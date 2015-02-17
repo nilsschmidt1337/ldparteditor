@@ -1,0 +1,11 @@
+
+0 !LPE PNG 0 0 0 0 0 0 1 1 /home/nils/LDRAW_Part-Authoring/Test-Theme/BGImage/01.png
+0 !LPE PNG 0 0 0 10 0 0 1 1 /home/nils/LDRAW_Part-Authoring/Test-Theme/BGImage/02.png
+0 !LPE PNG 0 0 0 20 0 0 1 1 /home/nils/LDRAW_Part-Authoring/Test-Theme/BGImage/03.png
+0 !LPE PNG 0 0 0 30 0 0 1 1 /home/nils/LDRAW_Part-Authoring/Test-Theme/BGImage/04.png
+0 !LPE PNG 0 0 0 40 0 0 1 1 /home/nils/LDRAW_Part-Authoring/Test-Theme/BGImage/05.png
+0 !LPE PNG 0 0 0 50 0 0 1 1 /home/nils/LDRAW_Part-Authoring/Test-Theme/BGImage/06.png
+0 !LPE PNG 0 0 0 60 0 0 1 1 /home/nils/LDRAW_Part-Authoring/Test-Theme/BGImage/07.png
+0 !LPE PNG 0 0 0 70 0 0 1 1 /home/nils/LDRAW_Part-Authoring/Test-Theme/BGImage/08.png
+0 !LPE PNG 0 0 0 80 0 0 1 1 /home/nils/LDRAW_Part-Authoring/Test-Theme/BGImage/09.png
+0 !LPE PNG 0 0 0 90 0 0 1 1 /home/nils/LDRAW_Part-Authoring/Test-Theme/BGImage/10.png

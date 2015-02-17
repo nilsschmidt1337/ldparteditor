@@ -1,0 +1,22 @@
+0 Sticker Mindstorms EV3 #12 for Beam 3 / Fairing Right (Formed) (Needs Work)
+0 Name: 13710kc01.dat
+0 Author: Philippe Hurbain [Philo]
+0 !LDRAW_ORG Unofficial_Part
+0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt
+
+0 !HELP To be used with panel 61070
+0 !HELP 1 15 -20 30 -65 1 0 0 0 0 -1 0 1 0 13710kc01.dat
+
+0 BFC CERTIFY CCW
+
+0 // Image file courtesy of the LEGO MINDSTORMS Team
+0 // Needs Work: Missing more detailed fallback pattern
+
+1 15 0 0 0 -1 0 0 0 1 0 0 0 1 s\61071s03.dat
+0 !TEXMAP NEXT PLANAR -33.94 10 16.725 18.484 10 16.725 -33.94 10 -17.27 13710k.png
+1 15 0 0 0 -1 0 0 0 1 0 0 0 1 s\61071s04.dat
+0 !TEXMAP FALLBACK
+1 15 0 0 0 -1 0 0 0 1 0 0 0 1 s\61071s04.dat
+0 !TEXMAP END
+
+1 15 -20 -80 60 1 0 0 0 1 0 0 0 1 61070d01.dat

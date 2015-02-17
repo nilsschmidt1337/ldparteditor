@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="lib/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/home/nils/workspace/lwjgl/lwjgl-2.8.4/native/linux"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt_linux"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.jface"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.sun.tools"/>
+	<classpathentry kind="lib" path="swt-grouplayout.jar" sourcepath="swt-grouplayout.zip"/>
+	<classpathentry kind="lib" path="swing2swt.jar"/>
+	<classpathentry kind="lib" path="/home/nils/eclipse/plugins/org.eclipse.core.databinding_1.4.1.v20130515-1857.jar" sourcepath="/usr/lib/eclipse/dropins/sdk/plugins/org.eclipse.core.databinding.source_1.4.0.dist.jar"/>
+	<classpathentry kind="lib" path="/home/nils/eclipse/plugins/org.eclipse.core.databinding.beans_1.2.200.v20130515-1857.jar" sourcepath="/usr/lib/eclipse/dropins/sdk/plugins/org.eclipse.core.databinding.beans.source_1.2.100.dist.jar"/>
+	<classpathentry kind="lib" path="/home/nils/eclipse/plugins/org.eclipse.core.databinding.observable_1.4.1.v20130515-1857.jar" sourcepath="/usr/lib/eclipse/dropins/sdk/plugins/org.eclipse.core.databinding.observable.source_1.4.0.dist.jar"/>
+	<classpathentry kind="lib" path="/home/nils/eclipse/plugins/org.eclipse.core.databinding.property_1.4.200.v20130515-1857.jar" sourcepath="/usr/lib/eclipse/dropins/sdk/plugins/org.eclipse.core.databinding.property.source_1.4.0.dist.jar"/>
+	<classpathentry kind="lib" path="/home/nils/eclipse/plugins/org.eclipse.jface.databinding_1.6.200.v20130515-1857.jar" sourcepath="/usr/lib/eclipse/dropins/sdk/plugins/org.eclipse.jface.databinding.source_1.5.0.dist.jar"/>
+	<classpathentry kind="lib" path="/home/nils/eclipse/plugins/com.ibm.icu_50.1.1.v201304230130.jar" sourcepath="/usr/lib/eclipse/plugins/com.ibm.icu_4.4.2.v20110823.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

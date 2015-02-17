@@ -1,0 +1,76 @@
+/* MIT - License
+
+Copyright (c) 2012 - this year, Nils Schmidt
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+package org.nschmidt.ldparteditor.dialogs.colour;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.ColorDialog;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.data.GColour;
+
+/**
+ *
+ * <p>
+ * Note: This class should be instantiated, it defines all listeners and part of
+ * the business logic. It overrides the {@code open()} method to invoke the
+ * listener definitions ;)
+ *
+ * @author nils
+ *
+ */
+public class ColourDialog extends ColourDesign {
+
+    /**
+     * Create the dialog.
+     *
+     * @param parentShell
+     */
+    public ColourDialog(Shell parentShell, final GColour[] refCol) {
+        super(parentShell, refCol);
+    }
+
+    @Override
+    public int open() {
+        super.create();
+        // MARK All final listeners will be configured here..
+        btn_colourChoose[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                ColorDialog dlg = new ColorDialog(getShell());
+                // Change the title bar text
+                dlg.setText("Choose a Direct Colour:"); // I18N //$NON-NLS-1$
+                // Open the dialog and retrieve the selected color
+                RGB rgb = dlg.open();
+                if (rgb != null) {
+                    refCol[0] = new GColour(-1, rgb.red / 255f, rgb.green / 255f, rgb.blue / 255f, 1f);
+                    me.close();
+                }
+            }
+        });
+        btn_colourTable[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                new ColourTableDialog(getShell(), refCol).open();
+            }
+        });
+        return super.open();
+    }
+
+}

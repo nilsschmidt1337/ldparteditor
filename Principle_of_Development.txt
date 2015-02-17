@@ -1,0 +1,19 @@
+PERFORMANCE - Faster is always better
+
+    AGILITY - Requirements should be delivered just-in-time
+
+        PRECISION - The tool must not handicap the user's business
+
+            STABILITY - No Crashes, No Complains, No Data Loss
+
+                TEST - Only a known bug can be fixed before the release
+
+                    INDEPENDENCE - of Operating Systems and hardware manufacturers
+
+                        BOTTOM-UP - Implement only what is necessary now to get a good program
+
+                            STRUCTURE
+
+                                DOCUMENTATION to the programmer
+
+                                        HELP to the user                   

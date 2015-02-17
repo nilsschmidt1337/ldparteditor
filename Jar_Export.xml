@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project LDPartEditor_linux">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="/home/nils/workspace/LDPartEditor/LDPartEditor_linux_x86/LDPartEditor.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="org.nschmidt.ldparteditor.main.LDPartEditor"/>
+                <!-- Modified Classpath -->
+            	<attribute name="Class-Path" value=". plugin/"/>
+            </manifest>
+        	<fileset dir="/home/nils/workspace/LDPartEditor_linux/bin"/>
+        	<zipfileset excludes="META-INF/*.SF" src="/home/nils/workspace/LDPartEditor_linux/lib/lwjgl_util.jar"/>
+        	<zipfileset excludes="META-INF/*.SF" src="/home/nils/workspace/LDPartEditor_linux/lib/lwjgl.jar"/>
+        	<fileset dir="/home/nils/workspace/org.eclipse.swt_linux"/>
+        	<zipfileset excludes="META-INF/*.SF" src="/home/nils/workspace/org.eclipse.swt_linux/swt.jar"/>
+        	<fileset dir="/home/nils/workspace/org.eclipse.jface/bin"/>
+        	<zipfileset excludes="META-INF/*.SF" src="/home/nils/workspace/jface/org.eclipse.core.commands_3.6.0.jar"/>
+        	<zipfileset excludes="META-INF/*.SF" src="/home/nils/workspace/jface/org.eclipse.equinox.common_3.6.0.jar"/>
+        	<zipfileset excludes="META-INF/*.SF" src="/home/nils/workspace/jface/org.eclipse.jface_3.5.0.jar"/>
+        	<zipfileset excludes="META-INF/*.SF" src="/home/nils/workspace/jface/org.eclipse.osgi_3.6.0.jar"/>
+        	<zipfileset excludes="META-INF/*.SF" src="/home/nils/workspace/jface/org.eclipse.ui.workbench_3.1.0.jar"/>
+        	<fileset dir="/home/nils/workspace/com.sun.tools/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/nils/workspace/runtime_compiler/tools.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/nils/workspace/LDPartEditor_linux/swt-grouplayout.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/nils/workspace/LDPartEditor_linux/swing2swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/nils/eclipse/plugins/org.eclipse.core.databinding_1.4.1.v20130515-1857.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/nils/eclipse/plugins/org.eclipse.core.databinding.beans_1.2.200.v20130515-1857.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/nils/eclipse/plugins/org.eclipse.core.databinding.observable_1.4.1.v20130515-1857.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/nils/eclipse/plugins/org.eclipse.core.databinding.property_1.4.200.v20130515-1857.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/nils/eclipse/plugins/org.eclipse.jface.databinding_1.6.200.v20130515-1857.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/nils/eclipse/plugins/com.ibm.icu_50.1.1.v201304230130.jar"/>
+        </jar>
+    </target>
+</project>

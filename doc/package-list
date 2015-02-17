@@ -1,0 +1,17 @@
+org.eclipse.swt.snippets
+org.eclipse.wb.swt
+org.nschmidt.ldparteditor.composites
+org.nschmidt.ldparteditor.dialogs
+org.nschmidt.ldparteditor.enums
+org.nschmidt.ldparteditor.helpers
+org.nschmidt.ldparteditor.helpers.composite3d
+org.nschmidt.ldparteditor.i18n
+org.nschmidt.ldparteditor.logger
+org.nschmidt.ldparteditor.main
+org.nschmidt.ldparteditor.opengl
+org.nschmidt.ldparteditor.plugin
+org.nschmidt.ldparteditor.resources
+org.nschmidt.ldparteditor.shells
+org.nschmidt.ldparteditor.splash
+org.nschmidt.ldparteditor.state
+org.nschmidt.ldparteditor.workbench
