@@ -82,6 +82,7 @@ import org.nschmidt.ldparteditor.dialogs.lines2pattern.Lines2PatternDialog;
 import org.nschmidt.ldparteditor.dialogs.newfile.NewFileDialog;
 import org.nschmidt.ldparteditor.dialogs.newproject.NewProjectDialog;
 import org.nschmidt.ldparteditor.dialogs.openfile.OpenFileDialog;
+import org.nschmidt.ldparteditor.dialogs.pathtruder.PathTruderDialog;
 import org.nschmidt.ldparteditor.dialogs.rectifier.RectifierDialog;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.dialogs.slicerpro.SlicerProDialog;
@@ -2539,7 +2540,6 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-
         mntm_Lines2Pattern[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -2550,6 +2550,21 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (new Lines2PatternDialog(getShell()).open() == IDialogConstants.OK_ID)
                             vm.lines2pattern();
                         return;
+                    }
+                }
+            }
+        });
+
+        mntm_PathTruder[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        if (new PathTruderDialog(getShell(), new Edger2Settings()).open() == IDialogConstants.OK_ID)
+                            // FIXME vm.pathTruder(ps)
+                            return;
                     }
                 }
             }
