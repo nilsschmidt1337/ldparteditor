@@ -98,6 +98,7 @@ import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
 import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.IsecalcSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.TreeData;
@@ -170,6 +171,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private IsecalcSettings is = new IsecalcSettings();
     private SlicerProSettings ss = new SlicerProSettings();
     private IntersectorSettings ins = new IntersectorSettings();
+    private PathTruderSettings ps = new PathTruderSettings();
 
     private boolean updatingPngPictureTab;
     private int pngPictureUpdateCounter = 0;
@@ -2562,7 +2564,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new PathTruderDialog(getShell(), new Edger2Settings()).open() == IDialogConstants.OK_ID)
+                        if (new PathTruderDialog(getShell(), ps).open() == IDialogConstants.OK_ID)
                             // FIXME vm.pathTruder(ps)
                             return;
                     }

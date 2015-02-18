@@ -19,7 +19,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
+import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
@@ -41,8 +41,8 @@ public class PathTruderDialog extends PathTruderDesign {
      * @param parentShell
      * @param es
      */
-    public PathTruderDialog(Shell parentShell, Edger2Settings es) {
-        super(parentShell, es);
+    public PathTruderDialog(Shell parentShell, PathTruderSettings ps) {
+        super(parentShell, ps);
     }
 
     @Override
@@ -53,43 +53,43 @@ public class PathTruderDialog extends PathTruderDesign {
         spn_ac[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                es.setAc(spn.getValue());
+                ps.setAc(spn.getValue());
             }
         });
         spn_af[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                es.setAf(spn.getValue());
+                ps.setAf(spn.getValue());
             }
         });
         spn_ae[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                es.setAe(spn.getValue());
+                ps.setAe(spn.getValue());
             }
         });
         spn_vequ[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                es.setEqualDistance(spn.getValue());
+                ps.setEqualDistance(spn.getValue());
             }
         });
         cmb_b[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                es.setExtendedRange(cmb_b[0].getSelectionIndex() == 1);
+                ps.setExtendedRange(cmb_b[0].getSelectionIndex() == 1);
             }
         });
         cmb_u[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                es.setUnmatchedMode(cmb_u[0].getSelectionIndex());
+                ps.setUnmatchedMode(cmb_u[0].getSelectionIndex());
             }
         });
         cmb_scope[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                es.setScope(cmb_scope[0].getSelectionIndex());
+                ps.setScope(cmb_scope[0].getSelectionIndex());
             }
         });
         return super.open();
