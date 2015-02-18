@@ -166,6 +166,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_SlicerPro = new MenuItem[1];
     final MenuItem[] mntm_Intersector = new MenuItem[1];
     final MenuItem[] mntm_Lines2Pattern = new MenuItem[1];
+    final MenuItem[] mntm_PathTruder = new MenuItem[1];
 
     final Text[] txt_Search = new Text[1];
     final Button[] btn_ResetSearch = new Button[1];
@@ -708,6 +709,12 @@ class Editor3DDesign extends ApplicationWindow {
                         this.mntm_Lines2Pattern[0] = mntm_Lines2Pattern;
                         mntm_Lines2Pattern.setText("Lines2Pattern\tAlt+P"); //$NON-NLS-1$ I18N
                         mntm_Lines2Pattern.setAccelerator(SWT.ALT | 'P');
+                    }
+                    {
+                        MenuItem mntm_PathTruder = new MenuItem(mnu_Tools, SWT.PUSH);
+                        this.mntm_PathTruder[0] = mntm_PathTruder;
+                        mntm_PathTruder.setText("PathTruder\tAlt+X"); //$NON-NLS-1$ I18N
+                        mntm_PathTruder.setAccelerator(SWT.ALT | 'X');
                     }
                 }
             }
