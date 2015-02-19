@@ -272,7 +272,7 @@ public final class GData1 extends GData {
             }
 
             GData description = myGData.getNext();
-            if (description.type() == 0) {
+            if (description != null && description.type() == 0) {
                 if (((GData0) description).text.trim().startsWith("0 ~Moved to")) { //$NON-NLS-1$
                     this.firstRef.setMovedTo(true);
                 }
