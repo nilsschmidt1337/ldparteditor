@@ -1271,9 +1271,18 @@ public final class GData3 extends GData {
 
     @Override
     public String transformAndColourReplace(String colour, Matrix matrix) {
-        BigDecimal[] v1 = matrix.transform(X1, Y1, Z1);
-        BigDecimal[] v2 = matrix.transform(X2, Y2, Z2);
-        BigDecimal[] v3 = matrix.transform(X3, Y3, Z3);
+        BigDecimal[] v1;
+        BigDecimal[] v2;
+        BigDecimal[] v3;
+        if (X1 == null) {
+            v1 = matrix.transform(new BigDecimal(x1), new BigDecimal(y1), new BigDecimal(z1));
+            v2 = matrix.transform(new BigDecimal(x2), new BigDecimal(y2), new BigDecimal(z2));
+            v3 = matrix.transform(new BigDecimal(x3), new BigDecimal(y3), new BigDecimal(z3));
+        } else {
+            v1 = matrix.transform(X1, Y1, Z1);
+            v2 = matrix.transform(X2, Y2, Z2);
+            v3 = matrix.transform(X3, Y3, Z3);
+        }
         StringBuilder lineBuilder = useAgain();
         lineBuilder.append(3);
         lineBuilder.append(" "); //$NON-NLS-1$
