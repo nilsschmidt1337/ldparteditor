@@ -2051,7 +2051,12 @@ public final class GData1 extends GData {
 
     @Override
     public String transformAndColourReplace(String colour, Matrix matrix) {
-        Matrix localMatrix = Matrix.mul(matrix, accurateLocalMatrix);
+        Matrix localMatrix;
+        if (accurateLocalMatrix == null) {
+            localMatrix = Matrix.mul(matrix, new Matrix(this.localMatrix));
+        } else {
+            localMatrix = Matrix.mul(matrix, accurateLocalMatrix);
+        }
         StringBuilder lineBuilder = useAgain();
         lineBuilder.append(1);
         lineBuilder.append(" "); //$NON-NLS-1$
