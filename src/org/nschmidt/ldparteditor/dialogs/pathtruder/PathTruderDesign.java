@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 
 /**
  * The PathTruder dialog
@@ -78,7 +79,10 @@ class PathTruderDesign extends Dialog {
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_colourCodes = new Label(cmp_container, SWT.NONE);
-        lbl_colourCodes.setText("Colour codes:\n\n1\t= Path 1\n2\t= Path 2\n4\t= Shape 1 Direction Vector\n5\t= Shape 1\n13\t= Shape 2 Direction Vector [optional]\n14\t= Shape 2 [optional]\n7\t= Line Indicators [optional]\n0\t= Line Ending Normal Indicators [optional]"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_colourCodes.setText("Colour codes:\n\n1\t= Path 1\n2\t= Path 2\n4\t= Shape 1 Direction Vector\n5\t= Shape 1\n13\t= Shape 2 Direction Vector [optional]\n14\t= Shape 2 [optional]\n7\t= Line Indicators [optional]\n0\t= Line Ending Normal Indicators [optional]\n"); //$NON-NLS-1$ I18N Needs translation!
+
+        Label lbl_use180deg = new Label(cmp_container, SWT.NONE);
+        lbl_use180deg.setText("Define maximum path segment length. Longer segments are split:"); //$NON-NLS-1$ I18N Needs translation!
 
         BigDecimalSpinner spn_vequ = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_vequ[0] = spn_vequ;
@@ -87,68 +91,69 @@ class PathTruderDesign extends Dialog {
         spn_vequ.setMinimum(new BigDecimal(0));
         spn_vequ.setValue(ps.getEqualDistance());
 
-        Label lbl_use180deg = new Label(cmp_container, SWT.NONE);
-        lbl_use180deg.setText("Range:"); //$NON-NLS-1$ I18N Needs translation!
+        Label lbl_transitions = new Label(cmp_container, SWT.NONE);
+        lbl_transitions.setText("Sets the number of transitions from shape1 to shape2 and vice versa (1, default):"); //$NON-NLS-1$ I18N Needs translation!
+
+        IntegerSpinner spn_transitions = new IntegerSpinner(cmp_container, SWT.NONE);
+        spn_transitions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spn_transitions.setMaximum(1);
+        spn_transitions.setMinimum(1000000);
+        spn_transitions.setValue(1);
+
+        Label lbl_transCurve = new Label(cmp_container, SWT.NONE);
+        lbl_transCurve.setText("Control transition curve, from 1 (linear) to 10 (s-shape, default) to 100 (step):"); //$NON-NLS-1$ I18N Needs translation!
+
+        BigDecimalSpinner spn_transCurve = new BigDecimalSpinner(cmp_container, SWT.NONE);
+        spn_transCurve.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spn_transCurve.setMaximum(BigDecimal.ONE);
+        spn_transCurve.setMinimum(new BigDecimal(0));
+        spn_transCurve.setValue(ps.getEqualDistance());
+
+        Label lbl_centerCurve = new Label(cmp_container, SWT.NONE);
+        lbl_centerCurve.setText("Control transition curve centering. 0 <= position <= 1. Default is 0.5, centered:"); //$NON-NLS-1$ I18N Needs translation!
+
+        BigDecimalSpinner spn_centerCurve = new BigDecimalSpinner(cmp_container, SWT.NONE);
+        spn_centerCurve.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spn_centerCurve.setMaximum(BigDecimal.ONE);
+        spn_centerCurve.setMinimum(new BigDecimal(0));
+        spn_centerCurve.setValue(ps.getEqualDistance());
+
+        Label lbl_lineThreshold = new Label(cmp_container, SWT.NONE);
+        lbl_lineThreshold.setText("If path has a sharper angle, a line is created at the junction. Default is 180° (no line).\nUse a negative value to force line creation:"); //$NON-NLS-1$ I18N Needs translation!
+
+        BigDecimalSpinner spn_lineThreshold = new BigDecimalSpinner(cmp_container, SWT.NONE);
+        spn_lineThreshold.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spn_lineThreshold.setMaximum(BigDecimal.ONE);
+        spn_lineThreshold.setMinimum(new BigDecimal(0));
+        spn_lineThreshold.setValue(ps.getEqualDistance());
+
+        Label lbl_rotationAngle = new Label(cmp_container, SWT.NONE);
+        lbl_rotationAngle.setText("Specify rotation of shape direction vector around path1 as it sweeps along the path. Default is 0°:"); //$NON-NLS-1$ I18N Needs translation!
+
+        BigDecimalSpinner spn_rotationAngle = new BigDecimalSpinner(cmp_container, SWT.NONE);
+        spn_rotationAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spn_rotationAngle.setMaximum(BigDecimal.ONE);
+        spn_rotationAngle.setMinimum(new BigDecimal(0));
+        spn_rotationAngle.setValue(ps.getEqualDistance());
+
+        Label lbl_af = new Label(cmp_container, SWT.NONE);
+        lbl_af.setText("Compensation at sharp path angles:"); //$NON-NLS-1$ I18N Needs translation!
 
         Combo cmb_b = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_b[0] = cmb_b;
-        cmb_b.setItems(new String[] { "0°-90°", "0°-180" }); //$NON-NLS-1$ //$NON-NLS-2$
+        cmb_b.setItems(new String[] {"No compensation.", "The shape is elongated to compensate for flattening at sharp path angles." }); //$NON-NLS-1$ //$NON-NLS-2$
         cmb_b.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_b.setText(ps.isExtendedRange() ? cmb_b.getItem(1) : cmb_b.getItem(0));
         cmb_b.select(ps.isExtendedRange() ? 1 : 0);
 
-        Label lbl_af = new Label(cmp_container, SWT.NONE);
-        lbl_af.setText("Flat Surface Maximum Angle (af) [Degree]:"); //$NON-NLS-1$ I18N Needs translation!
+        Label lbl_bfcinvert = new Label(cmp_container, SWT.NONE);
+        lbl_bfcinvert.setText("Invert shape winding:"); //$NON-NLS-1$ I18N Needs translation!
 
-        BigDecimalSpinner spn_af = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_af[0] = spn_af;
-        spn_af.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_af.setMaximum(new BigDecimal(180));
-        spn_af.setMinimum(new BigDecimal(0));
-        spn_af.setValue(ps.getAf());
-
-        Label lbl_ac = new Label(cmp_container, SWT.NONE);
-        lbl_ac.setText("Cond. Line Only Maximum Angle (ac) [Degree]:"); //$NON-NLS-1$ I18N Needs translation!
-
-        BigDecimalSpinner spn_ac = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_ac[0] = spn_ac;
-        spn_ac.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_ac.setMaximum(new BigDecimal(180));
-        spn_ac.setMinimum(new BigDecimal(0));
-        spn_ac.setValue(ps.getAc());
-
-        Label lbl_ae = new Label(cmp_container, SWT.NONE);
-        lbl_ae.setText("Edge Line Only Minimum Angle (ae) [Degree]:"); //$NON-NLS-1$ I18N Needs translation!
-
-        BigDecimalSpinner spn_ae = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_ae[0] = spn_ae;
-        spn_ae.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_ae.setMaximum(new BigDecimal(180));
-        spn_ae.setMinimum(new BigDecimal(0));
-        spn_ae.setValue(ps.getAe());
-
-        Combo cmb_u = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_u[0] = cmb_u;
-        cmb_u.setItems(new String[] { "Include Unmatched Edges", "Exclude Unmatched Edges", "Unmatched Edges Only"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
-        cmb_u.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_u.setText(cmb_u.getItem(ps.getUnmatchedMode()));
-        cmb_u.select(ps.getUnmatchedMode());
-
-        Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {"Scope: File + Subfiles", "Scope: File", "Scope: Selection"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
-        cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_scope.setText(cmb_scope.getItem(ps.getScope()));
-        cmb_scope.select(ps.getScope());
-
-        Label lbl_1 = new Label(cmp_container, SWT.NONE);
-        lbl_1.setText("0\t<\ta\t≤\taf\t: No Line"); //$NON-NLS-1$ I18N Needs translation!
-        Label lbl_2 = new Label(cmp_container, SWT.NONE);
-        lbl_2.setText("af\t<\ta\t≤\tac\t: Cond. Line"); //$NON-NLS-1$ I18N Needs translation!
-        Label lbl_3 = new Label(cmp_container, SWT.NONE);
-        lbl_3.setText("ac\t<\ta\t≤\tae\t: Cond. Line + Edge Line"); //$NON-NLS-1$ I18N Needs translation!
-        Label lbl_4 = new Label(cmp_container, SWT.NONE);
-        lbl_4.setText("ae\t<\ta\t\t\t: Egde Line"); //$NON-NLS-1$ I18N Needs translation!
+        Combo cmb_bfcinvert = new Combo(cmp_container, SWT.READ_ONLY);
+        cmb_bfcinvert.setItems(new String[] {"Use original winding.", "Invert winding." }); //$NON-NLS-1$ //$NON-NLS-2$
+        cmb_bfcinvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmb_bfcinvert.setText(ps.isExtendedRange() ? cmb_bfcinvert.getItem(1) : cmb_bfcinvert.getItem(0));
+        cmb_bfcinvert.select(ps.isExtendedRange() ? 1 : 0);
 
         cmp_container.pack();
         return cmp_container;
