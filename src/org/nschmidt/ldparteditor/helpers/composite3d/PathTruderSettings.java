@@ -23,53 +23,60 @@ import java.math.BigDecimal;
  */
 public class PathTruderSettings {
 
-    private BigDecimal equalDistance = new BigDecimal("0.0001"); //$NON-NLS-1$
-    private BigDecimal af = new BigDecimal("0.1"); //$NON-NLS-1$
-    private BigDecimal ac = new BigDecimal("60"); //$NON-NLS-1$
-    private BigDecimal ae = new BigDecimal("60"); //$NON-NLS-1$
-    private boolean extendedRange = false;
-    private int scope = 0;
-    private int unmatchedMode = 0;
-    public BigDecimal getEqualDistance() {
-        return equalDistance;
+    private BigDecimal maxPathSegmentLength = new BigDecimal("100"); //$NON-NLS-1$
+    private BigDecimal transitionCurveControl = BigDecimal.TEN;
+    private BigDecimal transitionCurveCenter = new BigDecimal("0.5"); //$NON-NLS-1$
+    private BigDecimal pathAngleForLine = new BigDecimal(180);
+    private BigDecimal rotation = BigDecimal.ZERO;
+    private boolean inverted = false;
+    private int transitionCount = 1;
+    private boolean compensation = false;
+    public BigDecimal getMaxPathSegmentLength() {
+        return maxPathSegmentLength;
     }
-    public void setEqualDistance(BigDecimal equalDistance) {
-        this.equalDistance = equalDistance;
+    public void setMaxPathSegmentLength(BigDecimal length) {
+        this.maxPathSegmentLength = length;
     }
-    public BigDecimal getAf() {
-        return af;
+    public int getTransitionCount() {
+        return transitionCount;
     }
-    public void setAf(BigDecimal af) {
-        this.af = af;
+    public void setTransitionCount(int transitionCount) {
+        this.transitionCount = transitionCount;
     }
-    public BigDecimal getAc() {
-        return ac;
+    public BigDecimal getTransitionCurveControl() {
+        return transitionCurveControl;
     }
-    public void setAc(BigDecimal ac) {
-        this.ac = ac;
+    public void setTransitionCurveControl(BigDecimal transitionCurveControl) {
+        this.transitionCurveControl = transitionCurveControl;
     }
-    public BigDecimal getAe() {
-        return ae;
+    public BigDecimal getTransitionCurveCenter() {
+        return transitionCurveCenter;
     }
-    public void setAe(BigDecimal ae) {
-        this.ae = ae;
+    public void setTransitionCurveCenter(BigDecimal transitionCurveCenter) {
+        this.transitionCurveCenter = transitionCurveCenter;
     }
-    public boolean isExtendedRange() {
-        return extendedRange;
+    public BigDecimal getPathAngleForLine() {
+        return pathAngleForLine;
     }
-    public void setExtendedRange(boolean extendedRange) {
-        this.extendedRange = extendedRange;
+    public void setPathAngleForLine(BigDecimal pathAngleForLine) {
+        this.pathAngleForLine = pathAngleForLine;
     }
-    public int getScope() {
-        return scope;
+    public BigDecimal getRotation() {
+        return rotation;
     }
-    public void setScope(int scope) {
-        this.scope = scope;
+    public void setRotation(BigDecimal rotation) {
+        this.rotation = rotation;
     }
-    public int getUnmatchedMode() {
-        return unmatchedMode;
+    public boolean isCompensation() {
+        return compensation;
     }
-    public void setUnmatchedMode(int unmatchedMode) {
-        this.unmatchedMode = unmatchedMode;
+    public void setCompensation(boolean compensation) {
+        this.compensation = compensation;
+    }
+    public boolean isInverted() {
+        return inverted;
+    }
+    public void setInverted(boolean inverted) {
+        this.inverted = inverted;
     }
 }
