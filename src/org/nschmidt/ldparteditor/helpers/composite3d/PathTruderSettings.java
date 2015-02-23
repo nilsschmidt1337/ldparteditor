@@ -23,7 +23,7 @@ import java.math.BigDecimal;
  */
 public class PathTruderSettings {
 
-    private BigDecimal maxPathSegmentLength = new BigDecimal("100"); //$NON-NLS-1$
+    private BigDecimal maxPathSegmentLength = new BigDecimal(100000);
     private BigDecimal transitionCurveControl = BigDecimal.TEN;
     private BigDecimal transitionCurveCenter = new BigDecimal("0.5"); //$NON-NLS-1$
     private BigDecimal pathAngleForLine = new BigDecimal(180);

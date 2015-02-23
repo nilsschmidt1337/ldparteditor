@@ -2565,8 +2565,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         if (new PathTruderDialog(getShell(), ps).open() == IDialogConstants.OK_ID)
-                            // FIXME vm.pathTruder(ps)
-                            return;
+                            vm.pathTruder(ps);
+                        return;
                     }
                 }
             }

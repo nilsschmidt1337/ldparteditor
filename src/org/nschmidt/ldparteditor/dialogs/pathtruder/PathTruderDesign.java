@@ -84,13 +84,13 @@ class PathTruderDesign extends Dialog {
         lbl_colourCodes.setText("Colour codes:\n\n1\t= Path 1\n2\t= Path 2\n4\t= Shape 1 Direction Vector\n5\t= Shape 1\n13\t= Shape 2 Direction Vector [optional]\n14\t= Shape 2 [optional]\n7\t= Line Indicators [optional]\n0\t= Line Ending Normal Indicators [optional]\n"); //$NON-NLS-1$ I18N Needs translation!
 
         Label lbl_use180deg = new Label(cmp_container, SWT.NONE);
-        lbl_use180deg.setText("Define maximum path segment length. Longer segments are split:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_use180deg.setText("Define maximum path segment length. Longer segments are split (100000, default):"); //$NON-NLS-1$ I18N Needs translation!
 
         BigDecimalSpinner spn_maxPathSegmentLength = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_maxPathSegmentLength[0] = spn_maxPathSegmentLength;
         spn_maxPathSegmentLength.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_maxPathSegmentLength.setMaximum(BigDecimal.ONE);
-        spn_maxPathSegmentLength.setMinimum(new BigDecimal(0));
+        spn_maxPathSegmentLength.setMaximum(new BigDecimal(100000));
+        spn_maxPathSegmentLength.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
         spn_maxPathSegmentLength.setValue(ps.getMaxPathSegmentLength());
 
         Label lbl_transitions = new Label(cmp_container, SWT.NONE);
@@ -148,7 +148,7 @@ class PathTruderDesign extends Dialog {
 
         Combo cmb_shapeCompensation = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_shapeCompensation[0] = cmb_shapeCompensation;
-        cmb_shapeCompensation.setItems(new String[] {"No compensation.", "The shape is elongated to compensate for flattening at sharp path angles." }); //$NON-NLS-1$ //$NON-NLS-2$
+        cmb_shapeCompensation.setItems(new String[] {"No compensation (default).", "The shape is elongated to compensate for flattening at sharp path angles." }); //$NON-NLS-1$ //$NON-NLS-2$
         cmb_shapeCompensation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_shapeCompensation.setText(ps.isCompensation() ? cmb_shapeCompensation.getItem(1) : cmb_shapeCompensation.getItem(0));
         cmb_shapeCompensation.select(ps.isCompensation() ? 1 : 0);
@@ -158,7 +158,7 @@ class PathTruderDesign extends Dialog {
 
         Combo cmb_bfcInvert = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_bfcInvert[0] = cmb_bfcInvert;
-        cmb_bfcInvert.setItems(new String[] {"Use original winding.", "Invert winding." }); //$NON-NLS-1$ //$NON-NLS-2$
+        cmb_bfcInvert.setItems(new String[] {"Use original winding (default).", "Invert winding." }); //$NON-NLS-1$ //$NON-NLS-2$
         cmb_bfcInvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_bfcInvert.setText(ps.isInverted() ? cmb_bfcInvert.getItem(1) : cmb_bfcInvert.getItem(0));
         cmb_bfcInvert.select(ps.isInverted() ? 1 : 0);
