@@ -13240,8 +13240,6 @@ public class VertexManager {
                                 double[][][] SortBuf = new double[MAX_LINE][2][3];
                                 int[][][] next = new int[MAX_LINE][2][2];
 
-                                boolean Path1Flag=false;
-                                boolean Path2Flag=false;
                                 boolean Shape1Flag=false;
                                 boolean Shape2Flag=false;
 
@@ -13271,263 +13269,210 @@ public class VertexManager {
                                 double rotangle;
 
                                 {
-                                    switch (1)
-                                    {
-                                    case 'p':
-                                        switch (1)
-                                        {
-                                        case '1':
-                                            Path1Flag=true;
-                                            printf("Read path file 1\n"); //$NON-NLS-1$
-                                            {
-                                                {
-                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", null, null,  //$NON-NLS-1$
-                                                            SortBuf[Path1Len][0][0], SortBuf[Path1Len][0][1], SortBuf[Path1Len][0][2],
-                                                            SortBuf[Path1Len][1][0], SortBuf[Path1Len][1][1], SortBuf[Path1Len][1][2]);
-                                                    next[Path1Len][0][0] = next[Path1Len][1][0] = -1;
-                                                    if(MANHATTAN(SortBuf[Path1Len][0], SortBuf[Path1Len][1]) < EPSILON )
-                                                    {
-                                                        printf("Null length element in path file 1\n"); //$NON-NLS-1$
-                                                        printf("Press <Enter> to quit"); //$NON-NLS-1$
-                                                        getchar();
-                                                        return;
-                                                    }
-
-                                                    Path1Len++;
-                                                }
-
-                                            }
-                                            printf("Sort path file 1\n"); //$NON-NLS-1$
-                                            circular=true;
-                                            for (i=0; i<Path1Len; i++)
-                                            {
-                                                for (j=0; j<2; j++)
-                                                {
-                                                    if(next[i][j][0] != -1) break;
-                                                    dmax=100000;
-                                                    for (k=0; k<Path1Len; k++)
-                                                    {
-                                                        if(k != i)
-                                                        {
-                                                            for(l=0; l<2; l++)
-                                                            {
-                                                                d=MANHATTAN(SortBuf[i][j], SortBuf[k][l]);
-                                                                if(d<dmax)
-                                                                {
-                                                                    dmax=d;
-                                                                    next[i][j][0]=k;
-                                                                    next[i][j][1]=l;
-                                                                }
-                                                                if(d==0) break;
-                                                            }
-                                                            if(d==0) break;
-                                                        }
-                                                    }
-                                                    if(dmax>SMALL)
-                                                    {
-                                                        next[i][j][0]=-1;
-                                                        circular=false;
-                                                    }
-                                                }
-                                            }
-                                            if(circular)
-                                            {
-                                                next[next[0][0][0]][next[0][0][1]][0]=-1;
-                                                next[0][0][0]=-1;
-                                            }
-                                            InLineIdx=0;
-                                            NumPath=0;
-                                            for (i=0; i<Path1Len; i++)
-                                            {
-                                                for (j=0; j<2; j++)
-                                                {
-                                                    int a,b,c,d2;
-                                                    if(next[i][j][0] == -1)
-                                                    {
-                                                        NumPath++;
-                                                        a=i; b=j;
-                                                        do
-                                                        {
-                                                            SET(Path1a[InLineIdx][0], SortBuf[a][b]);
-                                                            SET(Path1a[InLineIdx][1], SortBuf[a][1-b]);
-                                                            InLineIdx++;
-
-                                                            d2=next[a][1-b][1];
-                                                            c=next[a][1-b][0];
-                                                            next[a][1-b][0] = -2;
-                                                            next[a][b][0] = -2;
-                                                            b=d2;
-                                                            a=c;
-                                                        }
-                                                        while(a!=-1);
-                                                    }
-                                                }
-                                            }
-
-                                            Path1Len=InLineIdx;
-
-                                            if(NumPath > 1)
-                                                printf("%d distinct paths found in Path file 1. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
-
-                                            printf("%d lines in path file 1\n" + Path1Len); //$NON-NLS-1$
-                                            break;
-
-                                        case '2':
-                                            Path2Flag=true;
-                                            printf("Read path file 2\n"); //$NON-NLS-1$
-                                            {
-                                                {
-                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", null, null,  //$NON-NLS-1$
-                                                            SortBuf[Path2Len][0][0], SortBuf[Path2Len][0][1], SortBuf[Path2Len][0][2],
-                                                            SortBuf[Path2Len][1][0], SortBuf[Path2Len][1][1], SortBuf[Path2Len][1][2]);
-                                                    next[Path2Len][0][0] = next[Path2Len][1][0] = -1;
-                                                    if(MANHATTAN(SortBuf[Path2Len][0], SortBuf[Path2Len][1]) < EPSILON )
-                                                    {
-                                                        printf("Null length element in path file 2\n"); //$NON-NLS-1$
-                                                        printf("Press <Enter> to quit"); //$NON-NLS-1$
-                                                        getchar();
-                                                        return;
-                                                    }
-
-                                                    Path2Len++;
-                                                }
-                                            }
-                                            printf("Sort path file 2\n"); //$NON-NLS-1$
-                                            circular=true;
-                                            for (i=0; i<Path2Len; i++)
-                                            {
-                                                for (j=0; j<2; j++)
-                                                {
-                                                    if(next[i][j][0] != -1) break;
-                                                    dmax=100000;
-                                                    for (k=0; k<Path2Len; k++)
-                                                    {
-                                                        if(k != i)
-                                                        {
-                                                            for(l=0; l<2; l++)
-                                                            {
-                                                                d=MANHATTAN(SortBuf[i][j], SortBuf[k][l]);
-                                                                if(d<dmax)
-                                                                {
-                                                                    dmax=d;
-                                                                    next[i][j][0]=k;
-                                                                    next[i][j][1]=l;
-                                                                }
-                                                                if(d==0) break;
-                                                            }
-                                                            if(d==0) break;
-                                                        }
-                                                    }
-                                                    if(dmax>SMALL)
-                                                    {
-                                                        next[i][j][0]=-1;
-                                                        circular=false;
-                                                    }
-                                                }
-                                            }
-                                            if(circular)
-                                            {
-                                                next[next[0][0][0]][next[0][0][1]][0]=-1;
-                                                next[0][0][0]=-1;
-                                            }
-                                            InLineIdx=0;
-                                            NumPath=0;
-                                            for (i=0; i<Path2Len; i++)
-                                            {
-                                                for (j=0; j<2; j++)
-                                                {
-                                                    int a,b,c,d2;
-                                                    if(next[i][j][0] == -1)
-                                                    {
-                                                        NumPath++;
-                                                        a=i; b=j;
-                                                        do
-                                                        {
-                                                            SET(Path2a[InLineIdx][0], SortBuf[a][b]);
-                                                            SET(Path2a[InLineIdx][1], SortBuf[a][1-b]);
-                                                            InLineIdx++;
-
-                                                            d2=next[a][1-b][1];
-                                                            c=next[a][1-b][0];
-                                                            next[a][1-b][0] = -2;
-                                                            next[a][b][0] = -2;
-                                                            b=d2;
-                                                            a=c;
-                                                        }
-                                                        while(a!=-1);
-                                                    }
-                                                }
-                                            }
-
-                                            Path2Len=InLineIdx;
-
-                                            if(NumPath > 1)
-                                                printf("%d distinct paths found in Path file 2. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
-
-                                            printf("%d lines in path file 2\n" + Path2Len); //$NON-NLS-1$
-                                            break;
-                                        default:
-                                            break;
-                                        }
-                                        break;
-                                    case 's':
-                                        switch (1)
-                                        {
-                                        case '1':
-                                            Shape1Flag=true;
-
-                                            printf("Read shape file 1\n"); //$NON-NLS-1$
-
-                                            {
-                                                {
-                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", null, null,  //$NON-NLS-1$
-                                                            Shape1[Shape1Len][0][0], Shape1[Shape1Len][0][1], Shape1[Shape1Len][0][2],
-                                                            Shape1[Shape1Len][1][0], Shape1[Shape1Len][1][1], Shape1[Shape1Len][1][2]);
-                                                    Shape1Len++;
-                                                }
-                                            }
-                                            printf("%d lines in shape file 1\n" + Shape1Len); //$NON-NLS-1$
-                                            break;
-                                        case '2':
-                                            Shape2Flag=true;
-                                            printf("Read shape file 2\n"); //$NON-NLS-1$
-                                            {
-                                                {
-                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", null, null,  //$NON-NLS-1$
-                                                            Shape2[Shape2Len][0][0], Shape2[Shape2Len][0][1], Shape2[Shape2Len][0][2],
-                                                            Shape2[Shape2Len][1][0], Shape2[Shape2Len][1][1], Shape2[Shape2Len][1][2]);
-                                                    Shape2Len++;
-                                                }
-                                            }
-                                            printf("%d lines in shape file 2\n" + Shape2Len); //$NON-NLS-1$
-                                            break;
-                                        default:
-                                            return;
-                                        }
-                                        break;
-                                    default:
-                                        return;
+                                    printf("Read path file 1\n"); //$NON-NLS-1$
+                                    if (endings) {
+                                        path1.add(0, path1endSegments.get(0));
+                                        path1.add(path1endSegments.get(1));
                                     }
-                                }
+                                    for (GData2 p : path1) {
+                                        SortBuf[Path1Len][0][0] = p.X1.doubleValue();
+                                        SortBuf[Path1Len][0][1] = p.Y1.doubleValue();
+                                        SortBuf[Path1Len][0][2] = p.Z1.doubleValue();
+                                        SortBuf[Path1Len][1][0] = p.X2.doubleValue();
+                                        SortBuf[Path1Len][1][1] = p.Y2.doubleValue();
+                                        SortBuf[Path1Len][1][2] = p.Z2.doubleValue();
+                                        next[Path1Len][0][0] = next[Path1Len][1][0] = -1;
+                                        Path1Len++;
+                                    }
+                                    printf("Sort path file 1\n"); //$NON-NLS-1$
+                                    circular=true;
+                                    for (i=0; i<Path1Len; i++)
+                                    {
+                                        for (j=0; j<2; j++)
+                                        {
+                                            if(next[i][j][0] != -1) break;
+                                            dmax=100000;
+                                            for (k=0; k<Path1Len; k++)
+                                            {
+                                                if(k != i)
+                                                {
+                                                    for(l=0; l<2; l++)
+                                                    {
+                                                        d=MANHATTAN(SortBuf[i][j], SortBuf[k][l]);
+                                                        if(d<dmax)
+                                                        {
+                                                            dmax=d;
+                                                            next[i][j][0]=k;
+                                                            next[i][j][1]=l;
+                                                        }
+                                                        if(d==0) break;
+                                                    }
+                                                    if(d==0) break;
+                                                }
+                                            }
+                                            if(dmax>SMALL)
+                                            {
+                                                next[i][j][0]=-1;
+                                                circular=false;
+                                            }
+                                        }
+                                    }
+                                    if(circular)
+                                    {
+                                        next[next[0][0][0]][next[0][0][1]][0]=-1;
+                                        next[0][0][0]=-1;
+                                    }
+                                    InLineIdx=0;
+                                    NumPath=0;
+                                    for (i=0; i<Path1Len; i++)
+                                    {
+                                        for (j=0; j<2; j++)
+                                        {
+                                            int a,b,c,d2;
+                                            if(next[i][j][0] == -1)
+                                            {
+                                                NumPath++;
+                                                a=i; b=j;
+                                                do
+                                                {
+                                                    SET(Path1a[InLineIdx][0], SortBuf[a][b]);
+                                                    SET(Path1a[InLineIdx][1], SortBuf[a][1-b]);
+                                                    InLineIdx++;
 
-                                if(!Shape1Flag && !Shape2Flag)
-                                {
-                                    printf("No shape file provided!\n"); //$NON-NLS-1$
-                                    return;
-                                }
-                                if(!Shape1Flag)
-                                {
-                                    printf("Shape 1 file not provided, copying shape 2 to shape 1\n"); //$NON-NLS-1$
-                                }
-                                if(!Shape2Flag)
-                                {
-                                    printf("Shape 2 file not provided, copying shape 1 to shape 2\n"); //$NON-NLS-1$
-                                }
+                                                    d2=next[a][1-b][1];
+                                                    c=next[a][1-b][0];
+                                                    next[a][1-b][0] = -2;
+                                                    next[a][b][0] = -2;
+                                                    b=d2;
+                                                    a=c;
+                                                }
+                                                while(a!=-1);
+                                            }
+                                        }
+                                    }
 
-                                if(!Path1Flag || !Path2Flag)
+                                    Path1Len=InLineIdx;
+
+                                    if(NumPath > 1)
+                                        printf("%d distinct paths found in Path file 1. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
+
+                                    printf("%d lines in path file 1\n" + Path1Len); //$NON-NLS-1$
+                                }
                                 {
-                                    printf("Two path files are needed!\n"); //$NON-NLS-1$
-                                    return;
+                                    printf("Read path file 2\n"); //$NON-NLS-1$
+                                    if (endings) {
+                                        path2.add(0, path2endSegments.get(0));
+                                        path2.add(path2endSegments.get(1));
+                                    }
+                                    for (GData2 p : path2) {
+                                        SortBuf[Path2Len][0][0] = p.X1.doubleValue();
+                                        SortBuf[Path2Len][0][1] = p.Y1.doubleValue();
+                                        SortBuf[Path2Len][0][2] = p.Z1.doubleValue();
+                                        SortBuf[Path2Len][1][0] = p.X2.doubleValue();
+                                        SortBuf[Path2Len][1][1] = p.Y2.doubleValue();
+                                        SortBuf[Path2Len][1][2] = p.Z2.doubleValue();
+                                        next[Path2Len][0][0] = next[Path2Len][1][0] = -1;
+                                        Path2Len++;
+                                    }
+                                    printf("Sort path file 2\n"); //$NON-NLS-1$
+                                    circular=true;
+                                    for (i=0; i<Path2Len; i++)
+                                    {
+                                        for (j=0; j<2; j++)
+                                        {
+                                            if(next[i][j][0] != -1) break;
+                                            dmax=100000;
+                                            for (k=0; k<Path2Len; k++)
+                                            {
+                                                if(k != i)
+                                                {
+                                                    for(l=0; l<2; l++)
+                                                    {
+                                                        d=MANHATTAN(SortBuf[i][j], SortBuf[k][l]);
+                                                        if(d<dmax)
+                                                        {
+                                                            dmax=d;
+                                                            next[i][j][0]=k;
+                                                            next[i][j][1]=l;
+                                                        }
+                                                        if(d==0) break;
+                                                    }
+                                                    if(d==0) break;
+                                                }
+                                            }
+                                            if(dmax>SMALL)
+                                            {
+                                                next[i][j][0]=-1;
+                                                circular=false;
+                                            }
+                                        }
+                                    }
+                                    if(circular)
+                                    {
+                                        next[next[0][0][0]][next[0][0][1]][0]=-1;
+                                        next[0][0][0]=-1;
+                                    }
+                                    InLineIdx=0;
+                                    NumPath=0;
+                                    for (i=0; i<Path2Len; i++)
+                                    {
+                                        for (j=0; j<2; j++)
+                                        {
+                                            int a,b,c,d2;
+                                            if(next[i][j][0] == -1)
+                                            {
+                                                NumPath++;
+                                                a=i; b=j;
+                                                do
+                                                {
+                                                    SET(Path2a[InLineIdx][0], SortBuf[a][b]);
+                                                    SET(Path2a[InLineIdx][1], SortBuf[a][1-b]);
+                                                    InLineIdx++;
+
+                                                    d2=next[a][1-b][1];
+                                                    c=next[a][1-b][0];
+                                                    next[a][1-b][0] = -2;
+                                                    next[a][b][0] = -2;
+                                                    b=d2;
+                                                    a=c;
+                                                }
+                                                while(a!=-1);
+                                            }
+                                        }
+                                    }
+
+                                    Path2Len=InLineIdx;
+
+                                    if(NumPath > 1)
+                                        printf("%d distinct paths found in Path file 2. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
+
+                                    printf("%d lines in path file 2\n" + Path2Len); //$NON-NLS-1$
+                                }
+                                {
+                                    printf("Read shape file 1\n"); //$NON-NLS-1$
+                                    for (GData2 p : shape1) {
+                                        Shape1[Shape1Len][0][0] = p.X1.doubleValue();
+                                        Shape1[Shape1Len][0][1] = p.Y1.doubleValue();
+                                        Shape1[Shape1Len][0][2] = p.Z1.doubleValue();
+                                        Shape1[Shape1Len][1][0] = p.X2.doubleValue();
+                                        Shape1[Shape1Len][1][1] = p.Y2.doubleValue();
+                                        Shape1[Shape1Len][1][2] = p.Z2.doubleValue();
+                                        Shape1Len++;
+                                    }
+                                    printf("%d lines in shape file 1\n" + Shape1Len); //$NON-NLS-1$
+                                }
+                                {
+                                    printf("Read shape file 2\n"); //$NON-NLS-1$
+                                    for (GData2 p : shape2) {
+                                        Shape2[Shape2Len][0][0] = p.X1.doubleValue();
+                                        Shape2[Shape2Len][0][1] = p.Y1.doubleValue();
+                                        Shape2[Shape2Len][0][2] = p.Z1.doubleValue();
+                                        Shape1[Shape2Len][1][0] = p.X2.doubleValue();
+                                        Shape2[Shape2Len][1][1] = p.Y2.doubleValue();
+                                        Shape2[Shape2Len][1][2] = p.Z2.doubleValue();
+                                        Shape2Len++;
+                                    }
+                                    printf("%d lines in shape file 2\n" + Shape2Len); //$NON-NLS-1$
                                 }
 
                                 if(Path1Len != Path2Len)
@@ -13555,7 +13500,7 @@ public class VertexManager {
                                 for(i=0; i<Path1Len; i++)
                                 {
                                     double[] p1 = new double[3], p2 = new double[3], q1 = new double[3], q2 = new double[3], delta1 = new double[3], delta2 = new double[3], temp = new double[3];
-                                    double nsplit1, nsplit2;
+                                    int nsplit1, nsplit2;
 
                                     SET(p1, Path1a[i][0]);
                                     SET(p2, Path1a[i][1]);
@@ -13563,8 +13508,8 @@ public class VertexManager {
                                     SET(q1, Path2a[i][0]);
                                     SET(q2, Path2a[i][1]);
 
-                                    nsplit1=DIST(p1,p2)/maxlength+1;
-                                    nsplit2=DIST(q1,q2)/maxlength+1;
+                                    nsplit1 = (int) (DIST(p1,p2) / maxlength + 1);
+                                    nsplit2 = (int) (DIST(q1,q2) / maxlength + 1);
 
                                     // don't split endings segments
                                     if(endings)
@@ -13575,10 +13520,10 @@ public class VertexManager {
                                     nsplit1 = nsplit1 > nsplit2 ? nsplit1 : nsplit2;
 
                                     SUB(delta1,p2,p1);
-                                    MULT(delta1, delta1, 1.0/nsplit1);
+                                    MULT(delta1, delta1, 1.0 / nsplit1);
                                     SUB(delta2,q2,q1);
-                                    MULT(delta2, delta2, 1.0/nsplit1);
-                                    for (k=0; k<nsplit1; k++)
+                                    MULT(delta2, delta2, 1.0 / nsplit1);
+                                    for (k=0; k < nsplit1; k++)
                                     {
                                         MULT (temp, delta1, k);
                                         ADD (Path1[InLineIdx][0],p1,temp);
@@ -13838,10 +13783,10 @@ public class VertexManager {
                                             }
                                             else
                                             {
-                                                fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
-                                                        CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
-                                                        NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2],
-                                                        NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                                Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
+                                                Vertex v2 = new Vertex(new BigDecimal(NxtShape[j][1][0]), new BigDecimal(NxtShape[j][1][1]), new BigDecimal(NxtShape[j][1][2]));
+                                                Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
                                                 continue;
                                             }
                                         }
@@ -13854,11 +13799,11 @@ public class VertexManager {
                                             }
                                             else
                                             {
-                                                fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
-                                                        CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
-                                                        CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
-                                                        NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
-                                                continue;
+                                                CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2]));
+            CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2]));
+            NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]));
+            newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+            continue;
                                             }
                                         }
                                         if (DIST(CurShape[j][0], NxtShape[j][0]) < VERTMERGE)
@@ -13874,6 +13819,7 @@ public class VertexManager {
                                                         CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
                                                         CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
                                                         NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2]);
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
                                                 continue;
                                             }
                                         }
@@ -13883,6 +13829,7 @@ public class VertexManager {
                                                     CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
                                                     CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
                                                     NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                            newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
                                             continue;
                                         }
 
@@ -13898,14 +13845,20 @@ public class VertexManager {
                                         }
                                         else
                                         {
-                                            fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
-                                                    CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
-                                                    NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2],
-                                                    NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
-                                            fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
-                                                    CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
-                                                    CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
-                                                    NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2]);
+                                            {
+                                                fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                        CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
+                                                        NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2],
+                                                        NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+                                            }
+                                            {
+                                                fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                        CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
+                                                        CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
+                                                        NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2]);
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+                                            }
                                         }
 
                                     }
