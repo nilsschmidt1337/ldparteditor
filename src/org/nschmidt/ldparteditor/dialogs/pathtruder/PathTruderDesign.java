@@ -139,7 +139,7 @@ class PathTruderDesign extends Dialog {
         BigDecimalSpinner spn_rotationAngle = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_rotationAngle[0] = spn_rotationAngle;
         spn_rotationAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_rotationAngle.setMaximum(BigDecimal.ONE);
+        spn_rotationAngle.setMaximum(new BigDecimal(1000000));
         spn_rotationAngle.setMinimum(new BigDecimal(0));
         spn_rotationAngle.setValue(ps.getRotation());
 

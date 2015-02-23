@@ -13213,8 +13213,8 @@ public class VertexManager {
                                     return;
                                 }
 
-                                final GColour lineColour = DatParser.validateColour("24", .5f, .5f, .5f, 1f); //$NON-NLS-1$
-                                final GColour bodyColour = DatParser.validateColour("16", .5f, .5f, .5f, 1f); //$NON-NLS-1$
+                                final GColour lineColour = DatParser.validateColour("24", .5f, .5f, .5f, 1f).clone(); //$NON-NLS-1$
+                                final GColour bodyColour = DatParser.validateColour("16", .5f, .5f, .5f, 1f).clone(); //$NON-NLS-1$
 
                                 double VERTMERGE = 0.001;
                                 double PI = 3.14159265358979323846;
@@ -13249,7 +13249,7 @@ public class VertexManager {
                                 int Shape2Len=0;
 
                                 boolean circular = false;
-                                double maxlength = ps.getMaxPathSegmentLength().doubleValue() * 1000.0;
+                                double maxlength = ps.getMaxPathSegmentLength().doubleValue();
                                 double dmax, d = 0.0;
                                 double len;
                                 int InLineIdx;
@@ -13720,13 +13720,13 @@ public class VertexManager {
 
                                     {
                                         double x;
-                                        double j=(i+1-start)*transitions % (2 * (end-start));
-                                        x = 1.0 * j / (end-start);
-                                        if (x>1) x=2-x;
-                                        ratio = .5; // FIXME sigmoid(x, slope, position);
+                                        double j= (i + 1.0 - start) * transitions % (2 * (end - start));
+                                        x = 1.0 * j / (end - start);
+                                        if (x > 1.0) x = 2.0 - x;
+                                        ratio = sigmoid(x, slope, position);
                                     }
 
-                                    double rotangle = rotation * PI / 180 * (i+1.0) / Path1Len;
+                                    double rotangle = rotation * PI / 180.0 * ((i+1.0) / Path1Len);
 
                                     sa = Math.sin(rotangle);
                                     ca = Math.cos(rotangle);

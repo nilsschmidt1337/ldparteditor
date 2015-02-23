@@ -134,8 +134,11 @@ public class BigDecimalSpinner extends Composite {
                     BigDecimal val = (BigDecimal) df.parseObject(txt_val[0].getText());
 
                     value = val;
-                    value = value.compareTo(maximum) == 1 ? maximum : value;
-                    value = value.compareTo(minimum) == -1 ? minimum : value;
+                    if (value.compareTo(maximum) > 0 || value.compareTo(minimum) < 0) {
+                        oldValue[0] = value;
+                        value = value.compareTo(maximum) > 0 ? maximum : value;
+                        value = value.compareTo(minimum) < 0 ? minimum : value;
+                    }
 
                     if (myListener != null)
                         myListener.valueChanged(me);
