@@ -13255,7 +13255,7 @@ public class VertexManager {
                                 int InLineIdx;
                                 int NumPath;
                                 boolean invert = ps.isInverted();
-                                int i,j,k,l;
+                                int j,k,l;
 
                                 int transitions = ps.getTransitionCount();
                                 double slope= ps.getTransitionCurveControl().doubleValue();
@@ -13284,7 +13284,7 @@ public class VertexManager {
                                     }
                                     printf("Sort path file 1\n"); //$NON-NLS-1$
                                     circular=true;
-                                    for (i=0; i<Path1Len; i++)
+                                    for (int i=0; i<Path1Len; i++)
                                     {
                                         for (j=0; j<2; j++)
                                         {
@@ -13322,7 +13322,7 @@ public class VertexManager {
                                     }
                                     InLineIdx=0;
                                     NumPath=0;
-                                    for (i=0; i<Path1Len; i++)
+                                    for (int i=0; i<Path1Len; i++)
                                     {
                                         for (j=0; j<2; j++)
                                         {
@@ -13374,7 +13374,7 @@ public class VertexManager {
                                     }
                                     printf("Sort path file 2\n"); //$NON-NLS-1$
                                     circular=true;
-                                    for (i=0; i<Path2Len; i++)
+                                    for (int i=0; i<Path2Len; i++)
                                     {
                                         for (j=0; j<2; j++)
                                         {
@@ -13412,7 +13412,7 @@ public class VertexManager {
                                     }
                                     InLineIdx=0;
                                     NumPath=0;
-                                    for (i=0; i<Path2Len; i++)
+                                    for (int i=0; i<Path2Len; i++)
                                     {
                                         for (j=0; j<2; j++)
                                         {
@@ -13495,7 +13495,7 @@ public class VertexManager {
 
                                 printf("Split long lines\n"); //$NON-NLS-1$
                                 InLineIdx = 0;
-                                for(i=0; i<Path1Len; i++)
+                                for(int i=0; i<Path1Len; i++)
                                 {
                                     double[] p1 = new double[3], p2 = new double[3], q1 = new double[3], q2 = new double[3], delta1 = new double[3], delta2 = new double[3], temp = new double[3];
                                     int nsplit1, nsplit2;
@@ -13549,7 +13549,7 @@ public class VertexManager {
 
                                 len = DIST(Shape1[0][0],Shape1[0][1]);
 
-                                for(i=1; i<Shape1Len; i++)
+                                for(int i=1; i<Shape1Len; i++)
                                 {
                                     SUB(Shape1[i][0], Shape1[i][0], Shape1[0][0]);
                                     MULT(Shape1[i][0], Shape1[i][0], 1/len);
@@ -13562,7 +13562,7 @@ public class VertexManager {
 
                                 sa=Math.sin(Angle); ca=Math.cos(Angle);
 
-                                for(i=1; i<Shape1Len; i++)
+                                for(int i=1; i<Shape1Len; i++)
                                 {
                                     Shape1[i-1][0][0] = Shape1[i][0][0] * ca - Shape1[i][0][1] * sa;
                                     Shape1[i-1][0][1] = Shape1[i][0][0] * sa + Shape1[i][0][1] * ca;
@@ -13582,7 +13582,7 @@ public class VertexManager {
 
                                 len = DIST(Shape2[0][0],Shape2[0][1]);
 
-                                for(i=1; i<Shape2Len; i++)
+                                for(int i=1; i<Shape2Len; i++)
                                 {
                                     SUB(Shape2[i][0], Shape2[i][0], Shape2[0][0]);
                                     MULT(Shape2[i][0], Shape2[i][0], 1/len);
@@ -13595,7 +13595,7 @@ public class VertexManager {
 
                                 sa=Math.sin(Angle); ca=Math.cos(Angle);
 
-                                for(i=1; i<Shape2Len; i++)
+                                for(int i=1; i<Shape2Len; i++)
                                 {
                                     Shape2[i-1][0][0] = Shape2[i][0][0] * ca - Shape2[i][0][1] * sa;
                                     Shape2[i-1][0][1] = Shape2[i][0][0] * sa + Shape2[i][0][1] * ca;
@@ -13663,7 +13663,7 @@ public class VertexManager {
                                 if(Angle > crease)
                                 {
                                     // sharp angle. Create line at junction
-                                    for(i=0; i<Shape1Len; i++)
+                                    for(int i=0; i<Shape1Len; i++)
                                     {
                                         Vertex v1 = new Vertex(new BigDecimal(NxtShape[i][0][0]), new BigDecimal(NxtShape[i][0][1]), new BigDecimal(NxtShape[i][0][2]));
                                         Vertex v2 = new Vertex(new BigDecimal(NxtShape[i][1][0]), new BigDecimal(NxtShape[i][1][1]), new BigDecimal(NxtShape[i][1][2]));
@@ -13678,7 +13678,7 @@ public class VertexManager {
                                     start++;
                                     end--;
                                 }
-                                for(i=start; i<end; i++)
+                                for(int i=start; i<end; i++)
                                 {
 
                                     // Transfer old next shape to current.
@@ -13955,8 +13955,12 @@ public class VertexManager {
 
         // Round to 6 decimal places
 
+        selectedLines.addAll(newLines);
         selectedTriangles.addAll(newTriangles);
+        selectedQuads.addAll(newQuads);
+        selectedData.addAll(selectedLines);
         selectedData.addAll(selectedTriangles);
+        selectedData.addAll(selectedQuads);
 
         NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
         roundSelection(6, 10, true);
