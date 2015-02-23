@@ -131,8 +131,11 @@ public class IntegerSpinner extends Composite {
                 try {
                     Number val = df.parse(txt_val[0].getText());
                     value = val.intValue();
-                    value = Math.min(value, maximum);
-                    value = Math.max(value, minimum);
+                    if (value > maximum || value < minimum) {
+                        oldValue[0] = value;
+                        value = Math.min(value, maximum);
+                        value = Math.max(value, minimum);
+                    }
 
                     if (myListener != null)
                         myListener.valueChanged(me);
