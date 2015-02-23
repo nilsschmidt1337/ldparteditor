@@ -13107,7 +13107,7 @@ public class VertexManager {
         }
     }
 
-    public void pathTruder(PathTruderSettings ps) {
+    public void pathTruder(final PathTruderSettings ps) {
         if (linkedDatFile.isReadOnly()) return;
 
         final Set<GData2> originalSelection = new HashSet<GData2>();
@@ -13115,9 +13115,77 @@ public class VertexManager {
         final Set<GData3> newTriangles = new HashSet<GData3>();
         final Set<GData4> newQuads = new HashSet<GData4>();
 
+        final GData2 shape1Normal;
+        final GData2 shape2Normal;
+
+        final ArrayList<GData2> shape1 = new ArrayList<GData2>();
+        final ArrayList<GData2> shape2 = new ArrayList<GData2>();
+
+        final ArrayList<GData2> path1 = new ArrayList<GData2>();
+        final ArrayList<GData2> path2 = new ArrayList<GData2>();
+
+        final ArrayList<GData2> path1endSegments = new ArrayList<GData2>();
+        final ArrayList<GData2> path2endSegments = new ArrayList<GData2>();
+
+        final ArrayList<GData2> lineIndicators = new ArrayList<GData2>();
+
         originalSelection.addAll(selectedLines);
 
         // TODO Validate and evaluate selection
+        {
+            GData2 shape1Normal2 = null;
+            GData2 shape2Normal2 = null;
+            GData data2draw = linkedDatFile.getDrawChainStart();
+            while ((data2draw = data2draw.getNext()) != null) {
+                if (originalSelection.contains(data2draw)) {
+                    GData2 line = (GData2) data2draw;
+                    switch (line.colourNumber) {
+                    case 1:
+                        path1.add(line);
+                        break;
+                    case 2:
+                        path2.add(line);
+                        break;
+                    case 5:
+                        shape1.add(line);
+                        break;
+                    case 14:
+                        shape2.add(line);
+                        break;
+                    case 4:
+                        if (shape1Normal2 == null) {
+                            shape1Normal2 = line;
+                        } else {
+                            return;
+                        }
+                        break;
+                    case 13:
+                        if (shape2Normal2 == null) {
+                            shape2Normal2 = line;
+                        } else {
+                            return;
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+            if (shape1Normal2 == null || shape1.isEmpty() || path1.isEmpty() || path2.isEmpty() || shape2Normal2 != null && shape2.isEmpty()) {
+                return;
+            }
+            if (path1.size() != path2.size() || shape2Normal2 != null && shape1.size() != shape2.size()) {
+                return;
+            }
+            // Copy shape 1 to shape 2
+            if (shape2Normal2 == null) {
+                shape2.clear();
+                shape2Normal2 = shape1Normal2;
+                shape2.addAll(shape1);
+            }
+            shape1Normal = shape1Normal2;
+            shape2Normal = shape2Normal2;
+        }
 
         // Clear selection
         clearSelection();
@@ -13138,11 +13206,728 @@ public class VertexManager {
                             @Override
                             public void run() {
 
-
-
                                 if (monitor.isCanceled()) {
                                     return;
                                 }
+
+                                double VERTMERGE = 0.001;
+                                double PI = 3.14159265358979323846;
+
+                                /* Null vector */
+
+                                double[] nullv = new double[]{0.0,0.0,0.0};
+
+                                int MAX_LINE = 1000;
+                                double SMALL = 0.1;
+                                double SMALLANGLE = .95;
+
+                                double[][][] Path1 = new double[5*MAX_LINE][2][3];
+                                double[][][] Path2 = new double[5*MAX_LINE][2][3];
+                                double[][][] Path1a = new double[MAX_LINE][2][3];
+                                double[][][] Path2a = new double[MAX_LINE][2][3];
+                                /** [lineIndex][pointIndex][coordinateIndex]*/
+                                double[][][] Shape1 = new double[MAX_LINE][2][3];
+                                /** [lineIndex][pointIndex][coordinateIndex]*/
+                                double[][][] Shape2 = new double[MAX_LINE][2][3];
+                                double[][][] CurShape = new double[MAX_LINE][2][3];
+                                double[][][] NxtShape = new double[MAX_LINE][2][3];
+                                double[] Shape1Vect = new double[3], Shape2Vect = new double[3];
+
+                                double[] temp1 = new double[3], temp2 = new double[3], temp3 = new double[3];
+                                double[] XVect = new double[3], YVect = new double[3], ZVect = new double[3];
+
+                                double Angle, ca, sa;
+                                double ratio;
+                                double[][][] SortBuf = new double[MAX_LINE][2][3];
+                                int[][][] next = new int[MAX_LINE][2][2];
+
+                                boolean Path1Flag=false;
+                                boolean Path2Flag=false;
+                                boolean Shape1Flag=false;
+                                boolean Shape2Flag=false;
+
+                                int Path1Len=0;
+                                int Path2Len=0;
+                                int Shape1Len=0;
+                                int Shape2Len=0;
+
+                                char[] buf = new char[1024];
+                                int type, color = 0;
+
+                                boolean circular = false;
+                                double maxlength = ps.getMaxPathSegmentLength().doubleValue();
+                                double dmax, d = 0.0;
+                                double len;
+                                int InLineIdx;
+                                int NumPath;
+                                boolean invert = ps.isInverted();
+                                int i,j,k,l;
+
+                                int transitions = ps.getTransitionCount();
+                                double slope= ps.getTransitionCurveControl().doubleValue();
+                                double position= ps.getTransitionCurveCenter().doubleValue();
+                                double crease = ps.getPathAngleForLine().doubleValue();
+                                boolean compensate = ps.isCompensation();
+                                boolean endings = path1endSegments.size() == 2 && path2endSegments.size() == 2;
+                                double rotation = ps.getRotation().doubleValue();
+                                double rotslope=1;
+                                double rotpos=0.5;
+                                double rotangle;
+
+                                {
+                                    switch (1)
+                                    {
+                                    case 'p':
+                                        switch (1)
+                                        {
+                                        case '1':
+                                            Path1Flag=true;
+                                            printf("Read path file 1\n"); //$NON-NLS-1$
+                                            {
+                                                type = -1;
+                                                sscanf(buf, "%d", type); //$NON-NLS-1$
+                                                if(type==2)
+                                                {
+                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", type, color,  //$NON-NLS-1$
+                                                            SortBuf[Path1Len][0][0], SortBuf[Path1Len][0][1], SortBuf[Path1Len][0][2],
+                                                            SortBuf[Path1Len][1][0], SortBuf[Path1Len][1][1], SortBuf[Path1Len][1][2]);
+                                                    next[Path1Len][0][0] = next[Path1Len][1][0] = -1;
+                                                    if(MANHATTAN(SortBuf[Path1Len][0], SortBuf[Path1Len][1]) < EPSILON )
+                                                    {
+                                                        printf("Null length element in path file 1\n"); //$NON-NLS-1$
+                                                        printf("Press <Enter> to quit"); //$NON-NLS-1$
+                                                        getchar();
+                                                        return;
+                                                    }
+
+                                                    Path1Len++;
+                                                }
+
+                                            }
+                                            printf("Sort path file 1\n"); //$NON-NLS-1$
+                                            circular=true;
+                                            for (i=0; i<Path1Len; i++)
+                                            {
+                                                for (j=0; j<2; j++)
+                                                {
+                                                    if(next[i][j][0] != -1) break;
+                                                    dmax=100000;
+                                                    for (k=0; k<Path1Len; k++)
+                                                    {
+                                                        if(k != i)
+                                                        {
+                                                            for(l=0; l<2; l++)
+                                                            {
+                                                                d=MANHATTAN(SortBuf[i][j], SortBuf[k][l]);
+                                                                if(d<dmax)
+                                                                {
+                                                                    dmax=d;
+                                                                    next[i][j][0]=k;
+                                                                    next[i][j][1]=l;
+                                                                }
+                                                                if(d==0) break;
+                                                            }
+                                                            if(d==0) break;
+                                                        }
+                                                    }
+                                                    if(dmax>SMALL)
+                                                    {
+                                                        next[i][j][0]=-1;
+                                                        circular=false;
+                                                    }
+                                                }
+                                            }
+                                            if(circular)
+                                            {
+                                                next[next[0][0][0]][next[0][0][1]][0]=-1;
+                                                next[0][0][0]=-1;
+                                            }
+                                            InLineIdx=0;
+                                            NumPath=0;
+                                            for (i=0; i<Path1Len; i++)
+                                            {
+                                                for (j=0; j<2; j++)
+                                                {
+                                                    int a,b,c,d2;
+                                                    if(next[i][j][0] == -1)
+                                                    {
+                                                        NumPath++;
+                                                        a=i; b=j;
+                                                        do
+                                                        {
+                                                            SET(Path1a[InLineIdx][0], SortBuf[a][b]);
+                                                            SET(Path1a[InLineIdx][1], SortBuf[a][1-b]);
+                                                            InLineIdx++;
+
+                                                            d2=next[a][1-b][1];
+                                                            c=next[a][1-b][0];
+                                                            next[a][1-b][0] = -2;
+                                                            next[a][b][0] = -2;
+                                                            b=d2;
+                                                            a=c;
+                                                        }
+                                                        while(a!=-1);
+                                                    }
+                                                }
+                                            }
+
+                                            Path1Len=InLineIdx;
+
+                                            if(NumPath > 1)
+                                                printf("%d distinct paths found in Path file 1. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
+
+                                            printf("%d lines in path file 1\n" + Path1Len); //$NON-NLS-1$
+                                            break;
+
+                                        case '2':
+                                            Path2Flag=true;
+                                            printf("Read path file 2\n"); //$NON-NLS-1$
+                                            {
+                                                type = -1;
+                                                sscanf(buf, "%d", type); //$NON-NLS-1$
+                                                if(type==2)
+                                                {
+                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", type, color,  //$NON-NLS-1$
+                                                            SortBuf[Path2Len][0][0], SortBuf[Path2Len][0][1], SortBuf[Path2Len][0][2],
+                                                            SortBuf[Path2Len][1][0], SortBuf[Path2Len][1][1], SortBuf[Path2Len][1][2]);
+                                                    next[Path2Len][0][0] = next[Path2Len][1][0] = -1;
+                                                    if(MANHATTAN(SortBuf[Path2Len][0], SortBuf[Path2Len][1]) < EPSILON )
+                                                    {
+                                                        printf("Null length element in path file 2\n"); //$NON-NLS-1$
+                                                        printf("Press <Enter> to quit"); //$NON-NLS-1$
+                                                        getchar();
+                                                        return;
+                                                    }
+
+                                                    Path2Len++;
+                                                }
+                                            }
+                                            printf("Sort path file 2\n"); //$NON-NLS-1$
+                                            circular=true;
+                                            for (i=0; i<Path2Len; i++)
+                                            {
+                                                for (j=0; j<2; j++)
+                                                {
+                                                    if(next[i][j][0] != -1) break;
+                                                    dmax=100000;
+                                                    for (k=0; k<Path2Len; k++)
+                                                    {
+                                                        if(k != i)
+                                                        {
+                                                            for(l=0; l<2; l++)
+                                                            {
+                                                                d=MANHATTAN(SortBuf[i][j], SortBuf[k][l]);
+                                                                if(d<dmax)
+                                                                {
+                                                                    dmax=d;
+                                                                    next[i][j][0]=k;
+                                                                    next[i][j][1]=l;
+                                                                }
+                                                                if(d==0) break;
+                                                            }
+                                                            if(d==0) break;
+                                                        }
+                                                    }
+                                                    if(dmax>SMALL)
+                                                    {
+                                                        next[i][j][0]=-1;
+                                                        circular=false;
+                                                    }
+                                                }
+                                            }
+                                            if(circular)
+                                            {
+                                                next[next[0][0][0]][next[0][0][1]][0]=-1;
+                                                next[0][0][0]=-1;
+                                            }
+                                            InLineIdx=0;
+                                            NumPath=0;
+                                            for (i=0; i<Path2Len; i++)
+                                            {
+                                                for (j=0; j<2; j++)
+                                                {
+                                                    int a,b,c,d2;
+                                                    if(next[i][j][0] == -1)
+                                                    {
+                                                        NumPath++;
+                                                        a=i; b=j;
+                                                        do
+                                                        {
+                                                            SET(Path2a[InLineIdx][0], SortBuf[a][b]);
+                                                            SET(Path2a[InLineIdx][1], SortBuf[a][1-b]);
+                                                            InLineIdx++;
+
+                                                            d2=next[a][1-b][1];
+                                                            c=next[a][1-b][0];
+                                                            next[a][1-b][0] = -2;
+                                                            next[a][b][0] = -2;
+                                                            b=d2;
+                                                            a=c;
+                                                        }
+                                                        while(a!=-1);
+                                                    }
+                                                }
+                                            }
+
+                                            Path2Len=InLineIdx;
+
+                                            if(NumPath > 1)
+                                                printf("%d distinct paths found in Path file 2. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
+
+                                            printf("%d lines in path file 2\n" + Path2Len); //$NON-NLS-1$
+                                            break;
+                                        default:
+                                            break;
+                                        }
+                                        break;
+                                    case 's':
+                                        switch (1)
+                                        {
+                                        case '1':
+                                            Shape1Flag=true;
+
+                                            printf("Read shape file 1\n"); //$NON-NLS-1$
+
+                                            {
+                                                type = -1;
+                                                sscanf(buf, "%d", type); //$NON-NLS-1$
+                                                if(type==2)
+                                                {
+                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", type, color,  //$NON-NLS-1$
+                                                            Shape1[Shape1Len][0][0], Shape1[Shape1Len][0][1], Shape1[Shape1Len][0][2],
+                                                            Shape1[Shape1Len][1][0], Shape1[Shape1Len][1][1], Shape1[Shape1Len][1][2]);
+                                                    Shape1Len++;
+                                                }
+                                            }
+                                            printf("%d lines in shape file 1\n" + Shape1Len); //$NON-NLS-1$
+                                            break;
+                                        case '2':
+                                            Shape2Flag=true;
+                                            printf("Read shape file 2\n"); //$NON-NLS-1$
+                                            {
+                                                type = -1;
+                                                sscanf(buf, "%d", type); //$NON-NLS-1$
+                                                if(type==2)
+                                                {
+                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", type, color,  //$NON-NLS-1$
+                                                            Shape2[Shape2Len][0][0], Shape2[Shape2Len][0][1], Shape2[Shape2Len][0][2],
+                                                            Shape2[Shape2Len][1][0], Shape2[Shape2Len][1][1], Shape2[Shape2Len][1][2]);
+                                                    Shape2Len++;
+                                                }
+                                            }
+                                            printf("%d lines in shape file 2\n" + Shape2Len); //$NON-NLS-1$
+                                            break;
+                                        default:
+                                            return;
+                                        }
+                                        break;
+                                    default:
+                                        return;
+                                    }
+                                }
+
+                                if(!Shape1Flag && !Shape2Flag)
+                                {
+                                    printf("No shape file provided!\n"); //$NON-NLS-1$
+                                    return;
+                                }
+                                if(!Shape1Flag)
+                                {
+                                    printf("Shape 1 file not provided, copying shape 2 to shape 1\n"); //$NON-NLS-1$
+                                }
+                                if(!Shape2Flag)
+                                {
+                                    printf("Shape 2 file not provided, copying shape 1 to shape 2\n"); //$NON-NLS-1$
+                                }
+
+                                if(!Path1Flag || !Path2Flag)
+                                {
+                                    printf("Two path files are needed!\n"); //$NON-NLS-1$
+                                    return;
+                                }
+
+                                if(Path1Len != Path2Len)
+                                {
+                                    printf("The two path files do not have the same number of elements!\n"); //$NON-NLS-1$
+                                    return;
+                                }
+
+                                if(endings && Path1Len<3 && !circular)
+                                {
+                                    printf("Path files must have at least 3 elements to use -e option!\n"); //$NON-NLS-1$
+                                    return;
+                                }
+
+
+                                if(Shape1Len != Shape2Len)
+                                {
+                                    printf("The two shape files do not have the same number of elements!\n"); //$NON-NLS-1$
+                                    printf("Press <Enter> to quit"); //$NON-NLS-1$
+                                    getchar();
+                                    return;
+                                }
+
+
+                                Object LdrawFileOut = new String();
+
+                                printf("Split long lines\n"); //$NON-NLS-1$
+                                InLineIdx = 0;
+                                for(i=0; i<Path1Len; i++)
+                                {
+                                    double[] p1 = new double[3], p2 = new double[3], q1 = new double[3], q2 = new double[3], delta1 = new double[3], delta2 = new double[3], temp = new double[3];
+                                    double nsplit1, nsplit2;
+
+                                    SET(p1, Path1a[i][0]);
+                                    SET(p2, Path1a[i][1]);
+
+                                    SET(q1, Path2a[i][0]);
+                                    SET(q2, Path2a[i][1]);
+
+                                    nsplit1=DIST(p1,p2)/maxlength+1;
+                                    nsplit2=DIST(q1,q2)/maxlength+1;
+
+                                    // don't split endings segments
+                                    if(endings)
+                                    {
+                                        if(i==0 || i==Path1Len-1) nsplit1 = nsplit2 = 1;
+                                    }
+
+                                    nsplit1 = nsplit1 > nsplit2 ? nsplit1 : nsplit2;
+
+                                    SUB(delta1,p2,p1);
+                                    MULT(delta1, delta1, 1.0/nsplit1);
+                                    SUB(delta2,q2,q1);
+                                    MULT(delta2, delta2, 1.0/nsplit1);
+                                    for (k=0; k<nsplit1; k++)
+                                    {
+                                        MULT (temp, delta1, k);
+                                        ADD (Path1[InLineIdx][0],p1,temp);
+                                        ADD (Path1[InLineIdx][1],Path1[InLineIdx][0],delta1);
+                                        MULT (temp, delta2, k);
+                                        ADD (Path2[InLineIdx][0],q1,temp);
+                                        ADD (Path2[InLineIdx][1],Path2[InLineIdx][0],delta2);
+
+                                        InLineIdx++;
+                                    }
+                                }
+
+                                Path1Len = Path2Len = InLineIdx;
+                                SET(Path1[Path1Len][0],Path1[Path1Len-1][1]);
+                                SET(Path1[Path1Len][1],Path1[Path1Len-1][0]);
+
+                                SET(Path2[Path2Len][0],Path2[Path2Len-1][1]);
+                                SET(Path2[Path2Len][1],Path2[Path2Len-1][0]);
+
+
+                                fprintf(LdrawFileOut, "0 Surface extruded\n"); //$NON-NLS-1$
+                                fprintf(LdrawFileOut, "0 Author: Philo's PathTruder\n0\n"); //$NON-NLS-1$
+                                fprintf(LdrawFileOut, "0 BFC CERTIFY CCW\n\n"); //$NON-NLS-1$
+
+                                printf("Normalize shape 1\n"); //$NON-NLS-1$
+
+                                len = DIST(Shape1[0][0],Shape1[0][1]);
+
+                                for(i=1; i<Shape1Len; i++)
+                                {
+                                    SUB(Shape1[i][0], Shape1[i][0], Shape1[0][0]);
+                                    MULT(Shape1[i][0], Shape1[i][0], 1/len);
+                                    SUB(Shape1[i][1], Shape1[i][1], Shape1[0][0]);
+                                    MULT(Shape1[i][1], Shape1[i][1], 1/len);
+                                }
+                                SUB(Shape1Vect, Shape1[0][1], Shape1[0][0]);
+
+                                Angle = Math.atan2(-Shape1Vect[0], -Shape1Vect[1]);
+
+                                sa=Math.sin(Angle); ca=Math.cos(Angle);
+
+                                for(i=1; i<Shape1Len; i++)
+                                {
+                                    Shape1[i-1][0][0] = Shape1[i][0][0] * ca - Shape1[i][0][1] * sa;
+                                    Shape1[i-1][0][1] = Shape1[i][0][0] * sa + Shape1[i][0][1] * ca;
+                                    Shape1[i-1][1][0] = Shape1[i][1][0] * ca - Shape1[i][1][1] * sa;
+                                    Shape1[i-1][1][1] = Shape1[i][1][0] * sa + Shape1[i][1][1] * ca;
+                                    Shape1[i-1][0][2] = Shape1[i][0][2];
+                                    Shape1[i-1][1][2] = Shape1[i][1][2];
+                                    if(invert)
+                                    {
+                                        Shape1[i-1][0][0] = -Shape1[i-1][0][0];
+                                        Shape1[i-1][1][0] = -Shape1[i-1][1][0];
+                                    }
+                                }
+                                Shape1Len--;
+
+                                printf("Normalize shape 2\n"); //$NON-NLS-1$
+
+                                len = DIST(Shape2[0][0],Shape2[0][1]);
+
+                                for(i=1; i<Shape2Len; i++)
+                                {
+                                    SUB(Shape2[i][0], Shape2[i][0], Shape2[0][0]);
+                                    MULT(Shape2[i][0], Shape2[i][0], 1/len);
+                                    SUB(Shape2[i][1], Shape2[i][1], Shape2[0][0]);
+                                    MULT(Shape2[i][1], Shape2[i][1], 1/len);
+                                }
+                                SUB(Shape2Vect, Shape2[0][1], Shape2[0][0]);
+
+                                Angle = Math.atan2(-Shape2Vect[0], -Shape2Vect[1]);
+
+                                sa=Math.sin(Angle); ca=Math.cos(Angle);
+
+                                for(i=1; i<Shape2Len; i++)
+                                {
+                                    Shape2[i-1][0][0] = Shape2[i][0][0] * ca - Shape2[i][0][1] * sa;
+                                    Shape2[i-1][0][1] = Shape2[i][0][0] * sa + Shape2[i][0][1] * ca;
+                                    Shape2[i-1][1][0] = Shape2[i][1][0] * ca - Shape2[i][1][1] * sa;
+                                    Shape2[i-1][1][1] = Shape2[i][1][0] * sa + Shape2[i][1][1] * ca;
+                                    Shape2[i-1][0][2] = Shape2[i][0][2];
+                                    Shape2[i-1][1][2] = Shape2[i][1][2];
+                                    if(invert)
+                                    {
+                                        Shape2[i-1][0][0] = -Shape2[i-1][0][0];
+                                        Shape2[i-1][1][0] = -Shape2[i-1][1][0];
+                                    }
+
+                                }
+                                Shape2Len--;
+
+
+                                printf("Extrusion\n"); //$NON-NLS-1$
+                                // Initialize current shape
+                                if(circular) endings=false;
+                                int n = 0;
+                                if (circular) n=Path1Len-1; else n=0;
+
+                                if(endings)
+                                {
+                                    double Angle2=PathLocalBasis (0, 1, XVect, YVect, ZVect, Path1, Path2);
+                                    Angle=PathLocalBasis (0, 0, XVect, YVect, ZVect, Path1, Path2);
+                                    if(Angle2 > 90)
+                                    {
+                                        MULT(XVect, XVect, -1);
+                                        MULT(ZVect, ZVect, -1);
+                                    }
+                                }
+                                else
+                                {
+                                    Angle=PathLocalBasis (n, 0, XVect, YVect, ZVect, Path1, Path2);
+                                }
+                                // compensate sharp angles
+                                if(compensate)
+                                {
+                                    MULT(XVect, XVect, 1/Math.cos(Angle*PI/360));
+                                }
+
+                                // Calculate next transformed shape
+                                for(j=0; j<Shape1Len; j++)
+                                {
+                                    for(k=0; k<2; k++)
+                                    {
+                                        MULT(NxtShape[j][k], XVect, Shape1[j][k][0]);
+                                        MULT(temp1, YVect, Shape1[j][k][1]);
+                                        ADD(NxtShape[j][k], NxtShape[j][k], temp1);
+                                        MULT(temp1, ZVect, Shape1[j][k][2]);
+                                        ADD(NxtShape[j][k], NxtShape[j][k], temp1);
+                                        if(endings)
+                                        {
+                                            ADD(NxtShape[j][k], NxtShape[j][k], Path1[1][0]);
+                                        }
+                                        else
+                                        {
+                                            ADD(NxtShape[j][k], NxtShape[j][k], Path1[0][0]);
+                                        }
+                                    }
+
+                                }
+                                if(Angle > crease)
+                                {
+                                    // sharp angle. Create line at junction
+                                    for(i=0; i<Shape1Len; i++)
+                                    {
+                                        fprintf(LdrawFileOut, "2 24 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n", NxtShape[i][0][0], NxtShape[i][0][1], NxtShape[i][0][2], NxtShape[i][1][0], NxtShape[i][1][1], NxtShape[i][1][2]); //$NON-NLS-1$
+                                    }
+                                }
+
+                                int start, end;
+                                start=0; end=Path1Len;
+                                if(endings)
+                                {
+                                    start++;
+                                    end--;
+                                }
+                                for(i=start; i<end; i++)
+                                {
+
+                                    // Transfer old next shape to current.
+                                    for(j=0; j<Shape1Len; j++)
+                                    {
+                                        SET( CurShape[j][0],  NxtShape[j][0]);
+                                        SET( CurShape[j][1],  NxtShape[j][1]);
+                                    }
+
+                                    if(i==end-1)
+                                        if(circular)
+                                            Angle = PathLocalBasis (i, 0, XVect, YVect, ZVect, Path1, Path2);
+                                        else
+                                        {
+                                            if(endings)
+                                            {
+                                                double Angle2 = PathLocalBasis (i, i+1, XVect, YVect, ZVect, Path1, Path2);
+                                                Angle = PathLocalBasis (i+2, i+2, XVect, YVect, ZVect, Path1, Path2);
+                                                if(Angle2 < 90)
+                                                {
+                                                    // in that case the local base is mirrorred...
+                                                    SUB (XVect, null, XVect);
+                                                    SUB (ZVect, null, ZVect);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Angle = PathLocalBasis (i+1, i+1, XVect, YVect, ZVect, Path1, Path2);
+                                                // in that case the local base is mirrorred...
+                                                SUB (XVect, null, XVect);
+                                                SUB (ZVect, null, ZVect);
+                                            }
+                                        }
+                                    else
+                                        Angle = PathLocalBasis (i, i+1, XVect, YVect, ZVect, Path1, Path2);
+
+                                    // compensate sharp angles
+                                    if(compensate)
+                                    {
+                                        MULT(XVect, XVect, 1/Math.cos(Angle*PI/360));
+                                    }
+
+                                    {
+                                        double x;
+                                        j=(i+1-start)*transitions % (2 * (end-start));
+                                        x = 1.0 * j / (end-start);
+                                        if (x>1) x=2-x;
+                                        ratio = sigmoid(x, slope, position);
+                                    }
+
+                                    rotangle = rotation * PI / 180 * (i+1.0) / Path1Len;
+
+                                    sa = Math.sin(rotangle); ca = Math.cos(rotangle);
+
+
+                                    for(j=0; j<Shape1Len; j++)
+                                    {
+                                        for(k=0; k<2; k++)
+                                        {
+                                            temp1[0] = Shape1[j][k][0] * ca - Shape1[j][k][1] * sa;
+                                            temp1[1] = Shape1[j][k][0] * sa + Shape1[j][k][1] * ca;
+                                            temp2[0] = Shape2[j][k][0] * ca - Shape2[j][k][1] * sa;
+                                            temp2[1] = Shape2[j][k][0] * sa + Shape2[j][k][1] * ca;
+
+                                            MULT(NxtShape[j][k], XVect, temp1[0]*(1-ratio)+temp2[0]*ratio);
+                                            MULT(temp3, YVect, temp1[1]*(1-ratio)+temp2[1]*ratio);
+                                            ADD(NxtShape[j][k], NxtShape[j][k], temp3);
+                                            MULT(temp3, ZVect, Shape1[j][k][2]*(1-ratio)+Shape2[j][k][2]*ratio);
+                                            ADD(NxtShape[j][k], NxtShape[j][k], temp3);
+                                            ADD(NxtShape[j][k], NxtShape[j][k], Path1[i+1][0]);
+                                        }
+                                    }
+                                    if(Angle > crease)
+                                    {
+                                        // sharp angle. Create line at junction
+                                        for(j=0; j<Shape1Len; j++)
+                                        {
+                                            fprintf(LdrawFileOut, "2 24 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n", NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2], NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2]); //$NON-NLS-1$
+                                        }
+                                    }
+                                    // Generate tri/quad sheet
+                                    for(j=0; j<Shape1Len; j++)
+                                    {
+                                        if (DIST(Shape1[j][0], Shape1[j][1]) < EPSILON && DIST(Shape2[j][0], Shape2[j][1]) < EPSILON)
+                                        {
+                                            // Null lenth segment in shape file -> generate line at that place
+                                            fprintf(LdrawFileOut, "2 24 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                    CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
+                                                    NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                        }
+                                        if (DIST(CurShape[j][0], CurShape[j][1]) < VERTMERGE)
+                                        {
+                                            if (DIST(NxtShape[j][0], NxtShape[j][1]) < VERTMERGE || DIST(CurShape[j][0], NxtShape[j][0]) < VERTMERGE || DIST(NxtShape[j][1], CurShape[j][1]) < VERTMERGE)
+                                            {
+                                                // Degenerated. Nothing to output
+                                                continue;
+                                            }
+                                            else
+                                            {
+                                                fprintf(LdrawFileOut, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                        CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
+                                                        NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2],
+                                                        NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                                continue;
+                                            }
+                                        }
+                                        if (DIST(NxtShape[j][0], NxtShape[j][1]) < VERTMERGE)
+                                        {
+                                            if (DIST(CurShape[j][0], NxtShape[j][0]) < VERTMERGE || DIST(NxtShape[j][1], CurShape[j][1]) < VERTMERGE)
+                                            {
+                                                // Degenerated. Nothing to output
+                                                continue;
+                                            }
+                                            else
+                                            {
+                                                fprintf(LdrawFileOut, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                        CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
+                                                        CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
+                                                        NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                                continue;
+                                            }
+                                        }
+                                        if (DIST(CurShape[j][0], NxtShape[j][0]) < VERTMERGE)
+                                        {
+                                            if (DIST(NxtShape[j][1], CurShape[j][1]) < VERTMERGE)
+                                            {
+                                                // Degenerated. Nothing to output
+                                                continue;
+                                            }
+                                            else
+                                            {
+                                                fprintf(LdrawFileOut, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                        CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
+                                                        CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
+                                                        NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2]);
+                                                continue;
+                                            }
+                                        }
+                                        if (DIST(NxtShape[j][1], CurShape[j][1]) < VERTMERGE)
+                                        {
+                                            fprintf(LdrawFileOut, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                    CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
+                                                    CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
+                                                    NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                            continue;
+                                        }
+
+
+                                        Angle=Tri_Angle(CurShape[j][0], NxtShape[j][0], NxtShape[j][1], CurShape[j][1] );
+                                        if(Angle<SMALLANGLE)
+                                        {
+                                            fprintf(LdrawFileOut, "4 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                    CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
+                                                    CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
+                                                    NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2],
+                                                    NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                        }
+                                        else
+                                        {
+                                            fprintf(LdrawFileOut, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                    CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
+                                                    NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2],
+                                                    NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                            fprintf(LdrawFileOut, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                    CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
+                                                    CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
+                                                    NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2]);
+                                        }
+
+                                    }
+                                }
+
+
 
 
                             }
@@ -13251,5 +14036,197 @@ public class VertexManager {
 
         validateState();
 
+    }
+
+    // Calculate scaled sigmoid function between 0 and 1.
+    // 1/(1+exp(-b*(x-m))) Scaled so that sigmoid(0)=0, sigmoid(1)=1
+    // b is growth rate, m is max growth rate point
+    // if b=1. returns a true x (linear relationship)
+    double sigmoid(double x,double b,double m)
+    {
+        double s0, s1, y;
+        if(b==1.) return x;
+        s0=1/(1+Math.exp(b*m));
+        s1=1/(1+Math.exp(-b*(1-m)));
+        y=1/(1+Math.exp(-b*(x-m)));
+        y=(y-s0)/(s1-s0);
+        return y;
+    }
+
+    // FIXME Method stubs
+
+    private static final double EPSILON = 0.000001;
+
+    void CROSS(double[] dest, double[] left, double[] right) {
+
+    }
+
+    void fprintf(Object obj, String s, Object... args) {
+
+    }
+
+    void sscanf(Object obj, String s, Object... args) {
+
+    }
+
+    void printf(String s) {
+
+    }
+
+    double DOT(double[] v1, double[] v2) {
+        return v1[0]*v2[0]+v1[1]*v2[1]+v1[2]*v2[2];
+    }
+
+    void SUB(double[] dest, double[] left, double[] right) {
+
+    }
+
+    void ADD(double[] dest, double[] left, double[] right) {
+
+    }
+
+    void MULT(double[] dest, double[] v, double factor) {
+        //  #define MULT(dest,v,factor) dest[0]=factor*v[0]; dest[1]=factor*v[1]; dest[2]=factor*v[2];
+    }
+
+    void SET(double[] dest, double[] src) {
+
+    }
+
+    double MANHATTAN(double[] v1, double[] v2) {
+        //     #define MANHATTAN(v1, v2) (fabs(v1[0]-v2[0]) + fabs(v1[1]-v2[1]) + fabs(v1[2]-v2[2]))
+        return 0.0;
+    }
+
+    double DIST(double[] v1, double[] v2) {
+        //         #define DIST(v1, v2) (sqrt((v1[0]-v2[0])*(v1[0]-v2[0]) + (v1[1]-v2[1])*(v1[1]-v2[1]) + (v1[2]-v2[2])*(v1[2]-v2[2])))
+        return 0.0;
+    }
+
+    // Calculate local basis, based on the direction of the i-th vector between both paths,
+    // and the average of the planes defined by the paths before and after this vector
+    // Returns angle between these planes.
+    double PathLocalBasis (int n, int i,  double[] xv,double[] yv,double[] zv, double[][][] path1, double[][][] path2)
+    {
+        double a, scale;
+        double[] temp1 = new double[3], temp2 = new double[3], temp3 = new double[3], temp4 = new double[3];
+
+        // Calculate local coordinate basis
+        scale = DIST(path2[i][0], path1[i][0]);
+
+        if(scale < EPSILON)
+        {
+            // size is 0... any non-degenerated base will do!
+            SET (yv, null);
+            yv[0]=1;
+        }
+        else
+        {
+            SUB(yv, path1[i][0], path2[i][0]);
+        }
+
+        // Average Path Normal
+        SUB(temp1, path1[i][1], path1[i][0]);
+        SUB(temp2, path2[i][1], path1[i][0]);
+        CROSS(xv, temp2, temp1);
+        a=DIST(xv, null);
+        if (a > EPSILON) {
+            MULT(xv, xv, 1/a);
+        } else {
+            SET(xv, null);
+        }
+        SUB(temp1, path2[i][1], path2[i][0]);
+        SUB(temp2, path1[i][0], path2[i][0]);
+        CROSS(temp3, temp1, temp2);
+        a=DIST(temp3, null);
+        if (a > EPSILON) {
+            MULT(temp3, temp3, 1/a);
+        } else {
+            SET(temp3, null);
+        }
+        ADD(xv, xv, temp3);
+        a=DIST(xv, null);
+        if (a > EPSILON) {
+            MULT(xv, xv, 1/a);
+        } else {
+            SET(xv, null);
+        }
+
+        SUB(temp1, path1[n][1], path1[n][0]);
+        SUB(temp2, path2[n][1], path1[n][0]);
+        CROSS(temp4, temp2, temp1);
+        a=DIST(temp4, null);
+        if(a > EPSILON) {
+            MULT(temp4, temp4, 1/a);
+        } else {
+            SET(temp4, null);
+        }
+        SUB(temp1, path2[n][1], path2[n][0]);
+        SUB(temp2, path1[n][0], path2[n][0]);
+        CROSS(temp3, temp1, temp2);
+        a=DIST(temp3, null);
+        if(a > EPSILON) {
+            MULT(temp3, temp3, 1/a);
+        } else {
+            SET(temp3, null);
+        }
+        ADD(temp4, temp4, temp3);
+        a=DIST(temp4, null);
+        if(a > EPSILON) {
+            MULT(temp4, temp4, 1/a);
+        } else {
+            SET(temp4, null);
+        }
+
+        // Average previous and current path normals
+        ADD(xv, xv, temp4);
+        a=DIST(xv, null);
+        if(a > EPSILON) {
+            MULT(xv, xv, 1/a);
+        } else {
+            SET(xv, null);
+        }
+
+        // calculate angle
+        a = 360 / Math.PI * Math.acos(DOT(xv,temp4));
+
+        CROSS(zv,xv,yv);
+        MULT(xv, xv, scale);
+        if(scale < EPSILON)
+        {
+            SET(yv, null);
+            SET(zv, null);
+        }
+        return a;
+    }
+
+    private void getchar() {
+
+    }
+
+    // Tri_Angle computes the angle (in degrees) between the planes of a quad.
+    // They are assumed to be non-degenerated
+    double Tri_Angle(double[] U0,double[] U1,double[] U2, double[] U3)
+    {
+        double[] Unorm = new double[3], Vnorm = new double[3];
+        double[] Temp = new double[3];
+        double[] U10 = new double[3], U20 = new double[3];
+        double[] V10 = new double[3], V20 = new double[3];
+        double len;
+        SUB(U10, U1, U0);
+        SUB(U20, U2, U0);
+        SUB(V10, U2, U0);
+        SUB(V20, U3, U0);
+        CROSS(Temp, U10, U20);
+        len = DIST(Temp, null);
+        MULT(Unorm, Temp, 1/len);
+        CROSS(Temp, V10, V20);
+        len = DIST(Temp, null);
+        MULT(Vnorm, Temp, 1/len);
+        CROSS(Temp, Unorm, Vnorm);
+        double dist;
+        dist = DIST(Temp, null);
+        if(dist > 0.9999999999) return 90;
+        return 180.0 / Math.PI * Math.asin(dist);
     }
 }
