@@ -59,6 +59,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.IsecalcSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
@@ -13104,5 +13105,151 @@ public class VertexManager {
 
             validateState();
         }
+    }
+
+    public void pathTruder(PathTruderSettings ps) {
+        if (linkedDatFile.isReadOnly()) return;
+
+        final Set<GData2> originalSelection = new HashSet<GData2>();
+        final Set<GData2> newLines = new HashSet<GData2>();
+        final Set<GData3> newTriangles = new HashSet<GData3>();
+        final Set<GData4> newQuads = new HashSet<GData4>();
+
+        originalSelection.addAll(selectedLines);
+
+        // TODO Validate and evaluate selection
+
+        // Clear selection
+        clearSelection();
+
+        try
+        {
+            new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
+            {
+                @Override
+                public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+                {
+                    try
+                    {
+                        monitor.beginTask("Running PathTruder...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+
+                        final Thread[] threads = new Thread[1];
+                        threads[0] = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+
+
+
+                                if (monitor.isCanceled()) {
+                                    return;
+                                }
+
+
+                            }
+                        });
+                        threads[0].start();
+                        boolean isRunning = true;
+                        while (isRunning) {
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                            }
+                            isRunning = false;
+                            if (threads[0].isAlive())
+                                isRunning = true;
+                        }
+                        if (monitor.isCanceled()) {
+                            selectedLines.addAll(originalSelection);
+                            selectedData.addAll(originalSelection);
+                            originalSelection.clear();
+                            return;
+                        }
+                    } finally {
+                        monitor.done();
+                    }
+                }
+            });
+        }
+        catch (InvocationTargetException consumed) {
+        } catch (InterruptedException consumed) {
+        }
+
+        if (originalSelection.isEmpty()) return;
+
+        NLogger.debug(getClass(), "Check for identical vertices and collinearity."); //$NON-NLS-1$
+        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
+        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
+        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
+        {
+            for (GData2 g2 : newLines) {
+                Vertex[] verts = lines.get(g2);
+                Set<Vertex> verts2 = new HashSet<Vertex>();
+                for (Vertex vert : verts) {
+                    verts2.add(vert);
+                }
+                if (verts2.size() < 2 ) {
+                    linesToDelete2.add(g2);
+                }
+            }
+            for (GData3 g3 : newTriangles) {
+                Vertex[] verts = triangles.get(g3);
+                Set<Vertex> verts2 = new HashSet<Vertex>();
+                for (Vertex vert : verts) {
+                    verts2.add(vert);
+                }
+                if (verts2.size() < 3 || g3.isCollinear()) {
+                    trisToDelete2.add(g3);
+                }
+            }
+            for (GData4 g4 : newQuads) {
+                Vertex[] verts = quads.get(g4);
+                Set<Vertex> verts2 = new HashSet<Vertex>();
+                for (Vertex vert : verts) {
+                    verts2.add(vert);
+                }
+                if (verts2.size() < 4 || g4.isCollinear()) {
+                    quadsToDelete2.add(g4);
+                }
+            }
+        }
+
+        // Append the new data
+        for (GData2 line : newLines) {
+            linkedDatFile.addToTail(line);
+        }
+        for (GData3 tri : newTriangles) {
+            linkedDatFile.addToTail(tri);
+        }
+        for (GData4 quad : newQuads) {
+            linkedDatFile.addToTail(quad);
+        }
+
+        NLogger.debug(getClass(), "Delete new, but invalid objects."); //$NON-NLS-1$
+
+        newLines.removeAll(linesToDelete2);
+        newTriangles.removeAll(trisToDelete2);
+        newQuads.removeAll(quadsToDelete2);
+        selectedLines.addAll(linesToDelete2);
+        selectedTriangles.addAll(trisToDelete2);
+        selectedQuads.addAll(quadsToDelete2);
+        selectedData.addAll(selectedLines);
+        selectedData.addAll(selectedTriangles);
+        selectedData.addAll(selectedQuads);
+        delete(false);
+
+        // Round to 6 decimal places
+
+        selectedTriangles.addAll(newTriangles);
+        selectedData.addAll(selectedTriangles);
+
+        NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
+        roundSelection(6, 10, true);
+
+        setModified(true);
+
+        NLogger.debug(getClass(), "Done."); //$NON-NLS-1$
+
+        validateState();
+
     }
 }
