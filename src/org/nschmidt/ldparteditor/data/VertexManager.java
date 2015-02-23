@@ -13249,13 +13249,12 @@ public class VertexManager {
                                 int Shape2Len=0;
 
                                 boolean circular = false;
-                                double maxlength = ps.getMaxPathSegmentLength().doubleValue();
+                                double maxlength = ps.getMaxPathSegmentLength().doubleValue() * 1000.0;
                                 double dmax, d = 0.0;
                                 double len;
                                 int InLineIdx;
                                 int NumPath;
                                 boolean invert = ps.isInverted();
-                                int j,k,l;
 
                                 int transitions = ps.getTransitionCount();
                                 double slope= ps.getTransitionCurveControl().doubleValue();
@@ -13264,7 +13263,6 @@ public class VertexManager {
                                 boolean compensate = ps.isCompensation();
                                 boolean endings = path1endSegments.size() == 2 && path2endSegments.size() == 2;
                                 double rotation = ps.getRotation().doubleValue();
-                                double rotangle;
 
                                 {
                                     printf("Read path file 1\n"); //$NON-NLS-1$
@@ -13286,15 +13284,15 @@ public class VertexManager {
                                     circular=true;
                                     for (int i=0; i<Path1Len; i++)
                                     {
-                                        for (j=0; j<2; j++)
+                                        for (int j=0; j<2; j++)
                                         {
                                             if(next[i][j][0] != -1) break;
-                                            dmax=100000;
-                                            for (k=0; k<Path1Len; k++)
+                                            dmax=10000000;
+                                            for (int k=0; k<Path1Len; k++)
                                             {
                                                 if(k != i)
                                                 {
-                                                    for(l=0; l<2; l++)
+                                                    for(int l=0; l<2; l++)
                                                     {
                                                         d=MANHATTAN(SortBuf[i][j], SortBuf[k][l]);
                                                         if(d<dmax)
@@ -13310,21 +13308,21 @@ public class VertexManager {
                                             }
                                             if(dmax>SMALL)
                                             {
-                                                next[i][j][0]=-1;
+                                                next[i][j][0] = -1;
                                                 circular=false;
                                             }
                                         }
                                     }
                                     if(circular)
                                     {
-                                        next[next[0][0][0]][next[0][0][1]][0]=-1;
-                                        next[0][0][0]=-1;
+                                        next[next[0][0][0]][next[0][0][1]][0] = -1;
+                                        next[0][0][0] = -1;
                                     }
                                     InLineIdx=0;
                                     NumPath=0;
                                     for (int i=0; i<Path1Len; i++)
                                     {
-                                        for (j=0; j<2; j++)
+                                        for (int j=0; j<2; j++)
                                         {
                                             int a,b,c,d2;
                                             if(next[i][j][0] == -1)
@@ -13376,15 +13374,15 @@ public class VertexManager {
                                     circular=true;
                                     for (int i=0; i<Path2Len; i++)
                                     {
-                                        for (j=0; j<2; j++)
+                                        for (int j=0; j<2; j++)
                                         {
                                             if(next[i][j][0] != -1) break;
-                                            dmax=100000;
-                                            for (k=0; k<Path2Len; k++)
+                                            dmax=10000000;
+                                            for (int k=0; k<Path2Len; k++)
                                             {
                                                 if(k != i)
                                                 {
-                                                    for(l=0; l<2; l++)
+                                                    for(int l=0; l<2; l++)
                                                     {
                                                         d=MANHATTAN(SortBuf[i][j], SortBuf[k][l]);
                                                         if(d<dmax)
@@ -13400,21 +13398,21 @@ public class VertexManager {
                                             }
                                             if(dmax>SMALL)
                                             {
-                                                next[i][j][0]=-1;
+                                                next[i][j][0] = -1;
                                                 circular=false;
                                             }
                                         }
                                     }
                                     if(circular)
                                     {
-                                        next[next[0][0][0]][next[0][0][1]][0]=-1;
-                                        next[0][0][0]=-1;
+                                        next[next[0][0][0]][next[0][0][1]][0] = -1;
+                                        next[0][0][0] = -1;
                                     }
                                     InLineIdx=0;
                                     NumPath=0;
                                     for (int i=0; i<Path2Len; i++)
                                     {
-                                        for (j=0; j<2; j++)
+                                        for (int j=0; j<2; j++)
                                         {
                                             int a,b,c,d2;
                                             if(next[i][j][0] == -1)
@@ -13465,7 +13463,7 @@ public class VertexManager {
                                         Shape2[Shape2Len][0][0] = p.X1.doubleValue();
                                         Shape2[Shape2Len][0][1] = p.Y1.doubleValue();
                                         Shape2[Shape2Len][0][2] = p.Z1.doubleValue();
-                                        Shape1[Shape2Len][1][0] = p.X2.doubleValue();
+                                        Shape2[Shape2Len][1][0] = p.X2.doubleValue();
                                         Shape2[Shape2Len][1][1] = p.Y2.doubleValue();
                                         Shape2[Shape2Len][1][2] = p.Z2.doubleValue();
                                         Shape2Len++;
@@ -13489,7 +13487,6 @@ public class VertexManager {
                                 {
                                     printf("The two shape files do not have the same number of elements!\n"); //$NON-NLS-1$
                                     printf("Press <Enter> to quit"); //$NON-NLS-1$
-                                    getchar();
                                     return;
                                 }
 
@@ -13506,8 +13503,8 @@ public class VertexManager {
                                     SET(q1, Path2a[i][0]);
                                     SET(q2, Path2a[i][1]);
 
-                                    nsplit1 = (int) (DIST(p1,p2) / maxlength + 1);
-                                    nsplit2 = (int) (DIST(q1,q2) / maxlength + 1);
+                                    nsplit1 = (int) (DIST(p1,p2) / maxlength) + 1;
+                                    nsplit2 = (int) (DIST(q1,q2) / maxlength) + 1;
 
                                     // don't split endings segments
                                     if(endings)
@@ -13521,7 +13518,7 @@ public class VertexManager {
                                     MULT(delta1, delta1, 1.0 / nsplit1);
                                     SUB(delta2,q2,q1);
                                     MULT(delta2, delta2, 1.0 / nsplit1);
-                                    for (k=0; k < nsplit1; k++)
+                                    for (int k=0; k < nsplit1; k++)
                                     {
                                         MULT (temp, delta1, k);
                                         ADD (Path1[InLineIdx][0],p1,temp);
@@ -13640,9 +13637,9 @@ public class VertexManager {
                                 }
 
                                 // Calculate next transformed shape
-                                for(j=0; j<Shape1Len; j++)
+                                for(int j=0; j<Shape1Len; j++)
                                 {
-                                    for(k=0; k<2; k++)
+                                    for(int k=0; k<2; k++)
                                     {
                                         MULT(NxtShape[j][k], XVect, Shape1[j][k][0]);
                                         MULT(temp1, YVect, Shape1[j][k][1]);
@@ -13682,7 +13679,7 @@ public class VertexManager {
                                 {
 
                                     // Transfer old next shape to current.
-                                    for(j=0; j<Shape1Len; j++)
+                                    for(int j=0; j<Shape1Len; j++)
                                     {
                                         SET( CurShape[j][0],  NxtShape[j][0]);
                                         SET( CurShape[j][1],  NxtShape[j][1]);
@@ -13723,30 +13720,31 @@ public class VertexManager {
 
                                     {
                                         double x;
-                                        j=(i+1-start)*transitions % (2 * (end-start));
+                                        double j=(i+1-start)*transitions % (2 * (end-start));
                                         x = 1.0 * j / (end-start);
                                         if (x>1) x=2-x;
-                                        ratio = sigmoid(x, slope, position);
+                                        ratio = .5; // FIXME sigmoid(x, slope, position);
                                     }
 
-                                    rotangle = rotation * PI / 180 * (i+1.0) / Path1Len;
+                                    double rotangle = rotation * PI / 180 * (i+1.0) / Path1Len;
 
-                                    sa = Math.sin(rotangle); ca = Math.cos(rotangle);
+                                    sa = Math.sin(rotangle);
+                                    ca = Math.cos(rotangle);
 
 
-                                    for(j=0; j<Shape1Len; j++)
+                                    for(int j=0; j<Shape1Len; j++)
                                     {
-                                        for(k=0; k<2; k++)
+                                        for(int k=0; k<2; k++)
                                         {
                                             temp1[0] = Shape1[j][k][0] * ca - Shape1[j][k][1] * sa;
                                             temp1[1] = Shape1[j][k][0] * sa + Shape1[j][k][1] * ca;
                                             temp2[0] = Shape2[j][k][0] * ca - Shape2[j][k][1] * sa;
                                             temp2[1] = Shape2[j][k][0] * sa + Shape2[j][k][1] * ca;
 
-                                            MULT(NxtShape[j][k], XVect, temp1[0]*(1-ratio)+temp2[0]*ratio);
-                                            MULT(temp3, YVect, temp1[1]*(1-ratio)+temp2[1]*ratio);
+                                            MULT(NxtShape[j][k], XVect, temp1[0]*(1.0-ratio)+temp2[0]*ratio);
+                                            MULT(temp3, YVect, temp1[1]*(1.0-ratio)+temp2[1]*ratio);
                                             ADD(NxtShape[j][k], NxtShape[j][k], temp3);
-                                            MULT(temp3, ZVect, Shape1[j][k][2]*(1-ratio)+Shape2[j][k][2]*ratio);
+                                            MULT(temp3, ZVect, Shape1[j][k][2]*(1.0-ratio)+Shape2[j][k][2]*ratio);
                                             ADD(NxtShape[j][k], NxtShape[j][k], temp3);
                                             ADD(NxtShape[j][k], NxtShape[j][k], Path1[i+1][0]);
                                         }
@@ -13754,7 +13752,7 @@ public class VertexManager {
                                     if(Angle > crease)
                                     {
                                         // sharp angle. Create line at junction
-                                        for(j=0; j<Shape1Len; j++)
+                                        for(int j=0; j<Shape1Len; j++)
                                         {
                                             Vertex v1 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
                                             Vertex v2 = new Vertex(new BigDecimal(NxtShape[j][1][0]), new BigDecimal(NxtShape[j][1][1]), new BigDecimal(NxtShape[j][1][2]));
@@ -13762,7 +13760,7 @@ public class VertexManager {
                                         }
                                     }
                                     // Generate tri/quad sheet
-                                    for(j=0; j<Shape1Len; j++)
+                                    for(int j=0; j < Shape1Len; j++)
                                     {
                                         if (DIST(Shape1[j][0], Shape1[j][1]) < EPSILON && DIST(Shape2[j][0], Shape2[j][1]) < EPSILON)
                                         {
@@ -13977,14 +13975,14 @@ public class VertexManager {
     // 1/(1+exp(-b*(x-m))) Scaled so that sigmoid(0)=0, sigmoid(1)=1
     // b is growth rate, m is max growth rate point
     // if b=1. returns a true x (linear relationship)
-    double sigmoid(double x,double b,double m)
+    private double sigmoid(double x,double b,double m)
     {
         double s0, s1, y;
         if(b == 1.0) return x;
-        s0=1/(1+Math.exp(b*m));
-        s1=1/(1+Math.exp(-b*(1-m)));
-        y=1/(1+Math.exp(-b*(x-m)));
-        y=(y-s0)/(s1-s0);
+        s0 = 1.0 / (1.0 + Math.exp(b * m));
+        s1 = 1.0 / (1.0 + Math.exp(-b * (1.0 - m)));
+        y = 1.0 / (1.0 + Math.exp(-b * (x - m)));
+        y = (y - s0) / (s1 - s0);
         return y;
     }
 
@@ -14008,44 +14006,44 @@ public class VertexManager {
     /* Null vector */
     private double[] nullv = new double[]{0.0,0.0,0.0};
 
-    void CROSS(double[] dest, double[] left, double[] right) {
+    private void CROSS(double[] dest, double[] left, double[] right) {
         dest[0]=left[1]*right[2]-left[2]*right[1];
         dest[1]=left[2]*right[0]-left[0]*right[2];
         dest[2]=left[0]*right[1]-left[1]*right[0];
     }
 
-    double DOT(double[] v1, double[] v2) {
+    private double DOT(double[] v1, double[] v2) {
         return v1[0]*v2[0]+v1[1]*v2[1]+v1[2]*v2[2];
     }
 
-    void SUB(double[] dest, double[] left, double[] right) {
+    private void SUB(double[] dest, double[] left, double[] right) {
         dest[0]=left[0]-right[0]; dest[1]=left[1]-right[1]; dest[2]=left[2]-right[2];
     }
 
-    void ADD(double[] dest, double[] left, double[] right) {
+    private void ADD(double[] dest, double[] left, double[] right) {
         dest[0]=left[0]+right[0]; dest[1]=left[1]+right[1]; dest[2]=left[2]+right[2];
     }
 
-    void MULT(double[] dest, double[] v, double factor) {
+    private void MULT(double[] dest, double[] v, double factor) {
         dest[0]=factor*v[0]; dest[1]=factor*v[1]; dest[2]=factor*v[2];
     }
 
-    void SET(double[] dest, double[] src) {
+    private void SET(double[] dest, double[] src) {
         dest[0]=src[0]; dest[1]=src[1]; dest[2]=src[2];
     }
 
-    double MANHATTAN(double[] v1, double[] v2) {
+    private double MANHATTAN(double[] v1, double[] v2) {
         return Math.abs(v1[0]-v2[0]) + Math.abs(v1[1]-v2[1]) + Math.abs(v1[2]-v2[2]);
     }
 
-    double DIST(double[] v1, double[] v2) {
+    private double DIST(double[] v1, double[] v2) {
         return Math.sqrt((v1[0]-v2[0])*(v1[0]-v2[0]) + (v1[1]-v2[1])*(v1[1]-v2[1]) + (v1[2]-v2[2])*(v1[2]-v2[2]));
     }
 
     // Calculate local basis, based on the direction of the i-th vector between both paths,
     // and the average of the planes defined by the paths before and after this vector
     // Returns angle between these planes.
-    double PathLocalBasis (int n, int i,  double[] xv,double[] yv,double[] zv, double[][][] path1, double[][][] path2)
+    private double PathLocalBasis (int n, int i,  double[] xv,double[] yv,double[] zv, double[][][] path1, double[][][] path2)
     {
         double a, scale;
         double[] temp1 = new double[3], temp2 = new double[3], temp3 = new double[3], temp4 = new double[3];
@@ -14070,7 +14068,7 @@ public class VertexManager {
         CROSS(xv, temp2, temp1);
         a=DIST(xv, nullv);
         if (a > EPSILON) {
-            MULT(xv, xv, 1/a);
+            MULT(xv, xv, 1.0/a);
         } else {
             SET(xv, nullv);
         }
@@ -14079,7 +14077,7 @@ public class VertexManager {
         CROSS(temp3, temp1, temp2);
         a=DIST(temp3, nullv);
         if (a > EPSILON) {
-            MULT(temp3, temp3, 1/a);
+            MULT(temp3, temp3, 1.0/a);
         } else {
             SET(temp3, nullv);
         }
@@ -14096,7 +14094,7 @@ public class VertexManager {
         CROSS(temp4, temp2, temp1);
         a=DIST(temp4, nullv);
         if(a > EPSILON) {
-            MULT(temp4, temp4, 1/a);
+            MULT(temp4, temp4, 1.0/a);
         } else {
             SET(temp4, nullv);
         }
@@ -14105,14 +14103,14 @@ public class VertexManager {
         CROSS(temp3, temp1, temp2);
         a=DIST(temp3, nullv);
         if(a > EPSILON) {
-            MULT(temp3, temp3, 1/a);
+            MULT(temp3, temp3, 1.0/a);
         } else {
             SET(temp3, nullv);
         }
         ADD(temp4, temp4, temp3);
         a=DIST(temp4, nullv);
         if(a > EPSILON) {
-            MULT(temp4, temp4, 1/a);
+            MULT(temp4, temp4, 1.0/a);
         } else {
             SET(temp4, nullv);
         }
@@ -14127,7 +14125,7 @@ public class VertexManager {
         }
 
         // calculate angle
-        a = 360 / Math.PI * Math.acos(DOT(xv,temp4));
+        a = 360.0 / Math.PI * Math.acos(DOT(xv,temp4));
 
         CROSS(zv,xv,yv);
         MULT(xv, xv, scale);
@@ -14139,13 +14137,9 @@ public class VertexManager {
         return a;
     }
 
-    private void getchar() {
-
-    }
-
     // Tri_Angle computes the angle (in degrees) between the planes of a quad.
     // They are assumed to be non-degenerated
-    double Tri_Angle(double[] U0,double[] U1,double[] U2, double[] U3)
+    private double Tri_Angle(double[] U0,double[] U1,double[] U2, double[] U3)
     {
         double[] Unorm = new double[3], Vnorm = new double[3];
         double[] Temp = new double[3];
@@ -14166,6 +14160,6 @@ public class VertexManager {
         double dist;
         dist = DIST(Temp, nullv);
         if(dist > 0.9999999999) return 90;
-        return 180.0 / Math.PI * Math.asin(dist);
+        return 180 / Math.PI * Math.asin(dist);
     }
 }
