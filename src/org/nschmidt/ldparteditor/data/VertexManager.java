@@ -13115,8 +13115,7 @@ public class VertexManager {
         final Set<GData3> newTriangles = new HashSet<GData3>();
         final Set<GData4> newQuads = new HashSet<GData4>();
 
-        final GData2 shape1Normal;
-        final GData2 shape2Normal;
+
 
         final ArrayList<GData2> shape1 = new ArrayList<GData2>();
         final ArrayList<GData2> shape2 = new ArrayList<GData2>();
@@ -13133,6 +13132,8 @@ public class VertexManager {
 
         // TODO Validate and evaluate selection
         {
+            final GData2 shape1Normal;
+            final GData2 shape2Normal;
             GData2 shape1Normal2 = null;
             GData2 shape2Normal2 = null;
             GData data2draw = linkedDatFile.getDrawChainStart();
@@ -13185,6 +13186,8 @@ public class VertexManager {
             }
             shape1Normal = shape1Normal2;
             shape2Normal = shape2Normal2;
+            shape1.add(0, shape1Normal);
+            shape2.add(0, shape2Normal);
         }
 
         // Clear selection
@@ -13240,15 +13243,10 @@ public class VertexManager {
                                 double[][][] SortBuf = new double[MAX_LINE][2][3];
                                 int[][][] next = new int[MAX_LINE][2][2];
 
-                                boolean Shape1Flag=false;
-                                boolean Shape2Flag=false;
-
                                 int Path1Len=0;
                                 int Path2Len=0;
                                 int Shape1Len=0;
                                 int Shape2Len=0;
-
-                                char[] buf = new char[1024];
 
                                 boolean circular = false;
                                 double maxlength = ps.getMaxPathSegmentLength().doubleValue();
@@ -13799,11 +13797,11 @@ public class VertexManager {
                                             }
                                             else
                                             {
-                                                CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2]));
-            CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2]));
-            NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]));
-            newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
-            continue;
+                                                Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
+                                                Vertex v2 = new Vertex(new BigDecimal(CurShape[j][1][0]), new BigDecimal(CurShape[j][1][1]), new BigDecimal(CurShape[j][1][2]));
+                                                Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+                                                continue;
                                             }
                                         }
                                         if (DIST(CurShape[j][0], NxtShape[j][0]) < VERTMERGE)
@@ -13815,20 +13813,18 @@ public class VertexManager {
                                             }
                                             else
                                             {
-                                                fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
-                                                        CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
-                                                        CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
-                                                        NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2]);
+                                                Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
+                                                Vertex v2 = new Vertex(new BigDecimal(CurShape[j][1][0]), new BigDecimal(CurShape[j][1][1]), new BigDecimal(CurShape[j][1][2]));
+                                                Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][1][0]), new BigDecimal(NxtShape[j][1][1]), new BigDecimal(NxtShape[j][1][2]));
                                                 newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
                                                 continue;
                                             }
                                         }
                                         if (DIST(NxtShape[j][1], CurShape[j][1]) < VERTMERGE)
                                         {
-                                            fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
-                                                    CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
-                                                    CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
-                                                    NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                            Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
+                                            Vertex v2 = new Vertex(new BigDecimal(CurShape[j][1][0]), new BigDecimal(CurShape[j][1][1]), new BigDecimal(CurShape[j][1][2]));
+                                            Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
                                             newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
                                             continue;
                                         }
@@ -13837,26 +13833,24 @@ public class VertexManager {
                                         Angle=Tri_Angle(CurShape[j][0], NxtShape[j][0], NxtShape[j][1], CurShape[j][1] );
                                         if(Angle<SMALLANGLE)
                                         {
-                                            fprintf(null, "4 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
-                                                    CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
-                                                    CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
-                                                    NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2],
-                                                    NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                            Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
+                                            Vertex v2 = new Vertex(new BigDecimal(CurShape[j][1][0]), new BigDecimal(CurShape[j][1][1]), new BigDecimal(CurShape[j][1][2]));
+                                            Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][1][0]), new BigDecimal(NxtShape[j][1][1]), new BigDecimal(NxtShape[j][1][2]));
+                                            Vertex v4 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
+                                            newQuads.add(new GData4(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
                                         }
                                         else
                                         {
                                             {
-                                                fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
-                                                        CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
-                                                        NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2],
-                                                        NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                                Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
+                                                Vertex v2 = new Vertex(new BigDecimal(NxtShape[j][1][0]), new BigDecimal(NxtShape[j][1][1]), new BigDecimal(NxtShape[j][1][2]));
+                                                Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
                                                 newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
                                             }
                                             {
-                                                fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
-                                                        CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
-                                                        CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
-                                                        NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2]);
+                                                Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
+                                                Vertex v2 = new Vertex(new BigDecimal(CurShape[j][1][0]), new BigDecimal(CurShape[j][1][1]), new BigDecimal(CurShape[j][1][2]));
+                                                Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][1][0]), new BigDecimal(NxtShape[j][1][1]), new BigDecimal(NxtShape[j][1][2]));
                                                 newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
                                             }
                                         }
