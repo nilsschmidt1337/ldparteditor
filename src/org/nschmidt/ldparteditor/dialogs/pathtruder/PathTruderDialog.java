@@ -15,8 +15,14 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.pathtruder;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
+import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
+import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -45,6 +51,56 @@ public class PathTruderDialog extends PathTruderDesign {
         super.create();
 
         // MARK All final listeners will be configured here..
+
+        spn_centerCurve[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                ps.setTransitionCurveCenter(spn.getValue());
+            }
+        });
+        spn_lineThreshold[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                ps.setPathAngleForLine(spn.getValue());
+            }
+        });
+        spn_rotationAngle[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                ps.setRotation(spn.getValue());
+            }
+        });
+        spn_transCurve[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                ps.setTransitionCurveControl(spn.getValue());
+            }
+        });
+        spn_transitions[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(IntegerSpinner spn) {
+                ps.setTransitionCount(spn.getValue());
+            }
+        });
+        spn_maxPathSegmentLength[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                ps.setMaxPathSegmentLength(spn.getValue());
+            }
+        });
+        cmb_bfcInvert[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                ps.setInverted(cmb_bfcInvert[0].getSelectionIndex() == 1);
+            }
+        });
+        cmb_shapeCompensation[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                ps.setCompensation(cmb_shapeCompensation[0].getSelectionIndex() == 1);
+            }
+        });
+
         //        spn_ac[0].addValueChangeListener(new ValueChangeAdapter() {
         //            @Override
         //            public void valueChanged(BigDecimalSpinner spn) {
