@@ -13210,12 +13210,11 @@ public class VertexManager {
                                     return;
                                 }
 
+                                final GColour lineColour = DatParser.validateColour("24", .5f, .5f, .5f, 1f); //$NON-NLS-1$
+                                final GColour bodyColour = DatParser.validateColour("16", .5f, .5f, .5f, 1f); //$NON-NLS-1$
+
                                 double VERTMERGE = 0.001;
                                 double PI = 3.14159265358979323846;
-
-                                /* Null vector */
-
-                                double[] nullv = new double[]{0.0,0.0,0.0};
 
                                 int MAX_LINE = 1000;
                                 double SMALL = 0.1;
@@ -13252,7 +13251,6 @@ public class VertexManager {
                                 int Shape2Len=0;
 
                                 char[] buf = new char[1024];
-                                int type, color = 0;
 
                                 boolean circular = false;
                                 double maxlength = ps.getMaxPathSegmentLength().doubleValue();
@@ -13270,8 +13268,6 @@ public class VertexManager {
                                 boolean compensate = ps.isCompensation();
                                 boolean endings = path1endSegments.size() == 2 && path2endSegments.size() == 2;
                                 double rotation = ps.getRotation().doubleValue();
-                                double rotslope=1;
-                                double rotpos=0.5;
                                 double rotangle;
 
                                 {
@@ -13284,11 +13280,8 @@ public class VertexManager {
                                             Path1Flag=true;
                                             printf("Read path file 1\n"); //$NON-NLS-1$
                                             {
-                                                type = -1;
-                                                sscanf(buf, "%d", type); //$NON-NLS-1$
-                                                if(type==2)
                                                 {
-                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", type, color,  //$NON-NLS-1$
+                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", null, null,  //$NON-NLS-1$
                                                             SortBuf[Path1Len][0][0], SortBuf[Path1Len][0][1], SortBuf[Path1Len][0][2],
                                                             SortBuf[Path1Len][1][0], SortBuf[Path1Len][1][1], SortBuf[Path1Len][1][2]);
                                                     next[Path1Len][0][0] = next[Path1Len][1][0] = -1;
@@ -13383,11 +13376,8 @@ public class VertexManager {
                                             Path2Flag=true;
                                             printf("Read path file 2\n"); //$NON-NLS-1$
                                             {
-                                                type = -1;
-                                                sscanf(buf, "%d", type); //$NON-NLS-1$
-                                                if(type==2)
                                                 {
-                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", type, color,  //$NON-NLS-1$
+                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", null, null,  //$NON-NLS-1$
                                                             SortBuf[Path2Len][0][0], SortBuf[Path2Len][0][1], SortBuf[Path2Len][0][2],
                                                             SortBuf[Path2Len][1][0], SortBuf[Path2Len][1][1], SortBuf[Path2Len][1][2]);
                                                     next[Path2Len][0][0] = next[Path2Len][1][0] = -1;
@@ -13489,11 +13479,8 @@ public class VertexManager {
                                             printf("Read shape file 1\n"); //$NON-NLS-1$
 
                                             {
-                                                type = -1;
-                                                sscanf(buf, "%d", type); //$NON-NLS-1$
-                                                if(type==2)
                                                 {
-                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", type, color,  //$NON-NLS-1$
+                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", null, null,  //$NON-NLS-1$
                                                             Shape1[Shape1Len][0][0], Shape1[Shape1Len][0][1], Shape1[Shape1Len][0][2],
                                                             Shape1[Shape1Len][1][0], Shape1[Shape1Len][1][1], Shape1[Shape1Len][1][2]);
                                                     Shape1Len++;
@@ -13505,11 +13492,8 @@ public class VertexManager {
                                             Shape2Flag=true;
                                             printf("Read shape file 2\n"); //$NON-NLS-1$
                                             {
-                                                type = -1;
-                                                sscanf(buf, "%d", type); //$NON-NLS-1$
-                                                if(type==2)
                                                 {
-                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", type, color,  //$NON-NLS-1$
+                                                    sscanf (buf, "%d %d %lf %lf %lf %lf %lf %lf", null, null,  //$NON-NLS-1$
                                                             Shape2[Shape2Len][0][0], Shape2[Shape2Len][0][1], Shape2[Shape2Len][0][2],
                                                             Shape2[Shape2Len][1][0], Shape2[Shape2Len][1][1], Shape2[Shape2Len][1][2]);
                                                     Shape2Len++;
@@ -13558,7 +13542,6 @@ public class VertexManager {
                                     return;
                                 }
 
-
                                 if(Shape1Len != Shape2Len)
                                 {
                                     printf("The two shape files do not have the same number of elements!\n"); //$NON-NLS-1$
@@ -13566,9 +13549,6 @@ public class VertexManager {
                                     getchar();
                                     return;
                                 }
-
-
-                                Object LdrawFileOut = new String();
 
                                 printf("Split long lines\n"); //$NON-NLS-1$
                                 InLineIdx = 0;
@@ -13618,10 +13598,9 @@ public class VertexManager {
                                 SET(Path2[Path2Len][0],Path2[Path2Len-1][1]);
                                 SET(Path2[Path2Len][1],Path2[Path2Len-1][0]);
 
-
-                                fprintf(LdrawFileOut, "0 Surface extruded\n"); //$NON-NLS-1$
-                                fprintf(LdrawFileOut, "0 Author: Philo's PathTruder\n0\n"); //$NON-NLS-1$
-                                fprintf(LdrawFileOut, "0 BFC CERTIFY CCW\n\n"); //$NON-NLS-1$
+                                fprintf(null, "0 Surface extruded\n"); //$NON-NLS-1$
+                                fprintf(null, "0 Author: Philo's PathTruder\n0\n"); //$NON-NLS-1$
+                                fprintf(null, "0 BFC CERTIFY CCW\n\n"); //$NON-NLS-1$
 
                                 printf("Normalize shape 1\n"); //$NON-NLS-1$
 
@@ -13743,7 +13722,9 @@ public class VertexManager {
                                     // sharp angle. Create line at junction
                                     for(i=0; i<Shape1Len; i++)
                                     {
-                                        fprintf(LdrawFileOut, "2 24 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n", NxtShape[i][0][0], NxtShape[i][0][1], NxtShape[i][0][2], NxtShape[i][1][0], NxtShape[i][1][1], NxtShape[i][1][2]); //$NON-NLS-1$
+                                        Vertex v1 = new Vertex(new BigDecimal(NxtShape[i][0][0]), new BigDecimal(NxtShape[i][0][1]), new BigDecimal(NxtShape[i][0][2]));
+                                        Vertex v2 = new Vertex(new BigDecimal(NxtShape[i][1][0]), new BigDecimal(NxtShape[i][1][1]), new BigDecimal(NxtShape[i][1][2]));
+                                        newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
                                     }
                                 }
 
@@ -13776,16 +13757,16 @@ public class VertexManager {
                                                 if(Angle2 < 90)
                                                 {
                                                     // in that case the local base is mirrorred...
-                                                    SUB (XVect, null, XVect);
-                                                    SUB (ZVect, null, ZVect);
+                                                    SUB (XVect, nullv, XVect);
+                                                    SUB (ZVect, nullv, ZVect);
                                                 }
                                             }
                                             else
                                             {
                                                 Angle = PathLocalBasis (i+1, i+1, XVect, YVect, ZVect, Path1, Path2);
                                                 // in that case the local base is mirrorred...
-                                                SUB (XVect, null, XVect);
-                                                SUB (ZVect, null, ZVect);
+                                                SUB (XVect, nullv, XVect);
+                                                SUB (ZVect, nullv, ZVect);
                                             }
                                         }
                                     else
@@ -13832,7 +13813,9 @@ public class VertexManager {
                                         // sharp angle. Create line at junction
                                         for(j=0; j<Shape1Len; j++)
                                         {
-                                            fprintf(LdrawFileOut, "2 24 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n", NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2], NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2]); //$NON-NLS-1$
+                                            Vertex v1 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
+                                            Vertex v2 = new Vertex(new BigDecimal(NxtShape[j][1][0]), new BigDecimal(NxtShape[j][1][1]), new BigDecimal(NxtShape[j][1][2]));
+                                            newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
                                         }
                                     }
                                     // Generate tri/quad sheet
@@ -13841,9 +13824,10 @@ public class VertexManager {
                                         if (DIST(Shape1[j][0], Shape1[j][1]) < EPSILON && DIST(Shape2[j][0], Shape2[j][1]) < EPSILON)
                                         {
                                             // Null lenth segment in shape file -> generate line at that place
-                                            fprintf(LdrawFileOut, "2 24 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
-                                                    CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
-                                                    NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
+                                            Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
+                                            Vertex v2 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
+                                            newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
+
                                         }
                                         if (DIST(CurShape[j][0], CurShape[j][1]) < VERTMERGE)
                                         {
@@ -13854,7 +13838,7 @@ public class VertexManager {
                                             }
                                             else
                                             {
-                                                fprintf(LdrawFileOut, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
                                                         CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
                                                         NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2],
                                                         NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
@@ -13870,7 +13854,7 @@ public class VertexManager {
                                             }
                                             else
                                             {
-                                                fprintf(LdrawFileOut, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
                                                         CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
                                                         CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
                                                         NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
@@ -13886,7 +13870,7 @@ public class VertexManager {
                                             }
                                             else
                                             {
-                                                fprintf(LdrawFileOut, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                                fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
                                                         CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
                                                         CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
                                                         NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2]);
@@ -13895,7 +13879,7 @@ public class VertexManager {
                                         }
                                         if (DIST(NxtShape[j][1], CurShape[j][1]) < VERTMERGE)
                                         {
-                                            fprintf(LdrawFileOut, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                            fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
                                                     CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
                                                     CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
                                                     NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
@@ -13906,7 +13890,7 @@ public class VertexManager {
                                         Angle=Tri_Angle(CurShape[j][0], NxtShape[j][0], NxtShape[j][1], CurShape[j][1] );
                                         if(Angle<SMALLANGLE)
                                         {
-                                            fprintf(LdrawFileOut, "4 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                            fprintf(null, "4 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
                                                     CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
                                                     CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
                                                     NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2],
@@ -13914,11 +13898,11 @@ public class VertexManager {
                                         }
                                         else
                                         {
-                                            fprintf(LdrawFileOut, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                            fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
                                                     CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
                                                     NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2],
                                                     NxtShape[j][0][0], NxtShape[j][0][1], NxtShape[j][0][2]);
-                                            fprintf(LdrawFileOut, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
+                                            fprintf(null, "3 16 %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg %.7lg\n",  //$NON-NLS-1$
                                                     CurShape[j][0][0], CurShape[j][0][1], CurShape[j][0][2],
                                                     CurShape[j][1][0], CurShape[j][1][1], CurShape[j][1][2],
                                                     NxtShape[j][1][0], NxtShape[j][1][1], NxtShape[j][1][2]);
@@ -14045,7 +14029,7 @@ public class VertexManager {
     double sigmoid(double x,double b,double m)
     {
         double s0, s1, y;
-        if(b==1.) return x;
+        if(b == 1.0) return x;
         s0=1/(1+Math.exp(b*m));
         s1=1/(1+Math.exp(-b*(1-m)));
         y=1/(1+Math.exp(-b*(x-m)));
@@ -14055,11 +14039,7 @@ public class VertexManager {
 
     // FIXME Method stubs
 
-    private static final double EPSILON = 0.000001;
 
-    void CROSS(double[] dest, double[] left, double[] right) {
-
-    }
 
     void fprintf(Object obj, String s, Object... args) {
 
@@ -14073,34 +14053,42 @@ public class VertexManager {
 
     }
 
+    private final double EPSILON = 0.000001;
+    /* Null vector */
+    private double[] nullv = new double[]{0.0,0.0,0.0};
+
+    void CROSS(double[] dest, double[] left, double[] right) {
+        dest[0]=left[1]*right[2]-left[2]*right[1];
+        dest[1]=left[2]*right[0]-left[0]*right[2];
+        dest[2]=left[0]*right[1]-left[1]*right[0];
+    }
+
     double DOT(double[] v1, double[] v2) {
         return v1[0]*v2[0]+v1[1]*v2[1]+v1[2]*v2[2];
     }
 
     void SUB(double[] dest, double[] left, double[] right) {
-
+        dest[0]=left[0]-right[0]; dest[1]=left[1]-right[1]; dest[2]=left[2]-right[2];
     }
 
     void ADD(double[] dest, double[] left, double[] right) {
-
+        dest[0]=left[0]+right[0]; dest[1]=left[1]+right[1]; dest[2]=left[2]+right[2];
     }
 
     void MULT(double[] dest, double[] v, double factor) {
-        //  #define MULT(dest,v,factor) dest[0]=factor*v[0]; dest[1]=factor*v[1]; dest[2]=factor*v[2];
+        dest[0]=factor*v[0]; dest[1]=factor*v[1]; dest[2]=factor*v[2];
     }
 
     void SET(double[] dest, double[] src) {
-
+        dest[0]=src[0]; dest[1]=src[1]; dest[2]=src[2];
     }
 
     double MANHATTAN(double[] v1, double[] v2) {
-        //     #define MANHATTAN(v1, v2) (fabs(v1[0]-v2[0]) + fabs(v1[1]-v2[1]) + fabs(v1[2]-v2[2]))
-        return 0.0;
+        return Math.abs(v1[0]-v2[0]) + Math.abs(v1[1]-v2[1]) + Math.abs(v1[2]-v2[2]);
     }
 
     double DIST(double[] v1, double[] v2) {
-        //         #define DIST(v1, v2) (sqrt((v1[0]-v2[0])*(v1[0]-v2[0]) + (v1[1]-v2[1])*(v1[1]-v2[1]) + (v1[2]-v2[2])*(v1[2]-v2[2])))
-        return 0.0;
+        return Math.sqrt((v1[0]-v2[0])*(v1[0]-v2[0]) + (v1[1]-v2[1])*(v1[1]-v2[1]) + (v1[2]-v2[2])*(v1[2]-v2[2]));
     }
 
     // Calculate local basis, based on the direction of the i-th vector between both paths,
@@ -14117,7 +14105,7 @@ public class VertexManager {
         if(scale < EPSILON)
         {
             // size is 0... any non-degenerated base will do!
-            SET (yv, null);
+            SET (yv, nullv);
             yv[0]=1;
         }
         else
@@ -14129,62 +14117,62 @@ public class VertexManager {
         SUB(temp1, path1[i][1], path1[i][0]);
         SUB(temp2, path2[i][1], path1[i][0]);
         CROSS(xv, temp2, temp1);
-        a=DIST(xv, null);
+        a=DIST(xv, nullv);
         if (a > EPSILON) {
             MULT(xv, xv, 1/a);
         } else {
-            SET(xv, null);
+            SET(xv, nullv);
         }
         SUB(temp1, path2[i][1], path2[i][0]);
         SUB(temp2, path1[i][0], path2[i][0]);
         CROSS(temp3, temp1, temp2);
-        a=DIST(temp3, null);
+        a=DIST(temp3, nullv);
         if (a > EPSILON) {
             MULT(temp3, temp3, 1/a);
         } else {
-            SET(temp3, null);
+            SET(temp3, nullv);
         }
         ADD(xv, xv, temp3);
-        a=DIST(xv, null);
+        a=DIST(xv, nullv);
         if (a > EPSILON) {
             MULT(xv, xv, 1/a);
         } else {
-            SET(xv, null);
+            SET(xv, nullv);
         }
 
         SUB(temp1, path1[n][1], path1[n][0]);
         SUB(temp2, path2[n][1], path1[n][0]);
         CROSS(temp4, temp2, temp1);
-        a=DIST(temp4, null);
+        a=DIST(temp4, nullv);
         if(a > EPSILON) {
             MULT(temp4, temp4, 1/a);
         } else {
-            SET(temp4, null);
+            SET(temp4, nullv);
         }
         SUB(temp1, path2[n][1], path2[n][0]);
         SUB(temp2, path1[n][0], path2[n][0]);
         CROSS(temp3, temp1, temp2);
-        a=DIST(temp3, null);
+        a=DIST(temp3, nullv);
         if(a > EPSILON) {
             MULT(temp3, temp3, 1/a);
         } else {
-            SET(temp3, null);
+            SET(temp3, nullv);
         }
         ADD(temp4, temp4, temp3);
-        a=DIST(temp4, null);
+        a=DIST(temp4, nullv);
         if(a > EPSILON) {
             MULT(temp4, temp4, 1/a);
         } else {
-            SET(temp4, null);
+            SET(temp4, nullv);
         }
 
         // Average previous and current path normals
         ADD(xv, xv, temp4);
-        a=DIST(xv, null);
+        a=DIST(xv, nullv);
         if(a > EPSILON) {
             MULT(xv, xv, 1/a);
         } else {
-            SET(xv, null);
+            SET(xv, nullv);
         }
 
         // calculate angle
@@ -14194,8 +14182,8 @@ public class VertexManager {
         MULT(xv, xv, scale);
         if(scale < EPSILON)
         {
-            SET(yv, null);
-            SET(zv, null);
+            SET(yv, nullv);
+            SET(zv, nullv);
         }
         return a;
     }
@@ -14218,14 +14206,14 @@ public class VertexManager {
         SUB(V10, U2, U0);
         SUB(V20, U3, U0);
         CROSS(Temp, U10, U20);
-        len = DIST(Temp, null);
+        len = DIST(Temp, nullv);
         MULT(Unorm, Temp, 1/len);
         CROSS(Temp, V10, V20);
-        len = DIST(Temp, null);
+        len = DIST(Temp, nullv);
         MULT(Vnorm, Temp, 1/len);
         CROSS(Temp, Unorm, Vnorm);
         double dist;
-        dist = DIST(Temp, null);
+        dist = DIST(Temp, nullv);
         if(dist > 0.9999999999) return 90;
         return 180.0 / Math.PI * Math.asin(dist);
     }
