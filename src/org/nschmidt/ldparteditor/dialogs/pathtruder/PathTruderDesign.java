@@ -75,7 +75,7 @@ class PathTruderDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("PathTruder [Arbitrary Precision]\nResults are rounded to 6 decimal places."); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText("PathTruder [Double Precision, IEEE-754]\nResults are rounded to 6 decimal places."); //$NON-NLS-1$ I18N Needs translation!
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
