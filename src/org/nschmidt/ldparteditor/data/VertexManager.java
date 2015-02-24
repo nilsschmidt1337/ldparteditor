@@ -13148,6 +13148,9 @@ public class VertexManager {
                     case 5:
                         shape1.add(line);
                         break;
+                    case 7:
+                        lineIndicators.add(line);
+                        break;
                     case 13:
                         shape2.add(line);
                         break;
@@ -13217,6 +13220,20 @@ public class VertexManager {
                                 double SMALL = 0.1;
                                 double SMALLANGLE = .95;
 
+                                double[][] lineIndicatorsArr = new double[lineIndicators.size() > 0 ? lineIndicators.size() * 2 : 1][3];
+                                {
+                                    int lis = 0;
+                                    for (GData2 l : lineIndicators) {
+                                        lineIndicatorsArr[lis][0] = l.X1.doubleValue();
+                                        lineIndicatorsArr[lis][1] = l.Y1.doubleValue();
+                                        lineIndicatorsArr[lis][2] = l.Z1.doubleValue();
+                                        lineIndicatorsArr[lis + 1][0] = l.X2.doubleValue();
+                                        lineIndicatorsArr[lis + 1][1] = l.Y2.doubleValue();
+                                        lineIndicatorsArr[lis + 1][2] = l.Z2.doubleValue();
+                                        lis += 2;
+                                    }
+                                }
+
                                 double[][][] Path1 = new double[5 * MAX_LINE][2][3];
                                 double[][][] Path2 = new double[5 * MAX_LINE][2][3];
                                 double[][][] Path1a = new double[MAX_LINE][2][3];
@@ -13241,6 +13258,8 @@ public class VertexManager {
                                 int Path2Len = 0;
                                 int Shape1Len = 0;
                                 int Shape2Len = 0;
+
+                                int LineIndLen = lineIndicators.size() * 2;
 
                                 boolean circular = false;
                                 double maxlength = ps.getMaxPathSegmentLength().doubleValue();
@@ -13507,6 +13526,10 @@ public class VertexManager {
                                     SUB(Shape1[i][1], Shape1[i][1], Shape1[0][0]);
                                     MULT(Shape1[i][1], Shape1[i][1], 1 / len);
                                 }
+                                for (int i = 1; i < LineIndLen; i++) {
+                                    SUB(lineIndicatorsArr[i], lineIndicatorsArr[i], Shape1[0][0]);
+                                    MULT(lineIndicatorsArr[i], lineIndicatorsArr[i], 1 / len);
+                                }
                                 SUB(Shape1Vect, Shape1[0][1], Shape1[0][0]);
 
                                 Angle = Math.atan2(-Shape1Vect[0], -Shape1Vect[1]);
@@ -13527,6 +13550,14 @@ public class VertexManager {
                                     }
                                 }
                                 Shape1Len--;
+                                for (int i = 0; i < LineIndLen; i++) {
+                                    lineIndicatorsArr[i][0] = lineIndicatorsArr[i][0] * ca - lineIndicatorsArr[i][1] * sa;
+                                    lineIndicatorsArr[i][1] = lineIndicatorsArr[i][0] * sa + lineIndicatorsArr[i][1] * ca;
+                                    lineIndicatorsArr[i][2] = lineIndicatorsArr[i][2];
+                                    if (invert) {
+                                        lineIndicatorsArr[i][0] = -lineIndicatorsArr[i][0];
+                                    }
+                                }
 
                                 // Normalize shape 2
 
@@ -13601,8 +13632,7 @@ public class VertexManager {
                                     for (int i = 0; i < Shape1Len; i++) {
                                         Vertex v1 = new Vertex(new BigDecimal(NxtShape[i][0][0]), new BigDecimal(NxtShape[i][0][1]), new BigDecimal(NxtShape[i][0][2]));
                                         Vertex v2 = new Vertex(new BigDecimal(NxtShape[i][1][0]), new BigDecimal(NxtShape[i][1][1]), new BigDecimal(NxtShape[i][1][2]));
-                                        newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE,
-                                                linkedDatFile));
+                                        newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
                                     }
                                 }
 
@@ -13690,13 +13720,20 @@ public class VertexManager {
                                     }
                                     // Generate tri/quad sheet
                                     for (int j = 0; j < Shape1Len; j++) {
-                                        if (DIST(Shape1[j][0], Shape1[j][1]) < EPSILON && DIST(Shape2[j][0], Shape2[j][1]) < EPSILON) {
-                                            // Null lenth segment in shape file
-                                            // -> generate line at that place
-                                            Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
-                                            Vertex v2 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
-                                            newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
-
+                                        if (!lineIndicators.isEmpty()) {
+                                            boolean hasLineSegment = false;
+                                            for (double[] line : lineIndicatorsArr) {
+                                                if (DIST(Shape1[j][0], line) < EPSILON) {
+                                                    hasLineSegment = true;
+                                                    break;
+                                                }
+                                            }
+                                            if (hasLineSegment) {
+                                                // Line indicator -> generate line at that place
+                                                Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
+                                                Vertex v2 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
+                                                newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
+                                            }
                                         }
                                         if (DIST(CurShape[j][0], CurShape[j][1]) < VERTMERGE) {
                                             if (DIST(NxtShape[j][0], NxtShape[j][1]) < VERTMERGE || DIST(CurShape[j][0], NxtShape[j][0]) < VERTMERGE || DIST(NxtShape[j][1], CurShape[j][1]) < VERTMERGE) {
