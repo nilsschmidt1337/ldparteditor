@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -155,7 +156,7 @@ public class VertexManager {
     private final Set<GData4> selectedQuadsForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<GData4, Boolean>());
     private final Set<GData5> selectedCondlinesForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<GData5, Boolean>());
 
-    private static final Set<GData> CLIPBOARD = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
+    private static final List<GData> CLIPBOARD = new ArrayList<GData>();
     private static final Set<GData> CLIPBOARD_InvNext = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
 
     private final Set<GData> dataToHide = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
@@ -6845,9 +6846,6 @@ public class VertexManager {
             CLIPBOARD.addAll(effSelectedTriangles);
             CLIPBOARD.addAll(effSelectedQuads);
             CLIPBOARD.addAll(effSelectedCondlines);
-            for (Vertex v : singleVertices) {
-                CLIPBOARD.add(new GData0("0 !LPE VERTEX " + bigDecimalToString(v.X) + " " + bigDecimalToString(v.Y) + " " + bigDecimalToString(v.Z))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
-            }
 
             // 4. Subfile Based Copy (with INVERTNEXT)
             if (!selectedSubfiles.isEmpty()) {
@@ -6865,6 +6863,131 @@ public class VertexManager {
                     }
                 }
                 CLIPBOARD.addAll(selectedSubfiles);
+            }
+
+
+            // Sort the clipboard content by linenumber (or ID if the linenumber is the same)
+
+            {
+                final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+                // TODO Caching? final HashMap<GData, Integer> lineNumberCache = new HashMap<GData, Integer>();
+                Collections.sort(CLIPBOARD, new Comparator<GData>(){
+                    @Override
+                    public int compare(GData o1, GData o2) {
+                        if (dpl.containsValue(o1)) {
+                            if (dpl.containsValue(o2)) {
+                                return dpl.getKey(o1).compareTo(dpl.getKey(o2));
+                            } else {
+                                switch (o2.type()) {
+                                case 1:
+                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GData1) o2).firstRef));
+                                case 2:
+                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GData2) o2).parent.firstRef));
+                                case 3:
+                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GData3) o2).parent.firstRef));
+                                case 4:
+                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GData4) o2).parent.firstRef));
+                                case 5:
+                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GData5) o2).parent.firstRef));
+                                default:
+                                    GData t = o2.getBefore();
+                                    while (t != null && t.getBefore() != null) {
+                                        t = t.getBefore();
+                                    }
+                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GDataInit) t).getParent().firstRef));
+                                }
+                            }
+                        } else {
+                            if (dpl.containsValue(o2)) {
+                                switch (o1.type()) {
+                                case 1:
+                                    return dpl.getKey(((GData1) o1).firstRef).compareTo(dpl.getKey(o2));
+                                case 2:
+                                    return dpl.getKey(((GData2) o1).parent.firstRef).compareTo(dpl.getKey(o2));
+                                case 3:
+                                    return dpl.getKey(((GData3) o1).parent.firstRef).compareTo(dpl.getKey(o2));
+                                case 4:
+                                    return dpl.getKey(((GData4) o1).parent.firstRef).compareTo(dpl.getKey(o2));
+                                case 5:
+                                    return dpl.getKey(((GData5) o1).parent.firstRef).compareTo(dpl.getKey(o2));
+                                default:
+                                    GData t = o2.getBefore();
+                                    while (t != null && t.getBefore() != null) {
+                                        t = t.getBefore();
+                                    }
+                                    return dpl.getKey(((GDataInit) t).getParent().firstRef).compareTo(dpl.getKey(o2));
+                                }
+                            } else {
+                                final Integer co1;
+                                final Integer co2;
+                                {
+                                    switch (o1.type()) {
+                                    case 1:
+                                        co1 = dpl.getKey(((GData1) o1).firstRef);
+                                        break;
+                                    case 2:
+                                        co1 = dpl.getKey(((GData2) o1).parent.firstRef);
+                                        break;
+                                    case 3:
+                                        co1 = dpl.getKey(((GData3) o1).parent.firstRef);
+                                        break;
+                                    case 4:
+                                        co1 = dpl.getKey(((GData4) o1).parent.firstRef);
+                                        break;
+                                    case 5:
+                                        co1 = dpl.getKey(((GData5) o1).parent.firstRef);
+                                        break;
+                                    default:
+                                        GData t = o2.getBefore();
+                                        while (t != null && t.getBefore() != null) {
+                                            t = t.getBefore();
+                                        }
+                                        co1 = dpl.getKey(((GDataInit) t).getParent().firstRef);
+                                    }
+                                }
+                                {
+                                    switch (o2.type()) {
+                                    case 1:
+                                        co2 = dpl.getKey(((GData1) o2).firstRef);
+                                        break;
+                                    case 2:
+                                        co2 = dpl.getKey(((GData2) o2).parent.firstRef);
+                                        break;
+                                    case 3:
+                                        co2 = dpl.getKey(((GData3) o2).parent.firstRef);
+                                        break;
+                                    case 4:
+                                        co2 = dpl.getKey(((GData4) o2).parent.firstRef);
+                                        break;
+                                    case 5:
+                                        co2 = dpl.getKey(((GData5) o2).parent.firstRef);
+                                        break;
+                                    default:
+                                        GData t = o2.getBefore();
+                                        while (t != null && t.getBefore() != null) {
+                                            t = t.getBefore();
+                                        }
+                                        co2 = dpl.getKey(((GDataInit) t).getParent().firstRef);
+                                    }
+                                }
+                                int comparism = co1.compareTo(co2);
+                                if (comparism == 0) {
+                                    if (o1.ID > o2.ID) { // The id can never be equal!
+                                        return 1;
+                                    } else {
+                                        return -1;
+                                    }
+                                } else {
+                                    return comparism;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            for (Vertex v : singleVertices) {
+                CLIPBOARD.add(new GData0("0 !LPE VERTEX " + bigDecimalToString(v.X) + " " + bigDecimalToString(v.Y) + " " + bigDecimalToString(v.Z))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
             }
 
             // 5. Create text data entry in the OS clipboard

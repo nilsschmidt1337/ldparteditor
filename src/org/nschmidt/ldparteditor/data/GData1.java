@@ -86,7 +86,7 @@ public final class GData1 extends GData {
     boolean recursive = false;
     boolean movedTo = false;
 
-    final GData myGData = new GData0(""); //$NON-NLS-1$
+    final GData myGData = new GDataInit(this);
 
     public final GData1 firstRef;
 

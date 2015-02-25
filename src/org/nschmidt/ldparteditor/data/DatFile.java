@@ -63,7 +63,7 @@ public final class DatFile {
     private final boolean readOnly;
     private boolean drawSelection = true;
 
-    private final GData drawChainAnchor = new GDataInit();
+    private final GData drawChainAnchor = new GDataInit(View.DUMMY_REFERENCE);
 
     private final HashBiMap<Integer, GData> drawPerLine = new HashBiMap<Integer, GData>();
     private final HashMap<Integer, GData> copy_drawPerLine = new HashMap<Integer, GData>();
