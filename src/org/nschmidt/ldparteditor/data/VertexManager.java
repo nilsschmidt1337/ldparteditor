@@ -14271,7 +14271,33 @@ public class VertexManager {
     }
 
     public void symSplitter(SymSplitterSettings sims) {
-        // FIXME Auto-generated method stub
+
+        if (linkedDatFile.isReadOnly()) return;
+
+        // Get header, since it is the same on all three sets (behind, between, before)
+        final StringBuilder headerSb = new StringBuilder();
+        final StringBuilder beforeSb = new StringBuilder();
+        final StringBuilder betweenSb = new StringBuilder();
+        final StringBuilder behindSb = new StringBuilder();
+        {
+            GData g = linkedDatFile.getDrawChainStart();
+            while ((g = g.getNext()) != null) {
+                headerSb.append(g.toString());
+                headerSb.append(StringHelper.getLineDelimiter());
+                if (g.getNext() == null || g.getNext().type() != 0 && !(g.getNext().type() == 6 && (
+                        ((GDataBFC) g.getNext()).type == BFC.CCW_CLIP ||
+                        ((GDataBFC) g.getNext()).type == BFC.CW_CLIP ||
+                        ((GDataBFC) g.getNext()).type == BFC.NOCERTIFY
+                        ))) {
+                    break;
+                }
+
+            }
+        }
+
+        // FIXME Needs implementation!
+
+
 
     }
 }

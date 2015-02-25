@@ -79,7 +79,7 @@ class SymSplitterDesign extends Dialog {
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_hint = new Label(cmp_container, SWT.NONE);
-        lbl_hint.setText("\nPlease note that no inlining option is provided within SymSplitter.\nSymSplitter restructures the file content.\n\n\nPlane offset (0, default):"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_hint.setText("\nPlease note that no inlining option is provided within SymSplitter and TEXMAP is not supported yet.\nSymSplitter restructures the file content and deletes nothing, unless the threshold is not zero.\n\n\nPlane offset (0, default):"); //$NON-NLS-1$ I18N Needs translation!
 
         BigDecimalSpinner spn_offset = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_offset [0] = spn_offset;
@@ -89,7 +89,7 @@ class SymSplitterDesign extends Dialog {
         spn_offset.setValue(ss.getOffset());
 
         Label lbl_precision = new Label(cmp_container, SWT.NONE);
-        lbl_precision.setText("Vertex unification threshold:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_precision.setText("Vertex unification threshold (0, default):"); //$NON-NLS-1$ I18N Needs translation!
 
         BigDecimalSpinner spn_precision = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_precision [0] = spn_offset;
@@ -99,7 +99,7 @@ class SymSplitterDesign extends Dialog {
         spn_precision.setValue(ss.getPrecision());
 
         Label lbl_splitPlane = new Label(cmp_container, SWT.NONE);
-        lbl_splitPlane.setText("Splitting Plane (+z would be used split by the plane z=0 and keep z>0 data):"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_splitPlane.setText("Splitting Plane (+z would be split by the plane z=0 and 'keep' z>0 data):"); //$NON-NLS-1$ I18N Needs translation!
 
         {
             Combo cmb_splitPlane = new Combo(cmp_container, SWT.READ_ONLY);
