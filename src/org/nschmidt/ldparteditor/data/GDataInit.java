@@ -25,6 +25,12 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
  */
 public final class GDataInit extends GData {
 
+    private final GData1 parent;
+
+    public GDataInit(GData1 parent) {
+        this.parent = parent;
+    }
+
     @Override
     public void draw(Composite3D c3d) {
         GData.localWinding = BFC.NOCERTIFY;
@@ -130,5 +136,9 @@ public final class GDataInit extends GData {
     @Override
     public void getVertexNormalMapNOCLIP(HashMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {
         getVertexNormalMap(vertexLinkedToNormalCACHE, null, null);
+    }
+
+    public GData1 getParent() {
+        return parent;
     }
 }
