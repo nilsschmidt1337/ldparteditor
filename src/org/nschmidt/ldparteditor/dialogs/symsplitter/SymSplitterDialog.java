@@ -19,7 +19,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
@@ -40,7 +40,7 @@ public class SymSplitterDialog extends SymSplitterDesign {
      *
      * @param parentShell
      */
-    public SymSplitterDialog(Shell parentShell, RectifierSettings rs) {
+    public SymSplitterDialog(Shell parentShell, SymSplitterSettings rs) {
         super(parentShell, rs);
     }
 
@@ -48,43 +48,54 @@ public class SymSplitterDialog extends SymSplitterDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_angle[0].addValueChangeListener(new ValueChangeAdapter() {
+        spn_offset[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                rs.setMaximumAngle(spn.getValue());
+                ss.setOffset(spn.getValue());
             }
         });
         cmb_scope[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                rs.setScope(cmb_scope[0].getSelectionIndex());
+                ss.setScope(cmb_scope[0].getSelectionIndex());
+            }
+        });
+        cmb_splitPlane[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                ss.setSplitPlane(cmb_splitPlane[0].getSelectionIndex());
+            }
+        });
+        cmb_hide[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                ss.setHideLevel(cmb_hide[0].getSelectionIndex());
             }
         });
         cmb_colourise[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                rs.setColourise(cmb_colourise[0].getSelectionIndex() == 1);
+                ss.setColourise(cmb_colourise[0].getSelectionIndex() == 1);
             }
         });
-        cmb_noBorderedQuadToRectConversation[0].addListener(SWT.Selection, new Listener() {
+        cmb_cutAcross[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                rs.setNoBorderedQuadToRectConversation(cmb_noBorderedQuadToRectConversation[0].getSelectionIndex() == 1);
+                ss.setCutAcross(cmb_cutAcross[0].getSelectionIndex() == 1);
             }
         });
-        cmb_noQuadConversation[0].addListener(SWT.Selection, new Listener() {
+        cmb_validate[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                rs.setNoQuadConversation(cmb_noQuadConversation[0].getSelectionIndex() == 1);
+                ss.setValidate(cmb_validate[0].getSelectionIndex() == 1);
             }
         });
-        cmb_noRectConversationOnAdjacentCondlines[0].addListener(SWT.Selection, new Listener() {
+        spn_precision[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
-            public void handleEvent(Event event) {
-                rs.setNoRectConversationOnAdjacentCondlines(cmb_noRectConversationOnAdjacentCondlines[0].getSelectionIndex() == 1);
+            public void valueChanged(BigDecimalSpinner spn) {
+                ss.setPrecision(spn.getValue());
             }
         });
-
         return super.open();
     }
 
