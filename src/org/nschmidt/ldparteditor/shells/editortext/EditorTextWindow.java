@@ -52,6 +52,7 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.QuadSplitter;
 import org.nschmidt.ldparteditor.data.Rounder;
+import org.nschmidt.ldparteditor.data.Unrectifier;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.dialogs.sort.SortDialog;
@@ -254,6 +255,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     toLine++;
                     Inliner.withSubfileReference = false;
                     Inliner.recursively = false;
+                    Inliner.noComment = false;
                     NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
                     NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
                     Inliner.inline(st, fromLine, toLine, selection.getState().getFileNameObj());
@@ -277,6 +279,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     toLine++;
                     Inliner.withSubfileReference = false;
                     Inliner.recursively = true;
+                    Inliner.noComment = false;
                     NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
                     NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
                     Inliner.inline(st, fromLine, toLine, selection.getState().getFileNameObj());
@@ -400,6 +403,19 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
+        btn_Unrectify[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                if (selection != null) {
+                    NLogger.debug(getClass(), "Unrectify.."); //$NON-NLS-1$
+                    final StyledText st = selection.getTextComposite();
+                    Unrectifier.splitAllIntoTriangles(st, selection.getState().getFileNameObj());
+                    st.forceFocus();
+                }
+            }
+        });
+
         btn_Palette[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -448,6 +464,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     toLine++;
                     Inliner.withSubfileReference = true;
                     Inliner.recursively = false;
+                    Inliner.noComment = false;
                     NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
                     NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
                     Inliner.inline(st, fromLine, toLine, selection.getState().getFileNameObj());

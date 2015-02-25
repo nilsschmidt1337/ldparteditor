@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +26,7 @@ import org.eclipse.swt.custom.StyledText;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.enums.Threshold;
+import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
@@ -55,6 +57,7 @@ public enum Beautifier {
             return;
 
         lastCommentLine = null;
+        lastType = 0;
 
         datFile.getVertexManager().clearSelection();
 
@@ -97,8 +100,39 @@ public enum Beautifier {
             }
             text2 = sb.toString();
         }
+
+        int headerLastLine = 1;
+        {
+            HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
+            Set<Integer> keys = dpl.keySet();
+
+            boolean headerEnd = false;
+            for (Integer key : keys) {
+                GData gd = dpl.getValue(key);
+                switch (gd.type()) {
+                case 0:
+                case 6:
+                    break;
+                default:
+                    headerLastLine = key;
+                    GData g0 = gd;
+                    while (g0 != null && g0.toString().trim().equals("")) { //$NON-NLS-1$
+                        g0 = g0.getBefore();
+                        headerLastLine -= 1;
+                    }
+                    headerLastLine += 1;
+                    headerEnd = true;
+                    break;
+                }
+                if (headerEnd) {
+                    break;
+                }
+            }
+        }
+
         for (Iterator<Integer> it = lineNumbers.descendingIterator(); it.hasNext();) {
             Integer l = it.next();
+            if (l < headerLastLine) break;
             String line = getLine(l, text2);
             text2 = Beautifier.beautify(l, line, text2, datFile);
         }
@@ -148,7 +182,7 @@ public enum Beautifier {
         return text.replaceAll("<br>", StringHelper.getLineDelimiter()); //$NON-NLS-1$
     }
 
-
+    private static int lastType = 0;
     private static String beautify(Integer lineNumber, String line, String source, DatFile datFile) {
 
         GData gd = datFile.getDrawPerLine_NOCLONE().getValue(lineNumber);
@@ -163,8 +197,18 @@ public enum Beautifier {
         }
         String normalizedLine = normalized.toString().trim();
 
+        if (type != 0) {
+            lastType = type;
+        }
 
         switch (type) {
+        case 0:
+            if (lastType != 0 && normalizedLine.equals("")) { //$NON-NLS-1$
+                source = setLine(lineNumber, "<rm>", source); //$NON-NLS-1$
+            } else {
+                lastType = 0;
+            }
+            break;
         case 1:
 
             GData invertNextData = gd.getBefore();

@@ -1600,7 +1600,7 @@ public final class GData1 extends GData {
         if (Inliner.withSubfileReference) {
             sb.append("0 !LPE INLINE " + getNiceString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
         } else {
-            if (!(Inliner.recursively && this.ID != this.firstRef.ID)) sb.append("0 // Inlined: " + getNiceString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            if (!(Inliner.recursively && this.ID != this.firstRef.ID) && !Inliner.noComment) sb.append("0 // Inlined: " + getNiceString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
             if (negativeDeterminant) {
                 if (bfc == BFC.CCW_CLIP) bfc = BFC.CW_CLIP;
                 else if (bfc == BFC.CW_CLIP) bfc = BFC.CCW_CLIP;
