@@ -1328,7 +1328,6 @@ public final class GData1 extends GData {
         accurateLocalMatrix = Matrix.mul(transformation, accurateLocalMatrix);
         accurateLocalMatrix = accurateLocalMatrix.translate(new BigDecimal[] { tx, ty, tz });
 
-
         // Avoid scaling of flat files
         GData1 untransformedSubfile;
         StringBuilder colourBuilder = useAgain();
@@ -1352,24 +1351,32 @@ public final class GData1 extends GData {
         boolean plainOnX = untransformedSubfile.boundingBoxMin.x - untransformedSubfile.boundingBoxMax.x == 0f;
         boolean plainOnY = untransformedSubfile.boundingBoxMin.y - untransformedSubfile.boundingBoxMax.y == 0f;
         boolean plainOnZ = untransformedSubfile.boundingBoxMin.z - untransformedSubfile.boundingBoxMax.z == 0f;
-        if (plainOnX && avoidFlatScaling) {
-            accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ONE , 0, 0);
-            accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 0, 1);
-            accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 0, 2);
-        }
-        if (plainOnY && avoidFlatScaling) {
-            accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ONE , 1, 1);
-            accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 1, 0);
-            accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 1, 2);
-        }
-        if (plainOnZ && avoidFlatScaling) {
-            accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ONE , 2, 2);
-            accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 2, 0);
-            accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 2, 1);
-        }
 
-        // FIXME Correct singularity! All rows/cols zero!
-        // Something is wrong here!
+        if (avoidFlatScaling && (plainOnX || plainOnY || plainOnZ)) {
+
+            final BigDecimal EPSILON = new BigDecimal("1.00000001"); //$NON-NLS-1$
+            // Check if it's a rotation matrix
+            BigDecimal discrX = transformation.M00.multiply(transformation.M00).add(transformation.M01.multiply(transformation.M01)).add(transformation.M02.multiply(transformation.M02));
+            BigDecimal discrY = transformation.M10.multiply(transformation.M10).add(transformation.M11.multiply(transformation.M11)).add(transformation.M12.multiply(transformation.M12));
+            BigDecimal discrZ = transformation.M20.multiply(transformation.M20).add(transformation.M21.multiply(transformation.M21)).add(transformation.M22.multiply(transformation.M22));
+            if (discrX.compareTo(EPSILON) > 0 && discrY.compareTo(EPSILON) > 0 && discrZ.compareTo(EPSILON) > 0) {
+                if (plainOnX && avoidFlatScaling) {
+                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ONE , 0, 0);
+                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 0, 1);
+                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 0, 2);
+                }
+                if (plainOnY && avoidFlatScaling) {
+                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ONE , 1, 1);
+                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 1, 0);
+                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 1, 2);
+                }
+                if (plainOnZ && avoidFlatScaling) {
+                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ONE , 2, 2);
+                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 2, 0);
+                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 2, 1);
+                }
+            }
+        }
 
         df.getVertexManager().remove(untransformedSubfile);
         StringBuilder lineBuilder = useAgain2();

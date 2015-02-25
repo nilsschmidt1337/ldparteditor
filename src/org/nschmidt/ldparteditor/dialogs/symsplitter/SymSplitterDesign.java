@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 
 /**
@@ -42,20 +42,22 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
  */
 class SymSplitterDesign extends Dialog {
 
-    final RectifierSettings rs;
-    final BigDecimalSpinner[] spn_angle = new BigDecimalSpinner[1];
+    final SymSplitterSettings ss;
+    final BigDecimalSpinner[] spn_offset = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spn_precision = new BigDecimalSpinner[1];
     final Combo[] cmb_scope = new Combo[1];
 
+    final Combo[] cmb_splitPlane = new Combo[1];
+    final Combo[] cmb_hide = new Combo[1];
     final Combo[] cmb_colourise = new Combo[1];
-    final Combo[] cmb_noQuadConversation = new Combo[1];
-    final Combo[] cmb_noRectConversationOnAdjacentCondlines = new Combo[1];
-    final Combo[] cmb_noBorderedQuadToRectConversation = new Combo[1];
+    final Combo[] cmb_validate = new Combo[1];
+    final Combo[] cmb_cutAcross = new Combo[1];
 
     // Use final only for subclass/listener references!
 
-    SymSplitterDesign(Shell parentShell, RectifierSettings rs) {
+    SymSplitterDesign(Shell parentShell, SymSplitterSettings ss) {
         super(parentShell);
-        this.rs = rs;
+        this.ss = ss;
     }
 
     /**
@@ -71,59 +73,88 @@ class SymSplitterDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Rectifier [Arbitrary Precision]"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText("SymSplitter [Arbitrary Precision]"); //$NON-NLS-1$ I18N Needs translation!
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_angle = new Label(cmp_container, SWT.NONE);
-        lbl_angle.setText("Maximum angle formed by two triangles (default: 0.95°)"); //$NON-NLS-1$ I18N Needs translation!
+        Label lbl_hint = new Label(cmp_container, SWT.NONE);
+        lbl_hint.setText("\nPlease note that no inlining option is provided within SymSplitter.\nSymSplitter restructures the file content.\n\n\nPlane offset (0, default):"); //$NON-NLS-1$ I18N Needs translation!
 
-        BigDecimalSpinner spn_angle = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_angle [0] = spn_angle;
-        spn_angle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_angle.setMaximum(new BigDecimal(90));
-        spn_angle.setMinimum(new BigDecimal(0));
-        spn_angle.setValue(rs.getMaximumAngle());
+        BigDecimalSpinner spn_offset = new BigDecimalSpinner(cmp_container, SWT.NONE);
+        this.spn_offset [0] = spn_offset;
+        spn_offset.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spn_offset.setMaximum(new BigDecimal(100000000));
+        spn_offset.setMinimum(new BigDecimal(-100000000));
+        spn_offset.setValue(ss.getOffset());
 
+        Label lbl_precision = new Label(cmp_container, SWT.NONE);
+        lbl_precision.setText("Vertex unification threshold:"); //$NON-NLS-1$ I18N Needs translation!
+
+        BigDecimalSpinner spn_precision = new BigDecimalSpinner(cmp_container, SWT.NONE);
+        this.spn_precision [0] = spn_offset;
+        spn_precision.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spn_precision.setMaximum(new BigDecimal(1000));
+        spn_precision.setMinimum(new BigDecimal(0));
+        spn_precision.setValue(ss.getPrecision());
+
+        Label lbl_splitPlane = new Label(cmp_container, SWT.NONE);
+        lbl_splitPlane.setText("Splitting Plane (+z would be used split by the plane z=0 and keep z>0 data):"); //$NON-NLS-1$ I18N Needs translation!
+
+        {
+            Combo cmb_splitPlane = new Combo(cmp_container, SWT.READ_ONLY);
+            this.cmb_splitPlane[0] = cmb_splitPlane;
+            cmb_splitPlane.setItems(new String[] {"+z.", "+y", "+y", "-z", "-y", "-x"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ I18N Needs translation!
+            cmb_splitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmb_splitPlane.setText(cmb_splitPlane.getItem(ss.getSplitPlane()));
+            cmb_splitPlane.select(ss.getSplitPlane());
+        }
+
+        Label lbl_hide = new Label(cmp_container, SWT.NONE);
+        lbl_hide.setText("Select what to show:"); //$NON-NLS-1$ I18N Needs translation!
+        {
+            Combo cmb_hide = new Combo(cmp_container, SWT.READ_ONLY);
+            this.cmb_hide[0] = cmb_hide;
+            cmb_hide.setItems(new String[] {"Show all.", "Show middle.", "Show what is in front of the plane.", "Show what is behind the plane."}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ I18N Needs translation!
+            cmb_hide.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmb_hide.setText(cmb_hide.getItem(ss.getHideLevel()));
+            cmb_hide.select(ss.getHideLevel());
+        }
+
+        Label lbl_dummy = new Label(cmp_container, SWT.NONE);
+        lbl_dummy.setText(""); //$NON-NLS-1$
+
+        {
+            Combo cmb_validate = new Combo(cmp_container, SWT.READ_ONLY);
+            this.cmb_validate[0] = cmb_validate;
+            cmb_validate.setItems(new String[] {"No validation.", "Validates the middle section. Read the manual for more information."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb_validate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmb_validate.setText(cmb_validate.getItem(ss.isValidate() ? 1 : 0));
+            cmb_validate.select(ss.isValidate() ? 1 : 0);
+        }
+        {
+            Combo cmb_cutAcross = new Combo(cmp_container, SWT.READ_ONLY);
+            this.cmb_cutAcross[0] = cmb_cutAcross;
+            cmb_cutAcross.setItems(new String[] {"Do not cut.", "Cut across the plane."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb_cutAcross.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmb_cutAcross.setText(cmb_cutAcross.getItem(ss.isCutAcross() ? 1 : 0));
+            cmb_cutAcross.select(ss.isCutAcross() ? 1 : 0);
+        }
         {
             Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {"No colour modifications.", "Converted triangles are colored in yellow, newly formed rect primitives are colored blue."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb_colourise.setItems(new String[] {"No colour modifications.", "Colourises the result. Read the manual for more information."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
             cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_colourise.setText(cmb_colourise.getItem(rs.isColourise() ? 1 : 0));
-            cmb_colourise.select(rs.isColourise() ? 1 : 0);
-        }
-        {
-            Combo cmb_noQuadConversation = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_noQuadConversation[0] = cmb_noQuadConversation;
-            cmb_noQuadConversation.setItems(new String[] {"Transform triangles into quads.", "Rectifier does not attempt to transform triangles into quads. "}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-            cmb_noQuadConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_noQuadConversation.setText(cmb_noQuadConversation.getItem(rs.isNoQuadConversation() ? 1 : 0));
-            cmb_noQuadConversation.select(rs.isNoQuadConversation() ? 1 : 0);
-        }
-        {
-            Combo cmb_noBorderedQuadToRectConversation = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_noBorderedQuadToRectConversation[0] = cmb_noBorderedQuadToRectConversation;
-            cmb_noBorderedQuadToRectConversation.setItems(new String[] {"Convert bordered rhombuses into rect primitives.", "Do not convert bordered rhombuses into rect primitives."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-            cmb_noBorderedQuadToRectConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_noBorderedQuadToRectConversation.setText(cmb_noBorderedQuadToRectConversation.getItem(rs.isNoBorderedQuadToRectConversation() ? 1 : 0));
-            cmb_noBorderedQuadToRectConversation.select(rs.isNoBorderedQuadToRectConversation() ? 1 : 0);
-        }
-        {
-            Combo cmb_noRectConversationOnAdjacentCondlines = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_noRectConversationOnAdjacentCondlines[0] = cmb_noRectConversationOnAdjacentCondlines;
-            cmb_noRectConversationOnAdjacentCondlines.setItems(new String[] {"Convert to rect primitives, if possible.", "Rectifier does not convert quad to rect when the quad has adjacent condline(s).\nThis may improve smooth shading of the part. "}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-            cmb_noRectConversationOnAdjacentCondlines.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_noRectConversationOnAdjacentCondlines.setText(cmb_noRectConversationOnAdjacentCondlines.getItem(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0));
-            cmb_noRectConversationOnAdjacentCondlines.select(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0);
+            cmb_colourise.setText(cmb_colourise.getItem(ss.isColourise() ? 1 : 0));
+            cmb_colourise.select(ss.isColourise() ? 1 : 0);
         }
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
         cmb_scope.setItems(new String[] {"Scope: File", "Scope: Selection"}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_scope.setText(cmb_scope.getItem(rs.getScope()));
-        cmb_scope.select(rs.getScope());
+        cmb_scope.setText(cmb_scope.getItem(0));
+        cmb_scope.select(0);
+        cmb_scope.setEnabled(false);
 
         cmp_container.pack();
         return cmp_container;

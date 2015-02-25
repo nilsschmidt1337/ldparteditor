@@ -64,6 +64,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -6870,7 +6871,6 @@ public class VertexManager {
 
             {
                 final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
-                // TODO Caching? final HashMap<GData, Integer> lineNumberCache = new HashMap<GData, Integer>();
                 Collections.sort(CLIPBOARD, new Comparator<GData>(){
                     @Override
                     public int compare(GData o1, GData o2) {
@@ -14268,5 +14268,10 @@ public class VertexManager {
         dist = DIST(Temp, nullv);
         if(dist > 0.9999999999) return 90;
         return 180 / Math.PI * Math.asin(dist);
+    }
+
+    public void symSplitter(SymSplitterSettings sims) {
+        // FIXME Auto-generated method stub
+
     }
 }
