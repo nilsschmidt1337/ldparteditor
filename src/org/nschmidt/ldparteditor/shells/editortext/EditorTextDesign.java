@@ -79,6 +79,7 @@ class EditorTextDesign extends ApplicationWindow {
     final Button[] btn_FindAndReplace = new Button[1];
     final Button[] btn_Sort = new Button[1];
     final Button[] btn_SplitQuad = new Button[1];
+    final Button[] btn_Unrectify = new Button[1];
     final Button[] btn_Beautify = new Button[1];
     final Button[] btn_Inline = new Button[1];
     final Button[] btn_InlineDeep = new Button[1];
@@ -202,6 +203,12 @@ class EditorTextDesign extends ApplicationWindow {
             this.btn_SplitQuad[0] = btn_SplitQuad;
             btn_SplitQuad.setImage(ResourceManager.getImage("icon16_quadToTri.png")); //$NON-NLS-1$
             btn_SplitQuad.setToolTipText("Split Quad into Triangles"); //$NON-NLS-1$ I18N Needs translation!
+        }
+        {
+            Button btn_Unrectify = new Button(toolItem_Debug, SWT.NONE);
+            this.btn_Unrectify[0] = btn_Unrectify;
+            btn_Unrectify.setImage(ResourceManager.getImage("icon16_unrectify.png")); //$NON-NLS-1$
+            btn_Unrectify.setToolTipText("'Unrectifier': Split all Quads and rect*.dat-Primitives into Triangles"); //$NON-NLS-1$ I18N Needs translation!
         }
         {
             Button btn_Beautify = new Button(toolItem_Debug, SWT.NONE);
