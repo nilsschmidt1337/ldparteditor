@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.helpers.compositetext;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,6 +47,7 @@ public enum Inliner {
 
     public static boolean withSubfileReference = false;
     public static boolean recursively = false;
+    public static boolean noComment = false;
 
     /**
      * Inlines selected lines (clears the selection)
@@ -173,6 +175,126 @@ public enum Inliner {
             text2 = sb.toString();
         }
         for (Integer l : lineNumbers) {
+            String line = getLine(l, text2);
+            NLogger.debug(Inliner.class, "Inlining: " + line); //$NON-NLS-1$
+            text2 = Inliner.inline(l, line, text2, datFile);
+        }
+        cText.setText(restoreLineTermination(text2));
+        int tl = cText.getText().length();
+        try {
+            cText.setSelection(Math.min(c, tl));
+        } catch (Exception e) {
+            cText.setSelection(0);
+        }
+
+    }
+
+    /**
+     * Inlines selected lines (clears the selection)
+     *
+     * @param cText
+     *            the selected CompositeText
+     * @param lineStart
+     *            start line number to inline
+     * @param lineEnd
+     *            end line number to inline
+     * @param datFile
+     */
+    public static void inline(StyledText cText, ArrayList<Integer> lineNumbers, DatFile datFile) {
+
+        if (datFile.isReadOnly())
+            return;
+
+        datFile.getVertexManager().clearSelection();
+
+        bfcStatusTarget = BFC.NOCERTIFY;
+        hasINVERTNEXT = false;
+
+        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
+
+        HashMap<Integer, Byte> bfcStatusToLine = new HashMap<Integer, Byte>();
+
+        Set<Integer> keys = dpl.keySet();
+
+        for (Integer key : keys) {
+            GData gd = dpl.getValue(key);
+            switch (gd.type()) {
+            case 6:
+                GDataBFC gbfc = (GDataBFC) gd;
+                byte t = gbfc.getType();
+                if (t == BFC.CCW_CLIP || t == BFC.CCW) {
+                    bfcStatusTarget = BFC.CCW_CLIP;
+                } else if (t == BFC.CW_CLIP || t == BFC.CW) {
+                    bfcStatusTarget = BFC.CW_CLIP;
+                } else if (t == BFC.NOCLIP) {
+                    bfcStatusTarget = BFC.NOCLIP;
+                } else if (t == BFC.INVERTNEXT) {
+                    hasINVERTNEXT = true;
+                    if (bfcStatusTarget == BFC.CCW_CLIP) {
+                        bfcStatusTarget = BFC.CW_CLIP;
+                    } else if (bfcStatusTarget == BFC.CW_CLIP) {
+                        bfcStatusTarget = BFC.CCW_CLIP;
+                    }
+                }
+                break;
+            case 1:
+                break;
+            default:
+                if (hasINVERTNEXT && !(gd.type() == 0 && gd.toString().trim().isEmpty())) {
+                    hasINVERTNEXT = false;
+                    if (bfcStatusTarget == BFC.CCW_CLIP || bfcStatusTarget == BFC.CCW) {
+                        bfcStatusTarget = BFC.CW_CLIP;
+                    } else if (bfcStatusTarget == BFC.CW_CLIP || bfcStatusTarget == BFC.CW) {
+                        bfcStatusTarget = BFC.CCW_CLIP;
+                    }
+                }
+                break;
+            }
+            bfcStatusToLine.put(key, bfcStatusTarget);
+        }
+
+        GDataCSG.resetCSG();
+        GDataCSG.forceRecompile();
+
+        Collections.sort(lineNumbers);
+        Collections.reverse(lineNumbers);
+
+        String text = cText.getText();
+        String text2 = text;
+        int c = cText.getCaretOffset();
+
+        // Set the identifiers for each line
+        text2 = "<L1>" + text2; //$NON-NLS-1$
+        if (text2.contains("\r\n")) { //$NON-NLS-1$ Windows line termination
+            text2 = text2.replaceAll("\\r\\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        if (text2.contains("\n")) { //$NON-NLS-1$ Linux/Mac line termination
+            text2 = text2.replaceAll("\\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        if (!text2.endsWith("#!%")) { //$NON-NLS-1$
+            text2 = text2 + "#!%"; //$NON-NLS-1$
+        }
+        {
+            int state = 0;
+            int l = 1;
+            StringBuilder sb = new StringBuilder();
+            for (char ch : text2.toCharArray()) {
+                if (state == 0 && ch == '#') {
+                    state++;
+                } else if (state == 1 && ch == '!') {
+                    state++;
+                } else if (state == 2 && ch == '%') {
+                    state = 0;
+                    sb.append("</L" + l + "><L" + (l + 1) + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    l++;
+                } else {
+                    sb.append(ch);
+                }
+            }
+            text2 = sb.toString();
+        }
+        for (Integer l : lineNumbers) {
+            bfcStatusTarget = bfcStatusToLine.get(l);
             String line = getLine(l, text2);
             NLogger.debug(Inliner.class, "Inlining: " + line); //$NON-NLS-1$
             text2 = Inliner.inline(l, line, text2, datFile);
