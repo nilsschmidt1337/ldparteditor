@@ -21,6 +21,12 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
  *
  */
 public class IntersectorSettings {
+    public final static int Z_PLUS = 0;
+    public final static int Y_PLUS = 1;
+    public final static int X_PLUS = 2;
+    public final static int Z_MINUS = 3;
+    public final static int Y_MINUS = 4;
+    public final static int X_MINUS = 5;
     private int scope = 1;
     private boolean colourise = false;
     public int getScope() {

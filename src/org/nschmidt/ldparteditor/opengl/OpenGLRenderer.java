@@ -335,6 +335,7 @@ public class OpenGLRenderer {
             if (c3d.isLightOn())
                 GL11.glEnable(GL11.GL_LIGHTING);
 
+            // TODO Implement high quaity transparency via subdivision and sorting (only for the semi-realtime LDraw-Standard Mode, which has frame skipping)
             c3d.setDrawingSolidMaterials(true);
             c3d.getLockableDatFileReference().draw(c3d);
             c3d.setDrawingSolidMaterials(false);
