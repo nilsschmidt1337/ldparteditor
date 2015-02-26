@@ -14274,6 +14274,158 @@ public class VertexManager {
 
         if (linkedDatFile.isReadOnly()) return;
 
+        clearSelection();
+
+        final BigDecimal o = sims.getOffset();
+
+        if (sims.isCutAcross()) {
+            // First, do the cutting with intersector :)
+
+            // We have to create a really big quad at the cutting plane
+            final GData4 splitPlane;
+            final BigDecimal a = new BigDecimal(100000000);
+            final BigDecimal an = a.negate();
+            switch (sims.getSplitPlane()) {
+            case IntersectorSettings.Z_PLUS:
+            case IntersectorSettings.Z_MINUS:
+                splitPlane = new GData4(16, .5f, .5f, .5f, 1f, a, a, o, a, an, o, an, an, o, an, a, o, new Vector3d(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE), View.DUMMY_REFERENCE, linkedDatFile);
+                break;
+            case IntersectorSettings.Y_PLUS:
+            case IntersectorSettings.Y_MINUS:
+                splitPlane = new GData4(16, .5f, .5f, .5f, 1f, a, o, a, a, o, an, an, o, an, an, o, a, new Vector3d(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO), View.DUMMY_REFERENCE, linkedDatFile);
+                break;
+            case IntersectorSettings.X_PLUS:
+            case IntersectorSettings.X_MINUS:
+                splitPlane = new GData4(16, .5f, .5f, .5f, 1f, o, a, a, o, a, an, o, an, an, o, an, a, new Vector3d(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO), View.DUMMY_REFERENCE, linkedDatFile);
+                break;
+            default:
+                return;
+            }
+            linkedDatFile.addToTail(splitPlane);
+
+            // Now we have to select the data which is cut by the split plane
+
+            selectAll();
+
+            {
+                HashSet<GData> dataToCut = new HashSet<GData>();
+                for (GData g : selectedData) {
+                    if (!lineLinkedToVertices.containsKey(g)) continue;
+                    final Vertex[] verts;
+                    switch (g.type()) {
+                    case 2:
+                        verts = lines.get(g);
+                        break;
+                    case 3:
+                        verts = triangles.get(g);
+                        break;
+                    case 4:
+                        verts = quads.get(g);
+                        break;
+                    case 5:
+                        verts = condlines.get(g);
+                        break;
+                    default:
+                        continue;
+                    }
+
+
+                    final int targetValue = verts.length;
+                    int currentValue = 0;
+                    int neg = 0;
+                    int pos = 0;
+                    final int sp = sims.getSplitPlane();
+                    for (Vertex v : verts) {
+                        switch (sp) {
+                        case IntersectorSettings.Z_PLUS:
+                            if (v.Z.compareTo(o) > 0) {
+                                pos++;
+                            } else {
+                                neg++;
+                            }
+                            break;
+                        case IntersectorSettings.Z_MINUS:
+                            if (v.Z.compareTo(o) > 0) {
+                                neg++;
+                            } else {
+                                pos++;
+                            }
+                            break;
+                        case IntersectorSettings.Y_PLUS:
+                            if (v.Y.compareTo(o) > 0) {
+                                pos++;
+                            } else {
+                                neg++;
+                            }
+                            break;
+                        case IntersectorSettings.Y_MINUS:
+                            if (v.Y.compareTo(o) > 0) {
+                                neg++;
+                            } else {
+                                pos++;
+                            }
+                            break;
+                        case IntersectorSettings.X_PLUS:
+                            if (v.X.compareTo(o) > 0) {
+                                pos++;
+                            } else {
+                                neg++;
+                            }
+                            break;
+                        case IntersectorSettings.X_MINUS:
+                            if (v.X.compareTo(o) > 0) {
+                                neg++;
+                            } else {
+                                pos++;
+                            }
+                            break;
+                        }
+                    }
+                    currentValue = Math.max(neg, pos);
+                    if (targetValue != currentValue) {
+                        dataToCut.add(g);
+                    }
+                }
+
+                clearSelection();
+
+                for (GData g : dataToCut) {
+                    switch (g.type()) {
+                    case 2:
+                        selectedLines.add((GData2) g);
+                        break;
+                    case 3:
+                        selectedTriangles.add((GData3) g);
+                        break;
+                    case 4:
+                        selectedQuads.add((GData4) g);
+                        break;
+                    case 5:
+                        selectedCondlines.add((GData5) g);
+                        break;
+                    default:
+                        continue;
+                    }
+                    selectedData.add(g);
+                }
+            }
+
+            // Remove the quad from the selection
+            selectedData.remove(splitPlane);
+            selectedQuads.remove(splitPlane);
+
+            intersector(new IntersectorSettings());
+
+            showAll();
+            clearSelection();
+
+            // Remove the split plane
+            selectedData.add(splitPlane);
+            selectedQuads.add(splitPlane);
+            delete(false);
+        }
+
+
         // Get header, since it is the same on all three sets (behind, between, before)
         final StringBuilder headerSb = new StringBuilder();
         final StringBuilder beforeSb = new StringBuilder();
@@ -14296,6 +14448,131 @@ public class VertexManager {
         }
 
         // FIXME Needs implementation!
+
+        // Merge vertices to the plane
+
+
+        // Separate the data according the plane
+
+        selectAll();
+
+        {
+            HashSet<GData> before = new HashSet<GData>();
+            HashSet<GData> between = new HashSet<GData>();
+            HashSet<GData> behind = new HashSet<GData>();
+
+            for (GData g : selectedData) {
+                if (!lineLinkedToVertices.containsKey(g)) continue;
+                final Vertex[] verts;
+                switch (g.type()) {
+                case 2:
+                    verts = lines.get(g);
+                    break;
+                case 3:
+                    verts = triangles.get(g);
+                    break;
+                case 4:
+                    verts = quads.get(g);
+                    break;
+                case 5:
+                    verts = condlines.get(g);
+                    break;
+                default:
+                    continue;
+                }
+
+
+                final int targetValue = verts.length;
+                int currentValue = 0;
+                int neg = 0;
+                int pos = 0;
+                final int sp = sims.getSplitPlane();
+                for (Vertex v : verts) {
+                    switch (sp) {
+                    case IntersectorSettings.Z_PLUS:
+                        switch (v.Z.compareTo(o)) {
+                        case -1:
+                            neg++;
+                        case 0:
+                            neg++;
+                            pos++;
+                        case 1:
+                            pos++;
+                            break;
+                        }
+                        break;
+                    case IntersectorSettings.Z_MINUS:
+                        switch (v.Z.compareTo(o)) {
+                        case -1:
+                            pos++;
+                        case 0:
+                            neg++;
+                            pos++;
+                        case 1:
+                            neg++;
+                            break;
+                        }
+                        break;
+                    case IntersectorSettings.Y_PLUS:
+                        switch (v.Y.compareTo(o)) {
+                        case -1:
+                            neg++;
+                        case 0:
+                            neg++;
+                            pos++;
+                        case 1:
+                            pos++;
+                            break;
+                        }
+                    case IntersectorSettings.Y_MINUS:
+                        switch (v.Y.compareTo(o)) {
+                        case -1:
+                            pos++;
+                        case 0:
+                            neg++;
+                            pos++;
+                        case 1:
+                            neg++;
+                            break;
+                        }
+                        break;
+                    case IntersectorSettings.X_PLUS:
+                        switch (v.X.compareTo(o)) {
+                        case -1:
+                            neg++;
+                        case 0:
+                            neg++;
+                            pos++;
+                        case 1:
+                            pos++;
+                            break;
+                        }
+                    case IntersectorSettings.X_MINUS:
+                        switch (v.X.compareTo(o)) {
+                        case -1:
+                            pos++;
+                        case 0:
+                            neg++;
+                            pos++;
+                        case 1:
+                            neg++;
+                            break;
+                        }
+                        break;
+                    }
+                }
+                currentValue = Math.max(neg, pos);
+                if (targetValue != currentValue) {
+                    between.add(g);
+                } else if (pos == targetValue) {
+                    before.add(g);
+                } else if (neg == targetValue) {
+                    behind.add(g);
+                }
+            }
+        }
+
+
 
 
 
