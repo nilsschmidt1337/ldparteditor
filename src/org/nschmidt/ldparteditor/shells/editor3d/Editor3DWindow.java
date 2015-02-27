@@ -1226,7 +1226,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     NLogger.debug(getClass(), "Showing context menu."); //$NON-NLS-1$
 
                     try {
-                        treeParts[0].getTree().getMenu().dispose();
+                        if (treeParts[0].getTree().getMenu() != null) {
+                            treeParts[0].getTree().getMenu().dispose();
+                        }
                     } catch (Exception ex) {}
 
                     Menu treeMenu = new Menu(treeParts[0].getTree());
