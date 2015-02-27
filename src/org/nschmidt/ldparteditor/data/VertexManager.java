@@ -14598,6 +14598,7 @@ public class VertexManager {
                             pos++;
                             break;
                         }
+                        break;
                     case IntersectorSettings.Y_MINUS:
                         switch (v.Y.compareTo(o)) {
                         case -1:
@@ -14625,6 +14626,7 @@ public class VertexManager {
                             pos++;
                             break;
                         }
+                        break;
                     case IntersectorSettings.X_MINUS:
                         switch (v.X.compareTo(o)) {
                         case -1:
@@ -14654,8 +14656,6 @@ public class VertexManager {
                     between.add(g);
                 }
             }
-
-            // FIXME Needs implementation!
 
             // Colourise only before and between
 
@@ -14737,7 +14737,50 @@ public class VertexManager {
                                         continue;
                                     }
 
-                                    // FIXME Needs implementation!
+                                    switch (sp) {
+                                    case IntersectorSettings.Z_PLUS:
+                                    case IntersectorSettings.Z_MINUS:
+                                        for (int i = 0; i < verts.length - 1; i++) {
+                                            int j = (i + 1) % verts.length;
+                                            BigDecimal di = verts[i].Z.subtract(o);
+                                            BigDecimal dj = verts[j].Z.subtract(o);
+                                            if (di.signum() != dj.signum()) {
+                                                if (di.abs().subtract(dj.abs()).abs().compareTo(p) > 0) {
+                                                    isSymmetrical = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    case IntersectorSettings.Y_PLUS:
+                                    case IntersectorSettings.Y_MINUS:
+                                        for (int i = 0; i < verts.length - 1; i++) {
+                                            int j = (i + 1) % verts.length;
+                                            BigDecimal di = verts[i].Y.subtract(o);
+                                            BigDecimal dj = verts[j].Y.subtract(o);
+                                            if (di.signum() != dj.signum()) {
+                                                if (di.abs().subtract(dj.abs()).abs().compareTo(p) > 0) {
+                                                    isSymmetrical = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    case IntersectorSettings.X_PLUS:
+                                    case IntersectorSettings.X_MINUS:
+                                        for (int i = 0; i < verts.length - 1; i++) {
+                                            int j = (i + 1) % verts.length;
+                                            BigDecimal di = verts[i].X.subtract(o);
+                                            BigDecimal dj = verts[j].X.subtract(o);
+                                            if (di.signum() != dj.signum()) {
+                                                if (di.abs().subtract(dj.abs()).abs().compareTo(p) > 0) {
+                                                    isSymmetrical = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    }
                                 }
 
                                 switch (g.type()) {
