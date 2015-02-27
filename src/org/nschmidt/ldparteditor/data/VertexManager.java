@@ -77,6 +77,7 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dh;
 import org.nschmidt.ldparteditor.helpers.math.Vector3r;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -14416,6 +14417,13 @@ public class VertexManager {
             selectedData.remove(splitPlane);
             selectedQuads.remove(splitPlane);
 
+            List<OpenGLRenderer> renderers = Editor3DWindow.getRenders();
+            for (OpenGLRenderer renderer : renderers) {
+                if (renderer.getC3D().getLockableDatFileReference().equals(linkedDatFile)) {
+                    linkedDatFile.setLastSelectedComposite(renderer.getC3D());
+                }
+            }
+
             intersector(new IntersectorSettings());
 
             showAll();
@@ -14871,12 +14879,15 @@ public class VertexManager {
             if (!headerS.endsWith(StringHelper.getLineDelimiter())) {
                 headerS = headerS + StringHelper.getLineDelimiter();
             }
+            headerS = headerS + "0 !LPE TODO SymSplitter: Section in front of the plane." + StringHelper.getLineDelimiter(); //$NON-NLS-1$ I18N
             if (!beforeS.endsWith(StringHelper.getLineDelimiter())) {
                 beforeS = beforeS + StringHelper.getLineDelimiter();
             }
+            beforeS = beforeS + "0 !LPE TODO SymSplitter: Section between the plane." + StringHelper.getLineDelimiter(); //$NON-NLS-1$ I18N
             if (!betweenS.endsWith(StringHelper.getLineDelimiter())) {
                 betweenS = betweenS + StringHelper.getLineDelimiter();
             }
+            betweenS = betweenS + "0 !LPE TODO SymSplitter: Section behind the plane." + StringHelper.getLineDelimiter(); //$NON-NLS-1$ I18N
 
             String symSplitterOutput = headerS + beforeS + betweenS + behindS;
 
@@ -14895,6 +14906,8 @@ public class VertexManager {
                 setModified(true);
 
                 // FIXME Show/hide flag needs implementation!
+
+
             } else {
                 setModified(false);
             }
