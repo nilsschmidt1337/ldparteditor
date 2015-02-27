@@ -1918,14 +1918,35 @@ public class VertexManager {
 
     public synchronized void changeColour(int index, float r, float g, float b, float a, Set<GData> dataToModify) {
         HashSet<GData> newData = new HashSet<GData>();
-        if (index > -1) {
-            GColour colour = View.getLDConfigColour(index);
-            r = colour.getR();
-            g = colour.getG();
-            b = colour.getB();
-            a = colour.getA();
-        }
+        GColour colour = View.getLDConfigColour(index);
+        final float cr = colour.getR();
+        final float cg = colour.getG();
+        final float cb = colour.getB();
+        final float ca = colour.getA();
         for (GData gData : dataToModify) {
+            if (index > -1) {
+                switch (gData.type()) {
+                case 2:
+                case 5:
+                    if (index == 24) {
+                        r = View.line_Colour_r[0];
+                        g = View.line_Colour_g[0];
+                        b = View.line_Colour_b[0];
+                        a = 1f;
+                    } else {
+                        r = cr;
+                        g = cg;
+                        b = cb;
+                        a = ca;
+                    }
+                    break;
+                default:
+                    r = cr;
+                    g = cg;
+                    b = cb;
+                    a = ca;
+                }
+            }
             GData newGData = null;
             switch (gData.type()) {
             case 2:
