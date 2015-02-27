@@ -99,12 +99,12 @@ class SymSplitterDesign extends Dialog {
         spn_precision.setValue(ss.getPrecision());
 
         Label lbl_splitPlane = new Label(cmp_container, SWT.NONE);
-        lbl_splitPlane.setText("Splitting Plane (+z would be split by the plane z=0 and 'keep' z>0 data):"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_splitPlane.setText("Splitting Plane (+z would be split by the plane z=0):"); //$NON-NLS-1$ I18N Needs translation!
 
         {
             Combo cmb_splitPlane = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_splitPlane[0] = cmb_splitPlane;
-            cmb_splitPlane.setItems(new String[] {"+z.", "+y", "+x", "-z", "-y", "-x"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ I18N Needs translation!
+            cmb_splitPlane.setItems(new String[] {"+z", "+y", "+x", "-z", "-y", "-x"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ I18N Needs translation!
             cmb_splitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_splitPlane.setText(cmb_splitPlane.getItem(ss.getSplitPlane()));
             cmb_splitPlane.select(ss.getSplitPlane());

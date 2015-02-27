@@ -14905,8 +14905,212 @@ public class VertexManager {
 
                 setModified(true);
 
-                // FIXME Show/hide flag needs implementation!
+                // Separate the data according the plane and hide or show it
 
+                if (sims.getHideLevel() > 0) {
+
+                    selectAll();
+
+                    before.clear();
+                    between.clear();
+                    behind.clear();
+
+                    for (GData g : selectedData) {
+                        if (!lineLinkedToVertices.containsKey(g)) continue;
+                        boolean forceMiddle = false;
+                        final Vertex[] verts;
+                        switch (g.type()) {
+                        case 1:
+                            GData1 g1 = (GData1) g;
+                            String shortName = g1.shortName.trim();
+                            if (shortName.contains("stug") || shortName.contains("stud.dat") || shortName.contains("stud2.dat")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                forceMiddle = true;
+                            }
+                            verts = new Vertex[]{new Vertex(g1.accurateProductMatrix.M30, g1.accurateProductMatrix.M31, g1.accurateProductMatrix.M32)};
+                            break;
+                        case 2:
+                            verts = lines.get(g);
+                            {
+                                HashSet<Vertex> vv = new HashSet<Vertex>();
+                                for (Vertex v : verts) {
+                                    vv.add(v);
+                                }
+                                if (vv.size() != 2) continue;
+                            }
+                            break;
+                        case 3:
+                            verts = triangles.get(g);
+                            {
+                                HashSet<Vertex> vv = new HashSet<Vertex>();
+                                for (Vertex v : verts) {
+                                    vv.add(v);
+                                }
+                                if (vv.size() != 3) continue;
+                            }
+                            break;
+                        case 4:
+                            verts = quads.get(g);
+                            {
+                                HashSet<Vertex> vv = new HashSet<Vertex>();
+                                for (Vertex v : verts) {
+                                    vv.add(v);
+                                }
+                                if (vv.size() != 4) continue;
+                            }
+                            break;
+                        case 5:
+                            Vertex[] v2 = condlines.get(g);
+                            verts = new Vertex[]{v2[0], v2[1]};
+                            {
+                                HashSet<Vertex> vv = new HashSet<Vertex>();
+                                for (Vertex v : verts) {
+                                    vv.add(v);
+                                }
+                                if (vv.size() != 2) continue;
+                            }
+                            break;
+                        default:
+                            continue;
+                        }
+
+                        final int targetValue = verts.length;
+                        int currentValue = 0;
+                        int neg = 0;
+                        int pos = 0;
+                        for (Vertex v : verts) {
+                            switch (sp) {
+                            case IntersectorSettings.Z_PLUS:
+                                switch (v.Z.compareTo(o)) {
+                                case -1:
+                                    neg++;
+                                    break;
+                                case 0:
+                                    neg++;
+                                    pos++;
+                                    break;
+                                case 1:
+                                    pos++;
+                                    break;
+                                }
+                                break;
+                            case IntersectorSettings.Z_MINUS:
+                                switch (v.Z.compareTo(o)) {
+                                case -1:
+                                    pos++;
+                                    break;
+                                case 0:
+                                    neg++;
+                                    pos++;
+                                    break;
+                                case 1:
+                                    neg++;
+                                    break;
+                                }
+                                break;
+                            case IntersectorSettings.Y_PLUS:
+                                switch (v.Y.compareTo(o)) {
+                                case -1:
+                                    neg++;
+                                    break;
+                                case 0:
+                                    neg++;
+                                    pos++;
+                                    break;
+                                case 1:
+                                    pos++;
+                                    break;
+                                }
+                                break;
+                            case IntersectorSettings.Y_MINUS:
+                                switch (v.Y.compareTo(o)) {
+                                case -1:
+                                    pos++;
+                                    break;
+                                case 0:
+                                    neg++;
+                                    pos++;
+                                    break;
+                                case 1:
+                                    neg++;
+                                    break;
+                                }
+                                break;
+                            case IntersectorSettings.X_PLUS:
+                                switch (v.X.compareTo(o)) {
+                                case -1:
+                                    neg++;
+                                    break;
+                                case 0:
+                                    neg++;
+                                    pos++;
+                                    break;
+                                case 1:
+                                    pos++;
+                                    break;
+                                }
+                                break;
+                            case IntersectorSettings.X_MINUS:
+                                switch (v.X.compareTo(o)) {
+                                case -1:
+                                    pos++;
+                                    break;
+                                case 0:
+                                    neg++;
+                                    pos++;
+                                    break;
+                                case 1:
+                                    neg++;
+                                    break;
+                                }
+                                break;
+                            }
+                        }
+                        currentValue = Math.max(neg, pos);
+                        if (forceMiddle || targetValue == currentValue && neg == pos) {
+                            between.add(g);
+                        } else if (targetValue != currentValue) {
+                            between.add(g);
+                        } else if (pos == targetValue) {
+                            before.add(g);
+                        } else if (neg == targetValue) {
+                            behind.add(g);
+                        } else {
+                            between.add(g);
+                        }
+                    }
+
+                    hiddenVertices.addAll(selectedVertices);
+                    clearSelection();
+
+                    switch (sims.getHideLevel()) {
+                    case 1: // between
+                        for (GData g : before) {
+                            hide(g);
+                        }
+                        for (GData g : behind) {
+                            hide(g);
+                        }
+                        break;
+                    case 2: // before
+                        for (GData g : between) {
+                            hide(g);
+                        }
+                        for (GData g : behind) {
+                            hide(g);
+                        }
+                        break;
+                    case 3: // behind
+                        for (GData g : before) {
+                            hide(g);
+                        }
+                        for (GData g : between) {
+                            hide(g);
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                }
 
             } else {
                 setModified(false);
