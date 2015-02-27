@@ -89,7 +89,7 @@ class SymSplitterDesign extends Dialog {
         spn_offset.setValue(ss.getOffset());
 
         Label lbl_precision = new Label(cmp_container, SWT.NONE);
-        lbl_precision.setText("Vertex unification threshold (0, default):"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_precision.setText("Vertex unification threshold to the plane (0, default):"); //$NON-NLS-1$ I18N Needs translation!
 
         BigDecimalSpinner spn_precision = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_precision [0] = spn_offset;

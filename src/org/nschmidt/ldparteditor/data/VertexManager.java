@@ -14497,6 +14497,9 @@ public class VertexManager {
         selectAll();
 
         {
+
+            HashSet<GData> subfilesWithInvertnext = new HashSet<GData>();
+
             HashSet<GData> before = new HashSet<GData>();
             HashSet<GData> between = new HashSet<GData>();
             HashSet<GData> behind = new HashSet<GData>();
@@ -14508,6 +14511,19 @@ public class VertexManager {
                 switch (g.type()) {
                 case 1:
                     GData1 g1 = (GData1) g;
+                    {
+                        boolean hasInvertnext = false;
+                        GData invertNextData = g1.getBefore();
+                        while (invertNextData != null && invertNextData.type() != 1 && (invertNextData.type() != 6 || ((GDataBFC) invertNextData).type != BFC.INVERTNEXT)) {
+                            invertNextData = invertNextData.getBefore();
+                        }
+                        if (invertNextData != null && invertNextData.type() == 6) {
+                            hasInvertnext = true;
+                        }
+                        if (hasInvertnext) {
+                            subfilesWithInvertnext.add(g1);
+                        }
+                    }
                     String shortName = g1.shortName.trim();
                     if (shortName.contains("stug") || shortName.contains("stud.dat") || shortName.contains("stud2.dat")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         forceMiddle = true;
@@ -14678,6 +14694,7 @@ public class VertexManager {
                 GData g = lastHeaderLine;
                 while ((g = g.getNext()) != null) {
                     if (g.type() < 1 || g.type() > 5) {
+                        if (g.type() == 6 && ((GDataBFC) g).type == BFC.INVERTNEXT) continue;
                         beforeSb.append(g.toString());
                         if (!g.equals(tail)) beforeSb.append(StringHelper.getLineDelimiter());
                     } else {
@@ -14691,6 +14708,9 @@ public class VertexManager {
                                     beforeSb.append(((GData4) g).colourReplace(lightBlue.toString()));
                                     break;
                                 case 1:
+                                    if (subfilesWithInvertnext.contains(g)) {
+                                        beforeSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                    }
                                     beforeSb.append(((GData1) g).colourReplace(blue.toString()));
                                     break;
                                 case 2:
@@ -14703,6 +14723,9 @@ public class VertexManager {
                                     break;
                                 }
                             } else {
+                                if (subfilesWithInvertnext.contains(g)) {
+                                    beforeSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                }
                                 beforeSb.append(g.toString());
                             }
                             if (!g.equals(tail)) beforeSb.append(StringHelper.getLineDelimiter());
@@ -14714,6 +14737,7 @@ public class VertexManager {
                 GData g = lastHeaderLine;
                 while ((g = g.getNext()) != null) {
                     if (g.type() < 1 || g.type() > 5) {
+                        if (g.type() == 6 && ((GDataBFC) g).type == BFC.INVERTNEXT) continue;
                         betweenSb.append(g.toString());
                         if (!g.equals(tail)) betweenSb.append(StringHelper.getLineDelimiter());
                     } else {
@@ -14807,6 +14831,9 @@ public class VertexManager {
                                     }
                                     break;
                                 case 1:
+                                    if (subfilesWithInvertnext.contains(g)) {
+                                        betweenSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                    }
                                     betweenSb.append(((GData1) g).colourReplace(yellow.toString()));
                                     break;
                                 case 2:
@@ -14837,6 +14864,9 @@ public class VertexManager {
                                     betweenSb.append(((GData4) g).colourReplace(yellow.toString()));
                                     break;
                                 case 1:
+                                    if (subfilesWithInvertnext.contains(g)) {
+                                        betweenSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                    }
                                     betweenSb.append(((GData1) g).colourReplace(yellow.toString()));
                                     break;
                                 case 2:
@@ -14849,6 +14879,9 @@ public class VertexManager {
                                     break;
                                 }
                             } else {
+                                if (subfilesWithInvertnext.contains(g)) {
+                                    betweenSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                }
                                 betweenSb.append(g.toString());
                             }
                             if (!g.equals(tail)) betweenSb.append(StringHelper.getLineDelimiter());
@@ -14860,10 +14893,14 @@ public class VertexManager {
                 GData g = lastHeaderLine;
                 while ((g = g.getNext()) != null) {
                     if (g.type() < 1 || g.type() > 5) {
+                        if (g.type() == 6 && ((GDataBFC) g).type == BFC.INVERTNEXT) continue;
                         behindSb.append(g.toString());
                         if (!g.equals(tail)) behindSb.append(StringHelper.getLineDelimiter());
                     } else {
                         if (behind.contains(g)) {
+                            if (subfilesWithInvertnext.contains(g)) {
+                                behindSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                            }
                             behindSb.append(g.toString());
                             if (!g.equals(tail)) behindSb.append(StringHelper.getLineDelimiter());
                         }
