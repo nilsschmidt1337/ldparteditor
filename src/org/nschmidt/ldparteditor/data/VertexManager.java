@@ -65,6 +65,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.UnificatorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -15175,6 +15176,13 @@ public class VertexManager {
             }
 
         }
+        validateState();
+    }
+
+    public void unificator(UnificatorSettings us) {
+        // FIXME Auto-generated method stub
+
+
         validateState();
     }
 }

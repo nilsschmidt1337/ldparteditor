@@ -19,7 +19,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.UnificatorSettings;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
@@ -40,60 +40,36 @@ public class UnificatorDialog extends UnificatorDesign {
      *
      * @param parentShell
      */
-    public UnificatorDialog(Shell parentShell, SymSplitterSettings rs) {
-        super(parentShell, rs);
+    public UnificatorDialog(Shell parentShell, UnificatorSettings us) {
+        super(parentShell, us);
     }
 
     @Override
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_offset[0].addValueChangeListener(new ValueChangeAdapter() {
+        spn_vertexThreshold[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                ss.setOffset(spn.getValue());
+                us.setVertexThreshold(spn.getValue());
             }
         });
         cmb_scope[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                ss.setScope(cmb_scope[0].getSelectionIndex());
+                us.setScope(cmb_scope[0].getSelectionIndex());
             }
         });
-        cmb_splitPlane[0].addListener(SWT.Selection, new Listener() {
+        cmb_whatToUnify[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                ss.setSplitPlane(cmb_splitPlane[0].getSelectionIndex());
+                us.setSnapOn(cmb_whatToUnify[0].getSelectionIndex());
             }
         });
-        cmb_hide[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                ss.setHideLevel(cmb_hide[0].getSelectionIndex());
-            }
-        });
-        cmb_colourise[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                ss.setColourise(cmb_colourise[0].getSelectionIndex() == 1);
-            }
-        });
-        cmb_cutAcross[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                ss.setCutAcross(cmb_cutAcross[0].getSelectionIndex() == 1);
-            }
-        });
-        cmb_validate[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                ss.setValidate(cmb_validate[0].getSelectionIndex() == 1);
-            }
-        });
-        spn_precision[0].addValueChangeListener(new ValueChangeAdapter() {
+        spn_subfileThreshold[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                ss.setPrecision(spn.getValue());
+                us.setSubvertexThreshold(spn.getValue());
             }
         });
         return super.open();

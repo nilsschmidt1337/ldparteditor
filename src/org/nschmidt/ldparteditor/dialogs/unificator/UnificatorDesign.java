@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.UnificatorSettings;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 
 /**
@@ -42,22 +42,18 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
  */
 class UnificatorDesign extends Dialog {
 
-    final SymSplitterSettings ss;
-    final BigDecimalSpinner[] spn_offset = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_precision = new BigDecimalSpinner[1];
-    final Combo[] cmb_scope = new Combo[1];
+    final UnificatorSettings us;
+    final BigDecimalSpinner[] spn_vertexThreshold = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spn_subfileThreshold = new BigDecimalSpinner[1];
 
-    final Combo[] cmb_splitPlane = new Combo[1];
-    final Combo[] cmb_hide = new Combo[1];
-    final Combo[] cmb_colourise = new Combo[1];
-    final Combo[] cmb_validate = new Combo[1];
-    final Combo[] cmb_cutAcross = new Combo[1];
+    final Combo[] cmb_whatToUnify = new Combo[1];
+    final Combo[] cmb_scope = new Combo[1];
 
     // Use final only for subclass/listener references!
 
-    UnificatorDesign(Shell parentShell, SymSplitterSettings ss) {
+    UnificatorDesign(Shell parentShell, UnificatorSettings us) {
         super(parentShell);
-        this.ss = ss;
+        this.us = us;
     }
 
     /**
@@ -79,82 +75,43 @@ class UnificatorDesign extends Dialog {
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_hint = new Label(cmp_container, SWT.NONE);
-        lbl_hint.setText("\nPlease note that no inlining option is provided within SymSplitter and TEXMAP is not supported yet.\nSymSplitter restructures the file content and deletes nothing, unless the threshold is not zero.\n\n\nPlane offset (0, default):"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_hint.setText("\nVertices unification threshold (default 0.005):"); //$NON-NLS-1$ I18N Needs translation!
 
         BigDecimalSpinner spn_offset = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_offset [0] = spn_offset;
+        this.spn_vertexThreshold [0] = spn_offset;
         spn_offset.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spn_offset.setMaximum(new BigDecimal(100000000));
         spn_offset.setMinimum(new BigDecimal(-100000000));
-        spn_offset.setValue(ss.getOffset());
+        spn_offset.setValue(us.getVertexThreshold());
 
         Label lbl_precision = new Label(cmp_container, SWT.NONE);
         lbl_precision.setText("Vertex unification threshold to the plane (0, default):"); //$NON-NLS-1$ I18N Needs translation!
 
         BigDecimalSpinner spn_precision = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_precision [0] = spn_offset;
+        this.spn_subfileThreshold [0] = spn_offset;
         spn_precision.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spn_precision.setMaximum(new BigDecimal(1000));
         spn_precision.setMinimum(new BigDecimal(0));
-        spn_precision.setValue(ss.getPrecision());
+        spn_precision.setValue(us.getSubvertexThreshold());
 
         Label lbl_splitPlane = new Label(cmp_container, SWT.NONE);
-        lbl_splitPlane.setText("Splitting Plane (+z would be split by the plane z=0):"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_splitPlane.setText("Snap on..."); //$NON-NLS-1$ I18N Needs translation!
 
         {
             Combo cmb_splitPlane = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_splitPlane[0] = cmb_splitPlane;
-            cmb_splitPlane.setItems(new String[] {"+z", "+y", "+x", "-z", "-y", "-x"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ I18N Needs translation!
+            this.cmb_whatToUnify[0] = cmb_splitPlane;
+            cmb_splitPlane.setItems(new String[] {"...vertices.", "...subpart vertices.", "...vertices and subpart vertices."}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ // I18N Needs translation!
             cmb_splitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_splitPlane.setText(cmb_splitPlane.getItem(ss.getSplitPlane()));
-            cmb_splitPlane.select(ss.getSplitPlane());
+            cmb_splitPlane.setText(cmb_splitPlane.getItem(us.getSnapOn()));
+            cmb_splitPlane.select(us.getSnapOn());
         }
 
-        Label lbl_hide = new Label(cmp_container, SWT.NONE);
-        lbl_hide.setText("Select what to show:"); //$NON-NLS-1$ I18N Needs translation!
-        {
-            Combo cmb_hide = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_hide[0] = cmb_hide;
-            cmb_hide.setItems(new String[] {"Show all.", "Show middle.", "Show what is in front of the plane.", "Show what is behind the plane."}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ I18N Needs translation!
-            cmb_hide.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_hide.setText(cmb_hide.getItem(ss.getHideLevel()));
-            cmb_hide.select(ss.getHideLevel());
-        }
-
-        Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-        lbl_dummy.setText(""); //$NON-NLS-1$
-
-        {
-            Combo cmb_validate = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_validate[0] = cmb_validate;
-            cmb_validate.setItems(new String[] {"No validation.", "Validates the middle section. Read the manual for more information."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-            cmb_validate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_validate.setText(cmb_validate.getItem(ss.isValidate() ? 1 : 0));
-            cmb_validate.select(ss.isValidate() ? 1 : 0);
-        }
-        {
-            Combo cmb_cutAcross = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_cutAcross[0] = cmb_cutAcross;
-            cmb_cutAcross.setItems(new String[] {"Do not cut.", "Cut across the plane."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-            cmb_cutAcross.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_cutAcross.setText(cmb_cutAcross.getItem(ss.isCutAcross() ? 1 : 0));
-            cmb_cutAcross.select(ss.isCutAcross() ? 1 : 0);
-        }
-        {
-            Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {"No colour modifications.", "Colourises the result. Read the manual for more information."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-            cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_colourise.setText(cmb_colourise.getItem(ss.isColourise() ? 1 : 0));
-            cmb_colourise.select(ss.isColourise() ? 1 : 0);
-        }
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
         cmb_scope.setItems(new String[] {"Scope: File", "Scope: Selection"}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_scope.setText(cmb_scope.getItem(0));
-        cmb_scope.select(0);
-        cmb_scope.setEnabled(false);
+        cmb_scope.setText(cmb_scope.getItem(us.getScope()));
+        cmb_scope.select(us.getScope());
 
         cmp_container.pack();
         return cmp_container;

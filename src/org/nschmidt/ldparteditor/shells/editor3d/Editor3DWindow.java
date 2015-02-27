@@ -88,6 +88,7 @@ import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.dialogs.slicerpro.SlicerProDialog;
 import org.nschmidt.ldparteditor.dialogs.symsplitter.SymSplitterDialog;
 import org.nschmidt.ldparteditor.dialogs.txt2dat.Txt2DatDialog;
+import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.enums.GLPrimitives;
 import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.View;
@@ -105,6 +106,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.TreeData;
 import org.nschmidt.ldparteditor.helpers.composite3d.Txt2DatSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.UnificatorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.compositetext.ProjectActions;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
@@ -175,6 +177,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private IntersectorSettings ins = new IntersectorSettings();
     private PathTruderSettings ps = new PathTruderSettings();
     private SymSplitterSettings sims = new SymSplitterSettings();
+    private UnificatorSettings us = new UnificatorSettings();
 
     private boolean updatingPngPictureTab;
     private int pngPictureUpdateCounter = 0;
@@ -2586,6 +2589,21 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         if (new SymSplitterDialog(getShell(), sims).open() == IDialogConstants.OK_ID)
                             vm.symSplitter(sims);
+                        return;
+                    }
+                }
+            }
+        });
+
+        mntm_Unificator[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        if (new UnificatorDialog(getShell(), us).open() == IDialogConstants.OK_ID)
+                            vm.unificator(us);
                         return;
                     }
                 }
