@@ -91,7 +91,7 @@ public enum View {
     public static final float[] lineWidth = new float[] { .100f };
     public static final float[] lineWidthGL = new float[] { 1.5f };
 
-    private static GColour BLACK = new GColour(-1, 0f, 0f, 0f, 1f);
+    private static final GColour BLACK = new GColour(-1, 0f, 0f, 0f, 1f);
 
     public static final int NUM_CORES = Runtime.getRuntime().availableProcessors();
 
@@ -111,7 +111,14 @@ public enum View {
     public static final Locale LOCALE = Locale.getDefault();
 
     public static final GColour getLDConfigColour(int index) {
-        return colourFromIndex.get(index);
+        GColour result =  colourFromIndex.get(index);
+        if (result == null) result = new GColour(index, 0f, 0f, 0f, 1f);
+        return result;
+    }
+
+    public static final boolean hasLDConfigColour(int index) {
+        GColour result = colourFromIndex.get(index);
+        return result != null;
     }
 
     public static final GColour getLDConfigEdgeColour(int index, Composite3D c3d) {

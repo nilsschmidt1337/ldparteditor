@@ -1538,7 +1538,7 @@ class Editor3DDesign extends ApplicationWindow {
         final Button btn_Col = new Button(toolItem_Colours, SWT.NONE);
         btn_Col.setData(gColour2);
         int num = gColour2[0].getColourNumber();
-        if (View.getLDConfigColour(num) == null) {
+        if (!View.hasLDConfigColour(num)) {
             num = -1;
         }
         if (num != -1) {
@@ -1563,7 +1563,7 @@ class Editor3DDesign extends ApplicationWindow {
                     WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
                     col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
                     int num = gColour2[0].getColourNumber();
-                    if (View.getLDConfigColour(num) == null) {
+                    if (!View.hasLDConfigColour(num)) {
                         num = -1;
                     }
                     if (num != -1) {
@@ -1578,7 +1578,7 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                 } else {
                     int num = gColour2[0].getColourNumber();
-                    if (View.getLDConfigColour(num) == null) {
+                    if (!View.hasLDConfigColour(num)) {
                         num = -1;
                     }
                     if (Project.getFileToEdit() != null) {
@@ -1611,7 +1611,7 @@ class Editor3DDesign extends ApplicationWindow {
                             if (Project.getFileToEdit() != null) {
                                 Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
                                 int num = gColour2[0].getColourNumber();
-                                if (View.getLDConfigColour(num) == null) {
+                                if (!View.hasLDConfigColour(num)) {
                                     num = -1;
                                 }
                                 Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());

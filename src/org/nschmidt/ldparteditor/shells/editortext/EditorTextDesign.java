@@ -371,7 +371,7 @@ class EditorTextDesign extends ApplicationWindow {
         final Button btn_Col = new Button(toolItem_Colours, SWT.NONE);
         btn_Col.setData(gColour2);
         int num = gColour2[0].getColourNumber();
-        if (View.getLDConfigColour(num) == null) {
+        if (!View.hasLDConfigColour(num)) {
             num = -1;
         }
         if (num != -1) {
@@ -396,7 +396,7 @@ class EditorTextDesign extends ApplicationWindow {
                     WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
                     col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
                     int num = gColour2[0].getColourNumber();
-                    if (View.getLDConfigColour(num) == null) {
+                    if (!View.hasLDConfigColour(num)) {
                         num = -1;
                     }
                     if (num != -1) {

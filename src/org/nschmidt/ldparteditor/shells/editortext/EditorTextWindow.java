@@ -423,7 +423,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 new ColourDialog(getShell(), gColour2).open();
                 if (gColour2[0] != null) {
                     int num = gColour2[0].getColourNumber();
-                    if (View.getLDConfigColour(num) == null) {
+                    if (!View.hasLDConfigColour(num)) {
                         num = -1;
                     }
 

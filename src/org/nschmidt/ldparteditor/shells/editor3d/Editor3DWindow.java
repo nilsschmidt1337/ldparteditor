@@ -677,7 +677,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         public void widgetSelected(SelectionEvent e) {
                             if (Project.getFileToEdit() != null) {
                                 int num = gColour2.getColourNumber();
-                                if (View.getLDConfigColour(num) == null) {
+                                if (!View.hasLDConfigColour(num)) {
                                     num = -1;
                                 }
                                 Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2.getR(), gColour2.getG(), gColour2.getB(), gColour2.getA());
@@ -712,7 +712,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (gColour2[0] != null) {
                         setLastUsedColour(gColour2[0]);
                         int num = gColour2[0].getColourNumber();
-                        if (View.getLDConfigColour(num) == null) {
+                        if (!View.hasLDConfigColour(num)) {
                             num = -1;
                         }
                         Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
@@ -742,7 +742,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             public void widgetSelected(SelectionEvent e) {
                                 if (Project.getFileToEdit() != null) {
                                     int num = gColour2[0].getColourNumber();
-                                    if (View.getLDConfigColour(num) == null) {
+                                    if (!View.hasLDConfigColour(num)) {
                                         num = -1;
                                     }
                                     Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());

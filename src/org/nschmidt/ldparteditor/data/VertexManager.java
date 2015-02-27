@@ -1919,12 +1919,10 @@ public class VertexManager {
         HashSet<GData> newData = new HashSet<GData>();
         if (index > -1) {
             GColour colour = View.getLDConfigColour(index);
-            if (colour != null) {
-                r = colour.getR();
-                g = colour.getG();
-                b = colour.getB();
-                a = colour.getA();
-            }
+            r = colour.getR();
+            g = colour.getG();
+            b = colour.getB();
+            a = colour.getA();
         }
         for (GData gData : dataToModify) {
             GData newGData = null;
@@ -9516,10 +9514,7 @@ public class VertexManager {
                                         }
 
                                         if (colourise) {
-                                            GColour yellow = View.getLDConfigColour(14);
-                                            if (yellow == null) {
-                                                yellow = new GColour(-1, 1f, 1f, 0f, 1f);
-                                            }
+                                            GColour yellow = View.hasLDConfigColour(14) ? View.getLDConfigColour(14) : new GColour(-1, 1f, 1f, 0f, 1f);
 
                                             quad = new GData4(yellow.getColourNumber(), yellow.getR(), yellow.getG(), yellow.getB(), yellow.getA(), first, second, third, fourth, View.DUMMY_REFERENCE, linkedDatFile);
 
@@ -14274,12 +14269,16 @@ public class VertexManager {
 
         if (linkedDatFile.isReadOnly()) return;
 
+        setModified(true);
+        final String originalContent = linkedDatFile.getText();
+
         clearSelection();
 
         final BigDecimal o = sims.getOffset();
         final BigDecimal p = sims.getPrecision();
         final boolean needMerge = BigDecimal.ZERO.compareTo(p) != 0;
         final int sp = sims.getSplitPlane();
+        boolean wasModified = false;
 
         if (sims.isCutAcross()) {
             // First, do the cutting with intersector :)
@@ -14434,6 +14433,7 @@ public class VertexManager {
         final StringBuilder beforeSb = new StringBuilder();
         final StringBuilder betweenSb = new StringBuilder();
         final StringBuilder behindSb = new StringBuilder();
+        final GData lastHeaderLine;
         {
             GData g = linkedDatFile.getDrawChainStart();
             while ((g = g.getNext()) != null) {
@@ -14446,7 +14446,11 @@ public class VertexManager {
                         ))) {
                     break;
                 }
-
+            }
+            if (g == null) {
+                return;
+            } else {
+                lastHeaderLine = g;
             }
         }
 
@@ -14461,26 +14465,26 @@ public class VertexManager {
                 case IntersectorSettings.Z_PLUS:
                 case IntersectorSettings.Z_MINUS:
                     if (p.compareTo(v.Z.subtract(o).abs()) > 0) {
-                        changeVertexDirectFast(v, new Vertex(v.X, v.Y, o), true);
+                        wasModified = changeVertexDirectFast(v, new Vertex(v.X, v.Y, o), true) || wasModified;
                     }
                     break;
                 case IntersectorSettings.Y_PLUS:
                 case IntersectorSettings.Y_MINUS:
                     if (p.compareTo(v.Y.subtract(o).abs()) > 0) {
-                        changeVertexDirectFast(v, new Vertex(v.X, o, v.Z), true);
+                        wasModified = changeVertexDirectFast(v, new Vertex(v.X, o, v.Z), true) || wasModified;
                     }
                     break;
                 case IntersectorSettings.X_PLUS:
                 case IntersectorSettings.X_MINUS:
                     if (p.compareTo(v.X.subtract(o).abs()) > 0) {
-                        changeVertexDirectFast(v, new Vertex(o, v.Y, v.Z), true);
+                        wasModified = changeVertexDirectFast(v, new Vertex(o, v.Y, v.Z), true) || wasModified;
                     }
                     break;
                 }
             }
         }
 
-        // Separate the data according the plane
+        // Separate the data according the plane and detect invalid data (identical vertices)
 
         selectAll();
 
@@ -14504,16 +14508,44 @@ public class VertexManager {
                     break;
                 case 2:
                     verts = lines.get(g);
+                    {
+                        HashSet<Vertex> vv = new HashSet<Vertex>();
+                        for (Vertex v : verts) {
+                            vv.add(v);
+                        }
+                        if (vv.size() != 2) continue;
+                    }
                     break;
                 case 3:
                     verts = triangles.get(g);
+                    {
+                        HashSet<Vertex> vv = new HashSet<Vertex>();
+                        for (Vertex v : verts) {
+                            vv.add(v);
+                        }
+                        if (vv.size() != 3) continue;
+                    }
                     break;
                 case 4:
                     verts = quads.get(g);
+                    {
+                        HashSet<Vertex> vv = new HashSet<Vertex>();
+                        for (Vertex v : verts) {
+                            vv.add(v);
+                        }
+                        if (vv.size() != 4) continue;
+                    }
                     break;
                 case 5:
                     Vertex[] v2 = condlines.get(g);
                     verts = new Vertex[]{v2[0], v2[1]};
+                    {
+                        HashSet<Vertex> vv = new HashSet<Vertex>();
+                        for (Vertex v : verts) {
+                            vv.add(v);
+                        }
+                        if (vv.size() != 2) continue;
+                    }
                     break;
                 default:
                     continue;
@@ -14529,9 +14561,11 @@ public class VertexManager {
                         switch (v.Z.compareTo(o)) {
                         case -1:
                             neg++;
+                            break;
                         case 0:
                             neg++;
                             pos++;
+                            break;
                         case 1:
                             pos++;
                             break;
@@ -14541,9 +14575,11 @@ public class VertexManager {
                         switch (v.Z.compareTo(o)) {
                         case -1:
                             pos++;
+                            break;
                         case 0:
                             neg++;
                             pos++;
+                            break;
                         case 1:
                             neg++;
                             break;
@@ -14553,9 +14589,11 @@ public class VertexManager {
                         switch (v.Y.compareTo(o)) {
                         case -1:
                             neg++;
+                            break;
                         case 0:
                             neg++;
                             pos++;
+                            break;
                         case 1:
                             pos++;
                             break;
@@ -14564,9 +14602,11 @@ public class VertexManager {
                         switch (v.Y.compareTo(o)) {
                         case -1:
                             pos++;
+                            break;
                         case 0:
                             neg++;
                             pos++;
+                            break;
                         case 1:
                             neg++;
                             break;
@@ -14576,9 +14616,11 @@ public class VertexManager {
                         switch (v.X.compareTo(o)) {
                         case -1:
                             neg++;
+                            break;
                         case 0:
                             neg++;
                             pos++;
+                            break;
                         case 1:
                             pos++;
                             break;
@@ -14587,9 +14629,11 @@ public class VertexManager {
                         switch (v.X.compareTo(o)) {
                         case -1:
                             pos++;
+                            break;
                         case 0:
                             neg++;
                             pos++;
+                            break;
                         case 1:
                             neg++;
                             break;
@@ -14598,23 +14642,221 @@ public class VertexManager {
                     }
                 }
                 currentValue = Math.max(neg, pos);
-                if (forceMiddle || targetValue != currentValue) {
+                if (forceMiddle || targetValue == currentValue && neg == pos) {
+                    between.add(g);
+                } else if (targetValue != currentValue) {
                     between.add(g);
                 } else if (pos == targetValue) {
                     before.add(g);
                 } else if (neg == targetValue) {
                     behind.add(g);
+                } else {
+                    between.add(g);
                 }
             }
+
+            // FIXME Needs implementation!
+
+            // Colourise only before and between
+
+            final GData tail = linkedDatFile.getDrawChainTail();
+            GColour blue = View.hasLDConfigColour(1) ? View.getLDConfigColour(1) : new GColour(-1, 0f, 0f, 1f, 1f);
+            GColour yellow = View.hasLDConfigColour(14) ? View.getLDConfigColour(14) : new GColour(-1, 1f, 1f, 0f, 1f);
+            GColour red = View.hasLDConfigColour(4) ? View.getLDConfigColour(4) : new GColour(-1, 1f, 0f, 0f, 1f);
+            GColour lightBlue = View.hasLDConfigColour(9) ? View.getLDConfigColour(9) : new GColour(-1, 1f, .5f, .5f, 1f);
+            GColour lightGreen = View.hasLDConfigColour(10) ? View.getLDConfigColour(10) : new GColour(-1, .5f, 1f, .5f, 1f);
+            GColour violet = View.hasLDConfigColour(5) ? View.getLDConfigColour(5) : new GColour(-1, 1f, 0f, 1f, 1f);
+            {
+                GData g = lastHeaderLine;
+                while ((g = g.getNext()) != null) {
+                    if (g.type() < 1 || g.type() > 5) {
+                        beforeSb.append(g.toString());
+                        if (!g.equals(tail)) beforeSb.append(StringHelper.getLineDelimiter());
+                    } else {
+                        if (before.contains(g)) {
+                            if (sims.isColourise() && lineLinkedToVertices.containsKey(g)) {
+                                switch (g.type()) {
+                                case 3:
+                                    beforeSb.append(((GData3) g).colourReplace(lightBlue.toString()));
+                                    break;
+                                case 4:
+                                    beforeSb.append(((GData4) g).colourReplace(lightBlue.toString()));
+                                    break;
+                                case 1:
+                                    beforeSb.append(((GData1) g).colourReplace(blue.toString()));
+                                    break;
+                                case 2:
+                                    beforeSb.append(((GData2) g).colourReplace(blue.toString()));
+                                    break;
+                                case 5:
+                                    beforeSb.append(((GData5) g).colourReplace(blue.toString()));
+                                    break;
+                                default:
+                                    break;
+                                }
+                            } else {
+                                beforeSb.append(g.toString());
+                            }
+                            if (!g.equals(tail)) beforeSb.append(StringHelper.getLineDelimiter());
+                        }
+                    }
+                }
+            }
+            {
+                GData g = lastHeaderLine;
+                while ((g = g.getNext()) != null) {
+                    if (g.type() < 1 || g.type() > 5) {
+                        betweenSb.append(g.toString());
+                        if (!g.equals(tail)) betweenSb.append(StringHelper.getLineDelimiter());
+                    } else {
+                        if (between.contains(g)) {
+
+                            if (sims.isValidate() && lineLinkedToVertices.containsKey(g)) {
+
+                                boolean isSymmetrical = true;
+
+                                if (g.type() != 1) {
+                                    // Check symmetry
+
+                                    final Vertex[] verts;
+                                    switch (g.type()) {
+                                    case 2:
+                                        verts = lines.get(g);
+                                        break;
+                                    case 3:
+                                        verts = triangles.get(g);
+                                        break;
+                                    case 4:
+                                        verts = quads.get(g);
+                                        break;
+                                    case 5:
+                                        Vertex[] v2 = condlines.get(g);
+                                        verts = new Vertex[]{v2[0], v2[1]};
+                                        break;
+                                    default:
+                                        continue;
+                                    }
+
+                                    // FIXME Needs implementation!
+                                }
+
+                                switch (g.type()) {
+                                case 3:
+                                    if (isSymmetrical) {
+                                        betweenSb.append(((GData3) g).colourReplace(yellow.toString()));
+                                    } else {
+                                        betweenSb.append(((GData3) g).colourReplace(violet.toString()));
+                                    }
+                                    break;
+                                case 4:
+                                    if (isSymmetrical) {
+                                        betweenSb.append(((GData4) g).colourReplace(yellow.toString()));
+                                    } else {
+                                        betweenSb.append(((GData4) g).colourReplace(violet.toString()));
+                                    }
+                                    break;
+                                case 1:
+                                    betweenSb.append(((GData1) g).colourReplace(yellow.toString()));
+                                    break;
+                                case 2:
+                                    if (isSymmetrical) {
+                                        betweenSb.append(((GData2) g).colourReplace(red.toString()));
+                                    } else {
+                                        betweenSb.append(((GData2) g).colourReplace(lightGreen.toString()));
+                                    }
+
+                                    break;
+                                case 5:
+                                    if (isSymmetrical) {
+                                        betweenSb.append(((GData5) g).colourReplace(red.toString()));
+                                    } else {
+                                        betweenSb.append(((GData5) g).colourReplace(lightGreen.toString()));
+                                    }
+                                    break;
+                                default:
+                                    break;
+                                }
+
+                            } else if (sims.isColourise() && lineLinkedToVertices.containsKey(g)) {
+                                switch (g.type()) {
+                                case 3:
+                                    betweenSb.append(((GData3) g).colourReplace(yellow.toString()));
+                                    break;
+                                case 4:
+                                    betweenSb.append(((GData4) g).colourReplace(yellow.toString()));
+                                    break;
+                                case 1:
+                                    betweenSb.append(((GData1) g).colourReplace(yellow.toString()));
+                                    break;
+                                case 2:
+                                    betweenSb.append(((GData2) g).colourReplace(red.toString()));
+                                    break;
+                                case 5:
+                                    betweenSb.append(((GData5) g).colourReplace(red.toString()));
+                                    break;
+                                default:
+                                    break;
+                                }
+                            } else {
+                                betweenSb.append(g.toString());
+                            }
+                            if (!g.equals(tail)) betweenSb.append(StringHelper.getLineDelimiter());
+                        }
+                    }
+                }
+            }
+            {
+                GData g = lastHeaderLine;
+                while ((g = g.getNext()) != null) {
+                    if (g.type() < 1 || g.type() > 5) {
+                        behindSb.append(g.toString());
+                        if (!g.equals(tail)) behindSb.append(StringHelper.getLineDelimiter());
+                    } else {
+                        if (behind.contains(g)) {
+                            behindSb.append(g.toString());
+                            if (!g.equals(tail)) behindSb.append(StringHelper.getLineDelimiter());
+                        }
+                    }
+                }
+            }
+
+            String headerS = headerSb.toString();
+            String beforeS = beforeSb.toString();
+            String betweenS = betweenSb.toString();
+            String behindS = behindSb.toString();
+
+            if (!headerS.endsWith(StringHelper.getLineDelimiter())) {
+                headerS = headerS + StringHelper.getLineDelimiter();
+            }
+            if (!beforeS.endsWith(StringHelper.getLineDelimiter())) {
+                beforeS = beforeS + StringHelper.getLineDelimiter();
+            }
+            if (!betweenS.endsWith(StringHelper.getLineDelimiter())) {
+                betweenS = betweenS + StringHelper.getLineDelimiter();
+            }
+
+            String symSplitterOutput = headerS + beforeS + betweenS + behindS;
+
+            if (wasModified || !symSplitterOutput.equals(originalContent)) {
+                if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
+                    Project.addUnsavedFile(linkedDatFile);
+                    Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                }
+
+                GDataCSG.resetCSG();
+                GDataCSG.forceRecompile();
+                setModified(true);
+                linkedDatFile.setText(symSplitterOutput);
+                linkedDatFile.parseForData();
+
+                setModified(true);
+
+                // FIXME Show/hide flag needs implementation!
+            } else {
+                setModified(false);
+            }
+
         }
-
-        // Colourise
-
-        // Check symmetry
-
-        // FIXME Needs implementation!
-
-
 
     }
 }
