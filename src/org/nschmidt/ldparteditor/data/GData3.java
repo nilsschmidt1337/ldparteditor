@@ -1030,10 +1030,10 @@ public final class GData3 extends GData {
                         if (GData.globalInvertNext) {
                             GL11.glColor4f(r, g, b, a);
                             GL11.glBegin(GL11.GL_TRIANGLES);
-                            tex.calcUVcoords1(x1, y1, z1, parent, ID);
+                            tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x3, y3, z3, parent);
                             tex.calcUVcoords3(x2, y2, z2, parent);
-                            uv = tex.getUVcoords(true, ID);
+                            uv = tex.getUVcoords(true, this);
                             GL11.glTexCoord2f(uv[0], uv[1]);
                             c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
                             GL11.glTexCoord2f(uv[2], uv[3]);
@@ -1044,10 +1044,10 @@ public final class GData3 extends GData {
                         } else {
                             GL11.glColor4f(r, g, b, a);
                             GL11.glBegin(GL11.GL_TRIANGLES);
-                            tex.calcUVcoords1(x1, y1, z1, parent, ID);
+                            tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
                             tex.calcUVcoords3(x3, y3, z3, parent);
-                            uv = tex.getUVcoords(true, ID);
+                            uv = tex.getUVcoords(true, this);
                             GL11.glTexCoord2f(uv[0], uv[1]);
                             c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
                             GL11.glTexCoord2f(uv[2], uv[3]);
@@ -1060,10 +1060,10 @@ public final class GData3 extends GData {
                         if (GData.globalInvertNext) {
                             GL11.glColor4f(r, g, b, a);
                             GL11.glBegin(GL11.GL_TRIANGLES);
-                            tex.calcUVcoords1(x1, y1, z1, parent, ID);
+                            tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
                             tex.calcUVcoords3(x3, y3, z3, parent);
-                            uv = tex.getUVcoords(true, ID);
+                            uv = tex.getUVcoords(true, this);
                             GL11.glTexCoord2f(uv[0], uv[1]);
                             c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
                             GL11.glTexCoord2f(uv[2], uv[3]);
@@ -1074,10 +1074,10 @@ public final class GData3 extends GData {
                         } else {
                             GL11.glColor4f(r, g, b, a);
                             GL11.glBegin(GL11.GL_TRIANGLES);
-                            tex.calcUVcoords1(x1, y1, z1, parent, ID);
+                            tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x3, y3, z3, parent);
                             tex.calcUVcoords3(x2, y2, z2, parent);
-                            uv = tex.getUVcoords(true, ID);
+                            uv = tex.getUVcoords(true, this);
                             GL11.glTexCoord2f(uv[0], uv[1]);
                             c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
                             GL11.glTexCoord2f(uv[2], uv[3]);
@@ -1093,10 +1093,10 @@ public final class GData3 extends GData {
                         if (GData.globalInvertNext) {
                             GL11.glColor4f(r, g, b, a);
                             GL11.glBegin(GL11.GL_TRIANGLES);
-                            tex.calcUVcoords1(x1, y1, z1, parent, ID);
+                            tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
                             tex.calcUVcoords3(x3, y3, z3, parent);
-                            uv = tex.getUVcoords(true, ID);
+                            uv = tex.getUVcoords(true, this);
                             GL11.glTexCoord2f(uv[0], uv[1]);
                             c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
                             GL11.glTexCoord2f(uv[2], uv[3]);
@@ -1107,10 +1107,10 @@ public final class GData3 extends GData {
                         } else {
                             GL11.glColor4f(r, g, b, a);
                             GL11.glBegin(GL11.GL_TRIANGLES);
-                            tex.calcUVcoords1(x1, y1, z1, parent, ID);
+                            tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x3, y3, z3, parent);
                             tex.calcUVcoords3(x2, y2, z2, parent);
-                            uv = tex.getUVcoords(true, ID);
+                            uv = tex.getUVcoords(true, this);
                             GL11.glTexCoord2f(uv[0], uv[1]);
                             c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
                             GL11.glTexCoord2f(uv[2], uv[3]);
@@ -1123,10 +1123,10 @@ public final class GData3 extends GData {
                         if (GData.globalInvertNext) {
                             GL11.glColor4f(r, g, b, a);
                             GL11.glBegin(GL11.GL_TRIANGLES);
-                            tex.calcUVcoords1(x1, y1, z1, parent, ID);
+                            tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x3, y3, z3, parent);
                             tex.calcUVcoords3(x2, y2, z2, parent);
-                            uv = tex.getUVcoords(true, ID);
+                            uv = tex.getUVcoords(true, this);
                             GL11.glTexCoord2f(uv[0], uv[1]);
                             c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
                             GL11.glTexCoord2f(uv[2], uv[3]);
@@ -1137,10 +1137,10 @@ public final class GData3 extends GData {
                         } else {
                             GL11.glColor4f(r, g, b, a);
                             GL11.glBegin(GL11.GL_TRIANGLES);
-                            tex.calcUVcoords1(x1, y1, z1, parent, ID);
+                            tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
                             tex.calcUVcoords3(x3, y3, z3, parent);
-                            uv = tex.getUVcoords(true, ID);
+                            uv = tex.getUVcoords(true, this);
                             GL11.glTexCoord2f(uv[0], uv[1]);
                             c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
                             GL11.glTexCoord2f(uv[2], uv[3]);
@@ -1152,14 +1152,13 @@ public final class GData3 extends GData {
                     }
                     break;
                 case BFC.NOCERTIFY:
-                    final int mID = -ID;
                     if (GData.globalNegativeDeterminant) {
                         GL11.glColor4f(r, g, b, a);
                         GL11.glBegin(GL11.GL_TRIANGLES);
-                        tex.calcUVcoords1(x1, y1, z1, parent, mID);
+                        tex.calcUVcoords1(x1, y1, z1, parent, null);
                         tex.calcUVcoords2(x3, y3, z3, parent);
                         tex.calcUVcoords3(x2, y2, z2, parent);
-                        uv = tex.getUVcoords(true, mID);
+                        uv = tex.getUVcoords(true, null);
                         GL11.glTexCoord2f(uv[0], uv[1]);
                         c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
                         GL11.glTexCoord2f(uv[2], uv[3]);
@@ -1168,24 +1167,24 @@ public final class GData3 extends GData {
                         c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
                         GL11.glEnd();
                         GL11.glBegin(GL11.GL_TRIANGLES);
-                        tex.calcUVcoords1(x1, y1, z1, parent, mID);
+                        tex.calcUVcoords1(x1, y1, z1, parent, null);
                         tex.calcUVcoords2(x2, y2, z2, parent);
                         tex.calcUVcoords3(x3, y3, z3, parent);
-                        uv = tex.getUVcoords(true, mID);
+                        uv = tex.getUVcoords(true, null);
                         GL11.glTexCoord2f(uv[0], uv[1]);
                         c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
-                        GL11.glTexCoord2f(uv[4], uv[5]);
-                        c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                         GL11.glTexCoord2f(uv[2], uv[3]);
+                        c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
+                        GL11.glTexCoord2f(uv[4], uv[5]);
                         c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
                         GL11.glEnd();
                     } else {
                         GL11.glColor4f(r, g, b, a);
                         GL11.glBegin(GL11.GL_TRIANGLES);
-                        tex.calcUVcoords1(x1, y1, z1, parent, mID);
+                        tex.calcUVcoords1(x1, y1, z1, parent, null);
                         tex.calcUVcoords2(x2, y2, z2, parent);
                         tex.calcUVcoords3(x3, y3, z3, parent);
-                        uv = tex.getUVcoords(true, mID);
+                        uv = tex.getUVcoords(true, null);
                         GL11.glTexCoord2f(uv[0], uv[1]);
                         c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
                         GL11.glTexCoord2f(uv[2], uv[3]);
@@ -1194,15 +1193,15 @@ public final class GData3 extends GData {
                         c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
                         GL11.glEnd();
                         GL11.glBegin(GL11.GL_TRIANGLES);
-                        tex.calcUVcoords1(x1, y1, z1, parent, mID);
+                        tex.calcUVcoords1(x1, y1, z1, parent, null);
                         tex.calcUVcoords2(x3, y3, z3, parent);
                         tex.calcUVcoords3(x2, y2, z2, parent);
-                        uv = tex.getUVcoords(true, mID);
+                        uv = tex.getUVcoords(true, null);
                         GL11.glTexCoord2f(uv[0], uv[1]);
                         c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
-                        GL11.glTexCoord2f(uv[4], uv[5]);
-                        c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
                         GL11.glTexCoord2f(uv[2], uv[3]);
+                        c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
+                        GL11.glTexCoord2f(uv[4], uv[5]);
                         c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                         GL11.glEnd();
                     }

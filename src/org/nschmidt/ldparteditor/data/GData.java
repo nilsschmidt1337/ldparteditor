@@ -107,6 +107,7 @@ public abstract class GData implements IGData {
     protected final int ID;
 
     GData() {
+        // NOTE: A possible overflow is irrelevant since equals() will return distinct results!!
         ID = id_counter.getAndIncrement();
     }
 
@@ -123,16 +124,15 @@ public abstract class GData implements IGData {
         return ID;
     }
 
+
+    /**
+     * EVERY GData object is unique!
+     */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
         if (obj == null)
             return false;
-        GData other = (GData) obj;
-        if (ID != other.ID)
-            return false;
-        return true;
+        return this == obj;
     }
 
     public static int getLastID() {

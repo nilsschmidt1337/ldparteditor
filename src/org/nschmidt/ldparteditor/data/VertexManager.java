@@ -1672,7 +1672,7 @@ public class VertexManager {
                 selectedVertices.add(newVertex);
             }
 
-            if (oldData.ID == tail.ID)
+            if (oldData.equals(tail))
                 linkedDatFile.setDrawChainTail(newData);
 
             GData oldNext = oldData.getNext();
@@ -1825,7 +1825,7 @@ public class VertexManager {
                 selectedVertices.add(newVertex);
             }
 
-            if (oldData.ID == tail.ID)
+            if (oldData.equals(tail))
                 linkedDatFile.setDrawChainTail(newData);
 
             GData oldNext = oldData.getNext();
@@ -4299,7 +4299,7 @@ public class VertexManager {
                             break;
                         case 2:
                             GData2 line = (GData2) g;
-                            idCheck = line.parent.ID != View.DUMMY_REFERENCE.ID;
+                            idCheck = !line.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
                             if (val == 2) {
                                 if (!idCheck) {
@@ -4310,7 +4310,7 @@ public class VertexManager {
                             break;
                         case 3:
                             GData3 triangle = (GData3) g;
-                            idCheck = triangle.parent.ID != View.DUMMY_REFERENCE.ID;
+                            idCheck = !triangle.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
                             if (val == 3) {
                                 if (!idCheck) {
@@ -4321,7 +4321,7 @@ public class VertexManager {
                             break;
                         case 4:
                             GData4 quad = (GData4) g;
-                            idCheck = quad.parent.ID != View.DUMMY_REFERENCE.ID;
+                            idCheck = !quad.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
                             if (val == 4) {
                                 if (!idCheck) {
@@ -4332,7 +4332,7 @@ public class VertexManager {
                             break;
                         case 5:
                             GData5 condline = (GData5) g;
-                            idCheck = condline.parent.ID != View.DUMMY_REFERENCE.ID;
+                            idCheck = !condline.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
                             if (val == 4) {
                                 if (!idCheck) {
@@ -4351,7 +4351,7 @@ public class VertexManager {
             // 2. Object Based Selection
 
             for (GData2 line : selectedLines) {
-                if (line.parent.ID == View.DUMMY_REFERENCE.ID)
+                if (line.parent.equals(View.DUMMY_REFERENCE))
                     effSelectedLines.add(line);
                 Vertex[] verts = lines.get(line);
                 if (verts == null)
@@ -4361,7 +4361,7 @@ public class VertexManager {
                 }
             }
             for (GData3 triangle : selectedTriangles) {
-                if (triangle.parent.ID == View.DUMMY_REFERENCE.ID)
+                if (triangle.parent.equals(View.DUMMY_REFERENCE))
                     effSelectedTriangles.add(triangle);
                 Vertex[] verts = triangles.get(triangle);
                 if (verts == null)
@@ -4371,7 +4371,7 @@ public class VertexManager {
                 }
             }
             for (GData4 quad : selectedQuads) {
-                if (quad.parent.ID == View.DUMMY_REFERENCE.ID)
+                if (quad.parent.equals(View.DUMMY_REFERENCE))
                     effSelectedQuads.add(quad);
                 Vertex[] verts = quads.get(quad);
                 if (verts == null)
@@ -4381,7 +4381,7 @@ public class VertexManager {
                 }
             }
             for (GData5 condline : selectedCondlines) {
-                if (condline.parent.ID == View.DUMMY_REFERENCE.ID)
+                if (condline.parent.equals(View.DUMMY_REFERENCE))
                     effSelectedCondlines.add(condline);
                 Vertex[] verts = condlines.get(condline);
                 if (verts == null)
@@ -4436,7 +4436,7 @@ public class VertexManager {
                     GData transformedSubfile = DatParser
                             .parseLine(transformedString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile,
                                     false, new HashSet<String>(), false).get(0).getGraphicalData();
-                    if (subf.ID == linkedDatFile.getDrawChainTail().ID)
+                    if (subf.equals(linkedDatFile.getDrawChainTail()))
                         linkedDatFile.setDrawChainTail(transformedSubfile);
                     GData oldNext = subf.getNext();
                     GData oldBefore = subf.getBefore();
@@ -4682,7 +4682,7 @@ public class VertexManager {
 
     private void linker(GData oldData, GData newData) {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
-        if (oldData.ID == linkedDatFile.getDrawChainTail().ID)
+        if (oldData.equals(linkedDatFile.getDrawChainTail()))
             linkedDatFile.setDrawChainTail(newData);
         GData oldNext = oldData.getNext();
         GData oldBefore = oldData.getBefore();
@@ -4826,25 +4826,25 @@ public class VertexManager {
         // 2. Object Based Selection
 
         for (GData2 line : selectedLines) {
-            if (line.parent.ID == View.DUMMY_REFERENCE.ID)
+            if (line.parent.equals(View.DUMMY_REFERENCE))
                 effSelectedLines.add(line);
             else
                 subSelectedLines.add(line);
         }
         for (GData3 triangle : selectedTriangles) {
-            if (triangle.parent.ID == View.DUMMY_REFERENCE.ID)
+            if (triangle.parent.equals(View.DUMMY_REFERENCE))
                 effSelectedTriangles.add(triangle);
             else
                 subSelectedTriangles.add(triangle);
         }
         for (GData4 quad : selectedQuads) {
-            if (quad.parent.ID == View.DUMMY_REFERENCE.ID)
+            if (quad.parent.equals(View.DUMMY_REFERENCE))
                 effSelectedQuads.add(quad);
             else
                 subSelectedQuads.add(quad);
         }
         for (GData5 condline : selectedCondlines) {
-            if (condline.parent.ID == View.DUMMY_REFERENCE.ID)
+            if (condline.parent.equals(View.DUMMY_REFERENCE))
                 effSelectedCondlines.add(condline);
             else
                 subSelectedCondlines.add(condline);
@@ -5012,8 +5012,8 @@ public class VertexManager {
                     }
                 }
 
-                if (subf.ID != newSubfile.ID) {
-                    if (subf.ID == linkedDatFile.getDrawChainTail().ID)
+                if (!subf.equals(newSubfile)) {
+                    if (subf.equals(linkedDatFile.getDrawChainTail()))
                         linkedDatFile.setDrawChainTail(newSubfile);
                     GData oldNext = subf.getNext();
                     GData oldBefore = subf.getBefore();
@@ -5155,25 +5155,25 @@ public class VertexManager {
         // 2. Object Based Selection
 
         for (GData2 line : selectedLines) {
-            if (line.parent.ID == View.DUMMY_REFERENCE.ID)
+            if (line.parent.equals(View.DUMMY_REFERENCE))
                 effSelectedLines.add(line);
             else
                 subSelectedLines.add(line);
         }
         for (GData3 triangle : selectedTriangles) {
-            if (triangle.parent.ID == View.DUMMY_REFERENCE.ID)
+            if (triangle.parent.equals(View.DUMMY_REFERENCE))
                 effSelectedTriangles.add(triangle);
             else
                 subSelectedTriangles.add(triangle);
         }
         for (GData4 quad : selectedQuads) {
-            if (quad.parent.ID == View.DUMMY_REFERENCE.ID)
+            if (quad.parent.equals(View.DUMMY_REFERENCE))
                 effSelectedQuads.add(quad);
             else
                 subSelectedQuads.add(quad);
         }
         for (GData5 condline : selectedCondlines) {
-            if (condline.parent.ID == View.DUMMY_REFERENCE.ID)
+            if (condline.parent.equals(View.DUMMY_REFERENCE))
                 effSelectedCondlines.add(condline);
             else
                 subSelectedCondlines.add(condline);
@@ -5251,7 +5251,7 @@ public class VertexManager {
                             .parseLine(colouredString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                 }
-                if (subf.ID == linkedDatFile.getDrawChainTail().ID)
+                if (subf.equals(linkedDatFile.getDrawChainTail()))
                     linkedDatFile.setDrawChainTail(colouredSubfile);
                 GData oldNext = subf.getNext();
                 GData oldBefore = subf.getBefore();
@@ -6396,7 +6396,7 @@ public class VertexManager {
                             break;
                         case 2:
                             GData2 line = (GData2) g;
-                            idCheck = line.parent.ID != View.DUMMY_REFERENCE.ID;
+                            idCheck = !line.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
                             if (val == 2) {
                                 if (!idCheck) {
@@ -6406,7 +6406,7 @@ public class VertexManager {
                             break;
                         case 3:
                             GData3 triangle = (GData3) g;
-                            idCheck = triangle.parent.ID != View.DUMMY_REFERENCE.ID;
+                            idCheck = !triangle.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
                             if (val == 3) {
                                 if (!idCheck) {
@@ -6416,7 +6416,7 @@ public class VertexManager {
                             break;
                         case 4:
                             GData4 quad = (GData4) g;
-                            idCheck = quad.parent.ID != View.DUMMY_REFERENCE.ID;
+                            idCheck = !quad.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
                             if (val == 4) {
                                 if (!idCheck) {
@@ -6426,7 +6426,7 @@ public class VertexManager {
                             break;
                         case 5:
                             GData5 condline = (GData5) g;
-                            idCheck = condline.parent.ID != View.DUMMY_REFERENCE.ID;
+                            idCheck = !condline.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
                             if (val == 4) {
                                 if (!idCheck) {
@@ -6444,7 +6444,7 @@ public class VertexManager {
             // 2. Object Based Selection
 
             for (GData2 line : selectedLines) {
-                if (line.parent.ID == View.DUMMY_REFERENCE.ID)
+                if (line.parent.equals(View.DUMMY_REFERENCE))
                     effSelectedLines.add(line);
                 Vertex[] verts = lines.get(line);
                 if (verts == null)
@@ -6454,7 +6454,7 @@ public class VertexManager {
                 }
             }
             for (GData3 triangle : selectedTriangles) {
-                if (triangle.parent.ID == View.DUMMY_REFERENCE.ID)
+                if (triangle.parent.equals(View.DUMMY_REFERENCE))
                     effSelectedTriangles.add(triangle);
                 Vertex[] verts = triangles.get(triangle);
                 if (verts == null)
@@ -6464,7 +6464,7 @@ public class VertexManager {
                 }
             }
             for (GData4 quad : selectedQuads) {
-                if (quad.parent.ID == View.DUMMY_REFERENCE.ID)
+                if (quad.parent.equals(View.DUMMY_REFERENCE))
                     effSelectedQuads.add(quad);
                 Vertex[] verts = quads.get(quad);
                 if (verts == null)
@@ -6474,7 +6474,7 @@ public class VertexManager {
                 }
             }
             for (GData5 condline : selectedCondlines) {
-                if (condline.parent.ID == View.DUMMY_REFERENCE.ID)
+                if (condline.parent.equals(View.DUMMY_REFERENCE))
                     effSelectedCondlines.add(condline);
                 Vertex[] verts = condlines.get(condline);
                 if (verts == null)
@@ -6793,7 +6793,7 @@ public class VertexManager {
             // 3. Object Based Selection
 
             for (GData2 line : selectedLines) {
-                if (line.parent.ID == View.DUMMY_REFERENCE.ID) {
+                if (line.parent.equals(View.DUMMY_REFERENCE)) {
                     effSelectedLines.add(line);
                 } else {
                     Vertex[] verts = lines.get(line);
@@ -6809,7 +6809,7 @@ public class VertexManager {
                 }
             }
             for (GData3 triangle : selectedTriangles) {
-                if (triangle.parent.ID == View.DUMMY_REFERENCE.ID) {
+                if (triangle.parent.equals(View.DUMMY_REFERENCE)) {
                     effSelectedTriangles.add(triangle);
                 } else {
                     Vertex[] verts = triangles.get(triangle);
@@ -6825,7 +6825,7 @@ public class VertexManager {
                 }
             }
             for (GData4 quad : selectedQuads) {
-                if (quad.parent.ID == View.DUMMY_REFERENCE.ID) {
+                if (quad.parent.equals(View.DUMMY_REFERENCE)) {
                     effSelectedQuads.add(quad);
                 } else {
                     Vertex[] verts = quads.get(quad);
@@ -6841,7 +6841,7 @@ public class VertexManager {
                 }
             }
             for (GData5 condline : selectedCondlines) {
-                if (condline.parent.ID == View.DUMMY_REFERENCE.ID) {
+                if (condline.parent.equals(View.DUMMY_REFERENCE)) {
                     effSelectedCondlines.add(condline);
                 } else {
                     Vertex[] verts = condlines.get(condline);
@@ -6992,7 +6992,7 @@ public class VertexManager {
                                 }
                                 int comparism = co1.compareTo(co2);
                                 if (comparism == 0) {
-                                    if (o1.ID > o2.ID) { // The id can never be equal!
+                                    if (o1.ID > o2.ID) { // The id can "never" be equal!
                                         return 1;
                                     } else {
                                         return -1;
@@ -7636,7 +7636,7 @@ public class VertexManager {
                             break;
                         case 2:
                             GData2 line = (GData2) g;
-                            idCheck = line.parent.ID != View.DUMMY_REFERENCE.ID;
+                            idCheck = !line.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
                             if (val == 2) {
                                 if (!idCheck) {
@@ -7646,7 +7646,7 @@ public class VertexManager {
                             break;
                         case 3:
                             GData3 triangle = (GData3) g;
-                            idCheck = triangle.parent.ID != View.DUMMY_REFERENCE.ID;
+                            idCheck = !triangle.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
                             if (val == 3) {
                                 if (!idCheck) {
@@ -7656,7 +7656,7 @@ public class VertexManager {
                             break;
                         case 4:
                             GData4 quad = (GData4) g;
-                            idCheck = quad.parent.ID != View.DUMMY_REFERENCE.ID;
+                            idCheck = !quad.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
                             if (val == 4) {
                                 if (!idCheck) {
@@ -7666,7 +7666,7 @@ public class VertexManager {
                             break;
                         case 5:
                             GData5 condline = (GData5) g;
-                            idCheck = condline.parent.ID != View.DUMMY_REFERENCE.ID;
+                            idCheck = !condline.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
                             if (val == 4) {
                                 if (!idCheck) {
@@ -7684,7 +7684,7 @@ public class VertexManager {
             // 2. Object Based Selection
 
             for (GData2 line : selectedLines) {
-                if (line.parent.ID == View.DUMMY_REFERENCE.ID)
+                if (line.parent.equals(View.DUMMY_REFERENCE))
                     effSelectedLines.add(line);
                 Vertex[] verts = lines.get(line);
                 if (verts == null)
@@ -7694,7 +7694,7 @@ public class VertexManager {
                 }
             }
             for (GData3 triangle : selectedTriangles) {
-                if (triangle.parent.ID == View.DUMMY_REFERENCE.ID)
+                if (triangle.parent.equals(View.DUMMY_REFERENCE))
                     effSelectedTriangles.add(triangle);
                 Vertex[] verts = triangles.get(triangle);
                 if (verts == null)
@@ -7704,7 +7704,7 @@ public class VertexManager {
                 }
             }
             for (GData4 quad : selectedQuads) {
-                if (quad.parent.ID == View.DUMMY_REFERENCE.ID)
+                if (quad.parent.equals(View.DUMMY_REFERENCE))
                     effSelectedQuads.add(quad);
                 Vertex[] verts = quads.get(quad);
                 if (verts == null)
@@ -7714,7 +7714,7 @@ public class VertexManager {
                 }
             }
             for (GData5 condline : selectedCondlines) {
-                if (condline.parent.ID == View.DUMMY_REFERENCE.ID)
+                if (condline.parent.equals(View.DUMMY_REFERENCE))
                     effSelectedCondlines.add(condline);
                 Vertex[] verts = condlines.get(condline);
                 if (verts == null)
@@ -7760,7 +7760,7 @@ public class VertexManager {
                                 .parseLine(roundedString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile,
                                         false, new HashSet<String>(), false).get(0).getGraphicalData();
                     }
-                    if (subf.ID == linkedDatFile.getDrawChainTail().ID)
+                    if (subf.equals(linkedDatFile.getDrawChainTail()))
                         linkedDatFile.setDrawChainTail(roundedSubfile);
                     GData oldNext = subf.getNext();
                     GData oldBefore = subf.getBefore();
@@ -8624,7 +8624,7 @@ public class VertexManager {
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
                 GData bg = b.getGdata();
-                if (a.getGdata().ID == bg.ID && (bg.type() == 3 || bg.type() == 4)) {
+                if (a.getGdata().equals(bg) && (bg.type() == 3 || bg.type() == 4)) {
                     result.add(bg);
                 }
             }
@@ -8641,7 +8641,7 @@ public class VertexManager {
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
                 GData bg = b.getGdata();
-                if (a.getGdata().ID == bg.ID && (bg.type() == 3 || bg.type() == 4)) {
+                if (a.getGdata().equals(bg) && (bg.type() == 3 || bg.type() == 4)) {
                     result.add(bg);
                 }
             }
@@ -8654,7 +8654,7 @@ public class VertexManager {
         Set<VertexManifestation> m2 = vertexLinkedToPositionInFile.get(v2);
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
-                if (a.getGdata().ID == b.getGdata().ID) {
+                if (a.getGdata().equals(b.getGdata())) {
                     return true;
                 }
             }
@@ -8764,7 +8764,7 @@ public class VertexManager {
             return false;
         }
 
-        if (View.DUMMY_REFERENCE.ID != p1.ID && p1.ID == p2.ID) return true;
+        if (!p1.equals(View.DUMMY_REFERENCE) && p1.equals(p2)) return true;
 
         int co = v1.size();
         v1.removeAll(v2);
@@ -8778,7 +8778,7 @@ public class VertexManager {
         Set<VertexManifestation> m2 = vertexLinkedToPositionInFile.get(v2);
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
-                if (a.getGdata().ID == b.getGdata().ID && b.getGdata().type() == 2) {
+                if (a.getGdata().equals(b.getGdata()) && b.getGdata().type() == 2) {
                     if (!lineLinkedToVertices.containsKey(b.getGdata())) return null;
                     return (GData2) b.getGdata();
                 }
@@ -8794,7 +8794,7 @@ public class VertexManager {
             if (a.getPosition() > 2) continue;
             for (VertexManifestation b : m2) {
                 if (b.getPosition() > 2) continue;
-                if (a.getGdata().ID == b.getGdata().ID && b.getGdata().type() == 5) {
+                if (a.getGdata().equals(b.getGdata()) && b.getGdata().type() == 5) {
                     if (!lineLinkedToVertices.containsKey(b.getGdata())) return null;
                     return (GData5) b.getGdata();
                 }
@@ -9311,7 +9311,7 @@ public class VertexManager {
                                     if (cf[i].size() == 2 && cf[i].get(0).type() == 3 && cf[i].get(1).type() == 3) {
                                         GData3 tri1 = (GData3) cf[i].get(0);
                                         GData3 tri2 = (GData3) cf[i].get(1);
-                                        if (tri1.parent.ID == View.DUMMY_REFERENCE.ID && tri2.parent.ID == View.DUMMY_REFERENCE.ID && tri1.colourNumber == tri2.colourNumber && (tri1.colourNumber != -1 || tri1.r == tri2.r && tri1.g == tri2.g && tri1.b == tri2.b && tri1.a == tri2.a)) {
+                                        if (tri1.parent.equals(View.DUMMY_REFERENCE) && tri2.parent.equals(View.DUMMY_REFERENCE) && tri1.colourNumber == tri2.colourNumber && (tri1.colourNumber != -1 || tri1.r == tri2.r && tri1.g == tri2.g && tri1.b == tri2.b && tri1.a == tri2.a)) {
 
                                             HashSet<Vertex> tri1V = new HashSet<Vertex>();
                                             HashSet<Vertex> tri2V = new HashSet<Vertex>();
@@ -15175,6 +15175,6 @@ public class VertexManager {
             }
 
         }
-
+        validateState();
     }
 }
