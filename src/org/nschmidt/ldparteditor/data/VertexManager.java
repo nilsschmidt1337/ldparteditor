@@ -14277,6 +14277,9 @@ public class VertexManager {
         clearSelection();
 
         final BigDecimal o = sims.getOffset();
+        final BigDecimal p = sims.getPrecision();
+        final boolean needMerge = BigDecimal.ZERO.compareTo(p) != 0;
+        final int sp = sims.getSplitPlane();
 
         if (sims.isCutAcross()) {
             // First, do the cutting with intersector :)
@@ -14285,7 +14288,7 @@ public class VertexManager {
             final GData4 splitPlane;
             final BigDecimal a = new BigDecimal(100000000);
             final BigDecimal an = a.negate();
-            switch (sims.getSplitPlane()) {
+            switch (sp) {
             case IntersectorSettings.Z_PLUS:
             case IntersectorSettings.Z_MINUS:
                 splitPlane = new GData4(16, .5f, .5f, .5f, 1f, a, a, o, a, an, o, an, an, o, an, a, o, new Vector3d(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE), View.DUMMY_REFERENCE, linkedDatFile);
@@ -14323,7 +14326,8 @@ public class VertexManager {
                         verts = quads.get(g);
                         break;
                     case 5:
-                        verts = condlines.get(g);
+                        Vertex[] v2 = condlines.get(g);
+                        verts = new Vertex[]{v2[0], v2[1]};
                         break;
                     default:
                         continue;
@@ -14334,7 +14338,6 @@ public class VertexManager {
                     int currentValue = 0;
                     int neg = 0;
                     int pos = 0;
-                    final int sp = sims.getSplitPlane();
                     for (Vertex v : verts) {
                         switch (sp) {
                         case IntersectorSettings.Z_PLUS:
@@ -14447,10 +14450,35 @@ public class VertexManager {
             }
         }
 
-        // FIXME Needs implementation!
-
         // Merge vertices to the plane
-
+        if (needMerge) {
+            selectAll();
+            HashSet<Vertex> allVertices = new HashSet<Vertex>();
+            allVertices.addAll(selectedVertices);
+            clearSelection();
+            for (Vertex v : allVertices) {
+                switch (sp) {
+                case IntersectorSettings.Z_PLUS:
+                case IntersectorSettings.Z_MINUS:
+                    if (p.compareTo(v.Z.subtract(o).abs()) > 0) {
+                        changeVertexDirectFast(v, new Vertex(v.X, v.Y, o), true);
+                    }
+                    break;
+                case IntersectorSettings.Y_PLUS:
+                case IntersectorSettings.Y_MINUS:
+                    if (p.compareTo(v.Y.subtract(o).abs()) > 0) {
+                        changeVertexDirectFast(v, new Vertex(v.X, o, v.Z), true);
+                    }
+                    break;
+                case IntersectorSettings.X_PLUS:
+                case IntersectorSettings.X_MINUS:
+                    if (p.compareTo(v.X.subtract(o).abs()) > 0) {
+                        changeVertexDirectFast(v, new Vertex(o, v.Y, v.Z), true);
+                    }
+                    break;
+                }
+            }
+        }
 
         // Separate the data according the plane
 
@@ -14463,8 +14491,17 @@ public class VertexManager {
 
             for (GData g : selectedData) {
                 if (!lineLinkedToVertices.containsKey(g)) continue;
+                boolean forceMiddle = false;
                 final Vertex[] verts;
                 switch (g.type()) {
+                case 1:
+                    GData1 g1 = (GData1) g;
+                    String shortName = g1.shortName.trim();
+                    if (shortName.contains("stug") || shortName.contains("stud.dat") || shortName.contains("stud2.dat")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        forceMiddle = true;
+                    }
+                    verts = new Vertex[]{new Vertex(g1.accurateProductMatrix.M30, g1.accurateProductMatrix.M31, g1.accurateProductMatrix.M32)};
+                    break;
                 case 2:
                     verts = lines.get(g);
                     break;
@@ -14475,18 +14512,17 @@ public class VertexManager {
                     verts = quads.get(g);
                     break;
                 case 5:
-                    verts = condlines.get(g);
+                    Vertex[] v2 = condlines.get(g);
+                    verts = new Vertex[]{v2[0], v2[1]};
                     break;
                 default:
                     continue;
                 }
 
-
                 final int targetValue = verts.length;
                 int currentValue = 0;
                 int neg = 0;
                 int pos = 0;
-                final int sp = sims.getSplitPlane();
                 for (Vertex v : verts) {
                     switch (sp) {
                     case IntersectorSettings.Z_PLUS:
@@ -14562,7 +14598,7 @@ public class VertexManager {
                     }
                 }
                 currentValue = Math.max(neg, pos);
-                if (targetValue != currentValue) {
+                if (forceMiddle || targetValue != currentValue) {
                     between.add(g);
                 } else if (pos == targetValue) {
                     before.add(g);
@@ -14572,7 +14608,11 @@ public class VertexManager {
             }
         }
 
+        // Colourise
 
+        // Check symmetry
+
+        // FIXME Needs implementation!
 
 
 
