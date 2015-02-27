@@ -73,8 +73,8 @@ public class GTexture {
 
     final float EPSILON = 1f;
 
-    private Map<Integer, UV> uvCache = new HashMap<Integer, UV>();
-    private Set<Integer> cacheUsage = new HashSet<Integer>();
+    private Map<GData, UV> uvCache = new HashMap<GData, UV>();
+    private Set<GData> cacheUsage = new HashSet<GData>();
 
     public GTexture(TexType type, String texture, String glossmap, boolean useCubemap, Vector3f point1, Vector3f point2, Vector3f point3, float a, float b) {
         this.type = type;
@@ -108,7 +108,7 @@ public class GTexture {
         }
     }
 
-    public void calcUVcoords1(float x, float y, float z, GData1 parent, Integer ID) {
+    public void calcUVcoords1(float x, float y, float z, GData1 parent, GData ID) {
         calcUVcoords(x, y, z, parent, 0, ID);
     }
 
@@ -128,11 +128,11 @@ public class GTexture {
     private float[] tV = new float[4];
     private boolean cacheTriggered = false;
 
-    private void calcUVcoords(float x, float y, float z, GData1 parent, int i, Integer ID) {
+    private void calcUVcoords(float x, float y, float z, GData1 parent, int i, GData ID) {
         if (cacheTriggered)
             return;
         if (i == 0) {
-            if (uvCache.containsKey(ID)) {
+            if (ID != null && uvCache.containsKey(ID)) {
                 cacheUsage.add(ID);
                 cacheTriggered = true;
                 float[] cacheUV = uvCache.get(ID).getUV();
@@ -273,7 +273,7 @@ public class GTexture {
         return;
     }
 
-    public float[] getUVcoords(boolean isTriangle, Integer ID) {
+    public float[] getUVcoords(boolean isTriangle, GData ID) {
         final int size = isTriangle ? 3 : 4;
         float[] result = new float[8];
         if (cacheTriggered) {
@@ -387,7 +387,7 @@ public class GTexture {
             // u = .5f + tU[i] / a / 2f;
             // v = .5f - tV[i] / b / 2;
         }
-        if (!uvCache.containsKey(ID)) {
+        if (ID != null && !uvCache.containsKey(ID)) {
             uvCache.put(ID, new UV(tU, tV));
         }
         return result;
@@ -418,9 +418,9 @@ public class GTexture {
 
     public void refreshCache() {
         if (!cacheUsage.isEmpty()) {
-            Set<Integer> isolatedIDs = new HashSet<Integer>(uvCache.keySet());
+            Set<GData> isolatedIDs = new HashSet<GData>(uvCache.keySet());
             isolatedIDs.removeAll(cacheUsage);
-            for (Integer ID : isolatedIDs) {
+            for (GData ID : isolatedIDs) {
                 uvCache.remove(ID);
             }
             cacheUsage.clear();

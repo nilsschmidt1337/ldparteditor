@@ -249,7 +249,7 @@ public enum Rounder {
                         .parseLine(roundedString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false,
                                 new HashSet<String>(), false).get(0).getGraphicalData();
             }
-            if (subf.ID == datFile.getDrawChainTail().ID)
+            if (subf.equals(datFile.getDrawChainTail()))
                 datFile.setDrawChainTail(roundedSubfile);
             GData oldNext = subf.getNext();
             GData oldBefore = subf.getBefore();

@@ -13,7 +13,7 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.dialogs.symsplitter;
+package org.nschmidt.ldparteditor.dialogs.unificator;
 
 import java.math.BigDecimal;
 
@@ -32,7 +32,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 
 /**
- * The symsplitter dialog
+ * The unificator dialog
  * <p>
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
@@ -40,7 +40,7 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
  * @author nils
  *
  */
-class SymSplitterDesign extends Dialog {
+class UnificatorDesign extends Dialog {
 
     final SymSplitterSettings ss;
     final BigDecimalSpinner[] spn_offset = new BigDecimalSpinner[1];
@@ -55,7 +55,7 @@ class SymSplitterDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    SymSplitterDesign(Shell parentShell, SymSplitterSettings ss) {
+    UnificatorDesign(Shell parentShell, SymSplitterSettings ss) {
         super(parentShell);
         this.ss = ss;
     }
@@ -73,7 +73,7 @@ class SymSplitterDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("SymSplitter [Arbitrary Precision]"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText("Unificator [Arbitrary Precision]"); //$NON-NLS-1$ I18N Needs translation!
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
