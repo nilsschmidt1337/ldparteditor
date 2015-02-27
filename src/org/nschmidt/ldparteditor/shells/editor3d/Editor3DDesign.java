@@ -168,6 +168,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Lines2Pattern = new MenuItem[1];
     final MenuItem[] mntm_PathTruder = new MenuItem[1];
     final MenuItem[] mntm_SymSplitter = new MenuItem[1];
+    final MenuItem[] mntm_Unificator = new MenuItem[1];
 
     final Text[] txt_Search = new Text[1];
     final Button[] btn_ResetSearch = new Button[1];
@@ -722,6 +723,12 @@ class Editor3DDesign extends ApplicationWindow {
                         this.mntm_SymSplitter[0] = mntm_SymSplitter;
                         mntm_SymSplitter.setText("SymSplitter\tAlt+Y"); //$NON-NLS-1$ I18N
                         mntm_SymSplitter.setAccelerator(SWT.ALT | 'Y');
+                    }
+                    {
+                        MenuItem mntm_Unificator = new MenuItem(mnu_Tools, SWT.PUSH);
+                        this.mntm_Unificator[0] = mntm_Unificator;
+                        mntm_Unificator.setText("Unificator\tAlt+U"); //$NON-NLS-1$ I18N
+                        mntm_Unificator.setAccelerator(SWT.ALT | 'U');
                     }
                 }
             }
