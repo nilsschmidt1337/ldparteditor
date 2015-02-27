@@ -871,7 +871,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         GColour c = View.getLDConfigColour(View.getLDConfigIndex(r, g, b));
-        GColourType ct = c == null ? null : c.getType();
+        GColourType ct = c.getType();
         boolean useCubeMap = ct != null && ct.type().equals(GCType.CHROME);
         switch (a < 1f ? BFC.NOCERTIFY : GData.localWinding) {
         case BFC.CCW:
@@ -998,7 +998,7 @@ public final class GData3 extends GData {
     public void drawBFC_Textured(Composite3D c3d) {
         if (GData.globalDrawObjects) {
             GColour c = View.getLDConfigColour(View.getLDConfigIndex(r, g, b));
-            GColourType ct = c == null ? null : c.getType();
+            GColourType ct = c.getType();
             boolean useCubeMap = ct != null && ct.type().equals(GCType.CHROME);
             final OpenGLRenderer ren = c3d.getRenderer();
             if (GData.globalTextureStack.isEmpty()) {

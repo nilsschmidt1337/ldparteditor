@@ -190,9 +190,10 @@ public class SyntaxFormatter {
             colourValue = Integer.parseInt(arg);
             if (colourValue < 0) {
                 setErrorStyle(range);
-            } else if ((colour = View.getLDConfigColour(colourValue)) == null) {
+            } else if (!View.hasLDConfigColour(colourValue)) {
                 setErrorStyle(range);
             } else {
+                colour = View.getLDConfigColour(colourValue);
                 final int r = (int) (colour.getR() * 255);
                 final int g = (int) (colour.getG() * 255);
                 final int b = (int) (colour.getB() * 255);

@@ -333,10 +333,12 @@ public enum TexMapParser {
                 cValue.set(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f);
                 break;
             default:
-                GColour colour = View.getLDConfigColour(colourValue);
-                if (colour == null)
+                if (View.hasLDConfigColour(colourValue)) {
+                    GColour colour = View.getLDConfigColour(colourValue);
+                    cValue.set(colour);
+                } else {
                     return null;
-                cValue.set(colour);
+                }
                 break;
             }
         } catch (NumberFormatException nfe) {

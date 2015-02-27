@@ -17,6 +17,8 @@ package org.nschmidt.ldparteditor.data;
 
 import java.io.Serializable;
 
+import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+
 /**
  * @author nils
  *
@@ -154,5 +156,19 @@ public class GColour implements Serializable {
 
     public void setType(GColourType type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder colourBuilder = new StringBuilder();
+        if (colourNumber == -1) {
+            colourBuilder.append("0x2"); //$NON-NLS-1$
+            colourBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
+            colourBuilder.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
+            colourBuilder.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
+        } else {
+            colourBuilder.append(colourNumber);
+        }
+        return colourBuilder.toString();
     }
 }
