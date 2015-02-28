@@ -2665,6 +2665,22 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        // MARK Merge, split...
+
+        mntm_Flip[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.flipSelection();
+                        return;
+                    }
+                }
+            }
+        });
+
         // MARK Background PNG
         btn_PngFocus[0].addSelectionListener(new SelectionAdapter() {
             @Override

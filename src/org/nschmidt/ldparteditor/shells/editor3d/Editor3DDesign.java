@@ -84,6 +84,8 @@ class Editor3DDesign extends ApplicationWindow {
     private Menu mnu_Manipulator;
     /** The menu of the tools */
     private Menu mnu_Tools;
+    /** The menu of merge, split and other functions */
+    private Menu mnu_Merge;
     /** The menu of the select features */
     private Menu mnu_Select;
 
@@ -169,6 +171,8 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_PathTruder = new MenuItem[1];
     final MenuItem[] mntm_SymSplitter = new MenuItem[1];
     final MenuItem[] mntm_Unificator = new MenuItem[1];
+
+    final MenuItem[] mntm_Flip = new MenuItem[1];
 
     final Text[] txt_Search = new Text[1];
     final Button[] btn_ResetSearch = new Button[1];
@@ -635,23 +639,22 @@ class Editor3DDesign extends ApplicationWindow {
                 final Button btn_MergeNSplit = new Button(toolItem_MiscClick, SWT.PUSH);
                 btn_MergeNSplit.setToolTipText("Merge/Split…"); //$NON-NLS-1$ I18N
                 btn_MergeNSplit.setText("Merge/Split…"); //$NON-NLS-1$ I18N
-                this.mnu_Tools = new Menu(this.getShell(), SWT.POP_UP);
+                this.mnu_Merge = new Menu(this.getShell(), SWT.POP_UP);
                 btn_MergeNSplit.addSelectionListener(new SelectionAdapter() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Point loc = btn_MergeNSplit.getLocation();
                         Rectangle rect = btn_MergeNSplit.getBounds();
                         Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
-                        mnu_Tools.setLocation(getShell().getDisplay().map(btn_MergeNSplit.getParent(), null, mLoc));
-                        mnu_Tools.setVisible(true);
+                        mnu_Merge.setLocation(getShell().getDisplay().map(btn_MergeNSplit.getParent(), null, mLoc));
+                        mnu_Merge.setVisible(true);
                     }
                 });
                 {
                     {
-                        MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_Edger2[0] = mntm_Edger2;
-                        mntm_Edger2.setText("Edger2\tAlt+E"); //$NON-NLS-1$ I18N
-                        mntm_Edger2.setAccelerator(SWT.ALT | 'E');
+                        MenuItem mntm_Flip = new MenuItem(mnu_Merge, SWT.PUSH);
+                        this.mntm_Flip[0] = mntm_Flip;
+                        mntm_Flip.setText("Flip"); //$NON-NLS-1$ I18N
                     }
                 }
             }
