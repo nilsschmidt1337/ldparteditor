@@ -15346,7 +15346,7 @@ public class VertexManager {
                             HashMap<Vertex, HashSet<Vertex>> unifyGroups = new HashMap<Vertex, HashSet<Vertex>>();
                             HashSet<Vertex> inGroup = new HashSet<Vertex>();
 
-                            for (Vertex v1 : fileVertices) {
+                            for (Vertex v1 : subfileVertices) {
                                 HashSet<Vertex> group = new HashSet<Vertex>();
                                 for (Vertex v2 : fileVertices) {
                                     if (j > i && !inGroup.contains(v2)) {
@@ -15355,7 +15355,6 @@ public class VertexManager {
                                         if (Vector3d.distSquare(v3d1, v3d2).compareTo(st) < 0) {
                                             group.add(v2);
                                             inGroup.add(v2);
-                                            break;
                                         }
                                     }
                                     j++;
@@ -15370,7 +15369,9 @@ public class VertexManager {
                             for (Vertex key : keySet) {
                                 HashSet<Vertex> group = unifyGroups.get(key);
                                 if (group.size() > 0) {
-                                    mergeTargets.put(key, group.iterator().next());
+                                    for (Vertex gv : group) {
+                                        mergeTargets.put(gv, key);
+                                    }
                                 }
                             }
                         }
