@@ -158,8 +158,21 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Delete = new MenuItem[1];
     final MenuItem[] mntm_CopyToUnofficial = new MenuItem[1];
 
+    final Button[] btn_Select2 = new Button[1];
+
     final MenuItem[] mntm_SelectAll = new MenuItem[1];
+    final MenuItem[] mntm_SelectAllWithColours = new MenuItem[1];
+    final MenuItem[] mntm_SelectAllVisible = new MenuItem[1];
+    final MenuItem[] mntm_SelectAllVisibleWithColours = new MenuItem[1];
     final MenuItem[] mntm_SelectNone = new MenuItem[1];
+    final MenuItem[] mntm_SelectConnected = new MenuItem[1];
+    final MenuItem[] mntm_SelectTouching = new MenuItem[1];
+    final MenuItem[] mntm_WithSameOrientation = new MenuItem[1];
+    final MenuItem[] mntm_WithWholeSubfiles = new MenuItem[1];
+    final MenuItem[] mntm_WithSameColour = new MenuItem[1];
+    final MenuItem[] mntm_WithHiddenData = new MenuItem[1];
+    final MenuItem[] mntm_ExceptSubfiles = new MenuItem[1];
+    final MenuItem[] mntm_StopAtEdges = new MenuItem[1];
 
     final MenuItem[] mntm_Edger2 = new MenuItem[1];
     final MenuItem[] mntm_Txt2Dat = new MenuItem[1];
@@ -607,17 +620,14 @@ class Editor3DDesign extends ApplicationWindow {
             }
             {
                 final Button btn_Select = new Button(toolItem_MiscClick, SWT.PUSH);
+                this.btn_Select2[0] = btn_Select;
                 btn_Select.setToolTipText("Select…"); //$NON-NLS-1$ I18N
                 btn_Select.setText("Select…"); //$NON-NLS-1$ I18N
                 this.mnu_Select = new Menu(this.getShell(), SWT.POP_UP);
                 btn_Select.addSelectionListener(new SelectionAdapter() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
-                        Point loc = btn_Select.getLocation();
-                        Rectangle rect = btn_Select.getBounds();
-                        Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
-                        mnu_Select.setLocation(getShell().getDisplay().map(btn_Select.getParent(), null, mLoc));
-                        mnu_Select.setVisible(true);
+                        showSelectMenu();
                     }
                 });
                 {
@@ -632,6 +642,74 @@ class Editor3DDesign extends ApplicationWindow {
                         this.mntm_SelectNone[0] = mntm_SelectNone;
                         mntm_SelectNone.setText("…None.\tShift+Ctrl+A"); //$NON-NLS-1$ I18N
                         mntm_SelectNone.setAccelerator(SWT.CTRL | SWT.SHIFT | 'A');
+                    }
+                    @SuppressWarnings("unused")
+                    final MenuItem mntmSeparator1 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                    {
+                        MenuItem mntm_SelectAllVisible = new MenuItem(mnu_Select, SWT.PUSH);
+                        this.mntm_SelectAllVisible[0] = mntm_SelectAllVisible;
+                        mntm_SelectAllVisible.setText("…All Shown."); //$NON-NLS-1$ I18N
+                    }
+                    {
+                        MenuItem mntm_SelectAllWithColours = new MenuItem(mnu_Select, SWT.PUSH);
+                        this.mntm_SelectAllWithColours[0] = mntm_SelectAllWithColours;
+                        mntm_SelectAllWithColours.setText("…All with Same Colours."); //$NON-NLS-1$ I18N
+                        mntm_SelectAllWithColours.setAccelerator(SWT.CTRL | 'A');
+                    }
+                    {
+                        MenuItem mntm_SelectAllVisibleWithColours = new MenuItem(mnu_Select, SWT.PUSH);
+                        this.mntm_SelectAllVisibleWithColours[0] = mntm_SelectAllVisibleWithColours;
+                        mntm_SelectAllVisibleWithColours.setText("…All Shown with Same Colours."); //$NON-NLS-1$ I18N
+                    }
+                    @SuppressWarnings("unused")
+                    final MenuItem mntmSeparator2 = new MenuItem(mnu_Select, SWT.PUSH);
+                    {
+                        MenuItem mntm_SelectConnected = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_SelectConnected[0] = mntm_SelectConnected;
+                        mntm_SelectConnected.setText("…Connected…"); //$NON-NLS-1$ I18N
+                    }
+                    {
+                        MenuItem mntm_SelectTouching = new MenuItem(mnu_Select, SWT.PUSH);
+                        this.mntm_SelectTouching[0] = mntm_SelectTouching;
+                        mntm_SelectTouching.setText("…Touching…"); //$NON-NLS-1$ I18N
+                    }
+                    {
+                        MenuItem mntm_WithSameColour = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_WithSameColour[0] = mntm_WithSameColour;
+                        mntm_WithSameColour.setText("…with Same Colour."); //$NON-NLS-1$ I18N
+                    }
+                    {
+                        MenuItem mntm_WithSameOrientation = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_WithSameOrientation[0] = mntm_WithSameOrientation;
+                        mntm_WithSameOrientation.setText("…with Same Orientation*."); //$NON-NLS-1$ I18N
+                    }
+                    {
+                        MenuItem mntm_WithHiddenData = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_WithHiddenData[0] = mntm_WithHiddenData;
+                        mntm_WithHiddenData.setText("…with Hidden Data."); //$NON-NLS-1$ I18N
+                        mntm_WithHiddenData.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
+                    }
+                    {
+                        MenuItem mntm_ExceptSubfiles = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_ExceptSubfiles[0] = mntm_ExceptSubfiles;
+                        mntm_ExceptSubfiles.setText("…except Subfile Content."); //$NON-NLS-1$ I18N
+                    }
+                    {
+                        MenuItem mntm_WithWholeSubfiles = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_WithWholeSubfiles[0] = mntm_WithWholeSubfiles;
+                        mntm_WithWholeSubfiles.setText("…with Whole Subfile Selection."); //$NON-NLS-1$ I18N
+                    }
+                    {
+                        MenuItem mntm_StopAtEdges = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_StopAtEdges[0] = mntm_StopAtEdges;
+                        mntm_StopAtEdges.setText("…and Stop Selection at Edges."); //$NON-NLS-1$ I18N
+                    }
+                    @SuppressWarnings("unused")
+                    final MenuItem mntmSeparator3 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                    {
+                        MenuItem mntm_needsThreshold = new MenuItem(mnu_Select, SWT.PUSH);
+                        mntm_needsThreshold.setText("*needs a threshold."); //$NON-NLS-1$ I18N
+                        mntm_needsThreshold.setEnabled(false);
                     }
                 }
             }
@@ -1726,5 +1804,13 @@ class Editor3DDesign extends ApplicationWindow {
 
     public static void setSashForm(SashForm sashForm) {
         Editor3DDesign.sashForm = sashForm;
+    }
+
+    void showSelectMenu() {
+        Point loc = btn_Select2[0].getLocation();
+        Rectangle rect = btn_Select2[0].getBounds();
+        Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
+        mnu_Select.setLocation(getShell().getDisplay().map(btn_Select2[0].getParent(), null, mLoc));
+        mnu_Select.setVisible(true);
     }
 }

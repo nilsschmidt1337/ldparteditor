@@ -2450,7 +2450,46 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        vm.selectAll();
+                        vm.selectAll(true);
+                        return;
+                    }
+                }
+            }
+        });
+        mntm_SelectAllVisible[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.selectAll(false);
+                        return;
+                    }
+                }
+            }
+        });
+        mntm_SelectAllWithColours[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.selectAllWithSameColours(true);
+                        return;
+                    }
+                }
+            }
+        });
+        mntm_SelectAllVisibleWithColours[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.selectAllWithSameColours(false);
                         return;
                     }
                 }
@@ -2467,6 +2506,75 @@ public class Editor3DWindow extends Editor3DDesign {
                         return;
                     }
                 }
+            }
+        });
+
+        mntm_WithSameColour[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSelectMenu();
+                    }
+                });
+            }
+        });
+
+        mntm_WithSameOrientation[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSelectMenu();
+                    }
+                });
+            }
+        });
+        mntm_WithHiddenData[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSelectMenu();
+                    }
+                });
+            }
+        });
+        mntm_WithWholeSubfiles[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSelectMenu();
+                    }
+                });
+            }
+        });
+        mntm_ExceptSubfiles[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        mntm_WithWholeSubfiles[0].setEnabled(!mntm_ExceptSubfiles[0].getSelection());
+                        showSelectMenu();
+                    }
+                });
+            }
+        });
+        mntm_StopAtEdges[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSelectMenu();
+                    }
+                });
             }
         });
 
