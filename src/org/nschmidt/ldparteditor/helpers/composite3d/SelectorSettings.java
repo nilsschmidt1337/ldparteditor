@@ -30,10 +30,12 @@ public class SelectorSettings {
     private boolean edgeStop = false;
     private boolean colour = false;
     private boolean orientation = false;
+    private boolean distance = false;
     private boolean hidden = false;
     private boolean noSubfiles = false;
     private boolean wholeSubfiles = false;
     private BigDecimal angle = BigDecimal.ZERO;
+    private BigDecimal equalDistance = new BigDecimal("0.0001"); //$NON-NLS-1$
     public int getScope() {
         return scope;
     }
@@ -81,5 +83,17 @@ public class SelectorSettings {
     }
     public void setAngle(BigDecimal angle) {
         this.angle = angle;
+    }
+    public BigDecimal getEqualDistance() {
+        return equalDistance;
+    }
+    public void setEqualDistance(BigDecimal equalDistance) {
+        this.equalDistance = equalDistance;
+    }
+    public boolean isDistance() {
+        return distance;
+    }
+    public void setDistance(boolean distance) {
+        this.distance = distance;
     }
 }

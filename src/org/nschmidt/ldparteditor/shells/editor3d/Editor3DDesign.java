@@ -169,6 +169,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_SelectConnected = new MenuItem[1];
     final MenuItem[] mntm_SelectTouching = new MenuItem[1];
     final MenuItem[] mntm_WithSameOrientation = new MenuItem[1];
+    final MenuItem[] mntm_WithAccuracy = new MenuItem[1];
     final MenuItem[] mntm_WithWholeSubfiles = new MenuItem[1];
     final MenuItem[] mntm_WithSameColour = new MenuItem[1];
     final MenuItem[] mntm_WithHiddenData = new MenuItem[1];
@@ -692,9 +693,14 @@ class Editor3DDesign extends ApplicationWindow {
                         mntm_WithSameOrientation.setText("…  with Same Orientation¹."); //$NON-NLS-1$ I18N
                     }
                     {
+                        MenuItem mntm_WithAccuracy = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_WithAccuracy[0] = mntm_WithAccuracy;
+                        mntm_WithAccuracy.setText("…  with Specified Accuracy¹."); //$NON-NLS-1$ I18N
+                    }
+                    {
                         MenuItem mntm_WithHiddenData = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_WithHiddenData[0] = mntm_WithHiddenData;
-                        mntm_WithHiddenData.setText("…  with Hidden Data."); //$NON-NLS-1$ I18N
+                        mntm_WithHiddenData.setText("…  what is Hidden."); //$NON-NLS-1$ I18N
                         mntm_WithHiddenData.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
                     }
                     {

@@ -2564,6 +2564,41 @@ public class Editor3DWindow extends Editor3DDesign {
                 });
             }
         });
+
+        mntm_WithAccuracy[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        mntm_SelectEverything[0].setEnabled(
+                                mntm_WithHiddenData[0].getSelection() ||
+                                mntm_WithSameColour[0].getSelection() ||
+                                mntm_WithSameOrientation[0].getSelection() ||
+                                mntm_ExceptSubfiles[0].getSelection()
+                                );
+                        if (mntm_WithAccuracy[0].getSelection()) {
+
+                            new ValueDialog(getShell(), "Set accuracy:", "Threshold in LDU, range from 0 to 1000.\nControls the maximum distance between two points that the process will consider matching") { //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+                                @Override
+                                public void initializeSpinner() {
+                                    this.spn_Value[0].setMinimum(new BigDecimal("0")); //$NON-NLS-1$
+                                    this.spn_Value[0].setMaximum(new BigDecimal("1000")); //$NON-NLS-1$
+                                    this.spn_Value[0].setValue(sels.getEqualDistance());
+                                }
+
+                                @Override
+                                public void applyValue() {
+                                    sels.setEqualDistance(this.spn_Value[0].getValue());
+                                }
+                            }.open();
+                        }
+                        showSelectMenu();
+                    }
+                });
+            }
+        });
         mntm_WithHiddenData[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -2630,6 +2665,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         sels.setScope(SelectorSettings.EVERYTHING);
+                        loadSelectorSettings();
                         vm.selector(sels);
                     }
                 }
@@ -2644,6 +2680,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         sels.setScope(SelectorSettings.CONNECTED);
+                        loadSelectorSettings();
                         vm.selector(sels);
                     }
                 }
@@ -2658,6 +2695,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         sels.setScope(SelectorSettings.TOUCHING);
+                        loadSelectorSettings();
                         vm.selector(sels);
                     }
                 }
@@ -4514,4 +4552,14 @@ public class Editor3DWindow extends Editor3DDesign {
         this.searchWindow = searchWindow;
     }
 
+
+    private void loadSelectorSettings()  {
+        sels.setColour(mntm_WithSameColour[0].getSelection());
+        sels.setEdgeStop(mntm_StopAtEdges[0].getSelection());
+        sels.setHidden(mntm_WithHiddenData[0].getSelection());
+        sels.setNoSubfiles(mntm_ExceptSubfiles[0].getSelection());
+        sels.setOrientation(mntm_WithSameOrientation[0].getSelection());
+        sels.setDistance(mntm_WithAccuracy[0].getSelection());
+        sels.setWholeSubfiles(mntm_WithWholeSubfiles[0].getSelection());
+    }
 }
