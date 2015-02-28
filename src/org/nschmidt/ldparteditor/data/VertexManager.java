@@ -7832,16 +7832,40 @@ public class VertexManager {
         return lines.containsKey(g) || triangles.containsKey(g) || quads.containsKey(g) || condlines.containsKey(g);
     }
 
-    public synchronized void selectAll() {
+    public synchronized void selectAll(boolean includeHidden) {
         clearSelection();
 
-        selectedVertices.addAll(vertexLinkedToPositionInFile.keySet());
+        if (includeHidden) {
 
-        selectedLines.addAll(lines.keySet());
-        selectedTriangles.addAll(triangles.keySet());
-        selectedQuads.addAll(quads.keySet());
-        selectedCondlines.addAll(condlines.keySet());
-        selectedSubfiles.addAll(vertexCountInSubfile.keySet());
+            selectedVertices.addAll(vertexLinkedToPositionInFile.keySet());
+
+            selectedLines.addAll(lines.keySet());
+            selectedTriangles.addAll(triangles.keySet());
+            selectedQuads.addAll(quads.keySet());
+            selectedCondlines.addAll(condlines.keySet());
+            selectedSubfiles.addAll(vertexCountInSubfile.keySet());
+
+        } else {
+
+            for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
+                if (!hiddenVertices.contains(v)) selectedVertices.add(v);
+            }
+            for (GData1 g : vertexCountInSubfile.keySet()) {
+                if (!hiddenData.contains(g)) selectedSubfiles.add(g);
+            }
+            for (GData2 g : lines.keySet()) {
+                if (!hiddenData.contains(g)) selectedLines.add(g);
+            }
+            for (GData3 g : triangles.keySet()) {
+                if (!hiddenData.contains(g)) selectedTriangles.add(g);
+            }
+            for (GData4 g : quads.keySet()) {
+                if (!hiddenData.contains(g)) selectedQuads.add(g);
+            }
+            for (GData5 g : condlines.keySet()) {
+                if (!hiddenData.contains(g)) selectedCondlines.add(g);
+            }
+        }
 
         selectedData.addAll(selectedLines);
         selectedData.addAll(selectedTriangles);
@@ -14320,7 +14344,7 @@ public class VertexManager {
 
             // Now we have to select the data which is cut by the split plane
 
-            selectAll();
+            selectAll(true);
 
             {
                 HashSet<GData> dataToCut = new HashSet<GData>();
@@ -14476,7 +14500,7 @@ public class VertexManager {
 
         // Merge vertices to the plane
         if (needMerge) {
-            selectAll();
+            selectAll(true);
             HashSet<Vertex> allVertices = new HashSet<Vertex>();
             allVertices.addAll(selectedVertices);
             clearSelection();
@@ -14506,7 +14530,7 @@ public class VertexManager {
 
         // Separate the data according the plane and detect invalid data (identical vertices)
 
-        selectAll();
+        selectAll(true);
 
         {
 
@@ -14958,7 +14982,7 @@ public class VertexManager {
 
                 if (sims.getHideLevel() > 0) {
 
-                    selectAll();
+                    selectAll(true);
 
                     before.clear();
                     between.clear();
@@ -15177,7 +15201,7 @@ public class VertexManager {
         final BigDecimal st = us.getSubvertexThreshold().multiply(us.getSubvertexThreshold());
 
         if (us.getScope() == 0) {
-            selectAll();
+            selectAll(true);
         } else {
             for (GData gd : selectedData) {
                 Vertex[] verts = null;
@@ -15649,5 +15673,104 @@ public class VertexManager {
         selectedData.addAll(selectedCondlines);
 
         validateState();
+    }
+
+    public void selectAllWithSameColours(boolean includeHidden) {
+
+        final Set<GColour> allColours = new HashSet<GColour>();
+
+        final Set<GData1> effSelectedSubfiles = new HashSet<GData1>();
+        final Set<GData2> effSelectedLines = new HashSet<GData2>();
+        final Set<GData3> effSelectedTriangles = new HashSet<GData3>();
+        final Set<GData4> effSelectedQuads = new HashSet<GData4>();
+        final Set<GData5> effSelectedCondlines = new HashSet<GData5>();
+
+        for (GData1 g : selectedSubfiles) {
+            allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
+        }
+        for (GData2 g : selectedLines) {
+            allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
+        }
+        for (GData3 g : selectedTriangles) {
+            allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
+        }
+        for (GData4 g : selectedQuads) {
+            allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
+        }
+        for (GData5 g : selectedCondlines) {
+            allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
+        }
+
+        clearSelection();
+
+        for (GData1 g : vertexCountInSubfile.keySet()) {
+            if (!includeHidden && hiddenData.contains(g)) continue;
+            if (allColours.contains(new GColour(g.colourNumber, g.r, g.g, g.b, g.a))) {
+                effSelectedSubfiles.add(g);
+            }
+        }
+
+        for (GData1 subf : effSelectedSubfiles) {
+            selectedSubfiles.add(subf);
+            Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+            for (VertexInfo vertexInfo : vis) {
+                selectedVertices.add(vertexInfo.getVertex());
+                GData g = vertexInfo.getLinkedData();
+                if (!includeHidden && hiddenData.contains(g)) continue;
+                switch (g.type()) {
+                case 2:
+                    effSelectedLines.add((GData2) g);
+                    break;
+                case 3:
+                    effSelectedTriangles.add((GData3) g);
+                    break;
+                case 4:
+                    effSelectedQuads.add((GData4) g);
+                    break;
+                case 5:
+                    effSelectedCondlines.add((GData5) g);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+
+        for (GData2 g : lines.keySet()) {
+            if (!includeHidden && hiddenData.contains(g)) continue;
+            if (allColours.contains(new GColour(g.colourNumber, g.r, g.g, g.b, g.a))) {
+                effSelectedLines.add(g);
+            }
+        }
+        for (GData3 g : triangles.keySet()) {
+            if (!includeHidden && hiddenData.contains(g)) continue;
+            if (allColours.contains(new GColour(g.colourNumber, g.r, g.g, g.b, g.a))) {
+                effSelectedTriangles.add(g);
+            }
+        }
+        for (GData4 g : quads.keySet()) {
+            if (!includeHidden && hiddenData.contains(g)) continue;
+            if (allColours.contains(new GColour(g.colourNumber, g.r, g.g, g.b, g.a))) {
+                effSelectedQuads.add(g);
+            }
+        }
+        for (GData5 g : condlines.keySet()) {
+            if (!includeHidden && hiddenData.contains(g)) continue;
+            if (allColours.contains(new GColour(g.colourNumber, g.r, g.g, g.b, g.a))) {
+                effSelectedCondlines.add(g);
+            }
+        }
+
+        selectedLines.addAll(effSelectedLines);
+        selectedTriangles.addAll(effSelectedTriangles);
+        selectedQuads.addAll(effSelectedQuads);
+        selectedCondlines.addAll(effSelectedCondlines);
+        selectedSubfiles.addAll(effSelectedSubfiles);
+
+        selectedData.addAll(selectedLines);
+        selectedData.addAll(selectedTriangles);
+        selectedData.addAll(selectedQuads);
+        selectedData.addAll(selectedCondlines);
+        selectedData.addAll(selectedSubfiles);
     }
 }
