@@ -15179,8 +15179,102 @@ public class VertexManager {
         validateState();
     }
 
-    public void unificator(UnificatorSettings us) {
+    public void unificator(final UnificatorSettings us) {
         // FIXME Auto-generated method stub
+        if (linkedDatFile.isReadOnly()) return;
+
+        if (us.getScope() == 0) {
+            selectAll();
+        } else {
+            for (GData gd : selectedData) {
+                Vertex[] verts = null;
+                switch (gd.type()) {
+                case 2:
+                    verts = lines.get(gd);
+                    break;
+                case 3:
+                    verts = triangles.get(gd);
+                    break;
+                case 4:
+                    verts = quads.get(gd);
+                    break;
+                case 5:
+                    verts = condlines.get(gd);
+                    break;
+                default:
+                    continue;
+                }
+                for (Vertex v : verts) {
+                    selectedVertices.add(v);
+                }
+            }
+        }
+
+        final HashSet<Vertex> selectedVerts = new HashSet<Vertex>();
+        selectedVerts.addAll(selectedVertices);
+
+        clearSelection();
+
+        try
+        {
+            new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress()
+            {
+                @Override
+                public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+                {
+                    monitor.beginTask("Running Unificator (this may take some time)", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+
+                    monitor.subTask("Sorting out vertices..."); //$NON-NLS-1$ I18N
+
+
+                    HashSet<Vertex> subfileVertices = new HashSet<Vertex>();
+                    HashSet<Vertex> fileVertices = new HashSet<Vertex>();
+
+                    for (Vertex v : selectedVerts) {
+                        {
+                            // Do not add points for condlines in subparts.
+                            Set<VertexManifestation> mani = vertexLinkedToPositionInFile.get(v);
+                            int controlPointCondlineInSubfile = 0;
+                            for (VertexManifestation vm : mani) {
+                                GData gd = vm.getGdata();
+                                if (!lineLinkedToVertices.containsKey(gd) && gd.type() == 5 && vm.getPosition() > 1) {
+                                    controlPointCondlineInSubfile++;
+                                }
+                            }
+                            if (controlPointCondlineInSubfile == mani.size()) {
+                                continue;
+                            }
+                        }
+
+                        if (vertexLinkedToSubfile.containsKey(v)) subfileVertices.add(v);
+
+                        {
+                            Set<VertexManifestation> mani = vertexLinkedToPositionInFile.get(v);
+                            for (VertexManifestation vm : mani) {
+                                GData gd = vm.getGdata();
+                                if (lineLinkedToVertices.containsKey(gd)) {
+                                    fileVertices.add(v);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+
+                    if (us.getSnapOn() == 0 || us.getSnapOn() == 2) {
+                        monitor.subTask("Unify vertices..."); //$NON-NLS-1$ I18N
+
+                    }
+
+                    if (us.getSnapOn() == 1 || us.getSnapOn() == 2) {
+                        monitor.subTask("Snap vertices to subfiles..."); //$NON-NLS-1$ I18N
+
+                    }
+                }
+            });
+        } catch (InvocationTargetException consumed) {
+        } catch (InterruptedException consumed) {
+        }
 
 
         validateState();

@@ -23,15 +23,15 @@ import java.math.BigDecimal;
  */
 public class UnificatorSettings {
 
-    private BigDecimal offset = BigDecimal.ZERO;
-    private BigDecimal precision = BigDecimal.ZERO;
-    private int splitPlane = 0;
+    private BigDecimal vertexThreshold = new BigDecimal("0.005"); //$NON-NLS-1$
+    private BigDecimal subvertexThreshold = new BigDecimal("0.005"); //$NON-NLS-1$
+    private int snapOn = 0;
     private int scope = 0;
     public BigDecimal getVertexThreshold() {
-        return offset;
+        return vertexThreshold;
     }
-    public void setVertexThreshold(BigDecimal offset) {
-        this.offset = offset;
+    public void setVertexThreshold(BigDecimal t) {
+        this.vertexThreshold = t;
     }
     public int getScope() {
         return scope;
@@ -40,15 +40,15 @@ public class UnificatorSettings {
         this.scope = scope;
     }
     public int getSnapOn() {
-        return splitPlane;
+        return snapOn;
     }
-    public void setSnapOn(int plane) {
-        this.splitPlane = plane;
+    public void setSnapOn(int snapOn) {
+        this.snapOn = snapOn;
     }
     public BigDecimal getSubvertexThreshold() {
-        return precision;
+        return subvertexThreshold;
     }
-    public void setSubvertexThreshold(BigDecimal precision) {
-        this.precision = precision;
+    public void setSubvertexThreshold(BigDecimal t) {
+        this.subvertexThreshold = t;
     }
 }

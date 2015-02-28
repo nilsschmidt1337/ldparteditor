@@ -135,7 +135,6 @@ public class SplashScreen extends ApplicationWindow {
                 // Initialize startup tasks
                 ProgressHelper.queueTask(I18n.SPLASH_CheckPlugIn);
                 ProgressHelper.queueTask(I18n.SPLASH_CheckView);
-                ProgressHelper.queueTask("Load 2D Mesh Reducing Rules"); //$NON-NLS-1$ I18N
                 ProgressHelper.queueTask(I18n.SPLASH_LoadWorkbench);
 
                 // Check if there is the /plugin folder and create it if not
@@ -159,8 +158,6 @@ public class SplashScreen extends ApplicationWindow {
                  * Return with a warning threadReturn[0] =
                  * ReturnType.MKDIR_READ_ERROR; return; }
                  */
-
-                // Load the Mesh Reducing Rule-Set for 2D space
 
                 // Now load the workbench
                 dequeueTask();

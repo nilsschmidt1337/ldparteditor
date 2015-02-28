@@ -75,17 +75,17 @@ class UnificatorDesign extends Dialog {
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_hint = new Label(cmp_container, SWT.NONE);
-        lbl_hint.setText("\nVertices unification threshold (default 0.005):"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_hint.setText("\nVertex unification threshold (default 0.005):"); //$NON-NLS-1$ I18N Needs translation!
 
         BigDecimalSpinner spn_offset = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_vertexThreshold [0] = spn_offset;
         spn_offset.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_offset.setMaximum(new BigDecimal(100000000));
-        spn_offset.setMinimum(new BigDecimal(-100000000));
+        spn_offset.setMaximum(new BigDecimal(1000));
+        spn_offset.setMinimum(new BigDecimal(0));
         spn_offset.setValue(us.getVertexThreshold());
 
         Label lbl_precision = new Label(cmp_container, SWT.NONE);
-        lbl_precision.setText("Vertex unification threshold to the plane (0, default):"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_precision.setText("Vertex snapping distance (default 0.005) onto subpart/primitive vertices\n(except optional line control points):"); //$NON-NLS-1$ I18N Needs translation!
 
         BigDecimalSpinner spn_precision = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_subfileThreshold [0] = spn_offset;
