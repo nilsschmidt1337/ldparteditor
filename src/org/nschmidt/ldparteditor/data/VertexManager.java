@@ -15461,6 +15461,11 @@ public class VertexManager {
 
         if (linkedDatFile.isReadOnly()) return;
 
+        final Set<GData2> newLines = new HashSet<GData2>();
+        final Set<GData3> newTriangles = new HashSet<GData3>();
+        final Set<GData4> newQuads = new HashSet<GData4>();
+        final Set<GData5> newCondlines = new HashSet<GData5>();
+
         final Set<GData2> effSelectedLines = new HashSet<GData2>();
         final Set<GData3> effSelectedTriangles = new HashSet<GData3>();
         final Set<GData4> effSelectedQuads = new HashSet<GData4>();
@@ -15501,7 +15506,7 @@ public class VertexManager {
             for (GData3 s1 : effSelectedTriangles) {
                 for (GData3 s2 : effSelectedTriangles) {
                     if (j > i && !surfsToIgnore.contains(s2)) {
-                        if (s1.colourNumber == s2.colourNumber && s1.r == s2.r && s1.g == s2.g && s1.b == s2.b && hasSameEdge(s1, s2)) {
+                        if (s1.colourNumber != 16 && s1.colourNumber == s2.colourNumber && s1.r == s2.r && s1.g == s2.g && s1.b == s2.b && hasSameEdge(s1, s2)) {
                             surfsToIgnore.add(s1);
                             surfsToIgnore.add(s2);
                             trianglePair.put(s1, s2);
@@ -15566,8 +15571,14 @@ public class VertexManager {
                         }
                         if (fourth == null) continue;
 
-                        linkedDatFile.insertAfter(s1, new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, first, second, third, s1.parent, linkedDatFile));
-                        linkedDatFile.insertAfter(s2, new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, third, fourth, first, s1.parent, linkedDatFile));
+                        GData3 n1 = new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, first, second, third, s1.parent, linkedDatFile);
+                        GData3 n2 = new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, third, fourth, first, s1.parent, linkedDatFile);
+
+                        linkedDatFile.insertAfter(s1, n1);
+                        linkedDatFile.insertAfter(s2, n2);
+
+                        newTriangles.add(n1);
+                        newTriangles.add(n2);
 
                         trisToDelete2.add(s1);
                         trisToDelete2.add(s2);
@@ -15587,26 +15598,34 @@ public class VertexManager {
         }
 
         for (GData2 g : effSelectedLines) {
-            linkedDatFile.insertAfter(g, new GData2(g.colourNumber, g.r, g.g, g.b, g.a, g.X2, g.Y2, g.Z2, g.X1, g.Y1, g.Z1, g.parent, linkedDatFile));
+            GData2 n = new GData2(g.colourNumber, g.r, g.g, g.b, g.a, g.X2, g.Y2, g.Z2, g.X1, g.Y1, g.Z1, g.parent, linkedDatFile);
+            newLines.add(n);
+            linkedDatFile.insertAfter(g, n);
             linesToDelete2.add(g);
         }
 
         for (GData3 g : effSelectedTriangles) {
-            linkedDatFile.insertAfter(g, new GData3(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X2, g.Y2, g.Z2), g.parent, linkedDatFile));
+            GData3 n = new GData3(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X2, g.Y2, g.Z2), g.parent, linkedDatFile);
+            newTriangles.add(n);
+            linkedDatFile.insertAfter(g, n);
             trisToDelete2.add(g);
         }
 
         for (GData4 g : effSelectedQuads) {
-            linkedDatFile.insertAfter(g, new GData4(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X4, g.Y4, g.Z4), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X2, g.Y2, g.Z2), new Vertex(g.X3, g.Y3, g.Z3), g.parent, linkedDatFile));
+            GData4 n = new GData4(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X4, g.Y4, g.Z4), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X2, g.Y2, g.Z2), new Vertex(g.X3, g.Y3, g.Z3), g.parent, linkedDatFile);
+            newQuads.add(n);
+            linkedDatFile.insertAfter(g, n);
             quadsToDelete2.add(g);
         }
 
         for (GData5 g : effSelectedCondlines) {
-            linkedDatFile.insertAfter(g, new GData5(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X2, g.Y2, g.Z2), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X4, g.Y4, g.Z4), g.parent, linkedDatFile));
+            GData5 n = new GData5(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X2, g.Y2, g.Z2), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X4, g.Y4, g.Z4), g.parent, linkedDatFile);
+            newCondlines.add(n);
+            linkedDatFile.insertAfter(g, n);
             clinesToDelete2.add(g);
         }
 
-        setModified(true);
+        setModified(newLines.size() + newTriangles.size() + newQuads.size() + newCondlines.size() > 0);
 
         selectedLines.addAll(linesToDelete2);
         selectedTriangles.addAll(trisToDelete2);
@@ -15617,6 +15636,17 @@ public class VertexManager {
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
         delete(false);
+
+        clearSelection();
+
+        selectedLines.addAll(newLines);
+        selectedTriangles.addAll(newTriangles);
+        selectedQuads.addAll(newQuads);
+        selectedCondlines.addAll(newCondlines);
+        selectedData.addAll(selectedLines);
+        selectedData.addAll(selectedTriangles);
+        selectedData.addAll(selectedQuads);
+        selectedData.addAll(selectedCondlines);
 
         validateState();
     }
