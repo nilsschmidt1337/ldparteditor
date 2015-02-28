@@ -15847,6 +15847,8 @@ public class VertexManager {
                         float[] n = dataLinkedToNormalCACHE.get(g);
                         allNormals.add(new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2])));
                     } else {
+                        Vector4f n = new Vector4f(g.xn, g.yn, g.zn, 1f);
+                        Matrix4f.transform(g.parent.productMatrix, n, n);
                         allNormals.add(new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn)));
                     }
                 }
@@ -15856,6 +15858,8 @@ public class VertexManager {
                         float[] n = dataLinkedToNormalCACHE.get(g);
                         allNormals.add(new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2])));
                     } else {
+                        Vector4f n = new Vector4f(g.xn, g.yn, g.zn, 1f);
+                        Matrix4f.transform(g.parent.productMatrix, n, n);
                         allNormals.add(new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn)));
                     }
                 }
