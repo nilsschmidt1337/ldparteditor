@@ -15782,8 +15782,6 @@ public class VertexManager {
         final Set<Vector3d> allNormals = new HashSet<Vector3d>();
         final HashMap<Vertex, HashSet<Vertex>> adjaencyByPrecision = new HashMap<Vertex, HashSet<Vertex>>();
 
-        BigDecimal oldAngle = ss.getAngle();
-
         // Get near vertices
 
         if (ss.isDistance() && ss.getEqualDistance().compareTo(BigDecimal.ZERO) != 0) {
@@ -15843,14 +15841,12 @@ public class VertexManager {
             fillVertexNormalCache(linkedDatFile.getDrawChainStart());
 
             if (ss.getScope() == SelectorSettings.EVERYTHING) {
-                boolean hasNoBFCCERTIFY = false;
                 for (GData3 g : triangles.keySet()) {
                     if (ss.isNoSubfiles() && !lineLinkedToVertices.containsKey(g)) continue;
                     if (dataLinkedToNormalCACHE.containsKey(g)) {
                         float[] n = dataLinkedToNormalCACHE.get(g);
                         allNormals.add(new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2])));
                     } else {
-                        hasNoBFCCERTIFY = true;
                         allNormals.add(new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn)));
                     }
                 }
@@ -15860,15 +15856,10 @@ public class VertexManager {
                         float[] n = dataLinkedToNormalCACHE.get(g);
                         allNormals.add(new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2])));
                     } else {
-                        hasNoBFCCERTIFY = true;
                         allNormals.add(new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn)));
                     }
                 }
-
-                if (hasNoBFCCERTIFY) {
-                    double angle = ss.getAngle().doubleValue() % 180.0;
-                    ss.setAngle(new BigDecimal(-angle));
-                }
+            } else {
 
             }
         }
@@ -15911,7 +15902,6 @@ public class VertexManager {
             }
         }
 
-        ss.setAngle(oldAngle);
         clearVertexNormalCache();
 
         // FIXME Extend selection to whole subfiles
@@ -15956,11 +15946,47 @@ public class VertexManager {
 
         if (adjacentTo == null) {
             // SelectorSettings.EVERYTHING
+
+            // Check normal orientation
             switch (what.type()) {
             case 3:
-                break;
+            {
+                Vector3d n1;
+                if (dataLinkedToNormalCACHE.containsKey(what)) {
+                    float[] n = dataLinkedToNormalCACHE.get(what);
+                    n1 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
+                } else {
+                    GData3 g = (GData3) what;
+                    n1 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                }
+                for (Vector3d n2 : allNormals) {
+                    double angle2 = Vector3d.angle(n1, n2);
+                    if (angle2 > 90.0) angle2 = 90.0 - angle2;
+                    if (angle2 > angle) {
+                        return false;
+                    }
+                }
+            }
+            break;
             case 4:
-                break;
+            {
+                Vector3d n1;
+                if (dataLinkedToNormalCACHE.containsKey(what)) {
+                    float[] n = dataLinkedToNormalCACHE.get(what);
+                    n1 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
+                } else {
+                    GData4 g = (GData4) what;
+                    n1 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                }
+                for (Vector3d n2 : allNormals) {
+                    double angle2 = Vector3d.angle(n1, n2);
+                    if (angle2 > 90.0) angle2 = 90.0 - angle2;
+                    if (angle2 > angle) {
+                        return false;
+                    }
+                }
+            }
+            break;
             default:
                 // Check subfile content
                 return !(ss.isNoSubfiles() && (!lineLinkedToVertices.containsKey(what) || what.type() == 1) || ss.isHidden() && !hiddenData.contains(what));
