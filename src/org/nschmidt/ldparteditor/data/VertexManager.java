@@ -6801,7 +6801,7 @@ public class VertexManager {
                     Vertex[] verts = lines.get(line);
                     if (verts == null)
                         continue;
-                    effSelectedLines.add(new GData2(verts[0], verts[1], View.DUMMY_REFERENCE, new GColour(line.colourNumber, line.r, line.g, line.b, line.a)));
+                    effSelectedLines.add(new GData2(verts[0], verts[1], line.parent, new GColour(line.colourNumber, line.r, line.g, line.b, line.a)));
                 }
                 Vertex[] verts = lines.get(line);
                 if (verts == null)
@@ -6817,7 +6817,7 @@ public class VertexManager {
                     Vertex[] verts = triangles.get(triangle);
                     if (verts == null)
                         continue;
-                    effSelectedTriangles.add(new GData3(verts[0], verts[1], verts[2], View.DUMMY_REFERENCE, new GColour(triangle.colourNumber, triangle.r, triangle.g, triangle.b, triangle.a)));
+                    effSelectedTriangles.add(new GData3(verts[0], verts[1], verts[2], triangle.parent, new GColour(triangle.colourNumber, triangle.r, triangle.g, triangle.b, triangle.a)));
                 }
                 Vertex[] verts = triangles.get(triangle);
                 if (verts == null)
@@ -6833,7 +6833,7 @@ public class VertexManager {
                     Vertex[] verts = quads.get(quad);
                     if (verts == null)
                         continue;
-                    effSelectedQuads.add(new GData4(verts[0], verts[1], verts[2], verts[3], View.DUMMY_REFERENCE, new GColour(quad.colourNumber, quad.r, quad.g, quad.b, quad.a)));
+                    effSelectedQuads.add(new GData4(verts[0], verts[1], verts[2], verts[3], quad.parent, new GColour(quad.colourNumber, quad.r, quad.g, quad.b, quad.a)));
                 }
                 Vertex[] verts = quads.get(quad);
                 if (verts == null)
@@ -6849,7 +6849,7 @@ public class VertexManager {
                     Vertex[] verts = condlines.get(condline);
                     if (verts == null)
                         continue;
-                    effSelectedCondlines.add(new GData5(verts[0], verts[1], verts[2], verts[3], View.DUMMY_REFERENCE,
+                    effSelectedCondlines.add(new GData5(verts[0], verts[1], verts[2], verts[3], condline.parent,
                             new GColour(condline.colourNumber, condline.r, condline.g, condline.b, condline.a)));
                 }
                 Vertex[] verts = condlines.get(condline);
@@ -15877,6 +15877,14 @@ public class VertexManager {
 
         if (ss.getScope() == SelectorSettings.EVERYTHING) {
             clearSelection();
+
+            for (GData1 g : vertexCountInSubfile.keySet()) {
+                if (canSelect(null, g, ss, allNormals, allColours, angle)) {
+                    selectedSubfiles.add(g);
+                    selectedData.add(g);
+                }
+            }
+
             for (GData2 g : lines.keySet()) {
                 if (canSelect(null, g, ss, allNormals, allColours, angle)) {
                     selectedLines.add(g);
@@ -15914,30 +15922,36 @@ public class VertexManager {
 
     private boolean canSelect(GData adjacentTo, GData what, SelectorSettings ss, Set<Vector3d> allNormals, Set<GColour> allColours, double angle) {
 
-        GColour myColour;
-        switch (what.type()) {
-        case 2:
-            GData2 g2 = (GData2) what;
-            myColour = new GColour(g2.colourNumber, g2.r, g2.g, g2.b, g2.a);
-            break;
-        case 3:
-            GData3 g3 = (GData3) what;
-            myColour = new GColour(g3.colourNumber, g3.r, g3.g, g3.b, g3.a);
-            break;
-        case 4:
-            GData4 g4 = (GData4) what;
-            myColour = new GColour(g4.colourNumber, g4.r, g4.g, g4.b, g4.a);
-            break;
-        case 5:
-            GData5 g5 = (GData5) what;
-            myColour = new GColour(g5.colourNumber, g5.r, g5.g, g5.b, g5.a);
-            break;
-        default:
-            return false;
-        }
-        // Check Colour
-        if (!allColours.contains(myColour)) {
-            return false;
+        if (ss.isColour()) {
+            GColour myColour;
+            switch (what.type()) {
+            case 1:
+                GData1 g1 = (GData1) what;
+                myColour = new GColour(g1.colourNumber, g1.r, g1.g, g1.b, g1.a);
+                break;
+            case 2:
+                GData2 g2 = (GData2) what;
+                myColour = new GColour(g2.colourNumber, g2.r, g2.g, g2.b, g2.a);
+                break;
+            case 3:
+                GData3 g3 = (GData3) what;
+                myColour = new GColour(g3.colourNumber, g3.r, g3.g, g3.b, g3.a);
+                break;
+            case 4:
+                GData4 g4 = (GData4) what;
+                myColour = new GColour(g4.colourNumber, g4.r, g4.g, g4.b, g4.a);
+                break;
+            case 5:
+                GData5 g5 = (GData5) what;
+                myColour = new GColour(g5.colourNumber, g5.r, g5.g, g5.b, g5.a);
+                break;
+            default:
+                return false;
+            }
+            // Check Colour
+            if (!allColours.contains(myColour)) {
+                return false;
+            }
         }
 
         if (adjacentTo == null) {
@@ -15949,13 +15963,13 @@ public class VertexManager {
                 break;
             default:
                 // Check subfile content
-                return !(ss.isNoSubfiles() && !lineLinkedToVertices.containsKey(what));
+                return !(ss.isNoSubfiles() && (!lineLinkedToVertices.containsKey(what) || what.type() == 1) || ss.isHidden() && !hiddenData.contains(what));
             }
         } else {
             // FIXME Auto-generated method stub
         }
 
         // Check subfile content
-        return !(ss.isNoSubfiles() && !lineLinkedToVertices.containsKey(what));
+        return !(ss.isNoSubfiles() && (!lineLinkedToVertices.containsKey(what) || what.type() == 1) || ss.isHidden() && !hiddenData.contains(what));
     }
 }
