@@ -15183,6 +15183,9 @@ public class VertexManager {
         // FIXME Auto-generated method stub
         if (linkedDatFile.isReadOnly()) return;
 
+        final BigDecimal vt = us.getVertexThreshold().multiply(us.getVertexThreshold());
+        final BigDecimal st = us.getSubvertexThreshold().multiply(us.getSubvertexThreshold());
+
         if (us.getScope() == 0) {
             selectAll();
         } else {
@@ -15226,29 +15229,35 @@ public class VertexManager {
 
                     monitor.subTask("Sorting out vertices..."); //$NON-NLS-1$ I18N
 
-
                     HashSet<Vertex> subfileVertices = new HashSet<Vertex>();
                     HashSet<Vertex> fileVertices = new HashSet<Vertex>();
 
                     for (Vertex v : selectedVerts) {
-                        {
+
+                        boolean isFileVertex = false;
+
+                        if (vertexLinkedToSubfile.containsKey(v)) {
                             // Do not add points for condlines in subparts.
                             Set<VertexManifestation> mani = vertexLinkedToPositionInFile.get(v);
                             int controlPointCondlineInSubfile = 0;
                             for (VertexManifestation vm : mani) {
                                 GData gd = vm.getGdata();
-                                if (!lineLinkedToVertices.containsKey(gd) && gd.type() == 5 && vm.getPosition() > 1) {
+                                if (lineLinkedToVertices.containsKey(gd)) {
+                                    // Better performance, since we can detect file vertices here!
+                                    fileVertices.add(v);
+                                    isFileVertex = true;
+                                    break;
+                                } else if (gd.type() == 5 && vm.getPosition() > 1) {
                                     controlPointCondlineInSubfile++;
                                 }
                             }
                             if (controlPointCondlineInSubfile == mani.size()) {
                                 continue;
                             }
+                            subfileVertices.add(v);
                         }
 
-                        if (vertexLinkedToSubfile.containsKey(v)) subfileVertices.add(v);
-
-                        {
+                        if (!isFileVertex) {
                             Set<VertexManifestation> mani = vertexLinkedToPositionInFile.get(v);
                             for (VertexManifestation vm : mani) {
                                 GData gd = vm.getGdata();
@@ -15263,12 +15272,115 @@ public class VertexManager {
 
                     if (us.getSnapOn() == 0 || us.getSnapOn() == 2) {
                         monitor.subTask("Unify vertices..."); //$NON-NLS-1$ I18N
+                        int i = 0;
+                        int j = 0;
 
+                        HashMap<Vertex, Vertex> mergeTargets = new HashMap<Vertex, Vertex>();
+                        {
+                            HashMap<Vertex, HashSet<Vertex>> unifyGroups = new HashMap<Vertex, HashSet<Vertex>>();
+                            HashSet<Vertex> inGroup = new HashSet<Vertex>();
+
+                            for (Vertex v1 : fileVertices) {
+                                HashSet<Vertex> group = new HashSet<Vertex>();
+                                group.add(v1);
+                                for (Vertex v2 : fileVertices) {
+                                    if (j > i && !inGroup.contains(v2)) {
+                                        Vector3d v3d1 = new Vector3d(v1);
+                                        Vector3d v3d2 = new Vector3d(v2);
+                                        if (Vector3d.distSquare(v3d1, v3d2).compareTo(vt) < 0) {
+                                            group.add(v2);
+                                            inGroup.add(v2);
+                                        }
+                                    }
+                                    j++;
+                                }
+                                unifyGroups.put(v1, group);
+                                i++;
+                            }
+
+                            fileVertices.clear();
+
+                            Set<Vertex> keySet = unifyGroups.keySet();
+                            for (Vertex key : keySet) {
+                                HashSet<Vertex> group = unifyGroups.get(key);
+                                if (group.size() > 1) {
+                                    BigDecimal X = BigDecimal.ZERO;
+                                    BigDecimal Y = BigDecimal.ZERO;
+                                    BigDecimal Z = BigDecimal.ZERO;
+                                    BigDecimal gc = new BigDecimal(group.size());
+                                    for (Vertex gv : group) {
+                                        X = X.add(gv.X);
+                                        Y = Y.add(gv.Y);
+                                        Z = Z.add(gv.Z);
+                                    }
+                                    X = X.divide(gc, Threshold.mc);
+                                    Y = Y.divide(gc, Threshold.mc);
+                                    Z = Z.divide(gc, Threshold.mc);
+                                    Vertex newVertex = new Vertex(X, Y, Z);
+                                    fileVertices.add(newVertex);
+                                    for (Vertex gv : group) {
+                                        mergeTargets.put(gv, newVertex);
+                                    }
+                                } else {
+                                    fileVertices.add(key);
+                                }
+                            }
+                        }
+
+                        Set<Vertex> keySet = mergeTargets.keySet();
+                        for (Vertex key : keySet) {
+                            Vertex target = mergeTargets.get(key);
+                            changeVertexDirectFast(key, target, true);
+                            selectedVertices.add(target);
+                        }
                     }
 
                     if (us.getSnapOn() == 1 || us.getSnapOn() == 2) {
                         monitor.subTask("Snap vertices to subfiles..."); //$NON-NLS-1$ I18N
 
+                        int i = 0;
+                        int j = 0;
+
+                        HashMap<Vertex, Vertex> mergeTargets = new HashMap<Vertex, Vertex>();
+                        {
+                            HashMap<Vertex, HashSet<Vertex>> unifyGroups = new HashMap<Vertex, HashSet<Vertex>>();
+                            HashSet<Vertex> inGroup = new HashSet<Vertex>();
+
+                            for (Vertex v1 : fileVertices) {
+                                HashSet<Vertex> group = new HashSet<Vertex>();
+                                for (Vertex v2 : fileVertices) {
+                                    if (j > i && !inGroup.contains(v2)) {
+                                        Vector3d v3d1 = new Vector3d(v1);
+                                        Vector3d v3d2 = new Vector3d(v2);
+                                        if (Vector3d.distSquare(v3d1, v3d2).compareTo(st) < 0) {
+                                            group.add(v2);
+                                            inGroup.add(v2);
+                                            break;
+                                        }
+                                    }
+                                    j++;
+                                }
+                                unifyGroups.put(v1, group);
+                                i++;
+                            }
+
+                            fileVertices.clear();
+
+                            Set<Vertex> keySet = unifyGroups.keySet();
+                            for (Vertex key : keySet) {
+                                HashSet<Vertex> group = unifyGroups.get(key);
+                                if (group.size() > 0) {
+                                    mergeTargets.put(key, group.iterator().next());
+                                }
+                            }
+                        }
+
+                        Set<Vertex> keySet = mergeTargets.keySet();
+                        for (Vertex key : keySet) {
+                            Vertex target = mergeTargets.get(key);
+                            changeVertexDirectFast(key, target, true);
+                            selectedVertices.add(target);
+                        }
                     }
                 }
             });
@@ -15276,6 +15388,10 @@ public class VertexManager {
         } catch (InterruptedException consumed) {
         }
 
+        // Round selection to 6 decimal places
+
+        NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
+        roundSelection(6, 10, true);
 
         validateState();
     }

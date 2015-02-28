@@ -92,7 +92,7 @@ class SymSplitterDesign extends Dialog {
         lbl_precision.setText("Vertex unification threshold to the plane (0, default):"); //$NON-NLS-1$ I18N Needs translation!
 
         BigDecimalSpinner spn_precision = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_precision [0] = spn_offset;
+        this.spn_precision [0] = spn_precision;
         spn_precision.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spn_precision.setMaximum(new BigDecimal(1000));
         spn_precision.setMinimum(new BigDecimal(0));

@@ -77,22 +77,22 @@ class UnificatorDesign extends Dialog {
         Label lbl_hint = new Label(cmp_container, SWT.NONE);
         lbl_hint.setText("\nVertex unification threshold (default 0.005):"); //$NON-NLS-1$ I18N Needs translation!
 
-        BigDecimalSpinner spn_offset = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_vertexThreshold [0] = spn_offset;
-        spn_offset.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_offset.setMaximum(new BigDecimal(1000));
-        spn_offset.setMinimum(new BigDecimal(0));
-        spn_offset.setValue(us.getVertexThreshold());
+        BigDecimalSpinner spn_vertexThreshold = new BigDecimalSpinner(cmp_container, SWT.NONE);
+        this.spn_vertexThreshold [0] = spn_vertexThreshold;
+        spn_vertexThreshold.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spn_vertexThreshold.setMaximum(new BigDecimal(1000));
+        spn_vertexThreshold.setMinimum(new BigDecimal(0));
+        spn_vertexThreshold.setValue(us.getVertexThreshold());
 
         Label lbl_precision = new Label(cmp_container, SWT.NONE);
         lbl_precision.setText("Vertex snapping distance (default 0.005) onto subpart/primitive vertices\n(except optional line control points):"); //$NON-NLS-1$ I18N Needs translation!
 
-        BigDecimalSpinner spn_precision = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_subfileThreshold [0] = spn_offset;
-        spn_precision.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_precision.setMaximum(new BigDecimal(1000));
-        spn_precision.setMinimum(new BigDecimal(0));
-        spn_precision.setValue(us.getSubvertexThreshold());
+        BigDecimalSpinner spn_subfileThreshold = new BigDecimalSpinner(cmp_container, SWT.NONE);
+        this.spn_subfileThreshold [0] = spn_subfileThreshold;
+        spn_subfileThreshold.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spn_subfileThreshold.setMaximum(new BigDecimal(1000));
+        spn_subfileThreshold.setMinimum(new BigDecimal(0));
+        spn_subfileThreshold.setValue(us.getSubvertexThreshold());
 
         Label lbl_splitPlane = new Label(cmp_container, SWT.NONE);
         lbl_splitPlane.setText("Snap on..."); //$NON-NLS-1$ I18N Needs translation!
