@@ -1,0 +1,85 @@
+/* MIT - License
+
+Copyright (c) 2012 - this year, Nils Schmidt
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+package org.nschmidt.ldparteditor.helpers.composite3d;
+
+import java.math.BigDecimal;
+
+/**
+ * @author nils
+ *
+ */
+public class SelectorSettings {
+
+    public final static int EVERYTHING = 0;
+    public final static int CONNECTED = 1;
+    public final static int TOUCHING = 2;
+    private int scope = 0;
+    private boolean edgeStop = false;
+    private boolean colour = false;
+    private boolean orientation = false;
+    private boolean hidden = false;
+    private boolean noSubfiles = false;
+    private boolean wholeSubfiles = false;
+    private BigDecimal angle = BigDecimal.ZERO;
+    public int getScope() {
+        return scope;
+    }
+    public void setScope(int scope) {
+        this.scope = scope;
+    }
+    public boolean isEdgeStop() {
+        return edgeStop;
+    }
+    public void setEdgeStop(boolean edgeStop) {
+        this.edgeStop = edgeStop;
+    }
+    public boolean isColour() {
+        return colour;
+    }
+    public void setColour(boolean colour) {
+        this.colour = colour;
+    }
+    public boolean isOrientation() {
+        return orientation;
+    }
+    public void setOrientation(boolean orientation) {
+        this.orientation = orientation;
+    }
+    public boolean isHidden() {
+        return hidden;
+    }
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+    public boolean isNoSubfiles() {
+        return noSubfiles;
+    }
+    public void setNoSubfiles(boolean noSubfiles) {
+        this.noSubfiles = noSubfiles;
+    }
+    public boolean isWholeSubfiles() {
+        return wholeSubfiles;
+    }
+    public void setWholeSubfiles(boolean wholeSubfiles) {
+        this.wholeSubfiles = wholeSubfiles;
+    }
+    public BigDecimal getAngle() {
+        return angle;
+    }
+    public void setAngle(BigDecimal angle) {
+        this.angle = angle;
+    }
+}

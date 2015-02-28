@@ -63,6 +63,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.IsecalcSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.UnificatorSettings;
@@ -14325,16 +14326,16 @@ public class VertexManager {
             final BigDecimal a = new BigDecimal(100000000);
             final BigDecimal an = a.negate();
             switch (sp) {
-            case IntersectorSettings.Z_PLUS:
-            case IntersectorSettings.Z_MINUS:
+            case SymSplitterSettings.Z_PLUS:
+            case SymSplitterSettings.Z_MINUS:
                 splitPlane = new GData4(16, .5f, .5f, .5f, 1f, a, a, o, a, an, o, an, an, o, an, a, o, new Vector3d(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE), View.DUMMY_REFERENCE, linkedDatFile);
                 break;
-            case IntersectorSettings.Y_PLUS:
-            case IntersectorSettings.Y_MINUS:
+            case SymSplitterSettings.Y_PLUS:
+            case SymSplitterSettings.Y_MINUS:
                 splitPlane = new GData4(16, .5f, .5f, .5f, 1f, a, o, a, a, o, an, an, o, an, an, o, a, new Vector3d(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO), View.DUMMY_REFERENCE, linkedDatFile);
                 break;
-            case IntersectorSettings.X_PLUS:
-            case IntersectorSettings.X_MINUS:
+            case SymSplitterSettings.X_PLUS:
+            case SymSplitterSettings.X_MINUS:
                 splitPlane = new GData4(16, .5f, .5f, .5f, 1f, o, a, a, o, a, an, o, an, an, o, an, a, new Vector3d(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO), View.DUMMY_REFERENCE, linkedDatFile);
                 break;
             default:
@@ -14376,42 +14377,42 @@ public class VertexManager {
                     int pos = 0;
                     for (Vertex v : verts) {
                         switch (sp) {
-                        case IntersectorSettings.Z_PLUS:
+                        case SymSplitterSettings.Z_PLUS:
                             if (v.Z.compareTo(o) > 0) {
                                 pos++;
                             } else {
                                 neg++;
                             }
                             break;
-                        case IntersectorSettings.Z_MINUS:
+                        case SymSplitterSettings.Z_MINUS:
                             if (v.Z.compareTo(o) > 0) {
                                 neg++;
                             } else {
                                 pos++;
                             }
                             break;
-                        case IntersectorSettings.Y_PLUS:
+                        case SymSplitterSettings.Y_PLUS:
                             if (v.Y.compareTo(o) > 0) {
                                 pos++;
                             } else {
                                 neg++;
                             }
                             break;
-                        case IntersectorSettings.Y_MINUS:
+                        case SymSplitterSettings.Y_MINUS:
                             if (v.Y.compareTo(o) > 0) {
                                 neg++;
                             } else {
                                 pos++;
                             }
                             break;
-                        case IntersectorSettings.X_PLUS:
+                        case SymSplitterSettings.X_PLUS:
                             if (v.X.compareTo(o) > 0) {
                                 pos++;
                             } else {
                                 neg++;
                             }
                             break;
-                        case IntersectorSettings.X_MINUS:
+                        case SymSplitterSettings.X_MINUS:
                             if (v.X.compareTo(o) > 0) {
                                 neg++;
                             } else {
@@ -14506,20 +14507,20 @@ public class VertexManager {
             clearSelection();
             for (Vertex v : allVertices) {
                 switch (sp) {
-                case IntersectorSettings.Z_PLUS:
-                case IntersectorSettings.Z_MINUS:
+                case SymSplitterSettings.Z_PLUS:
+                case SymSplitterSettings.Z_MINUS:
                     if (p.compareTo(v.Z.subtract(o).abs()) > 0) {
                         wasModified = changeVertexDirectFast(v, new Vertex(v.X, v.Y, o), true) || wasModified;
                     }
                     break;
-                case IntersectorSettings.Y_PLUS:
-                case IntersectorSettings.Y_MINUS:
+                case SymSplitterSettings.Y_PLUS:
+                case SymSplitterSettings.Y_MINUS:
                     if (p.compareTo(v.Y.subtract(o).abs()) > 0) {
                         wasModified = changeVertexDirectFast(v, new Vertex(v.X, o, v.Z), true) || wasModified;
                     }
                     break;
-                case IntersectorSettings.X_PLUS:
-                case IntersectorSettings.X_MINUS:
+                case SymSplitterSettings.X_PLUS:
+                case SymSplitterSettings.X_MINUS:
                     if (p.compareTo(v.X.subtract(o).abs()) > 0) {
                         wasModified = changeVertexDirectFast(v, new Vertex(o, v.Y, v.Z), true) || wasModified;
                     }
@@ -14617,7 +14618,7 @@ public class VertexManager {
                 int pos = 0;
                 for (Vertex v : verts) {
                     switch (sp) {
-                    case IntersectorSettings.Z_PLUS:
+                    case SymSplitterSettings.Z_PLUS:
                         switch (v.Z.compareTo(o)) {
                         case -1:
                             neg++;
@@ -14631,7 +14632,7 @@ public class VertexManager {
                             break;
                         }
                         break;
-                    case IntersectorSettings.Z_MINUS:
+                    case SymSplitterSettings.Z_MINUS:
                         switch (v.Z.compareTo(o)) {
                         case -1:
                             pos++;
@@ -14645,7 +14646,7 @@ public class VertexManager {
                             break;
                         }
                         break;
-                    case IntersectorSettings.Y_PLUS:
+                    case SymSplitterSettings.Y_PLUS:
                         switch (v.Y.compareTo(o)) {
                         case -1:
                             neg++;
@@ -14659,7 +14660,7 @@ public class VertexManager {
                             break;
                         }
                         break;
-                    case IntersectorSettings.Y_MINUS:
+                    case SymSplitterSettings.Y_MINUS:
                         switch (v.Y.compareTo(o)) {
                         case -1:
                             pos++;
@@ -14673,7 +14674,7 @@ public class VertexManager {
                             break;
                         }
                         break;
-                    case IntersectorSettings.X_PLUS:
+                    case SymSplitterSettings.X_PLUS:
                         switch (v.X.compareTo(o)) {
                         case -1:
                             neg++;
@@ -14687,7 +14688,7 @@ public class VertexManager {
                             break;
                         }
                         break;
-                    case IntersectorSettings.X_MINUS:
+                    case SymSplitterSettings.X_MINUS:
                         switch (v.X.compareTo(o)) {
                         case -1:
                             pos++;
@@ -14806,8 +14807,8 @@ public class VertexManager {
                                     }
 
                                     switch (sp) {
-                                    case IntersectorSettings.Z_PLUS:
-                                    case IntersectorSettings.Z_MINUS:
+                                    case SymSplitterSettings.Z_PLUS:
+                                    case SymSplitterSettings.Z_MINUS:
                                         for (int i = 0; i < verts.length - 1; i++) {
                                             int j = (i + 1) % verts.length;
                                             BigDecimal di = verts[i].Z.subtract(o);
@@ -14820,8 +14821,8 @@ public class VertexManager {
                                             }
                                         }
                                         break;
-                                    case IntersectorSettings.Y_PLUS:
-                                    case IntersectorSettings.Y_MINUS:
+                                    case SymSplitterSettings.Y_PLUS:
+                                    case SymSplitterSettings.Y_MINUS:
                                         for (int i = 0; i < verts.length - 1; i++) {
                                             int j = (i + 1) % verts.length;
                                             BigDecimal di = verts[i].Y.subtract(o);
@@ -14834,8 +14835,8 @@ public class VertexManager {
                                             }
                                         }
                                         break;
-                                    case IntersectorSettings.X_PLUS:
-                                    case IntersectorSettings.X_MINUS:
+                                    case SymSplitterSettings.X_PLUS:
+                                    case SymSplitterSettings.X_MINUS:
                                         for (int i = 0; i < verts.length - 1; i++) {
                                             int j = (i + 1) % verts.length;
                                             BigDecimal di = verts[i].X.subtract(o);
@@ -15052,7 +15053,7 @@ public class VertexManager {
                         int pos = 0;
                         for (Vertex v : verts) {
                             switch (sp) {
-                            case IntersectorSettings.Z_PLUS:
+                            case SymSplitterSettings.Z_PLUS:
                                 switch (v.Z.compareTo(o)) {
                                 case -1:
                                     neg++;
@@ -15066,7 +15067,7 @@ public class VertexManager {
                                     break;
                                 }
                                 break;
-                            case IntersectorSettings.Z_MINUS:
+                            case SymSplitterSettings.Z_MINUS:
                                 switch (v.Z.compareTo(o)) {
                                 case -1:
                                     pos++;
@@ -15080,7 +15081,7 @@ public class VertexManager {
                                     break;
                                 }
                                 break;
-                            case IntersectorSettings.Y_PLUS:
+                            case SymSplitterSettings.Y_PLUS:
                                 switch (v.Y.compareTo(o)) {
                                 case -1:
                                     neg++;
@@ -15094,7 +15095,7 @@ public class VertexManager {
                                     break;
                                 }
                                 break;
-                            case IntersectorSettings.Y_MINUS:
+                            case SymSplitterSettings.Y_MINUS:
                                 switch (v.Y.compareTo(o)) {
                                 case -1:
                                     pos++;
@@ -15108,7 +15109,7 @@ public class VertexManager {
                                     break;
                                 }
                                 break;
-                            case IntersectorSettings.X_PLUS:
+                            case SymSplitterSettings.X_PLUS:
                                 switch (v.X.compareTo(o)) {
                                 case -1:
                                     neg++;
@@ -15122,7 +15123,7 @@ public class VertexManager {
                                     break;
                                 }
                                 break;
-                            case IntersectorSettings.X_MINUS:
+                            case SymSplitterSettings.X_MINUS:
                                 switch (v.X.compareTo(o)) {
                                 case -1:
                                     pos++;
@@ -15772,5 +15773,10 @@ public class VertexManager {
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
         selectedData.addAll(selectedSubfiles);
+    }
+
+    public void selector(SelectorSettings sels) {
+        // FIXME Auto-generated method stub
+
     }
 }

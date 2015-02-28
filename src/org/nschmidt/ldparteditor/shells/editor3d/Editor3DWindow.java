@@ -89,6 +89,7 @@ import org.nschmidt.ldparteditor.dialogs.slicerpro.SlicerProDialog;
 import org.nschmidt.ldparteditor.dialogs.symsplitter.SymSplitterDialog;
 import org.nschmidt.ldparteditor.dialogs.txt2dat.Txt2DatDialog;
 import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
+import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.enums.GLPrimitives;
 import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.View;
@@ -102,6 +103,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.IsecalcSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.TreeData;
@@ -178,6 +180,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private PathTruderSettings ps = new PathTruderSettings();
     private SymSplitterSettings sims = new SymSplitterSettings();
     private UnificatorSettings us = new UnificatorSettings();
+    private SelectorSettings sels = new SelectorSettings();
 
     private boolean updatingPngPictureTab;
     private int pngPictureUpdateCounter = 0;
@@ -2515,6 +2518,12 @@ public class Editor3DWindow extends Editor3DDesign {
                 Display.getCurrent().asyncExec(new Runnable() {
                     @Override
                     public void run() {
+                        mntm_SelectEverything[0].setEnabled(
+                                mntm_WithHiddenData[0].getSelection() ||
+                                mntm_WithSameColour[0].getSelection() ||
+                                mntm_WithSameOrientation[0].getSelection() ||
+                                mntm_ExceptSubfiles[0].getSelection()
+                                );
                         showSelectMenu();
                     }
                 });
@@ -2527,6 +2536,29 @@ public class Editor3DWindow extends Editor3DDesign {
                 Display.getCurrent().asyncExec(new Runnable() {
                     @Override
                     public void run() {
+                        mntm_SelectEverything[0].setEnabled(
+                                mntm_WithHiddenData[0].getSelection() ||
+                                mntm_WithSameColour[0].getSelection() ||
+                                mntm_WithSameOrientation[0].getSelection() ||
+                                mntm_ExceptSubfiles[0].getSelection()
+                                );
+                        if (mntm_WithSameOrientation[0].getSelection()) {
+
+                            new ValueDialog(getShell(), "Set angular surface normal difference:", "Threshold in degree [°], range from -180 to 360.\nNegative values do not care about the surface winding,\nwhile positive do.") { //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+                                @Override
+                                public void initializeSpinner() {
+                                    this.spn_Value[0].setMinimum(new BigDecimal("-180")); //$NON-NLS-1$
+                                    this.spn_Value[0].setMaximum(new BigDecimal("360")); //$NON-NLS-1$
+                                    this.spn_Value[0].setValue(sels.getAngle());
+                                }
+
+                                @Override
+                                public void applyValue() {
+                                    sels.setAngle(this.spn_Value[0].getValue());
+                                }
+                            }.open();
+                        }
                         showSelectMenu();
                     }
                 });
@@ -2538,6 +2570,12 @@ public class Editor3DWindow extends Editor3DDesign {
                 Display.getCurrent().asyncExec(new Runnable() {
                     @Override
                     public void run() {
+                        mntm_SelectEverything[0].setEnabled(
+                                mntm_WithHiddenData[0].getSelection() ||
+                                mntm_WithSameColour[0].getSelection() ||
+                                mntm_WithSameOrientation[0].getSelection() ||
+                                mntm_ExceptSubfiles[0].getSelection()
+                                );
                         showSelectMenu();
                     }
                 });
@@ -2560,6 +2598,12 @@ public class Editor3DWindow extends Editor3DDesign {
                 Display.getCurrent().asyncExec(new Runnable() {
                     @Override
                     public void run() {
+                        mntm_SelectEverything[0].setEnabled(
+                                mntm_WithHiddenData[0].getSelection() ||
+                                mntm_WithSameColour[0].getSelection() ||
+                                mntm_WithSameOrientation[0].getSelection() ||
+                                mntm_ExceptSubfiles[0].getSelection()
+                                );
                         mntm_WithWholeSubfiles[0].setEnabled(!mntm_ExceptSubfiles[0].getSelection());
                         showSelectMenu();
                     }
@@ -2575,6 +2619,48 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+            }
+        });
+
+        mntm_SelectEverything[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        sels.setScope(SelectorSettings.EVERYTHING);
+                        vm.selector(sels);
+                    }
+                }
+            }
+        });
+
+        mntm_SelectConnected[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        sels.setScope(SelectorSettings.CONNECTED);
+                        vm.selector(sels);
+                    }
+                }
+            }
+        });
+
+        mntm_SelectTouching[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        sels.setScope(SelectorSettings.TOUCHING);
+                        vm.selector(sels);
+                    }
+                }
             }
         });
 
