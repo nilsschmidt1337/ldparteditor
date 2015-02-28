@@ -2544,12 +2544,12 @@ public class Editor3DWindow extends Editor3DDesign {
                                 );
                         if (mntm_WithSameOrientation[0].getSelection()) {
 
-                            new ValueDialog(getShell(), "Set angular surface normal difference:", "Threshold in degree [°], range from -180 to 360.\nNegative values do not care about the surface winding,\nwhile positive do.") { //$NON-NLS-1$ //$NON-NLS-2$ I18N
+                            new ValueDialog(getShell(), "Set angular surface normal difference:", "Threshold in degree [°], range from 0 to 180.") { //$NON-NLS-1$ //$NON-NLS-2$ I18N
 
                                 @Override
                                 public void initializeSpinner() {
-                                    this.spn_Value[0].setMinimum(new BigDecimal("-180")); //$NON-NLS-1$
-                                    this.spn_Value[0].setMaximum(new BigDecimal("360")); //$NON-NLS-1$
+                                    this.spn_Value[0].setMinimum(BigDecimal.ZERO);
+                                    this.spn_Value[0].setMaximum(new BigDecimal("180")); //$NON-NLS-1$
                                     this.spn_Value[0].setValue(sels.getAngle());
                                 }
 
