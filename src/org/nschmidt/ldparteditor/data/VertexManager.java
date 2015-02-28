@@ -9060,7 +9060,7 @@ public class VertexManager {
             BigDecimal x4, BigDecimal y4, BigDecimal z4, boolean moveAdjacentData) {
 
         if (selectedItemIndex != -1 && exist(selectedLine)) {
-            // TODO Auto-generated method stub
+
             if (moveAdjacentData) {
 
                 final Vertex v1 = new Vertex(x1, y1, z1);
@@ -11479,8 +11479,7 @@ public class VertexManager {
             originObjects.addAll(selectedLines);
             originObjects.addAll(selectedCondlines);
 
-            // TODO Remove adjacent non-selected surfaces from targetSurfs!
-
+            // Remove adjacent non-selected surfaces from targetSurfs!
             {
                 HashSet<Vertex> verts = new HashSet<Vertex>();
                 for (GData g3 : selectedTriangles) {
@@ -13269,7 +13268,7 @@ public class VertexManager {
 
         originalSelection.addAll(selectedLines);
 
-        // TODO Validate and evaluate selection
+        // Validate and evaluate selection
         {
             final GData2 shape1Normal;
             final GData2 shape2Normal;
@@ -13476,7 +13475,7 @@ public class VertexManager {
                                 double rotation = ps.getRotation().doubleValue();
 
                                 {
-                                    printf("Read path file 1\n"); //$NON-NLS-1$
+                                    // printf("Read path file 1\n"); //$NON-NLS-1$
                                     if (endings) {
                                         path1.add(0, path1endSegments.get(0));
                                         path1.add(path1endSegments.get(1));
@@ -13491,7 +13490,7 @@ public class VertexManager {
                                         next[Path1Len][0][0] = next[Path1Len][1][0] = -1;
                                         Path1Len++;
                                     }
-                                    printf("Sort path file 1\n"); //$NON-NLS-1$
+                                    // printf("Sort path file 1\n"); //$NON-NLS-1$
                                     circular = true;
                                     for (int i = 0; i < Path1Len; i++) {
                                         for (int j = 0; j < 2; j++) {
@@ -13551,11 +13550,12 @@ public class VertexManager {
 
                                     Path1Len = InLineIdx;
 
-                                    if (NumPath > 1)
-                                        printf("%d distinct paths found in Path file 1. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
+                                    if (NumPath > 1) {
+                                        //   printf("%d distinct paths found in Path file 1. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
+                                    }
                                 }
                                 {
-                                    printf("Read path file 2\n"); //$NON-NLS-1$
+                                    // printf("Read path file 2\n"); //$NON-NLS-1$
                                     if (endings) {
                                         path2.add(0, path2endSegments.get(0));
                                         path2.add(path2endSegments.get(1));
@@ -13570,7 +13570,7 @@ public class VertexManager {
                                         next[Path2Len][0][0] = next[Path2Len][1][0] = -1;
                                         Path2Len++;
                                     }
-                                    printf("Sort path file 2\n"); //$NON-NLS-1$
+                                    // printf("Sort path file 2\n"); //$NON-NLS-1$
                                     circular = true;
                                     for (int i = 0; i < Path2Len; i++) {
                                         for (int j = 0; j < 2; j++) {
@@ -13630,10 +13630,10 @@ public class VertexManager {
 
                                     Path2Len = InLineIdx;
 
-                                    if (NumPath > 1)
-                                        printf("%d distinct paths found in Path file 2. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
+                                    // if (NumPath > 1)
+                                    //    printf("%d distinct paths found in Path file 2. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
                                 }
-                                printf("Read shape file 1\n"); //$NON-NLS-1$
+                                // printf("Read shape file 1\n"); //$NON-NLS-1$
                                 for (GData2 p : shape1) {
                                     Shape1[Shape1Len][0][0] = p.X1.doubleValue();
                                     Shape1[Shape1Len][0][1] = p.Y1.doubleValue();
@@ -13643,7 +13643,7 @@ public class VertexManager {
                                     Shape1[Shape1Len][1][2] = p.Z2.doubleValue();
                                     Shape1Len++;
                                 }
-                                printf("Read shape file 2\n"); //$NON-NLS-1$
+                                // printf("Read shape file 2\n"); //$NON-NLS-1$
                                 for (GData2 p : shape2) {
                                     Shape2[Shape2Len][0][0] = p.X1.doubleValue();
                                     Shape2[Shape2Len][0][1] = p.Y1.doubleValue();
@@ -13655,18 +13655,18 @@ public class VertexManager {
                                 }
 
                                 if (Path1Len != Path2Len) {
-                                    printf("The two path files do not have the same number of elements!\n"); //$NON-NLS-1$
+                                    // printf("The two path files do not have the same number of elements!\n"); //$NON-NLS-1$
                                     return;
                                 }
 
                                 if (endings && Path1Len < 3 && !circular) {
-                                    printf("Path files must have at least 3 elements to use -e option!\n"); //$NON-NLS-1$
+                                    // printf("Path files must have at least 3 elements to use -e option!\n"); //$NON-NLS-1$
                                     return;
                                 }
 
                                 if (Shape1Len != Shape2Len) {
-                                    printf("The two shape files do not have the same number of elements!\n"); //$NON-NLS-1$
-                                    printf("Press <Enter> to quit"); //$NON-NLS-1$
+                                    // printf("The two shape files do not have the same number of elements!\n"); //$NON-NLS-1$
+                                    // printf("Press <Enter> to quit"); //$NON-NLS-1$
                                     return;
                                 }
 
@@ -14109,22 +14109,6 @@ public class VertexManager {
         y = 1.0 / (1.0 + Math.exp(-b * (x - m)));
         y = (y - s0) / (s1 - s0);
         return y;
-    }
-
-    // FIXME Method stubs
-
-
-
-    void fprintf(Object obj, String s, Object... args) {
-
-    }
-
-    void sscanf(Object obj, String s, Object... args) {
-
-    }
-
-    void printf(String s) {
-
     }
 
     private final double EPSILON = 0.000001;
@@ -15468,8 +15452,70 @@ public class VertexManager {
     }
 
     public void flipSelection() {
-        // FIXME Auto-generated method stub
+
         if (linkedDatFile.isReadOnly()) return;
+
+        final Set<GData2> effSelectedLines = new HashSet<GData2>();
+        final Set<GData3> effSelectedTriangles = new HashSet<GData3>();
+        final Set<GData4> effSelectedQuads = new HashSet<GData4>();
+        final Set<GData5> effSelectedCondlines = new HashSet<GData5>();
+
+        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
+        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
+        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
+        final Set<GData5> clinesToDelete2 = new HashSet<GData5>();
+
+        {
+            for (GData2 g2 : selectedLines) {
+                if (!lineLinkedToVertices.containsKey(g2)) continue;
+                effSelectedLines.add(g2);
+            }
+            for (GData3 g3 : selectedTriangles) {
+                if (!lineLinkedToVertices.containsKey(g3)) continue;
+                effSelectedTriangles.add(g3);
+            }
+            for (GData4 g4 : selectedQuads) {
+                if (!lineLinkedToVertices.containsKey(g4)) continue;
+                effSelectedQuads.add(g4);
+            }
+            for (GData5 g5 : selectedCondlines) {
+                if (!lineLinkedToVertices.containsKey(g5)) continue;
+                effSelectedCondlines.add(g5);
+            }
+        }
+
+        // FIXME Needs special case for coloured triangle pairs (Flipper behaviour)
+
+
+        for (GData2 g : effSelectedLines) {
+            linkedDatFile.insertAfter(g, new GData2(g.colourNumber, g.r, g.g, g.b, g.a, g.X2, g.Y2, g.Z2, g.X1, g.Y1, g.Z1, g.parent, linkedDatFile));
+            linesToDelete2.add(g);
+        }
+
+        for (GData3 g : effSelectedTriangles) {
+            linkedDatFile.insertAfter(g, new GData3(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X2, g.Y2, g.Z2), g.parent, linkedDatFile));
+            trisToDelete2.add(g);
+        }
+
+        for (GData4 g : effSelectedQuads) {
+            linkedDatFile.insertAfter(g, new GData4(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X4, g.Y4, g.Z4), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X2, g.Y2, g.Z2), new Vertex(g.X3, g.Y3, g.Z3), g.parent, linkedDatFile));
+            quadsToDelete2.add(g);
+        }
+
+        for (GData5 g : effSelectedCondlines) {
+            linkedDatFile.insertAfter(g, new GData5(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X2, g.Y2, g.Z2), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X4, g.Y4, g.Z4), g.parent, linkedDatFile));
+            clinesToDelete2.add(g);
+        }
+
+        selectedLines.addAll(linesToDelete2);
+        selectedTriangles.addAll(trisToDelete2);
+        selectedQuads.addAll(quadsToDelete2);
+        selectedCondlines.addAll(clinesToDelete2);
+        selectedData.addAll(selectedLines);
+        selectedData.addAll(selectedTriangles);
+        selectedData.addAll(selectedQuads);
+        selectedData.addAll(selectedCondlines);
+        delete(false);
 
         validateState();
     }

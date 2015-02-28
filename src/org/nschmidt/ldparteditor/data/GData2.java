@@ -59,29 +59,6 @@ public final class GData2 extends GData {
 
     final GData1 parent;
 
-    public GData2(int colourNumber, float r, float g, float b, float a, float x1, float y1, float z1, float x2, float y2, float z2, GData1 parent, DatFile datFile) {
-        this.colourNumber = colourNumber;
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.a = a;
-        this.x1 = x1 * 1000f;
-        this.y1 = y1 * 1000f;
-        this.z1 = z1 * 1000f;
-        this.x2 = x2 * 1000f;
-        this.y2 = y2 * 1000f;
-        this.z2 = z2 * 1000f;
-        this.parent = parent;
-        datFile.getVertexManager().add(this);
-        this.lGeom = MathHelper.getLineVertices(new Vector4f(x1, y1, z1, 1f), new Vector4f(x2, y2, z2, 1f), parent.productMatrix);
-        this.X1 = null;
-        this.Y1 = null;
-        this.Z1 = null;
-        this.X2 = null;
-        this.Y2 = null;
-        this.Z2 = null;
-    }
-
     public GData2(int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, GData1 parent, DatFile datFile) {
         this.colourNumber = colourNumber;
         this.r = r;
