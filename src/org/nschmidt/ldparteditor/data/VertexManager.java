@@ -15180,7 +15180,7 @@ public class VertexManager {
     }
 
     public void unificator(final UnificatorSettings us) {
-        // FIXME Auto-generated method stub
+
         if (linkedDatFile.isReadOnly()) return;
 
         final BigDecimal vt = us.getVertexThreshold().multiply(us.getVertexThreshold());
@@ -15390,9 +15390,86 @@ public class VertexManager {
         }
 
         // Round selection to 6 decimal places
+        selectedVerts.clear();
+        selectedVerts.addAll(selectedVertices);
+
+        clearSelection();
+
+        NLogger.debug(getClass(), "Check for identical vertices and collinearity."); //$NON-NLS-1$
+
+        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
+        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
+        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
+        final Set<GData5> clinesToDelete2 = new HashSet<GData5>();
+        {
+            for (GData2 g2 : lines.keySet()) {
+                if (!lineLinkedToVertices.containsKey(g2)) continue;
+                Vertex[] verts = lines.get(g2);
+                Set<Vertex> verts2 = new HashSet<Vertex>();
+                for (Vertex vert : verts) {
+                    verts2.add(vert);
+                }
+                if (verts2.size() < 2) {
+                    linesToDelete2.add(g2);
+                }
+            }
+            for (GData3 g3 : triangles.keySet()) {
+                if (!lineLinkedToVertices.containsKey(g3)) continue;
+                Vertex[] verts = triangles.get(g3);
+                Set<Vertex> verts2 = new HashSet<Vertex>();
+                for (Vertex vert : verts) {
+                    verts2.add(vert);
+                }
+                if (verts2.size() < 3 || g3.isCollinear()) {
+                    trisToDelete2.add(g3);
+                }
+            }
+            for (GData4 g4 : quads.keySet()) {
+                if (!lineLinkedToVertices.containsKey(g4)) continue;
+                Vertex[] verts = quads.get(g4);
+                Set<Vertex> verts2 = new HashSet<Vertex>();
+                for (Vertex vert : verts) {
+                    verts2.add(vert);
+                }
+                if (verts2.size() < 4 || g4.isCollinear()) {
+                    quadsToDelete2.add(g4);
+                }
+            }
+            for (GData5 g5 : condlines.keySet()) {
+                if (!lineLinkedToVertices.containsKey(g5)) continue;
+                Vertex[] verts = condlines.get(g5);
+                Set<Vertex> verts2 = new HashSet<Vertex>();
+                for (Vertex vert : verts) {
+                    verts2.add(vert);
+                }
+                if (verts2.size() < 4) {
+                    clinesToDelete2.add(g5);
+                }
+            }
+        }
+
+        selectedLines.addAll(linesToDelete2);
+        selectedTriangles.addAll(trisToDelete2);
+        selectedQuads.addAll(quadsToDelete2);
+        selectedCondlines.addAll(clinesToDelete2);
+        selectedData.addAll(selectedLines);
+        selectedData.addAll(selectedTriangles);
+        selectedData.addAll(selectedQuads);
+        selectedData.addAll(selectedCondlines);
+        delete(false);
+
+        // Round selection to 6 decimal places
+        selectedVertices.addAll(selectedVerts);
 
         NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
         roundSelection(6, 10, true);
+
+        validateState();
+    }
+
+    public void flipSelection() {
+        // FIXME Auto-generated method stub
+        if (linkedDatFile.isReadOnly()) return;
 
         validateState();
     }
