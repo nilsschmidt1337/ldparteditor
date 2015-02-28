@@ -8714,7 +8714,13 @@ public class VertexManager {
         return 2 == co - cn;
     }
 
-    private boolean isConnected2(GData g1, GData g2) {
+    /**
+     * Tests, if two surfaces share a common edge
+     * @param g1 a surface
+     * @param g2 another surface
+     * @return {@code true} if they do / {@code false} otherwise
+     */
+    private boolean hasSameEdge(GData g1, GData g2) {
 
         int t1 = g1.type();
         int t2 = g2.type();
@@ -8792,9 +8798,9 @@ public class VertexManager {
         Set<VertexManifestation> m1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> m2 = vertexLinkedToPositionInFile.get(v2);
         for (VertexManifestation a : m1) {
-            if (a.getPosition() > 2) continue;
+            if (a.getPosition() > 1) continue;
             for (VertexManifestation b : m2) {
-                if (b.getPosition() > 2) continue;
+                if (b.getPosition() > 1) continue;
                 if (a.getGdata().equals(b.getGdata()) && b.getGdata().type() == 5) {
                     if (!lineLinkedToVertices.containsKey(b.getGdata())) return null;
                     return (GData5) b.getGdata();
@@ -9832,7 +9838,7 @@ public class VertexManager {
                             for(int j = i + 1; j < surfsSize; j++) {
                                 GData s1 = surfsToParse.get(i);
                                 GData s2 = surfsToParse.get(j);
-                                if (isConnected2(s1, s2)) continue;
+                                if (hasSameEdge(s1, s2)) continue;
                                 newLines.addAll(intersectionLines(clinesToDelete, linesToDelete, s1, s2));
                             }
                         }
@@ -15484,8 +15490,101 @@ public class VertexManager {
             }
         }
 
-        // FIXME Needs special case for coloured triangle pairs (Flipper behaviour)
+        clearSelection();
 
+        // Special case for coloured triangle pairs (Flipper behaviour)
+        {
+            HashSet<GData3> surfsToIgnore = new HashSet<GData3>();
+            HashMap<GData3, GData3> trianglePair = new HashMap<GData3, GData3>();
+            int i = 0;
+            int j = 0;
+            for (GData3 s1 : effSelectedTriangles) {
+                for (GData3 s2 : effSelectedTriangles) {
+                    if (j > i && !surfsToIgnore.contains(s2)) {
+                        if (s1.colourNumber == s2.colourNumber && s1.r == s2.r && s1.g == s2.g && s1.b == s2.b && hasSameEdge(s1, s2)) {
+                            surfsToIgnore.add(s1);
+                            surfsToIgnore.add(s2);
+                            trianglePair.put(s1, s2);
+                        }
+                    }
+                    j++;
+                }
+                i++;
+            }
+            effSelectedTriangles.removeAll(surfsToIgnore);
+            for (GData3 s1 : trianglePair.keySet()) {
+                GData3 s2 = trianglePair.get(s1);
+                {
+                    HashSet<Vertex> v1 = new HashSet<Vertex>();
+                    HashSet<Vertex> v2 = new HashSet<Vertex>();
+                    for (Vertex v : triangles.get(s1)) {
+                        v1.add(v);
+                    }
+                    for (Vertex v : triangles.get(s2)) {
+                        v2.add(v);
+                    }
+                    {
+                        HashSet<Vertex> sum = new HashSet<Vertex>();
+                        sum.addAll(v1);
+                        sum.addAll(v2);
+                        if (sum.size() != 4) continue;
+                    }
+                    v1.retainAll(v2);
+                    if (v1.size() == 2) {
+
+                        Vertex first = null;
+                        Vertex second = null;
+                        Vertex third = null;
+                        Vertex fourth = null;
+
+                        for (Vertex v : triangles.get(s1)) {
+                            if (!v1.contains(v)) {
+                                first = v;
+                                break;
+                            }
+                        }
+                        if (first == null) continue;
+                        for (Vertex v : triangles.get(s1)) {
+                            if (v1.contains(v)) {
+                                second = v;
+                                break;
+                            }
+                        }
+                        if (second == null) continue;
+                        for (Vertex v : triangles.get(s2)) {
+                            if (!v1.contains(v)) {
+                                third = v;
+                                break;
+                            }
+                        }
+                        if (third == null) continue;
+                        for (Vertex v : triangles.get(s2)) {
+                            if (v1.contains(v) && !v.equals(second)) {
+                                fourth = v;
+                                break;
+                            }
+                        }
+                        if (fourth == null) continue;
+
+                        linkedDatFile.insertAfter(s1, new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, first, second, third, s1.parent, linkedDatFile));
+                        linkedDatFile.insertAfter(s2, new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, third, fourth, first, s1.parent, linkedDatFile));
+
+                        trisToDelete2.add(s1);
+                        trisToDelete2.add(s2);
+
+                        Iterator<Vertex> vit = v1.iterator();
+                        Vertex cv1 = vit.next();
+                        Vertex cv2 = vit.next();
+                        GData5 cline = hasCondline(cv1, cv2);
+                        if (cline != null && lineLinkedToVertices.containsKey(cline)) {
+                            linkedDatFile.insertAfter(cline, new GData5(cline.colourNumber, cline.r, cline.g, cline.b, cline.a, first, third, second, fourth, cline.parent, linkedDatFile));
+                            clinesToDelete2.add(cline);
+                        }
+                    }
+                }
+
+            }
+        }
 
         for (GData2 g : effSelectedLines) {
             linkedDatFile.insertAfter(g, new GData2(g.colourNumber, g.r, g.g, g.b, g.a, g.X2, g.Y2, g.Z2, g.X1, g.Y1, g.Z1, g.parent, linkedDatFile));
@@ -15506,6 +15605,8 @@ public class VertexManager {
             linkedDatFile.insertAfter(g, new GData5(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X2, g.Y2, g.Z2), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X4, g.Y4, g.Z4), g.parent, linkedDatFile));
             clinesToDelete2.add(g);
         }
+
+        setModified(true);
 
         selectedLines.addAll(linesToDelete2);
         selectedTriangles.addAll(trisToDelete2);
