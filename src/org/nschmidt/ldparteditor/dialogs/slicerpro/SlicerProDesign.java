@@ -63,69 +63,8 @@ class SlicerProDesign extends Dialog {
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        //
-        //        Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
-        //        lbl_coordsPrec.setText("Font:"); //$NON-NLS-1$ I18N Needs translation!
-        //
-        //        Button spn_vequ = new Button(cmp_container, SWT.NONE);
-        //        this.btn_chooseFont[0] = spn_vequ;
-        //        spn_vequ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        //        spn_vequ.setText("Select"); //$NON-NLS-1$ I18N
-        //
-        //        Label lbl_text = new Label(cmp_container, SWT.NONE);
-        //        lbl_text.setText("Text:"); //$NON-NLS-1$ I18N Needs translation!
-        //
-        //        Text txt_text = new Text(cmp_container, SWT.NONE);
-        //        this.txt_text[0] = txt_text;
-        //        txt_text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        //        txt_text.setText(ts.getText());
-        //
-        //        Label lbl_use180deg = new Label(cmp_container, SWT.NONE);
-        //        lbl_use180deg.setText("Flatness\n(the maximum distance that the line segments used to\napproximate the curved segments are allowed to deviate\nfrom any point on the original curve):"); //$NON-NLS-1$ I18N Needs translation!
-        //
-        //        BigDecimalSpinner spn_flatness = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        //        this.spn_flatness[0] = spn_flatness;
-        //        spn_flatness.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        //        spn_flatness.setMaximum(new BigDecimal(1000));
-        //        spn_flatness.setMinimum(new BigDecimal(0));
-        //        spn_flatness.setValue(ts.getFlatness());
-        //
-        //        Label lbl_af = new Label(cmp_container, SWT.NONE);
-        //        lbl_af.setText("Interpolate Flatness:\n(the maximum distance that is used for interpolation)"); //$NON-NLS-1$ I18N Needs translation!
-        //
-        //        BigDecimalSpinner spn_interpolateFlatness = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        //        this.spn_interpolateFlatness[0] = spn_interpolateFlatness;
-        //        spn_interpolateFlatness.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        //        spn_interpolateFlatness.setMaximum(new BigDecimal(1000));
-        //        spn_interpolateFlatness.setMinimum(new BigDecimal(0));
-        //        spn_interpolateFlatness.setValue(ts.getInterpolateFlatness());
-        //
-        //        Label lbl_ac = new Label(cmp_container, SWT.NONE);
-        //        lbl_ac.setText("Font Height [LDU]:"); //$NON-NLS-1$ I18N Needs translation!
-        //
-        //        BigDecimalSpinner spn_fontHeight = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        //        this.spn_fontHeight[0] = spn_fontHeight;
-        //        spn_fontHeight.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        //        spn_fontHeight.setMaximum(new BigDecimal(10000));
-        //        spn_fontHeight.setMinimum(new BigDecimal("0.0001"));//$NON-NLS-1$
-        //        spn_fontHeight.setValue(ts.getFontHeight());
-        //
-        //        Label lbl_ae = new Label(cmp_container, SWT.NONE);
-        //        lbl_ae.setText("Min. Angle Between Line Segments [°]:"); //$NON-NLS-1$ I18N Needs translation!
-        //        BigDecimalSpinner spn_deltaAngle = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        //        this.spn_deltaAngle[0] = spn_deltaAngle;
-        //        spn_deltaAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        //        spn_deltaAngle.setMaximum(new BigDecimal(30));
-        //        spn_deltaAngle.setMinimum(new BigDecimal(0));
-        //        spn_deltaAngle.setValue(ts.getDeltaAngle());
-        //
-        //        Combo cmb_meshReducer = new Combo(cmp_container, SWT.READ_ONLY);
-        //        this.cmb_meshReducer[0] = cmb_meshReducer;
-        //        cmb_meshReducer.setItems(new String[] { "Disable Mesh Decimation", "Enable Mesh Decimation" }); //$NON-NLS-1$ //$NON-NLS-2$ I18N
-        //        cmb_meshReducer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        //        cmb_meshReducer.setText(ts.isReduce() ? cmb_meshReducer.getItem(1) : cmb_meshReducer.getItem(0));
-        //        cmb_meshReducer.select(ts.isReduce() ? 1 : 0);
-        //
+
+
         cmp_container.pack();
         return cmp_container;
     }
