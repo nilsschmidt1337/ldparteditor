@@ -72,6 +72,7 @@ class ValueDesign extends Dialog {
         this.lbl_Unit[0] = lbl_Unit;
         lbl_Unit.setText(unitText);
 
+        cmp_Container.pack();
         return cmp_Container;
     }
 

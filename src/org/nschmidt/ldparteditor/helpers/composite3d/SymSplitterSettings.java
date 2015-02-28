@@ -31,6 +31,12 @@ public class SymSplitterSettings {
     private boolean validate = false;
     private boolean cutAcross = false;
     private int scope = 0;
+    public final static int Z_PLUS = 0;
+    public final static int Y_PLUS = 1;
+    public final static int X_PLUS = 2;
+    public final static int Z_MINUS = 3;
+    public final static int Y_MINUS = 4;
+    public final static int X_MINUS = 5;
     public BigDecimal getOffset() {
         return offset;
     }
