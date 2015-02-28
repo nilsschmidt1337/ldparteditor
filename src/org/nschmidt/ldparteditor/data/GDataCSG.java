@@ -371,6 +371,7 @@ public final class GDataCSG extends GData {
             if (compiledCSG != null) {
                 StringBuilder sb = useAgain();
                 sb.append("0 // Inlined: " + getNiceString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+                // TODO Needs T-Juntion Elimination!
                 for (GData3 g3 : compiledCSG.getResult()) {
                     StringBuilder lineBuilder3 = useAgain2();
                     lineBuilder3.append(3);

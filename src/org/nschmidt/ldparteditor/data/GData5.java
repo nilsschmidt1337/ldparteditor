@@ -88,55 +88,6 @@ public final class GData5 extends GData {
 
     private boolean wasShown = false;
 
-    public GData5(final int colourNumber, float r, float g, float b, float a, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4,
-            GData1 parentFileRef, DatFile datFile) {
-
-        this.parent = parentFileRef;
-        this.colourNumber = colourNumber;
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.a = a;
-        this.x1 = x1 * 1000f;
-        this.y1 = y1 * 1000f;
-        this.z1 = z1 * 1000f;
-        this.x2 = x2 * 1000f;
-        this.y2 = y2 * 1000f;
-        this.z2 = z2 * 1000f;
-        this.x3 = x3 * 1000f;
-        this.y3 = y3 * 1000f;
-        this.z3 = z3 * 1000f;
-        this.x4 = x4 * 1000f;
-        this.y4 = y4 * 1000f;
-        this.z4 = z4 * 1000f;
-        datFile.getVertexManager().add(this);
-        this.lGeom = MathHelper.getLineVertices(new Vector4f(x1, y1, z1, 1f), new Vector4f(x2, y2, z2, 1f), parent.productMatrix);
-        A2.x = this.x1;
-        B2.x = this.x2;
-        C2.x = this.x3;
-        D2.x = this.x4;
-        A2.y = this.y1;
-        B2.y = this.y2;
-        C2.y = this.y3;
-        D2.y = this.y4;
-        A2.z = this.z1;
-        B2.z = this.z2;
-        C2.z = this.z3;
-        D2.z = this.z4;
-        this.X1 = null;
-        this.Y1 = null;
-        this.Z1 = null;
-        this.X2 = null;
-        this.Y2 = null;
-        this.Z2 = null;
-        this.X3 = null;
-        this.Y3 = null;
-        this.Z3 = null;
-        this.X4 = null;
-        this.Y4 = null;
-        this.Z4 = null;
-    }
-
     public GData5(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3, BigDecimal y3,
             BigDecimal z3, BigDecimal x4, BigDecimal y4, BigDecimal z4, GData1 parentFileRef, DatFile datFile) {
 

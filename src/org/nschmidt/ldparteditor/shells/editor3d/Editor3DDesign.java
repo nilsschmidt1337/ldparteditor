@@ -654,7 +654,7 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_Flip = new MenuItem(mnu_Merge, SWT.PUSH);
                         this.mntm_Flip[0] = mntm_Flip;
-                        mntm_Flip.setText("Flip"); //$NON-NLS-1$ I18N
+                        mntm_Flip.setText("Flip / Rotate Vertices"); //$NON-NLS-1$ I18N
                     }
                 }
             }
