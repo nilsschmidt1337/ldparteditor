@@ -15775,8 +15775,187 @@ public class VertexManager {
         selectedData.addAll(selectedSubfiles);
     }
 
-    public void selector(SelectorSettings sels) {
+    public void selector(SelectorSettings ss) {
         // FIXME Auto-generated method stub
 
+        final Set<GColour> allColours = new HashSet<GColour>();
+        final Set<Vector3d> allNormals = new HashSet<Vector3d>();
+        final HashMap<Vertex, HashSet<Vertex>> adjaencyByPrecision = new HashMap<Vertex, HashSet<Vertex>>();
+
+        BigDecimal oldAngle = ss.getAngle();
+
+        // Get near vertices
+
+        if (ss.isDistance() && ss.getEqualDistance().compareTo(BigDecimal.ZERO) != 0) {
+            final BigDecimal ds = ss.getEqualDistance().multiply(ss.getEqualDistance());
+            HashSet<Vertex> verticesToIgnore = new HashSet<Vertex>();
+            int i = 0;
+            int j = 0;
+            for (Vertex v1 : vertexLinkedToPositionInFile.keySet()) {
+                HashSet<Vertex> newSet = new HashSet<Vertex>();
+                newSet.add(v1);
+                for (Vertex v2 : vertexLinkedToPositionInFile.keySet()) {
+                    if (j > i && !verticesToIgnore.contains(v2)) {
+                        Vector3d v3d1 = new Vector3d(v1);
+                        Vector3d v3d2 = new Vector3d(v2);
+                        if (Vector3d.distSquare(v3d1, v3d2).compareTo(ds) < 0) {
+                            verticesToIgnore.add(v2);
+                            newSet.add(v2);
+                        }
+                    }
+                    j++;
+                }
+                adjaencyByPrecision.put(v1, newSet);
+                i++;
+            }
+        } else {
+            for (Vertex v1 : vertexLinkedToPositionInFile.keySet()) {
+                HashSet<Vertex> newSet = new HashSet<Vertex>();
+                newSet.add(v1);
+                adjaencyByPrecision.put(v1, newSet);
+            }
+        }
+
+        // Get selected colour set
+
+        if (ss.isColour()) {
+            for (GData1 g : selectedSubfiles) {
+                allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
+            }
+            for (GData2 g : selectedLines) {
+                allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
+            }
+            for (GData3 g : selectedTriangles) {
+                allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
+            }
+            for (GData4 g : selectedQuads) {
+                allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
+            }
+            for (GData5 g : selectedCondlines) {
+                allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
+            }
+        }
+
+        // Prepare normals for orientation check
+
+        if (ss.isOrientation()) {
+
+            fillVertexNormalCache(linkedDatFile.getDrawChainStart());
+
+            if (ss.getScope() == SelectorSettings.EVERYTHING) {
+                boolean hasNoBFCCERTIFY = false;
+                for (GData3 g : triangles.keySet()) {
+                    if (ss.isNoSubfiles() && !lineLinkedToVertices.containsKey(g)) continue;
+                    if (dataLinkedToNormalCACHE.containsKey(g)) {
+                        float[] n = dataLinkedToNormalCACHE.get(g);
+                        allNormals.add(new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2])));
+                    } else {
+                        hasNoBFCCERTIFY = true;
+                        allNormals.add(new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn)));
+                    }
+                }
+                for (GData4 g : quads.keySet()) {
+                    if (ss.isNoSubfiles() && !lineLinkedToVertices.containsKey(g)) continue;
+                    if (dataLinkedToNormalCACHE.containsKey(g)) {
+                        float[] n = dataLinkedToNormalCACHE.get(g);
+                        allNormals.add(new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2])));
+                    } else {
+                        hasNoBFCCERTIFY = true;
+                        allNormals.add(new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn)));
+                    }
+                }
+
+                if (hasNoBFCCERTIFY) {
+                    double angle = ss.getAngle().doubleValue() % 180.0;
+                    ss.setAngle(new BigDecimal(-angle));
+                }
+
+            }
+        }
+
+        double angle = ss.getAngle().doubleValue();
+
+        if (ss.getScope() == SelectorSettings.EVERYTHING) {
+            clearSelection();
+            for (GData2 g : lines.keySet()) {
+                if (canSelect(null, g, ss, allNormals, allColours, angle)) {
+                    selectedLines.add(g);
+                    selectedData.add(g);
+                }
+            }
+            for (GData3 g : triangles.keySet()) {
+                if (canSelect(null, g, ss, allNormals, allColours, angle)) {
+                    selectedTriangles.add(g);
+                    selectedData.add(g);
+                }
+            }
+            for (GData4 g : quads.keySet()) {
+                if (canSelect(null, g, ss, allNormals, allColours, angle)) {
+                    selectedQuads.add(g);
+                    selectedData.add(g);
+                }
+            }
+            for (GData5 g : condlines.keySet()) {
+                if (canSelect(null, g, ss, allNormals, allColours, angle)) {
+                    selectedCondlines.add(g);
+                    selectedData.add(g);
+                }
+            }
+        }
+
+        ss.setAngle(oldAngle);
+        clearVertexNormalCache();
+
+        // FIXME Extend selection to whole subfiles
+        if (ss.isWholeSubfiles() && !ss.isNoSubfiles()) {
+
+        }
+    }
+
+    private boolean canSelect(GData adjacentTo, GData what, SelectorSettings ss, Set<Vector3d> allNormals, Set<GColour> allColours, double angle) {
+
+        GColour myColour;
+        switch (what.type()) {
+        case 2:
+            GData2 g2 = (GData2) what;
+            myColour = new GColour(g2.colourNumber, g2.r, g2.g, g2.b, g2.a);
+            break;
+        case 3:
+            GData3 g3 = (GData3) what;
+            myColour = new GColour(g3.colourNumber, g3.r, g3.g, g3.b, g3.a);
+            break;
+        case 4:
+            GData4 g4 = (GData4) what;
+            myColour = new GColour(g4.colourNumber, g4.r, g4.g, g4.b, g4.a);
+            break;
+        case 5:
+            GData5 g5 = (GData5) what;
+            myColour = new GColour(g5.colourNumber, g5.r, g5.g, g5.b, g5.a);
+            break;
+        default:
+            return false;
+        }
+        // Check Colour
+        if (!allColours.contains(myColour)) {
+            return false;
+        }
+
+        if (adjacentTo == null) {
+            // SelectorSettings.EVERYTHING
+            switch (what.type()) {
+            case 3:
+                break;
+            case 4:
+                break;
+            default:
+                // Check subfile content
+                return !(ss.isNoSubfiles() && !lineLinkedToVertices.containsKey(what));
+            }
+        } else {
+            // FIXME Auto-generated method stub
+        }
+
+        // Check subfile content
+        return !(ss.isNoSubfiles() && !lineLinkedToVertices.containsKey(what));
     }
 }
