@@ -8378,16 +8378,8 @@ public class VertexManager {
 
         Vertex v3 = verts[1];
         Vertex v4 = verts[3];
-        n1 = new Vector3d( // T1 1-2-3
-                g4.Y3.subtract(g4.Y1).multiply(g4.Z2.subtract(g4.Z1)).subtract(g4.Z3.subtract(g4.Z1).multiply(g4.Y2.subtract(g4.Y1))),
-                g4.Z3.subtract(g4.Z1).multiply(g4.X2.subtract(g4.X1)).subtract(g4.X3.subtract(g4.X1).multiply(g4.Z2.subtract(g4.Z1))),
-                g4.X3.subtract(g4.X1).multiply(g4.Y2.subtract(g4.Y1)).subtract(g4.Y3.subtract(g4.Y1).multiply(g4.X2.subtract(g4.X1)))
-                );
-        n2 = new Vector3d( // T2 3-4-1
-                g4.Y1.subtract(g4.Y3).multiply(g4.Z4.subtract(g4.Z3)).subtract(g4.Z1.subtract(g4.Z3).multiply(g4.Y4.subtract(g4.Y3))),
-                g4.Z1.subtract(g4.Z3).multiply(g4.X4.subtract(g4.X3)).subtract(g4.X1.subtract(g4.X3).multiply(g4.Z4.subtract(g4.Z3))),
-                g4.X1.subtract(g4.X3).multiply(g4.Y4.subtract(g4.Y3)).subtract(g4.Y1.subtract(g4.Y3).multiply(g4.X4.subtract(g4.X3)))
-                );
+        n1 = Vector3d.getNormal(new Vector3d(verts[2]), new Vector3d(verts[0]), new Vector3d(verts[1])); // T1 1-2-3
+        n2 = Vector3d.getNormal(new Vector3d(verts[0]), new Vector3d(verts[1]), new Vector3d(verts[3])); // T2 3-4-1
         double angle;
         if (es.isExtendedRange()) {
             if (getBFCorientation(g4) == BFC.CCW) {
@@ -8456,69 +8448,33 @@ public class VertexManager {
                 tvs.remove(v1);
                 tvs.remove(v2);
                 v3 = tvs.iterator().next();
-                n1 = new Vector3d(
-                        g3.Y3.subtract(g3.Y1).multiply(g3.Z2.subtract(g3.Z1)).subtract(g3.Z3.subtract(g3.Z1).multiply(g3.Y2.subtract(g3.Y1))),
-                        g3.Z3.subtract(g3.Z1).multiply(g3.X2.subtract(g3.X1)).subtract(g3.X3.subtract(g3.X1).multiply(g3.Z2.subtract(g3.Z1))),
-                        g3.X3.subtract(g3.X1).multiply(g3.Y2.subtract(g3.Y1)).subtract(g3.Y3.subtract(g3.Y1).multiply(g3.X2.subtract(g3.X1)))
-                        );
+                n1 = Vector3d.getNormal(new Vector3d(vt[2]), new Vector3d(vt[0]), new Vector3d(vt[1]));
             } else {
                 GData4 g4 = (GData4) g1;
                 Vertex[] vq = quads.get(g4);
                 if (vq[0].equals(v1) && vq[1].equals(v2)) {
-                    n1 = new Vector3d( // T1 1-2-3
-                            g4.Y3.subtract(g4.Y1).multiply(g4.Z2.subtract(g4.Z1)).subtract(g4.Z3.subtract(g4.Z1).multiply(g4.Y2.subtract(g4.Y1))),
-                            g4.Z3.subtract(g4.Z1).multiply(g4.X2.subtract(g4.X1)).subtract(g4.X3.subtract(g4.X1).multiply(g4.Z2.subtract(g4.Z1))),
-                            g4.X3.subtract(g4.X1).multiply(g4.Y2.subtract(g4.Y1)).subtract(g4.Y3.subtract(g4.Y1).multiply(g4.X2.subtract(g4.X1)))
-                            );
+                    n1 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
                     v3 = vq[2];
                 } else if (vq[1].equals(v1) && vq[2].equals(v2)) {
-                    n1 = new Vector3d( // T1 1-2-3
-                            g4.Y3.subtract(g4.Y1).multiply(g4.Z2.subtract(g4.Z1)).subtract(g4.Z3.subtract(g4.Z1).multiply(g4.Y2.subtract(g4.Y1))),
-                            g4.Z3.subtract(g4.Z1).multiply(g4.X2.subtract(g4.X1)).subtract(g4.X3.subtract(g4.X1).multiply(g4.Z2.subtract(g4.Z1))),
-                            g4.X3.subtract(g4.X1).multiply(g4.Y2.subtract(g4.Y1)).subtract(g4.Y3.subtract(g4.Y1).multiply(g4.X2.subtract(g4.X1)))
-                            );
+                    n1 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
                     v3 = vq[0];
                 } else if (vq[2].equals(v1) && vq[3].equals(v2)) {
-                    n1 = new Vector3d(// 22 3-4-1
-                            g4.Y1.subtract(g4.Y2).multiply(g4.Z4.subtract(g4.Z2)).subtract(g4.Z1.subtract(g4.Z2).multiply(g4.Y4.subtract(g4.Y2))),
-                            g4.Z1.subtract(g4.Z2).multiply(g4.X4.subtract(g4.X2)).subtract(g4.X1.subtract(g4.X2).multiply(g4.Z4.subtract(g4.Z2))),
-                            g4.X1.subtract(g4.X2).multiply(g4.Y4.subtract(g4.Y2)).subtract(g4.Y1.subtract(g4.Y2).multiply(g4.X4.subtract(g4.X2)))
-                            );
+                    n1 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // 22 3-4-1
                     v3 = vq[0];
                 } else if (vq[3].equals(v1) && vq[0].equals(v2)) {
-                    n1 = new Vector3d(// 22 3-4-1
-                            g4.Y1.subtract(g4.Y2).multiply(g4.Z4.subtract(g4.Z2)).subtract(g4.Z1.subtract(g4.Z2).multiply(g4.Y4.subtract(g4.Y2))),
-                            g4.Z1.subtract(g4.Z2).multiply(g4.X4.subtract(g4.X2)).subtract(g4.X1.subtract(g4.X2).multiply(g4.Z4.subtract(g4.Z2))),
-                            g4.X1.subtract(g4.X2).multiply(g4.Y4.subtract(g4.Y2)).subtract(g4.Y1.subtract(g4.Y2).multiply(g4.X4.subtract(g4.X2)))
-                            );
+                    n1 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // 22 3-4-1
                     v3 = vq[2];
                 } else if (vq[0].equals(v2) && vq[1].equals(v1)) {
-                    n1 = new Vector3d(// T1 1-2-3
-                            g4.Y3.subtract(g4.Y1).multiply(g4.Z2.subtract(g4.Z1)).subtract(g4.Z3.subtract(g4.Z1).multiply(g4.Y2.subtract(g4.Y1))),
-                            g4.Z3.subtract(g4.Z1).multiply(g4.X2.subtract(g4.X1)).subtract(g4.X3.subtract(g4.X1).multiply(g4.Z2.subtract(g4.Z1))),
-                            g4.X3.subtract(g4.X1).multiply(g4.Y2.subtract(g4.Y1)).subtract(g4.Y3.subtract(g4.Y1).multiply(g4.X2.subtract(g4.X1)))
-                            );
+                    n1 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
                     v3 = vq[2];
                 } else if (vq[1].equals(v2) && vq[2].equals(v1)) {
-                    n1 = new Vector3d(// T1 1-2-3
-                            g4.Y3.subtract(g4.Y1).multiply(g4.Z2.subtract(g4.Z1)).subtract(g4.Z3.subtract(g4.Z1).multiply(g4.Y2.subtract(g4.Y1))),
-                            g4.Z3.subtract(g4.Z1).multiply(g4.X2.subtract(g4.X1)).subtract(g4.X3.subtract(g4.X1).multiply(g4.Z2.subtract(g4.Z1))),
-                            g4.X3.subtract(g4.X1).multiply(g4.Y2.subtract(g4.Y1)).subtract(g4.Y3.subtract(g4.Y1).multiply(g4.X2.subtract(g4.X1)))
-                            );
+                    n1 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
                     v3 = vq[0];
                 } else if (vq[2].equals(v2) && vq[3].equals(v1)) {
-                    n1 = new Vector3d(// T2 3-4-1
-                            g4.Y1.subtract(g4.Y2).multiply(g4.Z4.subtract(g4.Z2)).subtract(g4.Z1.subtract(g4.Z2).multiply(g4.Y4.subtract(g4.Y2))),
-                            g4.Z1.subtract(g4.Z2).multiply(g4.X4.subtract(g4.X2)).subtract(g4.X1.subtract(g4.X2).multiply(g4.Z4.subtract(g4.Z2))),
-                            g4.X1.subtract(g4.X2).multiply(g4.Y4.subtract(g4.Y2)).subtract(g4.Y1.subtract(g4.Y2).multiply(g4.X4.subtract(g4.X2)))
-                            );
+                    n1 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // T2 3-4-1
                     v3 = vq[0];
                 } else {
-                    n1 = new Vector3d(// T2 3-4-1
-                            g4.Y1.subtract(g4.Y2).multiply(g4.Z4.subtract(g4.Z2)).subtract(g4.Z1.subtract(g4.Z2).multiply(g4.Y4.subtract(g4.Y2))),
-                            g4.Z1.subtract(g4.Z2).multiply(g4.X4.subtract(g4.X2)).subtract(g4.X1.subtract(g4.X2).multiply(g4.Z4.subtract(g4.Z2))),
-                            g4.X1.subtract(g4.X2).multiply(g4.Y4.subtract(g4.Y2)).subtract(g4.Y1.subtract(g4.Y2).multiply(g4.X4.subtract(g4.X2)))
-                            );
+                    n1 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // T2 3-4-1
                     v3 = vq[2];
                 }
             }
@@ -8532,69 +8488,33 @@ public class VertexManager {
                 tvs.remove(v1);
                 tvs.remove(v2);
                 v4 = tvs.iterator().next();
-                n2 = new Vector3d(
-                        g3.Y3.subtract(g3.Y1).multiply(g3.Z2.subtract(g3.Z1)).subtract(g3.Z3.subtract(g3.Z1).multiply(g3.Y2.subtract(g3.Y1))),
-                        g3.Z3.subtract(g3.Z1).multiply(g3.X2.subtract(g3.X1)).subtract(g3.X3.subtract(g3.X1).multiply(g3.Z2.subtract(g3.Z1))),
-                        g3.X3.subtract(g3.X1).multiply(g3.Y2.subtract(g3.Y1)).subtract(g3.Y3.subtract(g3.Y1).multiply(g3.X2.subtract(g3.X1)))
-                        );
+                n2 = Vector3d.getNormal(new Vector3d(vt[2]), new Vector3d(vt[0]), new Vector3d(vt[1]));
             } else {
                 GData4 g4 = (GData4) g2;
                 Vertex[] vq = quads.get(g4);
                 if (vq[0].equals(v1) && vq[1].equals(v2)) {
-                    n2 = new Vector3d( // T1 1-2-3
-                            g4.Y3.subtract(g4.Y1).multiply(g4.Z2.subtract(g4.Z1)).subtract(g4.Z3.subtract(g4.Z1).multiply(g4.Y2.subtract(g4.Y1))),
-                            g4.Z3.subtract(g4.Z1).multiply(g4.X2.subtract(g4.X1)).subtract(g4.X3.subtract(g4.X1).multiply(g4.Z2.subtract(g4.Z1))),
-                            g4.X3.subtract(g4.X1).multiply(g4.Y2.subtract(g4.Y1)).subtract(g4.Y3.subtract(g4.Y1).multiply(g4.X2.subtract(g4.X1)))
-                            );
+                    n2 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
                     v4 = vq[2];
                 } else if (vq[1].equals(v1) && vq[2].equals(v2)) {
-                    n2 = new Vector3d( // T1 1-2-3
-                            g4.Y3.subtract(g4.Y1).multiply(g4.Z2.subtract(g4.Z1)).subtract(g4.Z3.subtract(g4.Z1).multiply(g4.Y2.subtract(g4.Y1))),
-                            g4.Z3.subtract(g4.Z1).multiply(g4.X2.subtract(g4.X1)).subtract(g4.X3.subtract(g4.X1).multiply(g4.Z2.subtract(g4.Z1))),
-                            g4.X3.subtract(g4.X1).multiply(g4.Y2.subtract(g4.Y1)).subtract(g4.Y3.subtract(g4.Y1).multiply(g4.X2.subtract(g4.X1)))
-                            );
+                    n2 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
                     v4 = vq[0];
                 } else if (vq[2].equals(v1) && vq[3].equals(v2)) {
-                    n2 = new Vector3d(// 22 3-4-1
-                            g4.Y1.subtract(g4.Y2).multiply(g4.Z4.subtract(g4.Z2)).subtract(g4.Z1.subtract(g4.Z2).multiply(g4.Y4.subtract(g4.Y2))),
-                            g4.Z1.subtract(g4.Z2).multiply(g4.X4.subtract(g4.X2)).subtract(g4.X1.subtract(g4.X2).multiply(g4.Z4.subtract(g4.Z2))),
-                            g4.X1.subtract(g4.X2).multiply(g4.Y4.subtract(g4.Y2)).subtract(g4.Y1.subtract(g4.Y2).multiply(g4.X4.subtract(g4.X2)))
-                            );
+                    n2 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // 22 3-4-1
                     v4 = vq[0];
                 } else if (vq[3].equals(v1) && vq[0].equals(v2)) {
-                    n2 = new Vector3d(// 22 3-4-1
-                            g4.Y1.subtract(g4.Y2).multiply(g4.Z4.subtract(g4.Z2)).subtract(g4.Z1.subtract(g4.Z2).multiply(g4.Y4.subtract(g4.Y2))),
-                            g4.Z1.subtract(g4.Z2).multiply(g4.X4.subtract(g4.X2)).subtract(g4.X1.subtract(g4.X2).multiply(g4.Z4.subtract(g4.Z2))),
-                            g4.X1.subtract(g4.X2).multiply(g4.Y4.subtract(g4.Y2)).subtract(g4.Y1.subtract(g4.Y2).multiply(g4.X4.subtract(g4.X2)))
-                            );
+                    n2 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // 22 3-4-1
                     v4 = vq[2];
                 } else if (vq[0].equals(v2) && vq[1].equals(v1)) {
-                    n2 = new Vector3d(// T1 1-2-3
-                            g4.Y3.subtract(g4.Y1).multiply(g4.Z2.subtract(g4.Z1)).subtract(g4.Z3.subtract(g4.Z1).multiply(g4.Y2.subtract(g4.Y1))),
-                            g4.Z3.subtract(g4.Z1).multiply(g4.X2.subtract(g4.X1)).subtract(g4.X3.subtract(g4.X1).multiply(g4.Z2.subtract(g4.Z1))),
-                            g4.X3.subtract(g4.X1).multiply(g4.Y2.subtract(g4.Y1)).subtract(g4.Y3.subtract(g4.Y1).multiply(g4.X2.subtract(g4.X1)))
-                            );
+                    n2 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
                     v4 = vq[2];
                 } else if (vq[1].equals(v2) && vq[2].equals(v1)) {
-                    n2 = new Vector3d(// T1 1-2-3
-                            g4.Y3.subtract(g4.Y1).multiply(g4.Z2.subtract(g4.Z1)).subtract(g4.Z3.subtract(g4.Z1).multiply(g4.Y2.subtract(g4.Y1))),
-                            g4.Z3.subtract(g4.Z1).multiply(g4.X2.subtract(g4.X1)).subtract(g4.X3.subtract(g4.X1).multiply(g4.Z2.subtract(g4.Z1))),
-                            g4.X3.subtract(g4.X1).multiply(g4.Y2.subtract(g4.Y1)).subtract(g4.Y3.subtract(g4.Y1).multiply(g4.X2.subtract(g4.X1)))
-                            );
+                    n2 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
                     v4 = vq[0];
                 } else if (vq[2].equals(v2) && vq[3].equals(v1)) {
-                    n2 = new Vector3d(// T2 3-4-1
-                            g4.Y1.subtract(g4.Y2).multiply(g4.Z4.subtract(g4.Z2)).subtract(g4.Z1.subtract(g4.Z2).multiply(g4.Y4.subtract(g4.Y2))),
-                            g4.Z1.subtract(g4.Z2).multiply(g4.X4.subtract(g4.X2)).subtract(g4.X1.subtract(g4.X2).multiply(g4.Z4.subtract(g4.Z2))),
-                            g4.X1.subtract(g4.X2).multiply(g4.Y4.subtract(g4.Y2)).subtract(g4.Y1.subtract(g4.Y2).multiply(g4.X4.subtract(g4.X2)))
-                            );
+                    n2 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // T2 3-4-1
                     v4 = vq[0];
                 } else {
-                    n2 = new Vector3d(// T2 3-4-1
-                            g4.Y1.subtract(g4.Y2).multiply(g4.Z4.subtract(g4.Z2)).subtract(g4.Z1.subtract(g4.Z2).multiply(g4.Y4.subtract(g4.Y2))),
-                            g4.Z1.subtract(g4.Z2).multiply(g4.X4.subtract(g4.X2)).subtract(g4.X1.subtract(g4.X2).multiply(g4.Z4.subtract(g4.Z2))),
-                            g4.X1.subtract(g4.X2).multiply(g4.Y4.subtract(g4.Y2)).subtract(g4.Y1.subtract(g4.Y2).multiply(g4.X4.subtract(g4.X2)))
-                            );
+                    n2 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // T2 3-4-1
                     v4 = vq[2];
                 }
             }
@@ -12106,11 +12026,11 @@ public class VertexManager {
                                 nl.add(v2);
                                 allLines.add(nl);
 
-                                //                                // MARK DEBUG ONLY!
-                                //                                resultVertices.add(v1);
-                                //                                resultVertices.add(v2);
-                                //                                resultColours.add(new GColour(-1, 1f, 0f, 1f, 1f));
-                                //                                resultIsLine.add(1);
+                                //     // MARK DEBUG ONLY!
+                                //     resultVertices.add(v1);
+                                //     resultVertices.add(v2);
+                                //     resultColours.add(new GColour(-1, 1f, 0f, 1f, 1f));
+                                //     resultIsLine.add(1);
                             }
                         }
                     }
