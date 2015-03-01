@@ -8748,7 +8748,6 @@ public class VertexManager {
             Vertex[] va0 = lines.get(g1);
             v1.add(va0[0]);
             v1.add(va0[1]);
-            v1.add(va0[2]);
             break;
         case 3:
             Vertex[] va = triangles.get(g1);
@@ -8772,7 +8771,82 @@ public class VertexManager {
             Vertex[] va0 = lines.get(g2);
             v2.add(va0[0]);
             v2.add(va0[1]);
-            v2.add(va0[2]);
+            break;
+        case 3:
+            Vertex[] va = triangles.get(g2);
+            v2.add(va[0]);
+            v2.add(va[1]);
+            v2.add(va[2]);
+            break;
+        case 4:
+            Vertex[] va2 = quads.get(g2);
+            v2.add(va2[0]);
+            v2.add(va2[1]);
+            v2.add(va2[2]);
+            v2.add(va2[3]);
+            break;
+        default:
+            return false;
+        }
+
+        // Create the sets
+
+        ArrayList<HashSet<Vertex>> setList1 = new ArrayList<HashSet<Vertex>>();
+        ArrayList<HashSet<Vertex>> setList2 = new ArrayList<HashSet<Vertex>>();
+
+        for (Vertex v : v1) {
+            HashSet<Vertex> newSet = new HashSet<Vertex>();
+            newSet.addAll(adjaencyByPrecision.get(v));
+            setList1.add(newSet);
+        }
+
+        for (Vertex v : v2) {
+            HashSet<Vertex> newSet = new HashSet<Vertex>();
+            newSet.addAll(adjaencyByPrecision.get(v));
+            setList2.add(newSet);
+        }
+
+        // Now we have to detect a least 2 set intersections
+
+        int intersections = 0;
+        for (HashSet<Vertex> s1 : setList1) {
+            for (HashSet<Vertex> s2 : setList1) {
+                HashSet<Vertex> newSet = new HashSet<Vertex>();
+                newSet.addAll(s1);
+                if (newSet.retainAll(s2) && !newSet.isEmpty()) {
+                    intersections++;
+                    if (intersections == 2) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Tests, if an edge and a surface share a common edge, or if the edge is equal to another edge
+     * @param e1 an edge
+     * @param g2 a surface
+     * @param adjaencyByPrecision a map which contains informations about near vertices
+     * @return {@code true} if they do / {@code false} otherwise
+     */
+    private boolean hasSameEdge(AccurateEdge e1, GData g2, HashMap<Vertex, HashSet<Vertex>> adjaencyByPrecision) {
+
+        int t2 = g2.type();
+
+        HashSet<Vertex> v1 = new HashSet<Vertex>();
+        HashSet<Vertex> v2 = new HashSet<Vertex>();
+
+        v1.add(e1.v1);
+        v1.add(e1.v2);
+
+        switch (t2) {
+        case 2:
+            Vertex[] va0 = lines.get(g2);
+            v2.add(va0[0]);
+            v2.add(va0[1]);
             break;
         case 3:
             Vertex[] va = triangles.get(g2);
@@ -15945,8 +16019,6 @@ public class VertexManager {
 
                         selectedVertices.clear();
 
-                        // Iterative Selection Spread
-
                         double angle2 = ss.getAngle().doubleValue();
 
                         final Set<GData2> lastSelectedLines = new HashSet<GData2>();
@@ -15959,243 +16031,406 @@ public class VertexManager {
                         final Set<GData4> newSelectedQuads = new HashSet<GData4>();
                         final Set<GData5> newSelectedCondlines = new HashSet<GData5>();
 
-                        // Init (Step 0)
-                        // Filter invalid selection start (e.g. subfile content), since the selection wont be cleared
-                        for (GData1 g : selectedSubfiles) {
-                            if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
-                                selectedSubfiles.remove(g);
-                                selectedData.remove(g);
-                            }
-                        }
-                        for (GData2 g : selectedLines) {
-                            if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
-                                selectedLines.remove(g);
-                                selectedData.remove(g);
-                            }
-                        }
-                        for (GData3 g : selectedTriangles) {
-                            if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
-                                selectedTriangles.remove(g);
-                                selectedData.remove(g);
-                            }
-                        }
-                        for (GData4 g : selectedQuads) {
-                            if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
-                                selectedQuads.remove(g);
-                                selectedData.remove(g);
-                            }
-                        }
-                        for (GData5 g : selectedCondlines) {
-                            if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
-                                selectedCondlines.remove(g);
-                                selectedData.remove(g);
-                            }
-                        }
+                        if (ss.isEdgeStop()) {
+                            selectedData.clear();
+                            selectedLines.clear();
+                            selectedCondlines.clear();
+                            selectedSubfiles.clear();
 
-                        int c1 = selectedLines.size();
-                        int c2 = selectedTriangles.size();
-                        int c3 = selectedQuads.size();
-                        int c4 = selectedCondlines.size();
+                            // Iterative Selection Spread I (Stops at edges)
 
-                        lastSelectedLines.addAll(selectedLines);
-                        lastSelectedTriangles.addAll(selectedTriangles);
-                        lastSelectedQuads.addAll(selectedQuads);
-                        lastSelectedCondlines.addAll(selectedCondlines);
-
-                        // Interation, Step (1...n), "Select Touching" is only one step
-                        do {
-                            c1 = selectedLines.size();
-                            c2 = selectedTriangles.size();
-                            c3 = selectedQuads.size();
-                            c4 = selectedCondlines.size();
-                            newSelectedLines.clear();
-                            newSelectedTriangles.clear();
-                            newSelectedQuads.clear();
-                            newSelectedCondlines.clear();
-
-                            HashSet<Vertex> touchingVertices = new HashSet<Vertex>();
-                            {
-                                Vertex[] verts;
-                                for (GData2 g : lastSelectedLines) {
-                                    verts = lines.get(g);
-                                    for (Vertex v : verts) {
-                                        HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
-                                        for (Vertex v2 : verts2) {
-                                            touchingVertices.add(v2);
-                                            selectedVertices.add(v2);
-                                        }
-                                    }
-                                }
-                                for (GData3 g : lastSelectedTriangles) {
-                                    verts = triangles.get(g);
-                                    for (Vertex v : verts) {
-                                        HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
-                                        for (Vertex v2 : verts2) {
-                                            touchingVertices.add(v2);
-                                            selectedVertices.add(v2);
-                                        }
-                                    }
-                                }
-                                for (GData4 g : lastSelectedQuads) {
-                                    verts = quads.get(g);
-                                    for (Vertex v : verts) {
-                                        HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
-                                        for (Vertex v2 : verts2) {
-                                            touchingVertices.add(v2);
-                                            selectedVertices.add(v2);
-                                        }
-                                    }
-                                }
-                                for (GData5 g : lastSelectedCondlines) {
-                                    verts = condlines.get(g);
-                                    int c = 0;
-                                    for (Vertex v : verts) {
-                                        if (c > 1) break;
-                                        HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
-                                        for (Vertex v2 : verts2) {
-                                            touchingVertices.add(v2);
-                                            selectedVertices.add(v2);
-                                        }
-                                        c++;
-                                    }
+                            // Init (Step 0)
+                            // Filter invalid selection start (e.g. subfile content), since the selection wont be cleared
+                            for (GData3 g : selectedTriangles) {
+                                if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                    selectedTriangles.remove(g);
+                                    selectedData.remove(g);
                                 }
                             }
-                            for (Vertex v : touchingVertices) {
-                                Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
-                                for (VertexManifestation mani : manis) {
-                                    GData g = mani.getGdata();
-                                    switch (g.type()) {
-                                    case 2:
-                                        if (!selectedLines.contains(g) &&  canSelect(null, g, ss, allNormals, allColours, angle2)) {
-                                            selectedLines.add((GData2) g);
-                                            selectedData.add(g);
-                                            newSelectedLines.add((GData2) g);
-                                            Vertex[] verts = lines.get(g);
-                                            for (Vertex ov : verts) {
-                                                HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
-                                                for (Vertex v2 : verts2) {
-                                                    selectedVertices.add(v2);
-                                                }
+                            for (GData4 g : selectedQuads) {
+                                if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                    selectedQuads.remove(g);
+                                    selectedData.remove(g);
+                                }
+                            }
+
+                            int c2 = selectedTriangles.size();
+                            int c3 = selectedQuads.size();
+
+                            lastSelectedTriangles.addAll(selectedTriangles);
+                            lastSelectedQuads.addAll(selectedQuads);
+
+                            // Interation, Step (1...n), "Select Touching" is only one step
+                            do {
+                                c2 = selectedTriangles.size();
+                                c3 = selectedQuads.size();
+                                newSelectedTriangles.clear();
+                                newSelectedQuads.clear();
+
+                                HashSet<AccurateEdge> touchingEdges = new HashSet<AccurateEdge>();
+                                {
+                                    Vertex[] verts;
+                                    for (GData3 g : lastSelectedTriangles) {
+                                        verts = triangles.get(g);
+                                        for (Vertex v : verts) {
+                                            HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                            for (Vertex v2 : verts2) {
+                                                selectedVertices.add(v2);
                                             }
                                         }
-                                        break;
-                                    case 3:
-
-                                        if (!selectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
-
-                                            if (ss.isOrientation()) {
-                                                // We have to find a selected face, which shares one edge
-                                                int faceCount = 0;
-                                                int angleCount = 0;
-                                                for (GData3 g2 : selectedTriangles) {
-                                                    if (hasSameEdge(g, g2, adjaencyByPrecision)) {
-                                                        faceCount++;
-                                                        if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
-                                                            angleCount++;
+                                        touchingEdges.add(new AccurateEdge(verts[0], verts[1]));
+                                        touchingEdges.add(new AccurateEdge(verts[1], verts[2]));
+                                        touchingEdges.add(new AccurateEdge(verts[2], verts[0]));
+                                    }
+                                    for (GData4 g : lastSelectedQuads) {
+                                        verts = quads.get(g);
+                                        for (Vertex v : verts) {
+                                            HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                            for (Vertex v2 : verts2) {
+                                                selectedVertices.add(v2);
+                                            }
+                                        }
+                                        touchingEdges.add(new AccurateEdge(verts[0], verts[1]));
+                                        touchingEdges.add(new AccurateEdge(verts[1], verts[2]));
+                                        touchingEdges.add(new AccurateEdge(verts[2], verts[3]));
+                                        touchingEdges.add(new AccurateEdge(verts[3], verts[0]));
+                                    }
+                                }
+                                for (AccurateEdge edge : touchingEdges) {
+                                    boolean skipEdge = false;
+                                    for (GData2 line : lines.keySet()) {
+                                        if (hasSameEdge(edge, line, adjaencyByPrecision)) {
+                                            skipEdge = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!skipEdge) {
+                                        for (GData3 g : triangles.keySet()) {
+                                            if (!selectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && hasSameEdge(edge, g, adjaencyByPrecision)) {
+                                                if (ss.isOrientation()) {
+                                                    int faceCount = 0;
+                                                    int angleCount = 0;
+                                                    for (GData3 g2 : selectedTriangles) {
+                                                        if (hasSameEdge(g, g2, adjaencyByPrecision)) {
+                                                            faceCount++;
+                                                            if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
+                                                                angleCount++;
+                                                            }
                                                         }
                                                     }
-                                                }
-                                                for (GData4 g2 : selectedQuads) {
-                                                    if (hasSameEdge(g, g2, adjaencyByPrecision)) {
-                                                        faceCount++;
-                                                        if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
-                                                            angleCount++;
+                                                    for (GData4 g2 : selectedQuads) {
+                                                        if (hasSameEdge(g, g2, adjaencyByPrecision)) {
+                                                            faceCount++;
+                                                            if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
+                                                                angleCount++;
+                                                            }
                                                         }
                                                     }
+                                                    if (faceCount != angleCount) break;
                                                 }
-                                                if (faceCount != angleCount) break;
-                                            }
-
-                                            selectedTriangles.add((GData3) g);
-                                            selectedData.add(g);
-                                            newSelectedTriangles.add((GData3) g);
-                                            Vertex[] verts = triangles.get(g);
-                                            for (Vertex ov : verts) {
-                                                HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
-                                                for (Vertex v2 : verts2) {
-                                                    selectedVertices.add(v2);
+                                                selectedTriangles.add(g);
+                                                selectedData.add(g);
+                                                newSelectedTriangles.add(g);
+                                                Vertex[] verts = triangles.get(g);
+                                                for (Vertex ov : verts) {
+                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                    for (Vertex v2 : verts2) {
+                                                        selectedVertices.add(v2);
+                                                    }
                                                 }
                                             }
                                         }
-                                        break;
-                                    case 4:
-                                        if (!selectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
-
-                                            if (ss.isOrientation()) {
-                                                // We have to find a selected face, which shares one edge
-                                                int faceCount = 0;
-                                                int angleCount = 0;
-                                                for (GData3 g2 : selectedTriangles) {
-                                                    if (hasSameEdge(g, g2, adjaencyByPrecision)) {
-                                                        faceCount++;
-                                                        if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
-                                                            angleCount++;
+                                        for (GData4 g : quads.keySet()) {
+                                            if (!selectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && hasSameEdge(edge, g, adjaencyByPrecision)) {
+                                                if (ss.isOrientation()) {
+                                                    int faceCount = 0;
+                                                    int angleCount = 0;
+                                                    for (GData3 g2 : selectedTriangles) {
+                                                        if (hasSameEdge(g, g2, adjaencyByPrecision)) {
+                                                            faceCount++;
+                                                            if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
+                                                                angleCount++;
+                                                            }
                                                         }
                                                     }
-                                                }
-                                                for (GData4 g2 : selectedQuads) {
-                                                    if (hasSameEdge(g, g2, adjaencyByPrecision)) {
-                                                        faceCount++;
-                                                        if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
-                                                            angleCount++;
+                                                    for (GData4 g2 : selectedQuads) {
+                                                        if (hasSameEdge(g, g2, adjaencyByPrecision)) {
+                                                            faceCount++;
+                                                            if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
+                                                                angleCount++;
+                                                            }
                                                         }
                                                     }
+                                                    if (faceCount != angleCount) break;
                                                 }
-                                                if (faceCount != angleCount) break;
-                                            }
-
-
-                                            selectedQuads.add((GData4) g);
-                                            selectedData.add(g);
-                                            newSelectedQuads.add((GData4) g);
-                                            Vertex[] verts = quads.get(g);
-                                            for (Vertex ov : verts) {
-                                                HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
-                                                for (Vertex v2 : verts2) {
-                                                    selectedVertices.add(v2);
+                                                selectedQuads.add(g);
+                                                selectedData.add(g);
+                                                newSelectedQuads.add(g);
+                                                Vertex[] verts = quads.get(g);
+                                                for (Vertex ov : verts) {
+                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                    for (Vertex v2 : verts2) {
+                                                        selectedVertices.add(v2);
+                                                    }
                                                 }
                                             }
                                         }
-                                        break;
-                                    case 5:
-                                        if (!selectedCondlines.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
-                                            selectedCondlines.add((GData5) g);
-                                            selectedData.add(g);
-                                            newSelectedCondlines.add((GData5) g);
-                                            Vertex[] verts = condlines.get(g);
-                                            int c = 0;
-                                            for (Vertex ov : verts) {
-                                                if (c > 1) break;
-                                                HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
-                                                for (Vertex v2 : verts2) {
-                                                    selectedVertices.add(v2);
-                                                }
-                                                c++;
-                                            }
-                                        }
-                                        break;
-                                    default:
-                                        break;
                                     }
+                                }
 
+                                lastSelectedTriangles.clear();
+                                lastSelectedQuads.clear();
+                                lastSelectedTriangles.addAll(newSelectedTriangles);
+                                lastSelectedQuads.addAll(newSelectedQuads);
+
+                                if (ss.getScope() == SelectorSettings.TOUCHING) break;
+                            } while (
+                                    c2 != selectedTriangles.size() ||
+                                    c3 != selectedQuads.size());
+
+                            selectedData.addAll(selectedTriangles);
+                            selectedData.addAll(selectedQuads);
+                        } else {
+
+                            // Iterative Selection Spread II
+
+                            // Init (Step 0)
+                            // Filter invalid selection start (e.g. subfile content), since the selection wont be cleared
+                            for (GData1 g : selectedSubfiles) {
+                                if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                    selectedSubfiles.remove(g);
+                                    selectedData.remove(g);
+                                }
+                            }
+                            for (GData2 g : selectedLines) {
+                                if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                    selectedLines.remove(g);
+                                    selectedData.remove(g);
+                                }
+                            }
+                            for (GData3 g : selectedTriangles) {
+                                if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                    selectedTriangles.remove(g);
+                                    selectedData.remove(g);
+                                }
+                            }
+                            for (GData4 g : selectedQuads) {
+                                if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                    selectedQuads.remove(g);
+                                    selectedData.remove(g);
+                                }
+                            }
+                            for (GData5 g : selectedCondlines) {
+                                if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                    selectedCondlines.remove(g);
+                                    selectedData.remove(g);
                                 }
                             }
 
-                            lastSelectedLines.clear();
-                            lastSelectedTriangles.clear();
-                            lastSelectedQuads.clear();
-                            lastSelectedCondlines.clear();
-                            lastSelectedLines.addAll(newSelectedLines);
-                            lastSelectedTriangles.addAll(newSelectedTriangles);
-                            lastSelectedQuads.addAll(newSelectedQuads);
-                            lastSelectedCondlines.addAll(newSelectedCondlines);
+                            int c1 = selectedLines.size();
+                            int c2 = selectedTriangles.size();
+                            int c3 = selectedQuads.size();
+                            int c4 = selectedCondlines.size();
 
-                            if (ss.getScope() == SelectorSettings.TOUCHING) break;
-                        } while (
-                                c1 != selectedLines.size() ||
-                                c2 != selectedTriangles.size() ||
-                                c3 != selectedQuads.size() ||
-                                c4 != selectedCondlines.size());
+                            lastSelectedLines.addAll(selectedLines);
+                            lastSelectedTriangles.addAll(selectedTriangles);
+                            lastSelectedQuads.addAll(selectedQuads);
+                            lastSelectedCondlines.addAll(selectedCondlines);
+
+                            // Interation, Step (1...n), "Select Touching" is only one step
+                            do {
+                                c1 = selectedLines.size();
+                                c2 = selectedTriangles.size();
+                                c3 = selectedQuads.size();
+                                c4 = selectedCondlines.size();
+                                newSelectedLines.clear();
+                                newSelectedTriangles.clear();
+                                newSelectedQuads.clear();
+                                newSelectedCondlines.clear();
+
+                                HashSet<Vertex> touchingVertices = new HashSet<Vertex>();
+                                {
+                                    Vertex[] verts;
+                                    for (GData2 g : lastSelectedLines) {
+                                        verts = lines.get(g);
+                                        for (Vertex v : verts) {
+                                            HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                            for (Vertex v2 : verts2) {
+                                                touchingVertices.add(v2);
+                                                selectedVertices.add(v2);
+                                            }
+                                        }
+                                    }
+                                    for (GData3 g : lastSelectedTriangles) {
+                                        verts = triangles.get(g);
+                                        for (Vertex v : verts) {
+                                            HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                            for (Vertex v2 : verts2) {
+                                                touchingVertices.add(v2);
+                                                selectedVertices.add(v2);
+                                            }
+                                        }
+                                    }
+                                    for (GData4 g : lastSelectedQuads) {
+                                        verts = quads.get(g);
+                                        for (Vertex v : verts) {
+                                            HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                            for (Vertex v2 : verts2) {
+                                                touchingVertices.add(v2);
+                                                selectedVertices.add(v2);
+                                            }
+                                        }
+                                    }
+                                    for (GData5 g : lastSelectedCondlines) {
+                                        verts = condlines.get(g);
+                                        int c = 0;
+                                        for (Vertex v : verts) {
+                                            if (c > 1) break;
+                                            HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                            for (Vertex v2 : verts2) {
+                                                touchingVertices.add(v2);
+                                                selectedVertices.add(v2);
+                                            }
+                                            c++;
+                                        }
+                                    }
+                                }
+                                for (Vertex v : touchingVertices) {
+                                    Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
+                                    for (VertexManifestation mani : manis) {
+                                        GData g = mani.getGdata();
+                                        switch (g.type()) {
+                                        case 2:
+                                            if (!selectedLines.contains(g) &&  canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                                selectedLines.add((GData2) g);
+                                                selectedData.add(g);
+                                                newSelectedLines.add((GData2) g);
+                                                Vertex[] verts = lines.get(g);
+                                                for (Vertex ov : verts) {
+                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                    for (Vertex v2 : verts2) {
+                                                        selectedVertices.add(v2);
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        case 3:
+
+                                            if (!selectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+
+                                                if (ss.isOrientation()) {
+                                                    int faceCount = 0;
+                                                    int angleCount = 0;
+                                                    for (GData3 g2 : selectedTriangles) {
+                                                        if (hasSameEdge(g, g2, adjaencyByPrecision)) {
+                                                            faceCount++;
+                                                            if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
+                                                                angleCount++;
+                                                            }
+                                                        }
+                                                    }
+                                                    for (GData4 g2 : selectedQuads) {
+                                                        if (hasSameEdge(g, g2, adjaencyByPrecision)) {
+                                                            faceCount++;
+                                                            if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
+                                                                angleCount++;
+                                                            }
+                                                        }
+                                                    }
+                                                    if (faceCount != angleCount) break;
+                                                }
+
+                                                selectedTriangles.add((GData3) g);
+                                                selectedData.add(g);
+                                                newSelectedTriangles.add((GData3) g);
+                                                Vertex[] verts = triangles.get(g);
+                                                for (Vertex ov : verts) {
+                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                    for (Vertex v2 : verts2) {
+                                                        selectedVertices.add(v2);
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        case 4:
+                                            if (!selectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+
+                                                if (ss.isOrientation()) {
+                                                    // We have to find a selected face, which shares one edge
+                                                    int faceCount = 0;
+                                                    int angleCount = 0;
+                                                    for (GData3 g2 : selectedTriangles) {
+                                                        if (hasSameEdge(g, g2, adjaencyByPrecision)) {
+                                                            faceCount++;
+                                                            if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
+                                                                angleCount++;
+                                                            }
+                                                        }
+                                                    }
+                                                    for (GData4 g2 : selectedQuads) {
+                                                        if (hasSameEdge(g, g2, adjaencyByPrecision)) {
+                                                            faceCount++;
+                                                            if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
+                                                                angleCount++;
+                                                            }
+                                                        }
+                                                    }
+                                                    if (faceCount != angleCount) break;
+                                                }
+
+
+                                                selectedQuads.add((GData4) g);
+                                                selectedData.add(g);
+                                                newSelectedQuads.add((GData4) g);
+                                                Vertex[] verts = quads.get(g);
+                                                for (Vertex ov : verts) {
+                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                    for (Vertex v2 : verts2) {
+                                                        selectedVertices.add(v2);
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        case 5:
+                                            if (!selectedCondlines.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                                selectedCondlines.add((GData5) g);
+                                                selectedData.add(g);
+                                                newSelectedCondlines.add((GData5) g);
+                                                Vertex[] verts = condlines.get(g);
+                                                int c = 0;
+                                                for (Vertex ov : verts) {
+                                                    if (c > 1) break;
+                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                    for (Vertex v2 : verts2) {
+                                                        selectedVertices.add(v2);
+                                                    }
+                                                    c++;
+                                                }
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                        }
+
+                                    }
+                                }
+
+                                lastSelectedLines.clear();
+                                lastSelectedTriangles.clear();
+                                lastSelectedQuads.clear();
+                                lastSelectedCondlines.clear();
+                                lastSelectedLines.addAll(newSelectedLines);
+                                lastSelectedTriangles.addAll(newSelectedTriangles);
+                                lastSelectedQuads.addAll(newSelectedQuads);
+                                lastSelectedCondlines.addAll(newSelectedCondlines);
+
+                                if (ss.getScope() == SelectorSettings.TOUCHING) break;
+                            } while (
+                                    c1 != selectedLines.size() ||
+                                    c2 != selectedTriangles.size() ||
+                                    c3 != selectedQuads.size() ||
+                                    c4 != selectedCondlines.size());
+                        }
 
                         break;
                     default:
@@ -16449,5 +16684,49 @@ public class VertexManager {
                 selectedVertices.add(v);
             }
         }
+    }
+
+    public void selectInverse() {
+
+        final Set<Vertex> lastSelectedVertices = new HashSet<Vertex>();
+        final Set<GData1> lastSelectedSubfiles = new HashSet<GData1>();
+        final Set<GData2> lastSelectedLines = new HashSet<GData2>();
+        final Set<GData3> lastSelectedTriangles = new HashSet<GData3>();
+        final Set<GData4> lastSelectedQuads = new HashSet<GData4>();
+        final Set<GData5> lastSelectedCondlines = new HashSet<GData5>();
+
+        lastSelectedVertices.addAll(selectedVertices);
+        lastSelectedSubfiles.addAll(selectedSubfiles);
+        lastSelectedLines.addAll(selectedLines);
+        lastSelectedTriangles.addAll(selectedTriangles);
+        lastSelectedQuads.addAll(selectedQuads);
+        lastSelectedCondlines.addAll(selectedCondlines);
+
+        clearSelection();
+
+        for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
+            if (!hiddenVertices.contains(v) && !lastSelectedVertices.contains(v)) selectedVertices.add(v);
+        }
+        for (GData1 g : vertexCountInSubfile.keySet()) {
+            if (!hiddenData.contains(g) && !lastSelectedSubfiles.contains(g)) selectedSubfiles.add(g);
+        }
+        for (GData2 g : lines.keySet()) {
+            if (!hiddenData.contains(g) && !lastSelectedLines.contains(g)) selectedLines.add(g);
+        }
+        for (GData3 g : triangles.keySet()) {
+            if (!hiddenData.contains(g) && !lastSelectedTriangles.contains(g)) selectedTriangles.add(g);
+        }
+        for (GData4 g : quads.keySet()) {
+            if (!hiddenData.contains(g) && !lastSelectedQuads.contains(g)) selectedQuads.add(g);
+        }
+        for (GData5 g : condlines.keySet()) {
+            if (!hiddenData.contains(g) && !lastSelectedCondlines.contains(g)) selectedCondlines.add(g);
+        }
+
+        selectedData.addAll(selectedLines);
+        selectedData.addAll(selectedTriangles);
+        selectedData.addAll(selectedQuads);
+        selectedData.addAll(selectedCondlines);
+        selectedData.addAll(selectedSubfiles);
     }
 }

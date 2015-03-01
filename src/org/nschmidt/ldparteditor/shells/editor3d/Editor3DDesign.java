@@ -165,6 +165,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_SelectAllVisible = new MenuItem[1];
     final MenuItem[] mntm_SelectAllVisibleWithColours = new MenuItem[1];
     final MenuItem[] mntm_SelectNone = new MenuItem[1];
+    final MenuItem[] mntm_SelectInverse = new MenuItem[1];
     final MenuItem[] mntm_SelectEverything = new MenuItem[1];
     final MenuItem[] mntm_SelectConnected = new MenuItem[1];
     final MenuItem[] mntm_SelectTouching = new MenuItem[1];
@@ -645,6 +646,13 @@ class Editor3DDesign extends ApplicationWindow {
                         this.mntm_SelectNone[0] = mntm_SelectNone;
                         mntm_SelectNone.setText("…None.\tShift+Ctrl+A"); //$NON-NLS-1$ I18N
                         mntm_SelectNone.setAccelerator(SWT.CTRL | SWT.SHIFT | 'A');
+                    }
+                    @SuppressWarnings("unused")
+                    final MenuItem mntmSeparator0 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                    {
+                        MenuItem mntm_SelectInverse = new MenuItem(mnu_Select, SWT.PUSH);
+                        this.mntm_SelectInverse[0] = mntm_SelectInverse;
+                        mntm_SelectInverse.setText("…Inverse Shown."); //$NON-NLS-1$ I18N
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator1 = new MenuItem(mnu_Select, SWT.SEPARATOR);
