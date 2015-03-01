@@ -50,7 +50,7 @@ public enum ProjectActions {
      * @param createOnlyDefault
      */
     public static void createNewProject(Editor3DWindow win, boolean createOnlyDefault) {
-        if (askForUnsavedChanges(win, createOnlyDefault) && !createOnlyDefault && new NewProjectDialog(false).open() == IDialogConstants.OK_ID) {
+        if (askForUnsavedChanges(win, createOnlyDefault, true) && !createOnlyDefault && new NewProjectDialog(false).open() == IDialogConstants.OK_ID) {
             while (new File(Project.getTempProjectPath()).isDirectory()) {
                 MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.YES | SWT.CANCEL | SWT.NO);
                 messageBoxError.setText(I18n.PROJECT_ProjectOverwriteTitle);
@@ -74,15 +74,16 @@ public enum ProjectActions {
             }
             Project.setProjectName(Project.getTempProjectName());
             Project.setProjectPath(Project.getTempProjectPath());
-            Project.create();
+            Project.create(true);
         }
     }
 
-    private static boolean askForUnsavedChanges(Editor3DWindow win, boolean createOnlyDefault) {
+    private static boolean askForUnsavedChanges(Editor3DWindow win, boolean createOnlyDefault, boolean ignoreNonProjectFiles) {
         boolean unsavedProjectFiles = false;
         if (!createOnlyDefault) {
             Set<DatFile> unsavedFiles = new HashSet<DatFile>(Project.getUnsavedFiles());
             for (DatFile df : unsavedFiles) {
+                if (ignoreNonProjectFiles && !df.isProjectFile()) continue;
                 if (!df.getText().trim().equals("")) { //$NON-NLS-1$
                     MessageBox messageBox = new MessageBox(win.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
                     messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
@@ -235,9 +236,9 @@ public enum ProjectActions {
     /**
      * Opens a existing project
      */
-    public static void openProject() {
+    public static boolean openProject() {
 
-        if (askForUnsavedChanges(Editor3DWindow.getWindow(), false)) {
+        if (askForUnsavedChanges(Editor3DWindow.getWindow(), false, true)) {
 
             DirectoryDialog dlg = new DirectoryDialog(Editor3DWindow.getWindow().getShell());
             String authorFolder = WorkbenchManager.getUserSettingState().getAuthoringFolderPath();
@@ -264,7 +265,9 @@ public enum ProjectActions {
             if (dir != null && dir.contains(authorFolder)) {
                 Project.setProjectPath(dir);
                 Project.setProjectName(new File(dir).getName());
+                return true;
             }
         }
+        return false;
     }
 }
