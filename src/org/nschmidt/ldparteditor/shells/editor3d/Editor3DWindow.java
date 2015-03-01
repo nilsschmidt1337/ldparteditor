@@ -3964,7 +3964,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 } else {
                     StringBuilder nameSb = new StringBuilder(new File(d.getNewName()).getName());
                     final String d2 = d.getDescription();
-                    if (counter < 5 && !d.getNewName().startsWith(Project.getProjectPath())) {
+                    if (counter < 5 && (!d.getNewName().startsWith(Project.getProjectPath()) || !d.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
                         nameSb.insert(0, "(!) "); //$NON-NLS-1$
                     }
                     if (d2 != null)
