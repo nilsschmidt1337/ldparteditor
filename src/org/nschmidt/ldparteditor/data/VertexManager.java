@@ -8610,7 +8610,13 @@ public class VertexManager {
         return false;
     }
 
-    public boolean isConnected(GData g1, GData g2) {
+    /**
+     * Tests, if two surfaces share a common edge
+     * @param g1 a surface
+     * @param g2 another surface
+     * @return {@code true} if they do / {@code false} otherwise
+     */
+    public boolean hasSameEdge(GData g1, GData g2) {
 
         int t1 = g1.type();
         int t2 = g2.type();
@@ -8661,13 +8667,7 @@ public class VertexManager {
         return 2 == co - cn;
     }
 
-    /**
-     * Tests, if two surfaces share a common edge
-     * @param g1 a surface
-     * @param g2 another surface
-     * @return {@code true} if they do / {@code false} otherwise
-     */
-    private boolean hasSameEdge(GData g1, GData g2) {
+    private boolean isConnected2(GData g1, GData g2) {
 
         int t1 = g1.type();
         int t2 = g2.type();
@@ -8726,6 +8726,107 @@ public class VertexManager {
 
         return 2 == co - cn;
     }
+
+    /**
+     * Tests, if two surfaces share a common edge, or if a surface has an edge
+     * @param g1 a surface
+     * @param g2 another surface
+     * @param adjaencyByPrecision a map which contains informations about near vertices
+     * @return {@code true} if they do / {@code false} otherwise
+     */
+    private boolean hasSameEdge(GData g1, GData g2, HashMap<Vertex, HashSet<Vertex>> adjaencyByPrecision) {
+
+        int t1 = g1.type();
+        int t2 = g2.type();
+
+        HashSet<Vertex> v1 = new HashSet<Vertex>();
+        HashSet<Vertex> v2 = new HashSet<Vertex>();
+
+
+        switch (t1) {
+        case 2:
+            Vertex[] va0 = lines.get(g1);
+            v1.add(va0[0]);
+            v1.add(va0[1]);
+            v1.add(va0[2]);
+            break;
+        case 3:
+            Vertex[] va = triangles.get(g1);
+            v1.add(va[0]);
+            v1.add(va[1]);
+            v1.add(va[2]);
+            break;
+        case 4:
+            Vertex[] va2 = quads.get(g1);
+            v1.add(va2[0]);
+            v1.add(va2[1]);
+            v1.add(va2[2]);
+            v1.add(va2[3]);
+            break;
+        default:
+            return false;
+        }
+
+        switch (t2) {
+        case 2:
+            Vertex[] va0 = lines.get(g2);
+            v2.add(va0[0]);
+            v2.add(va0[1]);
+            v2.add(va0[2]);
+            break;
+        case 3:
+            Vertex[] va = triangles.get(g2);
+            v2.add(va[0]);
+            v2.add(va[1]);
+            v2.add(va[2]);
+            break;
+        case 4:
+            Vertex[] va2 = quads.get(g2);
+            v2.add(va2[0]);
+            v2.add(va2[1]);
+            v2.add(va2[2]);
+            v2.add(va2[3]);
+            break;
+        default:
+            return false;
+        }
+
+        // Create the sets
+
+        ArrayList<HashSet<Vertex>> setList1 = new ArrayList<HashSet<Vertex>>();
+        ArrayList<HashSet<Vertex>> setList2 = new ArrayList<HashSet<Vertex>>();
+
+        for (Vertex v : v1) {
+            HashSet<Vertex> newSet = new HashSet<Vertex>();
+            newSet.addAll(adjaencyByPrecision.get(v));
+            setList1.add(newSet);
+        }
+
+        for (Vertex v : v2) {
+            HashSet<Vertex> newSet = new HashSet<Vertex>();
+            newSet.addAll(adjaencyByPrecision.get(v));
+            setList2.add(newSet);
+        }
+
+        // Now we have to detect a least 2 set intersections
+
+        int intersections = 0;
+        for (HashSet<Vertex> s1 : setList1) {
+            for (HashSet<Vertex> s2 : setList1) {
+                HashSet<Vertex> newSet = new HashSet<Vertex>();
+                newSet.addAll(s1);
+                if (newSet.retainAll(s2) && !newSet.isEmpty()) {
+                    intersections++;
+                    if (intersections == 2) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     public GData2 hasEdge(Vertex v1, Vertex v2) {
         Set<VertexManifestation> m1 = vertexLinkedToPositionInFile.get(v1);
@@ -9785,7 +9886,7 @@ public class VertexManager {
                             for(int j = i + 1; j < surfsSize; j++) {
                                 GData s1 = surfsToParse.get(i);
                                 GData s2 = surfsToParse.get(j);
-                                if (hasSameEdge(s1, s2)) continue;
+                                if (isConnected2(s1, s2)) continue;
                                 newLines.addAll(intersectionLines(clinesToDelete, linesToDelete, s1, s2));
                             }
                         }
@@ -15718,18 +15819,16 @@ public class VertexManager {
 
                     if (ss.isDistance() && ss.getEqualDistance().compareTo(BigDecimal.ZERO) != 0) {
                         final BigDecimal ds = ss.getEqualDistance().multiply(ss.getEqualDistance());
-                        HashSet<Vertex> verticesToIgnore = new HashSet<Vertex>();
                         int i = 0;
                         int j = 0;
                         for (Vertex v1 : vertexLinkedToPositionInFile.keySet()) {
                             HashSet<Vertex> newSet = new HashSet<Vertex>();
                             newSet.add(v1);
                             for (Vertex v2 : vertexLinkedToPositionInFile.keySet()) {
-                                if (j > i && !verticesToIgnore.contains(v2)) {
+                                if (j > i) {
                                     Vector3d v3d1 = new Vector3d(v1);
                                     Vector3d v3d2 = new Vector3d(v2);
                                     if (Vector3d.distSquare(v3d1, v3d2).compareTo(ds) < 0) {
-                                        verticesToIgnore.add(v2);
                                         newSet.add(v2);
                                     }
                                 }
@@ -15981,7 +16080,32 @@ public class VertexManager {
                                         }
                                         break;
                                     case 3:
+
                                         if (!selectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+
+                                            if (ss.isOrientation()) {
+                                                // We have to find a selected face, which shares one edge
+                                                int faceCount = 0;
+                                                int angleCount = 0;
+                                                for (GData3 g2 : selectedTriangles) {
+                                                    if (hasSameEdge(g, g2, adjaencyByPrecision)) {
+                                                        faceCount++;
+                                                        if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
+                                                            angleCount++;
+                                                        }
+                                                    }
+                                                }
+                                                for (GData4 g2 : selectedQuads) {
+                                                    if (hasSameEdge(g, g2, adjaencyByPrecision)) {
+                                                        faceCount++;
+                                                        if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
+                                                            angleCount++;
+                                                        }
+                                                    }
+                                                }
+                                                if (faceCount != angleCount) break;
+                                            }
+
                                             selectedTriangles.add((GData3) g);
                                             selectedData.add(g);
                                             newSelectedTriangles.add((GData3) g);
@@ -15996,6 +16120,31 @@ public class VertexManager {
                                         break;
                                     case 4:
                                         if (!selectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+
+                                            if (ss.isOrientation()) {
+                                                // We have to find a selected face, which shares one edge
+                                                int faceCount = 0;
+                                                int angleCount = 0;
+                                                for (GData3 g2 : selectedTriangles) {
+                                                    if (hasSameEdge(g, g2, adjaencyByPrecision)) {
+                                                        faceCount++;
+                                                        if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
+                                                            angleCount++;
+                                                        }
+                                                    }
+                                                }
+                                                for (GData4 g2 : selectedQuads) {
+                                                    if (hasSameEdge(g, g2, adjaencyByPrecision)) {
+                                                        faceCount++;
+                                                        if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
+                                                            angleCount++;
+                                                        }
+                                                    }
+                                                }
+                                                if (faceCount != angleCount) break;
+                                            }
+
+
                                             selectedQuads.add((GData4) g);
                                             selectedData.add(g);
                                             newSelectedQuads.add((GData4) g);
@@ -16109,15 +16258,15 @@ public class VertexManager {
                 switch (what.type()) {
                 case 3:
                 {
-                    Vector3d n1;
-                    if (dataLinkedToNormalCACHE.containsKey(what)) {
-                        float[] n = dataLinkedToNormalCACHE.get(what);
-                        n1 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
-                    } else {
-                        GData3 g = (GData3) what;
-                        n1 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
-                    }
                     if (!allNormals.isEmpty()) {
+                        Vector3d n1;
+                        if (dataLinkedToNormalCACHE.containsKey(what)) {
+                            float[] n = dataLinkedToNormalCACHE.get(what);
+                            n1 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
+                        } else {
+                            GData3 g = (GData3) what;
+                            n1 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                        }
                         int falseCounter = 0;
                         for (Vector3d n2 : allNormals) {
                             double angle2 = Vector3d.angle(n1, n2);
@@ -16134,18 +16283,24 @@ public class VertexManager {
                 break;
                 case 4:
                 {
-                    Vector3d n1;
-                    if (dataLinkedToNormalCACHE.containsKey(what)) {
-                        float[] n = dataLinkedToNormalCACHE.get(what);
-                        n1 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
-                    } else {
-                        GData4 g = (GData4) what;
-                        n1 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
-                    }
-                    for (Vector3d n2 : allNormals) {
-                        double angle2 = Vector3d.angle(n1, n2);
-                        if (angle2 > 90.0) angle2 = 180.0 - angle2;
-                        if (angle2 > angle) {
+                    if (!allNormals.isEmpty()) {
+                        Vector3d n1;
+                        if (dataLinkedToNormalCACHE.containsKey(what)) {
+                            float[] n = dataLinkedToNormalCACHE.get(what);
+                            n1 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
+                        } else {
+                            GData4 g = (GData4) what;
+                            n1 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                        }
+                        int falseCounter = 0;
+                        for (Vector3d n2 : allNormals) {
+                            double angle2 = Vector3d.angle(n1, n2);
+                            if (angle2 > 90.0) angle2 = 180.0 - angle2;
+                            if (angle2 > angle) {
+                                falseCounter++;
+                            }
+                        }
+                        if (falseCounter == allNormals.size()) {
                             return false;
                         }
                     }
