@@ -4564,7 +4564,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     cachedReferences.add(df);
 
                     Project.addUnsavedFile(df);
-
+                    updateTree_renamedEntries();
                     updateTree_unsavedEntries();
                     break;
                 }
