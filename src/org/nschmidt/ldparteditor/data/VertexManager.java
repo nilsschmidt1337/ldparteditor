@@ -16116,11 +16116,13 @@ public class VertexManager {
                                                 if (ss.isOrientation()) {
                                                     int faceCount = 0;
                                                     int angleCount = 0;
+                                                    boolean notAdjacent = true;
                                                     for (GData3 g2 : selectedTriangles) {
                                                         if (hasSameEdge(g, g2, adjaencyByPrecision)) {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
                                                                 angleCount++;
+                                                                notAdjacent = false;
                                                             }
                                                         }
                                                     }
@@ -16129,10 +16131,11 @@ public class VertexManager {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
                                                                 angleCount++;
+                                                                notAdjacent = false;
                                                             }
                                                         }
                                                     }
-                                                    if (faceCount != angleCount) break;
+                                                    if (notAdjacent || faceCount != angleCount) break;
                                                 }
                                                 selectedTriangles.add(g);
                                                 selectedData.add(g);
@@ -16151,11 +16154,13 @@ public class VertexManager {
                                                 if (ss.isOrientation()) {
                                                     int faceCount = 0;
                                                     int angleCount = 0;
+                                                    boolean notAdjacent = true;
                                                     for (GData3 g2 : selectedTriangles) {
                                                         if (hasSameEdge(g, g2, adjaencyByPrecision)) {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
                                                                 angleCount++;
+                                                                notAdjacent = false;
                                                             }
                                                         }
                                                     }
@@ -16164,10 +16169,11 @@ public class VertexManager {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
                                                                 angleCount++;
+                                                                notAdjacent = false;
                                                             }
                                                         }
                                                     }
-                                                    if (faceCount != angleCount) break;
+                                                    if (notAdjacent || faceCount != angleCount) break;
                                                 }
                                                 selectedQuads.add(g);
                                                 selectedData.add(g);
@@ -16194,8 +16200,28 @@ public class VertexManager {
                                     c2 != selectedTriangles.size() ||
                                     c3 != selectedQuads.size());
 
+                            // Now add lines and condlines
+                            for (GData2 g : lines.keySet()) {
+                                if (canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                    Vertex[] verts = lines.get(g);
+                                    if (selectedVertices.contains(verts[0]) && selectedVertices.contains(verts[1])) {
+                                        selectedLines.add(g);
+                                    }
+                                }
+                            }
+                            for (GData5 g : condlines.keySet()) {
+                                if (canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                    Vertex[] verts = condlines.get(g);
+                                    if (selectedVertices.contains(verts[0]) && selectedVertices.contains(verts[1])) {
+                                        selectedCondlines.add(g);
+                                    }
+                                }
+                            }
+
+                            selectedData.addAll(selectedLines);
                             selectedData.addAll(selectedTriangles);
-                            selectedData.addAll(selectedQuads);
+                            selectedData.addAll(selectedCondlines);
+                            selectedData.addAll(selectedTriangles);
                         } else {
 
                             // Iterative Selection Spread II
@@ -16325,13 +16351,16 @@ public class VertexManager {
                                             if (!selectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
 
                                                 if (ss.isOrientation()) {
+                                                    // We have to find a selected face, which shares one edge
                                                     int faceCount = 0;
                                                     int angleCount = 0;
+                                                    boolean notAdjacent = true;
                                                     for (GData3 g2 : selectedTriangles) {
                                                         if (hasSameEdge(g, g2, adjaencyByPrecision)) {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
                                                                 angleCount++;
+                                                                notAdjacent = false;
                                                             }
                                                         }
                                                     }
@@ -16340,10 +16369,11 @@ public class VertexManager {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
                                                                 angleCount++;
+                                                                notAdjacent = false;
                                                             }
                                                         }
                                                     }
-                                                    if (faceCount != angleCount) break;
+                                                    if (notAdjacent || faceCount != angleCount) break;
                                                 }
 
                                                 selectedTriangles.add((GData3) g);
@@ -16365,6 +16395,7 @@ public class VertexManager {
                                                     // We have to find a selected face, which shares one edge
                                                     int faceCount = 0;
                                                     int angleCount = 0;
+                                                    boolean notAdjacent = true;
                                                     for (GData3 g2 : selectedTriangles) {
                                                         if (hasSameEdge(g, g2, adjaencyByPrecision)) {
                                                             faceCount++;
@@ -16381,7 +16412,7 @@ public class VertexManager {
                                                             }
                                                         }
                                                     }
-                                                    if (faceCount != angleCount) break;
+                                                    if (notAdjacent || faceCount != angleCount) break;
                                                 }
 
 
