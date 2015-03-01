@@ -337,6 +337,7 @@ public class MouseActions {
                     if (keyboard.isShiftPressed()) {
                         Vertex nv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVertexToLineEnd(new Vertex(c3d.getCursor3D()));
                         c3d.getLockableDatFileReference().setObjVertex1(nv);
+                        c3d.getLockableDatFileReference().setObjVertex2(nv);
                         c3d.getCursorSnapped3D().set(nv.x, nv.y, nv.z, 1f);
                         c3d.setCursorSnapped3Dprecise(nv.X, nv.Y, nv.Z);
                     } else if (!keyboard.isCtrlPressed()) {
@@ -550,6 +551,9 @@ public class MouseActions {
                             if (keyboard.isShiftPressed()) {
                                 Vertex nv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVertexToLineEnd(new Vertex(c3d.getCursor3D()));
                                 c3d.getLockableDatFileReference().setObjVertex1(nv);
+                                c3d.getLockableDatFileReference().setObjVertex2(nv);
+                                c3d.getLockableDatFileReference().setObjVertex3(nv);
+                                c3d.getLockableDatFileReference().setObjVertex4(nv);
                                 c3d.getCursorSnapped3D().set(nv.x, nv.y, nv.z, 1f);
                             } else if (!keyboard.isCtrlPressed()) {
                                 Vector3f v13 = new Vector3f(v1.x, v1.y, v1.z);
@@ -569,9 +573,9 @@ public class MouseActions {
                             if (keyboard.isShiftPressed()) {
                                 Vertex nv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVertexToLineEnd(new Vertex(c3d.getCursor3D()));
                                 c3d.getLockableDatFileReference().setObjVertex1(nv);
-                                c3d.getLockableDatFileReference().setObjVertex2(null);
-                                c3d.getLockableDatFileReference().setObjVertex3(null);
-                                c3d.getLockableDatFileReference().setObjVertex4(null);
+                                c3d.getLockableDatFileReference().setObjVertex2(nv);
+                                c3d.getLockableDatFileReference().setObjVertex3(nv);
+                                c3d.getLockableDatFileReference().setObjVertex4(nv);
                                 c3d.getCursorSnapped3D().set(nv.x, nv.y, nv.z, 1f);
                             } else if (!keyboard.isCtrlPressed() && v3 == null) {
                                 Vector3f v13 = new Vector3f(v1.x, v1.y, v1.z);
