@@ -3740,16 +3740,16 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
 
                 // MARK For Debug Only!
-                DatType t = d.getType();
-                if (t == DatType.PART) {
-                    nameSb.append(" PART"); //$NON-NLS-1$
-                } else if (t == DatType.SUBPART) {
-                    nameSb.append(" SUBPART"); //$NON-NLS-1$
-                } else if (t == DatType.PRIMITIVE) {
-                    nameSb.append(" PRIMITIVE"); //$NON-NLS-1$
-                } else if (t == DatType.PRIMITIVE48) {
-                    nameSb.append(" PRIMITIVE48"); //$NON-NLS-1$
-                }
+                //                DatType t = d.getType();
+                //                if (t == DatType.PART) {
+                //                    nameSb.append(" PART"); //$NON-NLS-1$
+                //                } else if (t == DatType.SUBPART) {
+                //                    nameSb.append(" SUBPART"); //$NON-NLS-1$
+                //                } else if (t == DatType.PRIMITIVE) {
+                //                    nameSb.append(" PRIMITIVE"); //$NON-NLS-1$
+                //                } else if (t == DatType.PRIMITIVE48) {
+                //                    nameSb.append(" PRIMITIVE48"); //$NON-NLS-1$
+                //                }
 
                 if (d2 != null)
                     nameSb.append(d2);
@@ -4610,7 +4610,40 @@ public class Editor3DWindow extends Editor3DDesign {
 
             } else {
                 if (original.isProjectFile()) {
+                    openDatFile(df);
                     return;
+                }
+                {
+                    @SuppressWarnings("unchecked")
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
+                    if (cachedReferences.contains(df)) {
+                        openDatFile(df);
+                        return;
+                    }
+                }
+                {
+                    @SuppressWarnings("unchecked")
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectSubparts[0].getData();
+                    if (cachedReferences.contains(df)) {
+                        openDatFile(df);
+                        return;
+                    }
+                }
+                {
+                    @SuppressWarnings("unchecked")
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives[0].getData();
+                    if (cachedReferences.contains(df)) {
+                        openDatFile(df);
+                        return;
+                    }
+                }
+                {
+                    @SuppressWarnings("unchecked")
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives48[0].getData();
+                    if (cachedReferences.contains(df)) {
+                        openDatFile(df);
+                        return;
+                    }
                 }
                 type = original.getType();
                 df = original;
@@ -4619,45 +4652,45 @@ public class Editor3DWindow extends Editor3DDesign {
             TreeItem ti;
             switch (type) {
             case PART:
-                ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
-                {
-                    @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
-                    cachedReferences.add(df);
-                }
-                break;
+            {
+                @SuppressWarnings("unchecked")
+                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
+                cachedReferences.add(df);
+            }
+            ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
+            break;
             case SUBPART:
-                ti = new TreeItem(this.treeItem_ProjectSubparts[0], SWT.NONE);
-                {
-                    @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectSubparts[0].getData();
-                    cachedReferences.add(df);
-                }
-                break;
+            {
+                @SuppressWarnings("unchecked")
+                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectSubparts[0].getData();
+                cachedReferences.add(df);
+            }
+            ti = new TreeItem(this.treeItem_ProjectSubparts[0], SWT.NONE);
+            break;
             case PRIMITIVE:
-                ti = new TreeItem(this.treeItem_ProjectPrimitives[0], SWT.NONE);
-                {
-                    @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives[0].getData();
-                    cachedReferences.add(df);
-                }
-                break;
+            {
+                @SuppressWarnings("unchecked")
+                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives[0].getData();
+                cachedReferences.add(df);
+            }
+            ti = new TreeItem(this.treeItem_ProjectPrimitives[0], SWT.NONE);
+            break;
             case PRIMITIVE48:
-                ti = new TreeItem(this.treeItem_ProjectPrimitives48[0], SWT.NONE);
-                {
-                    @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives48[0].getData();
-                    cachedReferences.add(df);
-                }
-                break;
+            {
+                @SuppressWarnings("unchecked")
+                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives48[0].getData();
+                cachedReferences.add(df);
+            }
+            ti = new TreeItem(this.treeItem_ProjectPrimitives48[0], SWT.NONE);
+            break;
             default:
-                ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
-                {
-                    @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
-                    cachedReferences.add(df);
-                }
-                break;
+            {
+                @SuppressWarnings("unchecked")
+                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
+                cachedReferences.add(df);
+            }
+            ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
+            break;
             }
 
             StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
@@ -4668,7 +4701,65 @@ public class Editor3DWindow extends Editor3DDesign {
             ti.setData(df);
 
             updateTree_unsavedEntries();
+
+            openDatFile(df);
         }
+    }
+
+    private void openDatFile(DatFile df) {
+        if (renders.isEmpty()) {
+            if ("%EMPTY%".equals(Editor3DWindow.getSashForm().getChildren()[1].getData())) { //$NON-NLS-1$
+                int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
+                Editor3DWindow.getSashForm().getChildren()[1].dispose();
+                CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
+                cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
+                df.parseForData();
+                final VertexManager vm = df.getVertexManager();
+                Project.setFileToEdit(df);
+                cmp_Container.getComposite3D().setLockableDatFileReference(df);
+                vm.zoomToFit(cmp_Container.getComposite3D());
+                Editor3DWindow.getSashForm().getParent().layout();
+                Editor3DWindow.getSashForm().setWeights(mainSashWeights);
+            }
+        } else {
+            boolean canUpdate = false;
+            for (OpenGLRenderer renderer : renders) {
+                Composite3D c3d = renderer.getC3D();
+                if (!c3d.isDatFileLockedOnDisplay()) {
+                    canUpdate = true;
+                    break;
+                }
+            }
+            if (canUpdate) {
+                final VertexManager vm = df.getVertexManager();
+                if (vm.isModified()) {
+                    df.setText(df.getText());
+                }
+                df.parseForData();
+                Project.setFileToEdit(df);
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (!c3d.isDatFileLockedOnDisplay()) {
+                        c3d.setLockableDatFileReference(df);
+                        vm.zoomToFit(c3d);
+                    }
+                }
+            }
+        }
+
+        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+            for (CTabItem t : w.getTabFolder().getItems()) {
+                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                    w.getTabFolder().setSelection(t);
+                    ((CompositeTab) t).getControl().getShell().forceActive();
+                    w.open();
+                    return;
+                }
+            }
+        }
+        // Project.getParsedFiles().add(df); IS NECESSARY HERE
+        Project.getParsedFiles().add(df);
+        new EditorTextWindow().run(df);
     }
 
     public void disableSelectionTab() {
