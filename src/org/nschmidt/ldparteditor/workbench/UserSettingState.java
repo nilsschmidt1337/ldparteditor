@@ -72,6 +72,11 @@ public class UserSettingState implements Serializable {
     /** Your coordinates precision */
     private int coordsPrecision = 3;
 
+    /** {@code true} if the user wants to delete this settings */
+    private boolean resetOnStart = false;
+    /** LDConfig.ldr */
+    private String ldConfigPath = null;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -304,5 +309,21 @@ public class UserSettingState implements Serializable {
 
     public void setCoordsPrecision(int coordsPrecision) {
         this.coordsPrecision = coordsPrecision;
+    }
+
+    public boolean isResetOnStart() {
+        return resetOnStart;
+    }
+
+    public void setResetOnStart(boolean resetOnStart) {
+        this.resetOnStart = resetOnStart;
+    }
+
+    public String getLdConfigPath() {
+        return ldConfigPath;
+    }
+
+    public void setLdConfigPath(String ldConfigPath) {
+        this.ldConfigPath = ldConfigPath;
     }
 }

@@ -31,7 +31,6 @@ import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.colour.GCChrome;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
-import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * This class provides constants for the 3D view
@@ -193,9 +192,12 @@ public enum View {
 
     }
 
-    public static final void loadLDConfig() {
-        String location = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "LDConfig.ldr"; //$NON-NLS-1$
+    public static final boolean loadLDConfig(String location) {
         if (new File(location).exists()) {
+            indexFromColour.clear();
+            edgeColourFromIndex.clear();
+            colourFromIndex.clear();
+            colourNameFromIndex.clear();
             Pattern p = Pattern.compile("ALPHA\\s+\\d+"); //$NON-NLS-1$
             try {
                 indexFromColour.put(new IndexedEntry(View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0]), 24);
@@ -238,10 +240,11 @@ public enum View {
                     }
                 }
                 reader.close();
+                return true;
             } catch (Exception e) {
-
             }
         }
+        return false;
     }
 
 }

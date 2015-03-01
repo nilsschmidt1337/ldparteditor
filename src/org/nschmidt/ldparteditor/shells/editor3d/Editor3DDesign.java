@@ -189,6 +189,9 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_SymSplitter = new MenuItem[1];
     final MenuItem[] mntm_Unificator = new MenuItem[1];
 
+    final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
+    final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
+
     final MenuItem[] mntm_Flip = new MenuItem[1];
 
     final Text[] txt_Search = new Text[1];
@@ -844,6 +847,18 @@ class Editor3DDesign extends ApplicationWindow {
                         this.mntm_Unificator[0] = mntm_Unificator;
                         mntm_Unificator.setText("Unificator\tAlt+U"); //$NON-NLS-1$ I18N
                         mntm_Unificator.setAccelerator(SWT.ALT | 'U');
+                    }
+                    @SuppressWarnings("unused")
+                    final MenuItem mntmSeparator1 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
+                    {
+                        MenuItem mntm_ResetSettingsOnRestart = new MenuItem(mnu_Tools, SWT.PUSH);
+                        this.mntm_ResetSettingsOnRestart[0] = mntm_ResetSettingsOnRestart;
+                        mntm_ResetSettingsOnRestart.setText("Reset All Settings On Restart"); //$NON-NLS-1$ I18N
+                    }
+                    {
+                        MenuItem mntm_SelectAnotherLDConfig = new MenuItem(mnu_Tools, SWT.PUSH);
+                        this.mntm_SelectAnotherLDConfig[0] = mntm_SelectAnotherLDConfig;
+                        mntm_SelectAnotherLDConfig.setText("Select LDConfig.ldr"); //$NON-NLS-1$ I18N
                     }
                 }
             }
