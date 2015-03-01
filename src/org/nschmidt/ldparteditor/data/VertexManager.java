@@ -15800,8 +15800,9 @@ public class VertexManager {
                         }
                     }
 
-                    if (ss.getScope() == SelectorSettings.EVERYTHING) {
-
+                    switch (ss.getScope()) {
+                    case SelectorSettings.EVERYTHING:
+                    {
                         double angle = Math.min(Math.abs(ss.getAngle().doubleValue()), 180.0 - Math.abs(ss.getAngle().doubleValue()));
 
                         clearSelection2();
@@ -15838,6 +15839,218 @@ public class VertexManager {
                                 selectedData.add(g);
                             }
                         }
+                        break;
+                    }
+                    case SelectorSettings.TOUCHING:
+                    case SelectorSettings.CONNECTED:
+
+                        selectedVertices.clear();
+
+                        // Iterative Selection Spread
+
+                        double angle2 = ss.getAngle().doubleValue();
+
+                        final Set<GData2> lastSelectedLines = new HashSet<GData2>();
+                        final Set<GData3> lastSelectedTriangles = new HashSet<GData3>();
+                        final Set<GData4> lastSelectedQuads = new HashSet<GData4>();
+                        final Set<GData5> lastSelectedCondlines = new HashSet<GData5>();
+
+                        final Set<GData2> newSelectedLines = new HashSet<GData2>();
+                        final Set<GData3> newSelectedTriangles = new HashSet<GData3>();
+                        final Set<GData4> newSelectedQuads = new HashSet<GData4>();
+                        final Set<GData5> newSelectedCondlines = new HashSet<GData5>();
+
+                        // Init (Step 0)
+                        // Filter invalid selection start (e.g. subfile content), since the selection wont be cleared
+                        for (GData1 g : selectedSubfiles) {
+                            if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                selectedSubfiles.remove(g);
+                                selectedData.remove(g);
+                            }
+                        }
+                        for (GData2 g : selectedLines) {
+                            if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                selectedLines.remove(g);
+                                selectedData.remove(g);
+                            }
+                        }
+                        for (GData3 g : selectedTriangles) {
+                            if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                selectedTriangles.remove(g);
+                                selectedData.remove(g);
+                            }
+                        }
+                        for (GData4 g : selectedQuads) {
+                            if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                selectedQuads.remove(g);
+                                selectedData.remove(g);
+                            }
+                        }
+                        for (GData5 g : selectedCondlines) {
+                            if (!canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                selectedCondlines.remove(g);
+                                selectedData.remove(g);
+                            }
+                        }
+
+                        int c1 = selectedLines.size();
+                        int c2 = selectedTriangles.size();
+                        int c3 = selectedQuads.size();
+                        int c4 = selectedCondlines.size();
+
+                        lastSelectedLines.addAll(selectedLines);
+                        lastSelectedTriangles.addAll(selectedTriangles);
+                        lastSelectedQuads.addAll(selectedQuads);
+                        lastSelectedCondlines.addAll(selectedCondlines);
+
+                        // Interation, Step (1...n), "Select Touching" is only one step
+                        do {
+                            c1 = selectedLines.size();
+                            c2 = selectedTriangles.size();
+                            c3 = selectedQuads.size();
+                            c4 = selectedCondlines.size();
+                            newSelectedLines.clear();
+                            newSelectedTriangles.clear();
+                            newSelectedQuads.clear();
+                            newSelectedCondlines.clear();
+
+                            HashSet<Vertex> touchingVertices = new HashSet<Vertex>();
+                            {
+                                Vertex[] verts;
+                                for (GData2 g : lastSelectedLines) {
+                                    verts = lines.get(g);
+                                    for (Vertex v : verts) {
+                                        HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                        for (Vertex v2 : verts2) {
+                                            touchingVertices.add(v2);
+                                            selectedVertices.add(v2);
+                                        }
+                                    }
+                                }
+                                for (GData3 g : lastSelectedTriangles) {
+                                    verts = triangles.get(g);
+                                    for (Vertex v : verts) {
+                                        HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                        for (Vertex v2 : verts2) {
+                                            touchingVertices.add(v2);
+                                            selectedVertices.add(v2);
+                                        }
+                                    }
+                                }
+                                for (GData4 g : lastSelectedQuads) {
+                                    verts = quads.get(g);
+                                    for (Vertex v : verts) {
+                                        HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                        for (Vertex v2 : verts2) {
+                                            touchingVertices.add(v2);
+                                            selectedVertices.add(v2);
+                                        }
+                                    }
+                                }
+                                for (GData5 g : lastSelectedCondlines) {
+                                    verts = condlines.get(g);
+                                    int c = 0;
+                                    for (Vertex v : verts) {
+                                        if (c > 1) break;
+                                        HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                        for (Vertex v2 : verts2) {
+                                            touchingVertices.add(v2);
+                                            selectedVertices.add(v2);
+                                        }
+                                        c++;
+                                    }
+                                }
+                            }
+                            for (Vertex v : touchingVertices) {
+                                Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
+                                for (VertexManifestation mani : manis) {
+                                    GData g = mani.getGdata();
+                                    switch (g.type()) {
+                                    case 2:
+                                        if (!selectedLines.contains(g) &&  canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                            selectedLines.add((GData2) g);
+                                            selectedData.add(g);
+                                            newSelectedLines.add((GData2) g);
+                                            Vertex[] verts = lines.get(g);
+                                            for (Vertex ov : verts) {
+                                                HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                for (Vertex v2 : verts2) {
+                                                    selectedVertices.add(v2);
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    case 3:
+                                        if (!selectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                            selectedTriangles.add((GData3) g);
+                                            selectedData.add(g);
+                                            newSelectedTriangles.add((GData3) g);
+                                            Vertex[] verts = triangles.get(g);
+                                            for (Vertex ov : verts) {
+                                                HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                for (Vertex v2 : verts2) {
+                                                    selectedVertices.add(v2);
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    case 4:
+                                        if (!selectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                            selectedQuads.add((GData4) g);
+                                            selectedData.add(g);
+                                            newSelectedQuads.add((GData4) g);
+                                            Vertex[] verts = quads.get(g);
+                                            for (Vertex ov : verts) {
+                                                HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                for (Vertex v2 : verts2) {
+                                                    selectedVertices.add(v2);
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    case 5:
+                                        if (!selectedCondlines.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                            selectedCondlines.add((GData5) g);
+                                            selectedData.add(g);
+                                            newSelectedCondlines.add((GData5) g);
+                                            Vertex[] verts = condlines.get(g);
+                                            int c = 0;
+                                            for (Vertex ov : verts) {
+                                                if (c > 1) break;
+                                                HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                for (Vertex v2 : verts2) {
+                                                    selectedVertices.add(v2);
+                                                }
+                                                c++;
+                                            }
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                    }
+
+                                }
+                            }
+
+                            lastSelectedLines.clear();
+                            lastSelectedTriangles.clear();
+                            lastSelectedQuads.clear();
+                            lastSelectedCondlines.clear();
+                            lastSelectedLines.addAll(newSelectedLines);
+                            lastSelectedTriangles.addAll(newSelectedTriangles);
+                            lastSelectedQuads.addAll(newSelectedQuads);
+                            lastSelectedCondlines.addAll(newSelectedCondlines);
+
+                            if (ss.getScope() == SelectorSettings.TOUCHING) break;
+                        } while (
+                                c1 != selectedLines.size() ||
+                                c2 != selectedTriangles.size() ||
+                                c3 != selectedQuads.size() ||
+                                c4 != selectedCondlines.size());
+
+                        break;
+                    default:
+                        break;
                     }
 
                     clearVertexNormalCache();
@@ -15888,64 +16101,198 @@ public class VertexManager {
             }
         }
 
-        if (adjacentTo == null) {
-            // SelectorSettings.EVERYTHING
+        if (ss.isOrientation()) {
+            if (adjacentTo == null) {
+                // SelectorSettings.EVERYTHING
 
-            // Check normal orientation
-            switch (what.type()) {
-            case 3:
-            {
-                Vector3d n1;
-                if (dataLinkedToNormalCACHE.containsKey(what)) {
-                    float[] n = dataLinkedToNormalCACHE.get(what);
-                    n1 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
-                } else {
-                    GData3 g = (GData3) what;
-                    n1 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                // Check normal orientation
+                switch (what.type()) {
+                case 3:
+                {
+                    Vector3d n1;
+                    if (dataLinkedToNormalCACHE.containsKey(what)) {
+                        float[] n = dataLinkedToNormalCACHE.get(what);
+                        n1 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
+                    } else {
+                        GData3 g = (GData3) what;
+                        n1 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                    }
+                    if (!allNormals.isEmpty()) {
+                        int falseCounter = 0;
+                        for (Vector3d n2 : allNormals) {
+                            double angle2 = Vector3d.angle(n1, n2);
+                            if (angle2 > 90.0) angle2 = 180.0 - angle2;
+                            if (angle2 > angle) {
+                                falseCounter++;
+                            }
+                        }
+                        if (falseCounter == allNormals.size()) {
+                            return false;
+                        }
+                    }
                 }
-                if (!allNormals.isEmpty()) {
-                    int falseCounter = 0;
+                break;
+                case 4:
+                {
+                    Vector3d n1;
+                    if (dataLinkedToNormalCACHE.containsKey(what)) {
+                        float[] n = dataLinkedToNormalCACHE.get(what);
+                        n1 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
+                    } else {
+                        GData4 g = (GData4) what;
+                        n1 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                    }
                     for (Vector3d n2 : allNormals) {
                         double angle2 = Vector3d.angle(n1, n2);
                         if (angle2 > 90.0) angle2 = 180.0 - angle2;
                         if (angle2 > angle) {
-                            falseCounter++;
+                            return false;
                         }
                     }
-                    if (falseCounter == allNormals.size()) {
-                        return false;
-                    }
                 }
-            }
-            break;
-            case 4:
-            {
-                Vector3d n1;
-                if (dataLinkedToNormalCACHE.containsKey(what)) {
-                    float[] n = dataLinkedToNormalCACHE.get(what);
-                    n1 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
-                } else {
-                    GData4 g = (GData4) what;
-                    n1 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                break;
+                default:
+                    // Check subfile content
+                    return !(ss.isNoSubfiles() && (!lineLinkedToVertices.containsKey(what) || what.type() == 1) || !(ss.isHidden() ^ !hiddenData.contains(what)));
                 }
-                for (Vector3d n2 : allNormals) {
-                    double angle2 = Vector3d.angle(n1, n2);
-                    if (angle2 > 90.0) angle2 = 180.0 - angle2;
-                    if (angle2 > angle) {
-                        return false;
-                    }
-                }
-            }
-            break;
-            default:
-                // Check subfile content
-                return !(ss.isNoSubfiles() && (!lineLinkedToVertices.containsKey(what) || what.type() == 1) || !(ss.isHidden() ^ !hiddenData.contains(what)));
-            }
-        } else {
-            // FIXME Auto-generated method stub
-        }
+            } else {
 
+                // Check normal orientation
+                boolean noBFC = angle < 0.0;
+                switch (what.type()) {
+                case 3:
+                {
+                    Vector3d n1;
+                    if (dataLinkedToNormalCACHE.containsKey(what)) {
+                        float[] n = dataLinkedToNormalCACHE.get(what);
+                        n1 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
+                    } else {
+                        GData3 g = (GData3) what;
+                        n1 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                        noBFC = true;
+                    }
+                    switch (adjacentTo.type()) {
+                    case 3:
+                    {
+                        Vector3d n2;
+                        if (dataLinkedToNormalCACHE.containsKey(adjacentTo)) {
+                            float[] n = dataLinkedToNormalCACHE.get(adjacentTo);
+                            n2 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
+                        } else {
+                            GData3 g = (GData3) adjacentTo;
+                            n2 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                            noBFC = true;
+                        }
+                        double angle2 = Vector3d.angle(n1, n2);
+                        if (noBFC && angle2 > 90.0) angle2 = 180.0 - angle2;
+                        if (angle2 > Math.abs(angle)) {
+                            return false;
+                        }
+                    }
+                    break;
+                    case 4:
+                    {
+                        Vector3d n2;
+                        if (dataLinkedToNormalCACHE.containsKey(adjacentTo)) {
+                            float[] n = dataLinkedToNormalCACHE.get(adjacentTo);
+                            n2 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
+                        } else {
+                            GData4 g = (GData4) adjacentTo;
+                            n2 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                            noBFC = true;
+                        }
+                        double angle2 = Vector3d.angle(n1, n2);
+                        if (noBFC && angle2 > 90.0) angle2 = 180.0 - angle2;
+                        if (angle2 > Math.abs(angle)) {
+                            return false;
+                        }
+                    }
+                    break;
+                    default:
+                        // Check subfile content
+                        return !(ss.isNoSubfiles() && (!lineLinkedToVertices.containsKey(what) || what.type() == 1) || !(ss.isHidden() ^ !hiddenData.contains(what)));
+                    }
+                }
+                break;
+                case 4:
+                {
+                    Vector3d n1;
+                    if (dataLinkedToNormalCACHE.containsKey(what)) {
+                        float[] n = dataLinkedToNormalCACHE.get(what);
+                        n1 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
+                    } else {
+                        GData4 g = (GData4) what;
+                        n1 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                        noBFC = true;
+                    }
+
+                    switch (adjacentTo.type()) {
+                    case 3:
+                    {
+                        Vector3d n2;
+                        if (dataLinkedToNormalCACHE.containsKey(adjacentTo)) {
+                            float[] n = dataLinkedToNormalCACHE.get(adjacentTo);
+                            n2 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
+                        } else {
+                            GData3 g = (GData3) adjacentTo;
+                            n2 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                            noBFC = true;
+                        }
+                        double angle2 = Vector3d.angle(n1, n2);
+                        if (noBFC && angle2 > 90.0) angle2 = 180.0 - angle2;
+                        if (angle2 > angle) {
+                            return false;
+                        }
+                    }
+                    break;
+                    case 4:
+                    {
+                        Vector3d n2;
+                        if (dataLinkedToNormalCACHE.containsKey(adjacentTo)) {
+                            float[] n = dataLinkedToNormalCACHE.get(adjacentTo);
+                            n2 = new Vector3d(new BigDecimal(n[0]), new BigDecimal(n[1]), new BigDecimal(n[2]));
+                        } else {
+                            GData4 g = (GData4) adjacentTo;
+                            n2 = new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn));
+                            noBFC = true;
+                        }
+                        double angle2 = Vector3d.angle(n1, n2);
+                        if (noBFC && angle2 > 90.0) angle2 = 180.0 - angle2;
+                        if (angle2 > angle) {
+                            return false;
+                        }
+                    }
+                    break;
+                    default:
+                        // Check subfile content
+                        return !(ss.isNoSubfiles() && (!lineLinkedToVertices.containsKey(what) || what.type() == 1) || !(ss.isHidden() ^ !hiddenData.contains(what)));
+                    }
+                }
+                break;
+                default:
+                    // Check subfile content
+                    return !(ss.isNoSubfiles() && (!lineLinkedToVertices.containsKey(what) || what.type() == 1) || !(ss.isHidden() ^ !hiddenData.contains(what)));
+                }
+            }
+        }
         // Check subfile content
         return !(ss.isNoSubfiles() && (!lineLinkedToVertices.containsKey(what) || what.type() == 1) || !(ss.isHidden() ^ !hiddenData.contains(what)));
+    }
+
+    public void selectIsolatedVertices() {
+        clearSelection();
+        for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
+            int vd = 0;
+            for (VertexManifestation vm : vertexLinkedToPositionInFile.get(v)) {
+                if (vm.getGdata().type() == 0) {
+                    vd++;
+                } else {
+                    break;
+                }
+            }
+            if (vd == vertexLinkedToPositionInFile.get(v).size()) {
+                selectedVertices.add(v);
+            }
+        }
     }
 }
