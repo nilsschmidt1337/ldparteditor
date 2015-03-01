@@ -271,7 +271,20 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_Open[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                ProjectActions.openProject();
+                if (ProjectActions.openProject()) {
+                    Project.create(false);
+                    treeItem_Project[0].setData(Project.getProjectPath());
+                    resetSearch();
+                    LibraryManager.readProjectPartsParent(treeItem_ProjectParts[0]);
+                    LibraryManager.readProjectParts(treeItem_ProjectParts[0]);
+                    LibraryManager.readProjectSubparts(treeItem_ProjectSubparts[0]);
+                    LibraryManager.readProjectPrimitives(treeItem_ProjectPrimitives[0]);
+                    LibraryManager.readProjectHiResPrimitives(treeItem_ProjectPrimitives48[0]);
+                    treeItem_OfficialParts[0].setData(null);
+                    txt_Search[0].setText(" "); //$NON-NLS-1$
+                    txt_Search[0].setText(""); //$NON-NLS-1$
+                    updateTree_unsavedEntries();
+                }
             }
         });
         btn_Save[0].addSelectionListener(new SelectionAdapter() {
@@ -1556,6 +1569,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                         }
                                     }
 
+                                    df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
+
                                     HashSet<EditorTextWindow> windows = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
                                     for (EditorTextWindow win : windows) {
                                         win.updateTabWithDatfile(df);
@@ -1611,6 +1626,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                                 if (!oldName.startsWith(projectPrefix) && oldName.startsWith(defaultPrefix)) {
                                                     df.setOldName(projectPrefix + oldName.substring(defaultPrefix.length()));
                                                 }
+                                                df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
                                                 if (isUnsaved) Project.addUnsavedFile(df);
                                                 if (isParsed) Project.getParsedFiles().add(df);
                                             }
@@ -4292,6 +4308,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     folder.removeAll();
                     for (DatFile part : (ArrayList<DatFile>) folder.getData()) {
                         StringBuilder nameSb = new StringBuilder(new File(part.getNewName()).getName());
+                        if (i > 7 && (!part.getNewName().startsWith(Project.getProjectPath()) || !part.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
+                            nameSb.insert(0, "(!) "); //$NON-NLS-1$
+                        }
                         final String d = part.getDescription();
                         if (d != null)
                             nameSb.append(d);
@@ -4608,8 +4627,11 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
 
                 df = new DatFile(selected, titleSb.toString(), false, type);
+                df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
 
             } else {
+
+                df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
                 if (original.isProjectFile()) {
                     openDatFile(df);
                     return;

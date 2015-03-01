@@ -124,13 +124,13 @@ class EditorTextDesign extends ApplicationWindow {
             Button btn_New = new Button(toolItem_NewOpenSave, SWT.NONE);
             this.btn_New[0] = btn_New;
             btn_New.setToolTipText(I18n.EDITOR3D_NewDat);
-            btn_New.setImage(ResourceManager.getImage("icon16_document-new.png")); //$NON-NLS-1$
+            btn_New.setImage(ResourceManager.getImage("icon16_document-newdat.png")); //$NON-NLS-1$
         }
         {
             Button btn_Open = new Button(toolItem_NewOpenSave, SWT.NONE);
             this.btn_Open[0] = btn_Open;
             btn_Open.setToolTipText(I18n.EDITOR3D_OpenDat);
-            btn_Open.setImage(ResourceManager.getImage("icon16_document-open.png")); //$NON-NLS-1$
+            btn_Open.setImage(ResourceManager.getImage("icon16_document-opendat.png")); //$NON-NLS-1$
         }
         {
             Button btn_Save = new Button(toolItem_NewOpenSave, SWT.NONE);

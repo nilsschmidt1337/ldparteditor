@@ -81,7 +81,7 @@ public final class DatFile {
     private Vertex objVertex4 = null;
 
     private boolean virtual;
-    private final boolean projectFile;
+    private boolean projectFile;
 
     private DatType type = DatType.PART;
     private long lastModified = 0;
@@ -1322,6 +1322,10 @@ public final class DatFile {
 
     public void setDrawSelection(boolean drawSelection) {
         this.drawSelection = drawSelection;
+    }
+
+    public void setProjectFile(boolean projectFile) {
+        this.projectFile = projectFile;
     }
 
 }

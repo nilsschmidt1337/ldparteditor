@@ -57,10 +57,10 @@ public enum Project {
     /**
      * Creates the new project file structure
      */
-    public static void create() {
-        resetEditor();
+    public static void create(boolean withFolders) {
+        if (withFolders) resetEditor();
         setDefaultProject(false);
-        createFileStructure(true);
+        createFileStructure(withFolders);
         updateEditor();
 
         Editor3DWindow.getWindow().getProjectParts().getItems().clear();
