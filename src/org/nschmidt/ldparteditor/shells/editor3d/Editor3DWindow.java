@@ -2703,6 +2703,24 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        mntm_SelectIsolatedVertices[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (OpenGLRenderer renderer : renders) {
+                            Composite3D c3d = renderer.getC3D();
+                            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                                VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                                vm.selectIsolatedVertices();;
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
         mntm_Edger2[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

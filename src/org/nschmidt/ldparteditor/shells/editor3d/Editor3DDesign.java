@@ -695,7 +695,7 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_WithAccuracy = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_WithAccuracy[0] = mntm_WithAccuracy;
-                        mntm_WithAccuracy.setText("…  with Specified Accuracy¹²."); //$NON-NLS-1$ I18N
+                        mntm_WithAccuracy.setText("…  with Specified Accuracy¹ ²."); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_WithHiddenData = new MenuItem(mnu_Select, SWT.CHECK);
