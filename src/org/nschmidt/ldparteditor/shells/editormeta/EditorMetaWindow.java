@@ -15,7 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editormeta;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import org.eclipse.swt.SWT;
@@ -403,7 +402,8 @@ public class EditorMetaWindow extends EditorMetaDesign {
                             String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
                             decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
                             fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
-                        } catch (UnsupportedEncodingException consumed) {
+                        } catch (Exception consumed) {
+                            fd.setFilterPath(Project.getProjectPath());
                         }
                     } else {
                         fd.setFilterPath(Project.getProjectPath());
@@ -474,7 +474,8 @@ public class EditorMetaWindow extends EditorMetaDesign {
                             String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
                             decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
                             fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
-                        } catch (UnsupportedEncodingException consumed) {
+                        } catch (Exception consumed) {
+                            fd.setFilterPath(Project.getProjectPath());
                         }
                     } else {
                         fd.setFilterPath(Project.getProjectPath());
@@ -547,7 +548,8 @@ public class EditorMetaWindow extends EditorMetaDesign {
                             String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
                             decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
                             fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
-                        } catch (UnsupportedEncodingException consumed) {
+                        } catch (Exception consumed) {
+                            fd.setFilterPath(Project.getProjectPath());
                         }
                     } else {
                         fd.setFilterPath(Project.getProjectPath());
@@ -827,7 +829,8 @@ public class EditorMetaWindow extends EditorMetaDesign {
                             String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
                             decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
                             fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
-                        } catch (UnsupportedEncodingException consumed) {
+                        } catch (Exception consumed) {
+                            fd.setFilterPath(Project.getProjectPath());
                         }
                     } else {
                         fd.setFilterPath(Project.getProjectPath());
