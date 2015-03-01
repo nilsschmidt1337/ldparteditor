@@ -2918,6 +2918,52 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        // MARK Options
+
+        mntm_ResetSettingsOnRestart[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+                messageBox.setText("Warning:"); //$NON-NLS-1$ I18N
+                messageBox.setMessage("Are you sure to delete your configuration on the next start?"); //$NON-NLS-1$
+                int result = messageBox.open();
+                if (result == SWT.CANCEL) {
+                    return;
+                }
+                WorkbenchManager.getUserSettingState().setResetOnStart(true);
+            }
+        });
+
+        mntm_SelectAnotherLDConfig[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                FileDialog fd = new FileDialog(sh, SWT.OPEN);
+                fd.setText("Open LDraw Configuration File (LDConfig.ldr):"); //$NON-NLS-1$ I18N Needs translation!
+
+                fd.setFilterPath(WorkbenchManager.getUserSettingState().getLdrawFolderPath());
+
+                String[] filterExt = { "*.ldr", "LDConfig.ldr", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                fd.setFilterExtensions(filterExt);
+                String[] filterNames = { "LDraw Configuration File (*.ldr)", "LDraw Configuration File (LDConfig.ldr)", "All Files" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
+                fd.setFilterNames(filterNames);
+
+                String selected = fd.open();
+                System.out.println(selected);
+
+                if (selected != null && View.loadLDConfig(selected)) {
+                    WorkbenchManager.getUserSettingState().setLdConfigPath(selected);
+                    Set<DatFile> dfs = new HashSet<DatFile>();
+                    for (OpenGLRenderer renderer : renders) {
+                        dfs.add(renderer.getC3D().getLockableDatFileReference());
+                    }
+                    for (DatFile df : dfs) {
+                        SubfileCompiler.compile(df);
+                    }
+                }
+
+            }
+        });
+
         // MARK Merge, split...
 
         mntm_Flip[0].addSelectionListener(new SelectionAdapter() {

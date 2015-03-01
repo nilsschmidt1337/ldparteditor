@@ -44,6 +44,7 @@ import org.nschmidt.ldparteditor.helpers.ProgressHelper;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -172,6 +173,12 @@ public class SplashScreen extends ApplicationWindow {
                     // Load the workbench here if config.gz exists
                     if (configGzFile.exists()) {
                         WorkbenchManager.loadWorkbench();
+                        if (WorkbenchManager.getUserSettingState().isResetOnStart()) {
+                            // Do a reset, if needed.
+                            configGzFile.delete();
+                            WorkbenchManager.createDefaultWorkbench();
+                            firstApplicationRun[0] = true;
+                        }
                     } else {
                         // Return with a warning
                         threadReturn[0] = ReturnType.WRITE_ERROR;
@@ -282,12 +289,18 @@ public class SplashScreen extends ApplicationWindow {
             } catch (SecurityException consumed) {
             }
 
-            View.loadLDConfig();
+            String ldcPath = WorkbenchManager.getUserSettingState().getLdConfigPath();
+            if (ldcPath == null) {
+                ldcPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "LDConfig.ldr"; //$NON-NLS-1$
+            }
+            View.loadLDConfig(ldcPath);
 
             // Finally, open the editor window!
 
-            DatFile fileToEdit = new DatFile(Project.getProjectPath() + File.separator + "PARTS" + File.separator + "new.dat"); //$NON-NLS-1$ //$NON-NLS-2$
-            Project.setFileToEdit(fileToEdit);
+            if (NLogger.DEBUG) {
+                DatFile fileToEdit = new DatFile(Project.getProjectPath() + File.separator + "PARTS" + File.separator + "new.dat"); //$NON-NLS-1$ //$NON-NLS-2$
+                Project.setFileToEdit(fileToEdit);
+            }
             new Editor3DWindow().run();
         }
     }

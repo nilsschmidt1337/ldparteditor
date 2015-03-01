@@ -36,7 +36,7 @@ public enum NLogger {
     INSTANCE;
 
     // TODO _Set debug variable to false on release!
-    private final static boolean LOG_DEBUG = true;
+    public final static boolean DEBUG = true;
     /**
      * The error counter. If it reaches 100 within one session, no more caught
      * errors will be evaluated.
@@ -52,7 +52,7 @@ public enum NLogger {
      */
     public static void init() {
         try {
-            if (!LOG_DEBUG) {
+            if (!DEBUG) {
                 File log = new File("error_log.txt"); //$NON-NLS-1$
                 if (log.length() > 100000) {
                     log.delete();
@@ -62,7 +62,7 @@ public enum NLogger {
             }
             StringBuilder sb = new StringBuilder();
             sb.append("[LDPartEditor "); //$NON-NLS-1$
-            sb.append(LOG_DEBUG ? "DEBUG " : "RELEASE "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append(DEBUG ? "DEBUG " : "RELEASE "); //$NON-NLS-1$ //$NON-NLS-2$
             sb.append(Version.getVersion());
             sb.append("] on "); //$NON-NLS-1$
             sb.append(new java.util.Date());
@@ -84,7 +84,7 @@ public enum NLogger {
      *            The throwable exception
      */
     public static void debug(Class<?> clazz, Throwable t) {
-        if (LOG_DEBUG) {
+        if (DEBUG) {
             debug_sync(clazz, t);
         }
     }
@@ -99,31 +99,31 @@ public enum NLogger {
      *            The message to display
      */
     public static void debug(Class<?> clazz, String message) {
-        if (LOG_DEBUG) {
+        if (DEBUG) {
             debug_sync(clazz, message);
         }
     }
 
     public static void debug(Class<?> clazz, float value) {
-        if (LOG_DEBUG) {
+        if (DEBUG) {
             debug_sync(clazz, Float.toString(value));
         }
     }
 
     public static void debug(Class<?> clazz, double value) {
-        if (LOG_DEBUG) {
+        if (DEBUG) {
             debug_sync(clazz, Double.toString(value));
         }
     }
 
     public static void debug(Class<?> clazz, int value) {
-        if (LOG_DEBUG) {
+        if (DEBUG) {
             debug_sync(clazz, Integer.toString(value));
         }
     }
 
     public static void debugPressAnyKey() {
-        if (LOG_DEBUG) {
+        if (DEBUG) {
             try {
                 System.in.read();
             } catch (IOException e) {
