@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.shells.editor3d;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -119,8 +120,10 @@ import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editormeta.EditorMetaWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shells.searchnreplace.SearchWindow;
+import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.References;
 import org.nschmidt.ldparteditor.text.TextTriangulator;
+import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
@@ -1441,7 +1444,13 @@ public class Editor3DWindow extends Editor3DDesign {
                         public void widgetSelected(SelectionEvent e) {
                             if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
                                 DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                if (df.isReadOnly()) return;
+                                if (df.isReadOnly()) {
+                                    if (treeParts[0].getSelection()[0].getParentItem().getParentItem() == treeItem_Project[0]) {
+                                        updateTree_removeEntry(df);
+                                        cleanupClosedData();
+                                    }
+                                    return;
+                                }
 
                                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
                                 messageBox.setText(I18n.DIALOG_DeleteTitle);
@@ -4446,7 +4455,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
                 decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
                 fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
-            } catch (UnsupportedEncodingException consumed) {
+            } catch (Exception consumed) {
+                fd.setFilterPath(Project.getProjectPath());
             }
         } else {
             fd.setFilterPath(Project.getProjectPath());
@@ -4484,6 +4494,10 @@ public class Editor3DWindow extends Editor3DDesign {
                     ti.setText(nameSb.toString());
                     ti.setData(df);
 
+                    @SuppressWarnings("unchecked")
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
+                    cachedReferences.add(df);
+
                     Project.addUnsavedFile(df);
 
                     updateTree_unsavedEntries();
@@ -4497,8 +4511,6 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public void openDatFile(Shell sh) {
 
-        // FIXME Needs implementation!
-
         FileDialog fd = new FileDialog(sh, SWT.OPEN);
         fd.setText("Open *.dat file"); //$NON-NLS-1$ I18N Needs translation!
 
@@ -4508,7 +4520,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
                 decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
                 fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
-            } catch (UnsupportedEncodingException consumed) {
+            } catch (Exception consumed) {
+                fd.setFilterPath(Project.getProjectPath());
             }
         } else {
             fd.setFilterPath(Project.getProjectPath());
@@ -4518,8 +4531,144 @@ public class Editor3DWindow extends Editor3DDesign {
         fd.setFilterExtensions(filterExt);
         String[] filterNames = { "LDraw Source File (*.dat)", "All Files" }; //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
         fd.setFilterNames(filterNames);
+
         String selected = fd.open();
         System.out.println(selected);
+
+        if (selected != null) {
+
+            // Check if its already created
+
+            DatType type = DatType.PART;
+
+            DatFile df = new DatFile(selected);
+            DatFile original = isFileNameAllocated2(selected, df);
+
+            if (original == null) {
+
+                // Type Check and Description Parsing!!
+                StringBuilder titleSb = new StringBuilder();
+                UTF8BufferedReader reader = null;
+                File f = new File(selected);
+                try {
+                    reader = new UTF8BufferedReader(f.getAbsolutePath());
+                    String title = reader.readLine();
+                    if (title != null) {
+                        title = title.trim();
+                        if (title.length() > 0) {
+                            titleSb.append(" -"); //$NON-NLS-1$
+                            titleSb.append(title.substring(1));
+                        }
+                    }
+                    while (true) {
+                        String typ = reader.readLine().trim();
+                        if (typ != null) {
+                            if (!typ.startsWith("0")) { //$NON-NLS-1$
+                                break;
+                            } else {
+                                int i1 = typ.indexOf("!LDRAW_ORG"); //$NON-NLS-1$
+                                if (i1 > -1) {
+                                    int i2;
+                                    i2 = typ.indexOf("Subpart"); //$NON-NLS-1$
+                                    if (i2 > -1 && i1 < i2) {
+                                        type = DatType.SUBPART;
+                                        break;
+                                    }
+                                    i2 = typ.indexOf("Part"); //$NON-NLS-1$
+                                    if (i2 > -1 && i1 < i2) {
+                                        type = DatType.PART;
+                                        break;
+                                    }
+                                    i2 = typ.indexOf("48_Primitive"); //$NON-NLS-1$
+                                    if (i2 > -1 && i1 < i2) {
+                                        type = DatType.PRIMITIVE48;
+                                        break;
+                                    }
+                                    i2 = typ.indexOf("Primitive"); //$NON-NLS-1$
+                                    if (i2 > -1 && i1 < i2) {
+                                        type = DatType.PRIMITIVE;
+                                        break;
+                                    }
+                                }
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                } catch (LDParsingException e) {
+                } catch (FileNotFoundException e) {
+                } catch (UnsupportedEncodingException e) {
+                } finally {
+                    try {
+                        if (reader != null)
+                            reader.close();
+                    } catch (LDParsingException e1) {
+                    }
+                }
+
+                df = new DatFile(selected, titleSb.toString(), false, type);
+
+            } else {
+                if (original.isProjectFile()) {
+                    return;
+                }
+                type = original.getType();
+                df = original;
+            }
+
+            TreeItem ti;
+            switch (type) {
+            case PART:
+                ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
+                {
+                    @SuppressWarnings("unchecked")
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
+                    cachedReferences.add(df);
+                }
+                break;
+            case SUBPART:
+                ti = new TreeItem(this.treeItem_ProjectSubparts[0], SWT.NONE);
+                {
+                    @SuppressWarnings("unchecked")
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectSubparts[0].getData();
+                    cachedReferences.add(df);
+                }
+                break;
+            case PRIMITIVE:
+                ti = new TreeItem(this.treeItem_ProjectPrimitives[0], SWT.NONE);
+                {
+                    @SuppressWarnings("unchecked")
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives[0].getData();
+                    cachedReferences.add(df);
+                }
+                break;
+            case PRIMITIVE48:
+                ti = new TreeItem(this.treeItem_ProjectPrimitives48[0], SWT.NONE);
+                {
+                    @SuppressWarnings("unchecked")
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives48[0].getData();
+                    cachedReferences.add(df);
+                }
+                break;
+            default:
+                ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
+                {
+                    @SuppressWarnings("unchecked")
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
+                    cachedReferences.add(df);
+                }
+                break;
+            }
+
+            StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
+
+            nameSb.append("(new file)"); //$NON-NLS-1$ I18N
+
+            ti.setText(nameSb.toString());
+            ti.setData(df);
+
+            updateTree_unsavedEntries();
+        }
     }
 
     public void disableSelectionTab() {
@@ -4617,5 +4766,35 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         }
         return false;
+    }
+
+    private DatFile isFileNameAllocated2(String dir, DatFile df) {
+
+        TreeItem[] folders = new TreeItem[12];
+        folders[0] = treeItem_OfficialParts[0];
+        folders[1] = treeItem_OfficialPrimitives[0];
+        folders[2] = treeItem_OfficialPrimitives48[0];
+        folders[3] = treeItem_OfficialSubparts[0];
+
+        folders[4] = treeItem_UnofficialParts[0];
+        folders[5] = treeItem_UnofficialPrimitives[0];
+        folders[6] = treeItem_UnofficialPrimitives48[0];
+        folders[7] = treeItem_UnofficialSubparts[0];
+
+        folders[8] = treeItem_ProjectParts[0];
+        folders[9] = treeItem_ProjectPrimitives[0];
+        folders[10] = treeItem_ProjectPrimitives48[0];
+        folders[11] = treeItem_ProjectSubparts[0];
+
+        for (TreeItem folder : folders) {
+            @SuppressWarnings("unchecked")
+            ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
+            for (DatFile d : cachedReferences) {
+                if (dir.equals(d.getOldName()) || dir.equals(d.getNewName())) {
+                    return d;
+                }
+            }
+        }
+        return null;
     }
 }
