@@ -58,6 +58,7 @@ import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.dialogs.sort.SortDialog;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer;
 import org.nschmidt.ldparteditor.dnd.MyDummyType;
+import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.Version;
@@ -155,8 +156,8 @@ public class EditorTextWindow extends EditorTextDesign {
         btn_New[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                DatFile df = Editor3DWindow.getWindow().createNewDatFile(getShell());
-                if (df != null) {
+                DatFile df = Editor3DWindow.getWindow().createNewDatFile(getShell(), OpenInWhat.EDITOR_3D);
+                if (df != null && !Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
                     {
                         CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
                         tbtmnewItem.setWindow(editorTextWindow);
@@ -169,7 +170,15 @@ public class EditorTextWindow extends EditorTextDesign {
         btn_Open[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                Editor3DWindow.getWindow().openDatFile(getShell(), null);
+                DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D);
+                if (df != null && !Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
+                    {
+                        CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
+                        tbtmnewItem.setWindow(editorTextWindow);
+                        tbtmnewItem.getState().setFileNameObj(df);
+                        tabFolder[0].setSelection(tbtmnewItem);
+                    }
+                }
             }
         });
         btn_Save[0].addSelectionListener(new SelectionListener() {
