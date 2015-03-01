@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
@@ -79,9 +78,7 @@ import org.nschmidt.ldparteditor.dialogs.edger2.EdgerDialog;
 import org.nschmidt.ldparteditor.dialogs.intersector.IntersectorDialog;
 import org.nschmidt.ldparteditor.dialogs.isecalc.IsecalcDialog;
 import org.nschmidt.ldparteditor.dialogs.lines2pattern.Lines2PatternDialog;
-import org.nschmidt.ldparteditor.dialogs.newfile.NewFileDialog;
 import org.nschmidt.ldparteditor.dialogs.newproject.NewProjectDialog;
-import org.nschmidt.ldparteditor.dialogs.openfile.OpenFileDialog;
 import org.nschmidt.ldparteditor.dialogs.pathtruder.PathTruderDialog;
 import org.nschmidt.ldparteditor.dialogs.rectifier.RectifierDialog;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
@@ -1499,12 +1496,12 @@ public class Editor3DWindow extends Editor3DDesign {
                                 dlg.setText(I18n.DIALOG_RenameOrMove);
 
                                 // Calling open() will open and run the dialog.
-                                // It will return the selected directory, or
+                                // It will return the selected file, or
                                 // null if user cancels
-                                String dir = dlg.open();
-                                if (dir != null) {
+                                String newPath = dlg.open();
+                                if (newPath != null) {
 
-                                    while (isFileNameAllocated(dir, df)) {
+                                    while (isFileNameAllocated(newPath, df, false)) {
                                         MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
                                         messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
                                         messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
@@ -1514,17 +1511,17 @@ public class Editor3DWindow extends Editor3DDesign {
                                         if (result == SWT.CANCEL) {
                                             return;
                                         }
-                                        dir = dlg.open();
-                                        if (dir == null) return;
+                                        newPath = dlg.open();
+                                        if (newPath == null) return;
                                     }
 
 
-                                    if (df.isProjectFile() && !dir.startsWith(Project.getProjectPath())) {
+                                    if (df.isProjectFile() && !newPath.startsWith(Project.getProjectPath())) {
 
                                         MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
                                         messageBox.setText(I18n.DIALOG_NoProjectLocationTitle);
 
-                                        Object[] messageArguments = {new File(dir).getName()};
+                                        Object[] messageArguments = {new File(newPath).getName()};
                                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                                         formatter.setLocale(View.LOCALE);
                                         formatter.applyPattern(I18n.DIALOG_NoProjectLocation);
@@ -1537,7 +1534,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         }
                                     }
 
-                                    df.setNewName(dir);
+                                    df.setNewName(newPath);
                                     if (!df.getOldName().equals(df.getNewName())) {
                                         if (!Project.getUnsavedFiles().contains(df)) {
                                             df.parseForData();
@@ -1626,39 +1623,6 @@ public class Editor3DWindow extends Editor3DDesign {
                                 messageBoxError.setMessage(I18n.DIALOG_Unavailable);
                                 messageBoxError.open();
                             }
-                        }
-
-
-                        private boolean isFileNameAllocated(String dir, DatFile df) {
-
-                            TreeItem[] folders = new TreeItem[12];
-                            folders[0] = treeItem_OfficialParts[0];
-                            folders[1] = treeItem_OfficialPrimitives[0];
-                            folders[2] = treeItem_OfficialPrimitives48[0];
-                            folders[3] = treeItem_OfficialSubparts[0];
-
-                            folders[4] = treeItem_UnofficialParts[0];
-                            folders[5] = treeItem_UnofficialPrimitives[0];
-                            folders[6] = treeItem_UnofficialPrimitives48[0];
-                            folders[7] = treeItem_UnofficialSubparts[0];
-
-                            folders[8] = treeItem_ProjectParts[0];
-                            folders[9] = treeItem_ProjectPrimitives[0];
-                            folders[10] = treeItem_ProjectPrimitives48[0];
-                            folders[11] = treeItem_ProjectSubparts[0];
-
-                            for (TreeItem folder : folders) {
-                                @SuppressWarnings("unchecked")
-                                ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
-                                for (DatFile d : cachedReferences) {
-                                    if (!df.equals(d)) {
-                                        if (dir.equals(d.getOldName()) || dir.equals(d.getNewName())) {
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                            return false;
                         }
                     });
                     mntm_CopyToUnofficial[0] .addSelectionListener(new SelectionAdapter() {
@@ -3762,7 +3726,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 DatFile d = (DatFile) df.getData();
                 StringBuilder nameSb = new StringBuilder(new File(d.getNewName()).getName());
                 final String d2 = d.getDescription();
-                if (counter < 5 && !d.getNewName().startsWith(Project.getProjectPath())) {
+                if (counter < 5 && (!d.getNewName().startsWith(Project.getProjectPath()) || !d.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
                     nameSb.insert(0, "(!) "); //$NON-NLS-1$
                 }
 
@@ -4472,11 +4436,6 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void createNewDatFile(Shell sh) {
-        Dialog n = new NewFileDialog(sh);
-        if (n.open() == IDialogConstants.OK_ID) {
-
-        }
-
 
         FileDialog fd = new FileDialog(sh, SWT.SAVE);
         fd.setText("Create a new *.dat file"); //$NON-NLS-1$ I18N Needs translation!
@@ -4497,15 +4456,48 @@ public class Editor3DWindow extends Editor3DDesign {
         fd.setFilterExtensions(filterExt);
         String[] filterNames = { "LDraw Source File (*.dat)", "All Files" }; //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
         fd.setFilterNames(filterNames);
-        String selected = fd.open();
-        System.out.println(selected);
+
+        while (true) {
+            String selected = fd.open();
+            System.out.println(selected);
+
+            if (selected != null) {
+
+                // Check if its already created
+
+                DatFile df = new DatFile(selected);
+
+                if (isFileNameAllocated(selected, df, true)) {
+                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
+                    messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
+                    messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
+
+                    int result = messageBox.open();
+
+                    if (result == SWT.CANCEL) {
+                        break;
+                    }
+                } else {
+                    TreeItem ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
+                    StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
+                    nameSb.append("(new file)"); //$NON-NLS-1$ I18N
+                    ti.setText(nameSb.toString());
+                    ti.setData(df);
+
+                    Project.addUnsavedFile(df);
+
+                    updateTree_unsavedEntries();
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
     }
 
     public void openDatFile(Shell sh) {
-        Dialog n = new OpenFileDialog(sh);
-        if (n.open() == IDialogConstants.OK_ID) {
 
-        }
+        // FIXME Needs implementation!
 
         FileDialog fd = new FileDialog(sh, SWT.OPEN);
         fd.setText("Open *.dat file"); //$NON-NLS-1$ I18N Needs translation!
@@ -4593,5 +4585,37 @@ public class Editor3DWindow extends Editor3DDesign {
         sels.setOrientation(mntm_WithSameOrientation[0].getSelection());
         sels.setDistance(mntm_WithAccuracy[0].getSelection());
         sels.setWholeSubfiles(mntm_WithWholeSubfiles[0].getSelection());
+    }
+
+    private boolean isFileNameAllocated(String dir, DatFile df, boolean createNew) {
+
+        TreeItem[] folders = new TreeItem[12];
+        folders[0] = treeItem_OfficialParts[0];
+        folders[1] = treeItem_OfficialPrimitives[0];
+        folders[2] = treeItem_OfficialPrimitives48[0];
+        folders[3] = treeItem_OfficialSubparts[0];
+
+        folders[4] = treeItem_UnofficialParts[0];
+        folders[5] = treeItem_UnofficialPrimitives[0];
+        folders[6] = treeItem_UnofficialPrimitives48[0];
+        folders[7] = treeItem_UnofficialSubparts[0];
+
+        folders[8] = treeItem_ProjectParts[0];
+        folders[9] = treeItem_ProjectPrimitives[0];
+        folders[10] = treeItem_ProjectPrimitives48[0];
+        folders[11] = treeItem_ProjectSubparts[0];
+
+        for (TreeItem folder : folders) {
+            @SuppressWarnings("unchecked")
+            ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
+            for (DatFile d : cachedReferences) {
+                if (createNew || !df.equals(d)) {
+                    if (dir.equals(d.getOldName()) || dir.equals(d.getNewName())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
