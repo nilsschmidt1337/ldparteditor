@@ -15880,7 +15880,6 @@ public class VertexManager {
 
     public void selector(final SelectorSettings ss) {
 
-        // FIXME Auto-generated method stub
         linkedDatFile.setDrawSelection(false);
         try
         {
