@@ -1118,7 +1118,7 @@ public class MouseActions {
                     c3d.getLockableDatFileReference().getVertexManager().reSelectSubFiles();
                     break;
                 case WorkingMode.SUBFILES:
-                    c3d.getLockableDatFileReference().getVertexManager().selectSubfiles(c3d, event);
+                    c3d.getLockableDatFileReference().getVertexManager().selectSubfiles(c3d, event, true);
                     break;
                 }
             } else if (!window.isAddingSomething()) {
