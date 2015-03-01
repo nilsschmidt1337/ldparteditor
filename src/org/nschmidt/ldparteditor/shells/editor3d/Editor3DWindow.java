@@ -90,6 +90,7 @@ import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.enums.GLPrimitives;
 import org.nschmidt.ldparteditor.enums.MouseButton;
+import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
@@ -398,14 +399,14 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_NewDat[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                createNewDatFile(getShell());
+                createNewDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D);
             }
         });
 
         btn_OpenDat[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                openDatFile(getShell(), null);
+                openDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D);
             }
         });
 
@@ -4509,7 +4510,7 @@ public class Editor3DWindow extends Editor3DDesign {
         setAddingSomething(false);
     }
 
-    public DatFile createNewDatFile(Shell sh) {
+    public DatFile createNewDatFile(Shell sh, OpenInWhat where) {
 
         FileDialog fd = new FileDialog(sh, SWT.SAVE);
         fd.setText("Create a new *.dat file"); //$NON-NLS-1$ I18N Needs translation!
@@ -4566,6 +4567,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.addUnsavedFile(df);
                     updateTree_renamedEntries();
                     updateTree_unsavedEntries();
+
+                    openDatFile(df, where, null);
                     return df;
                 }
             } else {
@@ -4575,7 +4578,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return null;
     }
 
-    public DatFile openDatFile(Shell sh, EditorTextWindow tWin) {
+    public DatFile openDatFile(Shell sh, OpenInWhat where) {
 
         FileDialog fd = new FileDialog(sh, SWT.OPEN);
         fd.setText("Open *.dat file"); //$NON-NLS-1$ I18N Needs translation!
@@ -4680,14 +4683,14 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
                 if (original.isProjectFile()) {
-                    openDatFile(df, tWin);
+                    openDatFile(df, where, null);
                     return df;
                 }
                 {
                     @SuppressWarnings("unchecked")
                     ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
                     if (cachedReferences.contains(df)) {
-                        openDatFile(df, tWin);
+                        openDatFile(df, where, null);
                         return df;
                     }
                 }
@@ -4695,7 +4698,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     @SuppressWarnings("unchecked")
                     ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectSubparts[0].getData();
                     if (cachedReferences.contains(df)) {
-                        openDatFile(df, tWin);
+                        openDatFile(df, where, null);
                         return df;
                     }
                 }
@@ -4703,7 +4706,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     @SuppressWarnings("unchecked")
                     ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives[0].getData();
                     if (cachedReferences.contains(df)) {
-                        openDatFile(df, tWin);
+                        openDatFile(df, where, null);
                         return df;
                     }
                 }
@@ -4711,7 +4714,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     @SuppressWarnings("unchecked")
                     ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives48[0].getData();
                     if (cachedReferences.contains(df)) {
-                        openDatFile(df, tWin);
+                        openDatFile(df, where, null);
                         return df;
                     }
                 }
@@ -4772,14 +4775,14 @@ public class Editor3DWindow extends Editor3DDesign {
 
             updateTree_unsavedEntries();
 
-            openDatFile(df, tWin);
+            openDatFile(df, where, null);
             return df;
         }
         return null;
     }
 
-    private boolean openDatFile(DatFile df, EditorTextWindow tWin) {
-        if (tWin == null) {
+    public boolean openDatFile(DatFile df, OpenInWhat where, EditorTextWindow tWin) {
+        if (where == OpenInWhat.EDITOR_3D || where == OpenInWhat.EDITOR_TEXT_AND_3D) {
             if (renders.isEmpty()) {
                 if ("%EMPTY%".equals(Editor3DWindow.getSashForm().getChildren()[1].getData())) { //$NON-NLS-1$
                     int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
@@ -4821,21 +4824,23 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         }
 
-        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+        if (where == OpenInWhat.EDITOR_TEXT || where == OpenInWhat.EDITOR_TEXT_AND_3D) {
+            for (EditorTextWindow w : Project.getOpenTextWindows()) {
 
-            for (CTabItem t : w.getTabFolder().getItems()) {
-                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                    w.getTabFolder().setSelection(t);
-                    ((CompositeTab) t).getControl().getShell().forceActive();
-                    w.open();
-                    return w.equals(tWin);
+                for (CTabItem t : w.getTabFolder().getItems()) {
+                    if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                        w.getTabFolder().setSelection(t);
+                        ((CompositeTab) t).getControl().getShell().forceActive();
+                        w.open();
+                        return w == tWin;
+                    }
                 }
             }
-        }
-        if (tWin == null) {
-            // Project.getParsedFiles().add(df); IS NECESSARY HERE
-            Project.getParsedFiles().add(df);
-            new EditorTextWindow().run(df);
+            if (tWin == null) {
+                // Project.getParsedFiles().add(df); IS NECESSARY HERE
+                Project.getParsedFiles().add(df);
+                new EditorTextWindow().run(df);
+            }
         }
         return false;
     }
