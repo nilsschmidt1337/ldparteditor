@@ -8810,10 +8810,13 @@ public class VertexManager {
 
         int intersections = 0;
         for (HashSet<Vertex> s1 : setList1) {
-            for (HashSet<Vertex> s2 : setList1) {
+            for (HashSet<Vertex> s2 : setList2) {
                 HashSet<Vertex> newSet = new HashSet<Vertex>();
                 newSet.addAll(s1);
-                if (newSet.retainAll(s2) && !newSet.isEmpty()) {
+                int co = newSet.size();
+                newSet.removeAll(s2);
+                int cn = newSet.size();
+                if (co != cn) {
                     intersections++;
                     if (intersections == 2) {
                         return true;
@@ -8886,10 +8889,13 @@ public class VertexManager {
 
         int intersections = 0;
         for (HashSet<Vertex> s1 : setList1) {
-            for (HashSet<Vertex> s2 : setList1) {
+            for (HashSet<Vertex> s2 : setList2) {
                 HashSet<Vertex> newSet = new HashSet<Vertex>();
                 newSet.addAll(s1);
-                if (newSet.retainAll(s2) && !newSet.isEmpty()) {
+                int co = newSet.size();
+                newSet.removeAll(s2);
+                int cn = newSet.size();
+                if (co != cn) {
                     intersections++;
                     if (intersections == 2) {
                         return true;
