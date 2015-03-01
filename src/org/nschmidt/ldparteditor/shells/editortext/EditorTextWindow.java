@@ -155,13 +155,21 @@ public class EditorTextWindow extends EditorTextDesign {
         btn_New[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                Editor3DWindow.getWindow().createNewDatFile(getShell());
+                DatFile df = Editor3DWindow.getWindow().createNewDatFile(getShell());
+                if (df != null) {
+                    {
+                        CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
+                        tbtmnewItem.setWindow(editorTextWindow);
+                        tbtmnewItem.getState().setFileNameObj(df);
+                        tabFolder[0].setSelection(tbtmnewItem);
+                    }
+                }
             }
         });
         btn_Open[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                Editor3DWindow.getWindow().openDatFile(getShell());
+                Editor3DWindow.getWindow().openDatFile(getShell(), null);
             }
         });
         btn_Save[0].addSelectionListener(new SelectionListener() {

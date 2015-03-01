@@ -405,7 +405,7 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_OpenDat[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                openDatFile(getShell());
+                openDatFile(getShell(), null);
             }
         });
 
@@ -4509,7 +4509,7 @@ public class Editor3DWindow extends Editor3DDesign {
         setAddingSomething(false);
     }
 
-    public void createNewDatFile(Shell sh) {
+    public DatFile createNewDatFile(Shell sh) {
 
         FileDialog fd = new FileDialog(sh, SWT.SAVE);
         fd.setText("Create a new *.dat file"); //$NON-NLS-1$ I18N Needs translation!
@@ -4566,15 +4566,16 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.addUnsavedFile(df);
                     updateTree_renamedEntries();
                     updateTree_unsavedEntries();
-                    break;
+                    return df;
                 }
             } else {
                 break;
             }
         }
+        return null;
     }
 
-    public void openDatFile(Shell sh) {
+    public DatFile openDatFile(Shell sh, EditorTextWindow tWin) {
 
         FileDialog fd = new FileDialog(sh, SWT.OPEN);
         fd.setText("Open *.dat file"); //$NON-NLS-1$ I18N Needs translation!
@@ -4679,39 +4680,39 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
                 if (original.isProjectFile()) {
-                    openDatFile(df);
-                    return;
+                    openDatFile(df, tWin);
+                    return df;
                 }
                 {
                     @SuppressWarnings("unchecked")
                     ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
                     if (cachedReferences.contains(df)) {
-                        openDatFile(df);
-                        return;
+                        openDatFile(df, tWin);
+                        return df;
                     }
                 }
                 {
                     @SuppressWarnings("unchecked")
                     ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectSubparts[0].getData();
                     if (cachedReferences.contains(df)) {
-                        openDatFile(df);
-                        return;
+                        openDatFile(df, tWin);
+                        return df;
                     }
                 }
                 {
                     @SuppressWarnings("unchecked")
                     ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives[0].getData();
                     if (cachedReferences.contains(df)) {
-                        openDatFile(df);
-                        return;
+                        openDatFile(df, tWin);
+                        return df;
                     }
                 }
                 {
                     @SuppressWarnings("unchecked")
                     ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives48[0].getData();
                     if (cachedReferences.contains(df)) {
-                        openDatFile(df);
-                        return;
+                        openDatFile(df, tWin);
+                        return df;
                     }
                 }
                 type = original.getType();
@@ -4771,64 +4772,72 @@ public class Editor3DWindow extends Editor3DDesign {
 
             updateTree_unsavedEntries();
 
-            openDatFile(df);
+            openDatFile(df, tWin);
+            return df;
         }
+        return null;
     }
 
-    private void openDatFile(DatFile df) {
-        if (renders.isEmpty()) {
-            if ("%EMPTY%".equals(Editor3DWindow.getSashForm().getChildren()[1].getData())) { //$NON-NLS-1$
-                int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
-                Editor3DWindow.getSashForm().getChildren()[1].dispose();
-                CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
-                cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
-                df.parseForData();
-                final VertexManager vm = df.getVertexManager();
-                Project.setFileToEdit(df);
-                cmp_Container.getComposite3D().setLockableDatFileReference(df);
-                vm.zoomToFit(cmp_Container.getComposite3D());
-                Editor3DWindow.getSashForm().getParent().layout();
-                Editor3DWindow.getSashForm().setWeights(mainSashWeights);
-            }
-        } else {
-            boolean canUpdate = false;
-            for (OpenGLRenderer renderer : renders) {
-                Composite3D c3d = renderer.getC3D();
-                if (!c3d.isDatFileLockedOnDisplay()) {
-                    canUpdate = true;
-                    break;
+    private boolean openDatFile(DatFile df, EditorTextWindow tWin) {
+        if (tWin == null) {
+            if (renders.isEmpty()) {
+                if ("%EMPTY%".equals(Editor3DWindow.getSashForm().getChildren()[1].getData())) { //$NON-NLS-1$
+                    int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
+                    Editor3DWindow.getSashForm().getChildren()[1].dispose();
+                    CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
+                    cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
+                    df.parseForData();
+                    final VertexManager vm = df.getVertexManager();
+                    Project.setFileToEdit(df);
+                    cmp_Container.getComposite3D().setLockableDatFileReference(df);
+                    vm.zoomToFit(cmp_Container.getComposite3D());
+                    Editor3DWindow.getSashForm().getParent().layout();
+                    Editor3DWindow.getSashForm().setWeights(mainSashWeights);
                 }
-            }
-            if (canUpdate) {
-                final VertexManager vm = df.getVertexManager();
-                if (vm.isModified()) {
-                    df.setText(df.getText());
-                }
-                df.parseForData();
-                Project.setFileToEdit(df);
+            } else {
+                boolean canUpdate = false;
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (!c3d.isDatFileLockedOnDisplay()) {
-                        c3d.setLockableDatFileReference(df);
-                        vm.zoomToFit(c3d);
+                        canUpdate = true;
+                        break;
+                    }
+                }
+                if (canUpdate) {
+                    final VertexManager vm = df.getVertexManager();
+                    if (vm.isModified()) {
+                        df.setText(df.getText());
+                    }
+                    df.parseForData();
+                    Project.setFileToEdit(df);
+                    for (OpenGLRenderer renderer : renders) {
+                        Composite3D c3d = renderer.getC3D();
+                        if (!c3d.isDatFileLockedOnDisplay()) {
+                            c3d.setLockableDatFileReference(df);
+                            vm.zoomToFit(c3d);
+                        }
                     }
                 }
             }
         }
 
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
+
             for (CTabItem t : w.getTabFolder().getItems()) {
                 if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                     w.getTabFolder().setSelection(t);
                     ((CompositeTab) t).getControl().getShell().forceActive();
                     w.open();
-                    return;
+                    return w.equals(tWin);
                 }
             }
         }
-        // Project.getParsedFiles().add(df); IS NECESSARY HERE
-        Project.getParsedFiles().add(df);
-        new EditorTextWindow().run(df);
+        if (tWin == null) {
+            // Project.getParsedFiles().add(df); IS NECESSARY HERE
+            Project.getParsedFiles().add(df);
+            new EditorTextWindow().run(df);
+        }
+        return false;
     }
 
     public void disableSelectionTab() {
