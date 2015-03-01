@@ -4561,8 +4561,9 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                     }
                     while (true) {
-                        String typ = reader.readLine().trim();
+                        String typ = reader.readLine();
                         if (typ != null) {
+                            typ = typ.trim();
                             if (!typ.startsWith("0")) { //$NON-NLS-1$
                                 break;
                             } else {
