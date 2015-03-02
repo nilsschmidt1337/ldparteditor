@@ -856,7 +856,7 @@ public class LibraryManager {
                         type = newTypeMap.get(path);
                     }
 
-                    DatFile newDf = new DatFile(dfn.getName(), dfn.getDescription(), readOnly2, type);
+                    DatFile newDf = new DatFile(dfn.getFullName(), dfn.getDescription(), readOnly2, type);
 
                     if (historyMap.containsKey(path)) {
                         // Copies the undo/redo history if there is one
@@ -878,6 +878,10 @@ public class LibraryManager {
                     fileList.add(newDf);
                 }
             }
+        }
+
+        for (TreeItem key : lists.keySet()) {
+            key.setData(lists.get(key));
         }
 
         // Add unsaved files wich are not anymore on the file system, but were opened in the text editor or in the 3D view
@@ -916,7 +920,7 @@ public class LibraryManager {
                 parentMap.put(old, Editor3DWindow.getWindow().getUnsaved());
                 typeMap.put(old, df.getType());
                 existingMap.put(old, df);
-                dfnMap.put(old, new DatFileName(new File(old, df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
+                dfnMap.put(old, new DatFileName(old, new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
             }
         }
     }
@@ -950,7 +954,7 @@ public class LibraryManager {
                 parentMap.put(old, treeItem);
                 typeMap.put(old, df.getType());
                 existingMap.put(old, df);
-                dfnMap.put(old, new DatFileName(new File(old, df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
+                dfnMap.put(old, new DatFileName(old, new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
             } else {
                 if (!new File(old).exists()) {
                     // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
@@ -964,6 +968,7 @@ public class LibraryManager {
                             c3ds.add(c3d);
                         }
                     }
+                    if (!c3ds.isEmpty()) unsavedIn3DMap.put(old, c3ds);
                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
                         for (CTabItem t : w.getTabFolder().getItems()) {
                             CompositeTab tab = (CompositeTab) t;
@@ -972,7 +977,6 @@ public class LibraryManager {
                             }
                         }
                     }
-                    unsavedIn3DMap.put(old, c3ds);
                 } else {
 
                     // 2.5 Check which "saved" files are on the disk (only for the statistic) items in this set will not count for add
@@ -987,6 +991,7 @@ public class LibraryManager {
                             c3ds.add(c3d);
                         }
                     }
+                    if (!c3ds.isEmpty()) openIn3DMap.put(old, c3ds);
                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
                         for (CTabItem t : w.getTabFolder().getItems()) {
                             CompositeTab tab = (CompositeTab) t;
@@ -995,7 +1000,6 @@ public class LibraryManager {
                             }
                         }
                     }
-                    openIn3DMap.put(old, c3ds);
                 }
             }
         }
@@ -1118,7 +1122,7 @@ public class LibraryManager {
                 }
             }
         } else {
-            boolean canSearch = false;
+            boolean canSearch = true;
             for (File sub : baseFolder.listFiles()) {
                 // Check if the sub-folder exist
                 if (sub.isDirectory() && sub.getName().equalsIgnoreCase(prefix1)) {
