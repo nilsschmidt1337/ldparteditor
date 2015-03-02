@@ -98,6 +98,8 @@ public final class DatFile {
 
     private Composite3D lastSelectedComposite = null;
 
+    private HistoryMock history = new HistoryMock();
+
     public DatFile(String path) {
         this.projectFile = true;
         this.oldName = path;
@@ -1326,6 +1328,16 @@ public final class DatFile {
 
     public void setProjectFile(boolean projectFile) {
         this.projectFile = projectFile;
+    }
+
+    public HistoryMock getHistory() {
+        // FIXME MOCKUP!
+        return history;
+    }
+
+    public void setHistory(HistoryMock history) {
+        // FIXME MOCKUP!
+        this.history = history;
     }
 
 }
