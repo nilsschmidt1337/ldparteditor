@@ -16765,4 +16765,188 @@ public class VertexManager {
         selectedData.addAll(selectedCondlines);
         selectedData.addAll(selectedSubfiles);
     }
+
+    public void subdivideCatmullClark() {
+        // FIXME Auto-generated method stub
+        if (linkedDatFile.isReadOnly()) return;
+
+        // Backup selected surfaces
+        HashSet<GData> surfsToParse = new HashSet<GData>();
+
+        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
+        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
+
+        final Set<GData4> newQuads = new HashSet<GData4>();
+
+        {
+            for (GData3 g3 : selectedTriangles) {
+                if (!lineLinkedToVertices.containsKey(g3)) continue;
+                surfsToParse.add(g3);
+                trisToDelete2.add(g3);
+            }
+            for (GData4 g4 : selectedQuads) {
+                if (!lineLinkedToVertices.containsKey(g4)) continue;
+                surfsToParse.add(g4);
+                quadsToDelete2.add(g4);
+            }
+        }
+        if (surfsToParse.isEmpty()) return;
+
+        // Delete all condlines, since the are a PITA for subdivision
+
+        clearSelection();
+        selectedCondlines.addAll(condlines.keySet());
+        selectedData.addAll(selectedCondlines);
+        delete(false);
+
+        HashMap<Vertex, Vertex> newPoints = new HashMap<Vertex, Vertex>();
+
+        // Calculate new points
+        for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
+            Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
+            HashSet<Vector3d> midEdge = new HashSet<Vector3d>();
+            boolean keepIt = false;
+            for (VertexManifestation m : manis) {
+                GData gd = m.getGdata();
+                switch (gd.type()) {
+                case 0:
+                    continue;
+                case 2:
+                    keepIt = true;
+                    break;
+                case 3:
+                {
+                    int p = m.getPosition();
+                    Vertex[] verts = triangles.get(gd);
+                    Vector3d vt = new Vector3d(v);
+                    midEdge.add(Vector3d.add(vt, new Vector3d(verts[(p + 1) % 3])));
+                    midEdge.add(Vector3d.add(vt, new Vector3d(verts[(p + 2) % 3])));
+                }
+                break;
+                case 4:
+                {
+                    int p = m.getPosition();
+                    Vertex[] verts = quads.get(gd);
+                    Vector3d vt = new Vector3d(v);
+                    midEdge.add(Vector3d.add(vt, new Vector3d(verts[(p + 1) % 4])));
+                    midEdge.add(Vector3d.add(vt, new Vector3d(verts[(p + 3) % 4])));
+                }
+                break;
+                default:
+                    continue;
+                }
+                if (keepIt) break;
+            }
+            if (keepIt) {
+                newPoints.put(v, v);
+            } else {
+                BigDecimal c = new BigDecimal(midEdge.size() * 2);
+                Vector3d np = new Vector3d();
+                for (Vector3d vd : midEdge) {
+                    np = Vector3d.add(np, vd);
+                }
+                np.setX(np.X.divide(c, Threshold.mc));
+                np.setY(np.Y.divide(c, Threshold.mc));
+                np.setZ(np.Z.divide(c, Threshold.mc));
+                newPoints.put(v, new Vertex(np));
+            }
+        }
+
+        for (GData gd : surfsToParse) {
+            Vertex[] originalVerts;
+            int colourNumber;
+            float r;
+            float g;
+            float b;
+            float a;
+            switch (gd.type()) {
+            case 3:
+                originalVerts = triangles.get(gd);
+                GData3 g3 = (GData3) gd;
+                colourNumber = g3.colourNumber; r = g3.r; g = g3.g; b = g3.b; a = g3.a;
+                break;
+            case 4:
+                originalVerts = quads.get(gd);
+                GData4 g4 = (GData4) gd;
+                colourNumber = g4.colourNumber; r = g4.r; g = g4.g; b = g4.b; a = g4.a;
+                break;
+            default:
+                continue;
+            }
+
+            final int c = originalVerts.length;
+
+            BigDecimal c2 = new BigDecimal(c);
+            Vector3d center = new Vector3d();
+            for (Vertex vd : originalVerts) {
+                center = Vector3d.add(center, new Vector3d(vd));
+            }
+            center.setX(center.X.divide(c2, Threshold.mc));
+            center.setY(center.Y.divide(c2, Threshold.mc));
+            center.setZ(center.Z.divide(c2, Threshold.mc));
+
+            Vertex vc = new Vertex(center);
+
+            Vertex[] ve = new Vertex[c];
+            for(int i = 0; i < c; i++) {
+                ve[i] = new Vertex(Vector3d.add(new Vector3d(originalVerts[i]), new Vector3d(originalVerts[(i + 1) % c]).scaledByHalf()));
+            }
+
+            // Build quads
+            for(int i = 0; i < c; i++) {
+                // newQuads.add(new GData4(colourNumber, r, g, b, a, vc, ve[(i + c - 1) % c], newPoints.get(originalVerts[i]), ve[(i + 1) % c], View.DUMMY_REFERENCE, linkedDatFile));
+
+                newQuads.add(new GData4(colourNumber, r, g, b, a, vc, ve[(i + c - 1) % c], newPoints.get(originalVerts[i]), ve[(i + 1) % c], View.DUMMY_REFERENCE, linkedDatFile));
+
+            }
+
+        }
+
+        for (GData4 g4 : newQuads) {
+            linkedDatFile.addToTail(g4);
+        }
+
+        selectedTriangles.addAll(trisToDelete2);
+        selectedQuads.addAll(quadsToDelete2);
+        selectedData.addAll(trisToDelete2);
+        selectedData.addAll(quadsToDelete2);
+        delete(false);
+
+        selectedQuads.addAll(newQuads);
+        selectedData.addAll(newQuads);
+
+        validateState();
+
+    }
+
+    public void subdivideLoop() {
+        // FIXME Auto-generated method stub
+        if (linkedDatFile.isReadOnly()) return;
+
+        // Backup selected surfaces
+        HashSet<GData> surfsToParse = new HashSet<GData>();
+
+        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
+        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
+
+        {
+            for (GData3 g3 : selectedTriangles) {
+                if (!lineLinkedToVertices.containsKey(g3)) continue;
+                surfsToParse.add(g3);
+            }
+            for (GData4 g4 : selectedQuads) {
+                if (!lineLinkedToVertices.containsKey(g4)) continue;
+                surfsToParse.add(g4);
+            }
+        }
+        if (surfsToParse.isEmpty()) return;
+
+        // Delete all condlines, since the are a PITA for subdivision
+
+        clearSelection();
+        selectedCondlines.addAll(condlines.keySet());
+        selectedData.addAll(selectedCondlines);
+        delete(false);
+    }
+
 }
