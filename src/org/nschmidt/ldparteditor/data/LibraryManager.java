@@ -739,6 +739,8 @@ public class LibraryManager {
         HashSet<String> loaded = new HashSet<String>();
         HashMap<String, DatFile> existingMap = new HashMap<String, DatFile>();
 
+        HashMap<String, Boolean> readOnly = new HashMap<String, Boolean>();
+
         HashMap<String, HashSet<Composite3D>> openIn3DMap = new HashMap<String, HashSet<Composite3D>>();
         HashMap<String, CompositeTab> openInTextMap = new HashMap<String, CompositeTab>();
 
@@ -748,6 +750,8 @@ public class LibraryManager {
         HashMap<String, TreeItem> newParentMap = new HashMap<String, TreeItem>();
         HashMap<String, DatType> newTypeMap = new HashMap<String, DatType>();
         HashMap<String, DatFileName> newDfnMap = new HashMap<String, DatFileName>();
+
+        HashMap<String, HistoryMock> historyMap = new HashMap<String, HistoryMock>();
 
         if (prefix1.isEmpty()) {
 
@@ -760,10 +764,10 @@ public class LibraryManager {
             final TreeItem treeItem_ProjectPrimitives = treeItem.getItems().get(2);
             final TreeItem treeItem_ProjectPrimitives48 = treeItem.getItems().get(3);
 
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
 
             readAllUnsavedFiles(parentMap, typeMap, dfnMap, locked, existingMap);
 
@@ -776,17 +780,17 @@ public class LibraryManager {
 
             // 3. Scan for new files
 
-            readActualDataFromFolder(result, basePath, null, "", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, null, false, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, null, "", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, null, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
 
-            readActualDataFromFolder(result, basePath, DatType.PART, "PARTS", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectParts, false, false); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromFolder(result, basePath, DatType.SUBPART, "PARTS", "S", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectSubparts, false, false); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE, "P", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives, true, false); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE48, "P", "48", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives48, true, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PART, "PARTS", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectParts, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.SUBPART, "PARTS", "S", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectSubparts, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE, "P", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives, true, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE48, "P", "48", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives48, true, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
 
         } else {
 
             // 1. Read and store all unsaved project files, since we want to keep them in the editor
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, !isReadOnlyFolder);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, !isReadOnlyFolder);
 
             if (!isReadOnlyFolder) readAllUnsavedFiles(parentMap, typeMap, dfnMap, locked, existingMap);
 
@@ -794,7 +798,7 @@ public class LibraryManager {
             treeItem.getItems().clear();
 
             // 3. Scan for new files
-            readActualDataFromFolder(result, basePath, type, prefix1, prefix2, locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem, isPrimitiveFolder, isReadOnlyFolder);
+            readActualDataFromFolder(result, basePath, type, prefix1, prefix2, locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem, isPrimitiveFolder, readOnly, isReadOnlyFolder);
 
         }
 
@@ -838,7 +842,40 @@ public class LibraryManager {
 
                     // FIXME Needs implementation!
 
+                    // Create new DatFile
 
+                    boolean readOnly2 = false;
+
+                    if (readOnly.containsKey(path)) {
+                        readOnly2 = readOnly.get(path);
+                    }
+
+                    if (typeMap.containsKey(path)) {
+                        type = typeMap.get(path);
+                    } else if (newTypeMap.containsKey(path)) {
+                        type = newTypeMap.get(path);
+                    }
+
+                    DatFile newDf = new DatFile(dfn.getName(), dfn.getDescription(), readOnly2, type);
+
+                    if (historyMap.containsKey(path)) {
+                        // Copies the undo/redo history if there is one
+                        newDf.setHistory(historyMap.get(path));
+                    }
+
+                    if (openIn3DMap.containsKey(path) || openInTextMap.containsKey(path)) {
+                        newDf.parseForData();
+                        if (openIn3DMap.containsKey(path)) {
+                            for (Composite3D c3d : openIn3DMap.get(path)) {
+                                c3d.setLockableDatFileReference(newDf);
+                            }
+                        }
+                        if (openInTextMap.containsKey(path)) {
+                            openInTextMap.get(path).getState().setFileNameObj(newDf);
+                        }
+                    }
+
+                    fileList.add(newDf);
                 }
             }
         }
@@ -897,13 +934,17 @@ public class LibraryManager {
             HashMap<String, CompositeTab> openInTextMap,
             HashMap<String, HashSet<Composite3D>> unsavedIn3DMap,
             HashMap<String, CompositeTab> unsavedInTextMap,
+            HashMap<String, HistoryMock> historyMap,
+            HashMap<String, Boolean> readOnly,
             boolean checkForUnsaved
             ) {
 
         for (TreeItem ti : treeItem.getItems()) {
             DatFile df = (DatFile) ti.getData();
+            final String old = df.getOldName();
+            historyMap.put(old, df.getHistory());
+            readOnly.put(old, !checkForUnsaved);
             if (checkForUnsaved && Project.getUnsavedFiles().contains(df)) {
-                final String old = df.getOldName();
                 locked.add(df.getNewName());
                 locked.add(df.getOldName());
                 parentMap.put(old, treeItem);
@@ -911,7 +952,6 @@ public class LibraryManager {
                 existingMap.put(old, df);
                 dfnMap.put(old, new DatFileName(new File(old, df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
             } else {
-                final String old = df.getOldName();
                 if (!new File(old).exists()) {
                     // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
                     result[1] = result[1] + 1;
@@ -974,6 +1014,7 @@ public class LibraryManager {
             HashMap<String, DatFileName> newDfnMap,
             final TreeItem treeItem,
             boolean isPrimitiveFolder,
+            HashMap<String, Boolean> readOnly,
             boolean isReadOnlyFolder) {
 
         final File baseFolder = new File(basePath);
@@ -1073,6 +1114,7 @@ public class LibraryManager {
                     newDfnMap.put(path, new DatFileName(path, f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48));
                     newParentMap.put(path, treeItem2);
                     newTypeMap.put(path, type);
+                    readOnly.put(path, isReadOnlyFolder);
                 }
             }
         } else {
@@ -1136,6 +1178,7 @@ public class LibraryManager {
                                 newDfnMap.put(path, new DatFileName(path,f.getName(), titleSb.toString(), isPrimitiveFolder));
                                 newParentMap.put(path, treeItem);
                                 newTypeMap.put(path, type);
+                                readOnly.put(path, isReadOnlyFolder);
                             }
                         }
                     }
