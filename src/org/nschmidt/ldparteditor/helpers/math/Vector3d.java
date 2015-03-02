@@ -68,9 +68,12 @@ public class Vector3d {
     }
 
     public Vector3d(Vertex vertex) {
-        this.X = new BigDecimal(vertex.x / 1000f, mc);
-        this.Y = new BigDecimal(vertex.y / 1000f, mc);
-        this.Z = new BigDecimal(vertex.z / 1000f, mc);
+        this.X = vertex.X;
+        this.Y = vertex.Y;
+        this.Z = vertex.Z;
+        //        this.X = new BigDecimal(vertex.x / 1000f, mc);
+        //        this.Y = new BigDecimal(vertex.y / 1000f, mc);
+        //        this.Z = new BigDecimal(vertex.z / 1000f, mc);
     }
 
     public Vector3d(Vector3r vertex) {
@@ -330,6 +333,16 @@ public class Vector3d {
         BigDecimal Y = v1.Z.subtract(v2.Z).multiply(v3.X.subtract(v2.X)).subtract(v1.X.subtract(v2.X).multiply(v3.Z.subtract(v2.Z)));
         BigDecimal Z = v1.X.subtract(v2.X).multiply(v3.Y.subtract(v2.Y)).subtract(v1.Y.subtract(v2.Y).multiply(v3.X.subtract(v2.X)));
         return new Vector3d(X, Y, Z);
+    }
+
+
+    /**
+     *
+     * @return
+     */
+    private static BigDecimal HALF = new BigDecimal(".5"); //$NON-NLS-1$
+    public Vector3d scaledByHalf() {
+        return new Vector3d(X.multiply(HALF), Y.multiply(HALF), Z.multiply(HALF));
     }
 
 }
