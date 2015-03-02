@@ -495,9 +495,9 @@ public class LibraryManager {
      *
      * @param basePath
      *            this path was already validated before
-     * @param suffix1
+     * @param prefix1
      *            the case insensitive name of the first subfolder
-     * @param suffix2
+     * @param prefix2
      *            the case insensitive name of the second subfolder
      * @param treeItem
      *            the target {@code TreeItem} which lists all DAT files from the
@@ -505,11 +505,11 @@ public class LibraryManager {
      * @param isPrimitiveFolder
      *            {@code true} if the folder contains primitives
      */
-    private static void readLibraryFolder(String basePath, String suffix1, String suffix2, TreeItem treeItem, boolean isPrimitiveFolder, boolean isReadOnlyFolder, DatType type) {
+    private static void readLibraryFolder(String basePath, String prefix1, String prefix2, TreeItem treeItem, boolean isPrimitiveFolder, boolean isReadOnlyFolder, DatType type) {
         String folderPath = basePath;
         boolean canSearch = true;
         File baseFolder = new File(basePath);
-        if (suffix1.isEmpty()) {
+        if (prefix1.isEmpty()) {
             HashMap<DatFileName, TreeItem> parentMap = new HashMap<DatFileName, TreeItem>();
             HashMap<DatFileName, DatType> typeMap = new HashMap<DatFileName, DatType>();
             ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
@@ -618,15 +618,15 @@ public class LibraryManager {
         } else {
             for (File sub : baseFolder.listFiles()) {
                 // Check if the sub-folder exist
-                if (sub.isDirectory() && sub.getName().equalsIgnoreCase(suffix1)) {
+                if (sub.isDirectory() && sub.getName().equalsIgnoreCase(prefix1)) {
                     folderPath = folderPath + File.separator + sub.getName();
-                    if (!suffix2.equals("")) { //$NON-NLS-1$
+                    if (!prefix2.equals("")) { //$NON-NLS-1$
                         // We can not search now. It is not guaranteed that the
                         // sub-sub-folder exist (e.g. D:\LDRAW\PARTS\S)
                         canSearch = false;
                         File subFolder = new File(basePath + File.separator + sub.getName());
                         for (File subsub : subFolder.listFiles()) {
-                            if (subsub.isDirectory() && subsub.getName().equalsIgnoreCase(suffix2)) {
+                            if (subsub.isDirectory() && subsub.getName().equalsIgnoreCase(prefix2)) {
                                 folderPath = folderPath + File.separator + subsub.getName();
                                 canSearch = true;
                                 break;
@@ -696,9 +696,9 @@ public class LibraryManager {
      *
      * @param basePath
      *            this path was already validated before
-     * @param suffix1
+     * @param prefix1
      *            the case insensitive name of the first subfolder
-     * @param suffix2
+     * @param prefix2
      *            the case insensitive name of the second subfolder
      * @param treeItem
      *            the target {@code TreeItem} which lists all DAT files from the
@@ -707,7 +707,7 @@ public class LibraryManager {
      *            {@code true} if the folder contains primitives
      * @return An array which contains how many files were added [0], deleted [1], and can't be replaced [2]
      */
-    private static int[] syncLibraryFolder(String basePath, String suffix1, String suffix2, TreeItem treeItem, boolean isPrimitiveFolder, boolean isReadOnlyFolder, DatType type) {
+    private static int[] syncLibraryFolder(String basePath, String prefix1, String prefix2, TreeItem treeItem, boolean isPrimitiveFolder, boolean isReadOnlyFolder, DatType type) {
 
         int[] result = new int[3];
 
@@ -722,11 +722,14 @@ public class LibraryManager {
         HashMap<String, HashSet<Composite3D>> openIn3DMap = new HashMap<String, HashSet<Composite3D>>();
         HashMap<String, CompositeTab> openInTextMap = new HashMap<String, CompositeTab>();
 
+        HashMap<String, HashSet<Composite3D>> unsavedIn3DMap = new HashMap<String, HashSet<Composite3D>>();
+        HashMap<String, CompositeTab> unsavedInTextMap = new HashMap<String, CompositeTab>();
+
         HashMap<String, TreeItem> newParentMap = new HashMap<String, TreeItem>();
         HashMap<String, DatType> newTypeMap = new HashMap<String, DatType>();
         HashMap<String, DatFileName> newDfnMap = new HashMap<String, DatFileName>();
 
-        if (suffix1.isEmpty()) {
+        if (prefix1.isEmpty()) {
 
             // Sync project root.
 
@@ -737,18 +740,21 @@ public class LibraryManager {
             final TreeItem treeItem_ProjectPrimitives = treeItem.getItems().get(2);
             final TreeItem treeItem_ProjectPrimitives48 = treeItem.getItems().get(3);
 
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts, openIn3DMap, openInTextMap, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts, openIn3DMap, openInTextMap, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives, openIn3DMap, openInTextMap, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48, openIn3DMap, openInTextMap, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, true);
 
-            // 3. Clear all project trees
+            readAllUnsavedFiles(parentMap, typeMap, dfnMap, locked, existingMap);
+
+
+            // 2. Clear all project trees
             treeItem_ProjectParts.getItems().clear();
             treeItem_ProjectSubparts.getItems().clear();
             treeItem_ProjectPrimitives.getItems().clear();
             treeItem_ProjectPrimitives48.getItems().clear();
 
-            // 4. Scan for new files
+            // 3. Scan for new files
 
             readActualDataFromFolder(result, basePath, null, "", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -757,16 +763,43 @@ public class LibraryManager {
             readActualDataFromFolder(result, basePath, DatType.PRIMITIVE, "P", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
             readActualDataFromFolder(result, basePath, DatType.PRIMITIVE48, "P", "48", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
 
-
-            // 5. Rebuilt the trees
+            // 4. Rebuilt the trees
 
         } else {
             // FIXME Needs Implementation!
+
+            // 1. Read and store all unsaved project files, since we want to keep them in the editor
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, !isReadOnlyFolder);
+
+            if (!isReadOnlyFolder) readAllUnsavedFiles(parentMap, typeMap, dfnMap, locked, existingMap);
+
+            // 2. Clear the tree
+            treeItem.getItems().clear();
+
+            // 3. Scan for new files
+            readActualDataFromFolder(result, basePath, type, prefix1, prefix2, locked, loaded, newParentMap, newTypeMap, newDfnMap);
+
+            // 4. Rebuild the trees
+
         }
 
         return result;
     }
 
+    private static void readAllUnsavedFiles(HashMap<String, TreeItem> parentMap, HashMap<String, DatType> typeMap, HashMap<String, DatFileName> dfnMap, HashSet<String> locked,
+            HashMap<String, DatFile> existingMap) {
+        for (DatFile df : Project.getUnsavedFiles()) {
+            final String old = df.getOldName();
+            if (!locked.contains(old)) {
+                locked.add(df.getNewName());
+                locked.add(df.getOldName());
+                parentMap.put(old, Editor3DWindow.getWindow().getUnsaved());
+                typeMap.put(old, df.getType());
+                existingMap.put(old, df);
+                dfnMap.put(old, new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
+            }
+        }
+    }
 
     private static void readVirtualDataFromFolder(
             int[] result,
@@ -779,6 +812,8 @@ public class LibraryManager {
             final TreeItem treeItem,
             HashMap<String, HashSet<Composite3D>> openIn3DMap,
             HashMap<String, CompositeTab> openInTextMap,
+            HashMap<String, HashSet<Composite3D>> unsavedIn3DMap,
+            HashMap<String, CompositeTab> unsavedInTextMap,
             boolean checkForUnsaved
             ) {
 
@@ -793,17 +828,35 @@ public class LibraryManager {
                 existingMap.put(old, df);
                 dfnMap.put(old, new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
             } else {
-                if (!new File(df.getOldName()).exists()) {
+                final String old = df.getOldName();
+                if (!new File(old).exists()) {
                     // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
                     result[1] = result[1] + 1;
+
+                    // 3. Displayed, but deleted files will become unsaved files
+                    HashSet<Composite3D> c3ds = new HashSet<Composite3D>();
+                    for (OpenGLRenderer r : Editor3DWindow.getRenders()) {
+                        Composite3D c3d = r.getC3D();
+                        if (df.equals(c3d.getLockableDatFileReference())) {
+                            c3ds.add(c3d);
+                        }
+                    }
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        for (CTabItem t : w.getTabFolder().getItems()) {
+                            CompositeTab tab = (CompositeTab) t;
+                            if (df.equals(tab.getState().getFileNameObj())) {
+                                unsavedInTextMap.put(old, tab);
+                            }
+                        }
+                    }
+                    unsavedIn3DMap.put(old, c3ds);
                 } else {
 
                     // 2.5 Check which "saved" files are on the disk (only for the statistic) items in this set will not count for add
-                    final String old = df.getOldName();
                     loaded.add(df.getNewName());
                     loaded.add(old);
 
-                    // 3. Displayed, but unmodified files (Text+3D) need a remapping
+                    // 3.5 Displayed, but unmodified files (Text+3D) need a remapping
                     HashSet<Composite3D> c3ds = new HashSet<Composite3D>();
                     for (OpenGLRenderer r : Editor3DWindow.getRenders()) {
                         Composite3D c3d = r.getC3D();
