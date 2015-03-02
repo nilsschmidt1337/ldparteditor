@@ -326,6 +326,7 @@ public class LibraryManager {
     private static class DatFileName implements Comparable<DatFileName> {
         /** The DAT file name to compare */
         private final String name;
+        private final String fullname;
         private final String description;
         private final boolean comparePrimitives;
 
@@ -337,12 +338,24 @@ public class LibraryManager {
          */
         public DatFileName(String name, String description, boolean comparePrimitives) {
             this.name = name;
+            this.fullname = ""; //$NON-NLS-1$
+            this.description = description;
+            this.comparePrimitives = comparePrimitives;
+        }
+
+        public DatFileName(String fullname, String name, String description, boolean comparePrimitives) {
+            this.name = name;
+            this.fullname = fullname;
             this.description = description;
             this.comparePrimitives = comparePrimitives;
         }
 
         public String getName() {
             return this.name;
+        }
+
+        public String getFullName() {
+            return this.fullname;
         }
 
         public String getDescription() {
@@ -468,7 +481,11 @@ public class LibraryManager {
 
         @Override
         public int hashCode() {
-            return name == null ? 0 : name.hashCode();
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + (fullname == null ? 0 : fullname.hashCode());
+            result = prime * result + (name == null ? 0 : name.hashCode());
+            return result;
         }
 
         @Override
@@ -480,6 +497,11 @@ public class LibraryManager {
             if (getClass() != obj.getClass())
                 return false;
             DatFileName other = (DatFileName) obj;
+            if (fullname == null) {
+                if (other.fullname != null)
+                    return false;
+            } else if (!fullname.equals(other.fullname))
+                return false;
             if (name == null) {
                 if (other.name != null)
                     return false;
@@ -710,7 +732,6 @@ public class LibraryManager {
 
         int[] result = new int[3];
 
-        // FIXME Needs impl.!
         HashMap<String, TreeItem> parentMap = new HashMap<String, TreeItem>();
         HashMap<String, DatType> typeMap = new HashMap<String, DatType>();
         HashMap<String, DatFileName> dfnMap = new HashMap<String, DatFileName>();
@@ -762,12 +783,7 @@ public class LibraryManager {
             readActualDataFromFolder(result, basePath, DatType.PRIMITIVE, "P", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives, true, false); //$NON-NLS-1$ //$NON-NLS-2$
             readActualDataFromFolder(result, basePath, DatType.PRIMITIVE48, "P", "48", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives48, true, false); //$NON-NLS-1$ //$NON-NLS-2$
 
-            // 4. Rebuilt the trees
-
-
-
         } else {
-            // FIXME Needs Implementation!
 
             // 1. Read and store all unsaved project files, since we want to keep them in the editor
             readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, !isReadOnlyFolder);
@@ -780,8 +796,74 @@ public class LibraryManager {
             // 3. Scan for new files
             readActualDataFromFolder(result, basePath, type, prefix1, prefix2, locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem, isPrimitiveFolder, isReadOnlyFolder);
 
-            // 4. Rebuild the trees
+        }
 
+        // 4. Rebuilt the tree arrays
+
+        ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
+        HashMap<TreeItem, ArrayList<DatFile>> lists = new HashMap<TreeItem, ArrayList<DatFile>>();
+        for (String key : dfnMap.keySet()) {
+            datFiles.add(dfnMap.get(key));
+        }
+        for (String key : newDfnMap.keySet()) {
+            datFiles.add(newDfnMap.get(key));
+        }
+        Collections.sort(datFiles);
+
+        for (DatFileName dfn : datFiles) {
+
+            String path = dfn.getFullName();
+            TreeItem ti;
+
+            if (parentMap.containsKey(path)) {
+                ti = parentMap.get(path);
+            } else if (newParentMap.containsKey(path)) {
+                ti = newParentMap.get(path);
+            } else {
+                // Very defensive, but anyway..
+                continue;
+            }
+
+            if (!Editor3DWindow.getWindow().getUnsaved().equals(ti)) {
+                ArrayList<DatFile> fileList;
+                if (lists.containsKey(ti)) {
+                    fileList = lists.get(ti);
+                } else {
+                    fileList = new ArrayList<DatFile>();
+                    lists.put(ti, fileList);
+                }
+                if (existingMap.containsKey(path)) {
+                    fileList.add(existingMap.get(path));
+                } else {
+
+                    // FIXME Needs implementation!
+
+
+                }
+            }
+        }
+
+        // Add unsaved files wich are not anymore on the file system, but were opened in the text editor or in the 3D view
+
+        {
+            HashSet<DatFile> newUnsavedFiles = new HashSet<DatFile>();
+            for (String key : unsavedInTextMap.keySet()) {
+                DatFile df = unsavedInTextMap.get(key).getState().getFileNameObj();
+                if (!newUnsavedFiles.contains(df)) {
+                    newUnsavedFiles.add(df);
+                    Project.addUnsavedFile(df);
+                }
+            }
+            for (String key : unsavedIn3DMap.keySet()) {
+                for (Composite3D c3d : unsavedIn3DMap.get(key)) {
+                    DatFile df = c3d.getLockableDatFileReference();
+                    if (!newUnsavedFiles.contains(df)) {
+                        newUnsavedFiles.add(df);
+                        Project.addUnsavedFile(df);
+                    }
+                    break;
+                }
+            }
         }
 
         return result;
@@ -793,11 +875,11 @@ public class LibraryManager {
             final String old = df.getOldName();
             if (!locked.contains(old)) {
                 locked.add(df.getNewName());
-                locked.add(df.getOldName());
+                locked.add(old);
                 parentMap.put(old, Editor3DWindow.getWindow().getUnsaved());
                 typeMap.put(old, df.getType());
                 existingMap.put(old, df);
-                dfnMap.put(old, new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
+                dfnMap.put(old, new DatFileName(new File(old, df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
             }
         }
     }
@@ -827,7 +909,7 @@ public class LibraryManager {
                 parentMap.put(old, treeItem);
                 typeMap.put(old, df.getType());
                 existingMap.put(old, df);
-                dfnMap.put(old, new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
+                dfnMap.put(old, new DatFileName(new File(old, df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
             } else {
                 final String old = df.getOldName();
                 if (!new File(old).exists()) {
@@ -988,7 +1070,7 @@ public class LibraryManager {
                         }
                     }
 
-                    newDfnMap.put(path, new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48));
+                    newDfnMap.put(path, new DatFileName(path, f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48));
                     newParentMap.put(path, treeItem2);
                     newTypeMap.put(path, type);
                 }
@@ -1051,7 +1133,7 @@ public class LibraryManager {
                                     }
                                 }
 
-                                newDfnMap.put(path, new DatFileName(f.getName(), titleSb.toString(), isPrimitiveFolder));
+                                newDfnMap.put(path, new DatFileName(path,f.getName(), titleSb.toString(), isPrimitiveFolder));
                                 newParentMap.put(path, treeItem);
                                 newTypeMap.put(path, type);
                             }

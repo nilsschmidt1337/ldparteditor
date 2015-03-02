@@ -297,9 +297,37 @@ public class Editor3DWindow extends Editor3DDesign {
                 formatter.applyPattern(I18n.DIALOG_Sync);
                 messageBox.setMessage(formatter.format(messageArguments));
 
+                messageBox.open();
+
                 treeItem_OfficialParts[0].setData(null);
                 txt_Search[0].setText(" "); //$NON-NLS-1$
                 txt_Search[0].setText(""); //$NON-NLS-1$
+
+                Set<DatFile> dfs = new HashSet<DatFile>();
+                for (OpenGLRenderer renderer : renders) {
+                    dfs.add(renderer.getC3D().getLockableDatFileReference());
+                }
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    for (CTabItem t : w.getTabFolder().getItems()) {
+                        DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
+                        if (txtDat != null) {
+                            dfs.add(txtDat);
+                        }
+                    }
+                }
+                for (DatFile df : dfs) {
+                    SubfileCompiler.compile(df);
+                }
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    for (CTabItem t : w.getTabFolder().getItems()) {
+                        DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
+                        if (txtDat != null) {
+                            ((CompositeTab) t).parseForError();
+                            ((CompositeTab) t).getTextComposite().redraw();
+                        }
+                    }
+                }
+
                 updateTree_unsavedEntries();
             }
         });
@@ -4338,7 +4366,7 @@ public class Editor3DWindow extends Editor3DDesign {
             datFile.disposeData();
         }
         if (!deadFiles.isEmpty()) {
-            System.gc();
+            // TODO Debug only System.gc();
         }
     }
 
