@@ -714,10 +714,18 @@ public class LibraryManager {
 
             // Sync project root.
 
-            HashMap<DatFileName, TreeItem> parentMap = new HashMap<DatFileName, TreeItem>();
-            HashMap<DatFileName, DatType> typeMap = new HashMap<DatFileName, DatType>();
-            HashSet<DatFileName> locked = new HashSet<DatFileName>();
-            HashMap<DatFileName, DatFile> existingMap = new HashMap<DatFileName, DatFile>();
+            HashMap<String, TreeItem> parentMap = new HashMap<String, TreeItem>();
+            HashMap<String, DatType> typeMap = new HashMap<String, DatType>();
+            HashMap<String, DatFileName> dfnMap = new HashMap<String, DatFileName>();
+            HashSet<String> locked = new HashSet<String>();
+            HashSet<String> loaded = new HashSet<String>();
+            HashMap<String, DatFile> existingMap = new HashMap<String, DatFile>();
+
+
+            HashMap<String, TreeItem> newParentMap = new HashMap<String, TreeItem>();
+            HashMap<String, DatType> newTypeMap = new HashMap<String, DatType>();
+            HashMap<String, DatFileName> newDfnMap = new HashMap<String, DatFileName>();
+
 
             // 1. Read and store all unsaved project files, since we want to keep them in the project
 
@@ -726,74 +734,18 @@ public class LibraryManager {
             final TreeItem treeItem_ProjectPrimitives = treeItem.getItems().get(2);
             final TreeItem treeItem_ProjectPrimitives48 = treeItem.getItems().get(3);
 
-            for (TreeItem ti : treeItem_ProjectParts.getItems()) {
-                DatFile df = (DatFile) ti.getData();
-                if (Project.getUnsavedFiles().contains(df)) {
-                    DatFileName name = new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
-                    DatFileName name2 = new DatFileName(new File(df.getOldName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
-                    locked.add(name);
-                    locked.add(name2);
-                    parentMap.put(name, treeItem_ProjectParts);
-                    typeMap.put(name, df.getType());
-                    existingMap.put(name, df);
-                } else {
-                    if (!new File(df.getOldName()).exists()) {
-                        // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
-                        result[1] = result[1] + 1;
-                    }
-                }
-            }
-            for (TreeItem ti : treeItem_ProjectSubparts.getItems()) {
-                DatFile df = (DatFile) ti.getData();
-                if (Project.getUnsavedFiles().contains(df)) {
-                    DatFileName name = new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
-                    DatFileName name2 = new DatFileName(new File(df.getOldName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
-                    locked.add(name);
-                    locked.add(name2);
-                    parentMap.put(name, treeItem_ProjectSubparts);
-                    typeMap.put(name, df.getType());
-                    existingMap.put(name, df);
-                } else {
-                    if (!new File(df.getOldName()).exists()) {
-                        // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
-                        result[1] = result[1] + 1;
-                    }
-                }
-            }
-            for (TreeItem ti : treeItem_ProjectPrimitives.getItems()) {
-                DatFile df = (DatFile) ti.getData();
-                if (Project.getUnsavedFiles().contains(df)) {
-                    DatFileName name = new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
-                    DatFileName name2 = new DatFileName(new File(df.getOldName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
-                    locked.add(name);
-                    locked.add(name2);
-                    parentMap.put(name, treeItem_ProjectPrimitives);
-                    typeMap.put(name, df.getType());
-                    existingMap.put(name, df);
-                } else {
-                    if (!new File(df.getOldName()).exists()) {
-                        // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
-                        result[1] = result[1] + 1;
-                    }
-                }
-            }
-            for (TreeItem ti : treeItem_ProjectPrimitives48.getItems()) {
-                DatFile df = (DatFile) ti.getData();
-                if (Project.getUnsavedFiles().contains(df)) {
-                    DatFileName name = new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
-                    DatFileName name2 = new DatFileName(new File(df.getOldName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
-                    locked.add(name);
-                    locked.add(name2);
-                    parentMap.put(name, treeItem_ProjectPrimitives48);
-                    typeMap.put(name, df.getType());
-                    existingMap.put(name, df);
-                } else {
-                    if (!new File(df.getOldName()).exists()) {
-                        // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
-                        result[1] = result[1] + 1;
-                    }
-                }
-            }
+            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts);
+            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts);
+            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives);
+            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48);
+
+            readActualDataFromProjectLeaf(null, "", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
+
+            readActualDataFromProjectLeaf(DatType.PART, "PARTS", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromProjectLeaf(DatType.SUBPART, "PARTS", "S", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromProjectLeaf(DatType.PRIMITIVE, "P", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromProjectLeaf(DatType.PRIMITIVE48, "P", "48", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
+
 
             // 3. Clear all project trees
             treeItem_ProjectParts.getItems().clear();
@@ -802,6 +754,11 @@ public class LibraryManager {
             treeItem_ProjectPrimitives48.getItems().clear();
 
             // 4. Scan for new files
+
+            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts);
+            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts);
+            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives);
+            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48);
 
 
             // 5. Rebuilt the trees
@@ -891,7 +848,6 @@ public class LibraryManager {
                     }
                     DatFileName name = new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48);
                     datFiles.add(name);
-                    parentMap.put(name, treeItem);
                 }
             }
             // Sort the file list
@@ -911,78 +867,44 @@ public class LibraryManager {
                 }
             }
         } else {
-            for (File sub : baseFolder.listFiles()) {
-                // Check if the sub-folder exist
-                if (sub.isDirectory() && sub.getName().equalsIgnoreCase(suffix1)) {
-                    folderPath = folderPath + File.separator + sub.getName();
-                    if (!suffix2.equals("")) { //$NON-NLS-1$
-                        // We can not search now. It is not guaranteed that the
-                        // sub-sub-folder exist (e.g. D:\LDRAW\PARTS\S)
-                        canSearch = false;
-                        File subFolder = new File(basePath + File.separator + sub.getName());
-                        for (File subsub : subFolder.listFiles()) {
-                            if (subsub.isDirectory() && subsub.getName().equalsIgnoreCase(suffix2)) {
-                                folderPath = folderPath + File.separator + subsub.getName();
-                                canSearch = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (canSearch) {
-                        // Do the search for DAT files
-                        ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
-                        File libFolder = new File(folderPath);
-                        UTF8BufferedReader reader = null;
-                        StringBuilder titleSb = new StringBuilder();
-                        for (File f : libFolder.listFiles()) {
-                            if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
-                                titleSb.setLength(0);
-                                try {
-                                    reader = new UTF8BufferedReader(f.getAbsolutePath());
-                                    String title = reader.readLine();
-                                    if (title != null) {
-                                        title = title.trim();
-                                        if (title.startsWith("0 ~Moved to")) continue; //$NON-NLS-1$
-                                        if (title.length() > 0) {
-                                            titleSb.append(" -"); //$NON-NLS-1$
-                                            titleSb.append(title.substring(1));
-                                        }
-                                    }
-                                } catch (LDParsingException e) {
-                                } catch (FileNotFoundException e) {
-                                } catch (UnsupportedEncodingException e) {
-                                } finally {
-                                    try {
-                                        if (reader != null)
-                                            reader.close();
-                                    } catch (LDParsingException e1) {
-                                    }
-                                }
-                                datFiles.add(new DatFileName(f.getName(), titleSb.toString(), isPrimitiveFolder));
-                            }
-                        }
-                        // Sort the file list
-                        Collections.sort(datFiles);
-                        // Create the file entries
-                        for (DatFileName dat : datFiles) {
-                            TreeItem finding = new TreeItem(treeItem, SWT.NONE);
-                            // Save the path
-                            DatFile path = new DatFile(folderPath + File.separator + dat.getName(), dat.getDescription(), isReadOnlyFolder, type);
-                            finding.setData(path);
-                            // Set the filename
-                            if (Project.getUnsavedFiles().contains(path)) {
-                                // Insert asterisk if the file was modified
-                                finding.setText("* " + dat.getName() + dat.getDescription()); //$NON-NLS-1$
-                            } else {
-                                finding.setText(dat.getName() + dat.getDescription());
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
+
+            // FIXME Needs Implementation!
+
         }
 
         return result;
+    }
+
+
+    private static void readVirtualDataFromProjectLeaf(int[] result, HashMap<String, TreeItem> parentMap, HashMap<String, DatType> typeMap, HashSet<String> locked, HashSet<String> loaded,
+            HashMap<String, DatFile> existingMap, HashMap<String, DatFileName> dfnMap, final TreeItem treeItem_ProjectParts) {
+        for (TreeItem ti : treeItem_ProjectParts.getItems()) {
+            DatFile df = (DatFile) ti.getData();
+            if (Project.getUnsavedFiles().contains(df)) {
+                final String old = df.getOldName();
+                locked.add(df.getNewName());
+                locked.add(df.getOldName());
+                parentMap.put(old, treeItem_ProjectParts);
+                typeMap.put(old, df.getType());
+                existingMap.put(old, df);
+                dfnMap.put(old, new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
+            } else {
+                if (!new File(df.getOldName()).exists()) {
+                    // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
+                    result[1] = result[1] + 1;
+                } else {
+                    // FIXME 3. Displayed, but unmodified files (Text+3D) need a remapping
+                    // 2.5 Check which "saved" files are on the disk (only for the statistic) items in this set will not count for add
+                    loaded.add(df.getNewName());
+                    loaded.add(df.getOldName());
+                }
+            }
+        }
+    }
+
+    private static void readActualDataFromProjectLeaf(DatType primitive48, String string, String string2, HashSet<String> locked, HashSet<String> loaded, HashMap<String, TreeItem> newParentMap,
+            HashMap<String, DatType> newTypeMap, HashMap<String, DatFileName> newDfnMap) {
+        // FIXME Auto-generated method stub
+
     }
 }
