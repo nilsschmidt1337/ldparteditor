@@ -676,7 +676,7 @@ public class GTexture {
                 final byte[] bytes = new byte[] { 0, 0, 0, -1 };
                 buf.put(bytes);
                 buf.flip();
-                System.gc();
+                // TODO Debug only System.gc();
                 try {
                     in.close();
                 } catch (Exception ex) {
@@ -688,7 +688,7 @@ public class GTexture {
                 final byte[] bytes = new byte[] { 0, 0, 0, -1 };
                 buf.put(bytes);
                 buf.flip();
-                System.gc();
+                // TODO Debug only System.gc();
                 try {
                     in.close();
                 } catch (Exception ex) {
