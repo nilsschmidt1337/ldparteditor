@@ -288,18 +288,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     conflicts += is[2];
                 }
 
-                MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                messageBox.setText(I18n.DIALOG_SyncTitle);
-
-                Object[] messageArguments = {additions, deletions, conflicts};
-                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(View.LOCALE);
-                formatter.applyPattern(I18n.DIALOG_Sync);
-                messageBox.setMessage(formatter.format(messageArguments));
-
-                messageBox.open();
-
-                treeItem_OfficialParts[0].setData(null);
+                // treeItem_OfficialParts[0].setData(null);
                 txt_Search[0].setText(" "); //$NON-NLS-1$
                 txt_Search[0].setText(""); //$NON-NLS-1$
 
@@ -329,6 +318,17 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
 
                 updateTree_unsavedEntries();
+
+                MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                messageBox.setText(I18n.DIALOG_SyncTitle);
+
+                Object[] messageArguments = {additions, deletions, conflicts};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(View.LOCALE);
+                formatter.applyPattern(I18n.DIALOG_Sync);
+                messageBox.setMessage(formatter.format(messageArguments));
+
+                messageBox.open();
             }
         });
         btn_New[0].addSelectionListener(new SelectionAdapter() {
