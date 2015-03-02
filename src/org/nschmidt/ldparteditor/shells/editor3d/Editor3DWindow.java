@@ -288,7 +288,6 @@ public class Editor3DWindow extends Editor3DDesign {
                     conflicts += is[2];
                 }
 
-                // treeItem_OfficialParts[0].setData(null);
                 txt_Search[0].setText(" "); //$NON-NLS-1$
                 txt_Search[0].setText(""); //$NON-NLS-1$
 
@@ -313,6 +312,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (txtDat != null) {
                             ((CompositeTab) t).parseForError();
                             ((CompositeTab) t).getTextComposite().redraw();
+
+                            ((CompositeTab) t).getState().getTab().setText(((CompositeTab) t).getState().getFilenameWithStar());
                         }
                     }
                 }

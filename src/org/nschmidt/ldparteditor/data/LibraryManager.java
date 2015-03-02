@@ -840,8 +840,6 @@ public class LibraryManager {
                     fileList.add(existingMap.get(path));
                 } else {
 
-                    // FIXME Needs implementation!
-
                     // Create new DatFile
 
                     boolean readOnly2 = false;
@@ -893,6 +891,8 @@ public class LibraryManager {
                 if (!newUnsavedFiles.contains(df)) {
                     newUnsavedFiles.add(df);
                     Project.addUnsavedFile(df);
+                    result[2] = result[2] + 1;
+                    result[1] = result[1] - 1;
                 }
             }
             for (String key : unsavedIn3DMap.keySet()) {
@@ -901,6 +901,8 @@ public class LibraryManager {
                     if (!newUnsavedFiles.contains(df)) {
                         newUnsavedFiles.add(df);
                         Project.addUnsavedFile(df);
+                        result[2] = result[2] + 1;
+                        result[1] = result[1] - 1;
                     }
                     break;
                 }
