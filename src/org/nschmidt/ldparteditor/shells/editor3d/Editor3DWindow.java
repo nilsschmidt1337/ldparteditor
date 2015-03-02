@@ -4413,7 +4413,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         } else {
                             finding.setText(name);
                         }
-                        finding.setShown(name.matches(criteria));
+                        finding.setShown(!(d != null && d.startsWith(" - ~Moved to")) && name.matches(criteria)); //$NON-NLS-1$
                     }
                 }
                 folders[0].getParent().build();

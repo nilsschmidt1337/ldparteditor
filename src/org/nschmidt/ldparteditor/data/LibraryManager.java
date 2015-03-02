@@ -647,7 +647,6 @@ public class LibraryManager {
                                     String title = reader.readLine();
                                     if (title != null) {
                                         title = title.trim();
-                                        if (title.startsWith("0 ~Moved to")) continue; //$NON-NLS-1$
                                         if (title.length() > 0) {
                                             titleSb.append(" -"); //$NON-NLS-1$
                                             titleSb.append(title.substring(1));
@@ -756,14 +755,16 @@ public class LibraryManager {
 
             // 3. Scan for new files
 
-            readActualDataFromFolder(result, basePath, null, "", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, null, "", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, null, false, false); //$NON-NLS-1$ //$NON-NLS-2$
 
-            readActualDataFromFolder(result, basePath, DatType.PART, "PARTS", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromFolder(result, basePath, DatType.SUBPART, "PARTS", "S", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE, "P", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE48, "P", "48", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PART, "PARTS", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectParts, false, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.SUBPART, "PARTS", "S", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectSubparts, false, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE, "P", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives, true, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE48, "P", "48", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives48, true, false); //$NON-NLS-1$ //$NON-NLS-2$
 
             // 4. Rebuilt the trees
+
+
 
         } else {
             // FIXME Needs Implementation!
@@ -777,7 +778,7 @@ public class LibraryManager {
             treeItem.getItems().clear();
 
             // 3. Scan for new files
-            readActualDataFromFolder(result, basePath, type, prefix1, prefix2, locked, loaded, newParentMap, newTypeMap, newDfnMap);
+            readActualDataFromFolder(result, basePath, type, prefix1, prefix2, locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem, isPrimitiveFolder, isReadOnlyFolder);
 
             // 4. Rebuild the trees
 
@@ -888,9 +889,10 @@ public class LibraryManager {
             HashSet<String> loaded,
             HashMap<String, TreeItem> newParentMap,
             HashMap<String, DatType> newTypeMap,
-            HashMap<String, DatFileName> newDfnMap) {
-
-        // FIXME Auto-generated method stub
+            HashMap<String, DatFileName> newDfnMap,
+            final TreeItem treeItem,
+            boolean isPrimitiveFolder,
+            boolean isReadOnlyFolder) {
 
         final File baseFolder = new File(basePath);
 
@@ -910,7 +912,7 @@ public class LibraryManager {
                         result[0] = result[0] + 1;
                     }
                     titleSb.setLength(0);
-                    TreeItem treeItem = Editor3DWindow.getWindow().getProjectParts();
+                    TreeItem treeItem2 = Editor3DWindow.getWindow().getProjectParts();
                     try {
                         reader = new UTF8BufferedReader(path);
                         String title = reader.readLine();
@@ -961,16 +963,16 @@ public class LibraryManager {
                         // Change treeItem according to type
                         switch (type) {
                         case PART:
-                            treeItem = Editor3DWindow.getWindow().getProjectParts();
+                            treeItem2 = Editor3DWindow.getWindow().getProjectParts();
                             break;
                         case SUBPART:
-                            treeItem = Editor3DWindow.getWindow().getProjectSubparts();
+                            treeItem2 = Editor3DWindow.getWindow().getProjectSubparts();
                             break;
                         case PRIMITIVE:
-                            treeItem = Editor3DWindow.getWindow().getProjectPrimitives();
+                            treeItem2 = Editor3DWindow.getWindow().getProjectPrimitives();
                             break;
                         case PRIMITIVE48:
-                            treeItem = Editor3DWindow.getWindow().getProjectPrimitives48();
+                            treeItem2 = Editor3DWindow.getWindow().getProjectPrimitives48();
                             break;
                         default:
                             break;
@@ -987,15 +989,77 @@ public class LibraryManager {
                     }
 
                     newDfnMap.put(path, new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48));
-                    newParentMap.put(path, treeItem);
+                    newParentMap.put(path, treeItem2);
                     newTypeMap.put(path, type);
                 }
             }
         } else {
+            boolean canSearch = false;
+            for (File sub : baseFolder.listFiles()) {
+                // Check if the sub-folder exist
+                if (sub.isDirectory() && sub.getName().equalsIgnoreCase(prefix1)) {
+                    String folderPath = basePath + File.separator + sub.getName();
+                    if (!prefix2.equals("")) { //$NON-NLS-1$
+                        // We can not search now. It is not guaranteed that the
+                        // sub-sub-folder exist (e.g. D:\LDRAW\PARTS\S)
+                        canSearch = false;
+                        File subFolder = new File(basePath + File.separator + sub.getName());
+                        for (File subsub : subFolder.listFiles()) {
+                            if (subsub.isDirectory() && subsub.getName().equalsIgnoreCase(prefix2)) {
+                                folderPath = folderPath + File.separator + subsub.getName();
+                                canSearch = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (canSearch) {
+                        // Do the search for DAT files
+                        File libFolder = new File(folderPath);
+                        UTF8BufferedReader reader = null;
+                        StringBuilder titleSb = new StringBuilder();
+                        for (File f : libFolder.listFiles()) {
+                            if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
+                                final String path = f.getAbsolutePath();
+                                if (locked.contains(path)) {
+                                    // File is locked by LPE, so don't parse it twice
+                                    result[2] = result[2] + 1;
+                                    continue;
+                                }
+                                if (!loaded.contains(path)) {
+                                    // The file is new
+                                    result[0] = result[0] + 1;
+                                }
+                                titleSb.setLength(0);
+                                try {
+                                    reader = new UTF8BufferedReader(f.getAbsolutePath());
+                                    String title = reader.readLine();
+                                    if (title != null) {
+                                        title = title.trim();
+                                        if (title.length() > 0) {
+                                            titleSb.append(" -"); //$NON-NLS-1$
+                                            titleSb.append(title.substring(1));
+                                        }
+                                    }
+                                } catch (LDParsingException e) {
+                                } catch (FileNotFoundException e) {
+                                } catch (UnsupportedEncodingException e) {
+                                } finally {
+                                    try {
+                                        if (reader != null)
+                                            reader.close();
+                                    } catch (LDParsingException e1) {
+                                    }
+                                }
 
-
-
+                                newDfnMap.put(path, new DatFileName(f.getName(), titleSb.toString(), isPrimitiveFolder));
+                                newParentMap.put(path, treeItem);
+                                newTypeMap.put(path, type);
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
         }
-
     }
 }
