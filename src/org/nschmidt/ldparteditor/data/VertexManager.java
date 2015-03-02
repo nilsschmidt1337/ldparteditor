@@ -16773,9 +16773,11 @@ public class VertexManager {
         // Backup selected surfaces
         HashSet<GData> surfsToParse = new HashSet<GData>();
 
+        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
         final Set<GData3> trisToDelete2 = new HashSet<GData3>();
         final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
 
+        final Set<GData2> newLines = new HashSet<GData2>();
         final Set<GData4> newQuads = new HashSet<GData4>();
 
         {
@@ -16889,25 +16891,33 @@ public class VertexManager {
 
             Vertex[] ve = new Vertex[c];
             for(int i = 0; i < c; i++) {
-                ve[i] = new Vertex(Vector3d.add(new Vector3d(originalVerts[i]), new Vector3d(originalVerts[(i + 1) % c]).scaledByHalf()));
+                ve[i] = new Vertex(Vector3d.add(new Vector3d(originalVerts[i]), new Vector3d(originalVerts[(i + 1) % c])).scaledByHalf());
+                GData2 g2 = null;
+                if ((g2 = hasEdge(originalVerts[i], originalVerts[(i + 1) % c])) != null) {
+                    newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[i], ve[i], View.DUMMY_REFERENCE, linkedDatFile));
+                    newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[(i + 1) % c], ve[i], View.DUMMY_REFERENCE, linkedDatFile));
+                    linesToDelete2.add(g2);
+                }
             }
 
             // Build quads
             for(int i = 0; i < c; i++) {
-                // newQuads.add(new GData4(colourNumber, r, g, b, a, vc, ve[(i + c - 1) % c], newPoints.get(originalVerts[i]), ve[(i + 1) % c], View.DUMMY_REFERENCE, linkedDatFile));
-
-                newQuads.add(new GData4(colourNumber, r, g, b, a, vc, ve[(i + c - 1) % c], newPoints.get(originalVerts[i]), ve[(i + 1) % c], View.DUMMY_REFERENCE, linkedDatFile));
-
+                newQuads.add(new GData4(colourNumber, r, g, b, a, vc, ve[i], newPoints.get(originalVerts[i]), ve[(c + i - 1) % c], View.DUMMY_REFERENCE, linkedDatFile));
             }
 
         }
 
-        for (GData4 g4 : newQuads) {
-            linkedDatFile.addToTail(g4);
+        for (GData g : newLines) {
+            linkedDatFile.addToTail(g);
+        }
+        for (GData g : newQuads) {
+            linkedDatFile.addToTail(g);
         }
 
+        selectedLines.addAll(linesToDelete2);
         selectedTriangles.addAll(trisToDelete2);
         selectedQuads.addAll(quadsToDelete2);
+        selectedData.addAll(linesToDelete2);
         selectedData.addAll(trisToDelete2);
         selectedData.addAll(quadsToDelete2);
         delete(false);
