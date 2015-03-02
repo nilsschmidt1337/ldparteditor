@@ -25,8 +25,13 @@ import java.util.HashSet;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabItem;
+import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
@@ -707,25 +712,23 @@ public class LibraryManager {
         int[] result = new int[3];
 
         // FIXME Needs impl.!
-        String folderPath = basePath;
-        boolean canSearch = true;
-        File baseFolder = new File(basePath);
+        HashMap<String, TreeItem> parentMap = new HashMap<String, TreeItem>();
+        HashMap<String, DatType> typeMap = new HashMap<String, DatType>();
+        HashMap<String, DatFileName> dfnMap = new HashMap<String, DatFileName>();
+        HashSet<String> locked = new HashSet<String>();
+        HashSet<String> loaded = new HashSet<String>();
+        HashMap<String, DatFile> existingMap = new HashMap<String, DatFile>();
+
+        HashMap<String, HashSet<Composite3D>> openIn3DMap = new HashMap<String, HashSet<Composite3D>>();
+        HashMap<String, CompositeTab> openInTextMap = new HashMap<String, CompositeTab>();
+
+        HashMap<String, TreeItem> newParentMap = new HashMap<String, TreeItem>();
+        HashMap<String, DatType> newTypeMap = new HashMap<String, DatType>();
+        HashMap<String, DatFileName> newDfnMap = new HashMap<String, DatFileName>();
+
         if (suffix1.isEmpty()) {
 
             // Sync project root.
-
-            HashMap<String, TreeItem> parentMap = new HashMap<String, TreeItem>();
-            HashMap<String, DatType> typeMap = new HashMap<String, DatType>();
-            HashMap<String, DatFileName> dfnMap = new HashMap<String, DatFileName>();
-            HashSet<String> locked = new HashSet<String>();
-            HashSet<String> loaded = new HashSet<String>();
-            HashMap<String, DatFile> existingMap = new HashMap<String, DatFile>();
-
-
-            HashMap<String, TreeItem> newParentMap = new HashMap<String, TreeItem>();
-            HashMap<String, DatType> newTypeMap = new HashMap<String, DatType>();
-            HashMap<String, DatFileName> newDfnMap = new HashMap<String, DatFileName>();
-
 
             // 1. Read and store all unsaved project files, since we want to keep them in the project
 
@@ -734,18 +737,10 @@ public class LibraryManager {
             final TreeItem treeItem_ProjectPrimitives = treeItem.getItems().get(2);
             final TreeItem treeItem_ProjectPrimitives48 = treeItem.getItems().get(3);
 
-            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts);
-            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts);
-            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives);
-            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48);
-
-            readActualDataFromProjectLeaf(null, "", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
-
-            readActualDataFromProjectLeaf(DatType.PART, "PARTS", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromProjectLeaf(DatType.SUBPART, "PARTS", "S", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromProjectLeaf(DatType.PRIMITIVE, "P", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromProjectLeaf(DatType.PRIMITIVE48, "P", "48", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
-
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts, openIn3DMap, openInTextMap, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts, openIn3DMap, openInTextMap, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives, openIn3DMap, openInTextMap, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48, openIn3DMap, openInTextMap, true);
 
             // 3. Clear all project trees
             treeItem_ProjectParts.getItems().clear();
@@ -755,25 +750,116 @@ public class LibraryManager {
 
             // 4. Scan for new files
 
-            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts);
-            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts);
-            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives);
-            readVirtualDataFromProjectLeaf(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48);
+            readActualDataFromFolder(result, basePath, null, "", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
+
+            readActualDataFromFolder(result, basePath, DatType.PART, "PARTS", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.SUBPART, "PARTS", "S", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE, "P", "", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE48, "P", "48", locked, loaded, newParentMap, newTypeMap, newDfnMap); //$NON-NLS-1$ //$NON-NLS-2$
 
 
             // 5. Rebuilt the trees
 
+        } else {
+            // FIXME Needs Implementation!
+        }
+
+        return result;
+    }
 
 
-            ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
-            File libFolder = new File(folderPath);
+    private static void readVirtualDataFromFolder(
+            int[] result,
+            HashMap<String, TreeItem> parentMap,
+            HashMap<String, DatType> typeMap,
+            HashSet<String> locked,
+            HashSet<String> loaded,
+            HashMap<String, DatFile> existingMap,
+            HashMap<String, DatFileName> dfnMap,
+            final TreeItem treeItem,
+            HashMap<String, HashSet<Composite3D>> openIn3DMap,
+            HashMap<String, CompositeTab> openInTextMap,
+            boolean checkForUnsaved
+            ) {
+
+        for (TreeItem ti : treeItem.getItems()) {
+            DatFile df = (DatFile) ti.getData();
+            if (checkForUnsaved && Project.getUnsavedFiles().contains(df)) {
+                final String old = df.getOldName();
+                locked.add(df.getNewName());
+                locked.add(df.getOldName());
+                parentMap.put(old, treeItem);
+                typeMap.put(old, df.getType());
+                existingMap.put(old, df);
+                dfnMap.put(old, new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
+            } else {
+                if (!new File(df.getOldName()).exists()) {
+                    // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
+                    result[1] = result[1] + 1;
+                } else {
+
+                    // 2.5 Check which "saved" files are on the disk (only for the statistic) items in this set will not count for add
+                    final String old = df.getOldName();
+                    loaded.add(df.getNewName());
+                    loaded.add(old);
+
+                    // 3. Displayed, but unmodified files (Text+3D) need a remapping
+                    HashSet<Composite3D> c3ds = new HashSet<Composite3D>();
+                    for (OpenGLRenderer r : Editor3DWindow.getRenders()) {
+                        Composite3D c3d = r.getC3D();
+                        if (df.equals(c3d.getLockableDatFileReference())) {
+                            c3ds.add(c3d);
+                        }
+                    }
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        for (CTabItem t : w.getTabFolder().getItems()) {
+                            CompositeTab tab = (CompositeTab) t;
+                            if (df.equals(tab.getState().getFileNameObj())) {
+                                openInTextMap.put(old, tab);
+                            }
+                        }
+                    }
+                    openIn3DMap.put(old, c3ds);
+                }
+            }
+        }
+    }
+
+    private static void readActualDataFromFolder(
+            int[] result,
+            String basePath,
+            DatType type,
+            String prefix1,
+            String prefix2,
+            HashSet<String> locked,
+            HashSet<String> loaded,
+            HashMap<String, TreeItem> newParentMap,
+            HashMap<String, DatType> newTypeMap,
+            HashMap<String, DatFileName> newDfnMap) {
+
+        // FIXME Auto-generated method stub
+
+        final File baseFolder = new File(basePath);
+
+        if (prefix1.isEmpty() && prefix2.isEmpty()) {
             UTF8BufferedReader reader = null;
             StringBuilder titleSb = new StringBuilder();
-            for (File f : libFolder.listFiles()) {
+            for (File f : baseFolder.listFiles()) {
                 if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
+                    final String path = f.getAbsolutePath();
+                    if (locked.contains(path)) {
+                        // File is locked by LPE, so don't parse it twice
+                        result[2] = result[2] + 1;
+                        continue;
+                    }
+                    if (!loaded.contains(path)) {
+                        // The file is new
+                        result[0] = result[0] + 1;
+                    }
                     titleSb.setLength(0);
+                    TreeItem treeItem = Editor3DWindow.getWindow().getProjectParts();
                     try {
-                        reader = new UTF8BufferedReader(f.getAbsolutePath());
+                        reader = new UTF8BufferedReader(path);
                         String title = reader.readLine();
                         if (title != null) {
                             title = title.trim();
@@ -846,65 +932,17 @@ public class LibraryManager {
                         } catch (LDParsingException e1) {
                         }
                     }
-                    DatFileName name = new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48);
-                    datFiles.add(name);
-                }
-            }
-            // Sort the file list
-            Collections.sort(datFiles);
-            // Create the file entries
-            for (DatFileName dat : datFiles) {
-                TreeItem finding = new TreeItem(parentMap.get(dat), SWT.NONE);
-                // Save the path
-                DatFile path = new DatFile(folderPath + File.separator + dat.getName(), dat.getDescription(), isReadOnlyFolder, type);
-                finding.setData(path);
-                // Set the filename
-                if (Project.getUnsavedFiles().contains(path)) {
-                    // Insert asterisk if the file was modified
-                    finding.setText("* " + dat.getName() + dat.getDescription()); //$NON-NLS-1$
-                } else {
-                    finding.setText(dat.getName() + dat.getDescription());
+
+                    newDfnMap.put(path, new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48));
+                    newParentMap.put(path, treeItem);
+                    newTypeMap.put(path, type);
                 }
             }
         } else {
 
-            // FIXME Needs Implementation!
+
 
         }
-
-        return result;
-    }
-
-
-    private static void readVirtualDataFromProjectLeaf(int[] result, HashMap<String, TreeItem> parentMap, HashMap<String, DatType> typeMap, HashSet<String> locked, HashSet<String> loaded,
-            HashMap<String, DatFile> existingMap, HashMap<String, DatFileName> dfnMap, final TreeItem treeItem_ProjectParts) {
-        for (TreeItem ti : treeItem_ProjectParts.getItems()) {
-            DatFile df = (DatFile) ti.getData();
-            if (Project.getUnsavedFiles().contains(df)) {
-                final String old = df.getOldName();
-                locked.add(df.getNewName());
-                locked.add(df.getOldName());
-                parentMap.put(old, treeItem_ProjectParts);
-                typeMap.put(old, df.getType());
-                existingMap.put(old, df);
-                dfnMap.put(old, new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
-            } else {
-                if (!new File(df.getOldName()).exists()) {
-                    // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
-                    result[1] = result[1] + 1;
-                } else {
-                    // FIXME 3. Displayed, but unmodified files (Text+3D) need a remapping
-                    // 2.5 Check which "saved" files are on the disk (only for the statistic) items in this set will not count for add
-                    loaded.add(df.getNewName());
-                    loaded.add(df.getOldName());
-                }
-            }
-        }
-    }
-
-    private static void readActualDataFromProjectLeaf(DatType primitive48, String string, String string2, HashSet<String> locked, HashSet<String> loaded, HashMap<String, TreeItem> newParentMap,
-            HashMap<String, DatType> newTypeMap, HashMap<String, DatFileName> newDfnMap) {
-        // FIXME Auto-generated method stub
 
     }
 }
