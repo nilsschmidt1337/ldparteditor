@@ -44,7 +44,7 @@ public class CompositeTabState {
      * The filename of the file, which is displayed by this tab when the content
      * is modified
      */
-    String filenameWithStar = "(new file)*"; //$NON-NLS-1$ I18N Needs translation?
+    private String filenameWithStar = "(new file)*"; //$NON-NLS-1$ I18N Needs translation?
     /** The line index of the caret [NOT PUBLIC YET] */
     int currentLineIndex = 0;
     /** The caret position (needed for vertex replacement and so on) */
@@ -52,7 +52,7 @@ public class CompositeTabState {
     int currentCaretPositionChar = 0;
     int currentCaretTopIndex = 0;
     /** The tab reference */
-    CompositeTab tab;
+    private CompositeTab tab;
 
     private boolean replacingVertex = false;
     private float replaceEpsilon = 0.0001f;
@@ -66,18 +66,18 @@ public class CompositeTabState {
 
     public void setFileNameObj(DatFile fileNameObj) {
         filename = new File(fileNameObj.getNewName()).getName();
-        filenameWithStar = filename + "*"; //$NON-NLS-1$
+        setFilenameWithStar(filename + "*"); //$NON-NLS-1$
         if (fileNameObj.isReadOnly()) {
             filename = filename + " (read-only)"; //$NON-NLS-1$ I18N Needs translation?
-            filenameWithStar = filenameWithStar + " (read-only)"; //$NON-NLS-1$ I18N Needs translation?
-            tab.getTextComposite().setEditable(false);
+            setFilenameWithStar(getFilenameWithStar() + " (read-only)"); //$NON-NLS-1$ I18N Needs translation?
+            getTab().getTextComposite().setEditable(false);
         }
         this.datFileObj = fileNameObj;
         if (Project.getUnsavedFiles().contains(fileNameObj) || !fileNameObj.getOldName().equals(fileNameObj.getNewName())) {
-            NLogger.debug(getClass(), filenameWithStar);
+            NLogger.debug(getClass(), getFilenameWithStar());
             this.datFileObj.getVertexManager().setModified(true);
-            tab.getTextComposite().setText(this.datFileObj.getText());
-            tab.setText(filenameWithStar);
+            getTab().getTextComposite().setText(this.datFileObj.getText());
+            getTab().setText(getFilenameWithStar());
         } else {
 
             try {
@@ -102,30 +102,30 @@ public class CompositeTabState {
                     this.datFileObj.getVertexManager().setVertexToReplace(null);
                     this.datFileObj.getVertexManager().setModified(true);
                 }
-                tab.getTextComposite().setText(originalText);
-                datFileObj.setText(tab.getTextComposite().getText());
-                tab.setText(filename);
+                getTab().getTextComposite().setText(originalText);
+                datFileObj.setText(getTab().getTextComposite().getText());
+                getTab().setText(filename);
                 datFileObj.setLastModified(new File(datFileObj.getOldName()).lastModified());
             } catch (FileNotFoundException e) {
-                tab.getTextComposite().setText("The file was not found: " + fileNameObj.getOldName()); //$NON-NLS-1$ I18N Needs translation!
+                getTab().getTextComposite().setText("The file was not found: " + fileNameObj.getOldName()); //$NON-NLS-1$ I18N Needs translation!
                 datFileObj.setText(""); //$NON-NLS-1$
                 datFileObj.setOriginalText(""); //$NON-NLS-1$
-                tab.setText(filenameWithStar);
-                tab.getTextComposite().setEditable(false);
+                getTab().setText(getFilenameWithStar());
+                getTab().getTextComposite().setEditable(false);
             } catch (LDParsingException e) {
-                tab.getTextComposite().setText("The file cannot be read: " + fileNameObj.getOldName()); //$NON-NLS-1$ I18N Needs translation!
+                getTab().getTextComposite().setText("The file cannot be read: " + fileNameObj.getOldName()); //$NON-NLS-1$ I18N Needs translation!
                 datFileObj.setText(""); //$NON-NLS-1$
                 datFileObj.setOriginalText(""); //$NON-NLS-1$
-                tab.getTextComposite().setEditable(false);
+                getTab().getTextComposite().setEditable(false);
                 e.printStackTrace();
             } catch (UnsupportedEncodingException e) {
-                tab.getTextComposite().setText("The file has no UTF-8 encoding: " + fileNameObj.getOldName()); //$NON-NLS-1$ I18N Needs translation!
+                getTab().getTextComposite().setText("The file has no UTF-8 encoding: " + fileNameObj.getOldName()); //$NON-NLS-1$ I18N Needs translation!
                 datFileObj.setText(""); //$NON-NLS-1$
                 datFileObj.setOriginalText(""); //$NON-NLS-1$
-                tab.getTextComposite().setEditable(false);
+                getTab().getTextComposite().setEditable(false);
             }
         }
-        tab.getTextComposite().forceFocus();
+        getTab().getTextComposite().forceFocus();
     }
 
     public boolean isReplacingVertex() {
@@ -166,6 +166,22 @@ public class CompositeTabState {
 
     public void setToReplaceZ(BigDecimal toReplaceZ) {
         this.toReplaceZ = toReplaceZ;
+    }
+
+    public CompositeTab getTab() {
+        return tab;
+    }
+
+    public void setTab(CompositeTab tab) {
+        this.tab = tab;
+    }
+
+    public String getFilenameWithStar() {
+        return filenameWithStar;
+    }
+
+    public void setFilenameWithStar(String filenameWithStar) {
+        this.filenameWithStar = filenameWithStar;
     }
 
 }

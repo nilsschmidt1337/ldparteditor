@@ -116,7 +116,7 @@ public class CompositeTab extends CompositeTabDesign {
         // MARK All final listeners will be configured here..
         // Each line should be formatted automagically on text change within a
         // single text line
-        this.state.tab = this;
+        this.state.setTab(this);
 
         compositeText[0].addLineStyleListener(new LineStyleListener() {
             @Override
@@ -580,7 +580,7 @@ public class CompositeTab extends CompositeTabDesign {
                 DatFile dat = state.getFileNameObj();
 
                 if (compositeText[0].getText().equals(dat.getOriginalText()) && dat.getOldName().equals(dat.getNewName())) {
-                    if (!dat.isVirtual()) state.tab.setText(state.filename);
+                    if (!dat.isVirtual()) state.getTab().setText(state.filename);
                     // Do not remove virtual files from the unsaved file list
                     // (they are virtual, because they were not saved at all!)
                     if (Project.getUnsavedFiles().contains(dat) && !dat.isVirtual()) {
@@ -588,7 +588,7 @@ public class CompositeTab extends CompositeTabDesign {
                         Editor3DWindow.getWindow().updateTree_unsavedEntries();
                     }
                 } else {
-                    state.tab.setText(state.filenameWithStar);
+                    state.getTab().setText(state.getFilenameWithStar());
                     if (!Project.getUnsavedFiles().contains(dat)) {
                         Project.addUnsavedFile(dat);
                         Editor3DWindow.getWindow().updateTree_unsavedEntries();
@@ -1051,7 +1051,7 @@ public class CompositeTab extends CompositeTabDesign {
      */
     public void restoreState(CompositeTabState state) {
         this.state = state;
-        this.state.tab = this;
+        this.state.setTab(this);
     }
 
     /**
@@ -1072,7 +1072,7 @@ public class CompositeTab extends CompositeTabDesign {
      */
     public CompositeTab moveToFolder(CompositeTabFolder folder, int index) {
 
-        if (this.state.tab.getParent().equals(folder)) {
+        if (this.state.getTab().getParent().equals(folder)) {
             int index2 = 0;
             for (CTabItem t : folder.getItems()) {
                 if (((CompositeTab) t).getState().getFileNameObj().equals(state.getFileNameObj()))
@@ -1080,14 +1080,14 @@ public class CompositeTab extends CompositeTabDesign {
                 index2++;
             }
             if (index == index2)
-                return this.state.tab;
+                return this.state.getTab();
         }
         if (index != 0) {
-            if (!this.state.tab.getParent().equals(folder))
+            if (!this.state.getTab().getParent().equals(folder))
                 index--;
         }
         final CompositeTab ct = new CompositeTab(folder, SWT.CLOSE, index);
-        ct.setText(this.state.tab.getText());
+        ct.setText(this.state.getTab().getText());
         ct.getControl().dispose();
         ct.canvas_lineNumberArea[0] = this.canvas_lineNumberArea[0];
         ct.compositeText[0] = this.compositeText[0];
@@ -1095,19 +1095,19 @@ public class CompositeTab extends CompositeTabDesign {
         ct.sashForm[0] = this.sashForm[0];
         ct.tabFolder_partInformation[0] = this.tabFolder_partInformation[0];
         try {
-            ct.setControl(this.state.tab.getControl());
+            ct.setControl(this.state.getTab().getControl());
         } catch (IllegalArgumentException e) {
-            this.state.tab.getControl().setParent(folder);
-            ct.setControl(this.state.tab.getControl());
+            this.state.getTab().getControl().setParent(folder);
+            ct.setControl(this.state.getTab().getControl());
         }
-        this.state.tab.dispose();
+        this.state.getTab().dispose();
         ct.restoreState(state);
         ct.setWindow(folder.getWindow());
         return ct;
     }
 
     public StyledText getTextComposite() {
-        return this.state.tab.compositeText[0];
+        return this.state.getTab().compositeText[0];
     }
 
     public void parseForError() {
