@@ -146,8 +146,8 @@ public class CompositeTab extends CompositeTabDesign {
                 DatFile dat = state.getFileNameObj();
                 final VertexManager vm = dat.getVertexManager();
                 if (vm.getVertexToReplace() != null) {
-                    if (!vm.isModified() && state.isReplacingVertex()) { // && compositeText[0].getSelection().x == compositeText[0].getSelection().y
-                        // TODO Replaced vertex manipulation check
+                    if (!vm.isModified() && state.isReplacingVertex()) {
+                        // Replaced vertex manipulation check
                         NLogger.debug(getClass(), "Vertex Manipulation is ACTIVE"); //$NON-NLS-1$
 
                         event.start = compositeText[0].getSelection().x;
@@ -559,15 +559,15 @@ public class CompositeTab extends CompositeTabDesign {
             @Override
             public void modifyText(final ExtendedModifyEvent event) {
                 ViewIdleManager.pause[0].compareAndSet(false, true);
-                // TODO Only for vertex replace test
+                // TODO ?? Only for vertex replace test ?? <- what does this mean?
                 compositeText[0].redraw();
 
                 int new_line_count = compositeText[0].getLineCount();
                 if (old_line_count != new_line_count) {
                     old_line_count = new_line_count;
                     int number_of_digits = (int) Math.log10(new_line_count);
-                    // TODO + 2
-                    ((GridData) canvas_lineNumberArea[0].getLayoutData()).widthHint = (number_of_digits + 26) * Font.MONOSPACE_WIDTH;
+                    // TODO DEBUG
+                    ((GridData) canvas_lineNumberArea[0].getLayoutData()).widthHint = (number_of_digits + (NLogger.DEBUG ? 26 : 2)) * Font.MONOSPACE_WIDTH;
                     canvas_lineNumberArea[0].getParent().layout();
                 }
                 if (event.length == 0) {
@@ -951,35 +951,36 @@ public class CompositeTab extends CompositeTabDesign {
 
                 for (int y = y_offset; y < height; y += caretHeight) { // Font.MONOSPACE_HEIGHT) {
 
-                    // e.gc.drawText(Integer.toString(start_line), 0, y);
+                    if (NLogger.DEBUG) {
 
+                        // TODO DEBUG Emergency reference debugging
 
-                    // MARK Emergency reference debugging
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(start_line);
-                    GData source = Project.getFileToEdit().getDrawPerLine().getValue(start_line);
-                    if (source != null) {
-                        if (source.getBefore() != null) {
-                            sb.append(source.getBefore().hashCode());
-                            sb.append(" -> "); //$NON-NLS-1$
-                        } else {
-                            sb.append("null"); //$NON-NLS-1$
-                            sb.append(" -> "); //$NON-NLS-1$
-                        }
-                        sb.append(source.hashCode());
-                        sb.append(" -> "); //$NON-NLS-1$
-                        source = Project.getFileToEdit().getDrawPerLine().getValue(start_line).getNext();
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(start_line);
+                        GData source = Project.getFileToEdit().getDrawPerLine().getValue(start_line);
                         if (source != null) {
+                            if (source.getBefore() != null) {
+                                sb.append(source.getBefore().hashCode());
+                                sb.append(" -> "); //$NON-NLS-1$
+                            } else {
+                                sb.append("null"); //$NON-NLS-1$
+                                sb.append(" -> "); //$NON-NLS-1$
+                            }
                             sb.append(source.hashCode());
+                            sb.append(" -> "); //$NON-NLS-1$
+                            source = Project.getFileToEdit().getDrawPerLine().getValue(start_line).getNext();
+                            if (source != null) {
+                                sb.append(source.hashCode());
+                            } else {
+                                sb.append("null"); //$NON-NLS-1$
+                            }
                         } else {
                             sb.append("null"); //$NON-NLS-1$
                         }
+                        e.gc.drawText(sb.toString(), 0, y);
                     } else {
-                        sb.append("null"); //$NON-NLS-1$
+                        e.gc.drawText(Integer.toString(start_line), 0, y);
                     }
-                    e.gc.drawText(sb.toString(), 0, y);
-
 
                     if (start_line > end_line) {
                         break;
