@@ -263,6 +263,46 @@ public class Editor3DWindow extends Editor3DDesign {
         // MARK All final listeners will be configured here..
         // First, create all menu actions.
         createActions();
+        btn_Sync[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+
+                resetSearch();
+                int[][] stats = new int[13][3];
+                stats[0] = LibraryManager.syncProjectElements(treeItem_Project[0]);
+                stats[5] = LibraryManager.syncUnofficialParts(treeItem_UnofficialParts[0]);
+                stats[6] = LibraryManager.syncUnofficialSubparts(treeItem_UnofficialSubparts[0]);
+                stats[7] = LibraryManager.syncUnofficialPrimitives(treeItem_UnofficialPrimitives[0]);
+                stats[8] = LibraryManager.syncUnofficialHiResPrimitives(treeItem_UnofficialPrimitives48[0]);
+                stats[9] = LibraryManager.syncOfficialParts(treeItem_OfficialParts[0]);
+                stats[10] = LibraryManager.syncOfficialSubparts(treeItem_OfficialSubparts[0]);
+                stats[11] = LibraryManager.syncOfficialPrimitives(treeItem_OfficialPrimitives[0]);
+                stats[12] = LibraryManager.syncOfficialHiResPrimitives(treeItem_OfficialPrimitives48[0]);
+
+                int additions = 0;
+                int deletions = 0;
+                int conflicts = 0;
+                for (int[] is : stats) {
+                    additions += is[0];
+                    deletions += is[1];
+                    conflicts += is[2];
+                }
+
+                MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                messageBox.setText(I18n.DIALOG_SyncTitle);
+
+                Object[] messageArguments = {additions, deletions, conflicts};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(View.LOCALE);
+                formatter.applyPattern(I18n.DIALOG_Sync);
+                messageBox.setMessage(formatter.format(messageArguments));
+
+                treeItem_OfficialParts[0].setData(null);
+                txt_Search[0].setText(" "); //$NON-NLS-1$
+                txt_Search[0].setText(""); //$NON-NLS-1$
+                updateTree_unsavedEntries();
+            }
+        });
         btn_New[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

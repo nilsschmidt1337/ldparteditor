@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
@@ -203,6 +204,115 @@ public class LibraryManager {
     }
 
     /**
+     * Synchronises all paths to project library objects case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     * @return
+     */
+    public static int[] syncProjectElements(TreeItem treeItem) {
+        return syncLibraryFolder(Project.getProjectPath(), "", "", treeItem, false, false, DatType.PART); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Synchronises all paths to unofficial library parts case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static int[] syncUnofficialParts(TreeItem treeItem) {
+        return syncLibraryFolder(WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), "PARTS", "", treeItem, false, false, DatType.PART); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Synchronises all paths to unofficial library subparts case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static int[] syncUnofficialSubparts(TreeItem treeItem) {
+        return syncLibraryFolder(WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), "PARTS", "S", treeItem, false, false, DatType.SUBPART); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Synchronises all paths to unofficial library primitives case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static int[] syncUnofficialPrimitives(TreeItem treeItem) {
+        return syncLibraryFolder(WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), "P", "", treeItem, true, false, DatType.PRIMITIVE); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Synchronises all paths to unofficial library hi-res primirives case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static int[] syncUnofficialHiResPrimitives(TreeItem treeItem) {
+        return syncLibraryFolder(WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), "P", "48", treeItem, true, false, DatType.PRIMITIVE48); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Synchronises all paths to official library parts case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static int[] syncOfficialParts(TreeItem treeItem) {
+        return syncLibraryFolder(WorkbenchManager.getUserSettingState().getLdrawFolderPath(), "PARTS", "", treeItem, false, true, DatType.PART); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Synchronises all paths to official library subparts case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static int[] syncOfficialSubparts(TreeItem treeItem) {
+        return syncLibraryFolder(WorkbenchManager.getUserSettingState().getLdrawFolderPath(), "PARTS", "S", treeItem, false, true, DatType.SUBPART); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Synchronises all paths to official library primitives case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static int[] syncOfficialPrimitives(TreeItem treeItem) {
+        return syncLibraryFolder(WorkbenchManager.getUserSettingState().getLdrawFolderPath(), "P", "", treeItem, true, true, DatType.PRIMITIVE); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Synchronises all paths to official library hi-res primitives case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static int[] syncOfficialHiResPrimitives(TreeItem treeItem) {
+        return syncLibraryFolder(WorkbenchManager.getUserSettingState().getLdrawFolderPath(), "P", "48", treeItem, true, true, DatType.PRIMITIVE48); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
      * This is a helper class, which provides a comparator for DAT file names.
      *
      * @author nils
@@ -248,7 +358,7 @@ public class LibraryManager {
             }
 
             // Special cases: Primitive fractions
-            if (this.comparePrimitives) {
+            if (this.comparePrimitives && other.comparePrimitives) {
                 if (segs_this[0].length() > 2 && segs_other[0].length() > 2 && (segs_this[0].charAt(1) == '-' || segs_this[0].charAt(2) == '-')
                         && (segs_other[0].charAt(1) == '-' || segs_other[0].charAt(2) == '-')) {
                     String upper_this = ""; //$NON-NLS-1$
@@ -350,6 +460,28 @@ public class LibraryManager {
                 }
             }
         }
+
+        @Override
+        public int hashCode() {
+            return name == null ? 0 : name.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            DatFileName other = (DatFileName) obj;
+            if (name == null) {
+                if (other.name != null)
+                    return false;
+            } else if (!name.equals(other.name))
+                return false;
+            return true;
+        }
     }
 
     /**
@@ -374,6 +506,7 @@ public class LibraryManager {
         File baseFolder = new File(basePath);
         if (suffix1.isEmpty()) {
             HashMap<DatFileName, TreeItem> parentMap = new HashMap<DatFileName, TreeItem>();
+            HashMap<DatFileName, DatType> typeMap = new HashMap<DatFileName, DatType>();
             ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
             File libFolder = new File(folderPath);
             UTF8BufferedReader reader = null;
@@ -455,7 +588,308 @@ public class LibraryManager {
                         } catch (LDParsingException e1) {
                         }
                     }
-                    DatFileName name = new DatFileName(f.getName(), titleSb.toString(), isPrimitiveFolder);
+                    DatFileName name = new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48);
+                    datFiles.add(name);
+                    parentMap.put(name, treeItem);
+                    typeMap.put(name, type);
+                }
+            }
+            // Sort the file list
+            Collections.sort(datFiles);
+            // Create the file entries
+            for (DatFileName dat : datFiles) {
+                TreeItem finding = new TreeItem(parentMap.get(dat), SWT.NONE);
+                // Save the path
+                DatFile path = new DatFile(folderPath + File.separator + dat.getName(), dat.getDescription(), isReadOnlyFolder, typeMap.get(dat));
+                finding.setData(path);
+                // Set the filename
+                if (Project.getUnsavedFiles().contains(path)) {
+                    // Insert asterisk if the file was modified
+                    finding.setText("* " + dat.getName() + dat.getDescription()); //$NON-NLS-1$
+                } else {
+                    finding.setText(dat.getName() + dat.getDescription());
+                }
+            }
+        } else {
+            for (File sub : baseFolder.listFiles()) {
+                // Check if the sub-folder exist
+                if (sub.isDirectory() && sub.getName().equalsIgnoreCase(suffix1)) {
+                    folderPath = folderPath + File.separator + sub.getName();
+                    if (!suffix2.equals("")) { //$NON-NLS-1$
+                        // We can not search now. It is not guaranteed that the
+                        // sub-sub-folder exist (e.g. D:\LDRAW\PARTS\S)
+                        canSearch = false;
+                        File subFolder = new File(basePath + File.separator + sub.getName());
+                        for (File subsub : subFolder.listFiles()) {
+                            if (subsub.isDirectory() && subsub.getName().equalsIgnoreCase(suffix2)) {
+                                folderPath = folderPath + File.separator + subsub.getName();
+                                canSearch = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (canSearch) {
+                        // Do the search for DAT files
+                        ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
+                        File libFolder = new File(folderPath);
+                        UTF8BufferedReader reader = null;
+                        StringBuilder titleSb = new StringBuilder();
+                        for (File f : libFolder.listFiles()) {
+                            if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
+                                titleSb.setLength(0);
+                                try {
+                                    reader = new UTF8BufferedReader(f.getAbsolutePath());
+                                    String title = reader.readLine();
+                                    if (title != null) {
+                                        title = title.trim();
+                                        if (title.startsWith("0 ~Moved to")) continue; //$NON-NLS-1$
+                                        if (title.length() > 0) {
+                                            titleSb.append(" -"); //$NON-NLS-1$
+                                            titleSb.append(title.substring(1));
+                                        }
+                                    }
+                                } catch (LDParsingException e) {
+                                } catch (FileNotFoundException e) {
+                                } catch (UnsupportedEncodingException e) {
+                                } finally {
+                                    try {
+                                        if (reader != null)
+                                            reader.close();
+                                    } catch (LDParsingException e1) {
+                                    }
+                                }
+                                datFiles.add(new DatFileName(f.getName(), titleSb.toString(), isPrimitiveFolder));
+                            }
+                        }
+                        // Sort the file list
+                        Collections.sort(datFiles);
+                        // Create the file entries
+                        for (DatFileName dat : datFiles) {
+                            TreeItem finding = new TreeItem(treeItem, SWT.NONE);
+                            // Save the path
+                            DatFile path = new DatFile(folderPath + File.separator + dat.getName(), dat.getDescription(), isReadOnlyFolder, type);
+                            finding.setData(path);
+                            // Set the filename
+                            if (Project.getUnsavedFiles().contains(path)) {
+                                // Insert asterisk if the file was modified
+                                finding.setText("* " + dat.getName() + dat.getDescription()); //$NON-NLS-1$
+                            } else {
+                                finding.setText(dat.getName() + dat.getDescription());
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Synchronises the contents (DAT files) from the folder case insensitive and sorts
+     * the entries alphabetically and by number
+     *
+     * @param basePath
+     *            this path was already validated before
+     * @param suffix1
+     *            the case insensitive name of the first subfolder
+     * @param suffix2
+     *            the case insensitive name of the second subfolder
+     * @param treeItem
+     *            the target {@code TreeItem} which lists all DAT files from the
+     *            folder
+     * @param isPrimitiveFolder
+     *            {@code true} if the folder contains primitives
+     * @return An array which contains how many files were added [0], deleted [1], and can't be replaced [2]
+     */
+    private static int[] syncLibraryFolder(String basePath, String suffix1, String suffix2, TreeItem treeItem, boolean isPrimitiveFolder, boolean isReadOnlyFolder, DatType type) {
+
+        int[] result = new int[3];
+
+        // FIXME Needs impl.!
+        String folderPath = basePath;
+        boolean canSearch = true;
+        File baseFolder = new File(basePath);
+        if (suffix1.isEmpty()) {
+
+            // Sync project root.
+
+            HashMap<DatFileName, TreeItem> parentMap = new HashMap<DatFileName, TreeItem>();
+            HashMap<DatFileName, DatType> typeMap = new HashMap<DatFileName, DatType>();
+            HashSet<DatFileName> locked = new HashSet<DatFileName>();
+            HashMap<DatFileName, DatFile> existingMap = new HashMap<DatFileName, DatFile>();
+
+            // 1. Read and store all unsaved project files, since we want to keep them in the project
+
+            final TreeItem treeItem_ProjectParts = treeItem.getItems().get(0);
+            final TreeItem treeItem_ProjectSubparts = treeItem.getItems().get(1);
+            final TreeItem treeItem_ProjectPrimitives = treeItem.getItems().get(2);
+            final TreeItem treeItem_ProjectPrimitives48 = treeItem.getItems().get(3);
+
+            for (TreeItem ti : treeItem_ProjectParts.getItems()) {
+                DatFile df = (DatFile) ti.getData();
+                if (Project.getUnsavedFiles().contains(df)) {
+                    DatFileName name = new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
+                    DatFileName name2 = new DatFileName(new File(df.getOldName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
+                    locked.add(name);
+                    locked.add(name2);
+                    parentMap.put(name, treeItem_ProjectParts);
+                    typeMap.put(name, df.getType());
+                    existingMap.put(name, df);
+                } else {
+                    if (!new File(df.getOldName()).exists()) {
+                        // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
+                        result[1] = result[1] + 1;
+                    }
+                }
+            }
+            for (TreeItem ti : treeItem_ProjectSubparts.getItems()) {
+                DatFile df = (DatFile) ti.getData();
+                if (Project.getUnsavedFiles().contains(df)) {
+                    DatFileName name = new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
+                    DatFileName name2 = new DatFileName(new File(df.getOldName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
+                    locked.add(name);
+                    locked.add(name2);
+                    parentMap.put(name, treeItem_ProjectSubparts);
+                    typeMap.put(name, df.getType());
+                    existingMap.put(name, df);
+                } else {
+                    if (!new File(df.getOldName()).exists()) {
+                        // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
+                        result[1] = result[1] + 1;
+                    }
+                }
+            }
+            for (TreeItem ti : treeItem_ProjectPrimitives.getItems()) {
+                DatFile df = (DatFile) ti.getData();
+                if (Project.getUnsavedFiles().contains(df)) {
+                    DatFileName name = new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
+                    DatFileName name2 = new DatFileName(new File(df.getOldName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
+                    locked.add(name);
+                    locked.add(name2);
+                    parentMap.put(name, treeItem_ProjectPrimitives);
+                    typeMap.put(name, df.getType());
+                    existingMap.put(name, df);
+                } else {
+                    if (!new File(df.getOldName()).exists()) {
+                        // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
+                        result[1] = result[1] + 1;
+                    }
+                }
+            }
+            for (TreeItem ti : treeItem_ProjectPrimitives48.getItems()) {
+                DatFile df = (DatFile) ti.getData();
+                if (Project.getUnsavedFiles().contains(df)) {
+                    DatFileName name = new DatFileName(new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
+                    DatFileName name2 = new DatFileName(new File(df.getOldName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48);
+                    locked.add(name);
+                    locked.add(name2);
+                    parentMap.put(name, treeItem_ProjectPrimitives48);
+                    typeMap.put(name, df.getType());
+                    existingMap.put(name, df);
+                } else {
+                    if (!new File(df.getOldName()).exists()) {
+                        // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
+                        result[1] = result[1] + 1;
+                    }
+                }
+            }
+
+            // 3. Clear all project trees
+            treeItem_ProjectParts.getItems().clear();
+            treeItem_ProjectSubparts.getItems().clear();
+            treeItem_ProjectPrimitives.getItems().clear();
+            treeItem_ProjectPrimitives48.getItems().clear();
+
+            // 4. Scan for new files
+
+
+            // 5. Rebuilt the trees
+
+
+
+            ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
+            File libFolder = new File(folderPath);
+            UTF8BufferedReader reader = null;
+            StringBuilder titleSb = new StringBuilder();
+            for (File f : libFolder.listFiles()) {
+                if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
+                    titleSb.setLength(0);
+                    try {
+                        reader = new UTF8BufferedReader(f.getAbsolutePath());
+                        String title = reader.readLine();
+                        if (title != null) {
+                            title = title.trim();
+                            if (title.length() > 0) {
+                                titleSb.append(" -"); //$NON-NLS-1$
+                                titleSb.append(title.substring(1));
+                            }
+                        }
+                        // Detect type
+                        while (true) {
+                            String typ = reader.readLine();
+                            if (typ != null) {
+                                typ = typ.trim();
+                                if (!typ.startsWith("0")) { //$NON-NLS-1$
+                                    break;
+                                } else {
+                                    int i1 = typ.indexOf("!LDRAW_ORG"); //$NON-NLS-1$
+                                    if (i1 > -1) {
+                                        int i2;
+                                        i2 = typ.indexOf("Subpart"); //$NON-NLS-1$
+                                        if (i2 > -1 && i1 < i2) {
+                                            type = DatType.SUBPART;
+                                            break;
+                                        }
+                                        i2 = typ.indexOf("Part"); //$NON-NLS-1$
+                                        if (i2 > -1 && i1 < i2) {
+                                            type = DatType.PART;
+                                            break;
+                                        }
+                                        i2 = typ.indexOf("48_Primitive"); //$NON-NLS-1$
+                                        if (i2 > -1 && i1 < i2) {
+                                            type = DatType.PRIMITIVE48;
+                                            break;
+                                        }
+                                        i2 = typ.indexOf("Primitive"); //$NON-NLS-1$
+                                        if (i2 > -1 && i1 < i2) {
+                                            type = DatType.PRIMITIVE;
+                                            break;
+                                        }
+                                    }
+                                }
+                            } else {
+                                break;
+                            }
+                        }
+                        // Change treeItem according to type
+                        switch (type) {
+                        case PART:
+                            treeItem = Editor3DWindow.getWindow().getProjectParts();
+                            break;
+                        case SUBPART:
+                            treeItem = Editor3DWindow.getWindow().getProjectSubparts();
+                            break;
+                        case PRIMITIVE:
+                            treeItem = Editor3DWindow.getWindow().getProjectPrimitives();
+                            break;
+                        case PRIMITIVE48:
+                            treeItem = Editor3DWindow.getWindow().getProjectPrimitives48();
+                            break;
+                        default:
+                            break;
+                        }
+                    } catch (LDParsingException e) {
+                    } catch (FileNotFoundException e) {
+                    } catch (UnsupportedEncodingException e) {
+                    } finally {
+                        try {
+                            if (reader != null)
+                                reader.close();
+                        } catch (LDParsingException e1) {
+                        }
+                    }
+                    DatFileName name = new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48);
                     datFiles.add(name);
                     parentMap.put(name, treeItem);
                 }
@@ -548,5 +982,7 @@ public class LibraryManager {
                 }
             }
         }
+
+        return result;
     }
 }

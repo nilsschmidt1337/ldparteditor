@@ -105,6 +105,8 @@ public final class I18n {
     public static final String DIALOG_Revert = DIALOG.getString(getProperty());
     public static final String DIALOG_RevertTitle = DIALOG.getString(getProperty());
     public static final String DIALOG_SkipAll = DIALOG.getString(getProperty());
+    public static final String DIALOG_Sync = DIALOG.getString(getProperty());
+    public static final String DIALOG_SyncTitle = DIALOG.getString(getProperty());
     public static final String DIALOG_TheNewProject = DIALOG.getString(getProperty());
     public static final String DIALOG_TheOldProject = DIALOG.getString(getProperty());
     public static final String DIALOG_Unavailable = DIALOG.getString(getProperty());
