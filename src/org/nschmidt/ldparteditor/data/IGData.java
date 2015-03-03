@@ -27,6 +27,8 @@ interface IGData {
 
     public void draw(Composite3D c3d);
 
+    // TODO public void drawCatmullClark(Composite3D c3d); for Subdivision surfaces
+
     public void drawRandomColours(Composite3D c3d);
 
     public void drawBFC(Composite3D c3d);
