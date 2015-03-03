@@ -40,12 +40,12 @@ public class Vertex {
     public final float y;
     public final float z;
     private final Vector4f vertex;
-    private final float absRoundedVertex_x;
-    private final float absRoundedVertex_y;
-    private final float absRoundedVertex_z;
-    private final float roundedVertex_x;
-    private final float roundedVertex_y;
-    private final float roundedVertex_z;
+    private final int int_x;
+    private final int int_y;
+    private final int int_z;
+    private final float rounded_x;
+    private final float rounded_y;
+    private final float rounded_z;
 
     private boolean hasHashcode = false;
     private int hashCode = 0;
@@ -69,12 +69,12 @@ public class Vertex {
         Z = z.scaleByPowerOfTen(-3);
         z = z.setScale(2, RoundingMode.HALF_UP);
 
-        this.roundedVertex_x = x.floatValue();
-        this.roundedVertex_y = y.floatValue();
-        this.roundedVertex_z = z.floatValue();
-        absRoundedVertex_x = roundedVertex_x < 0 ? -roundedVertex_x : roundedVertex_x;
-        absRoundedVertex_y = roundedVertex_y < 0 ? -roundedVertex_y : roundedVertex_y;
-        absRoundedVertex_z = roundedVertex_z < 0 ? -roundedVertex_z : roundedVertex_z;
+        this.rounded_x = x.floatValue();
+        this.rounded_y = y.floatValue();
+        this.rounded_z = z.floatValue();
+        int_x = rounded_x < 0 ? -((int) rounded_x) : (int) rounded_x;
+        int_y = rounded_y < 0 ? -((int) rounded_y) : (int) rounded_y;
+        int_z = rounded_z < 0 ? -((int) rounded_z) : (int) rounded_z;
 
         this.vertex = new Vector4f(vertex);
 
@@ -108,12 +108,12 @@ public class Vertex {
         BigDecimal z = new BigDecimal(this.z);
         z = z.setScale(2, RoundingMode.HALF_UP);
 
-        this.roundedVertex_x = x.floatValue();
-        this.roundedVertex_y = y.floatValue();
-        this.roundedVertex_z = z.floatValue();
-        absRoundedVertex_x = roundedVertex_x < 0 ? -roundedVertex_x : roundedVertex_x;
-        absRoundedVertex_y = roundedVertex_y < 0 ? -roundedVertex_y : roundedVertex_y;
-        absRoundedVertex_z = roundedVertex_z < 0 ? -roundedVertex_z : roundedVertex_z;
+        this.rounded_x = x.floatValue();
+        this.rounded_y = y.floatValue();
+        this.rounded_z = z.floatValue();
+        int_x = rounded_x < 0 ? -((int) rounded_x) : (int) rounded_x;
+        int_y = rounded_y < 0 ? -((int) rounded_y) : (int) rounded_y;
+        int_z = rounded_z < 0 ? -((int) rounded_z) : (int) rounded_z;
 
     }
 
@@ -138,12 +138,12 @@ public class Vertex {
         BigDecimal z = new BigDecimal(this.z);
         z = z.setScale(2, RoundingMode.HALF_UP);
 
-        this.roundedVertex_x = x.floatValue();
-        this.roundedVertex_y = y.floatValue();
-        this.roundedVertex_z = z.floatValue();
-        absRoundedVertex_x = roundedVertex_x < 0 ? -roundedVertex_x : roundedVertex_x;
-        absRoundedVertex_y = roundedVertex_y < 0 ? -roundedVertex_y : roundedVertex_y;
-        absRoundedVertex_z = roundedVertex_z < 0 ? -roundedVertex_z : roundedVertex_z;
+        this.rounded_x = x.floatValue();
+        this.rounded_y = y.floatValue();
+        this.rounded_z = z.floatValue();
+        int_x = rounded_x < 0 ? -((int) rounded_x) : (int) rounded_x;
+        int_y = rounded_y < 0 ? -((int) rounded_y) : (int) rounded_y;
+        int_z = rounded_z < 0 ? -((int) rounded_z) : (int) rounded_z;
     }
 
     // High accuracy version (better performance)
@@ -168,12 +168,12 @@ public class Vertex {
         BigDecimal z = new BigDecimal(this.z);
         z = z.setScale(2, RoundingMode.HALF_UP);
 
-        this.roundedVertex_x = x.floatValue();
-        this.roundedVertex_y = y.floatValue();
-        this.roundedVertex_z = z.floatValue();
-        absRoundedVertex_x = roundedVertex_x < 0 ? -roundedVertex_x : roundedVertex_x;
-        absRoundedVertex_y = roundedVertex_y < 0 ? -roundedVertex_y : roundedVertex_y;
-        absRoundedVertex_z = roundedVertex_z < 0 ? -roundedVertex_z : roundedVertex_z;
+        this.rounded_x = x.floatValue();
+        this.rounded_y = y.floatValue();
+        this.rounded_z = z.floatValue();
+        int_x = rounded_x < 0 ? -((int) rounded_x) : (int) rounded_x;
+        int_y = rounded_y < 0 ? -((int) rounded_y) : (int) rounded_y;
+        int_z = rounded_z < 0 ? -((int) rounded_z) : (int) rounded_z;
 
     }
 
@@ -208,18 +208,9 @@ public class Vertex {
         }
         hasHashcode = true;
         final int prime = 31;
-        int result = prime + Float.floatToIntBits(absRoundedVertex_x); // -
-        // absRoundedVertex_x
-        // %
-        // epsilon);
-        result = prime * result + Float.floatToIntBits(absRoundedVertex_y); // -
-        // absRoundedVertex_y
-        // %
-        // epsilon);
-        result = prime * result + Float.floatToIntBits(absRoundedVertex_z); // -
-        // absRoundedVertex_z
-        // %
-        // epsilon);
+        int result = prime + int_x;
+        result = prime * result + int_y;
+        result = prime * result + int_z;
         hashCode = result;
         return result;
     }
@@ -227,8 +218,8 @@ public class Vertex {
     @Override
     public boolean equals(Object obj) {
         Vertex other = (Vertex) obj;
-        return Math.abs(roundedVertex_x - other.roundedVertex_x) < epsilon && Math.abs(roundedVertex_y - other.roundedVertex_y) < epsilon
-                && Math.abs(roundedVertex_z - other.roundedVertex_z) < epsilon;
+        return Math.abs(rounded_x - other.rounded_x) < epsilon && Math.abs(rounded_y - other.rounded_y) < epsilon
+                && Math.abs(rounded_z - other.rounded_z) < epsilon;
     }
 
     @Override
