@@ -71,9 +71,9 @@ public class Vector3d {
         this.X = vertex.X;
         this.Y = vertex.Y;
         this.Z = vertex.Z;
-        //        this.X = new BigDecimal(vertex.x / 1000f, mc);
-        //        this.Y = new BigDecimal(vertex.y / 1000f, mc);
-        //        this.Z = new BigDecimal(vertex.z / 1000f, mc);
+        // this.X = new BigDecimal(vertex.x / 1000f, mc);
+        // this.Y = new BigDecimal(vertex.y / 1000f, mc);
+        // this.Z = new BigDecimal(vertex.z / 1000f, mc);
     }
 
     public Vector3d(Vector3r vertex) {

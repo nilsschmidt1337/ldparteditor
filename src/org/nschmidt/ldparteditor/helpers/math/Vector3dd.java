@@ -35,7 +35,11 @@ public class Vector3dd extends Vector3d {
     }
     @Override
     public int hashCode() {
-        return 1337;
+        final int prime = 31;
+        int result = prime + X.intValue();
+        result = prime * result + Y.intValue();
+        result = prime * result + Z.intValue();
+        return result;
     }
 
     private static final BigDecimal MIN_DIST = new BigDecimal(".0001"); //$NON-NLS-1$
