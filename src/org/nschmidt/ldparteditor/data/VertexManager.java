@@ -7213,7 +7213,7 @@ public class VertexManager {
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
         if (col.getColourNumber() == 16 || col.getColourNumber() == 24) {
-            col = DatParser.validateColour("24", .5f, .5f, .5f, 1f); //$NON-NLS-1$
+            col = DatParser.validateColour(24, .5f, .5f, .5f, 1f);
         }
         linkedDatFile.addToTail(new GData2(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
         linkedDatFile.setObjVertex1(v1);
@@ -7545,7 +7545,7 @@ public class VertexManager {
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
         if (col.getColourNumber() == 16 || col.getColourNumber() == 24) {
-            col = DatParser.validateColour("24", .5f, .5f, .5f, 1f); //$NON-NLS-1$
+            col = DatParser.validateColour(24, .5f, .5f, .5f, 1f);
         }
         linkedDatFile.addToTail(new GData5(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
 
@@ -13558,8 +13558,8 @@ public class VertexManager {
                                     return;
                                 }
 
-                                final GColour lineColour = DatParser.validateColour("24", .5f, .5f, .5f, 1f).clone(); //$NON-NLS-1$
-                                final GColour bodyColour = DatParser.validateColour("16", .5f, .5f, .5f, 1f).clone(); //$NON-NLS-1$
+                                final GColour lineColour = DatParser.validateColour(24, .5f, .5f, .5f, 1f).clone();
+                                final GColour bodyColour = DatParser.validateColour(16, .5f, .5f, .5f, 1f).clone();
 
                                 double VERTMERGE = 0.001;
                                 double PI = 3.14159265358979323846;
