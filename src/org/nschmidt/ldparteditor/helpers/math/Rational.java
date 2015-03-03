@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import java.math.MathContext;
 
 /**
+ * Full immutable rational representation with lower and upper part
  * @author nils
  *
  */
@@ -27,8 +28,8 @@ public class Rational implements Comparable<Rational> {
 
     public static final Rational ZERO = new Rational();
     public static final Rational ONE = new Rational(BigInteger.ONE, BigInteger.ONE);
-    private BigInteger upper;
-    private BigInteger lower;
+    private final BigInteger upper;
+    private final BigInteger lower;
 
     public Rational(BigInteger upper, BigInteger lower) {
         this.upper = upper;
@@ -50,7 +51,6 @@ public class Rational implements Comparable<Rational> {
 
     public Rational(BigDecimal x) {
         final int scale = x.scale();
-        this.upper = x.unscaledValue();
         if (scale > 0) {
             this.upper = x.unscaledValue();
             this.lower = BigInteger.TEN.pow(scale);
