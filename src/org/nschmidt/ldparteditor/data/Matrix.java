@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.nschmidt.ldparteditor.enums.RotationSnap;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
@@ -330,180 +331,221 @@ public final class Matrix {
         return s0.multiply(c5).subtract(s1.multiply(c4)).add(s2.multiply(c3)).add(s3.multiply(c2)).subtract(s4.multiply(c1)).add(s5.multiply(c0));
     }
 
-    public Matrix rotate(BigDecimal angle, BigDecimal[] axis) {
-        BigDecimal c = MathHelper.cos(angle);
-        BigDecimal s = MathHelper.sin(angle);
-        BigDecimal oneminusc = BigDecimal.ONE.subtract(c);
-        BigDecimal xy = axis[0].multiply(axis[1]); // axis.x * axis.y;
-        BigDecimal yz = axis[1].multiply(axis[2]); // axis.y * axis.z;
-        BigDecimal xz = axis[0].multiply(axis[2]); // axis.x * axis.z;
-        BigDecimal xs = axis[0].multiply(s); // axis.x * s;
-        BigDecimal ys = axis[1].multiply(s); // axis.y * s;
-        BigDecimal zs = axis[2].multiply(s); // axis.z * s;
-        BigDecimal f00 = axis[0].multiply(axis[0]).multiply(oneminusc).add(c); // axis.x
-        // *
-        // axis.x
-        // *
-        // oneminusc
-        // +
-        // c;
-        BigDecimal f01 = xy.multiply(oneminusc).add(zs); // xy * oneminusc + zs;
-        BigDecimal f02 = xz.multiply(oneminusc).subtract(ys); // xz * oneminusc
-        // - ys;
-        // n[3] not used
-        BigDecimal f10 = xy.multiply(oneminusc).subtract(zs); // xy * oneminusc
-        // - zs;
-        BigDecimal f11 = axis[1].multiply(axis[1]).multiply(oneminusc).add(c); // axis.y
-        // *
-        // axis.y
-        // *
-        // oneminusc
-        // +
-        // c;
-        BigDecimal f12 = yz.multiply(oneminusc).add(xs); // yz * oneminusc + xs;
-        // n[7] not used
-        BigDecimal f20 = xz.multiply(oneminusc).add(ys); // xz * oneminusc + ys;
-        BigDecimal f21 = yz.multiply(oneminusc).subtract(xs); // yz * oneminusc
-        // - xs;
-        BigDecimal f22 = axis[2].multiply(axis[2]).multiply(oneminusc).add(c); // axis.z
-        // *
-        // axis.z
-        // *
-        // oneminusc
-        // +
-        // c;
-        BigDecimal t00 = M00.multiply(f00).add(M10.multiply(f01)).add(M20.multiply(f02)); // src.m00
-        // *
-        // f00
-        // +
-        // src.m10
-        // *
-        // f01
-        // +
-        // src.m20
-        // *
-        // f02;
-        BigDecimal t01 = M01.multiply(f00).add(M11.multiply(f01)).add(M21.multiply(f02)); // src.m01
-        // *
-        // f00
-        // +
-        // src.m11
-        // *
-        // f01
-        // +
-        // src.m21
-        // *
-        // f02;
-        BigDecimal t02 = M02.multiply(f00).add(M12.multiply(f01)).add(M22.multiply(f02)); // src.m02
-        // *
-        // f00
-        // +
-        // src.m12
-        // *
-        // f01
-        // +
-        // src.m22
-        // *
-        // f02;
-        BigDecimal t03 = M03.multiply(f00).add(M13.multiply(f01)).add(M23.multiply(f02)); // src.m03
-        // *
-        // f00
-        // +
-        // src.m13
-        // *
-        // f01
-        // +
-        // src.m23
-        // *
-        // f02;
-        BigDecimal t10 = M00.multiply(f10).add(M10.multiply(f11)).add(M20.multiply(f12)); // src.m00
-        // *
-        // f10
-        // +
-        // src.m10
-        // *
-        // f11
-        // +
-        // src.m20
-        // *
-        // f12;
-        BigDecimal t11 = M01.multiply(f10).add(M11.multiply(f11)).add(M21.multiply(f12)); // src.m01
-        // *
-        // f10
-        // +
-        // src.m11
-        // *
-        // f11
-        // +
-        // src.m21
-        // *
-        // f12;
-        BigDecimal t12 = M02.multiply(f10).add(M12.multiply(f11)).add(M22.multiply(f12)); // src.m02
-        // *
-        // f10
-        // +
-        // src.m12
-        // *
-        // f11
-        // +
-        // src.m22
-        // *
-        // f12;
-        BigDecimal t13 = M03.multiply(f10).add(M13.multiply(f11)).add(M23.multiply(f12)); // src.m03
-        // *
-        // f10
-        // +
-        // src.m13
-        // *
-        // f11
-        // +
-        // src.m23
-        // *
-        // f12;
-        BigDecimal m20 = M00.multiply(f20).add(M10.multiply(f21)).add(M20.multiply(f22)); // src.m00
-        // *
-        // f20
-        // +
-        // src.m10
-        // *
-        // f21
-        // +
-        // src.m20
-        // *
-        // f22;
-        BigDecimal m21 = M01.multiply(f20).add(M11.multiply(f21)).add(M21.multiply(f22)); // src.m01
-        // *
-        // f20
-        // +
-        // src.m11
-        // *
-        // f21
-        // +
-        // src.m21
-        // *
-        // f22;
-        BigDecimal m22 = M02.multiply(f20).add(M12.multiply(f21)).add(M22.multiply(f22)); // src.m02
-        // *
-        // f20
-        // +
-        // src.m12
-        // *
-        // f21
-        // +
-        // src.m22
-        // *
-        // f22;
-        BigDecimal m23 = M03.multiply(f20).add(M13.multiply(f21)).add(M23.multiply(f22)); // src.m03
-        // *
-        // f20
-        // +
-        // src.m13
-        // *
-        // f21
-        // +
-        // src.m23
-        // *
-        // f22;
+    public Matrix rotate(BigDecimal angle, RotationSnap rs, BigDecimal[] axis) {
+
+        BigDecimal f00;
+        BigDecimal f01;
+        BigDecimal f02;
+        BigDecimal f10;
+        BigDecimal f11;
+        BigDecimal f12;
+        BigDecimal f20;
+        BigDecimal f21;
+        BigDecimal f22;
+
+        int ac = 0;
+        int ax = 0;
+        if (axis[0].compareTo(BigDecimal.ONE) == 0) {
+            ax = 1;
+            ac++;
+        } else if (axis[0].compareTo(BigDecimal.ZERO) == 0) ac++;
+        if (axis[1].compareTo(BigDecimal.ONE) == 0) {
+            if (ax != 0) ac = 0;
+            ax = 2;
+            ac++;
+        } else if (axis[1].compareTo(BigDecimal.ZERO) == 0) ac++;
+        if (axis[2].compareTo(BigDecimal.ONE) == 0) {
+            if (ax != 0) ac = 0;
+            ax = 3;
+            ac++;
+        } else if (axis[2].compareTo(BigDecimal.ZERO) == 0) ac++;
+        if (ac != 3) rs = RotationSnap.COMPLEX;
+
+        switch (rs) {
+        case DEG180:
+            switch (ax) {
+            case 1:
+                f00 = BigDecimal.ONE;
+                f01 = BigDecimal.ZERO;
+                f02 = BigDecimal.ZERO;
+                f10 = BigDecimal.ZERO;
+                f11 = BigDecimal.ONE.negate();
+                f12 = BigDecimal.ZERO;
+                f20 = BigDecimal.ZERO;
+                f21 = BigDecimal.ZERO;
+                f22 = BigDecimal.ONE.negate();
+                break;
+            case 2:
+                f00 = BigDecimal.ONE.negate();
+                f01 = BigDecimal.ZERO;
+                f02 = BigDecimal.ZERO;
+                f10 = BigDecimal.ZERO;
+                f11 = BigDecimal.ONE;
+                f12 = BigDecimal.ZERO;
+                f20 = BigDecimal.ZERO;
+                f21 = BigDecimal.ZERO;
+                f22 = BigDecimal.ONE.negate();
+                break;
+            case 3:
+                f00 = BigDecimal.ONE.negate();
+                f01 = BigDecimal.ZERO;
+                f02 = BigDecimal.ZERO;
+                f10 = BigDecimal.ZERO;
+                f11 = BigDecimal.ONE.negate();
+                f12 = BigDecimal.ZERO;
+                f20 = BigDecimal.ZERO;
+                f21 = BigDecimal.ZERO;
+                f22 = BigDecimal.ONE;
+                break;
+            }
+            break;
+        case DEG270:
+            switch (ax) {
+            case 1:
+                f00 = BigDecimal.;
+                f01 = BigDecimal.;
+                f02 = BigDecimal.;
+                f10 = BigDecimal.;
+                f11 = BigDecimal.;
+                f12 = BigDecimal.;
+                f20 = BigDecimal.;
+                f21 = BigDecimal.;
+                f22 = BigDecimal.;
+                break;
+            case 2:
+                f00 = BigDecimal.;
+                f01 = BigDecimal.;
+                f02 = BigDecimal.;
+                f10 = BigDecimal.;
+                f11 = BigDecimal.;
+                f12 = BigDecimal.;
+                f20 = BigDecimal.;
+                f21 = BigDecimal.;
+                f22 = BigDecimal.;
+                break;
+            case 3:
+                f00 = BigDecimal.;
+                f01 = BigDecimal.;
+                f02 = BigDecimal.;
+                f10 = BigDecimal.;
+                f11 = BigDecimal.;
+                f12 = BigDecimal.;
+                f20 = BigDecimal.;
+                f21 = BigDecimal.;
+                f22 = BigDecimal.;
+                break;
+            }
+            break;
+        case DEG360:
+            switch (ax) {
+            case 1:
+                f00 = BigDecimal.;
+                f01 = BigDecimal.;
+                f02 = BigDecimal.;
+                f10 = BigDecimal.;
+                f11 = BigDecimal.;
+                f12 = BigDecimal.;
+                f20 = BigDecimal.;
+                f21 = BigDecimal.;
+                f22 = BigDecimal.;
+                break;
+            case 2:
+                f00 = BigDecimal.;
+                f01 = BigDecimal.;
+                f02 = BigDecimal.;
+                f10 = BigDecimal.;
+                f11 = BigDecimal.;
+                f12 = BigDecimal.;
+                f20 = BigDecimal.;
+                f21 = BigDecimal.;
+                f22 = BigDecimal.;
+                break;
+            case 3:
+                f00 = BigDecimal.;
+                f01 = BigDecimal.;
+                f02 = BigDecimal.;
+                f10 = BigDecimal.;
+                f11 = BigDecimal.;
+                f12 = BigDecimal.;
+                f20 = BigDecimal.;
+                f21 = BigDecimal.;
+                f22 = BigDecimal.;
+                break;
+            }
+            break;
+        case DEG90:
+            switch (ax) {
+            case 1:
+                f00 = BigDecimal.;
+                f01 = BigDecimal.;
+                f02 = BigDecimal.;
+                f10 = BigDecimal.;
+                f11 = BigDecimal.;
+                f12 = BigDecimal.;
+                f20 = BigDecimal.;
+                f21 = BigDecimal.;
+                f22 = BigDecimal.;
+                break;
+            case 2:
+                f00 = BigDecimal.;
+                f01 = BigDecimal.;
+                f02 = BigDecimal.;
+                f10 = BigDecimal.;
+                f11 = BigDecimal.;
+                f12 = BigDecimal.;
+                f20 = BigDecimal.;
+                f21 = BigDecimal.;
+                f22 = BigDecimal.;
+                break;
+            case 3:
+                f00 = BigDecimal.;
+                f01 = BigDecimal.;
+                f02 = BigDecimal.;
+                f10 = BigDecimal.;
+                f11 = BigDecimal.;
+                f12 = BigDecimal.;
+                f20 = BigDecimal.;
+                f21 = BigDecimal.;
+                f22 = BigDecimal.;
+                break;
+            }
+            break;
+        case COMPLEX:
+        default:
+            BigDecimal c = MathHelper.cos(angle);
+            BigDecimal s = MathHelper.sin(angle);
+            BigDecimal oneminusc = BigDecimal.ONE.subtract(c);
+            BigDecimal xy = axis[0].multiply(axis[1]);
+            BigDecimal yz = axis[1].multiply(axis[2]);
+            BigDecimal xz = axis[0].multiply(axis[2]);
+            BigDecimal xs = axis[0].multiply(s);
+            BigDecimal ys = axis[1].multiply(s);
+            BigDecimal zs = axis[2].multiply(s);
+            f00 = axis[0].multiply(axis[0]).multiply(oneminusc).add(c);
+            f01 = xy.multiply(oneminusc).add(zs);
+            f02 = xz.multiply(oneminusc).subtract(ys);
+            f10 = xy.multiply(oneminusc).subtract(zs);
+            f11 = axis[1].multiply(axis[1]).multiply(oneminusc).add(c);
+            f12 = yz.multiply(oneminusc).add(xs);
+            f20 = xz.multiply(oneminusc).add(ys);
+            f21 = yz.multiply(oneminusc).subtract(xs);
+            f22 = axis[2].multiply(axis[2]).multiply(oneminusc).add(c);
+            break;
+        }
+
+
+        BigDecimal t00 = M00.multiply(f00).add(M10.multiply(f01)).add(M20.multiply(f02));
+        BigDecimal t01 = M01.multiply(f00).add(M11.multiply(f01)).add(M21.multiply(f02));
+        BigDecimal t02 = M02.multiply(f00).add(M12.multiply(f01)).add(M22.multiply(f02));
+        BigDecimal t03 = M03.multiply(f00).add(M13.multiply(f01)).add(M23.multiply(f02));
+        BigDecimal t10 = M00.multiply(f10).add(M10.multiply(f11)).add(M20.multiply(f12));
+        BigDecimal t11 = M01.multiply(f10).add(M11.multiply(f11)).add(M21.multiply(f12));
+        BigDecimal t12 = M02.multiply(f10).add(M12.multiply(f11)).add(M22.multiply(f12));
+        BigDecimal t13 = M03.multiply(f10).add(M13.multiply(f11)).add(M23.multiply(f12));
+        BigDecimal m20 = M00.multiply(f20).add(M10.multiply(f21)).add(M20.multiply(f22));
+        BigDecimal m21 = M01.multiply(f20).add(M11.multiply(f21)).add(M21.multiply(f22));
+        BigDecimal m22 = M02.multiply(f20).add(M12.multiply(f21)).add(M22.multiply(f22));
+        BigDecimal m23 = M03.multiply(f20).add(M13.multiply(f21)).add(M23.multiply(f22));
         BigDecimal m00 = t00;
         BigDecimal m01 = t01;
         BigDecimal m02 = t02;
@@ -518,39 +560,9 @@ public final class Matrix {
 
     public Matrix translate(BigDecimal[] vec) {
 
-        BigDecimal m30 = M30.add(M00.multiply(vec[0]).add(M10.multiply(vec[1])).add(M20.multiply(vec[2]))); // src.m00
-        // *
-        // vec.x
-        // +
-        // src.m10
-        // *
-        // vec.y
-        // +
-        // src.m20
-        // *
-        // vec.z;
-        BigDecimal m31 = M31.add(M01.multiply(vec[0]).add(M11.multiply(vec[1])).add(M21.multiply(vec[2]))); // src.m01
-        // *
-        // vec.x
-        // +
-        // src.m11
-        // *
-        // vec.y
-        // +
-        // src.m21
-        // *
-        // vec.z;
-        BigDecimal m32 = M32.add(M02.multiply(vec[0]).add(M12.multiply(vec[1])).add(M22.multiply(vec[2]))); // src.m02
-        // *
-        // vec.x
-        // +
-        // src.m12
-        // *
-        // vec.y
-        // +
-        // src.m22
-        // *
-        // vec.z;
+        BigDecimal m30 = M30.add(M00.multiply(vec[0]).add(M10.multiply(vec[1])).add(M20.multiply(vec[2])));
+        BigDecimal m31 = M31.add(M01.multiply(vec[0]).add(M11.multiply(vec[1])).add(M21.multiply(vec[2])));
+        BigDecimal m32 = M32.add(M02.multiply(vec[0]).add(M12.multiply(vec[1])).add(M22.multiply(vec[2])));
 
         return new Matrix(M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, m30, m31, m32, BigDecimal.ONE);
     }
