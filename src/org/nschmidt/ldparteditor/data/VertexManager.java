@@ -16768,7 +16768,7 @@ public class VertexManager {
     }
 
     public void subdivideCatmullClark() {
-        // FIXME Auto-generated method stub
+
         if (linkedDatFile.isReadOnly()) return;
 
         // Backup selected surfaces
@@ -16903,7 +16903,7 @@ public class VertexManager {
 
             // Build quads
             for(int i = 0; i < c; i++) {
-                newQuads.add(new GData4(colourNumber, r, g, b, a, vc, ve[i], newPoints.get(originalVerts[i]), ve[(c + i - 1) % c], View.DUMMY_REFERENCE, linkedDatFile));
+                newQuads.add(new GData4(colourNumber, r, g, b, a, newPoints.get(originalVerts[i]), ve[i], vc, ve[(c + i - 1) % c], View.DUMMY_REFERENCE, linkedDatFile));
             }
 
         }
@@ -16928,37 +16928,38 @@ public class VertexManager {
         selectedQuads.addAll(newQuads);
         selectedData.addAll(newQuads);
         roundSelection(6, 10, true);
-
+        setModified(true);
         validateState();
 
     }
 
     public void subdivideLoop() {
-        // FIXME Auto-generated method stub
+
         if (linkedDatFile.isReadOnly()) return;
 
         // Backup selected surfaces
-        HashSet<GData> surfsToParse = new HashSet<GData>();
+        HashSet<GData3> surfsToParse = new HashSet<GData3>();
 
         final Set<GData2> linesToDelete2 = new HashSet<GData2>();
         final Set<GData3> trisToDelete2 = new HashSet<GData3>();
-        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
 
         final Set<GData2> newLines = new HashSet<GData2>();
         final Set<GData3> newTris = new HashSet<GData3>();
 
-        {
-            for (GData3 g3 : selectedTriangles) {
-                if (!lineLinkedToVertices.containsKey(g3)) continue;
-                surfsToParse.add(g3);
-                trisToDelete2.add(g3);
-            }
-            for (GData4 g4 : selectedQuads) {
-                if (!lineLinkedToVertices.containsKey(g4)) continue;
-                surfsToParse.add(g4);
-                quadsToDelete2.add(g4);
-            }
+        for (GData3 g3 : selectedTriangles) {
+            if (!lineLinkedToVertices.containsKey(g3)) continue;
+            surfsToParse.add(g3);
+            trisToDelete2.add(g3);
         }
+
+        splitQuads();
+
+        for (GData3 g3 : selectedTriangles) {
+            if (!lineLinkedToVertices.containsKey(g3)) continue;
+            surfsToParse.add(g3);
+            trisToDelete2.add(g3);
+        }
+
         if (surfsToParse.isEmpty()) return;
 
         // Delete all condlines, since the are a PITA for subdivision
@@ -16969,6 +16970,68 @@ public class VertexManager {
         delete(false);
 
         HashMap<Vertex, Vertex> newPoints = new HashMap<Vertex, Vertex>();
+
+        for (GData3 g3 : surfsToParse) {
+            Vertex[] originalVerts;
+            int colourNumber;
+            float r;
+            float g;
+            float b;
+            float a;
+            originalVerts = triangles.get(g3);
+            colourNumber = g3.colourNumber; r = g3.r; g = g3.g; b = g3.b; a = g3.a;
+
+            final int c = originalVerts.length;
+
+            Vertex[] ve = new Vertex[c];
+            for(int i = 0; i < c; i++) {
+                ve[i] = new Vertex(Vector3d.add(new Vector3d(originalVerts[i]), new Vector3d(originalVerts[(i + 1) % c])).scaledByHalf());
+                GData2 g2 = null;
+                if ((g2 = hasEdge(originalVerts[i], originalVerts[(i + 1) % c])) != null) {
+                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[i], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[i], ve[i], View.DUMMY_REFERENCE, linkedDatFile));
+                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[(i + 1) % c], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[(i + 1) % c], ve[i], View.DUMMY_REFERENCE, linkedDatFile));
+                    linesToDelete2.add(g2);
+                }
+            }
+
+            // Build triangles
+            newTris.add(new GData3(colourNumber, r, g, b, a, ve[0], ve[1], ve[2], View.DUMMY_REFERENCE, linkedDatFile));
+            newTris.add(new GData3(colourNumber, r, g, b, a, originalVerts[0], ve[0], ve[2], View.DUMMY_REFERENCE, linkedDatFile));
+            newTris.add(new GData3(colourNumber, r, g, b, a, originalVerts[1], ve[1], ve[0], View.DUMMY_REFERENCE, linkedDatFile));
+            newTris.add(new GData3(colourNumber, r, g, b, a, originalVerts[2], ve[2], ve[1], View.DUMMY_REFERENCE, linkedDatFile));
+        }
+
+        for (GData g : newLines) {
+            linkedDatFile.addToTail(g);
+        }
+        for (GData g : newTris) {
+            linkedDatFile.addToTail(g);
+        }
+
+        selectedLines.addAll(linesToDelete2);
+        selectedTriangles.addAll(trisToDelete2);
+        selectedData.addAll(linesToDelete2);
+        selectedData.addAll(trisToDelete2);
+        delete(false);
+
+        selectedLines.addAll(newLines);
+        selectedData.addAll(newLines);
+        selectedTriangles.addAll(newTris);
+        selectedData.addAll(newTris);
+        roundSelection(6, 10, true);
+
+        HashSet<Vertex> verticesToMove = new HashSet<Vertex>();
+
+        for (GData3 tri : selectedTriangles) {
+            Vertex[] verts = triangles.get(tri);
+            for (Vertex v : verts) {
+                verticesToMove.add(v);
+            }
+        }
+
+        int newContentSize = newLines.size() + newTris.size();
+
+        clearSelection();
 
         // Calculate new points, based on Loop's Algorithm
         for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
@@ -17023,97 +17086,32 @@ public class VertexManager {
             }
         }
 
+        for (Vertex v : verticesToMove) {
+            changeVertexDirectFast(v, newPoints.get(v), true);
+        }
 
-        for (GData gd : surfsToParse) {
-            Vertex[] originalVerts;
-            int colourNumber;
-            float r;
-            float g;
-            float b;
-            float a;
+        clearSelection();
+
+        GData gd = linkedDatFile.getDrawChainTail();
+        while (newContentSize > 0) {
             switch (gd.type()) {
+            case 2:
+                selectedLines.add((GData2) gd);
+                selectedData.add(gd);
+                break;
             case 3:
-                originalVerts = triangles.get(gd);
-                GData3 g3 = (GData3) gd;
-                colourNumber = g3.colourNumber; r = g3.r; g = g3.g; b = g3.b; a = g3.a;
-                break;
-            case 4:
-                originalVerts = quads.get(gd);
-                GData4 g4 = (GData4) gd;
-                colourNumber = g4.colourNumber; r = g4.r; g = g4.g; b = g4.b; a = g4.a;
-                break;
-            default:
-                continue;
-            }
-
-            final int c = originalVerts.length;
-
-            BigDecimal c2 = new BigDecimal(c);
-            Vector3d center = new Vector3d();
-            for (Vertex vd : originalVerts) {
-                center = Vector3d.add(center, new Vector3d(vd));
-            }
-            center.setX(center.X.divide(c2, Threshold.mc));
-            center.setY(center.Y.divide(c2, Threshold.mc));
-            center.setZ(center.Z.divide(c2, Threshold.mc));
-
-            Vertex vc = new Vertex(center);
-
-            Vertex[] ve = new Vertex[c];
-            for(int i = 0; i < c; i++) {
-                ve[i] = new Vertex(Vector3d.add(new Vector3d(originalVerts[i]), new Vector3d(originalVerts[(i + 1) % c])).scaledByHalf());
-                GData2 g2 = null;
-                if ((g2 = hasEdge(originalVerts[i], originalVerts[(i + 1) % c])) != null) {
-                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[i], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[i], ve[i], View.DUMMY_REFERENCE, linkedDatFile));
-                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[(i + 1) % c], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[(i + 1) % c], ve[i], View.DUMMY_REFERENCE, linkedDatFile));
-                    linesToDelete2.add(g2);
-                }
-            }
-
-            // Build triangles
-            switch (c) {
-            case 3:
-                newTris.add(new GData3(colourNumber, r, g, b, a, ve[0], ve[1], ve[2], View.DUMMY_REFERENCE, linkedDatFile));
-                newTris.add(new GData3(colourNumber, r, g, b, a, newPoints.get(originalVerts[0]), ve[0], ve[2], View.DUMMY_REFERENCE, linkedDatFile));
-                newTris.add(new GData3(colourNumber, r, g, b, a, newPoints.get(originalVerts[1]), ve[1], ve[0], View.DUMMY_REFERENCE, linkedDatFile));
-                newTris.add(new GData3(colourNumber, r, g, b, a, newPoints.get(originalVerts[2]), ve[2], ve[1], View.DUMMY_REFERENCE, linkedDatFile));
-                break;
-            case 4:
-                newTris.add(new GData3(colourNumber, r, g, b, a, newPoints.get(originalVerts[0]), ve[0], ve[3], View.DUMMY_REFERENCE, linkedDatFile));
-                newTris.add(new GData3(colourNumber, r, g, b, a, ve[0], vc, ve[3], View.DUMMY_REFERENCE, linkedDatFile));
-                newTris.add(new GData3(colourNumber, r, g, b, a, ve[0], newPoints.get(originalVerts[1]), vc, View.DUMMY_REFERENCE, linkedDatFile));
-                newTris.add(new GData3(colourNumber, r, g, b, a, ve[3], vc, newPoints.get(originalVerts[3]), View.DUMMY_REFERENCE, linkedDatFile));
-                newTris.add(new GData3(colourNumber, r, g, b, a, newPoints.get(originalVerts[1]), ve[1], vc, View.DUMMY_REFERENCE, linkedDatFile));
-                newTris.add(new GData3(colourNumber, r, g, b, a, ve[1], ve[2], vc, View.DUMMY_REFERENCE, linkedDatFile));
-                newTris.add(new GData3(colourNumber, r, g, b, a, vc, ve[2], newPoints.get(originalVerts[3]), View.DUMMY_REFERENCE, linkedDatFile));
-                newTris.add(new GData3(colourNumber, r, g, b, a, ve[1], newPoints.get(originalVerts[2]), ve[2], View.DUMMY_REFERENCE, linkedDatFile));
+                selectedTriangles.add((GData3) gd);
+                selectedData.add(gd);
                 break;
             default:
                 break;
             }
+            gd = gd.getBefore();
+            newContentSize--;
         }
-
-        for (GData g : newLines) {
-            linkedDatFile.addToTail(g);
-        }
-        for (GData g : newTris) {
-            linkedDatFile.addToTail(g);
-        }
-
-        selectedLines.addAll(linesToDelete2);
-        selectedTriangles.addAll(trisToDelete2);
-        selectedQuads.addAll(quadsToDelete2);
-        selectedData.addAll(linesToDelete2);
-        selectedData.addAll(trisToDelete2);
-        selectedData.addAll(quadsToDelete2);
-        delete(false);
-
-        selectedLines.addAll(newLines);
-        selectedData.addAll(newLines);
-        selectedTriangles.addAll(newTris);
-        selectedData.addAll(newTris);
         roundSelection(6, 10, true);
 
+        setModified(true);
         validateState();
     }
 
