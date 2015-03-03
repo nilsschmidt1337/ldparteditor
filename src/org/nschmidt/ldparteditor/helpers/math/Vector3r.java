@@ -22,6 +22,8 @@ import org.nschmidt.ldparteditor.data.Vertex;
 
 /**
  * Absolute precise vector
+ *
+ * Note: Needs no hashCode() and equals()
  * @author nils
  *
  */
@@ -30,10 +32,6 @@ public class Vector3r {
     public Rational X;
     public Rational Y;
     public Rational Z;
-
-    //    private boolean hasHashcode = false;
-    //    private int hashCode = 0;
-
 
     public Vector3r(Vector4f tmp) {
         this(new Vertex(tmp));
@@ -102,21 +100,6 @@ public class Vector3r {
         return new Vector3r(a.X.add(b.X), a.Y.add(b.Y), a.Z.add(b.Z));
     }
 
-    //    @Override
-    //    public int hashCode() {
-    //        if (hasHashcode) {
-    //            return hashCode;
-    //        }
-    //        hasHashcode = true;
-    //        final int prime = 31;
-    //        int result = prime + X.hashCode();
-    //        result = prime * result + Y.hashCode();
-    //        result = prime * result + Z.hashCode();
-    //        hashCode = result;
-    //        return result;
-    //    }
-    //
-    //    @Override
     public boolean equals3d(Object obj) {
         Vector3r other = (Vector3r) obj;
         return this.X.compareTo(other.X) == 0 && this.Y.compareTo(other.Y) == 0 && this.Z.compareTo(other.Z) == 0;
