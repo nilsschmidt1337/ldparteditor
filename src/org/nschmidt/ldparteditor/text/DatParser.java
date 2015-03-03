@@ -156,25 +156,56 @@ public enum DatParser {
         } catch (NumberFormatException nfe) {
             if (arg.length() == 9 && arg.substring(0, 3).equals("0x2")) { //$NON-NLS-1$
                 cValue.setA(1f);
-                try {
-                    cValue.setR(Integer.parseInt(arg.substring(3, 5), 16) / 255f);
-                } catch (NumberFormatException nfe2) {
-                    return null;
-                }
-                try {
-                    cValue.setG(Integer.parseInt(arg.substring(5, 7), 16) / 255f);
-                } catch (NumberFormatException nfe2) {
-                    return null;
-                }
-                try {
-                    cValue.setB(Integer.parseInt(arg.substring(7, 9), 16) / 255f);
-                } catch (NumberFormatException nfe2) {
-                    return null;
-                }
-                cValue.setColourNumber(-1);
+            try {
+                cValue.setR(Integer.parseInt(arg.substring(3, 5), 16) / 255f);
+            } catch (NumberFormatException nfe2) {
+                return null;
+            }
+            try {
+                cValue.setG(Integer.parseInt(arg.substring(5, 7), 16) / 255f);
+            } catch (NumberFormatException nfe2) {
+                return null;
+            }
+            try {
+                cValue.setB(Integer.parseInt(arg.substring(7, 9), 16) / 255f);
+            } catch (NumberFormatException nfe2) {
+                return null;
+            }
+            cValue.setColourNumber(-1);
             } else {
                 return null;
             }
+        }
+        return cValue;
+    }
+
+    /**
+     * Validates the colour argument and highlights possible errors
+     *
+     * Please note that the returned value will be always the same instance due
+     * to performance reasons! <br>
+     * Use {@code clone()} to obtain a new instance!
+     *
+     * @param arg
+     *            the argument data
+     * @return {@code null} if the colour is invalid
+     */
+    public static GColour validateColour(int arg, float r, float g, float b, float a) {
+        switch (arg) {
+        case 16:
+            cValue.set(16, r, g, b, a);
+            break;
+        case 24:
+            cValue.set(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f);
+            break;
+        default:
+            if (View.hasLDConfigColour(arg)) {
+                GColour colour = View.getLDConfigColour(arg);
+                cValue.set(colour);
+            } else {
+                return null;
+            }
+            break;
         }
         return cValue;
     }
