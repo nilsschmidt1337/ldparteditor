@@ -36,6 +36,11 @@ public class SelectorSettings {
     private boolean wholeSubfiles = false;
     private BigDecimal angle = BigDecimal.ZERO;
     private BigDecimal equalDistance = new BigDecimal("0.0001"); //$NON-NLS-1$
+    private boolean vertices = false;
+    private boolean lines = false;
+    private boolean triangles = false;
+    private boolean quads = false;
+    private boolean condlines = false;
     public int getScope() {
         return scope;
     }
@@ -95,5 +100,35 @@ public class SelectorSettings {
     }
     public void setDistance(boolean distance) {
         this.distance = distance;
+    }
+    public boolean isVertices() {
+        return vertices;
+    }
+    public void setVertices(boolean vertices) {
+        this.vertices = vertices;
+    }
+    public boolean isLines() {
+        return lines;
+    }
+    public void setLines(boolean lines) {
+        this.lines = lines;
+    }
+    public boolean isTriangles() {
+        return triangles;
+    }
+    public void setTriangles(boolean triangles) {
+        this.triangles = triangles;
+    }
+    public boolean isQuads() {
+        return quads;
+    }
+    public void setQuads(boolean quads) {
+        this.quads = quads;
+    }
+    public boolean isCondlines() {
+        return condlines;
+    }
+    public void setCondlines(boolean condlines) {
+        this.condlines = condlines;
     }
 }
