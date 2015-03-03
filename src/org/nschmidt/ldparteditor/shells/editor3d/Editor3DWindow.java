@@ -2729,6 +2729,61 @@ public class Editor3DWindow extends Editor3DDesign {
                 });
             }
         });
+        mntm_STriangles[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSelectMenu();
+                    }
+                });
+            }
+        });
+        mntm_SQuads[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSelectMenu();
+                    }
+                });
+            }
+        });
+        mntm_SCLines[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSelectMenu();
+                    }
+                });
+            }
+        });
+        mntm_SVertices[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSelectMenu();
+                    }
+                });
+            }
+        });
+        mntm_SLines[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSelectMenu();
+                    }
+                });
+            }
+        });
 
         mntm_SelectEverything[0].addSelectionListener(new SelectionAdapter() {
             @Override
@@ -5005,6 +5060,11 @@ public class Editor3DWindow extends Editor3DDesign {
         sels.setOrientation(mntm_WithSameOrientation[0].getSelection());
         sels.setDistance(mntm_WithAccuracy[0].getSelection());
         sels.setWholeSubfiles(mntm_WithWholeSubfiles[0].getSelection());
+        sels.setVertices(mntm_SVertices[0].getSelection());
+        sels.setLines(mntm_SLines[0].getSelection());
+        sels.setTriangles(mntm_STriangles[0].getSelection());
+        sels.setQuads(mntm_SQuads[0].getSelection());
+        sels.setCondlines(mntm_SCLines[0].getSelection());
     }
 
     private boolean isFileNameAllocated(String dir, DatFile df, boolean createNew) {

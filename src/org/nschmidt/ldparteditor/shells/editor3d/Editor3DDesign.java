@@ -79,7 +79,6 @@ import swing2swt.layout.BorderLayout;
  */
 class Editor3DDesign extends ApplicationWindow {
 
-
     /** The menu of the manipulator */
     private Menu mnu_Manipulator;
     /** The menu of the tools */
@@ -287,6 +286,12 @@ class Editor3DDesign extends ApplicationWindow {
     final Label[] lbl_SelectionX4 = new Label[1];
     final Label[] lbl_SelectionY4 = new Label[1];
     final Label[] lbl_SelectionZ4 = new Label[1];
+
+    final MenuItem[] mntm_STriangles = new MenuItem[1];
+    final MenuItem[] mntm_SQuads = new MenuItem[1];
+    final MenuItem[] mntm_SCLines = new MenuItem[1];
+    final MenuItem[] mntm_SVertices = new MenuItem[1];
+    final MenuItem[] mntm_SLines = new MenuItem[1];
 
     private static SashForm sashForm;
 
@@ -740,6 +745,38 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator4 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                    {
+                        MenuItem mntm_SVertices = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_SVertices[0] = mntm_SVertices;
+                        mntm_SVertices.setText("Vertices."); //$NON-NLS-1$ I18N
+                        mntm_SVertices.setSelection(true);
+                    }
+                    {
+                        MenuItem mntm_SLines = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_SLines[0] = mntm_SLines;
+                        mntm_SLines.setText("Lines."); //$NON-NLS-1$ I18N
+                        mntm_SLines.setSelection(true);
+                    }
+                    {
+                        MenuItem mntm_STriangles = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_STriangles[0] = mntm_STriangles;
+                        mntm_STriangles.setText("Triangles."); //$NON-NLS-1$ I18N
+                        mntm_STriangles.setSelection(true);
+                    }
+                    {
+                        MenuItem mntm_SQuads = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_SQuads[0] = mntm_SQuads;
+                        mntm_SQuads.setText("Quads."); //$NON-NLS-1$ I18N
+                        mntm_SQuads.setSelection(true);
+                    }
+                    {
+                        MenuItem mntm_SCLines = new MenuItem(mnu_Select, SWT.CHECK);
+                        this.mntm_SCLines[0] = mntm_SCLines;
+                        mntm_SCLines.setText("Conditional Lines."); //$NON-NLS-1$ I18N
+                        mntm_SCLines.setSelection(true);
+                    }
+                    @SuppressWarnings("unused")
+                    final MenuItem mntmSeparator5 = new MenuItem(mnu_Select, SWT.SEPARATOR);
                     {
                         MenuItem mntm_needsThreshold = new MenuItem(mnu_Select, SWT.PUSH);
                         mntm_needsThreshold.setText("¹ needs a threshold."); //$NON-NLS-1$ I18N
