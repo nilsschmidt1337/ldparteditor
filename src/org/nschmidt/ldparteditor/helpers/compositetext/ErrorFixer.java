@@ -98,7 +98,7 @@ final class ErrorFixer {
                         i++;
                         switch (i) {
                         case 6:
-                            if (M00 && (M01 && M02 || M10 && M02)) {
+                            if (M00 && (M01 && M02 || M10 && M20)) {
                                 sb.append("1"); //$NON-NLS-1$
                             } else {
                                 sb.append(seg);

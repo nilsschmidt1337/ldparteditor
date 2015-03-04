@@ -26,6 +26,7 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.Matrix;
+import org.nschmidt.ldparteditor.enums.RotationSnap;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
@@ -114,7 +115,86 @@ public class Manipulator {
     private static BigDecimal snap_z_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.mc);
     private static BigDecimal snap_v_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.mc);
 
+
+    private static RotationSnap snap_x_RotateFlag = RotationSnap.COMPLEX;
+    private static RotationSnap snap_y_RotateFlag = RotationSnap.COMPLEX;
+    private static RotationSnap snap_z_RotateFlag = RotationSnap.COMPLEX;
+    private static RotationSnap snap_v_RotateFlag = RotationSnap.COMPLEX;
+
     public static void setSnap(BigDecimal trans, BigDecimal rot, BigDecimal scale) {
+
+        switch (rot.intValue()) {
+        case 90:
+            snap_x_RotateFlag = RotationSnap.DEG90;
+            break;
+        case 180:
+            snap_x_RotateFlag = RotationSnap.DEG180;
+            break;
+        case 270:
+            snap_x_RotateFlag = RotationSnap.DEG270;
+            break;
+        case 360:
+            snap_x_RotateFlag = RotationSnap.DEG360;
+            break;
+        default:
+            snap_x_RotateFlag = RotationSnap.COMPLEX;
+            break;
+        }
+
+        switch (rot.intValue()) {
+        case 90:
+            snap_y_RotateFlag = RotationSnap.DEG90;
+            break;
+        case 180:
+            snap_y_RotateFlag = RotationSnap.DEG180;
+            break;
+        case 270:
+            snap_y_RotateFlag = RotationSnap.DEG270;
+            break;
+        case 360:
+            snap_y_RotateFlag = RotationSnap.DEG360;
+            break;
+        default:
+            snap_y_RotateFlag = RotationSnap.COMPLEX;
+            break;
+        }
+
+        switch (rot.intValue()) {
+        case 90:
+            snap_z_RotateFlag = RotationSnap.DEG90;
+            break;
+        case 180:
+            snap_z_RotateFlag = RotationSnap.DEG180;
+            break;
+        case 270:
+            snap_z_RotateFlag = RotationSnap.DEG270;
+            break;
+        case 360:
+            snap_z_RotateFlag = RotationSnap.DEG360;
+            break;
+        default:
+            snap_z_RotateFlag = RotationSnap.COMPLEX;
+            break;
+        }
+
+        switch (rot.intValue()) {
+        case 90:
+            snap_v_RotateFlag = RotationSnap.DEG90;
+            break;
+        case 180:
+            snap_v_RotateFlag = RotationSnap.DEG180;
+            break;
+        case 270:
+            snap_v_RotateFlag = RotationSnap.DEG270;
+            break;
+        case 360:
+            snap_v_RotateFlag = RotationSnap.DEG360;
+            break;
+        default:
+            snap_v_RotateFlag = RotationSnap.COMPLEX;
+            break;
+        }
+
         rot = rot.divide(new BigDecimal(180), Threshold.mc).multiply(new BigDecimal(Math.PI));
         snap_x_Translate = trans;
         snap_y_Translate = trans;
@@ -128,6 +208,7 @@ public class Manipulator {
         snap_y_Rotate = rot;
         snap_z_Rotate = rot;
         snap_v_Rotate = rot;
+
     }
 
     public static BigDecimal[] getSnap() {
@@ -1025,12 +1106,12 @@ public class Manipulator {
                 if (x_rotatingForwards && !x_rotatingForwards_lock) {
                     x_rotatingBackwards_lock = true;
                     transformation.rotate(snap_x_Rotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_x_Rotate, accurateXaxis);
+                    accurateTransformation = View.ACCURATE_ID.rotate(snap_x_Rotate, snap_x_RotateFlag, accurateXaxis);
                     x_Rotate_start.set(x_forwards);
                 } else if (x_rotatingBackwards && !x_rotatingBackwards_lock) {
                     x_rotatingForwards_lock = true;
                     transformation.rotate(-snap_x_Rotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_x_Rotate.negate(), accurateXaxis);
+                    accurateTransformation = View.ACCURATE_ID.rotate(snap_x_Rotate.negate(), snap_x_RotateFlag, accurateXaxis);
                     x_Rotate_start.set(x_backwards);
                 } else {
                     break;
@@ -1056,12 +1137,12 @@ public class Manipulator {
                 if (y_rotatingForwards && !y_rotatingForwards_lock) {
                     y_rotatingBackwards_lock = true;
                     transformation.rotate(snap_y_Rotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_y_Rotate, accurateYaxis);
+                    accurateTransformation = View.ACCURATE_ID.rotate(snap_y_Rotate, snap_y_RotateFlag, accurateYaxis);
                     y_Rotate_start.set(y_forwards);
                 } else if (y_rotatingBackwards && !y_rotatingBackwards_lock) {
                     y_rotatingForwards_lock = true;
                     transformation.rotate(-snap_y_Rotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_y_Rotate.negate(), accurateYaxis);
+                    accurateTransformation = View.ACCURATE_ID.rotate(snap_y_Rotate.negate(), snap_y_RotateFlag, accurateYaxis);
                     y_Rotate_start.set(y_backwards);
                 } else {
                     break;
@@ -1087,12 +1168,12 @@ public class Manipulator {
                 if (z_rotatingForwards && !z_rotatingForwards_lock) {
                     z_rotatingBackwards_lock = true;
                     transformation.rotate(snap_z_Rotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_z_Rotate, accurateZaxis);
+                    accurateTransformation = View.ACCURATE_ID.rotate(snap_z_Rotate, snap_z_RotateFlag, accurateZaxis);
                     z_Rotate_start.set(z_forwards);
                 } else if (z_rotatingBackwards && !z_rotatingBackwards_lock) {
                     z_rotatingForwards_lock = true;
                     transformation.rotate(-snap_z_Rotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_z_Rotate.negate(), accurateZaxis);
+                    accurateTransformation = View.ACCURATE_ID.rotate(snap_z_Rotate.negate(), snap_z_RotateFlag, accurateZaxis);
                     z_Rotate_start.set(z_backwards);
                 } else {
                     break;
@@ -1119,12 +1200,12 @@ public class Manipulator {
                 if (v_rotatingForwards && !v_rotatingForwards_lock) {
                     v_rotatingBackwards_lock = true;
                     transformation.rotate(snap_v_Rotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_v_Rotate, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
+                    accurateTransformation = View.ACCURATE_ID.rotate(snap_v_Rotate, snap_v_RotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
                     v_Rotate_start.set(v_forwards);
                 } else if (v_rotatingBackwards && !v_rotatingBackwards_lock) {
                     v_rotatingForwards_lock = true;
                     transformation.rotate(-snap_v_Rotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_v_Rotate.negate(), new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
+                    accurateTransformation = View.ACCURATE_ID.rotate(snap_v_Rotate.negate(), snap_v_RotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
                     v_Rotate_start.set(v_backwards);
                 } else {
                     break;
