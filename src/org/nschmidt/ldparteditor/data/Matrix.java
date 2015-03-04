@@ -333,34 +333,46 @@ public final class Matrix {
 
     public Matrix rotate(BigDecimal angle, RotationSnap rs, BigDecimal[] axis) {
 
-        BigDecimal f00;
-        BigDecimal f01;
-        BigDecimal f02;
-        BigDecimal f10;
-        BigDecimal f11;
-        BigDecimal f12;
-        BigDecimal f20;
-        BigDecimal f21;
-        BigDecimal f22;
+        final BigDecimal f00;
+        final BigDecimal f01;
+        final BigDecimal f02;
+        final BigDecimal f10;
+        final BigDecimal f11;
+        final BigDecimal f12;
+        final BigDecimal f20;
+        final BigDecimal f21;
+        final BigDecimal f22;
 
         int ac = 0;
         int ax = 0;
-        if (axis[0].compareTo(BigDecimal.ONE) == 0) {
+        boolean neg = false;
+        if (axis[0].abs().compareTo(BigDecimal.ONE) == 0) {
             ax = 1;
             ac++;
+            neg = axis[0].compareTo(BigDecimal.ZERO) < 0;
         } else if (axis[0].compareTo(BigDecimal.ZERO) == 0) ac++;
-        if (axis[1].compareTo(BigDecimal.ONE) == 0) {
+        if (axis[1].abs().compareTo(BigDecimal.ONE) == 0) {
             if (ax != 0) ac = 0;
             ax = 2;
             ac++;
+            neg = axis[1].compareTo(BigDecimal.ZERO) < 0;
         } else if (axis[1].compareTo(BigDecimal.ZERO) == 0) ac++;
-        if (axis[2].compareTo(BigDecimal.ONE) == 0) {
+        if (axis[2].abs().compareTo(BigDecimal.ONE) == 0) {
             if (ax != 0) ac = 0;
             ax = 3;
             ac++;
+            neg = axis[2].compareTo(BigDecimal.ZERO) < 0;
         } else if (axis[2].compareTo(BigDecimal.ZERO) == 0) ac++;
-        if (ac != 3) rs = RotationSnap.COMPLEX;
-
+        if (ac != 3 || ax < 1) {
+            rs = RotationSnap.COMPLEX;
+        } else if (angle.compareTo(BigDecimal.ZERO) < 0 ^ !neg) {
+            if (rs == RotationSnap.DEG270) {
+                rs = RotationSnap.DEG90;
+            } else if (rs == RotationSnap.DEG90) {
+                rs = RotationSnap.DEG270;
+            }
+        }
+        // rs = RotationSnap.COMPLEX;
         switch (rs) {
         case DEG180:
             switch (ax) {
@@ -386,7 +398,7 @@ public final class Matrix {
                 f21 = BigDecimal.ZERO;
                 f22 = BigDecimal.ONE.negate();
                 break;
-            case 3:
+            default:
                 f00 = BigDecimal.ONE.negate();
                 f01 = BigDecimal.ZERO;
                 f02 = BigDecimal.ZERO;
@@ -399,114 +411,88 @@ public final class Matrix {
                 break;
             }
             break;
-        case DEG270:
+        case DEG90:
             switch (ax) {
             case 1:
-                f00 = BigDecimal.;
-                f01 = BigDecimal.;
-                f02 = BigDecimal.;
-                f10 = BigDecimal.;
-                f11 = BigDecimal.;
-                f12 = BigDecimal.;
-                f20 = BigDecimal.;
-                f21 = BigDecimal.;
-                f22 = BigDecimal.;
+                f00 = BigDecimal.ONE;
+                f01 = BigDecimal.ZERO;
+                f02 = BigDecimal.ZERO;
+                f10 = BigDecimal.ZERO;
+                f11 = BigDecimal.ZERO;
+                f12 = BigDecimal.ONE.negate();
+                f20 = BigDecimal.ZERO;
+                f21 = BigDecimal.ONE;
+                f22 = BigDecimal.ZERO;
                 break;
             case 2:
-                f00 = BigDecimal.;
-                f01 = BigDecimal.;
-                f02 = BigDecimal.;
-                f10 = BigDecimal.;
-                f11 = BigDecimal.;
-                f12 = BigDecimal.;
-                f20 = BigDecimal.;
-                f21 = BigDecimal.;
-                f22 = BigDecimal.;
+                f00 = BigDecimal.ZERO;
+                f01 = BigDecimal.ZERO;
+                f02 = BigDecimal.ONE.negate();
+                f10 = BigDecimal.ZERO;
+                f11 = BigDecimal.ONE;
+                f12 = BigDecimal.ZERO;
+                f20 = BigDecimal.ONE;
+                f21 = BigDecimal.ZERO;
+                f22 = BigDecimal.ZERO;
                 break;
-            case 3:
-                f00 = BigDecimal.;
-                f01 = BigDecimal.;
-                f02 = BigDecimal.;
-                f10 = BigDecimal.;
-                f11 = BigDecimal.;
-                f12 = BigDecimal.;
-                f20 = BigDecimal.;
-                f21 = BigDecimal.;
-                f22 = BigDecimal.;
+            default:
+                f00 = BigDecimal.ZERO;
+                f01 = BigDecimal.ONE.negate();
+                f02 = BigDecimal.ZERO;
+                f10 = BigDecimal.ONE;
+                f11 = BigDecimal.ZERO;
+                f12 = BigDecimal.ZERO;
+                f20 = BigDecimal.ZERO;
+                f21 = BigDecimal.ZERO;
+                f22 = BigDecimal.ONE;
                 break;
             }
             break;
         case DEG360:
-            switch (ax) {
-            case 1:
-                f00 = BigDecimal.;
-                f01 = BigDecimal.;
-                f02 = BigDecimal.;
-                f10 = BigDecimal.;
-                f11 = BigDecimal.;
-                f12 = BigDecimal.;
-                f20 = BigDecimal.;
-                f21 = BigDecimal.;
-                f22 = BigDecimal.;
-                break;
-            case 2:
-                f00 = BigDecimal.;
-                f01 = BigDecimal.;
-                f02 = BigDecimal.;
-                f10 = BigDecimal.;
-                f11 = BigDecimal.;
-                f12 = BigDecimal.;
-                f20 = BigDecimal.;
-                f21 = BigDecimal.;
-                f22 = BigDecimal.;
-                break;
-            case 3:
-                f00 = BigDecimal.;
-                f01 = BigDecimal.;
-                f02 = BigDecimal.;
-                f10 = BigDecimal.;
-                f11 = BigDecimal.;
-                f12 = BigDecimal.;
-                f20 = BigDecimal.;
-                f21 = BigDecimal.;
-                f22 = BigDecimal.;
-                break;
-            }
+            f00 = BigDecimal.ONE;
+            f01 = BigDecimal.ZERO;
+            f02 = BigDecimal.ZERO;
+            f10 = BigDecimal.ZERO;
+            f11 = BigDecimal.ONE;
+            f12 = BigDecimal.ZERO;
+            f20 = BigDecimal.ZERO;
+            f21 = BigDecimal.ZERO;
+            f22 = BigDecimal.ONE;
             break;
-        case DEG90:
+        case DEG270:
             switch (ax) {
             case 1:
-                f00 = BigDecimal.;
-                f01 = BigDecimal.;
-                f02 = BigDecimal.;
-                f10 = BigDecimal.;
-                f11 = BigDecimal.;
-                f12 = BigDecimal.;
-                f20 = BigDecimal.;
-                f21 = BigDecimal.;
-                f22 = BigDecimal.;
+                f00 = BigDecimal.ONE;
+                f01 = BigDecimal.ZERO;
+                f02 = BigDecimal.ZERO;
+                f10 = BigDecimal.ZERO;
+                f11 = BigDecimal.ZERO;
+                f12 = BigDecimal.ONE;
+                f20 = BigDecimal.ZERO;
+                f21 = BigDecimal.ONE.negate();
+                f22 = BigDecimal.ZERO;
                 break;
             case 2:
-                f00 = BigDecimal.;
-                f01 = BigDecimal.;
-                f02 = BigDecimal.;
-                f10 = BigDecimal.;
-                f11 = BigDecimal.;
-                f12 = BigDecimal.;
-                f20 = BigDecimal.;
-                f21 = BigDecimal.;
-                f22 = BigDecimal.;
+                f00 = BigDecimal.ZERO;
+                f01 = BigDecimal.ZERO;
+                f02 = BigDecimal.ONE;
+                f10 = BigDecimal.ZERO;
+                f11 = BigDecimal.ONE;
+                f12 = BigDecimal.ZERO;
+                f20 = BigDecimal.ONE.negate();
+                f21 = BigDecimal.ZERO;
+                f22 = BigDecimal.ZERO;
                 break;
-            case 3:
-                f00 = BigDecimal.;
-                f01 = BigDecimal.;
-                f02 = BigDecimal.;
-                f10 = BigDecimal.;
-                f11 = BigDecimal.;
-                f12 = BigDecimal.;
-                f20 = BigDecimal.;
-                f21 = BigDecimal.;
-                f22 = BigDecimal.;
+            default:
+                f00 = BigDecimal.ZERO;
+                f01 = BigDecimal.ONE;
+                f02 = BigDecimal.ZERO;
+                f10 = BigDecimal.ONE.negate();
+                f11 = BigDecimal.ZERO;
+                f12 = BigDecimal.ZERO;
+                f20 = BigDecimal.ZERO;
+                f21 = BigDecimal.ZERO;
+                f22 = BigDecimal.ONE;
                 break;
             }
             break;
