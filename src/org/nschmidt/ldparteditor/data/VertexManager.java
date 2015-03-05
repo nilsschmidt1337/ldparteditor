@@ -17370,7 +17370,7 @@ public class VertexManager {
         for (GData3 g : new HashSet<GData3>(triangles.keySet())) {
             if (!lineLinkedToVertices.containsKey(g)) continue;
             List<GData3> result = split(g, fractions, edgesToSplit);
-            if (result.size() > 1) newTriangles.addAll(result);
+            newTriangles.addAll(result);
             for (GData n : result) {
                 linkedDatFile.insertAfter(g, n);
             }
@@ -17380,7 +17380,7 @@ public class VertexManager {
         for (GData4 g : new HashSet<GData4>(quads.keySet())) {
             if (!lineLinkedToVertices.containsKey(g)) continue;
             List<GData3> result = split(g, fractions, edgesToSplit);
-            if (result.size() > 1) newTriangles.addAll(result);
+            newTriangles.addAll(result);
             for (GData n : result) {
                 linkedDatFile.insertAfter(g, n);
             }
@@ -17750,7 +17750,7 @@ public class VertexManager {
             } else if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
                 return splitTri1(verts[1], verts[2], verts[0], fractions, g);
             } else {
-                return splitTri1(verts[0], verts[2], verts[1], fractions, g);
+                return splitTri1(verts[2], verts[0], verts[1], fractions, g);
             }
         case 2:
             if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
