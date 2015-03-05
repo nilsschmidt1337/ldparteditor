@@ -15686,19 +15686,22 @@ public class VertexManager {
                         Vertex second = null;
                         Vertex third = null;
                         Vertex fourth = null;
-
+                        int i1 = 0;
                         for (Vertex v : triangles.get(s1)) {
                             if (!v1.contains(v)) {
                                 first = v;
                                 break;
                             }
+                            i1++;
                         }
                         if (first == null) continue;
+                        int i2 = 0;
                         for (Vertex v : triangles.get(s1)) {
-                            if (v1.contains(v)) {
+                            if ((i2 > i1 || i1 == 2 && i2 == 0) && v1.contains(v)) {
                                 second = v;
                                 break;
                             }
+                            i2++;
                         }
                         if (second == null) continue;
                         for (Vertex v : triangles.get(s2)) {
