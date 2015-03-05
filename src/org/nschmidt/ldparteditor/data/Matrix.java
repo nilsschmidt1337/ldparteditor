@@ -372,7 +372,6 @@ public final class Matrix {
                 rs = RotationSnap.DEG270;
             }
         }
-        // rs = RotationSnap.COMPLEX;
         switch (rs) {
         case DEG180:
             switch (ax) {

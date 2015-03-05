@@ -36,11 +36,11 @@ public class SelectorSettings {
     private boolean wholeSubfiles = false;
     private BigDecimal angle = BigDecimal.ZERO;
     private BigDecimal equalDistance = new BigDecimal("0.0001"); //$NON-NLS-1$
-    private boolean vertices = false;
-    private boolean lines = false;
-    private boolean triangles = false;
-    private boolean quads = false;
-    private boolean condlines = false;
+    private boolean vertices = true;
+    private boolean lines = true;
+    private boolean triangles = true;
+    private boolean quads = true;
+    private boolean condlines = true;
     public int getScope() {
         return scope;
     }
