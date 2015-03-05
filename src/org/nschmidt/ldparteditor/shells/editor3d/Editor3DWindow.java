@@ -2512,7 +2512,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        vm.selectAll(true);
+                        loadSelectorSettings();
+                        vm.selectAll(sels, true);
                         return;
                     }
                 }
@@ -2525,7 +2526,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        vm.selectAll(false);
+                        loadSelectorSettings();
+                        vm.selectAll(sels, false);
                         return;
                     }
                 }
@@ -2538,7 +2540,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        vm.selectAllWithSameColours(true);
+                        loadSelectorSettings();
+                        vm.selectAllWithSameColours(sels, true);
                         return;
                     }
                 }
@@ -2551,7 +2554,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        vm.selectAllWithSameColours(false);
+                        loadSelectorSettings();
+                        vm.selectAllWithSameColours(sels, false);
                         return;
                     }
                 }
@@ -2577,7 +2581,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        vm.selectInverse();
+                        loadSelectorSettings();
+                        vm.selectInverse(sels);
                         return;
                     }
                 }
