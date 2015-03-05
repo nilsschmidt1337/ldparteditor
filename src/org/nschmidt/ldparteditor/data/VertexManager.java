@@ -17533,9 +17533,9 @@ public class VertexManager {
                         v1.Y,
                         v1.Z,
 
-                        A.X.multiply(oneMinusCur).add(B.X.multiply(next)),
-                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(next)),
-                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(next)),
+                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
+                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
+                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
 
                         A.X.multiply(oneMinusNext).add(C.X.multiply(next)),
                         A.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
@@ -17543,21 +17543,6 @@ public class VertexManager {
 
                         View.DUMMY_REFERENCE, linkedDatFile));
             } else {
-                result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
-
-                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
-
-                        A.X.multiply(oneMinusCur).add(B.X.multiply(next)),
-                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(next)),
-                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(next)),
-
-                        A.X.multiply(oneMinusNext).add(C.X.multiply(next)),
-                        A.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
-                        A.Z.multiply(oneMinusNext).add(C.Z.multiply(next)),
-
-                        View.DUMMY_REFERENCE, linkedDatFile));
                 result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
 
                         A.X.multiply(oneMinusNext).add(C.X.multiply(next)),
@@ -17571,6 +17556,21 @@ public class VertexManager {
                         A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
                         A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
                         A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+
+                        View.DUMMY_REFERENCE, linkedDatFile));
+                result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
+                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
+                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+
+                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
+                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
+                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+
+                        A.X.multiply(oneMinusNext).add(C.X.multiply(next)),
+                        A.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
+                        A.Z.multiply(oneMinusNext).add(C.Z.multiply(next)),
 
                         View.DUMMY_REFERENCE, linkedDatFile));
             }
