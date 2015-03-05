@@ -17474,8 +17474,37 @@ public class VertexManager {
             result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a, verts[2], verts[3], verts[0], View.DUMMY_REFERENCE, linkedDatFile));
             break;
         case 1:
-            break;
+            if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
+                return splitQuad1(verts[0], verts[1], verts[2], verts[3], fractions, g);
+            } else if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
+                return splitQuad1(verts[1], verts[2], verts[3], verts[0], fractions, g);
+            } else if (edgesToSplit.contains(new AccurateEdge(verts[2], verts[3]))) {
+                return splitQuad1(verts[2], verts[3], verts[0], verts[1], fractions, g);
+            } else {
+                return splitQuad1(verts[3], verts[0], verts[1], verts[2], fractions, g);
+            }
         case 2:
+            if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
+                if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
+                } else if (edgesToSplit.contains(new AccurateEdge(verts[2], verts[3]))) {
+                } else {
+                }
+            } else if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
+                if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
+                } else if (edgesToSplit.contains(new AccurateEdge(verts[2], verts[3]))) {
+                } else {
+                }
+            } else if (edgesToSplit.contains(new AccurateEdge(verts[2], verts[3]))) {
+                if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
+                } else if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
+                } else {
+                }
+            } else {
+                if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
+                } else if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
+                } else {// if (edgesToSplit.contains(new AccurateEdge(verts[2], verts[3]))) {
+                }
+            }
             break;
         case 3:
             break;
@@ -17483,6 +17512,101 @@ public class VertexManager {
             return splitQuad4(verts[0], verts[1], verts[2], verts[3], fractions, g);
         default:
             break;
+        }
+
+        return result;
+    }
+
+    private List<GData3> splitQuad1(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
+        ArrayList<GData3> result = new ArrayList<GData3>(fractions);
+
+        Vector3d A = new Vector3d(v1);
+        Vector3d B = new Vector3d(v2);
+
+
+        int fracA = fractions / 2;
+
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+        BigDecimal cur = BigDecimal.ZERO;
+        BigDecimal next = BigDecimal.ZERO;
+
+        BigDecimal middle = BigDecimal.ZERO;
+
+        for (int i = 0; i < fracA; i++) {
+            next = next.add(step);
+
+            BigDecimal oneMinusCur = BigDecimal.ONE.subtract(cur);
+            BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
+
+            result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                    A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
+                    A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
+                    A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+
+                    A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
+                    A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
+                    A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+
+                    v4.X,
+                    v4.Y,
+                    v4.Z,
+
+                    View.DUMMY_REFERENCE, linkedDatFile));
+            cur = next;
+            middle = next;
+        }
+
+
+        for (int i = fracA; i < fractions; i++) {
+            if (i == fractions - 1) {
+                next = BigDecimal.ONE;
+            } else {
+                next = next.add(step);
+            }
+
+            BigDecimal oneMinusCur = BigDecimal.ONE.subtract(cur);
+            BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
+
+            result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                    A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
+                    A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
+                    A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+
+                    A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
+                    A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
+                    A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+
+                    v3.X,
+                    v3.Y,
+                    v3.Z,
+
+                    View.DUMMY_REFERENCE, linkedDatFile));
+            cur = next;
+        }
+
+        {
+
+            cur = middle;
+
+            BigDecimal oneMinusCur = BigDecimal.ONE.subtract(cur);
+
+            result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                    A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
+                    A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
+                    A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+
+                    v3.X,
+                    v3.Y,
+                    v3.Z,
+
+                    v4.X,
+                    v4.Y,
+                    v4.Z,
+
+                    View.DUMMY_REFERENCE, linkedDatFile));
         }
 
         return result;
