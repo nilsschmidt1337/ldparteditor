@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -434,7 +435,7 @@ public class MouseActions {
                                 c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().clear();
                                 Vertex[] tv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToTriangleEdges(v3d, v1, v2, v3, c3d);
                                 Vertex[] tv2 = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToTriangleEdges(v3d, v3, v4, v1, c3d);
-                                Set<Vertex> qverts = new HashSet<Vertex>();
+                                Set<Vertex> qverts = new TreeSet<Vertex>();
                                 qverts.add(tv[0]);
                                 qverts.add(tv[1]);
                                 qverts.add(tv2[0]);

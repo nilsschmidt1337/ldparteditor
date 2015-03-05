@@ -21,7 +21,7 @@ import java.math.RoundingMode;
 
 import org.nschmidt.ldparteditor.data.Vertex;
 
-public class Vector3dd extends Vector3d {
+public class Vector3dd extends Vector3d implements Comparable<Vector3dd> {
 
     public Vector3dd(Vertex tmp) {
         super(tmp);
@@ -35,11 +35,7 @@ public class Vector3dd extends Vector3d {
     }
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = prime + X.intValue();
-        result = prime * result + Y.intValue();
-        result = prime * result + Z.intValue();
-        return result;
+        return 1337;
     }
 
     private static final BigDecimal MIN_DIST = new BigDecimal(".0001"); //$NON-NLS-1$
@@ -63,5 +59,42 @@ public class Vector3dd extends Vector3d {
         if (this.Y.abs().compareTo(EPSILON) <= 0) this.Y = BigDecimal.ZERO;
         if (this.Z.abs().compareTo(EPSILON) <= 0) this.Z = BigDecimal.ZERO;
         return this;
+    }
+    @Override
+    public int compareTo(Vector3dd o) {
+        {
+            BigDecimal d1 = X.subtract(o.X);
+            int c1 = d1.abs().compareTo(EPSILON);
+            switch (c1) {
+            case 0:
+            case 1:
+                return d1.compareTo(BigDecimal.ZERO) < 0 ? -1 : 1;
+            default:
+                break;
+            }
+        }
+        {
+            BigDecimal d1 = Y.subtract(o.Y);
+            int c1 = d1.abs().compareTo(EPSILON);
+            switch (c1) {
+            case 0:
+            case 1:
+                return d1.compareTo(BigDecimal.ZERO) < 0 ? -1 : 1;
+            default:
+                break;
+            }
+        }
+        {
+            BigDecimal d1 = Z.subtract(o.Z);
+            int c1 = d1.abs().compareTo(EPSILON);
+            switch (c1) {
+            case 0:
+            case 1:
+                return d1.compareTo(BigDecimal.ZERO) < 0 ? -1 : 1;
+            default:
+                break;
+            }
+        }
+        return 0;
     }
 }
