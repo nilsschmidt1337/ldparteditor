@@ -31,10 +31,7 @@ public class AccurateEdge {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = prime + v1.hashCode();
-        result = prime * result + v2.hashCode();
-        return result;
+        return 1337;
     }
 
     @Override
