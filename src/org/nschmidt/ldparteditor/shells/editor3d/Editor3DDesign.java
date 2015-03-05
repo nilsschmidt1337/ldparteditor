@@ -194,6 +194,8 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Flip = new MenuItem[1];
     final MenuItem[] mntm_SubdivideCatmullClark = new MenuItem[1];
     final MenuItem[] mntm_SubdivideLoop = new MenuItem[1];
+    final MenuItem[] mntm_Split = new MenuItem[1];
+    final MenuItem[] mntm_SplitNTimes = new MenuItem[1];
 
     final Text[] txt_Search = new Text[1];
     final Button[] btn_ResetSearch = new Button[1];
@@ -662,7 +664,7 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_SelectInverse = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectInverse[0] = mntm_SelectInverse;
-                        mntm_SelectInverse.setText("…Inverse Shown."); //$NON-NLS-1$ I18N
+                        mntm_SelectInverse.setText("…Inverse (Shown)."); //$NON-NLS-1$ I18N
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator1 = new MenuItem(mnu_Select, SWT.SEPARATOR);
@@ -805,30 +807,34 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                 });
                 {
-                    {
-                        MenuItem mntm_Flip = new MenuItem(mnu_Merge, SWT.PUSH);
-                        this.mntm_Flip[0] = mntm_Flip;
-                        mntm_Flip.setText("Flip / Rotate Vertices"); //$NON-NLS-1$ I18N
-                    }
+                    MenuItem mntm_Flip = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_Flip[0] = mntm_Flip;
+                    mntm_Flip.setText("Flip / Rotate Vertices"); //$NON-NLS-1$ I18N
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator1 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
                 {
-                    {
-                        MenuItem mntm_SubdivideCatmullClark = new MenuItem(mnu_Merge, SWT.PUSH);
-                        this.mntm_SubdivideCatmullClark[0] = mntm_SubdivideCatmullClark;
-                        mntm_SubdivideCatmullClark.setText("Subdivide (Catmull-Clark)"); //$NON-NLS-1$ I18N
-                    }
+                    MenuItem mntm_SubdivideCatmullClark = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_SubdivideCatmullClark[0] = mntm_SubdivideCatmullClark;
+                    mntm_SubdivideCatmullClark.setText("Subdivide (Catmull-Clark)"); //$NON-NLS-1$ I18N
                 }
                 {
-                    {
-                        MenuItem mntm_SubdivideLoop = new MenuItem(mnu_Merge, SWT.PUSH);
-                        this.mntm_SubdivideLoop[0] = mntm_SubdivideLoop;
-                        mntm_SubdivideLoop.setText("Subdivide (Loop)"); //$NON-NLS-1$ I18N
-                    }
+                    MenuItem mntm_SubdivideLoop = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_SubdivideLoop[0] = mntm_SubdivideLoop;
+                    mntm_SubdivideLoop.setText("Subdivide (Loop)"); //$NON-NLS-1$ I18N
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator2 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_Split = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_Split[0] = mntm_Split;
+                    mntm_Split.setText("Split"); //$NON-NLS-1$ I18N
+                }
+                {
+                    MenuItem mntm_SplitNTimes = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_SplitNTimes[0] = mntm_SplitNTimes;
+                    mntm_SplitNTimes.setText("Split N-Times"); //$NON-NLS-1$ I18N
+                }
             }
             {
                 final Button btn_ToolsActions = new Button(toolItem_MiscClick, SWT.ARROW | SWT.DOWN);

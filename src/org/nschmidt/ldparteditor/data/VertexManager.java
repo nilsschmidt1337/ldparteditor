@@ -7836,38 +7836,50 @@ public class VertexManager {
         return lines.containsKey(g) || triangles.containsKey(g) || quads.containsKey(g) || condlines.containsKey(g);
     }
 
-    public synchronized void selectAll(boolean includeHidden) {
+    public synchronized void selectAll(SelectorSettings ss, boolean includeHidden) {
         clearSelection();
-
+        if (ss == null) ss = new SelectorSettings();
         if (includeHidden) {
 
-            selectedVertices.addAll(vertexLinkedToPositionInFile.keySet());
+            if (ss.isVertices()) selectedVertices.addAll(vertexLinkedToPositionInFile.keySet());
 
-            selectedLines.addAll(lines.keySet());
-            selectedTriangles.addAll(triangles.keySet());
-            selectedQuads.addAll(quads.keySet());
-            selectedCondlines.addAll(condlines.keySet());
+            if (ss.isLines()) selectedLines.addAll(lines.keySet());
+            if (ss.isTriangles()) selectedTriangles.addAll(triangles.keySet());
+            if (ss.isQuads()) selectedQuads.addAll(quads.keySet());
+            if (ss.isCondlines()) selectedCondlines.addAll(condlines.keySet());
             selectedSubfiles.addAll(vertexCountInSubfile.keySet());
 
         } else {
 
-            for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
-                if (!hiddenVertices.contains(v)) selectedVertices.add(v);
+            if (ss.isVertices()) {
+                for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
+                    if (!hiddenVertices.contains(v)) selectedVertices.add(v);
+                }
             }
-            for (GData1 g : vertexCountInSubfile.keySet()) {
-                if (!hiddenData.contains(g)) selectedSubfiles.add(g);
+            if (ss.isLines()) {
+                for (GData1 g : vertexCountInSubfile.keySet()) {
+                    if (!hiddenData.contains(g)) selectedSubfiles.add(g);
+                }
             }
-            for (GData2 g : lines.keySet()) {
-                if (!hiddenData.contains(g)) selectedLines.add(g);
+            if (ss.isTriangles()) {
+                for (GData2 g : lines.keySet()) {
+                    if (!hiddenData.contains(g)) selectedLines.add(g);
+                }
             }
-            for (GData3 g : triangles.keySet()) {
-                if (!hiddenData.contains(g)) selectedTriangles.add(g);
+            if (ss.isQuads()) {
+                for (GData3 g : triangles.keySet()) {
+                    if (!hiddenData.contains(g)) selectedTriangles.add(g);
+                }
             }
-            for (GData4 g : quads.keySet()) {
-                if (!hiddenData.contains(g)) selectedQuads.add(g);
+            if (ss.isVertices()) {
+                for (GData4 g : quads.keySet()) {
+                    if (!hiddenData.contains(g)) selectedQuads.add(g);
+                }
             }
-            for (GData5 g : condlines.keySet()) {
-                if (!hiddenData.contains(g)) selectedCondlines.add(g);
+            if (ss.isVertices()) {
+                for (GData5 g : condlines.keySet()) {
+                    if (!hiddenData.contains(g)) selectedCondlines.add(g);
+                }
             }
         }
 
@@ -7876,6 +7888,10 @@ public class VertexManager {
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
         selectedData.addAll(selectedSubfiles);
+
+        if (!(ss.isVertices() && ss.isLines() && ss.isTriangles() && ss.isQuads() && ss.isCondlines())) {
+            selectSubfiles(null, null, false);
+        }
     }
 
 
@@ -14449,7 +14465,7 @@ public class VertexManager {
 
             // Now we have to select the data which is cut by the split plane
 
-            selectAll(true);
+            selectAll(null, true);
 
             {
                 HashSet<GData> dataToCut = new HashSet<GData>();
@@ -14605,7 +14621,7 @@ public class VertexManager {
 
         // Merge vertices to the plane
         if (needMerge) {
-            selectAll(true);
+            selectAll(null, true);
             HashSet<Vertex> allVertices = new HashSet<Vertex>();
             allVertices.addAll(selectedVertices);
             clearSelection();
@@ -14635,7 +14651,7 @@ public class VertexManager {
 
         // Separate the data according the plane and detect invalid data (identical vertices)
 
-        selectAll(true);
+        selectAll(null, true);
 
         {
 
@@ -15087,7 +15103,7 @@ public class VertexManager {
 
                 if (sims.getHideLevel() > 0) {
 
-                    selectAll(true);
+                    selectAll(null, true);
 
                     before.clear();
                     between.clear();
@@ -15306,7 +15322,7 @@ public class VertexManager {
         final BigDecimal st = us.getSubvertexThreshold().multiply(us.getSubvertexThreshold());
 
         if (us.getScope() == 0) {
-            selectAll(true);
+            selectAll(null, true);
         } else {
             for (GData gd : selectedData) {
                 Vertex[] verts = null;
@@ -15780,7 +15796,7 @@ public class VertexManager {
         validateState();
     }
 
-    public void selectAllWithSameColours(boolean includeHidden) {
+    public void selectAllWithSameColours(SelectorSettings ss, boolean includeHidden) {
 
         final Set<GColour> allColours = new HashSet<GColour>();
 
@@ -15877,6 +15893,10 @@ public class VertexManager {
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
         selectedData.addAll(selectedSubfiles);
+
+        if (!(ss.isVertices() && ss.isLines() && ss.isTriangles() && ss.isQuads() && ss.isCondlines())) {
+            selectSubfiles(null, null, false);
+        }
     }
 
     public void selector(final SelectorSettings ss) {
@@ -16037,6 +16057,12 @@ public class VertexManager {
                         final Set<GData4> newSelectedQuads = new HashSet<GData4>();
                         final Set<GData5> newSelectedCondlines = new HashSet<GData5>();
 
+                        final Set<Vertex> addedSelectedVertices = new HashSet<Vertex>();
+                        final Set<GData2> addedSelectedLines = new HashSet<GData2>();
+                        final Set<GData3> addedSelectedTriangles = new HashSet<GData3>();
+                        final Set<GData4> addedSelectedQuads = new HashSet<GData4>();
+                        final Set<GData5> addedSelectedCondlines = new HashSet<GData5>();
+
                         if (ss.isEdgeStop()) {
                             selectedData.clear();
                             selectedLines.clear();
@@ -16066,10 +16092,14 @@ public class VertexManager {
                             lastSelectedTriangles.addAll(selectedTriangles);
                             lastSelectedQuads.addAll(selectedQuads);
 
+                            addedSelectedTriangles.addAll(selectedTriangles);
+                            addedSelectedQuads.addAll(selectedQuads);
+                            addedSelectedVertices.addAll(selectedVertices);
+
                             // Interation, Step (1...n), "Select Touching" is only one step
                             do {
-                                c2 = selectedTriangles.size();
-                                c3 = selectedQuads.size();
+                                c2 = addedSelectedTriangles.size();
+                                c3 = addedSelectedQuads.size();
                                 newSelectedTriangles.clear();
                                 newSelectedQuads.clear();
 
@@ -16081,7 +16111,7 @@ public class VertexManager {
                                         for (Vertex v : verts) {
                                             HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                             for (Vertex v2 : verts2) {
-                                                selectedVertices.add(v2);
+                                                addedSelectedVertices.add(v2);
                                             }
                                         }
                                         touchingEdges.add(new AccurateEdge(verts[0], verts[1]));
@@ -16093,7 +16123,7 @@ public class VertexManager {
                                         for (Vertex v : verts) {
                                             HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                             for (Vertex v2 : verts2) {
-                                                selectedVertices.add(v2);
+                                                addedSelectedVertices.add(v2);
                                             }
                                         }
                                         touchingEdges.add(new AccurateEdge(verts[0], verts[1]));
@@ -16112,12 +16142,12 @@ public class VertexManager {
                                     }
                                     if (!skipEdge) {
                                         for (GData3 g : triangles.keySet()) {
-                                            if (!selectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && hasSameEdge(edge, g, adjaencyByPrecision)) {
+                                            if (!addedSelectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && hasSameEdge(edge, g, adjaencyByPrecision)) {
                                                 if (ss.isOrientation()) {
                                                     int faceCount = 0;
                                                     int angleCount = 0;
                                                     boolean notAdjacent = true;
-                                                    for (GData3 g2 : selectedTriangles) {
+                                                    for (GData3 g2 : addedSelectedTriangles) {
                                                         if (hasSameEdge(g, g2, adjaencyByPrecision)) {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
@@ -16126,7 +16156,7 @@ public class VertexManager {
                                                             }
                                                         }
                                                     }
-                                                    for (GData4 g2 : selectedQuads) {
+                                                    for (GData4 g2 : addedSelectedQuads) {
                                                         if (hasSameEdge(g, g2, adjaencyByPrecision)) {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
@@ -16137,25 +16167,24 @@ public class VertexManager {
                                                     }
                                                     if (notAdjacent || faceCount != angleCount) break;
                                                 }
-                                                selectedTriangles.add(g);
-                                                selectedData.add(g);
+                                                addedSelectedTriangles.add(g);
                                                 newSelectedTriangles.add(g);
                                                 Vertex[] verts = triangles.get(g);
-                                                for (Vertex ov : verts) {
-                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                for (Vertex v : verts) {
+                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                                     for (Vertex v2 : verts2) {
-                                                        selectedVertices.add(v2);
+                                                        addedSelectedVertices.add(v2);
                                                     }
                                                 }
                                             }
                                         }
                                         for (GData4 g : quads.keySet()) {
-                                            if (!selectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && hasSameEdge(edge, g, adjaencyByPrecision)) {
+                                            if (!addedSelectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && hasSameEdge(edge, g, adjaencyByPrecision)) {
                                                 if (ss.isOrientation()) {
                                                     int faceCount = 0;
                                                     int angleCount = 0;
                                                     boolean notAdjacent = true;
-                                                    for (GData3 g2 : selectedTriangles) {
+                                                    for (GData3 g2 : addedSelectedTriangles) {
                                                         if (hasSameEdge(g, g2, adjaencyByPrecision)) {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
@@ -16164,7 +16193,7 @@ public class VertexManager {
                                                             }
                                                         }
                                                     }
-                                                    for (GData4 g2 : selectedQuads) {
+                                                    for (GData4 g2 : addedSelectedQuads) {
                                                         if (hasSameEdge(g, g2, adjaencyByPrecision)) {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
@@ -16175,14 +16204,13 @@ public class VertexManager {
                                                     }
                                                     if (notAdjacent || faceCount != angleCount) break;
                                                 }
-                                                selectedQuads.add(g);
-                                                selectedData.add(g);
+                                                addedSelectedQuads.add(g);
                                                 newSelectedQuads.add(g);
                                                 Vertex[] verts = quads.get(g);
-                                                for (Vertex ov : verts) {
-                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                for (Vertex v : verts) {
+                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                                     for (Vertex v2 : verts2) {
-                                                        selectedVertices.add(v2);
+                                                        addedSelectedVertices.add(v2);
                                                     }
                                                 }
                                             }
@@ -16197,31 +16225,45 @@ public class VertexManager {
 
                                 if (ss.getScope() == SelectorSettings.TOUCHING) break;
                             } while (
-                                    c2 != selectedTriangles.size() ||
-                                    c3 != selectedQuads.size());
+                                    c2 != addedSelectedTriangles.size() ||
+                                    c3 != addedSelectedQuads.size());
+
+                            if (ss.isVertices()) {
+                                selectedVertices.addAll(addedSelectedVertices);
+                            }
+                            if (ss.isTriangles()) {
+                                selectedTriangles.addAll(addedSelectedTriangles);
+                                selectedData.addAll(selectedTriangles);
+                            }
+                            if (ss.isQuads()) {
+                                selectedQuads.addAll(addedSelectedQuads);
+                                selectedData.addAll(selectedQuads);
+                            }
 
                             // Now add lines and condlines
-                            for (GData2 g : lines.keySet()) {
-                                if (canSelect(null, g, ss, allNormals, allColours, angle2)) {
-                                    Vertex[] verts = lines.get(g);
-                                    if (selectedVertices.contains(verts[0]) && selectedVertices.contains(verts[1])) {
-                                        selectedLines.add(g);
+                            if (ss.isLines()) {
+                                for (GData2 g : lines.keySet()) {
+                                    if (canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                        Vertex[] verts = lines.get(g);
+                                        if (addedSelectedVertices.contains(verts[0]) && addedSelectedVertices.contains(verts[1])) {
+                                            selectedLines.add(g);
+                                        }
                                     }
                                 }
+                                selectedData.addAll(selectedLines);
                             }
-                            for (GData5 g : condlines.keySet()) {
-                                if (canSelect(null, g, ss, allNormals, allColours, angle2)) {
-                                    Vertex[] verts = condlines.get(g);
-                                    if (selectedVertices.contains(verts[0]) && selectedVertices.contains(verts[1])) {
-                                        selectedCondlines.add(g);
+                            if (ss.isCondlines()) {
+                                for (GData5 g : condlines.keySet()) {
+                                    if (canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                        Vertex[] verts = condlines.get(g);
+                                        if (addedSelectedVertices.contains(verts[0]) && addedSelectedVertices.contains(verts[1])) {
+                                            selectedCondlines.add(g);
+                                        }
                                     }
                                 }
+                                selectedData.addAll(selectedCondlines);
                             }
 
-                            selectedData.addAll(selectedLines);
-                            selectedData.addAll(selectedTriangles);
-                            selectedData.addAll(selectedCondlines);
-                            selectedData.addAll(selectedTriangles);
                         } else {
 
                             // Iterative Selection Spread II
@@ -16269,12 +16311,20 @@ public class VertexManager {
                             lastSelectedQuads.addAll(selectedQuads);
                             lastSelectedCondlines.addAll(selectedCondlines);
 
+                            if (!ss.isVertices()) selectedVertices.clear();
+
+                            addedSelectedLines.addAll(selectedLines);
+                            addedSelectedTriangles.addAll(selectedTriangles);
+                            addedSelectedQuads.addAll(selectedQuads);
+                            addedSelectedCondlines.addAll(selectedCondlines);
+                            addedSelectedVertices.addAll(selectedVertices);
+
                             // Interation, Step (1...n), "Select Touching" is only one step
                             do {
-                                c1 = selectedLines.size();
-                                c2 = selectedTriangles.size();
-                                c3 = selectedQuads.size();
-                                c4 = selectedCondlines.size();
+                                c1 = addedSelectedLines.size();
+                                c2 = addedSelectedTriangles.size();
+                                c3 = addedSelectedQuads.size();
+                                c4 = addedSelectedCondlines.size();
                                 newSelectedLines.clear();
                                 newSelectedTriangles.clear();
                                 newSelectedQuads.clear();
@@ -16289,7 +16339,7 @@ public class VertexManager {
                                             HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                             for (Vertex v2 : verts2) {
                                                 touchingVertices.add(v2);
-                                                selectedVertices.add(v2);
+                                                addedSelectedVertices.add(v2);
                                             }
                                         }
                                     }
@@ -16299,7 +16349,7 @@ public class VertexManager {
                                             HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                             for (Vertex v2 : verts2) {
                                                 touchingVertices.add(v2);
-                                                selectedVertices.add(v2);
+                                                addedSelectedVertices.add(v2);
                                             }
                                         }
                                     }
@@ -16309,7 +16359,7 @@ public class VertexManager {
                                             HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                             for (Vertex v2 : verts2) {
                                                 touchingVertices.add(v2);
-                                                selectedVertices.add(v2);
+                                                addedSelectedVertices.add(v2);
                                             }
                                         }
                                     }
@@ -16321,7 +16371,7 @@ public class VertexManager {
                                             HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                             for (Vertex v2 : verts2) {
                                                 touchingVertices.add(v2);
-                                                selectedVertices.add(v2);
+                                                addedSelectedVertices.add(v2);
                                             }
                                             c++;
                                         }
@@ -16333,29 +16383,28 @@ public class VertexManager {
                                         GData g = mani.getGdata();
                                         switch (g.type()) {
                                         case 2:
-                                            if (!selectedLines.contains(g) &&  canSelect(null, g, ss, allNormals, allColours, angle2)) {
-                                                selectedLines.add((GData2) g);
-                                                selectedData.add(g);
+                                            if (!addedSelectedLines.contains(g) &&  canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                                addedSelectedLines.add((GData2) g);
                                                 newSelectedLines.add((GData2) g);
                                                 Vertex[] verts = lines.get(g);
                                                 for (Vertex ov : verts) {
                                                     HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
                                                     for (Vertex v2 : verts2) {
-                                                        selectedVertices.add(v2);
+                                                        addedSelectedVertices.add(v2);
                                                     }
                                                 }
                                             }
                                             break;
                                         case 3:
 
-                                            if (!selectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                            if (!addedSelectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
 
                                                 if (ss.isOrientation()) {
                                                     // We have to find a selected face, which shares one edge
                                                     int faceCount = 0;
                                                     int angleCount = 0;
                                                     boolean notAdjacent = true;
-                                                    for (GData3 g2 : selectedTriangles) {
+                                                    for (GData3 g2 : addedSelectedTriangles) {
                                                         if (hasSameEdge(g, g2, adjaencyByPrecision)) {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
@@ -16364,7 +16413,7 @@ public class VertexManager {
                                                             }
                                                         }
                                                     }
-                                                    for (GData4 g2 : selectedQuads) {
+                                                    for (GData4 g2 : addedSelectedQuads) {
                                                         if (hasSameEdge(g, g2, adjaencyByPrecision)) {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
@@ -16376,27 +16425,26 @@ public class VertexManager {
                                                     if (notAdjacent || faceCount != angleCount) break;
                                                 }
 
-                                                selectedTriangles.add((GData3) g);
-                                                selectedData.add(g);
+                                                addedSelectedTriangles.add((GData3) g);
                                                 newSelectedTriangles.add((GData3) g);
                                                 Vertex[] verts = triangles.get(g);
                                                 for (Vertex ov : verts) {
                                                     HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
                                                     for (Vertex v2 : verts2) {
-                                                        selectedVertices.add(v2);
+                                                        addedSelectedVertices.add(v2);
                                                     }
                                                 }
                                             }
                                             break;
                                         case 4:
-                                            if (!selectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                            if (!addedSelectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
 
                                                 if (ss.isOrientation()) {
                                                     // We have to find a selected face, which shares one edge
                                                     int faceCount = 0;
                                                     int angleCount = 0;
                                                     boolean notAdjacent = true;
-                                                    for (GData3 g2 : selectedTriangles) {
+                                                    for (GData3 g2 : addedSelectedTriangles) {
                                                         if (hasSameEdge(g, g2, adjaencyByPrecision)) {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
@@ -16404,7 +16452,7 @@ public class VertexManager {
                                                             }
                                                         }
                                                     }
-                                                    for (GData4 g2 : selectedQuads) {
+                                                    for (GData4 g2 : addedSelectedQuads) {
                                                         if (hasSameEdge(g, g2, adjaencyByPrecision)) {
                                                             faceCount++;
                                                             if (canSelect(g2, g, ss, allNormals, allColours, angle2)) {
@@ -16416,22 +16464,20 @@ public class VertexManager {
                                                 }
 
 
-                                                selectedQuads.add((GData4) g);
-                                                selectedData.add(g);
+                                                addedSelectedQuads.add((GData4) g);
                                                 newSelectedQuads.add((GData4) g);
                                                 Vertex[] verts = quads.get(g);
                                                 for (Vertex ov : verts) {
                                                     HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
                                                     for (Vertex v2 : verts2) {
-                                                        selectedVertices.add(v2);
+                                                        addedSelectedVertices.add(v2);
                                                     }
                                                 }
                                             }
                                             break;
                                         case 5:
-                                            if (!selectedCondlines.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
-                                                selectedCondlines.add((GData5) g);
-                                                selectedData.add(g);
+                                            if (!addedSelectedCondlines.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                                addedSelectedCondlines.add((GData5) g);
                                                 newSelectedCondlines.add((GData5) g);
                                                 Vertex[] verts = condlines.get(g);
                                                 int c = 0;
@@ -16439,7 +16485,7 @@ public class VertexManager {
                                                     if (c > 1) break;
                                                     HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
                                                     for (Vertex v2 : verts2) {
-                                                        selectedVertices.add(v2);
+                                                        addedSelectedVertices.add(v2);
                                                     }
                                                     c++;
                                                 }
@@ -16463,10 +16509,35 @@ public class VertexManager {
 
                                 if (ss.getScope() == SelectorSettings.TOUCHING) break;
                             } while (
-                                    c1 != selectedLines.size() ||
-                                    c2 != selectedTriangles.size() ||
-                                    c3 != selectedQuads.size() ||
-                                    c4 != selectedCondlines.size());
+                                    c1 != addedSelectedLines.size() ||
+                                    c2 != addedSelectedTriangles.size() ||
+                                    c3 != addedSelectedQuads.size() ||
+                                    c4 != addedSelectedCondlines.size());
+
+                            if (ss.isVertices()) {
+                                selectedVertices.addAll(addedSelectedVertices);
+                            }
+
+                            if (ss.isLines()) {
+                                selectedLines.addAll(addedSelectedLines);
+                                selectedData.addAll(selectedLines);
+                            }
+
+                            if (ss.isTriangles()) {
+                                selectedTriangles.addAll(addedSelectedTriangles);
+                                selectedData.addAll(selectedTriangles);
+                            }
+
+                            if (ss.isQuads()) {
+                                selectedQuads.addAll(addedSelectedQuads);
+                                selectedData.addAll(selectedQuads);
+                            }
+
+                            if (ss.isCondlines()) {
+                                selectedCondlines.addAll(addedSelectedCondlines);
+                                selectedData.addAll(selectedCondlines);
+                            }
+
                         }
 
                         break;
@@ -16500,18 +16571,22 @@ public class VertexManager {
             case 2:
                 GData2 g2 = (GData2) what;
                 myColour = new GColour(g2.colourNumber, g2.r, g2.g, g2.b, g2.a);
+                if (!ss.isLines()) return false;
                 break;
             case 3:
                 GData3 g3 = (GData3) what;
                 myColour = new GColour(g3.colourNumber, g3.r, g3.g, g3.b, g3.a);
+                if (!ss.isTriangles()) return false;
                 break;
             case 4:
                 GData4 g4 = (GData4) what;
                 myColour = new GColour(g4.colourNumber, g4.r, g4.g, g4.b, g4.a);
+                if (!ss.isQuads()) return false;
                 break;
             case 5:
                 GData5 g5 = (GData5) what;
                 myColour = new GColour(g5.colourNumber, g5.r, g5.g, g5.b, g5.a);
+                if (!ss.isCondlines()) return false;
                 break;
             default:
                 return false;
@@ -16723,7 +16798,7 @@ public class VertexManager {
         }
     }
 
-    public void selectInverse() {
+    public void selectInverse(SelectorSettings sels) {
 
         final Set<Vertex> lastSelectedVertices = new HashSet<Vertex>();
         final Set<GData1> lastSelectedSubfiles = new HashSet<GData1>();
@@ -16741,23 +16816,33 @@ public class VertexManager {
 
         clearSelection();
 
-        for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
-            if (!hiddenVertices.contains(v) && !lastSelectedVertices.contains(v)) selectedVertices.add(v);
+        if (sels.isVertices()) {
+            for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
+                if (!hiddenVertices.contains(v) && !lastSelectedVertices.contains(v)) selectedVertices.add(v);
+            }
         }
         for (GData1 g : vertexCountInSubfile.keySet()) {
             if (!hiddenData.contains(g) && !lastSelectedSubfiles.contains(g)) selectedSubfiles.add(g);
         }
-        for (GData2 g : lines.keySet()) {
-            if (!hiddenData.contains(g) && !lastSelectedLines.contains(g)) selectedLines.add(g);
+        if (sels.isLines()) {
+            for (GData2 g : lines.keySet()) {
+                if (!hiddenData.contains(g) && !lastSelectedLines.contains(g)) selectedLines.add(g);
+            }
         }
-        for (GData3 g : triangles.keySet()) {
-            if (!hiddenData.contains(g) && !lastSelectedTriangles.contains(g)) selectedTriangles.add(g);
+        if (sels.isTriangles()) {
+            for (GData3 g : triangles.keySet()) {
+                if (!hiddenData.contains(g) && !lastSelectedTriangles.contains(g)) selectedTriangles.add(g);
+            }
         }
-        for (GData4 g : quads.keySet()) {
-            if (!hiddenData.contains(g) && !lastSelectedQuads.contains(g)) selectedQuads.add(g);
+        if (sels.isQuads()) {
+            for (GData4 g : quads.keySet()) {
+                if (!hiddenData.contains(g) && !lastSelectedQuads.contains(g)) selectedQuads.add(g);
+            }
         }
-        for (GData5 g : condlines.keySet()) {
-            if (!hiddenData.contains(g) && !lastSelectedCondlines.contains(g)) selectedCondlines.add(g);
+        if (sels.isCondlines()) {
+            for (GData5 g : condlines.keySet()) {
+                if (!hiddenData.contains(g) && !lastSelectedCondlines.contains(g)) selectedCondlines.add(g);
+            }
         }
 
         selectedData.addAll(selectedLines);
@@ -16765,6 +16850,9 @@ public class VertexManager {
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
         selectedData.addAll(selectedSubfiles);
+
+        // Extend selection to whole subfiles
+        selectSubfiles(null, null, false);
     }
 
     public void subdivideCatmullClark() {
