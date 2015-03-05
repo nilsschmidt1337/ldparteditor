@@ -88,6 +88,7 @@ import org.nschmidt.ldparteditor.dialogs.symsplitter.SymSplitterDialog;
 import org.nschmidt.ldparteditor.dialogs.txt2dat.Txt2DatDialog;
 import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
+import org.nschmidt.ldparteditor.dialogs.value.ValueDialogInt;
 import org.nschmidt.ldparteditor.enums.GLPrimitives;
 import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
@@ -2846,6 +2847,61 @@ public class Editor3DWindow extends Editor3DDesign {
                             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                                 VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                                 vm.selectIsolatedVertices();;
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        mntm_Split[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (OpenGLRenderer renderer : renders) {
+                            Composite3D c3d = renderer.getC3D();
+                            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                                VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                                vm.split(2);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        mntm_SplitNTimes[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (OpenGLRenderer renderer : renders) {
+                            Composite3D c3d = renderer.getC3D();
+                            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+
+                                final int[] frac = new int[]{2};
+                                if (new ValueDialogInt(getShell(), "Split edges:", "(Number of resulting fractions)") { //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+                                    @Override
+                                    public void initializeSpinner() {
+                                        this.spn_Value[0].setMinimum(2);
+                                        this.spn_Value[0].setMaximum(1000);
+                                        this.spn_Value[0].setValue(2);
+                                    }
+
+                                    @Override
+                                    public void applyValue() {
+                                        frac[0] = this.spn_Value[0].getValue();
+                                    }
+                                }.open() == OK) {
+
+                                    VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+
+                                    vm.split(frac[0]);
+                                }
                             }
                         }
                     }
