@@ -12597,7 +12597,9 @@ public class VertexManager {
 
         final BigDecimal MIN_DIST = new BigDecimal(".0001"); //$NON-NLS-1$
 
-        final Set<GData2> originalSelection = new HashSet<GData2>();
+        final Set<GData2> originalSelectionLines = new HashSet<GData2>();
+        final Set<GData3> originalSelectionTriangles = new HashSet<GData3>();
+        final Set<GData4> originalSelectionQuads = new HashSet<GData4>();
         final Set<GData3> newTriangles = new HashSet<GData3>();
 
         final ArrayList<ArrayList<Vector3dd>> linesToParse = new ArrayList<ArrayList<Vector3dd>>();
@@ -12608,7 +12610,9 @@ public class VertexManager {
 
         final int chunks = View.NUM_CORES;
 
-        originalSelection.addAll(selectedLines);
+        originalSelectionLines.addAll(selectedLines);
+        originalSelectionTriangles.addAll(selectedTriangles);
+        originalSelectionQuads.addAll(selectedQuads);
 
         final Vector3d originalNormal = new Vector3d(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
 
@@ -12623,6 +12627,72 @@ public class VertexManager {
                     try
                     {
                         monitor.beginTask("Running Lines2Pattern (this may take some time)", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+
+                        for (GData3 g3 : selectedTriangles) {
+                            TreeSet<Vertex> vs = new TreeSet<Vertex>();
+                            Vertex[] verts = triangles.get(g3);
+                            for (Vertex v : verts) {
+                                vs.add(v);
+                            }
+                            if (vs.size() != 3) return;
+                            {
+                                ArrayList<Vector3dd> l = new ArrayList<Vector3dd>();
+                                l.add(new Vector3dd(verts[0]));
+                                l.add(new Vector3dd(verts[1]));
+                                linesToParse.add(l);
+                            }
+                            {
+                                ArrayList<Vector3dd> l = new ArrayList<Vector3dd>();
+                                l.add(new Vector3dd(verts[1]));
+                                l.add(new Vector3dd(verts[2]));
+                                linesToParse.add(l);
+                            }
+                            {
+                                ArrayList<Vector3dd> l = new ArrayList<Vector3dd>();
+                                l.add(new Vector3dd(verts[2]));
+                                l.add(new Vector3dd(verts[0]));
+                                linesToParse.add(l);
+                            }
+                        }
+
+                        for (GData4 g4 : selectedQuads) {
+                            TreeSet<Vertex> vs = new TreeSet<Vertex>();
+                            Vertex[] verts = quads.get(g4);
+                            for (Vertex v : verts) {
+                                vs.add(v);
+                            }
+                            if (vs.size() != 4) return;
+                            {
+                                ArrayList<Vector3dd> l = new ArrayList<Vector3dd>();
+                                l.add(new Vector3dd(verts[0]));
+                                l.add(new Vector3dd(verts[1]));
+                                linesToParse.add(l);
+                            }
+                            {
+                                ArrayList<Vector3dd> l = new ArrayList<Vector3dd>();
+                                l.add(new Vector3dd(verts[1]));
+                                l.add(new Vector3dd(verts[2]));
+                                linesToParse.add(l);
+                            }
+                            {
+                                ArrayList<Vector3dd> l = new ArrayList<Vector3dd>();
+                                l.add(new Vector3dd(verts[2]));
+                                l.add(new Vector3dd(verts[3]));
+                                linesToParse.add(l);
+                            }
+                            {
+                                ArrayList<Vector3dd> l = new ArrayList<Vector3dd>();
+                                l.add(new Vector3dd(verts[3]));
+                                l.add(new Vector3dd(verts[0]));
+                                linesToParse.add(l);
+                            }
+                            {
+                                ArrayList<Vector3dd> l = new ArrayList<Vector3dd>();
+                                l.add(new Vector3dd(verts[1]));
+                                l.add(new Vector3dd(verts[3]));
+                                linesToParse.add(l);
+                            }
+                        }
 
                         TreeSet<Vertex> m1 = new TreeSet<Vertex>();
                         TreeSet<Vertex> m2 = new TreeSet<Vertex>();
@@ -12692,7 +12762,7 @@ public class VertexManager {
                         }
 
                         if (monitor.isCanceled()) {
-                            originalSelection.clear();
+                            originalSelectionLines.clear();
                         }
                     }
                     finally
@@ -12706,7 +12776,7 @@ public class VertexManager {
         } catch (InterruptedException consumed) {
         }
 
-        if (originalSelection.isEmpty()) return;
+        if (originalSelectionLines.isEmpty()) return;
         clearSelection();
 
         // Calculate intersecting lines, if needed.
@@ -13040,9 +13110,13 @@ public class VertexManager {
                                 }
                             }
                             if (monitor.isCanceled()) {
-                                selectedLines.addAll(originalSelection);
-                                selectedData.addAll(originalSelection);
-                                originalSelection.clear();
+                                selectedLines.addAll(originalSelectionLines);
+                                selectedTriangles.addAll(originalSelectionTriangles);
+                                selectedQuads.addAll(originalSelectionQuads);
+                                selectedData.addAll(originalSelectionTriangles);
+                                selectedData.addAll(originalSelectionQuads);
+                                selectedData.addAll(originalSelectionLines);
+                                originalSelectionLines.clear();
                                 return;
                             } else {
                                 colourLines.addAll(colourLines2);
@@ -13067,7 +13141,7 @@ public class VertexManager {
             } catch (InterruptedException consumed) {
             }
 
-            if (originalSelection.isEmpty()) return;
+            if (originalSelectionLines.isEmpty()) return;
 
             int lc = linesToParse.size();
             {
@@ -13337,9 +13411,13 @@ public class VertexManager {
                                 }
                             }
                             if (monitor.isCanceled()) {
-                                selectedLines.addAll(originalSelection);
-                                selectedData.addAll(originalSelection);
-                                originalSelection.clear();
+                                selectedLines.addAll(originalSelectionLines);
+                                selectedTriangles.addAll(originalSelectionTriangles);
+                                selectedQuads.addAll(originalSelectionQuads);
+                                selectedData.addAll(originalSelectionTriangles);
+                                selectedData.addAll(originalSelectionQuads);
+                                selectedData.addAll(originalSelectionLines);
+                                originalSelectionLines.clear();
                                 return;
                             }
                         } finally {
@@ -13352,7 +13430,7 @@ public class VertexManager {
             } catch (InterruptedException consumed) {
             }
 
-            if (originalSelection.isEmpty()) return;
+            if (originalSelectionLines.isEmpty()) return;
 
             newTriangles.addAll(MathHelper.triangulatePointGroups(resultColours, resultVertices, resultIsLine, View.DUMMY_REFERENCE, linkedDatFile));
 
