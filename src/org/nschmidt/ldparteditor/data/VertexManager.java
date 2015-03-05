@@ -656,10 +656,10 @@ public class VertexManager {
         // HashMap<GData4, Vertex[]> quads
         // HashMap<GData5, Vertex[]> condlines
 
-        // HashSet<Vertex> selectedVertices
+        // TreeSet<Vertex> selectedVertices
 
         Set<Vertex> vertices = vertexLinkedToPositionInFile.keySet();
-        Set<Vertex> verticesInUse = new HashSet<Vertex>();
+        Set<Vertex> verticesInUse = new TreeSet<Vertex>();
         for (GData0 line : declaredVertices.keySet()) {
             for (Vertex vertex : declaredVertices.get(line)) {
                 verticesInUse.add(vertex);
@@ -786,7 +786,7 @@ public class VertexManager {
         if (manipulator.isModified()) {
             Set<GData> alreadyMoved = new HashSet<GData>();
 
-            Set<Vertex> allVertices = new HashSet<Vertex>(selectedVertices);
+            Set<Vertex> allVertices = new TreeSet<Vertex>(selectedVertices);
             GL11.glLineWidth(2f);
             if (c3d.isShowingVertices()) {
                 GL11.glBegin(GL11.GL_POINTS);
@@ -1861,7 +1861,7 @@ public class VertexManager {
 
         for (GData gData : dataToRemove) {
 
-            HashSet<Vertex> verts = new HashSet<Vertex>();
+            TreeSet<Vertex> verts = new TreeSet<Vertex>();
 
             switch (gData.type()) {
             case 3:
@@ -3490,7 +3490,7 @@ public class VertexManager {
             selectedSubfiles.clear();
         }
 
-        HashSet<Vertex> verticesToRemove = new HashSet<Vertex>();
+        TreeSet<Vertex> verticesToRemove = new TreeSet<Vertex>();
         HashSet<GData1> subfilesToLink = new HashSet<GData1>();
         HashSet<GData2> linesToRemove = new HashSet<GData2>();
         HashSet<GData3> trianglesToRemove = new HashSet<GData3>();
@@ -4170,7 +4170,7 @@ public class VertexManager {
         return result;
     }
 
-    HashSet<Vertex> hiddenVertices = new HashSet<Vertex>();
+    TreeSet<Vertex> hiddenVertices = new TreeSet<Vertex>();
     HashSet<GData> hiddenData = new HashSet<GData>();
 
     private HashMap<GData, Byte> bfcMap = new HashMap<GData, Byte>();
@@ -4633,9 +4633,9 @@ public class VertexManager {
     private Set<GData1> transformVertices(Matrix transformation, boolean moveAdjacentData) {
         Set<GData1> result = new HashSet<GData1>();
         if (moveAdjacentData) {
-            Set<Vertex> oldVerts = new HashSet<Vertex>();
-            Set<Vertex> newVerts = new HashSet<Vertex>();
-            Set<Vertex> tmpVerts = new HashSet<Vertex>(selectedVertices);
+            Set<Vertex> oldVerts = new TreeSet<Vertex>();
+            Set<Vertex> newVerts = new TreeSet<Vertex>();
+            Set<Vertex> tmpVerts = new TreeSet<Vertex>(selectedVertices);
             for (Vertex vertex : tmpVerts) {
                 Set<VertexManifestation> tvms = vertexLinkedToPositionInFile.get(vertex);
                 if (tvms == null)
@@ -4657,9 +4657,9 @@ public class VertexManager {
             selectedVertices.removeAll(oldVerts);
             selectedVertices.addAll(newVerts);
         } else {
-            Set<Vertex> oldVerts = new HashSet<Vertex>();
-            Set<Vertex> newVerts = new HashSet<Vertex>();
-            Set<Vertex> tmpVerts = new HashSet<Vertex>(selectedVertices);
+            Set<Vertex> oldVerts = new TreeSet<Vertex>();
+            Set<Vertex> newVerts = new TreeSet<Vertex>();
+            Set<Vertex> tmpVerts = new TreeSet<Vertex>(selectedVertices);
             for (Vertex vertex : tmpVerts) {
                 Set<VertexManifestation> tvms = vertexLinkedToPositionInFile.get(vertex);
                 if (tvms == null)
@@ -6619,7 +6619,7 @@ public class VertexManager {
         final HashSet<GData4> effSelectedQuads = new HashSet<GData4>();
         final HashSet<GData5> effSelectedCondlines = new HashSet<GData5>();
 
-        final HashSet<Vertex> effSelectedVertices2 = new HashSet<Vertex>(selectedVertices);
+        final TreeSet<Vertex> effSelectedVertices2 = new TreeSet<Vertex>(selectedVertices);
         final HashSet<GData2> effSelectedLines2 = new HashSet<GData2>(selectedLines);
         final HashSet<GData3> effSelectedTriangles2 = new HashSet<GData3>(selectedTriangles);
         final HashSet<GData4> effSelectedQuads2 = new HashSet<GData4>(selectedQuads);
@@ -7288,7 +7288,7 @@ public class VertexManager {
 
     public void addQuad(Vertex v1, Vertex v2, Vertex v3, Vertex v4, Composite3D c3d) {
         {
-            Set<Vertex> dupl = new HashSet<Vertex>();
+            Set<Vertex> dupl = new TreeSet<Vertex>();
             dupl.add(v1);
             dupl.add(v2);
             dupl.add(v3);
@@ -7504,7 +7504,7 @@ public class VertexManager {
 
     public void addCondline(Vertex v1, Vertex v2, Vertex v3, Vertex v4) {
         {
-            Set<Vertex> dupl = new HashSet<Vertex>();
+            Set<Vertex> dupl = new TreeSet<Vertex>();
             dupl.add(v1);
             dupl.add(v2);
             dupl.add(v3);
@@ -7903,7 +7903,7 @@ public class VertexManager {
 
         final BigDecimal ed = es.getEqualDistance();
         HashMap<Vertex, Vertex> snap = new HashMap<Vertex, Vertex>();
-        HashMap<Vertex, HashSet<Vertex>> snapToOriginal = new HashMap<Vertex, HashSet<Vertex>>();
+        HashMap<Vertex, TreeSet<Vertex>> snapToOriginal = new HashMap<Vertex, TreeSet<Vertex>>();
 
         HashMap<AccurateEdge, Integer> edges = new HashMap<AccurateEdge, Integer>();
         HashSet<AccurateEdge> presentEdges = new HashSet<AccurateEdge>();
@@ -7921,7 +7921,7 @@ public class VertexManager {
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
-                    HashSet<Vertex> h = new HashSet<Vertex>();
+                    TreeSet<Vertex> h = new TreeSet<Vertex>();
                     h.add(vertex);
                     snapToOriginal.put(snap.get(vertex), h);
                 }
@@ -8055,7 +8055,7 @@ public class VertexManager {
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
-                    HashSet<Vertex> h = new HashSet<Vertex>();
+                    TreeSet<Vertex> h = new TreeSet<Vertex>();
                     h.add(vertex);
                     snapToOriginal.put(snap.get(vertex), h);
                 }
@@ -8191,7 +8191,7 @@ public class VertexManager {
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
-                    HashSet<Vertex> h = new HashSet<Vertex>();
+                    TreeSet<Vertex> h = new TreeSet<Vertex>();
                     h.add(vertex);
                     snapToOriginal.put(snap.get(vertex), h);
                 }
@@ -8429,7 +8429,7 @@ public class VertexManager {
         }
     }
 
-    private void addEdgeEdger2(HashSet<Vertex> h1, HashSet<Vertex> h2) {
+    private void addEdgeEdger2(TreeSet<Vertex> h1, TreeSet<Vertex> h2) {
         for (Vertex v1 : h1) {
             for (Vertex v2 : h2) {
                 // if v1 is connected with v2 draw a line from v1 to v2
@@ -8440,7 +8440,7 @@ public class VertexManager {
         }
     }
 
-    private void addLineEdger2(HashSet<Vertex> h1, HashSet<Vertex> h2, Edger2Settings es) {
+    private void addLineEdger2(TreeSet<Vertex> h1, TreeSet<Vertex> h2, Edger2Settings es) {
 
         Vertex[] rv1 = new Vertex[1];
         Vertex[] rv2 = new Vertex[1];
@@ -8460,7 +8460,7 @@ public class VertexManager {
             if (g1.type() == 3) {
                 GData3 g3 = (GData3) g1;
                 Vertex[] vt = triangles.get(g3);
-                HashSet<Vertex> tvs = new HashSet<Vertex>();
+                TreeSet<Vertex> tvs = new TreeSet<Vertex>();
                 tvs.add(vt[0]);
                 tvs.add(vt[1]);
                 tvs.add(vt[2]);
@@ -8500,7 +8500,7 @@ public class VertexManager {
             if (g2.type() == 3) {
                 GData3 g3 = (GData3) g2;
                 Vertex[] vt = triangles.get(g3);
-                HashSet<Vertex> tvs = new HashSet<Vertex>();
+                TreeSet<Vertex> tvs = new TreeSet<Vertex>();
                 tvs.add(vt[0]);
                 tvs.add(vt[1]);
                 tvs.add(vt[2]);
@@ -8576,7 +8576,7 @@ public class VertexManager {
         }
     }
 
-    private ArrayList<GData> linkedCommonFaces(HashSet<Vertex> h1, HashSet<Vertex> h2, Vertex[] rv1, Vertex[] rv2) {
+    private ArrayList<GData> linkedCommonFaces(TreeSet<Vertex> h1, TreeSet<Vertex> h2, Vertex[] rv1, Vertex[] rv2) {
         ArrayList<GData> result = new ArrayList<GData>();
         Set<VertexManifestation> m1 = new HashSet<VertexManifestation>();
         Set<VertexManifestation> m2 = new HashSet<VertexManifestation>();
@@ -8638,8 +8638,8 @@ public class VertexManager {
         int t1 = g1.type();
         int t2 = g2.type();
 
-        HashSet<Vertex> v1 = new HashSet<Vertex>();
-        HashSet<Vertex> v2 = new HashSet<Vertex>();
+        TreeSet<Vertex> v1 = new TreeSet<Vertex>();
+        TreeSet<Vertex> v2 = new TreeSet<Vertex>();
 
         switch (t1) {
         case 3:
@@ -8689,8 +8689,8 @@ public class VertexManager {
         int t1 = g1.type();
         int t2 = g2.type();
 
-        HashSet<Vertex> v1 = new HashSet<Vertex>();
-        HashSet<Vertex> v2 = new HashSet<Vertex>();
+        TreeSet<Vertex> v1 = new TreeSet<Vertex>();
+        TreeSet<Vertex> v2 = new TreeSet<Vertex>();
 
         GData1 p1 = null;
         GData1 p2 = null;
@@ -8751,13 +8751,13 @@ public class VertexManager {
      * @param adjaencyByPrecision a map which contains informations about near vertices
      * @return {@code true} if they do / {@code false} otherwise
      */
-    private boolean hasSameEdge(GData g1, GData g2, HashMap<Vertex, HashSet<Vertex>> adjaencyByPrecision) {
+    private boolean hasSameEdge(GData g1, GData g2, HashMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
 
         int t1 = g1.type();
         int t2 = g2.type();
 
-        HashSet<Vertex> v1 = new HashSet<Vertex>();
-        HashSet<Vertex> v2 = new HashSet<Vertex>();
+        TreeSet<Vertex> v1 = new TreeSet<Vertex>();
+        TreeSet<Vertex> v2 = new TreeSet<Vertex>();
 
 
         switch (t1) {
@@ -8808,17 +8808,17 @@ public class VertexManager {
 
         // Create the sets
 
-        ArrayList<HashSet<Vertex>> setList1 = new ArrayList<HashSet<Vertex>>();
-        ArrayList<HashSet<Vertex>> setList2 = new ArrayList<HashSet<Vertex>>();
+        ArrayList<TreeSet<Vertex>> setList1 = new ArrayList<TreeSet<Vertex>>();
+        ArrayList<TreeSet<Vertex>> setList2 = new ArrayList<TreeSet<Vertex>>();
 
         for (Vertex v : v1) {
-            HashSet<Vertex> newSet = new HashSet<Vertex>();
+            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList1.add(newSet);
         }
 
         for (Vertex v : v2) {
-            HashSet<Vertex> newSet = new HashSet<Vertex>();
+            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList2.add(newSet);
         }
@@ -8826,9 +8826,9 @@ public class VertexManager {
         // Now we have to detect a least 2 set intersections
 
         int intersections = 0;
-        for (HashSet<Vertex> s1 : setList1) {
-            for (HashSet<Vertex> s2 : setList2) {
-                HashSet<Vertex> newSet = new HashSet<Vertex>();
+        for (TreeSet<Vertex> s1 : setList1) {
+            for (TreeSet<Vertex> s2 : setList2) {
+                TreeSet<Vertex> newSet = new TreeSet<Vertex>();
                 newSet.addAll(s1);
                 int co = newSet.size();
                 newSet.removeAll(s2);
@@ -8852,12 +8852,12 @@ public class VertexManager {
      * @param adjaencyByPrecision a map which contains informations about near vertices
      * @return {@code true} if they do / {@code false} otherwise
      */
-    private boolean hasSameEdge(AccurateEdge e1, GData g2, HashMap<Vertex, HashSet<Vertex>> adjaencyByPrecision) {
+    private boolean hasSameEdge(AccurateEdge e1, GData g2, HashMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
 
         int t2 = g2.type();
 
-        HashSet<Vertex> v1 = new HashSet<Vertex>();
-        HashSet<Vertex> v2 = new HashSet<Vertex>();
+        TreeSet<Vertex> v1 = new TreeSet<Vertex>();
+        TreeSet<Vertex> v2 = new TreeSet<Vertex>();
 
         v1.add(e1.v1);
         v1.add(e1.v2);
@@ -8887,17 +8887,17 @@ public class VertexManager {
 
         // Create the sets
 
-        ArrayList<HashSet<Vertex>> setList1 = new ArrayList<HashSet<Vertex>>();
-        ArrayList<HashSet<Vertex>> setList2 = new ArrayList<HashSet<Vertex>>();
+        ArrayList<TreeSet<Vertex>> setList1 = new ArrayList<TreeSet<Vertex>>();
+        ArrayList<TreeSet<Vertex>> setList2 = new ArrayList<TreeSet<Vertex>>();
 
         for (Vertex v : v1) {
-            HashSet<Vertex> newSet = new HashSet<Vertex>();
+            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList1.add(newSet);
         }
 
         for (Vertex v : v2) {
-            HashSet<Vertex> newSet = new HashSet<Vertex>();
+            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList2.add(newSet);
         }
@@ -8905,9 +8905,9 @@ public class VertexManager {
         // Now we have to detect a least 2 set intersections
 
         int intersections = 0;
-        for (HashSet<Vertex> s1 : setList1) {
-            for (HashSet<Vertex> s2 : setList2) {
-                HashSet<Vertex> newSet = new HashSet<Vertex>();
+        for (TreeSet<Vertex> s1 : setList1) {
+            for (TreeSet<Vertex> s2 : setList2) {
+                TreeSet<Vertex> newSet = new TreeSet<Vertex>();
                 newSet.addAll(s1);
                 int co = newSet.size();
                 newSet.removeAll(s2);
@@ -9222,8 +9222,8 @@ public class VertexManager {
                 Vertex oldVertex = null;
                 Vertex newVertex = null;
 
-                HashSet<Vertex> ov = new HashSet<Vertex>();
-                HashSet<Vertex> nv = new HashSet<Vertex>();
+                TreeSet<Vertex> ov = new TreeSet<Vertex>();
+                TreeSet<Vertex> nv = new TreeSet<Vertex>();
 
                 switch (selectedLine.type()) {
                 case 5:
@@ -9248,7 +9248,7 @@ public class VertexManager {
                     return null;
                 }
 
-                HashSet<Vertex> nv2 = new HashSet<Vertex>(nv);
+                TreeSet<Vertex> nv2 = new TreeSet<Vertex>(nv);
                 nv2.removeAll(ov);
                 ov.removeAll(nv);
 
@@ -9465,9 +9465,9 @@ public class VertexManager {
                                         GData3 tri2 = (GData3) cf[i].get(1);
                                         if (tri1.parent.equals(View.DUMMY_REFERENCE) && tri2.parent.equals(View.DUMMY_REFERENCE) && tri1.colourNumber == tri2.colourNumber && (tri1.colourNumber != -1 || tri1.r == tri2.r && tri1.g == tri2.g && tri1.b == tri2.b && tri1.a == tri2.a)) {
 
-                                            HashSet<Vertex> tri1V = new HashSet<Vertex>();
-                                            HashSet<Vertex> tri2V = new HashSet<Vertex>();
-                                            HashSet<Vertex> triC = new HashSet<Vertex>();
+                                            TreeSet<Vertex> tri1V = new TreeSet<Vertex>();
+                                            TreeSet<Vertex> tri2V = new TreeSet<Vertex>();
+                                            TreeSet<Vertex> triC = new TreeSet<Vertex>();
 
                                             Vertex[] v1 = triangles.get(tri1);
                                             Vertex[] v2 = triangles.get(tri2);
@@ -9598,9 +9598,9 @@ public class VertexManager {
                                     GData3 tri1 = (GData3) cf[bestIndex].get(0);
                                     GData3 tri2 = (GData3) cf[bestIndex].get(1);
 
-                                    HashSet<Vertex> tri1V = new HashSet<Vertex>();
-                                    HashSet<Vertex> tri2V = new HashSet<Vertex>();
-                                    HashSet<Vertex> triC = new HashSet<Vertex>();
+                                    TreeSet<Vertex> tri1V = new TreeSet<Vertex>();
+                                    TreeSet<Vertex> tri2V = new TreeSet<Vertex>();
+                                    TreeSet<Vertex> triC = new TreeSet<Vertex>();
 
                                     Vertex[] v1 = triangles.get(tri1);
                                     Vertex[] v2 = triangles.get(tri2);
@@ -10769,7 +10769,7 @@ public class VertexManager {
                 final Set<GData3> newTriangles2 = new HashSet<GData3>();
                 for (GData3 g3 : newTriangles) {
                     Vertex[] verts = triangles.get(g3);
-                    Set<Vertex> verts2 = new HashSet<Vertex>();
+                    Set<Vertex> verts2 = new TreeSet<Vertex>();
                     for (Vertex vert : verts) {
                         verts2.add(vert);
                     }
@@ -11632,7 +11632,7 @@ public class VertexManager {
 
             // Remove adjacent non-selected surfaces from targetSurfs!
             {
-                HashSet<Vertex> verts = new HashSet<Vertex>();
+                TreeSet<Vertex> verts = new TreeSet<Vertex>();
                 for (GData g3 : selectedTriangles) {
                     Vertex[] verts2 = triangles.get(g3);
                     for (Vertex vertex : verts2) {
@@ -11841,7 +11841,7 @@ public class VertexManager {
             {
                 for (GData3 g3 : newTriangles) {
                     Vertex[] verts = triangles.get(g3);
-                    Set<Vertex> verts2 = new HashSet<Vertex>();
+                    Set<Vertex> verts2 = new TreeSet<Vertex>();
                     for (Vertex vert : verts) {
                         verts2.add(vert);
                     }
@@ -12109,7 +12109,7 @@ public class VertexManager {
                     ArrayList<Vector3d> intersect = new ArrayList<Vector3d>();
                     for (ArrayList<Vector3dd> line2 : fixedIntersectionLines) {
                         if (line2 != line) {
-                            HashSet<Vector3dd> allVertices = new HashSet<Vector3dd>();
+                            TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
                             for(int l = 0; l < 2; l++) {
                                 allVertices.add(line.get(l));
                                 allVertices.add(line2.get(l));
@@ -12179,7 +12179,7 @@ public class VertexManager {
             }
 
             {
-                final HashSet<Vector3dd> allVertices = new HashSet<Vector3dd>();
+                final TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
                 for (ArrayList<Vector3dd> l : fixedIntersectionLines) {
                     allVertices.add(l.get(0).round());
                     allVertices.add(l.get(1).round());
@@ -12241,7 +12241,7 @@ public class VertexManager {
                     int removed = 0;
                     for (int i = 0; i + removed < lc; i++) {
                         for (int j = i + 1; j + removed < lc; j++) {
-                            HashSet<Vector3dd> allVertices = new HashSet<Vector3dd>();
+                            TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
                             for(int l = 0; l < 2; l++) {
                                 allVertices.add(allLines.get(i).get(l));
                                 allVertices.add(allLines.get(j).get(l));
@@ -12257,7 +12257,7 @@ public class VertexManager {
 
                     removed = 0;
                     for (int i = 0; i + removed < lc; i++) {
-                        HashSet<Vector3dd> allVertices = new HashSet<Vector3dd>();
+                        TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
                         allVertices.add(allLines.get(i).get(0));
                         allVertices.add(allLines.get(i).get(1));
                         if (allVertices.size() == 1) {
@@ -12272,7 +12272,7 @@ public class VertexManager {
                 for (int i = 0; i < lc; i++) {
                     for (int j = i + 1; j < lc; j++) {
                         for (int k = j + 1; k < lc; k++) {
-                            HashSet<Vector3dd> allVertices = new HashSet<Vector3dd>();
+                            TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
                             for(int l = 0; l < 2; l++) {
                                 allVertices.add(allLines.get(i).get(l).round());
                                 allVertices.add(allLines.get(j).get(l).round());
@@ -12476,7 +12476,7 @@ public class VertexManager {
             intersections.put(target, result2);
         }
 
-        final HashSet<Vector3dd> result = new HashSet<Vector3dd>();
+        final TreeSet<Vector3dd> result = new TreeSet<Vector3dd>();
 
         {
             Vector3dd r = new Vector3dd();
@@ -12623,8 +12623,8 @@ public class VertexManager {
                     {
                         monitor.beginTask("Running Lines2Pattern (this may take some time)", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
 
-                        HashSet<Vertex> m1 = new HashSet<Vertex>();
-                        HashSet<Vertex> m2 = new HashSet<Vertex>();
+                        TreeSet<Vertex> m1 = new TreeSet<Vertex>();
+                        TreeSet<Vertex> m2 = new TreeSet<Vertex>();
                         for (GData2 g2 : selectedLines) {
                             Vertex[] verts = lines.get(g2);
                             for (Vertex v : verts) {
@@ -12717,7 +12717,7 @@ public class VertexManager {
                 ArrayList<Vector3d> intersect = new ArrayList<Vector3d>();
                 for (ArrayList<Vector3dd> line2 : linesToParse) {
                     if (line2 != line) {
-                        HashSet<Vector3dd> allVertices = new HashSet<Vector3dd>();
+                        TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
                         for(int l = 0; l < 2; l++) {
                             allVertices.add(line.get(l));
                             allVertices.add(line2.get(l));
@@ -12783,7 +12783,7 @@ public class VertexManager {
                                 final ArrayList<Vector3dd> colourVertices = new ArrayList<Vector3dd>();
                                 final HashMap<Vector3dd, GColour> vertexColour = new HashMap<Vector3dd, GColour>();
                                 {
-                                    final HashSet<Vector3dd> allVertices = new HashSet<Vector3dd>();
+                                    final TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
                                     for (ArrayList<Vector3dd> l : linesToParse) {
                                         allVertices.add(l.get(0).round());
                                         allVertices.add(l.get(1).round());
@@ -12893,7 +12893,7 @@ public class VertexManager {
         final ArrayList<Vector3dh> fixedVertices2 = new ArrayList<Vector3dh>();
 
         {
-            final HashSet<Vector3dd> allVertices = new HashSet<Vector3dd>();
+            final TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
             for (ArrayList<Vector3dd> l : linesToParse) {
                 allVertices.add(l.get(0).round());
                 allVertices.add(l.get(1).round());
@@ -13073,7 +13073,7 @@ public class VertexManager {
                 int removed = 0;
                 for (int i = 0; i + removed < lc; i++) {
                     for (int j = i + 1; j + removed < lc; j++) {
-                        HashSet<Vector3dd> allVertices = new HashSet<Vector3dd>();
+                        TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
                         for(int l = 0; l < 2; l++) {
                             allVertices.add(linesToParse.get(i).get(l));
                             allVertices.add(linesToParse.get(j).get(l));
@@ -13089,7 +13089,7 @@ public class VertexManager {
 
                 removed = 0;
                 for (int i = 0; i + removed < lc; i++) {
-                    HashSet<Vector3dd> allVertices = new HashSet<Vector3dd>();
+                    TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
                     allVertices.add(linesToParse.get(i).get(0));
                     allVertices.add(linesToParse.get(i).get(1));
                     if (allVertices.size() == 1) {
@@ -13275,7 +13275,7 @@ public class VertexManager {
                                                                     BigDecimal len = sp.normalise(dir);
                                                                     for (ArrayList<Vector3dd> line2 : colourLines) {
                                                                         if (line2 != line) {
-                                                                            HashSet<Vector3dd> allVertices1 = new HashSet<Vector3dd>();
+                                                                            TreeSet<Vector3dd> allVertices1 = new TreeSet<Vector3dd>();
                                                                             for(int l1 = 0; l1 < 2; l1++) {
                                                                                 allVertices1.add(line.get(l1));
                                                                                 allVertices1.add(line2.get(l1));
@@ -13360,7 +13360,7 @@ public class VertexManager {
             {
                 for (GData3 g3 : newTriangles) {
                     Vertex[] verts = triangles.get(g3);
-                    Set<Vertex> verts2 = new HashSet<Vertex>();
+                    Set<Vertex> verts2 = new TreeSet<Vertex>();
                     for (Vertex vert : verts) {
                         verts2.add(vert);
                     }
@@ -13481,7 +13481,7 @@ public class VertexManager {
 
             // Insert zero length lines as line indicators
             {
-                Set<Vertex> liVerts = new HashSet<Vertex>();
+                Set<Vertex> liVerts = new TreeSet<Vertex>();
                 for (GData2 ind : lineIndicators) {
                     Vertex[] verts = lines.get(ind);
                     liVerts.add(verts[0]);
@@ -14173,7 +14173,7 @@ public class VertexManager {
         {
             for (GData2 g2 : newLines) {
                 Vertex[] verts = lines.get(g2);
-                Set<Vertex> verts2 = new HashSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<Vertex>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -14183,7 +14183,7 @@ public class VertexManager {
             }
             for (GData3 g3 : newTriangles) {
                 Vertex[] verts = triangles.get(g3);
-                Set<Vertex> verts2 = new HashSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<Vertex>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -14193,7 +14193,7 @@ public class VertexManager {
             }
             for (GData4 g4 : newQuads) {
                 Vertex[] verts = quads.get(g4);
-                Set<Vertex> verts2 = new HashSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<Vertex>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -14622,7 +14622,7 @@ public class VertexManager {
         // Merge vertices to the plane
         if (needMerge) {
             selectAll(null, true);
-            HashSet<Vertex> allVertices = new HashSet<Vertex>();
+            TreeSet<Vertex> allVertices = new TreeSet<Vertex>();
             allVertices.addAll(selectedVertices);
             clearSelection();
             for (Vertex v : allVertices) {
@@ -14690,7 +14690,7 @@ public class VertexManager {
                 case 2:
                     verts = lines.get(g);
                     {
-                        HashSet<Vertex> vv = new HashSet<Vertex>();
+                        TreeSet<Vertex> vv = new TreeSet<Vertex>();
                         for (Vertex v : verts) {
                             vv.add(v);
                         }
@@ -14700,7 +14700,7 @@ public class VertexManager {
                 case 3:
                     verts = triangles.get(g);
                     {
-                        HashSet<Vertex> vv = new HashSet<Vertex>();
+                        TreeSet<Vertex> vv = new TreeSet<Vertex>();
                         for (Vertex v : verts) {
                             vv.add(v);
                         }
@@ -14710,7 +14710,7 @@ public class VertexManager {
                 case 4:
                     verts = quads.get(g);
                     {
-                        HashSet<Vertex> vv = new HashSet<Vertex>();
+                        TreeSet<Vertex> vv = new TreeSet<Vertex>();
                         for (Vertex v : verts) {
                             vv.add(v);
                         }
@@ -14721,7 +14721,7 @@ public class VertexManager {
                     Vertex[] v2 = condlines.get(g);
                     verts = new Vertex[]{v2[0], v2[1]};
                     {
-                        HashSet<Vertex> vv = new HashSet<Vertex>();
+                        TreeSet<Vertex> vv = new TreeSet<Vertex>();
                         for (Vertex v : verts) {
                             vv.add(v);
                         }
@@ -15125,7 +15125,7 @@ public class VertexManager {
                         case 2:
                             verts = lines.get(g);
                             {
-                                HashSet<Vertex> vv = new HashSet<Vertex>();
+                                TreeSet<Vertex> vv = new TreeSet<Vertex>();
                                 for (Vertex v : verts) {
                                     vv.add(v);
                                 }
@@ -15135,7 +15135,7 @@ public class VertexManager {
                         case 3:
                             verts = triangles.get(g);
                             {
-                                HashSet<Vertex> vv = new HashSet<Vertex>();
+                                TreeSet<Vertex> vv = new TreeSet<Vertex>();
                                 for (Vertex v : verts) {
                                     vv.add(v);
                                 }
@@ -15145,7 +15145,7 @@ public class VertexManager {
                         case 4:
                             verts = quads.get(g);
                             {
-                                HashSet<Vertex> vv = new HashSet<Vertex>();
+                                TreeSet<Vertex> vv = new TreeSet<Vertex>();
                                 for (Vertex v : verts) {
                                     vv.add(v);
                                 }
@@ -15156,7 +15156,7 @@ public class VertexManager {
                             Vertex[] v2 = condlines.get(g);
                             verts = new Vertex[]{v2[0], v2[1]};
                             {
-                                HashSet<Vertex> vv = new HashSet<Vertex>();
+                                TreeSet<Vertex> vv = new TreeSet<Vertex>();
                                 for (Vertex v : verts) {
                                     vv.add(v);
                                 }
@@ -15348,7 +15348,7 @@ public class VertexManager {
             }
         }
 
-        final HashSet<Vertex> selectedVerts = new HashSet<Vertex>();
+        final TreeSet<Vertex> selectedVerts = new TreeSet<Vertex>();
         selectedVerts.addAll(selectedVertices);
 
         clearSelection();
@@ -15364,8 +15364,8 @@ public class VertexManager {
 
                     monitor.subTask("Sorting out vertices..."); //$NON-NLS-1$ I18N
 
-                    HashSet<Vertex> subfileVertices = new HashSet<Vertex>();
-                    HashSet<Vertex> fileVertices = new HashSet<Vertex>();
+                    TreeSet<Vertex> subfileVertices = new TreeSet<Vertex>();
+                    TreeSet<Vertex> fileVertices = new TreeSet<Vertex>();
 
                     for (Vertex v : selectedVerts) {
 
@@ -15412,11 +15412,11 @@ public class VertexManager {
 
                         HashMap<Vertex, Vertex> mergeTargets = new HashMap<Vertex, Vertex>();
                         {
-                            HashMap<Vertex, HashSet<Vertex>> unifyGroups = new HashMap<Vertex, HashSet<Vertex>>();
-                            HashSet<Vertex> inGroup = new HashSet<Vertex>();
+                            HashMap<Vertex, TreeSet<Vertex>> unifyGroups = new HashMap<Vertex, TreeSet<Vertex>>();
+                            TreeSet<Vertex> inGroup = new TreeSet<Vertex>();
 
                             for (Vertex v1 : fileVertices) {
-                                HashSet<Vertex> group = new HashSet<Vertex>();
+                                TreeSet<Vertex> group = new TreeSet<Vertex>();
                                 group.add(v1);
                                 for (Vertex v2 : fileVertices) {
                                     if (j > i && !inGroup.contains(v2)) {
@@ -15437,7 +15437,7 @@ public class VertexManager {
 
                             Set<Vertex> keySet = unifyGroups.keySet();
                             for (Vertex key : keySet) {
-                                HashSet<Vertex> group = unifyGroups.get(key);
+                                TreeSet<Vertex> group = unifyGroups.get(key);
                                 if (group.size() > 1) {
                                     BigDecimal X = BigDecimal.ZERO;
                                     BigDecimal Y = BigDecimal.ZERO;
@@ -15478,11 +15478,11 @@ public class VertexManager {
 
                         HashMap<Vertex, Vertex> mergeTargets = new HashMap<Vertex, Vertex>();
                         {
-                            HashMap<Vertex, HashSet<Vertex>> unifyGroups = new HashMap<Vertex, HashSet<Vertex>>();
-                            HashSet<Vertex> inGroup = new HashSet<Vertex>();
+                            HashMap<Vertex, TreeSet<Vertex>> unifyGroups = new HashMap<Vertex, TreeSet<Vertex>>();
+                            TreeSet<Vertex> inGroup = new TreeSet<Vertex>();
 
                             for (Vertex v1 : subfileVertices) {
-                                HashSet<Vertex> group = new HashSet<Vertex>();
+                                TreeSet<Vertex> group = new TreeSet<Vertex>();
                                 for (Vertex v2 : fileVertices) {
                                     if (j > i && !inGroup.contains(v2)) {
                                         Vector3d v3d1 = new Vector3d(v1);
@@ -15502,7 +15502,7 @@ public class VertexManager {
 
                             Set<Vertex> keySet = unifyGroups.keySet();
                             for (Vertex key : keySet) {
-                                HashSet<Vertex> group = unifyGroups.get(key);
+                                TreeSet<Vertex> group = unifyGroups.get(key);
                                 if (group.size() > 0) {
                                     for (Vertex gv : group) {
                                         mergeTargets.put(gv, key);
@@ -15540,7 +15540,7 @@ public class VertexManager {
             for (GData2 g2 : lines.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g2)) continue;
                 Vertex[] verts = lines.get(g2);
-                Set<Vertex> verts2 = new HashSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<Vertex>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -15551,7 +15551,7 @@ public class VertexManager {
             for (GData3 g3 : triangles.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g3)) continue;
                 Vertex[] verts = triangles.get(g3);
-                Set<Vertex> verts2 = new HashSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<Vertex>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -15562,7 +15562,7 @@ public class VertexManager {
             for (GData4 g4 : quads.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g4)) continue;
                 Vertex[] verts = quads.get(g4);
-                Set<Vertex> verts2 = new HashSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<Vertex>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -15573,7 +15573,7 @@ public class VertexManager {
             for (GData5 g5 : condlines.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g5)) continue;
                 Vertex[] verts = condlines.get(g5);
-                Set<Vertex> verts2 = new HashSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<Vertex>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -15665,8 +15665,8 @@ public class VertexManager {
             for (GData3 s1 : trianglePair.keySet()) {
                 GData3 s2 = trianglePair.get(s1);
                 {
-                    HashSet<Vertex> v1 = new HashSet<Vertex>();
-                    HashSet<Vertex> v2 = new HashSet<Vertex>();
+                    TreeSet<Vertex> v1 = new TreeSet<Vertex>();
+                    TreeSet<Vertex> v2 = new TreeSet<Vertex>();
                     for (Vertex v : triangles.get(s1)) {
                         v1.add(v);
                     }
@@ -15674,7 +15674,7 @@ public class VertexManager {
                         v2.add(v);
                     }
                     {
-                        HashSet<Vertex> sum = new HashSet<Vertex>();
+                        TreeSet<Vertex> sum = new TreeSet<Vertex>();
                         sum.addAll(v1);
                         sum.addAll(v2);
                         if (sum.size() != 4) continue;
@@ -15922,7 +15922,7 @@ public class VertexManager {
 
                     final Set<GColour> allColours = new HashSet<GColour>();
                     final Set<Vector3d> allNormals = new HashSet<Vector3d>();
-                    final HashMap<Vertex, HashSet<Vertex>> adjaencyByPrecision = new HashMap<Vertex, HashSet<Vertex>>();
+                    final HashMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision = new HashMap<Vertex, TreeSet<Vertex>>();
 
                     // Get near vertices
 
@@ -15931,7 +15931,7 @@ public class VertexManager {
                         int i = 0;
                         int j = 0;
                         for (Vertex v1 : vertexLinkedToPositionInFile.keySet()) {
-                            HashSet<Vertex> newSet = new HashSet<Vertex>();
+                            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
                             newSet.add(v1);
                             for (Vertex v2 : vertexLinkedToPositionInFile.keySet()) {
                                 if (j > i) {
@@ -15948,7 +15948,7 @@ public class VertexManager {
                         }
                     } else {
                         for (Vertex v1 : vertexLinkedToPositionInFile.keySet()) {
-                            HashSet<Vertex> newSet = new HashSet<Vertex>();
+                            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
                             newSet.add(v1);
                             adjaencyByPrecision.put(v1, newSet);
                         }
@@ -16066,7 +16066,7 @@ public class VertexManager {
                         final Set<GData4> newSelectedQuads = new HashSet<GData4>();
                         final Set<GData5> newSelectedCondlines = new HashSet<GData5>();
 
-                        final Set<Vertex> addedSelectedVertices = new HashSet<Vertex>();
+                        final Set<Vertex> addedSelectedVertices = new TreeSet<Vertex>();
                         final Set<GData2> addedSelectedLines = new HashSet<GData2>();
                         final Set<GData3> addedSelectedTriangles = new HashSet<GData3>();
                         final Set<GData4> addedSelectedQuads = new HashSet<GData4>();
@@ -16118,7 +16118,7 @@ public class VertexManager {
                                     for (GData3 g : lastSelectedTriangles) {
                                         verts = triangles.get(g);
                                         for (Vertex v : verts) {
-                                            HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                            TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                             for (Vertex v2 : verts2) {
                                                 addedSelectedVertices.add(v2);
                                             }
@@ -16130,7 +16130,7 @@ public class VertexManager {
                                     for (GData4 g : lastSelectedQuads) {
                                         verts = quads.get(g);
                                         for (Vertex v : verts) {
-                                            HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                            TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                             for (Vertex v2 : verts2) {
                                                 addedSelectedVertices.add(v2);
                                             }
@@ -16180,7 +16180,7 @@ public class VertexManager {
                                                 newSelectedTriangles.add(g);
                                                 Vertex[] verts = triangles.get(g);
                                                 for (Vertex v : verts) {
-                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                                    TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                                     for (Vertex v2 : verts2) {
                                                         addedSelectedVertices.add(v2);
                                                     }
@@ -16217,7 +16217,7 @@ public class VertexManager {
                                                 newSelectedQuads.add(g);
                                                 Vertex[] verts = quads.get(g);
                                                 for (Vertex v : verts) {
-                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                                    TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                                     for (Vertex v2 : verts2) {
                                                         addedSelectedVertices.add(v2);
                                                     }
@@ -16339,13 +16339,13 @@ public class VertexManager {
                                 newSelectedQuads.clear();
                                 newSelectedCondlines.clear();
 
-                                HashSet<Vertex> touchingVertices = new HashSet<Vertex>();
+                                TreeSet<Vertex> touchingVertices = new TreeSet<Vertex>();
                                 {
                                     Vertex[] verts;
                                     for (GData2 g : lastSelectedLines) {
                                         verts = lines.get(g);
                                         for (Vertex v : verts) {
-                                            HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                            TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                             for (Vertex v2 : verts2) {
                                                 touchingVertices.add(v2);
                                                 addedSelectedVertices.add(v2);
@@ -16355,7 +16355,7 @@ public class VertexManager {
                                     for (GData3 g : lastSelectedTriangles) {
                                         verts = triangles.get(g);
                                         for (Vertex v : verts) {
-                                            HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                            TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                             for (Vertex v2 : verts2) {
                                                 touchingVertices.add(v2);
                                                 addedSelectedVertices.add(v2);
@@ -16365,7 +16365,7 @@ public class VertexManager {
                                     for (GData4 g : lastSelectedQuads) {
                                         verts = quads.get(g);
                                         for (Vertex v : verts) {
-                                            HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                            TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                             for (Vertex v2 : verts2) {
                                                 touchingVertices.add(v2);
                                                 addedSelectedVertices.add(v2);
@@ -16377,7 +16377,7 @@ public class VertexManager {
                                         int c = 0;
                                         for (Vertex v : verts) {
                                             if (c > 1) break;
-                                            HashSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                            TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                             for (Vertex v2 : verts2) {
                                                 touchingVertices.add(v2);
                                                 addedSelectedVertices.add(v2);
@@ -16397,7 +16397,7 @@ public class VertexManager {
                                                 newSelectedLines.add((GData2) g);
                                                 Vertex[] verts = lines.get(g);
                                                 for (Vertex ov : verts) {
-                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                    TreeSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
                                                     for (Vertex v2 : verts2) {
                                                         addedSelectedVertices.add(v2);
                                                     }
@@ -16438,7 +16438,7 @@ public class VertexManager {
                                                 newSelectedTriangles.add((GData3) g);
                                                 Vertex[] verts = triangles.get(g);
                                                 for (Vertex ov : verts) {
-                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                    TreeSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
                                                     for (Vertex v2 : verts2) {
                                                         addedSelectedVertices.add(v2);
                                                     }
@@ -16477,7 +16477,7 @@ public class VertexManager {
                                                 newSelectedQuads.add((GData4) g);
                                                 Vertex[] verts = quads.get(g);
                                                 for (Vertex ov : verts) {
-                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                    TreeSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
                                                     for (Vertex v2 : verts2) {
                                                         addedSelectedVertices.add(v2);
                                                     }
@@ -16492,7 +16492,7 @@ public class VertexManager {
                                                 int c = 0;
                                                 for (Vertex ov : verts) {
                                                     if (c > 1) break;
-                                                    HashSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                                    TreeSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
                                                     for (Vertex v2 : verts2) {
                                                         addedSelectedVertices.add(v2);
                                                     }
@@ -16809,7 +16809,7 @@ public class VertexManager {
 
     public void selectInverse(SelectorSettings sels) {
 
-        final Set<Vertex> lastSelectedVertices = new HashSet<Vertex>();
+        final Set<Vertex> lastSelectedVertices = new TreeSet<Vertex>();
         final Set<GData1> lastSelectedSubfiles = new HashSet<GData1>();
         final Set<GData2> lastSelectedLines = new HashSet<GData2>();
         final Set<GData3> lastSelectedTriangles = new HashSet<GData3>();
@@ -17117,7 +17117,7 @@ public class VertexManager {
         selectedData.addAll(newTris);
         roundSelection(6, 10, true);
 
-        HashSet<Vertex> verticesToMove = new HashSet<Vertex>();
+        TreeSet<Vertex> verticesToMove = new TreeSet<Vertex>();
 
         for (GData3 tri : selectedTriangles) {
             Vertex[] verts = triangles.get(tri);

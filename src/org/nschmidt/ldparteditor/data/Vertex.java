@@ -29,7 +29,7 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3r;
  * @author nils
  *
  */
-public class Vertex {
+public class Vertex implements Comparable<Vertex> {
 
     public static float epsilon = 0.0001f;
 
@@ -40,15 +40,9 @@ public class Vertex {
     public final float y;
     public final float z;
     private final Vector4f vertex;
-    private final int int_x;
-    private final int int_y;
-    private final int int_z;
     private final float rounded_x;
     private final float rounded_y;
     private final float rounded_z;
-
-    private boolean hasHashcode = false;
-    private int hashCode = 0;
 
     // Lowest accuracy version (simple float to BigDecimal cast)
     public Vertex(Vector4f vertex) {
@@ -72,14 +66,10 @@ public class Vertex {
         this.rounded_x = x.floatValue();
         this.rounded_y = y.floatValue();
         this.rounded_z = z.floatValue();
-        int_x = rounded_x < 0 ? -((int) rounded_x) : (int) rounded_x;
-        int_y = rounded_y < 0 ? -((int) rounded_y) : (int) rounded_y;
-        int_z = rounded_z < 0 ? -((int) rounded_z) : (int) rounded_z;
 
         this.vertex = new Vector4f(vertex);
 
         // NLogger.error(getClass(), "Standard accuracy on vertex."); //$NON-NLS-1$
-
     }
 
     public Vertex(Vector3d v3d) {
@@ -111,10 +101,6 @@ public class Vertex {
         this.rounded_x = x.floatValue();
         this.rounded_y = y.floatValue();
         this.rounded_z = z.floatValue();
-        int_x = rounded_x < 0 ? -((int) rounded_x) : (int) rounded_x;
-        int_y = rounded_y < 0 ? -((int) rounded_y) : (int) rounded_y;
-        int_z = rounded_z < 0 ? -((int) rounded_z) : (int) rounded_z;
-
     }
 
     // High performance version / only for texture rendering
@@ -141,9 +127,6 @@ public class Vertex {
         this.rounded_x = x.floatValue();
         this.rounded_y = y.floatValue();
         this.rounded_z = z.floatValue();
-        int_x = rounded_x < 0 ? -((int) rounded_x) : (int) rounded_x;
-        int_y = rounded_y < 0 ? -((int) rounded_y) : (int) rounded_y;
-        int_z = rounded_z < 0 ? -((int) rounded_z) : (int) rounded_z;
     }
 
     // High accuracy version (better performance)
@@ -171,10 +154,6 @@ public class Vertex {
         this.rounded_x = x.floatValue();
         this.rounded_y = y.floatValue();
         this.rounded_z = z.floatValue();
-        int_x = rounded_x < 0 ? -((int) rounded_x) : (int) rounded_x;
-        int_y = rounded_y < 0 ? -((int) rounded_y) : (int) rounded_y;
-        int_z = rounded_z < 0 ? -((int) rounded_z) : (int) rounded_z;
-
     }
 
     public Vertex(float x, float y, float z) {
@@ -203,16 +182,7 @@ public class Vertex {
 
     @Override
     public int hashCode() {
-        if (hasHashcode) {
-            return hashCode;
-        }
-        hasHashcode = true;
-        final int prime = 31;
-        int result = prime + int_x;
-        result = prime * result + int_y;
-        result = prime * result + int_z;
-        hashCode = result;
-        return result;
+        return 1337;
     }
 
     @Override
@@ -225,6 +195,44 @@ public class Vertex {
     @Override
     public String toString() {
         return Math.round(x / 10f) / 100f + "|" + Math.round(y / 10f) / 100f + "|" + Math.round(z / 10f) / 100f; //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    @Override
+    public int compareTo(Vertex o) {
+        {
+            float d1 = rounded_x - o.rounded_x;
+            int c1 = Float.compare(Math.abs(d1), epsilon);
+            switch (c1) {
+            case 0:
+            case 1:
+                return d1 < 0f ? -1 : 1;
+            default:
+                break;
+            }
+        }
+        {
+            float d1 = rounded_y - o.rounded_y;
+            int c1 = Float.compare(Math.abs(d1), epsilon);
+            switch (c1) {
+            case 0:
+            case 1:
+                return d1 < 0f ? -1 : 1;
+            default:
+                break;
+            }
+        }
+        {
+            float d1 = rounded_z - o.rounded_z;
+            int c1 = Float.compare(Math.abs(d1), epsilon);
+            switch (c1) {
+            case 0:
+            case 1:
+                return d1 < 0f ? -1 : 1;
+            default:
+                break;
+            }
+        }
+        return 0;
     }
 
 }
