@@ -74,6 +74,7 @@ import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.helpers.math.Rational;
 import org.nschmidt.ldparteditor.helpers.math.RationalMatrix;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dh;
@@ -103,10 +104,10 @@ public class VertexManager {
      * {@code lineLinkedToVertices} checken, wenn ausgeschlossen werden soll,
      * dass es sich um Subfile Daten handelt
      */
-    private final ThreadsafeHashMap<Vertex, Set<VertexManifestation>> vertexLinkedToPositionInFile = new ThreadsafeHashMap<Vertex, Set<VertexManifestation>>();
+    private final ThreadsafeTreeMap<Vertex, Set<VertexManifestation>> vertexLinkedToPositionInFile = new ThreadsafeTreeMap<Vertex, Set<VertexManifestation>>();
 
     // 1 Vertex kann keinem oder mehreren Subfiles angehören
-    private final ThreadsafeHashMap<Vertex, Set<GData1>> vertexLinkedToSubfile = new ThreadsafeHashMap<Vertex, Set<GData1>>();
+    private final ThreadsafeTreeMap<Vertex, Set<GData1>> vertexLinkedToSubfile = new ThreadsafeTreeMap<Vertex, Set<GData1>>();
 
     // Auf Dateiebene: 1 Vertex kann an mehreren Stellen (GData1-5 + position)
     // manifestiert sein, ist er auch im Subfile, so gibt VertexInfo dies an
@@ -117,7 +118,7 @@ public class VertexManager {
         return lineLinkedToVertices;
     }
 
-    private final HashMap<Vertex, float[]> vertexLinkedToNormalCACHE = new HashMap<Vertex, float[]>();
+    private final TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE = new TreeMap<Vertex, float[]>();
     private final HashMap<GData, float[]> dataLinkedToNormalCACHE = new HashMap<GData, float[]>();
 
     private final ThreadsafeHashMap<GData1, Integer> vertexCountInSubfile = new ThreadsafeHashMap<GData1, Integer>();
@@ -131,7 +132,7 @@ public class VertexManager {
     private final Vertex[] vArray = new Vertex[4];
     private final VertexManifestation[] vdArray = new VertexManifestation[4];
 
-    private final Set<Vertex> selectedVertices = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+    private final Set<Vertex> selectedVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
     private final Set<GData> selectedData = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
     private final Set<GData1> selectedSubfiles = Collections.newSetFromMap(new ThreadsafeHashMap<GData1, Boolean>());
@@ -140,7 +141,7 @@ public class VertexManager {
     private final Set<GData4> selectedQuads = Collections.newSetFromMap(new ThreadsafeHashMap<GData4, Boolean>());
     private final Set<GData5> selectedCondlines = Collections.newSetFromMap(new ThreadsafeHashMap<GData5, Boolean>());
 
-    private final Set<Vertex> backupSelectedVertices = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+    private final Set<Vertex> backupSelectedVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
     private final Set<GData> backupSelectedData = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
     private final Set<GData1> backupSelectedSubfiles = Collections.newSetFromMap(new ThreadsafeHashMap<GData1, Boolean>());
@@ -154,7 +155,7 @@ public class VertexManager {
     private GDataPNG selectedBgPicture = null;
     private int selectedBgPictureIndex = -1;
 
-    private final Set<Vertex> selectedVerticesForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+    private final Set<Vertex> selectedVerticesForSubfile = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
     private final Set<GData2> selectedLinesForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<GData2, Boolean>());
     private final Set<GData3> selectedTrianglesForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<GData3, Boolean>());
     private final Set<GData4> selectedQuadsForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<GData4, Boolean>());
@@ -644,9 +645,9 @@ public class VertexManager {
      */
     public synchronized void validateState() {
 
-        // HashMap<Vertex, HashSet<VertexManifestation>>
+        // TreeMap<Vertex, HashSet<VertexManifestation>>
         // vertexLinkedToPositionInFile
-        // HashMap<Vertex, HashSet<GData1>> vertexLinkedToSubfile
+        // TreeMap<Vertex, HashSet<GData1>> vertexLinkedToSubfile
         // HashMap<GData, HashSet<VertexInfo>> lineLinkedToVertices
 
         // HashMap<GData1, Integer> vertexCountInSubfile
@@ -2763,7 +2764,7 @@ public class VertexManager {
             selectedLines.clear();
             selectedCondlines.clear();
         }
-        Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+        Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         selectedVerticesTemp.addAll(selectedVertices);
         selectedVertices.clear();
         selectVertices(c3d, false);
@@ -2993,7 +2994,7 @@ public class VertexManager {
 
     private synchronized void selectLines2(Composite3D c3d) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
-        Set<Vertex> tmpVerts = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+        Set<Vertex> tmpVerts = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         tmpVerts.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
         selectVertices2(c3d, false);
@@ -3192,7 +3193,7 @@ public class VertexManager {
             selectedTriangles.clear();
             selectedQuads.clear();
         }
-        Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+        Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         selectedVerticesTemp.addAll(selectedVertices);
         selectedVertices.clear();
         selectVertices(c3d, false);
@@ -3309,7 +3310,7 @@ public class VertexManager {
     }
 
     private synchronized void selectFaces2(Composite3D c3d, Event event) {
-        Set<Vertex> selVert4sTemp = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+        Set<Vertex> selVert4sTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         selVert4sTemp.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
         selectVertices2(c3d, false);
@@ -4231,7 +4232,7 @@ public class VertexManager {
         if (linkedDatFile.isReadOnly())
             return;
 
-        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
         final HashSet<GData0> effSelectedVertices = new HashSet<GData0>();
         final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
@@ -4270,7 +4271,7 @@ public class VertexManager {
 
         // 1. Vertex Based Selection
         {
-            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
             if (moveAdjacentData) {
                 HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
                 for (Vertex vertex : selectedVertices) {
@@ -5334,7 +5335,7 @@ public class VertexManager {
 
     public Vector4f getSelectionCenter() {
 
-        final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+        final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         objectVertices.addAll(selectedVertices);
 
         // 1. Object Based Selection
@@ -6330,7 +6331,7 @@ public class VertexManager {
             setModified(true);
         }
 
-        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
         final HashSet<GData0> effSelectedVertices = new HashSet<GData0>();
         final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
@@ -6368,7 +6369,7 @@ public class VertexManager {
 
         // 1. Vertex Based Selection
         {
-            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
             {
                 HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
                 for (Vertex vertex : selectedVertices) {
@@ -6612,7 +6613,7 @@ public class VertexManager {
         CLIPBOARD.clear();
         CLIPBOARD_InvNext.clear();
 
-        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
         final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
         final HashSet<GData3> effSelectedTriangles = new HashSet<GData3>();
@@ -6628,7 +6629,7 @@ public class VertexManager {
         selectedData.clear();
 
         {
-            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
             // 0. Deselect selected subfile data I (for whole selected subfiles)
             for (GData1 subf : selectedSubfiles) {
                 Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
@@ -7571,7 +7572,7 @@ public class VertexManager {
         if (linkedDatFile.isReadOnly())
             return;
 
-        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
         final HashSet<GData0> effSelectedVertices = new HashSet<GData0>();
         final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
@@ -7609,7 +7610,7 @@ public class VertexManager {
 
         // 1. Vertex Based Selection
         {
-            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeHashMap<Vertex, Boolean>());
+            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
             {
                 HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
                 for (Vertex vertex : selectedVertices) {
@@ -7902,8 +7903,8 @@ public class VertexManager {
         initBFCmap();
 
         final BigDecimal ed = es.getEqualDistance();
-        HashMap<Vertex, Vertex> snap = new HashMap<Vertex, Vertex>();
-        HashMap<Vertex, TreeSet<Vertex>> snapToOriginal = new HashMap<Vertex, TreeSet<Vertex>>();
+        TreeMap<Vertex, Vertex> snap = new TreeMap<Vertex, Vertex>();
+        TreeMap<Vertex, TreeSet<Vertex>> snapToOriginal = new TreeMap<Vertex, TreeSet<Vertex>>();
 
         HashMap<AccurateEdge, Integer> edges = new HashMap<AccurateEdge, Integer>();
         HashSet<AccurateEdge> presentEdges = new HashSet<AccurateEdge>();
@@ -8383,7 +8384,7 @@ public class VertexManager {
 
     }
 
-    private void addLineQuadEdger2(GData4 g4, HashSet<AccurateEdge> presentEdges, Edger2Settings es, HashMap<Vertex, Vertex> snap) {
+    private void addLineQuadEdger2(GData4 g4, HashSet<AccurateEdge> presentEdges, Edger2Settings es, TreeMap<Vertex, Vertex> snap) {
 
         Vertex[] verts = quads.get(g4);
 
@@ -8751,7 +8752,7 @@ public class VertexManager {
      * @param adjaencyByPrecision a map which contains informations about near vertices
      * @return {@code true} if they do / {@code false} otherwise
      */
-    private boolean hasSameEdge(GData g1, GData g2, HashMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
+    private boolean hasSameEdge(GData g1, GData g2, TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
 
         int t1 = g1.type();
         int t2 = g2.type();
@@ -8852,7 +8853,7 @@ public class VertexManager {
      * @param adjaencyByPrecision a map which contains informations about near vertices
      * @return {@code true} if they do / {@code false} otherwise
      */
-    private boolean hasSameEdge(AccurateEdge e1, GData g2, HashMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
+    private boolean hasSameEdge(AccurateEdge e1, GData g2, TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
 
         int t2 = g2.type();
 
@@ -12781,7 +12782,7 @@ public class VertexManager {
 
                                 final ArrayList<Vector3dd> fixedVertices = new ArrayList<Vector3dd>();
                                 final ArrayList<Vector3dd> colourVertices = new ArrayList<Vector3dd>();
-                                final HashMap<Vector3dd, GColour> vertexColour = new HashMap<Vector3dd, GColour>();
+                                final TreeMap<Vector3dd, GColour> vertexColour = new TreeMap<Vector3dd, GColour>();
                                 {
                                     final TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
                                     for (ArrayList<Vector3dd> l : linesToParse) {
@@ -12918,7 +12919,7 @@ public class VertexManager {
                             final Thread[] threads = new Thread[1];
 
                             {
-                                HashMap<Vector3dd, Vector3dh> hashedRelation = new HashMap<Vector3dd, Vector3dh>();
+                                TreeMap<Vector3dd, Vector3dh> hashedRelation = new TreeMap<Vector3dd, Vector3dh>();
                                 for (Vector3dd v : fixedVertices) {
                                     Vector3dh vh;
                                     if (hashedRelation.containsKey(v)) {
@@ -13103,7 +13104,7 @@ public class VertexManager {
                 HashSet<Vector3dh> m1 = new HashSet<Vector3dh>();
                 HashSet<Vector3dh> m2 = new HashSet<Vector3dh>();
                 HashSet<Vector3dh> m3 = new HashSet<Vector3dh>();
-                HashMap<Vector3dd, Vector3dh> hashedRelation = new HashMap<Vector3dd, Vector3dh>();
+                TreeMap<Vector3dd, Vector3dh> hashedRelation = new TreeMap<Vector3dd, Vector3dh>();
                 for (int i = 0; i < lc; i++) {
                     Vector3dd v1nh = linesToParse.get(i).get(0).round();
                     Vector3dd v2nh = linesToParse.get(i).get(1).round();
@@ -15410,9 +15411,9 @@ public class VertexManager {
                         int i = 0;
                         int j = 0;
 
-                        HashMap<Vertex, Vertex> mergeTargets = new HashMap<Vertex, Vertex>();
+                        TreeMap<Vertex, Vertex> mergeTargets = new TreeMap<Vertex, Vertex>();
                         {
-                            HashMap<Vertex, TreeSet<Vertex>> unifyGroups = new HashMap<Vertex, TreeSet<Vertex>>();
+                            TreeMap<Vertex, TreeSet<Vertex>> unifyGroups = new TreeMap<Vertex, TreeSet<Vertex>>();
                             TreeSet<Vertex> inGroup = new TreeSet<Vertex>();
 
                             for (Vertex v1 : fileVertices) {
@@ -15476,9 +15477,9 @@ public class VertexManager {
                         int i = 0;
                         int j = 0;
 
-                        HashMap<Vertex, Vertex> mergeTargets = new HashMap<Vertex, Vertex>();
+                        TreeMap<Vertex, Vertex> mergeTargets = new TreeMap<Vertex, Vertex>();
                         {
-                            HashMap<Vertex, TreeSet<Vertex>> unifyGroups = new HashMap<Vertex, TreeSet<Vertex>>();
+                            TreeMap<Vertex, TreeSet<Vertex>> unifyGroups = new TreeMap<Vertex, TreeSet<Vertex>>();
                             TreeSet<Vertex> inGroup = new TreeSet<Vertex>();
 
                             for (Vertex v1 : subfileVertices) {
@@ -15922,7 +15923,7 @@ public class VertexManager {
 
                     final Set<GColour> allColours = new HashSet<GColour>();
                     final Set<Vector3d> allNormals = new HashSet<Vector3d>();
-                    final HashMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision = new HashMap<Vertex, TreeSet<Vertex>>();
+                    final TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision = new TreeMap<Vertex, TreeSet<Vertex>>();
 
                     // Get near vertices
 
@@ -16899,7 +16900,7 @@ public class VertexManager {
         selectedData.addAll(selectedCondlines);
         delete(false);
 
-        HashMap<Vertex, Vertex> newPoints = new HashMap<Vertex, Vertex>();
+        TreeMap<Vertex, Vertex> newPoints = new TreeMap<Vertex, Vertex>();
 
         // Calculate new points
         for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
@@ -17066,7 +17067,7 @@ public class VertexManager {
         selectedData.addAll(selectedCondlines);
         delete(false);
 
-        HashMap<Vertex, Vertex> newPoints = new HashMap<Vertex, Vertex>();
+        TreeMap<Vertex, Vertex> newPoints = new TreeMap<Vertex, Vertex>();
 
         for (GData3 g3 : surfsToParse) {
             Vertex[] originalVerts;
