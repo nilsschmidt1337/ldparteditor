@@ -17292,7 +17292,7 @@ public class VertexManager {
         for (GData3 g : new HashSet<GData3>(triangles.keySet())) {
             if (!lineLinkedToVertices.containsKey(g)) continue;
             List<GData3> result = split(g, fractions, edgesToSplit);
-            newTriangles.addAll(result);
+            if (result.size() > 1) newTriangles.addAll(result);
             for (GData n : result) {
                 linkedDatFile.insertAfter(g, n);
             }
@@ -17302,7 +17302,7 @@ public class VertexManager {
         for (GData4 g : new HashSet<GData4>(quads.keySet())) {
             if (!lineLinkedToVertices.containsKey(g)) continue;
             List<GData4> result = split(g, fractions, edgesToSplit);
-            newQuads.addAll(result);
+            if (result.size() > 1) newQuads.addAll(result);
             for (GData n : result) {
                 linkedDatFile.insertAfter(g, n);
             }
@@ -17331,15 +17331,15 @@ public class VertexManager {
         delete(false);
 
         clearSelection();
-
-        selectedLines.addAll(newLines);
-        selectedTriangles.addAll(newTriangles);
-        selectedQuads.addAll(newQuads);
-        selectedCondlines.addAll(newCondlines);
-        selectedData.addAll(selectedLines);
-        selectedData.addAll(selectedTriangles);
-        selectedData.addAll(selectedQuads);
-        selectedData.addAll(selectedCondlines);
+        //
+        //        selectedLines.addAll(newLines);
+        //        selectedTriangles.addAll(newTriangles);
+        //        selectedQuads.addAll(newQuads);
+        //        selectedCondlines.addAll(newCondlines);
+        //        selectedData.addAll(selectedLines);
+        //        selectedData.addAll(selectedTriangles);
+        //        selectedData.addAll(selectedQuads);
+        //        selectedData.addAll(selectedCondlines);
 
         validateState();
     }
@@ -17415,7 +17415,7 @@ public class VertexManager {
     }
 
     private List<GData3> split(GData3 g, int fractions, Set<AccurateEdge> edgesToSplit) {
-        // FIXME Auto-generated method stub
+
         ArrayList<GData3> result = new ArrayList<GData3>(fractions * fractions);
 
         // Detect how many edges are affected
@@ -17506,12 +17506,83 @@ public class VertexManager {
     }
 
     private List<GData3> splitTri2(Vertex v1, Vertex v2, Vertex v3, int fractions, GData3 g) {
-        // TODO Auto-generated method stub
-        return null;
+        // FIXME Auto-generated method stub
+        ArrayList<GData3> result = new ArrayList<GData3>(fractions);
+
+        Vector3d A = new Vector3d(v1);
+        Vector3d B = new Vector3d(v2);
+        Vector3d C = new Vector3d(v3);
+
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+        BigDecimal cur = BigDecimal.ZERO;
+        BigDecimal next = BigDecimal.ZERO;
+        for (int i = 0; i < fractions; i++) {
+            if (i == fractions - 1) {
+                next = BigDecimal.ONE;
+            } else {
+                next = next.add(step);
+            }
+
+            BigDecimal oneMinusCur = BigDecimal.ONE.subtract(cur);
+            BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
+
+            if (i == 0) {
+                result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                        v1.X,
+                        v1.Y,
+                        v1.Z,
+
+                        A.X.multiply(oneMinusCur).add(B.X.multiply(next)),
+                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(next)),
+                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(next)),
+
+                        A.X.multiply(oneMinusNext).add(C.X.multiply(next)),
+                        A.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
+                        A.Z.multiply(oneMinusNext).add(C.Z.multiply(next)),
+
+                        View.DUMMY_REFERENCE, linkedDatFile));
+            } else {
+                result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
+                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
+                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+
+                        A.X.multiply(oneMinusCur).add(B.X.multiply(next)),
+                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(next)),
+                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(next)),
+
+                        A.X.multiply(oneMinusNext).add(C.X.multiply(next)),
+                        A.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
+                        A.Z.multiply(oneMinusNext).add(C.Z.multiply(next)),
+
+                        View.DUMMY_REFERENCE, linkedDatFile));
+                result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                        A.X.multiply(oneMinusNext).add(C.X.multiply(next)),
+                        A.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
+                        A.Z.multiply(oneMinusNext).add(C.Z.multiply(next)),
+
+                        A.X.multiply(oneMinusCur).add(C.X.multiply(cur)),
+                        A.Y.multiply(oneMinusCur).add(C.Y.multiply(cur)),
+                        A.Z.multiply(oneMinusCur).add(C.Z.multiply(cur)),
+
+                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
+                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
+                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+
+                        View.DUMMY_REFERENCE, linkedDatFile));
+            }
+
+            cur = next;
+        }
+
+        return result;
     }
 
     private List<GData3> splitTri3(Vertex v1, Vertex v2, Vertex v3, int fractions, GData3 g) {
-        // TODO Auto-generated method stub
+        // FIXME Auto-generated method stub
         return null;
     }
 
