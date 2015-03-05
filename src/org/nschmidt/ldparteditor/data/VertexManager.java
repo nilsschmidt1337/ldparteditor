@@ -17506,7 +17506,7 @@ public class VertexManager {
     }
 
     private List<GData3> splitTri2(Vertex v1, Vertex v2, Vertex v3, int fractions, GData3 g) {
-        // FIXME Auto-generated method stub
+
         ArrayList<GData3> result = new ArrayList<GData3>(fractions);
 
         Vector3d A = new Vector3d(v1);
@@ -17582,8 +17582,102 @@ public class VertexManager {
     }
 
     private List<GData3> splitTri3(Vertex v1, Vertex v2, Vertex v3, int fractions, GData3 g) {
-        // FIXME Auto-generated method stub
-        return null;
+
+        ArrayList<GData3> result = new ArrayList<GData3>(fractions * 3);
+
+        Vector3d A = new Vector3d(v1);
+        Vector3d B = new Vector3d(v2);
+        Vector3d C = new Vector3d(v3);
+
+        Vector3d vc = Vector3d.add(Vector3d.add(A, B), C);
+        vc.setX(vc.X.divide(new BigDecimal(3), Threshold.mc));
+        vc.setY(vc.Y.divide(new BigDecimal(3), Threshold.mc));
+        vc.setZ(vc.Z.divide(new BigDecimal(3), Threshold.mc));
+
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+
+        ArrayList<Vector3d> newPoints = new ArrayList<Vector3d>(fractions * 3);
+
+        {
+            BigDecimal next = BigDecimal.ZERO;
+            for (int i = 0; i < fractions; i++) {
+                if (i == fractions - 1) {
+                    next = BigDecimal.ONE;
+                } else {
+                    next = next.add(step);
+                }
+
+                BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
+
+
+                newPoints.add(new Vector3d(
+                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
+                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
+                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next))
+                        ));
+            }
+        }
+        {
+            BigDecimal next = BigDecimal.ZERO;
+            for (int i = 0; i < fractions; i++) {
+                if (i == fractions - 1) {
+                    next = BigDecimal.ONE;
+                } else {
+                    next = next.add(step);
+                }
+
+                BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
+
+
+                newPoints.add(new Vector3d(
+                        B.X.multiply(oneMinusNext).add(C.X.multiply(next)),
+                        B.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
+                        B.Z.multiply(oneMinusNext).add(C.Z.multiply(next))
+                        ));
+            }
+        }
+        {
+            BigDecimal next = BigDecimal.ZERO;
+            for (int i = 0; i < fractions; i++) {
+                if (i == fractions - 1) {
+                    next = BigDecimal.ONE;
+                } else {
+                    next = next.add(step);
+                }
+
+                BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
+
+                newPoints.add(new Vector3d(
+                        C.X.multiply(oneMinusNext).add(A.X.multiply(next)),
+                        C.Y.multiply(oneMinusNext).add(A.Y.multiply(next)),
+                        C.Z.multiply(oneMinusNext).add(A.Z.multiply(next))
+                        ));
+            }
+        }
+
+        fractions = fractions * 3;
+        for (int i = 0; i < fractions; i++) {
+
+            result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                    vc.X,
+                    vc.Y,
+                    vc.Z,
+
+                    newPoints.get(i).X,
+                    newPoints.get(i).Y,
+                    newPoints.get(i).Z,
+
+                    newPoints.get((i + 1) % fractions).X,
+                    newPoints.get((i + 1) % fractions).Y,
+                    newPoints.get((i + 1) % fractions).Z,
+
+                    View.DUMMY_REFERENCE, linkedDatFile));
+
+
+        }
+
+        return result;
     }
 
     private List<GData2> split(GData2 g, int fractions) {
