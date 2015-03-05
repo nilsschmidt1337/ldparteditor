@@ -17212,4 +17212,10 @@ public class VertexManager {
         validateState();
     }
 
+    public void split(int fractions) {
+        // FIXME Auto-generated method stub
+        if (linkedDatFile.isReadOnly()) return;
+
+    }
+
 }
