@@ -17216,6 +17216,142 @@ public class VertexManager {
         // FIXME Auto-generated method stub
         if (linkedDatFile.isReadOnly()) return;
 
+        final Set<GData2> newLines = new HashSet<GData2>();
+        final Set<GData3> newTriangles = new HashSet<GData3>();
+        final Set<GData4> newQuads = new HashSet<GData4>();
+        final Set<GData5> newCondlines = new HashSet<GData5>();
+
+        final Set<GData2> effSelectedLines = new HashSet<GData2>();
+        final Set<GData3> effSelectedTriangles = new HashSet<GData3>();
+        final Set<GData4> effSelectedQuads = new HashSet<GData4>();
+        final Set<GData5> effSelectedCondlines = new HashSet<GData5>();
+
+        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
+        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
+        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
+        final Set<GData5> clinesToDelete2 = new HashSet<GData5>();
+
+        final Set<AccurateEdge> edgesToSplit = new HashSet<AccurateEdge>();
+
+
+        {
+            for (GData2 g2 : selectedLines) {
+                if (!lineLinkedToVertices.containsKey(g2)) continue;
+                effSelectedLines.add(g2);
+                Vertex[] verts = lines.get(g2);
+                edgesToSplit.add(new AccurateEdge(verts[0], verts[1]));
+            }
+            for (GData3 g3 : selectedTriangles) {
+                if (!lineLinkedToVertices.containsKey(g3)) continue;
+                effSelectedTriangles.add(g3);
+                Vertex[] verts = triangles.get(g3);
+                edgesToSplit.add(new AccurateEdge(verts[0], verts[1]));
+                edgesToSplit.add(new AccurateEdge(verts[1], verts[2]));
+                edgesToSplit.add(new AccurateEdge(verts[2], verts[0]));
+            }
+            for (GData4 g4 : selectedQuads) {
+                if (!lineLinkedToVertices.containsKey(g4)) continue;
+                effSelectedQuads.add(g4);
+                Vertex[] verts = quads.get(g4);
+                edgesToSplit.add(new AccurateEdge(verts[0], verts[1]));
+                edgesToSplit.add(new AccurateEdge(verts[1], verts[2]));
+                edgesToSplit.add(new AccurateEdge(verts[2], verts[3]));
+                edgesToSplit.add(new AccurateEdge(verts[3], verts[0]));
+            }
+            for (GData5 g5 : selectedCondlines) {
+                if (!lineLinkedToVertices.containsKey(g5)) continue;
+                effSelectedCondlines.add(g5);
+                Vertex[] verts = condlines.get(g5);
+                edgesToSplit.add(new AccurateEdge(verts[0], verts[1]));
+            }
+        }
+
+        clearSelection();
+
+        for (GData2 g : effSelectedLines) {
+            List<GData2> result = split(g, fractions);
+            newLines.addAll(result);
+            for (GData n : result) {
+                linkedDatFile.insertAfter(g, n);
+            }
+            linesToDelete2.add(g);
+        }
+
+        for (GData3 g : effSelectedTriangles) {
+            List<GData3> result = split(g, fractions, edgesToSplit);
+            newTriangles.addAll(result);
+            for (GData n : result) {
+                linkedDatFile.insertAfter(g, n);
+            }
+            trisToDelete2.add(g);
+        }
+
+        for (GData4 g : effSelectedQuads) {
+            List<GData4> result = split(g, fractions, edgesToSplit);
+            newQuads.addAll(result);
+            for (GData n : result) {
+                linkedDatFile.insertAfter(g, n);
+            }
+            quadsToDelete2.add(g);
+        }
+
+        for (GData5 g : effSelectedCondlines) {
+            List<GData5> result = split(g, fractions);
+            newCondlines.addAll(result);
+            for (GData n : result) {
+                linkedDatFile.insertAfter(g, n);
+            }
+            clinesToDelete2.add(g);
+        }
+
+        setModified(newLines.size() + newTriangles.size() + newQuads.size() + newCondlines.size() > 0);
+
+        selectedLines.addAll(linesToDelete2);
+        selectedTriangles.addAll(trisToDelete2);
+        selectedQuads.addAll(quadsToDelete2);
+        selectedCondlines.addAll(clinesToDelete2);
+        selectedData.addAll(selectedLines);
+        selectedData.addAll(selectedTriangles);
+        selectedData.addAll(selectedQuads);
+        selectedData.addAll(selectedCondlines);
+        delete(false);
+
+        clearSelection();
+
+        selectedLines.addAll(newLines);
+        selectedTriangles.addAll(newTriangles);
+        selectedQuads.addAll(newQuads);
+        selectedCondlines.addAll(newCondlines);
+        selectedData.addAll(selectedLines);
+        selectedData.addAll(selectedTriangles);
+        selectedData.addAll(selectedQuads);
+        selectedData.addAll(selectedCondlines);
+
+        validateState();
+    }
+
+    private List<GData5> split(GData5 g, int fractions) {
+        // TODO Auto-generated method stub
+        ArrayList<GData5> result = new ArrayList<GData5>(fractions);
+        return result;
+    }
+
+    private List<GData4> split(GData4 g, int fractions, Set<AccurateEdge> edgesToSplit) {
+        // TODO Auto-generated method stub
+        ArrayList<GData4> result = new ArrayList<GData4>(fractions * fractions);
+        return result;
+    }
+
+    private List<GData3> split(GData3 g, int fractions, Set<AccurateEdge> edgesToSplit) {
+        // TODO Auto-generated method stub
+        ArrayList<GData3> result = new ArrayList<GData3>(fractions * fractions);
+        return result;
+    }
+
+    private List<GData2> split(GData2 g, int fractions) {
+        // TODO Auto-generated method stub
+        ArrayList<GData2> result = new ArrayList<GData2>(fractions);
+        return result;
     }
 
 }
