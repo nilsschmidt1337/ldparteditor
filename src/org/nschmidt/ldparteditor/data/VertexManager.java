@@ -17222,8 +17222,6 @@ public class VertexManager {
         final Set<GData5> newCondlines = new HashSet<GData5>();
 
         final Set<GData2> effSelectedLines = new HashSet<GData2>();
-        final Set<GData3> effSelectedTriangles = new HashSet<GData3>();
-        final Set<GData4> effSelectedQuads = new HashSet<GData4>();
         final Set<GData5> effSelectedCondlines = new HashSet<GData5>();
 
         final Set<GData2> linesToDelete2 = new HashSet<GData2>();
@@ -17233,6 +17231,22 @@ public class VertexManager {
 
         final Set<AccurateEdge> edgesToSplit = new HashSet<AccurateEdge>();
 
+        {
+            int i = 0;
+            int j = 0;
+
+            for (Vertex v1 : selectedVertices) {
+                for (Vertex v2 : selectedVertices) {
+                    if (j > i) {
+                        if (isNeighbour(v1, v2)) {
+                            edgesToSplit.add(new AccurateEdge(v1, v2));
+                        }
+                    }
+                    j++;
+                }
+                i++;
+            }
+        }
 
         {
             for (GData2 g2 : selectedLines) {
@@ -17243,7 +17257,6 @@ public class VertexManager {
             }
             for (GData3 g3 : selectedTriangles) {
                 if (!lineLinkedToVertices.containsKey(g3)) continue;
-                effSelectedTriangles.add(g3);
                 Vertex[] verts = triangles.get(g3);
                 edgesToSplit.add(new AccurateEdge(verts[0], verts[1]));
                 edgesToSplit.add(new AccurateEdge(verts[1], verts[2]));
@@ -17251,7 +17264,6 @@ public class VertexManager {
             }
             for (GData4 g4 : selectedQuads) {
                 if (!lineLinkedToVertices.containsKey(g4)) continue;
-                effSelectedQuads.add(g4);
                 Vertex[] verts = quads.get(g4);
                 edgesToSplit.add(new AccurateEdge(verts[0], verts[1]));
                 edgesToSplit.add(new AccurateEdge(verts[1], verts[2]));
@@ -17277,7 +17289,8 @@ public class VertexManager {
             linesToDelete2.add(g);
         }
 
-        for (GData3 g : effSelectedTriangles) {
+        for (GData3 g : triangles.keySet()) {
+            if (!lineLinkedToVertices.containsKey(g)) continue;
             List<GData3> result = split(g, fractions, edgesToSplit);
             newTriangles.addAll(result);
             for (GData n : result) {
@@ -17286,7 +17299,8 @@ public class VertexManager {
             trisToDelete2.add(g);
         }
 
-        for (GData4 g : effSelectedQuads) {
+        for (GData4 g : quads.keySet()) {
+            if (!lineLinkedToVertices.containsKey(g)) continue;
             List<GData4> result = split(g, fractions, edgesToSplit);
             newQuads.addAll(result);
             for (GData n : result) {
@@ -17373,13 +17387,97 @@ public class VertexManager {
     private List<GData4> split(GData4 g, int fractions, Set<AccurateEdge> edgesToSplit) {
         // FIXME Auto-generated method stub
         ArrayList<GData4> result = new ArrayList<GData4>(fractions * fractions);
+
+        // Detect how many edges are affected
+        Vertex[] verts = triangles.get(g);
+        int ec = edgesToSplit.contains(new AccurateEdge(verts[0], verts[1])) ? 1 :0;
+        ec += edgesToSplit.contains(new AccurateEdge(verts[1], verts[2])) ? 1 :0;
+        ec += edgesToSplit.contains(new AccurateEdge(verts[2], verts[3])) ? 1 :0;
+        ec += edgesToSplit.contains(new AccurateEdge(verts[3], verts[0])) ? 1 :0;
+
+        switch (ec) {
+        case 0:
+            result.add(g);
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        default:
+            break;
+        }
+
         return result;
     }
 
     private List<GData3> split(GData3 g, int fractions, Set<AccurateEdge> edgesToSplit) {
         // FIXME Auto-generated method stub
         ArrayList<GData3> result = new ArrayList<GData3>(fractions * fractions);
+
+        // Detect how many edges are affected
+        Vertex[] verts = triangles.get(g);
+        int ec = edgesToSplit.contains(new AccurateEdge(verts[0], verts[1])) ? 1 :0;
+        ec += edgesToSplit.contains(new AccurateEdge(verts[1], verts[2])) ? 1 :0;
+        ec += edgesToSplit.contains(new AccurateEdge(verts[2], verts[0])) ? 1 :0;
+
+        switch (ec) {
+        case 0:
+            result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a, verts[0], verts[1], verts[2], View.DUMMY_REFERENCE, linkedDatFile));
+            break;
+        case 1:
+            if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
+                return splitTri1(verts[0], verts[1], verts[2]);
+            } else if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
+                return splitTri1(verts[1], verts[2], verts[0]);
+            } else {
+                return splitTri1(verts[0], verts[2], verts[1]);
+            }
+        case 2:
+            if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
+                if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
+                    return splitTri2(verts[1], verts[2], verts[0]);
+                } else {
+                    return splitTri2(verts[0], verts[2], verts[1]);
+                }
+            } else if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
+                if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
+                    return splitTri2(verts[1], verts[2], verts[0]);
+                } else {
+                    return splitTri2(verts[1], verts[2], verts[1]);
+                }
+            } else if (edgesToSplit.contains(new AccurateEdge(verts[2], verts[0]))) {
+                if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
+                    return splitTri2(verts[2], verts[0], verts[0]);
+                } else {
+                    return splitTri2(verts[2], verts[0], verts[1]);
+                }
+            }
+        case 3:
+            return splitTri3(verts[0], verts[1], verts[2]);
+        default:
+            break;
+        }
+
         return result;
+    }
+
+    private List<GData3> splitTri1(Vertex vertex, Vertex vertex2, Vertex vertex3) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    private List<GData3> splitTri2(Vertex vertex, Vertex vertex2, Vertex vertex3) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    private List<GData3> splitTri3(Vertex vertex, Vertex vertex2, Vertex vertex3) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     private List<GData2> split(GData2 g, int fractions) {
