@@ -128,6 +128,8 @@ public enum View {
     }
 
     public static String getLDConfigColourName(Integer index) {
+        String result = colourNameFromIndex.get(index);
+        if (result == null) result = "<???>"; //$NON-NLS-1$
         return colourNameFromIndex.get(index);
     }
 
