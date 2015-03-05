@@ -122,7 +122,9 @@ public enum View {
 
     public static final GColour getLDConfigEdgeColour(int index, Composite3D c3d) {
         if (c3d.isBlackEdges()) return BLACK;
-        return edgeColourFromIndex.get(index);
+        GColour result = edgeColourFromIndex.get(index);
+        if (result == null) result = new GColour(index, 0f, 0f, 0f, 1f);
+        return result;
     }
 
     public static String getLDConfigColourName(Integer index) {
