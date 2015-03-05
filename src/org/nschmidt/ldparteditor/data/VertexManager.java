@@ -17331,26 +17331,94 @@ public class VertexManager {
     }
 
     private List<GData5> split(GData5 g, int fractions) {
-        // TODO Auto-generated method stub
+
         ArrayList<GData5> result = new ArrayList<GData5>(fractions);
+
+        Vector3d A = new Vector3d(lines.get(g)[0]);
+        Vector3d B = new Vector3d(lines.get(g)[1]);
+
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+        BigDecimal cur = BigDecimal.ZERO;
+        BigDecimal next = BigDecimal.ZERO;
+        for (int i = 0; i < fractions; i++) {
+            if (i == fractions - 1) {
+                next = BigDecimal.ONE;
+            } else {
+                next = next.add(step);
+            }
+
+            BigDecimal oneMinusCur = BigDecimal.ONE.subtract(cur);
+            BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
+
+            result.add(new GData5(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                    A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
+                    A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
+                    A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+
+                    A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
+                    A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
+                    A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+
+                    g.X3, g.Y3, g.Z3,
+                    g.X4, g.Y4, g.Z4,
+
+                    View.DUMMY_REFERENCE, linkedDatFile));
+            cur = next;
+        }
+
         return result;
     }
 
     private List<GData4> split(GData4 g, int fractions, Set<AccurateEdge> edgesToSplit) {
-        // TODO Auto-generated method stub
+        // FIXME Auto-generated method stub
         ArrayList<GData4> result = new ArrayList<GData4>(fractions * fractions);
         return result;
     }
 
     private List<GData3> split(GData3 g, int fractions, Set<AccurateEdge> edgesToSplit) {
-        // TODO Auto-generated method stub
+        // FIXME Auto-generated method stub
         ArrayList<GData3> result = new ArrayList<GData3>(fractions * fractions);
         return result;
     }
 
     private List<GData2> split(GData2 g, int fractions) {
-        // TODO Auto-generated method stub
+
         ArrayList<GData2> result = new ArrayList<GData2>(fractions);
+
+        Vector3d A = new Vector3d(lines.get(g)[0]);
+        Vector3d B = new Vector3d(lines.get(g)[1]);
+
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+        BigDecimal cur = BigDecimal.ZERO;
+        BigDecimal next = BigDecimal.ZERO;
+        for (int i = 0; i < fractions; i++) {
+            if (i == fractions - 1) {
+                next = BigDecimal.ONE;
+            } else {
+                next = next.add(step);
+            }
+
+            BigDecimal oneMinusCur = BigDecimal.ONE.subtract(cur);
+            BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
+
+            // Cx = Ax * (1-t) + Bx * t
+            // Cy = Ay * (1-t) + By * t
+
+            result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                    A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
+                    A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
+                    A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+
+                    A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
+                    A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
+                    A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+
+                    View.DUMMY_REFERENCE, linkedDatFile));
+            cur = next;
+        }
+
         return result;
     }
 
