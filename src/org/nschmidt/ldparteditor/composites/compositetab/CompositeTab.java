@@ -123,7 +123,10 @@ public class CompositeTab extends CompositeTabDesign {
             public void lineGetStyle(final LineStyleEvent e) {
                 // So the line will be formated with the syntax formatter from
                 // the CompositeText.
-                syntaxFormatter.format(e, state.getToReplaceX(), state.getToReplaceY(), state.getToReplaceZ(), state.getReplaceEpsilon(), state.isReplacingVertex());
+
+                boolean isSelected = state.getFileNameObj().getVertexManager().getSelectedData().contains(state.getFileNameObj().getDrawPerLine_NOCLONE().getValue(compositeText[0].getLineAtOffset(e.lineOffset) + 1));
+
+                syntaxFormatter.format(e, state.getToReplaceX(), state.getToReplaceY(), state.getToReplaceZ(), state.getReplaceEpsilon(), state.isReplacingVertex(), isSelected);
             }
         });
         final boolean[] isDelPressed = new boolean[] { false };
