@@ -178,7 +178,7 @@ public class VertexManager {
 
     private boolean modified = false;
 
-    private boolean syncWithTextEditor = false;
+    private AtomicBoolean syncWithTextEditor = new AtomicBoolean(true);
 
     private int selectedItemIndex = -1;
     private GData selectedLine = null;
@@ -18087,7 +18087,7 @@ public class VertexManager {
     private final AtomicInteger tid = new AtomicInteger(0);
     private final AtomicInteger openThreads = new AtomicInteger(0);
     public void syncWithTextEditors() {
-        if (!syncWithTextEditor) return;
+        if (!syncWithTextEditor.get()) return;
         if (openThreads.get() > 10) {
             resetTimer.set(true);
             return;
@@ -18105,7 +18105,7 @@ public class VertexManager {
                     }
                 } while (resetTimer.get());
                 openThreads.decrementAndGet();
-                if (tid2.get() != tid.get()) return;
+                if (tid2.get() != tid.get() || !syncWithTextEditor.get()) return;
                 for (EditorTextWindow w : Project.getOpenTextWindows()) {
                     for (final CTabItem t : w.getTabFolder().getItems()) {
                         final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
@@ -18137,11 +18137,11 @@ public class VertexManager {
     }
 
     public boolean isSyncWithTextEditor() {
-        return syncWithTextEditor;
+        return syncWithTextEditor.get();
     }
 
     public void setSyncWithTextEditor(boolean syncWithTextEditor) {
-        this.syncWithTextEditor = syncWithTextEditor;
+        this.syncWithTextEditor.set(syncWithTextEditor);
     }
 
 }
