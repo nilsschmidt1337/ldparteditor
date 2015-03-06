@@ -72,8 +72,9 @@ public class SyntaxFormatter {
      * @param vy
      * @param vx
      * @param replaceEpsilon
+     * @param isSelected
      */
-    public void format(LineStyleEvent e, BigDecimal VX, BigDecimal VY, BigDecimal VZ, float replaceEpsilon, boolean replaceVertex) {
+    public void format(LineStyleEvent e, BigDecimal VX, BigDecimal VY, BigDecimal VZ, float replaceEpsilon, boolean replaceVertex, boolean isSelected) {
 
         float vx = VX.floatValue();
         float vy = VY.floatValue();
@@ -81,6 +82,7 @@ public class SyntaxFormatter {
 
         ArrayList<StyleRange> styles = new ArrayList<StyleRange>();
         String[] text_segments = e.lineText.split(" "); //$NON-NLS-1$
+
         // Get the linetype
         int linetype = 0;
         for (String segment : text_segments) {
@@ -133,6 +135,13 @@ public class SyntaxFormatter {
             errStyleRange.underlineStyle = SWT.UNDERLINE_ERROR;
             styles.add(errStyleRange);
             break;
+        }
+        if (isSelected) {
+            StyleRange selStyleRange = new StyleRange();
+            selStyleRange.start = e.lineOffset;
+            selStyleRange.length = e.lineText.length();
+            selStyleRange.background = Colour.line_highlight_selected_background;
+            styles.add(selStyleRange);
         }
         e.styles = styles.toArray(new StyleRange[0]);
     }

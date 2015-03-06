@@ -28,6 +28,8 @@ public enum Colour {
 
     /** The background of hightlighted text lines */
     public static org.eclipse.swt.graphics.Color line_highlight_background = SWTResourceManager.getColor(235, 236, 255);
+    /** The background of hightlighted selected text lines */
+    public static org.eclipse.swt.graphics.Color line_highlight_selected_background = SWTResourceManager.getColor(242, 240, 240);
     /** The underline colour of line errors */
     public static org.eclipse.swt.graphics.Color line_error_underline = SWTResourceManager.getColor(235, 30, 30);
     /** The underline colour of line warnings */

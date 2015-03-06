@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
@@ -33,6 +34,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.ScalableComposite;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.data.GData;
@@ -50,6 +52,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.widgets.Tree;
@@ -1125,6 +1128,14 @@ public class MouseActions {
                 case WorkingMode.SUBFILES:
                     c3d.getLockableDatFileReference().getVertexManager().selectSubfiles(c3d, event, true);
                     break;
+                }
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    for (CTabItem t : w.getTabFolder().getItems()) {
+                        DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
+                        if (txtDat != null) {
+                            ((CompositeTab) t).getTextComposite().redraw();
+                        }
+                    }
                 }
             } else if (!window.isAddingSomething()) {
                 c3d.getManipulator().applyTranslation(c3d);
