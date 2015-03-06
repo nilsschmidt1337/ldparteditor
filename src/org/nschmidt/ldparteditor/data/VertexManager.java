@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -4489,7 +4490,7 @@ public class VertexManager {
                         }
                     }
                 }
-                setModified(true);
+                setModified_NoSync();
             }
 
             if (isModified()) {
@@ -4499,6 +4500,7 @@ public class VertexManager {
                 selectedData.addAll(selectedCondlines);
                 selectedData.addAll(selectedSubfiles);
 
+                syncWithTextEditors();
                 updateUnsavedStatus();
 
             }
@@ -4598,7 +4600,7 @@ public class VertexManager {
                 newObjT = cast(newObj);
                 if (!newSelectedData.contains(data)) newData.add(newObjT);
                 linker((GData) data, newObj);
-                setModified(true);
+                setModified_NoSync();
             }
         }
         switch (type) {
@@ -4712,7 +4714,7 @@ public class VertexManager {
     private boolean adjacentMover(GData dataToMove, Vertex vertexToMove, Vertex newVertex) {
         if (lineLinkedToVertices.containsKey(dataToMove) && !selectedLines.contains(dataToMove) && !selectedTriangles.contains(dataToMove) && !selectedQuads.contains(dataToMove)
                 && !selectedCondlines.contains(dataToMove)) {
-            setModified(true);
+            setModified_NoSync();
             GData newData = null;
             Vertex[] verts;
             boolean doCreate = false;
@@ -4901,9 +4903,9 @@ public class VertexManager {
         }
 
         if (!selectedTriangles.isEmpty())
-            setModified(true);
+            setModified_NoSync();
         if (!selectedQuads.isEmpty())
-            setModified(true);
+            setModified_NoSync();
 
         // 4. Subfile Based Change & Selection
         if (!selectedSubfiles.isEmpty()) {
@@ -5068,7 +5070,7 @@ public class VertexManager {
                     }
                 }
             }
-            setModified(true);
+            setModified_NoSync();
         }
 
         if (isModified()) {
@@ -5082,6 +5084,7 @@ public class VertexManager {
             selectedData.addAll(selectedCondlines);
             selectedData.addAll(selectedSubfiles);
 
+            syncWithTextEditors();
             updateUnsavedStatus();
         }
 
@@ -5230,13 +5233,13 @@ public class VertexManager {
         }
 
         if (!selectedLines.isEmpty())
-            setModified(true);
+            setModified_NoSync();
         if (!selectedTriangles.isEmpty())
-            setModified(true);
+            setModified_NoSync();
         if (!selectedQuads.isEmpty())
-            setModified(true);
+            setModified_NoSync();
         if (!selectedCondlines.isEmpty())
-            setModified(true);
+            setModified_NoSync();
 
         // 4. Subfile Based Change & Selection
         if (!selectedSubfiles.isEmpty()) {
@@ -5304,7 +5307,7 @@ public class VertexManager {
                     }
                 }
             }
-            setModified(true);
+            setModified_NoSync();
         }
 
         if (isModified()) {
@@ -5318,6 +5321,7 @@ public class VertexManager {
             selectedData.addAll(selectedCondlines);
             selectedData.addAll(selectedSubfiles);
 
+            syncWithTextEditors();
             updateUnsavedStatus();
         }
 
@@ -18055,19 +18059,26 @@ public class VertexManager {
         return result;
     }
 
+    private final AtomicBoolean resetTimer = new AtomicBoolean(false);
     private final AtomicInteger tid = new AtomicInteger(0);
     private final AtomicInteger openThreads = new AtomicInteger(0);
     public void syncWithTextEditors() {
-        if (openThreads.get() > 10) return;
+        if (openThreads.get() > 10) {
+            resetTimer.set(true);
+            return;
+        }
         final AtomicInteger tid2 = new AtomicInteger(tid.incrementAndGet());
         final Thread syncThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 openThreads.incrementAndGet();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                }
+                do {
+                    resetTimer.set(false);
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                    }
+                } while (resetTimer.get());
                 openThreads.decrementAndGet();
                 if (tid2.get() != tid.get()) return;
                 for (EditorTextWindow w : Project.getOpenTextWindows()) {

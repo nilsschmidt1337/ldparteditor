@@ -411,7 +411,7 @@ public class CompositeTab extends CompositeTabDesign {
                                     state.setToReplaceY(y);
                                     state.setToReplaceZ(z);
                                     event.doit = false;
-                                    vm.setModified(true);
+                                    vm.setModified_NoSync();
                                     compositeText[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
 
                                 } else {
@@ -476,7 +476,7 @@ public class CompositeTab extends CompositeTabDesign {
                                             state.setToReplaceY(y);
                                             state.setToReplaceZ(z);
                                             event.doit = false;
-                                            vm.setModified(true);
+                                            vm.setModified_NoSync();
                                             compositeText[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
                                         } else {
                                             foundValidVertex = false;
@@ -540,7 +540,7 @@ public class CompositeTab extends CompositeTabDesign {
                                                     state.setToReplaceY(y);
                                                     state.setToReplaceZ(z);
                                                     event.doit = false;
-                                                    vm.setModified(true);
+                                                    vm.setModified_NoSync();
                                                     compositeText[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
                                                 }
                                             }
