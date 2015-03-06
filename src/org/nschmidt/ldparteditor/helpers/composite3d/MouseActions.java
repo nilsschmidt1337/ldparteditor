@@ -200,6 +200,7 @@ public class MouseActions {
             Matrix4f.load(c3d.getRotation(), old_viewport_rotation);
             break;
         case MouseButton.RIGHT:
+            c3d.getLockableDatFileReference().getVertexManager().setSyncWithTextEditor(false);
             Project.setFileToEdit(datfile);
             if (c3d.isDoingSelection())
                 break;
@@ -1141,6 +1142,7 @@ public class MouseActions {
             }
             break;
         case MouseButton.RIGHT:
+            c3d.getLockableDatFileReference().getVertexManager().setSyncWithTextEditor(true);
             KeyStateManager keyboard = c3d.getKeys();
             if (!keyboard.isCtrlPressed()) {
                 c3d.getLockableDatFileReference().setObjVertex1(null);
