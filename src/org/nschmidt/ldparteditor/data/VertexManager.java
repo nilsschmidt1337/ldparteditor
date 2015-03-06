@@ -178,6 +178,8 @@ public class VertexManager {
 
     private boolean modified = false;
 
+    private boolean syncWithTextEditor = false;
+
     private int selectedItemIndex = -1;
     private GData selectedLine = null;
 
@@ -6331,7 +6333,7 @@ public class VertexManager {
         return result;
     }
 
-    public void delete(boolean moveAdjacentData) {
+    public void delete(boolean moveAdjacentData, boolean setModified) {
         if (linkedDatFile.isReadOnly())
             return;
 
@@ -6615,7 +6617,7 @@ public class VertexManager {
                     linkedDatFile.setDrawChainTail(blankLine);
                 }
 
-                syncWithTextEditors();
+                if (setModified) syncWithTextEditors();
                 updateUnsavedStatus();
             }
         }
@@ -7222,7 +7224,7 @@ public class VertexManager {
                     return;
             }
         }
-        setModified(true);
+        setModified_NoSync();
         if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
             Project.addUnsavedFile(linkedDatFile);
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
@@ -7293,13 +7295,14 @@ public class VertexManager {
             v1 = v2;
             v2 = t;
         }
-        setModified(true);
+        setModified_NoSync();
         if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
             Project.addUnsavedFile(linkedDatFile);
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
         linkedDatFile.addToTail(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+        setModified(true);
     }
 
     public void addQuad(Vertex v1, Vertex v2, Vertex v3, Vertex v4, Composite3D c3d) {
@@ -7403,7 +7406,7 @@ public class VertexManager {
                 v1 = v3;
                 v3 = t;
             }
-            setModified(true);
+            setModified_NoSync();
             if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
                 Project.addUnsavedFile(linkedDatFile);
                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
@@ -7411,6 +7414,7 @@ public class VertexManager {
             GColour col = Editor3DWindow.getWindow().getLastUsedColour();
             linkedDatFile.addToTail(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
             linkedDatFile.addToTail(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v4, v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
+            setModified(true);
             return;
         }
 
@@ -7509,13 +7513,14 @@ public class VertexManager {
             v3 = t;
         }
 
-        setModified(true);
+        setModified_NoSync();
         if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
             Project.addUnsavedFile(linkedDatFile);
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
         linkedDatFile.addToTail(new GData4(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
+        setModified(true);
     }
 
     public void addCondline(Vertex v1, Vertex v2, Vertex v3, Vertex v4) {
@@ -7554,7 +7559,7 @@ public class VertexManager {
                 }
             }
         }
-        setModified(true);
+        setModified_NoSync();
         if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
             Project.addUnsavedFile(linkedDatFile);
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
@@ -7564,11 +7569,10 @@ public class VertexManager {
             col = DatParser.validateColour(24, .5f, .5f, .5f, 1f);
         }
         linkedDatFile.addToTail(new GData5(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
-
     }
 
     public void addBackgroundPicture(String text, Vertex offset, BigDecimal angleA, BigDecimal angleB, BigDecimal angleC, Vertex scale, String texturePath) {
-        setModified(true);
+        setModified_NoSync();
         if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
             Project.addUnsavedFile(linkedDatFile);
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
@@ -7576,13 +7580,14 @@ public class VertexManager {
         GDataPNG pic = new GDataPNG(new GDataPNG(text, offset, angleA, angleB, angleC, scale, texturePath).getString(offset, angleA, angleB, angleC, scale, texturePath), offset, angleA, angleB, angleC, scale, texturePath);
         linkedDatFile.addToTail(pic);
         setSelectedBgPicture(pic);
+        setModified(true);
     }
 
     public void zoomToFit(Composite3D c3d) {
         // TODO zoomToFit() Needs implementation!
     }
 
-    public synchronized void roundSelection(int coordsDecimalPlaces, int matrixDecimalPlaces, boolean moveAdjacentData) {
+    public synchronized void roundSelection(int coordsDecimalPlaces, int matrixDecimalPlaces, boolean moveAdjacentData, boolean syncWithTextEditors) {
 
         if (linkedDatFile.isReadOnly())
             return;
@@ -7843,7 +7848,7 @@ public class VertexManager {
                 selectedData.addAll(selectedCondlines);
                 selectedData.addAll(selectedSubfiles);
 
-                syncWithTextEditors();
+                if (syncWithTextEditors) syncWithTextEditors();
                 updateUnsavedStatus();
             }
 
@@ -9412,7 +9417,7 @@ public class VertexManager {
         }
     }
 
-    public void rectify(final RectifierSettings rs) {
+    public void rectify(final RectifierSettings rs, boolean syncWithTextEditor) {
 
         if (linkedDatFile.isReadOnly()) return;
 
@@ -9712,13 +9717,13 @@ public class VertexManager {
                                             quad = new GData4(yellow.getColourNumber(), yellow.getR(), yellow.getG(), yellow.getB(), yellow.getA(), first, second, third, fourth, View.DUMMY_REFERENCE, linkedDatFile);
 
                                             linkedDatFile.insertAfter(tri2, quad);
-                                            setModified(true);
+                                            setModified_NoSync();
                                         } else {
 
                                             quad = new GData4(tri1.colourNumber, tri1.r, tri1.g, tri1.b, tri1.a, first, second, third, fourth, View.DUMMY_REFERENCE, linkedDatFile);
 
                                             linkedDatFile.insertAfter(tri2, quad);
-                                            setModified(true);
+                                            setModified_NoSync();
                                         }
 
 
@@ -9946,7 +9951,7 @@ public class VertexManager {
         selectedData.addAll(quadsToDelete);
         selectedData.addAll(selectedCondlines);
 
-        delete(false);
+        delete(false, syncWithTextEditor);
 
         validateState();
     }
@@ -10161,17 +10166,21 @@ public class VertexManager {
             selectedLines.addAll(newLines);
             selectedData.addAll(selectedLines);
 
-            roundSelection(6, 10, true);
+            roundSelection(6, 10, true, false);
 
             clearSelection();
-            setModified(true);
+            setModified_NoSync();
         }
 
         selectedLines.addAll(linesToDelete);
         selectedCondlines.addAll(clinesToDelete);
         selectedData.addAll(selectedLines);
         selectedData.addAll(selectedCondlines);
-        delete(false);
+        delete(false, false);
+
+        if (isModified()) {
+            syncWithTextEditors();
+        }
 
         validateState();
     }
@@ -10813,7 +10822,7 @@ public class VertexManager {
                 selectedQuads.addAll(quadsToDelete);
                 selectedData.addAll(selectedTriangles);
                 selectedData.addAll(selectedQuads);
-                delete(false);
+                delete(false, false);
             } else {
                 clearSelection();
             }
@@ -10833,7 +10842,7 @@ public class VertexManager {
 
             selectedTriangles.addAll(trisToDelete2);
             selectedData.addAll(selectedTriangles);
-            delete(false);
+            delete(false, false);
 
             // Round to 6 decimal places
 
@@ -10841,12 +10850,12 @@ public class VertexManager {
             selectedData.addAll(newTriangles);
 
             NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
-            roundSelection(6, 10, true);
+            roundSelection(6, 10, true, false);
 
             NLogger.debug(getClass(), "Rectify."); //$NON-NLS-1$
             RectifierSettings rs = new RectifierSettings();
             rs.setScope(1);
-            rectify(rs);
+            rectify(rs, false);
 
             clearSelection();
             setModified(true);
@@ -11579,7 +11588,7 @@ public class VertexManager {
         }
     }
 
-    public void intersector(final IntersectorSettings ins) {
+    public void intersector(final IntersectorSettings ins, boolean syncWithTextEditor) {
         Composite3D c3d =  linkedDatFile.getLastSelectedComposite();
         NLogger.debug(getClass(), "Intersector - (C) Nils Schmidt 2015"); //$NON-NLS-1$
         NLogger.debug(getClass(), "======================"); //$NON-NLS-1$
@@ -11892,7 +11901,7 @@ public class VertexManager {
                 selectedData.addAll(selectedTriangles);
                 selectedData.addAll(selectedQuads);
                 selectedData.addAll(selectedCondlines);
-                delete(false);
+                delete(false, false);
             } else {
                 clearSelection();
             }
@@ -11915,7 +11924,7 @@ public class VertexManager {
             newTriangles.removeAll(trisToDelete2);
             selectedTriangles.addAll(trisToDelete2);
             selectedData.addAll(selectedTriangles);
-            delete(false);
+            delete(false, false);
 
             // Round to 6 decimal places
 
@@ -11927,10 +11936,14 @@ public class VertexManager {
             selectedData.addAll(selectedCondlines);
 
             NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
-            roundSelection(6, 10, true);
+            roundSelection(6, 10, true, false);
 
             clearSelection();
-            setModified(true);
+            if (syncWithTextEditor) {
+                setModified(true);
+            } else {
+                setModified_NoSync();
+            }
 
             NLogger.debug(getClass(), "Done."); //$NON-NLS-1$
 
@@ -12537,7 +12550,7 @@ public class VertexManager {
         result2.addAll(result);
     }
 
-    public void splitQuads() {
+    public void splitQuads(boolean isModified) {
 
         final Set<GData4> quadsToDelete = new HashSet<GData4>();
         final Set<GData3> newTriangles = new HashSet<GData3>();
@@ -12557,7 +12570,7 @@ public class VertexManager {
         if (quadsToParse.isEmpty()) {
             return;
         } else {
-            setModified(true);
+            setModified_NoSync();
         }
         quadsToDelete.addAll(quadsToParse);
 
@@ -12600,11 +12613,14 @@ public class VertexManager {
 
         selectedQuads.addAll(quadsToDelete);
         selectedData.addAll(quadsToDelete);
-        delete(false);
+        delete(false, false);
 
         selectedTriangles.addAll(newTriangles);
         selectedData.addAll(newTriangles);
 
+        if (isModified && isModified()) {
+            syncWithTextEditors();
+        }
         validateState();
 
     }
@@ -13477,7 +13493,7 @@ public class VertexManager {
             newTriangles.removeAll(trisToDelete2);
             selectedTriangles.addAll(trisToDelete2);
             selectedData.addAll(selectedTriangles);
-            delete(false);
+            delete(false, false);
 
             // Round to 6 decimal places
 
@@ -13485,7 +13501,7 @@ public class VertexManager {
             selectedData.addAll(selectedTriangles);
 
             NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
-            roundSelection(6, 10, true);
+            roundSelection(6, 10, true, false);
 
             setModified(true);
 
@@ -14322,7 +14338,7 @@ public class VertexManager {
         selectedData.addAll(selectedLines);
         selectedData.addAll(selectedTriangles);
         selectedData.addAll(selectedQuads);
-        delete(false);
+        delete(false, false);
 
         // Round to 6 decimal places
 
@@ -14334,7 +14350,7 @@ public class VertexManager {
         selectedData.addAll(selectedQuads);
 
         NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
-        roundSelection(6, 10, true);
+        roundSelection(6, 10, true, false);
 
         setModified(true);
 
@@ -14524,7 +14540,7 @@ public class VertexManager {
 
         if (linkedDatFile.isReadOnly()) return;
 
-        setModified(true);
+        setModified_NoSync();
         final String originalContent = linkedDatFile.getText();
 
         clearSelection();
@@ -14678,7 +14694,7 @@ public class VertexManager {
                 }
             }
 
-            intersector(new IntersectorSettings());
+            intersector(new IntersectorSettings(), false);
 
             showAll();
             clearSelection();
@@ -14686,7 +14702,7 @@ public class VertexManager {
             // Remove the split plane
             selectedData.add(splitPlane);
             selectedQuads.add(splitPlane);
-            delete(false);
+            delete(false, false);
         }
 
 
@@ -15190,11 +15206,11 @@ public class VertexManager {
 
                 GDataCSG.resetCSG();
                 GDataCSG.forceRecompile();
-                setModified(true);
+                setModified_NoSync();
                 linkedDatFile.setText(symSplitterOutput);
                 linkedDatFile.parseForData();
 
-                setModified(true);
+                setModified_NoSync();
 
                 // Separate the data according the plane and hide or show it
 
@@ -15401,6 +15417,10 @@ public class VertexManager {
                     default:
                         break;
                     }
+                }
+
+                if (isModified()) {
+                    syncWithTextEditors();
                 }
 
             } else {
@@ -15688,13 +15708,13 @@ public class VertexManager {
         selectedData.addAll(selectedTriangles);
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
-        delete(false);
+        delete(false, false);
 
         // Round selection to 6 decimal places
         selectedVertices.addAll(selectedVerts);
 
         NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
-        roundSelection(6, 10, true);
+        roundSelection(6, 10, true, true);
 
         validateState();
     }
@@ -15882,7 +15902,7 @@ public class VertexManager {
         selectedData.addAll(selectedTriangles);
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
-        delete(false);
+        delete(false, false);
 
         clearSelection();
 
@@ -16999,7 +17019,7 @@ public class VertexManager {
         clearSelection();
         selectedCondlines.addAll(condlines.keySet());
         selectedData.addAll(selectedCondlines);
-        delete(false);
+        delete(false, false);
 
         TreeMap<Vertex, Vertex> newPoints = new TreeMap<Vertex, Vertex>();
 
@@ -17120,13 +17140,13 @@ public class VertexManager {
         selectedData.addAll(linesToDelete2);
         selectedData.addAll(trisToDelete2);
         selectedData.addAll(quadsToDelete2);
-        delete(false);
+        delete(false, false);
 
         selectedLines.addAll(newLines);
         selectedData.addAll(newLines);
         selectedQuads.addAll(newQuads);
         selectedData.addAll(newQuads);
-        roundSelection(6, 10, true);
+        roundSelection(6, 10, true, false);
         setModified(true);
         validateState();
 
@@ -17151,7 +17171,7 @@ public class VertexManager {
             trisToDelete2.add(g3);
         }
 
-        splitQuads();
+        splitQuads(false);
 
         for (GData3 g3 : selectedTriangles) {
             if (!lineLinkedToVertices.containsKey(g3)) continue;
@@ -17166,7 +17186,7 @@ public class VertexManager {
         clearSelection();
         selectedCondlines.addAll(condlines.keySet());
         selectedData.addAll(selectedCondlines);
-        delete(false);
+        delete(false, false);
 
         TreeMap<Vertex, Vertex> newPoints = new TreeMap<Vertex, Vertex>();
 
@@ -17211,13 +17231,13 @@ public class VertexManager {
         selectedTriangles.addAll(trisToDelete2);
         selectedData.addAll(linesToDelete2);
         selectedData.addAll(trisToDelete2);
-        delete(false);
+        delete(false, false);
 
         selectedLines.addAll(newLines);
         selectedData.addAll(newLines);
         selectedTriangles.addAll(newTris);
         selectedData.addAll(newTris);
-        roundSelection(6, 10, true);
+        roundSelection(6, 10, true, false);
 
         TreeSet<Vertex> verticesToMove = new TreeSet<Vertex>();
 
@@ -17308,7 +17328,7 @@ public class VertexManager {
             gd = gd.getBefore();
             newContentSize--;
         }
-        roundSelection(6, 10, true);
+        roundSelection(6, 10, true, false);
 
         setModified(true);
         validateState();
@@ -17419,7 +17439,9 @@ public class VertexManager {
             clinesToDelete2.add(g);
         }
 
-        setModified(newLines.size() + newTriangles.size() + newCondlines.size() > 0);
+        if (newLines.size() + newTriangles.size() + newCondlines.size() > 0) {
+            setModified_NoSync();
+        }
 
         selectedLines.addAll(linesToDelete2);
         selectedTriangles.addAll(trisToDelete2);
@@ -17429,14 +17451,16 @@ public class VertexManager {
         selectedData.addAll(selectedTriangles);
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
-        delete(false);
+        delete(false, false);
 
         selectedTriangles.addAll(newTriangles);
         selectedData.addAll(selectedTriangles);
-        rectify(new RectifierSettings());
+        rectify(new RectifierSettings(), false);
 
         clearSelection();
-
+        if (isModified()) {
+            syncWithTextEditors();
+        }
         validateState();
     }
 
@@ -18063,6 +18087,7 @@ public class VertexManager {
     private final AtomicInteger tid = new AtomicInteger(0);
     private final AtomicInteger openThreads = new AtomicInteger(0);
     public void syncWithTextEditors() {
+        if (!syncWithTextEditor) return;
         if (openThreads.get() > 10) {
             resetTimer.set(true);
             return;
@@ -18109,6 +18134,14 @@ public class VertexManager {
             }
         });
         syncThread.start();
+    }
+
+    public boolean isSyncWithTextEditor() {
+        return syncWithTextEditor;
+    }
+
+    public void setSyncWithTextEditor(boolean syncWithTextEditor) {
+        this.syncWithTextEditor = syncWithTextEditor;
     }
 
 }

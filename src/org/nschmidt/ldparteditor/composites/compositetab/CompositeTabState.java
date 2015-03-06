@@ -76,7 +76,7 @@ public class CompositeTabState {
         this.datFileObj = fileNameObj;
         if (Project.getUnsavedFiles().contains(fileNameObj) || !fileNameObj.getOldName().equals(fileNameObj.getNewName())) {
             NLogger.debug(getClass(), getFilenameWithStar());
-            this.datFileObj.getVertexManager().setModified(true);
+            this.datFileObj.getVertexManager().setModified_NoSync();
             getTab().getTextComposite().setText(this.datFileObj.getText());
             getTab().setText(getFilenameWithStar());
         } else {
@@ -101,7 +101,7 @@ public class CompositeTabState {
                 fileNameObj.setOriginalText(originalText);
                 if (datFileObj.getDrawChainTail() != null) {
                     this.datFileObj.getVertexManager().setVertexToReplace(null);
-                    this.datFileObj.getVertexManager().setModified(true);
+                    this.datFileObj.getVertexManager().setModified_NoSync();
                 }
                 getTab().getTextComposite().setText(originalText);
                 datFileObj.setText(getTab().getTextComposite().getText());

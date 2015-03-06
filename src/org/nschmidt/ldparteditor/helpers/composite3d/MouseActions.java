@@ -638,6 +638,7 @@ public class MouseActions {
                             datfile.setObjVertex2(nv);
                             vm.addLine(datfile.getNearestObjVertex1(), nv);
                             vm.getSelectedVertices().clear();
+                            vm.setModified(true);
                         } else {
                             final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();
                             Vertex v1 = vi.next();
@@ -661,6 +662,7 @@ public class MouseActions {
                             datfile.setObjVertex2(nv);
                             vm.addLine(datfile.getNearestObjVertex1(), nv);
                             vm.getSelectedVertices().clear();
+                            vm.setModified(true);
                         }
                     }
                     if (vm.getSelectedVertices().size() > 2 && vl1 != null) {
@@ -674,6 +676,7 @@ public class MouseActions {
                         Vertex v2 = vi.next();
                         vm.addLine(v1, v2);
                         vm.getSelectedVertices().clear();
+                        vm.setModified(true);
                     }
                 } else if (window.isAddingTriangles()) {
                     final VertexManager vm = datfile.getVertexManager();
@@ -981,6 +984,7 @@ public class MouseActions {
                             datfile.setObjVertex4(nv);
                             vm.addCondline(vc1, vc2, vc3, nv);
                             vm.getSelectedVertices().clear();
+                            vm.setModified(true);
                             return;
                         } else if (vc4 != null) {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
@@ -1019,6 +1023,7 @@ public class MouseActions {
                             datfile.setObjVertex4(nv);
                             vm.addCondline(vc1, vc2, vc3, nv);
                             vm.getSelectedVertices().clear();
+                            vm.setModified(true);
                             return;
                         } else if (vc4 != null) {
                             datfile.setObjVertex1(vn1);
@@ -1044,6 +1049,7 @@ public class MouseActions {
                             datfile.setObjVertex4(nv2);
                             vm.addCondline(vc1, vc2, nv, nv2);
                             vm.getSelectedVertices().clear();
+                            vm.setModified(true);
                             return;
                         } else if (vc1 != null && vc2 != null && vc3 != null && vc4 != null) {
                             datfile.setObjVertex1(vn1);
@@ -1052,6 +1058,7 @@ public class MouseActions {
                             datfile.setObjVertex4(nv2);
                             vm.addCondline(vn1, vn2, nv, nv2);
                             vm.getSelectedVertices().clear();
+                            vm.setModified(true);
                             return;
                         } else if (vc1 != null && vc2 == null && vc3 == null && vc4 == null) {
 
@@ -1067,6 +1074,7 @@ public class MouseActions {
                             datfile.setObjVertex4(nv3);
                             vm.addCondline(vc1, nv, nv2, nv3);
                             vm.getSelectedVertices().clear();
+                            vm.setModified(true);
                             return;
                         } else if (vc1 == null && vc2 == null && vc3 == null && vc4 == null) {
                             datfile.setNearestObjVertex1(nv);
@@ -1097,6 +1105,7 @@ public class MouseActions {
                         datfile.setObjVertex3(v3);
                         datfile.setObjVertex4(v4);
                         vm.addCondline(v1, v2, v3, v4);
+                        vm.setModified(true);
                         vm.getSelectedVertices().clear();
                     }
                 }

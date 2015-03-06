@@ -74,7 +74,7 @@ public enum Rounder {
             st.setToReplaceY(vNew.Y);
             st.setToReplaceZ(vNew.Z);
             datFile.getVertexManager().setVertexToReplace(vNew);
-            datFile.getVertexManager().setModified(true);
+            datFile.getVertexManager().setModified_NoSync();
 
             ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
 
@@ -184,7 +184,7 @@ public enum Rounder {
                 String line = getLine(l, text2);
                 text2 = Rounder.round(l, line, text2, datFile, coordsDecimalPlaces, matrixDecimalPlaces);
             }
-            datFile.getVertexManager().setModified(true);
+            datFile.getVertexManager().setModified_NoSync();
 
             cText.setText(restoreLineTermination(text2, lastLineIsEmpty));
             int tl = cText.getText().length();
