@@ -3125,7 +3125,6 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText("Open LDraw Configuration File (LDConfig.ldr):"); //$NON-NLS-1$ I18N Needs translation!
-
                 fd.setFilterPath(WorkbenchManager.getUserSettingState().getLdrawFolderPath());
 
                 String[] filterExt = { "*.ldr", "LDConfig.ldr", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -3137,6 +3136,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 System.out.println(selected);
 
                 if (selected != null && View.loadLDConfig(selected)) {
+                    GData.CACHE_warningsAndErrors.clear();
                     WorkbenchManager.getUserSettingState().setLdConfigPath(selected);
                     Set<DatFile> dfs = new HashSet<DatFile>();
                     for (OpenGLRenderer renderer : renders) {

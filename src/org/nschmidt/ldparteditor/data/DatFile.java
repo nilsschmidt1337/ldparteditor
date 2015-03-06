@@ -637,7 +637,12 @@ public final class DatFile {
 
             if (isNotBlank(line)) {
 
-                results = DatParser.parseLine(line, lineNumber, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, true, alreadyParsed, true);
+                GData gd = drawPerLine.getValue(lineNumber);
+                results = GData.CACHE_warningsAndErrors.get(gd);
+                if (results == null) {
+                    results = DatParser.parseLine(line, lineNumber, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, true, alreadyParsed, true);
+                    GData.CACHE_warningsAndErrors.put(gd, results);
+                }
 
                 for (ParsingResult result : results) {
                     switch (result.getTypeNumber()) {
