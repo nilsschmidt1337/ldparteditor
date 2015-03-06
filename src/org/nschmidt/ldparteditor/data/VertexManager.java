@@ -18113,7 +18113,12 @@ public class VertexManager {
                         for (final CTabItem t : w.getTabFolder().getItems()) {
                             final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
                             if (txtDat != null && txtDat.equals(linkedDatFile)) {
-                                final String txt = txtDat.getText();
+                                final String txt;
+                                if (isModified()) {
+                                    txt = txtDat.getText();
+                                } else {
+                                    txt = null;
+                                }
                                 Display.getDefault().asyncExec(new Runnable() {
                                     @Override
                                     public void run() {
@@ -18122,7 +18127,9 @@ public class VertexManager {
 
                                         Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
                                         ((CompositeTab) t).getState().setSync(true);
-                                        ((CompositeTab) t).getTextComposite().setText(txt);
+                                        if (isModified()) {
+                                            ((CompositeTab) t).getTextComposite().setText(txt);
+                                        }
                                         ((CompositeTab) t).getTextComposite().setTopIndex(ti);
                                         try {
                                             ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
@@ -18146,6 +18153,10 @@ public class VertexManager {
 
     public void setSyncWithTextEditor(boolean syncWithTextEditor) {
         this.syncWithTextEditor.set(syncWithTextEditor);
+    }
+
+    public AtomicBoolean getResetTimer() {
+        return resetTimer;
     }
 
 }

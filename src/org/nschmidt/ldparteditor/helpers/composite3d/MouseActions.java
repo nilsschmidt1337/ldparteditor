@@ -104,7 +104,10 @@ public class MouseActions {
      *            Event data.
      */
     public void mouseDown(Event event) {
+
         final DatFile datfile = c3d.getLockableDatFileReference();
+        final VertexManager vm = datfile.getVertexManager();
+        vm.getResetTimer().set(true);
         datfile.setLastSelectedComposite(c3d);
         mouse_button_pressed = event.button;
         old_mouse_position.set(event.x, event.y);
@@ -140,7 +143,6 @@ public class MouseActions {
             c3d.getOldMousePosition().set(event.x, event.y);
             Vector4f cursorCoordinates = c3d.getPerspectiveCalculator().get3DCoordinatesFromScreen(event.x, event.y);
             c3d.getSelectionStart().set(cursorCoordinates);
-            final VertexManager vm = datfile.getVertexManager();
             if (vm.getSelectedBgPicture() != null) {
                 vm.setSelectedBgPicture(null);
                 Editor3DWindow.getWindow().updateBgPictureTab();
@@ -192,6 +194,7 @@ public class MouseActions {
                     }
                 }
             }
+
             break;
         case MouseButton.MIDDLE:
             Project.setFileToEdit(datfile);
@@ -200,7 +203,7 @@ public class MouseActions {
             Matrix4f.load(c3d.getRotation(), old_viewport_rotation);
             break;
         case MouseButton.RIGHT:
-            c3d.getLockableDatFileReference().getVertexManager().setSyncWithTextEditor(false);
+            vm.setSyncWithTextEditor(false);
             Project.setFileToEdit(datfile);
             if (c3d.isDoingSelection())
                 break;
@@ -253,6 +256,7 @@ public class MouseActions {
                     c3d.getManipulator().setAccuratePosition(new BigDecimal(temp.x / 1000f), new BigDecimal(temp.y / 1000f), new BigDecimal(temp.z / 1000f));
                 }
             }
+            c3d.getVertexManager().getResetTimer().set(true);
             break;
         case MouseButton.MIDDLE:
             if (c3d.isDoingSelection())
@@ -291,6 +295,7 @@ public class MouseActions {
             Matrix4f.rotate(rx, yAxis3f_rotation, old_viewport_rotation, viewport_rotation);
             Matrix4f.rotate(ry, xAxis3f_rotation, viewport_rotation, viewport_rotation);
             perspective.calculateOriginData();
+            c3d.getVertexManager().getResetTimer().set(true);
             break;
         case MouseButton.RIGHT:
             if (c3d.isDoingSelection())
@@ -314,6 +319,7 @@ public class MouseActions {
             Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
             Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
             perspective.calculateOriginData();
+            c3d.getVertexManager().getResetTimer().set(true);
             break;
         }
         c3d.getCursor3D().set(perspective.get3DCoordinatesFromScreen(event.x, event.y));
