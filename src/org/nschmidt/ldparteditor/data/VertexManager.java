@@ -18106,31 +18106,35 @@ public class VertexManager {
                 } while (resetTimer.get());
                 openThreads.decrementAndGet();
                 if (tid2.get() != tid.get() || !syncWithTextEditor.get()) return;
-                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    for (final CTabItem t : w.getTabFolder().getItems()) {
-                        final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
-                        if (txtDat != null && txtDat.equals(linkedDatFile)) {
-                            final String txt = txtDat.getText();
-                            Display.getDefault().asyncExec(new Runnable() {
-                                @Override
-                                public void run() {
+                try {
+                    // A lot of stuff can throw an exception here, since the thread waits two seconds and
+                    // the state of the program may not allow a synchronisation anymore
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        for (final CTabItem t : w.getTabFolder().getItems()) {
+                            final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
+                            if (txtDat != null && txtDat.equals(linkedDatFile)) {
+                                final String txt = txtDat.getText();
+                                Display.getDefault().asyncExec(new Runnable() {
+                                    @Override
+                                    public void run() {
 
-                                    int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
+                                        int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
 
-                                    Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
-                                    ((CompositeTab) t).getState().setSync(true);
-                                    ((CompositeTab) t).getTextComposite().setText(txt);
-                                    ((CompositeTab) t).getTextComposite().setTopIndex(ti);
-                                    try {
-                                        ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
-                                    } catch (IllegalArgumentException consumed) {}
-                                    ((CompositeTab) t).getTextComposite().redraw();
-                                    ((CompositeTab) t).getState().setSync(false);
-                                }
-                            });
+                                        Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
+                                        ((CompositeTab) t).getState().setSync(true);
+                                        ((CompositeTab) t).getTextComposite().setText(txt);
+                                        ((CompositeTab) t).getTextComposite().setTopIndex(ti);
+                                        try {
+                                            ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
+                                        } catch (IllegalArgumentException consumed) {}
+                                        ((CompositeTab) t).getTextComposite().redraw();
+                                        ((CompositeTab) t).getState().setSync(false);
+                                    }
+                                });
+                            }
                         }
                     }
-                }
+                } catch (Exception consumed) {}
             }
         });
         syncThread.start();
