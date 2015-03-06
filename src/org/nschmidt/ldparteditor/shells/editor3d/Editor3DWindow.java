@@ -729,7 +729,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         new RoundDialog(getShell()).open();
                     }
                     Project.getFileToEdit().getVertexManager()
-                    .roundSelection(WorkbenchManager.getUserSettingState().getCoordsPrecision(), WorkbenchManager.getUserSettingState().getTransMatrixPrecision(), isMovingAdjacentData());
+                    .roundSelection(WorkbenchManager.getUserSettingState().getCoordsPrecision(), WorkbenchManager.getUserSettingState().getTransMatrixPrecision(), isMovingAdjacentData(), true);
                 }
             }
         });
@@ -905,7 +905,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
-                    Project.getFileToEdit().getVertexManager().splitQuads();
+                    Project.getFileToEdit().getVertexManager().splitQuads(true);
                 }
             }
         });
@@ -2016,7 +2016,7 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_Delete[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (Project.getFileToEdit() != null) Project.getFileToEdit().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData());
+                if (Project.getFileToEdit() != null) Project.getFileToEdit().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
             }
         });
         btn_Copy[0].addSelectionListener(new SelectionAdapter() {
@@ -2030,7 +2030,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().copy();
-                    Project.getFileToEdit().getVertexManager().delete(false);
+                    Project.getFileToEdit().getVertexManager().delete(false, true);
                 }
             }
         });
@@ -2933,7 +2933,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         if (new RectifierDialog(getShell(), rs).open() == IDialogConstants.OK_ID)
-                            vm.rectify(rs);
+                            vm.rectify(rs, true);
                         return;
 
                     }
@@ -2981,7 +2981,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         if (new IntersectorDialog(getShell(), ins).open() == IDialogConstants.OK_ID)
-                            vm.intersector(ins);
+                            vm.intersector(ins, true);
                         return;
 
                     }

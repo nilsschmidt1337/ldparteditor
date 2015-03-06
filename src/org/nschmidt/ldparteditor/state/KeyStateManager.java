@@ -90,7 +90,7 @@ public class KeyStateManager {
                 df.getVertexManager().clearSelection();
             }
             if (keyCode == SWT.DEL) {
-                c3d.getLockableDatFileReference().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData());
+                c3d.getLockableDatFileReference().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
             }
             pressedKeyCodes.add(keyCode);
             setKeyState(keyCode, true);

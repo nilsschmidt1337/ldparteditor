@@ -51,7 +51,7 @@ public enum QuadSplitter {
         vm.getSelectedQuads().addAll(selectedQuads);
         vm.getSelectedData().addAll(selectedQuads);
 
-        vm.splitQuads();
+        vm.splitQuads(false);
 
         if (vm.isModified()) {
             st.setText(fileNameObj.getText());
