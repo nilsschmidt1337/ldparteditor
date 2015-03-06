@@ -296,7 +296,7 @@ public enum SubfileCompiler {
                     Project.setFileToEdit(df);
                 }
 
-                df.getVertexManager().setModified(true);
+                df.getVertexManager().setModified_NoSync();
 
                 Project.addUnsavedFile(df);
 

@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -64,15 +65,14 @@ public abstract class GData implements IGData {
 
     static TexMeta globalLastTextureType = null;
 
-    public static final HashMap<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<GData1, Matrix4f>(1000); // Cleared
-    // before
-    // viewport
-    // change
-    public static final HashMap<String, LinkedList<String>> CACHE_parsedFilesSource = new HashMap<String, LinkedList<String>>(1000); // Cleared
-    // before
-    // parse
+    // Cleared before viewport change
+    public static final HashMap<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<GData1, Matrix4f>(1000);
 
+    // Cleared before parse
+    public static final HashMap<String, LinkedList<String>> CACHE_parsedFilesSource = new HashMap<String, LinkedList<String>>(1000);
     public static final HashMap<String, GData> parsedLines = new HashMap<String, GData>(1000);
+
+    public static final HashMap<GData, ArrayList<ParsingResult>> CACHE_warningsAndErrors = new HashMap<GData, ArrayList<ParsingResult>>(1000); // Cleared
 
     public GData getNext() {
         return next;
@@ -83,6 +83,7 @@ public abstract class GData implements IGData {
     }
 
     public void derefer() {
+        CACHE_warningsAndErrors.remove(this);
         next = null;
         before = null;
     }

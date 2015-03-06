@@ -54,6 +54,7 @@ public class CompositeTabState {
     /** The tab reference */
     private CompositeTab tab;
 
+    private boolean sync = false;
     private boolean replacingVertex = false;
     private float replaceEpsilon = 0.0001f;
     private BigDecimal toReplaceX = BigDecimal.ONE;
@@ -182,6 +183,14 @@ public class CompositeTabState {
 
     public void setFilenameWithStar(String filenameWithStar) {
         this.filenameWithStar = filenameWithStar;
+    }
+
+    public boolean isSync() {
+        return sync;
+    }
+
+    public void setSync(boolean sync) {
+        this.sync = sync;
     }
 
 }

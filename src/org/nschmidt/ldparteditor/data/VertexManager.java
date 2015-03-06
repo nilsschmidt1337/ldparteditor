@@ -40,6 +40,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -52,6 +53,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.ScalableComposite;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
@@ -83,6 +85,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
@@ -4149,7 +4152,14 @@ public class VertexManager {
     }
 
     public synchronized void setModified(boolean modified) {
+        if (modified) {
+            syncWithTextEditors();
+        }
         this.modified = modified;
+    }
+
+    public synchronized void setModified_NoSync() {
+        this.modified = true;
     }
 
     public Vertex getVertexToReplace() {
@@ -6328,7 +6338,7 @@ public class VertexManager {
             before.setNext(next);
             remove(selectedBgPicture);
             selectedBgPicture = null;
-            setModified(true);
+            setModified_NoSync();
         }
 
         final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
@@ -6495,13 +6505,13 @@ public class VertexManager {
             // 3. Deletion of the selected data (no whole subfiles!!)
 
             if (!effSelectedLines.isEmpty())
-                setModified(true);
+                setModified_NoSync();
             if (!effSelectedTriangles.isEmpty())
-                setModified(true);
+                setModified_NoSync();
             if (!effSelectedQuads.isEmpty())
-                setModified(true);
+                setModified_NoSync();
             if (!effSelectedCondlines.isEmpty())
-                setModified(true);
+                setModified_NoSync();
             final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
             for (GData2 gd : effSelectedLines) {
                 dpl.removeByValue(gd);
@@ -6535,7 +6545,7 @@ public class VertexManager {
                             dpl.removeByValue(g);
                             g.getBefore().setNext(g.getNext());
                             remove(g);
-                            setModified(true);
+                            setModified_NoSync();
                         }
                     }
                 }
@@ -6573,7 +6583,7 @@ public class VertexManager {
                     remove(gd);
                 }
                 selectedSubfiles.clear();
-                setModified(true);
+                setModified_NoSync();
             }
 
             if (isModified()) {
@@ -6601,6 +6611,7 @@ public class VertexManager {
                     linkedDatFile.setDrawChainTail(blankLine);
                 }
 
+                syncWithTextEditors();
                 updateUnsavedStatus();
             }
         }
@@ -7743,7 +7754,9 @@ public class VertexManager {
 
             // 3. Rounding of the selected data (no whole subfiles!!)
             // + selectedData update!
-            setModified(!singleVertices.isEmpty());
+            if (!singleVertices.isEmpty()) {
+                setModified_NoSync();
+            }
             for (Vertex vOld : singleVertices) {
                 Vertex vNew = new Vertex(vOld.X.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP), vOld.Y.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP), vOld.Z.setScale(coordsDecimalPlaces,
                         RoundingMode.HALF_UP));
@@ -7804,7 +7817,7 @@ public class VertexManager {
                         }
                     }
                 }
-                setModified(true);
+                setModified_NoSync();
             }
 
             if (isModified()) {
@@ -7826,6 +7839,7 @@ public class VertexManager {
                 selectedData.addAll(selectedCondlines);
                 selectedData.addAll(selectedSubfiles);
 
+                syncWithTextEditors();
                 updateUnsavedStatus();
             }
 
@@ -15852,7 +15866,9 @@ public class VertexManager {
             clinesToDelete2.add(g);
         }
 
-        setModified(newLines.size() + newTriangles.size() + newQuads.size() + newCondlines.size() > 0);
+        if (newLines.size() + newTriangles.size() + newQuads.size() + newCondlines.size() > 0) {
+            setModified_NoSync();
+        }
 
         selectedLines.addAll(linesToDelete2);
         selectedTriangles.addAll(trisToDelete2);
@@ -15875,6 +15891,9 @@ public class VertexManager {
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
 
+        if (isModified()) {
+            syncWithTextEditors();
+        }
         validateState();
     }
 
@@ -18034,6 +18053,51 @@ public class VertexManager {
         }
 
         return result;
+    }
+
+    private final AtomicInteger tid = new AtomicInteger(0);
+    private final AtomicInteger openThreads = new AtomicInteger(0);
+    public void syncWithTextEditors() {
+        if (openThreads.get() > 10) return;
+        final AtomicInteger tid2 = new AtomicInteger(tid.incrementAndGet());
+        final Thread syncThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                openThreads.incrementAndGet();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                }
+                openThreads.decrementAndGet();
+                if (tid2.get() != tid.get()) return;
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    for (final CTabItem t : w.getTabFolder().getItems()) {
+                        final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
+                        if (txtDat != null && txtDat.equals(linkedDatFile)) {
+                            final String txt = txtDat.getText();
+                            Display.getDefault().asyncExec(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
+
+                                    Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
+                                    ((CompositeTab) t).getState().setSync(true);
+                                    ((CompositeTab) t).getTextComposite().setText(txt);
+                                    ((CompositeTab) t).getTextComposite().setTopIndex(ti);
+                                    try {
+                                        ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
+                                    } catch (IllegalArgumentException consumed) {}
+                                    ((CompositeTab) t).getTextComposite().redraw();
+                                    ((CompositeTab) t).getState().setSync(false);
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
+        syncThread.start();
     }
 
 }

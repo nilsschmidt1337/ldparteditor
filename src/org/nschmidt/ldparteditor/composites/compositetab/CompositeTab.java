@@ -602,7 +602,7 @@ public class CompositeTab extends CompositeTabDesign {
                 final String insertedText = event.length == 0 ? "" : compositeText[0].getText(event.start, off - 1); //$NON-NLS-1$
 
                 final VertexManager vm = dat.getVertexManager();
-                vm.clearSelection();
+                if (!state.isSync()) vm.clearSelection();
                 // Reset the caret position when a vertex was modified
                 if (vm.getVertexToReplace() != null) {
                     if (vm.isModified()) {
@@ -631,19 +631,24 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                 }
 
-                if (!vm.isModified()) {
-                    Display.getCurrent().syncExec(new Runnable() {
-                        @Override
-                        public void run() {
-                            state.getFileNameObj().parseForHints(compositeText[0], treeItem_Hints[0]);
-                            state.getFileNameObj().parseForErrorAndData(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
-                                    treeItem_Errors[0]);
-                        }
-                    });
-                } else {
-                    vm.setModified(false);
+                if (state.isSync()) {
                     state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
                             treeItem_Errors[0]);
+                } else {
+                    if (!vm.isModified()) {
+                        Display.getCurrent().syncExec(new Runnable() {
+                            @Override
+                            public void run() {
+                                state.getFileNameObj().parseForHints(compositeText[0], treeItem_Hints[0]);
+                                state.getFileNameObj().parseForErrorAndData(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
+                                        treeItem_Errors[0]);
+                            }
+                        });
+                    } else {
+                        vm.setModified(false);
+                        state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
+                                treeItem_Errors[0]);
+                    }
                 }
                 int errorCount = treeItem_Errors[0].getItems().size();
                 int warningCount = treeItem_Warnings[0].getItems().size();
