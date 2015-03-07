@@ -653,6 +653,7 @@ public class CompositeTab extends CompositeTabDesign {
                         state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
                                 treeItem_Errors[0]);
                     }
+                    vm.setUpdated(true);
                 }
                 int errorCount = treeItem_Errors[0].getItems().size();
                 int warningCount = treeItem_Warnings[0].getItems().size();

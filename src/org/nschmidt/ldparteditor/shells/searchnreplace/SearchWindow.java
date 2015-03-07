@@ -209,10 +209,6 @@ public class SearchWindow extends SearchDesign {
         }
     }
 
-    public StyledText getTextComposite() {
-        return textComposite;
-    }
-
     private void setDisabledButtonStatus(StyledText txt) {
         boolean b = textComposite == null || textComposite.isDisposed();
         btn_find[0].setEnabled(!b);
@@ -411,8 +407,10 @@ public class SearchWindow extends SearchDesign {
     }
 
     public void setScopeToAll() {
-        rb_all[0].setSelection(true);
-        rb_selectedLines[0].setSelection(false);
-        getShell().update();
+        try {
+            rb_all[0].setSelection(true);
+            rb_selectedLines[0].setSelection(false);
+            getShell().update();
+        } catch (Exception consumed) {}
     }
 }
