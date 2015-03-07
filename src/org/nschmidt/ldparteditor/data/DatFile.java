@@ -511,6 +511,7 @@ public final class DatFile {
         // Clear the cache..
         GData.parsedLines.clear();
         GData.CACHE_parsedFilesSource.clear();
+        GData.CACHE_warningsAndErrors.clear();
 
         String line;
         GData gdata;
@@ -527,6 +528,7 @@ public final class DatFile {
                     gdata = new GData0(line);
                 } else {
                     gdata.setText(line);
+                    GData.CACHE_warningsAndErrors.put(gdata, results);
                 }
 
                 anchorData.setNext(gdata);
