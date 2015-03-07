@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.workbench;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.nschmidt.ldparteditor.data.GColour;
 
@@ -76,6 +77,8 @@ public class UserSettingState implements Serializable {
     private boolean resetOnStart = false;
     /** LDConfig.ldr */
     private String ldConfigPath = null;
+    /** {@code true} if the user wants active synchronisation with the text editor */
+    private AtomicBoolean syncWithTextEditor = new AtomicBoolean(true);
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -326,4 +329,13 @@ public class UserSettingState implements Serializable {
     public void setLdConfigPath(String ldConfigPath) {
         this.ldConfigPath = ldConfigPath;
     }
+
+    public AtomicBoolean getSyncWithTextEditor() {
+        return syncWithTextEditor;
+    }
+
+    public void setSyncWithTextEditor(AtomicBoolean syncWithTextEditor) {
+        this.syncWithTextEditor = syncWithTextEditor;
+    }
+
 }
