@@ -177,7 +177,7 @@ public class VertexManager {
     private Vertex vertexToReplace = null;
 
     private boolean modified = false;
-    private boolean updated = false;
+    private boolean updated = true;
 
     private AtomicBoolean syncWithTextEditor = new AtomicBoolean(true);
 
@@ -18117,9 +18117,18 @@ public class VertexManager {
                 } while (resetTimer.get());
                 openThreads.decrementAndGet();
                 if (tid2.get() != tid.get() || !syncWithTextEditor.get()) return;
+                boolean notFound = true;
                 try {
                     // A lot of stuff can throw an exception here, since the thread waits two seconds and
                     // the state of the program may not allow a synchronisation anymore
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        for (final CTabItem t : w.getTabFolder().getItems()) {
+                            final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
+                            if (txtDat != null && txtDat.equals(linkedDatFile)) {
+                                notFound = false;
+                            }
+                        }
+                    }
                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
                         for (final CTabItem t : w.getTabFolder().getItems()) {
                             final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
@@ -18153,7 +18162,10 @@ public class VertexManager {
                             }
                         }
                     }
-                } catch (Exception consumed) {}
+                } catch (Exception consumed) {
+                    setUpdated(true);
+                }
+                if (notFound) setUpdated(true);
             }
         });
         syncThread.start();

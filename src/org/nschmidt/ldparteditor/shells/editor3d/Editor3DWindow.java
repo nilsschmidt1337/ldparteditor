@@ -1372,6 +1372,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             w.getTabFolder().setSelection(t);
                                             ((CompositeTab) t).getControl().getShell().forceActive();
                                             w.open();
+                                            df.getVertexManager().setUpdated(true);
                                             return;
                                         }
                                     }

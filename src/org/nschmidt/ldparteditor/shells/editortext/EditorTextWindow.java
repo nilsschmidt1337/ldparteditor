@@ -208,11 +208,13 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
-                    if (!selection.getState().getFileNameObj().isReadOnly()) {
-                        selection.getTextComposite().cut();
-                        selection.getTextComposite().forceFocus();
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        selection.getTextComposite().copy();
+                        return;
                     }
+                    selection.getTextComposite().cut();
+                    selection.getTextComposite().forceFocus();
                 }
             }
 
@@ -234,11 +236,12 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
-                    if (!selection.getState().getFileNameObj().isReadOnly()) {
-                        selection.getTextComposite().paste();
-                        selection.getTextComposite().forceFocus();
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
                     }
+                    selection.getTextComposite().paste();
+                    selection.getTextComposite().forceFocus();
                 }
             }
         });
@@ -246,13 +249,14 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
-                    if (!selection.getState().getFileNameObj().isReadOnly()) {
-                        int x = selection.getTextComposite().getSelection().x;
-                        selection.getTextComposite().insert(""); //$NON-NLS-1$
-                        selection.getTextComposite().setSelection(new Point(x, x));
-                        selection.getTextComposite().forceFocus();
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
                     }
+                    int x = selection.getTextComposite().getSelection().x;
+                    selection.getTextComposite().insert(""); //$NON-NLS-1$
+                    selection.getTextComposite().setSelection(new Point(x, x));
+                    selection.getTextComposite().forceFocus();
                 }
             }
         });
@@ -261,7 +265,10 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
                     NLogger.debug(getClass(), "Inlining.."); //$NON-NLS-1$
                     final StyledText st = selection.getTextComposite();
                     int s1 = st.getSelectionRange().x;
@@ -285,7 +292,10 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
                     NLogger.debug(getClass(), "Inlining (deep).."); //$NON-NLS-1$
                     final StyledText st = selection.getTextComposite();
                     int s1 = st.getSelectionRange().x;
@@ -309,7 +319,10 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
                     NLogger.debug(getClass(), "Toggle Comment.."); //$NON-NLS-1$
                     final StyledText st = selection.getTextComposite();
                     int s1 = st.getSelectionRange().x;
@@ -330,7 +343,10 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
                     NLogger.debug(getClass(), "Toggle Texmap.."); //$NON-NLS-1$
                     final StyledText st = selection.getTextComposite();
                     int s1 = st.getSelectionRange().x;
@@ -369,7 +385,10 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
                     final StyledText st = selection.getTextComposite();
                     Beautifier.beautify(st, selection.getState().getFileNameObj());
                     st.forceFocus();
@@ -381,7 +400,10 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
                     NLogger.debug(getClass(), "Open sorting dialog.."); //$NON-NLS-1$
                     final StyledText st = selection.getTextComposite();
                     int s1 = st.getSelectionRange().x;
@@ -403,7 +425,10 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
                     NLogger.debug(getClass(), "Split quads into triangles.."); //$NON-NLS-1$
                     final StyledText st = selection.getTextComposite();
                     int s1 = st.getSelectionRange().x;
@@ -424,7 +449,10 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
                     NLogger.debug(getClass(), "Unrectify.."); //$NON-NLS-1$
                     final StyledText st = selection.getTextComposite();
                     Unrectifier.splitAllIntoTriangles(st, selection.getState().getFileNameObj());
@@ -447,7 +475,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
                     if (selection != null) {
                         DatFile df = selection.getState().getFileNameObj();
-                        if (!df.isReadOnly()) {
+                        if (!df.isReadOnly() && df.getVertexManager().isUpdated()) {
                             NLogger.debug(getClass(), "Change colours..."); //$NON-NLS-1$
                             final StyledText st = selection.getTextComposite();
                             int s1 = st.getSelectionRange().x;
@@ -470,7 +498,10 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
                     NLogger.debug(getClass(), "Inlining.."); //$NON-NLS-1$
                     final StyledText st = selection.getTextComposite();
                     int s1 = st.getSelectionRange().x;
@@ -494,6 +525,9 @@ public class EditorTextWindow extends EditorTextDesign {
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
                 if (selection != null) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
                     SubfileCompiler.compile(selection.getState().getFileNameObj());
                     final StyledText st = selection.getTextComposite();
                     st.forceFocus();
@@ -504,7 +538,10 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
                     if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
                         new RoundDialog(getShell()).open();
                     }
@@ -613,6 +650,8 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void drop(DropTargetEvent event) {
                 if (EditorTextWindow.draggedTabOrigin != null && !EditorTextWindow.draggedTabOrigin.equals(EditorTextWindow.draggedTabTarget)) {
+                    if (!EditorTextWindow.draggedTabOrigin.getState().getFileNameObj().getVertexManager().isUpdated()) return;
+                    if (!EditorTextWindow.draggedTabTarget.getState().getFileNameObj().getVertexManager().isUpdated()) return;
                     int index = 0;
                     for (CTabItem t : EditorTextWindow.dragFolderTarget.getItems()) {
                         CompositeTab tab = (CompositeTab) t;
