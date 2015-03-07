@@ -634,7 +634,7 @@ public class CompositeTab extends CompositeTabDesign {
                 }
 
                 if (state.isSync()) {
-                    state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
+                    if (GData.CACHE_warningsAndErrors.size() < 1000) state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
                             treeItem_Errors[0]);
                 } else {
                     if (!vm.isModified()) {
@@ -648,6 +648,7 @@ public class CompositeTab extends CompositeTabDesign {
                         });
                     } else {
                         vm.setModified(false);
+                        GData.CACHE_warningsAndErrors.clear();
                         state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
                                 treeItem_Errors[0]);
                     }
