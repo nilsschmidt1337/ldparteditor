@@ -3495,7 +3495,7 @@ public class VertexManager {
                     }
                 }
             }
-            selectedData.remove(selectedSubfiles);
+            selectedData.removeAll(selectedSubfiles);
             selectedSubfiles.clear();
         }
 
@@ -18112,9 +18112,25 @@ public class VertexManager {
                 do {
                     resetTimer.set(false);
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                     }
+                    if (tid2.get() != tid.get()) break;
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                    }
+                    if (tid2.get() != tid.get()) break;
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                    }
+                    if (tid2.get() != tid.get()) break;
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                    }
+                    if (tid2.get() != tid.get()) break;
                 } while (resetTimer.get());
                 openThreads.decrementAndGet();
                 if (tid2.get() != tid.get() || isSkipSyncWithTextEditor() || !isSyncWithTextEditor()) return;
