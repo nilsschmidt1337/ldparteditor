@@ -375,7 +375,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     }
                     Editor3DWindow.getWindow().setSearchWindow(new SearchWindow(getShell()));
                     Editor3DWindow.getWindow().getSearchWindow().run();
-                    Editor3DWindow.getWindow().getSearchWindow().setTextComposite(selection.getTextComposite());
+                    Editor3DWindow.getWindow().getSearchWindow().setTextComposite(selection);
                     Editor3DWindow.getWindow().getSearchWindow().setScopeToAll();
                 }
             }

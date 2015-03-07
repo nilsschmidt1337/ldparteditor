@@ -26,6 +26,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
@@ -34,6 +35,7 @@ public class SearchWindow extends SearchDesign {
 
 
     private StyledText textComposite = null;
+    private CompositeTab tab = null;
 
     private boolean scopeAll = true;
 
@@ -197,8 +199,14 @@ public class SearchWindow extends SearchDesign {
         close();
     }
 
-    public void setTextComposite(StyledText styledText) {
-        textComposite = styledText;
+    public void setTextComposite(CompositeTab tab) {
+        if (tab != null) {
+            textComposite = tab.getTextComposite();
+            this.tab = tab;
+        } else {
+            textComposite = null;
+            this.tab = null;
+        }
     }
 
     public StyledText getTextComposite() {
@@ -282,6 +290,7 @@ public class SearchWindow extends SearchDesign {
     }
 
     private void replace() {
+        if (textComposite == null || tab != null && !tab.getState().getFileNameObj().getVertexManager().isUpdated()) return;
         setDisabledButtonStatus(textComposite);
 
         if (btn_find[0].isEnabled()) {
@@ -327,6 +336,7 @@ public class SearchWindow extends SearchDesign {
     }
 
     private void replaceAll() {
+        if (textComposite == null || tab != null && !tab.getState().getFileNameObj().getVertexManager().isUpdated()) return;
         setDisabledButtonStatus(textComposite);
 
         if (btn_find[0].isEnabled()) {

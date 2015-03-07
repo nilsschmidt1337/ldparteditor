@@ -18156,6 +18156,7 @@ public class VertexManager {
                                             ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
                                         } catch (IllegalArgumentException consumed) {}
                                         ((CompositeTab) t).getTextComposite().redraw();
+                                        ((CompositeTab) t).getControl().redraw();
                                         ((CompositeTab) t).getState().setSync(false);
                                         setUpdated(true);
                                     }

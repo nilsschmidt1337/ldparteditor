@@ -635,7 +635,7 @@ public class CompositeTab extends CompositeTabDesign {
                 }
 
                 if (state.isSync()) {
-                    if (GData.CACHE_warningsAndErrors.size() < 1000) state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
+                    state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
                             treeItem_Errors[0]);
                 } else {
                     if (!vm.isModified()) {
@@ -756,7 +756,7 @@ public class CompositeTab extends CompositeTabDesign {
                 }
                 SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
                 if (sw != null) {
-                    sw.setTextComposite(compositeText[0]);
+                    sw.setTextComposite(state.getTab());
                     sw.setScopeToAll();
                 }
             }

@@ -312,6 +312,55 @@ public class Composite3D extends ScalableComposite {
         mntmOpenInTextEditor.setText("Open in Text Editor"); //$NON-NLS-1$ I18N
         mntmOpenInTextEditor.setSelection(false);
 
+        final MenuItem mntmSelectionInTextEditor = new MenuItem(menu, SWT.NONE);
+        mntmSelectionInTextEditor.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                final DatFile df = lockableDatFileReference;
+                if (df.equals(View.DUMMY_DATFILE)) return;
+                if (!df.getVertexManager().getSelectedData().isEmpty()) {
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        for (final CTabItem t : w.getTabFolder().getItems()) {
+                            if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+
+                                w.getTabFolder().setSelection(t);
+                                ((CompositeTab) t).getControl().getShell().forceActive();
+
+                                Display.getDefault().asyncExec(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ((CompositeTab) t).getTextComposite().setTopIndex(df.getDrawPerLine_NOCLONE().getKey(df.getVertexManager().getSelectedData().iterator().next()) - 1);
+                                    }
+                                });
+                                w.open();
+                                return;
+                            }
+                        }
+                    }
+                    // Project.getParsedFiles().add(df); IS NECESSARY HERE
+                    Project.getParsedFiles().add(df);
+                    EditorTextWindow win = new EditorTextWindow();
+                    win.run(df);
+                    for (final CTabItem t : win.getTabFolder().getItems()) {
+                        if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                            win.getTabFolder().setSelection(t);
+                            ((CompositeTab) t).getControl().getShell().forceActive();
+                            Display.getDefault().asyncExec(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((CompositeTab) t).getTextComposite().setTopIndex(df.getDrawPerLine_NOCLONE().getKey(df.getVertexManager().getSelectedData().iterator().next()) - 1);
+                                }
+                            });
+                            win.open();
+                            return;
+                        }
+                    }
+                }
+            }
+        });
+        mntmSelectionInTextEditor.setText("Show Selection in Text Editor"); //$NON-NLS-1$ I18N
+        mntmSelectionInTextEditor.setSelection(false);
+
         @SuppressWarnings("unused")
         final MenuItem mntmSeparator = new MenuItem(menu, SWT.SEPARATOR);
 
