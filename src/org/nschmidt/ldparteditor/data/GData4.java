@@ -1248,11 +1248,11 @@ public final class GData4 extends GData {
                         uv = tex.getUVcoords(false, null);
                         GL11.glTexCoord2f(uv[0], uv[1]);
                         c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
-                        GL11.glTexCoord2f(uv[6], uv[7]);
+                        GL11.glTexCoord2f(uv[2], uv[3]);
                         c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                         GL11.glTexCoord2f(uv[4], uv[5]);
                         c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
-                        GL11.glTexCoord2f(uv[2], uv[3]);
+                        GL11.glTexCoord2f(uv[6], uv[7]);
                         c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, true, this, useCubeMap);
                         GL11.glEnd();
                     } else {
