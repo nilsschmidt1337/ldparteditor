@@ -177,6 +177,7 @@ public class VertexManager {
     private Vertex vertexToReplace = null;
 
     private boolean modified = false;
+    private boolean updated = false;
 
     private AtomicBoolean syncWithTextEditor = new AtomicBoolean(true);
 
@@ -4156,13 +4157,23 @@ public class VertexManager {
 
     public synchronized void setModified(boolean modified) {
         if (modified) {
+            setUpdated(false);
             syncWithTextEditors();
         }
         this.modified = modified;
     }
 
+    public boolean isUpdated() {
+        return updated;
+    }
+
+    public synchronized void setUpdated(boolean updated) {
+        this.updated = updated;
+    }
+
     public synchronized void setModified_NoSync() {
         this.modified = true;
+        setUpdated(false);
     }
 
     public Vertex getVertexToReplace() {
@@ -18136,6 +18147,7 @@ public class VertexManager {
                                         } catch (IllegalArgumentException consumed) {}
                                         ((CompositeTab) t).getTextComposite().redraw();
                                         ((CompositeTab) t).getState().setSync(false);
+                                        setUpdated(true);
                                     }
                                 });
                             }
