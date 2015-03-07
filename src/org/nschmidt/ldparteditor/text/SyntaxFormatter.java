@@ -137,11 +137,11 @@ public class SyntaxFormatter {
             break;
         }
         if (isSelected) {
-            StyleRange selStyleRange = new StyleRange();
-            selStyleRange.start = e.lineOffset;
-            selStyleRange.length = e.lineText.length();
-            selStyleRange.background = Colour.line_highlight_selected_background;
-            styles.add(selStyleRange);
+            for (StyleRange sr : styles) {
+                if (sr.background == null) {
+                    sr.background = Colour.line_highlight_selected_background;
+                }
+            }
         }
         e.styles = styles.toArray(new StyleRange[0]);
     }
