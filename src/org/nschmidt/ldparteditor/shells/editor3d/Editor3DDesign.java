@@ -190,6 +190,7 @@ class Editor3DDesign extends ApplicationWindow {
 
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
+    final MenuItem[] mntm_SyncWithTextEditor = new MenuItem[1];
 
     final MenuItem[] mntm_Flip = new MenuItem[1];
     final MenuItem[] mntm_SubdivideCatmullClark = new MenuItem[1];
@@ -922,6 +923,14 @@ class Editor3DDesign extends ApplicationWindow {
                         MenuItem mntm_SelectAnotherLDConfig = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_SelectAnotherLDConfig[0] = mntm_SelectAnotherLDConfig;
                         mntm_SelectAnotherLDConfig.setText("Select LDConfig.ldr"); //$NON-NLS-1$ I18N
+                    }
+                    @SuppressWarnings("unused")
+                    final MenuItem mntmSeparator2 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
+                    {
+                        MenuItem mntm_SyncWithTextEditor = new MenuItem(mnu_Tools, SWT.CHECK);
+                        mntm_SyncWithTextEditor.setSelection(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
+                        this.mntm_SyncWithTextEditor[0] = mntm_SyncWithTextEditor;
+                        mntm_SyncWithTextEditor.setText("Sync. 3D Editor with Text Editor"); //$NON-NLS-1$ I18N
                     }
                 }
             }

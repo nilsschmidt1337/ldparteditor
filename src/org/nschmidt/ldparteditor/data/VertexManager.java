@@ -89,6 +89,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * All actions are THREAD safe!! 1. Displays all vertices <br>
@@ -179,7 +180,7 @@ public class VertexManager {
     private boolean modified = false;
     private boolean updated = true;
 
-    private AtomicBoolean syncWithTextEditor = new AtomicBoolean(true);
+    private AtomicBoolean skipSyncWithTextEditor = new AtomicBoolean(false);
 
     private int selectedItemIndex = -1;
     private GData selectedLine = null;
@@ -18098,7 +18099,7 @@ public class VertexManager {
     private final AtomicInteger tid = new AtomicInteger(0);
     private final AtomicInteger openThreads = new AtomicInteger(0);
     public void syncWithTextEditors() {
-        if (!syncWithTextEditor.get()) return;
+        if (isSkipSyncWithTextEditor() || !isSyncWithTextEditor()) return;
         if (openThreads.get() > 10) {
             resetTimer.set(true);
             return;
@@ -18116,7 +18117,7 @@ public class VertexManager {
                     }
                 } while (resetTimer.get());
                 openThreads.decrementAndGet();
-                if (tid2.get() != tid.get() || !syncWithTextEditor.get()) return;
+                if (tid2.get() != tid.get() || isSkipSyncWithTextEditor() || !isSyncWithTextEditor()) return;
                 boolean notFound = true;
                 try {
                     // A lot of stuff can throw an exception here, since the thread waits two seconds and
@@ -18172,11 +18173,19 @@ public class VertexManager {
     }
 
     public boolean isSyncWithTextEditor() {
-        return syncWithTextEditor.get();
+        return WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get();
     }
 
     public void setSyncWithTextEditor(boolean syncWithTextEditor) {
-        this.syncWithTextEditor.set(syncWithTextEditor);
+        WorkbenchManager.getUserSettingState().getSyncWithTextEditor().set(syncWithTextEditor);
+    }
+
+    public boolean isSkipSyncWithTextEditor() {
+        return skipSyncWithTextEditor.get();
+    }
+
+    public void setSkipSyncWithTextEditor(boolean syncWithTextEditor) {
+        this.skipSyncWithTextEditor.set(syncWithTextEditor);
     }
 
     public AtomicBoolean getResetTimer() {

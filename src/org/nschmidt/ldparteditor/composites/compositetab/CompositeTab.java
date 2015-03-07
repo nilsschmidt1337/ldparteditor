@@ -124,7 +124,8 @@ public class CompositeTab extends CompositeTabDesign {
                 // So the line will be formated with the syntax formatter from
                 // the CompositeText.
 
-                boolean isSelected = state.getFileNameObj().getVertexManager().getSelectedData().contains(state.getFileNameObj().getDrawPerLine_NOCLONE().getValue(compositeText[0].getLineAtOffset(e.lineOffset) + 1));
+                final VertexManager vm = state.getFileNameObj().getVertexManager();
+                boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(state.getFileNameObj().getDrawPerLine_NOCLONE().getValue(compositeText[0].getLineAtOffset(e.lineOffset) + 1));
 
                 syntaxFormatter.format(e, state.getToReplaceX(), state.getToReplaceY(), state.getToReplaceZ(), state.getReplaceEpsilon(), state.isReplacingVertex(), isSelected);
             }
@@ -739,13 +740,19 @@ public class CompositeTab extends CompositeTabDesign {
 
             @Override
             public void focusGained(FocusEvent e) {
-                if (state.getFileNameObj().getVertexManager().isModified() && !state.getFileNameObj().getVertexManager().isUpdated()) {
-                    //                    NLogger.debug(getClass(), "Text focused, reload"); //$NON-NLS-1$
-                    //                    try {
-                    //                        compositeText[0].setText(state.getFileNameObj().getText());
-                    //                    } catch (IllegalArgumentException iae) {
-                    //                        // Ignored on termination
-                    //                    }
+                final VertexManager vm = state.getFileNameObj().getVertexManager();
+                if (!vm.isSyncWithTextEditor()) {
+                    if (vm.isModified() && !vm.isUpdated()) {
+                        NLogger.debug(getClass(), "Text focused, reload"); //$NON-NLS-1$
+                        try {
+                            compositeText[0].setText(state.getFileNameObj().getText());
+                        } catch (IllegalArgumentException iae) {
+                            // Ignored on termination
+                        }
+                        vm.setUpdated(true);
+                    } else if (!vm.isModified() && !vm.isUpdated()) {
+                        vm.setUpdated(true);
+                    }
                 }
                 SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
                 if (sw != null) {

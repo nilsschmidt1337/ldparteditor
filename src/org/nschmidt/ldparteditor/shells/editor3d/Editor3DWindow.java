@@ -2516,6 +2516,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         loadSelectorSettings();
                         vm.selectAll(sels, true);
+                        vm.syncWithTextEditors();
                         return;
                     }
                 }
@@ -2530,6 +2531,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         loadSelectorSettings();
                         vm.selectAll(sels, false);
+                        vm.syncWithTextEditors();
                         return;
                     }
                 }
@@ -2544,6 +2546,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         loadSelectorSettings();
                         vm.selectAllWithSameColours(sels, true);
+                        vm.syncWithTextEditors();
                         return;
                     }
                 }
@@ -2558,6 +2561,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         loadSelectorSettings();
                         vm.selectAllWithSameColours(sels, false);
+                        vm.syncWithTextEditors();
                         return;
                     }
                 }
@@ -2571,6 +2575,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.clearSelection();
+                        vm.syncWithTextEditors();
                         return;
                     }
                 }
@@ -2585,6 +2590,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         loadSelectorSettings();
                         vm.selectInverse(sels);
+                        vm.syncWithTextEditors();
                         return;
                     }
                 }
@@ -2802,6 +2808,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         sels.setScope(SelectorSettings.EVERYTHING);
                         loadSelectorSettings();
                         vm.selector(sels);
+                        vm.syncWithTextEditors();
                     }
                 }
             }
@@ -2817,6 +2824,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         sels.setScope(SelectorSettings.CONNECTED);
                         loadSelectorSettings();
                         vm.selector(sels);
+                        vm.syncWithTextEditors();
                     }
                 }
             }
@@ -2832,6 +2840,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         sels.setScope(SelectorSettings.TOUCHING);
                         loadSelectorSettings();
                         vm.selector(sels);
+                        vm.syncWithTextEditors();
                     }
                 }
             }
@@ -2847,7 +2856,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             Composite3D c3d = renderer.getC3D();
                             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                                 VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                                vm.selectIsolatedVertices();;
+                                vm.selectIsolatedVertices();
+                                vm.syncWithTextEditors();
                             }
                         }
                     }
@@ -3148,6 +3158,13 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 }
 
+            }
+        });
+
+        mntm_SyncWithTextEditor[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().getSyncWithTextEditor().set(mntm_SyncWithTextEditor[0].getSelection());
             }
         });
 
