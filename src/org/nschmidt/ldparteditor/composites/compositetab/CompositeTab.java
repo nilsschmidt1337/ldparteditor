@@ -134,7 +134,9 @@ public class CompositeTab extends CompositeTabDesign {
 
             @Override
             public void verifyKey(VerifyEvent event) {
-                event.doit = true;
+                DatFile dat = state.getFileNameObj();
+                final VertexManager vm = dat.getVertexManager();
+                event.doit = vm.isUpdated();
                 isDelPressed[0] = event.keyCode == SWT.DEL;
 
             }
@@ -736,13 +738,13 @@ public class CompositeTab extends CompositeTabDesign {
 
             @Override
             public void focusGained(FocusEvent e) {
-                if (state.getFileNameObj().getVertexManager().isModified()) {
-                    NLogger.debug(getClass(), "Text focused, reload"); //$NON-NLS-1$
-                    try {
-                        compositeText[0].setText(state.getFileNameObj().getText());
-                    } catch (IllegalArgumentException iae) {
-                        // Ignored on termination
-                    }
+                if (state.getFileNameObj().getVertexManager().isModified() && !state.getFileNameObj().getVertexManager().isUpdated()) {
+                    //                    NLogger.debug(getClass(), "Text focused, reload"); //$NON-NLS-1$
+                    //                    try {
+                    //                        compositeText[0].setText(state.getFileNameObj().getText());
+                    //                    } catch (IllegalArgumentException iae) {
+                    //                        // Ignored on termination
+                    //                    }
                 }
                 SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
                 if (sw != null) {
