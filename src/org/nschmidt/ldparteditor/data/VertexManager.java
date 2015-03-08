@@ -55,6 +55,7 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.ScalableComposite;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
 import org.nschmidt.ldparteditor.data.tools.Merger;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.Threshold;
@@ -5657,7 +5658,8 @@ public class VertexManager {
     public Vertex[] getMinimalDistanceVerticesToLines(Vertex vertex) {
         double minDist = Double.MAX_VALUE;
         Vector4f vp = vertex.toVector4f();
-        Vertex[] result = new Vertex[2];
+        Vertex[] result = new Vertex[3];
+        Vector4f result2 = new Vector4f();
         Set<GData3> ts;
         Set<GData4> qs;
 
@@ -5707,6 +5709,7 @@ public class VertexManager {
                 if (d1 < minDist) {
                     result[0] = verts[0];
                     result[1] = verts[1];
+                    result2 = v1;
                     minDist = d1;
                 }
             }
@@ -5720,6 +5723,7 @@ public class VertexManager {
                 if (d1 < minDist) {
                     result[0] = verts[0];
                     result[1] = verts[1];
+                    result2 = v1;
                     minDist = d1;
                 }
             }
@@ -5729,6 +5733,7 @@ public class VertexManager {
                 if (d1 < minDist) {
                     result[0] = verts[1];
                     result[1] = verts[2];
+                    result2 = v1;
                     minDist = d1;
                 }
             }
@@ -5738,6 +5743,7 @@ public class VertexManager {
                 if (d1 < minDist) {
                     result[0] = verts[0];
                     result[1] = verts[2];
+                    result2 = v1;
                     minDist = d1;
                 }
             }
@@ -5751,6 +5757,7 @@ public class VertexManager {
                 if (d1 < minDist) {
                     result[0] = verts[0];
                     result[1] = verts[1];
+                    result2 = v1;
                     minDist = d1;
                 }
             }
@@ -5760,6 +5767,7 @@ public class VertexManager {
                 if (d1 < minDist) {
                     result[0] = verts[1];
                     result[1] = verts[2];
+                    result2 = v1;
                     minDist = d1;
                 }
             }
@@ -5769,6 +5777,7 @@ public class VertexManager {
                 if (d1 < minDist) {
                     result[0] = verts[2];
                     result[1] = verts[3];
+                    result2 = v1;
                     minDist = d1;
                 }
             }
@@ -5778,6 +5787,7 @@ public class VertexManager {
                 if (d1 < minDist) {
                     result[0] = verts[3];
                     result[1] = verts[0];
+                    result2 = v1;
                     minDist = d1;
                 }
             }
@@ -5791,6 +5801,7 @@ public class VertexManager {
                 if (d1 < minDist) {
                     result[0] = verts[0];
                     result[1] = verts[1];
+                    result2 = v1;
                     minDist = d1;
                 }
             }
@@ -5800,6 +5811,7 @@ public class VertexManager {
                 if (d1 < minDist) {
                     result[0] = verts[0];
                     result[1] = verts[2];
+                    result2 = v1;
                     minDist = d1;
                 }
             }
@@ -5809,6 +5821,7 @@ public class VertexManager {
                 if (d1 < minDist) {
                     result[0] = verts[0];
                     result[1] = verts[3];
+                    result2 = v1;
                     minDist = d1;
                 }
             }
@@ -5817,10 +5830,12 @@ public class VertexManager {
         if (minDist == Double.MAX_VALUE) {
             result[0] = new Vertex(vertex.X, vertex.Y, vertex.Z);
             result[1] = new Vertex(vertex.X, vertex.Y, vertex.Z);
+            result[2] = new Vertex(vertex.X, vertex.Y, vertex.Z);
             return result;
         }
         result[0] = new Vertex(result[0].X, result[0].Y, result[0].Z);
         result[1] = new Vertex(result[1].X, result[1].Y, result[1].Z);
+        result[2] = new Vertex(result2.x, result2.y, result2.z);
         return result;
     }
 
@@ -18575,23 +18590,57 @@ public class VertexManager {
             if (originVerts.size() == 0) return;
             break;
         case NEAREST_EDGE:
-            // FIXME Needs implementation!
             if (originVerts.size() == 0) return;
             {
-                float minDist = Float.MAX_VALUE;
+                // This is a little bit more complex.
+                // First, I had to extend the selection to adjacent data,
+                // so the nearest edge will not be adjacent to the (selected) origin vertex
 
+                for (Vertex v : originVerts) {
+                    for (VertexManifestation mani : vertexLinkedToPositionInFile.get(v)) {
+                        GData gd = mani.getGdata();
+                        switch (gd.type()) {
+                        case 2:
+                            selectedLines.add((GData2) gd);
+                            break;
+                        case 3:
+                            selectedTriangles.add((GData3) gd);
+                            break;
+                        case 4:
+                            selectedQuads.add((GData4) gd);
+                            break;
+                        case 5:
+                            selectedCondlines.add((GData5) gd);
+                            break;
+                        default:
+                            continue;
+                        }
+                        selectedData.add(gd);
+                    }
 
+                    // Then invert the selection, so that getMinimalDistanceVertexToLines() will snap on the target
 
-                //                clearSelection();
-                //                for (Vertex vertex2 : originVerts) {
-                //                    newVertex = new Vector3d(minVertex);
-                //                    Merger.mergeTo(new Vertex(newVertex), this, false);
-                //                }
-                //                if (syncWithTextEditor) {
-                //                    setModified(true);
-                //                } else {
-                //                    setModified_NoSync();
-                //                }
+                    selectInverse(new SelectorSettings());
+
+                    // And using changeVertexDirectFast() to do the merge
+                    boolean modified = false;
+                    for (Vertex vertex : originVerts) {
+                        final Vertex[] target = getMinimalDistanceVerticesToLines(vertex);
+                        modified = changeVertexDirectFast(vertex, target[2], true) || modified;
+                        // And split at target position!
+                        modified = split(target[0], target[1], target[2]) || modified;
+                    }
+                    clearSelection();
+
+                    if (modified) {
+                        IdenticalVertexRemover.removeIdenticalVertices(this, false);
+                        if (syncWithTextEditor) {
+                            setModified(true);
+                        } else {
+                            setModified_NoSync();
+                        }
+                    }
+                }
             }
             break;
         case NEAREST_VERTEX:
@@ -18631,5 +18680,9 @@ public class VertexManager {
         Merger.mergeTo(new Vertex(newVertex), this, syncWithTextEditor);
 
         validateState();
+    }
+
+    public boolean split(Vertex start, Vertex end, Vertex target) {
+        return true;
     }
 }
