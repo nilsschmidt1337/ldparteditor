@@ -90,6 +90,7 @@ import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialogInt;
 import org.nschmidt.ldparteditor.enums.GLPrimitives;
+import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.View;
@@ -2919,6 +2920,74 @@ public class Editor3DWindow extends Editor3DDesign {
                 });
             }
         });
+
+        mntm_MergeToAverage[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.merge(MergeTo.AVERAGE, true);
+                        return;
+                    }
+                }
+            }
+        });
+        mntm_MergeToLastSelected[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.merge(MergeTo.LAST_SELECTED, true);
+                        return;
+                    }
+                }
+            }
+        });
+        mntm_MergeToNearestVertex[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.merge(MergeTo.NEAREST_VERTEX, true);
+                        return;
+                    }
+                }
+            }
+        });
+        mntm_MergeToNearestEdge[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.merge(MergeTo.NEAREST_EDGE, true);
+                        return;
+                    }
+                }
+            }
+        });
+        mntm_MergeToNearestFace[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.merge(MergeTo.NEAREST_FACE, true);
+                        return;
+                    }
+                }
+            }
+        });
+
+
 
         mntm_Edger2[0].addSelectionListener(new SelectionAdapter() {
             @Override
