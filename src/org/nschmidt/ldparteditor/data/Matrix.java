@@ -426,11 +426,11 @@ public final class Matrix {
             case 2:
                 f00 = BigDecimal.ZERO;
                 f01 = BigDecimal.ZERO;
-                f02 = BigDecimal.ONE.negate();
+                f02 = BigDecimal.ONE;
                 f10 = BigDecimal.ZERO;
                 f11 = BigDecimal.ONE;
                 f12 = BigDecimal.ZERO;
-                f20 = BigDecimal.ONE;
+                f20 = BigDecimal.ONE.negate();
                 f21 = BigDecimal.ZERO;
                 f22 = BigDecimal.ZERO;
                 break;
@@ -474,11 +474,11 @@ public final class Matrix {
             case 2:
                 f00 = BigDecimal.ZERO;
                 f01 = BigDecimal.ZERO;
-                f02 = BigDecimal.ONE;
+                f02 = BigDecimal.ONE.negate();
                 f10 = BigDecimal.ZERO;
                 f11 = BigDecimal.ONE;
                 f12 = BigDecimal.ZERO;
-                f20 = BigDecimal.ONE.negate();
+                f20 = BigDecimal.ONE;
                 f21 = BigDecimal.ZERO;
                 f22 = BigDecimal.ZERO;
                 break;
