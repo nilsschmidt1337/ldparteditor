@@ -156,6 +156,11 @@ public class PerspectiveCalculator {
         Matrix4f.transform(vr_inverse, xAxis4f_viewport_generator, xAxis4f_viewport_generator);
         Matrix4f.transform(vr_inverse, yAxis4f_viewport_generator, yAxis4f_viewport_generator);
         Matrix4f.transform(vr_inverse, zAxis4f_viewport_generator, zAxis4f_viewport_generator);
+        switch (c3d.hasNegDeterminant()) {
+        case 1:
+            zAxis4f_viewport_generator = new Vector4f(-zAxis4f_viewport_generator.x, -zAxis4f_viewport_generator.y, -zAxis4f_viewport_generator.z, 1f);
+        default:
+        }
         Vector4f[] viewport_generator = c3d.getGenerator();
         viewport_generator[0] = xAxis4f_viewport_generator;
         viewport_generator[1] = yAxis4f_viewport_generator;
@@ -166,11 +171,11 @@ public class PerspectiveCalculator {
      * Calculates the origin and grid for the actual viewport perspective
      */
     public void calculateOriginData() {
-        calculateViewGenerator();
         Matrix4f realViewport = getRealViewport();
         calculateOrigin(realViewport);
         calculateGrid(realViewport);
         c3d.setNegDeterminant(realViewport.determinant() < 0f ? 1 : 0);
+        calculateViewGenerator();
     }
 
     /**
