@@ -18577,6 +18577,22 @@ public class VertexManager {
         case NEAREST_EDGE:
             // FIXME Needs implementation!
             if (originVerts.size() == 0) return;
+            {
+                float minDist = Float.MAX_VALUE;
+
+
+
+                //                clearSelection();
+                //                for (Vertex vertex2 : originVerts) {
+                //                    newVertex = new Vector3d(minVertex);
+                //                    Merger.mergeTo(new Vertex(newVertex), this, false);
+                //                }
+                //                if (syncWithTextEditor) {
+                //                    setModified(true);
+                //                } else {
+                //                    setModified_NoSync();
+                //                }
+            }
             break;
         case NEAREST_VERTEX:
             if (originVerts.size() == 0) return;
@@ -18585,8 +18601,11 @@ public class VertexManager {
                 Set<Vertex> allVerticesMinusSelection = new TreeSet<Vertex>();
                 allVerticesMinusSelection.addAll(getVertices());
                 allVerticesMinusSelection.removeAll(originVerts);
-                Vertex minVertex = new Vertex(0f, 0f, 0f);
+                clearSelection();
                 for (Vertex vertex2 : originVerts) {
+                    selectedVertices.clear();
+                    selectedVertices.add(vertex2);
+                    Vertex minVertex = new Vertex(0f, 0f, 0f);
                     Vector4f next = vertex2.toVector4fm();
                     for (Vertex vertex : allVerticesMinusSelection) {
                         Vector4f sub = Vector4f.sub(next, vertex.toVector4fm(), null);
@@ -18596,8 +18615,14 @@ public class VertexManager {
                             minDist = d2;
                         }
                     }
+                    newVertex = new Vector3d(minVertex);
+                    Merger.mergeTo(new Vertex(newVertex), this, false);
                 }
-                newVertex = new Vector3d(minVertex);
+                if (syncWithTextEditor) {
+                    setModified(true);
+                } else {
+                    setModified_NoSync();
+                }
             }
             break;
         default:
