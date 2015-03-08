@@ -9535,7 +9535,7 @@ public class VertexManager {
                                                         );
 
                                                 double angle = Vector3d.angle(n1, n2);
-                                                if(angle > 90.0) angle = 180.0 - angle;
+                                                angle = Math.min(angle, 180.0 - angle);
                                                 if (angle <= targetAngle) {
 
                                                     Vertex first = tri1V.iterator().next();
@@ -9612,7 +9612,7 @@ public class VertexManager {
                                                     }
 
                                                     angle = Vector3d.angle(normals[0], normals[2]);
-                                                    if (angle > Threshold.coplanarity_angle_warning) continue;
+                                                    if (angle > targetAngle) continue;
 
                                                     BigDecimal m1 = Vector3d.distSquare(new Vector3d(first), new Vector3d(third)).add(BigDecimal.ONE);
                                                     BigDecimal m2 = Vector3d.distSquare(new Vector3d(second), new Vector3d(fourth)).add(BigDecimal.ONE);
@@ -17667,6 +17667,13 @@ public class VertexManager {
 
                     View.DUMMY_REFERENCE, linkedDatFile));
         }
+
+        return result;
+    }
+
+    private List<GData3> splitQuad2(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
+
+        ArrayList<GData3> result = new ArrayList<GData3>(fractions * 8);
 
         return result;
     }
