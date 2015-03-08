@@ -17543,30 +17543,48 @@ public class VertexManager {
                 return splitQuad1(verts[3], verts[0], verts[1], verts[2], fractions, g);
             }
         case 2:
+
             if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
+
                 if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
+
+                    return splitQuad21(verts[0], verts[1], verts[2], verts[3], fractions, g);
+
                 } else if (edgesToSplit.contains(new AccurateEdge(verts[2], verts[3]))) {
-                } else {
+
+                    return splitQuad22(verts[0], verts[1], verts[2], verts[3], fractions, g);
+
+                } else if (edgesToSplit.contains(new AccurateEdge(verts[3], verts[0]))) {
+
+                    return splitQuad21(verts[3], verts[0], verts[1], verts[2], fractions, g);
+
                 }
             } else if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
-                if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
-                } else if (edgesToSplit.contains(new AccurateEdge(verts[2], verts[3]))) {
-                } else {
+
+                if (edgesToSplit.contains(new AccurateEdge(verts[2], verts[3]))) {
+
+                    return splitQuad21(verts[1], verts[2], verts[3], verts[0], fractions, g);
+
+                } else if (edgesToSplit.contains(new AccurateEdge(verts[3], verts[0]))) {
+
+                    return splitQuad22(verts[1], verts[2], verts[3], verts[0], fractions, g);
+
                 }
             } else if (edgesToSplit.contains(new AccurateEdge(verts[2], verts[3]))) {
-                if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
-                } else if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
-                } else {
-                }
-            } else {
-                if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
-                } else if (edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
-                } else {// if (edgesToSplit.contains(new AccurateEdge(verts[2], verts[3]))) {
-                }
+
+                return splitQuad21(verts[2], verts[3], verts[0], verts[1], fractions, g);
+
             }
-            break;
         case 3:
-            break;
+            if (!edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
+                return splitQuad3(verts[0], verts[1], verts[2], verts[3], fractions, g);
+            } else if (!edgesToSplit.contains(new AccurateEdge(verts[1], verts[2]))) {
+                return splitQuad3(verts[1], verts[2], verts[3], verts[0], fractions, g);
+            } else if (!edgesToSplit.contains(new AccurateEdge(verts[2], verts[3]))) {
+                return splitQuad3(verts[2], verts[3], verts[0], verts[1], fractions, g);
+            } else {
+                return splitQuad3(verts[3], verts[0], verts[1], verts[2], fractions, g);
+            }
         case 4:
             return splitQuad4(verts[0], verts[1], verts[2], verts[3], fractions, g);
         default:
@@ -17671,9 +17689,117 @@ public class VertexManager {
         return result;
     }
 
-    private List<GData3> splitQuad2(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
+    private List<GData3> splitQuad21(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
 
         ArrayList<GData3> result = new ArrayList<GData3>(fractions * 8);
+
+        // Split between v1-v2 & v2-v3
+        Vector3d A = new Vector3d(v1);
+        Vector3d B = new Vector3d(v2);
+        Vector3d C = new Vector3d(v3);
+        Vector3d D = new Vector3d(v4);
+
+        return result;
+    }
+
+    private List<GData3> splitQuad22(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
+
+        ArrayList<GData3> result = new ArrayList<GData3>(fractions * 8);
+
+        // Split between v1-v2 & v3-v4
+        Vector3d A = new Vector3d(v1);
+        Vector3d B = new Vector3d(v2);
+        Vector3d C = new Vector3d(v3);
+        Vector3d D = new Vector3d(v4);
+
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+
+        ArrayList<Vector3d> newPoints = new ArrayList<Vector3d>(fractions * 4);
+
+        {
+            BigDecimal cur = BigDecimal.ZERO;
+            BigDecimal next = BigDecimal.ZERO;
+            for (int i = 0; i < fractions; i++) {
+                if (i == fractions - 1) {
+                    next = BigDecimal.ONE;
+                } else {
+                    next = next.add(step);
+                }
+
+                BigDecimal oneMinusCur = BigDecimal.ONE.subtract(cur);
+                BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
+
+                newPoints.add(new Vector3d(
+                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
+                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
+                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur))
+                        ));
+                newPoints.add(new Vector3d(
+                        D.X.multiply(oneMinusCur).add(C.X.multiply(cur)),
+                        D.Y.multiply(oneMinusCur).add(C.Y.multiply(cur)),
+                        D.Z.multiply(oneMinusCur).add(C.Z.multiply(cur))
+                        ));
+                newPoints.add(new Vector3d(
+                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
+                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
+                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next))
+                        ));
+                newPoints.add(new Vector3d(
+                        D.X.multiply(oneMinusNext).add(C.X.multiply(next)),
+                        D.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
+                        D.Z.multiply(oneMinusNext).add(C.Z.multiply(next))
+                        ));
+
+                cur = next;
+            }
+        }
+
+        final int pz = newPoints.size();
+        for (int i = 0; i < pz; i += 4) {
+            Vector3d p1 = newPoints.get(i);
+            Vector3d p2 = newPoints.get(i + 1);
+            Vector3d p3 = newPoints.get(i + 2);
+            Vector3d p4 = newPoints.get(i + 3);
+
+            result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                    p2.X,
+                    p2.Y,
+                    p2.Z,
+
+                    p1.X,
+                    p1.Y,
+                    p1.Z,
+
+                    p3.X,
+                    p3.Y,
+                    p3.Z,
+
+                    View.DUMMY_REFERENCE, linkedDatFile));
+
+            result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                    p3.X,
+                    p3.Y,
+                    p3.Z,
+
+                    p4.X,
+                    p4.Y,
+                    p4.Z,
+
+                    p2.X,
+                    p2.Y,
+                    p2.Z,
+
+                    View.DUMMY_REFERENCE, linkedDatFile));
+
+        }
+
+        return result;
+    }
+
+    private List<GData3> splitQuad3(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
+        ArrayList<GData3> result = new ArrayList<GData3>(fractions);
 
         return result;
     }
