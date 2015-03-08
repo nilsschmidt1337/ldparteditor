@@ -6445,7 +6445,7 @@ public class VertexManager {
                             GData0 meta = (GData0) g;
                             boolean idCheck = !lineLinkedToVertices.containsKey(meta);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 1) {
+                            if (moveAdjacentData || val == 1) {
                                 if (!idCheck) {
                                     effSelectedVertices.add(meta);
                                 }
@@ -6455,7 +6455,7 @@ public class VertexManager {
                             GData2 line = (GData2) g;
                             idCheck = !line.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 2) {
+                            if (moveAdjacentData || val == 2) {
                                 if (!idCheck) {
                                     selectedLines.add(line);
                                 }
@@ -6463,9 +6463,9 @@ public class VertexManager {
                             break;
                         case 3:
                             GData3 triangle = (GData3) g;
-                            idCheck = !triangle.equals(View.DUMMY_REFERENCE);
+                            idCheck = !triangle.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 3) {
+                            if (moveAdjacentData || val == 3) {
                                 if (!idCheck) {
                                     selectedTriangles.add(triangle);
                                 }
@@ -6475,7 +6475,7 @@ public class VertexManager {
                             GData4 quad = (GData4) g;
                             idCheck = !quad.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 4) {
+                            if (moveAdjacentData || val == 4) {
                                 if (!idCheck) {
                                     selectedQuads.add(quad);
                                 }
@@ -6485,7 +6485,7 @@ public class VertexManager {
                             GData5 condline = (GData5) g;
                             idCheck = !condline.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 4) {
+                            if (moveAdjacentData || val == 4) {
                                 if (!idCheck) {
                                     selectedCondlines.add(condline);
                                 }
@@ -6541,8 +6541,10 @@ public class VertexManager {
                 }
             }
 
-            singleVertices.addAll(selectedVertices);
-            singleVertices.removeAll(objectVertices);
+            if (moveAdjacentData) {
+                singleVertices.addAll(selectedVertices);
+                singleVertices.removeAll(objectVertices);
+            }
 
             // 3. Deletion of the selected data (no whole subfiles!!)
 
