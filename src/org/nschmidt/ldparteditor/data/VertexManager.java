@@ -18528,10 +18528,42 @@ public class VertexManager {
         if (linkedDatFile.isReadOnly()) return;
 
         Vector3d newVertex = new Vector3d();
+        Set<Vertex> originVerts = new TreeSet<Vertex>();
+
+        if (mode != MergeTo.LAST_SELECTED) {
+            originVerts.addAll(selectedVertices);
+            for (GData2 g : selectedLines) {
+                for (Vertex v : lines.get(g)) {
+                    originVerts.add(v);
+                }
+            }
+            for (GData3 g : selectedTriangles) {
+                for (Vertex v : triangles.get(g)) {
+                    originVerts.add(v);
+                }
+            }
+            for (GData4 g : selectedQuads) {
+                for (Vertex v : quads.get(g)) {
+                    originVerts.add(v);
+                }
+            }
+            for (GData5 g : selectedCondlines) {
+                for (Vertex v : condlines.get(g)) {
+                    originVerts.add(v);
+                }
+            }
+        }
 
         switch (mode) {
         case AVERAGE:
-            // FIXME Needs implementation!
+            if (originVerts.size() == 0) return;
+            for (Vertex v : originVerts) {
+                newVertex = Vector3d.add(newVertex, new Vector3d(v));
+            }
+            final BigDecimal size = new BigDecimal(originVerts.size());
+            newVertex.setX(newVertex.X.divide(size, Threshold.mc));
+            newVertex.setY(newVertex.Y.divide(size, Threshold.mc));
+            newVertex.setZ(newVertex.Z.divide(size, Threshold.mc));
             break;
         case LAST_SELECTED:
             if (lastSelectedVertex == null || !vertexLinkedToPositionInFile.containsKey(lastSelectedVertex)) return;
@@ -18540,12 +18572,33 @@ public class VertexManager {
             break;
         case NEAREST_FACE:
             // FIXME Needs implementation!
+            if (originVerts.size() == 0) return;
             break;
         case NEAREST_EDGE:
             // FIXME Needs implementation!
+            if (originVerts.size() == 0) return;
             break;
         case NEAREST_VERTEX:
-            // FIXME Needs implementation!
+            if (originVerts.size() == 0) return;
+            {
+                float minDist = Float.MAX_VALUE;
+                Set<Vertex> allVerticesMinusSelection = new TreeSet<Vertex>();
+                allVerticesMinusSelection.addAll(getVertices());
+                allVerticesMinusSelection.removeAll(originVerts);
+                Vertex minVertex = new Vertex(0f, 0f, 0f);
+                for (Vertex vertex2 : originVerts) {
+                    Vector4f next = vertex2.toVector4fm();
+                    for (Vertex vertex : allVerticesMinusSelection) {
+                        Vector4f sub = Vector4f.sub(next, vertex.toVector4fm(), null);
+                        float d2 = sub.lengthSquared();
+                        if (d2 < minDist) {
+                            minVertex = vertex;
+                            minDist = d2;
+                        }
+                    }
+                }
+                newVertex = new Vector3d(minVertex);
+            }
             break;
         default:
             return;
