@@ -198,6 +198,12 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Split = new MenuItem[1];
     final MenuItem[] mntm_SplitNTimes = new MenuItem[1];
 
+    final MenuItem[] mntm_MergeToAverage = new MenuItem[1];
+    final MenuItem[] mntm_MergeToLastSelected = new MenuItem[1];
+    final MenuItem[] mntm_MergeToNearestVertex = new MenuItem[1];
+    final MenuItem[] mntm_MergeToNearestEdge = new MenuItem[1];
+    final MenuItem[] mntm_MergeToNearestFace = new MenuItem[1];
+
     final Text[] txt_Search = new Text[1];
     final Button[] btn_ResetSearch = new Button[1];
     final Composite[] tabFolder_Settings = new Composite[1];
@@ -835,6 +841,33 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_SplitNTimes = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_SplitNTimes[0] = mntm_SplitNTimes;
                     mntm_SplitNTimes.setText("Split N-Times"); //$NON-NLS-1$ I18N
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator3 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_MergeToAverage[0] = mntm_mergeTo;
+                    mntm_mergeTo.setText("Merge To Average"); //$NON-NLS-1$ I18N
+                }
+                {
+                    MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_MergeToLastSelected[0] = mntm_mergeTo;
+                    mntm_mergeTo.setText("Merge To Last Selected Vertex"); //$NON-NLS-1$ I18N
+                }
+                {
+                    MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_MergeToNearestVertex[0] = mntm_mergeTo;
+                    mntm_mergeTo.setText("Merge To Nearest Vertex"); //$NON-NLS-1$ I18N
+                }
+                {
+                    MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_MergeToNearestEdge[0] = mntm_mergeTo;
+                    mntm_mergeTo.setText("Merge To Nearest Edge"); //$NON-NLS-1$ I18N
+                }
+                {
+                    MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_MergeToNearestFace[0] = mntm_mergeTo;
+                    mntm_mergeTo.setText("Merge To Nearest Face"); //$NON-NLS-1$ I18N
                 }
             }
             {

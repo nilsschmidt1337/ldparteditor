@@ -55,6 +55,8 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.ScalableComposite;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.data.tools.Merger;
+import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
@@ -119,7 +121,7 @@ public class VertexManager {
     /** Subfile-Inhalte sind hier nicht als Key refenziert!! */
     private final ThreadsafeHashMap<GData, Set<VertexInfo>> lineLinkedToVertices = new ThreadsafeHashMap<GData, Set<VertexInfo>>();
 
-    ThreadsafeHashMap<GData, Set<VertexInfo>> getLineLinkedToVertices() {
+    public ThreadsafeHashMap<GData, Set<VertexInfo>> getLineLinkedToVertices() {
         return lineLinkedToVertices;
     }
 
@@ -184,6 +186,8 @@ public class VertexManager {
 
     private int selectedItemIndex = -1;
     private GData selectedLine = null;
+
+    private Vertex lastSelectedVertex = null;
 
     public VertexManager(DatFile linkedDatFile) {
         this.linkedDatFile = linkedDatFile;
@@ -2681,6 +2685,7 @@ public class VertexManager {
                     selectedVertices.remove(vertex);
                 } else {
                     selectedVertices.add(vertex);
+                    if (Editor3DWindow.getWindow().getWorkingType() == WorkingMode.VERTICES) lastSelectedVertex = vertex;
                 }
             }
         }
@@ -3697,6 +3702,7 @@ public class VertexManager {
         selectedTriangles.clear();
         selectedQuads.clear();
         selectedCondlines.clear();
+        lastSelectedVertex = null;
     }
 
     public synchronized void clearSelection() {
@@ -3710,6 +3716,7 @@ public class VertexManager {
         selectedTriangles.clear();
         selectedQuads.clear();
         selectedCondlines.clear();
+        lastSelectedVertex = null;
     }
 
     public synchronized void clearSelection2() {
@@ -3721,6 +3728,7 @@ public class VertexManager {
         selectedTriangles.clear();
         selectedQuads.clear();
         selectedCondlines.clear();
+        lastSelectedVertex = null;
     }
 
     private void clearSelection3() {
@@ -3732,6 +3740,7 @@ public class VertexManager {
         selectedTriangles.clear();
         selectedQuads.clear();
         selectedCondlines.clear();
+        lastSelectedVertex = null;
     }
 
     public synchronized void adjustRotationCenter(Composite3D c3d, Event event) {
@@ -17347,7 +17356,7 @@ public class VertexManager {
     }
 
     public void split(int fractions) {
-        // FIXME Auto-generated method stub
+
         if (linkedDatFile.isReadOnly()) return;
 
         final Set<GData2> newLines = new HashSet<GData2>();
@@ -17519,7 +17528,7 @@ public class VertexManager {
     }
 
     private List<GData3> split(GData4 g, int fractions, Set<AccurateEdge> edgesToSplit) {
-        // FIXME Auto-generated method stub
+
         ArrayList<GData3> result = new ArrayList<GData3>(fractions * fractions);
 
         // Detect how many edges are affected
@@ -18514,4 +18523,35 @@ public class VertexManager {
         return resetTimer;
     }
 
+    public void merge(MergeTo mode, boolean syncWithTextEditor) {
+
+        if (linkedDatFile.isReadOnly()) return;
+
+        Vector3d newVertex = new Vector3d();
+
+        switch (mode) {
+        case AVERAGE:
+            // FIXME Needs implementation!
+            break;
+        case LAST_SELECTED:
+            if (lastSelectedVertex == null || !vertexLinkedToPositionInFile.containsKey(lastSelectedVertex)) return;
+            newVertex = new Vector3d(lastSelectedVertex);
+            lastSelectedVertex = null;
+            break;
+        case NEAREST_FACE:
+            // FIXME Needs implementation!
+            break;
+        case NEAREST_EDGE:
+            // FIXME Needs implementation!
+            break;
+        case NEAREST_VERTEX:
+            // FIXME Needs implementation!
+            break;
+        default:
+            return;
+        }
+        Merger.mergeTo(new Vertex(newVertex), this, syncWithTextEditor);
+
+        validateState();
+    }
 }
