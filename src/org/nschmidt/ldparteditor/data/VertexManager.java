@@ -18583,11 +18583,8 @@ public class VertexManager {
             newVertex = new Vector3d(lastSelectedVertex);
             lastSelectedVertex = null;
             break;
-        case NEAREST_FACE:
-            // FIXME Needs implementation!
-            if (originVerts.size() == 0) return;
-            break;
         case NEAREST_EDGE:
+        case NEAREST_FACE:
             if (originVerts.size() == 0) return;
             {
                 // This is a little bit more complex.
@@ -18622,25 +18619,32 @@ public class VertexManager {
 
                     // And using changeVertexDirectFast() to do the merge
                     boolean modified = false;
-                    for (Vertex vertex : originVerts) {
-                        final Vertex[] target = getMinimalDistanceVerticesToLines(vertex);
-                        modified = changeVertexDirectFast(vertex, target[2], true) || modified;
-                        // And split at target position!
-                        modified = split(target[0], target[1], target[2]) || modified;
+                    if (mode == MergeTo.NEAREST_EDGE) {
+                        for (Vertex vertex : originVerts) {
+                            final Vertex[] target = getMinimalDistanceVerticesToLines(vertex);
+                            modified = changeVertexDirectFast(vertex, target[2], true) || modified;
+                            // And split at target position!
+                            modified = split(target[0], target[1], target[2]) || modified;
+                        }
+                    } else {
+                        for (Vertex vertex : originVerts) {
+                            final Vertex target = getMinimalDistanceVertexToSurfaces(vertex);
+                            modified = changeVertexDirectFast(vertex, target, true) || modified;
+                        }
                     }
                     clearSelection();
 
                     if (modified) {
                         IdenticalVertexRemover.removeIdenticalVertices(this, false);
-                        if (syncWithTextEditor) {
-                            setModified(true);
-                        } else {
-                            setModified_NoSync();
-                        }
+                        clearSelection();
+                        setModified_NoSync();
                     }
                 }
             }
-            break;
+            if (syncWithTextEditor) {
+                syncWithTextEditors();
+            }
+            return;
         case NEAREST_VERTEX:
             if (originVerts.size() == 0) return;
             {
@@ -18665,13 +18669,13 @@ public class VertexManager {
                     newVertex = new Vector3d(minVertex);
                     Merger.mergeTo(new Vertex(newVertex), this, false);
                 }
-                if (syncWithTextEditor) {
-                    setModified(true);
-                } else {
-                    setModified_NoSync();
-                }
+                clearSelection();
+                setModified_NoSync();
             }
-            break;
+            if (syncWithTextEditor) {
+                syncWithTextEditors();
+            }
+            return;
         default:
             return;
         }
