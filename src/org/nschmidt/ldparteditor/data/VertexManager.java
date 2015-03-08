@@ -17546,8 +17546,6 @@ public class VertexManager {
 
     private List<GData3> split(GData4 g, int fractions, Set<AccurateEdge> edgesToSplit) {
 
-        ArrayList<GData3> result = new ArrayList<GData3>(fractions * fractions);
-
         // Detect how many edges are affected
         Vertex[] verts = quads.get(g);
         int ec = edgesToSplit.contains(new AccurateEdge(verts[0], verts[1])) ? 1 :0;
@@ -17557,7 +17555,7 @@ public class VertexManager {
 
         switch (ec) {
         case 0:
-            return result;
+            return new ArrayList<GData3>();
         case 1:
             if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
                 return splitQuad1(verts[0], verts[1], verts[2], verts[3], fractions, g);
@@ -17617,7 +17615,7 @@ public class VertexManager {
             break;
         }
 
-        return result;
+        return new ArrayList<GData3>();
     }
 
     private List<GData3> splitQuad1(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
@@ -18123,8 +18121,6 @@ public class VertexManager {
 
     private List<GData3> split(GData3 g, int fractions, Set<AccurateEdge> edgesToSplit) {
 
-        ArrayList<GData3> result = new ArrayList<GData3>(fractions * fractions);
-
         // Detect how many edges are affected
         Vertex[] verts = triangles.get(g);
         int ec = edgesToSplit.contains(new AccurateEdge(verts[0], verts[1])) ? 1 :0;
@@ -18133,7 +18129,7 @@ public class VertexManager {
 
         switch (ec) {
         case 0:
-            return result;
+            return new ArrayList<GData3>();
         case 1:
             if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
                 return splitTri1(verts[0], verts[1], verts[2], fractions, g);
@@ -18168,7 +18164,7 @@ public class VertexManager {
             break;
         }
 
-        return result;
+        return new ArrayList<GData3>();
     }
 
     private List<GData3> splitTri1(Vertex v1, Vertex v2, Vertex v3, int fractions, GData3 g) {
@@ -18685,6 +18681,329 @@ public class VertexManager {
     }
 
     public boolean split(Vertex start, Vertex end, Vertex target) {
-        return true;
+
+        if (linkedDatFile.isReadOnly()) return false;
+
+        final Set<GData2> newLines = new HashSet<GData2>();
+        final Set<GData3> newTriangles = new HashSet<GData3>();
+        final Set<GData5> newCondlines = new HashSet<GData5>();
+
+        final Set<GData2> effSelectedLines = new HashSet<GData2>();
+        final Set<GData3> effSelectedTriangles = new HashSet<GData3>();
+        final Set<GData4> effSelectedQuads = new HashSet<GData4>();
+        final Set<GData5> effSelectedCondlines = new HashSet<GData5>();
+
+
+        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
+        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
+        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
+        final Set<GData5> clinesToDelete2 = new HashSet<GData5>();
+
+        Set<VertexManifestation> manis1 = vertexLinkedToPositionInFile.get(start);
+        Set<VertexManifestation> manis2 = vertexLinkedToPositionInFile.get(end);
+
+        if (manis1 == null || manis2 == null || manis1.isEmpty() || manis2.isEmpty()) return false;
+
+        Set<GData> setA = new HashSet<GData>();
+        Set<GData> setB = new HashSet<GData>();
+
+        for (VertexManifestation m : manis1) {
+            setA.add(m.getGdata());
+        }
+        for (VertexManifestation m : manis1) {
+            setB.add(m.getGdata());
+        }
+
+        setA.retainAll(setB);
+
+        for (GData g : setA) {
+            if (!lineLinkedToVertices.containsKey(g)) continue;
+            switch (g.type()) {
+            case 2:
+                effSelectedLines.add((GData2) g);
+                break;
+            case 3:
+                effSelectedTriangles.add((GData3) g);
+                break;
+            case 4:
+                effSelectedQuads.add((GData4) g);
+                break;
+            case 5:
+                effSelectedCondlines.add((GData5) g);
+                break;
+            default:
+                continue;
+            }
+        }
+
+        for (GData2 g : effSelectedLines) {
+            List<GData2> result = split(g, start, end, target);
+            newLines.addAll(result);
+            for (GData n : result) {
+                linkedDatFile.insertAfter(g, n);
+            }
+            linesToDelete2.add(g);
+        }
+
+        for (GData3 g : effSelectedTriangles) {
+            List<GData3> result = split(g, start, end, target);
+            if (result.isEmpty()) continue;
+            newTriangles.addAll(result);
+            for (GData n : result) {
+                linkedDatFile.insertAfter(g, n);
+            }
+            trisToDelete2.add(g);
+        }
+
+        for (GData4 g : effSelectedQuads) {
+            List<GData3> result = split(g, start, end, target);
+            if (result.isEmpty()) continue;
+            newTriangles.addAll(result);
+            for (GData n : result) {
+                linkedDatFile.insertAfter(g, n);
+            }
+            quadsToDelete2.add(g);
+        }
+
+        for (GData5 g : effSelectedCondlines) {
+            List<GData5> result = split(g, start, end, target);
+            newCondlines.addAll(result);
+            for (GData n : result) {
+                linkedDatFile.insertAfter(g, n);
+            }
+            clinesToDelete2.add(g);
+        }
+
+        if (newLines.size() + newTriangles.size() + newCondlines.size() > 0) {
+            setModified_NoSync();
+        }
+
+        backupSelection();
+        clearSelection();
+        selectedLines.addAll(linesToDelete2);
+        selectedTriangles.addAll(trisToDelete2);
+        selectedQuads.addAll(quadsToDelete2);
+        selectedCondlines.addAll(clinesToDelete2);
+        selectedData.addAll(selectedLines);
+        selectedData.addAll(selectedTriangles);
+        selectedData.addAll(selectedQuads);
+        selectedData.addAll(selectedCondlines);
+        delete(false, false);
+
+        selectedTriangles.addAll(newTriangles);
+        selectedData.addAll(selectedTriangles);
+        rectify(new RectifierSettings(), false);
+
+        clearSelection();
+        restoreSelection();
+
+        validateState();
+
+        return isModified();
+    }
+
+    private List<GData5> split(GData5 g, Vertex start, Vertex end, Vertex target) {
+        ArrayList<GData5> result = new ArrayList<GData5>();
+
+        if (!start.equals(end)) {
+            Vertex[] verts = condlines.get(g);
+            if ((verts[0].equals(start) || verts[0].equals(end)) && (verts[1].equals(start) || verts[1].equals(end))) {
+                result.add(new GData5(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                        start.X,
+                        start.Y,
+                        start.Z,
+
+                        target.X,
+                        target.Y,
+                        target.Z,
+
+                        g.X3,
+                        g.Y3,
+                        g.Z3,
+
+                        g.X4,
+                        g.Y4,
+                        g.Z4,
+
+                        View.DUMMY_REFERENCE, linkedDatFile));
+
+
+                result.add(new GData5(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                        target.X,
+                        target.Y,
+                        target.Z,
+
+                        end.X,
+                        end.Y,
+                        end.Z,
+
+                        g.X3,
+                        g.Y3,
+                        g.Z3,
+
+                        g.X4,
+                        g.Y4,
+                        g.Z4,
+
+                        View.DUMMY_REFERENCE, linkedDatFile));
+            }
+        }
+        return result;
+    }
+
+    private List<GData3> split(GData4 g, Vertex start, Vertex end, Vertex target) {
+        ArrayList<GData3> result = new ArrayList<GData3>();
+        if (!start.equals(end)) {
+            Vertex[] verts = quads.get(g);
+            if ((verts[0].equals(start) || verts[0].equals(end)) && (verts[1].equals(start) || verts[1].equals(end))) {
+                return splitQuad(verts[0], verts[1], verts[2], verts[3], target, g);
+            } else if ((verts[1].equals(start) || verts[1].equals(end)) && (verts[2].equals(start) || verts[2].equals(end))) {
+                return splitQuad(verts[1], verts[2], verts[3], verts[0], target, g);
+            } else if ((verts[2].equals(start) || verts[2].equals(end)) && (verts[3].equals(start) || verts[3].equals(end))) {
+                return splitQuad(verts[2], verts[3], verts[0], verts[1], target, g);
+            } else if ((verts[3].equals(start) || verts[3].equals(end)) && (verts[0].equals(start) || verts[0].equals(end))) {
+                return splitQuad(verts[3], verts[0], verts[1], verts[2], target, g);
+            }
+        }
+        return result;
+    }
+
+    private List<GData3> splitQuad(Vertex v1, Vertex v2, Vertex v3, Vertex v4, Vertex target, GData4 g) {
+        ArrayList<GData3> result = new ArrayList<GData3>();
+        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                v4.X,
+                v4.Y,
+                v4.Z,
+
+                v1.X,
+                v1.Y,
+                v1.Z,
+
+                target.X,
+                target.Y,
+                target.Z,
+
+                View.DUMMY_REFERENCE, linkedDatFile));
+
+        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                target.X,
+                target.Y,
+                target.Z,
+
+                v2.X,
+                v2.Y,
+                v2.Z,
+
+                v4.X,
+                v4.Y,
+                v4.Z,
+
+                View.DUMMY_REFERENCE, linkedDatFile));
+
+        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+                v2.X,
+                v2.Y,
+                v2.Z,
+
+                v3.X,
+                v3.Y,
+                v3.Z,
+
+                v4.X,
+                v4.Y,
+                v4.Z,
+
+                View.DUMMY_REFERENCE, linkedDatFile));
+        return result;
+    }
+
+    private List<GData3> split(GData3 g, Vertex start, Vertex end, Vertex target) {
+        ArrayList<GData3> result = new ArrayList<GData3>();
+        if (!start.equals(end)) {
+            Vertex[] verts = triangles.get(g);
+            if ((verts[0].equals(start) || verts[0].equals(end)) && (verts[1].equals(start) || verts[1].equals(end))) {
+                return splitTri(verts[0], verts[1], verts[2], target, g);
+            } else if ((verts[1].equals(start) || verts[1].equals(end)) && (verts[2].equals(start) || verts[2].equals(end))) {
+                return splitTri(verts[1], verts[2], verts[0], target, g);
+            } else if ((verts[2].equals(start) || verts[2].equals(end)) && (verts[0].equals(start) || verts[0].equals(end))) {
+                return splitTri(verts[2], verts[0], verts[1], target, g);
+            }
+        }
+        return result;
+    }
+
+    private List<GData3> splitTri(Vertex v1, Vertex v2, Vertex v3, Vertex target, GData3 g) {
+        ArrayList<GData3> result = new ArrayList<GData3>();
+        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                v3.X,
+                v3.Y,
+                v3.Z,
+
+                v1.X,
+                v1.Y,
+                v1.Z,
+
+                target.X,
+                target.Y,
+                target.Z,
+
+                View.DUMMY_REFERENCE, linkedDatFile));
+
+        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                target.X,
+                target.Y,
+                target.Z,
+
+                v2.X,
+                v2.Y,
+                v2.Z,
+
+                v3.X,
+                v3.Y,
+                v3.Z,
+
+                View.DUMMY_REFERENCE, linkedDatFile));
+        return result;
+    }
+
+    private List<GData2> split(GData2 g, Vertex start, Vertex end, Vertex target) {
+        ArrayList<GData2> result = new ArrayList<GData2>();
+
+        if (!start.equals(end)) {
+            Vertex[] verts = lines.get(g);
+            if ((verts[0].equals(start) || verts[0].equals(end)) && (verts[1].equals(start) || verts[1].equals(end))) {
+                result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                        start.X,
+                        start.Y,
+                        start.Z,
+
+                        target.X,
+                        target.Y,
+                        target.Z,
+
+                        View.DUMMY_REFERENCE, linkedDatFile));
+
+
+                result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                        target.X,
+                        target.Y,
+                        target.Z,
+
+                        end.X,
+                        end.Y,
+                        end.Z,
+
+                        View.DUMMY_REFERENCE, linkedDatFile));
+            }
+        }
+        return result;
     }
 }
