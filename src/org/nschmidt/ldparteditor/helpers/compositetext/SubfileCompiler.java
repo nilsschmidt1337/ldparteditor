@@ -34,8 +34,12 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.Matrix;
+import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.data.VertexInfo;
+import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -127,6 +131,107 @@ public enum SubfileCompiler {
                 }
             }
         }
+    }
+
+    /**
+     * Compiles outlined subfiles (reverse inlining, preserves the selection, except subfiles)
+     *
+     * @param datFile
+     */
+    public static void compile2(DatFile datFile) {
+
+        GDataCSG.resetCSG();
+        GDataCSG.forceRecompile();
+        skipCompile = true;
+        matrixInv = View.ACCURATE_ID;
+        matrixProd = View.ACCURATE_ID;
+
+        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
+
+        Set<Integer> keys = dpl.keySet();
+        ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
+        lineNumbers.addAll(keys);
+        Collections.sort(lineNumbers);
+
+        for (Integer l : lineNumbers) {
+            SubfileCompiler.compile(l, datFile);
+        }
+
+        matrixInvStack.clear();
+        matrixProdStack.clear();
+        nameStack.clear();
+        colourStack.clear();
+        builderStack.clear();
+        toFolderStack.clear();
+
+        VertexManager vm = datFile.getVertexManager();
+        for (Integer l : lineNumbers) {
+            GData gd = datFile.getDrawPerLine_NOCLONE().getValue(l);
+            int type = gd.type();
+            if (type == 1) {
+                final Set<VertexInfo> lv = vm.getLineLinkedToVertices().get(gd);
+                if (lv != null) {
+                    for (VertexInfo vertexInfo : lv) {
+                        GData linkedData = vertexInfo.getLinkedData();
+                        Vertex vertex = vertexInfo.getVertex();
+                        switch (linkedData.type()) {
+                        case 0:
+                            vm.getSelectedVertices().remove(vertex);
+                            break;
+                        case 2:
+                            vm.getSelectedLines().remove(linkedData);
+                            vm.getSelectedData().remove(linkedData);
+                            {
+                                Vertex[] verts = vm.getLines().get(linkedData);
+                                for (Vertex v : verts) {
+                                    vm.getSelectedVertices().remove(v);
+                                }
+                            }
+                            break;
+                        case 3:
+                            vm.getSelectedTriangles().remove(linkedData);
+                            vm.getSelectedData().remove(linkedData);
+                            {
+                                Vertex[] verts = vm.getTriangles().get(linkedData);
+                                for (Vertex v : verts) {
+                                    vm.getSelectedVertices().remove(v);
+                                }
+                            }
+                            break;
+                        case 4:
+                            vm.getSelectedQuads().remove(linkedData);
+                            vm.getSelectedData().remove(linkedData);
+                            {
+                                Vertex[] verts = vm.getQuads().get(linkedData);
+                                for (Vertex v : verts) {
+                                    vm.getSelectedVertices().remove(v);
+                                }
+                            }
+                            break;
+                        case 5:
+                            vm.getSelectedCondlines().remove(linkedData);
+                            vm.getSelectedData().remove(linkedData);
+                            {
+                                Vertex[] verts = vm.getCondlines().get(linkedData);
+                                for (Vertex v : verts) {
+                                    vm.getSelectedVertices().remove(v);
+                                }
+                            }
+                            break;
+                        default:
+                            throw new AssertionError();
+                        }
+                    }
+                }
+                vm.reloadSubfile((GData1) gd);
+            }
+        }
+
+        vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
+        vm.getSelectedSubfiles().clear();
+
+        builder = null;
+        Editor3DWindow.getWindow().updateTree_unsavedEntries();
     }
 
     @SuppressWarnings("unchecked")
@@ -232,8 +337,9 @@ public enum SubfileCompiler {
                     messageBox.open();
                 }
             } else if ( // Check for INLINE_END
+                    (gd.getNext() == null ||
                     data_segments.length == 3 && data_segments[2].equals("INLINE_END") && //$NON-NLS-1$
-                    data_segments[1].equals("!LPE") && !toFolderStack.isEmpty()) { //$NON-NLS-1$
+                    data_segments[1].equals("!LPE")) && !toFolderStack.isEmpty()) { //$NON-NLS-1$
 
                 String targetPath;
                 if (toFolderStack.peek()) {
