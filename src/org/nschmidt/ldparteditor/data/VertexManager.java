@@ -7648,7 +7648,33 @@ public class VertexManager {
     }
 
     public void zoomToFit(Composite3D c3d) {
+        final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
         // TODO zoomToFit() Needs implementation!
+        float max_x = 0f;
+        float max_y = 0f;
+        for (Vertex v : getVertices()) {
+            float ax = Math.abs(v.x);
+            float ay = Math.abs(v.y);
+            if (ax > max_x) max_x = ax;
+            if (ay > max_y) max_y = ay;
+        }
+
+        c3d.getSize();
+
+        float zoom_exponent = 1f;
+
+        if (max_x > max_y) {
+            zoom_exponent = 1000f / max_x;
+        } else {
+            zoom_exponent = 1000f / max_y;
+        }
+
+        pc.setZoom_exponent(zoom_exponent);
+        c3d.setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
+        c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
+        GuiManager.updateStatus(c3d);
+        ((ScalableComposite) c3d.getParent()).redrawScales();
+        pc.initializeViewportPerspective();
     }
 
     public synchronized void roundSelection(int coordsDecimalPlaces, int matrixDecimalPlaces, boolean moveAdjacentData, boolean syncWithTextEditors) {
