@@ -46,6 +46,7 @@ import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.lwjgl.opengl.GL11;
@@ -7659,18 +7660,18 @@ public class VertexManager {
             if (ay > max_y) max_y = ay;
         }
 
-        c3d.getSize();
+        Rectangle b = c3d.getBounds();
 
-        float zoom_exponent = 1f;
+        float zoom = 1f;
 
         if (max_x > max_y) {
-            zoom_exponent = 1000f / max_x;
+            c3d.setZoom(b.width / (max_x * 4f * View.PIXEL_PER_LDU));
         } else {
-            zoom_exponent = 1000f / max_y;
+            c3d.setZoom(b.height / (max_y * 4f * View.PIXEL_PER_LDU));
         }
-
-        pc.setZoom_exponent(zoom_exponent);
-        c3d.setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
+        zoom = c3d.getZoom();
+        pc.setZoom_exponent((float) (Math.log10(zoom) + 3f) * 10f);
+        // c3d.setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
         c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
         GuiManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();
