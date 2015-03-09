@@ -79,6 +79,8 @@ public class UserSettingState implements Serializable {
     private String ldConfigPath = null;
     /** {@code true} if the user wants active synchronisation with the text editor */
     private AtomicBoolean syncWithTextEditor = new AtomicBoolean(true);
+    /** {@code true} if the user wants active synchronisation with the text editor */
+    private AtomicBoolean syncWithLpeInline = new AtomicBoolean(false);
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -338,6 +340,14 @@ public class UserSettingState implements Serializable {
 
     public void setSyncWithTextEditor(AtomicBoolean syncWithTextEditor) {
         this.syncWithTextEditor = syncWithTextEditor;
+    }
+
+    public AtomicBoolean getSyncWithLpeInline() {
+        return syncWithLpeInline;
+    }
+
+    public void setSyncWithLpeInline(AtomicBoolean syncWithLpeInline) {
+        this.syncWithLpeInline = syncWithLpeInline;
     }
 
 }

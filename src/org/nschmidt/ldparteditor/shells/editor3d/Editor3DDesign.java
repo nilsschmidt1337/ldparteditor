@@ -192,6 +192,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
     final MenuItem[] mntm_SyncWithTextEditor = new MenuItem[1];
+    final MenuItem[] mntm_SyncLpeInline = new MenuItem[1];
 
     final MenuItem[] mntm_Flip = new MenuItem[1];
     final MenuItem[] mntm_SubdivideCatmullClark = new MenuItem[1];
@@ -975,6 +976,12 @@ class Editor3DDesign extends ApplicationWindow {
                         mntm_SyncWithTextEditor.setSelection(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
                         this.mntm_SyncWithTextEditor[0] = mntm_SyncWithTextEditor;
                         mntm_SyncWithTextEditor.setText("Sync. 3D Editor with Text Editor"); //$NON-NLS-1$ I18N
+                    }
+                    {
+                        MenuItem mntm_SyncLpeInline = new MenuItem(mnu_Tools, SWT.CHECK);
+                        mntm_SyncLpeInline.setSelection(WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get());
+                        this.mntm_SyncLpeInline[0] = mntm_SyncLpeInline;
+                        mntm_SyncLpeInline.setText("Instant !LPE INLINE Parsing"); //$NON-NLS-1$ I18N
                     }
                 }
             }
