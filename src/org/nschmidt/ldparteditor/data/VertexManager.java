@@ -757,8 +757,45 @@ public class VertexManager {
             throw new AssertionError("The number of vertices displayed is not equal to the number of stored vertices."); //$NON-NLS-1$
         }
 
-        if (selectedData.size() != selectedSubfiles.size() + selectedLines.size() + selectedTriangles.size() + selectedQuads.size() + selectedCondlines.size())
-            throw new AssertionError("The selected data is not equal to the content of single selection classes, e.g. 'selectedTriangles'."); //$NON-NLS-1$
+        if (selectedData.size() != selectedSubfiles.size() + selectedLines.size() + selectedTriangles.size() + selectedQuads.size() + selectedCondlines.size()) {
+            // throw new AssertionError("The selected data is not equal to the content of single selection classes, e.g. 'selectedTriangles'."); //$NON-NLS-1$
+            selectedData.clear();
+            for (Iterator<GData1> gi = selectedSubfiles.iterator(); gi.hasNext();) {
+                GData g = gi.next();
+                if (!exist(g)) {
+                    gi.remove();
+                }
+            }
+            for (Iterator<GData2> gi = selectedLines.iterator(); gi.hasNext();) {
+                GData g = gi.next();
+                if (!exist(g)) {
+                    gi.remove();
+                }
+            }
+            for (Iterator<GData3> gi = selectedTriangles.iterator(); gi.hasNext();) {
+                GData g = gi.next();
+                if (!exist(g)) {
+                    gi.remove();
+                }
+            }
+            for (Iterator<GData4> gi = selectedQuads.iterator(); gi.hasNext();) {
+                GData g = gi.next();
+                if (!exist(g)) {
+                    gi.remove();
+                }
+            }
+            for (Iterator<GData5> gi = selectedCondlines.iterator(); gi.hasNext();) {
+                GData g = gi.next();
+                if (!exist(g)) {
+                    gi.remove();
+                }
+            }
+            selectedData.addAll(selectedSubfiles);
+            selectedData.addAll(selectedLines);
+            selectedData.addAll(selectedTriangles);
+            selectedData.addAll(selectedQuads);
+            selectedData.addAll(selectedCondlines);
+        }
 
     }
 
@@ -7884,7 +7921,7 @@ public class VertexManager {
     }
 
     private boolean exist(GData g) {
-        return lines.containsKey(g) || triangles.containsKey(g) || quads.containsKey(g) || condlines.containsKey(g);
+        return lines.containsKey(g) || triangles.containsKey(g) || quads.containsKey(g) || condlines.containsKey(g) || lineLinkedToVertices.containsKey(g);
     }
 
     public synchronized void selectAll(SelectorSettings ss, boolean includeHidden) {
