@@ -129,7 +129,7 @@ public class OpenGLRenderer {
 
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glShadeModel(GL11.GL_FLAT);
-        // GL11.glShadeModel(GL11.GL_SMOOTH);
+
         GL11.glEnable(GL11.GL_NORMALIZE);
 
         GL11.glEnable(GL11.GL_LIGHT0);

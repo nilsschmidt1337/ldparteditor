@@ -9201,6 +9201,7 @@ public class VertexManager {
         boolean plainOnZ = true;
 
         Set<VertexInfo> verts = lineLinkedToVertices.get(ref);
+        if (verts == null) return result;
         for (VertexInfo vi : verts) {
             Vector4f vert = vi.vertex.toVector4fm();
             Vector4f vert2 = Matrix4f.transform(tMatrix, vert, null);
