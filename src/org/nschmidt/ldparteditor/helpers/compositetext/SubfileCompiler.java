@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helpers.compositetext;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +25,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.widgets.MessageBox;
@@ -82,9 +86,41 @@ public enum SubfileCompiler {
      *
      * @param datFile
      */
-    public static void compile(DatFile datFile) {
-
-        datFile.getVertexManager().clearSelection();
+    public static void compile(final DatFile datFile) {
+        final VertexManager vm = datFile.getVertexManager();
+        if (!vm.isUpdated()) {
+            if (vm.isSyncWithTextEditor()) {
+                final boolean[] doNotWait = new boolean[]{false};
+                try
+                {
+                    new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
+                    {
+                        @Override
+                        public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+                        {
+                            monitor.beginTask("Waiting for update...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                            while (!vm.isUpdated()) {
+                                if (monitor.isCanceled()) break;
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            doNotWait[0] = monitor.isCanceled();
+                        }
+                    });
+                } catch (InvocationTargetException consumed) {
+                    return;
+                } catch (InterruptedException consumed) {
+                    return;
+                }
+                if (doNotWait[0]) {
+                    return;
+                }
+            }
+        }
+        vm.clearSelection();
         GDataCSG.resetCSG();
         GDataCSG.forceRecompile();
         skipCompile = true;
