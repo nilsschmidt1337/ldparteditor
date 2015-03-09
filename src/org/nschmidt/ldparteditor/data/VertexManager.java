@@ -19038,9 +19038,15 @@ public class VertexManager {
     public void reloadSubfile(GData1 g) {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
         HeaderState.state().setState(HeaderState._99_DONE);
+        // Clear the cache..
+        GData.parsedLines.clear();
+        GData.CACHE_parsedFilesSource.clear();
         GData1 reloadedSubfile = (GData1) DatParser
                 .parseLine(g.toString(), drawPerLine.getKey(g).intValue(), 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
                         new HashSet<String>(), false).get(0).getGraphicalData();
+        // Clear the cache..
+        GData.parsedLines.clear();
+        GData.CACHE_parsedFilesSource.clear();
         GData oldNext = g.getNext();
         GData oldBefore = g.getBefore();
         oldBefore.setNext(reloadedSubfile);
@@ -19049,6 +19055,43 @@ public class VertexManager {
         if (oldNumber != null)
             drawPerLine.put(oldNumber, reloadedSubfile);
         remove(g);
+    }
+
+
+    public void transformSubfile(GData1 g, Matrix M) {
+        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+        HeaderState.state().setState(HeaderState._99_DONE);
+        StringBuilder colourBuilder = new StringBuilder();
+        if (g.colourNumber == -1) {
+            colourBuilder.append("0x2"); //$NON-NLS-1$
+            colourBuilder.append(MathHelper.toHex((int) (255f * g.r)).toUpperCase());
+            colourBuilder.append(MathHelper.toHex((int) (255f * g.g)).toUpperCase());
+            colourBuilder.append(MathHelper.toHex((int) (255f * g.b)).toUpperCase());
+        } else {
+            colourBuilder.append(g.colourNumber);
+        }
+        // Clear the cache..
+        GData.parsedLines.clear();
+        GData.CACHE_parsedFilesSource.clear();
+        GData1 reloadedSubfile = (GData1) DatParser
+                .parseLine("1 " + colourBuilder.toString() + M.toLDrawString() + g.shortName , 0, 0, 0.5f, 0.5f, 0.5f, 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, //$NON-NLS-1$
+                        new HashSet<String>(), false).get(0).getGraphicalData();
+        // Clear the cache..
+        GData.parsedLines.clear();
+        GData.CACHE_parsedFilesSource.clear();
+        GData oldNext = g.getNext();
+        GData oldBefore = g.getBefore();
+        oldBefore.setNext(reloadedSubfile);
+        reloadedSubfile.setNext(oldNext);
+        Integer oldNumber = drawPerLine.getKey(g);
+        if (oldNumber != null)
+            drawPerLine.put(oldNumber, reloadedSubfile);
+        remove(g);
+        clearSelection();
+        selectedData.add(reloadedSubfile);
+        selectedSubfiles.add(reloadedSubfile);
+        selectSubfiles(null, null, false);
+        setModified(true);
     }
 
     public boolean isUncompiled() {
