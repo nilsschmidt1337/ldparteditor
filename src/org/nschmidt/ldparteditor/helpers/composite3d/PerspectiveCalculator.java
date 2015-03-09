@@ -455,4 +455,12 @@ public class PerspectiveCalculator {
         }
     }
 
+    public float getZoom_exponent() {
+        return zoom_exponent;
+    }
+
+    public void setZoom_exponent(float zoom_exponent) {
+        this.zoom_exponent = zoom_exponent;
+    }
+
 }
