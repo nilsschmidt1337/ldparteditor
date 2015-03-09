@@ -329,7 +329,9 @@ public class Composite3D extends ScalableComposite {
                                 Display.getDefault().asyncExec(new Runnable() {
                                     @Override
                                     public void run() {
-                                        ((CompositeTab) t).getTextComposite().setTopIndex(df.getDrawPerLine_NOCLONE().getKey(df.getVertexManager().getSelectedData().iterator().next()) - 1);
+                                        Integer index = df.getDrawPerLine_NOCLONE().getKey(df.getVertexManager().getSelectedData().iterator().next());
+                                        if (index == null) return;
+                                        ((CompositeTab) t).getTextComposite().setTopIndex(index - 1);
                                     }
                                 });
                                 w.open();
