@@ -3667,35 +3667,6 @@ public class VertexManager {
         selectedData.addAll(selectedCondlines);
         selectedData.addAll(selectedSubfiles);
 
-        if (preSelection && selectedSubfiles.size() == 1) {
-            GData1 subfile = null;
-            for (GData1 g1 : selectedSubfiles) {
-                subfile = g1;
-                break;
-            }
-            Matrix4f m = subfile.getProductMatrix();
-            Matrix M = subfile.getAccurateProductMatrix();
-            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                c3d.getManipulator().getPosition().set(m.m30, m.m31, m.m32, 1f);
-                c3d.getManipulator().setAccuratePosition(M.M30, M.M31, M.M32);
-                Vector3f x = new Vector3f(m.m00, m.m01, m.m02);
-                x.normalise();
-                Vector3f y = new Vector3f(m.m10, m.m11, m.m12);
-                y.normalise();
-                Vector3f z = new Vector3f(m.m20, m.m21, m.m22);
-                z.normalise();
-                c3d.getManipulator().getXaxis().set(x.x, x.y, x.z, 1f);
-                c3d.getManipulator().getYaxis().set(y.x, y.y, y.z, 1f);
-                c3d.getManipulator().getZaxis().set(z.x, z.y, z.z, 1f);
-                c3d.getManipulator().setAccurateXaxis(new BigDecimal(c3d.getManipulator().getXaxis().x), new BigDecimal(c3d.getManipulator().getXaxis().y),
-                        new BigDecimal(c3d.getManipulator().getXaxis().z));
-                c3d.getManipulator().setAccurateYaxis(new BigDecimal(c3d.getManipulator().getYaxis().x), new BigDecimal(c3d.getManipulator().getYaxis().y),
-                        new BigDecimal(c3d.getManipulator().getYaxis().z));
-                c3d.getManipulator().setAccurateZaxis(new BigDecimal(c3d.getManipulator().getZaxis().x), new BigDecimal(c3d.getManipulator().getZaxis().y),
-                        new BigDecimal(c3d.getManipulator().getZaxis().z));
-            }
-        }
-
     }
 
     public synchronized void clear() {
@@ -18446,7 +18417,7 @@ public class VertexManager {
     public void syncWithTextEditors() {
 
         if (isUncompiled()) {
-            SubfileCompiler.compile2(linkedDatFile);
+            if (isSyncWithLpeInline()) SubfileCompiler.compile2(linkedDatFile);
             setUncompiled(false);
         }
 
@@ -18538,6 +18509,10 @@ public class VertexManager {
             }
         });
         syncThread.start();
+    }
+
+    public boolean isSyncWithLpeInline() {
+        return WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get();
     }
 
     public boolean isSyncWithTextEditor() {

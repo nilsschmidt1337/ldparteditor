@@ -3266,6 +3266,13 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        mntm_SyncLpeInline[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().getSyncWithLpeInline().set(mntm_SyncLpeInline[0].getSelection());
+            }
+        });
+
         // MARK Merge, split...
 
         mntm_Flip[0].addSelectionListener(new SelectionAdapter() {
