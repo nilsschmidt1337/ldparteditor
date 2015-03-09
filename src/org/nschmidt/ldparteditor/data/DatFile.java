@@ -960,6 +960,12 @@ public final class DatFile {
     }
 
     public GData getDrawChainTail() {
+        if (drawChainTail == null) {
+            GData gd = drawChainAnchor;
+            do {
+                drawChainTail = gd;
+            } while ((gd = gd.getNext()) != null);
+        }
         return drawChainTail;
     }
 

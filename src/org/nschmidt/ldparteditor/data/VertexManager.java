@@ -74,6 +74,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.UnificatorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
+import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
@@ -91,6 +92,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
+import org.nschmidt.ldparteditor.text.HeaderState;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -180,6 +182,7 @@ public class VertexManager {
 
     private Vertex vertexToReplace = null;
 
+    private boolean uncompiled = false;
     private boolean modified = false;
     private boolean updated = true;
 
@@ -625,7 +628,9 @@ public class VertexManager {
             break;
         }
         gdata.derefer();
-        return gdata.equals(linkedDatFile.getDrawChainTail());
+        boolean tailRemoved = gdata.equals(linkedDatFile.getDrawChainTail());
+        if (tailRemoved) linkedDatFile.setDrawChainTail(null);
+        return tailRemoved;
     }
 
     /**
@@ -4179,6 +4184,7 @@ public class VertexManager {
     public synchronized void setModified(boolean modified) {
         if (modified) {
             setUpdated(false);
+            setUncompiled(true);
             syncWithTextEditors();
         }
         this.modified = modified;
@@ -4194,6 +4200,7 @@ public class VertexManager {
 
     public synchronized void setModified_NoSync() {
         this.modified = true;
+        setUncompiled(true);
         setUpdated(false);
     }
 
@@ -5293,6 +5300,9 @@ public class VertexManager {
             HashSet<GData1> newSubfiles = new HashSet<GData1>();
             for (GData1 subf : selectedSubfiles) {
                 String colouredString = subf.getColouredString(col);
+                GData oldNext = subf.getNext();
+                GData oldBefore = subf.getBefore();
+                remove(subf);
                 GData colouredSubfile;
                 if ("16".equals(col)) { //$NON-NLS-1$
                     colouredSubfile = DatParser
@@ -5305,14 +5315,12 @@ public class VertexManager {
                 }
                 if (subf.equals(linkedDatFile.getDrawChainTail()))
                     linkedDatFile.setDrawChainTail(colouredSubfile);
-                GData oldNext = subf.getNext();
-                GData oldBefore = subf.getBefore();
+
                 oldBefore.setNext(colouredSubfile);
                 colouredSubfile.setNext(oldNext);
                 Integer oldNumber = drawPerLine.getKey(subf);
                 if (oldNumber != null)
                     drawPerLine.put(oldNumber, colouredSubfile);
-                remove(subf);
                 newSubfiles.add((GData1) colouredSubfile);
             }
             selectedSubfiles.clear();
@@ -18436,6 +18444,12 @@ public class VertexManager {
     private final AtomicInteger tid = new AtomicInteger(0);
     private final AtomicInteger openThreads = new AtomicInteger(0);
     public void syncWithTextEditors() {
+
+        if (isUncompiled()) {
+            SubfileCompiler.compile2(linkedDatFile);
+            setUncompiled(false);
+        }
+
         if (isSkipSyncWithTextEditor() || !isSyncWithTextEditor()) return;
         if (openThreads.get() > 10) {
             resetTimer.set(true);
@@ -19019,5 +19033,29 @@ public class VertexManager {
             }
         }
         return result;
+    }
+
+    public void reloadSubfile(GData1 g) {
+        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+        HeaderState.state().setState(HeaderState._99_DONE);
+        GData1 reloadedSubfile = (GData1) DatParser
+                .parseLine(g.toString(), drawPerLine.getKey(g).intValue(), 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
+                        new HashSet<String>(), false).get(0).getGraphicalData();
+        GData oldNext = g.getNext();
+        GData oldBefore = g.getBefore();
+        oldBefore.setNext(reloadedSubfile);
+        reloadedSubfile.setNext(oldNext);
+        Integer oldNumber = drawPerLine.getKey(g);
+        if (oldNumber != null)
+            drawPerLine.put(oldNumber, reloadedSubfile);
+        remove(g);
+    }
+
+    public boolean isUncompiled() {
+        return uncompiled;
+    }
+
+    public void setUncompiled(boolean uncompiled) {
+        this.uncompiled = uncompiled;
     }
 }
