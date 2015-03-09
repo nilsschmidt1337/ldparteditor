@@ -242,11 +242,11 @@ public enum SubfileCompiler {
         if (skipCompile && type != 0)
             return;
 
-        if (skipCompile) {
-            NLogger.debug(SubfileCompiler.class, "Parsing: " + gd.toString()); //$NON-NLS-1$
-        } else {
-            NLogger.debug(SubfileCompiler.class, "Compiling: " + gd.toString()); //$NON-NLS-1$
-        }
+        //        if (skipCompile) {
+        //            NLogger.debug(SubfileCompiler.class, "Parsing: " + gd.toString()); //$NON-NLS-1$
+        //        } else {
+        //            NLogger.debug(SubfileCompiler.class, "Compiling: " + gd.toString()); //$NON-NLS-1$
+        //        }
 
         switch (type) {
         case 0:
