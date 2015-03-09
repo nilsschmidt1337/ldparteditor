@@ -32,6 +32,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -1693,5 +1694,15 @@ public class Manipulator {
 
     public BigDecimal[] getAccurateZaxis() {
         return accurateZaxis;
+    }
+
+    public Matrix getAccurateMatrix() {
+        Vector3d X = new Vector3d(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
+        Vector3d Y = new Vector3d(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
+        Vector3d Z = new Vector3d(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
+        X.normalise(X);
+        Y.normalise(Y);
+        Z.normalise(Z);
+        return new Matrix(X.X, X.Y, X.Z, BigDecimal.ZERO, Y.X, Y.Y, Y.Z, BigDecimal.ZERO, Z.X, Z.Y, Z.Z, BigDecimal.ZERO, accuratePosition[0], accuratePosition[1], accuratePosition[2], BigDecimal.ONE);
     }
 }

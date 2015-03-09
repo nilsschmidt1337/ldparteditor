@@ -118,6 +118,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] btn_Manipulator_1_cameraToPos = new MenuItem[1];
     final MenuItem[] btn_Manipulator_2_toAverage = new MenuItem[1];
     final MenuItem[] btn_Manipulator_3_toSubfile = new MenuItem[1];
+    final MenuItem[] btn_Manipulator_32_subfileTo = new MenuItem[1];
     final MenuItem[] btn_Manipulator_4_toVertex = new MenuItem[1];
     final MenuItem[] btn_Manipulator_5_toEdge = new MenuItem[1];
     final MenuItem[] btn_Manipulator_6_toSurface = new MenuItem[1];
@@ -568,12 +569,22 @@ class Editor3DDesign extends ApplicationWindow {
                         btn_Mani.setText("Move the Manipulator to the Average Point of the Selection"); //$NON-NLS-1$ I18N
                         btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
                     }
+                    @SuppressWarnings("unused")
+                    final MenuItem mntmSeparator31 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_3_toSubfile[0] = btn_Mani;
                         btn_Mani.setText("Move the Manipulator to the Origin from a selected Subfile"); //$NON-NLS-1$ I18N
                         btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
                     }
+                    {
+                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                        this.btn_Manipulator_32_subfileTo[0] = btn_Mani;
+                        btn_Mani.setText("Move a selected Subfile to the Manipulator"); //$NON-NLS-1$ I18N
+                        btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
+                    }
+                    @SuppressWarnings("unused")
+                    final MenuItem mntmSeparator32 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_4_toVertex[0] = btn_Mani;

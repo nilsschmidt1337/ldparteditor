@@ -285,6 +285,24 @@ public final class Matrix {
         return result.toString();
     }
 
+    public String toLDrawString() {
+        StringBuilder result = new StringBuilder();
+        result.append(" "); //$NON-NLS-1$
+        result.append(this.M30.doubleValue());
+        result.append(" "); //$NON-NLS-1$
+        result.append(this.M31.doubleValue());
+        result.append(" "); //$NON-NLS-1$
+        result.append(this.M32.doubleValue());
+        result.append(" "); //$NON-NLS-1$
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                result.append(this.M[j][i].doubleValue());
+                result.append(" "); //$NON-NLS-1$
+            }
+        }
+        return result.toString();
+    }
+
     public Matrix4f getMatrix4f() {
 
         Matrix4f result = new Matrix4f();

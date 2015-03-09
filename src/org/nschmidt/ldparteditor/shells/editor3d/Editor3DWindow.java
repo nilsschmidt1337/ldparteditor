@@ -2259,6 +2259,35 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        btn_Manipulator_32_subfileTo[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (Project.getFileToEdit() != null) {
+                    VertexManager vm = Project.getFileToEdit().getVertexManager();
+                    Set<GData1> subfiles = vm.getSelectedSubfiles();
+                    if (!subfiles.isEmpty()) {
+                        GData1 subfile = null;
+                        for (GData1 g1 : subfiles) {
+                            if (vm.getLineLinkedToVertices().containsKey(g1)) {
+                                subfile = g1;
+                                break;
+                            }
+                        }
+                        if (subfile == null) {
+                            return;
+                        }
+                        for (OpenGLRenderer renderer : renders) {
+                            Composite3D c3d = renderer.getC3D();
+                            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                                Manipulator ma = c3d.getManipulator();
+                                vm.transformSubfile(subfile, ma.getAccurateMatrix());
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
         btn_Manipulator_4_toVertex[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
