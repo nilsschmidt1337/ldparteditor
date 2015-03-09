@@ -156,22 +156,14 @@ public enum DatParser {
         } catch (NumberFormatException nfe) {
             if (arg.length() == 9 && arg.substring(0, 3).equals("0x2")) { //$NON-NLS-1$
                 cValue.setA(1f);
-            try {
-                cValue.setR(Integer.parseInt(arg.substring(3, 5), 16) / 255f);
-            } catch (NumberFormatException nfe2) {
-                return null;
-            }
-            try {
-                cValue.setG(Integer.parseInt(arg.substring(5, 7), 16) / 255f);
-            } catch (NumberFormatException nfe2) {
-                return null;
-            }
-            try {
-                cValue.setB(Integer.parseInt(arg.substring(7, 9), 16) / 255f);
-            } catch (NumberFormatException nfe2) {
-                return null;
-            }
-            cValue.setColourNumber(-1);
+                try {
+                    cValue.setR(Integer.parseInt(arg.substring(3, 5), 16) / 255f);
+                    cValue.setG(Integer.parseInt(arg.substring(5, 7), 16) / 255f);
+                    cValue.setB(Integer.parseInt(arg.substring(7, 9), 16) / 255f);
+                } catch (NumberFormatException nfe2) {
+                    return null;
+                }
+                cValue.setColourNumber(-1);
             } else {
                 return null;
             }
@@ -861,112 +853,54 @@ public enum DatParser {
             BigDecimal M00;
             BigDecimal M01;
             BigDecimal M02;
-            BigDecimal M03 = BigDecimal.ZERO;
+            final BigDecimal M03 = BigDecimal.ZERO;
             BigDecimal M10;
             BigDecimal M11;
             BigDecimal M12;
-            BigDecimal M13 = BigDecimal.ZERO;
+            final BigDecimal M13 = BigDecimal.ZERO;
             BigDecimal M20;
             BigDecimal M21;
             BigDecimal M22;
-            BigDecimal M23 = BigDecimal.ZERO;
+            final BigDecimal M23 = BigDecimal.ZERO;
             BigDecimal M30;
             BigDecimal M31;
             BigDecimal M32;
-            BigDecimal M33 = BigDecimal.ONE;
+            final BigDecimal M33 = BigDecimal.ONE;
             float det = 0;
             while (true) {
-                boolean numberError = false;
-
-                // Offset
                 try {
+                    // Offset
                     M30 = new BigDecimal(data_segments[2]);
                     tMatrix.m30 = M30.floatValue() * 1000f;
-                } catch (NumberFormatException nfe) {
-                    M30 = null;
-                    numberError = true;
-                }
-                try {
                     M31 = new BigDecimal(data_segments[3]);
                     tMatrix.m31 = M31.floatValue() * 1000f;
-                } catch (NumberFormatException nfe) {
-                    M31 = null;
-                    numberError = true;
-                }
-                try {
                     M32 = new BigDecimal(data_segments[4]);
                     tMatrix.m32 = M32.floatValue() * 1000f;
-                } catch (NumberFormatException nfe) {
-                    M32 = null;
-                    numberError = true;
-                }
-                // First row
-                try {
+                    // First row
                     M00 = new BigDecimal(data_segments[5]);
                     tMatrix.m00 = M00.floatValue();
-                } catch (NumberFormatException nfe) {
-                    M00 = null;
-                    numberError = true;
-                }
-                try {
                     M10 = new BigDecimal(data_segments[6]);
                     tMatrix.m10 = M10.floatValue();
-                } catch (NumberFormatException nfe) {
-                    M10 = null;
-                    numberError = true;
-                }
-                try {
                     M20 = new BigDecimal(data_segments[7]);
                     tMatrix.m20 = M20.floatValue();
-                } catch (NumberFormatException nfe) {
-                    M20 = null;
-                    numberError = true;
-                }
-                // Second row
-                try {
+                    // Second row
                     M01 = new BigDecimal(data_segments[8]);
                     tMatrix.m01 = M01.floatValue();
-                } catch (NumberFormatException nfe) {
-                    M01 = null;
-                    numberError = true;
-                }
-                try {
                     M11 = new BigDecimal(data_segments[9]);
                     tMatrix.m11 = M11.floatValue();
-                } catch (NumberFormatException nfe) {
-                    M11 = null;
-                    numberError = true;
-                }
-                try {
                     M21 = new BigDecimal(data_segments[10]);
                     tMatrix.m21 = M21.floatValue();
-                } catch (NumberFormatException nfe) {
-                    M21 = null;
-                    numberError = true;
-                }
-                // Third row
-                try {
+                    // Third row
                     M02 = new BigDecimal(data_segments[11]);
                     tMatrix.m02 = M02.floatValue();
-                } catch (NumberFormatException nfe) {
-                    M02 = null;
-                    numberError = true;
-                }
-                try {
                     M12 = new BigDecimal(data_segments[12]);
                     tMatrix.m12 = M12.floatValue();
-                } catch (NumberFormatException nfe) {
-                    M12 = null;
-                    numberError = true;
-                }
-                try {
                     M22 = new BigDecimal(data_segments[13]);
                     tMatrix.m22 = M22.floatValue();
                 } catch (NumberFormatException nfe) {
-                    M22 = null;
-                    numberError = true;
-                }
-                if (numberError) {
+                    M00 = null; M01 = null; M02 = null; M10 = null;
+                    M11 = null; M12 = null; M20 = null; M21 = null;
+                    M22 = null; M30 = null; M31 = null;M32 = null;
                     result.add(new ParsingResult("Invalid number format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                     break;
                 }
@@ -1058,11 +992,10 @@ public enum DatParser {
 
             if (isVirtual) {
 
-                Matrix TMatrix = new Matrix(M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, M30, M31, M32, M33);
-
                 if (result.size() < 1) {
                     if (!errorCheckOnly) {
 
+                        Matrix TMatrix = new Matrix(M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, M30, M31, M32, M33);
                         Matrix DESTMatrix = Matrix.mul(accurateProductMatrix, TMatrix);
 
                         Matrix4f destMatrix = new Matrix4f();
@@ -1118,13 +1051,10 @@ public enum DatParser {
                     e1.printStackTrace();
                 }
 
-
-                Matrix TMatrix = new Matrix(M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, M30, M31, M32, M33);
-
                 if (result.size() < 1) {
-
                     if (!errorCheckOnly) {
 
+                        Matrix TMatrix = new Matrix(M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, M30, M31, M32, M33);
                         Matrix DESTMatrix = Matrix.mul(accurateProductMatrix, TMatrix);
 
                         Matrix4f destMatrix = new Matrix4f();
@@ -1202,40 +1132,16 @@ public enum DatParser {
             }
             // [ERROR] Check identical vertices
             while (true) {
-                boolean numberError = false;
-                // Start vertex
                 try {
+                    // Start vertex
                     start.setX(new BigDecimal(data_segments[2], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     start.setY(new BigDecimal(data_segments[3], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     start.setZ(new BigDecimal(data_segments[4], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                // End vertex
-                try {
+                    // End vertex
                     end.setX(new BigDecimal(data_segments[5], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     end.setY(new BigDecimal(data_segments[6], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     end.setZ(new BigDecimal(data_segments[7], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                if (numberError) {
                     result.add(new ParsingResult("Invalid number format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                     break;
                 }
@@ -1284,56 +1190,20 @@ public enum DatParser {
             }
             // [ERROR] Check identical vertices
             while (true) {
-                boolean numberError = false;
-                // 1st vertex
                 try {
+                    // 1st vertex
                     vertexA.setX(new BigDecimal(data_segments[2], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexA.setY(new BigDecimal(data_segments[3], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexA.setZ(new BigDecimal(data_segments[4], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                // 2nd vertex
-                try {
+                    // 2nd vertex
                     vertexB.setX(new BigDecimal(data_segments[5], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexB.setY(new BigDecimal(data_segments[6], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexB.setZ(new BigDecimal(data_segments[7], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                // 3rd vertex
-                try {
+                    // 3rd vertex
                     vertexC.setX(new BigDecimal(data_segments[8], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexC.setY(new BigDecimal(data_segments[9], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexC.setZ(new BigDecimal(data_segments[10], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                if (numberError) {
                     result.add(new ParsingResult("Invalid number format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                     break;
                 }
@@ -1396,72 +1266,24 @@ public enum DatParser {
             // [ERROR] Check hourglass, concave form, coplanarity & identical
             // vertices
             while (true) {
-                boolean numberError = false;
-                // 1st vertex
                 try {
+                    // 1st vertex
                     vertexA.setX(new BigDecimal(data_segments[2], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexA.setY(new BigDecimal(data_segments[3], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexA.setZ(new BigDecimal(data_segments[4], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                // 2nd vertex
-                try {
+                    // 2nd vertex
                     vertexB.setX(new BigDecimal(data_segments[5], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexB.setY(new BigDecimal(data_segments[6], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexB.setZ(new BigDecimal(data_segments[7], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                // 3rd vertex
-                try {
+                    // 3rd vertex
                     vertexC.setX(new BigDecimal(data_segments[8], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexC.setY(new BigDecimal(data_segments[9], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexC.setZ(new BigDecimal(data_segments[10], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                // 4th vertex
-                try {
+                    // 4th vertex
                     vertexD.setX(new BigDecimal(data_segments[11], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexD.setY(new BigDecimal(data_segments[12], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     vertexD.setZ(new BigDecimal(data_segments[13], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                if (numberError) {
                     result.add(new ParsingResult("Invalid number format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                     break;
                 }
@@ -1624,72 +1446,24 @@ public enum DatParser {
             }
             // [ERROR] Check identical vertices
             while (true) {
-                boolean numberError = false;
-                // start vertex
                 try {
+                    // start vertex
                     start.setX(new BigDecimal(data_segments[2], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     start.setY(new BigDecimal(data_segments[3], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     start.setZ(new BigDecimal(data_segments[4], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                // end vertex
-                try {
+                    // end vertex
                     end.setX(new BigDecimal(data_segments[5], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     end.setY(new BigDecimal(data_segments[6], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     end.setZ(new BigDecimal(data_segments[7], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                // control vertex I
-                try {
+                    // control vertex I
                     controlI.setX(new BigDecimal(data_segments[8], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     controlI.setY(new BigDecimal(data_segments[9], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     controlI.setZ(new BigDecimal(data_segments[10], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                // control vertex II
-                try {
+                    // control vertex II
                     controlII.setX(new BigDecimal(data_segments[11], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     controlII.setY(new BigDecimal(data_segments[12], Threshold.mc));
-                } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                try {
                     controlII.setZ(new BigDecimal(data_segments[13], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    numberError = true;
-                }
-                if (numberError) {
                     result.add(new ParsingResult("Invalid number format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                     break;
                 }

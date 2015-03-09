@@ -18487,7 +18487,7 @@ public class VertexManager {
 
                                         Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
                                         ((CompositeTab) t).getState().setSync(true);
-                                        if (isModified()) {
+                                        if (isModified() && txt != null) {
                                             ((CompositeTab) t).getTextComposite().setText(txt);
                                         }
                                         ((CompositeTab) t).getTextComposite().setTopIndex(ti);
