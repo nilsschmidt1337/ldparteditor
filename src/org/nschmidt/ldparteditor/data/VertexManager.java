@@ -19011,7 +19011,7 @@ public class VertexManager {
         return result;
     }
 
-    public void reloadSubfile(GData1 g) {
+    public GData1 reloadSubfile(GData1 g) {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
         HeaderState.state().setState(HeaderState._99_DONE);
         // Clear the cache..
@@ -19031,6 +19031,7 @@ public class VertexManager {
         if (oldNumber != null)
             drawPerLine.put(oldNumber, reloadedSubfile);
         remove(g);
+        return reloadedSubfile;
     }
 
 

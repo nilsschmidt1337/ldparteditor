@@ -153,17 +153,6 @@ public enum SubfileCompiler {
         lineNumbers.addAll(keys);
         Collections.sort(lineNumbers);
 
-        for (Integer l : lineNumbers) {
-            SubfileCompiler.compile(l, datFile);
-        }
-
-        matrixInvStack.clear();
-        matrixProdStack.clear();
-        nameStack.clear();
-        colourStack.clear();
-        builderStack.clear();
-        toFolderStack.clear();
-
         VertexManager vm = datFile.getVertexManager();
         for (Integer l : lineNumbers) {
             GData gd = datFile.getDrawPerLine_NOCLONE().getValue(l);
@@ -223,12 +212,38 @@ public enum SubfileCompiler {
                         }
                     }
                 }
-                vm.reloadSubfile((GData1) gd);
             }
         }
 
-        vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
-        vm.getSelectedSubfiles().clear();
+        for (Integer l : lineNumbers) {
+            SubfileCompiler.compile(l, datFile);
+        }
+
+        matrixInvStack.clear();
+        matrixProdStack.clear();
+        nameStack.clear();
+        colourStack.clear();
+        builderStack.clear();
+        toFolderStack.clear();
+
+        for (Integer l : lineNumbers) {
+            GData gd = datFile.getDrawPerLine_NOCLONE().getValue(l);
+            int type = gd.type();
+            if (type == 1) {
+                if (vm.getSelectedSubfiles().contains(gd)) {
+                    vm.getSelectedData().remove(gd);
+                    vm.getSelectedSubfiles().remove(gd);
+                    GData1 ns = vm.reloadSubfile((GData1) gd);
+                    vm.getSelectedData().add(ns);
+                    vm.getSelectedSubfiles().add(ns);
+                } else {
+                    vm.reloadSubfile((GData1) gd);
+                }
+
+            }
+        }
+
+        if (!vm.getSelectedSubfiles().isEmpty()) vm.selectSubfiles(null, null, false);
 
         builder = null;
         Editor3DWindow.getWindow().updateTree_unsavedEntries();
@@ -247,7 +262,11 @@ public enum SubfileCompiler {
         //        } else {
         //            NLogger.debug(SubfileCompiler.class, "Compiling: " + gd.toString()); //$NON-NLS-1$
         //        }
-
+        if (gd.getNext() == null && type != 0 && !toFolderStack.isEmpty() && !skipCompile) {
+            builder.append(gd.transformAndColourReplace(colour, matrixInv));
+            builder.append(StringHelper.getLineDelimiter());
+            type = 0;
+        }
         switch (type) {
         case 0:
             String line = gd.toString();
@@ -339,7 +358,7 @@ public enum SubfileCompiler {
             } else if ( // Check for INLINE_END
                     (gd.getNext() == null ||
                     data_segments.length == 3 && data_segments[2].equals("INLINE_END") && //$NON-NLS-1$
-                    data_segments[1].equals("!LPE")) && !toFolderStack.isEmpty()) { //$NON-NLS-1$
+                    data_segments[1].equals("!LPE")) && !toFolderStack.isEmpty() && !skipCompile) { //$NON-NLS-1$
 
                 String targetPath;
                 if (toFolderStack.peek()) {
