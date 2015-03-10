@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 
 /**
@@ -51,8 +52,10 @@ class CoordinatesDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    CoordinatesDesign(Shell parentShell) {
+    final Vertex v;
+    CoordinatesDesign(Shell parentShell, Vertex v) {
         super(parentShell);
+        this.v = v;
     }
 
     /**
@@ -88,7 +91,7 @@ class CoordinatesDesign extends Dialog {
             spn_X.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spn_X.setMaximum(new BigDecimal(1000000));
             spn_X.setMinimum(new BigDecimal(-1000000));
-            spn_X.setValue(new BigDecimal(0));
+            spn_X.setValue(v.X);
         }
 
         {
@@ -106,7 +109,7 @@ class CoordinatesDesign extends Dialog {
             spn_Y.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spn_Y.setMaximum(new BigDecimal(1000000));
             spn_Y.setMinimum(new BigDecimal(-1000000));
-            spn_Y.setValue(new BigDecimal(0));
+            spn_Y.setValue(v.Y);
         }
 
         {
@@ -124,7 +127,7 @@ class CoordinatesDesign extends Dialog {
             spn_Z.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spn_Z.setMaximum(new BigDecimal(1000000));
             spn_Z.setMinimum(new BigDecimal(-1000000));
-            spn_Z.setValue(new BigDecimal(0));
+            spn_Z.setValue(v.Z);
         }
 
         cmp_container.pack();

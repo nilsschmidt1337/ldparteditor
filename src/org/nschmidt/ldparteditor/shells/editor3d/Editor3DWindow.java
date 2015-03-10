@@ -3023,9 +3023,14 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                        if (new CoordinatesDialog(getShell()).open() == IDialogConstants.OK_ID) {
-                            VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                            vm.setXYZ(CoordinatesDialog.getVertex(), CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ());
+                        Vertex v = null;
+                        final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        final Set<Vertex> sv = vm.getSelectedVertices();
+                        if (sv.size() == 1) {
+                            v = sv.iterator().next();
+                        }
+                        if (new CoordinatesDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
+                            vm.setXYZ(CoordinatesDialog.getVertex(), CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), true);
                         }
                         return;
                     }

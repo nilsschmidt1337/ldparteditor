@@ -44,12 +44,16 @@ public class CoordinatesDialog extends CoordinatesDesign {
      *
      * @param parentShell
      */
-    public CoordinatesDialog(Shell parentShell) {
-        super(parentShell);
+    public CoordinatesDialog(Shell parentShell, Vertex v) {
+        super(parentShell, v);
         x = true;
         y = true;
         z = true;
-        vertex = new Vertex(0f, 0f, 0f);
+        if (v == null) {
+            vertex = new Vertex(0f, 0f, 0f);
+        } else {
+            vertex = new Vertex(v.X, v.Y, v.Z);
+        }
     }
 
     @Override
@@ -75,6 +79,18 @@ public class CoordinatesDialog extends CoordinatesDesign {
             }
         });
         spn_X[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+            }
+        });
+        spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+            }
+        });
+        spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
                 vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
