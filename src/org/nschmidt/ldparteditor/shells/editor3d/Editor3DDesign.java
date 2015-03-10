@@ -205,6 +205,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_MergeToNearestVertex = new MenuItem[1];
     final MenuItem[] mntm_MergeToNearestEdge = new MenuItem[1];
     final MenuItem[] mntm_MergeToNearestFace = new MenuItem[1];
+    final MenuItem[] mntm_setXYZ = new MenuItem[1];
 
     final Text[] txt_Search = new Text[1];
     final Button[] btn_ResetSearch = new Button[1];
@@ -880,6 +881,13 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_MergeToNearestFace[0] = mntm_mergeTo;
                     mntm_mergeTo.setText("Merge To Nearest Face"); //$NON-NLS-1$ I18N
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator4 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_setXYZ = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_setXYZ[0] = mntm_setXYZ;
+                    mntm_setXYZ.setText("Set X/Y/Z (for Selection)"); //$NON-NLS-1$ I18N
                 }
             }
             {

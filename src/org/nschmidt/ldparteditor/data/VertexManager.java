@@ -7650,7 +7650,6 @@ public class VertexManager {
 
     public void zoomToFit(Composite3D c3d) {
         final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
-        // TODO zoomToFit() Needs implementation!
         float max_x = 0f;
         float max_y = 0f;
         for (Vertex v : getVertices()) {
@@ -7659,19 +7658,16 @@ public class VertexManager {
             if (ax > max_x) max_x = ax;
             if (ay > max_y) max_y = ay;
         }
-
+        Matrix4f id = new Matrix4f();
+        Matrix4f.setIdentity(id);
+        c3d.getTranslation().load(id);
         Rectangle b = c3d.getBounds();
-
-        float zoom = 1f;
-
         if (max_x > max_y) {
             c3d.setZoom(b.width / (max_x * 4f * View.PIXEL_PER_LDU));
         } else {
             c3d.setZoom(b.height / (max_y * 4f * View.PIXEL_PER_LDU));
         }
-        zoom = c3d.getZoom();
-        pc.setZoom_exponent((float) (Math.log10(zoom) + 3f) * 10f);
-        // c3d.setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
+        pc.setZoom_exponent((float) (Math.log10(c3d.getZoom()) + 3f) * 10f);
         c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
         GuiManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();
@@ -19141,5 +19137,14 @@ public class VertexManager {
 
     public void setUncompiled(boolean uncompiled) {
         this.uncompiled = uncompiled;
+    }
+
+    public void setXYZ(Vertex vertex, boolean x, boolean y, boolean z) {
+        // FIXME Auto-generated method stub
+
+        if (linkedDatFile.isReadOnly()) return;
+
+
+
     }
 }

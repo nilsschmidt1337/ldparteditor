@@ -83,6 +83,7 @@ import org.nschmidt.ldparteditor.dialogs.newproject.NewProjectDialog;
 import org.nschmidt.ldparteditor.dialogs.pathtruder.PathTruderDialog;
 import org.nschmidt.ldparteditor.dialogs.rectifier.RectifierDialog;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
+import org.nschmidt.ldparteditor.dialogs.setcoordinates.CoordinatesDialog;
 import org.nschmidt.ldparteditor.dialogs.slicerpro.SlicerProDialog;
 import org.nschmidt.ldparteditor.dialogs.symsplitter.SymSplitterDialog;
 import org.nschmidt.ldparteditor.dialogs.txt2dat.Txt2DatDialog;
@@ -3010,6 +3011,22 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.merge(MergeTo.NEAREST_FACE, true);
+                        return;
+                    }
+                }
+            }
+        });
+
+        mntm_setXYZ[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        if (new CoordinatesDialog(getShell()).open() == IDialogConstants.OK_ID) {
+                            VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                            vm.setXYZ(CoordinatesDialog.getVertex(), CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ());
+                        }
                         return;
                     }
                 }

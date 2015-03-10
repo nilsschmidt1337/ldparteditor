@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * The rounding precision dialog
+ * The new file dialog
  * <p>
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
