@@ -17,9 +17,12 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -48,6 +51,20 @@ public enum GuiManager {
             sb.append(c3d.getPerspectiveCalculator().getPerspectiveString(c3d.getPerspectiveIndex()));
             sb.append("] "); //$NON-NLS-1$
         }
+
+        final VertexManager vm = c3d.getVertexManager();
+        final Set<Vertex> vs;
+        if ((vs = vm.getSelectedVertices()).size() == 1) {
+            sb.append(" Vertex @  ["); //$NON-NLS-1$
+            Vertex v = vs.iterator().next();
+            sb.append(df.format(v.X.multiply(View.unit_factor)));
+            sb.append("; "); //$NON-NLS-1$
+            sb.append(df.format(v.Y.multiply(View.unit_factor)));
+            sb.append("; "); //$NON-NLS-1$
+            sb.append(df.format(v.Z.multiply(View.unit_factor)));
+            sb.append("]"); //$NON-NLS-1$
+        }
+
         sb.append(" "); //$NON-NLS-1$
         sb.append(c3d.getLockableDatFileReference().getShortName());
         sb.append(", "); //$NON-NLS-1$
