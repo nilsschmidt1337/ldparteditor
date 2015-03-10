@@ -2335,15 +2335,12 @@ public class VertexManager {
                     for (VertexManifestation vm : occurences) {
                         GData g = vm.getGdata();
                         int val = 1;
-                        int type = g.type();
                         if (occurMap.containsKey(g)) {
                             val = occurMap.get(g);
                             val++;
-                            occurMap.put(g, val);
-                        } else {
-                            occurMap.put(g, val);
                         }
-                        switch (type) {
+                        occurMap.put(g, val);
+                        switch (g.type()) {
                         case 2:
                             GData2 line = (GData2) g;
                             if (val == 2) {
@@ -4346,12 +4343,9 @@ public class VertexManager {
                         if (occurMap.containsKey(g)) {
                             val = occurMap.get(g);
                             val++;
-                            occurMap.put(g, val);
-                        } else {
-                            occurMap.put(g, val);
                         }
-                        int type = g.type();
-                        switch (type) {
+                        occurMap.put(g, val);
+                        switch (g.type()) {
                         case 0:
                             GData0 meta = (GData0) g;
                             boolean idCheck = !lineLinkedToVertices.containsKey(meta);
@@ -6462,12 +6456,9 @@ public class VertexManager {
                         if (occurMap.containsKey(g)) {
                             val = occurMap.get(g);
                             val++;
-                            occurMap.put(g, val);
-                        } else {
-                            occurMap.put(g, val);
                         }
-                        int type = g.type();
-                        switch (type) {
+                        occurMap.put(g, val);
+                        switch (g.type()) {
                         case 0:
                             GData0 meta = (GData0) g;
                             boolean idCheck = !lineLinkedToVertices.containsKey(meta);
@@ -7731,12 +7722,9 @@ public class VertexManager {
                         if (occurMap.containsKey(g)) {
                             val = occurMap.get(g);
                             val++;
-                            occurMap.put(g, val);
-                        } else {
-                            occurMap.put(g, val);
                         }
-                        int type = g.type();
-                        switch (type) {
+                        occurMap.put(g, val);
+                        switch (g.type()) {
                         case 0:
                             GData0 meta = (GData0) g;
                             boolean idCheck = !lineLinkedToVertices.containsKey(meta);
@@ -19193,61 +19181,32 @@ public class VertexManager {
                         if (occurMap.containsKey(g)) {
                             val = occurMap.get(g);
                             val++;
-                            occurMap.put(g, val);
-                        } else {
-                            occurMap.put(g, val);
                         }
-                        int type = g.type();
-                        switch (type) {
+                        occurMap.put(g, val);
+                        switch (g.type()) {
                         case 0:
                             GData0 meta = (GData0) g;
                             boolean idCheck = !lineLinkedToVertices.containsKey(meta);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 1) {
-                                if (!idCheck) {
-                                    effSelectedVertices.add(meta);
-                                }
+                            if (val == 1 && !idCheck) {
+                                effSelectedVertices.add(meta);
                             }
                             break;
                         case 2:
                             GData2 line = (GData2) g;
-                            idCheck = !line.parent.equals(View.DUMMY_REFERENCE);
-                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 2) {
-                                if (!idCheck) {
-                                    selectedLines.add(line);
-                                }
-                            }
+                            isPureSubfileVertex = isPureSubfileVertex && !line.parent.equals(View.DUMMY_REFERENCE);
                             break;
                         case 3:
                             GData3 triangle = (GData3) g;
-                            idCheck = !triangle.parent.equals(View.DUMMY_REFERENCE);
-                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 3) {
-                                if (!idCheck) {
-                                    selectedTriangles.add(triangle);
-                                }
-                            }
+                            isPureSubfileVertex = isPureSubfileVertex && !triangle.parent.equals(View.DUMMY_REFERENCE);
                             break;
                         case 4:
                             GData4 quad = (GData4) g;
-                            idCheck = !quad.parent.equals(View.DUMMY_REFERENCE);
-                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 4) {
-                                if (!idCheck) {
-                                    selectedQuads.add(quad);
-                                }
-                            }
+                            isPureSubfileVertex = isPureSubfileVertex && !quad.parent.equals(View.DUMMY_REFERENCE);
                             break;
                         case 5:
                             GData5 condline = (GData5) g;
-                            idCheck = !condline.parent.equals(View.DUMMY_REFERENCE);
-                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 4) {
-                                if (!idCheck) {
-                                    selectedCondlines.add(condline);
-                                }
-                            }
+                            isPureSubfileVertex = isPureSubfileVertex && !condline.parent.equals(View.DUMMY_REFERENCE);
                             break;
                         }
                     }
@@ -19370,6 +19329,7 @@ public class VertexManager {
                 selectedData.addAll(selectedCondlines);
                 selectedData.addAll(selectedSubfiles);
 
+                IdenticalVertexRemover.removeIdenticalVertices(this, false);
                 if (syncWithTextEditors) syncWithTextEditors();
                 updateUnsavedStatus();
             }
