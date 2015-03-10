@@ -52,10 +52,14 @@ class CoordinatesDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    final Vertex v;
+    Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     CoordinatesDesign(Shell parentShell, Vertex v) {
         super(parentShell);
-        this.v = v;
+        if (v == null) {
+            this.v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+        } else {
+            this.v = v;
+        }
     }
 
     /**
