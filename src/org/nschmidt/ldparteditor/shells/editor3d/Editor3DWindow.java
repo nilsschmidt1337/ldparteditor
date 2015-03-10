@@ -82,10 +82,13 @@ import org.nschmidt.ldparteditor.dialogs.lines2pattern.Lines2PatternDialog;
 import org.nschmidt.ldparteditor.dialogs.newproject.NewProjectDialog;
 import org.nschmidt.ldparteditor.dialogs.pathtruder.PathTruderDialog;
 import org.nschmidt.ldparteditor.dialogs.rectifier.RectifierDialog;
+import org.nschmidt.ldparteditor.dialogs.rotate.RotateDialog;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
+import org.nschmidt.ldparteditor.dialogs.scale.ScaleDialog;
 import org.nschmidt.ldparteditor.dialogs.setcoordinates.CoordinatesDialog;
 import org.nschmidt.ldparteditor.dialogs.slicerpro.SlicerProDialog;
 import org.nschmidt.ldparteditor.dialogs.symsplitter.SymSplitterDialog;
+import org.nschmidt.ldparteditor.dialogs.translate.TranslateDialog;
 import org.nschmidt.ldparteditor.dialogs.txt2dat.Txt2DatDialog;
 import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
@@ -3031,6 +3034,69 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                         if (new CoordinatesDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
                             vm.setXYZ(CoordinatesDialog.getVertex(), CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), true);
+                        }
+                        return;
+                    }
+                }
+            }
+        });
+
+        mntm_Translate[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        Vertex v = null;
+                        final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        final Set<Vertex> sv = vm.getSelectedVertices();
+                        if (sv.size() == 1) {
+                            v = sv.iterator().next();
+                        }
+                        if (new TranslateDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
+                            // FIXME Needs implementation!
+                        }
+                        return;
+                    }
+                }
+            }
+        });
+
+        mntm_Rotate[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        Vertex v = null;
+                        final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        final Set<Vertex> sv = vm.getSelectedVertices();
+                        if (sv.size() == 1) {
+                            v = sv.iterator().next();
+                        }
+                        if (new RotateDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
+                            // FIXME Needs implementation!
+                        }
+                        return;
+                    }
+                }
+            }
+        });
+
+        mntm_Scale[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        Vertex v = null;
+                        final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        final Set<Vertex> sv = vm.getSelectedVertices();
+                        if (sv.size() == 1) {
+                            v = sv.iterator().next();
+                        }
+                        if (new ScaleDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
+                            // FIXME Needs implementation!
                         }
                         return;
                     }

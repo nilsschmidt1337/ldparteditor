@@ -205,7 +205,11 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_MergeToNearestVertex = new MenuItem[1];
     final MenuItem[] mntm_MergeToNearestEdge = new MenuItem[1];
     final MenuItem[] mntm_MergeToNearestFace = new MenuItem[1];
+
     final MenuItem[] mntm_setXYZ = new MenuItem[1];
+    final MenuItem[] mntm_Translate = new MenuItem[1];
+    final MenuItem[] mntm_Rotate = new MenuItem[1];
+    final MenuItem[] mntm_Scale = new MenuItem[1];
 
     final Text[] txt_Search = new Text[1];
     final Button[] btn_ResetSearch = new Button[1];
@@ -888,6 +892,21 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_setXYZ = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_setXYZ[0] = mntm_setXYZ;
                     mntm_setXYZ.setText("Set X/Y/Z (for Selection)"); //$NON-NLS-1$ I18N
+                }
+                {
+                    MenuItem mntm_Translate = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_Translate[0] = mntm_Translate;
+                    mntm_Translate.setText("Translate Selection"); //$NON-NLS-1$ I18N
+                }
+                {
+                    MenuItem mntm_Rotate = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_Rotate[0] = mntm_Rotate;
+                    mntm_Rotate.setText("Rotate Selection"); //$NON-NLS-1$ I18N
+                }
+                {
+                    MenuItem mntm_Scale = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_Scale[0] = mntm_Scale;
+                    mntm_Scale.setText("Scale Selection"); //$NON-NLS-1$ I18N
                 }
             }
             {
