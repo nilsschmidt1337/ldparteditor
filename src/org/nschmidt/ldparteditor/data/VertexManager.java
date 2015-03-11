@@ -4565,7 +4565,7 @@ public class VertexManager {
      * @param moveAdjacentData
      */
     private void transform(Set<GData> allData, Set<Vertex> allVertices, Matrix transformation, boolean updateSelection, boolean moveAdjacentData) {
-        HashSet<Vertex> verticesToTransform = new HashSet<Vertex>();
+        TreeSet<Vertex> verticesToTransform = new TreeSet<Vertex>();
         verticesToTransform.addAll(allVertices);
         for (GData gd : allData) {
             Set<VertexInfo> vis = lineLinkedToVertices.get(gd);
@@ -4610,6 +4610,14 @@ public class VertexManager {
             }
         }
         // Transform the data
+        if (updateSelection) {
+            selectedVertices.clear();
+            selectedData.clear();
+            selectedLines.clear();
+            selectedTriangles.clear();
+            selectedQuads.clear();
+            selectedCondlines.clear();
+        }
         HashSet<GData> allNewData = new HashSet<GData>();
         for (GData gd : allData) {
             GData newData = null;
@@ -4633,7 +4641,7 @@ public class VertexManager {
                     Vertex v1 = oldToNewVertex.get(verts[0]);
                     Vertex v2 = oldToNewVertex.get(verts[1]);
                     if (v1 == null) v1 = verts[0]; else avc++;
-                    if (v2 == null) v1 = verts[1]; else avc++;
+                    if (v2 == null) v2 = verts[1]; else avc++;
                     if (!moveAdjacentData && avc != 2) continue;
                     GData2 g2 = (GData2) gd;
                     newData = new GData2(g2.colourNumber, g2.r, g2.g, g2.b, g2.a, v1, v2, g2.parent, linkedDatFile);
@@ -4649,8 +4657,8 @@ public class VertexManager {
                     Vertex v2 = oldToNewVertex.get(verts[1]);
                     Vertex v3 = oldToNewVertex.get(verts[2]);
                     if (v1 == null) v1 = verts[0]; else avc++;
-                    if (v2 == null) v1 = verts[1]; else avc++;
-                    if (v3 == null) v1 = verts[2]; else avc++;
+                    if (v2 == null) v2 = verts[1]; else avc++;
+                    if (v3 == null) v3 = verts[2]; else avc++;
                     if (!moveAdjacentData && avc != 3) continue;
                     GData3 g3 = (GData3) gd;
                     newData = new GData3(g3.colourNumber, g3.r, g3.g, g3.b, g3.a, v1, v2, v3, g3.parent, linkedDatFile);
@@ -4667,9 +4675,9 @@ public class VertexManager {
                     Vertex v3 = oldToNewVertex.get(verts[2]);
                     Vertex v4 = oldToNewVertex.get(verts[3]);
                     if (v1 == null) v1 = verts[0]; else avc++;
-                    if (v2 == null) v1 = verts[1]; else avc++;
-                    if (v3 == null) v1 = verts[2]; else avc++;
-                    if (v4 == null) v1 = verts[3]; else avc++;
+                    if (v2 == null) v2 = verts[1]; else avc++;
+                    if (v3 == null) v3 = verts[2]; else avc++;
+                    if (v4 == null) v4 = verts[3]; else avc++;
                     if (!moveAdjacentData && avc != 4) continue;
                     GData4 g4 = (GData4) gd;
                     newData = new GData4(g4.colourNumber, g4.r, g4.g, g4.b, g4.a, v1, v2, v3, v4, g4.parent, linkedDatFile);
@@ -4686,9 +4694,9 @@ public class VertexManager {
                     Vertex v3 = oldToNewVertex.get(verts[2]);
                     Vertex v4 = oldToNewVertex.get(verts[3]);
                     if (v1 == null) v1 = verts[0]; else avc++;
-                    if (v2 == null) v1 = verts[1]; else avc++;
-                    if (v3 == null) v1 = verts[2]; else avc++;
-                    if (v4 == null) v1 = verts[3]; else avc++;
+                    if (v2 == null) v2 = verts[1]; else avc++;
+                    if (v3 == null) v3 = verts[2]; else avc++;
+                    if (v4 == null) v4 = verts[3]; else avc++;
                     if (!moveAdjacentData && avc != 4) continue;
                     GData5 g5 = (GData5) gd;
                     newData = new GData5(g5.colourNumber, g5.r, g5.g, g5.b, g5.a, v1, v2, v3, v4, g5.parent, linkedDatFile);
@@ -4702,31 +4710,40 @@ public class VertexManager {
                 linker(gd, newData);
                 allNewData.add(newData);
                 setModified_NoSync();
+                if (updateSelection) {
+                    switch (newData.type()) {
+                    case 2:
+                        if (verticesCountPerGData.get(gd) != 2) continue;
+                        selectedLines.add((GData2) newData);
+                        break;
+                    case 3:
+                        if (verticesCountPerGData.get(gd) != 3) continue;
+                        selectedTriangles.add((GData3) newData);
+                        break;
+                    case 4:
+                        if (verticesCountPerGData.get(gd) != 4) continue;
+                        selectedQuads.add((GData4) newData);
+                        break;
+                    case 5:
+                        if (verticesCountPerGData.get(gd) != 4) continue;
+                        selectedCondlines.add((GData5) newData);
+                        break;
+                    default:
+                        continue;
+                    }
+                    selectedData.add(newData);
+                }
             }
         }
         if (updateSelection) {
-            selectedData.clear();
-            selectedLines.clear();
-            selectedTriangles.clear();
-            selectedQuads.clear();
-            selectedCondlines.clear();
-            for (GData gd : allNewData) {
-                selectedData.add(gd);
-                switch (gd.type()) {
-                case 2:
-                    selectedLines.add((GData2) gd);
-                    break;
-                case 3:
-                    selectedTriangles.add((GData3) gd);
-                    break;
-                case 4:
-                    selectedQuads.add((GData4) gd);
-                    break;
-                case 5:
-                    selectedCondlines.add((GData5) gd);
-                    break;
-                default:
-                    continue;
+            for (Vertex v : oldToNewVertex.keySet()) {
+                Vertex nv = oldToNewVertex.get(v);
+                if (v != null) {
+                    if (vertexLinkedToPositionInFile.containsKey(v)) {
+                        selectedVertices.add(nv);
+                    } else {
+                        selectedVertices.add(v);
+                    }
                 }
             }
         }
