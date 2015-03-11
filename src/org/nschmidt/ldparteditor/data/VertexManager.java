@@ -60,6 +60,7 @@ import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
 import org.nschmidt.ldparteditor.data.tools.Merger;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.Threshold;
+import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
@@ -19127,9 +19128,28 @@ public class VertexManager {
         this.uncompiled = uncompiled;
     }
 
-    public void setXYZ(Vertex target, boolean x, boolean y, boolean z, boolean syncWithTextEditors) {
+    public void setXyzOrTranslateOrTransform(Vertex target, Vertex pivot, TransformationMode tm, boolean x, boolean y, boolean z, boolean syncWithTextEditors) {
         if (linkedDatFile.isReadOnly())
             return;
+
+        Matrix transformation = null;
+
+        // FIXME Transformation matrix needs to be set!
+        switch (tm) {
+        case ROTATE:
+            break;
+        case SCALE:
+            break;
+        case SET:
+            break;
+        case TRANSLATE:
+            break;
+        default:
+            break;
+        }
+
+        Vertex offset = null;
+        if (tm == TransformationMode.TRANSLATE) offset = new Vertex(target.X, target.Y, target.Z);
 
         final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
@@ -19274,6 +19294,17 @@ public class VertexManager {
                 setModified_NoSync();
             }
             for (Vertex vOld : singleVertices) {
+                switch (tm) {
+                case ROTATE:
+                case SCALE:
+                    target = new Vertex(transformation.transform(new Vector3d(vOld)));
+                    break;
+                case SET:
+                    break;
+                case TRANSLATE:
+                    target = new Vertex(vOld.X.add(offset.X), vOld.Y.add(offset.Y), vOld.Z.add(offset.Z));
+                    break;
+                }
                 Vertex vNew;
                 if (x) {
                     if (y) {
@@ -19308,6 +19339,10 @@ public class VertexManager {
                 selectedVertices.add(vNew);
             }
 
+            if ((tm == TransformationMode.TRANSLATE || tm == TransformationMode.SCALE || tm == TransformationMode.ROTATE) && !selectedSubfiles.isEmpty()) {
+                // FIXME Subfile transformation needs implementation!
+            }
+
             selectedSubfiles.clear();
 
             if (isModified()) {
@@ -19335,20 +19370,5 @@ public class VertexManager {
             }
             selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
         }
-    }
-
-    public void translate(Vertex offset, boolean x, boolean y, boolean z, boolean b) {
-        // FIXME Auto-generated method stub
-
-    }
-
-    public void rotate(Vertex angles, Vertex pivot, boolean x, boolean y, boolean z, boolean b) {
-        // FIXME Auto-generated method stub
-
-    }
-
-    public void scale(Vertex scaleFactors, Vertex pivot, boolean x, boolean y, boolean z, boolean b) {
-        // FIXME Auto-generated method stub
-
     }
 }

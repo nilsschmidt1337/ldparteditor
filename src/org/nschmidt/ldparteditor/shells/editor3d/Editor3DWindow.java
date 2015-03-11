@@ -97,6 +97,7 @@ import org.nschmidt.ldparteditor.enums.GLPrimitives;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
+import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
@@ -3033,7 +3034,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             v = sv.iterator().next();
                         }
                         if (new CoordinatesDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
-                            vm.setXYZ(CoordinatesDialog.getVertex(), CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), true);
+                            vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), true);
                         }
                         return;
                     }
@@ -3048,7 +3049,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         if (new TranslateDialog(getShell(), null).open() == IDialogConstants.OK_ID) {
-                            c3d.getLockableDatFileReference().getVertexManager().translate(TranslateDialog.getOffset(), TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), true);
+                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(TranslateDialog.getOffset(), null, TransformationMode.TRANSLATE, TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), true);
                         }
                         return;
                     }
@@ -3063,7 +3064,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         if (new RotateDialog(getShell(), null).open() == IDialogConstants.OK_ID) {
-                            c3d.getLockableDatFileReference().getVertexManager().rotate(RotateDialog.getAngles(), RotateDialog.getPivot(), RotateDialog.isX(), RotateDialog.isY(), TranslateDialog.isZ(), true);
+                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), TranslateDialog.isZ(), true);
                         }
                         return;
                     }
@@ -3078,7 +3079,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         if (new ScaleDialog(getShell(), null).open() == IDialogConstants.OK_ID) {
-                            c3d.getLockableDatFileReference().getVertexManager().scale(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), true);
+                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), TransformationMode.SCALE, ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), true);
                         }
                         return;
                     }
