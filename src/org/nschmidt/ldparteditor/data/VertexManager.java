@@ -15,8 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
-import static org.nschmidt.ldparteditor.helpers.math.MathHelper.cast;
-
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -4483,11 +4481,15 @@ public class VertexManager {
             // 3. Transformation of the selected data (no whole subfiles!!)
             // + selectedData update!
 
-            transformGData(GData2.class, transformation, moveAdjacentData);
-            transformGData(GData3.class, transformation, moveAdjacentData);
-            transformGData(GData4.class, transformation, moveAdjacentData);
-            transformGData(GData5.class, transformation, moveAdjacentData);
-            transformVertices(transformation, moveAdjacentData);
+
+            HashSet<GData> allData = new HashSet<GData>();
+            allData.addAll(selectedLines);
+            allData.addAll(selectedTriangles);
+            allData.addAll(selectedQuads);
+            allData.addAll(selectedCondlines);
+            HashSet<Vertex> allVertices = new HashSet<Vertex>();
+            allVertices.addAll(selectedVertices);
+            transform(allData, allVertices, transformation, true, moveAdjacentData);
 
             // 4. Subfile Based Transformation & Selection
             if (!selectedSubfiles.isEmpty()) {
@@ -4555,192 +4557,179 @@ public class VertexManager {
         }
     }
 
-    private <T> void transformGData(Class<T> cls, Matrix transformation, boolean moveAdjacentData) {
-        int type = 0;
-        if (cls == GData2.class)
-            type = 2;
-        else if (cls == GData3.class)
-            type = 3;
-        else if (cls == GData4.class)
-            type = 4;
-        else if (cls == GData5.class)
-            type = 5;
-        else
-            return;
-        GData newObj = null;
-        T newObjT;
-        Set<T> newData = new HashSet<T>();
-        Set<T> dataToIterate = null;
-        switch (type) {
-        case 2:
-            dataToIterate = cast(selectedLines);
-            break;
-        case 3:
-            dataToIterate = cast(selectedTriangles);
-            break;
-        case 4:
-            dataToIterate = cast(selectedQuads);
-            break;
-        case 5:
-            dataToIterate = cast(selectedCondlines);
-            break;
+    /**
+     * Transforms the selection (vertices or data)
+     * @param allData
+     * @param allVertices
+     * @param transformation
+     * @param moveAdjacentData
+     */
+    private void transform(Set<GData> allData, Set<Vertex> allVertices, Matrix transformation, boolean updateSelection, boolean moveAdjacentData) {
+        HashSet<Vertex> verticesToTransform = new HashSet<Vertex>();
+        verticesToTransform.addAll(allVertices);
+        for (GData gd : allData) {
+            Set<VertexInfo> vis = lineLinkedToVertices.get(gd);
+            if (vis != null) {
+                for (VertexInfo vi : vis) {
+                    allVertices.add(vi.vertex);
+                }
+            }
         }
-        for (T data : dataToIterate) {
-            // Move the selected, adjacent and non-subfile data itself
-            // OR Move only the selected, non-subfile data itself
-            boolean isNotInSubfile = lineLinkedToVertices.containsKey(data);
-            if (isNotInSubfile) {
-                Vertex[] newVerts = null;
-                Vertex[] verts = null;
-                switch (type) {
-                case 2:
-                    newVerts = new Vertex[2];
-                    verts = lines.get(data);
-                    break;
-                case 3:
-                    newVerts = new Vertex[3];
-                    verts = triangles.get(data);
-                    break;
-                case 4:
-                    newVerts = new Vertex[4];
-                    verts = quads.get(data);
-                    break;
-                case 5:
-                    newVerts = new Vertex[4];
-                    verts = condlines.get(data);
-                    break;
-                }
-                if (verts == null)
-                    continue;
-                int i = 0;
-                for (Vertex oldVertex : verts) {
-                    BigDecimal[] temp = transformation.transform(oldVertex.X, oldVertex.Y, oldVertex.Z);
-                    Vertex newVertex = new Vertex(temp[0], temp[1], temp[2]);
-                    if (moveAdjacentData) {
-                        Set<VertexManifestation> vms = new HashSet<VertexManifestation>(vertexLinkedToPositionInFile.get(oldVertex));
-                        for (VertexManifestation vm : vms) {
-                            adjacentMover(vm.getGdata(), oldVertex, newVertex);
-                        }
+        TreeMap<Vertex, Vertex> oldToNewVertex = new TreeMap<Vertex, Vertex>();
+        // Calculate the new vertex position
+        for (Vertex v : allVertices) {
+            BigDecimal[] temp = transformation.transform(v.X, v.Y, v.Z);
+            oldToNewVertex.put(v, new Vertex(temp[0], temp[1], temp[2]));
+        }
+        // Evaluate the adjacency
+        HashMap<GData, Integer> verticesCountPerGData = new HashMap<GData, Integer>();
+        for (Vertex v : allVertices) {
+            Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
+            if (manis == null) continue;
+            for (VertexManifestation m : manis) {
+                GData gd = m.getGdata();
+                if (lineLinkedToVertices.containsKey(gd)) {
+                    final int type = gd.type();
+                    switch (type) {
+                    case 0:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                        break;
+                    default:
+                        continue;
                     }
-                    newVerts[i] = newVertex;
-                    i++;
+                    if (verticesCountPerGData.containsKey(gd)) {
+                        verticesCountPerGData.put(gd, verticesCountPerGData.get(gd));
+                    } else {
+                        verticesCountPerGData.put(gd, 1);
+                    }
+                    allData.add(gd);
                 }
-                switch (type) {
-                case 2:
-                    GData2 d2 = (GData2) data;
-                    newObj = new GData2(d2.colourNumber, d2.r, d2.g, d2.b, d2.a, newVerts[0], newVerts[1], d2.parent, linkedDatFile);
-                    break;
-                case 3:
-                    GData3 d3 = (GData3) data;
-                    newObj = new GData3(d3.colourNumber, d3.r, d3.g, d3.b, d3.a, newVerts[0], newVerts[1], newVerts[2], d3.parent, linkedDatFile);
-                    break;
-                case 4:
-                    GData4 d4 = (GData4) data;
-                    newObj = new GData4(d4.colourNumber, d4.r, d4.g, d4.b, d4.a, newVerts[0], newVerts[1], newVerts[2], newVerts[3], d4.parent, linkedDatFile);
-                    break;
-                case 5:
-                    GData5 d5 = (GData5) data;
-                    newObj = new GData5(d5.colourNumber, d5.r, d5.g, d5.b, d5.a, newVerts[0], newVerts[1], newVerts[2], newVerts[3], d5.parent, linkedDatFile);
-                    break;
+            }
+        }
+        // Transform the data
+        HashSet<GData> allNewData = new HashSet<GData>();
+        for (GData gd : allData) {
+            GData newData = null;
+            final int type = gd.type();
+            switch (type) {
+            case 0:
+            {
+                Vertex[] verts = declaredVertices.get(gd);
+                if (verts != null) {
+                    Vertex v1 = oldToNewVertex.get(verts[0]);
+                    if (v1 == null) v1 = verts[0];
+                    newData = addVertex(v1);
                 }
-                newObjT = cast(newObj);
-                if (!newSelectedData.contains(data)) newData.add(newObjT);
-                linker((GData) data, newObj);
+            }
+            break;
+            case 2:
+            {
+                int avc = 0;
+                Vertex[] verts = lines.get(gd);
+                if (verts != null) {
+                    Vertex v1 = oldToNewVertex.get(verts[0]);
+                    Vertex v2 = oldToNewVertex.get(verts[1]);
+                    if (v1 == null) v1 = verts[0]; else avc++;
+                    if (v2 == null) v1 = verts[1]; else avc++;
+                    if (!moveAdjacentData && avc != 2) continue;
+                    GData2 g2 = (GData2) gd;
+                    newData = new GData2(g2.colourNumber, g2.r, g2.g, g2.b, g2.a, v1, v2, g2.parent, linkedDatFile);
+                }
+            }
+            break;
+            case 3:
+            {
+                int avc = 0;
+                Vertex[] verts = triangles.get(gd);
+                if (verts != null) {
+                    Vertex v1 = oldToNewVertex.get(verts[0]);
+                    Vertex v2 = oldToNewVertex.get(verts[1]);
+                    Vertex v3 = oldToNewVertex.get(verts[2]);
+                    if (v1 == null) v1 = verts[0]; else avc++;
+                    if (v2 == null) v1 = verts[1]; else avc++;
+                    if (v3 == null) v1 = verts[2]; else avc++;
+                    if (!moveAdjacentData && avc != 3) continue;
+                    GData3 g3 = (GData3) gd;
+                    newData = new GData3(g3.colourNumber, g3.r, g3.g, g3.b, g3.a, v1, v2, v3, g3.parent, linkedDatFile);
+                }
+            }
+            break;
+            case 4:
+            {
+                int avc = 0;
+                Vertex[] verts = quads.get(gd);
+                if (verts != null) {
+                    Vertex v1 = oldToNewVertex.get(verts[0]);
+                    Vertex v2 = oldToNewVertex.get(verts[1]);
+                    Vertex v3 = oldToNewVertex.get(verts[2]);
+                    Vertex v4 = oldToNewVertex.get(verts[3]);
+                    if (v1 == null) v1 = verts[0]; else avc++;
+                    if (v2 == null) v1 = verts[1]; else avc++;
+                    if (v3 == null) v1 = verts[2]; else avc++;
+                    if (v4 == null) v1 = verts[3]; else avc++;
+                    if (!moveAdjacentData && avc != 4) continue;
+                    GData4 g4 = (GData4) gd;
+                    newData = new GData4(g4.colourNumber, g4.r, g4.g, g4.b, g4.a, v1, v2, v3, v4, g4.parent, linkedDatFile);
+                }
+            }
+            break;
+            case 5:
+            {
+                int avc = 0;
+                Vertex[] verts = condlines.get(gd);
+                if (verts != null) {
+                    Vertex v1 = oldToNewVertex.get(verts[0]);
+                    Vertex v2 = oldToNewVertex.get(verts[1]);
+                    Vertex v3 = oldToNewVertex.get(verts[2]);
+                    Vertex v4 = oldToNewVertex.get(verts[3]);
+                    if (v1 == null) v1 = verts[0]; else avc++;
+                    if (v2 == null) v1 = verts[1]; else avc++;
+                    if (v3 == null) v1 = verts[2]; else avc++;
+                    if (v4 == null) v1 = verts[3]; else avc++;
+                    if (!moveAdjacentData && avc != 4) continue;
+                    GData5 g5 = (GData5) gd;
+                    newData = new GData5(g5.colourNumber, g5.r, g5.g, g5.b, g5.a, v1, v2, v3, v4, g5.parent, linkedDatFile);
+                }
+            }
+            break;
+            default:
+                continue;
+            }
+            if (newData != null) {
+                linker(gd, newData);
+                allNewData.add(newData);
                 setModified_NoSync();
             }
         }
-        switch (type) {
-        case 2:
+        if (updateSelection) {
+            selectedData.clear();
             selectedLines.clear();
-            selectedLines.addAll(cast2(newData));
-            break;
-        case 3:
             selectedTriangles.clear();
-            selectedTriangles.addAll(cast3(newData));
-            break;
-        case 4:
             selectedQuads.clear();
-            selectedQuads.addAll(cast4(newData));
-            break;
-        case 5:
             selectedCondlines.clear();
-            selectedCondlines.addAll(cast5(newData));
-            break;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Collection<? extends GData2> cast2(Collection<? extends T> x) {
-        return (Collection<? extends GData2>) x;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Collection<? extends GData3> cast3(Collection<? extends T> x) {
-        return (Collection<? extends GData3>) x;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Collection<? extends GData4> cast4(Collection<? extends T> x) {
-        return (Collection<? extends GData4>) x;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Collection<? extends GData5> cast5(Collection<? extends T> x) {
-        return (Collection<? extends GData5>) x;
-    }
-
-    private Set<GData1> transformVertices(Matrix transformation, boolean moveAdjacentData) {
-        Set<GData1> result = new HashSet<GData1>();
-        if (moveAdjacentData) {
-            Set<Vertex> oldVerts = new TreeSet<Vertex>();
-            Set<Vertex> newVerts = new TreeSet<Vertex>();
-            Set<Vertex> tmpVerts = new TreeSet<Vertex>(selectedVertices);
-            for (Vertex vertex : tmpVerts) {
-                Set<VertexManifestation> tvms = vertexLinkedToPositionInFile.get(vertex);
-                if (tvms == null)
+            for (GData gd : allNewData) {
+                selectedData.add(gd);
+                switch (gd.type()) {
+                case 2:
+                    selectedLines.add((GData2) gd);
+                    break;
+                case 3:
+                    selectedTriangles.add((GData3) gd);
+                    break;
+                case 4:
+                    selectedQuads.add((GData4) gd);
+                    break;
+                case 5:
+                    selectedCondlines.add((GData5) gd);
+                    break;
+                default:
                     continue;
-                Set<VertexManifestation> vms = new HashSet<VertexManifestation>(tvms);
-                for (VertexManifestation vm : vms) {
-                    GData data = vm.getGdata();
-                    boolean isNotInSubfile = lineLinkedToVertices.containsKey(data);
-                    if (isNotInSubfile) {
-                        BigDecimal[] temp = transformation.transform(vertex.X, vertex.Y, vertex.Z);
-                        Vertex newVertex = new Vertex(temp[0], temp[1], temp[2]);
-                        oldVerts.add(vertex);
-                        if (adjacentMover(data, vertex, newVertex)) {
-                            newVerts.add(newVertex);
-                        }
-                    }
                 }
             }
-            selectedVertices.removeAll(oldVerts);
-            selectedVertices.addAll(newVerts);
-        } else {
-            Set<Vertex> oldVerts = new TreeSet<Vertex>();
-            Set<Vertex> newVerts = new TreeSet<Vertex>();
-            Set<Vertex> tmpVerts = new TreeSet<Vertex>(selectedVertices);
-            for (Vertex vertex : tmpVerts) {
-                Set<VertexManifestation> tvms = vertexLinkedToPositionInFile.get(vertex);
-                if (tvms == null)
-                    continue;
-                Set<VertexManifestation> vms = new HashSet<VertexManifestation>(tvms);
-                for (VertexManifestation vm : vms) {
-                    GData data = vm.getGdata();
-                    boolean isNotInSubfile = lineLinkedToVertices.containsKey(data);
-                    if (isNotInSubfile && data.type() == 0) {
-                        BigDecimal[] temp = transformation.transform(vertex.X, vertex.Y, vertex.Z);
-                        Vertex newVertex = new Vertex(temp[0], temp[1], temp[2]);
-                        oldVerts.add(vertex);
-                        if (adjacentMover(data, vertex, newVertex)) {
-                            newVerts.add(newVertex);
-                        }
-                    }
-                }
-            }
-            selectedVertices.removeAll(oldVerts);
-            selectedVertices.addAll(newVerts);
         }
-        return result;
     }
 
     private void linker(GData oldData, GData newData) {
@@ -4755,94 +4744,6 @@ public class VertexManager {
         if (oldNumber != null)
             drawPerLine.put(oldNumber, newData);
         remove(oldData);
-    }
-
-    private boolean adjacentMover(GData dataToMove, Vertex vertexToMove, Vertex newVertex) {
-        if (lineLinkedToVertices.containsKey(dataToMove) && !selectedLines.contains(dataToMove) && !selectedTriangles.contains(dataToMove) && !selectedQuads.contains(dataToMove)
-                && !selectedCondlines.contains(dataToMove)) {
-            setModified_NoSync();
-            GData newData = null;
-            Vertex[] verts;
-            boolean doCreate = false;
-            int i = 0;
-            int type = dataToMove.type();
-            switch (type) {
-            case 0:
-                newData = addVertex(newVertex);
-                break;
-            case 2:
-                GData2 g2 = (GData2) dataToMove;
-                verts = lines.get(g2);
-                if (verts == null)
-                    break;
-                for (Vertex v2 : verts) {
-                    if (v2.equals(vertexToMove)) {
-                        verts[i] = newVertex;
-                        doCreate = true;
-                        break;
-                    }
-                    i++;
-                }
-                if (doCreate)
-                    newData = new GData2(g2.colourNumber, g2.r, g2.g, g2.b, g2.a, verts[0], verts[1], g2.parent, linkedDatFile);
-                break;
-            case 3:
-                GData3 g3 = (GData3) dataToMove;
-                verts = triangles.get(g3);
-                if (verts == null)
-                    break;
-                for (Vertex v2 : verts) {
-                    if (v2.equals(vertexToMove)) {
-                        verts[i] = newVertex;
-                        doCreate = true;
-                        break;
-                    }
-                    i++;
-                }
-                if (doCreate)
-                    newData = new GData3(g3.colourNumber, g3.r, g3.g, g3.b, g3.a, verts[0], verts[1], verts[2], g3.parent, linkedDatFile);
-                break;
-            case 4:
-                GData4 g4 = (GData4) dataToMove;
-                verts = quads.get(g4);
-                if (verts == null)
-                    break;
-                for (Vertex v2 : verts) {
-                    if (v2.equals(vertexToMove)) {
-                        verts[i] = newVertex;
-                        doCreate = true;
-                        break;
-                    }
-                    i++;
-                }
-                if (doCreate)
-                    newData = new GData4(g4.colourNumber, g4.r, g4.g, g4.b, g4.a, verts[0], verts[1], verts[2], verts[3], g4.parent, linkedDatFile);
-                break;
-            case 5:
-                GData5 g5 = (GData5) dataToMove;
-                verts = condlines.get(g5);
-                if (verts == null)
-                    break;
-                for (Vertex v2 : verts) {
-                    if (v2.equals(vertexToMove)) {
-                        verts[i] = newVertex;
-                        doCreate = true;
-                        break;
-                    }
-                    i++;
-                }
-                if (doCreate)
-                    newData = new GData5(g5.colourNumber, g5.r, g5.g, g5.b, g5.a, verts[0], verts[1], verts[2], verts[3], g5.parent, linkedDatFile);
-                break;
-            }
-            if (newData != null) {
-                linker(dataToMove, newData);
-                return dataToMove.type() != 0 || !newSelectedData.contains(dataToMove);
-            }
-            return true;
-        } else {
-            return true;
-        }
     }
 
     public synchronized void windingChangeSelection() {
@@ -19385,15 +19286,17 @@ public class VertexManager {
             }
             final Matrix forward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X.negate(), pivot.Y.negate(), pivot.Z.negate() }), View.ACCURATE_ID);
             final Matrix backward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X, pivot.Y, pivot.Z }), View.ACCURATE_ID);
+
+            if (tm == TransformationMode.ROTATE || tm == TransformationMode.SCALE) {
+                selectedVertices.addAll(singleVertices);
+                transform(new HashSet<GData>(), selectedVertices, transformation, false, true);
+            }
+
             for (Vertex vOld : singleVertices) {
                 switch (tm) {
                 case ROTATE:
                 case SCALE:
-                    Vector3d newV = forward.transform(new Vector3d(vOld));
-                    newV = transformation.transform(newV);
-                    newV = backward.transform(newV);
-                    target = new Vertex(newV);
-                    break;
+                    continue;
                 case SET:
                     break;
                 case TRANSLATE:
