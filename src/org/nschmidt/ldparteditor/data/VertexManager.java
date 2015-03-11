@@ -59,6 +59,7 @@ import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
 import org.nschmidt.ldparteditor.data.tools.Merger;
 import org.nschmidt.ldparteditor.enums.MergeTo;
+import org.nschmidt.ldparteditor.enums.RotationSnap;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
@@ -19148,6 +19149,82 @@ public class VertexManager {
         // FIXME Transformation matrix needs to be set!
         switch (tm) {
         case ROTATE:
+            transformation = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X.negate(), pivot.Y.negate(), pivot.Z.negate() }), View.ACCURATE_ID);
+            RotationSnap flag;
+            if (x) {
+                try {
+                    target.X.intValueExact();
+                    switch (Math.abs(target.X.intValue())) {
+                    case 90:
+                        flag = RotationSnap.DEG90;
+                        break;
+                    case 180:
+                        flag = RotationSnap.DEG180;
+                        break;
+                    case 270:
+                        flag = RotationSnap.DEG270;
+                        break;
+                    case 360:
+                        flag = RotationSnap.DEG360;
+                        break;
+                    default:
+                        flag = RotationSnap.COMPLEX;
+                        break;
+                    }
+                } catch (ArithmeticException ae) {
+                    flag = RotationSnap.COMPLEX;
+                }
+                transformation = transformation.rotate(target.X, flag, new BigDecimal[] { BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO });
+            } else if (y) {
+                try {
+                    target.Y.intValueExact();
+                    switch (Math.abs(target.Y.intValue())) {
+                    case 90:
+                        flag = RotationSnap.DEG90;
+                        break;
+                    case 180:
+                        flag = RotationSnap.DEG180;
+                        break;
+                    case 270:
+                        flag = RotationSnap.DEG270;
+                        break;
+                    case 360:
+                        flag = RotationSnap.DEG360;
+                        break;
+                    default:
+                        flag = RotationSnap.COMPLEX;
+                        break;
+                    }
+                } catch (ArithmeticException ae) {
+                    flag = RotationSnap.COMPLEX;
+                }
+                transformation = transformation.rotate(target.Y, flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO });
+            } else {
+                try {
+                    target.Z.intValueExact();
+                    switch (Math.abs(target.Z.intValue())) {
+                    case 90:
+                        flag = RotationSnap.DEG90;
+                        break;
+                    case 180:
+                        flag = RotationSnap.DEG180;
+                        break;
+                    case 270:
+                        flag = RotationSnap.DEG270;
+                        break;
+                    case 360:
+                        flag = RotationSnap.DEG360;
+                        break;
+                    default:
+                        flag = RotationSnap.COMPLEX;
+                        break;
+                    }
+                } catch (ArithmeticException ae) {
+                    flag = RotationSnap.COMPLEX;
+                }
+                transformation = transformation.rotate(target.Z, flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE });
+            }
+            transformation = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X, pivot.Y, pivot.Z }), transformation);
             break;
         case SCALE:
             break;
@@ -19163,8 +19240,6 @@ public class VertexManager {
         default:
             break;
         }
-
-
 
         final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
@@ -19362,8 +19437,6 @@ public class VertexManager {
             } else {
                 selectedSubfiles.clear();
             }
-
-
 
             if (isModified()) {
                 for(Iterator<GData2> it = selectedLines.iterator();it.hasNext();){

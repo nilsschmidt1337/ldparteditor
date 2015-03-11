@@ -124,76 +124,84 @@ public class Manipulator {
 
     public static void setSnap(BigDecimal trans, BigDecimal rot, BigDecimal scale) {
 
-        switch (rot.intValue()) {
-        case 90:
-            snap_x_RotateFlag = RotationSnap.DEG90;
-            break;
-        case 180:
-            snap_x_RotateFlag = RotationSnap.DEG180;
-            break;
-        case 270:
-            snap_x_RotateFlag = RotationSnap.DEG270;
-            break;
-        case 360:
-            snap_x_RotateFlag = RotationSnap.DEG360;
-            break;
-        default:
+        try {
+            rot.intValueExact();
+            switch (rot.intValue()) {
+            case 90:
+                snap_x_RotateFlag = RotationSnap.DEG90;
+                break;
+            case 180:
+                snap_x_RotateFlag = RotationSnap.DEG180;
+                break;
+            case 270:
+                snap_x_RotateFlag = RotationSnap.DEG270;
+                break;
+            case 360:
+                snap_x_RotateFlag = RotationSnap.DEG360;
+                break;
+            default:
+                snap_x_RotateFlag = RotationSnap.COMPLEX;
+                break;
+            }
+
+            switch (rot.intValue()) {
+            case 90:
+                snap_y_RotateFlag = RotationSnap.DEG90;
+                break;
+            case 180:
+                snap_y_RotateFlag = RotationSnap.DEG180;
+                break;
+            case 270:
+                snap_y_RotateFlag = RotationSnap.DEG270;
+                break;
+            case 360:
+                snap_y_RotateFlag = RotationSnap.DEG360;
+                break;
+            default:
+                snap_y_RotateFlag = RotationSnap.COMPLEX;
+                break;
+            }
+
+            switch (rot.intValue()) {
+            case 90:
+                snap_z_RotateFlag = RotationSnap.DEG90;
+                break;
+            case 180:
+                snap_z_RotateFlag = RotationSnap.DEG180;
+                break;
+            case 270:
+                snap_z_RotateFlag = RotationSnap.DEG270;
+                break;
+            case 360:
+                snap_z_RotateFlag = RotationSnap.DEG360;
+                break;
+            default:
+                snap_z_RotateFlag = RotationSnap.COMPLEX;
+                break;
+            }
+
+            switch (rot.intValue()) {
+            case 90:
+                snap_v_RotateFlag = RotationSnap.DEG90;
+                break;
+            case 180:
+                snap_v_RotateFlag = RotationSnap.DEG180;
+                break;
+            case 270:
+                snap_v_RotateFlag = RotationSnap.DEG270;
+                break;
+            case 360:
+                snap_v_RotateFlag = RotationSnap.DEG360;
+                break;
+            default:
+                snap_v_RotateFlag = RotationSnap.COMPLEX;
+                break;
+            }
+        } catch (ArithmeticException ae) {
             snap_x_RotateFlag = RotationSnap.COMPLEX;
-            break;
-        }
-
-        switch (rot.intValue()) {
-        case 90:
-            snap_y_RotateFlag = RotationSnap.DEG90;
-            break;
-        case 180:
-            snap_y_RotateFlag = RotationSnap.DEG180;
-            break;
-        case 270:
-            snap_y_RotateFlag = RotationSnap.DEG270;
-            break;
-        case 360:
-            snap_y_RotateFlag = RotationSnap.DEG360;
-            break;
-        default:
             snap_y_RotateFlag = RotationSnap.COMPLEX;
-            break;
-        }
-
-        switch (rot.intValue()) {
-        case 90:
-            snap_z_RotateFlag = RotationSnap.DEG90;
-            break;
-        case 180:
-            snap_z_RotateFlag = RotationSnap.DEG180;
-            break;
-        case 270:
-            snap_z_RotateFlag = RotationSnap.DEG270;
-            break;
-        case 360:
-            snap_z_RotateFlag = RotationSnap.DEG360;
-            break;
-        default:
             snap_z_RotateFlag = RotationSnap.COMPLEX;
-            break;
-        }
-
-        switch (rot.intValue()) {
-        case 90:
-            snap_v_RotateFlag = RotationSnap.DEG90;
-            break;
-        case 180:
-            snap_v_RotateFlag = RotationSnap.DEG180;
-            break;
-        case 270:
-            snap_v_RotateFlag = RotationSnap.DEG270;
-            break;
-        case 360:
-            snap_v_RotateFlag = RotationSnap.DEG360;
-            break;
-        default:
             snap_v_RotateFlag = RotationSnap.COMPLEX;
-            break;
         }
 
         rot = rot.divide(new BigDecimal(180), Threshold.mc).multiply(new BigDecimal(Math.PI));
