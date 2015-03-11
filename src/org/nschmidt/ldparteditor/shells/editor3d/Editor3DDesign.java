@@ -188,6 +188,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_PathTruder = new MenuItem[1];
     final MenuItem[] mntm_SymSplitter = new MenuItem[1];
     final MenuItem[] mntm_Unificator = new MenuItem[1];
+    final MenuItem[] mntm_RingsAndCones = new MenuItem[1];
 
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
@@ -983,6 +984,12 @@ class Editor3DDesign extends ApplicationWindow {
                         this.mntm_Unificator[0] = mntm_Unificator;
                         mntm_Unificator.setText("Unificator\tAlt+U"); //$NON-NLS-1$ I18N
                         mntm_Unificator.setAccelerator(SWT.ALT | 'U');
+                    }
+                    {
+                        // FIXME Rings and Cones: Needs implementation!
+                        MenuItem mntm_RingsAndCones = new MenuItem(mnu_Tools, SWT.PUSH);
+                        this.mntm_RingsAndCones[0] = mntm_RingsAndCones;
+                        mntm_RingsAndCones.setText("Rings and Cones"); //$NON-NLS-1$ I18N
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator1 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
@@ -1796,7 +1803,14 @@ class Editor3DDesign extends ApplicationWindow {
                         btn_ResetSearch.setText("Reset"); //$NON-NLS-1$ I18N Needs translation!
                     }
 
+                    Composite cmp_Container4 = new Composite(sashForm2, SWT.BORDER);
+                    GridLayout gridLayout4 = new GridLayout(1, true);
+                    cmp_Container4.setLayout(gridLayout4);
+
+                    Label lbl_Todo = new Label(cmp_Container4, SWT.NONE);
+                    lbl_Todo.setText("Insert\nPrimitive\nGallery\nHere!"); //$NON-NLS-1$
                 }
+
                 @SuppressWarnings("unused")
                 // Uncomment when changing the gui
                 // Composite cmp_Container = new Composite(sashForm, SWT.NONE);
