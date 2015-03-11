@@ -49,14 +49,17 @@ class ScaleDesign extends Dialog {
     final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spn_pX = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spn_pY = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spn_pZ = new BigDecimalSpinner[1];
 
     // Use final only for subclass/listener references!
 
-    Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+    Vertex v = new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE);
     ScaleDesign(Shell parentShell, Vertex v) {
         super(parentShell);
         if (v == null) {
-            this.v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+            this.v = new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE);
         } else {
             this.v = v;
         }
@@ -87,14 +90,14 @@ class ScaleDesign extends Dialog {
 
             Button cb_Xaxis = new Button(cmp_txt, SWT.CHECK);
             this.cb_Xaxis[0] = cb_Xaxis;
-            cb_Xaxis.setText("X"); //$NON-NLS-1$ I18N Needs translation!
+            cb_Xaxis.setText("f * X"); //$NON-NLS-1$ I18N Needs translation!
             cb_Xaxis.setSelection(true);
 
             BigDecimalSpinner spn_X = new BigDecimalSpinner(cmp_txt, SWT.NONE);
             this.spn_X[0] = spn_X;
             spn_X.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spn_X.setMaximum(new BigDecimal(1000000));
-            spn_X.setMinimum(new BigDecimal(-1000000));
+            spn_X.setMinimum(new BigDecimal("0.000000001")); //$NON-NLS-1$
             spn_X.setValue(v.X);
         }
 
@@ -105,14 +108,14 @@ class ScaleDesign extends Dialog {
 
             Button cb_Yaxis = new Button(cmp_txt, SWT.CHECK);
             this.cb_Yaxis[0] = cb_Yaxis;
-            cb_Yaxis.setText("Y"); //$NON-NLS-1$ I18N Needs translation!
+            cb_Yaxis.setText("f * Y"); //$NON-NLS-1$ I18N Needs translation!
             cb_Yaxis.setSelection(true);
 
             BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE);
             this.spn_Y[0] = spn_Y;
             spn_Y.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spn_Y.setMaximum(new BigDecimal(1000000));
-            spn_Y.setMinimum(new BigDecimal(-1000000));
+            spn_Y.setMinimum(new BigDecimal("0.000000001")); //$NON-NLS-1$
             spn_Y.setValue(v.Y);
         }
 
@@ -123,15 +126,58 @@ class ScaleDesign extends Dialog {
 
             Button cb_Zaxis = new Button(cmp_txt, SWT.CHECK);
             this.cb_Zaxis[0] = cb_Zaxis;
-            cb_Zaxis.setText("Z"); //$NON-NLS-1$ I18N Needs translation!
+            cb_Zaxis.setText("f * Z"); //$NON-NLS-1$ I18N Needs translation!
             cb_Zaxis.setSelection(true);
 
             BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE);
             this.spn_Z[0] = spn_Z;
             spn_Z.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spn_Z.setMaximum(new BigDecimal(1000000));
-            spn_Z.setMinimum(new BigDecimal(-1000000));
+            spn_Z.setMinimum(new BigDecimal("0.000000001")); //$NON-NLS-1$
             spn_Z.setValue(v.Z);
+        }
+
+        Label lbl_Pivot = new Label(cmp_container, SWT.NONE);
+        lbl_Pivot.setText("Pivot Point:"); //$NON-NLS-1$ I18N Needs translation!
+
+        {
+            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
+            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmp_txt.setLayout(new GridLayout(1, true));
+
+            BigDecimalSpinner spn_pX = new BigDecimalSpinner(cmp_txt, SWT.NONE);
+            this.spn_pX[0] = spn_pX;
+            spn_pX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            spn_pX.setMaximum(new BigDecimal(1000000));
+            spn_pX.setMinimum(new BigDecimal(-1000000));
+            spn_pX.setValue(BigDecimal.ZERO);
+        }
+
+
+        {
+            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
+            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmp_txt.setLayout(new GridLayout(1, true));
+
+            BigDecimalSpinner spn_pY = new BigDecimalSpinner(cmp_txt, SWT.NONE);
+            this.spn_pY[0] = spn_pY;
+            spn_pY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            spn_pY.setMaximum(new BigDecimal(1000000));
+            spn_pY.setMinimum(new BigDecimal(-1000000));
+            spn_pY.setValue(BigDecimal.ZERO);
+        }
+
+        {
+            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
+            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmp_txt.setLayout(new GridLayout(1, true));
+
+            BigDecimalSpinner spn_pZ = new BigDecimalSpinner(cmp_txt, SWT.NONE);
+            this.spn_pZ[0] = spn_pZ;
+            spn_pZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            spn_pZ.setMaximum(new BigDecimal(1000000));
+            spn_pZ.setMinimum(new BigDecimal(-1000000));
+            spn_pZ.setValue(BigDecimal.ZERO);
         }
 
         cmp_container.pack();
