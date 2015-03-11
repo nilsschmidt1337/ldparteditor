@@ -34,7 +34,8 @@ import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
  */
 public class RotateDialog extends RotateDesign {
 
-    private static Vertex vertex = new Vertex(0f, 0f, 0f);
+    private static Vertex angles = new Vertex(0f, 0f, 0f);
+    private static Vertex pivot = new Vertex(0f, 0f, 0f);
     private static boolean x = true;
     private static boolean y = true;
     private static boolean z = true;
@@ -50,9 +51,9 @@ public class RotateDialog extends RotateDesign {
         y = true;
         z = true;
         if (v == null) {
-            vertex = new Vertex(0f, 0f, 0f);
+            setAngles(new Vertex(0f, 0f, 0f));
         } else {
-            vertex = new Vertex(v.X, v.Y, v.Z);
+            setAngles(new Vertex(v.X, v.Y, v.Z));
         }
     }
 
@@ -81,19 +82,19 @@ public class RotateDialog extends RotateDesign {
         spn_X[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+                setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
             }
         });
         spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+                setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
             }
         });
         spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+                setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
             }
         });
         return super.open();
@@ -123,12 +124,19 @@ public class RotateDialog extends RotateDesign {
         RotateDialog.x = x;
     }
 
-    public static Vertex getVertex() {
-        return vertex;
+    public static Vertex getAngles() {
+        return angles;
     }
 
-    public static void setVertex(Vertex vertex) {
-        RotateDialog.vertex = vertex;
+    public static void setAngles(Vertex angles) {
+        RotateDialog.angles = angles;
     }
 
+    public static Vertex getPivot() {
+        return pivot;
+    }
+
+    public static void setPivot(Vertex pivot) {
+        RotateDialog.pivot = pivot;
+    }
 }

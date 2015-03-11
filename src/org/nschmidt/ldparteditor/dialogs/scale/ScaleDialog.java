@@ -34,7 +34,8 @@ import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
  */
 public class ScaleDialog extends ScaleDesign {
 
-    private static Vertex vertex = new Vertex(0f, 0f, 0f);
+    private static Vertex scaleFactors = new Vertex(1f, 1f, 1f);
+    private static Vertex pivot = new Vertex(0f, 0f, 0f);
     private static boolean x = true;
     private static boolean y = true;
     private static boolean z = true;
@@ -50,9 +51,9 @@ public class ScaleDialog extends ScaleDesign {
         y = true;
         z = true;
         if (v == null) {
-            vertex = new Vertex(0f, 0f, 0f);
+            setScaleFactors(new Vertex(1f, 1f, 1f));
         } else {
-            vertex = new Vertex(v.X, v.Y, v.Z);
+            setScaleFactors(new Vertex(v.X, v.Y, v.Z));
         }
     }
 
@@ -81,19 +82,19 @@ public class ScaleDialog extends ScaleDesign {
         spn_X[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+                setScaleFactors(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
             }
         });
         spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+                setScaleFactors(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
             }
         });
         spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+                setScaleFactors(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
             }
         });
         return super.open();
@@ -123,12 +124,19 @@ public class ScaleDialog extends ScaleDesign {
         ScaleDialog.x = x;
     }
 
-    public static Vertex getVertex() {
-        return vertex;
+    public static Vertex getScaleFactors() {
+        return scaleFactors;
     }
 
-    public static void setVertex(Vertex vertex) {
-        ScaleDialog.vertex = vertex;
+    public static void setScaleFactors(Vertex scaleFactors) {
+        ScaleDialog.scaleFactors = scaleFactors;
     }
 
+    public static Vertex getPivot() {
+        return pivot;
+    }
+
+    public static void setPivot(Vertex pivot) {
+        ScaleDialog.pivot = pivot;
+    }
 }

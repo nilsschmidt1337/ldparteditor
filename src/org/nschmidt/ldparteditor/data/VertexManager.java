@@ -19336,4 +19336,19 @@ public class VertexManager {
             selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
         }
     }
+
+    public void translate(Vertex offset, boolean x, boolean y, boolean z, boolean b) {
+        // FIXME Auto-generated method stub
+
+    }
+
+    public void rotate(Vertex angles, Vertex pivot, boolean x, boolean y, boolean z, boolean b) {
+        // FIXME Auto-generated method stub
+
+    }
+
+    public void scale(Vertex scaleFactors, Vertex pivot, boolean x, boolean y, boolean z, boolean b) {
+        // FIXME Auto-generated method stub
+
+    }
 }

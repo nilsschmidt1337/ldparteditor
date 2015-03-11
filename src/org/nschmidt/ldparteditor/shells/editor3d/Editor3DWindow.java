@@ -3047,14 +3047,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                        Vertex v = null;
-                        final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        final Set<Vertex> sv = vm.getSelectedVertices();
-                        if (sv.size() == 1) {
-                            v = sv.iterator().next();
-                        }
-                        if (new TranslateDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
-                            // FIXME Needs implementation!
+                        if (new TranslateDialog(getShell(), null).open() == IDialogConstants.OK_ID) {
+                            c3d.getLockableDatFileReference().getVertexManager().translate(TranslateDialog.getOffset(), TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), true);
                         }
                         return;
                     }
@@ -3068,14 +3062,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                        Vertex v = null;
-                        final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        final Set<Vertex> sv = vm.getSelectedVertices();
-                        if (sv.size() == 1) {
-                            v = sv.iterator().next();
-                        }
-                        if (new RotateDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
-                            // FIXME Needs implementation!
+                        if (new RotateDialog(getShell(), null).open() == IDialogConstants.OK_ID) {
+                            c3d.getLockableDatFileReference().getVertexManager().rotate(RotateDialog.getAngles(), RotateDialog.getPivot(), RotateDialog.isX(), RotateDialog.isY(), TranslateDialog.isZ(), true);
                         }
                         return;
                     }
@@ -3089,14 +3077,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                        Vertex v = null;
-                        final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        final Set<Vertex> sv = vm.getSelectedVertices();
-                        if (sv.size() == 1) {
-                            v = sv.iterator().next();
-                        }
-                        if (new ScaleDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
-                            // FIXME Needs implementation!
+                        if (new ScaleDialog(getShell(), null).open() == IDialogConstants.OK_ID) {
+                            c3d.getLockableDatFileReference().getVertexManager().scale(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), true);
                         }
                         return;
                     }
