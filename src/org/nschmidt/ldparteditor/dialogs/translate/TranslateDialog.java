@@ -34,7 +34,7 @@ import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
  */
 public class TranslateDialog extends TranslateDesign {
 
-    private static Vertex vertex = new Vertex(0f, 0f, 0f);
+    private static Vertex offset = new Vertex(0f, 0f, 0f);
     private static boolean x = true;
     private static boolean y = true;
     private static boolean z = true;
@@ -50,9 +50,9 @@ public class TranslateDialog extends TranslateDesign {
         y = true;
         z = true;
         if (v == null) {
-            vertex = new Vertex(0f, 0f, 0f);
+            setOffset(new Vertex(0f, 0f, 0f));
         } else {
-            vertex = new Vertex(v.X, v.Y, v.Z);
+            setOffset(new Vertex(v.X, v.Y, v.Z));
         }
     }
 
@@ -81,19 +81,19 @@ public class TranslateDialog extends TranslateDesign {
         spn_X[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+                setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
             }
         });
         spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+                setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
             }
         });
         spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+                setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
             }
         });
         return super.open();
@@ -123,12 +123,11 @@ public class TranslateDialog extends TranslateDesign {
         TranslateDialog.x = x;
     }
 
-    public static Vertex getVertex() {
-        return vertex;
+    public static Vertex getOffset() {
+        return offset;
     }
 
-    public static void setVertex(Vertex vertex) {
-        TranslateDialog.vertex = vertex;
+    public static void setOffset(Vertex offset) {
+        TranslateDialog.offset = offset;
     }
-
 }

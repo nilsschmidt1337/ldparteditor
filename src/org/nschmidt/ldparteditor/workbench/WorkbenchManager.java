@@ -98,6 +98,8 @@ public enum WorkbenchManager {
                 }
             }
         }
+
+        // TODO New values, which were not included in the state before, have to be initialized!
     }
 
     /**

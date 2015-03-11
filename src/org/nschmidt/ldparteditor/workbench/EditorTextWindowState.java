@@ -22,7 +22,7 @@ import java.io.Serializable;
  *
  */
 public class EditorTextWindowState implements Serializable {
-
+    // TODO New values, which were not included in the state before, have to be initialized! (@ WorkbenchManager.loadWorkbench())
     /** V1.00 */
     private static final long serialVersionUID = 1L;
     /** The state of the application window */
