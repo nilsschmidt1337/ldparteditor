@@ -19084,7 +19084,7 @@ public class VertexManager {
     }
 
 
-    public void transformSubfile(GData1 g, Matrix M) {
+    public void transformSubfile(GData1 g, Matrix M, boolean clearSelection, boolean syncWithTextEditor) {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
         HeaderState.state().setState(HeaderState._99_DONE);
         StringBuilder colourBuilder = new StringBuilder();
@@ -19113,11 +19113,20 @@ public class VertexManager {
         if (oldNumber != null)
             drawPerLine.put(oldNumber, reloadedSubfile);
         remove(g);
-        clearSelection();
+        if (clearSelection) {
+            clearSelection();
+        } else {
+            selectedData.remove(g);
+            selectedSubfiles.remove(g);
+        }
         selectedData.add(reloadedSubfile);
         selectedSubfiles.add(reloadedSubfile);
         selectSubfiles(null, null, false);
-        setModified(true);
+        if (syncWithTextEditor) {
+            setModified(true);
+        } else {
+            setModified_NoSync();
+        }
     }
 
     public boolean isUncompiled() {
@@ -19133,6 +19142,8 @@ public class VertexManager {
             return;
 
         Matrix transformation = null;
+        Vertex offset = null;
+        if (tm == TransformationMode.TRANSLATE) offset = new Vertex(target.X, target.Y, target.Z);
 
         // FIXME Transformation matrix needs to be set!
         switch (tm) {
@@ -19143,13 +19154,17 @@ public class VertexManager {
         case SET:
             break;
         case TRANSLATE:
+            transformation = new Matrix(
+                    BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO,
+                    offset.X, offset.Y, offset.Z, BigDecimal.ONE);
             break;
         default:
             break;
         }
 
-        Vertex offset = null;
-        if (tm == TransformationMode.TRANSLATE) offset = new Vertex(target.X, target.Y, target.Z);
+
 
         final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
@@ -19340,10 +19355,15 @@ public class VertexManager {
             }
 
             if ((tm == TransformationMode.TRANSLATE || tm == TransformationMode.SCALE || tm == TransformationMode.ROTATE) && !selectedSubfiles.isEmpty()) {
-                // FIXME Subfile transformation needs implementation!
+                setModified_NoSync();
+                for (GData1 s : new HashSet<GData1>(selectedSubfiles)) {
+                    transformSubfile(s, transformation, false, false);
+                }
+            } else {
+                selectedSubfiles.clear();
             }
 
-            selectedSubfiles.clear();
+
 
             if (isModified()) {
                 for(Iterator<GData2> it = selectedLines.iterator();it.hasNext();){
