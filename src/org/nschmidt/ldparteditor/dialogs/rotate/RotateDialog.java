@@ -37,8 +37,8 @@ public class RotateDialog extends RotateDesign {
     private static Vertex angles = new Vertex(0f, 0f, 0f);
     private static Vertex pivot = new Vertex(0f, 0f, 0f);
     private static boolean x = true;
-    private static boolean y = true;
-    private static boolean z = true;
+    private static boolean y = false;
+    private static boolean z = false;
 
     /**
      * Create the dialog.
@@ -48,35 +48,48 @@ public class RotateDialog extends RotateDesign {
     public RotateDialog(Shell parentShell, Vertex v) {
         super(parentShell, v);
         x = true;
-        y = true;
-        z = true;
+        y = false;
+        z = false;
         if (v == null) {
             setAngles(new Vertex(0f, 0f, 0f));
         } else {
             setAngles(new Vertex(v.X, v.Y, v.Z));
         }
+        setPivot(getAngles());
     }
 
     @Override
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        cb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
+        rb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                x = cb_Xaxis[0].getSelection();
+                if (rb_Xaxis[0].getSelection()) {
+                    x = true;
+                    y = false;
+                    z = false;
+                }
             }
         });
-        cb_Yaxis[0].addSelectionListener(new SelectionAdapter() {
+        rb_Yaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                y = cb_Yaxis[0].getSelection();
+                if (rb_Yaxis[0].getSelection()) {
+                    x = false;
+                    y = true;
+                    z = false;
+                }
             }
         });
-        cb_Zaxis[0].addSelectionListener(new SelectionAdapter() {
+        rb_Zaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                z = cb_Zaxis[0].getSelection();
+                if (rb_Zaxis[0].getSelection()) {
+                    x = false;
+                    y = false;
+                    z = true;
+                }
             }
         });
         spn_X[0].addValueChangeListener(new ValueChangeAdapter() {
@@ -95,6 +108,24 @@ public class RotateDialog extends RotateDesign {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
                 setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
+            }
+        });
+        spn_pX[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue()));
+            }
+        });
+        spn_pY[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue()));
+            }
+        });
+        spn_pZ[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue()));
             }
         });
         return super.open();
