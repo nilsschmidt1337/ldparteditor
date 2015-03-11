@@ -4611,7 +4611,6 @@ public class VertexManager {
         }
         // Transform the data
         if (updateSelection) {
-            selectedVertices.clear();
             selectedData.clear();
             selectedLines.clear();
             selectedTriangles.clear();
@@ -4630,6 +4629,10 @@ public class VertexManager {
                     Vertex v1 = oldToNewVertex.get(verts[0]);
                     if (v1 == null) v1 = verts[0];
                     newData = addVertex(v1);
+                    if (updateSelection) {
+                        selectedVertices.remove(verts[0]);
+                        selectedVertices.add(v1);
+                    }
                 }
             }
             break;
@@ -4643,6 +4646,16 @@ public class VertexManager {
                     if (v1 == null) v1 = verts[0]; else avc++;
                     if (v2 == null) v2 = verts[1]; else avc++;
                     if (!moveAdjacentData && avc != 2) continue;
+                    if (updateSelection) {
+                        if (selectedVertices.contains(verts[0])) {
+                            selectedVertices.remove(verts[0]);
+                            selectedVertices.add(v1);
+                        }
+                        if (selectedVertices.contains(verts[1])) {
+                            selectedVertices.remove(verts[1]);
+                            selectedVertices.add(v2);
+                        }
+                    }
                     GData2 g2 = (GData2) gd;
                     newData = new GData2(g2.colourNumber, g2.r, g2.g, g2.b, g2.a, v1, v2, g2.parent, linkedDatFile);
                 }
@@ -4660,6 +4673,20 @@ public class VertexManager {
                     if (v2 == null) v2 = verts[1]; else avc++;
                     if (v3 == null) v3 = verts[2]; else avc++;
                     if (!moveAdjacentData && avc != 3) continue;
+                    if (updateSelection) {
+                        if (selectedVertices.contains(verts[0])) {
+                            selectedVertices.remove(verts[0]);
+                            selectedVertices.add(v1);
+                        }
+                        if (selectedVertices.contains(verts[1])) {
+                            selectedVertices.remove(verts[1]);
+                            selectedVertices.add(v2);
+                        }
+                        if (selectedVertices.contains(verts[2])) {
+                            selectedVertices.remove(verts[2]);
+                            selectedVertices.add(v3);
+                        }
+                    }
                     GData3 g3 = (GData3) gd;
                     newData = new GData3(g3.colourNumber, g3.r, g3.g, g3.b, g3.a, v1, v2, v3, g3.parent, linkedDatFile);
                 }
@@ -4679,6 +4706,24 @@ public class VertexManager {
                     if (v3 == null) v3 = verts[2]; else avc++;
                     if (v4 == null) v4 = verts[3]; else avc++;
                     if (!moveAdjacentData && avc != 4) continue;
+                    if (updateSelection) {
+                        if (selectedVertices.contains(verts[0])) {
+                            selectedVertices.remove(verts[0]);
+                            selectedVertices.add(v1);
+                        }
+                        if (selectedVertices.contains(verts[1])) {
+                            selectedVertices.remove(verts[1]);
+                            selectedVertices.add(v2);
+                        }
+                        if (selectedVertices.contains(verts[2])) {
+                            selectedVertices.remove(verts[2]);
+                            selectedVertices.add(v3);
+                        }
+                        if (selectedVertices.contains(verts[3])) {
+                            selectedVertices.remove(verts[3]);
+                            selectedVertices.add(v4);
+                        }
+                    }
                     GData4 g4 = (GData4) gd;
                     newData = new GData4(g4.colourNumber, g4.r, g4.g, g4.b, g4.a, v1, v2, v3, v4, g4.parent, linkedDatFile);
                 }
@@ -4698,6 +4743,24 @@ public class VertexManager {
                     if (v3 == null) v3 = verts[2]; else avc++;
                     if (v4 == null) v4 = verts[3]; else avc++;
                     if (!moveAdjacentData && avc != 4) continue;
+                    if (updateSelection) {
+                        if (selectedVertices.contains(verts[0])) {
+                            selectedVertices.remove(verts[0]);
+                            selectedVertices.add(v1);
+                        }
+                        if (selectedVertices.contains(verts[1])) {
+                            selectedVertices.remove(verts[1]);
+                            selectedVertices.add(v2);
+                        }
+                        if (selectedVertices.contains(verts[2])) {
+                            selectedVertices.remove(verts[2]);
+                            selectedVertices.add(v3);
+                        }
+                        if (selectedVertices.contains(verts[3])) {
+                            selectedVertices.remove(verts[3]);
+                            selectedVertices.add(v4);
+                        }
+                    }
                     GData5 g5 = (GData5) gd;
                     newData = new GData5(g5.colourNumber, g5.r, g5.g, g5.b, g5.a, v1, v2, v3, v4, g5.parent, linkedDatFile);
                 }
@@ -4735,14 +4798,12 @@ public class VertexManager {
                 }
             }
         }
-        if (updateSelection) {
+        if (updateSelection && moveAdjacentData) {
             for (Vertex v : oldToNewVertex.keySet()) {
                 Vertex nv = oldToNewVertex.get(v);
-                if (v != null) {
-                    if (vertexLinkedToPositionInFile.containsKey(v)) {
+                if (nv != null) {
+                    if (vertexLinkedToPositionInFile.containsKey(nv)) {
                         selectedVertices.add(nv);
-                    } else {
-                        selectedVertices.add(v);
                     }
                 }
             }
