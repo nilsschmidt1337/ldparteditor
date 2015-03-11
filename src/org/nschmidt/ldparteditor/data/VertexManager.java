@@ -19146,10 +19146,11 @@ public class VertexManager {
         Vertex offset = null;
         if (tm == TransformationMode.TRANSLATE) offset = new Vertex(target.X, target.Y, target.Z);
 
+        if (pivot == null) pivot = new Vertex(0f, 0f, 0f);
+
         // FIXME Transformation matrix needs to be set!
         switch (tm) {
         case ROTATE:
-            transformation = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X.negate(), pivot.Y.negate(), pivot.Z.negate() }), View.ACCURATE_ID);
             RotationSnap flag;
             if (x) {
                 try {
@@ -19174,7 +19175,7 @@ public class VertexManager {
                 } catch (ArithmeticException ae) {
                     flag = RotationSnap.COMPLEX;
                 }
-                transformation = transformation.rotate(target.X, flag, new BigDecimal[] { BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO });
+                transformation = View.ACCURATE_ID.rotate(target.X, flag, new BigDecimal[] { BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO });
             } else if (y) {
                 try {
                     target.Y.intValueExact();
@@ -19198,7 +19199,7 @@ public class VertexManager {
                 } catch (ArithmeticException ae) {
                     flag = RotationSnap.COMPLEX;
                 }
-                transformation = transformation.rotate(target.Y, flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO });
+                transformation = View.ACCURATE_ID.rotate(target.Y, flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO });
             } else {
                 try {
                     target.Z.intValueExact();
@@ -19222,9 +19223,8 @@ public class VertexManager {
                 } catch (ArithmeticException ae) {
                     flag = RotationSnap.COMPLEX;
                 }
-                transformation = transformation.rotate(target.Z, flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE });
+                transformation = View.ACCURATE_ID.rotate(target.Z, flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE });
             }
-            transformation = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X, pivot.Y, pivot.Z }), transformation);
             break;
         case SCALE:
             break;
@@ -19383,11 +19383,16 @@ public class VertexManager {
             if (!singleVertices.isEmpty()) {
                 setModified_NoSync();
             }
+            final Matrix forward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X.negate(), pivot.Y.negate(), pivot.Z.negate() }), View.ACCURATE_ID);
+            final Matrix backward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X, pivot.Y, pivot.Z }), View.ACCURATE_ID);
             for (Vertex vOld : singleVertices) {
                 switch (tm) {
                 case ROTATE:
                 case SCALE:
-                    target = new Vertex(transformation.transform(new Vector3d(vOld)));
+                    Vector3d newV = forward.transform(new Vector3d(vOld));
+                    newV = transformation.transform(newV);
+                    newV = backward.transform(newV);
+                    target = new Vertex(newV);
                     break;
                 case SET:
                     break;
@@ -19432,7 +19437,10 @@ public class VertexManager {
             if ((tm == TransformationMode.TRANSLATE || tm == TransformationMode.SCALE || tm == TransformationMode.ROTATE) && !selectedSubfiles.isEmpty()) {
                 setModified_NoSync();
                 for (GData1 s : new HashSet<GData1>(selectedSubfiles)) {
-                    transformSubfile(s, Matrix.mul(transformation, s.accurateLocalMatrix), false, false);
+                    Matrix M = Matrix.mul(forward, s.accurateLocalMatrix);
+                    M = Matrix.mul(transformation, M);
+                    M = Matrix.mul(backward, M);
+                    transformSubfile(s, M, false, false);
                 }
             } else {
                 selectedSubfiles.clear();
