@@ -41,6 +41,9 @@ public enum IdenticalVertexRemover {
 
     public static void removeIdenticalVertices(VertexManager vm, boolean syncWithTextEditor) {
 
+        vm.backupSelection();
+        vm.clearSelection2();
+
         ThreadsafeHashMap<GData, Set<VertexInfo>> lineLinkedToVertices = vm.getLineLinkedToVertices();
 
         Map<GData2, Vertex[]> l = vm.getLines();
@@ -109,6 +112,7 @@ public enum IdenticalVertexRemover {
         vm.getSelectedData().addAll(vm.getSelectedCondlines());
 
         vm.delete(false, false);
+        vm.restoreSelection();
 
         if (syncWithTextEditor) {
             vm.setModified(true);

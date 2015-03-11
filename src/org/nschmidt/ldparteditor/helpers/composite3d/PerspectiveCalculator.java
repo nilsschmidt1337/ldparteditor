@@ -96,7 +96,7 @@ public class PerspectiveCalculator {
             break;
         case Perspective.LEFT: {
             NLogger.debug(PerspectiveCalculator.class, "[Left view]"); //$NON-NLS-1$
-            float[] rpf = new float[] { 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1 };
+            float[] rpf = new float[] { 0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 };
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
             fb.put(rpf);
             fb.flip();
@@ -105,7 +105,7 @@ public class PerspectiveCalculator {
         break;
         case Perspective.RIGHT: {
             NLogger.debug(PerspectiveCalculator.class, "[Right view]"); //$NON-NLS-1$
-            float[] rpf = new float[] { 0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 };
+            float[] rpf = new float[] { 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1 };
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
             fb.put(rpf);
             fb.flip();
@@ -114,7 +114,7 @@ public class PerspectiveCalculator {
         break;
         case Perspective.TOP: {
             NLogger.debug(PerspectiveCalculator.class, "[Top view]"); //$NON-NLS-1$
-            float[] rpf = new float[] { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1 };
+            float[] rpf = new float[] { -1, 0, 0, 0, 0, 0, -1, 0, 0, -1, 0, 0, 0, 0, 0, 1 };
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
             fb.put(rpf);
             fb.flip();
@@ -123,7 +123,7 @@ public class PerspectiveCalculator {
         break;
         case Perspective.BOTTOM: {
             NLogger.debug(PerspectiveCalculator.class, "[Bottom view]"); //$NON-NLS-1$
-            float[] rpf = new float[] { 1, 0, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1 };
+            float[] rpf = new float[] { -1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1 };
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
             fb.put(rpf);
             fb.flip();

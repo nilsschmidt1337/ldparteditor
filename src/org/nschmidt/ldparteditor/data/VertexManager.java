@@ -10576,7 +10576,7 @@ public class VertexManager {
     }
 
 
-    private void backupSelection() {
+    public void backupSelection() {
         backupSelectedCondlines.addAll(selectedCondlines);
         backupSelectedData.addAll(selectedData);
         backupSelectedLines.addAll(selectedLines);
@@ -10596,7 +10596,7 @@ public class VertexManager {
         backupSelectedVertices.clear();
     }
 
-    private void restoreSelection() {
+    public void restoreSelection() {
         clearSelection3();
         selectedCondlines.addAll(backupSelectedCondlines);
         selectedData.addAll(backupSelectedData);
@@ -19432,7 +19432,7 @@ public class VertexManager {
             if ((tm == TransformationMode.TRANSLATE || tm == TransformationMode.SCALE || tm == TransformationMode.ROTATE) && !selectedSubfiles.isEmpty()) {
                 setModified_NoSync();
                 for (GData1 s : new HashSet<GData1>(selectedSubfiles)) {
-                    transformSubfile(s, transformation, false, false);
+                    transformSubfile(s, Matrix.mul(transformation, s.accurateLocalMatrix), false, false);
                 }
             } else {
                 selectedSubfiles.clear();
@@ -19458,6 +19458,7 @@ public class VertexManager {
                 selectedData.addAll(selectedSubfiles);
 
                 IdenticalVertexRemover.removeIdenticalVertices(this, false);
+
                 if (syncWithTextEditors) syncWithTextEditors();
                 updateUnsavedStatus();
             }

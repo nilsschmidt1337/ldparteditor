@@ -138,19 +138,17 @@ public class CompositeScale extends ScalableComposite {
                         factor = -1;
                         break;
                     case Perspective.LEFT:
-                        offset = (int) (c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
-                        break;
-                    case Perspective.RIGHT:
                         offset = (int) -(c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
                         factor = -1;
                         break;
+                    case Perspective.RIGHT:
+                        offset = (int) (c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
+                        break;
                     case Perspective.TOP:
-                        offset = (int) -(c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
-                        factor = -1;
+                        offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
                         break;
                     case Perspective.BOTTOM:
-                        offset = (int) -(c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
-                        factor = -1;
+                        offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
                         break;
                     }
 
@@ -304,11 +302,11 @@ public class CompositeScale extends ScalableComposite {
                         offset = (int) (c3d.getTranslation().m31 * c3d.getZoom() * View.PIXEL_PER_LDU);
                         break;
                     case Perspective.TOP:
-                        offset = (int) (c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU);
-                        break;
-                    case Perspective.BOTTOM:
                         offset = (int) -(c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU);
                         factor = -1;
+                        break;
+                    case Perspective.BOTTOM:
+                        offset = (int) (c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU);
                         break;
                     }
 
