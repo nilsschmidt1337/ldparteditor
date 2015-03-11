@@ -2285,7 +2285,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             Composite3D c3d = renderer.getC3D();
                             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                                 Manipulator ma = c3d.getManipulator();
-                                vm.transformSubfile(subfile, ma.getAccurateMatrix());
+                                vm.transformSubfile(subfile, ma.getAccurateMatrix(), true, true);
                             }
                         }
                     }
