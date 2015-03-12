@@ -96,18 +96,36 @@ public class RotateDialog extends RotateDesign {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
                 setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
+                rb_Xaxis[0].setSelection(true);
+                rb_Yaxis[0].setSelection(false);
+                rb_Zaxis[0].setSelection(false);
+                x = true;
+                y = false;
+                z = false;
             }
         });
         spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
                 setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
+                rb_Xaxis[0].setSelection(false);
+                rb_Yaxis[0].setSelection(true);
+                rb_Zaxis[0].setSelection(false);
+                x = false;
+                y = true;
+                z = false;
             }
         });
         spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
                 setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
+                rb_Xaxis[0].setSelection(false);
+                rb_Yaxis[0].setSelection(false);
+                rb_Zaxis[0].setSelection(true);
+                x = false;
+                y = false;
+                z = true;
             }
         });
         spn_pX[0].addValueChangeListener(new ValueChangeAdapter() {
