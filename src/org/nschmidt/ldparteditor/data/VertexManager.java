@@ -7609,7 +7609,7 @@ public class VertexManager {
         GDataPNG pic = new GDataPNG(new GDataPNG(text, offset, angleA, angleB, angleC, scale, texturePath).getString(offset, angleA, angleB, angleC, scale, texturePath), offset, angleA, angleB, angleC, scale, texturePath);
         linkedDatFile.addToTail(pic);
         setSelectedBgPicture(pic);
-        setModified(true);
+        setModified_NoSync();
     }
 
     public void zoomToFit(Composite3D c3d) {

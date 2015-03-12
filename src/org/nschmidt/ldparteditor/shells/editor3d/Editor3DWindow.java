@@ -32,6 +32,7 @@ import java.util.TreeSet;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -3601,7 +3602,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 pngPictureUpdateCounter = 0;
                             }
 
-                            vm.setModified(true);
+                            vm.setModified_NoSync();
                         }
 
                         return;
@@ -3710,7 +3711,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified(true);
+                        vm.setModified_NoSync();
                         return;
                     }
                 }
@@ -3751,7 +3752,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified(true);
+                        vm.setModified_NoSync();
                         return;
                     }
                 }
@@ -3792,7 +3793,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified(true);
+                        vm.setModified_NoSync();
                         return;
                     }
                 }
@@ -3834,7 +3835,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified(true);
+                        vm.setModified_NoSync();
                         return;
                     }
                 }
@@ -3868,7 +3869,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath);
                         replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
 
-                        vm.setModified(true);
+                        vm.setModified_NoSync();
                         return;
                     }
                 }
@@ -3911,7 +3912,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified(true);
+                        vm.setModified_NoSync();
                         return;
                     }
                 }
@@ -3953,7 +3954,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified(true);
+                        vm.setModified_NoSync();
                         return;
                     }
                 }
@@ -3995,7 +3996,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified(true);
+                        vm.setModified_NoSync();
                         return;
                     }
                 }
@@ -4230,17 +4231,21 @@ public class Editor3DWindow extends Editor3DDesign {
         // NEVER DELETE THIS!
         final int s = renders.size();
         for (int i = 0; i < s; i++) {
-            GLCanvas canvas = canvasList.get(i);
-            OpenGLRenderer renderer = renders.get(i);
-            if (!canvas.isCurrent()) {
-                canvas.setCurrent();
-                try {
-                    GLContext.useContext(canvas);
-                } catch (LWJGLException e) {
-                    NLogger.error(OpenGLRenderer.class, e);
+            try {
+                GLCanvas canvas = canvasList.get(i);
+                OpenGLRenderer renderer = renders.get(i);
+                if (!canvas.isCurrent()) {
+                    canvas.setCurrent();
+                    try {
+                        GLContext.useContext(canvas);
+                    } catch (LWJGLException e) {
+                        NLogger.error(Editor3DWindow.class, e);
+                    }
                 }
+                renderer.dispose();
+            } catch (SWTException swtEx) {
+                NLogger.error(Editor3DWindow.class, swtEx);
             }
-            renderer.dispose();
         }
 
         // Save the workbench
