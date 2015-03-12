@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.scale;
 
+import java.util.Set;
+
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
@@ -45,8 +47,8 @@ public class ScaleDialog extends ScaleDesign {
      *
      * @param parentShell
      */
-    public ScaleDialog(Shell parentShell, Vertex v) {
-        super(parentShell, v);
+    public ScaleDialog(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices) {
+        super(parentShell, v, clipboardVertices);
         x = true;
         y = true;
         z = true;
@@ -54,6 +56,9 @@ public class ScaleDialog extends ScaleDesign {
             setScaleFactors(new Vertex(1f, 1f, 1f));
         } else {
             setScaleFactors(new Vertex(v.X, v.Y, v.Z));
+        }
+        if (clipboardVertices.size() == 1) {
+            p = clipboardVertices.iterator().next();
         }
     }
 
