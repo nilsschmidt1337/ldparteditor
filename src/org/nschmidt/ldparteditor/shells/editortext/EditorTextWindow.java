@@ -649,7 +649,7 @@ public class EditorTextWindow extends EditorTextDesign {
 
             @Override
             public void drop(DropTargetEvent event) {
-                if (EditorTextWindow.draggedTabOrigin != null && !EditorTextWindow.draggedTabOrigin.equals(EditorTextWindow.draggedTabTarget)) {
+                if (EditorTextWindow.draggedTabOrigin != null && EditorTextWindow.draggedTabTarget != null && !EditorTextWindow.draggedTabOrigin.equals(EditorTextWindow.draggedTabTarget)) {
                     if (!EditorTextWindow.draggedTabOrigin.getState().getFileNameObj().getVertexManager().isUpdated()) return;
                     if (!EditorTextWindow.draggedTabTarget.getState().getFileNameObj().getVertexManager().isUpdated()) return;
                     int index = 0;

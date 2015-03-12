@@ -15,14 +15,45 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
+import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
+import org.nschmidt.ldparteditor.dnd.MyDummyType2;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
 public class CompositePrimitive extends Composite {
 
     public CompositePrimitive(Composite parent) {
-        super(parent, I18n.I18N_NON_BIDIRECT());
+        super(parent, I18n.I18N_NON_BIDIRECT() | SWT.BORDER);
         // TODO Auto-generated constructor stub
+
+
+        Transfer[] types = new Transfer[] { MyDummyTransfer2.getInstance() };
+        int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
+
+        final DragSource source = new DragSource(this, operations);
+        source.setTransfer(types);
+        source.addDragListener(new DragSourceListener() {
+            @Override
+            public void dragStart(DragSourceEvent event) {
+                event.doit = true;
+            }
+
+            @Override
+            public void dragSetData(DragSourceEvent event) {
+                event.data = new MyDummyType2();
+            }
+
+            @Override
+            public void dragFinished(DragSourceEvent event) {
+
+            }
+        });
     }
     // FIXME Needs implementation!
 

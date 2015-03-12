@@ -50,6 +50,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
+import org.nschmidt.ldparteditor.composites.CompositePrimitive;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
@@ -1803,7 +1804,7 @@ class Editor3DDesign extends ApplicationWindow {
                         btn_ResetSearch.setText("Reset"); //$NON-NLS-1$ I18N Needs translation!
                     }
 
-                    Composite cmp_Container4 = new Composite(sashForm2, SWT.BORDER);
+                    CompositePrimitive cmp_Container4 = new CompositePrimitive(sashForm2);
                     GridLayout gridLayout4 = new GridLayout(1, true);
                     cmp_Container4.setLayout(gridLayout4);
 
