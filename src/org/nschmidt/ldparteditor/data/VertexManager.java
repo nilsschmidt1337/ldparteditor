@@ -19206,6 +19206,11 @@ public class VertexManager {
             }
             break;
         case SCALE:
+            transformation = new Matrix(
+                    x ? target.X : BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                            BigDecimal.ZERO, y ? target.Y : BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
+                                    BigDecimal.ZERO, BigDecimal.ZERO, z ? target.Z : BigDecimal.ONE, BigDecimal.ZERO,
+                                            BigDecimal.ZERO,  BigDecimal.ZERO,  BigDecimal.ZERO, BigDecimal.ONE);
             break;
         case SET:
             break;
@@ -19367,7 +19372,9 @@ public class VertexManager {
 
             if (tm == TransformationMode.ROTATE || tm == TransformationMode.SCALE) {
                 selectedVertices.addAll(singleVertices);
+                transform(new HashSet<GData>(), selectedVertices, forward, true, true);
                 transform(new HashSet<GData>(), selectedVertices, transformation, true, true);
+                transform(new HashSet<GData>(), selectedVertices, backward, true, true);
             }
             selectedData.clear();
 
