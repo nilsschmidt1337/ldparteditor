@@ -4601,7 +4601,7 @@ public class VertexManager {
                         continue;
                     }
                     if (verticesCountPerGData.containsKey(gd)) {
-                        verticesCountPerGData.put(gd, verticesCountPerGData.get(gd));
+                        verticesCountPerGData.put(gd, verticesCountPerGData.get(gd) + 1);
                     } else {
                         verticesCountPerGData.put(gd, 1);
                     }
@@ -19367,8 +19367,9 @@ public class VertexManager {
 
             if (tm == TransformationMode.ROTATE || tm == TransformationMode.SCALE) {
                 selectedVertices.addAll(singleVertices);
-                transform(new HashSet<GData>(), selectedVertices, transformation, false, true);
+                transform(new HashSet<GData>(), selectedVertices, transformation, true, true);
             }
+            selectedData.clear();
 
             for (Vertex vOld : singleVertices) {
                 switch (tm) {
