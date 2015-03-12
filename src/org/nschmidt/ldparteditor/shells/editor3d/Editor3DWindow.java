@@ -228,7 +228,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                         canvas = canvasList.get(i[0]);
                         if (!canvas.isDisposed()) {
-                            if (renders.get(i[0]).getC3D().getRenderMode() != 5) {
+                            if (renders.get(i[0]).getC3D().getRenderMode() != 5 || cs == 1) {
                                 renders.get(i[0]).drawScene();
                             }
                         } else {
