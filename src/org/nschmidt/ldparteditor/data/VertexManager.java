@@ -19462,4 +19462,8 @@ public class VertexManager {
             selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
         }
     }
+
+    public static List<GData> getClipboard() {
+        return CLIPBOARD;
+    }
 }

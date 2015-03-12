@@ -28,6 +28,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -97,6 +98,7 @@ import org.nschmidt.ldparteditor.enums.GLPrimitives;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
+import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
@@ -119,6 +121,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.compositetext.ProjectActions;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.main.LDPartEditor;
@@ -212,9 +215,10 @@ public class Editor3DWindow extends Editor3DDesign {
                     ViewIdleManager.pause[0].set(false);
                     intervall[0] = 500;
                 } else {
-                    if (i[0] < canvasList.size()) {
+                    final int cs = canvasList.size();
+                    if (i[0] < cs && cs > 0) {
                         GLCanvas canvas;
-                        if (!first1.equals(canvasList.get(i[0]))) {
+                        if (!canvasList.get(i[0]).equals(first1[0])) {
                             canvas = first1[0];
                             if (canvas != null && !canvas.isDisposed()) {
                                 first2[0].drawScene();
@@ -1409,10 +1413,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                         cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
                                         DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
                                         df.parseForData();
-                                        final VertexManager vm = df.getVertexManager();
                                         Project.setFileToEdit(df);
                                         cmp_Container.getComposite3D().setLockableDatFileReference(df);
-                                        vm.zoomToFit(cmp_Container.getComposite3D());
                                         Editor3DWindow.getSashForm().getParent().layout();
                                         Editor3DWindow.getSashForm().setWeights(mainSashWeights);
                                     }
@@ -3063,7 +3065,44 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                        if (new RotateDialog(getShell(), null).open() == IDialogConstants.OK_ID) {
+                        TreeSet<Vertex> clipboard = new TreeSet<Vertex>();
+                        if (VertexManager.getClipboard().size() == 1) {
+                            GData vertex = VertexManager.getClipboard().get(0);
+                            if (vertex.type() == 0) {
+                                String line = vertex.toString();
+                                line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                String[] data_segments = line.split("\\s+"); //$NON-NLS-1$
+                                if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
+                                    if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
+                                        Vector3d start = new Vector3d();
+                                        boolean numberError = false;
+                                        if (data_segments.length == 6) {
+                                            try {
+                                                start.setX(new BigDecimal(data_segments[3], Threshold.mc));
+                                            } catch (NumberFormatException nfe) {
+                                                numberError = true;
+                                            }
+                                            try {
+                                                start.setY(new BigDecimal(data_segments[4], Threshold.mc));
+                                            } catch (NumberFormatException nfe) {
+                                                numberError = true;
+                                            }
+                                            try {
+                                                start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
+                                            } catch (NumberFormatException nfe) {
+                                                numberError = true;
+                                            }
+                                        } else {
+                                            numberError = true;
+                                        }
+                                        if (!numberError) {
+                                            clipboard.add(new Vertex(start));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (new RotateDialog(getShell(), null, clipboard).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), TranslateDialog.isZ(), true);
                         }
                         return;
@@ -3078,7 +3117,44 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                        if (new ScaleDialog(getShell(), null).open() == IDialogConstants.OK_ID) {
+                        TreeSet<Vertex> clipboard = new TreeSet<Vertex>();
+                        if (VertexManager.getClipboard().size() == 1) {
+                            GData vertex = VertexManager.getClipboard().get(0);
+                            if (vertex.type() == 0) {
+                                String line = vertex.toString();
+                                line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                String[] data_segments = line.split("\\s+"); //$NON-NLS-1$
+                                if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
+                                    if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
+                                        Vector3d start = new Vector3d();
+                                        boolean numberError = false;
+                                        if (data_segments.length == 6) {
+                                            try {
+                                                start.setX(new BigDecimal(data_segments[3], Threshold.mc));
+                                            } catch (NumberFormatException nfe) {
+                                                numberError = true;
+                                            }
+                                            try {
+                                                start.setY(new BigDecimal(data_segments[4], Threshold.mc));
+                                            } catch (NumberFormatException nfe) {
+                                                numberError = true;
+                                            }
+                                            try {
+                                                start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
+                                            } catch (NumberFormatException nfe) {
+                                                numberError = true;
+                                            }
+                                        } else {
+                                            numberError = true;
+                                        }
+                                        if (!numberError) {
+                                            clipboard.add(new Vertex(start));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (new ScaleDialog(getShell(), null, clipboard).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), TransformationMode.SCALE, ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), true);
                         }
                         return;

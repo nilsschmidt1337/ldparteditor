@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialogs.scale;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -56,12 +57,16 @@ class ScaleDesign extends Dialog {
     // Use final only for subclass/listener references!
 
     Vertex v = new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE);
-    ScaleDesign(Shell parentShell, Vertex v) {
+    Vertex p = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+    ScaleDesign(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices) {
         super(parentShell);
         if (v == null) {
             this.v = new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE);
         } else {
             this.v = v;
+        }
+        if (clipboardVertices.size() == 1) {
+            p = clipboardVertices.iterator().next();
         }
     }
 
@@ -138,7 +143,7 @@ class ScaleDesign extends Dialog {
         }
 
         Label lbl_Pivot = new Label(cmp_container, SWT.NONE);
-        lbl_Pivot.setText("Pivot Point:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_Pivot.setText("Pivot Point:\n(Try to select one vertex, copy it to the clipboard\nre-open this dialog and see what will happen.)"); //$NON-NLS-1$ I18N Needs translation!
 
         {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
@@ -150,7 +155,7 @@ class ScaleDesign extends Dialog {
             spn_pX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spn_pX.setMaximum(new BigDecimal(1000000));
             spn_pX.setMinimum(new BigDecimal(-1000000));
-            spn_pX.setValue(BigDecimal.ZERO);
+            spn_pX.setValue(p.X);
         }
 
 
@@ -164,7 +169,7 @@ class ScaleDesign extends Dialog {
             spn_pY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spn_pY.setMaximum(new BigDecimal(1000000));
             spn_pY.setMinimum(new BigDecimal(-1000000));
-            spn_pY.setValue(BigDecimal.ZERO);
+            spn_pY.setValue(p.Y);
         }
 
         {
@@ -177,7 +182,7 @@ class ScaleDesign extends Dialog {
             spn_pZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spn_pZ.setMaximum(new BigDecimal(1000000));
             spn_pZ.setMinimum(new BigDecimal(-1000000));
-            spn_pZ.setValue(BigDecimal.ZERO);
+            spn_pZ.setValue(p.Z);
         }
 
         cmp_container.pack();
