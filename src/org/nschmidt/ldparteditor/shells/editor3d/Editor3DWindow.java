@@ -205,6 +205,7 @@ public class Editor3DWindow extends Editor3DDesign {
     public Editor3DWindow() {
         super();
         final int[] i = new int[1];
+        final int[] j = new int[1];
         final GLCanvas[] first1 = ViewIdleManager.firstCanvas;
         final OpenGLRenderer[] first2 = ViewIdleManager.firstRender;
         final int[] intervall = new int[] { 10 };
@@ -228,8 +229,12 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                         canvas = canvasList.get(i[0]);
                         if (!canvas.isDisposed()) {
-                            if (renders.get(i[0]).getC3D().getRenderMode() != 5 || cs == 1) {
+                            boolean stdMode = ViewIdleManager.renderLDrawStandard[0].get();
+                            if (renders.get(i[0]).getC3D().getRenderMode() != 5 || cs == 1 || stdMode) {
                                 renders.get(i[0]).drawScene();
+                                if (stdMode) {
+                                    j[0]++;
+                                }
                             }
                         } else {
                             canvasList.remove(i[0]);
@@ -238,6 +243,10 @@ public class Editor3DWindow extends Editor3DDesign {
                         i[0]++;
                     } else {
                         i[0] = 0;
+                        if (j[0] > cs) {
+                            j[0] = 0;
+                            ViewIdleManager.renderLDrawStandard[0].set(false);
+                        }
                     }
                 }
                 Display.getCurrent().timerExec(intervall[0], this);

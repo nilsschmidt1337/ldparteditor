@@ -35,6 +35,7 @@ public enum ViewIdleManager {
 
     public final static boolean[] running = new boolean[] { true };
     public final static AtomicBoolean[] pause = new AtomicBoolean[] { new AtomicBoolean(false) };
+    public final static AtomicBoolean[] renderLDrawStandard = new AtomicBoolean[] { new AtomicBoolean(false) };
 
     /**
      * Refreshes the {@linkplain Composite3D}
