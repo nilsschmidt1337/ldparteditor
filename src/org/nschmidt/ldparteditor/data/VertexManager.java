@@ -19154,7 +19154,7 @@ public class VertexManager {
                 } catch (ArithmeticException ae) {
                     flag = RotationSnap.COMPLEX;
                 }
-                transformation = View.ACCURATE_ID.rotate(target.X, flag, new BigDecimal[] { BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO });
+                transformation = View.ACCURATE_ID.rotate(target.X.divide(new BigDecimal(180), Threshold.mc).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO });
             } else if (y) {
                 try {
                     target.Y.intValueExact();
@@ -19178,7 +19178,7 @@ public class VertexManager {
                 } catch (ArithmeticException ae) {
                     flag = RotationSnap.COMPLEX;
                 }
-                transformation = View.ACCURATE_ID.rotate(target.Y, flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO });
+                transformation = View.ACCURATE_ID.rotate(target.Y.divide(new BigDecimal(180), Threshold.mc).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO });
             } else {
                 try {
                     target.Z.intValueExact();
@@ -19202,7 +19202,7 @@ public class VertexManager {
                 } catch (ArithmeticException ae) {
                     flag = RotationSnap.COMPLEX;
                 }
-                transformation = View.ACCURATE_ID.rotate(target.Z, flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE });
+                transformation = View.ACCURATE_ID.rotate(target.Z.divide(new BigDecimal(180), Threshold.mc).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE });
             }
             break;
         case SCALE:
