@@ -897,13 +897,16 @@ public class Composite3D extends ScalableComposite {
             // MARK MouseVerticalWheel
             public void handleEvent(Event event) {
                 Project.setFileToEdit(lockableDatFileReference);
-                lockableDatFileReference.setLastSelectedComposite(getComposite3D());
+                final Composite3D c3d = getComposite3D();
+                lockableDatFileReference.setLastSelectedComposite(c3d);
                 sb1.setSelection(0);
                 sb2.setSelection(0);
                 if (event.count < 0)
                     perspective.zoomIn();
                 else
                     perspective.zoomOut();
+
+                ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
             }
         });
 
@@ -922,6 +925,8 @@ public class Composite3D extends ScalableComposite {
             @Override
             // MARK KeyDown
             public void handleEvent(Event event) {
+                final Composite3D c3d = getComposite3D();
+                ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
                 keyboard.setStates(event.keyCode, SWT.KeyDown);
             }
         });
@@ -930,6 +935,8 @@ public class Composite3D extends ScalableComposite {
             @Override
             // MARK KeyUp
             public void handleEvent(Event event) {
+                final Composite3D c3d = getComposite3D();
+                ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
                 keyboard.setStates(event.keyCode, SWT.KeyUp);
             }
         });

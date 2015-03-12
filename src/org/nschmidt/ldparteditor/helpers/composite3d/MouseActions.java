@@ -1194,6 +1194,8 @@ public class MouseActions {
 
         vm.adjustRotationCenter(c3d, event);
 
+        ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
+
         if (vm.getSelectedSubfiles().size() == 1) {
             GData1 subfile = null;
             for (GData1 g1 : vm.getSelectedSubfiles()) {

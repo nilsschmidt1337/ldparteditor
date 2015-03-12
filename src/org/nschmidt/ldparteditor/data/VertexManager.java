@@ -4191,6 +4191,9 @@ public class VertexManager {
 
     public synchronized void setUpdated(boolean updated) {
         this.updated = updated;
+        if (updated) {
+            ViewIdleManager.renderLDrawStandard[0].set(true);
+        }
     }
 
     public synchronized void setModified_NoSync() {
