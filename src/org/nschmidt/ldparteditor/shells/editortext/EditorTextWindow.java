@@ -649,32 +649,31 @@ public class EditorTextWindow extends EditorTextDesign {
 
             @Override
             public void drop(DropTargetEvent event) {
-                if (EditorTextWindow.draggedTabOrigin != null && EditorTextWindow.draggedTabTarget != null && !EditorTextWindow.draggedTabOrigin.equals(EditorTextWindow.draggedTabTarget)) {
+                if (EditorTextWindow.draggedTabOrigin != null && !EditorTextWindow.draggedTabOrigin.equals(EditorTextWindow.draggedTabTarget)) {
                     if (!EditorTextWindow.draggedTabOrigin.getState().getFileNameObj().getVertexManager().isUpdated()) return;
-                    if (!EditorTextWindow.draggedTabTarget.getState().getFileNameObj().getVertexManager().isUpdated()) return;
+                    if (EditorTextWindow.draggedTabTarget != null && !EditorTextWindow.draggedTabTarget.getState().getFileNameObj().getVertexManager().isUpdated()) return;
                     int index = 0;
-                    for (CTabItem t : EditorTextWindow.dragFolderTarget.getItems()) {
-                        CompositeTab tab = (CompositeTab) t;
-                        if (tab.equals(EditorTextWindow.draggedTabTarget))
-                            break;
-                        index++;
-                    }
-                    if (index != 0)
-                        index++;
-                    if (EditorTextWindow.dragFolderOrigin.equals(EditorTextWindow.dragFolderTarget)) {
-                        int index2 = 0;
-                        for (CTabItem t : EditorTextWindow.dragFolderOrigin.getItems()) {
+                    if (EditorTextWindow.draggedTabTarget != null) {
+                        for (CTabItem t : EditorTextWindow.dragFolderTarget.getItems()) {
                             CompositeTab tab = (CompositeTab) t;
-                            if (tab.equals(EditorTextWindow.draggedTabOrigin))
+                            if (tab.equals(EditorTextWindow.draggedTabTarget))
                                 break;
-                            index2++;
+                            index++;
                         }
-                        if (index2 >= index && index > 0) {
-                            index--;
+                        if (index != 0)
+                            index++;
+                        if (EditorTextWindow.dragFolderOrigin.equals(EditorTextWindow.dragFolderTarget)) {
+                            int index2 = 0;
+                            for (CTabItem t : EditorTextWindow.dragFolderOrigin.getItems()) {
+                                CompositeTab tab = (CompositeTab) t;
+                                if (tab.equals(EditorTextWindow.draggedTabOrigin))
+                                    break;
+                                index2++;
+                            }
+                            if (index2 >= index && index > 0) {
+                                index--;
+                            }
                         }
-                    }
-                    if (EditorTextWindow.draggedTabTarget == null) {
-                        index = 0;
                     }
 
                     EditorTextWindow.dragFolderTarget.setSelection(EditorTextWindow.draggedTabOrigin.moveToFolder(EditorTextWindow.dragFolderTarget, index));

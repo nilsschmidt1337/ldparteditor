@@ -94,7 +94,7 @@ public final class DatFile {
 
     private Date lastSavedOpened = new Date();
 
-    private GData drawChainTail;
+    private GData drawChainTail = drawChainAnchor;
 
     private Composite3D lastSelectedComposite = null;
 
@@ -988,12 +988,12 @@ public final class DatFile {
     public void addToTail(GData gdata) {
         Integer lineNumber = drawPerLine.keySet().size() + 1;
         drawPerLine.put(lineNumber, gdata);
-        drawChainTail.setNext(gdata);
+        getDrawChainTail().setNext(gdata);
         drawChainTail = gdata;
     }
 
     public void insertAfter(GData target, GData gdata) {
-        if (target.equals(drawChainTail)) {
+        if (target.equals(getDrawChainTail())) {
             addToTail(gdata);
             return;
         }
