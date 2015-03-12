@@ -20,6 +20,11 @@ import java.math.BigDecimal;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.FocusAdapter;
@@ -27,6 +32,7 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.opengl.GLData;
@@ -49,6 +55,7 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
+import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
 import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
@@ -58,6 +65,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.MouseActions;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -945,6 +953,22 @@ public class Composite3D extends ScalableComposite {
             @Override
             public void focusGained(FocusEvent e) {
                 Project.setFileToEdit(lockableDatFileReference);
+            }
+        });
+
+        Transfer[] types = new Transfer[] { MyDummyTransfer2.getInstance() };
+        int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
+        DropTarget target = new DropTarget(this, operations);
+        target.setTransfer(types);
+        target.addDropListener(new DropTargetAdapter() {
+            @Override
+            public void dragOver(DropTargetEvent event) {
+                Point pos = new Point(event.x, event.y);
+            }
+
+            @Override
+            public void drop(DropTargetEvent event) {
+                NLogger.debug(getClass(), "Primitive dropped at: " + new Point(event.x, event.y).toString()); //$NON-NLS-1$
             }
         });
 
