@@ -980,20 +980,17 @@ public class VertexManager {
                             dataToHide.add(gd);
                             gd.hide();
                         }
-                        int oc = 0;
                         switch (gd.type()) {
                         case 2:
                             Vertex[] lineverts2 = lines.get(gd);
                             Vertex[] lineverts = lineverts2.clone();
                             for (int i = 0; i < 2; i++) {
                                 Vertex v2 = lineverts[i];
-                                if (allVertices.contains(v2)) oc++;
                                 if (!v2.equals(vertex)) {
                                     Vector4f res = manipulator.getUntransformed(v2.x, v2.y, v2.z);
                                     lineverts[i] = new Vertex(res.x, res.y, res.z, true);
                                 }
                             }
-                            if (oc == 2) continue;
                             GL11.glBegin(GL11.GL_LINES);
                             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                             GL11.glVertex3f(lineverts[0].x, lineverts[0].y, lineverts[0].z);
@@ -1007,14 +1004,11 @@ public class VertexManager {
                             Vertex[] triverts = triverts2.clone();
                             for (int i = 0; i < 3; i++) {
                                 Vertex v3 = triverts[i];
-                                if (allVertices.contains(v3)) {
-                                    oc++;
-                                } else {
+                                if (!allVertices.contains(v3)) {
                                     Vector4f res = manipulator.getUntransformed(v3.x, v3.y, v3.z);
                                     triverts[i] = new Vertex(res.x, res.y, res.z, true);
                                 }
                             }
-                            if (oc == 3) continue;
                             nx = (triverts[2].y - triverts[0].y) * (triverts[1].z - triverts[0].z) - (triverts[2].z - triverts[0].z) * (triverts[1].y - triverts[0].y);
                             ny = (triverts[2].z - triverts[0].z) * (triverts[1].x - triverts[0].x) - (triverts[2].x - triverts[0].x) * (triverts[1].z - triverts[0].z);
                             nz = (triverts[2].x - triverts[0].x) * (triverts[1].y - triverts[0].y) - (triverts[2].y - triverts[0].y) * (triverts[1].x - triverts[0].x);
@@ -1048,14 +1042,11 @@ public class VertexManager {
                             Vertex[] quadverts = quadverts2.clone();
                             for (int i = 0; i < 4; i++) {
                                 Vertex v4 = quadverts[i];
-                                if (allVertices.contains(v4)) {
-                                    oc++;
-                                } else {
+                                if (!allVertices.contains(v4)) {
                                     Vector4f res = manipulator.getUntransformed(v4.x, v4.y, v4.z);
                                     quadverts[i] = new Vertex(res.x, res.y, res.z, true);
                                 }
                             }
-                            if (oc == 4) continue;
                             final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
                             {
                                 final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
@@ -1109,13 +1100,11 @@ public class VertexManager {
                             Vertex[] condverts = condverts2.clone();
                             for (int i = 0; i < 2; i++) {
                                 Vertex v5 = condverts[i];
-                                if (allVertices.contains(v5)) oc++;
                                 if (!v5.equals(vertex)) {
                                     Vector4f res = manipulator.getUntransformed(v5.x, v5.y, v5.z);
                                     condverts[i] = new Vertex(res.x, res.y, res.z, true);
                                 }
                             }
-                            if (oc == 2) continue;
                             GL11.glBegin(GL11.GL_LINES);
                             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                             GL11.glVertex3f(condverts[0].x, condverts[0].y, condverts[0].z);
