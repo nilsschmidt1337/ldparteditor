@@ -90,7 +90,7 @@ class ScaleDesign extends Dialog {
 
             Button cb_Xaxis = new Button(cmp_txt, SWT.CHECK);
             this.cb_Xaxis[0] = cb_Xaxis;
-            cb_Xaxis.setText("f * X"); //$NON-NLS-1$ I18N Needs translation!
+            cb_Xaxis.setText(" X * "); //$NON-NLS-1$ I18N Needs translation!
             cb_Xaxis.setSelection(true);
 
             BigDecimalSpinner spn_X = new BigDecimalSpinner(cmp_txt, SWT.NONE);
@@ -108,7 +108,7 @@ class ScaleDesign extends Dialog {
 
             Button cb_Yaxis = new Button(cmp_txt, SWT.CHECK);
             this.cb_Yaxis[0] = cb_Yaxis;
-            cb_Yaxis.setText("f * Y"); //$NON-NLS-1$ I18N Needs translation!
+            cb_Yaxis.setText(" Y * "); //$NON-NLS-1$ I18N Needs translation!
             cb_Yaxis.setSelection(true);
 
             BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE);
@@ -126,7 +126,7 @@ class ScaleDesign extends Dialog {
 
             Button cb_Zaxis = new Button(cmp_txt, SWT.CHECK);
             this.cb_Zaxis[0] = cb_Zaxis;
-            cb_Zaxis.setText("f * Z"); //$NON-NLS-1$ I18N Needs translation!
+            cb_Zaxis.setText(" Z * "); //$NON-NLS-1$ I18N Needs translation!
             cb_Zaxis.setSelection(true);
 
             BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE);
