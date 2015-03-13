@@ -1804,8 +1804,42 @@ class Editor3DDesign extends ApplicationWindow {
                         btn_ResetSearch.setText("Reset"); //$NON-NLS-1$ I18N Needs translation!
                     }
 
-                    CompositePrimitive cmp_Container4 = new CompositePrimitive(sashForm2);
-                    cmp_Container4.setLayout(new FillLayout());
+                    Composite cmp_Container4 = new Composite(sashForm2, SWT.BORDER);
+                    GridLayout gridLayout4 = new GridLayout(1, true);
+                    cmp_Container4.setLayout(gridLayout4);
+
+                    CompositePrimitive cmp_Container5 = new CompositePrimitive(cmp_Container4);
+                    cmp_Container5.setLayout(new FillLayout());
+
+                    GridData gd = new GridData();
+                    gd.grabExcessHorizontalSpace = true;
+                    gd.grabExcessVerticalSpace = true;
+                    gd.horizontalAlignment = SWT.FILL;
+                    gd.verticalAlignment = SWT.FILL;
+                    cmp_Container5.setLayoutData(gd);
+
+                    Label lbl_selectedPrimitiveItem = new Label(cmp_Container4, SWT.NONE);
+                    lbl_selectedPrimitiveItem.setText("(no primitive selected)");//$NON-NLS-1$ I18N Needs translation!
+
+                    {
+                        Composite cmp_Search = new Composite(cmp_Container4, SWT.NONE);
+                        GridData gridData = new GridData();
+                        gridData.horizontalAlignment = SWT.FILL;
+                        gridData.grabExcessHorizontalSpace = true;
+                        cmp_Search.setLayoutData(gridData);
+                        GridLayout gridLayout2 = new GridLayout(2, false);
+                        cmp_Search.setLayout(gridLayout2);
+                        Text txt_Search = new Text(cmp_Search, SWT.BORDER);
+                        // this.txt_Search[0] = txt_Search;
+                        txt_Search.setMessage("Search Primitives"); //$NON-NLS-1$ I18N Needs translation!
+                        GridData gridData2 = new GridData();
+                        gridData2.horizontalAlignment = SWT.FILL;
+                        gridData2.grabExcessHorizontalSpace = true;
+                        txt_Search.setLayoutData(gridData2);
+                        Button btn_ResetSearch = new Button(cmp_Search, SWT.NONE);
+                        // this.btn_ResetSearch[0] = btn_ResetSearch;
+                        btn_ResetSearch.setText("Reset"); //$NON-NLS-1$ I18N Needs translation!
+                    }
                 }
 
                 @SuppressWarnings("unused")
