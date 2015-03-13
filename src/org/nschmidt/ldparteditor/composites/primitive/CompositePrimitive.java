@@ -13,7 +13,9 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.composites;
+package org.nschmidt.ldparteditor.composites.primitive;
+
+import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
@@ -39,6 +41,7 @@ import org.nschmidt.ldparteditor.dnd.MyDummyType2;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives;
+import org.nschmidt.ldparteditor.widgets.listeners.Win32MouseWheelFilter;
 
 public class CompositePrimitive extends Composite {
 
@@ -49,7 +52,8 @@ public class CompositePrimitive extends Composite {
     final GLCanvas canvas;
 
     /** The view zoom level */
-    private float zoom = 0.005f;
+    private float zoom = 0.0039810717f;
+    private float zoom_exponent = 6f; // Start with 0.4% zoom
 
     /** The transformation matrix of the view */
     private final Matrix4f viewport_matrix = new Matrix4f();
@@ -57,6 +61,8 @@ public class CompositePrimitive extends Composite {
     private Matrix4f viewport_matrix_inv = new Matrix4f();
     /** The translation matrix of the view */
     private final Matrix4f viewport_translation = new Matrix4f();
+
+    private ArrayList<Primitive> primitives = new ArrayList<Primitive>();
 
     public CompositePrimitive(Composite parent) {
         super(parent, I18n.I18N_NON_BIDIRECT() | SWT.BORDER);
@@ -125,14 +131,43 @@ public class CompositePrimitive extends Composite {
             }
         });
 
+        canvas.addListener(SWT.MouseDown, new Listener() {
+            @Override
+            // MARK MouseDown
+            public void handleEvent(Event event) {
+
+            }
+        });
+
         canvas.addListener(SWT.MouseMove, new Listener() {
             @Override
             // MARK MouseMove
             public void handleEvent(Event event) {
-                zoom = .007f;
                 openGL.drawScene();
             }
         });
+
+        canvas.addListener(SWT.MouseUp, new Listener() {
+            @Override
+            // MARK MouseUp
+            public void handleEvent(Event event) {
+
+            }
+        });
+
+        canvas.addListener(SWT.MouseVerticalWheel, new Listener() {
+            @Override
+            // MARK MouseVerticalWheel
+            public void handleEvent(Event event) {
+                if (event.count < 0)
+                    zoomIn();
+                else
+                    zoomOut();
+                openGL.drawScene();
+            }
+        });
+
+        new Win32MouseWheelFilter(canvas.getDisplay());
 
         openGL.init();
         Display.getCurrent().timerExec(3000, new Runnable() {
@@ -193,6 +228,36 @@ public class CompositePrimitive extends Composite {
         GData.CACHE_viewByProjection.clear();
         viewport_matrix.load(matrix);
         viewport_matrix_inv = (Matrix4f) matrix.invert();
+    }
+
+    public ArrayList<Primitive> getPrimitives() {
+        return primitives;
+    }
+
+    public void setPrimitives(ArrayList<Primitive> primitives) {
+        this.primitives = primitives;
+    }
+
+    /**
+     * Zooming in
+     */
+    public void zoomIn() {
+        zoom_exponent++;
+        if (zoom_exponent > 20) {
+            zoom_exponent = 20;
+        }
+        setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
+    }
+
+    /**
+     * Zooming out
+     */
+    public void zoomOut() {
+        zoom_exponent--;
+        if (zoom_exponent < 3) {
+            zoom_exponent = 3;
+        }
+        setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
     }
 
 }
