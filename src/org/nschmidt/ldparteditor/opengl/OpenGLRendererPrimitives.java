@@ -165,13 +165,13 @@ public class OpenGLRendererPrimitives {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         drawCell(0, 0, true, true);
-        drawMinus(0, 0);
+        drawPlus(0, 0);
 
         drawCell(22, 0, false, false);
 
         drawCell(0, 22, false, false);
         drawCell(22, 22, false, true);
-        drawPlus(22, 22);
+        drawMinus(22, 22);
 
         // Lights
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, 2.0f, 2.0f, 1f}));
@@ -202,14 +202,14 @@ public class OpenGLRendererPrimitives {
         GL11.glColor4f(1f, 1f, 1f, 1f);
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glNormal3f(0f, 0f, 1f);
-        GL11.glVertex3f(x + 13.8f, y + 16f, 0f);
-        GL11.glVertex3f(x + 13.8f, y + 15f, 0f);
-        GL11.glVertex3f(x + 16.2f, y + 15f, 0f);
-        GL11.glVertex3f(x + 16.2f, y + 16f, 0f);
-        GL11.glVertex3f(x + 14.4f, y + 16.5f, 0f);
-        GL11.glVertex3f(x + 14.4f, y + 14.5f, 0f);
-        GL11.glVertex3f(x + 15.7f, y + 14.5f, 0f);
-        GL11.glVertex3f(x + 15.7f, y + 16.5f, 0f);
+        GL11.glVertex3f(x + 14f, y + 15.75f, 0f);
+        GL11.glVertex3f(x + 14f, y + 15.25f, 0f);
+        GL11.glVertex3f(x + 16f, y + 15.25f, 0f);
+        GL11.glVertex3f(x + 16f, y + 15.75f, 0f);
+        GL11.glVertex3f(x + 14.75f, y + 16.4f, 0f);
+        GL11.glVertex3f(x + 14.75f, y + 14.6f, 0f);
+        GL11.glVertex3f(x + 15.25f, y + 14.6f, 0f);
+        GL11.glVertex3f(x + 15.25f, y + 16.4f, 0f);
         GL11.glEnd();
 
     }
@@ -219,10 +219,10 @@ public class OpenGLRendererPrimitives {
         GL11.glColor4f(1f, 1f, 1f, 1f);
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glNormal3f(0f, 0f, 1f);
-        GL11.glVertex3f(x + 13.8f, y + 16f, 0f);
-        GL11.glVertex3f(x + 13.8f, y + 15f, 0f);
-        GL11.glVertex3f(x + 16.2f, y + 15f, 0f);
-        GL11.glVertex3f(x + 16.2f, y + 16f, 0f);
+        GL11.glVertex3f(x + 14f, y + 15.75f, 0f);
+        GL11.glVertex3f(x + 14f, y + 15.25f, 0f);
+        GL11.glVertex3f(x + 16f, y + 15.25f, 0f);
+        GL11.glVertex3f(x + 16f, y + 15.75f, 0f);
         GL11.glEnd();
     }
 
