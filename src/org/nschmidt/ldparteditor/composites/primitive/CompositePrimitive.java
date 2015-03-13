@@ -35,9 +35,14 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
 import org.nschmidt.ldparteditor.dnd.MyDummyType2;
+import org.nschmidt.ldparteditor.enums.MouseButton;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives;
@@ -63,10 +68,19 @@ public class CompositePrimitive extends Composite {
     private final Matrix4f viewport_translation = new Matrix4f();
 
     private ArrayList<Primitive> primitives = new ArrayList<Primitive>();
+    private int mouse_button_pressed;
+    private final Vector2f old_mouse_position = new Vector2f();
+    /** The old translation matrix of the view [NOT PUBLIC YET] */
+    private final Matrix4f old_viewport_translation = new Matrix4f();
+
+    /** Resolution of the viewport at n% zoom */
+    private float viewport_pixel_per_ldu;
 
     public CompositePrimitive(Composite parent) {
         super(parent, I18n.I18N_NON_BIDIRECT() | SWT.BORDER);
         // TODO Auto-generated constructor stub
+
+        this.viewport_pixel_per_ldu = this.zoom * View.PIXEL_PER_LDU;
 
         this.setLayout(new FillLayout());
         GLData data = new GLData();
@@ -135,7 +149,18 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK MouseDown
             public void handleEvent(Event event) {
-
+                mouse_button_pressed = event.button;
+                old_mouse_position.set(event.x, event.y);
+                switch (event.button) {
+                case MouseButton.LEFT:
+                    break;
+                case MouseButton.MIDDLE:
+                    break;
+                case MouseButton.RIGHT:
+                    Matrix4f.load(getTranslation(), old_viewport_translation);
+                    break;
+                default:
+                }
             }
         });
 
@@ -144,6 +169,32 @@ public class CompositePrimitive extends Composite {
             // MARK MouseMove
             public void handleEvent(Event event) {
                 openGL.drawScene();
+
+                switch (mouse_button_pressed) {
+                case MouseButton.LEFT:
+                    break;
+                case MouseButton.MIDDLE:
+                    break;
+                case MouseButton.RIGHT:
+                    float dx = 0;
+                    float dy = 0;
+                    dx = (event.x - old_mouse_position.x) / viewport_pixel_per_ldu;
+                    dy = (event.y - old_mouse_position.y) / viewport_pixel_per_ldu;
+                    Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
+                    Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
+                    Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
+                    Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+                    Matrix4f.load(old_viewport_translation, viewport_translation);
+                    Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
+                    Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
+
+                    // if (viewport_translation.m30 > 0f) viewport_translation.m30 = 0f;
+
+                    viewport_translation.m30 = 0f;
+                    if (viewport_translation.m31 > 0f) viewport_translation.m31 = 0f;
+                    break;
+                default:
+                }
             }
         });
 
@@ -151,7 +202,16 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK MouseUp
             public void handleEvent(Event event) {
-
+                mouse_button_pressed = 0;
+                switch (event.button) {
+                case MouseButton.LEFT:
+                    break;
+                case MouseButton.MIDDLE:
+                    break;
+                case MouseButton.RIGHT:
+                    break;
+                default:
+                }
             }
         });
 
@@ -242,22 +302,55 @@ public class CompositePrimitive extends Composite {
      * Zooming in
      */
     public void zoomIn() {
+        float old = getZoom();
         zoom_exponent++;
         if (zoom_exponent > 20) {
             zoom_exponent = 20;
         }
         setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
+        this.viewport_pixel_per_ldu = this.zoom * View.PIXEL_PER_LDU;
+        adjustTranslate(old, getZoom());
     }
 
     /**
      * Zooming out
      */
     public void zoomOut() {
+        float old = getZoom();
         zoom_exponent--;
         if (zoom_exponent < 3) {
             zoom_exponent = 3;
         }
         setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
+        this.viewport_pixel_per_ldu = this.zoom * View.PIXEL_PER_LDU;
+        adjustTranslate(old, getZoom());
+    }
+
+    private void adjustTranslate(float old, float zoom2) {
+        float dx = 0;
+        float dy = 0;
+        dx = 0f / viewport_pixel_per_ldu;
+        dy = 0f / viewport_pixel_per_ldu;
+        Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
+        Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
+        Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
+        Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+
+        Matrix4f.load(old_viewport_translation, viewport_translation);
+        Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
+        Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
+
+        viewport_translation.m30 = 0f;
+        if (viewport_translation.m13 > 0f) viewport_translation.m13 = 0f;
+    }
+
+    public float getViewport_pixel_per_ldu() {
+        return viewport_pixel_per_ldu;
+    }
+
+    public void setViewport_pixel_per_ldu(float viewport_pixel_per_ldu) {
+        this.viewport_pixel_per_ldu = viewport_pixel_per_ldu;
+
     }
 
 }
