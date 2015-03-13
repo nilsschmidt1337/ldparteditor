@@ -32,6 +32,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.GLContext;
+import org.lwjgl.util.vector.Matrix4f;
+import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
 import org.nschmidt.ldparteditor.dnd.MyDummyType2;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -45,6 +47,16 @@ public class CompositePrimitive extends Composite {
 
     /** the {@linkplain GLCanvas} */
     final GLCanvas canvas;
+
+    /** The view zoom level */
+    private float zoom = 1f;
+
+    /** The transformation matrix of the view */
+    private final Matrix4f viewport_matrix = new Matrix4f();
+    /** The inverse transformation matrix of the view */
+    private Matrix4f viewport_matrix_inv = new Matrix4f();
+    /** The translation matrix of the view */
+    private final Matrix4f viewport_translation = new Matrix4f();
 
     public CompositePrimitive(Composite parent) {
         super(parent, I18n.I18N_NON_BIDIRECT() | SWT.BORDER);
@@ -104,9 +116,82 @@ public class CompositePrimitive extends Composite {
                 } catch (LWJGLException e) {
                     e.printStackTrace();
                 }
+                Display.getCurrent().timerExec(500, new Runnable() {
+                    @Override
+                    public void run() {
+                        openGL.drawScene();
+                    }
+                });
+            }
+        });
+
+        canvas.addListener(SWT.MouseMove, new Listener() {
+            @Override
+            // MARK MouseMove
+            public void handleEvent(Event event) {
+                openGL.drawScene();
+            }
+        });
+
+        openGL.init();
+        Display.getCurrent().timerExec(3000, new Runnable() {
+            @Override
+            public void run() {
+                openGL.drawScene();
             }
         });
     }
     // FIXME Needs implementation!
+
+    public GLCanvas getCanvas() {
+        return canvas;
+    }
+
+    /**
+     * @return the view zoom level exponent
+     */
+    public float getZoom() {
+        return zoom;
+    }
+
+    /**
+     * Set the view zoom level exponent
+     *
+     * @param zoom
+     *            value between -10.0 and 10.0
+     */
+    public void setZoom(float zoom) {
+        this.zoom = zoom;
+    }
+
+    /**
+     * @return The translation matrix of the view
+     */
+    public Matrix4f getTranslation() {
+        return viewport_translation;
+    }
+
+    /**
+     * @return The transformation matrix of the viewport which was last drawn
+     */
+    public Matrix4f getViewport() {
+        return viewport_matrix;
+    }
+
+    public Matrix4f getViewport_Inverse() {
+        return viewport_matrix_inv;
+    }
+
+    /**
+     * Sets the transformation matrix of the viewport
+     *
+     * @param matrix
+     *            the matrix to set.
+     */
+    public void setViewport(Matrix4f matrix) {
+        GData.CACHE_viewByProjection.clear();
+        viewport_matrix.load(matrix);
+        viewport_matrix_inv = (Matrix4f) matrix.invert();
+    }
 
 }

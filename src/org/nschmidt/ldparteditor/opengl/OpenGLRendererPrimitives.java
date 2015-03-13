@@ -15,15 +15,159 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.opengl;
 
+import java.nio.FloatBuffer;
+
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.opengl.GLCanvas;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GLContext;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.composites.CompositePrimitive;
+import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.BufferFactory;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 public class OpenGLRendererPrimitives {
 
     /** The Primitive Composite */
     private final CompositePrimitive cp;
 
+    /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
+    private final FloatBuffer viewport = BufferUtils.createFloatBuffer(16);
+
+    public FloatBuffer getViewport() {
+        return viewport;
+    }
+
     public OpenGLRendererPrimitives(CompositePrimitive compositePrimitive) {
         this.cp = compositePrimitive;
     }
     // FIXME Needs implementation!
+
+
+    /**
+     * Initializes the Scene and gives OpenGL-Hints
+     */
+    public void init() {
+        // MARK OpenGL Hints and Initialization
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        GL11.glDepthFunc(GL11.GL_LESS);
+        GL11.glEnable(GL11.GL_STENCIL_TEST);
+        GL11.glClearDepth(1.0f);
+        GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
+        GL11.glPointSize(4);
+        // GL11.glLineWidth(2);
+
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glShadeModel(GL11.GL_FLAT);
+
+        GL11.glEnable(GL11.GL_NORMALIZE);
+
+        GL11.glEnable(GL11.GL_LIGHT0);
+        GL11.glEnable(GL11.GL_LIGHT1);
+        GL11.glEnable(GL11.GL_LIGHT2);
+        GL11.glEnable(GL11.GL_LIGHT3);
+
+        GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, BufferFactory.floatBuffer(new float[] { 0.09f, 0.09f, 0.09f, 1f }));
+
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.8f, 0.8f, 0.8f, 1f }));
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 0.5f, 0.5f, 0.5f, 1f }));
+        GL11.glLightf(GL11.GL_LIGHT0, GL11.GL_LINEAR_ATTENUATION, .001f);
+
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.25f, 0.25f, 0.25f, 1f }));
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 0.0f, 0.0f, 0.0f, 1f }));
+        GL11.glLightf(GL11.GL_LIGHT1, GL11.GL_LINEAR_ATTENUATION, .001f);
+
+        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.25f, 0.25f, 0.25f, 1f }));
+        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 0.0f, 0.0f, 0.0f, 1f }));
+        GL11.glLightf(GL11.GL_LIGHT2, GL11.GL_LINEAR_ATTENUATION, .001f);
+
+        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.25f, 0.25f, 0.25f, 1f }));
+        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 0.0f, 0.0f, 0.0f, 1f }));
+        GL11.glLightf(GL11.GL_LIGHT3, GL11.GL_LINEAR_ATTENUATION, .001f);
+
+        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        GL11.glColorMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE);
+
+        GL11.glMaterial(GL11.GL_FRONT, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 1.0f, 1.0f, 1.0f, 1.0f }));
+        GL11.glMaterialf(GL11.GL_FRONT, GL11.GL_SHININESS, 128f);
+
+
+        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+    }
+
+    /**
+     * Draws the scene
+     */
+    public void drawScene() {
+
+        final GLCanvas canvas = cp.getCanvas();
+
+        if (!canvas.isCurrent()) {
+            canvas.setCurrent();
+            try {
+                GLContext.useContext(canvas);
+            } catch (LWJGLException e) {
+                NLogger.error(OpenGLRenderer.class, e);
+            }
+        }
+
+        // MARK OpenGL Draw Scene
+        GL20.glUseProgram(0);
+
+        GL11.glColorMask(true, true, true, true);
+
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+
+        Rectangle bounds = cp.getBounds();
+        GL11.glViewport(0, 0, bounds.width, bounds.height);
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        float viewport_width = bounds.width / View.PIXEL_PER_LDU / 2.0f;
+        float viewport_height = bounds.height / View.PIXEL_PER_LDU / 2.0f;
+        GL11.glOrtho(viewport_width, -viewport_width, viewport_height, -viewport_height, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
+
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
+
+        Matrix4f viewport_transform = new Matrix4f();
+        Matrix4f.setIdentity(viewport_transform);
+
+        float zoom = cp.getZoom();
+        Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewport_transform, viewport_transform);
+        Matrix4f viewport_translation = cp.getTranslation();
+        Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
+        viewport_transform.store(viewport);
+        cp.setViewport(viewport_transform);
+        viewport.flip();
+        GL11.glLoadMatrix(viewport);
+
+
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glFrontFace(GL11.GL_CW);
+        GL11.glCullFace(GL11.GL_BACK);
+        GL11.glEnable(GL11.GL_LIGHTING);
+
+
+        // Lights
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, 2.0f, 2.0f, 1f}));
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, 2.0f, 2.0f, 1f}));
+        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, -2.0f, 2.0f, 1f}));
+        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, -2.0f, 2.0f, 1f}));
+
+        cp.getCanvas().swapBuffers();
+    }
 }
