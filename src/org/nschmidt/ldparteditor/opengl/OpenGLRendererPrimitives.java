@@ -26,7 +26,8 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import org.nschmidt.ldparteditor.composites.CompositePrimitive;
+import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
+import org.nschmidt.ldparteditor.composites.primitive.Primitive;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.BufferFactory;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -161,6 +162,11 @@ public class OpenGLRendererPrimitives {
         //        GL11.glFrontFace(GL11.GL_CW);
         //        GL11.glCullFace(GL11.GL_BACK);
         //        GL11.glEnable(GL11.GL_LIGHTING);
+
+        // Draw all visible primitives / highlight selection
+        for (Primitive p : cp.getPrimitives()) {
+
+        }
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
