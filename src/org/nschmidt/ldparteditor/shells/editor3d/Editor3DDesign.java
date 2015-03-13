@@ -1805,11 +1805,7 @@ class Editor3DDesign extends ApplicationWindow {
                     }
 
                     CompositePrimitive cmp_Container4 = new CompositePrimitive(sashForm2);
-                    GridLayout gridLayout4 = new GridLayout(1, true);
-                    cmp_Container4.setLayout(gridLayout4);
-
-                    Label lbl_Todo = new Label(cmp_Container4, SWT.NONE);
-                    lbl_Todo.setText("Insert\nPrimitive\nGallery\nHere!"); //$NON-NLS-1$
+                    cmp_Container4.setLayout(new FillLayout());
                 }
 
                 @SuppressWarnings("unused")
