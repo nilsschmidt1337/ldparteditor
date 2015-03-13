@@ -138,7 +138,8 @@ public class OpenGLRendererPrimitives {
         GL11.glLoadIdentity();
         float viewport_width = bounds.width / View.PIXEL_PER_LDU / 2.0f;
         float viewport_height = bounds.height / View.PIXEL_PER_LDU / 2.0f;
-        GL11.glOrtho(viewport_width, -viewport_width, viewport_height, -viewport_height, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
+        GL11.glOrtho(0f, viewport_width * 2f, viewport_height * 2f, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
+        // GL11.glOrtho(viewport_width, -viewport_width, viewport_height, -viewport_height, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
@@ -156,11 +157,21 @@ public class OpenGLRendererPrimitives {
         GL11.glLoadMatrix(viewport);
 
 
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glFrontFace(GL11.GL_CW);
-        GL11.glCullFace(GL11.GL_BACK);
-        GL11.glEnable(GL11.GL_LIGHTING);
+        //        GL11.glEnable(GL11.GL_CULL_FACE);
+        //        GL11.glFrontFace(GL11.GL_CW);
+        //        GL11.glCullFace(GL11.GL_BACK);
+        //        GL11.glEnable(GL11.GL_LIGHTING);
 
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        drawCell(0, 0, true, true);
+        drawMinus(0, 0);
+
+        drawCell(22, 0, false, false);
+
+        drawCell(0, 22, false, false);
+        drawCell(22, 22, false, true);
+        drawPlus(22, 22);
 
         // Lights
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, 2.0f, 2.0f, 1f}));
@@ -169,5 +180,129 @@ public class OpenGLRendererPrimitives {
         GL11.glLight(GL11.GL_LIGHT3, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, -2.0f, 2.0f, 1f}));
 
         cp.getCanvas().swapBuffers();
+    }
+
+
+    private void drawCell(float x, float y, boolean selected, boolean category) {
+        if (selected) {
+            drawRoundRectangle(x, y, 20f, 20f, 5f, 1f, .3f, .3f);
+        } else {
+            drawRoundRectangle(x, y, 20f, 20f, 5f, .3f, .3f, .3f);
+        }
+        drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, .7f, .7f, .7f);
+        if (category) {
+            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, .95f, .95f, .95f);
+        } else {
+            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, 1f, 1f, 1f);
+        }
+    }
+
+    private void drawPlus(float x, float y) {
+        drawSignBackground(x, y);
+        GL11.glColor4f(1f, 1f, 1f, 1f);
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glNormal3f(0f, 0f, 1f);
+        GL11.glVertex3f(x + 13.8f, y + 16f, 0f);
+        GL11.glVertex3f(x + 13.8f, y + 15f, 0f);
+        GL11.glVertex3f(x + 16.2f, y + 15f, 0f);
+        GL11.glVertex3f(x + 16.2f, y + 16f, 0f);
+        GL11.glVertex3f(x + 14.4f, y + 16.5f, 0f);
+        GL11.glVertex3f(x + 14.4f, y + 14.5f, 0f);
+        GL11.glVertex3f(x + 15.7f, y + 14.5f, 0f);
+        GL11.glVertex3f(x + 15.7f, y + 16.5f, 0f);
+        GL11.glEnd();
+
+    }
+
+    private void drawMinus(float x, float y) {
+        drawSignBackground(x, y);
+        GL11.glColor4f(1f, 1f, 1f, 1f);
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glNormal3f(0f, 0f, 1f);
+        GL11.glVertex3f(x + 13.8f, y + 16f, 0f);
+        GL11.glVertex3f(x + 13.8f, y + 15f, 0f);
+        GL11.glVertex3f(x + 16.2f, y + 15f, 0f);
+        GL11.glVertex3f(x + 16.2f, y + 16f, 0f);
+        GL11.glEnd();
+    }
+
+    private void drawSignBackground(float x, float y) {
+        drawRoundRectangle(x + 13.2f, y + 13.6f, 4f, 4f, .5f, 1f, 1f, 1f);
+        drawRoundRectangle(x + 13.3f, y + 13.7f, 3.6f, 3.6f, .5f, .2f, .2f, 1f);
+    }
+    private void drawRoundRectangle(float x, float y,float width, float height, float radius, float r, float g, float b) {
+
+        final float widthMinusRadius = width - radius;
+        final float heightMinusRadius = height - radius;
+
+        GL11.glColor4f(r, g, b, 1f);
+
+        // Middle
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glNormal3f(0f, 0f, 1f);
+        GL11.glVertex3f(x + radius, y, 0f);
+        GL11.glVertex3f(x + radius, y + height, 0f);
+        GL11.glVertex3f(x + widthMinusRadius, y + height, 0f);
+        GL11.glVertex3f(x + widthMinusRadius, y, 0f);
+        GL11.glEnd();
+
+        // Left
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glNormal3f(0f, 0f, 1f);
+        GL11.glVertex3f(x, y + radius, 0f);
+        GL11.glVertex3f(x, y + heightMinusRadius, 0f);
+        GL11.glVertex3f(x + radius, y + heightMinusRadius, 0f);
+        GL11.glVertex3f(x + radius, y + radius, 0f);
+        GL11.glEnd();
+
+        // Right
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glNormal3f(0f, 0f, 1f);
+        GL11.glVertex3f(x + width, y + radius, 0f);
+        GL11.glVertex3f(x + width, y + heightMinusRadius, 0f);
+        GL11.glVertex3f(x + widthMinusRadius, y + heightMinusRadius, 0f);
+        GL11.glVertex3f(x + widthMinusRadius, y + radius, 0f);
+        GL11.glEnd();
+
+        // Upper-Left
+        GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+        GL11.glVertex3f(x + radius, y + radius, 0f);
+        for(float angle = 0f; angle < 100f; angle += 10f) {
+            float anglerad = (float) (Math.PI * angle / 180.0);
+            float ax = (float) (Math.cos(anglerad) * radius);
+            float ay = (float) (Math.sin(anglerad) * radius);
+            GL11.glVertex3f(x + radius - ax, y + radius - ay, 0f);
+        }
+        GL11.glEnd();
+        // Upper-Right
+        GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+        GL11.glVertex3f(x + widthMinusRadius, y + radius, 0f);
+        for(float angle = 0f; angle < 100f; angle += 10f) {
+            float anglerad = (float) (Math.PI * angle / 180.0);
+            float ax = (float) (Math.cos(anglerad) * radius);
+            float ay = (float) (Math.sin(anglerad) * radius);
+            GL11.glVertex3f(x + widthMinusRadius + ax, y + radius - ay, 0f);
+        }
+        GL11.glEnd();
+        // Lower-Left
+        GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+        GL11.glVertex3f(x + radius, y + heightMinusRadius, 0f);
+        for(float angle = 0f; angle < 100f; angle += 10f) {
+            float anglerad = (float) (Math.PI * angle / 180.0);
+            float ax = (float) (Math.cos(anglerad) * radius);
+            float ay = (float) (Math.sin(anglerad) * radius);
+            GL11.glVertex3f(x + radius - ax, y + heightMinusRadius + ay, 0f);
+        }
+        GL11.glEnd();
+        // Lower-Right
+        GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+        GL11.glVertex3f(x + widthMinusRadius, y + heightMinusRadius, 0f);
+        for(float angle = 0f; angle < 100f; angle += 10f) {
+            float anglerad = (float) (Math.PI * angle / 180.0);
+            float ax = (float) (Math.cos(anglerad) * radius);
+            float ay = (float) (Math.sin(anglerad) * radius);
+            GL11.glVertex3f(x + widthMinusRadius + ax, y + heightMinusRadius + ay, 0f);
+        }
+        GL11.glEnd();
     }
 }

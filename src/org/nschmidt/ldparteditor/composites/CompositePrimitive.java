@@ -49,7 +49,7 @@ public class CompositePrimitive extends Composite {
     final GLCanvas canvas;
 
     /** The view zoom level */
-    private float zoom = 1f;
+    private float zoom = 0.0001f;
 
     /** The transformation matrix of the view */
     private final Matrix4f viewport_matrix = new Matrix4f();
@@ -129,6 +129,7 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK MouseMove
             public void handleEvent(Event event) {
+                zoom = 0.01f;
                 openGL.drawScene();
             }
         });
