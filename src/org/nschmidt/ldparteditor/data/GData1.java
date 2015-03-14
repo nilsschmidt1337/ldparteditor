@@ -32,6 +32,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
@@ -361,6 +362,92 @@ public final class GData1 extends GData {
                     }
                     anchorData.setNext(gdata);
                     anchorData = gdata;
+                } else {
+                    GData0 gdata = new GData0(line);
+                    anchorData.setNext(gdata);
+                    anchorData = gdata;
+                }
+            }
+        } else {
+            this.firstRef = firstRef;
+            this.readOnly = firstRef.readOnly;
+            this.depth = depth;
+            this.colourNumber = 0;
+            this.r = 0;
+            this.g = 0;
+            this.b = 0;
+            this.a = 0;
+            this.name = null;
+            this.shortName = null;
+            this.matrix = null;
+            this.productMatrix = null;
+            this.localMatrix = null;
+            this.negativeDeterminant = false;
+        }
+    }
+
+    /**
+     * SLOWER, FOR PRIMITIVE CHOOSER ONLY, uses no cache, uses no bounding box!
+     *
+     * @param colourNumber
+     * @param r
+     * @param g
+     * @param b
+     * @param a
+     * @param tMatrix
+     * @param lines
+     * @param name
+     * @param shortName
+     * @param depth
+     * @param det
+     * @param pMatrix
+     * @param firstRef
+     */
+    public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, LinkedList<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
+            Set<String> alreadyParsed, GData1 firstRef) {
+
+        this.accurateLocalMatrix = null;
+        this.accurateProductMatrix = null;
+        depth++;
+        if (depth < 16) {
+            if (depth == 1) {
+                this.firstRef = this;
+
+            } else {
+                this.firstRef = firstRef.firstRef;
+            }
+            this.readOnly = false;
+            this.depth = depth;
+            this.boundingBoxMin.x = -10000000f;
+            this.boundingBoxMin.y = -10000000f;
+            this.boundingBoxMin.z = -1000000f;
+            this.boundingBoxMax.x = 10000000f;
+            this.boundingBoxMax.y = 10000000f;
+            this.boundingBoxMax.z = 10000000f;
+            negativeDeterminant = det;
+            this.colourNumber = colourNumber;
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            this.a = a;
+            this.name = name;
+            this.shortName = shortName;
+            this.productMatrix = new Matrix4f(pMatrix);
+            this.localMatrix = new Matrix4f(tMatrix);
+            matrix = BufferUtils.createFloatBuffer(16);
+            tMatrix.store(matrix);
+
+            matrix.position(0);
+
+            GData anchorData = myGData;
+
+            for (String line : lines) {
+                if (isNotBlank(line)) {
+                    GData gdata = CompositePrimitive.parseLine(line, depth, r, g, b, a, this, pMatrix, alreadyParsed);
+                    if (gdata != null) {
+                        anchorData.setNext(gdata);
+                        anchorData = gdata;
+                    }
                 } else {
                     GData0 gdata = new GData0(line);
                     anchorData.setNext(gdata);
