@@ -15,6 +15,51 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites.primitive;
 
+import java.util.ArrayList;
+
 public class Primitive {
 
+    private ArrayList<Primitive> primitives = new ArrayList<Primitive>();
+    private ArrayList<Primitive> primitivesExtended = new ArrayList<Primitive>();
+    private boolean extended = false;
+    private boolean category = false;
+
+    public Primitive() {
+        primitives.add(this);
+        primitivesExtended.add(this);
+    }
+
+    public void toggle() {
+        if (isCategory()) {
+            this.extended = !this.extended;
+        }
+    }
+
+    public ArrayList<Primitive> getPrimitives() {
+        if (isExtended()) {
+            return primitivesExtended;
+        } else {
+            return primitives;
+        }
+    }
+
+    public void setPrimitives(ArrayList<Primitive> primitives) {
+        this.primitives = primitives;
+    }
+
+    public boolean isExtended() {
+        return extended;
+    }
+
+    public void setExtended(boolean extended) {
+        this.extended = extended;
+    }
+
+    public boolean isCategory() {
+        return category;
+    }
+
+    public void setCategory(boolean category) {
+        this.category = category;
+    }
 }
