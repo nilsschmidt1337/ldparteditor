@@ -572,7 +572,7 @@ public enum TexMapParser {
             if (Vector3f.sub(start, end, null).length() < Threshold.identical_vertex_distance.floatValue()) {
                 return null;
             }
-            return new GData2(new Vertex(start.x * 1000f, start.y * 1000f, start.z * 1000f), new Vertex(end.x * 1000f, end.y * 1000f, end.z * 1000f), colour, parent);
+            return new GData2(new Vertex(start.x * 1000f, start.y * 1000f, start.z * 1000f, false), new Vertex(end.x * 1000f, end.y * 1000f, end.z * 1000f, false), colour, parent);
         }
     }
 
@@ -600,8 +600,8 @@ public enum TexMapParser {
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new GData3(new Vertex(vertexA.x * 1000f, vertexA.y * 1000f, vertexA.z * 1000f), new Vertex(vertexB.x * 1000f, vertexB.y * 1000f, vertexB.z * 1000f), new Vertex(vertexC.x * 1000f,
-                    vertexC.y * 1000f, vertexC.z * 1000f), parent, colour);
+            return new GData3(new Vertex(vertexA.x * 1000f, vertexA.y * 1000f, vertexA.z * 1000f, false), new Vertex(vertexB.x * 1000f, vertexB.y * 1000f, vertexB.z * 1000f, false), new Vertex(vertexC.x * 1000f,
+                    vertexC.y * 1000f, vertexC.z * 1000f, false), parent, colour);
         }
     }
 
@@ -628,8 +628,8 @@ public enum TexMapParser {
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new GData4(new Vertex(vertexA.x * 1000f, vertexA.y * 1000f, vertexA.z * 1000f), new Vertex(vertexB.x * 1000f, vertexB.y * 1000f, vertexB.z * 1000f), new Vertex(vertexC.x * 1000f,
-                    vertexC.y * 1000f, vertexC.z * 1000f), new Vertex(vertexD.x * 1000f, vertexD.y * 1000f, vertexD.z * 1000f), parent, colour);
+            return new GData4(new Vertex(vertexA.x * 1000f, vertexA.y * 1000f, vertexA.z * 1000f, false), new Vertex(vertexB.x * 1000f, vertexB.y * 1000f, vertexB.z * 1000f, false), new Vertex(vertexC.x * 1000f,
+                    vertexC.y * 1000f, vertexC.z * 1000f, false), new Vertex(vertexD.x * 1000f, vertexD.y * 1000f, vertexD.z * 1000f, false), parent, colour);
         }
     }
 
@@ -660,8 +660,8 @@ public enum TexMapParser {
             if (Vector3f.sub(start, end, null).length() < epsilon || Vector3f.sub(controlI, controlII, null).length() < epsilon) {
                 return null;
             }
-            return new GData5(new Vertex(start.x * 1000f, start.y * 1000f, start.z * 1000f), new Vertex(end.x * 1000f, end.y * 1000f, end.z * 1000f), new Vertex(controlI.x * 1000f,
-                    controlI.y * 1000f, controlI.z * 1000f), new Vertex(controlII.x * 1000f, controlII.y * 1000f, controlII.z * 1000f), colour, parent);
+            return new GData5(new Vertex(start.x * 1000f, start.y * 1000f, start.z * 1000f, false), new Vertex(end.x * 1000f, end.y * 1000f, end.z * 1000f, false), new Vertex(controlI.x * 1000f,
+                    controlI.y * 1000f, controlI.z * 1000f, false), new Vertex(controlII.x * 1000f, controlII.y * 1000f, controlII.z * 1000f, false), colour, parent);
         }
     }
 }
