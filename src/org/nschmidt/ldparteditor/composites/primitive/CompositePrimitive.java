@@ -101,6 +101,7 @@ public class CompositePrimitive extends Composite {
 
         for(int i = 0; i < 10; i++) {
             primitives.add(new Primitive());
+            if (i == 4) primitives.add(new Primitive(true));
         }
         setSelectedPrimitive(primitives.get(0));
 
