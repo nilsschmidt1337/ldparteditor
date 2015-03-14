@@ -306,6 +306,8 @@ class Editor3DDesign extends ApplicationWindow {
     final Label[] lbl_SelectionZ4 = new Label[1];
     final Label[] lbl_selectedPrimitiveItem = new Label[1];
 
+    final CompositePrimitive[] cmp_Primitives = new CompositePrimitive[1];
+
     final MenuItem[] mntm_STriangles = new MenuItem[1];
     final MenuItem[] mntm_SQuads = new MenuItem[1];
     final MenuItem[] mntm_SCLines = new MenuItem[1];
@@ -1809,15 +1811,18 @@ class Editor3DDesign extends ApplicationWindow {
                     GridLayout gridLayout4 = new GridLayout(1, true);
                     cmp_Container4.setLayout(gridLayout4);
 
-                    CompositePrimitive cmp_Container5 = new CompositePrimitive(cmp_Container4);
-                    cmp_Container5.setLayout(new FillLayout());
+                    CompositePrimitive cmp_Primitives = new CompositePrimitive(cmp_Container4);
+                    this.cmp_Primitives[0] = cmp_Primitives;
+                    cmp_Primitives.setLayout(new FillLayout());
 
                     GridData gd = new GridData();
                     gd.grabExcessHorizontalSpace = true;
                     gd.grabExcessVerticalSpace = true;
                     gd.horizontalAlignment = SWT.FILL;
                     gd.verticalAlignment = SWT.FILL;
-                    cmp_Container5.setLayoutData(gd);
+                    cmp_Primitives.setLayoutData(gd);
+
+                    cmp_Primitives.loadPrimitives();
 
                     Label lbl_selectedPrimitiveItem = new Label(cmp_Container4, SWT.NONE);
                     this.lbl_selectedPrimitiveItem[0] = lbl_selectedPrimitiveItem;
