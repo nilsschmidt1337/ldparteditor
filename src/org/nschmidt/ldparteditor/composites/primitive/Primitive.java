@@ -31,6 +31,7 @@ public class Primitive {
     private ArrayList<Primitive> primitivesExtended = new ArrayList<Primitive>();
     private boolean extended = false;
     private boolean category = false;
+    private float zoom = 1f;
 
     public Primitive() {
         primitives.add(this);
@@ -60,9 +61,9 @@ public class Primitive {
 
     public void draw(float x, float y, FloatBuffer m) {
         GL11.glPushMatrix();
-        GL11.glTranslatef(x, y, 0f);
+        GL11.glTranslatef(x + 11f, y + 11f, 0f);
         GL11.glMultMatrix(m);
-        GL11.glScalef(.001f, .001f, .001f);
+        GL11.glScalef(zoom, zoom, zoom);
         for (GData gd : graphicalData) {
             gd.drawBFCprimitive();
         }
@@ -116,5 +117,17 @@ public class Primitive {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public float getZoom() {
+        return zoom;
+    }
+
+    public void setZoom(float zoom) {
+        this.zoom = zoom;
+    }
+
+    public void calculateZoom() {
+        // FIXME Needs implementation!
     }
 }
