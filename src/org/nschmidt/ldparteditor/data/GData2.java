@@ -527,8 +527,8 @@ public final class GData2 extends GData {
         BigDecimal[] v1;
         BigDecimal[] v2;
         if (X1 == null) {
-            v1 = matrix.transform(new BigDecimal(x1), new BigDecimal(y1), new BigDecimal(z1));
-            v2 = matrix.transform(new BigDecimal(x2), new BigDecimal(y2), new BigDecimal(z2));
+            v1 = matrix.transform(new BigDecimal(x1 / 1000f), new BigDecimal(y1 / 1000f), new BigDecimal(z1 / 1000f));
+            v2 = matrix.transform(new BigDecimal(x2 / 1000f), new BigDecimal(y2 / 1000f), new BigDecimal(z2 / 1000f));
         } else {
             v1 = matrix.transform(X1, Y1, Z1);
             v2 = matrix.transform(X2, Y2, Z2);
