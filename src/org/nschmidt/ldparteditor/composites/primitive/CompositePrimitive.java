@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites.primitive;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -52,7 +53,10 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives;
+import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class CompositePrimitive extends Composite {
 
@@ -474,7 +478,44 @@ public class CompositePrimitive extends Composite {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                     monitor.beginTask("Loading Primitives...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
-                    Thread.sleep(5000);
+                    setFocusedPrimitive(null);
+                    setSelectedPrimitive(null);
+                    primitives.clear();
+
+                    ArrayList<String> searchPaths = new ArrayList<String>();
+                    String ldrawPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath();
+                    if (ldrawPath != null) {
+                        searchPaths.add(ldrawPath + File.separator + "p" + File.separator); //$NON-NLS-1$
+                        searchPaths.add(ldrawPath + File.separator + "P" + File.separator); //$NON-NLS-1$
+                        searchPaths.add(ldrawPath + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                        searchPaths.add(ldrawPath + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                    String unofficial = WorkbenchManager.getUserSettingState().getLdrawFolderPath();
+                    if (unofficial != null) {
+                        searchPaths.add(unofficial + File.separator + "p" + File.separator); //$NON-NLS-1$
+                        searchPaths.add(unofficial + File.separator + "P" + File.separator); //$NON-NLS-1$
+                        searchPaths.add(unofficial + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                        searchPaths.add(unofficial + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                    String project = Project.getProjectPath();
+                    if (project != null) {
+                        searchPaths.add(project + File.separator + "p" + File.separator); //$NON-NLS-1$
+                        searchPaths.add(project + File.separator + "P" + File.separator); //$NON-NLS-1$
+                        searchPaths.add(project + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                        searchPaths.add(project + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+
+                    for (String folderPath : searchPaths) {
+                        File libFolder = new File(folderPath);
+                        if (!libFolder.isDirectory()) continue;
+                        UTF8BufferedReader reader = null;
+                        for (File f : libFolder.listFiles()) {
+                            if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
+                                primitives.add(new Primitive());
+                            }
+                        }
+                    }
+
                 }
             });
         } catch (InvocationTargetException consumed) {
