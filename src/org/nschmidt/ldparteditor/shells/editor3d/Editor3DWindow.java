@@ -64,6 +64,7 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.composites.primitive.Primitive;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -5474,5 +5475,15 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         }
         return null;
+    }
+
+    public void updatePrimitiveLabel(Primitive p) {
+        if (lbl_selectedPrimitiveItem[0] == null) return;
+        if (p == null) {
+            lbl_selectedPrimitiveItem[0].setText("(no primitive selected)"); //$NON-NLS-1$ I18N Needs translation!
+        } else {
+            lbl_selectedPrimitiveItem[0].setText(p.toString());
+        }
+        lbl_selectedPrimitiveItem[0].getParent().layout();
     }
 }
