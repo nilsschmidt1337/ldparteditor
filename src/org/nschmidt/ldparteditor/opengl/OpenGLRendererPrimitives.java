@@ -192,7 +192,14 @@ public class OpenGLRendererPrimitives {
                     boolean focused = mx > sx - STEP && mx < sx  && my > ty && my < ty + STEP;
                     if (focused)
                         cp.setFocusedPrimitive(p);
-                    drawCell(x, y, p.equals(sp), false, focused);
+                    drawCell(x, y, p.equals(sp), p.isCategory(), focused);
+                    if (p.isCategory()) {
+                        if (p.isExtended()) {
+                            drawMinus(x, y);
+                        } else {
+                            drawPlus(x, y);
+                        }
+                    }
                 }
                 sx = (sx + STEP) % width;
                 x += 22f;

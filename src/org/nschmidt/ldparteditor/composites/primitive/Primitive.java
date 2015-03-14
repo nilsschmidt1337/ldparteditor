@@ -29,6 +29,13 @@ public class Primitive {
         primitivesExtended.add(this);
     }
 
+    public Primitive(boolean category) {
+        primitives.add(this);
+        primitivesExtended.add(this);
+        primitivesExtended.add(new Primitive());
+        setCategory(true);
+    }
+
     public void toggle() {
         if (isCategory()) {
             this.extended = !this.extended;
