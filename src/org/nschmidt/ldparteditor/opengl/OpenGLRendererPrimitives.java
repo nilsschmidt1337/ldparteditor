@@ -113,7 +113,7 @@ public class OpenGLRendererPrimitives {
     /**
      * Draws the scene
      */
-    public void drawScene() {
+    public void drawScene(float mx, float my) {
 
         final GLCanvas canvas = cp.getCanvas();
 
@@ -137,9 +137,9 @@ public class OpenGLRendererPrimitives {
         GL11.glViewport(0, 0, bounds.width, bounds.height);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        float viewport_width = bounds.width / View.PIXEL_PER_LDU / 2.0f;
-        float viewport_height = bounds.height / View.PIXEL_PER_LDU / 2.0f;
-        GL11.glOrtho(0f, viewport_width * 2f, viewport_height * 2f, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
+        float viewport_width = bounds.width / View.PIXEL_PER_LDU;
+        float viewport_height = bounds.height / View.PIXEL_PER_LDU;
+        GL11.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
         // GL11.glOrtho(viewport_width, -viewport_width, viewport_height, -viewport_height, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -164,20 +164,54 @@ public class OpenGLRendererPrimitives {
         //        GL11.glEnable(GL11.GL_LIGHTING);
 
         // Draw all visible primitives / highlight selection
-        for (Primitive p : cp.getPrimitives()) {
-
-        }
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        drawCell(0, 0, true, true);
-        drawPlus(0, 0);
 
-        drawCell(22, 0, false, false);
+        float lastX = Float.MAX_VALUE;
 
-        drawCell(0, 22, false, false);
-        drawCell(22, 22, false, true);
-        drawMinus(22, 22);
+        float x = 2f;
+        float y = 2f;
+
+        mx = mx + (viewport_transform.m30 - 2f) * zoom * View.PIXEL_PER_LDU;
+        my = my + (viewport_transform.m31 - 2f) * zoom * View.PIXEL_PER_LDU;
+
+        final float STEP = 22f * zoom * View.PIXEL_PER_LDU;
+
+        float minY = viewport_transform.m31 - 22f;
+        float maxY = viewport_transform.m31 + canvas.getBounds().height / (zoom * View.PIXEL_PER_LDU);
+
+        float sx = STEP;
+        float width = canvas.getBounds().width;
+        final Primitive sp = cp.getSelectedPrimitive();
+        for (Primitive p2 : cp.getPrimitives()) {
+            for (Primitive p : p2.getPrimitives()) {
+                lastX = sx;
+                if (minY < y && maxY > y) {
+                    float ty = y * zoom * View.PIXEL_PER_LDU;
+                    boolean focused = mx > sx - STEP && mx < sx  && my > ty && my < ty + STEP;
+                    if (focused)
+                        cp.setFocusedPrimitive(p);
+                    drawCell(x, y, p.equals(sp), false, focused);
+                }
+                sx = (sx + STEP) % width;
+                x += 22f;
+                if (lastX > sx) {
+                    sx = 22f * zoom * View.PIXEL_PER_LDU;
+                    x = 2f;
+                    y += 22f;
+                }
+            }
+        }
+
+        //        drawCell(0, 0, true, true);
+        //        drawPlus(0, 0);
+        //
+        //        drawCell(22, 0, false, false);
+        //
+        //        drawCell(0, 22, false, false);
+        //        drawCell(22, 22, false, true);
+        //        drawMinus(22, 22);
 
         // Lights
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, 2.0f, 2.0f, 1f}));
@@ -189,9 +223,11 @@ public class OpenGLRendererPrimitives {
     }
 
 
-    private void drawCell(float x, float y, boolean selected, boolean category) {
+    private void drawCell(float x, float y, boolean selected, boolean category, boolean focused) {
         if (selected) {
             drawRoundRectangle(x, y, 20f, 20f, 5f, 1f, .3f, .3f);
+        } else if (focused) {
+            drawRoundRectangle(x, y, 20f, 20f, 5f, .6f, .6f, 1f);
         } else {
             drawRoundRectangle(x, y, 20f, 20f, 5f, .3f, .3f, .3f);
         }

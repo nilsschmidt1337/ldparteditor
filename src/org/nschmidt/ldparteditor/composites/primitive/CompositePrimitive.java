@@ -46,7 +46,6 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives;
-import org.nschmidt.ldparteditor.widgets.listeners.Win32MouseWheelFilter;
 
 public class CompositePrimitive extends Composite {
 
@@ -68,6 +67,8 @@ public class CompositePrimitive extends Composite {
     private final Matrix4f viewport_translation = new Matrix4f();
 
     private ArrayList<Primitive> primitives = new ArrayList<Primitive>();
+    private Primitive selectedPrimitive = null;
+    private Primitive focusedPrimitive = null;
     private int mouse_button_pressed;
     private final Vector2f old_mouse_position = new Vector2f();
     /** The old translation matrix of the view [NOT PUBLIC YET] */
@@ -98,6 +99,10 @@ public class CompositePrimitive extends Composite {
 
         this.setBackgroundMode(SWT.INHERIT_FORCE);
 
+        for(int i = 0; i < 10; i++) {
+            primitives.add(new Primitive());
+        }
+        setSelectedPrimitive(primitives.get(0));
 
         Transfer[] types = new Transfer[] { MyDummyTransfer2.getInstance() };
         int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
@@ -139,7 +144,7 @@ public class CompositePrimitive extends Composite {
                 Display.getCurrent().timerExec(500, new Runnable() {
                     @Override
                     public void run() {
-                        openGL.drawScene();
+                        openGL.drawScene(10, 10);
                     }
                 });
             }
@@ -153,6 +158,7 @@ public class CompositePrimitive extends Composite {
                 old_mouse_position.set(event.x, event.y);
                 switch (event.button) {
                 case MouseButton.LEFT:
+                    setSelectedPrimitive(getFocusedPrimitive());
                     break;
                 case MouseButton.MIDDLE:
                     break;
@@ -161,6 +167,28 @@ public class CompositePrimitive extends Composite {
                     break;
                 default:
                 }
+                openGL.drawScene(event.x, event.y);
+            }
+        });
+
+        canvas.addListener(SWT.MouseDoubleClick, new Listener() {
+            @Override
+            // MARK MouseDown
+            public void handleEvent(Event event) {
+                mouse_button_pressed = event.button;
+                old_mouse_position.set(event.x, event.y);
+                switch (event.button) {
+                case MouseButton.LEFT:
+                    setSelectedPrimitive(getFocusedPrimitive());
+                    break;
+                case MouseButton.MIDDLE:
+                    break;
+                case MouseButton.RIGHT:
+                    Matrix4f.load(getTranslation(), old_viewport_translation);
+                    break;
+                default:
+                }
+                openGL.drawScene(event.x, event.y);
             }
         });
 
@@ -168,7 +196,7 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK MouseMove
             public void handleEvent(Event event) {
-                openGL.drawScene();
+                openGL.drawScene(event.x, event.y);
 
                 switch (mouse_button_pressed) {
                 case MouseButton.LEFT:
@@ -219,21 +247,42 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK MouseVerticalWheel
             public void handleEvent(Event event) {
-                if (event.count < 0)
-                    zoomIn();
-                else
-                    zoomOut();
-                openGL.drawScene();
+
+                if ((event.stateMask & SWT.CTRL) == SWT.CTRL) {
+                    if (event.count < 0)
+                        zoomIn();
+                    else
+                        zoomOut();
+                } else {
+                    float dy = 0;
+
+                    Matrix4f.load(getTranslation(), old_viewport_translation);
+
+                    if (event.count < 0) {
+                        dy = -11f /  viewport_pixel_per_ldu;
+                    } else {
+                        dy = 11f /  viewport_pixel_per_ldu;
+                    }
+
+                    Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
+                    Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+                    Matrix4f.load(old_viewport_translation, viewport_translation);
+                    Matrix4f.translate(yAxis3, old_viewport_translation, viewport_translation);
+
+                    if (viewport_translation.m31 > 0f) viewport_translation.m31 = 0f;
+                }
+
+                openGL.drawScene(event.x, event.y);
+
+
             }
         });
-
-        new Win32MouseWheelFilter(canvas.getDisplay());
 
         openGL.init();
         Display.getCurrent().timerExec(3000, new Runnable() {
             @Override
             public void run() {
-                openGL.drawScene();
+                openGL.drawScene(10, 10);
             }
         });
     }
@@ -351,6 +400,22 @@ public class CompositePrimitive extends Composite {
     public void setViewport_pixel_per_ldu(float viewport_pixel_per_ldu) {
         this.viewport_pixel_per_ldu = viewport_pixel_per_ldu;
 
+    }
+
+    public Primitive getSelectedPrimitive() {
+        return selectedPrimitive;
+    }
+
+    public void setSelectedPrimitive(Primitive selectedPrimitive) {
+        this.selectedPrimitive = selectedPrimitive;
+    }
+
+    public Primitive getFocusedPrimitive() {
+        return focusedPrimitive;
+    }
+
+    public void setFocusedPrimitive(Primitive focusedPrimitive) {
+        this.focusedPrimitive = focusedPrimitive;
     }
 
 }
