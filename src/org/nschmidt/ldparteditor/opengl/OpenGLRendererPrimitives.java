@@ -214,6 +214,8 @@ public class OpenGLRendererPrimitives {
             }
         }
 
+        cp.setMaxY(y - 22f);
+
         if (!wasFocused && mouseX != -1) {
             cp.setFocusedPrimitive(null);
             cp.setSelectedPrimitive(null);
