@@ -103,7 +103,7 @@ public class Vertex implements Comparable<Vertex> {
         this.rounded_z = z.floatValue();
     }
 
-    // High performance version / only for texture rendering
+    // High performance version / only for texture rendering, primitive preview
     public Vertex(float vx, float vy, float vz, boolean hp) {
 
         this.x = vx;

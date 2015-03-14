@@ -346,15 +346,7 @@ public enum TexMapParser {
                 cValue.setA(1f);
                 try {
                     cValue.setR(Integer.parseInt(arg.substring(3, 5), 16) / 255f);
-                } catch (NumberFormatException nfe2) {
-                    return null;
-                }
-                try {
                     cValue.setG(Integer.parseInt(arg.substring(5, 7), 16) / 255f);
-                } catch (NumberFormatException nfe2) {
-                    return null;
-                }
-                try {
                     cValue.setB(Integer.parseInt(arg.substring(7, 9), 16) / 255f);
                 } catch (NumberFormatException nfe2) {
                     return null;
@@ -371,18 +363,10 @@ public enum TexMapParser {
         line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
         if (line.startsWith("0 !: ")) { //$NON-NLS-1$
             GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed);
-            if (newLPEmetaTag == null) {
-                return null;
-            } else {
-                return newLPEmetaTag;
-            }
+            return newLPEmetaTag;
         } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
             GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent);
-            if (newLPEmetaTag == null) {
-                return null;
-            } else {
-                return newLPEmetaTag;
-            }
+            return newLPEmetaTag;
         } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
                 return new GDataBFC(BFC.INVERTNEXT);
@@ -429,60 +413,16 @@ public enum TexMapParser {
             float det = 0;
             try {
                 tMatrix.m30 = Float.parseFloat(data_segments[2]) * 1000f;
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 tMatrix.m31 = Float.parseFloat(data_segments[3]) * 1000f;
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 tMatrix.m32 = Float.parseFloat(data_segments[4]) * 1000f;
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 tMatrix.m00 = Float.parseFloat(data_segments[5]);
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 tMatrix.m10 = Float.parseFloat(data_segments[6]);
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 tMatrix.m20 = Float.parseFloat(data_segments[7]);
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 tMatrix.m01 = Float.parseFloat(data_segments[8]);
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 tMatrix.m11 = Float.parseFloat(data_segments[9]);
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 tMatrix.m21 = Float.parseFloat(data_segments[10]);
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 tMatrix.m02 = Float.parseFloat(data_segments[11]);
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 tMatrix.m12 = Float.parseFloat(data_segments[12]);
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 tMatrix.m22 = Float.parseFloat(data_segments[13]);
             } catch (NumberFormatException nfe) {
                 return null;
@@ -621,30 +561,10 @@ public enum TexMapParser {
                 return null;
             try {
                 start.setX(Float.parseFloat(data_segments[2]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 start.setY(Float.parseFloat(data_segments[3]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 start.setZ(Float.parseFloat(data_segments[4]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 end.setX(Float.parseFloat(data_segments[5]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 end.setY(Float.parseFloat(data_segments[6]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 end.setZ(Float.parseFloat(data_segments[7]));
             } catch (NumberFormatException nfe) {
                 return null;
@@ -665,40 +585,12 @@ public enum TexMapParser {
                 return null;
             try {
                 vertexA.setX(Float.parseFloat(data_segments[2]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexA.setY(Float.parseFloat(data_segments[3]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexA.setZ(Float.parseFloat(data_segments[4]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexB.setX(Float.parseFloat(data_segments[5]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexB.setY(Float.parseFloat(data_segments[6]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexB.setZ(Float.parseFloat(data_segments[7]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexC.setX(Float.parseFloat(data_segments[8]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexC.setY(Float.parseFloat(data_segments[9]));
             } catch (NumberFormatException nfe) {
                 return null;
@@ -722,60 +614,16 @@ public enum TexMapParser {
                 return null;
             try {
                 vertexA.setX(Float.parseFloat(data_segments[2]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexA.setY(Float.parseFloat(data_segments[3]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexA.setZ(Float.parseFloat(data_segments[4]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexB.setX(Float.parseFloat(data_segments[5]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexB.setY(Float.parseFloat(data_segments[6]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexB.setZ(Float.parseFloat(data_segments[7]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexC.setX(Float.parseFloat(data_segments[8]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexC.setY(Float.parseFloat(data_segments[9]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexC.setZ(Float.parseFloat(data_segments[10]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexD.setX(Float.parseFloat(data_segments[11]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexD.setY(Float.parseFloat(data_segments[12]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 vertexD.setZ(Float.parseFloat(data_segments[13]));
             } catch (NumberFormatException nfe) {
                 return null;
@@ -794,60 +642,16 @@ public enum TexMapParser {
                 return null;
             try {
                 start.setX(Float.parseFloat(data_segments[2]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 start.setY(Float.parseFloat(data_segments[3]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 start.setZ(Float.parseFloat(data_segments[4]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 end.setX(Float.parseFloat(data_segments[5]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 end.setY(Float.parseFloat(data_segments[6]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 end.setZ(Float.parseFloat(data_segments[7]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 controlI.setX(Float.parseFloat(data_segments[8]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 controlI.setY(Float.parseFloat(data_segments[9]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 controlI.setZ(Float.parseFloat(data_segments[10]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 controlII.setX(Float.parseFloat(data_segments[11]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 controlII.setY(Float.parseFloat(data_segments[12]));
-            } catch (NumberFormatException nfe) {
-                return null;
-            }
-            try {
                 controlII.setZ(Float.parseFloat(data_segments[13]));
             } catch (NumberFormatException nfe) {
                 return null;

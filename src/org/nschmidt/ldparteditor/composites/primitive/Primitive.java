@@ -18,9 +18,12 @@ package org.nschmidt.ldparteditor.composites.primitive;
 import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.nschmidt.ldparteditor.data.GData;
 
 public class Primitive {
 
+
+    private ArrayList<GData> graphicalData = new ArrayList<GData>();
     private ArrayList<Primitive> primitives = new ArrayList<Primitive>();
     private ArrayList<Primitive> primitivesExtended = new ArrayList<Primitive>();
     private boolean extended = false;
@@ -74,5 +77,13 @@ public class Primitive {
 
     public void setCategory(boolean category) {
         this.category = category;
+    }
+
+    public ArrayList<GData> getGraphicalData() {
+        return graphicalData;
+    }
+
+    public void setGraphicalData(ArrayList<GData> graphicalData) {
+        this.graphicalData = graphicalData;
     }
 }
