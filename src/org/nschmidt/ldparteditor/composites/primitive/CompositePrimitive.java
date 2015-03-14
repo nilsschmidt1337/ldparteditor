@@ -47,6 +47,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 public class CompositePrimitive extends Composite {
 
@@ -432,6 +433,7 @@ public class CompositePrimitive extends Composite {
 
     public void setSelectedPrimitive(Primitive selectedPrimitive) {
         this.selectedPrimitive = selectedPrimitive;
+        Editor3DWindow.getWindow().updatePrimitiveLabel(selectedPrimitive);
     }
 
     public Primitive getFocusedPrimitive() {
@@ -440,6 +442,7 @@ public class CompositePrimitive extends Composite {
 
     public void setFocusedPrimitive(Primitive focusedPrimitive) {
         this.focusedPrimitive = focusedPrimitive;
+        Editor3DWindow.getWindow().updatePrimitiveLabel(focusedPrimitive);
     }
 
 }

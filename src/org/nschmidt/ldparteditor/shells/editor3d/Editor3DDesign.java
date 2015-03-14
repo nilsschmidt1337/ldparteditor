@@ -304,6 +304,7 @@ class Editor3DDesign extends ApplicationWindow {
     final Label[] lbl_SelectionX4 = new Label[1];
     final Label[] lbl_SelectionY4 = new Label[1];
     final Label[] lbl_SelectionZ4 = new Label[1];
+    final Label[] lbl_selectedPrimitiveItem = new Label[1];
 
     final MenuItem[] mntm_STriangles = new MenuItem[1];
     final MenuItem[] mntm_SQuads = new MenuItem[1];
@@ -1819,6 +1820,13 @@ class Editor3DDesign extends ApplicationWindow {
                     cmp_Container5.setLayoutData(gd);
 
                     Label lbl_selectedPrimitiveItem = new Label(cmp_Container4, SWT.NONE);
+                    this.lbl_selectedPrimitiveItem[0] = lbl_selectedPrimitiveItem;
+                    {
+                        GridData gd2 = new GridData();
+                        gd2.grabExcessHorizontalSpace = true;
+                        gd2.horizontalAlignment = SWT.FILL;
+                        lbl_selectedPrimitiveItem.setLayoutData(gd2);
+                    }
                     lbl_selectedPrimitiveItem.setText("(no primitive selected)");//$NON-NLS-1$ I18N Needs translation!
 
                     {
