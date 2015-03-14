@@ -15,14 +15,17 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites.primitive;
 
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
-import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.opengl.GL11;
 import org.nschmidt.ldparteditor.data.GData;
 
 public class Primitive {
 
 
+    private String name = ""; //$NON-NLS-1$
+    private String description = ""; //$NON-NLS-1$
     private ArrayList<GData> graphicalData = new ArrayList<GData>();
     private ArrayList<Primitive> primitives = new ArrayList<Primitive>();
     private ArrayList<Primitive> primitivesExtended = new ArrayList<Primitive>();
@@ -55,8 +58,15 @@ public class Primitive {
         }
     }
 
-    public void draw(float x, float y, Matrix4f rotation) {
-
+    public void draw(float x, float y, FloatBuffer m) {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x, y, 0f);
+        GL11.glMultMatrix(m);
+        GL11.glScalef(.001f, .001f, .001f);
+        for (GData gd : graphicalData) {
+            gd.drawBFCprimitive();
+        }
+        GL11.glPopMatrix();
     }
 
     public void setPrimitives(ArrayList<Primitive> primitives) {
@@ -85,5 +95,26 @@ public class Primitive {
 
     public void setGraphicalData(ArrayList<GData> graphicalData) {
         this.graphicalData = graphicalData;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name + " - " + description; //$NON-NLS-1$
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -210,6 +210,10 @@ public final class GDataPNG extends GData {
     }
 
     @Override
+    public void drawBFCprimitive() {
+    }
+
+    @Override
     public void drawBFCuncertified(Composite3D c3d) {
         draw(c3d);
     }

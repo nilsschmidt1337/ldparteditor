@@ -1,0 +1,4 @@
+Technic|Axle Hole;{Starts with "Technic Axle"; Contains "Hole"}
+Ring;{Contains "Ring"; Order by fraction; Order by radius}
+Disc;{Contains "Disc"; Not contains "Hi-Res"; Order by size}
+Disc|Hi-Res;{Contains "Disc"; Not contains "Hi-Res"; Order by size}

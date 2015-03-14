@@ -21,6 +21,8 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
@@ -30,6 +32,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -62,6 +65,7 @@ import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GData5;
 import org.nschmidt.ldparteditor.data.GDataBFC;
 import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.data.GDataInit;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
 import org.nschmidt.ldparteditor.dnd.MyDummyType2;
@@ -69,6 +73,7 @@ import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives;
 import org.nschmidt.ldparteditor.project.Project;
@@ -112,6 +117,8 @@ public class CompositePrimitive extends Composite {
     private float viewport_pixel_per_ldu;
 
     private AtomicBoolean dontRefresh = new AtomicBoolean(false);
+    private AtomicBoolean hasDrawn = new AtomicBoolean(false);
+    private AtomicBoolean stopDraw = new AtomicBoolean(true);
 
     private float maxY = 0f;
 
@@ -136,12 +143,6 @@ public class CompositePrimitive extends Composite {
         canvas.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
         this.setBackgroundMode(SWT.INHERIT_FORCE);
-
-        for(int i = 0; i < 10; i++) {
-            primitives.add(new Primitive());
-            if (i == 4) primitives.add(new Primitive(true));
-        }
-        setSelectedPrimitive(primitives.get(0));
 
         Transfer[] types = new Transfer[] { MyDummyTransfer2.getInstance() };
         int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
@@ -245,7 +246,7 @@ public class CompositePrimitive extends Composite {
                     Point cSize = getSize();
                     float rx = 0;
                     float ry = 0;
-                    rx = (old_mouse_position.x - event.x) / cSize.x * (float) Math.PI;
+                    rx = (event.x - old_mouse_position.x) / cSize.x * (float) Math.PI;
                     ry = (old_mouse_position.y - event.y) / cSize.y * (float) Math.PI;
                     Vector4f xAxis4f_rotation = new Vector4f(1.0f, 0, 0, 1.0f);
                     Vector4f yAxis4f_rotation = new Vector4f(0, 1.0f, 0, 1.0f);
@@ -339,9 +340,16 @@ public class CompositePrimitive extends Composite {
         Display.getCurrent().timerExec(3000, new Runnable() {
             @Override
             public void run() {
-                openGL.drawScene(-1, -1);
-                if (dontRefresh.get()) return;
-                Display.getCurrent().timerExec(3000, this);
+                try {
+                    if (!stopDraw.get()) openGL.drawScene(-1, -1);
+                    hasDrawn.set(true);
+                    if (dontRefresh.get()) return;
+                    if (stopDraw.get()) {
+                        Display.getCurrent().timerExec(100, this);
+                    } else {
+                        Display.getCurrent().timerExec(3000, this);
+                    }
+                } catch (SWTException consumed) {}
             }
         });
     }
@@ -498,6 +506,20 @@ public class CompositePrimitive extends Composite {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                     monitor.beginTask("Loading Primitives...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+
+                    // Pause primitive renderer
+                    if (!stopDraw.get()) {
+                        stopDraw.set(true);
+                        hasDrawn.set(false);
+                        while (!hasDrawn.get()) {
+                            Thread.sleep(100);
+                        }
+                        hasDrawn.set(false);
+                        while (!hasDrawn.get()) {
+                            Thread.sleep(100);
+                        }
+                    }
+
                     setFocusedPrimitive(null);
                     setSelectedPrimitive(null);
                     primitives.clear();
@@ -525,17 +547,94 @@ public class CompositePrimitive extends Composite {
                         searchPaths.add(project + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
                     }
 
-                    for (String folderPath : searchPaths) {
-                        File libFolder = new File(folderPath);
-                        if (!libFolder.isDirectory()) continue;
-                        UTF8BufferedReader reader = null;
-                        for (File f : libFolder.listFiles()) {
-                            if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
-                                primitives.add(new Primitive());
+                    String hiResSuffix = File.separator + "48" + File.separator; //$NON-NLS-1$
+                    try {
+
+                        // Creating the categories / Rules
+                        File rulesFile = new File("primitive_rules.txt"); //$NON-NLS-1$
+                        if (rulesFile.exists()) {
+                            UTF8BufferedReader reader = null;
+                            try {
+                                reader = new UTF8BufferedReader(rulesFile.getAbsolutePath());
+                                String line ;
+                                while ((line = reader.readLine()) != null) {
+                                    NLogger.debug(getClass(), line);
+                                }
+                            } catch (LDParsingException e) {
+                            } catch (FileNotFoundException e) {
+                            } catch (UnsupportedEncodingException e) {
+                            } finally {
+                                try {
+                                    if (reader != null)
+                                        reader.close();
+                                } catch (LDParsingException e1) {
+                                }
                             }
                         }
-                    }
 
+                        HashMap<String, String> descriptionMap = new HashMap<String, String>();
+                        HashMap<String, Primitive> primitiveMap = new HashMap<String, Primitive>();
+                        HashMap<String, String> fileNameMap = new HashMap<String, String>();
+
+                        for (String folderPath : searchPaths) {
+                            File libFolder = new File(folderPath);
+                            if (!libFolder.isDirectory()) continue;
+                            UTF8BufferedReader reader = null;
+                            for (File f : libFolder.listFiles()) {
+                                final String fileName = f.getName();
+                                if (f.isFile() && fileName.matches(".*.dat")) { //$NON-NLS-1$
+                                    try {
+                                        Primitive newPrimitive = new Primitive();
+                                        ArrayList<GData> data = new ArrayList<GData>();
+                                        final String path = f.getAbsolutePath();
+                                        String description = ""; //$NON-NLS-1$
+                                        reader = new UTF8BufferedReader(path);
+                                        String line;
+                                        line = reader.readLine();
+                                        if (line != null) {
+                                            data.add(new GDataInit(View.DUMMY_REFERENCE));
+                                            GData gd = parseLine(line, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, new HashSet<String>());
+                                            if (line.trim().startsWith("0")) { //$NON-NLS-1$
+                                                description = line.trim();
+                                                if (description.length() > 2) {
+                                                    description = description.substring(1).trim();
+                                                }
+                                            } else if (gd != null) {
+                                                data.add(gd);
+                                            }
+                                            while ((line = reader.readLine()) != null) {
+                                                gd = parseLine(line, 0, 0.5f, 0.5f, 0.5f, 1f, View.DUMMY_REFERENCE, View.ID, new HashSet<String>());
+                                                if (gd != null && gd.type() != 0) data.add(gd);
+                                            }
+                                            newPrimitive.getGraphicalData().addAll(data);
+                                            primitives.add(newPrimitive);
+                                            descriptionMap.put(path, description);
+                                            primitiveMap.put(path, newPrimitive);
+                                            fileNameMap.put(path, fileName);
+                                            if (folderPath.endsWith(hiResSuffix)) {
+                                                newPrimitive.setName("48\\" + fileName); //$NON-NLS-1$
+                                            } else {
+                                                newPrimitive.setName(fileName);
+                                            }
+                                            newPrimitive.setDescription(description);
+                                        }
+                                    } catch (LDParsingException e) {
+                                    } catch (FileNotFoundException e) {
+                                    } catch (UnsupportedEncodingException e) {
+                                    } finally {
+                                        try {
+                                            if (reader != null)
+                                                reader.close();
+                                        } catch (LDParsingException e1) {
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } catch (SecurityException consumed) {
+
+                    }
+                    stopDraw.set(false);
                 }
             });
         } catch (InvocationTargetException consumed) {
@@ -671,9 +770,9 @@ public class CompositePrimitive extends Composite {
             Matrix4f tMatrix = new Matrix4f();
             float det = 0;
             try {
-                tMatrix.m30 = Float.parseFloat(data_segments[2]) * 1000f;
-                tMatrix.m31 = Float.parseFloat(data_segments[3]) * 1000f;
-                tMatrix.m32 = Float.parseFloat(data_segments[4]) * 1000f;
+                tMatrix.m30 = Float.parseFloat(data_segments[2]);
+                tMatrix.m31 = Float.parseFloat(data_segments[3]);
+                tMatrix.m32 = Float.parseFloat(data_segments[4]);
                 tMatrix.m00 = Float.parseFloat(data_segments[5]);
                 tMatrix.m10 = Float.parseFloat(data_segments[6]);
                 tMatrix.m20 = Float.parseFloat(data_segments[7]);
@@ -831,7 +930,7 @@ public class CompositePrimitive extends Composite {
             if (Vector3f.sub(start, end, null).length() < Threshold.identical_vertex_distance.floatValue()) {
                 return null;
             }
-            return new GData2(new Vertex(start.x * 1000f, start.y * 1000f, start.z * 1000f, true), new Vertex(end.x * 1000f, end.y * 1000f, end.z * 1000f, true), colour, parent);
+            return new GData2(new Vertex(start.x, start.y, start.z, true), new Vertex(end.x, end.y, end.z, true), colour, parent);
         }
     }
 
@@ -855,8 +954,8 @@ public class CompositePrimitive extends Composite {
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new GData3(new Vertex(vertexA.x * 1000f, vertexA.y * 1000f, vertexA.z * 1000f, true), new Vertex(vertexB.x * 1000f, vertexB.y * 1000f, vertexB.z * 1000f, true), new Vertex(vertexC.x * 1000f,
-                    vertexC.y * 1000f, vertexC.z * 1000f, true), parent, colour);
+            return new GData3(new Vertex(vertexA.x, vertexA.y, vertexA.z, true), new Vertex(vertexB.x, vertexB.y, vertexB.z, true), new Vertex(vertexC.x,
+                    vertexC.y, vertexC.z, true), parent, colour);
         }
     }
 
@@ -883,8 +982,8 @@ public class CompositePrimitive extends Composite {
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new GData4(new Vertex(vertexA.x * 1000f, vertexA.y * 1000f, vertexA.z * 1000f, true), new Vertex(vertexB.x * 1000f, vertexB.y * 1000f, vertexB.z * 1000f, true), new Vertex(vertexC.x * 1000f,
-                    vertexC.y * 1000f, vertexC.z * 1000f, true), new Vertex(vertexD.x * 1000f, vertexD.y * 1000f, vertexD.z * 1000f, true), parent, colour);
+            return new GData4(new Vertex(vertexA.x, vertexA.y, vertexA.z, true), new Vertex(vertexB.x, vertexB.y, vertexB.z, true), new Vertex(vertexC.x,
+                    vertexC.y, vertexC.z, true), new Vertex(vertexD.x, vertexD.y, vertexD.z, true), parent, colour);
         }
     }
 
@@ -915,8 +1014,8 @@ public class CompositePrimitive extends Composite {
             if (Vector3f.sub(start, end, null).length() < epsilon || Vector3f.sub(controlI, controlII, null).length() < epsilon) {
                 return null;
             }
-            return new GData5(new Vertex(start.x * 1000f, start.y * 1000f, start.z * 1000f, true), new Vertex(end.x * 1000f, end.y * 1000f, end.z * 1000f, true), new Vertex(controlI.x * 1000f,
-                    controlI.y * 1000f, controlI.z * 1000f, true), new Vertex(controlII.x * 1000f, controlII.y * 1000f, controlII.z * 1000f, true), colour, parent);
+            return new GData5(new Vertex(start.x, start.y, start.z, true), new Vertex(end.x, end.y, end.z, true), new Vertex(controlI.x,
+                    controlI.y, controlI.z, true), new Vertex(controlII.x, controlII.y, controlII.z, true), colour, parent);
         }
     }
 }

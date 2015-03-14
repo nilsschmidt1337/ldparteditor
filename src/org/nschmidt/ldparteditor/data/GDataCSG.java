@@ -331,6 +331,10 @@ public final class GDataCSG extends GData {
     }
 
     @Override
+    public void drawBFCprimitive() {
+    }
+
+    @Override
     public void drawBFCuncertified(Composite3D c3d) {
         drawAndParse(c3d);
     }

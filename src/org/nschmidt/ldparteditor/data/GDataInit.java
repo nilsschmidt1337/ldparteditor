@@ -52,6 +52,11 @@ public final class GDataInit extends GData {
     }
 
     @Override
+    public void drawBFCprimitive() {
+        draw(null);
+    }
+
+    @Override
     public void drawBFCuncertified(Composite3D c3d) {
         draw(c3d);
     }
