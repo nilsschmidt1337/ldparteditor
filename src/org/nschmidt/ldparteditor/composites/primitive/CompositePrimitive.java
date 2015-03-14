@@ -82,6 +82,9 @@ public class CompositePrimitive extends Composite {
     /** Resolution of the viewport at n% zoom */
     private float viewport_pixel_per_ldu;
 
+
+    private float maxY = 0f;
+
     public CompositePrimitive(Composite parent) {
         super(parent, I18n.I18N_NON_BIDIRECT() | SWT.BORDER);
         // TODO Auto-generated constructor stub
@@ -240,6 +243,7 @@ public class CompositePrimitive extends Composite {
 
                     viewport_translation.m30 = 0f;
                     if (viewport_translation.m31 > 0f) viewport_translation.m31 = 0f;
+                    if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
                     break;
                 default:
                 }
@@ -291,6 +295,7 @@ public class CompositePrimitive extends Composite {
                     Matrix4f.translate(yAxis3, old_viewport_translation, viewport_translation);
 
                     if (viewport_translation.m31 > 0f) viewport_translation.m31 = 0f;
+                    if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
                 }
 
                 openGL.drawScene(event.x, event.y);
@@ -416,6 +421,7 @@ public class CompositePrimitive extends Composite {
 
         viewport_translation.m30 = 0f;
         if (viewport_translation.m13 > 0f) viewport_translation.m13 = 0f;
+        if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
     }
 
     public float getViewport_pixel_per_ldu() {
@@ -443,6 +449,14 @@ public class CompositePrimitive extends Composite {
     public void setFocusedPrimitive(Primitive focusedPrimitive) {
         this.focusedPrimitive = focusedPrimitive;
         Editor3DWindow.getWindow().updatePrimitiveLabel(focusedPrimitive);
+    }
+
+    public float getMaxY() {
+        return maxY;
+    }
+
+    public void setMaxY(float maxY) {
+        this.maxY = maxY;
     }
 
 }
