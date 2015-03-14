@@ -17,6 +17,8 @@ package org.nschmidt.ldparteditor.composites.primitive;
 
 import java.util.ArrayList;
 
+import org.lwjgl.util.vector.Matrix4f;
+
 public class Primitive {
 
     private ArrayList<Primitive> primitives = new ArrayList<Primitive>();
@@ -48,6 +50,10 @@ public class Primitive {
         } else {
             return primitives;
         }
+    }
+
+    public void draw(float x, float y, Matrix4f rotation) {
+
     }
 
     public void setPrimitives(ArrayList<Primitive> primitives) {
