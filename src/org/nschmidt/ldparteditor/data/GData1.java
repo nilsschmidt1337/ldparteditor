@@ -717,6 +717,39 @@ public final class GData1 extends GData {
     }
 
     @Override
+    public void drawBFCprimitive() {
+        if (matrix != null) {
+            byte tempWinding = GData.localWinding;
+            boolean tempInvertNext = GData.globalInvertNext;
+            boolean tempInvertNextFound = GData.globalInvertNextFound;
+            boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
+            GData.globalInvertNextFound = false;
+            GData.localWinding = BFC.NOCERTIFY;
+            GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
+            GL11.glPushMatrix();
+            GL11.glMultMatrix(matrix);
+            GData data2draw = myGData;
+            if (GData.accumClip > 0) {
+                GData.accumClip++;
+                while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    data2draw.drawBFCprimitive();
+                GData.accumClip--;
+            } else {
+                while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                    data2draw.drawBFCprimitive();
+                }
+                if (GData.accumClip > 0)
+                    GData.accumClip = 0;
+            }
+            GL11.glPopMatrix();
+            GData.localWinding = tempWinding;
+            if (tempInvertNextFound)
+                GData.globalInvertNext = !tempInvertNext;
+            GData.globalNegativeDeterminant = tempNegativeDeterminant;
+        }
+    }
+
+    @Override
     public void drawBFCuncertified(Composite3D c3d) {
         if (!visible)
             return;

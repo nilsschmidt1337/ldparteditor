@@ -37,6 +37,7 @@ public class OpenGLRendererPrimitives {
     /** The Primitive Composite */
     private final CompositePrimitive cp;
 
+    private final FloatBuffer rotation = BufferUtils.createFloatBuffer(16);
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
     private final FloatBuffer viewport = BufferUtils.createFloatBuffer(16);
 
@@ -157,12 +158,6 @@ public class OpenGLRendererPrimitives {
         viewport.flip();
         GL11.glLoadMatrix(viewport);
 
-
-        //        GL11.glEnable(GL11.GL_CULL_FACE);
-        //        GL11.glFrontFace(GL11.GL_CW);
-        //        GL11.glCullFace(GL11.GL_BACK);
-        //        GL11.glEnable(GL11.GL_LIGHTING);
-
         // Draw all visible primitives / highlight selection
 
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -177,7 +172,9 @@ public class OpenGLRendererPrimitives {
         float my = mouseY + (viewport_transform.m31 - 2f) * zoom * View.PIXEL_PER_LDU;
 
         final float STEP = 22f * zoom * View.PIXEL_PER_LDU;
-        final Matrix4f rotation = cp.getRotation();
+        final Matrix4f rotation2 = cp.getRotation();
+        rotation2.store(rotation);
+        rotation.position(0);
         float minY = viewport_transform.m31 - 22f;
         float maxY = viewport_transform.m31 + canvas.getBounds().height / (zoom * View.PIXEL_PER_LDU);
         boolean wasFocused = false;
@@ -195,7 +192,13 @@ public class OpenGLRendererPrimitives {
                         wasFocused = true;
                     }
                     drawCell(x, y, p.equals(sp), p.isCategory(), focused);
+                    GL11.glEnable(GL11.GL_CULL_FACE);
+                    GL11.glFrontFace(GL11.GL_CCW);
+                    GL11.glCullFace(GL11.GL_BACK);
+                    GL11.glEnable(GL11.GL_DEPTH_TEST);
                     p.draw(x, y, rotation);
+                    GL11.glDisable(GL11.GL_DEPTH_TEST);
+                    GL11.glDisable(GL11.GL_CULL_FACE);
                     if (p.isCategory()) {
                         if (p.isExtended()) {
                             drawMinus(x, y);
