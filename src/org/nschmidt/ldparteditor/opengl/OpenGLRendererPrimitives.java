@@ -113,7 +113,7 @@ public class OpenGLRendererPrimitives {
     /**
      * Draws the scene
      */
-    public void drawScene(float mx, float my) {
+    public void drawScene(float mouseX, float mouseY) {
 
         final GLCanvas canvas = cp.getCanvas();
 
@@ -173,14 +173,14 @@ public class OpenGLRendererPrimitives {
         float x = 2f;
         float y = 2f;
 
-        mx = mx + (viewport_transform.m30 - 2f) * zoom * View.PIXEL_PER_LDU;
-        my = my + (viewport_transform.m31 - 2f) * zoom * View.PIXEL_PER_LDU;
+        float mx = mouseX + (viewport_transform.m30 - 2f) * zoom * View.PIXEL_PER_LDU;
+        float my = mouseY + (viewport_transform.m31 - 2f) * zoom * View.PIXEL_PER_LDU;
 
         final float STEP = 22f * zoom * View.PIXEL_PER_LDU;
-
+        final Matrix4f rotation = cp.getRotation();
         float minY = viewport_transform.m31 - 22f;
         float maxY = viewport_transform.m31 + canvas.getBounds().height / (zoom * View.PIXEL_PER_LDU);
-
+        boolean wasFocused = false;
         float sx = STEP;
         float width = canvas.getBounds().width;
         final Primitive sp = cp.getSelectedPrimitive();
@@ -190,9 +190,12 @@ public class OpenGLRendererPrimitives {
                 if (minY < y && maxY > y) {
                     float ty = y * zoom * View.PIXEL_PER_LDU;
                     boolean focused = mx > sx - STEP && mx < sx  && my > ty && my < ty + STEP;
-                    if (focused)
+                    if (focused) {
                         cp.setFocusedPrimitive(p);
+                        wasFocused = true;
+                    }
                     drawCell(x, y, p.equals(sp), p.isCategory(), focused);
+                    p.draw(x, y, rotation);
                     if (p.isCategory()) {
                         if (p.isExtended()) {
                             drawMinus(x, y);
@@ -209,6 +212,11 @@ public class OpenGLRendererPrimitives {
                     y += 22f;
                 }
             }
+        }
+
+        if (!wasFocused && mouseX != -1) {
+            cp.setFocusedPrimitive(null);
+            cp.setSelectedPrimitive(null);
         }
 
         //        drawCell(0, 0, true, true);

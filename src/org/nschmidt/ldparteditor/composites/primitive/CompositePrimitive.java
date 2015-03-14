@@ -24,6 +24,7 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.opengl.GLData;
@@ -66,6 +67,8 @@ public class CompositePrimitive extends Composite {
     /** The translation matrix of the view */
     private final Matrix4f viewport_translation = new Matrix4f();
 
+    private final Matrix4f viewport_rotation = new Matrix4f();
+
     private ArrayList<Primitive> primitives = new ArrayList<Primitive>();
     private Primitive selectedPrimitive = null;
     private Primitive focusedPrimitive = null;
@@ -73,6 +76,7 @@ public class CompositePrimitive extends Composite {
     private final Vector2f old_mouse_position = new Vector2f();
     /** The old translation matrix of the view [NOT PUBLIC YET] */
     private final Matrix4f old_viewport_translation = new Matrix4f();
+    private final Matrix4f old_viewport_rotation = new Matrix4f();
 
     /** Resolution of the viewport at n% zoom */
     private float viewport_pixel_per_ldu;
@@ -145,7 +149,7 @@ public class CompositePrimitive extends Composite {
                 Display.getCurrent().timerExec(500, new Runnable() {
                     @Override
                     public void run() {
-                        openGL.drawScene(10, 10);
+                        openGL.drawScene(-1, -1);
                     }
                 });
             }
@@ -162,6 +166,7 @@ public class CompositePrimitive extends Composite {
                     setSelectedPrimitive(getFocusedPrimitive());
                     break;
                 case MouseButton.MIDDLE:
+                    Matrix4f.load(getRotation(), old_viewport_rotation);
                     break;
                 case MouseButton.RIGHT:
                     Matrix4f.load(getTranslation(), old_viewport_translation);
@@ -181,6 +186,7 @@ public class CompositePrimitive extends Composite {
                 switch (event.button) {
                 case MouseButton.LEFT:
                     setSelectedPrimitive(getFocusedPrimitive());
+                    getSelectedPrimitive().toggle();
                     break;
                 case MouseButton.MIDDLE:
                     break;
@@ -197,12 +203,24 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK MouseMove
             public void handleEvent(Event event) {
-                openGL.drawScene(event.x, event.y);
-
                 switch (mouse_button_pressed) {
                 case MouseButton.LEFT:
                     break;
                 case MouseButton.MIDDLE:
+                    Point cSize = getSize();
+                    float rx = 0;
+                    float ry = 0;
+                    rx = (old_mouse_position.x - event.x) / cSize.x * (float) Math.PI;
+                    ry = (old_mouse_position.y - event.y) / cSize.y * (float) Math.PI;
+                    Vector4f xAxis4f_rotation = new Vector4f(1.0f, 0, 0, 1.0f);
+                    Vector4f yAxis4f_rotation = new Vector4f(0, 1.0f, 0, 1.0f);
+                    Matrix4f ovr_inverse = Matrix4f.invert(old_viewport_rotation, null);
+                    Matrix4f.transform(ovr_inverse, xAxis4f_rotation, xAxis4f_rotation);
+                    Matrix4f.transform(ovr_inverse, yAxis4f_rotation, yAxis4f_rotation);
+                    Vector3f xAxis3f_rotation = new Vector3f(xAxis4f_rotation.x, xAxis4f_rotation.y, xAxis4f_rotation.z);
+                    Vector3f yAxis3f_rotation = new Vector3f(yAxis4f_rotation.x, yAxis4f_rotation.y, yAxis4f_rotation.z);
+                    Matrix4f.rotate(rx, yAxis3f_rotation, old_viewport_rotation, viewport_rotation);
+                    Matrix4f.rotate(ry, xAxis3f_rotation, viewport_rotation, viewport_rotation);
                     break;
                 case MouseButton.RIGHT:
                     float dx = 0;
@@ -224,6 +242,7 @@ public class CompositePrimitive extends Composite {
                     break;
                 default:
                 }
+                openGL.drawScene(event.x, event.y);
             }
         });
 
@@ -315,6 +334,10 @@ public class CompositePrimitive extends Composite {
      */
     public Matrix4f getTranslation() {
         return viewport_translation;
+    }
+
+    public Matrix4f getRotation() {
+        return viewport_rotation;
     }
 
     /**
