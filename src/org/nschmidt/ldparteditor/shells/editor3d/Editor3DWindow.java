@@ -344,6 +344,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 updateTree_unsavedEntries();
 
+                cmp_Primitives[0].loadPrimitives();
+
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                 messageBox.setText(I18n.DIALOG_SyncTitle);
 

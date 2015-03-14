@@ -15,8 +15,13 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites.primitive;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
@@ -82,6 +87,7 @@ public class CompositePrimitive extends Composite {
     /** Resolution of the viewport at n% zoom */
     private float viewport_pixel_per_ldu;
 
+    private AtomicBoolean dontRefresh = new AtomicBoolean(false);
 
     private float maxY = 0f;
 
@@ -207,6 +213,7 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK MouseMove
             public void handleEvent(Event event) {
+                dontRefresh.set(true);
                 switch (mouse_button_pressed) {
                 case MouseButton.LEFT:
                     break;
@@ -284,9 +291,9 @@ public class CompositePrimitive extends Composite {
                     Matrix4f.load(getTranslation(), old_viewport_translation);
 
                     if (event.count < 0) {
-                        dy = -11f /  viewport_pixel_per_ldu;
+                        dy = -17f /  viewport_pixel_per_ldu;
                     } else {
-                        dy = 11f /  viewport_pixel_per_ldu;
+                        dy = 17f /  viewport_pixel_per_ldu;
                     }
 
                     Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
@@ -308,7 +315,9 @@ public class CompositePrimitive extends Composite {
         Display.getCurrent().timerExec(3000, new Runnable() {
             @Override
             public void run() {
-                openGL.drawScene(10, 10);
+                openGL.drawScene(-1, -1);
+                if (dontRefresh.get()) return;
+                Display.getCurrent().timerExec(3000, this);
             }
         });
     }
@@ -457,6 +466,20 @@ public class CompositePrimitive extends Composite {
 
     public void setMaxY(float maxY) {
         this.maxY = maxY;
+    }
+
+    public void loadPrimitives() {
+        try {
+            new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress() {
+                @Override
+                public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                    monitor.beginTask("Loading Primitives...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                    Thread.sleep(5000);
+                }
+            });
+        } catch (InvocationTargetException consumed) {
+        } catch (InterruptedException consumed) {
+        }
     }
 
 }
