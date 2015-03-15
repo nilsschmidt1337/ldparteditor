@@ -19,6 +19,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +30,10 @@ import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.Matrix;
+import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.colour.GCChrome;
+import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.text.TextTriangulator;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 
 /**
@@ -89,6 +93,14 @@ public enum View {
     public static final float[] lineWidth1000 = new float[] { 100f };
     public static final float[] lineWidth = new float[] { .100f };
     public static final float[] lineWidthGL = new float[] { 1.5f };
+
+
+    public final static Set<PGData3> FRONT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_FRONT, 0.1, 0.5, 100, 29.9);
+    public final static Set<PGData3> BACK = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BACK, 0.1, 0.5, 100, 29.9);
+    public final static Set<PGData3> BOTTOM = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BOTTOM, 0.1, 0.5, 100, 29.9);
+    public final static Set<PGData3> LEFT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_LEFT, 0.1, 0.5, 100, 29.9);
+    public final static Set<PGData3> RIGHT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_RIGHT, 0.1, 0.5, 100, 29.9);
+    public final static Set<PGData3> TOP = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_TOP, 0.1, 0.5, 100, 29.9);
 
     private static final GColour BLACK = new GColour(-1, 0f, 0f, 0f, 1f);
 

@@ -307,6 +307,8 @@ class Editor3DDesign extends ApplicationWindow {
     final Label[] lbl_selectedPrimitiveItem = new Label[1];
 
     final CompositePrimitive[] cmp_Primitives = new CompositePrimitive[1];
+    final Text[] txt_primitiveSearch = new Text[1];
+    final Button[] btn_resetPrimitiveSearch = new Button[1];
 
     final MenuItem[] mntm_STriangles = new MenuItem[1];
     final MenuItem[] mntm_SQuads = new MenuItem[1];
@@ -1843,14 +1845,14 @@ class Editor3DDesign extends ApplicationWindow {
                         GridLayout gridLayout2 = new GridLayout(2, false);
                         cmp_Search.setLayout(gridLayout2);
                         Text txt_Search = new Text(cmp_Search, SWT.BORDER);
-                        // this.txt_Search[0] = txt_Search;
+                        this.txt_primitiveSearch[0] = txt_Search;
                         txt_Search.setMessage("Search Primitives"); //$NON-NLS-1$ I18N Needs translation!
                         GridData gridData2 = new GridData();
                         gridData2.horizontalAlignment = SWT.FILL;
                         gridData2.grabExcessHorizontalSpace = true;
                         txt_Search.setLayoutData(gridData2);
                         Button btn_ResetSearch = new Button(cmp_Search, SWT.NONE);
-                        // this.btn_ResetSearch[0] = btn_ResetSearch;
+                        this.btn_resetPrimitiveSearch[0] = btn_ResetSearch;
                         btn_ResetSearch.setText("Reset"); //$NON-NLS-1$ I18N Needs translation!
                     }
                 }

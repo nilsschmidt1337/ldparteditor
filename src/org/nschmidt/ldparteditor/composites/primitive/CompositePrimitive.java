@@ -859,8 +859,15 @@ public class CompositePrimitive extends Composite {
                         for (String catKey : leavesMap.keySet()) {
                             ArrayList<PrimitiveRule> rules = leavesRulesMap.get(catKey);
                             boolean prevMatch = true;
+                            boolean andWasFound = false;
                             for (PrimitiveRule r : rules) {
                                 boolean match = r.matches(p) ^ r.isNot();
+                                if (prevMatch && andWasFound && !r.isAnd()) {
+                                    matched = true;
+                                    Primitive cat = leavesMap.get(catKey);
+                                    cat.getCategories().add(p);
+                                    break;
+                                }
                                 if (match) {
                                     if (!r.isAnd()) {
                                         matched = true;
@@ -868,10 +875,9 @@ public class CompositePrimitive extends Composite {
                                         cat.getCategories().add(p);
                                         break;
                                     }
-                                    prevMatch = !(r.isAnd() && !prevMatch);
-                                } else {
-                                    prevMatch = false;
                                 }
+                                andWasFound = r.isAnd();
+                                prevMatch = match;
                             }
                         }
                         if (!matched) {
@@ -1193,5 +1199,9 @@ public class CompositePrimitive extends Composite {
 
     public void setDoingDND(boolean doingDND) {
         this.doingDND = doingDND;
+    }
+
+    public OpenGLRendererPrimitives getOpenGL() {
+        return openGL;
     }
 }

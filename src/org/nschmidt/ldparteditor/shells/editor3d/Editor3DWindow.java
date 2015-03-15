@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -2011,6 +2013,29 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 txt_Search[0].setText(""); //$NON-NLS-1$
+            }
+        });
+        txt_primitiveSearch[0].addModifyListener(new ModifyListener() {
+            @Override
+            public void modifyText(ModifyEvent e) {
+                ArrayList<Primitive> prims = getCompositePrimitive().getPrimitives();
+                String criteria = ".*" + txt_primitiveSearch[0].getText() + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+                try {
+                    "DUMMY".matches(criteria); //$NON-NLS-1$
+                } catch (PatternSyntaxException pe) {
+                    criteria = ".*" + Pattern.quote(txt_primitiveSearch[0].getText()) + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                for (Primitive p : prims) {
+                    p.search(criteria);
+                }
+                Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
+                getCompositePrimitive().getOpenGL().drawScene(-1, -1);
+            }
+        });
+        btn_resetPrimitiveSearch[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                txt_primitiveSearch[0].setText(""); //$NON-NLS-1$
             }
         });
         btn_Hide[0].addSelectionListener(new SelectionAdapter() {
