@@ -176,12 +176,12 @@ public final class PGData3 extends PGData {
         }
     }
 
-    public void drawText(float x, float y) {
+    public void drawText(float x, float y, float z) {
         GL11.glColor4f(0f, 0f, 0f, 1f);
         GL11.glBegin(GL11.GL_TRIANGLES);
-        GL11.glVertex3f(-x1 + x, y1 + y, z1);
-        GL11.glVertex3f(-x3 + x, y3 + y, z3);
-        GL11.glVertex3f(-x2 + x, y2 + y, z2);
+        GL11.glVertex3f(-x1 + x, y1 + y, z1 + z);
+        GL11.glVertex3f(-x3 + x, y3 + y, z3 + z);
+        GL11.glVertex3f(-x2 + x, y2 + y, z2 + z);
         GL11.glEnd();
     }
 }

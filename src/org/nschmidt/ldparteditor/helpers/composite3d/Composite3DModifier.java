@@ -389,4 +389,12 @@ public class Composite3DModifier {
             }
         }
     }
+
+    public void switchAxis(boolean selection) {
+        c3d.setShowingAxis(selection);
+    }
+
+    public void switchLabel(boolean selection) {
+        c3d.setShowingLabels(selection);
+    }
 }

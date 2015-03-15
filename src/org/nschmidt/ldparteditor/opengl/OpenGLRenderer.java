@@ -724,44 +724,46 @@ public class OpenGLRenderer {
                 GL11.glColorMask(false, true, true, true);
                 state3d++;
             } else {
-                GL11.glPushMatrix();
-                GL11.glTranslatef(.05f - viewport_width, viewport_height - .06f, 0f);
-                GL11.glMultMatrix(rotation);
-                new Arrow(1f, 0f, 0f, 1f,.5f, 0f, 0f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
-                new Arrow(0f, 1f, 0f, 1f, 0f,.5f, 0f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
-                new Arrow(0f, 0f, 1f, 1f, 0f, 0f,.5f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
-                GL11.glPopMatrix();
+                if (c3d.isShowingAxis()) {
+                    GL11.glPushMatrix();
+                    GL11.glTranslatef(.05f - viewport_width, viewport_height - .06f, 0f);
+                    GL11.glMultMatrix(rotation);
+                    new Arrow(1f, 0f, 0f, 1f,.5f, 0f, 0f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
+                    new Arrow(0f, 1f, 0f, 1f, 0f,.5f, 0f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
+                    new Arrow(0f, 0f, 1f, 1f, 0f, 0f,.5f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
+                    GL11.glPopMatrix();
+                }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
-                if (c3d.isClassicPerspective()) {
+                if (c3d.isShowingLabels() && c3d.isClassicPerspective()) {
                     switch (c3d.getPerspectiveIndex()) {
                     case Perspective.FRONT:
                         for (PGData3 tri : View.FRONT) {
-                            tri.drawText(viewport_width, viewport_height);
+                            tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
                     case Perspective.BACK:
                         for (PGData3 tri : View.BACK) {
-                            tri.drawText(viewport_width, viewport_height);
+                            tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
                     case Perspective.TOP:
                         for (PGData3 tri : View.TOP) {
-                            tri.drawText(viewport_width, viewport_height);
+                            tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
                     case Perspective.BOTTOM:
                         for (PGData3 tri : View.BOTTOM) {
-                            tri.drawText(viewport_width, viewport_height);
+                            tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
                     case Perspective.LEFT:
                         for (PGData3 tri : View.LEFT) {
-                            tri.drawText(viewport_width, viewport_height);
+                            tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
                     case Perspective.RIGHT:
                         for (PGData3 tri : View.RIGHT) {
-                            tri.drawText(viewport_width, viewport_height);
+                            tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
                     default:

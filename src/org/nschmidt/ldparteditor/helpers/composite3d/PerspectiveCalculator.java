@@ -184,7 +184,7 @@ public class PerspectiveCalculator {
      */
     private void calculateOrigin(Matrix4f realViewport) {
         Rectangle bounds = c3d.getBounds();
-        z_eff = (float) (c3d.getzFar() + c3d.getzNear()) / -2f * c3d.getZoom();
+        z_eff = (float) ((c3d.getzFar() + c3d.getzNear()) / -2.0 * c3d.getZoom());
         width = (float) bounds.width / (float) bounds.height * .5f;
         Vector3f[] axes = c3d.getViewportOriginAxis();
         offset.set(0, 0, 0, 1f);
