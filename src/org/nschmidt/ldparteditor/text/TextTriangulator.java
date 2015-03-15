@@ -410,7 +410,7 @@ public class TextTriangulator {
         } else {
             fontName = ff[0];
         }
-        Font myFont = new Font(fontName, Font.BOLD, 8);
+        Font myFont = new Font(fontName, Font.BOLD | Font.HANGING_BASELINE, 8);
         final GlyphVector vector = myFont.createGlyphVector(new FontRenderContext(null, false, false), text);
 
         final Set<PGData3> finalTriangleSet = new HashSet<PGData3>();

@@ -66,6 +66,7 @@ public class OpenGLRenderer {
 
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
     private final FloatBuffer viewport = BufferUtils.createFloatBuffer(16);
+    private final FloatBuffer rotation = BufferUtils.createFloatBuffer(16);
 
     public FloatBuffer getViewport() {
         return viewport;
@@ -251,6 +252,8 @@ public class OpenGLRenderer {
             float zoom = c3d.getZoom();
             Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewport_transform, viewport_transform);
             Matrix4f viewport_rotation = c3d.getRotation();
+            viewport_rotation.store(rotation);
+            rotation.flip();
             Matrix4f.mul(viewport_rotation, viewport_transform, viewport_transform);
             Matrix4f viewport_translation = c3d.getTranslation();
             Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
@@ -721,6 +724,13 @@ public class OpenGLRenderer {
                 GL11.glColorMask(false, true, true, true);
                 state3d++;
             } else {
+                GL11.glPushMatrix();
+                GL11.glTranslatef(.05f - viewport_width, viewport_height - .06f, 0f);
+                GL11.glMultMatrix(rotation);
+                new Arrow(1f, 0f, 0f, 1f,.5f, 0f, 0f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
+                new Arrow(0f, 1f, 0f, 1f, 0f,.5f, 0f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
+                new Arrow(0f, 0f, 1f, 1f, 0f, 0f,.5f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
+                GL11.glPopMatrix();
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 if (c3d.isClassicPerspective()) {
                     switch (c3d.getPerspectiveIndex()) {
