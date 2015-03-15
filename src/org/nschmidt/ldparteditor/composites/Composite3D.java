@@ -16,6 +16,9 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.composites;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
@@ -53,6 +56,8 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.data.GData1;
+import org.nschmidt.ldparteditor.data.ParsingResult;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
@@ -64,6 +69,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.Composite3DModifier;
 import org.nschmidt.ldparteditor.helpers.composite3d.MouseActions;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
+import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -72,6 +78,7 @@ import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
+import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.widgets.listeners.Win32MouseWheelFilter;
 
 /**
@@ -963,12 +970,40 @@ public class Composite3D extends ScalableComposite {
         target.addDropListener(new DropTargetAdapter() {
             @Override
             public void dragOver(DropTargetEvent event) {
-                Point pos = new Point(event.x, event.y);
+                // TODO It would be nice to "show" the dragged primitive
+                Event ev = new Event();
+                ev.x = event.x - toDisplay(1, 1).x;
+                ev.y = event.y - toDisplay(1, 1).y;
+                ev.stateMask = ev.stateMask;
+                mouse.mouseMove(ev);
             }
 
             @Override
             public void drop(DropTargetEvent event) {
                 NLogger.debug(getClass(), "Primitive dropped at: " + new Point(event.x, event.y).toString()); //$NON-NLS-1$
+                final Editor3DWindow window = Editor3DWindow.getWindow();
+                final org.nschmidt.ldparteditor.data.Primitive p = window.getCompositePrimitive().getSelectedPrimitive();
+                if (p == null || p.isCategory()) return;
+                final DatFile datfile = getLockableDatFileReference();
+                NLogger.debug(getClass(), "Primitive: " + p); //$NON-NLS-1$
+                String ref = p.getName();
+                final BigDecimal[] cur = getCursorSnapped3Dprecise();
+                Set<String> alreadyParsed = new HashSet<String>();
+                alreadyParsed.add(datfile.getShortName());
+                ArrayList<ParsingResult> subfileLine = DatParser
+                        .parseLine(
+                                "1 16 " + MathHelper.bigDecimalToString(cur[0]) + " " + MathHelper.bigDecimalToString(cur[1]) + " " + MathHelper.bigDecimalToString(cur[2]) + " 1 0 0 0 1 0 0 0 1 " + ref, -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datfile, false, alreadyParsed, false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                GData1 vertexLine = (GData1) subfileLine.get(0).getGraphicalData();
+                if (vertexLine != null) {
+                    datfile.addToTail(vertexLine);
+                    datfile.getVertexManager().setModified(true);
+                    if (!Project.getUnsavedFiles().contains(datfile)) {
+                        Project.addUnsavedFile(datfile);
+                        Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                    }
+                    datfile.getVertexManager().validateState();
+                }
+                Editor3DWindow.getWindow().unselectAddSubfile();
             }
         });
 

@@ -56,7 +56,6 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.BFC;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
-import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.PGData;
 import org.nschmidt.ldparteditor.data.PGData1;
 import org.nschmidt.ldparteditor.data.PGData2;
@@ -352,7 +351,6 @@ public class CompositePrimitive extends Composite {
             }
         });
     }
-    // FIXME Needs implementation!
 
     public GLCanvas getCanvas() {
         return canvas;
@@ -501,7 +499,7 @@ public class CompositePrimitive extends Composite {
 
     public void loadPrimitives() {
         try {
-            new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress() {
+            new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                     monitor.beginTask("Loading Primitives...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
@@ -739,7 +737,6 @@ public class CompositePrimitive extends Composite {
                 return null;
             }
             tMatrix.m33 = 1f;
-            det = tMatrix.determinant();
             // [WARNING] Check file existance
             boolean fileExists = true;
             StringBuilder sb = new StringBuilder();
@@ -811,9 +808,9 @@ public class CompositePrimitive extends Composite {
                 if (isVirtual) break;
             }
             if (isVirtual) {
+                det = tMatrix.determinant();
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
-                GDataCSG.forceRecompile();
                 final PGData1 result = new PGData1(tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
                         destMatrix, alreadyParsed);
                 alreadyParsed.remove(shortFilename);
@@ -842,9 +839,9 @@ public class CompositePrimitive extends Composite {
                 } catch (UnsupportedEncodingException e1) {
                     return null;
                 }
+                det = tMatrix.determinant();
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
-                GDataCSG.forceRecompile();
                 final PGData1 result = new PGData1(tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
                         destMatrix, alreadyParsed);
                 alreadyParsed.remove(shortFilename);

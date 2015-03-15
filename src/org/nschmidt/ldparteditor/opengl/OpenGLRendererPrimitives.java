@@ -48,8 +48,6 @@ public class OpenGLRendererPrimitives {
     public OpenGLRendererPrimitives(CompositePrimitive compositePrimitive) {
         this.cp = compositePrimitive;
     }
-    // FIXME Needs implementation!
-
 
     /**
      * Initializes the Scene and gives OpenGL-Hints
