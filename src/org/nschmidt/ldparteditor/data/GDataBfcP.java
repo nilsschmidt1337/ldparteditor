@@ -40,27 +40,27 @@ public final class GDataBfcP extends GDataP {
     public void drawBFCprimitive() {
         switch (type) {
         case BFC.CCW:
-            GData.localWinding = BFC.CCW;
+            GDataP.localWinding = BFC.CCW;
             break;
         case BFC.CCW_CLIP:
-            GData.localWinding = BFC.CCW;
+            GDataP.localWinding = BFC.CCW;
             break;
         case BFC.CW:
-            GData.localWinding = BFC.CW;
+            GDataP.localWinding = BFC.CW;
             break;
         case BFC.CW_CLIP:
-            GData.localWinding = BFC.CW;
+            GDataP.localWinding = BFC.CW;
             break;
         case BFC.INVERTNEXT:
-            GData.globalInvertNext = !GData.globalInvertNext;
-            GData.globalInvertNextFound = true;
+            GDataP.globalInvertNext = !GData.globalInvertNext;
+            GDataP.globalInvertNextFound = true;
             break;
         case BFC.NOCERTIFY:
-            GData.localWinding = BFC.NOCERTIFY;
+            GDataP.localWinding = BFC.NOCERTIFY;
             break;
         case BFC.NOCLIP:
-            if (GData.accumClip == 0)
-                GData.accumClip = 1;
+            if (GDataP.accumClip == 0)
+                GDataP.accumClip = 1;
             break;
         default:
             break;
