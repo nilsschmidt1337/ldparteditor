@@ -121,6 +121,8 @@ public class CompositePrimitive extends Composite {
 
     private float maxY = 0f;
 
+    private boolean doingDND;
+
     public CompositePrimitive(Composite parent) {
         super(parent, I18n.I18N_NON_BIDIRECT() | SWT.BORDER);
         // TODO Auto-generated constructor stub
@@ -152,6 +154,7 @@ public class CompositePrimitive extends Composite {
             @Override
             public void dragStart(DragSourceEvent event) {
                 event.doit = true;
+                setDoingDND(true);
             }
 
             @Override
@@ -161,7 +164,7 @@ public class CompositePrimitive extends Composite {
 
             @Override
             public void dragFinished(DragSourceEvent event) {
-
+                setDoingDND(false);
             }
         });
 
@@ -939,5 +942,13 @@ public class CompositePrimitive extends Composite {
 
     public void setRotationWidth(float rotationWidth) {
         this.rotationWidth = rotationWidth;
+    }
+
+    public boolean isDoingDND() {
+        return doingDND;
+    }
+
+    public void setDoingDND(boolean doingDND) {
+        this.doingDND = doingDND;
     }
 }

@@ -72,6 +72,16 @@ public class Primitive {
         GL11.glPopMatrix();
     }
 
+    public void draw(float x, float y, float z) {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x, y, z);
+        GL11.glScalef(1000f, 1000f, 1000f);
+        for (PGData gd : graphicalData) {
+            gd.drawBFCprimitive();
+        }
+        GL11.glPopMatrix();
+    }
+
     public void setPrimitives(ArrayList<Primitive> primitives) {
         this.primitives = primitives;
     }
