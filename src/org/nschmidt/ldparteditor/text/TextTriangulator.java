@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -45,6 +46,7 @@ import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData0;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
+import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -397,6 +399,197 @@ public class TextTriangulator {
             lock2.unlock();
         }
 
+        return finalTriangleSet;
+    }
+
+    public static Set<PGData3> triangulateGLText(org.eclipse.swt.graphics.Font font, final String text, final double flatness, final double interpolateFlatness, int fontHeight, final double deltaAngle) {
+        String[] ff = font.getFontData()[0].getName().split(Pattern.quote("-")); //$NON-NLS-1$
+        String fontName;
+        if (ff.length > 1) {
+            fontName = ff[1];
+        } else {
+            fontName = ff[0];
+        }
+        NLogger.debug(TextTriangulator.class, fontName);
+        Font myFont = new Font(fontName, Font.PLAIN, 18);
+        final GlyphVector vector = myFont.createGlyphVector(new FontRenderContext(null, false, false), text);
+
+        final Set<PGData3> finalTriangleSet = Collections.synchronizedSet(new HashSet<PGData3>());
+
+        if (vector.getNumGlyphs() == 0)
+            return finalTriangleSet;
+
+        double maxHeight = 0d;
+        for (int i = 0; i < vector.getNumGlyphs(); i++) {
+            double height = vector.getGlyphMetrics(0).getBounds2D().getHeight();
+            if (height > maxHeight)
+                maxHeight = height;
+        }
+
+        final double scale = fontHeight / maxHeight;
+        for (int j = 0; j < vector.getNumGlyphs(); j++) {
+            Shape characterShape = vector.getGlyphOutline(j);
+            Set<PGData3> characterTriangleSet = triangulateGLShape(characterShape, flatness, interpolateFlatness, scale, deltaAngle);
+            finalTriangleSet.addAll(characterTriangleSet);
+        }
+        return finalTriangleSet;
+    }
+
+    private static Set<PGData3> triangulateGLShape(Shape shape, double flatness, double interpolateFlatness, double scale, double deltaAngle) {
+        PathIterator shapePathIterator = shape.getPathIterator(null, flatness);
+        /*
+         * Add all points of the shape to the triangulation
+         */
+        double x = 0, y = 0, px, py;
+
+        double minX = Double.MAX_VALUE;
+        double minY = Double.MAX_VALUE;
+
+        double maxX = -Double.MAX_VALUE;
+        double maxY = -Double.MAX_VALUE;
+
+        ArrayList<Pnt> places = new ArrayList<Pnt>();
+
+        while (!shapePathIterator.isDone()) {
+            px = x;
+            py = y;
+
+            double[] args = new double[6];
+
+            switch (shapePathIterator.currentSegment(args)) {
+            case PathIterator.SEG_MOVETO:
+                x = args[0];
+                y = args[1];
+                break;
+            case PathIterator.SEG_LINETO:
+                x = args[0];
+                y = args[1];
+
+                if (px == x && py == y)
+                    break;
+
+                Pnt p1 = new Pnt(px, py);
+                Pnt p2 = new Pnt(x, y);
+
+                places.add(p1);
+                if (px > maxX)
+                    maxX = px;
+                if (py > maxY)
+                    maxY = py;
+                if (px < minX)
+                    minX = px;
+                if (py < minY)
+                    minY = py;
+
+                Pnt lengthVector = new Pnt(x - px, y - py);
+
+                // sqrt( x^2 + y^2 )
+                double length = Math.sqrt(lengthVector.coord(0) * lengthVector.coord(0) + lengthVector.coord(1) * lengthVector.coord(1));
+
+                double num = length / interpolateFlatness;
+                double nx = lengthVector.coord(0) / num;
+                double ny = lengthVector.coord(1) / num;
+
+                if (num > 1) {
+                    double start = (num - Math.floor(num)) / 2.0;
+
+                    double cx = p1.coord(0);
+                    double cy = p1.coord(1);
+                    double ll = length;
+                    ll = ll - start;
+                    while (ll > interpolateFlatness) {
+                        places.add(new Pnt(cx, cy));
+                        if (cx > maxX)
+                            maxX = cx;
+                        if (cy > maxY)
+                            maxY = cy;
+                        if (cx < minX)
+                            minX = cx;
+                        if (cy < minY)
+                            minY = cy;
+
+                        cx = cx + nx;
+                        cy = cy + ny;
+
+                        ll = ll - interpolateFlatness;
+                    }
+                }
+                places.add(p2);
+                if (x > maxX)
+                    maxX = x;
+                if (y > maxY)
+                    maxY = y;
+                if (x < minX)
+                    minX = x;
+                if (y < minY)
+                    minY = y;
+                break;
+            case PathIterator.SEG_QUADTO:
+                break;
+            case PathIterator.SEG_CUBICTO:
+                break;
+            case PathIterator.SEG_CLOSE:
+                break;
+            default:
+                break;
+            }
+
+            shapePathIterator.next();
+        }
+
+        /*
+         * Build the triangle which encompasses the shape (-0.5,+1) - (+0.5,+1)
+         * - (0,-1)
+         */
+        double TRISIZE = 100000d;
+        Triangle tri = new Triangle(new Pnt(-TRISIZE / 2.0, TRISIZE), new Pnt(+TRISIZE / 2.0, TRISIZE), new Pnt(0, -TRISIZE));
+
+        // now add all triangles which are in the shape to the set
+        Set<PGData3> finalTriangleSet = new HashSet<PGData3>();
+
+        if (!places.isEmpty()) {
+
+            // initialize the triangulation with this triangle
+            Triangulation triangulation = new Triangulation(tri);
+
+            triangulation.delaunayPlace(new Pnt(minX - 0.0, minY - 0.0));
+            triangulation.delaunayPlace(new Pnt(maxX + 0.0, minY - 0.0));
+            triangulation.delaunayPlace(new Pnt(maxX + 0.0, maxY + 0.0));
+            triangulation.delaunayPlace(new Pnt(minX - 0.0, maxY + 0.0));
+
+            for (Pnt place : places) {
+                triangulation.delaunayPlace(place);
+                if (triangulation.size() > 4000) break;
+            }
+
+            for (Triangle triangle : triangulation) {
+                Pnt point1 = triangle.get(0);
+                Pnt point2 = triangle.get(1);
+                Pnt point3 = triangle.get(2);
+                double midX = point1.coord(0);
+                double midY = point1.coord(1);
+                midX = midX + point2.coord(0);
+                midY = midY + point2.coord(1);
+                midX = midX + point3.coord(0);
+                midY = midY + point3.coord(1);
+                midX /= 3.0;
+                midY /= 3.0;
+                if (shape.contains(midX, midY)) {
+                    double[] vec1 = new double[] { point3.coord(0) - point1.coord(0), point3.coord(1) - point1.coord(1) };
+                    double[] vec2 = new double[] { point3.coord(0) - point2.coord(0), point3.coord(1) - point2.coord(1) };
+                    double wind = vec1[0] * vec2[1] - vec1[1] * vec2[0];
+                    if (wind < 0) {
+                        PGData3 gdt = new PGData3((float) (point1.coord(0) * scale), (float) (point1.coord(1) * scale), 0f, (float) (point2.coord(0) * scale),
+                                (float) (point2.coord(1) * scale), 0f, (float) (point3.coord(0) * scale), (float) (point3.coord(1) * scale), 0f);
+                        finalTriangleSet.add(gdt);
+                    } else {
+                        PGData3 gdt = new PGData3((float) (point1.coord(0) * scale), (float) (point1.coord(1) * scale), 0f, (float) (point3.coord(0) * scale),
+                                (float) (point3.coord(1) * scale), 0f, (float) (point2.coord(0) * scale), (float) (point2.coord(1) * scale), 0f);
+                        finalTriangleSet.add(gdt);
+                    }
+                }
+            }
+        }
         return finalTriangleSet;
     }
 }
