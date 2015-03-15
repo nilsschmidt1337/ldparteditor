@@ -66,6 +66,7 @@ import org.nschmidt.ldparteditor.data.GData5;
 import org.nschmidt.ldparteditor.data.GDataBFC;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.GDataInit;
+import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
 import org.nschmidt.ldparteditor.dnd.MyDummyType2;
@@ -598,6 +599,7 @@ public class CompositePrimitive extends Composite {
                                                 description = line.trim();
                                                 if (description.length() > 2) {
                                                     description = description.substring(1).trim();
+                                                    if (description.startsWith("~")) continue; //$NON-NLS-1$
                                                 }
                                             } else if (gd != null) {
                                                 data.add(gd);
@@ -617,6 +619,7 @@ public class CompositePrimitive extends Composite {
                                                 newPrimitive.setName(fileName);
                                             }
                                             newPrimitive.setDescription(description);
+                                            newPrimitive.calculateZoom();
                                         }
                                     } catch (LDParsingException e) {
                                     } catch (FileNotFoundException e) {
@@ -930,7 +933,7 @@ public class CompositePrimitive extends Composite {
             if (Vector3f.sub(start, end, null).length() < Threshold.identical_vertex_distance.floatValue()) {
                 return null;
             }
-            return new GData2(new Vertex(start.x, start.y, start.z, true), new Vertex(end.x, end.y, end.z, true), colour, parent);
+            return new GData2(colour, parent, new Vertex(start.x, start.y, start.z, true), new Vertex(end.x, end.y, end.z, true));
         }
     }
 
@@ -1014,8 +1017,8 @@ public class CompositePrimitive extends Composite {
             if (Vector3f.sub(start, end, null).length() < epsilon || Vector3f.sub(controlI, controlII, null).length() < epsilon) {
                 return null;
             }
-            return new GData5(new Vertex(start.x, start.y, start.z, true), new Vertex(end.x, end.y, end.z, true), new Vertex(controlI.x,
-                    controlI.y, controlI.z, true), new Vertex(controlII.x, controlII.y, controlII.z, true), colour, parent);
+            return new GData5(colour, parent, new Vertex(start.x, start.y, start.z, true), new Vertex(end.x, end.y, end.z, true), new Vertex(controlI.x,
+                    controlI.y, controlI.z, true), new Vertex(controlII.x, controlII.y, controlII.z, true));
         }
     }
 }
