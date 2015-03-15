@@ -19,51 +19,10 @@ package org.nschmidt.ldparteditor.data;
  * @author nils
  *
  */
-public final class GDataBfcP extends GDataP {
+interface IPGData {
 
-    final byte type;
+    public void drawBFCprimitive();
 
-    public byte getType() {
-        return type;
-    }
+    public int type();
 
-    public GDataBfcP(byte type) {
-        this.type = type;
-    }
-
-    @Override
-    public int type() {
-        return 6;
-    }
-
-    @Override
-    public void drawBFCprimitive() {
-        switch (type) {
-        case BFC.CCW:
-            GDataP.localWinding = BFC.CCW;
-            break;
-        case BFC.CCW_CLIP:
-            GDataP.localWinding = BFC.CCW;
-            break;
-        case BFC.CW:
-            GDataP.localWinding = BFC.CW;
-            break;
-        case BFC.CW_CLIP:
-            GDataP.localWinding = BFC.CW;
-            break;
-        case BFC.INVERTNEXT:
-            GDataP.globalInvertNext = !GData.globalInvertNext;
-            GDataP.globalInvertNextFound = true;
-            break;
-        case BFC.NOCERTIFY:
-            GDataP.localWinding = BFC.NOCERTIFY;
-            break;
-        case BFC.NOCLIP:
-            if (GDataP.accumClip == 0)
-                GDataP.accumClip = 1;
-            break;
-        default:
-            break;
-        }
-    }
 }

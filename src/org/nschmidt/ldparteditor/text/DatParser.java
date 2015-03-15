@@ -900,7 +900,7 @@ public enum DatParser {
                 } catch (NumberFormatException nfe) {
                     M00 = null; M01 = null; M02 = null; M10 = null;
                     M11 = null; M12 = null; M20 = null; M21 = null;
-                    M22 = null; M30 = null; M31 = null;M32 = null;
+                    M22 = null; M30 = null; M31 = null; M32 = null;
                     result.add(new ParsingResult("Invalid number format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                     break;
                 }

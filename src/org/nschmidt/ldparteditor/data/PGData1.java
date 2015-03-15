@@ -29,7 +29,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
  * @author nils
  *
  */
-public final class GData1P extends GDataP {
+public final class PGData1 extends PGData {
 
     final FloatBuffer matrix;
     final Matrix4f productMatrix;
@@ -40,10 +40,7 @@ public final class GData1P extends GDataP {
 
     final boolean negativeDeterminant;
 
-    boolean recursive = false;
-    boolean movedTo = false;
-
-    final GDataP myGData = new GDataInitP();
+    final PGData myGData = new PGDataInit();
 
     final int depth;
 
@@ -59,7 +56,7 @@ public final class GData1P extends GDataP {
      * @param pMatrix
      * @param firstRef
      */
-    public GData1P(Matrix4f tMatrix, LinkedList<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
+    public PGData1(Matrix4f tMatrix, LinkedList<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
             Set<String> alreadyParsed) {
 
         depth++;
@@ -75,11 +72,11 @@ public final class GData1P extends GDataP {
 
             matrix.position(0);
 
-            GDataP anchorData = myGData;
+            PGData anchorData = myGData;
 
             for (String line : lines) {
                 if (isNotBlank(line)) {
-                    GDataP gdata = CompositePrimitive.parseLine(line, depth, pMatrix, alreadyParsed);
+                    PGData gdata = CompositePrimitive.parseLine(line, depth, pMatrix, alreadyParsed);
                     if (gdata != null) {
                         anchorData.setNext(gdata);
                         anchorData = gdata;
@@ -95,10 +92,6 @@ public final class GData1P extends GDataP {
             this.localMatrix = null;
             this.negativeDeterminant = false;
         }
-    }
-
-    public Matrix4f getProductMatrix() {
-        return productMatrix;
     }
 
     private boolean isNotBlank(String str) {
@@ -117,47 +110,37 @@ public final class GData1P extends GDataP {
     @Override
     public void drawBFCprimitive() {
         if (matrix != null) {
-            byte tempWinding = GDataP.localWinding;
-            boolean tempInvertNext = GDataP.globalInvertNext;
-            boolean tempInvertNextFound = GDataP.globalInvertNextFound;
-            boolean tempNegativeDeterminant = GDataP.globalNegativeDeterminant;
-            GDataP.globalInvertNextFound = false;
-            GDataP.localWinding = BFC.NOCERTIFY;
-            GDataP.globalNegativeDeterminant = GDataP.globalNegativeDeterminant ^ negativeDeterminant;
+            byte tempWinding = PGData.localWinding;
+            boolean tempInvertNext = PGData.globalInvertNext;
+            boolean tempInvertNextFound = PGData.globalInvertNextFound;
+            boolean tempNegativeDeterminant = PGData.globalNegativeDeterminant;
+            PGData.globalInvertNextFound = false;
+            PGData.localWinding = BFC.NOCERTIFY;
+            PGData.globalNegativeDeterminant = PGData.globalNegativeDeterminant ^ negativeDeterminant;
             GL11.glPushMatrix();
             GL11.glMultMatrix(matrix);
-            GDataP data2draw = myGData;
-            if (GDataP.accumClip > 0) {
-                GDataP.accumClip++;
+            PGData data2draw = myGData;
+            if (PGData.accumClip > 0) {
+                PGData.accumClip++;
                 while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
                     data2draw.drawBFCprimitive();
-                GDataP.accumClip--;
+                PGData.accumClip--;
             } else {
                 while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                     data2draw.drawBFCprimitive();
                 }
-                if (GDataP.accumClip > 0)
-                    GDataP.accumClip = 0;
+                if (PGData.accumClip > 0)
+                    PGData.accumClip = 0;
             }
             GL11.glPopMatrix();
-            GDataP.localWinding = tempWinding;
+            PGData.localWinding = tempWinding;
             if (tempInvertNextFound)
-                GDataP.globalInvertNext = !tempInvertNext;
-            GDataP.globalNegativeDeterminant = tempNegativeDeterminant;
+                PGData.globalInvertNext = !tempInvertNext;
+            PGData.globalNegativeDeterminant = tempNegativeDeterminant;
         }
     }
-
     @Override
     public int type() {
         return 1;
     }
-
-    public boolean isRecursive() {
-        return recursive;
-    }
-
-    public void setRecursive(boolean recursive) {
-        this.recursive = recursive;
-    }
-
 }

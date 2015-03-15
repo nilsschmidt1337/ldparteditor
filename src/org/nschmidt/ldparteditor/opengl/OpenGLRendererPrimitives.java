@@ -172,6 +172,7 @@ public class OpenGLRendererPrimitives {
         float my = mouseY + (viewport_transform.m31 - 2f) * zoom * View.PIXEL_PER_LDU;
 
         final float STEP = 22f * zoom * View.PIXEL_PER_LDU;
+        cp.setRotationWidth(STEP);
         final Matrix4f rotation2 = cp.getRotation();
         rotation2.store(rotation);
         rotation.position(0);
@@ -223,15 +224,6 @@ public class OpenGLRendererPrimitives {
             cp.setFocusedPrimitive(null);
             cp.setSelectedPrimitive(null);
         }
-
-        //        drawCell(0, 0, true, true);
-        //        drawPlus(0, 0);
-        //
-        //        drawCell(22, 0, false, false);
-        //
-        //        drawCell(0, 22, false, false);
-        //        drawCell(22, 22, false, true);
-        //        drawMinus(22, 22);
 
         // Lights
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, 2.0f, 2.0f, 1f}));

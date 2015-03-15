@@ -39,7 +39,6 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.opengl.GLData;
@@ -57,20 +56,19 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.BFC;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
-import org.nschmidt.ldparteditor.data.GData1P;
-import org.nschmidt.ldparteditor.data.GData2P;
-import org.nschmidt.ldparteditor.data.GData3P;
-import org.nschmidt.ldparteditor.data.GData4P;
-import org.nschmidt.ldparteditor.data.GData5P;
-import org.nschmidt.ldparteditor.data.GDataBfcP;
 import org.nschmidt.ldparteditor.data.GDataCSG;
-import org.nschmidt.ldparteditor.data.GDataInitP;
-import org.nschmidt.ldparteditor.data.GDataP;
+import org.nschmidt.ldparteditor.data.PGData;
+import org.nschmidt.ldparteditor.data.PGData1;
+import org.nschmidt.ldparteditor.data.PGData2;
+import org.nschmidt.ldparteditor.data.PGData3;
+import org.nschmidt.ldparteditor.data.PGData4;
+import org.nschmidt.ldparteditor.data.PGData5;
+import org.nschmidt.ldparteditor.data.PGDataBFC;
+import org.nschmidt.ldparteditor.data.PGDataInit;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
 import org.nschmidt.ldparteditor.dnd.MyDummyType2;
 import org.nschmidt.ldparteditor.enums.MouseButton;
-import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -115,6 +113,8 @@ public class CompositePrimitive extends Composite {
 
     /** Resolution of the viewport at n% zoom */
     private float viewport_pixel_per_ldu;
+
+    private float rotationWidth = 300f;
 
     private AtomicBoolean dontRefresh = new AtomicBoolean(false);
     private AtomicBoolean hasDrawn = new AtomicBoolean(false);
@@ -243,11 +243,10 @@ public class CompositePrimitive extends Composite {
                 case MouseButton.LEFT:
                     break;
                 case MouseButton.MIDDLE:
-                    Point cSize = getSize();
                     float rx = 0;
                     float ry = 0;
-                    rx = (event.x - old_mouse_position.x) / cSize.x * (float) Math.PI;
-                    ry = (old_mouse_position.y - event.y) / cSize.y * (float) Math.PI;
+                    rx = (event.x - old_mouse_position.x) / rotationWidth * (float) Math.PI;
+                    ry = (old_mouse_position.y - event.y) / rotationWidth * (float) Math.PI;
                     Vector4f xAxis4f_rotation = new Vector4f(1.0f, 0, 0, 1.0f);
                     Vector4f yAxis4f_rotation = new Vector4f(0, 1.0f, 0, 1.0f);
                     Matrix4f ovr_inverse = Matrix4f.invert(old_viewport_rotation, null);
@@ -585,29 +584,29 @@ public class CompositePrimitive extends Composite {
                                 if (f.isFile() && fileName.matches(".*.dat")) { //$NON-NLS-1$
                                     try {
                                         Primitive newPrimitive = new Primitive();
-                                        ArrayList<GDataP> data = new ArrayList<GDataP>();
+                                        ArrayList<PGData> data = new ArrayList<PGData>();
                                         final String path = f.getAbsolutePath();
                                         String description = ""; //$NON-NLS-1$
                                         reader = new UTF8BufferedReader(path);
                                         String line;
                                         line = reader.readLine();
                                         if (line != null) {
-                                            data.add(new GDataInitP());
-                                            GDataP gd = parseLine(line, 0, View.ID, new HashSet<String>());
+                                            data.add(new PGDataInit());
+                                            PGData gd;
                                             if (line.trim().startsWith("0")) { //$NON-NLS-1$
                                                 description = line.trim();
                                                 if (description.length() > 2) {
                                                     description = description.substring(1).trim();
                                                     if (description.startsWith("~")) continue; //$NON-NLS-1$
                                                 }
-                                            } else if (gd != null) {
+                                            } else if ((gd = parseLine(line, 0, View.ID, new HashSet<String>())) != null) {
                                                 data.add(gd);
                                             }
                                             while ((line = reader.readLine()) != null) {
                                                 gd = parseLine(line, 0, View.ID, new HashSet<String>());
                                                 if (gd != null && gd.type() != 0) data.add(gd);
                                             }
-                                            newPrimitive.getGraphicalData().addAll(data);
+                                            newPrimitive.setGraphicalData(data);
                                             primitives.add(newPrimitive);
                                             descriptionMap.put(path, description);
                                             primitiveMap.put(path, newPrimitive);
@@ -644,11 +643,6 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    public static GDataP parseLine(String line, int depth, Matrix4f pMatrix, Set<String> alreadyParsed) {
-        String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
-        return parseLine(data_segments, line, depth, pMatrix, alreadyParsed);
-    }
-
     // What follows now is a very minimalistic DAT file parser (<500LOC)
 
     private static final Vector3f start = new Vector3f();
@@ -658,7 +652,8 @@ public class CompositePrimitive extends Composite {
     private static final Vector3f vertexC = new Vector3f();
     private static final Vector3f vertexD = new Vector3f();
 
-    public static GDataP parseLine(String[] data_segments, String line, int depth, Matrix4f productMatrix, Set<String> alreadyParsed) {
+    public static PGData parseLine(String line, int depth, Matrix4f productMatrix, Set<String> alreadyParsed) {
+        final String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
         // Get the linetype
         int linetype = 0;
         char c;
@@ -669,7 +664,7 @@ public class CompositePrimitive extends Composite {
         // Parse the line according to its type
         switch (linetype) {
         case 0:
-            return parse_Comment(line, data_segments, depth, productMatrix, alreadyParsed);
+            return parse_Comment(line);
         case 1:
             return parse_Reference(data_segments, depth, productMatrix, alreadyParsed);
         case 2:
@@ -684,35 +679,35 @@ public class CompositePrimitive extends Composite {
         return null;
     }
 
-    private static GDataP parse_Comment(String line, String[] data_segments, int depth, Matrix4f productMatrix, Set<String> alreadyParsed) {
+    private static PGData parse_Comment(String line) {
         line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-        if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
+        if (line.startsWith("BFC ", 2)) { //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.INVERTNEXT);
+                return new PGDataBFC(BFC.INVERTNEXT);
             } else if (line.startsWith("CERTIFY CCW", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.CCW_CLIP);
+                return new PGDataBFC(BFC.CCW_CLIP);
             } else if (line.startsWith("CERTIFY CW", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.CW_CLIP);
+                return new PGDataBFC(BFC.CW_CLIP);
             } else if (line.startsWith("CERTIFY", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.CCW_CLIP);
+                return new PGDataBFC(BFC.CCW_CLIP);
             } else if (line.startsWith("NOCERTIFY", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.NOCERTIFY);
+                return new PGDataBFC(BFC.NOCERTIFY);
             } else if (line.startsWith("CCW", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.CCW);
+                return new PGDataBFC(BFC.CCW);
             } else if (line.startsWith("CW", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.CW);
+                return new PGDataBFC(BFC.CW);
             } else if (line.startsWith("NOCLIP", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.NOCLIP);
+                return new PGDataBFC(BFC.NOCLIP);
             } else if (line.startsWith("CLIP CCW", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.CCW_CLIP);
+                return new PGDataBFC(BFC.CCW_CLIP);
             } else if (line.startsWith("CLIP CW", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.CW_CLIP);
+                return new PGDataBFC(BFC.CW_CLIP);
             } else if (line.startsWith("CCW CLIP", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.CCW_CLIP);
+                return new PGDataBFC(BFC.CCW_CLIP);
             } else if (line.startsWith("CW CLIP", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.CW_CLIP);
+                return new PGDataBFC(BFC.CW_CLIP);
             } else if (line.startsWith("CLIP", 6)) { //$NON-NLS-1$
-                return new GDataBfcP(BFC.CLIP);
+                return new PGDataBFC(BFC.CLIP);
             } else {
                 return null;
             }
@@ -721,7 +716,7 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static GDataP parse_Reference(String[] data_segments, int depth, Matrix4f productMatrix, Set<String> alreadyParsed) {
+    private static PGData parse_Reference(String[] data_segments, int depth, Matrix4f productMatrix, Set<String> alreadyParsed) {
         if (data_segments.length < 15) {
             return null;
         } else {
@@ -744,9 +739,6 @@ public class CompositePrimitive extends Composite {
                 return null;
             }
             tMatrix.m33 = 1f;
-            det = tMatrix.determinant();
-            if (Math.abs(det) < Threshold.singularity_determinant)
-                return null;
             // [WARNING] Check file existance
             boolean fileExists = true;
             StringBuilder sb = new StringBuilder();
@@ -764,7 +756,7 @@ public class CompositePrimitive extends Composite {
                 shortFilename = shortFilename.replace("s\\\\", "S" + File.separator).replace("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             if (alreadyParsed.contains(shortFilename)) {
-                // FIXME return null;
+                return null;
             } else {
                 alreadyParsed.add(shortFilename);
             }
@@ -821,7 +813,7 @@ public class CompositePrimitive extends Composite {
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
                 GDataCSG.forceRecompile();
-                final GData1P result = new GData1P(tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
+                final PGData1 result = new PGData1(tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
                         destMatrix, alreadyParsed);
                 alreadyParsed.remove(shortFilename);
                 return result;
@@ -852,7 +844,7 @@ public class CompositePrimitive extends Composite {
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
                 GDataCSG.forceRecompile();
-                final GData1P result = new GData1P(tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
+                final PGData1 result = new PGData1(tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
                         destMatrix, alreadyParsed);
                 alreadyParsed.remove(shortFilename);
                 return result;
@@ -860,7 +852,7 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static GDataP parse_Line(String[] data_segments) {
+    private static PGData parse_Line(String[] data_segments) {
         if (data_segments.length != 8) {
             return null;
         } else {
@@ -874,14 +866,11 @@ public class CompositePrimitive extends Composite {
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            if (Vector3f.sub(start, end, null).length() < Threshold.identical_vertex_distance.floatValue()) {
-                return null;
-            }
-            return new GData2P(start.x, start.y, start.z, end.x, end.y, end.z);
+            return new PGData2(start.x, start.y, start.z, end.x, end.y, end.z);
         }
     }
 
-    private static GDataP parse_Triangle(String[] data_segments) {
+    private static PGData parse_Triangle(String[] data_segments) {
         if (data_segments.length != 11) {
             return null;
         } else {
@@ -898,12 +887,12 @@ public class CompositePrimitive extends Composite {
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new GData3P(vertexA.x, vertexA.y, vertexA.z, vertexB.x, vertexB.y, vertexB.z, vertexC.x,
+            return new PGData3(vertexA.x, vertexA.y, vertexA.z, vertexB.x, vertexB.y, vertexB.z, vertexC.x,
                     vertexC.y, vertexC.z);
         }
     }
 
-    private static GDataP parse_Quad(String[] data_segments) {
+    private static PGData parse_Quad(String[] data_segments) {
         if (data_segments.length != 14) {
             return null;
         } else {
@@ -923,12 +912,12 @@ public class CompositePrimitive extends Composite {
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new GData4P(vertexA.x, vertexA.y, vertexA.z, vertexB.x, vertexB.y, vertexB.z, vertexC.x,
+            return new PGData4(vertexA.x, vertexA.y, vertexA.z, vertexB.x, vertexB.y, vertexB.z, vertexC.x,
                     vertexC.y, vertexC.z, vertexD.x, vertexD.y, vertexD.z);
         }
     }
 
-    private static GDataP parse_Condline(String[] data_segments) {
+    private static PGData parse_Condline(String[] data_segments) {
         if (data_segments.length != 14) {
             return null;
         } else {
@@ -942,7 +931,15 @@ public class CompositePrimitive extends Composite {
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new GData5P(start.x, start.y, start.z, end.x, end.y, end.z);
+            return new PGData5(start.x, start.y, start.z, end.x, end.y, end.z);
         }
+    }
+
+    public float getRotationWidth() {
+        return rotationWidth;
+    }
+
+    public void setRotationWidth(float rotationWidth) {
+        this.rotationWidth = rotationWidth;
     }
 }
