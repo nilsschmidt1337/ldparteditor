@@ -37,8 +37,10 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GTexture;
+import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Arc;
@@ -719,6 +721,43 @@ public class OpenGLRenderer {
                 GL11.glColorMask(false, true, true, true);
                 state3d++;
             } else {
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                if (c3d.isClassicPerspective()) {
+                    switch (c3d.getPerspectiveIndex()) {
+                    case Perspective.FRONT:
+                        for (PGData3 tri : View.FRONT) {
+                            tri.drawText(viewport_width, viewport_height);
+                        }
+                        break;
+                    case Perspective.BACK:
+                        for (PGData3 tri : View.BACK) {
+                            tri.drawText(viewport_width, viewport_height);
+                        }
+                        break;
+                    case Perspective.TOP:
+                        for (PGData3 tri : View.TOP) {
+                            tri.drawText(viewport_width, viewport_height);
+                        }
+                        break;
+                    case Perspective.BOTTOM:
+                        for (PGData3 tri : View.BOTTOM) {
+                            tri.drawText(viewport_width, viewport_height);
+                        }
+                        break;
+                    case Perspective.LEFT:
+                        for (PGData3 tri : View.LEFT) {
+                            tri.drawText(viewport_width, viewport_height);
+                        }
+                        break;
+                    case Perspective.RIGHT:
+                        for (PGData3 tri : View.RIGHT) {
+                            tri.drawText(viewport_width, viewport_height);
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                }
                 if (Project.getFileToEdit().equals(c3d.getLockableDatFileReference())) {
                     if (Project.getFileToEdit().isReadOnly()) {
                         GL11.glColor3f(0f, 0f, 0f);
@@ -746,6 +785,7 @@ public class OpenGLRenderer {
                     GL11.glVertex3f(viewport_width, -viewport_height, viewport_origin_axis[3].z);
                     GL11.glEnd();
                 }
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
                 break;
             }
         }

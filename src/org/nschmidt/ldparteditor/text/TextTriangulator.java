@@ -402,7 +402,7 @@ public class TextTriangulator {
         return finalTriangleSet;
     }
 
-    public static Set<PGData3> triangulateGLText(org.eclipse.swt.graphics.Font font, final String text, final double flatness, final double interpolateFlatness, int fontHeight, final double deltaAngle) {
+    public static Set<PGData3> triangulateGLText(org.eclipse.swt.graphics.Font font, final String text, final double flatness, final double interpolateFlatness, float fontHeight, final double deltaAngle) {
         String[] ff = font.getFontData()[0].getName().split(Pattern.quote("-")); //$NON-NLS-1$
         String fontName;
         if (ff.length > 1) {
@@ -410,11 +410,10 @@ public class TextTriangulator {
         } else {
             fontName = ff[0];
         }
-        NLogger.debug(TextTriangulator.class, fontName);
-        Font myFont = new Font(fontName, Font.PLAIN, 18);
+        Font myFont = new Font(fontName, Font.BOLD, 8);
         final GlyphVector vector = myFont.createGlyphVector(new FontRenderContext(null, false, false), text);
 
-        final Set<PGData3> finalTriangleSet = Collections.synchronizedSet(new HashSet<PGData3>());
+        final Set<PGData3> finalTriangleSet = new HashSet<PGData3>();
 
         if (vector.getNumGlyphs() == 0)
             return finalTriangleSet;
@@ -432,7 +431,24 @@ public class TextTriangulator {
             Set<PGData3> characterTriangleSet = triangulateGLShape(characterShape, flatness, interpolateFlatness, scale, deltaAngle);
             finalTriangleSet.addAll(characterTriangleSet);
         }
-        return finalTriangleSet;
+        float minX = Float.MAX_VALUE;
+        float minY = Float.MAX_VALUE;
+        final Set<PGData3> finalTriangleSet2 = new HashSet<PGData3>();
+        for (PGData3 tri : finalTriangleSet) {
+            minX = Math.min(minX, tri.x1);
+            minX = Math.min(minX, tri.x2);
+            minX = Math.min(minX, tri.x3);
+            minY = Math.min(minY, tri.y1);
+            minY = Math.min(minY, tri.y2);
+            minY = Math.min(minY, tri.y3);
+        }
+        for (PGData3 tri : finalTriangleSet) {
+            finalTriangleSet2.add(new PGData3(
+                    tri.x1 + minX - minY, tri.y1 + minY, 0f,
+                    tri.x2 + minX - minY, tri.y2 + minY, 0f,
+                    tri.x3 + minX - minY, tri.y3 + minY, 0f));
+        }
+        return finalTriangleSet2;
     }
 
     private static Set<PGData3> triangulateGLShape(Shape shape, double flatness, double interpolateFlatness, double scale, double deltaAngle) {

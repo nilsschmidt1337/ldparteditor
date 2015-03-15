@@ -23,14 +23,14 @@ import org.nschmidt.ldparteditor.enums.View;
  *
  */
 public final class PGData3 extends PGData {
-    final float x1;
-    final float y1;
+    public final float x1;
+    public final float y1;
     final float z1;
-    final float x2;
-    final float y2;
+    public final float x2;
+    public final float y2;
     final float z2;
-    final float x3;
-    final float y3;
+    public final float x3;
+    public final float y3;
     final float z3;
     public PGData3(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
         this.x1 = x1;
@@ -176,12 +176,12 @@ public final class PGData3 extends PGData {
         }
     }
 
-    public void drawText() {
+    public void drawText(float x, float y) {
         GL11.glColor4f(0f, 0f, 0f, 1f);
         GL11.glBegin(GL11.GL_TRIANGLES);
-        GL11.glVertex3f(x1, y1, z1);
-        GL11.glVertex3f(x2, y2, z2);
-        GL11.glVertex3f(x3, y3, z3);
+        GL11.glVertex3f(-x1 + x, y1 + y, z1);
+        GL11.glVertex3f(-x3 + x, y3 + y, z3);
+        GL11.glVertex3f(-x2 + x, y2 + y, z2);
         GL11.glEnd();
     }
 }
