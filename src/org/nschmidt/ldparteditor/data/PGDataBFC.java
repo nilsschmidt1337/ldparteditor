@@ -52,7 +52,7 @@ public final class PGDataBFC extends PGData {
             PGData.localWinding = BFC.CW;
             break;
         case BFC.INVERTNEXT:
-            PGData.globalInvertNext = !GData.globalInvertNext;
+            PGData.globalInvertNext = !PGData.globalInvertNext;
             PGData.globalInvertNextFound = true;
             break;
         case BFC.NOCERTIFY:

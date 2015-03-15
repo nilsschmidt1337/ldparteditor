@@ -739,6 +739,7 @@ public class CompositePrimitive extends Composite {
                 return null;
             }
             tMatrix.m33 = 1f;
+            det = tMatrix.determinant();
             // [WARNING] Check file existance
             boolean fileExists = true;
             StringBuilder sb = new StringBuilder();
