@@ -988,12 +988,22 @@ public final class DatFile {
     public void addToTail(GData gdata) {
         Integer lineNumber = drawPerLine.keySet().size() + 1;
         drawPerLine.put(lineNumber, gdata);
-        getDrawChainTail().setNext(gdata);
+        GData tail = drawPerLine.getValue(lineNumber - 1);
+        if (tail == null) {
+            drawChainTail = null;
+            tail = getDrawChainTail();
+        }
+        tail.setNext(gdata);
         drawChainTail = gdata;
     }
 
     public void insertAfter(GData target, GData gdata) {
-        if (target.equals(getDrawChainTail())) {
+        GData tail = drawPerLine.getValue(drawPerLine.keySet().size());
+        if (tail == null) {
+            drawChainTail = null;
+            tail = getDrawChainTail();
+        }
+        if (target.equals(tail)) {
             addToTail(gdata);
             return;
         }

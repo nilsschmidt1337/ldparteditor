@@ -19119,7 +19119,6 @@ public class VertexManager {
 
         if (pivot == null) pivot = new Vertex(0f, 0f, 0f);
 
-        // FIXME Transformation matrix needs to be set!
         switch (tm) {
         case ROTATE:
             RotationSnap flag;
