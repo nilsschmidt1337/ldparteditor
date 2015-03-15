@@ -241,10 +241,11 @@ public class OpenGLRendererPrimitives {
         } else {
             drawRoundRectangle(x, y, 20f, 20f, 5f, .3f, .3f, .3f);
         }
-        drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, .7f, .7f, .7f);
         if (category) {
+            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, .8f, .6f, .2f);
             drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, .95f, .95f, .95f);
         } else {
+            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, .7f, .7f, .7f);
             drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, 1f, 1f, 1f);
         }
     }

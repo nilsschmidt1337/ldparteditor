@@ -21,12 +21,14 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -68,6 +70,7 @@ import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
 import org.nschmidt.ldparteditor.dnd.MyDummyType2;
 import org.nschmidt.ldparteditor.enums.MouseButton;
+import org.nschmidt.ldparteditor.enums.Rule;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -547,7 +550,13 @@ public class CompositePrimitive extends Composite {
                         searchPaths.add(project + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
                     }
 
-                    String hiResSuffix = File.separator + "48" + File.separator; //$NON-NLS-1$
+                    HashMap<String, Primitive> titleMap = new HashMap<String, Primitive>();
+                    HashMap<String, String> leavesTitleMap = new HashMap<String, String>();
+                    HashMap<String, Primitive> primitiveMap = new HashMap<String, Primitive>();
+                    HashMap<String, Primitive> categoryMap = new HashMap<String, Primitive>();
+                    HashMap<String, Primitive> leavesMap = new HashMap<String, Primitive>();
+                    HashMap<String, ArrayList<PrimitiveRule>> leavesRulesMap = new HashMap<String, ArrayList<PrimitiveRule>>();
+                    final String hiResSuffix = File.separator + "48" + File.separator; //$NON-NLS-1$
                     try {
 
                         // Creating the categories / Rules
@@ -559,6 +568,209 @@ public class CompositePrimitive extends Composite {
                                 String line ;
                                 while ((line = reader.readLine()) != null) {
                                     NLogger.debug(getClass(), line);
+                                    line = line.trim();
+                                    String[] data_segments = line.trim().split(Pattern.quote(";")); //$NON-NLS-1$
+                                    for (int i = 0; i < data_segments.length; i++) {
+                                        data_segments[i] = data_segments[i].trim();
+                                    }
+                                    if (data_segments.length > 1)
+                                    {
+                                        String[] tree_segments = data_segments[0].split(Pattern.quote("|")); //$NON-NLS-1$
+                                        String catID = ""; //$NON-NLS-1$
+                                        final int maxDepth = tree_segments.length;
+                                        int depth = 0;
+                                        for (String s : tree_segments) {
+                                            depth++;
+                                            String before = catID;
+                                            catID = catID + "|" + s; //$NON-NLS-1$
+                                            NLogger.debug(getClass(), catID);
+                                            if (maxDepth < 2) {
+                                                // MARK Parse rules I
+                                                ArrayList<PrimitiveRule> rules = new ArrayList<PrimitiveRule>();
+                                                for (int i = 1; i < data_segments.length; i++) {
+                                                    data_segments[i] = data_segments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                                    data_segments[i] = data_segments[i].replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                                    int searchIndex = 0;
+                                                    boolean hasAnd = false;
+                                                    boolean hasNot = false;
+                                                    if (data_segments[i].startsWith("AND ")) { //$NON-NLS-1$
+                                                        searchIndex = 4;
+                                                        hasAnd = true;
+                                                    }
+                                                    if (data_segments[i].startsWith("OR ", searchIndex)) { //$NON-NLS-1$
+                                                        searchIndex += 3;
+                                                        hasAnd = false;
+                                                    }
+                                                    if (data_segments[i].startsWith("NOT ", searchIndex)) { //$NON-NLS-1$
+                                                        searchIndex += 4;
+                                                        hasNot = true;
+                                                    }
+                                                    String criteria = ""; //$NON-NLS-1$
+                                                    if (data_segments[i].startsWith("Order by ", searchIndex)) { //$NON-NLS-1$
+                                                        searchIndex += 9;
+                                                        if (data_segments[i].startsWith("fraction", searchIndex)) { //$NON-NLS-1$
+                                                            rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_FRACTION));
+                                                        } else if (data_segments[i].startsWith("last number", searchIndex)) { //$NON-NLS-1$
+                                                            rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_LASTNUMBER));
+                                                        }
+                                                    } else if (data_segments[i].startsWith("Filename ", searchIndex)) { //$NON-NLS-1$
+                                                        searchIndex += 9;
+                                                        if (data_segments[i].startsWith("starts with ", searchIndex)) { //$NON-NLS-1$
+                                                            try {
+                                                                criteria = data_segments[i].substring(searchIndex + 13, data_segments[i].length() - 1);
+                                                                rules.add(new PrimitiveRule(Rule.FILENAME_STARTS_WITH, criteria, hasAnd, hasNot));
+                                                            } catch (IndexOutOfBoundsException consumed) {}
+                                                        } else if (data_segments[i].startsWith("ends with ", searchIndex)) { //$NON-NLS-1$
+                                                            try {
+                                                                criteria = data_segments[i].substring(searchIndex + 11, data_segments[i].length() - 1);
+                                                                rules.add(new PrimitiveRule(Rule.FILENAME_ENDS_WITH, criteria, hasAnd, hasNot));
+                                                            } catch (IndexOutOfBoundsException consumed) {}
+                                                        } else if (data_segments[i].startsWith("contains ", searchIndex)) { //$NON-NLS-1$
+                                                            try {
+                                                                criteria = data_segments[i].substring(searchIndex + 10, data_segments[i].length() - 1);
+                                                                rules.add(new PrimitiveRule(Rule.FILENAME_CONTAINS, criteria, hasAnd, hasNot));
+                                                            } catch (IndexOutOfBoundsException consumed) {}
+                                                        } else if (data_segments[i].startsWith("matches ", searchIndex)) { //$NON-NLS-1$
+                                                            try {
+                                                                criteria = data_segments[i].substring(searchIndex + 9, data_segments[i].length() - 1);
+                                                                rules.add(new PrimitiveRule(Rule.FILENAME_MATCHES, criteria, hasAnd, hasNot));
+                                                            } catch (IndexOutOfBoundsException consumed) {}
+                                                        }
+                                                    } else if (data_segments[i].startsWith("Starts with ", searchIndex)) { //$NON-NLS-1$
+                                                        try {
+                                                            criteria = data_segments[i].substring(searchIndex + 13, data_segments[i].length() - 1);
+                                                            rules.add(new PrimitiveRule(Rule.STARTS_WITH, criteria, hasAnd, hasNot));
+                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                    } else if (data_segments[i].startsWith("Ends with ", searchIndex)) { //$NON-NLS-1$
+                                                        try {
+                                                            criteria = data_segments[i].substring(searchIndex + 11, data_segments[i].length() - 1);
+                                                            rules.add(new PrimitiveRule(Rule.ENDS_WITH, criteria, hasAnd, hasNot));
+                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                    } else if (data_segments[i].startsWith("Contains ", searchIndex)) { //$NON-NLS-1$
+                                                        try {
+                                                            criteria = data_segments[i].substring(searchIndex + 10, data_segments[i].length() - 1);
+                                                            rules.add(new PrimitiveRule(Rule.CONTAINS, criteria, hasAnd, hasNot));
+                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                    } else if (data_segments[i].startsWith("Matches ", searchIndex)) { //$NON-NLS-1$
+                                                        try {
+                                                            criteria = data_segments[i].substring(searchIndex + 9, data_segments[i].length() - 1);
+                                                            rules.add(new PrimitiveRule(Rule.MATCHES, criteria, hasAnd, hasNot));
+                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                    } else if (data_segments[i].startsWith("Title ", searchIndex)) { //$NON-NLS-1$
+                                                        try {
+                                                            criteria = data_segments[i].substring(searchIndex + 7, data_segments[i].length() - 1);
+                                                            leavesTitleMap.put(catID, criteria);
+                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                    }
+                                                }
+                                                leavesRulesMap.put(catID, rules);
+                                                Primitive firstParent = new Primitive(true);
+                                                firstParent.setName(s.trim());
+                                                categoryMap.put(catID, firstParent);
+                                                leavesMap.put(catID, firstParent);
+                                                primitives.add(firstParent);
+                                            } else {
+                                                if (!categoryMap.containsKey(catID)) {
+                                                    if (categoryMap.containsKey(before)) {
+                                                        Primitive parent = categoryMap.get(before);
+                                                        Primitive child = new Primitive(true);
+                                                        child.setName(s.trim());
+                                                        parent.getCategories().add(child);
+                                                        categoryMap.put(catID, child);
+                                                        if (depth == maxDepth) {
+                                                            // MARK Parse rules II
+                                                            ArrayList<PrimitiveRule> rules = new ArrayList<PrimitiveRule>();
+                                                            for (int i = 1; i < data_segments.length; i++) {
+                                                                data_segments[i] = data_segments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                                                data_segments[i] = data_segments[i].replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                                                int searchIndex = 0;
+                                                                boolean hasAnd = false;
+                                                                boolean hasNot = false;
+                                                                if (data_segments[i].startsWith("AND ")) { //$NON-NLS-1$
+                                                                    searchIndex = 4;
+                                                                    hasAnd = true;
+                                                                }
+                                                                if (data_segments[i].startsWith("OR ", searchIndex)) { //$NON-NLS-1$
+                                                                    searchIndex += 3;
+                                                                    hasAnd = false;
+                                                                }
+                                                                if (data_segments[i].startsWith("NOT ", searchIndex)) { //$NON-NLS-1$
+                                                                    searchIndex += 4;
+                                                                    hasNot = true;
+                                                                }
+
+                                                                String criteria = ""; //$NON-NLS-1$
+                                                                if (data_segments[i].startsWith("Order by ", searchIndex)) { //$NON-NLS-1$
+                                                                    searchIndex += 9;
+                                                                    if (data_segments[i].startsWith("fraction", searchIndex)) { //$NON-NLS-1$
+                                                                        rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_FRACTION));
+                                                                    } else if (data_segments[i].startsWith("last number", searchIndex)) { //$NON-NLS-1$
+                                                                        rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_LASTNUMBER));
+                                                                    }
+                                                                } else if (data_segments[i].startsWith("Filename ", searchIndex)) { //$NON-NLS-1$
+                                                                    searchIndex += 9;
+                                                                    if (data_segments[i].startsWith("starts with ", searchIndex)) { //$NON-NLS-1$
+                                                                        try {
+                                                                            criteria = data_segments[i].substring(searchIndex + 13, data_segments[i].length() - 1);
+                                                                            rules.add(new PrimitiveRule(Rule.FILENAME_STARTS_WITH, criteria, hasAnd, hasNot));
+                                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                                    } else if (data_segments[i].startsWith("ends with ", searchIndex)) { //$NON-NLS-1$
+                                                                        try {
+                                                                            criteria = data_segments[i].substring(searchIndex + 11, data_segments[i].length() - 1);
+                                                                            rules.add(new PrimitiveRule(Rule.FILENAME_ENDS_WITH, criteria, hasAnd, hasNot));
+                                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                                    } else if (data_segments[i].startsWith("contains ", searchIndex)) { //$NON-NLS-1$
+                                                                        try {
+                                                                            criteria = data_segments[i].substring(searchIndex + 10, data_segments[i].length() - 1);
+                                                                            rules.add(new PrimitiveRule(Rule.FILENAME_CONTAINS, criteria, hasAnd, hasNot));
+                                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                                    } else if (data_segments[i].startsWith("matches ", searchIndex)) { //$NON-NLS-1$
+                                                                        try {
+                                                                            criteria = data_segments[i].substring(searchIndex + 9, data_segments[i].length() - 1);
+                                                                            rules.add(new PrimitiveRule(Rule.FILENAME_MATCHES, criteria, hasAnd, hasNot));
+                                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                                    }
+                                                                } else if (data_segments[i].startsWith("Starts with ", searchIndex)) { //$NON-NLS-1$
+                                                                    try {
+                                                                        criteria = data_segments[i].substring(searchIndex + 13, data_segments[i].length() - 1);
+                                                                        rules.add(new PrimitiveRule(Rule.STARTS_WITH, criteria, hasAnd, hasNot));
+                                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                                } else if (data_segments[i].startsWith("Ends with ", searchIndex)) { //$NON-NLS-1$
+                                                                    try {
+                                                                        criteria = data_segments[i].substring(searchIndex + 11, data_segments[i].length() - 1);
+                                                                        rules.add(new PrimitiveRule(Rule.ENDS_WITH, criteria, hasAnd, hasNot));
+                                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                                } else if (data_segments[i].startsWith("Contains ", searchIndex)) { //$NON-NLS-1$
+                                                                    try {
+                                                                        criteria = data_segments[i].substring(searchIndex + 10, data_segments[i].length() - 1);
+                                                                        rules.add(new PrimitiveRule(Rule.CONTAINS, criteria, hasAnd, hasNot));
+                                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                                } else if (data_segments[i].startsWith("Matches ", searchIndex)) { //$NON-NLS-1$
+                                                                    try {
+                                                                        criteria = data_segments[i].substring(searchIndex + 9, data_segments[i].length() - 1);
+                                                                        rules.add(new PrimitiveRule(Rule.MATCHES, criteria, hasAnd, hasNot));
+                                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                                } else if (data_segments[i].startsWith("Title ", searchIndex)) { //$NON-NLS-1$
+                                                                    try {
+                                                                        criteria = data_segments[i].substring(searchIndex + 7, data_segments[i].length() - 1);
+                                                                        leavesTitleMap.put(catID, criteria);
+                                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                                }
+                                                            }
+                                                            leavesMap.put(catID, child);
+                                                            leavesRulesMap.put(catID, rules);
+                                                        }
+                                                    } else {
+                                                        Primitive firstParent = new Primitive(true);
+                                                        firstParent.setName(s.trim());
+                                                        categoryMap.put(catID, firstParent);
+                                                        primitives.add(firstParent);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                                 }
                             } catch (LDParsingException e) {
                             } catch (FileNotFoundException e) {
@@ -571,10 +783,6 @@ public class CompositePrimitive extends Composite {
                                 }
                             }
                         }
-
-                        HashMap<String, String> descriptionMap = new HashMap<String, String>();
-                        HashMap<String, Primitive> primitiveMap = new HashMap<String, Primitive>();
-                        HashMap<String, String> fileNameMap = new HashMap<String, String>();
 
                         for (String folderPath : searchPaths) {
                             File libFolder = new File(folderPath);
@@ -608,10 +816,7 @@ public class CompositePrimitive extends Composite {
                                                 if (gd != null && gd.type() != 0) data.add(gd);
                                             }
                                             newPrimitive.setGraphicalData(data);
-                                            primitives.add(newPrimitive);
-                                            descriptionMap.put(path, description);
                                             primitiveMap.put(path, newPrimitive);
-                                            fileNameMap.put(path, fileName);
                                             if (folderPath.endsWith(hiResSuffix)) {
                                                 newPrimitive.setName("48\\" + fileName); //$NON-NLS-1$
                                             } else {
@@ -619,6 +824,7 @@ public class CompositePrimitive extends Composite {
                                             }
                                             newPrimitive.setDescription(description);
                                             newPrimitive.calculateZoom();
+                                            titleMap.put(newPrimitive.getName(), newPrimitive);
                                         }
                                     } catch (LDParsingException e) {
                                     } catch (FileNotFoundException e) {
@@ -636,6 +842,43 @@ public class CompositePrimitive extends Composite {
                     } catch (SecurityException consumed) {
 
                     }
+                    // Set category titles
+                    for (String catKey : leavesMap.keySet()) {
+                        String key = leavesTitleMap.get(catKey);
+                        if (key == null) continue;
+                        Primitive title = titleMap.get(key);
+                        if (title == null) continue;
+                        Primitive cat = leavesMap.get(catKey);
+                        cat.setZoom(title.getZoom());
+                        cat.setGraphicalData(title.getGraphicalData());
+                    }
+                    // Check which primitves belong in which category
+                    for (String key : primitiveMap.keySet()) {
+                        final Primitive p = primitiveMap.get(key);
+                        boolean matched = false;
+                        for (String catKey : leavesMap.keySet()) {
+                            ArrayList<PrimitiveRule> rules = leavesRulesMap.get(catKey);
+                            boolean prevMatch = true;
+                            for (PrimitiveRule r : rules) {
+                                boolean match = r.matches(p) ^ r.isNot();
+                                if (match) {
+                                    if (!r.isAnd()) {
+                                        matched = true;
+                                        Primitive cat = leavesMap.get(catKey);
+                                        cat.getCategories().add(p);
+                                        break;
+                                    }
+                                    prevMatch = !(r.isAnd() && !prevMatch);
+                                } else {
+                                    prevMatch = false;
+                                }
+                            }
+                        }
+                        if (!matched) {
+                            primitives.add(p);
+                        }
+                    }
+                    Collections.sort(primitives);
                     stopDraw.set(false);
                 }
             });
