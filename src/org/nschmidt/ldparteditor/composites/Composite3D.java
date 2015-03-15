@@ -984,6 +984,11 @@ public class Composite3D extends ScalableComposite {
             }
 
             @Override
+            public void dragLeave(DropTargetEvent event) {
+                setDraggedPrimitive(null);
+            }
+
+            @Override
             public void drop(DropTargetEvent event) {
                 NLogger.debug(getClass(), "Primitive dropped at: " + new Point(event.x, event.y).toString()); //$NON-NLS-1$
                 final Editor3DWindow window = Editor3DWindow.getWindow();
@@ -1008,7 +1013,6 @@ public class Composite3D extends ScalableComposite {
                     }
                     datfile.getVertexManager().validateState();
                 }
-                Editor3DWindow.getWindow().unselectAddSubfile();
             }
         });
 
