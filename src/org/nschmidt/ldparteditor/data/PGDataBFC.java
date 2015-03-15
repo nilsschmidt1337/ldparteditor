@@ -19,10 +19,51 @@ package org.nschmidt.ldparteditor.data;
  * @author nils
  *
  */
-interface IGDataP {
+public final class PGDataBFC extends PGData {
 
-    public void drawBFCprimitive();
+    final byte type;
 
-    public int type();
+    public byte getType() {
+        return type;
+    }
 
+    public PGDataBFC(byte type) {
+        this.type = type;
+    }
+
+    @Override
+    public int type() {
+        return 6;
+    }
+
+    @Override
+    public void drawBFCprimitive() {
+        switch (type) {
+        case BFC.CCW:
+            PGData.localWinding = BFC.CCW;
+            break;
+        case BFC.CCW_CLIP:
+            PGData.localWinding = BFC.CCW;
+            break;
+        case BFC.CW:
+            PGData.localWinding = BFC.CW;
+            break;
+        case BFC.CW_CLIP:
+            PGData.localWinding = BFC.CW;
+            break;
+        case BFC.INVERTNEXT:
+            PGData.globalInvertNext = !GData.globalInvertNext;
+            PGData.globalInvertNextFound = true;
+            break;
+        case BFC.NOCERTIFY:
+            PGData.localWinding = BFC.NOCERTIFY;
+            break;
+        case BFC.NOCLIP:
+            if (PGData.accumClip == 0)
+                PGData.accumClip = 1;
+            break;
+        default:
+            break;
+        }
+    }
 }

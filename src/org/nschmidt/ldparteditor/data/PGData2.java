@@ -22,14 +22,14 @@ import org.nschmidt.ldparteditor.enums.View;
  * @author nils
  *
  */
-public final class GData5P extends GDataP {
+public final class PGData2 extends PGData {
     final float x1;
     final float y1;
     final float z1;
     final float x2;
     final float y2;
     final float z2;
-    public GData5P(float x1, float y1, float z1, float x2, float y2, float z2) {
+    public PGData2(float x1, float y1, float z1, float x2, float y2, float z2) {
         this.x1 = x1;
         this.y1 = y1;
         this.z1 = z1;
@@ -40,7 +40,7 @@ public final class GData5P extends GDataP {
     @Override
     public void drawBFCprimitive() {
         GL11.glLineWidth(View.lineWidthGL[0]);
-        GL11.glColor4f(0f, 0f, 1f, 1f);
+        GL11.glColor4f(0f, 0f, 0f, 1f);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(x1, y1, z1);
         GL11.glVertex3f(x2, y2, z2);
@@ -48,6 +48,6 @@ public final class GData5P extends GDataP {
     }
     @Override
     public int type() {
-        return 5;
+        return 2;
     }
 }

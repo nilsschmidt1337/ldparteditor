@@ -23,10 +23,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author nils
  *
  */
-public abstract class GDataP implements IGDataP {
+public abstract class PGData implements IPGData {
 
-    private GDataP next;
-    private GDataP before;
+    private PGData next;
+    private PGData before;
 
     static byte localWinding = BFC.NOCERTIFY;
     static int accumClip = 0;
@@ -36,24 +36,24 @@ public abstract class GDataP implements IGDataP {
     static boolean globalDrawObjects = true;
     static boolean globalFoundTEXMAPNEXT = false;
 
-    public GDataP getNext() {
+    public PGData getNext() {
         return next;
     }
 
-    public GDataP getBefore() {
+    public PGData getBefore() {
         return before;
     }
 
     private static final AtomicInteger id_counter = new AtomicInteger(0); // Integer.MIN_VALUE);
     protected final int ID;
 
-    GDataP() {
+    PGData() {
         // NOTE: A possible overflow is irrelevant since equals() will return distinct results!!
         ID = id_counter.getAndIncrement();
     }
 
     // anchor is the next data to render
-    public void setNext(GDataP next) {
+    public void setNext(PGData next) {
         this.next = next;
         if (next != null) {
             next.before = this;

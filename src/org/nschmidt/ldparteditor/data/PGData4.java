@@ -22,7 +22,7 @@ import org.nschmidt.ldparteditor.enums.View;
  * @author nils
  *
  */
-public final class GData4P extends GDataP {
+public final class PGData4 extends PGData {
     final float x1;
     final float y1;
     final float z1;
@@ -35,7 +35,7 @@ public final class GData4P extends GDataP {
     final float x4;
     final float y4;
     final float z4;
-    public GData4P(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
+    public PGData4(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
         this.x1 = x1;
         this.y1 = y1;
         this.z1 = z1;
@@ -55,10 +55,10 @@ public final class GData4P extends GDataP {
     }
     @Override
     public void drawBFCprimitive() {
-        switch (GDataP.accumClip > 0 ? BFC.NOCLIP : GDataP.localWinding) {
+        switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
         case BFC.CCW:
-            if (GDataP.globalNegativeDeterminant) {
-                if (GDataP.globalInvertNext) {
+            if (PGData.globalNegativeDeterminant) {
+                if (PGData.globalInvertNext) {
                     GL11.glColor4f( // 111
                             View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], 1f);
                     GL11.glBegin(GL11.GL_QUADS);
@@ -88,7 +88,7 @@ public final class GData4P extends GDataP {
                     GL11.glEnd();
                 }
             } else {
-                if (GDataP.globalInvertNext) {
+                if (PGData.globalInvertNext) {
                     GL11.glColor4f( // 101
                             View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], 1f);
                     GL11.glBegin(GL11.GL_QUADS);
@@ -120,8 +120,8 @@ public final class GData4P extends GDataP {
             }
             break;
         case BFC.CW:
-            if (GDataP.globalNegativeDeterminant) {
-                if (GDataP.globalInvertNext) {
+            if (PGData.globalNegativeDeterminant) {
+                if (PGData.globalInvertNext) {
                     GL11.glColor4f( // 011
                             View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], 1f);
                     GL11.glBegin(GL11.GL_QUADS);
@@ -151,7 +151,7 @@ public final class GData4P extends GDataP {
                     GL11.glEnd();
                 }
             } else {
-                if (GDataP.globalInvertNext) {
+                if (PGData.globalInvertNext) {
                     GL11.glColor4f( // 001
                             View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], 1f);
                     GL11.glBegin(GL11.GL_QUADS);
@@ -183,58 +183,30 @@ public final class GData4P extends GDataP {
             }
             break;
         case BFC.NOCERTIFY:
-            if (GDataP.globalNegativeDeterminant) {
-                GL11.glColor4f(View.BFC_uncertified__Colour_r[0], View.BFC_uncertified__Colour_g[0], View.BFC_uncertified__Colour_b[0], 1f);
-                GL11.glBegin(GL11.GL_QUADS);
-                GL11.glVertex3f(x1, y1, z1);
-                GL11.glVertex3f(x4, y4, z4);
-                GL11.glVertex3f(x3, y3, z3);
-                GL11.glVertex3f(x2, y2, z2);
-                GL11.glVertex3f(x1, y1, z1);
-                GL11.glVertex3f(x2, y2, z2);
-                GL11.glVertex3f(x3, y3, z3);
-                GL11.glVertex3f(x4, y4, z4);
-                GL11.glEnd();
-            } else {
-                GL11.glColor4f(View.BFC_uncertified__Colour_r[0], View.BFC_uncertified__Colour_g[0], View.BFC_uncertified__Colour_b[0], 1f);
-                GL11.glBegin(GL11.GL_QUADS);
-                GL11.glVertex3f(x1, y1, z1);
-                GL11.glVertex3f(x4, y4, z4);
-                GL11.glVertex3f(x3, y3, z3);
-                GL11.glVertex3f(x2, y2, z2);
-                GL11.glVertex3f(x1, y1, z1);
-                GL11.glVertex3f(x2, y2, z2);
-                GL11.glVertex3f(x3, y3, z3);
-                GL11.glVertex3f(x4, y4, z4);
-                GL11.glEnd();
-            }
+            GL11.glColor4f(View.BFC_uncertified__Colour_r[0], View.BFC_uncertified__Colour_g[0], View.BFC_uncertified__Colour_b[0], 1f);
+            GL11.glBegin(GL11.GL_QUADS);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x4, y4, z4);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x4, y4, z4);
+            GL11.glEnd();
             break;
         case BFC.NOCLIP:
-            if (GDataP.globalNegativeDeterminant) {
-                GL11.glColor4f(View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], 1f);
-                GL11.glBegin(GL11.GL_QUADS);
-                GL11.glVertex3f(x1, y1, z1);
-                GL11.glVertex3f(x4, y4, z4);
-                GL11.glVertex3f(x3, y3, z3);
-                GL11.glVertex3f(x2, y2, z2);
-                GL11.glVertex3f(x1, y1, z1);
-                GL11.glVertex3f(x2, y2, z2);
-                GL11.glVertex3f(x3, y3, z3);
-                GL11.glVertex3f(x4, y4, z4);
-                GL11.glEnd();
-            } else {
-                GL11.glColor4f(View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], 1f);
-                GL11.glBegin(GL11.GL_QUADS);
-                GL11.glVertex3f(x1, y1, z1);
-                GL11.glVertex3f(x4, y4, z4);
-                GL11.glVertex3f(x3, y3, z3);
-                GL11.glVertex3f(x2, y2, z2);
-                GL11.glVertex3f(x1, y1, z1);
-                GL11.glVertex3f(x2, y2, z2);
-                GL11.glVertex3f(x3, y3, z3);
-                GL11.glVertex3f(x4, y4, z4);
-                GL11.glEnd();
-            }
+            GL11.glColor4f(View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], 1f);
+            GL11.glBegin(GL11.GL_QUADS);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x4, y4, z4);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x4, y4, z4);
+            GL11.glEnd();
             break;
         }
     }
