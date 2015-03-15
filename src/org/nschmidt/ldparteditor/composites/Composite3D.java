@@ -58,6 +58,7 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.ParsingResult;
+import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
@@ -117,6 +118,8 @@ public class Composite3D extends ScalableComposite {
 
     private boolean doingSelection;
     private int negDeterminant;
+
+    private Primitive draggedPrimitive = null;
 
     /** Resolution of the viewport at n% zoom */
     private float viewport_pixel_per_ldu;
@@ -970,7 +973,9 @@ public class Composite3D extends ScalableComposite {
         target.addDropListener(new DropTargetAdapter() {
             @Override
             public void dragOver(DropTargetEvent event) {
-                // TODO It would be nice to "show" the dragged primitive
+                final org.nschmidt.ldparteditor.data.Primitive p = Editor3DWindow.getWindow().getCompositePrimitive().getSelectedPrimitive();
+                if (p == null || p.isCategory()) return;
+                setDraggedPrimitive(p);
                 Event ev = new Event();
                 ev.x = event.x - toDisplay(1, 1).x;
                 ev.y = event.y - toDisplay(1, 1).y;
@@ -1481,5 +1486,13 @@ public class Composite3D extends ScalableComposite {
 
     public void setBlackEdges(boolean blackEdges) {
         this.blackEdges = blackEdges;
+    }
+
+    public Primitive getDraggedPrimitive() {
+        return draggedPrimitive;
+    }
+
+    public void setDraggedPrimitive(Primitive draggedPrimitive) {
+        this.draggedPrimitive = draggedPrimitive;
     }
 }

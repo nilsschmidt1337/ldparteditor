@@ -37,6 +37,7 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GTexture;
+import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
@@ -204,6 +205,8 @@ public class OpenGLRenderer {
             }
         }
 
+        final Editor3DWindow window = Editor3DWindow.getWindow();
+
         // MARK OpenGL Draw Scene
 
         if (c3d.getRenderMode() != 5) {
@@ -338,6 +341,18 @@ public class OpenGLRenderer {
             // TODO Implement high quaity transparency via subdivision and sorting (only for the semi-realtime LDraw-Standard Mode, which has frame skipping)
             c3d.setDrawingSolidMaterials(true);
             c3d.getLockableDatFileReference().draw(c3d);
+            if (window.getCompositePrimitive().isDoingDND()) {
+                final Primitive p = c3d.getDraggedPrimitive();
+                if (p != null) {
+                    GL11.glDisable(GL11.GL_LIGHTING);
+                    Vector4f cur = c3d.getCursorSnapped3D();
+                    p.draw(cur.x, cur.y, cur.z);
+                    if (c3d.isLightOn())
+                        GL11.glEnable(GL11.GL_LIGHTING);
+                }
+            } else {
+                c3d.setDraggedPrimitive(null);
+            }
             c3d.setDrawingSolidMaterials(false);
             c3d.getLockableDatFileReference().draw(c3d);
 
@@ -352,7 +367,7 @@ public class OpenGLRenderer {
             // MARK Manipulator
             boolean singleMode = true;
             GColour c;
-            switch (Editor3DWindow.getWindow().getWorkingAction()) {
+            switch (window.getWorkingAction()) {
             case WorkingMode.COMBINED:
                 singleMode = false;
             case WorkingMode.MOVE:
@@ -438,7 +453,6 @@ public class OpenGLRenderer {
             }
 
             // MARK Draw temporary objects for all "Add..." functions here
-            final Editor3DWindow window = Editor3DWindow.getWindow();
             if (window.isAddingSomething() && c3d.getLockableDatFileReference().getLastSelectedComposite() != null && c3d.getLockableDatFileReference().getLastSelectedComposite().equals(c3d)) {
                 if (window.isAddingVertices()) {
                     // Point for add vertex
