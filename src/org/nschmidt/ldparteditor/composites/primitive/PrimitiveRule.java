@@ -15,6 +15,90 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites.primitive;
 
+import org.nschmidt.ldparteditor.data.Primitive;
+import org.nschmidt.ldparteditor.enums.Rule;
+
 public class PrimitiveRule {
 
+
+    private boolean not = false;
+    private boolean and = false;
+    private String criteria = ""; //$NON-NLS-1$
+    private Rule rule;
+    public PrimitiveRule(Rule rule) {
+        this.rule = rule;
+    }
+
+    public PrimitiveRule(Rule rule, String criteria, boolean hasAnd, boolean hasNot) {
+        this.rule = rule;
+        this.criteria = criteria;
+        this.not = hasNot;
+        this.and = hasAnd;
+    }
+
+
+    public boolean matches(Primitive p) {
+        switch (rule) {
+        case CONTAINS:
+            return p.getDescription().contains(criteria);
+        case ENDS_WITH:
+            return p.getDescription().endsWith(criteria);
+        case FILENAME_CONTAINS:
+            return p.getName().contains(criteria);
+        case FILENAME_ENDS_WITH:
+            return p.getName().endsWith(criteria);
+        case FILENAME_MATCHES:
+            break;
+        case FILENAME_ORDER_BY_FRACTION:
+            break;
+        case FILENAME_ORDER_BY_LASTNUMBER:
+            break;
+        case FILENAME_STARTS_WITH:
+            return p.getName().startsWith(criteria);
+        case MATCHES:
+            break;
+        case STARTS_WITH:
+            return p.getDescription().startsWith(criteria);
+        default:
+            break;
+        }
+        return false;
+    }
+
+    public boolean isNot() {
+        return not;
+    }
+
+    public void setNot(boolean not) {
+        this.not = not;
+    }
+
+    public boolean isAnd() {
+        return and;
+    }
+
+    public void setAnd(boolean and) {
+        this.and = and;
+    }
+
+    public String getCriteria() {
+        return criteria;
+    }
+
+    public void setCriteria(String criteria) {
+        this.criteria = criteria;
+    }
+
+    public Rule getRule() {
+        return rule;
+    }
+
+    public void setRule(Rule rule) {
+        this.rule = rule;
+    }
+
+    @Override
+    public String toString() {
+        return (isAnd() ? "AND " : "OR ") + (isNot() ? "NOT " : "") + rule.toString() + (criteria.isEmpty() ? "" : " '" + criteria + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+    }
 }

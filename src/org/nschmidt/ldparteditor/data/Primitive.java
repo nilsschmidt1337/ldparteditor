@@ -23,7 +23,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-public class Primitive {
+public class Primitive implements Comparable<Primitive> {
 
 
     private String name = ""; //$NON-NLS-1$
@@ -32,18 +32,16 @@ public class Primitive {
     private ArrayList<Primitive> primitives = new ArrayList<Primitive>();
     private ArrayList<Primitive> primitivesExtended = new ArrayList<Primitive>();
     private boolean extended = false;
+    private boolean hidden = false;
     private boolean category = false;
     private float zoom = 1f;
 
     public Primitive() {
         primitives.add(this);
-        primitivesExtended.add(this);
     }
 
     public Primitive(boolean category) {
         primitives.add(this);
-        primitivesExtended.add(this);
-        primitivesExtended.add(new Primitive());
         setCategory(true);
     }
 
@@ -54,11 +52,24 @@ public class Primitive {
     }
 
     public ArrayList<Primitive> getPrimitives() {
+        if (isHidden()) return new ArrayList<Primitive>();
         if (isExtended()) {
-            return primitivesExtended;
+            ArrayList<Primitive> result = new ArrayList<Primitive>();
+            result.addAll(primitives);
+            for (Primitive p : primitivesExtended) {
+                result.addAll(p.getPrimitives());
+            }
+            if (result.size() == 1) {
+                return new ArrayList<Primitive>();
+            }
+            return result;
         } else {
             return primitives;
         }
+    }
+
+    public ArrayList<Primitive> getCategories() {
+        return primitivesExtended;
     }
 
     public void draw(float x, float y, FloatBuffer m) {
@@ -120,7 +131,11 @@ public class Primitive {
 
     @Override
     public String toString() {
-        return name + " - " + description; //$NON-NLS-1$
+        if (description.isEmpty()) {
+            return name;
+        } else {
+            return name + " - " + description; //$NON-NLS-1$
+        }
     }
 
     public String getDescription() {
@@ -302,5 +317,26 @@ public class Primitive {
         result[1] = maxY;
         result[2] = maxZ;
         return result;
+    }
+
+    @Override
+    public int compareTo(Primitive o) {
+        if (o.category && !category) {
+            return 1;
+        } else if (!o.category && category) {
+            return -1;
+        } else if (category) {
+            return name.compareToIgnoreCase(o.name);
+        } else {
+            return description.compareToIgnoreCase(o.description);
+        }
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 }

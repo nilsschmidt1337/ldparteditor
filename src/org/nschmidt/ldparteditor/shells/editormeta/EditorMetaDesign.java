@@ -315,6 +315,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 Label lbl_category = new Label(cmp_category, SWT.NONE);
                 lbl_category.setText("0 !CATEGORY "); //$NON-NLS-1$ I18N
 
+                // FIXME Read from txt file!
                 Combo cmb_category = new Combo(cmp_category, SWT.NONE);
                 cmb_category.setItems(new String[] {
                         "", //$NON-NLS-1$
