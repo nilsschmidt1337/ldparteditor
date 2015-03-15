@@ -33,7 +33,6 @@ interface IGData {
     public void drawRandomColours(Composite3D c3d);
 
     public void drawBFC(Composite3D c3d);
-    public void drawBFCprimitive();
 
     public void drawBFCuncertified(Composite3D c3d);
 

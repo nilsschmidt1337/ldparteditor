@@ -51,10 +51,6 @@ public final class GDataTEX extends GData {
     }
 
     @Override
-    public void drawBFCprimitive() {
-    }
-
-    @Override
     public void drawBFCuncertified(Composite3D c3d) {
     }
 

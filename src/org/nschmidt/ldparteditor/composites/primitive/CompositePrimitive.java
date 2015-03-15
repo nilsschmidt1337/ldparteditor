@@ -59,13 +59,15 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
-import org.nschmidt.ldparteditor.data.GData2;
-import org.nschmidt.ldparteditor.data.GData3;
-import org.nschmidt.ldparteditor.data.GData4;
-import org.nschmidt.ldparteditor.data.GData5;
-import org.nschmidt.ldparteditor.data.GDataBFC;
+import org.nschmidt.ldparteditor.data.GData1P;
+import org.nschmidt.ldparteditor.data.GData2P;
+import org.nschmidt.ldparteditor.data.GData3P;
+import org.nschmidt.ldparteditor.data.GData4P;
+import org.nschmidt.ldparteditor.data.GData5P;
+import org.nschmidt.ldparteditor.data.GDataBfcP;
 import org.nschmidt.ldparteditor.data.GDataCSG;
-import org.nschmidt.ldparteditor.data.GDataInit;
+import org.nschmidt.ldparteditor.data.GDataInitP;
+import org.nschmidt.ldparteditor.data.GDataP;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
@@ -586,15 +588,15 @@ public class CompositePrimitive extends Composite {
                                 if (f.isFile() && fileName.matches(".*.dat")) { //$NON-NLS-1$
                                     try {
                                         Primitive newPrimitive = new Primitive();
-                                        ArrayList<GData> data = new ArrayList<GData>();
+                                        ArrayList<GDataP> data = new ArrayList<GDataP>();
                                         final String path = f.getAbsolutePath();
                                         String description = ""; //$NON-NLS-1$
                                         reader = new UTF8BufferedReader(path);
                                         String line;
                                         line = reader.readLine();
                                         if (line != null) {
-                                            data.add(new GDataInit(View.DUMMY_REFERENCE));
-                                            GData gd = parseLine(line, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, new HashSet<String>());
+                                            data.add(new GDataInitP());
+                                            GDataP gd = parseLine(line, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.ID, new HashSet<String>());
                                             if (line.trim().startsWith("0")) { //$NON-NLS-1$
                                                 description = line.trim();
                                                 if (description.length() > 2) {
@@ -605,7 +607,7 @@ public class CompositePrimitive extends Composite {
                                                 data.add(gd);
                                             }
                                             while ((line = reader.readLine()) != null) {
-                                                gd = parseLine(line, 0, 0.5f, 0.5f, 0.5f, 1f, View.DUMMY_REFERENCE, View.ID, new HashSet<String>());
+                                                gd = parseLine(line, 0, 0.5f, 0.5f, 0.5f, 1f, View.ID, new HashSet<String>());
                                                 if (gd != null && gd.type() != 0) data.add(gd);
                                             }
                                             newPrimitive.getGraphicalData().addAll(data);
@@ -645,9 +647,9 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    public static GData parseLine(String line, int depth, float r, float g, float b, float a, GData1 gData1, Matrix4f pMatrix, Set<String> alreadyParsed) {
+    public static GDataP parseLine(String line, int depth, float r, float g, float b, float a, Matrix4f pMatrix, Set<String> alreadyParsed) {
         String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
-        return parseLine(data_segments, line, depth, r, g, b, a, gData1, pMatrix, alreadyParsed);
+        return parseLine(data_segments, line, depth, r, g, b, a, pMatrix, alreadyParsed);
     }
 
     // What follows now is a very minimalistic DAT file parser (<500LOC)
@@ -659,10 +661,8 @@ public class CompositePrimitive extends Composite {
     private static final Vector3f vertexB = new Vector3f();
     private static final Vector3f vertexC = new Vector3f();
     private static final Vector3f vertexD = new Vector3f();
-    private static final Vector3f controlI = new Vector3f();
-    private static final Vector3f controlII = new Vector3f();
 
-    public static GData parseLine(String[] data_segments, String line, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed) {
+    public static GDataP parseLine(String[] data_segments, String line, int depth, float r, float g, float b, float a, Matrix4f productMatrix, Set<String> alreadyParsed) {
         // Get the linetype
         int linetype = 0;
         char c;
@@ -673,88 +673,50 @@ public class CompositePrimitive extends Composite {
         // Parse the line according to its type
         switch (linetype) {
         case 0:
-            return parse_Comment(line, data_segments, depth, r, g, b, a, parent, productMatrix, alreadyParsed);
+            return parse_Comment(line, data_segments, depth, r, g, b, a, productMatrix, alreadyParsed);
         case 1:
-            return parse_Reference(data_segments, depth, r, g, b, a, parent, productMatrix, alreadyParsed);
+            return parse_Reference(data_segments, depth, r, g, b, a, productMatrix, alreadyParsed);
         case 2:
-            return parse_Line(data_segments, r, g, b, a, parent);
+            return parse_Line(data_segments, r, g, b, a);
         case 3:
-            return parse_Triangle(data_segments, r, g, b, a, parent);
+            return parse_Triangle(data_segments, r, g, b, a);
         case 4:
-            return parse_Quad(data_segments, r, g, b, a, parent);
+            return parse_Quad(data_segments, r, g, b, a);
         case 5:
-            return parse_Condline(data_segments, r, g, b, a, parent);
+            return parse_Condline(data_segments);
         }
         return null;
     }
 
-    private static GColour validateColour(String arg, float r, float g, float b, float a) {
-        int colourValue;
-        try {
-            colourValue = Integer.parseInt(arg);
-            switch (colourValue) {
-            case 16:
-                cValue.set(16, r, g, b, a);
-                break;
-            case 24:
-                cValue.set(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f);
-                break;
-            default:
-                if (View.hasLDConfigColour(colourValue)) {
-                    GColour colour = View.getLDConfigColour(colourValue);
-                    cValue.set(colour);
-                } else {
-                    return null;
-                }
-                break;
-            }
-        } catch (NumberFormatException nfe) {
-            if (arg.length() == 9 && arg.substring(0, 3).equals("0x2")) { //$NON-NLS-1$
-                cValue.setA(1f);
-                try {
-                    cValue.setR(Integer.parseInt(arg.substring(3, 5), 16) / 255f);
-                    cValue.setG(Integer.parseInt(arg.substring(5, 7), 16) / 255f);
-                    cValue.setB(Integer.parseInt(arg.substring(7, 9), 16) / 255f);
-                } catch (NumberFormatException nfe2) {
-                    return null;
-                }
-                cValue.setColourNumber(-1);
-            } else {
-                return null;
-            }
-        }
-        return cValue;
-    }
-
-    private static GData parse_Comment(String line, String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed) {
+    private static GDataP parse_Comment(String line, String[] data_segments, int depth, float r, float g, float b, float a, Matrix4f productMatrix, Set<String> alreadyParsed) {
         line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
         if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.INVERTNEXT);
+                return new GDataBfcP(BFC.INVERTNEXT);
             } else if (line.startsWith("CERTIFY CCW", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CCW_CLIP);
+                return new GDataBfcP(BFC.CCW_CLIP);
             } else if (line.startsWith("CERTIFY CW", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CW_CLIP);
+                return new GDataBfcP(BFC.CW_CLIP);
             } else if (line.startsWith("CERTIFY", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CCW_CLIP);
+                return new GDataBfcP(BFC.CCW_CLIP);
             } else if (line.startsWith("NOCERTIFY", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.NOCERTIFY);
+                return new GDataBfcP(BFC.NOCERTIFY);
             } else if (line.startsWith("CCW", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CCW);
+                return new GDataBfcP(BFC.CCW);
             } else if (line.startsWith("CW", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CW);
+                return new GDataBfcP(BFC.CW);
             } else if (line.startsWith("NOCLIP", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.NOCLIP);
+                return new GDataBfcP(BFC.NOCLIP);
             } else if (line.startsWith("CLIP CCW", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CCW_CLIP);
+                return new GDataBfcP(BFC.CCW_CLIP);
             } else if (line.startsWith("CLIP CW", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CW_CLIP);
+                return new GDataBfcP(BFC.CW_CLIP);
             } else if (line.startsWith("CCW CLIP", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CCW_CLIP);
+                return new GDataBfcP(BFC.CCW_CLIP);
             } else if (line.startsWith("CW CLIP", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CW_CLIP);
+                return new GDataBfcP(BFC.CW_CLIP);
             } else if (line.startsWith("CLIP", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CLIP);
+                return new GDataBfcP(BFC.CLIP);
             } else {
                 return null;
             }
@@ -763,13 +725,10 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static GData parse_Reference(String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed) {
+    private static GDataP parse_Reference(String[] data_segments, int depth, float r, float g, float b, float a, Matrix4f productMatrix, Set<String> alreadyParsed) {
         if (data_segments.length < 15) {
             return null;
         } else {
-            GColour colour = validateColour(data_segments[1], r, g, b, a);
-            if (colour == null)
-                return null;
             Matrix4f tMatrix = new Matrix4f();
             float det = 0;
             try {
@@ -809,9 +768,7 @@ public class CompositePrimitive extends Composite {
                 shortFilename = shortFilename.replace("s\\\\", "S" + File.separator).replace("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             if (alreadyParsed.contains(shortFilename)) {
-                if (!View.DUMMY_REFERENCE.equals(parent))
-                    parent.firstRef.setRecursive(true);
-                return null;
+                // FIXME return null;
             } else {
                 alreadyParsed.add(shortFilename);
             }
@@ -868,7 +825,7 @@ public class CompositePrimitive extends Composite {
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
                 GDataCSG.forceRecompile();
-                final GData1 result = new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
+                final GData1 result = new GData1P(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
                         destMatrix, alreadyParsed, parent.firstRef);
                 if (result != null && result.firstRef.isRecursive()) {
                     return null;
@@ -902,7 +859,7 @@ public class CompositePrimitive extends Composite {
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
                 GDataCSG.forceRecompile();
-                final GData1 result = new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
+                final GData1 result = new GData1P(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
                         destMatrix, alreadyParsed, parent.firstRef);
                 alreadyParsed.remove(shortFilename);
                 if (result != null && result.firstRef.isRecursive()) {
@@ -913,7 +870,7 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static GData parse_Line(String[] data_segments, float r, float g, float b, float a, GData1 parent) {
+    private static GDataP parse_Line(String[] data_segments, float r, float g, float b, float a) {
         if (data_segments.length != 8) {
             return null;
         } else {
@@ -933,11 +890,11 @@ public class CompositePrimitive extends Composite {
             if (Vector3f.sub(start, end, null).length() < Threshold.identical_vertex_distance.floatValue()) {
                 return null;
             }
-            return new GData2(colour, parent, new Vertex(start.x, start.y, start.z, true), new Vertex(end.x, end.y, end.z, true));
+            return new GData2P(colour, parent, new Vertex(start.x, start.y, start.z, true), new Vertex(end.x, end.y, end.z, true));
         }
     }
 
-    private static GData parse_Triangle(String[] data_segments, float r, float g, float b, float a, GData1 parent) {
+    private static GDataP parse_Triangle(String[] data_segments, float r, float g, float b, float a) {
         if (data_segments.length != 11) {
             return null;
         } else {
@@ -957,12 +914,12 @@ public class CompositePrimitive extends Composite {
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new GData3(new Vertex(vertexA.x, vertexA.y, vertexA.z, true), new Vertex(vertexB.x, vertexB.y, vertexB.z, true), new Vertex(vertexC.x,
+            return new GData3P(new Vertex(vertexA.x, vertexA.y, vertexA.z, true), new Vertex(vertexB.x, vertexB.y, vertexB.z, true), new Vertex(vertexC.x,
                     vertexC.y, vertexC.z, true), parent, colour);
         }
     }
 
-    private static GData parse_Quad(String[] data_segments, float r, float g, float b, float a, GData1 parent) {
+    private static GDataP parse_Quad(String[] data_segments, float r, float g, float b, float a) {
         if (data_segments.length != 14) {
             return null;
         } else {
@@ -985,18 +942,15 @@ public class CompositePrimitive extends Composite {
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new GData4(new Vertex(vertexA.x, vertexA.y, vertexA.z, true), new Vertex(vertexB.x, vertexB.y, vertexB.z, true), new Vertex(vertexC.x,
+            return new GData4P(new Vertex(vertexA.x, vertexA.y, vertexA.z, true), new Vertex(vertexB.x, vertexB.y, vertexB.z, true), new Vertex(vertexC.x,
                     vertexC.y, vertexC.z, true), new Vertex(vertexD.x, vertexD.y, vertexD.z, true), parent, colour);
         }
     }
 
-    private static GData parse_Condline(String[] data_segments, float r, float g, float b, float a, GData1 parent) {
+    private static GDataP parse_Condline(String[] data_segments) {
         if (data_segments.length != 14) {
             return null;
         } else {
-            GColour colour = validateColour(data_segments[1], r, g, b, a);
-            if (colour == null)
-                return null;
             try {
                 start.setX(Float.parseFloat(data_segments[2]));
                 start.setY(Float.parseFloat(data_segments[3]));
@@ -1004,21 +958,10 @@ public class CompositePrimitive extends Composite {
                 end.setX(Float.parseFloat(data_segments[5]));
                 end.setY(Float.parseFloat(data_segments[6]));
                 end.setZ(Float.parseFloat(data_segments[7]));
-                controlI.setX(Float.parseFloat(data_segments[8]));
-                controlI.setY(Float.parseFloat(data_segments[9]));
-                controlI.setZ(Float.parseFloat(data_segments[10]));
-                controlII.setX(Float.parseFloat(data_segments[11]));
-                controlII.setY(Float.parseFloat(data_segments[12]));
-                controlII.setZ(Float.parseFloat(data_segments[13]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            final float epsilon = Threshold.identical_vertex_distance.floatValue();
-            if (Vector3f.sub(start, end, null).length() < epsilon || Vector3f.sub(controlI, controlII, null).length() < epsilon) {
-                return null;
-            }
-            return new GData5(colour, parent, new Vertex(start.x, start.y, start.z, true), new Vertex(end.x, end.y, end.z, true), new Vertex(controlI.x,
-                    controlI.y, controlI.z, true), new Vertex(controlII.x, controlII.y, controlII.z, true));
+            return new GData5P(start.x, start.y, start.z, end.x, end.y, end.z);
         }
     }
 }
