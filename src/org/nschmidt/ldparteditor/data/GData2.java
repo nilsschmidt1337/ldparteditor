@@ -162,6 +162,31 @@ public final class GData2 extends GData {
     }
 
     /**
+     * FOR Primitives ONLY!
+     */
+    public GData2(GColour c, GData1 parent, Vertex v1, Vertex v2) {
+        this.colourNumber = c.getColourNumber();
+        this.r = c.getR();
+        this.g = c.getG();
+        this.b = c.getB();
+        this.a = c.getA();
+        this.x1 = v1.x;
+        this.y1 = v1.y;
+        this.z1 = v1.z;
+        this.x2 = v2.x;
+        this.y2 = v2.y;
+        this.z2 = v2.z;
+        this.X1 = v1.X;
+        this.Y1 = v1.Y;
+        this.Z1 = v1.Z;
+        this.X2 = v2.X;
+        this.Y2 = v2.Y;
+        this.Z2 = v2.Z;
+        this.parent = parent;
+        this.lGeom = null;
+    }
+
+    /**
      * FOR TEXMAP ONLY!
      *
      * @param v1
