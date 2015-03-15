@@ -196,6 +196,9 @@ public class Composite3D extends ScalableComposite {
     private boolean showingLogo;
     private boolean blackEdges;
 
+    private boolean showingAxis;
+    private boolean showingLabels;
+
     private int lineMode;
 
     private int renderMode = 0;
@@ -230,6 +233,8 @@ public class Composite3D extends ScalableComposite {
         this.setClassicPerspective(true);
         this.setOriginShown(true);
         this.setGridShown(true);
+        setShowingAxis(true);
+        setShowingLabels(true);
         this.setLightOn(true);
         this.setMeshLines(true);
         this.setSubMeshLines(false);
@@ -644,6 +649,26 @@ public class Composite3D extends ScalableComposite {
                 }
             });
             mntmShowScale.setText(I18n.EDITOR3D_Ruler);
+
+            final MenuItem mntmAxis = new MenuItem(mnu_viewActions, SWT.CHECK);
+            mntmAxis.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    c3d_modifier.switchAxis(mntmAxis.getSelection());
+                }
+            });
+            mntmAxis.setText("XYZ-Axis"); //$NON-NLS-1$ I18N Needs translation
+            mntmAxis.setSelection(true);
+
+            final MenuItem mntmLabel = new MenuItem(mnu_viewActions, SWT.CHECK);
+            mntmLabel.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    c3d_modifier.switchLabel(mntmLabel.getSelection());
+                }
+            });
+            mntmLabel.setText("Perspective Label"); //$NON-NLS-1$ I18N Needs translation
+            mntmLabel.setSelection(true);
 
             final MenuItem mntmAnaglyph = new MenuItem(mnu_viewActions, SWT.CHECK);
             mntmAnaglyph.addSelectionListener(new SelectionAdapter() {
@@ -1498,5 +1523,21 @@ public class Composite3D extends ScalableComposite {
 
     public void setDraggedPrimitive(Primitive draggedPrimitive) {
         this.draggedPrimitive = draggedPrimitive;
+    }
+
+    public boolean isShowingAxis() {
+        return showingAxis;
+    }
+
+    public void setShowingAxis(boolean showingAxis) {
+        this.showingAxis = showingAxis;
+    }
+
+    public boolean isShowingLabels() {
+        return showingLabels;
+    }
+
+    public void setShowingLabels(boolean showingLabels) {
+        this.showingLabels = showingLabels;
     }
 }

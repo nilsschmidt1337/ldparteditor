@@ -125,7 +125,10 @@ public class BigDecimalSpinner extends Composite {
         txt.addModifyListener(new ModifyListener() {
             @Override
             public void modifyText(ModifyEvent e) {
-
+                if (invalidInput[0]) {
+                    invalidInput[0] = false;
+                    return;
+                }
                 int caret = txt_val[0].getCaretPosition();
 
                 DecimalFormat df = View.NUMBER_FORMAT4F;
@@ -145,6 +148,7 @@ public class BigDecimalSpinner extends Composite {
 
                     if (oldValue[0].compareTo(value) != 0) {
                         oldValue[0] = value;
+                        invalidInput[0] = true;
                         txt_val[0].setText(df.format(value));
                     }
                 } catch (ParseException ex) {
