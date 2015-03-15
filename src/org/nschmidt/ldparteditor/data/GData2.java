@@ -430,16 +430,6 @@ public final class GData2 extends GData {
     }
 
     @Override
-    public void drawBFCprimitive() {
-        GL11.glLineWidth(View.lineWidthGL[0]);
-        GL11.glColor4f(0f, 0f, 0f, 1f);
-        GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex3f(x1, y1, z1);
-        GL11.glVertex3f(x2, y2, z2);
-        GL11.glEnd();
-    }
-
-    @Override
     public void drawBFCuncertified(Composite3D c3d) {
         draw(c3d);
     }

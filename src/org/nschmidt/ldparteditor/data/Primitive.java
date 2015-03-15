@@ -28,7 +28,7 @@ public class Primitive {
 
     private String name = ""; //$NON-NLS-1$
     private String description = ""; //$NON-NLS-1$
-    private ArrayList<GData> graphicalData = new ArrayList<GData>();
+    private ArrayList<GDataP> graphicalData = new ArrayList<GDataP>();
     private ArrayList<Primitive> primitives = new ArrayList<Primitive>();
     private ArrayList<Primitive> primitivesExtended = new ArrayList<Primitive>();
     private boolean extended = false;
@@ -66,7 +66,7 @@ public class Primitive {
         GL11.glTranslatef(x + 10f, y + 10f, 0f);
         GL11.glMultMatrix(m);
         GL11.glScalef(zoom, zoom, zoom);
-        for (GData gd : graphicalData) {
+        for (GDataP gd : graphicalData) {
             gd.drawBFCprimitive();
         }
         GL11.glPopMatrix();
@@ -92,11 +92,11 @@ public class Primitive {
         this.category = category;
     }
 
-    public ArrayList<GData> getGraphicalData() {
+    public ArrayList<GDataP> getGraphicalData() {
         return graphicalData;
     }
 
-    public void setGraphicalData(ArrayList<GData> graphicalData) {
+    public void setGraphicalData(ArrayList<GDataP> graphicalData) {
         this.graphicalData = graphicalData;
     }
 
@@ -133,16 +133,16 @@ public class Primitive {
         float maxX = 0f;
         float maxY = 0f;
         float maxZ = 0f;
-        for (GData gd : graphicalData) {
+        for (GDataP gd : graphicalData) {
             switch (gd.type()) {
             case 1:
-                float[] result = calculateZoom(maxX, maxY, maxZ, (GData1) gd);
+                float[] result = calculateZoom(maxX, maxY, maxZ, (GData1P) gd);
                 maxX = Math.max(maxX, result[0]);
                 maxY = Math.max(maxY, result[1]);
                 maxZ = Math.max(maxZ, result[2]);
                 break;
             case 2:
-                GData2 gd2 = (GData2) gd;
+                GData2P gd2 = (GData2P) gd;
                 maxX = Math.max(maxX, Math.abs(gd2.x1));
                 maxX = Math.max(maxX, Math.abs(gd2.x2));
                 maxY = Math.max(maxY, Math.abs(gd2.y1));
@@ -151,7 +151,7 @@ public class Primitive {
                 maxZ = Math.max(maxZ, Math.abs(gd2.z2));
                 break;
             case 3:
-                GData3 gd3 = (GData3) gd;
+                GData3P gd3 = (GData3P) gd;
                 maxX = Math.max(maxX, Math.abs(gd3.x1));
                 maxX = Math.max(maxX, Math.abs( gd3.x2));
                 maxX = Math.max(maxX, Math.abs(gd3.x3));
@@ -163,7 +163,7 @@ public class Primitive {
                 maxZ = Math.max(maxZ, Math.abs(gd3.z3));
                 break;
             case 4:
-                GData4 gd4 = (GData4) gd;
+                GData4P gd4 = (GData4P) gd;
                 maxX = Math.max(maxX, Math.abs(gd4.x1));
                 maxX = Math.max(maxX, Math.abs(gd4.x2));
                 maxX = Math.max(maxX, Math.abs(gd4.x3));
@@ -178,7 +178,7 @@ public class Primitive {
                 maxZ = Math.max(maxZ, Math.abs(gd4.z4));
                 break;
             case 5:
-                GData5 gd5 = (GData5) gd;
+                GData5P gd5 = (GData5P) gd;
                 maxX = Math.max(maxX, Math.abs(gd5.x1));
                 maxX = Math.max(maxX, Math.abs(gd5.x2));
                 maxY = Math.max(maxY, Math.abs(gd5.y1));
@@ -196,22 +196,22 @@ public class Primitive {
             zoom = 10f / length;
     }
 
-    private float[] calculateZoom(float maxX, float maxY, float maxZ, GData1 gd0) {
+    private float[] calculateZoom(float maxX, float maxY, float maxZ, GData1P gd0) {
         float[] result = new float[]{maxX, maxY, maxZ};
         Matrix4f productMatrix = gd0.productMatrix;
         if (productMatrix == null) return result;
-        GData gd = gd0.myGData;
+        GDataP gd = gd0.myGData;
         while ((gd = gd.getNext()) != null) {
             switch (gd.type()) {
             case 1:
-                float[] result2 = calculateZoom(maxX, maxY, maxZ, (GData1) gd);
+                float[] result2 = calculateZoom(maxX, maxY, maxZ, (GData1P) gd);
                 maxX = Math.max(maxX, result2[0]);
                 maxY = Math.max(maxY, result2[1]);
                 maxZ = Math.max(maxZ, result2[2]);
                 break;
             case 2:
             {
-                GData2 g = (GData2) gd;
+                GData2P g = (GData2P) gd;
                 Vector4f v1 = new Vector4f(g.x1, g.y1, g.z1, 1f);
                 Vector4f v2 = new Vector4f(g.x2, g.y2, g.z2, 1f);
                 Matrix4f.transform(productMatrix, v1, v1);
@@ -226,7 +226,7 @@ public class Primitive {
             break;
             case 3:
             {
-                GData3 g = (GData3) gd;
+                GData3P g = (GData3P) gd;
                 Vector4f v1 = new Vector4f(g.x1, g.y1, g.z1, 1f);
                 Vector4f v2 = new Vector4f(g.x2, g.y2, g.z2, 1f);
                 Vector4f v3 = new Vector4f(g.x3, g.y3, g.z3, 1f);
@@ -246,7 +246,7 @@ public class Primitive {
             break;
             case 4:
             {
-                GData4 g = (GData4) gd;
+                GData4P g = (GData4P) gd;
                 Vector4f v1 = new Vector4f(g.x1, g.y1, g.z1, 1f);
                 Vector4f v2 = new Vector4f(g.x2, g.y2, g.z2, 1f);
                 Vector4f v3 = new Vector4f(g.x3, g.y3, g.z3, 1f);
@@ -271,7 +271,7 @@ public class Primitive {
             break;
             case 5:
             {
-                GData5 g = (GData5) gd;
+                GData5P g = (GData5P) gd;
                 Vector4f v1 = new Vector4f(g.x1, g.y1, g.z1, 1f);
                 Vector4f v2 = new Vector4f(g.x2, g.y2, g.z2, 1f);
                 Matrix4f.transform(productMatrix, v1, v1);
