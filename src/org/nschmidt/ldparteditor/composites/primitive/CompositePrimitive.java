@@ -78,6 +78,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
@@ -122,6 +123,7 @@ public class CompositePrimitive extends Composite {
     private AtomicBoolean hasDrawn = new AtomicBoolean(false);
     private AtomicBoolean stopDraw = new AtomicBoolean(true);
 
+    private final KeyStateManager keyboard = new KeyStateManager(this);
     private float maxY = 0f;
 
     private boolean doingDND;
@@ -236,6 +238,22 @@ public class CompositePrimitive extends Composite {
                 default:
                 }
                 openGL.drawScene(event.x, event.y);
+            }
+        });
+
+        canvas.addListener(SWT.KeyDown, new Listener() {
+            @Override
+            // MARK KeyDown
+            public void handleEvent(Event event) {
+                keyboard.setStates(event.keyCode, SWT.KeyDown);
+            }
+        });
+
+        canvas.addListener(SWT.KeyUp, new Listener() {
+            @Override
+            // MARK KeyUp
+            public void handleEvent(Event event) {
+                keyboard.setStates(event.keyCode, SWT.KeyUp);
             }
         });
 
@@ -1203,5 +1221,28 @@ public class CompositePrimitive extends Composite {
 
     public OpenGLRendererPrimitives getOpenGL() {
         return openGL;
+    }
+
+    public void scroll(boolean down) {
+
+        float dy = 0;
+
+        Matrix4f.load(getTranslation(), old_viewport_translation);
+
+        if (down) {
+            dy = -37f /  viewport_pixel_per_ldu;
+        } else {
+            dy = 37f /  viewport_pixel_per_ldu;
+        }
+
+        Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
+        Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+        Matrix4f.load(old_viewport_translation, viewport_translation);
+        Matrix4f.translate(yAxis3, old_viewport_translation, viewport_translation);
+
+        if (viewport_translation.m31 > 0f) viewport_translation.m31 = 0f;
+        if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
+
+        openGL.drawScene(-1, -1);
     }
 }

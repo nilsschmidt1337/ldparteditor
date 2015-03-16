@@ -59,7 +59,7 @@ public class UserSettingState implements Serializable {
     /** Your medium move snap value */
     private BigDecimal medium_move_snap = new BigDecimal("0.01"); //$NON-NLS-1$
     /** Your medium rotate snap value */
-    private BigDecimal medium_rotate_snap = new BigDecimal("12.5"); //$NON-NLS-1$
+    private BigDecimal medium_rotate_snap = new BigDecimal("11.25"); //$NON-NLS-1$
     /** Your medium scale snap value */
     private BigDecimal medium_scale_snap = new BigDecimal("1.1"); //$NON-NLS-1$
     /** Your fine move snap value */
