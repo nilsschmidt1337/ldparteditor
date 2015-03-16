@@ -34,6 +34,7 @@ public class PrimitiveRule {
         this.rule = rule;
         this.function = true;
         this.pattern = Pattern.compile("[^.*]"); //$NON-NLS-1$
+        this.and = true;
     }
 
     public PrimitiveRule(Rule rule, String criteria, boolean hasAnd, boolean hasNot) {
@@ -65,9 +66,8 @@ public class PrimitiveRule {
         case FILENAME_MATCHES:
             return pattern.matcher(p.getName()).matches();
         case FILENAME_ORDER_BY_FRACTION:
-            break;
         case FILENAME_ORDER_BY_LASTNUMBER:
-            break;
+            return true;
         case FILENAME_STARTS_WITH:
             return p.getName().startsWith(criteria);
         case MATCHES:
