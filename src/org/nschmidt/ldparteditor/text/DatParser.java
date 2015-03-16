@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
@@ -67,6 +68,7 @@ public enum DatParser {
     private static boolean upatePngImages = false;
 
     private static GColour cValue = new GColour();
+    private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
 
     private static final Vector3d start = new Vector3d();
     private static final Vector3d end = new Vector3d();
@@ -87,7 +89,7 @@ public enum DatParser {
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
         // Get the linetype
         int linetype = 0;
-        String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+        final String[] data_segments = WHITESPACE.split(line.trim());
 
         char c;
         if (!(data_segments.length > 0 && data_segments[0].length() == 1 && Character.isDigit(c = data_segments[0].charAt(0)))) {
@@ -224,7 +226,8 @@ public enum DatParser {
         headerState = h.getState();
 
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
-        line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+        // line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+        line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
 
         if (headerState != HeaderState._99_DONE) {
             int lastKnownGoodState = headerState;
