@@ -2026,7 +2026,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     criteria = ".*" + Pattern.quote(txt_primitiveSearch[0].getText()) + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 for (Primitive p : prims) {
-                    p.search(criteria);
+                    p.search(criteria, true);
                 }
                 Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
                 getCompositePrimitive().getOpenGL().drawScene(-1, -1);
