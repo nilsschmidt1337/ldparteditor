@@ -17,12 +17,15 @@ package org.nschmidt.ldparteditor.data;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.regex.Pattern;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.ldparteditor.enums.Rule;
 
 public class Primitive implements Comparable<Primitive> {
 
@@ -36,6 +39,8 @@ public class Primitive implements Comparable<Primitive> {
     private boolean hidden = false;
     private boolean category = false;
     private float zoom = 1f;
+
+    private static Pattern numberAndMinus = Pattern.compile("[\\d|\\-\\\\]+"); //$NON-NLS-1$
 
     public Primitive() {
         primitives.add(this);
@@ -142,6 +147,183 @@ public class Primitive implements Comparable<Primitive> {
             setHidden(!pattern.matcher(toString()).matches());
         }
         return isHidden();
+    }
+
+    public boolean sort(Rule r) {
+        if (isCategory()) {
+            final Primitive me = this;
+            switch (r) {
+            case FILENAME_ORDER_BY_ALPHABET:
+                Collections.sort(primitivesExtended, new Comparator<Primitive>() {
+                    @Override
+                    public int compare(Primitive o1, Primitive o2) {
+                        if (o1 == me) return 1;
+                        return o1.compareTo(o2);
+                    }
+                });
+                break;
+            case FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS:
+                Collections.sort(primitivesExtended, new Comparator<Primitive>() {
+                    @Override
+                    public int compare(Primitive o1, Primitive o2) {
+                        if (o1 == me) return 1;
+                        String name_o1 = o1.name;
+                        String name_o2 = o2.name;
+                        return numberAndMinus.matcher(name_o1).replaceAll("").compareToIgnoreCase(numberAndMinus.matcher(name_o2).replaceAll("")); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                });
+                break;
+            case FILENAME_ORDER_BY_FRACTION:
+                Collections.sort(primitivesExtended, new Comparator<Primitive>() {
+                    @Override
+                    public int compare(Primitive o1, Primitive o2) {
+                        if (o1 == me) return 1;
+                        try {
+                            String name_o1 = o1.name;
+                            String name_o2 = o2.name;
+                            if (name_o1.startsWith("48\\")) name_o1 = name_o1.substring(3); //$NON-NLS-1$
+                            if (name_o2.startsWith("48\\")) name_o2 = name_o2.substring(3); //$NON-NLS-1$
+                            // Special cases: unknown parts numbers "u[Number]" and unknown
+                            // stickers "s[Number]"
+                            if (name_o1.charAt(0) == 'u' && name_o2.charAt(0) == 'u' || name_o1.charAt(0) == 's' && name_o2.charAt(0) == 's') {
+                                name_o1 = name_o1.substring(1, name_o1.length());
+                                name_o2 = name_o2.substring(1, name_o2.length());
+                            }
+
+                            if ((name_o1.charAt(1) == '-' || name_o1.charAt(2) == '-')
+                                    && (name_o2.charAt(1) == '-' || name_o2.charAt(2) == '-')) {
+                                String upper_this = ""; //$NON-NLS-1$
+                                String upper_other = ""; //$NON-NLS-1$
+                                String lower_this = ""; //$NON-NLS-1$
+                                String lower_other = ""; //$NON-NLS-1$
+                                String suffix_this = ""; //$NON-NLS-1$
+                                String suffix_other = ""; //$NON-NLS-1$
+                                boolean readUpper = true;
+                                int charCount = 0;
+                                char[] chars_this = name_o1.toCharArray();
+                                for (char c : chars_this) {
+                                    if (Character.isDigit(c)) {
+                                        if (readUpper) {
+                                            upper_this = upper_this + c;
+                                        } else {
+                                            lower_this = lower_this + c;
+                                        }
+                                    } else {
+                                        if (readUpper) {
+                                            readUpper = false;
+                                        } else {
+                                            suffix_this = name_o1.substring(charCount, name_o1.length());
+                                            break;
+                                        }
+                                    }
+                                    charCount++;
+                                }
+                                readUpper = true;
+                                charCount = 0;
+                                char[] chars_other = name_o2.toCharArray();
+                                for (char c : chars_other) {
+                                    if (Character.isDigit(c)) {
+                                        if (readUpper) {
+                                            upper_other = upper_other + c;
+                                        } else {
+                                            lower_other = lower_other + c;
+                                        }
+                                    } else {
+                                        if (readUpper) {
+                                            readUpper = false;
+                                        } else {
+                                            suffix_other = name_o2.substring(charCount, name_o2.length());
+                                            break;
+                                        }
+                                    }
+                                    charCount++;
+                                }
+                                float fraction_this = Float.parseFloat(upper_this) / Float.parseFloat(lower_this);
+                                float fraction_other = Float.parseFloat(upper_other) / Float.parseFloat(lower_other);
+
+                                if (!suffix_this.equals(suffix_other)) {
+                                    return suffix_this.compareTo(suffix_other);
+                                } else {
+                                    if (fraction_this < fraction_other) {
+                                        return 1;
+                                    } else {
+                                        return -1;
+                                    }
+                                }
+                            }
+                            return 0; // name_o1.compareTo(name_o2);
+                        } catch (Exception ex) {
+                            return 0; // o1.name.compareTo(o2.name);
+                        }
+                    }
+                });
+                break;
+            case FILENAME_ORDER_BY_LASTNUMBER:
+                Collections.sort(primitivesExtended, new Comparator<Primitive>() {
+                    @Override
+                    public int compare(Primitive o1, Primitive o2) {
+                        if (o1 == me) return 1;
+                        String name_o1 = o1.name;
+                        String name_o2 = o2.name;
+                        char[] chars_this = name_o1.toCharArray();
+                        char[] chars_other = name_o2.toCharArray();
+                        String number_this = ""; //$NON-NLS-1$
+                        String number_other = ""; //$NON-NLS-1$
+                        String prefix_this = ""; //$NON-NLS-1$
+                        String prefix_other = ""; //$NON-NLS-1$
+                        try {
+                            boolean readDigit = false;
+                            for (int i = chars_this.length - 1; i > 0 ; i--) {
+                                char c = chars_this[i];
+                                if (Character.isDigit(c)) {
+                                    number_this = c + number_this;
+                                    readDigit = true;
+                                } else if (readDigit) {
+                                    for (int j = 0; j < i + 1; j++) {
+                                        if (!Character.isDigit(chars_this[j])) prefix_this = prefix_this + chars_this[j];
+                                    }
+                                    break;
+                                } else if (i < chars_this.length - 5) {
+                                    break;
+                                }
+                            }
+                            if (!readDigit) {
+                                number_this = "0"; //$NON-NLS-1$
+                            }
+                        } catch (Exception ex) {
+                            number_this = "0"; //$NON-NLS-1$
+                        }
+                        try{
+                            boolean readDigit = false;
+                            for (int i = chars_other.length - 1; i > 0 ; i--) {
+                                char c = chars_other[i];
+                                if (Character.isDigit(c)) {
+                                    number_other = c + number_other;
+                                    readDigit = true;
+                                } else if (readDigit) {
+                                    for (int j = 0; j < i + 1; j++) {
+                                        if (!Character.isDigit(chars_other[j])) prefix_other = prefix_other + chars_other[j];
+                                    }
+                                    break;
+                                } else if (i < chars_other.length - 5) {
+                                    break;
+                                }
+                            }
+                            if (!readDigit) {
+                                number_other = "0"; //$NON-NLS-1$
+                            }
+                        } catch (Exception ex) {
+                            number_other = "0"; //$NON-NLS-1$
+                        }
+                        return Integer.compare(Integer.parseInt(number_this), Integer.parseInt(number_other));
+                    }
+                });
+                break;
+            default:
+                break;
+            }
+        }
+        return isCategory();
     }
 
     @Override
