@@ -29,6 +29,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Arrow;
 import org.nschmidt.ldparteditor.helpers.BufferFactory;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
@@ -192,7 +193,7 @@ public class OpenGLRendererPrimitives {
                     }
                     drawCell(x, y, p.equals(sp), p.isCategory(), focused);
                     GL11.glEnable(GL11.GL_CULL_FACE);
-                    GL11.glFrontFace(GL11.GL_CCW);
+                    GL11.glFrontFace(GL11.GL_CW);
                     GL11.glCullFace(GL11.GL_BACK);
                     GL11.glEnable(GL11.GL_DEPTH_TEST);
                     p.draw(x, y, rotation);
@@ -215,6 +216,16 @@ public class OpenGLRendererPrimitives {
                 }
             }
         }
+        // GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glLoadIdentity();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
+        GL11.glMultMatrix(rotation);
+        new Arrow(1f, 0f, 0f, 1f,-.5f, 0f, 0f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
+        new Arrow(0f, 1f, 0f, 1f, 0f,.5f, 0f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
+        new Arrow(0f, 0f, 1f, 1f, 0f, 0f,.5f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
+        GL11.glPopMatrix();
+
 
         cp.setMaxY(y - 22f);
 
