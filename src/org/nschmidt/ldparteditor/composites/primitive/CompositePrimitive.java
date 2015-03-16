@@ -631,6 +631,8 @@ public class CompositePrimitive extends Composite {
                                                             rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_FRACTION));
                                                         } else if (data_segments[i].startsWith("last number", searchIndex)) { //$NON-NLS-1$
                                                             rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_LASTNUMBER));
+                                                        } else if (data_segments[i].startsWith("alphabet", searchIndex)) { //$NON-NLS-1$
+                                                            rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS));
                                                         }
                                                     } else if (data_segments[i].startsWith("Filename ", searchIndex)) { //$NON-NLS-1$
                                                         searchIndex += 9;
@@ -725,6 +727,8 @@ public class CompositePrimitive extends Composite {
                                                                         rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_FRACTION));
                                                                     } else if (data_segments[i].startsWith("last number", searchIndex)) { //$NON-NLS-1$
                                                                         rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_LASTNUMBER));
+                                                                    } else if (data_segments[i].startsWith("alphabet", searchIndex)) { //$NON-NLS-1$
+                                                                        rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS));
                                                                     }
                                                                 } else if (data_segments[i].startsWith("Filename ", searchIndex)) { //$NON-NLS-1$
                                                                     searchIndex += 9;
@@ -945,6 +949,28 @@ public class CompositePrimitive extends Composite {
                         }
                         if (!matched) {
                             primitives.add(p);
+                        }
+                    }
+                    // Sort the categories
+                    for (String catKey : leavesMap.keySet()) {
+                        Primitive cat = leavesMap.get(catKey);
+                        ArrayList<PrimitiveRule> rules = leavesRulesMap.get(catKey);
+                        boolean hasSpecialOrder = false;
+                        for (PrimitiveRule rule : rules) {
+                            final Rule r = rule.getRule();
+                            switch (r) {
+                            case FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS:
+                            case FILENAME_ORDER_BY_FRACTION:
+                            case FILENAME_ORDER_BY_LASTNUMBER:
+                                hasSpecialOrder = true;
+                                cat.sort(r);
+                                break;
+                            default:
+                                break;
+                            }
+                        }
+                        if (!hasSpecialOrder) {
+                            cat.sort(Rule.FILENAME_ORDER_BY_ALPHABET);
                         }
                     }
                     final Pattern pattern = Pattern.compile(".*"); //$NON-NLS-1$
