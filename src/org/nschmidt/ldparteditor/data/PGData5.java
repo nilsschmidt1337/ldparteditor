@@ -47,15 +47,6 @@ public final class PGData5 extends PGData {
         GL11.glEnd();
     }
     @Override
-    public void drawBFCprimitive2() {
-        GL11.glLineWidth(View.lineWidthGL[0]);
-        GL11.glColor4f(0f, 0f, 1f, 1f);
-        GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex3f(-x1, y1, z1);
-        GL11.glVertex3f(-x2, y2, z2);
-        GL11.glEnd();
-    }
-    @Override
     public int type() {
         return 5;
     }

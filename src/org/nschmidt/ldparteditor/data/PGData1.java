@@ -32,6 +32,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 public final class PGData1 extends PGData {
 
     final FloatBuffer matrix;
+    final FloatBuffer matrix2;
     final Matrix4f productMatrix;
     final Matrix4f localMatrix;
 
@@ -71,6 +72,11 @@ public final class PGData1 extends PGData {
             tMatrix.store(matrix);
 
             matrix.position(0);
+            matrix2 = BufferUtils.createFloatBuffer(16);
+            Matrix4f tMatrix2 = new Matrix4f(tMatrix);
+            tMatrix2.m30 = -tMatrix2.m30;
+            tMatrix2.store(matrix2);
+            matrix2.position(0);
 
             PGData anchorData = myGData;
 
@@ -88,6 +94,7 @@ public final class PGData1 extends PGData {
             this.name = null;
             this.shortName = null;
             this.matrix = null;
+            this.matrix2 = null;
             this.productMatrix = null;
             this.localMatrix = null;
             this.negativeDeterminant = false;
@@ -128,38 +135,6 @@ public final class PGData1 extends PGData {
             } else {
                 while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                     data2draw.drawBFCprimitive();
-                }
-                if (PGData.accumClip > 0)
-                    PGData.accumClip = 0;
-            }
-            GL11.glPopMatrix();
-            PGData.localWinding = tempWinding;
-            if (tempInvertNextFound)
-                PGData.globalInvertNext = !tempInvertNext;
-            PGData.globalNegativeDeterminant = tempNegativeDeterminant;
-        }
-    }
-    @Override
-    public void drawBFCprimitive2() {
-        if (matrix != null) {
-            byte tempWinding = PGData.localWinding;
-            boolean tempInvertNext = PGData.globalInvertNext;
-            boolean tempInvertNextFound = PGData.globalInvertNextFound;
-            boolean tempNegativeDeterminant = PGData.globalNegativeDeterminant;
-            PGData.globalInvertNextFound = false;
-            PGData.localWinding = BFC.NOCERTIFY;
-            PGData.globalNegativeDeterminant = PGData.globalNegativeDeterminant ^ negativeDeterminant;
-            GL11.glPushMatrix();
-            GL11.glMultMatrix(matrix);
-            PGData data2draw = myGData;
-            if (PGData.accumClip > 0) {
-                PGData.accumClip++;
-                while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
-                    data2draw.drawBFCprimitive2();
-                PGData.accumClip--;
-            } else {
-                while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                    data2draw.drawBFCprimitive2();
                 }
                 if (PGData.accumClip > 0)
                     PGData.accumClip = 0;

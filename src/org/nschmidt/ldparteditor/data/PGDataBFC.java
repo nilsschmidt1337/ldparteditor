@@ -66,9 +66,4 @@ public final class PGDataBFC extends PGData {
             break;
         }
     }
-
-    @Override
-    public void drawBFCprimitive2() {
-        drawBFCprimitive();
-    }
 }
