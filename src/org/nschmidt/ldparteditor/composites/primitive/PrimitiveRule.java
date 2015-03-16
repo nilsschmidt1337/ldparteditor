@@ -23,10 +23,12 @@ public class PrimitiveRule {
 
     private boolean not = false;
     private boolean and = false;
+    private boolean function = false;
     private String criteria = ""; //$NON-NLS-1$
     private Rule rule;
     public PrimitiveRule(Rule rule) {
         this.rule = rule;
+        this.function = true;
     }
 
     public PrimitiveRule(Rule rule, String criteria, boolean hasAnd, boolean hasNot) {
@@ -34,6 +36,7 @@ public class PrimitiveRule {
         this.criteria = criteria;
         this.not = hasNot;
         this.and = hasAnd;
+        this.function = false;
     }
 
 
@@ -100,5 +103,13 @@ public class PrimitiveRule {
     @Override
     public String toString() {
         return (isAnd() ? "AND " : "OR ") + (isNot() ? "NOT " : "") + rule.toString() + (criteria.isEmpty() ? "" : " '" + criteria + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+    }
+
+    public boolean isFunction() {
+        return function;
+    }
+
+    public void setFunction(boolean function) {
+        this.function = function;
     }
 }

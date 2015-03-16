@@ -876,26 +876,60 @@ public class CompositePrimitive extends Composite {
                         boolean matched = false;
                         for (String catKey : leavesMap.keySet()) {
                             ArrayList<PrimitiveRule> rules = leavesRulesMap.get(catKey);
-                            boolean prevMatch = true;
-                            boolean andWasFound = false;
+                            if (rules.isEmpty()) continue;
+                            boolean andCummulative = true;
+                            boolean orWasPrevious = true;
+                            int index = 0;
                             for (PrimitiveRule r : rules) {
+                                if (r.isFunction()) continue;
                                 boolean match = r.matches(p) ^ r.isNot();
-                                if (prevMatch && andWasFound && !r.isAnd()) {
-                                    matched = true;
-                                    Primitive cat = leavesMap.get(catKey);
-                                    cat.getCategories().add(p);
-                                    break;
+                                // OR *match* -> Criteria is valid
+                                if (!match && !r.isAnd()) {
+                                    if (index + 1 < rules.size()) {
+                                        if (rules.get(index + 1).isAnd()) {
+                                            andCummulative = false;
+                                            continue;
+                                        }
+                                    }
                                 }
-                                if (match) {
-                                    if (!r.isAnd()) {
+                                if (match && !r.isAnd()) {
+                                    if (index + 1 < rules.size()) {
+                                        if (!rules.get(index + 1).isAnd()) {
+                                            matched = true;
+                                            Primitive cat = leavesMap.get(catKey);
+                                            cat.getCategories().add(p);
+                                            break;
+                                        } else {
+                                            andCummulative = true;
+                                            continue;
+                                        }
+                                    } else {
                                         matched = true;
                                         Primitive cat = leavesMap.get(catKey);
                                         cat.getCategories().add(p);
                                         break;
                                     }
                                 }
-                                andWasFound = r.isAnd();
-                                prevMatch = match;
+                                if (r.isAnd()) {
+                                    andCummulative = andCummulative && match;
+                                } else {
+                                    if (andCummulative && !orWasPrevious) {
+                                        matched = true;
+                                        Primitive cat = leavesMap.get(catKey);
+                                        cat.getCategories().add(p);
+                                        break;
+                                    }
+                                    andCummulative = true;
+                                }
+                                orWasPrevious = !r.isAnd();
+                                index++;
+                            }
+                            if (matched) break;
+                            if (andCummulative && rules.get(rules.size() - 1).isAnd()) {
+                                matched = true;
+                                Primitive cat = leavesMap.get(catKey);
+                                cat.getCategories().add(p);
+                                break;
                             }
                         }
                         if (!matched) {
