@@ -1069,7 +1069,7 @@ public enum MathHelper {
              */
             BigDecimal res = mod2pi(x);
             double errpi = 0.5 * Math.abs(x.ulp().doubleValue());
-            MathContext mc = new MathContext(2 + err2prec(3.14159, errpi));
+            MathContext mc = new MathContext(2 + err2prec(3.1415926535897932, errpi));
             BigDecimal p = pi(mc);
             mc = Threshold.mc; // new MathContext(x.precision());
             if (res.compareTo(p) > 0) {
@@ -1157,7 +1157,7 @@ public enum MathHelper {
              */
             BigDecimal res = mod2pi(x);
             double errpi = 0.5 * Math.abs(x.ulp().doubleValue());
-            MathContext mc = new MathContext(2 + err2prec(3.14159, errpi));
+            MathContext mc = new MathContext(2 + err2prec(3.1415926535897932, errpi));
             BigDecimal p = pi(mc);
             mc = new MathContext(x.precision());
             if (res.compareTo(p) > 0) {

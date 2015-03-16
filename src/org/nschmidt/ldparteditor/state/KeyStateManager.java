@@ -20,6 +20,7 @@ import java.util.HashSet;
 
 import org.eclipse.swt.SWT;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -37,6 +38,8 @@ public class KeyStateManager {
     /** The 3D Composite */
     private final Composite3D c3d;
 
+    private final CompositePrimitive cp;
+
     /** A set of all keys which are pressed at the moment */
     private HashSet<Integer> pressedKeyCodes = new HashSet<Integer>();
 
@@ -47,7 +50,15 @@ public class KeyStateManager {
 
     public KeyStateManager(Composite3D c3d) {
         this.c3d = c3d;
+        this.cp = null;
     }
+
+    public KeyStateManager(CompositePrimitive cp) {
+        this.c3d = null;
+        this.cp = cp;
+    }
+
+
 
     /**
      * @return {@code true} if SHIFT is pressed
@@ -73,39 +84,56 @@ public class KeyStateManager {
      *            the event type can be {@code SWT.KeyDown} or {@code SWT.KeyUp}
      */
     public void setStates(int keyCode, int keyEventType) {
-        if (keyEventType == SWT.KeyDown && !pressedKeyCodes.contains(keyCode)) {
-            NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") down]"); //$NON-NLS-1$ //$NON-NLS-2$
-            if (keyCode == SWT.ESC) {
-                // c3d.getModifier().closeView();
-                DatFile df = c3d.getLockableDatFileReference();
-                if (df.getObjVertex1() == null && df.getObjVertex2() == null && df.getObjVertex3() == null && df.getObjVertex4() == null) {
-                    Editor3DWindow.getWindow().disableAddAction();
+        if (cp == null) {
+            if (keyEventType == SWT.KeyDown && !pressedKeyCodes.contains(keyCode)) {
+                NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") down]"); //$NON-NLS-1$ //$NON-NLS-2$
+                if (keyCode == SWT.ESC) {
+                    // c3d.getModifier().closeView();
+                    DatFile df = c3d.getLockableDatFileReference();
+                    if (df.getObjVertex1() == null && df.getObjVertex2() == null && df.getObjVertex3() == null && df.getObjVertex4() == null) {
+                        Editor3DWindow.getWindow().disableAddAction();
+                    }
+                    df.setObjVertex1(null);
+                    df.setObjVertex2(null);
+                    df.setObjVertex3(null);
+                    df.setObjVertex4(null);
+                    df.setNearestObjVertex1(null);
+                    df.setNearestObjVertex2(null);
+                    df.getVertexManager().clearSelection();
                 }
-                df.setObjVertex1(null);
-                df.setObjVertex2(null);
-                df.setObjVertex3(null);
-                df.setObjVertex4(null);
-                df.setNearestObjVertex1(null);
-                df.setNearestObjVertex2(null);
-                df.getVertexManager().clearSelection();
+                if (keyCode == SWT.DEL) {
+                    c3d.getLockableDatFileReference().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
+                }
+                pressedKeyCodes.add(keyCode);
+                setKeyState(keyCode, true);
+            } else if (keyEventType == SWT.KeyUp) {
+                NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") up]"); //$NON-NLS-1$ //$NON-NLS-2$
+                pressedKeyCodes.remove(keyCode);
+                setKeyState(keyCode, false);
             }
-            if (keyCode == SWT.DEL) {
-                c3d.getLockableDatFileReference().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
+
+            // Synchronise key state with other composites
+            ArrayList<OpenGLRenderer> r = Editor3DWindow.getRenders();
+            for (OpenGLRenderer renderer : r) {
+                renderer.getC3D().getKeys().synchronise(this);
             }
-            pressedKeyCodes.add(keyCode);
-            setKeyState(keyCode, true);
-        } else if (keyEventType == SWT.KeyUp) {
-            NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") up]"); //$NON-NLS-1$ //$NON-NLS-2$
-            pressedKeyCodes.remove(keyCode);
-            setKeyState(keyCode, false);
+        } else {
+            if (keyEventType == SWT.KeyDown && !pressedKeyCodes.contains(keyCode)) {
+                NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") down]"); //$NON-NLS-1$ //$NON-NLS-2$
+                if (keyCode == SWT.PAGE_UP || keyCode == SWT.UP) {
+                    cp.scroll(false);
+                } else if (keyCode == SWT.PAGE_DOWN || keyCode == SWT.DOWN) {
+                    cp.scroll(true);
+                } else {
+                    pressedKeyCodes.add(keyCode);
+                }
+                setKeyState(keyCode, true);
+            } else if (keyEventType == SWT.KeyUp) {
+                NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") up]"); //$NON-NLS-1$ //$NON-NLS-2$
+                pressedKeyCodes.remove(keyCode);
+                setKeyState(keyCode, false);
+            }
         }
-
-        // Synchronise key state with other composites
-        ArrayList<OpenGLRenderer> r = Editor3DWindow.getRenders();
-        for (OpenGLRenderer renderer : r) {
-            renderer.getC3D().getKeys().synchronise(this);
-        }
-
     }
 
     /**
