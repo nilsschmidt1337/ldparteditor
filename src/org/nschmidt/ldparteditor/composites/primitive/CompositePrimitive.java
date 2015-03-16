@@ -902,6 +902,9 @@ public class CompositePrimitive extends Composite {
                             primitives.add(p);
                         }
                     }
+                    for (Primitive p : primitives) {
+                        p.search(".*", false); //$NON-NLS-1$
+                    }
                     Collections.sort(primitives);
                     stopDraw.set(false);
                 }

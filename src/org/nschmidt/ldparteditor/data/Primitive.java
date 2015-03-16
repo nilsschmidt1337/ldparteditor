@@ -129,12 +129,12 @@ public class Primitive implements Comparable<Primitive> {
         this.name = name;
     }
 
-    public boolean search(String criteria) {
+    public boolean search(String criteria, boolean extend) {
         if (isCategory()) {
-            setExtended(true);
+            setExtended(extend);
             boolean hidden = true;
             for (Primitive p : primitivesExtended) {
-                hidden = hidden && p.search(criteria);
+                hidden = hidden && p.search(criteria, extend);
             }
             setHidden(hidden);
         } else {
