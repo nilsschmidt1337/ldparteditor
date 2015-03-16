@@ -140,6 +140,38 @@ public final class PGData1 extends PGData {
         }
     }
     @Override
+    public void drawBFCprimitive2() {
+        if (matrix != null) {
+            byte tempWinding = PGData.localWinding;
+            boolean tempInvertNext = PGData.globalInvertNext;
+            boolean tempInvertNextFound = PGData.globalInvertNextFound;
+            boolean tempNegativeDeterminant = PGData.globalNegativeDeterminant;
+            PGData.globalInvertNextFound = false;
+            PGData.localWinding = BFC.NOCERTIFY;
+            PGData.globalNegativeDeterminant = PGData.globalNegativeDeterminant ^ negativeDeterminant;
+            GL11.glPushMatrix();
+            GL11.glMultMatrix(matrix);
+            PGData data2draw = myGData;
+            if (PGData.accumClip > 0) {
+                PGData.accumClip++;
+                while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    data2draw.drawBFCprimitive2();
+                PGData.accumClip--;
+            } else {
+                while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                    data2draw.drawBFCprimitive2();
+                }
+                if (PGData.accumClip > 0)
+                    PGData.accumClip = 0;
+            }
+            GL11.glPopMatrix();
+            PGData.localWinding = tempWinding;
+            if (tempInvertNextFound)
+                PGData.globalInvertNext = !tempInvertNext;
+            PGData.globalNegativeDeterminant = tempNegativeDeterminant;
+        }
+    }
+    @Override
     public int type() {
         return 1;
     }

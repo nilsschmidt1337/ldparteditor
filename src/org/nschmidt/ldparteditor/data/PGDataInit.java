@@ -33,6 +33,10 @@ public final class PGDataInit extends PGData {
         PGData.globalNegativeDeterminant = false;
     }
     @Override
+    public void drawBFCprimitive2() {
+        drawBFCprimitive();
+    }
+    @Override
     public int type() {
         return 7;
     }

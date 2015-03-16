@@ -78,7 +78,7 @@ public class Primitive implements Comparable<Primitive> {
         GL11.glMultMatrix(m);
         GL11.glScalef(zoom, zoom, zoom);
         for (PGData gd : graphicalData) {
-            gd.drawBFCprimitive();
+            gd.drawBFCprimitive2();
         }
         GL11.glPopMatrix();
     }
