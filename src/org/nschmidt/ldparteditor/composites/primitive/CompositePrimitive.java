@@ -947,8 +947,9 @@ public class CompositePrimitive extends Composite {
                             primitives.add(p);
                         }
                     }
+                    final Pattern pattern = Pattern.compile(".*"); //$NON-NLS-1$
                     for (Primitive p : primitives) {
-                        p.search(".*", false); //$NON-NLS-1$
+                        p.search(pattern, false);
                     }
                     Collections.sort(primitives);
                     stopDraw.set(false);

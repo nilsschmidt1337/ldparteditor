@@ -2025,8 +2025,9 @@ public class Editor3DWindow extends Editor3DDesign {
                 } catch (PatternSyntaxException pe) {
                     criteria = ".*" + Pattern.quote(txt_primitiveSearch[0].getText()) + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
                 }
+                final Pattern pattern = Pattern.compile(criteria);
                 for (Primitive p : prims) {
-                    p.search(criteria, true);
+                    p.search(pattern, true);
                 }
                 Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
                 getCompositePrimitive().getOpenGL().drawScene(-1, -1);
@@ -4878,6 +4879,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     criteria = ".*"; //$NON-NLS-1$
                 }
 
+                final Pattern pattern = Pattern.compile(criteria);
                 for (int i = 0; i < 12; i++) {
                     TreeItem folder = folders[i];
                     folder.removeAll();
@@ -4901,7 +4903,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         } else {
                             finding.setText(name);
                         }
-                        finding.setShown(!(d != null && d.startsWith(" - ~Moved to")) && name.matches(criteria)); //$NON-NLS-1$
+                        finding.setShown(!(d != null && d.startsWith(" - ~Moved to")) && pattern.matcher(name).matches()); //$NON-NLS-1$
                     }
                 }
                 folders[0].getParent().build();

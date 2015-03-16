@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
@@ -129,16 +130,16 @@ public class Primitive implements Comparable<Primitive> {
         this.name = name;
     }
 
-    public boolean search(String criteria, boolean extend) {
+    public boolean search(Pattern pattern, boolean extend) {
         if (isCategory()) {
             setExtended(extend);
             boolean hidden = true;
             for (Primitive p : primitivesExtended) {
-                hidden = hidden && p.search(criteria, extend);
+                hidden = hidden && p.search(pattern, extend);
             }
             setHidden(hidden);
         } else {
-            setHidden(!toString().matches(criteria));
+            setHidden(!pattern.matcher(toString()).matches());
         }
         return isHidden();
     }
