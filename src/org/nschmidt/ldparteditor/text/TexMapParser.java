@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -54,6 +55,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public enum TexMapParser {
     INSTANCE;
+
+    private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
 
     public static GDataTEX parseGeometry(String line, int depth, float r, float g, float b, float a, GData1 gData1, Matrix4f pMatrix, Set<String> alreadyParsed) {
         String tline = line.replaceAll("0\\s+\\Q!:\\E\\s+", ""); //$NON-NLS-1$ //$NON-NLS-2$
@@ -279,7 +282,7 @@ public enum TexMapParser {
     }
 
     public static GData parseLine(String line, int depth, float r, float g, float b, float a, GData1 gData1, Matrix4f pMatrix, Set<String> alreadyParsed) {
-        String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+        final String[] data_segments = WHITESPACE.split(line.trim());
         return parseLine(data_segments, line, depth, r, g, b, a, gData1, pMatrix, alreadyParsed);
     }
 
@@ -360,7 +363,7 @@ public enum TexMapParser {
     }
 
     private static GData parse_Comment(String line, String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed) {
-        line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+        line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
         if (line.startsWith("0 !: ")) { //$NON-NLS-1$
             GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed);
             return newLPEmetaTag;

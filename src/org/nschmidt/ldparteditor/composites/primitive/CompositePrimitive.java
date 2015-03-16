@@ -968,9 +968,10 @@ public class CompositePrimitive extends Composite {
     private static final Vector3f vertexB = new Vector3f();
     private static final Vector3f vertexC = new Vector3f();
     private static final Vector3f vertexD = new Vector3f();
+    private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
 
     public static PGData parseLine(String line, int depth, Matrix4f productMatrix, Set<String> alreadyParsed) {
-        final String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+        final String[] data_segments = WHITESPACE.split(line.trim());
         // Get the linetype
         int linetype = 0;
         char c;
@@ -997,7 +998,7 @@ public class CompositePrimitive extends Composite {
     }
 
     private static PGData parse_Comment(String line) {
-        line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+        line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
         if (line.startsWith("BFC ", 2)) { //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
                 return new PGDataBFC(BFC.INVERTNEXT);
