@@ -587,6 +587,7 @@ public class CompositePrimitive extends Composite {
                                 while ((line = reader.readLine()) != null) {
                                     NLogger.debug(getClass(), line);
                                     line = line.trim();
+                                    if (line.startsWith("%")) continue; //$NON-NLS-1$
                                     String[] data_segments = line.trim().split(Pattern.quote(";")); //$NON-NLS-1$
                                     for (int i = 0; i < data_segments.length; i++) {
                                         data_segments[i] = data_segments[i].trim();
@@ -925,11 +926,21 @@ public class CompositePrimitive extends Composite {
                                 index++;
                             }
                             if (matched) break;
-                            if (andCummulative && rules.get(rules.size() - 1).isAnd()) {
-                                matched = true;
-                                Primitive cat = leavesMap.get(catKey);
-                                cat.getCategories().add(p);
-                                break;
+                            if (andCummulative) {
+                                int j = 1;
+                                while (rules.get(rules.size() - j).isFunction()) {
+                                    j++;
+                                    if (j > rules.size()) {
+                                        j--;
+                                        break;
+                                    }
+                                }
+                                if (rules.get(rules.size() - j).isAnd()) {
+                                    matched = true;
+                                    Primitive cat = leavesMap.get(catKey);
+                                    cat.getCategories().add(p);
+                                    break;
+                                }
                             }
                         }
                         if (!matched) {
