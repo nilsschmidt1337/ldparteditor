@@ -2317,13 +2317,18 @@ public class VertexManager {
         if (addSomething) {
             TreeSet<Vertex> nearVertices = new TreeSet<Vertex>();
             TreeSet<Vertex> nearVertices2 = new TreeSet<Vertex>();
-            BigDecimal EPSILON = new BigDecimal(".005"); //$NON-NLS-1$
+            float zoom = c3d.getZoom();
+            NLogger.debug(getClass(), zoom);
+            BigDecimal EPSILON;
+            EPSILON = new BigDecimal(".0005"); //$NON-NLS-1$
+            EPSILON = EPSILON.multiply(EPSILON, Threshold.mc).multiply(EPSILON, Threshold.mc).multiply(new BigDecimal(3)).divide(new BigDecimal(zoom), Threshold.mc);
+            NLogger.debug(getClass(), EPSILON.toString());
             for (Vertex v : selectedVertices) {
                 Vector3d v1 = new Vector3d(v);
                 boolean isNear = false;
                 for (Vertex key : nearVertices2) {
                     Vector3d v2 = new Vector3d(key);
-                    BigDecimal dist = Vector3d.manhattan(v1, v2);
+                    BigDecimal dist = Vector3d.distSquare(v1, v2);
                     if (dist.compareTo(EPSILON) < 0f) {
                         isNear = true;
                         break;
