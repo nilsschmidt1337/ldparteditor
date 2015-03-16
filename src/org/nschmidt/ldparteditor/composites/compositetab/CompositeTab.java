@@ -565,8 +565,6 @@ public class CompositeTab extends CompositeTabDesign {
             @Override
             public void modifyText(final ExtendedModifyEvent event) {
                 ViewIdleManager.pause[0].compareAndSet(false, true);
-                // TODO ?? Only for vertex replace test ?? <- what does this mean?
-                compositeText[0].redraw();
 
                 int new_line_count = compositeText[0].getLineCount();
                 if (old_line_count != new_line_count) {
