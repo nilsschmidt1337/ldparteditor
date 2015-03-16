@@ -635,9 +635,9 @@ public class MouseActions {
             final Editor3DWindow window = Editor3DWindow.getWindow();
             final DatFile datfile = c3d.getLockableDatFileReference();
             if (window.isAddingSomething() && !datfile.isReadOnly()) {
-                datfile.getVertexManager().selectVertices(c3d, window.isAddingSomething());//window.isAddingLines() && c3d.getLockableDatFileReference().getObjVertex1() != null);
+                final VertexManager vm = datfile.getVertexManager();
+                vm.selectVertices(c3d, true); // vm.selectVertices(c3d, window.isAddingSomething());
                 if (window.isAddingLines()) {
-                    final VertexManager vm = datfile.getVertexManager();
                     Vertex vl1 = datfile.getObjVertex1();
                     if (vm.getSelectedVertices().size() == 1) {
                         if (vl1 != null) {
@@ -688,7 +688,6 @@ public class MouseActions {
                         vm.setModified(true);
                     }
                 } else if (window.isAddingTriangles()) {
-                    final VertexManager vm = datfile.getVertexManager();
                     Vertex vt1 = datfile.getObjVertex1();
                     Vertex vt2 = datfile.getObjVertex2();
                     Vertex vt3 = datfile.getObjVertex3();
@@ -810,7 +809,6 @@ public class MouseActions {
                         vm.getSelectedVertices().clear();
                     }
                 } else if (window.isAddingQuads()) {
-                    final VertexManager vm = datfile.getVertexManager();
                     Vertex vq1 = datfile.getObjVertex1();
                     Vertex vq2 = datfile.getObjVertex2();
                     Vertex vq3 = datfile.getObjVertex3();
@@ -953,7 +951,6 @@ public class MouseActions {
                         vm.getSelectedVertices().clear();
                     }
                 } else if (window.isAddingCondlines()) {
-                    final VertexManager vm = datfile.getVertexManager();
                     Vertex vc1 = datfile.getObjVertex1();
                     Vertex vc2 = datfile.getObjVertex2();
                     Vertex vc3 = datfile.getObjVertex3();

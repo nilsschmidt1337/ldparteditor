@@ -2314,7 +2314,29 @@ public class VertexManager {
                 }
             }
         }
-        if (!addSomething && Editor3DWindow.getWindow().isMovingAdjacentData() && Editor3DWindow.getWindow().getWorkingType() == WorkingMode.VERTICES) {
+        if (addSomething) {
+            TreeSet<Vertex> nearVertices = new TreeSet<Vertex>();
+            TreeSet<Vertex> nearVertices2 = new TreeSet<Vertex>();
+            BigDecimal EPSILON = new BigDecimal(".005"); //$NON-NLS-1$
+            for (Vertex v : selectedVertices) {
+                Vector3d v1 = new Vector3d(v);
+                boolean isNear = false;
+                for (Vertex key : nearVertices2) {
+                    Vector3d v2 = new Vector3d(key);
+                    BigDecimal dist = Vector3d.manhattan(v1, v2);
+                    if (dist.compareTo(EPSILON) < 0f) {
+                        isNear = true;
+                        break;
+                    }
+                }
+                nearVertices2.add(v);
+                if (!isNear) {
+                    nearVertices.add(v);
+                }
+            }
+            selectedVertices.clear();
+            selectedVertices.addAll(nearVertices);
+        } else if (Editor3DWindow.getWindow().isMovingAdjacentData() && Editor3DWindow.getWindow().getWorkingType() == WorkingMode.VERTICES) {
             {
                 HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
                 for (Vertex vertex : selectedVertices) {
