@@ -1,4 +1,8 @@
-Technic|Axle Hole;{Starts with "Technic Axle"; Contains "Hole"}
-Ring;{Contains "Ring"; Order by fraction; Order by radius}
-Disc;{Contains "Disc"; Not contains "Hi-Res"; Order by size}
-Disc|Hi-Res;{Contains "Disc"; Not contains "Hi-Res"; Order by size}
+% Pimitive Rule Set File for Categories (with Java-RegEx Syntax, uses underscore instead of spaces)
+Technic|Axle Hole;Starts with "Technic_Axle"; AND Contains "Hole"
+Ring;Contains "Ring"; Order by fraction; Order by last number
+Disc;Title "4-4disc.dat"
+Disc|Standard;Title "4-4disc.dat";Contains "Disc"; AND NOT Contains "Hi-Res"; Order by last number
+Disc|Hi-Res;Title "48\4-4disc.dat";Contains "Disc"; AND Contains "Hi-Res"; Order by last number
+Torus|Inside;Filename matches "t\\d\\di\\d\\d\\d\\d\\.dat"; OR Starts with "Torus_Inside"
+Torus|Outside;Filename matches "t\\d\\do\\d\\d\\d\\d\\.dat"; OR Matches "Torus_Outs[^\\d\\s]de.*"

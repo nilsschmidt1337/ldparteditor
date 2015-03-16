@@ -15,12 +15,16 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites.primitive;
 
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enums.Rule;
 
 public class PrimitiveRule {
 
 
+    private final Pattern pattern;
     private boolean not = false;
     private boolean and = false;
     private boolean function = false;
@@ -29,6 +33,7 @@ public class PrimitiveRule {
     public PrimitiveRule(Rule rule) {
         this.rule = rule;
         this.function = true;
+        this.pattern = Pattern.compile("[^.*]"); //$NON-NLS-1$
     }
 
     public PrimitiveRule(Rule rule, String criteria, boolean hasAnd, boolean hasNot) {
@@ -37,6 +42,13 @@ public class PrimitiveRule {
         this.not = hasNot;
         this.and = hasAnd;
         this.function = false;
+        Pattern pattern2;
+        try {
+            pattern2 = Pattern.compile(criteria);
+        } catch (PatternSyntaxException ex) {
+            pattern2 = Pattern.compile("[^.*]"); //$NON-NLS-1$
+        }
+        pattern = pattern2;
     }
 
 
@@ -51,7 +63,7 @@ public class PrimitiveRule {
         case FILENAME_ENDS_WITH:
             return p.getName().endsWith(criteria);
         case FILENAME_MATCHES:
-            break;
+            return pattern.matcher(p.getName()).matches();
         case FILENAME_ORDER_BY_FRACTION:
             break;
         case FILENAME_ORDER_BY_LASTNUMBER:
@@ -59,7 +71,7 @@ public class PrimitiveRule {
         case FILENAME_STARTS_WITH:
             return p.getName().startsWith(criteria);
         case MATCHES:
-            break;
+            return pattern.matcher(p.getDescription()).matches();
         case STARTS_WITH:
             return p.getDescription().startsWith(criteria);
         default:
