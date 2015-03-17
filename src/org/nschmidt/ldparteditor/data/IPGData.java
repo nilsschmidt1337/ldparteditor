@@ -20,6 +20,6 @@ package org.nschmidt.ldparteditor.data;
  *
  */
 interface IPGData {
-    public void drawBFCprimitive();
+    public void drawBFCprimitive(int drawOnlyMode);
     public int type();
 }

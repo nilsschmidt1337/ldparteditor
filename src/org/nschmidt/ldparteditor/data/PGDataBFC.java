@@ -37,7 +37,7 @@ public final class PGDataBFC extends PGData {
     }
 
     @Override
-    public void drawBFCprimitive() {
+    public void drawBFCprimitive(int drawOnlyMode) {
         switch (type) {
         case BFC.CCW:
             PGData.localWinding = BFC.CCW;

@@ -115,7 +115,7 @@ public final class PGData1 extends PGData {
     }
 
     @Override
-    public void drawBFCprimitive() {
+    public void drawBFCprimitive(int drawOnlyMode) {
         if (matrix != null) {
             byte tempWinding = PGData.localWinding;
             boolean tempInvertNext = PGData.globalInvertNext;
@@ -130,11 +130,11 @@ public final class PGData1 extends PGData {
             if (PGData.accumClip > 0) {
                 PGData.accumClip++;
                 while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
-                    data2draw.drawBFCprimitive();
+                    data2draw.drawBFCprimitive(drawOnlyMode);
                 PGData.accumClip--;
             } else {
                 while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                    data2draw.drawBFCprimitive();
+                    data2draw.drawBFCprimitive(drawOnlyMode);
                 }
                 if (PGData.accumClip > 0)
                     PGData.accumClip = 0;
