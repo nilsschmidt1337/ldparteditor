@@ -15,11 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.ringsandcones;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
@@ -40,8 +36,8 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
      *
      * @param parentShell
      */
-    public RingsAndConesDialog(Shell parentShell, RectifierSettings rs) {
-        super(parentShell, rs);
+    public RingsAndConesDialog(Shell parentShell) {
+        super(parentShell);
     }
 
     @Override
@@ -51,40 +47,8 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
         spn_angle[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                rs.setMaximumAngle(spn.getValue());
             }
         });
-        cmb_scope[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                rs.setScope(cmb_scope[0].getSelectionIndex());
-            }
-        });
-        cmb_colourise[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                rs.setColourise(cmb_colourise[0].getSelectionIndex() == 1);
-            }
-        });
-        cmb_noBorderedQuadToRectConversation[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                rs.setNoBorderedQuadToRectConversation(cmb_noBorderedQuadToRectConversation[0].getSelectionIndex() == 1);
-            }
-        });
-        cmb_noQuadConversation[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                rs.setNoQuadConversation(cmb_noQuadConversation[0].getSelectionIndex() == 1);
-            }
-        });
-        cmb_noRectConversationOnAdjacentCondlines[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                rs.setNoRectConversationOnAdjacentCondlines(cmb_noRectConversationOnAdjacentCondlines[0].getSelectionIndex() == 1);
-            }
-        });
-
         return super.open();
     }
 

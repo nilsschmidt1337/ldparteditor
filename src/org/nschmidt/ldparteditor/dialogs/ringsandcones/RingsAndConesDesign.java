@@ -28,11 +28,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 
 /**
- * The rectifier dialog
+ * The rings and cones dialog
  * <p>
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
@@ -42,7 +41,6 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
  */
 class RingsAndConesDesign extends Dialog {
 
-    final RectifierSettings rs;
     final BigDecimalSpinner[] spn_angle = new BigDecimalSpinner[1];
     final Combo[] cmb_scope = new Combo[1];
 
@@ -53,9 +51,8 @@ class RingsAndConesDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    RingsAndConesDesign(Shell parentShell, RectifierSettings rs) {
+    RingsAndConesDesign(Shell parentShell) {
         super(parentShell);
-        this.rs = rs;
     }
 
     /**
@@ -71,59 +68,62 @@ class RingsAndConesDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Rectifier [Arbitrary Precision]"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText("Rings And Cones [Arbitrary Precision]"); //$NON-NLS-1$ I18N Needs translation!
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_angle = new Label(cmp_container, SWT.NONE);
-        lbl_angle.setText("Maximum angle formed by two triangles (default: 0.95°)"); //$NON-NLS-1$ I18N Needs translation!
+        {
+            Label lbl = new Label(cmp_container, SWT.NONE);
+            lbl.setText("Shape:"); //$NON-NLS-1$ I18N Needs translation!
+        }
+
+        {
+            Label lbl = new Label(cmp_container, SWT.NONE);
+            lbl.setText("Inner Radius:"); //$NON-NLS-1$ I18N Needs translation!
+        }
+
+        {
+            Label lbl = new Label(cmp_container, SWT.NONE);
+            lbl.setText("Outer Radius:"); //$NON-NLS-1$ I18N Needs translation!
+        }
+
+        {
+            Label lbl = new Label(cmp_container, SWT.NONE);
+            lbl.setText("Hight:"); //$NON-NLS-1$ I18N Needs translation!
+        }
+
+        {
+            Label lbl = new Label(cmp_container, SWT.NONE);
+            lbl.setText("Angle:"); //$NON-NLS-1$ I18N Needs translation!
+        }
+
+        {
+            Label lbl = new Label(cmp_container, SWT.NONE);
+            lbl.setText("Maximum Amount:"); //$NON-NLS-1$ I18N Needs translation!
+        }
+
+        {
+            Label lbl = new Label(cmp_container, SWT.NONE);
+            lbl.setText("Use Non-Existing Primitives:"); //$NON-NLS-1$ I18N Needs translation!
+        }
+
 
         BigDecimalSpinner spn_angle = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_angle [0] = spn_angle;
         spn_angle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spn_angle.setMaximum(new BigDecimal(90));
         spn_angle.setMinimum(new BigDecimal(0));
-        spn_angle.setValue(rs.getMaximumAngle());
+        spn_angle.setValue(new BigDecimal(1));
 
         {
             Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_colourise[0] = cmb_colourise;
             cmb_colourise.setItems(new String[] {"No colour modifications.", "Converted triangles are colored in yellow, newly formed rect primitives are colored blue."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
             cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_colourise.setText(cmb_colourise.getItem(rs.isColourise() ? 1 : 0));
-            cmb_colourise.select(rs.isColourise() ? 1 : 0);
+            cmb_colourise.setText(cmb_colourise.getItem(1));
+            cmb_colourise.select(1);
         }
-        {
-            Combo cmb_noQuadConversation = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_noQuadConversation[0] = cmb_noQuadConversation;
-            cmb_noQuadConversation.setItems(new String[] {"Transform triangles into quads.", "Rectifier does not attempt to transform triangles into quads. "}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-            cmb_noQuadConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_noQuadConversation.setText(cmb_noQuadConversation.getItem(rs.isNoQuadConversation() ? 1 : 0));
-            cmb_noQuadConversation.select(rs.isNoQuadConversation() ? 1 : 0);
-        }
-        {
-            Combo cmb_noBorderedQuadToRectConversation = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_noBorderedQuadToRectConversation[0] = cmb_noBorderedQuadToRectConversation;
-            cmb_noBorderedQuadToRectConversation.setItems(new String[] {"Convert bordered rhombuses into rect primitives.", "Do not convert bordered rhombuses into rect primitives."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-            cmb_noBorderedQuadToRectConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_noBorderedQuadToRectConversation.setText(cmb_noBorderedQuadToRectConversation.getItem(rs.isNoBorderedQuadToRectConversation() ? 1 : 0));
-            cmb_noBorderedQuadToRectConversation.select(rs.isNoBorderedQuadToRectConversation() ? 1 : 0);
-        }
-        {
-            Combo cmb_noRectConversationOnAdjacentCondlines = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_noRectConversationOnAdjacentCondlines[0] = cmb_noRectConversationOnAdjacentCondlines;
-            cmb_noRectConversationOnAdjacentCondlines.setItems(new String[] {"Convert to rect primitives, if possible.", "Rectifier does not convert quad to rect when the quad has adjacent condline(s).\nThis may improve smooth shading of the part. "}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-            cmb_noRectConversationOnAdjacentCondlines.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_noRectConversationOnAdjacentCondlines.setText(cmb_noRectConversationOnAdjacentCondlines.getItem(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0));
-            cmb_noRectConversationOnAdjacentCondlines.select(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0);
-        }
-        Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {"Scope: File", "Scope: Selection"}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-        cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_scope.setText(cmb_scope.getItem(rs.getScope()));
-        cmb_scope.select(rs.getScope());
 
         cmp_container.pack();
         return cmp_container;
