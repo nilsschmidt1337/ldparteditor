@@ -181,38 +181,78 @@ public class OpenGLRendererPrimitives {
         float sx = STEP;
         float width = canvas.getBounds().width;
         final Primitive sp = cp.getSelectedPrimitive();
-        for (Primitive p2 : cp.getPrimitives()) {
-            for (Primitive p : p2.getPrimitives()) {
-                lastX = sx;
-                if (minY < y && maxY > y) {
-                    float ty = y * zoom * View.PIXEL_PER_LDU;
-                    boolean focused = mx > sx - STEP && mx < sx  && my > ty && my < ty + STEP;
-                    if (focused) {
-                        cp.setFocusedPrimitive(p);
-                        wasFocused = true;
-                    }
-                    drawCell(x, y, p.equals(sp), p.isCategory(), focused);
-                    GL11.glEnable(GL11.GL_CULL_FACE);
-                    GL11.glFrontFace(GL11.GL_CW);
-                    GL11.glCullFace(GL11.GL_BACK);
-                    GL11.glEnable(GL11.GL_DEPTH_TEST);
-                    p.draw(x, y, rotation);
-                    GL11.glDisable(GL11.GL_DEPTH_TEST);
-                    GL11.glDisable(GL11.GL_CULL_FACE);
-                    if (p.isCategory()) {
-                        if (p.isExtended()) {
-                            drawMinus(x, y);
-                        } else {
-                            drawPlus(x, y);
+        final boolean hasSearchResults = cp.getSearchResults().size() > 0;
+
+        if (hasSearchResults) {
+            if (cp.getSearchResults().get(0) != null) {
+                for (Primitive p : cp.getSearchResults()) {
+                    lastX = sx;
+                    if (minY < y && maxY > y) {
+                        float ty = y * zoom * View.PIXEL_PER_LDU;
+                        boolean focused = mx > sx - STEP && mx < sx  && my > ty && my < ty + STEP;
+                        if (focused) {
+                            cp.setFocusedPrimitive(p);
+                            wasFocused = true;
+                        }
+                        drawCell(x, y, p.equals(sp), p.isCategory(), focused);
+                        GL11.glEnable(GL11.GL_CULL_FACE);
+                        GL11.glFrontFace(GL11.GL_CW);
+                        GL11.glCullFace(GL11.GL_BACK);
+                        GL11.glEnable(GL11.GL_DEPTH_TEST);
+                        p.draw(x, y, rotation);
+                        GL11.glDisable(GL11.GL_DEPTH_TEST);
+                        GL11.glDisable(GL11.GL_CULL_FACE);
+                        if (p.isCategory()) {
+                            if (p.isExtended()) {
+                                drawMinus(x, y);
+                            } else {
+                                drawPlus(x, y);
+                            }
                         }
                     }
+                    sx = (sx + STEP) % width;
+                    x += 22f;
+                    if (lastX > sx) {
+                        sx = 22f * zoom * View.PIXEL_PER_LDU;
+                        x = 2f;
+                        y += 22f;
+                    }
                 }
-                sx = (sx + STEP) % width;
-                x += 22f;
-                if (lastX > sx) {
-                    sx = 22f * zoom * View.PIXEL_PER_LDU;
-                    x = 2f;
-                    y += 22f;
+            }
+        } else {
+            for (Primitive p2 : cp.getPrimitives()) {
+                for (Primitive p : p2.getPrimitives()) {
+                    lastX = sx;
+                    if (minY < y && maxY > y) {
+                        float ty = y * zoom * View.PIXEL_PER_LDU;
+                        boolean focused = mx > sx - STEP && mx < sx  && my > ty && my < ty + STEP;
+                        if (focused) {
+                            cp.setFocusedPrimitive(p);
+                            wasFocused = true;
+                        }
+                        drawCell(x, y, p.equals(sp), p.isCategory(), focused);
+                        GL11.glEnable(GL11.GL_CULL_FACE);
+                        GL11.glFrontFace(GL11.GL_CW);
+                        GL11.glCullFace(GL11.GL_BACK);
+                        GL11.glEnable(GL11.GL_DEPTH_TEST);
+                        p.draw(x, y, rotation);
+                        GL11.glDisable(GL11.GL_DEPTH_TEST);
+                        GL11.glDisable(GL11.GL_CULL_FACE);
+                        if (p.isCategory()) {
+                            if (p.isExtended()) {
+                                drawMinus(x, y);
+                            } else {
+                                drawPlus(x, y);
+                            }
+                        }
+                    }
+                    sx = (sx + STEP) % width;
+                    x += 22f;
+                    if (lastX > sx) {
+                        sx = 22f * zoom * View.PIXEL_PER_LDU;
+                        x = 2f;
+                        y += 22f;
+                    }
                 }
             }
         }
@@ -253,8 +293,8 @@ public class OpenGLRendererPrimitives {
             drawRoundRectangle(x, y, 20f, 20f, 5f, .3f, .3f, .3f);
         }
         if (category) {
-            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, .8f, .6f, .2f);
-            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, .95f, .95f, .95f);
+            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, .6f, .4f, .3f);
+            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, .7f, .5f, .4f);
         } else {
             drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, .7f, .7f, .7f);
             drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, 1f, 1f, 1f);
