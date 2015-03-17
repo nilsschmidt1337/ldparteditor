@@ -25,7 +25,7 @@ public final class PGDataInit extends PGData {
     public PGDataInit() {}
 
     @Override
-    public void drawBFCprimitive() {
+    public void drawBFCprimitive(int drawOnlyMode) {
         PGData.localWinding = BFC.NOCERTIFY;
         PGData.accumClip = 0;
         PGData.globalInvertNext = false;

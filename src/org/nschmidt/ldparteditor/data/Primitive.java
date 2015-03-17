@@ -83,7 +83,37 @@ public class Primitive implements Comparable<Primitive> {
         GL11.glMultMatrix(m);
         GL11.glScalef(-zoom, zoom, zoom);
         for (PGData gd : graphicalData) {
-            gd.drawBFCprimitive();
+            switch (gd.type()) {
+            case 0:
+            case 1:
+            case 3:
+            case 4:
+            case 6:
+            case 7:
+                gd.drawBFCprimitive(1);
+                break;
+            default:
+                break;
+            }
+        }
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x + 10f, y + 10f, .5f);
+        GL11.glMultMatrix(m);
+        GL11.glScalef(-zoom, zoom, zoom);
+        for (PGData gd : graphicalData) {
+            switch (gd.type()) {
+            case 0:
+            case 1:
+            case 2:
+            case 5:
+            case 6:
+            case 7:
+                gd.drawBFCprimitive(2);
+                break;
+            default:
+                break;
+            }
         }
         GL11.glPopMatrix();
     }
@@ -93,7 +123,7 @@ public class Primitive implements Comparable<Primitive> {
         GL11.glTranslatef(x, y, z);
         GL11.glScalef(1000f, 1000f, 1000f);
         for (PGData gd : graphicalData) {
-            gd.drawBFCprimitive();
+            gd.drawBFCprimitive(0);
         }
         GL11.glPopMatrix();
     }

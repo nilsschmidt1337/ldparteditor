@@ -54,7 +54,8 @@ public final class PGData4 extends PGData {
         return 4;
     }
     @Override
-    public void drawBFCprimitive() {
+    public void drawBFCprimitive(int drawOnlyMode) {
+        if (drawOnlyMode == 2) return;
         switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
         case BFC.CCW:
             if (PGData.globalNegativeDeterminant) {
