@@ -19,6 +19,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.lwjgl.opengl.GL11;
@@ -36,7 +37,6 @@ public class Primitive implements Comparable<Primitive> {
     private ArrayList<Primitive> primitives = new ArrayList<Primitive>();
     private ArrayList<Primitive> primitivesExtended = new ArrayList<Primitive>();
     private boolean extended = false;
-    private boolean hidden = false;
     private boolean category = false;
     private float zoom = 1f;
 
@@ -58,7 +58,6 @@ public class Primitive implements Comparable<Primitive> {
     }
 
     public ArrayList<Primitive> getPrimitives() {
-        if (isHidden()) return new ArrayList<Primitive>();
         if (isExtended()) {
             ArrayList<Primitive> result = new ArrayList<Primitive>();
             result.addAll(primitives);
@@ -70,7 +69,7 @@ public class Primitive implements Comparable<Primitive> {
             }
             return result;
         } else {
-            return primitives;
+            return new ArrayList<Primitive>(primitives);
         }
     }
 
@@ -135,18 +134,23 @@ public class Primitive implements Comparable<Primitive> {
         this.name = name;
     }
 
-    public boolean search(Pattern pattern, boolean extend) {
+    public void search(Pattern pattern, List<Primitive> results) {
         if (isCategory()) {
-            setExtended(extend);
-            boolean hidden = true;
             for (Primitive p : primitivesExtended) {
-                hidden = hidden && p.search(pattern, extend);
+                p.search(pattern, results);
             }
-            setHidden(hidden);
-        } else {
-            setHidden(!pattern.matcher(toString()).matches());
+        } else if (pattern.matcher(toString()).matches()) {
+            results.add(this);
         }
-        return isHidden();
+    }
+
+    public void collapse() {
+        if (isCategory()) {
+            setExtended(false);
+            for (Primitive p : primitivesExtended) {
+                p.collapse();
+            }
+        }
     }
 
     public boolean sort(Rule r) {
@@ -527,13 +531,5 @@ public class Primitive implements Comparable<Primitive> {
         } else {
             return description.compareToIgnoreCase(o.description);
         }
-    }
-
-    public boolean isHidden() {
-        return hidden;
-    }
-
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
     }
 }

@@ -1,8 +1,49 @@
+
 % Pimitive Rule Set File for Categories (with Java-RegEx Syntax, uses underscore instead of spaces)
-Technic|Axle Hole;Starts with "Technic_Axle"; AND Contains "Hole"
-Ring;Contains "Ring"; Order by fraction; Order by last number
-Disc;Title "4-4disc.dat"
-Disc|Standard;Title "4-4disc.dat";Contains "Disc"; AND NOT Contains "Hi-Res"; Order by last number
-Disc|Hi-Res;Title "48\4-4disc.dat";Contains "Disc"; AND Contains "Hi-Res"; Order by last number
-Torus|Inside;Filename matches "t\\d\\di\\d\\d\\d\\d\\.dat"; OR Starts with "Torus_Inside"
-Torus|Outside;Filename matches "t\\d\\do\\d\\d\\d\\d\\.dat"; OR Matches "Torus_Outs[^\\d\\s]de.*"
+
+
+Axle; Title "axle.dat";Contains "Axle"
+
+Ring; Title "4-4ring1.dat"; Contains "Ring"; Order by alphabet; Order by fraction; Order by last number
+
+Box;Title "box.dat"; Contains "Box"
+Bushlock;Title "bushlock.dat"; Filename contains "bushl"
+Click Lock;Title "clh2.dat"; Starts with "Click Lock"
+
+Chord;Title "7-16chrd.dat"; Contains "Chord"
+Edge/Circle;Title "4-4edge.dat"; Starts with "Circle"; OR Starts with "Hi-Res Circle"
+
+Cone; Title "4-4con0.dat"; Contains "Cone"
+
+Disc; Title "4-4disc.dat"; Contains "Disc";
+Clip; Title "clip3.dat"; Contains "Clip";
+Cylinder; Title "4-4cyli.dat"; Contains "Cylinder";
+
+Sphere; Title "8-8sphe.dat"; Contains "Sphere"; AND NOT Contains "Cylinder"
+
+Type Stencil; Title "typestn0.dat"; Filename starts with "type"
+Tooth; Title "toothl.dat"; Filename starts with "toot"
+Arm; Title "arm1.dat"; Filename starts with "arm"
+Technic Pin; Title "confric2.dat"; Matches ".*Technic.*Pin.*"
+Technic Connector Hole; Title "connhole.dat"; Matches ".*Technic.*Connector.*Hole.*"
+Technic Peg Hole Negative; Title "npeghol4.dat"; Matches ".*Technic.*Peg.*Hole.*Negative.*"
+Wheel Pin/Hole; Title "wpin.dat"; Matches ".*Wheel.*Pin.*"; OR Matches ".*Wheel.*Hole.*"
+
+Rectangle; Title "rect.dat"; Starts with "Rectangle"
+Fillet; Title "filletp2s.dat"; Starts with "Fillet"
+
+Handle; Title "handle.dat"; Contains "Handle"
+Prism; Title "tri4.dat"; Contains "Prism"
+
+Peg Hole End; Title "peghole.dat"; Matches ".*Peg.*Hole.*End.*"
+
+Technic Bush; Title "bush.dat"; Matches ".*Technic.*Bush.*"
+Technic Beam Hole; Title "beamhol2.dat"; Matches ".*Technic.*Beam.*Hole.*"
+
+Studs; Title "stud.dat"; Contains "Stud"; AND NOT Matches ".*Stud.*Group.*"
+Stud Groups; Title "stug-2x2.dat"; Matches ".*Stud.*Group.*"
+
+Torus; Title "t01q1429.dat"
+Torus|Inside; Title "t01i5556.dat"; Contains "Torus_Inside"
+Torus|Outside; Title "t01o4000.dat"; Contains "Torus_Outside"
+Torus|Tube; Title "t01q1429.dat"; Contains "Torus_Tube"

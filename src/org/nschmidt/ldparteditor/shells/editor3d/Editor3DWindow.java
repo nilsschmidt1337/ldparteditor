@@ -347,7 +347,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 updateTree_unsavedEntries();
 
-                cmp_Primitives[0].loadPrimitives();
+                cmp_Primitives[0].load();
 
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                 messageBox.setText(I18n.DIALOG_SyncTitle);
@@ -2018,17 +2018,33 @@ public class Editor3DWindow extends Editor3DDesign {
         txt_primitiveSearch[0].addModifyListener(new ModifyListener() {
             @Override
             public void modifyText(ModifyEvent e) {
+                getCompositePrimitive().collapseAll();
                 ArrayList<Primitive> prims = getCompositePrimitive().getPrimitives();
-                String criteria = ".*" + txt_primitiveSearch[0].getText() + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+                final String crit = txt_primitiveSearch[0].getText();
+                if (crit.trim().isEmpty()) {
+                    getCompositePrimitive().setSearchResults(new ArrayList<Primitive>());
+                    Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
+                    getCompositePrimitive().getOpenGL().drawScene(-1, -1);
+                    return;
+                }
+                String criteria = ".*" + crit + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
                 try {
                     "DUMMY".matches(criteria); //$NON-NLS-1$
                 } catch (PatternSyntaxException pe) {
-                    criteria = ".*" + Pattern.quote(txt_primitiveSearch[0].getText()) + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+                    getCompositePrimitive().setSearchResults(new ArrayList<Primitive>());
+                    Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
+                    getCompositePrimitive().getOpenGL().drawScene(-1, -1);
+                    return;
                 }
                 final Pattern pattern = Pattern.compile(criteria);
+                ArrayList<Primitive> results = new ArrayList<Primitive>();
                 for (Primitive p : prims) {
-                    p.search(pattern, true);
+                    p.search(pattern, results);
                 }
+                if (results.isEmpty()) {
+                    results.add(null);
+                }
+                getCompositePrimitive().setSearchResults(results);
                 Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
                 getCompositePrimitive().getOpenGL().drawScene(-1, -1);
             }

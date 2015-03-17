@@ -93,8 +93,8 @@ public class CompositePrimitive extends Composite {
     final GLCanvas canvas;
 
     /** The view zoom level */
-    private float zoom = 0.0039810717f;
-    private float zoom_exponent = 6f; // Start with 0.4% zoom
+    private float zoom = (float) Math.pow(10.0d, 3f / 10 - 3);
+    private float zoom_exponent = 3f;
 
     /** The transformation matrix of the view */
     private final Matrix4f viewport_matrix = new Matrix4f();
@@ -127,6 +127,8 @@ public class CompositePrimitive extends Composite {
     private float maxY = 0f;
 
     private boolean doingDND;
+
+    private ArrayList<Primitive> searchResults = new ArrayList<Primitive>();
 
     public CompositePrimitive(Composite parent) {
         super(parent, I18n.I18N_NON_BIDIRECT() | SWT.BORDER);
@@ -527,84 +529,197 @@ public class CompositePrimitive extends Composite {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                     monitor.beginTask("Loading Primitives...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                    load();
+                }
+            });
+        } catch (InvocationTargetException consumed) {
+            load();
+        } catch (InterruptedException consumed) {
+            load();
+        }
+    }
 
-                    // Pause primitive renderer
-                    if (!stopDraw.get()) {
-                        stopDraw.set(true);
-                        hasDrawn.set(false);
-                        while (!hasDrawn.get()) {
-                            Thread.sleep(100);
+    public void load() {
+        // Pause primitive renderer
+        if (!stopDraw.get() && !dontRefresh.get()) {
+            stopDraw.set(true);
+            hasDrawn.set(false);
+            while (!hasDrawn.get()) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                }
+            }
+            hasDrawn.set(false);
+            while (!hasDrawn.get()) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        setFocusedPrimitive(null);
+        setSelectedPrimitive(null);
+        primitives.clear();
+
+        ArrayList<String> searchPaths = new ArrayList<String>();
+        String ldrawPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath();
+        if (ldrawPath != null) {
+            searchPaths.add(ldrawPath + File.separator + "p" + File.separator); //$NON-NLS-1$
+            searchPaths.add(ldrawPath + File.separator + "P" + File.separator); //$NON-NLS-1$
+            searchPaths.add(ldrawPath + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+            searchPaths.add(ldrawPath + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        String unofficial = WorkbenchManager.getUserSettingState().getLdrawFolderPath();
+        if (unofficial != null) {
+            searchPaths.add(unofficial + File.separator + "p" + File.separator); //$NON-NLS-1$
+            searchPaths.add(unofficial + File.separator + "P" + File.separator); //$NON-NLS-1$
+            searchPaths.add(unofficial + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+            searchPaths.add(unofficial + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        String project = Project.getProjectPath();
+        if (project != null) {
+            searchPaths.add(project + File.separator + "p" + File.separator); //$NON-NLS-1$
+            searchPaths.add(project + File.separator + "P" + File.separator); //$NON-NLS-1$
+            searchPaths.add(project + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+            searchPaths.add(project + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        HashMap<String, Primitive> titleMap = new HashMap<String, Primitive>();
+        HashMap<String, String> leavesTitleMap = new HashMap<String, String>();
+        HashMap<String, Primitive> primitiveMap = new HashMap<String, Primitive>();
+        HashMap<String, Primitive> categoryMap = new HashMap<String, Primitive>();
+        HashMap<String, Primitive> leavesMap = new HashMap<String, Primitive>();
+        HashMap<String, ArrayList<PrimitiveRule>> leavesRulesMap = new HashMap<String, ArrayList<PrimitiveRule>>();
+        final String hiResSuffix = File.separator + "48" + File.separator; //$NON-NLS-1$
+        try {
+
+            // Creating the categories / Rules
+            File rulesFile = new File("primitive_rules.txt"); //$NON-NLS-1$
+            if (rulesFile.exists()) {
+                UTF8BufferedReader reader = null;
+                try {
+                    reader = new UTF8BufferedReader(rulesFile.getAbsolutePath());
+                    String line ;
+                    while ((line = reader.readLine()) != null) {
+                        NLogger.debug(getClass(), line);
+                        line = line.trim();
+                        if (line.startsWith("%")) continue; //$NON-NLS-1$
+                        String[] data_segments = line.trim().split(Pattern.quote(";")); //$NON-NLS-1$
+                        for (int i = 0; i < data_segments.length; i++) {
+                            data_segments[i] = data_segments[i].trim();
                         }
-                        hasDrawn.set(false);
-                        while (!hasDrawn.get()) {
-                            Thread.sleep(100);
-                        }
-                    }
-
-                    setFocusedPrimitive(null);
-                    setSelectedPrimitive(null);
-                    primitives.clear();
-
-                    ArrayList<String> searchPaths = new ArrayList<String>();
-                    String ldrawPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath();
-                    if (ldrawPath != null) {
-                        searchPaths.add(ldrawPath + File.separator + "p" + File.separator); //$NON-NLS-1$
-                        searchPaths.add(ldrawPath + File.separator + "P" + File.separator); //$NON-NLS-1$
-                        searchPaths.add(ldrawPath + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                        searchPaths.add(ldrawPath + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                    }
-                    String unofficial = WorkbenchManager.getUserSettingState().getLdrawFolderPath();
-                    if (unofficial != null) {
-                        searchPaths.add(unofficial + File.separator + "p" + File.separator); //$NON-NLS-1$
-                        searchPaths.add(unofficial + File.separator + "P" + File.separator); //$NON-NLS-1$
-                        searchPaths.add(unofficial + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                        searchPaths.add(unofficial + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                    }
-                    String project = Project.getProjectPath();
-                    if (project != null) {
-                        searchPaths.add(project + File.separator + "p" + File.separator); //$NON-NLS-1$
-                        searchPaths.add(project + File.separator + "P" + File.separator); //$NON-NLS-1$
-                        searchPaths.add(project + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                        searchPaths.add(project + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                    }
-
-                    HashMap<String, Primitive> titleMap = new HashMap<String, Primitive>();
-                    HashMap<String, String> leavesTitleMap = new HashMap<String, String>();
-                    HashMap<String, Primitive> primitiveMap = new HashMap<String, Primitive>();
-                    HashMap<String, Primitive> categoryMap = new HashMap<String, Primitive>();
-                    HashMap<String, Primitive> leavesMap = new HashMap<String, Primitive>();
-                    HashMap<String, ArrayList<PrimitiveRule>> leavesRulesMap = new HashMap<String, ArrayList<PrimitiveRule>>();
-                    final String hiResSuffix = File.separator + "48" + File.separator; //$NON-NLS-1$
-                    try {
-
-                        // Creating the categories / Rules
-                        File rulesFile = new File("primitive_rules.txt"); //$NON-NLS-1$
-                        if (rulesFile.exists()) {
-                            UTF8BufferedReader reader = null;
-                            try {
-                                reader = new UTF8BufferedReader(rulesFile.getAbsolutePath());
-                                String line ;
-                                while ((line = reader.readLine()) != null) {
-                                    NLogger.debug(getClass(), line);
-                                    line = line.trim();
-                                    if (line.startsWith("%")) continue; //$NON-NLS-1$
-                                    String[] data_segments = line.trim().split(Pattern.quote(";")); //$NON-NLS-1$
-                                    for (int i = 0; i < data_segments.length; i++) {
-                                        data_segments[i] = data_segments[i].trim();
+                        if (data_segments.length > 1)
+                        {
+                            String[] tree_segments = data_segments[0].split(Pattern.quote("|")); //$NON-NLS-1$
+                            String catID = ""; //$NON-NLS-1$
+                            final int maxDepth = tree_segments.length;
+                            int depth = 0;
+                            for (String s : tree_segments) {
+                                depth++;
+                                String before = catID;
+                                catID = catID + "|" + s; //$NON-NLS-1$
+                                NLogger.debug(getClass(), catID);
+                                if (maxDepth < 2) {
+                                    // MARK Parse rules I
+                                    ArrayList<PrimitiveRule> rules = new ArrayList<PrimitiveRule>();
+                                    for (int i = 1; i < data_segments.length; i++) {
+                                        data_segments[i] = data_segments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                        data_segments[i] = data_segments[i].replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                        int searchIndex = 0;
+                                        boolean hasAnd = false;
+                                        boolean hasNot = false;
+                                        if (data_segments[i].startsWith("AND ")) { //$NON-NLS-1$
+                                            searchIndex = 4;
+                                            hasAnd = true;
+                                        }
+                                        if (data_segments[i].startsWith("OR ", searchIndex)) { //$NON-NLS-1$
+                                            searchIndex += 3;
+                                            hasAnd = false;
+                                        }
+                                        if (data_segments[i].startsWith("NOT ", searchIndex)) { //$NON-NLS-1$
+                                            searchIndex += 4;
+                                            hasNot = true;
+                                        }
+                                        String criteria = ""; //$NON-NLS-1$
+                                        if (data_segments[i].startsWith("Order by ", searchIndex)) { //$NON-NLS-1$
+                                            searchIndex += 9;
+                                            if (data_segments[i].startsWith("fraction", searchIndex)) { //$NON-NLS-1$
+                                                rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_FRACTION));
+                                            } else if (data_segments[i].startsWith("last number", searchIndex)) { //$NON-NLS-1$
+                                                rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_LASTNUMBER));
+                                            } else if (data_segments[i].startsWith("alphabet", searchIndex)) { //$NON-NLS-1$
+                                                rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS));
+                                            }
+                                        } else if (data_segments[i].startsWith("Filename ", searchIndex)) { //$NON-NLS-1$
+                                            searchIndex += 9;
+                                            if (data_segments[i].startsWith("starts with ", searchIndex)) { //$NON-NLS-1$
+                                                try {
+                                                    criteria = data_segments[i].substring(searchIndex + 13, data_segments[i].length() - 1);
+                                                    rules.add(new PrimitiveRule(Rule.FILENAME_STARTS_WITH, criteria, hasAnd, hasNot));
+                                                } catch (IndexOutOfBoundsException consumed) {}
+                                            } else if (data_segments[i].startsWith("ends with ", searchIndex)) { //$NON-NLS-1$
+                                                try {
+                                                    criteria = data_segments[i].substring(searchIndex + 11, data_segments[i].length() - 1);
+                                                    rules.add(new PrimitiveRule(Rule.FILENAME_ENDS_WITH, criteria, hasAnd, hasNot));
+                                                } catch (IndexOutOfBoundsException consumed) {}
+                                            } else if (data_segments[i].startsWith("contains ", searchIndex)) { //$NON-NLS-1$
+                                                try {
+                                                    criteria = data_segments[i].substring(searchIndex + 10, data_segments[i].length() - 1);
+                                                    rules.add(new PrimitiveRule(Rule.FILENAME_CONTAINS, criteria, hasAnd, hasNot));
+                                                } catch (IndexOutOfBoundsException consumed) {}
+                                            } else if (data_segments[i].startsWith("matches ", searchIndex)) { //$NON-NLS-1$
+                                                try {
+                                                    criteria = data_segments[i].substring(searchIndex + 9, data_segments[i].length() - 1);
+                                                    rules.add(new PrimitiveRule(Rule.FILENAME_MATCHES, criteria, hasAnd, hasNot));
+                                                } catch (IndexOutOfBoundsException consumed) {}
+                                            }
+                                        } else if (data_segments[i].startsWith("Starts with ", searchIndex)) { //$NON-NLS-1$
+                                            try {
+                                                criteria = data_segments[i].substring(searchIndex + 13, data_segments[i].length() - 1);
+                                                rules.add(new PrimitiveRule(Rule.STARTS_WITH, criteria, hasAnd, hasNot));
+                                            } catch (IndexOutOfBoundsException consumed) {}
+                                        } else if (data_segments[i].startsWith("Ends with ", searchIndex)) { //$NON-NLS-1$
+                                            try {
+                                                criteria = data_segments[i].substring(searchIndex + 11, data_segments[i].length() - 1);
+                                                rules.add(new PrimitiveRule(Rule.ENDS_WITH, criteria, hasAnd, hasNot));
+                                            } catch (IndexOutOfBoundsException consumed) {}
+                                        } else if (data_segments[i].startsWith("Contains ", searchIndex)) { //$NON-NLS-1$
+                                            try {
+                                                criteria = data_segments[i].substring(searchIndex + 10, data_segments[i].length() - 1);
+                                                rules.add(new PrimitiveRule(Rule.CONTAINS, criteria, hasAnd, hasNot));
+                                            } catch (IndexOutOfBoundsException consumed) {}
+                                        } else if (data_segments[i].startsWith("Matches ", searchIndex)) { //$NON-NLS-1$
+                                            try {
+                                                criteria = data_segments[i].substring(searchIndex + 9, data_segments[i].length() - 1);
+                                                rules.add(new PrimitiveRule(Rule.MATCHES, criteria, hasAnd, hasNot));
+                                            } catch (IndexOutOfBoundsException consumed) {}
+                                        } else if (data_segments[i].startsWith("Title ", searchIndex)) { //$NON-NLS-1$
+                                            try {
+                                                criteria = data_segments[i].substring(searchIndex + 7, data_segments[i].length() - 1);
+                                                leavesTitleMap.put(catID, criteria);
+                                            } catch (IndexOutOfBoundsException consumed) {}
+                                        }
                                     }
-                                    if (data_segments.length > 1)
-                                    {
-                                        String[] tree_segments = data_segments[0].split(Pattern.quote("|")); //$NON-NLS-1$
-                                        String catID = ""; //$NON-NLS-1$
-                                        final int maxDepth = tree_segments.length;
-                                        int depth = 0;
-                                        for (String s : tree_segments) {
-                                            depth++;
-                                            String before = catID;
-                                            catID = catID + "|" + s; //$NON-NLS-1$
-                                            NLogger.debug(getClass(), catID);
-                                            if (maxDepth < 2) {
-                                                // MARK Parse rules I
+                                    leavesRulesMap.put(catID, rules);
+                                    Primitive firstParent = new Primitive(true);
+                                    firstParent.setName(s.trim());
+                                    categoryMap.put(catID, firstParent);
+                                    leavesMap.put(catID, firstParent);
+                                    primitives.add(firstParent);
+                                } else {
+                                    if (!categoryMap.containsKey(catID)) {
+                                        if (categoryMap.containsKey(before)) {
+                                            Primitive parent = categoryMap.get(before);
+                                            Primitive child = new Primitive(true);
+                                            child.setName(s.trim());
+                                            parent.getCategories().add(child);
+                                            categoryMap.put(catID, child);
+                                            if (depth == maxDepth) {
+                                                // MARK Parse rules II
                                                 ArrayList<PrimitiveRule> rules = new ArrayList<PrimitiveRule>();
                                                 for (int i = 1; i < data_segments.length; i++) {
                                                     data_segments[i] = data_segments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -624,6 +739,7 @@ public class CompositePrimitive extends Composite {
                                                         searchIndex += 4;
                                                         hasNot = true;
                                                     }
+
                                                     String criteria = ""; //$NON-NLS-1$
                                                     if (data_segments[i].startsWith("Order by ", searchIndex)) { //$NON-NLS-1$
                                                         searchIndex += 9;
@@ -684,306 +800,202 @@ public class CompositePrimitive extends Composite {
                                                         } catch (IndexOutOfBoundsException consumed) {}
                                                     }
                                                 }
+                                                leavesMap.put(catID, child);
                                                 leavesRulesMap.put(catID, rules);
-                                                Primitive firstParent = new Primitive(true);
-                                                firstParent.setName(s.trim());
-                                                categoryMap.put(catID, firstParent);
-                                                leavesMap.put(catID, firstParent);
-                                                primitives.add(firstParent);
-                                            } else {
-                                                if (!categoryMap.containsKey(catID)) {
-                                                    if (categoryMap.containsKey(before)) {
-                                                        Primitive parent = categoryMap.get(before);
-                                                        Primitive child = new Primitive(true);
-                                                        child.setName(s.trim());
-                                                        parent.getCategories().add(child);
-                                                        categoryMap.put(catID, child);
-                                                        if (depth == maxDepth) {
-                                                            // MARK Parse rules II
-                                                            ArrayList<PrimitiveRule> rules = new ArrayList<PrimitiveRule>();
-                                                            for (int i = 1; i < data_segments.length; i++) {
-                                                                data_segments[i] = data_segments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                                                                data_segments[i] = data_segments[i].replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
-                                                                int searchIndex = 0;
-                                                                boolean hasAnd = false;
-                                                                boolean hasNot = false;
-                                                                if (data_segments[i].startsWith("AND ")) { //$NON-NLS-1$
-                                                                    searchIndex = 4;
-                                                                    hasAnd = true;
-                                                                }
-                                                                if (data_segments[i].startsWith("OR ", searchIndex)) { //$NON-NLS-1$
-                                                                    searchIndex += 3;
-                                                                    hasAnd = false;
-                                                                }
-                                                                if (data_segments[i].startsWith("NOT ", searchIndex)) { //$NON-NLS-1$
-                                                                    searchIndex += 4;
-                                                                    hasNot = true;
-                                                                }
-
-                                                                String criteria = ""; //$NON-NLS-1$
-                                                                if (data_segments[i].startsWith("Order by ", searchIndex)) { //$NON-NLS-1$
-                                                                    searchIndex += 9;
-                                                                    if (data_segments[i].startsWith("fraction", searchIndex)) { //$NON-NLS-1$
-                                                                        rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_FRACTION));
-                                                                    } else if (data_segments[i].startsWith("last number", searchIndex)) { //$NON-NLS-1$
-                                                                        rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_LASTNUMBER));
-                                                                    } else if (data_segments[i].startsWith("alphabet", searchIndex)) { //$NON-NLS-1$
-                                                                        rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS));
-                                                                    }
-                                                                } else if (data_segments[i].startsWith("Filename ", searchIndex)) { //$NON-NLS-1$
-                                                                    searchIndex += 9;
-                                                                    if (data_segments[i].startsWith("starts with ", searchIndex)) { //$NON-NLS-1$
-                                                                        try {
-                                                                            criteria = data_segments[i].substring(searchIndex + 13, data_segments[i].length() - 1);
-                                                                            rules.add(new PrimitiveRule(Rule.FILENAME_STARTS_WITH, criteria, hasAnd, hasNot));
-                                                                        } catch (IndexOutOfBoundsException consumed) {}
-                                                                    } else if (data_segments[i].startsWith("ends with ", searchIndex)) { //$NON-NLS-1$
-                                                                        try {
-                                                                            criteria = data_segments[i].substring(searchIndex + 11, data_segments[i].length() - 1);
-                                                                            rules.add(new PrimitiveRule(Rule.FILENAME_ENDS_WITH, criteria, hasAnd, hasNot));
-                                                                        } catch (IndexOutOfBoundsException consumed) {}
-                                                                    } else if (data_segments[i].startsWith("contains ", searchIndex)) { //$NON-NLS-1$
-                                                                        try {
-                                                                            criteria = data_segments[i].substring(searchIndex + 10, data_segments[i].length() - 1);
-                                                                            rules.add(new PrimitiveRule(Rule.FILENAME_CONTAINS, criteria, hasAnd, hasNot));
-                                                                        } catch (IndexOutOfBoundsException consumed) {}
-                                                                    } else if (data_segments[i].startsWith("matches ", searchIndex)) { //$NON-NLS-1$
-                                                                        try {
-                                                                            criteria = data_segments[i].substring(searchIndex + 9, data_segments[i].length() - 1);
-                                                                            rules.add(new PrimitiveRule(Rule.FILENAME_MATCHES, criteria, hasAnd, hasNot));
-                                                                        } catch (IndexOutOfBoundsException consumed) {}
-                                                                    }
-                                                                } else if (data_segments[i].startsWith("Starts with ", searchIndex)) { //$NON-NLS-1$
-                                                                    try {
-                                                                        criteria = data_segments[i].substring(searchIndex + 13, data_segments[i].length() - 1);
-                                                                        rules.add(new PrimitiveRule(Rule.STARTS_WITH, criteria, hasAnd, hasNot));
-                                                                    } catch (IndexOutOfBoundsException consumed) {}
-                                                                } else if (data_segments[i].startsWith("Ends with ", searchIndex)) { //$NON-NLS-1$
-                                                                    try {
-                                                                        criteria = data_segments[i].substring(searchIndex + 11, data_segments[i].length() - 1);
-                                                                        rules.add(new PrimitiveRule(Rule.ENDS_WITH, criteria, hasAnd, hasNot));
-                                                                    } catch (IndexOutOfBoundsException consumed) {}
-                                                                } else if (data_segments[i].startsWith("Contains ", searchIndex)) { //$NON-NLS-1$
-                                                                    try {
-                                                                        criteria = data_segments[i].substring(searchIndex + 10, data_segments[i].length() - 1);
-                                                                        rules.add(new PrimitiveRule(Rule.CONTAINS, criteria, hasAnd, hasNot));
-                                                                    } catch (IndexOutOfBoundsException consumed) {}
-                                                                } else if (data_segments[i].startsWith("Matches ", searchIndex)) { //$NON-NLS-1$
-                                                                    try {
-                                                                        criteria = data_segments[i].substring(searchIndex + 9, data_segments[i].length() - 1);
-                                                                        rules.add(new PrimitiveRule(Rule.MATCHES, criteria, hasAnd, hasNot));
-                                                                    } catch (IndexOutOfBoundsException consumed) {}
-                                                                } else if (data_segments[i].startsWith("Title ", searchIndex)) { //$NON-NLS-1$
-                                                                    try {
-                                                                        criteria = data_segments[i].substring(searchIndex + 7, data_segments[i].length() - 1);
-                                                                        leavesTitleMap.put(catID, criteria);
-                                                                    } catch (IndexOutOfBoundsException consumed) {}
-                                                                }
-                                                            }
-                                                            leavesMap.put(catID, child);
-                                                            leavesRulesMap.put(catID, rules);
-                                                        }
-                                                    } else {
-                                                        Primitive firstParent = new Primitive(true);
-                                                        firstParent.setName(s.trim());
-                                                        categoryMap.put(catID, firstParent);
-                                                        primitives.add(firstParent);
-                                                    }
-                                                }
                                             }
-                                        }
-                                    }
-                                    // line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                                }
-                            } catch (LDParsingException e) {
-                            } catch (FileNotFoundException e) {
-                            } catch (UnsupportedEncodingException e) {
-                            } finally {
-                                try {
-                                    if (reader != null)
-                                        reader.close();
-                                } catch (LDParsingException e1) {
-                                }
-                            }
-                        }
-
-                        for (String folderPath : searchPaths) {
-                            File libFolder = new File(folderPath);
-                            if (!libFolder.isDirectory()) continue;
-                            UTF8BufferedReader reader = null;
-                            for (File f : libFolder.listFiles()) {
-                                final String fileName = f.getName();
-                                if (f.isFile() && fileName.matches(".*.dat")) { //$NON-NLS-1$
-                                    try {
-                                        Primitive newPrimitive = new Primitive();
-                                        ArrayList<PGData> data = new ArrayList<PGData>();
-                                        final String path = f.getAbsolutePath();
-                                        String description = ""; //$NON-NLS-1$
-                                        reader = new UTF8BufferedReader(path);
-                                        String line;
-                                        line = reader.readLine();
-                                        if (line != null) {
-                                            data.add(new PGDataInit());
-                                            PGData gd;
-                                            if (line.trim().startsWith("0")) { //$NON-NLS-1$
-                                                description = line.trim();
-                                                if (description.length() > 2) {
-                                                    description = description.substring(1).trim();
-                                                    if (description.startsWith("~")) continue; //$NON-NLS-1$
-                                                }
-                                            } else if ((gd = parseLine(line, 0, View.ID, new HashSet<String>())) != null) {
-                                                data.add(gd);
-                                            }
-                                            while ((line = reader.readLine()) != null) {
-                                                gd = parseLine(line, 0, View.ID, new HashSet<String>());
-                                                if (gd != null && gd.type() != 0) data.add(gd);
-                                            }
-                                            newPrimitive.setGraphicalData(data);
-                                            primitiveMap.put(path, newPrimitive);
-                                            if (folderPath.endsWith(hiResSuffix)) {
-                                                newPrimitive.setName("48\\" + fileName); //$NON-NLS-1$
-                                            } else {
-                                                newPrimitive.setName(fileName);
-                                            }
-                                            newPrimitive.setDescription(description);
-                                            newPrimitive.calculateZoom();
-                                            titleMap.put(newPrimitive.getName(), newPrimitive);
-                                        }
-                                    } catch (LDParsingException e) {
-                                    } catch (FileNotFoundException e) {
-                                    } catch (UnsupportedEncodingException e) {
-                                    } finally {
-                                        try {
-                                            if (reader != null)
-                                                reader.close();
-                                        } catch (LDParsingException e1) {
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } catch (SecurityException consumed) {
-
-                    }
-                    // Set category titles
-                    for (String catKey : leavesMap.keySet()) {
-                        String key = leavesTitleMap.get(catKey);
-                        if (key == null) continue;
-                        Primitive title = titleMap.get(key);
-                        if (title == null) continue;
-                        Primitive cat = leavesMap.get(catKey);
-                        cat.setZoom(title.getZoom());
-                        cat.setGraphicalData(title.getGraphicalData());
-                    }
-                    // Check which primitves belong in which category
-                    for (String key : primitiveMap.keySet()) {
-                        final Primitive p = primitiveMap.get(key);
-                        boolean matched = false;
-                        for (String catKey : leavesMap.keySet()) {
-                            ArrayList<PrimitiveRule> rules = leavesRulesMap.get(catKey);
-                            if (rules.isEmpty()) continue;
-                            boolean andCummulative = true;
-                            boolean orWasPrevious = true;
-                            int index = 0;
-                            for (PrimitiveRule r : rules) {
-                                if (r.isFunction()) continue;
-                                boolean match = r.matches(p) ^ r.isNot();
-                                // OR *match* -> Criteria is valid
-                                if (!match && !r.isAnd()) {
-                                    if (index + 1 < rules.size()) {
-                                        if (rules.get(index + 1).isAnd()) {
-                                            andCummulative = false;
-                                            continue;
-                                        }
-                                    }
-                                }
-                                if (match && !r.isAnd()) {
-                                    if (index + 1 < rules.size()) {
-                                        if (!rules.get(index + 1).isAnd()) {
-                                            matched = true;
-                                            Primitive cat = leavesMap.get(catKey);
-                                            cat.getCategories().add(p);
-                                            break;
                                         } else {
-                                            andCummulative = true;
-                                            continue;
+                                            Primitive firstParent = new Primitive(true);
+                                            firstParent.setName(s.trim());
+                                            categoryMap.put(catID, firstParent);
+                                            primitives.add(firstParent);
                                         }
-                                    } else {
-                                        matched = true;
-                                        Primitive cat = leavesMap.get(catKey);
-                                        cat.getCategories().add(p);
-                                        break;
                                     }
-                                }
-                                if (r.isAnd()) {
-                                    andCummulative = andCummulative && match;
-                                } else {
-                                    if (andCummulative && !orWasPrevious) {
-                                        matched = true;
-                                        Primitive cat = leavesMap.get(catKey);
-                                        cat.getCategories().add(p);
-                                        break;
-                                    }
-                                    andCummulative = true;
-                                }
-                                orWasPrevious = !r.isAnd();
-                                index++;
-                            }
-                            if (matched) break;
-                            if (andCummulative) {
-                                int j = 1;
-                                while (rules.get(rules.size() - j).isFunction()) {
-                                    j++;
-                                    if (j > rules.size()) {
-                                        j--;
-                                        break;
-                                    }
-                                }
-                                if (rules.get(rules.size() - j).isAnd()) {
-                                    matched = true;
-                                    Primitive cat = leavesMap.get(catKey);
-                                    cat.getCategories().add(p);
-                                    break;
                                 }
                             }
                         }
-                        if (!matched) {
-                            primitives.add(p);
-                        }
+                        // line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                     }
-                    // Sort the categories
-                    for (String catKey : leavesMap.keySet()) {
-                        Primitive cat = leavesMap.get(catKey);
-                        ArrayList<PrimitiveRule> rules = leavesRulesMap.get(catKey);
-                        boolean hasSpecialOrder = false;
-                        for (PrimitiveRule rule : rules) {
-                            final Rule r = rule.getRule();
-                            switch (r) {
-                            case FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS:
-                            case FILENAME_ORDER_BY_FRACTION:
-                            case FILENAME_ORDER_BY_LASTNUMBER:
-                                hasSpecialOrder = true;
-                                cat.sort(r);
-                                break;
-                            default:
-                                break;
-                            }
-                        }
-                        if (!hasSpecialOrder) {
-                            cat.sort(Rule.FILENAME_ORDER_BY_ALPHABET);
-                        }
+                } catch (LDParsingException e) {
+                } catch (FileNotFoundException e) {
+                } catch (UnsupportedEncodingException e) {
+                } finally {
+                    try {
+                        if (reader != null)
+                            reader.close();
+                    } catch (LDParsingException e1) {
                     }
-                    final Pattern pattern = Pattern.compile(".*"); //$NON-NLS-1$
-                    for (Primitive p : primitives) {
-                        p.search(pattern, false);
-                    }
-                    Collections.sort(primitives);
-                    stopDraw.set(false);
                 }
-            });
-        } catch (InvocationTargetException consumed) {
-        } catch (InterruptedException consumed) {
+            }
+
+            for (String folderPath : searchPaths) {
+                File libFolder = new File(folderPath);
+                if (!libFolder.isDirectory()) continue;
+                UTF8BufferedReader reader = null;
+                for (File f : libFolder.listFiles()) {
+                    final String fileName = f.getName();
+                    if (f.isFile() && fileName.matches(".*.dat")) { //$NON-NLS-1$
+                        try {
+                            Primitive newPrimitive = new Primitive();
+                            ArrayList<PGData> data = new ArrayList<PGData>();
+                            final String path = f.getAbsolutePath();
+                            String description = ""; //$NON-NLS-1$
+                            reader = new UTF8BufferedReader(path);
+                            String line;
+                            line = reader.readLine();
+                            if (line != null) {
+                                data.add(new PGDataInit());
+                                PGData gd;
+                                if (line.trim().startsWith("0")) { //$NON-NLS-1$
+                                    description = line.trim();
+                                    if (description.length() > 2) {
+                                        description = description.substring(1).trim();
+                                        if (description.startsWith("~")) continue; //$NON-NLS-1$
+                                    }
+                                } else if ((gd = parseLine(line, 0, View.ID, new HashSet<String>())) != null) {
+                                    data.add(gd);
+                                }
+                                while ((line = reader.readLine()) != null) {
+                                    gd = parseLine(line, 0, View.ID, new HashSet<String>());
+                                    if (gd != null && gd.type() != 0) data.add(gd);
+                                }
+                                newPrimitive.setGraphicalData(data);
+                                primitiveMap.put(path, newPrimitive);
+                                if (folderPath.endsWith(hiResSuffix)) {
+                                    newPrimitive.setName("48\\" + fileName); //$NON-NLS-1$
+                                } else {
+                                    newPrimitive.setName(fileName);
+                                }
+                                newPrimitive.setDescription(description);
+                                newPrimitive.calculateZoom();
+                                titleMap.put(newPrimitive.getName(), newPrimitive);
+                            }
+                        } catch (LDParsingException e) {
+                        } catch (FileNotFoundException e) {
+                        } catch (UnsupportedEncodingException e) {
+                        } finally {
+                            try {
+                                if (reader != null)
+                                    reader.close();
+                            } catch (LDParsingException e1) {
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (SecurityException consumed) {
+
         }
+        // Set category titles
+        for (String catKey : leavesMap.keySet()) {
+            String key = leavesTitleMap.get(catKey);
+            if (key == null) continue;
+            Primitive title = titleMap.get(key);
+            if (title == null) continue;
+            Primitive cat = leavesMap.get(catKey);
+            cat.setZoom(title.getZoom());
+            cat.setGraphicalData(title.getGraphicalData());
+        }
+        // Check which primitves belong in which category
+        for (String key : primitiveMap.keySet()) {
+            final Primitive p = primitiveMap.get(key);
+            boolean matched = false;
+            for (String catKey : leavesMap.keySet()) {
+                ArrayList<PrimitiveRule> rules = leavesRulesMap.get(catKey);
+                if (rules.isEmpty()) continue;
+                boolean andCummulative = true;
+                boolean orWasPrevious = true;
+                int index = 0;
+                for (PrimitiveRule r : rules) {
+                    if (r.isFunction()) continue;
+                    boolean match = r.matches(p) ^ r.isNot();
+                    // OR *match* -> Criteria is valid
+                    if (!match && !r.isAnd()) {
+                        if (index + 1 < rules.size()) {
+                            if (rules.get(index + 1).isAnd()) {
+                                andCummulative = false;
+                                continue;
+                            }
+                        }
+                    }
+                    if (match && !r.isAnd()) {
+                        if (index + 1 < rules.size()) {
+                            if (!rules.get(index + 1).isAnd()) {
+                                matched = true;
+                                Primitive cat = leavesMap.get(catKey);
+                                cat.getCategories().add(p);
+                                break;
+                            } else {
+                                andCummulative = true;
+                                continue;
+                            }
+                        } else {
+                            matched = true;
+                            Primitive cat = leavesMap.get(catKey);
+                            cat.getCategories().add(p);
+                            break;
+                        }
+                    }
+                    if (r.isAnd()) {
+                        andCummulative = andCummulative && match;
+                    } else {
+                        if (andCummulative && !orWasPrevious) {
+                            matched = true;
+                            Primitive cat = leavesMap.get(catKey);
+                            cat.getCategories().add(p);
+                            break;
+                        }
+                        andCummulative = true;
+                    }
+                    orWasPrevious = !r.isAnd();
+                    index++;
+                }
+                if (matched) break;
+                if (andCummulative) {
+                    int j = 1;
+                    while (rules.get(rules.size() - j).isFunction()) {
+                        j++;
+                        if (j > rules.size()) {
+                            j--;
+                            break;
+                        }
+                    }
+                    if (rules.get(rules.size() - j).isAnd()) {
+                        matched = true;
+                        Primitive cat = leavesMap.get(catKey);
+                        cat.getCategories().add(p);
+                        break;
+                    }
+                }
+            }
+            if (!matched) {
+                primitives.add(p);
+            }
+        }
+        // Sort the categories
+        for (String catKey : leavesMap.keySet()) {
+            Primitive cat = leavesMap.get(catKey);
+            ArrayList<PrimitiveRule> rules = leavesRulesMap.get(catKey);
+            boolean hasSpecialOrder = false;
+            for (PrimitiveRule rule : rules) {
+                final Rule r = rule.getRule();
+                switch (r) {
+                case FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS:
+                case FILENAME_ORDER_BY_FRACTION:
+                case FILENAME_ORDER_BY_LASTNUMBER:
+                    hasSpecialOrder = true;
+                    cat.sort(r);
+                    break;
+                default:
+                    break;
+                }
+            }
+            if (!hasSpecialOrder) {
+                cat.sort(Rule.FILENAME_ORDER_BY_ALPHABET);
+            }
+        }
+        searchResults.clear();
+        Collections.sort(primitives);
+        stopDraw.set(false);
     }
 
     // What follows now is a very minimalistic DAT file parser (<500LOC)
@@ -1320,5 +1332,19 @@ public class CompositePrimitive extends Composite {
         if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
 
         openGL.drawScene(-1, -1);
+    }
+
+    public void setSearchResults(ArrayList<Primitive> results) {
+        searchResults = results;
+    }
+
+    public ArrayList<Primitive> getSearchResults() {
+        return searchResults;
+    }
+
+    public void collapseAll( ) {
+        for (Primitive p : primitives) {
+            p.collapse();
+        }
     }
 }

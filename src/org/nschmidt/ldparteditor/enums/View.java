@@ -59,10 +59,10 @@ public enum View {
     public static final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat("###,##0.0000;-###,##0.0000"); //$NON-NLS-1$
 
     public static final float[] BFC_front_Colour_r = new float[] { 0f };
-    public static final float[] BFC_front_Colour_g = new float[] { 1f };
+    public static final float[] BFC_front_Colour_g = new float[] { .9f };
     public static final float[] BFC_front_Colour_b = new float[] { 0f };
 
-    public static final float[] BFC_back__Colour_r = new float[] { 1f };
+    public static final float[] BFC_back__Colour_r = new float[] { .9f };
     public static final float[] BFC_back__Colour_g = new float[] { 0f };
     public static final float[] BFC_back__Colour_b = new float[] { 0f };
 
