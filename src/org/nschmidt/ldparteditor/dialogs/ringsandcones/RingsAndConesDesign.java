@@ -75,56 +75,102 @@ class RingsAndConesDesign extends Dialog {
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
+            lbl.setText("The algorithm may only find an approximation.\n" //$NON-NLS-1$
+                    + "If you select a 4-4 disc in your model,\n" //$NON-NLS-1$
+                    + "the tool will place the output at the disc's location."); //$NON-NLS-1$ I18N Needs translation!
+        }
+        {
+            Label lbl = new Label(cmp_container, SWT.NONE);
             lbl.setText("Shape:"); //$NON-NLS-1$ I18N Needs translation!
         }
-
+        {
+            Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
+            this.cmb_colourise[0] = cmb_colourise;
+            cmb_colourise.setItems(new String[] {"Ring.", "Cone."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmb_colourise.setText(cmb_colourise.getItem(0));
+            cmb_colourise.select(0);
+        }
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Inner Radius:"); //$NON-NLS-1$ I18N Needs translation!
+            lbl.setText("Radius 1:"); //$NON-NLS-1$ I18N Needs translation!
+        }
+        {
+            BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
+            this.spn_angle [0] = spn;
+            spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            spn.setMaximum(new BigDecimal(90));
+            spn.setMinimum(new BigDecimal(0));
+            spn.setValue(new BigDecimal(1));
+        }
+        {
+            Label lbl = new Label(cmp_container, SWT.NONE);
+            lbl.setText("Radius 2:"); //$NON-NLS-1$ I18N Needs translation!
+        }
+        {
+            BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
+            this.spn_angle [0] = spn;
+            spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            spn.setMaximum(new BigDecimal(90));
+            spn.setMinimum(new BigDecimal(0));
+            spn.setValue(new BigDecimal(1));
         }
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Outer Radius:"); //$NON-NLS-1$ I18N Needs translation!
+            lbl.setText("Height:"); //$NON-NLS-1$ I18N Needs translation!
         }
-
         {
-            Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Hight:"); //$NON-NLS-1$ I18N Needs translation!
+            BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
+            this.spn_angle [0] = spn;
+            spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            spn.setMaximum(new BigDecimal(90));
+            spn.setMinimum(new BigDecimal(0));
+            spn.setValue(new BigDecimal(1));
         }
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
             lbl.setText("Angle:"); //$NON-NLS-1$ I18N Needs translation!
         }
+        {
+            BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
+            this.spn_angle [0] = spn;
+            spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            spn.setMaximum(new BigDecimal(90));
+            spn.setMinimum(new BigDecimal(0));
+            spn.setValue(new BigDecimal(1));
+        }
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
             lbl.setText("Maximum Amount:"); //$NON-NLS-1$ I18N Needs translation!
         }
-
         {
-            Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Use Non-Existing Primitives:"); //$NON-NLS-1$ I18N Needs translation!
+            BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
+            this.spn_angle [0] = spn;
+            spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            spn.setMaximum(new BigDecimal(90));
+            spn.setMinimum(new BigDecimal(0));
+            spn.setValue(new BigDecimal(1));
         }
-
-
-        BigDecimalSpinner spn_angle = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_angle [0] = spn_angle;
-        spn_angle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_angle.setMaximum(new BigDecimal(90));
-        spn_angle.setMinimum(new BigDecimal(0));
-        spn_angle.setValue(new BigDecimal(1));
 
         {
             Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {"No colour modifications.", "Converted triangles are colored in yellow, newly formed rect primitives are colored blue."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb_colourise.setItems(new String[] {"Use only existing primitives.", "Use all possible primitives."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
             cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_colourise.setText(cmb_colourise.getItem(1));
-            cmb_colourise.select(1);
+            cmb_colourise.setText(cmb_colourise.getItem(0));
+            cmb_colourise.select(0);
         }
-
+        {
+            Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
+            this.cmb_colourise[0] = cmb_colourise;
+            cmb_colourise.setItems(new String[] {"Create nothing, if no solution was found.", "Create the shape for me."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmb_colourise.setText(cmb_colourise.getItem(0));
+            cmb_colourise.select(0);
+        }
         cmp_container.pack();
         return cmp_container;
     }
