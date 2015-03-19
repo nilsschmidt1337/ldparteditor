@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
@@ -57,8 +58,13 @@ import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
+import org.nschmidt.ldparteditor.data.GData2;
+import org.nschmidt.ldparteditor.data.GData3;
+import org.nschmidt.ldparteditor.data.GData4;
+import org.nschmidt.ldparteditor.data.GData5;
 import org.nschmidt.ldparteditor.data.ParsingResult;
 import org.nschmidt.ldparteditor.data.Primitive;
+import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
@@ -372,10 +378,42 @@ public class Composite3D extends ScalableComposite {
                             }
                         }
                     }
+
+                    final Integer index2;
+                    final VertexManager vm = df.getVertexManager();
+                    if (vm.getSelectedData().size() > 0) {
+                        Integer index = df.getDrawPerLine_NOCLONE().getKey(vm.getSelectedData().iterator().next());
+                        if (index == null) {
+                            if (vm.getSelectedSubfiles().size() > 0) {
+                                index = df.getDrawPerLine_NOCLONE().getKey(vm.getSelectedSubfiles().iterator().next());
+                                if (index == null) {
+                                    return;
+                                }
+                            } else {
+                                return;
+                            }
+                        }
+                        index2 = index;
+                    } else {
+                        return;
+                    }
+
+                    final HashSet<Integer> selectedIndicies = new HashSet<Integer>();
+                    final TreeSet<Vertex> selectedVertices = new TreeSet<Vertex>();
+                    selectedVertices.addAll(vm.getSelectedVertices());
+                    for (GData gd : vm.getSelectedData()) {
+                        final Integer i = df.getDrawPerLine_NOCLONE().getKey(gd);
+                        if (i != null && gd.type() > 0 && gd.type() < 6) {
+                            selectedIndicies.add(i);
+                        }
+                    }
+
                     // Project.getParsedFiles().add(df); IS NECESSARY HERE
                     Project.getParsedFiles().add(df);
-                    EditorTextWindow win = new EditorTextWindow();
+
+                    final EditorTextWindow win = new EditorTextWindow();
                     win.run(df);
+                    win.open();
                     for (final CTabItem t : win.getTabFolder().getItems()) {
                         if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                             win.getTabFolder().setSelection(t);
@@ -383,10 +421,38 @@ public class Composite3D extends ScalableComposite {
                             Display.getDefault().asyncExec(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ((CompositeTab) t).getTextComposite().setTopIndex(df.getDrawPerLine_NOCLONE().getKey(df.getVertexManager().getSelectedData().iterator().next()) - 1);
+
+                                    ((CompositeTab) t).getTextComposite().setTopIndex(index2 - 1);
+
+                                    for (Integer i : selectedIndicies) {
+                                        final GData gs = df.getDrawPerLine_NOCLONE().getValue(i);
+                                        if (gs != null && gs.type() > 0 && gs.type() < 6) {
+                                            switch (gs.type()) {
+                                            case 1:
+                                                vm.getSelectedSubfiles().add((GData1) gs);
+                                                break;
+                                            case 2:
+                                                vm.getSelectedLines().add((GData2) gs);
+                                                break;
+                                            case 3:
+                                                vm.getSelectedTriangles().add((GData3) gs);
+                                                break;
+                                            case 4:
+                                                vm.getSelectedQuads().add((GData4) gs);
+                                                break;
+                                            case 5:
+                                                vm.getSelectedCondlines().add((GData5) gs);
+                                                break;
+                                            default:
+                                                break;
+                                            }
+                                            vm.getSelectedData().add(gs);
+                                        }
+                                    }
+                                    vm.getSelectedVertices().addAll(selectedVertices);
+                                    ((CompositeTab) t).getTextComposite().redraw();
                                 }
                             });
-                            win.open();
                             return;
                         }
                     }

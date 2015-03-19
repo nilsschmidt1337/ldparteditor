@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 
 /**
  * The rings and cones dialog
@@ -41,13 +42,15 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
  */
 class RingsAndConesDesign extends Dialog {
 
-    final BigDecimalSpinner[] spn_angle = new BigDecimalSpinner[1];
-    final Combo[] cmb_scope = new Combo[1];
 
-    final Combo[] cmb_colourise = new Combo[1];
-    final Combo[] cmb_noQuadConversation = new Combo[1];
-    final Combo[] cmb_noRectConversationOnAdjacentCondlines = new Combo[1];
-    final Combo[] cmb_noBorderedQuadToRectConversation = new Combo[1];
+    final Combo[] cmb_createWhat = new Combo[1];;
+    final Combo[] cmb_existingOnly = new Combo[1];
+    final IntegerSpinner[] spn_amount = new IntegerSpinner[1];
+    final Combo[] cmb_angle = new Combo[1];
+    final BigDecimalSpinner[] spn_height = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spn_radi1 = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spn_radi2 = new BigDecimalSpinner[1];
+    final Combo[] cmb_shape = new Combo[1];
 
     // Use final only for subclass/listener references!
 
@@ -84,45 +87,45 @@ class RingsAndConesDesign extends Dialog {
             lbl.setText("Shape:"); //$NON-NLS-1$ I18N Needs translation!
         }
         {
-            Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {"Ring.", "Cone."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-            cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_colourise.setText(cmb_colourise.getItem(0));
-            cmb_colourise.select(0);
+            Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
+            this.cmb_shape[0] = cmb;
+            cmb.setItems(new String[] {"Ring.", "Cone."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmb.setText(cmb.getItem(0));
+            cmb.select(0);
         }
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Radius 1:"); //$NON-NLS-1$ I18N Needs translation!
+            lbl.setText("Radius 1 (LDU):"); //$NON-NLS-1$ I18N Needs translation!
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
-            this.spn_angle [0] = spn;
+            this.spn_radi1 [0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             spn.setMaximum(new BigDecimal(90));
-            spn.setMinimum(new BigDecimal(0));
+            spn.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
             spn.setValue(new BigDecimal(1));
         }
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Radius 2:"); //$NON-NLS-1$ I18N Needs translation!
+            lbl.setText("Radius 2 (LDU):"); //$NON-NLS-1$ I18N Needs translation!
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
-            this.spn_angle [0] = spn;
+            this.spn_radi2[0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            spn.setMaximum(new BigDecimal(90));
-            spn.setMinimum(new BigDecimal(0));
+            spn.setMaximum(new BigDecimal(1000000));
+            spn.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
             spn.setValue(new BigDecimal(1));
         }
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Height:"); //$NON-NLS-1$ I18N Needs translation!
+            lbl.setText("Height (LDU):"); //$NON-NLS-1$ I18N Needs translation!
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
-            this.spn_angle [0] = spn;
+            this.spn_height[0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             spn.setMaximum(new BigDecimal(90));
             spn.setMinimum(new BigDecimal(0));
@@ -134,12 +137,14 @@ class RingsAndConesDesign extends Dialog {
             lbl.setText("Angle:"); //$NON-NLS-1$ I18N Needs translation!
         }
         {
-            BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
-            this.spn_angle [0] = spn;
-            spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            spn.setMaximum(new BigDecimal(90));
-            spn.setMinimum(new BigDecimal(0));
-            spn.setValue(new BigDecimal(1));
+            Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
+            this.cmb_angle[0] = cmb;
+            cmb.setItems(new String[] {
+                    "Use only existing primitives.", //$NON-NLS-1$
+            "Use all possible primitives."}); //$NON-NLS-1$
+            cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmb.setText(cmb.getItem(0));
+            cmb.select(0);
         }
 
         {
@@ -147,29 +152,29 @@ class RingsAndConesDesign extends Dialog {
             lbl.setText("Maximum Amount:"); //$NON-NLS-1$ I18N Needs translation!
         }
         {
-            BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
-            this.spn_angle [0] = spn;
+            IntegerSpinner spn = new IntegerSpinner(cmp_container, SWT.NONE);
+            this.spn_amount [0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            spn.setMaximum(new BigDecimal(90));
-            spn.setMinimum(new BigDecimal(0));
-            spn.setValue(new BigDecimal(1));
+            spn.setMaximum(10);
+            spn.setMinimum(1);
+            spn.setValue(3);
         }
 
         {
-            Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {"Use only existing primitives.", "Use all possible primitives."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-            cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_colourise.setText(cmb_colourise.getItem(0));
-            cmb_colourise.select(0);
+            Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
+            this.cmb_existingOnly[0] = cmb;
+            cmb.setItems(new String[] {"Use only existing primitives.", "Use all possible primitives."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmb.setText(cmb.getItem(0));
+            cmb.select(0);
         }
         {
-            Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {"Create nothing, if no solution was found.", "Create the shape for me."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-            cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_colourise.setText(cmb_colourise.getItem(0));
-            cmb_colourise.select(0);
+            Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
+            this.cmb_createWhat[0] = cmb;
+            cmb.setItems(new String[] {"Create nothing, if no solution was found.", "Create the shape for me."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmb.setText(cmb.getItem(0));
+            cmb.select(0);
         }
         cmp_container.pack();
         return cmp_container;

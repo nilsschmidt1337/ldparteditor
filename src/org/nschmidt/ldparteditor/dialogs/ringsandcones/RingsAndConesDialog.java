@@ -44,7 +44,7 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_angle[0].addValueChangeListener(new ValueChangeAdapter() {
+        spn_height[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
             }
