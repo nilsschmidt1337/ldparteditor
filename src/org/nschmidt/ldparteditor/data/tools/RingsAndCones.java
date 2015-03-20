@@ -17,6 +17,9 @@ package org.nschmidt.ldparteditor.data.tools;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -33,7 +36,14 @@ import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
 public enum RingsAndCones {
     INSTANCE;
 
+
+    private static List<Primitive> prims = null;
+
+    private static Map<Integer, boolean[]> existanceMap = new HashMap<Integer, boolean[]>();
+
     public static void solve(Shell sh, final VertexManager vm, final ArrayList<Primitive> allPrimitives, final RingsAndConesSettings rs, boolean syncWithTextEditor) {
+        prims = allPrimitives;
+        initExistanceMap(rs.isUsingCones());
         try
         {
             new ProgressMonitorDialog(sh).run(true, false, new IRunnableWithProgress()
@@ -47,6 +57,25 @@ public enum RingsAndCones {
         }catch (InvocationTargetException consumed) {
         } catch (InterruptedException consumed) {
         }
+    }
+
+    private static void initExistanceMap(boolean cones) {
+        existanceMap.clear();
+        for (Primitive p2 : prims) {
+            if (!p2.isCategory()) {
+                for (Primitive p : p2.getAllPrimitives()) {
+
+                }
+            }
+        }
+    }
+
+    private static boolean primitiveExists(int radius, int angle) {
+        boolean[] lst = null;
+        if ((lst = existanceMap.get(radius)) != null) {
+            return lst[angle];
+        }
+        return false;
     }
 
 }
