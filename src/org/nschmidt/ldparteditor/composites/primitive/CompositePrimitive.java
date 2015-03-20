@@ -827,11 +827,20 @@ public class CompositePrimitive extends Composite {
                 }
             }
 
+            boolean isUppercase = false;
+            boolean isEmpty = false;
             for (String folderPath : searchPaths) {
                 File libFolder = new File(folderPath);
                 if (!libFolder.isDirectory()) continue;
                 UTF8BufferedReader reader = null;
-                for (File f : libFolder.listFiles()) {
+                File[] files = libFolder.listFiles();
+                if (isUppercase && !isEmpty) {
+                    isUppercase = false;
+                    continue;
+                }
+                isEmpty = true;
+                isUppercase = !isUppercase;
+                for (File f : files) {
                     final String fileName = f.getName();
                     if (f.isFile() && fileName.matches(".*.dat")) { //$NON-NLS-1$
                         try {
@@ -868,6 +877,7 @@ public class CompositePrimitive extends Composite {
                                 newPrimitive.setDescription(description);
                                 newPrimitive.calculateZoom();
                                 titleMap.put(newPrimitive.getName(), newPrimitive);
+                                isEmpty = false;
                             }
                         } catch (LDParsingException e) {
                         } catch (FileNotFoundException e) {
