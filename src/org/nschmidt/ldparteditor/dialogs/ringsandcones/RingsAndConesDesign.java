@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 
@@ -78,7 +79,7 @@ class RingsAndConesDesign extends Dialog {
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("The algorithm may only find an approximation.\n" //$NON-NLS-1$
+            lbl.setText("The search may only find an approximation.\n" //$NON-NLS-1$
                     + "If you select a 4-4 disc in your model,\n" //$NON-NLS-1$
                     + "the tool will place the output at the disc's location."); //$NON-NLS-1$ I18N Needs translation!
         }
@@ -140,11 +141,65 @@ class RingsAndConesDesign extends Dialog {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_angle[0] = cmb;
             cmb.setItems(new String[] {
-                    "Use only existing primitives.", //$NON-NLS-1$
-            "Use all possible primitives."}); //$NON-NLS-1$
+                    "1-48  (  7.5°)", //$NON-NLS-1$
+                    "1-24  ( 15.0°)", //$NON-NLS-1$
+                    "1-16  ( 22.5°)", //$NON-NLS-1$
+                    "1-12  ( 30.0°)", //$NON-NLS-1$
+                    "5-48  ( 37.5°)", //$NON-NLS-1$
+                    "1-8   ( 45.0°)", //$NON-NLS-1$
+                    "7-48  ( 52.5°)", //$NON-NLS-1$
+                    "1-6   ( 60.0°)", //$NON-NLS-1$
+                    "3-16  ( 67.5°)", //$NON-NLS-1$
+                    "5-24  ( 75.0°)", //$NON-NLS-1$
+                    "11-48 ( 82.5°)", //$NON-NLS-1$
+                    "1-4   ( 90.0°)", //$NON-NLS-1$
+                    "13-48 ( 97.5°)", //$NON-NLS-1$
+                    "7-24  (105.0°)", //$NON-NLS-1$
+                    "5-16  (112.5°)", //$NON-NLS-1$
+                    "1-3   (120.0°)", //$NON-NLS-1$
+                    "17-48 (127.5°)", //$NON-NLS-1$
+                    "3-8   (135.0°)", //$NON-NLS-1$
+                    "19-48 (142.5°)", //$NON-NLS-1$
+                    "5-12  (150.0°)", //$NON-NLS-1$
+                    "7-16  (157.5°)", //$NON-NLS-1$
+                    "11-24 (165.0°)", //$NON-NLS-1$
+                    "23-48 (172.5°)", //$NON-NLS-1$
+                    "2-4   (180.0°)", //$NON-NLS-1$
+                    "25-48 (187.5°)", //$NON-NLS-1$
+                    "13-48 (195.0°)", //$NON-NLS-1$
+                    "9-16  (202.5°)", //$NON-NLS-1$
+                    "7-12  (210.0°)", //$NON-NLS-1$
+                    "29-48 (217.5°)", //$NON-NLS-1$
+                    "5-8   (225.0°)", //$NON-NLS-1$
+                    "31-48 (232.5°)", //$NON-NLS-1$
+                    "2-3   (240.0°)", //$NON-NLS-1$
+                    "11-16 (247.5°)", //$NON-NLS-1$
+                    "17-24 (255.0°)", //$NON-NLS-1$
+                    "35-48 (262.5°)", //$NON-NLS-1$
+                    "3-4   (270.0°)", //$NON-NLS-1$
+                    "37-48 (277.5°)", //$NON-NLS-1$
+                    "19-24 (285.0°)", //$NON-NLS-1$
+                    "13-16 (292.5°)", //$NON-NLS-1$
+                    "5-6   (300.0°)", //$NON-NLS-1$
+                    "41-48 (307.5°)", //$NON-NLS-1$
+                    "7-8   (315.0°)", //$NON-NLS-1$
+                    "43-48 (322.5°)", //$NON-NLS-1$
+                    "11-12 (330.0°)", //$NON-NLS-1$
+                    "15-16 (337.5°)", //$NON-NLS-1$
+                    "23-24 (345.0°)", //$NON-NLS-1$
+                    "47-48 (352.5°)", //$NON-NLS-1$
+                    "4-4   (360.0°)" //$NON-NLS-1$
+            });
+            {
+                int i = 0;
+                for (String it : cmb.getItems()) {
+                    cmb.setItem(i, it.replace('.', View.NUMBER_FORMAT4F.getDecimalFormatSymbols().getDecimalSeparator()));
+                    i++;
+                }
+            }
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb.setText(cmb.getItem(0));
-            cmb.select(0);
+            cmb.setText(cmb.getItem(47));
+            cmb.select(47);
         }
 
         {
