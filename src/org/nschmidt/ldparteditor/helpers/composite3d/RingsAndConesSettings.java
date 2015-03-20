@@ -23,10 +23,24 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
  */
 public class RingsAndConesSettings {
     private boolean usingCones = false;
+    private boolean usingExistingPrimitives = false;
+    private boolean creatingShapeForNoSolution = false;
     public boolean isUsingCones() {
         return usingCones;
     }
     public void setUsingCones(boolean usingCones) {
         this.usingCones = usingCones;
+    }
+    public boolean isUsingExistingPrimitives() {
+        return usingExistingPrimitives;
+    }
+    public void setUsingExistingPrimitives(boolean usingExistingPrimitives) {
+        this.usingExistingPrimitives = usingExistingPrimitives;
+    }
+    public boolean isCreatingShapeForNoSolution() {
+        return creatingShapeForNoSolution;
+    }
+    public void setCreatingShapeForNoSolution(boolean creatingShapeForNoSolution) {
+        this.creatingShapeForNoSolution = creatingShapeForNoSolution;
     }
 }
