@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
@@ -1072,16 +1073,31 @@ public class Composite3D extends ScalableComposite {
         DropTarget target = new DropTarget(this, operations);
         target.setTransfer(types);
         target.addDropListener(new DropTargetAdapter() {
+
+        	@Override
+        	public void dragEnter(DropTargetEvent event) {
+        		  final org.nschmidt.ldparteditor.data.Primitive p = Editor3DWindow.getWindow().getCompositePrimitive().getSelectedPrimitive();
+                  if (p == null || p.isCategory()) return;
+                  setDraggedPrimitive(p);
+        	}
+
             @Override
             public void dragOver(DropTargetEvent event) {
                 final org.nschmidt.ldparteditor.data.Primitive p = Editor3DWindow.getWindow().getCompositePrimitive().getSelectedPrimitive();
                 if (p == null || p.isCategory()) return;
                 setDraggedPrimitive(p);
-                Event ev = new Event();
+                final Event ev = new Event();
                 ev.x = event.x - toDisplay(1, 1).x;
                 ev.y = event.y - toDisplay(1, 1).y;
                 ev.stateMask = ev.stateMask;
-                mouse.mouseMove(ev);
+                Display.getCurrent().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						try {
+						mouse.mouseMove(ev);
+						} catch (SWTException swtEx) { /* consumed */ }
+					}
+				});
             }
 
             @Override
