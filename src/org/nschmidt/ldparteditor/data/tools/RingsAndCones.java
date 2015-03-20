@@ -19,12 +19,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
@@ -42,8 +45,10 @@ public enum RingsAndCones {
     private static Map<Integer, boolean[]> existanceMap = new HashMap<Integer, boolean[]>();
 
     public static void solve(Shell sh, final VertexManager vm, final ArrayList<Primitive> allPrimitives, final RingsAndConesSettings rs, boolean syncWithTextEditor) {
-        prims = allPrimitives;
-        initExistanceMap(rs.isUsingCones());
+        if (rs.isUsingExistingPrimitives()) {
+            prims = allPrimitives;
+            initExistanceMap(rs.isUsingCones());
+        }
         try
         {
             new ProgressMonitorDialog(sh).run(true, false, new IRunnableWithProgress()
@@ -52,6 +57,46 @@ public enum RingsAndCones {
                 public void run(final IProgressMonitor m) throws InvocationTargetException, InterruptedException
                 {
                     m.beginTask("Solving...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+
+                    int solutionCount = 0;
+
+                    // TODO We need two different solvers here.
+
+                    // Solver 1: A specialised version, which uses only existing primitives
+                    // Solver 2: A general solver, which is not bound to use only existing primitives
+
+                    // MARK Solver 1
+                    if (rs.isUsingExistingPrimitives()) {
+
+                    } else {
+                        // MARK Solver 1
+
+                    }
+
+                    // TODO The solution needs to be evaluated here
+                    if (solutionCount == 0) {
+                        if (rs.isCreatingShapeForNoSolution()) {
+
+                        } else {
+                            return;
+                        }
+                    } else {
+
+                    }
+
+                    // TODO The solution should be transformed to the location of a selected 4-4disc.dat if any was selected.
+                    GData1 disc44 = null;
+                    for (GData gd : vm.getSelectedData()) {
+                        if (gd.type() == 1
+                                && (gd.toString().toLowerCase(Locale.ENGLISH).endsWith(" 4-4disc.dat") //$NON-NLS-1$
+                                        || gd.toString().toLowerCase(Locale.ENGLISH).endsWith(" 48\4-4disc.dat"))) { //$NON-NLS-1$
+                            disc44 = (GData1) gd;
+                        }
+                    }
+                    if (disc44 != null) {
+
+                    }
+
                 }
             });
         }catch (InvocationTargetException consumed) {
