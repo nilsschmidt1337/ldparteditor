@@ -73,6 +73,22 @@ public class Primitive implements Comparable<Primitive> {
         }
     }
 
+    public ArrayList<Primitive> getAllPrimitives() {
+        if (isCategory()) {
+            ArrayList<Primitive> result = new ArrayList<Primitive>();
+            result.addAll(primitives);
+            for (Primitive p : primitivesExtended) {
+                result.addAll(p.getPrimitives());
+            }
+            if (result.size() == 1) {
+                return new ArrayList<Primitive>();
+            }
+            return result;
+        } else {
+            return new ArrayList<Primitive>(primitives);
+        }
+    }
+
     public ArrayList<Primitive> getCategories() {
         return primitivesExtended;
     }

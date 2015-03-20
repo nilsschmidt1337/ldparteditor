@@ -22,5 +22,11 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
  *
  */
 public class RingsAndConesSettings {
-
+    private boolean usingCones = false;
+    public boolean isUsingCones() {
+        return usingCones;
+    }
+    public void setUsingCones(boolean usingCones) {
+        this.usingCones = usingCones;
+    }
 }
