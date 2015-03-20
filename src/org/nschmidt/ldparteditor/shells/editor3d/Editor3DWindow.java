@@ -79,6 +79,7 @@ import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.ReferenceParser;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.data.tools.RingsAndCones;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
 import org.nschmidt.ldparteditor.dialogs.copy.CopyDialog;
 import org.nschmidt.ldparteditor.dialogs.edger2.EdgerDialog;
@@ -117,6 +118,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.IsecalcSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
@@ -3371,8 +3373,10 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new RingsAndConesDialog(getShell()).open() == IDialogConstants.OK_ID)
-                            return;
+                        RingsAndConesSettings ris = new RingsAndConesSettings();
+                        if (new RingsAndConesDialog(getShell(), ris).open() == IDialogConstants.OK_ID) {
+                            RingsAndCones.solve(Editor3DWindow.getWindow().getShell(), vm, cmp_Primitives[0].getPrimitives(), ris, true);
+                        }
                     }
                 }
             }

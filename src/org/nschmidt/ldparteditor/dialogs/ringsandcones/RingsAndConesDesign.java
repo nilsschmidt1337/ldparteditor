@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 
@@ -43,6 +44,7 @@ import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
  */
 class RingsAndConesDesign extends Dialog {
 
+    final RingsAndConesSettings rs;
 
     final Combo[] cmb_createWhat = new Combo[1];;
     final Combo[] cmb_existingOnly = new Combo[1];
@@ -55,8 +57,9 @@ class RingsAndConesDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    RingsAndConesDesign(Shell parentShell) {
+    RingsAndConesDesign(Shell parentShell, RingsAndConesSettings rs) {
         super(parentShell);
+        this.rs = rs;
     }
 
     /**

@@ -13,44 +13,40 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.dialogs.ringsandcones;
+package org.nschmidt.ldparteditor.data.tools;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.data.Primitive;
+import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
- *
- * <p>
- * Note: This class should be instantiated, it defines all listeners and part of
- * the business logic. It overrides the {@code open()} method to invoke the
- * listener definitions ;)
- *
  * @author nils
  *
  */
-public class RingsAndConesDialog extends RingsAndConesDesign {
+public enum RingsAndCones {
+    INSTANCE;
 
-    /**
-     * Create the dialog.
-     *
-     * @param parentShell
-     */
-    public RingsAndConesDialog(Shell parentShell, RingsAndConesSettings rs) {
-        super(parentShell, rs);
-    }
-
-    @Override
-    public int open() {
-        super.create();
-        // MARK All final listeners will be configured here..
-        spn_height[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-            }
-        });
-        return super.open();
+    public static void solve(Shell sh, final VertexManager vm, final ArrayList<Primitive> allPrimitives, final RingsAndConesSettings rs, boolean syncWithTextEditor) {
+        try
+        {
+            new ProgressMonitorDialog(sh).run(true, false, new IRunnableWithProgress()
+            {
+                @Override
+                public void run(final IProgressMonitor m) throws InvocationTargetException, InterruptedException
+                {
+                    m.beginTask("Solving...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                }
+            });
+        }catch (InvocationTargetException consumed) {
+        } catch (InterruptedException consumed) {
+        }
     }
 
 }
