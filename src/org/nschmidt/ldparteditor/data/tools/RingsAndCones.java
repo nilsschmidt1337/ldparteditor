@@ -44,11 +44,11 @@ public enum RingsAndCones {
 
     private static List<Primitive> prims = null;
 
-    private static Map<Integer, boolean[]> existanceMap = new HashMap<Integer, boolean[]>();
+    private static Map<Long, boolean[]> existanceMap = new HashMap<Long, boolean[]>();
 
     public static void solve(Shell sh, final VertexManager vm, final ArrayList<Primitive> allPrimitives, final RingsAndConesSettings rs, boolean syncWithTextEditor) {
-        long radi_min = rs.getRadius1().multiply(new BigDecimal(100000)).longValue();
-        long radi_max = rs.getRadius2().multiply(new BigDecimal(100000)).longValue();
+        long radi_min = rs.getRadius1().multiply(new BigDecimal(100000000)).longValue();
+        long radi_max = rs.getRadius2().multiply(new BigDecimal(100000000)).longValue();
 
         // Throw an arithmetic exception in case the radii were to big.
         if (new BigDecimal(radi_min).compareTo(rs.getRadius1()) < 0 || new BigDecimal(radi_max).compareTo(rs.getRadius2()) < 0) {
@@ -185,7 +185,7 @@ public enum RingsAndCones {
                                 if (readDigit) {
                                     try {
                                         int index = (int) (48.0 * Double.parseDouble(upper.toString()) / Double.parseDouble(lower.toString())) - 1;
-                                        int radius = Integer.parseInt(number.toString());
+                                        long radius = Long.parseLong(number.toString()) * 100000000L;
                                         if (existanceMap.containsKey(radius)) {
                                             existanceMap.get(radius)[index] = true;
                                         } else {

@@ -108,7 +108,7 @@ class RingsAndConesDesign extends Dialog {
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             spn.setMaximum(new BigDecimal(10000));
             spn.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
-            spn.setValue(new BigDecimal(1));
+            spn.setValue(rs.getRadius1());
         }
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
@@ -120,12 +120,12 @@ class RingsAndConesDesign extends Dialog {
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             spn.setMaximum(new BigDecimal(10000));
             spn.setMinimum(new BigDecimal("0.0002")); //$NON-NLS-1$
-            spn.setValue(new BigDecimal(1));
+            spn.setValue(rs.getRadius2());
         }
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Height (LDU):"); //$NON-NLS-1$ I18N Needs translation!
+            lbl.setText("Height, for Cones (LDU):"); //$NON-NLS-1$ I18N Needs translation!
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
