@@ -15,6 +15,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.ringsandcones;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
@@ -60,6 +63,12 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
                 rs.setRadius2(spn_radi2[0].getValue());
+            }
+        });
+        cmb_existingOnly[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                rs.setUsingExistingPrimitives(cmb_existingOnly[0].getSelectionIndex() == 0);
             }
         });
         return super.open();

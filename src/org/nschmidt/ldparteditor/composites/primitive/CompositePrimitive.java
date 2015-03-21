@@ -529,19 +529,19 @@ public class CompositePrimitive extends Composite {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                     monitor.beginTask("Loading Primitives...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
-                    load();
+                    load(true);
                 }
             });
         } catch (InvocationTargetException consumed) {
-            load();
+            load(false);
         } catch (InterruptedException consumed) {
-            load();
+            load(false);
         }
     }
 
-    public void load() {
+    public void load(boolean waitForRenderer) {
         // Pause primitive renderer
-        if (!stopDraw.get() && !dontRefresh.get()) {
+        if (!stopDraw.get() && !dontRefresh.get() && waitForRenderer) {
             stopDraw.set(true);
             hasDrawn.set(false);
             while (!hasDrawn.get()) {
