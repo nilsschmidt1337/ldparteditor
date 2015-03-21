@@ -405,21 +405,22 @@ public enum RingsAndCones {
                     // rounded to 4 decimal places, multiplied by radius"
                     // This is really important an must be considered!
 
-                    final int numFaces = rs.isUsingHiRes() ? 48 : 16;
+                    int numFaces = rs.isUsingHiRes() ? 48 : 16;
                     double deltaA = Math.PI * 2.0 / numFaces;
                     double a = deltaA;
+                    numFaces = (int) (numFaces * ((double) rs.getAngle() / (double) numFaces));
                     BigDecimal r = rs.getRadius1().compareTo(rs.getRadius2()) < 0 ? rs.getRadius2() : rs.getRadius1();
                     BigDecimal y = BigDecimal.ZERO;
                     if (rs.isUsingCones()) {
                         y = rs.getHeight();
                     }
-                    BigDecimal px = BigDecimal.ONE;
+                    BigDecimal px = r;
                     BigDecimal pz = BigDecimal.ZERO;
                     for (int i = 0; i < numFaces; i++) {
-                        BigDecimal x = new BigDecimal(Math.cos(a));
+                        BigDecimal x = new BigDecimal(Math.cos(a) + "", Threshold.mc); //$NON-NLS-1$
                         x = x.setScale(4, RoundingMode.HALF_UP);
                         x = x.multiply(r);
-                        BigDecimal z = new BigDecimal(Math.sin(a));
+                        BigDecimal z = new BigDecimal(Math.sin(a) + "", Threshold.mc); //$NON-NLS-1$
                         z = z.setScale(4, RoundingMode.HALF_UP);
                         z = z.multiply(r);
                         String line3 = "3 16 0 0 0 " + px + " " + y + " " + pz + " " + x + " " + y + " " + z;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
@@ -438,14 +439,13 @@ public enum RingsAndCones {
                             nz = nz.setScale(4, RoundingMode.HALF_UP);
                             nz = nz.multiply(r);
 
-                            String line5 = "5 16 0 0 0 " + x + " " + y + " " + z + " " + px + " " + y + " " + pz + " " + nx + " " + y + " " + nz;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+                            String line5 = "5 24 0 0 0 " + px + " " + y + " " + pz + " " + x + " " + y + " " + z + " " + nx + " " + y + " " + nz;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
                             GData condline = DatParser.parseLine(line5
                                     , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                             vm.getSelectedData().add(condline);
                             vm.getSelectedCondlines().add((GData5) condline);
-                            df.addToTail(tri);
-
+                            df.addToTail(condline);
                         }
 
                         px = x;
