@@ -106,7 +106,7 @@ class RingsAndConesDesign extends Dialog {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
             this.spn_radi1 [0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            spn.setMaximum(new BigDecimal(90));
+            spn.setMaximum(new BigDecimal(10000));
             spn.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
             spn.setValue(new BigDecimal(1));
         }
@@ -118,8 +118,8 @@ class RingsAndConesDesign extends Dialog {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
             this.spn_radi2[0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            spn.setMaximum(new BigDecimal(1000000));
-            spn.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
+            spn.setMaximum(new BigDecimal(10000));
+            spn.setMinimum(new BigDecimal("0.0002")); //$NON-NLS-1$
             spn.setValue(new BigDecimal(1));
         }
 

@@ -16,11 +16,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data.tools;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -45,6 +47,20 @@ public enum RingsAndCones {
     private static Map<Integer, boolean[]> existanceMap = new HashMap<Integer, boolean[]>();
 
     public static void solve(Shell sh, final VertexManager vm, final ArrayList<Primitive> allPrimitives, final RingsAndConesSettings rs, boolean syncWithTextEditor) {
+        long radi_min = rs.getRadius1().multiply(new BigDecimal(100000)).longValue();
+        long radi_max = rs.getRadius2().multiply(new BigDecimal(100000)).longValue();
+
+        // Throw an arithmetic exception in case the radii were to big.
+        if (new BigDecimal(radi_min).compareTo(rs.getRadius1()) < 0 || new BigDecimal(radi_max).compareTo(rs.getRadius2()) < 0) {
+            throw new ArithmeticException("The given radius was too big."); //$NON-NLS-1$
+        }
+        {
+            long radi_tmp = radi_min;
+            radi_min = Math.min(radi_min, radi_max);
+            radi_max = Math.max(radi_tmp, radi_max);
+        }
+
+
         if (rs.isUsingExistingPrimitives()) {
             prims = allPrimitives;
             initExistanceMap(rs.isUsingCones());
@@ -69,7 +85,7 @@ public enum RingsAndCones {
                     if (rs.isUsingExistingPrimitives()) {
 
                     } else {
-                        // MARK Solver 1
+                        // MARK Solver 2
 
                     }
 
@@ -106,10 +122,53 @@ public enum RingsAndCones {
 
     private static void initExistanceMap(boolean cones) {
         existanceMap.clear();
-        for (Primitive p2 : prims) {
-            if (!p2.isCategory()) {
-                for (Primitive p : p2.getAllPrimitives()) {
 
+        Pattern coneP = Pattern.compile("\\d+-\\d+con[e|\\d]\\d*\\.dat"); //$NON-NLS-1$
+        Pattern ringP = Pattern.compile("\\d+-\\d+rin[g|\\d]\\d*\\.dat"); //$NON-NLS-1$
+
+        for (Primitive p2 : prims) {
+            for (Primitive p : p2.getAllPrimitives()) {
+                if (!p.isCategory()) {
+                    String name = p.getName();
+                    if (cones && coneP.matcher(name).matches() || ringP.matcher(name).matches()) {
+
+                        if (name.startsWith("48\\")) name = name.substring(3); //$NON-NLS-1$
+                        if (name.startsWith("48\\")) name = name.substring(3); //$NON-NLS-1$
+                        // Special cases: unknown parts numbers "u[Number]" and unknown
+                        // stickers "s[Number]"
+                        if (name.charAt(0) == 'u' && name.charAt(0) == 'u' || name.charAt(0) == 's' && name.charAt(0) == 's') {
+                            name = name.substring(1, name.length());
+                            name = name.substring(1, name.length());
+                        }
+
+                        if ((name.charAt(1) == '-' || name.charAt(2) == '-')
+                                && (name.charAt(1) == '-' || name.charAt(2) == '-')) {
+                            String upper = ""; //$NON-NLS-1$
+                            String lower = ""; //$NON-NLS-1$
+                            boolean readUpper = true;
+                            int charCount = 0;
+                            char[] chars_this = name.toCharArray();
+                            for (char c : chars_this) {
+                                if (Character.isDigit(c)) {
+                                    if (readUpper) {
+                                        upper = upper + c;
+                                    } else {
+                                        lower = lower + c;
+                                    }
+                                } else {
+                                    if (readUpper) {
+                                        readUpper = false;
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                charCount++;
+                            }
+                            if (!upper.isEmpty() && !lower.isEmpty()) {
+                                int index = (int) (48f * Float.parseFloat(upper) / Float.parseFloat(lower));
+                            }
+                        }
+                    }
                 }
             }
         }
