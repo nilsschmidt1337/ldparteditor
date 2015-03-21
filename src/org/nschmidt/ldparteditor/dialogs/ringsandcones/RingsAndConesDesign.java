@@ -194,9 +194,11 @@ class RingsAndConesDesign extends Dialog {
                     "4-4   (360.0°)" //$NON-NLS-1$
             });
             {
+                rs.getAngles().clear();
                 int i = 0;
                 for (String it : cmb.getItems()) {
                     cmb.setItem(i, it.replace('.', View.NUMBER_FORMAT4F.getDecimalFormatSymbols().getDecimalSeparator()));
+                    rs.getAngles().add(it);
                     i++;
                 }
             }
@@ -204,20 +206,6 @@ class RingsAndConesDesign extends Dialog {
             cmb.setText(cmb.getItem(47));
             cmb.select(47);
         }
-
-        {
-            Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Maximum Amount:"); //$NON-NLS-1$ I18N Needs translation!
-        }
-        {
-            IntegerSpinner spn = new IntegerSpinner(cmp_container, SWT.NONE);
-            this.spn_amount [0] = spn;
-            spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            spn.setMaximum(10);
-            spn.setMinimum(1);
-            spn.setValue(3);
-        }
-
         {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_existingOnly[0] = cmb;

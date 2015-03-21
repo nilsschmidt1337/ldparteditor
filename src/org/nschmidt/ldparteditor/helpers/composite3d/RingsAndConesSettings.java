@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helpers.composite3d;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 
 /**
@@ -24,11 +25,14 @@ import java.math.BigDecimal;
  *
  */
 public class RingsAndConesSettings {
+
+    private ArrayList<String> angles = new ArrayList<String>();
     private boolean usingCones = false;
     private boolean usingExistingPrimitives = true;
     private boolean creatingShapeForNoSolution = false;
     private BigDecimal radius1 = BigDecimal.ONE;
     private BigDecimal radius2 = BigDecimal.TEN;
+    private int angle = 47;
     public boolean isUsingCones() {
         return usingCones;
     }
@@ -58,5 +62,17 @@ public class RingsAndConesSettings {
     }
     public void setRadius1(BigDecimal radius1) {
         this.radius1 = radius1;
+    }
+    public ArrayList<String> getAngles() {
+        return angles;
+    }
+    public void setAngles(ArrayList<String> angles) {
+        this.angles = angles;
+    }
+    public int getAngle() {
+        return angle;
+    }
+    public void setAngle(int angle) {
+        this.angle = angle;
     }
 }

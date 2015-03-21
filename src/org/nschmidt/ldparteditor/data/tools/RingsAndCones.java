@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -32,6 +33,8 @@ import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.Threshold;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
 
 /**
@@ -44,79 +47,175 @@ public enum RingsAndCones {
 
     private static List<Primitive> prims = null;
 
-    private static Map<Long, boolean[]> existanceMap = new HashMap<Long, boolean[]>();
+    private static Map<Integer, boolean[]> existanceMap = new HashMap<Integer, boolean[]>();
 
     public static void solve(Shell sh, final VertexManager vm, final ArrayList<Primitive> allPrimitives, final RingsAndConesSettings rs, boolean syncWithTextEditor) {
-        long radi_min = rs.getRadius1().multiply(new BigDecimal(100000000)).longValue();
-        long radi_max = rs.getRadius2().multiply(new BigDecimal(100000000)).longValue();
+
+        final BigDecimal factor = new BigDecimal(100000000L);
+
+        long rad_min = rs.getRadius1().multiply(factor).longValue();
+        long rad_max = rs.getRadius2().multiply(factor).longValue();
 
         // Throw an arithmetic exception in case the radii were to big.
-        if (new BigDecimal(radi_min).compareTo(rs.getRadius1()) < 0 || new BigDecimal(radi_max).compareTo(rs.getRadius2()) < 0) {
+        if (new BigDecimal(rad_min).compareTo(rs.getRadius1()) < 0 || new BigDecimal(rad_max).compareTo(rs.getRadius2()) < 0) {
             throw new ArithmeticException("The given radius was too big."); //$NON-NLS-1$
         }
         {
-            long radi_tmp = radi_min;
-            radi_min = Math.min(radi_min, radi_max);
-            radi_max = Math.max(radi_tmp, radi_max);
+            long rad_tmp = rad_min;
+            rad_min = Math.min(rad_min, rad_max);
+            rad_max = Math.max(rad_tmp, rad_max);
+            if (rad_min == rad_max) return;
         }
 
+        final long radi_min = rad_min;
+        final long radi_max = rad_max;
+
+        final int angle = rs.getAngle();
 
         if (rs.isUsingExistingPrimitives()) {
             prims = allPrimitives;
             initExistanceMap(rs.isUsingCones());
         }
+
+        final int[] solutionAmount = new int[]{0};
+        final long[] solution = new long[50];
         try
         {
-            new ProgressMonitorDialog(sh).run(true, false, new IRunnableWithProgress()
+            new ProgressMonitorDialog(sh).run(true, true, new IRunnableWithProgress()
             {
                 @Override
                 public void run(final IProgressMonitor m) throws InvocationTargetException, InterruptedException
                 {
-                    m.beginTask("Solving...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                    m.beginTask("Solving (you have to press cancel to stop)...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
 
-                    int solutionCount = 0;
+
 
                     // TODO We need two different solvers here.
 
                     // Solver 1: A specialised version, which uses only existing primitives
                     // Solver 2: A general solver, which is not bound to use only existing primitives
 
-                    // MARK Solver 1
-                    if (rs.isUsingExistingPrimitives()) {
 
-                    } else {
-                        // MARK Solver 2
+                    {
+                        int min_amount = Integer.MAX_VALUE;
+                        int amount = 0;
 
-                    }
+                        final long min_r = 1;
+                        long max_r = 100;
 
-                    // TODO The solution needs to be evaluated here
-                    if (solutionCount == 0) {
-                        if (rs.isCreatingShapeForNoSolution()) {
+                        long min_delta = Long.MAX_VALUE;
 
-                        } else {
-                            return;
+                        long current = radi_min;
+
+                        Random rnd = new Random(1238426235L);
+
+                        final long[] tsolution = new long[50];
+
+                        final long width = max_r - min_r;
+
+                        final long[] rndSet;
+                        final int size = existanceMap.keySet().size();
+                        {
+                            int i = 0;
+                            rndSet  = new long[size];
+                            for(int in : existanceMap.keySet())
+                            {
+                                rndSet[i] = in;
+                                i = i + 1;
+                            }
                         }
-                    } else {
 
-                    }
+                        while (!m.isCanceled()) {
+                            long s, r;
+                            // MARK Solver 1
+                            if (rs.isUsingExistingPrimitives()) {
+                                r = rndSet[(int) (rnd.nextFloat() * size)];
+                                if (!primitiveExists((int) r, angle)) {
+                                    continue;
+                                }
+                            } else {
+                                // MARK Solver 2
+                                r = (long) (width * rnd.nextDouble() + min_r);
+                            }
 
-                    // TODO The solution should be transformed to the location of a selected 4-4disc.dat if any was selected.
-                    GData1 disc44 = null;
-                    for (GData gd : vm.getSelectedData()) {
-                        if (gd.type() == 1
-                                && (gd.toString().toLowerCase(Locale.ENGLISH).endsWith(" 4-4disc.dat") //$NON-NLS-1$
-                                        || gd.toString().toLowerCase(Locale.ENGLISH).endsWith(" 48\4-4disc.dat"))) { //$NON-NLS-1$
-                            disc44 = (GData1) gd;
+                            s = current / r;
+                            if (s < 10000000L) {
+                                max_r = r;
+                                continue;
+                            }
+
+                            amount++;
+                            if (amount < 47) {
+                                tsolution[amount] = s;
+                            } else {
+                                current = radi_min;
+                                amount = 0;
+                                continue;
+                            }
+                            long sum = s + current;
+
+                            if (sum >= radi_max || amount > min_amount) {
+                                if (amount <= min_amount && amount < 47) {
+                                    long delta = Math.abs(sum - radi_max);
+                                    if (100000L >= delta) {
+                                        if (amount != min_amount) {
+                                            min_delta = Long.MAX_VALUE;
+                                            min_amount = amount;
+                                            m.subTask("Best Solution - " + min_amount + " Primitives, with " + View.NUMBER_FORMAT4F.format(new BigDecimal(delta).divide(factor, Threshold.mc).doubleValue()) + " deviation."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                            for(int i = 1; i < amount; i++) {
+                                                solution[i] = tsolution[i];
+                                            }
+                                            solution[amount] = tsolution[amount];
+                                            solutionAmount[0] = amount;
+                                        } else if (delta < min_delta) {
+                                            min_delta = delta;
+                                            min_amount = amount;
+                                            m.subTask("Best Solution - " + min_amount + " Primitives, with " + View.NUMBER_FORMAT4F.format(new BigDecimal(delta).divide(factor, Threshold.mc).doubleValue()) + " deviation."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                            for(int i = 1; i < amount; i++) {
+                                                solution[i] = tsolution[i];
+                                            }
+                                            solution[amount] = tsolution[amount];
+                                            solutionAmount[0] = amount;
+                                        }
+                                    }
+                                }
+                                current = radi_min;
+                                amount = 0;
+                            } else {
+                                current = sum;
+                            }
                         }
                     }
-                    if (disc44 != null) {
-
-                    }
-
                 }
             });
-        }catch (InvocationTargetException consumed) {
+        } catch (InvocationTargetException consumed) {
         } catch (InterruptedException consumed) {
+        } catch (Exception ex) {
+        }
+
+
+        // TODO The solution needs to be evaluated here
+        if (solutionAmount[0] == 0) {
+            if (rs.isCreatingShapeForNoSolution()) {
+
+            } else {
+                return;
+            }
+        } else {
+
+        }
+
+        // TODO The solution should be transformed to the location of a selected 4-4disc.dat if any was selected.
+        GData1 disc44 = null;
+        for (GData gd : vm.getSelectedData()) {
+            if (gd.type() == 1
+                    && (gd.toString().toLowerCase(Locale.ENGLISH).endsWith(" 4-4disc.dat") //$NON-NLS-1$
+                            || gd.toString().toLowerCase(Locale.ENGLISH).endsWith(" 48\4-4disc.dat"))) { //$NON-NLS-1$
+                disc44 = (GData1) gd;
+            }
+        }
+        if (disc44 != null) {
+
         }
     }
 
@@ -185,7 +284,7 @@ public enum RingsAndCones {
                                 if (readDigit) {
                                     try {
                                         int index = (int) (48.0 * Double.parseDouble(upper.toString()) / Double.parseDouble(lower.toString())) - 1;
-                                        long radius = Long.parseLong(number.toString()) * 100000000L;
+                                        int radius = Integer.parseInt(number.toString());
                                         if (existanceMap.containsKey(radius)) {
                                             existanceMap.get(radius)[index] = true;
                                         } else {
