@@ -123,8 +123,12 @@ public enum RingsAndCones {
     private static void initExistanceMap(boolean cones) {
         existanceMap.clear();
 
-        Pattern coneP = Pattern.compile("\\d+-\\d+con[e|\\d]\\d*\\.dat"); //$NON-NLS-1$
-        Pattern ringP = Pattern.compile("\\d+-\\d+rin[g|\\d]\\d*\\.dat"); //$NON-NLS-1$
+        Pattern coneP = Pattern.compile("\\d+\\-\\d+cone{0,1}\\d{1,2}\\.dat"); //$NON-NLS-1$
+        Pattern ringP = Pattern.compile("\\d+\\-\\d+ring{0,1}\\d{1,2}\\.dat"); //$NON-NLS-1$
+
+        StringBuilder upper = new StringBuilder();
+        StringBuilder lower = new StringBuilder();
+        StringBuilder number = new StringBuilder();
 
         for (Primitive p2 : prims) {
             for (Primitive p : p2.getAllPrimitives()) {
@@ -143,17 +147,18 @@ public enum RingsAndCones {
 
                         if ((name.charAt(1) == '-' || name.charAt(2) == '-')
                                 && (name.charAt(1) == '-' || name.charAt(2) == '-')) {
-                            String upper = ""; //$NON-NLS-1$
-                            String lower = ""; //$NON-NLS-1$
+
+                            upper.setLength(0);
+                            lower.setLength(0);
+
                             boolean readUpper = true;
-                            int charCount = 0;
                             char[] chars_this = name.toCharArray();
                             for (char c : chars_this) {
                                 if (Character.isDigit(c)) {
                                     if (readUpper) {
-                                        upper = upper + c;
+                                        upper.append(c);
                                     } else {
-                                        lower = lower + c;
+                                        lower.append(c);
                                     }
                                 } else {
                                     if (readUpper) {
@@ -162,10 +167,33 @@ public enum RingsAndCones {
                                         break;
                                     }
                                 }
-                                charCount++;
                             }
-                            if (!upper.isEmpty() && !lower.isEmpty()) {
-                                int index = (int) (48f * Float.parseFloat(upper) / Float.parseFloat(lower));
+                            if (upper.length() > 0 && lower.length() > 0) {
+                                number.setLength(0);
+                                boolean readDigit = false;
+                                for (int i = chars_this.length - 1; i > 0 ; i--) {
+                                    char c = chars_this[i];
+                                    if (Character.isDigit(c)) {
+                                        number = number.insert(0, c);
+                                        readDigit = true;
+                                    } else if (readDigit) {
+                                        break;
+                                    } else if (i < chars_this.length - 5) {
+                                        break;
+                                    }
+                                }
+                                if (readDigit) {
+                                    try {
+                                        int index = (int) (48.0 * Double.parseDouble(upper.toString()) / Double.parseDouble(lower.toString())) - 1;
+                                        int radius = Integer.parseInt(number.toString());
+                                        if (existanceMap.containsKey(radius)) {
+                                            existanceMap.get(radius)[index] = true;
+                                        } else {
+                                            existanceMap.put(radius, new boolean[48]);
+                                            existanceMap.get(radius)[index] = true;
+                                        }
+                                    } catch (NumberFormatException consumed) {}
+                                }
                             }
                         }
                     }

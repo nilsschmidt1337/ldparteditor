@@ -50,6 +50,18 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
             public void valueChanged(BigDecimalSpinner spn) {
             }
         });
+        spn_radi1[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                rs.setRadius1(spn_radi1[0].getValue());
+            }
+        });
+        spn_radi2[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                rs.setRadius2(spn_radi2[0].getValue());
+            }
+        });
         return super.open();
     }
 
