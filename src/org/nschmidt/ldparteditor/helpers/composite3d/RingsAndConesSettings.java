@@ -25,7 +25,7 @@ import java.math.BigDecimal;
  */
 public class RingsAndConesSettings {
     private boolean usingCones = false;
-    private boolean usingExistingPrimitives = false;
+    private boolean usingExistingPrimitives = true;
     private boolean creatingShapeForNoSolution = false;
     private BigDecimal radius1 = BigDecimal.ONE;
     private BigDecimal radius2 = BigDecimal.TEN;
