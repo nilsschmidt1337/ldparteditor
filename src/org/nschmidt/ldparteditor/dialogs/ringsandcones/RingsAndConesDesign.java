@@ -93,10 +93,9 @@ class RingsAndConesDesign extends Dialog {
         {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_shape[0] = cmb;
-            cmb.setItems(new String[] {"Ring.", "Cone."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb.setItems(new String[] {"Ring.", "Cone.", "Ring (Hi-Res).", "Cone (Hi-Res)."}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ I18N Needs translation!
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb.setText(cmb.getItem(0));
-            cmb.select(0);
+            cmb.select((rs.isUsingCones() ? 1 : 0) + (rs.isUsingHiRes() ? 2 : 0));
         }
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
@@ -131,9 +130,9 @@ class RingsAndConesDesign extends Dialog {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
             this.spn_height[0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            spn.setMaximum(new BigDecimal(90));
-            spn.setMinimum(new BigDecimal(0));
-            spn.setValue(new BigDecimal(1));
+            spn.setMaximum(new BigDecimal(10000));
+            spn.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
+            spn.setValue(rs.getHeight());
         }
 
         {
@@ -203,24 +202,21 @@ class RingsAndConesDesign extends Dialog {
                 }
             }
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb.setText(cmb.getItem(47));
-            cmb.select(47);
+            cmb.select(rs.getAngle());
         }
         {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_existingOnly[0] = cmb;
             cmb.setItems(new String[] {"Use only existing primitives.", "Use all possible primitives."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb.setText(cmb.getItem(0));
-            cmb.select(0);
+            cmb.select(rs.isUsingExistingPrimitives() ? 0 : 1);
         }
         {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_createWhat[0] = cmb;
             cmb.setItems(new String[] {"Create nothing, if no solution was found.", "Create the shape for me."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb.setText(cmb.getItem(0));
-            cmb.select(0);
+            cmb.select(rs.isCreatingNothingOnNoSolution() ? 0 : 1);
         }
         cmp_container.pack();
         return cmp_container;
