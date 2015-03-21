@@ -28,8 +28,11 @@ public class RingsAndConesSettings {
 
     private ArrayList<String> angles = new ArrayList<String>();
     private boolean usingCones = false;
+    private boolean usingHiRes = false;
+    private boolean creatingNothingOnNoSolution = false;
     private boolean usingExistingPrimitives = true;
     private boolean creatingShapeForNoSolution = false;
+    private BigDecimal height = BigDecimal.ONE;
     private BigDecimal radius1 = BigDecimal.ONE;
     private BigDecimal radius2 = BigDecimal.TEN;
     private int angle = 47;
@@ -74,5 +77,23 @@ public class RingsAndConesSettings {
     }
     public void setAngle(int angle) {
         this.angle = angle;
+    }
+    public boolean isUsingHiRes() {
+        return usingHiRes;
+    }
+    public void setUsingHiRes(boolean usingHiRes) {
+        this.usingHiRes = usingHiRes;
+    }
+    public BigDecimal getHeight() {
+        return height;
+    }
+    public void setHeight(BigDecimal height) {
+        this.height = height;
+    }
+    public boolean isCreatingNothingOnNoSolution() {
+        return creatingNothingOnNoSolution;
+    }
+    public void setCreatingNothingOnNoSolution(boolean creatingNothingOnNoSolution) {
+        this.creatingNothingOnNoSolution = creatingNothingOnNoSolution;
     }
 }

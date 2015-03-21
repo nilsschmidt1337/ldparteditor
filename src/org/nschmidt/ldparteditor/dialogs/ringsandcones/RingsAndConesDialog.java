@@ -51,6 +51,7 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
         spn_height[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
+                rs.setHeight(spn_height[0].getValue());
             }
         });
         spn_radi1[0].addValueChangeListener(new ValueChangeAdapter() {
@@ -65,10 +66,29 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
                 rs.setRadius2(spn_radi2[0].getValue());
             }
         });
+        cmb_angle[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                rs.setAngle(cmb_angle[0].getSelectionIndex());
+            }
+        });
         cmb_existingOnly[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
                 rs.setUsingExistingPrimitives(cmb_existingOnly[0].getSelectionIndex() == 0);
+            }
+        });
+        cmb_createWhat[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                rs.setCreatingNothingOnNoSolution(cmb_createWhat[0].getSelectionIndex() == 0);
+            }
+        });
+        this.cmb_shape[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                rs.setUsingCones(cmb_shape[0].getSelectionIndex() == 1 || cmb_shape[0].getSelectionIndex() == 4);
+                rs.setUsingHiRes(cmb_shape[0].getSelectionIndex() > 1);
             }
         });
         return super.open();
