@@ -77,9 +77,9 @@ import org.nschmidt.ldparteditor.data.LibraryManager;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.ReferenceParser;
+import org.nschmidt.ldparteditor.data.RingsAndCones;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
-import org.nschmidt.ldparteditor.data.tools.RingsAndCones;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
 import org.nschmidt.ldparteditor.dialogs.copy.CopyDialog;
 import org.nschmidt.ldparteditor.dialogs.edger2.EdgerDialog;
@@ -3372,10 +3372,9 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         RingsAndConesSettings ris = new RingsAndConesSettings();
                         if (new RingsAndConesDialog(getShell(), ris).open() == IDialogConstants.OK_ID) {
-                            RingsAndCones.solve(Editor3DWindow.getWindow().getShell(), vm, cmp_Primitives[0].getPrimitives(), ris, true);
+                            RingsAndCones.solve(Editor3DWindow.getWindow().getShell(), c3d.getLockableDatFileReference(), cmp_Primitives[0].getPrimitives(), ris, true);
                         }
                     }
                 }

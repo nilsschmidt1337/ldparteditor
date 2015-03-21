@@ -831,7 +831,10 @@ public class CompositePrimitive extends Composite {
             boolean isEmpty = false;
             for (String folderPath : searchPaths) {
                 File libFolder = new File(folderPath);
-                if (!libFolder.isDirectory()) continue;
+                if (!libFolder.isDirectory()) {
+                    isUppercase = !isUppercase;
+                    continue;
+                }
                 UTF8BufferedReader reader = null;
                 File[] files = libFolder.listFiles();
                 if (isUppercase && !isEmpty) {
