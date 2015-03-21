@@ -94,7 +94,7 @@ public final class DatFile {
 
     private Date lastSavedOpened = new Date();
 
-    private GData drawChainTail = drawChainAnchor;
+    private GData drawChainTail = null;
 
     private Composite3D lastSelectedComposite = null;
 
