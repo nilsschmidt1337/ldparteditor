@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers.composite3d;
 
+import java.math.BigDecimal;
+
 
 /**
  * Settings for Rings and Cones
@@ -25,6 +27,8 @@ public class RingsAndConesSettings {
     private boolean usingCones = false;
     private boolean usingExistingPrimitives = false;
     private boolean creatingShapeForNoSolution = false;
+    private BigDecimal radius1 = BigDecimal.ONE;
+    private BigDecimal radius2 = BigDecimal.TEN;
     public boolean isUsingCones() {
         return usingCones;
     }
@@ -42,5 +46,17 @@ public class RingsAndConesSettings {
     }
     public void setCreatingShapeForNoSolution(boolean creatingShapeForNoSolution) {
         this.creatingShapeForNoSolution = creatingShapeForNoSolution;
+    }
+    public BigDecimal getRadius2() {
+        return radius2;
+    }
+    public void setRadius2(BigDecimal radius2) {
+        this.radius2 = radius2;
+    }
+    public BigDecimal getRadius1() {
+        return radius1;
+    }
+    public void setRadius1(BigDecimal radius1) {
+        this.radius1 = radius1;
     }
 }
