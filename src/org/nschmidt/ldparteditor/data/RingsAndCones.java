@@ -13,12 +13,13 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.data.tools;
+package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -33,13 +34,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.data.GData;
-import org.nschmidt.ldparteditor.data.GData1;
-import org.nschmidt.ldparteditor.data.Primitive;
-import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
+import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.text.DatParser;
 
 /**
  * @author nils
@@ -53,7 +52,9 @@ public enum RingsAndCones {
 
     private static Map<Integer, boolean[]> existanceMap = new HashMap<Integer, boolean[]>();
 
-    public static void solve(Shell sh, final VertexManager vm, final ArrayList<Primitive> allPrimitives, final RingsAndConesSettings rs, boolean syncWithTextEditor) {
+    public static void solve(Shell sh, final DatFile df, final ArrayList<Primitive> allPrimitives, final RingsAndConesSettings rs, boolean syncWithTextEditor) {
+
+        final VertexManager vm = df.getVertexManager();
 
         final BigDecimal factor = new BigDecimal(100000000L);
 
@@ -137,6 +138,9 @@ public enum RingsAndCones {
 
                                         final long[] rndSet;
                                         final int size = existanceMap.keySet().size();
+                                        if (size == 0 && rs.isUsingExistingPrimitives()) {
+                                            return;
+                                        }
                                         {
                                             int i = 0;
                                             rndSet  = new long[size];
@@ -295,6 +299,52 @@ public enum RingsAndCones {
             }
         } else {
 
+            String anglePrefix = rs.getAngles().get(angle);
+            anglePrefix = anglePrefix.substring(0, anglePrefix.indexOf(" ")); //$NON-NLS-1$
+
+            if (rs.isUsingHiRes()) {
+                anglePrefix = "48\\" + anglePrefix; //$NON-NLS-1$
+            }
+
+            BigDecimal height = BigDecimal.ZERO;
+            BigDecimal step = BigDecimal.ONE;
+            if (rs.isUsingCones()) {
+                step = rs.getHeight().divide(new BigDecimal(solutionAmount[0]), Threshold.mc).negate();
+                height = BigDecimal.ONE;
+            }
+            for(int i = 1; i <= solutionAmount[0]; i++) {
+                BigDecimal sf = new BigDecimal(solution[i]).divide(factor, Threshold.mc);
+                String sfs = bigDecimalToString(sf);
+                String radiusSuffix = "" + solutionR[i]; //$NON-NLS-1$
+
+                String middle;
+                if (rs.isUsingCones()) {
+                    height = height.add(step);
+                    middle = "con"; //$NON-NLS-1$
+                } else {
+                    middle = "ring"; //$NON-NLS-1$
+                    if (rs.isUsingHiRes()) {
+                        if (anglePrefix.length() + radiusSuffix.length() > 7) {
+                            middle = middle.substring(0, 3);
+                        }
+                    } else {
+                        if (anglePrefix.length() + radiusSuffix.length() > 4) {
+                            middle = middle.substring(0, 3);
+                        }
+                    }
+                }
+
+
+                String line = "1 16 0 " + bigDecimalToString(height) + " 0 " + sfs + " 0 0 0 " + step.negate() + " 0 0 0 " + sfs + " " + anglePrefix + middle + radiusSuffix + ".dat";     //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+                GData gd = DatParser
+                        .parseLine(line
+                                , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
+                                new HashSet<String>(), false).get(0).getGraphicalData();
+                if (gd == null) {
+                    gd = new GData0(line);
+                }
+                df.addToTail(gd);
+            }
         }
 
         // TODO The solution should be transformed to the location of a selected 4-4disc.dat if any was selected.
@@ -309,12 +359,14 @@ public enum RingsAndCones {
         if (disc44 != null) {
 
         }
+
+        vm.setModified_NoSync();
     }
 
     private static void initExistanceMap(boolean cones, boolean hiRes) {
         existanceMap.clear();
 
-        Pattern coneP = Pattern.compile("\\d+\\-\\d+cone{0,1}\\d{1,2}\\.dat"); //$NON-NLS-1$
+        Pattern coneP = Pattern.compile("\\d+\\-\\d+con\\d{1,2}\\.dat"); //$NON-NLS-1$
         Pattern ringP = Pattern.compile("\\d+\\-\\d+ring{0,1}\\d{1,2}\\.dat"); //$NON-NLS-1$
 
         StringBuilder upper = new StringBuilder();
@@ -325,14 +377,14 @@ public enum RingsAndCones {
             for (Primitive p : p2.getAllPrimitives()) {
                 if (!p.isCategory()) {
                     String name = p.getName();
+                    NLogger.debug(RingsAndCones.class, name);
+                    if (name.startsWith("48\\")) {//$NON-NLS-1$
+                        if (!hiRes) continue;
+                        name = name.substring(3);
+                    } else if (hiRes) {
+                        continue;
+                    }
                     if (cones && coneP.matcher(name).matches() || ringP.matcher(name).matches()) {
-
-                        if (name.startsWith("48\\")) {//$NON-NLS-1$
-                            if (!hiRes) continue;
-                            name = name.substring(3);
-                        } else if (hiRes) {
-                            continue;
-                        }
 
                         // Special cases: unknown parts numbers "u[Number]" and unknown
                         // stickers "s[Number]"
@@ -382,11 +434,13 @@ public enum RingsAndCones {
                                     try {
                                         int index = (int) (48.0 * Double.parseDouble(upper.toString()) / Double.parseDouble(lower.toString())) - 1;
                                         int radius = Integer.parseInt(number.toString());
-                                        if (existanceMap.containsKey(radius)) {
-                                            existanceMap.get(radius)[index] = true;
-                                        } else {
-                                            existanceMap.put(radius, new boolean[48]);
-                                            existanceMap.get(radius)[index] = true;
+                                        if (radius > 0) {
+                                            if (existanceMap.containsKey(radius)) {
+                                                existanceMap.get(radius)[index] = true;
+                                            } else {
+                                                existanceMap.put(radius, new boolean[48]);
+                                                existanceMap.get(radius)[index] = true;
+                                            }
                                         }
                                     } catch (NumberFormatException consumed) {}
                                 }
@@ -406,4 +460,14 @@ public enum RingsAndCones {
         return false;
     }
 
+    private static String bigDecimalToString(BigDecimal bd) {
+        String result;
+        if (bd.compareTo(BigDecimal.ZERO) == 0)
+            return "0"; //$NON-NLS-1$
+        BigDecimal bd2 = bd.stripTrailingZeros();
+        result = bd2.toPlainString();
+        if (result.startsWith("-0."))return "-" + result.substring(2); //$NON-NLS-1$ //$NON-NLS-2$
+        if (result.startsWith("0."))return result.substring(1); //$NON-NLS-1$
+        return result;
+    }
 }

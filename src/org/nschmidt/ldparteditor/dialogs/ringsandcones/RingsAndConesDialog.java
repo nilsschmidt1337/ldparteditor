@@ -87,7 +87,7 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
         this.cmb_shape[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                rs.setUsingCones(cmb_shape[0].getSelectionIndex() == 1 || cmb_shape[0].getSelectionIndex() == 4);
+                rs.setUsingCones(cmb_shape[0].getSelectionIndex() == 1 || cmb_shape[0].getSelectionIndex() == 3);
                 rs.setUsingHiRes(cmb_shape[0].getSelectionIndex() > 1);
             }
         });
