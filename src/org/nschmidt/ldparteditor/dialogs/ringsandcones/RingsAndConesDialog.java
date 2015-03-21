@@ -69,7 +69,29 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
         cmb_angle[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                rs.setAngle(cmb_angle[0].getSelectionIndex());
+                int si = cmb_angle[0].getSelectionIndex();
+                rs.setAngle(si);
+                if (!rs.isUsingHiRes()) {
+                    boolean hiRes = true;
+                    int tc = 0;
+                    for (int i = 0; i <= si; i++) {
+                        if (tc == 2) {
+                            hiRes = false;
+                            tc = 0;
+                            continue;
+                        } else {
+                            hiRes = true;
+                        }
+                        tc++;
+                    }
+                    if (hiRes) {
+                        int index = cmb_shape[0].getSelectionIndex() + 2;
+                        cmb_shape[0].select(index);
+                        rs.setUsingHiRes(true);
+                        rs.setUsingCones(index == 3);
+                        rs.setUsingHiRes(index > 1);
+                    }
+                }
             }
         });
         cmb_existingOnly[0].addListener(SWT.Selection, new Listener() {
@@ -89,6 +111,25 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
             public void handleEvent(Event event) {
                 rs.setUsingCones(cmb_shape[0].getSelectionIndex() == 1 || cmb_shape[0].getSelectionIndex() == 3);
                 rs.setUsingHiRes(cmb_shape[0].getSelectionIndex() > 1);
+                int si = cmb_angle[0].getSelectionIndex();
+                if (!rs.isUsingHiRes()) {
+                    boolean hiRes = true;
+                    int tc = 0;
+                    for (int i = 0; i <= si; i++) {
+                        if (tc == 2) {
+                            hiRes = false;
+                            tc = 0;
+                            continue;
+                        } else {
+                            hiRes = true;
+                        }
+                        tc++;
+                    }
+                    if (hiRes) {
+                        cmb_angle[0].select(47);
+                        rs.setAngle(47);
+                    }
+                }
             }
         });
         return super.open();

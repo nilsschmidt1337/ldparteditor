@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,6 +34,8 @@ import java.util.regex.Pattern;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -304,9 +307,22 @@ public enum RingsAndCones {
 
             // TODO The solution needs to be evaluated here
             if (solutionAmount[0] == 0) {
-                if (rs.isCreatingShapeForNoSolution()) {
+                if (!rs.isCreatingNothingOnNoSolution()) {
+
+                    // We have to generate the shape here:
+                    // Quote: "The algorithm to get proper values for primitives is sine(angle)
+                    // rounded to 4 decimal places, multiplied by radius"
+                    // This is really important an must be considered!
+
+
 
                 } else {
+
+                    MessageBox messageBoxError = new MessageBox(sh, SWT.ICON_INFORMATION | SWT.OK);
+                    messageBoxError.setText("Information:"); //$NON-NLS-1$ I18N
+                    messageBoxError.setMessage("Found no solution."); //$NON-NLS-1$ I18N
+                    messageBoxError.open();
+
                     return;
                 }
             } else {
@@ -357,6 +373,9 @@ public enum RingsAndCones {
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                     if (gd == null) {
                         gd = new GData0(line);
+                    } else {
+                        vm.getSelectedData().add(gd);
+                        vm.getSelectedSubfiles().add((GData1) gd);
                     }
                     df.addToTail(gd);
                 }
@@ -372,19 +391,81 @@ public enum RingsAndCones {
             if (rs.isUsingCones()) {
                 line = "1 16 0 " + bigDecimalToString(rs.getHeight()) + " 0 " + sfs + " 0 0 0 " + bigDecimalToString(rs.getHeight().negate()) + " 0 0 0 " + sfs + " " + anglePrefix + "con0.dat";     //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
             } else {
-                line = "1 16 0 0 0 " + sfs + " 0 0 0 " + bigDecimalToString(rs.getHeight().negate()) + " 0 0 0 " + sfs + " " + anglePrefix + "disc.dat";     //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+                line = "1 16 0 0 0 " + sfs + " 0 0 0 1 0 0 0 " + sfs + " " + anglePrefix + "disc.dat";     //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
             }
             GData gd = DatParser
                     .parseLine(line
                             , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                             new HashSet<String>(), false).get(0).getGraphicalData();
             if (gd == null) {
-                if (rs.isCreatingShapeForNoSolution()) {
+                if (!rs.isCreatingNothingOnNoSolution()) {
 
+                    // We have to generate the shape here:
+                    // Quote: "The algorithm to get proper values for primitives is sine(angle)
+                    // rounded to 4 decimal places, multiplied by radius"
+                    // This is really important an must be considered!
+
+                    final int numFaces = rs.isUsingHiRes() ? 48 : 16;
+                    double deltaA = Math.PI * 2.0 / numFaces;
+                    double a = deltaA;
+                    BigDecimal r = rs.getRadius1().compareTo(rs.getRadius2()) < 0 ? rs.getRadius2() : rs.getRadius1();
+                    BigDecimal y = BigDecimal.ZERO;
+                    if (rs.isUsingCones()) {
+                        y = rs.getHeight();
+                    }
+                    BigDecimal px = BigDecimal.ONE;
+                    BigDecimal pz = BigDecimal.ZERO;
+                    for (int i = 0; i < numFaces; i++) {
+                        BigDecimal x = new BigDecimal(Math.cos(a));
+                        x = x.setScale(4, RoundingMode.HALF_UP);
+                        x = x.multiply(r);
+                        BigDecimal z = new BigDecimal(Math.sin(a));
+                        z = z.setScale(4, RoundingMode.HALF_UP);
+                        z = z.multiply(r);
+                        String line3 = "3 16 0 0 0 " + px + " " + y + " " + pz + " " + x + " " + y + " " + z;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+                        GData tri = DatParser.parseLine(line3
+                                , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
+                                new HashSet<String>(), false).get(0).getGraphicalData();
+                        vm.getSelectedData().add(tri);
+                        vm.getSelectedTriangles().add((GData3) tri);
+                        df.addToTail(tri);
+
+                        if (rs.isUsingCones()) {
+                            BigDecimal nx = new BigDecimal(Math.cos(a + deltaA));
+                            nx = nx.setScale(4, RoundingMode.HALF_UP);
+                            nx = nx.multiply(r);
+                            BigDecimal nz = new BigDecimal(Math.sin(a + deltaA));
+                            nz = nz.setScale(4, RoundingMode.HALF_UP);
+                            nz = nz.multiply(r);
+
+                            String line5 = "5 16 0 0 0 " + x + " " + y + " " + z + " " + px + " " + y + " " + pz + " " + nx + " " + y + " " + nz;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+                            GData condline = DatParser.parseLine(line5
+                                    , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
+                                    new HashSet<String>(), false).get(0).getGraphicalData();
+                            vm.getSelectedData().add(condline);
+                            vm.getSelectedCondlines().add((GData5) condline);
+                            df.addToTail(tri);
+
+                        }
+
+                        px = x;
+                        pz = z;
+                        a = a + deltaA;
+                    }
+
+
+                } else if (!rs.isUsingExistingPrimitives()) {
+                    df.addToTail(new GData0(line));
                 } else {
+                    MessageBox messageBoxError = new MessageBox(sh, SWT.ICON_INFORMATION | SWT.OK);
+                    messageBoxError.setText("Information:"); //$NON-NLS-1$ I18N
+                    messageBoxError.setMessage("Found no solution."); //$NON-NLS-1$ I18N
+                    messageBoxError.open();
                     return;
                 }
             } else {
+                vm.getSelectedData().add(gd);
+                vm.getSelectedSubfiles().add((GData1) gd);
                 df.addToTail(gd);
             }
         }
