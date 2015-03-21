@@ -7257,6 +7257,7 @@ public class VertexManager {
         linkedDatFile.setDrawChainTail(pasted);
         setModified(true);
         updateUnsavedStatus();
+        validateState();
     }
 
     public void addLine(Vertex v1, Vertex v2) {
