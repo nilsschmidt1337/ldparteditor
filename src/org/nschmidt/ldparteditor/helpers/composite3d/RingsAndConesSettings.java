@@ -31,7 +31,6 @@ public class RingsAndConesSettings {
     private boolean usingHiRes = false;
     private boolean creatingNothingOnNoSolution = false;
     private boolean usingExistingPrimitives = true;
-    private boolean creatingShapeForNoSolution = false;
     private BigDecimal height = BigDecimal.ONE;
     private BigDecimal radius1 = BigDecimal.ONE;
     private BigDecimal radius2 = BigDecimal.TEN;
@@ -47,12 +46,6 @@ public class RingsAndConesSettings {
     }
     public void setUsingExistingPrimitives(boolean usingExistingPrimitives) {
         this.usingExistingPrimitives = usingExistingPrimitives;
-    }
-    public boolean isCreatingShapeForNoSolution() {
-        return creatingShapeForNoSolution;
-    }
-    public void setCreatingShapeForNoSolution(boolean creatingShapeForNoSolution) {
-        this.creatingShapeForNoSolution = creatingShapeForNoSolution;
     }
     public BigDecimal getRadius2() {
         return radius2;
