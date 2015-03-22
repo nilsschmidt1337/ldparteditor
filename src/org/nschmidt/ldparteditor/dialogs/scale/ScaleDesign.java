@@ -102,7 +102,7 @@ class ScaleDesign extends Dialog {
             this.spn_X[0] = spn_X;
             spn_X.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spn_X.setMaximum(new BigDecimal(1000000));
-            spn_X.setMinimum(new BigDecimal("0.000000001")); //$NON-NLS-1$
+            spn_X.setMinimum(new BigDecimal(-1000000));
             spn_X.setValue(v.X);
         }
 
@@ -120,7 +120,7 @@ class ScaleDesign extends Dialog {
             this.spn_Y[0] = spn_Y;
             spn_Y.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spn_Y.setMaximum(new BigDecimal(1000000));
-            spn_Y.setMinimum(new BigDecimal("0.000000001")); //$NON-NLS-1$
+            spn_Y.setMinimum(new BigDecimal(-1000000));
             spn_Y.setValue(v.Y);
         }
 
@@ -138,7 +138,7 @@ class ScaleDesign extends Dialog {
             this.spn_Z[0] = spn_Z;
             spn_Z.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spn_Z.setMaximum(new BigDecimal(1000000));
-            spn_Z.setMinimum(new BigDecimal("0.000000001")); //$NON-NLS-1$
+            spn_Z.setMinimum(new BigDecimal(-1000000));
             spn_Z.setValue(v.Z);
         }
 

@@ -19152,7 +19152,7 @@ public class VertexManager {
         this.uncompiled = uncompiled;
     }
 
-    public void setXyzOrTranslateOrTransform(Vertex target, Vertex pivot, TransformationMode tm, boolean x, boolean y, boolean z, boolean syncWithTextEditors) {
+    public void setXyzOrTranslateOrTransform(Vertex target, Vertex pivot, TransformationMode tm, boolean x, boolean y, boolean z, boolean moveAdjacentData, boolean syncWithTextEditors) {
         if (linkedDatFile.isReadOnly())
             return;
 
@@ -19240,10 +19240,16 @@ public class VertexManager {
             }
             break;
         case SCALE:
+            BigDecimal sx = target.X;
+            BigDecimal sy = target.Y;
+            BigDecimal sz = target.Z;
+            if (sx.compareTo(BigDecimal.ZERO) == 0) sx = new BigDecimal("0.000000001"); //$NON-NLS-1$
+            if (sy.compareTo(BigDecimal.ZERO) == 0) sy = new BigDecimal("0.000000001"); //$NON-NLS-1$
+            if (sz.compareTo(BigDecimal.ZERO) == 0) sz = new BigDecimal("0.000000001"); //$NON-NLS-1$
             transformation = new Matrix(
-                    x ? target.X : BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-                            BigDecimal.ZERO, y ? target.Y : BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                                    BigDecimal.ZERO, BigDecimal.ZERO, z ? target.Z : BigDecimal.ONE, BigDecimal.ZERO,
+                    x ? sx : BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                            BigDecimal.ZERO, y ? sy : BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
+                                    BigDecimal.ZERO, BigDecimal.ZERO, z ? sz : BigDecimal.ONE, BigDecimal.ZERO,
                                             BigDecimal.ZERO,  BigDecimal.ZERO,  BigDecimal.ZERO, BigDecimal.ONE);
             break;
         case SET:
@@ -19453,7 +19459,7 @@ public class VertexManager {
                         }
                     }
                 }
-                changeVertexDirectFast(vOld, vNew, true);
+                changeVertexDirectFast(vOld, vNew, moveAdjacentData);
                 selectedVertices.add(vNew);
             }
 

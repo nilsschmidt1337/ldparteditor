@@ -284,6 +284,7 @@ public enum RingsAndCones {
                     }
 
                     private int getDigits(long l) {
+                        if (l < 1) return 1;
                         int result = 0;
                         while (100000000L > l) {
                             l *= 10L;
@@ -314,7 +315,65 @@ public enum RingsAndCones {
                     // rounded to 4 decimal places, multiplied by radius"
                     // This is really important an must be considered!
 
+                    int numFaces = rs.isUsingHiRes() ? 48 : 16;
+                    double deltaA = Math.PI * 2.0 / numFaces;
+                    double a = deltaA;
+                    numFaces = (int) Math.round(numFaces * ((rs.getAngle() + 1.0) / 48.0));
+                    final boolean ignoreLastCondline = (rs.isUsingHiRes() ? 48 : 16) != numFaces;
+                    BigDecimal r1 = rs.getRadius1().compareTo(rs.getRadius2()) < 0 ? rs.getRadius1() : rs.getRadius2();
+                    BigDecimal r2 = rs.getRadius1().compareTo(rs.getRadius2()) < 0 ? rs.getRadius2() : rs.getRadius1();
+                    BigDecimal y = BigDecimal.ZERO;
+                    if (rs.isUsingCones()) {
+                        y = rs.getHeight();
+                    }
+                    BigDecimal px1 = r1;
+                    BigDecimal pz1 = BigDecimal.ZERO;
+                    BigDecimal px2 = r2;
+                    BigDecimal pz2 = BigDecimal.ZERO;
+                    for (int i = 0; i < numFaces; i++) {
+                        BigDecimal x1 = new BigDecimal(Math.cos(a) + "", Threshold.mc); //$NON-NLS-1$
+                        x1 = x1.setScale(4, RoundingMode.HALF_UP);
+                        x1 = x1.multiply(r1);
+                        BigDecimal z1 = new BigDecimal(Math.sin(a) + "", Threshold.mc); //$NON-NLS-1$
+                        z1 = z1.setScale(4, RoundingMode.HALF_UP);
+                        z1 = z1.multiply(r1);
+                        BigDecimal x2 = new BigDecimal(Math.cos(a) + "", Threshold.mc); //$NON-NLS-1$
+                        x2 = x2.setScale(4, RoundingMode.HALF_UP);
+                        x2 = x2.multiply(r2);
+                        BigDecimal z2 = new BigDecimal(Math.sin(a) + "", Threshold.mc); //$NON-NLS-1$
+                        z2 = z2.setScale(4, RoundingMode.HALF_UP);
+                        z2 = z2.multiply(r2);
+                        String line3 = "4 16 " + px1 + " 0 " + pz1 + " " + x1 + " 0 " + z1 + " " + x2 + " " + y + " " + z2 + " " + px2 + " " + y + " " + pz2;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+                        GData quad = DatParser.parseLine(line3
+                                , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
+                                new HashSet<String>(), false).get(0).getGraphicalData();
+                        vm.getSelectedData().add(quad);
+                        vm.getSelectedQuads().add((GData4) quad);
+                        df.addToTail(quad);
 
+                        if (rs.isUsingCones() && ignoreLastCondline && i < numFaces - 1) {
+                            BigDecimal nx = new BigDecimal(Math.cos(a + deltaA));
+                            nx = nx.setScale(4, RoundingMode.HALF_UP);
+                            nx = nx.multiply(r1);
+                            BigDecimal nz = new BigDecimal(Math.sin(a + deltaA));
+                            nz = nz.setScale(4, RoundingMode.HALF_UP);
+                            nz = nz.multiply(r1);
+
+                            String line5 = "5 24 " + x1 + " 0 " + z1 + " " + x2 + " " + y + " " + z2 + " " + nx + " 0 " + nz + " " + px1 + " 0 " + pz1;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+                            GData condline = DatParser.parseLine(line5
+                                    , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
+                                    new HashSet<String>(), false).get(0).getGraphicalData();
+                            vm.getSelectedData().add(condline);
+                            vm.getSelectedCondlines().add((GData5) condline);
+                            df.addToTail(condline);
+                        }
+
+                        px1 = x1;
+                        pz1 = z1;
+                        px2 = x2;
+                        pz2 = z2;
+                        a = a + deltaA;
+                    }
 
                 } else {
 
@@ -408,7 +467,8 @@ public enum RingsAndCones {
                     int numFaces = rs.isUsingHiRes() ? 48 : 16;
                     double deltaA = Math.PI * 2.0 / numFaces;
                     double a = deltaA;
-                    numFaces = (int) (numFaces * ((double) rs.getAngle() / (double) numFaces));
+                    numFaces = (int) Math.round(numFaces * ((rs.getAngle() + 1.0) / 48.0));
+                    final boolean ignoreLastCondline = (rs.isUsingHiRes() ? 48 : 16) != numFaces;
                     BigDecimal r = rs.getRadius1().compareTo(rs.getRadius2()) < 0 ? rs.getRadius2() : rs.getRadius1();
                     BigDecimal y = BigDecimal.ZERO;
                     if (rs.isUsingCones()) {
@@ -431,7 +491,7 @@ public enum RingsAndCones {
                         vm.getSelectedTriangles().add((GData3) tri);
                         df.addToTail(tri);
 
-                        if (rs.isUsingCones()) {
+                        if (rs.isUsingCones() && ignoreLastCondline && i < numFaces - 1) {
                             BigDecimal nx = new BigDecimal(Math.cos(a + deltaA));
                             nx = nx.setScale(4, RoundingMode.HALF_UP);
                             nx = nx.multiply(r);
@@ -513,7 +573,7 @@ public enum RingsAndCones {
                     } else if (hiRes) {
                         continue;
                     }
-                    if (cones && coneP.matcher(name).matches() || ringP.matcher(name).matches()) {
+                    if (cones && coneP.matcher(name).matches() || !cones && ringP.matcher(name).matches()) {
 
                         // Special cases: unknown parts numbers "u[Number]" and unknown
                         // stickers "s[Number]"

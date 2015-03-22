@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.text.MessageFormat;
@@ -32,7 +33,10 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CTabItem;
@@ -199,6 +203,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private PathTruderSettings ps = new PathTruderSettings();
     private SymSplitterSettings sims = new SymSplitterSettings();
     private UnificatorSettings us = new UnificatorSettings();
+    private RingsAndConesSettings ris = new RingsAndConesSettings();
     private SelectorSettings sels = new SelectorSettings();
 
     private boolean updatingPngPictureTab;
@@ -349,6 +354,18 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
 
                 updateTree_unsavedEntries();
+
+                try {
+                    new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
+                        @Override
+                        public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                            monitor.beginTask("Loading Primitives...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                            Thread.sleep(1500);
+                        }
+                    });
+                } catch (InvocationTargetException consumed) {
+                } catch (InterruptedException consumed) {
+                }
 
                 cmp_Primitives[0].load(false);
 
@@ -3097,7 +3114,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             v = sv.iterator().next();
                         }
                         if (new CoordinatesDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
-                            vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), true);
+                            vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData(), true);
                         }
                         return;
                     }
@@ -3112,7 +3129,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         if (new TranslateDialog(getShell(), null).open() == IDialogConstants.OK_ID) {
-                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(TranslateDialog.getOffset(), null, TransformationMode.TRANSLATE, TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), true);
+                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(TranslateDialog.getOffset(), null, TransformationMode.TRANSLATE, TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), isMovingAdjacentData(), true);
                         }
                         return;
                     }
@@ -3164,7 +3181,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         }
                         if (new RotateDialog(getShell(), null, clipboard).open() == IDialogConstants.OK_ID) {
-                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), TranslateDialog.isZ(), true);
+                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), TranslateDialog.isZ(), isMovingAdjacentData(), true);
                         }
                         return;
                     }
@@ -3216,7 +3233,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         }
                         if (new ScaleDialog(getShell(), null, clipboard).open() == IDialogConstants.OK_ID) {
-                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), TransformationMode.SCALE, ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), true);
+                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), TransformationMode.SCALE, ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), isMovingAdjacentData(), true);
                         }
                         return;
                     }
@@ -3372,7 +3389,6 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                        RingsAndConesSettings ris = new RingsAndConesSettings();
                         if (new RingsAndConesDialog(getShell(), ris).open() == IDialogConstants.OK_ID) {
                             RingsAndCones.solve(Editor3DWindow.getWindow().getShell(), c3d.getLockableDatFileReference(), cmp_Primitives[0].getPrimitives(), ris, true);
                         }
