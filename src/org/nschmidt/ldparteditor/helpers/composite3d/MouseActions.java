@@ -269,33 +269,44 @@ public class MouseActions {
             }
             float rx = 0;
             float ry = 0;
-            switch (c3d.hasNegDeterminant()) {
-            case 1:
-                if (!keyboard.isShiftPressed()) {
+
+            if (keyboard.isCtrlPressed()) {
+                switch (c3d.hasNegDeterminant()) {
+                case 1:
+                    rx = (float) (Math.atan2(-cSize.y / 2f + old_mouse_position.y, -cSize.x / 2f + old_mouse_position.x)
+                            - Math.atan2(-cSize.y / 2f + event.y, -cSize.x / 2f + event.x));
+                    break;
+                case 0:
+                    rx = (float) (Math.atan2(cSize.y / 2f - old_mouse_position.y, cSize.x / 2f - old_mouse_position.x)
+                            - Math.atan2(cSize.y / 2f - event.y, cSize.x / 2f - event.x));
+                    break;
+                }
+                Vector4f xAxis4f_rotation = new Vector4f(0f, 0f, 1.0f, 1.0f);
+                Matrix4f ovr_inverse = Matrix4f.invert(old_viewport_rotation, null);
+                Matrix4f.transform(ovr_inverse, xAxis4f_rotation, xAxis4f_rotation);
+                Vector3f xAxis3f_rotation = new Vector3f(xAxis4f_rotation.x, xAxis4f_rotation.y, xAxis4f_rotation.z);
+                Matrix4f.rotate(rx, xAxis3f_rotation, old_viewport_rotation, viewport_rotation);
+            } else {
+                switch (c3d.hasNegDeterminant()) {
+                case 1:
                     rx = (event.x - old_mouse_position.x) / cSize.x * (float) Math.PI;
-                }
-                if (!keyboard.isCtrlPressed()) {
                     ry = (event.y - old_mouse_position.y) / cSize.y * (float) Math.PI;
-                }
-                break;
-            case 0:
-                if (!keyboard.isShiftPressed()) {
+                    break;
+                case 0:
                     rx = (old_mouse_position.x - event.x) / cSize.x * (float) Math.PI;
-                }
-                if (!keyboard.isCtrlPressed()) {
                     ry = (old_mouse_position.y - event.y) / cSize.y * (float) Math.PI;
+                    break;
                 }
-                break;
+                Vector4f xAxis4f_rotation = new Vector4f(1.0f, 0f, 0f, 1.0f);
+                Vector4f yAxis4f_rotation = new Vector4f(0f, 1.0f, 0f, 1.0f);
+                Matrix4f ovr_inverse = Matrix4f.invert(old_viewport_rotation, null);
+                Matrix4f.transform(ovr_inverse, xAxis4f_rotation, xAxis4f_rotation);
+                Matrix4f.transform(ovr_inverse, yAxis4f_rotation, yAxis4f_rotation);
+                Vector3f xAxis3f_rotation = new Vector3f(xAxis4f_rotation.x, xAxis4f_rotation.y, xAxis4f_rotation.z);
+                Vector3f yAxis3f_rotation = new Vector3f(yAxis4f_rotation.x, yAxis4f_rotation.y, yAxis4f_rotation.z);
+                Matrix4f.rotate(rx, yAxis3f_rotation, old_viewport_rotation, viewport_rotation);
+                Matrix4f.rotate(ry, xAxis3f_rotation, viewport_rotation, viewport_rotation);
             }
-            Vector4f xAxis4f_rotation = new Vector4f(1.0f, 0, 0, 1.0f);
-            Vector4f yAxis4f_rotation = new Vector4f(0, 1.0f, 0, 1.0f);
-            Matrix4f ovr_inverse = Matrix4f.invert(old_viewport_rotation, null);
-            Matrix4f.transform(ovr_inverse, xAxis4f_rotation, xAxis4f_rotation);
-            Matrix4f.transform(ovr_inverse, yAxis4f_rotation, yAxis4f_rotation);
-            Vector3f xAxis3f_rotation = new Vector3f(xAxis4f_rotation.x, xAxis4f_rotation.y, xAxis4f_rotation.z);
-            Vector3f yAxis3f_rotation = new Vector3f(yAxis4f_rotation.x, yAxis4f_rotation.y, yAxis4f_rotation.z);
-            Matrix4f.rotate(rx, yAxis3f_rotation, old_viewport_rotation, viewport_rotation);
-            Matrix4f.rotate(ry, xAxis3f_rotation, viewport_rotation, viewport_rotation);
             perspective.calculateOriginData();
             c3d.getVertexManager().getResetTimer().set(true);
             break;
