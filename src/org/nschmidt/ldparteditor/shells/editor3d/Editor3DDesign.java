@@ -940,59 +940,49 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Txt2Dat[0] = mntm_Edger2;
-                        mntm_Edger2.setText("Txt2Dat\tAlt+T"); //$NON-NLS-1$ I18N
-                        mntm_Edger2.setAccelerator(SWT.ALT | 'T');
+                        mntm_Edger2.setText("Txt2Dat"); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_Rectifier = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Rectifier[0] = mntm_Rectifier;
-                        mntm_Rectifier.setText("Rectifier\tAlt+R"); //$NON-NLS-1$ I18N
-                        mntm_Rectifier.setAccelerator(SWT.ALT | 'R');
+                        mntm_Rectifier.setText("Rectifier"); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_Isecalc = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Isecalc[0] = mntm_Isecalc;
-                        mntm_Isecalc.setText("Isecalc\tAlt+I"); //$NON-NLS-1$ I18N
-                        mntm_Isecalc.setAccelerator(SWT.ALT | 'I');
+                        mntm_Isecalc.setText("Isecalc"); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_SlicerPro = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_SlicerPro[0] = mntm_SlicerPro;
-                        mntm_SlicerPro.setText("SlicerPro\tAlt+S"); //$NON-NLS-1$ I18N
-                        mntm_SlicerPro.setAccelerator(SWT.ALT | 'S');
+                        mntm_SlicerPro.setText("SlicerPro"); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_Intersector = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Intersector[0] = mntm_Intersector;
-                        mntm_Intersector.setText("Intersector\tAlt+C"); //$NON-NLS-1$ I18N
-                        mntm_Intersector.setAccelerator(SWT.ALT | 'C');
+                        mntm_Intersector.setText("Intersector"); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_Lines2Pattern = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Lines2Pattern[0] = mntm_Lines2Pattern;
-                        mntm_Lines2Pattern.setText("Lines2Pattern\tAlt+P"); //$NON-NLS-1$ I18N
-                        mntm_Lines2Pattern.setAccelerator(SWT.ALT | 'P');
+                        mntm_Lines2Pattern.setText("Lines2Pattern"); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_PathTruder = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_PathTruder[0] = mntm_PathTruder;
-                        mntm_PathTruder.setText("PathTruder\tAlt+X"); //$NON-NLS-1$ I18N
-                        mntm_PathTruder.setAccelerator(SWT.ALT | 'X');
+                        mntm_PathTruder.setText("PathTruder"); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_SymSplitter = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_SymSplitter[0] = mntm_SymSplitter;
-                        mntm_SymSplitter.setText("SymSplitter\tAlt+Y"); //$NON-NLS-1$ I18N
-                        mntm_SymSplitter.setAccelerator(SWT.ALT | 'Y');
+                        mntm_SymSplitter.setText("SymSplitter"); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_Unificator = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Unificator[0] = mntm_Unificator;
-                        mntm_Unificator.setText("Unificator\tAlt+U"); //$NON-NLS-1$ I18N
-                        mntm_Unificator.setAccelerator(SWT.ALT | 'U');
+                        mntm_Unificator.setText("Unificator"); //$NON-NLS-1$ I18N
                     }
                     {
-                        // FIXME Rings and Cones: Needs implementation!
                         MenuItem mntm_RingsAndCones = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_RingsAndCones[0] = mntm_RingsAndCones;
                         mntm_RingsAndCones.setText("Rings and Cones"); //$NON-NLS-1$ I18N

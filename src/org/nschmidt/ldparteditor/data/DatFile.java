@@ -811,6 +811,8 @@ public final class DatFile {
                 descr = descr.substring(2);
             description = " - " + descr; //$NON-NLS-1$
         }
+
+        addHistory();
     }
 
     public void parseForHints(StyledText compositeText, TreeItem hints) {
@@ -1070,6 +1072,7 @@ public final class DatFile {
     }
 
     public void disposeData() {
+        history.deleteHistory();
         text = ""; //$NON-NLS-1$
         vertices.setModified(false);
         vertices.clear();
@@ -1363,4 +1366,46 @@ public final class DatFile {
         this.history = history;
     }
 
+    // FIXME Needs implementation!
+    public void addHistory() {
+        NLogger.debug(getClass(), "Added history entry for " + getShortName()); //$NON-NLS-1$
+        final long start = System.currentTimeMillis();
+        final int objCount = drawPerLine.size();
+        Object[] backup = new Object[objCount];
+        boolean[] backupSelection = new boolean[objCount];
+        int count = 0;
+        GData data2draw = drawChainAnchor;
+        Set<GData> sd = vertices.getSelectedData();
+        while (count < objCount) {
+            data2draw = data2draw.getNext();
+            backup[count] = data2draw;
+            backupSelection[count] = sd.contains(data2draw);
+            count++;
+        }
+        Vertex[] backupSelectedVertices = vertices.getSelectedVertices().toArray(new Vertex[vertices.getSelectedVertices().size()]);
+        history.pushHistory(
+                null
+                );
+        NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    // FIXME Needs implementation!
+    public void addHistory(String text, int selectionStart, int selectionEnd) {
+        final long start = System.currentTimeMillis();
+        NLogger.debug(getClass(), "Added history entry for " + getShortName()); //$NON-NLS-1$
+        history.pushHistory(
+                text
+                );
+        NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    // FIXME Needs implementation!
+    public void undo() {
+
+    }
+
+    // FIXME Needs implementation!
+    public void redo() {
+
+    }
 }

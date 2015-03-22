@@ -15,6 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editormeta;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -29,6 +34,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.text.LDParsingException;
+import org.nschmidt.ldparteditor.text.StringHelper;
+import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 
 /**
  * The text editor window
@@ -315,95 +323,43 @@ class EditorMetaDesign extends ApplicationWindow {
                 Label lbl_category = new Label(cmp_category, SWT.NONE);
                 lbl_category.setText("0 !CATEGORY "); //$NON-NLS-1$ I18N
 
-                // FIXME Read from txt file!
                 Combo cmb_category = new Combo(cmp_category, SWT.NONE);
-                cmb_category.setItems(new String[] {
-                        "", //$NON-NLS-1$
-                        "Animal", //$NON-NLS-1$
-                        "Antenna", //$NON-NLS-1$
-                        "Arch", //$NON-NLS-1$
-                        "Arm", //$NON-NLS-1$
-                        "Bar", //$NON-NLS-1$
-                        "Baseplate", //$NON-NLS-1$
-                        "Belville", //$NON-NLS-1$
-                        "Boat", //$NON-NLS-1$
-                        "Bracket", //$NON-NLS-1$
-                        "Brick", //$NON-NLS-1$
-                        "Canvas", //$NON-NLS-1$
-                        "Car", //$NON-NLS-1$
-                        "Clikits", //$NON-NLS-1$
-                        "Cockpit", //$NON-NLS-1$
-                        "Cone", //$NON-NLS-1$
-                        "Container", //$NON-NLS-1$
-                        "Conveyor", //$NON-NLS-1$
-                        "Crane", //$NON-NLS-1$
-                        "Cylinder", //$NON-NLS-1$
-                        "Dish", //$NON-NLS-1$
-                        "Door", //$NON-NLS-1$
-                        "Electric", //$NON-NLS-1$
-                        "Exhaust", //$NON-NLS-1$
-                        "Fence", //$NON-NLS-1$
-                        "Figure", //$NON-NLS-1$
-                        "Figure Accessory", //$NON-NLS-1$
-                        "Flag", //$NON-NLS-1$
-                        "Forklift", //$NON-NLS-1$
-                        "Freestyle", //$NON-NLS-1$
-                        "Garage", //$NON-NLS-1$
-                        "Glass", //$NON-NLS-1$
-                        "Grab", //$NON-NLS-1$
-                        "Hinge", //$NON-NLS-1$
-                        "Homemaker", //$NON-NLS-1$
-                        "Hose", //$NON-NLS-1$
-                        "Ladder", //$NON-NLS-1$
-                        "Lever", //$NON-NLS-1$
-                        "Magnet", //$NON-NLS-1$
-                        "Minifig", //$NON-NLS-1$
-                        "Minifig Accessory", //$NON-NLS-1$
-                        "Minifig Footwear", //$NON-NLS-1$
-                        "Minifig Headwear", //$NON-NLS-1$
-                        "Minifig Hipwear", //$NON-NLS-1$
-                        "Minifig Neckwear", //$NON-NLS-1$
-                        "Monorail", //$NON-NLS-1$
-                        "Panel", //$NON-NLS-1$
-                        "Plane", //$NON-NLS-1$
-                        "Plant", //$NON-NLS-1$
-                        "Plate", //$NON-NLS-1$
-                        "Platform", //$NON-NLS-1$
-                        "Propellor", //$NON-NLS-1$
-                        "Rack", //$NON-NLS-1$
-                        "Roadsign", //$NON-NLS-1$
-                        "Rock", //$NON-NLS-1$
-                        "Scala", //$NON-NLS-1$
-                        "Screw", //$NON-NLS-1$
-                        "Sheet", //$NON-NLS-1$
-                        "Slope", //$NON-NLS-1$
-                        "Sphere", //$NON-NLS-1$
-                        "Staircase", //$NON-NLS-1$
-                        "Sticker", //$NON-NLS-1$
-                        "Support", //$NON-NLS-1$
-                        "Tail", //$NON-NLS-1$
-                        "Tap", //$NON-NLS-1$
-                        "Technic", //$NON-NLS-1$
-                        "Tile", //$NON-NLS-1$
-                        "Tipper", //$NON-NLS-1$
-                        "Tractor", //$NON-NLS-1$
-                        "Trailer", //$NON-NLS-1$
-                        "Train", //$NON-NLS-1$
-                        "Turntable", //$NON-NLS-1$
-                        "Tyre", //$NON-NLS-1$
-                        "Vehicle", //$NON-NLS-1$
-                        "Wedge", //$NON-NLS-1$
-                        "Wheel", //$NON-NLS-1$
-                        "Winch", //$NON-NLS-1$
-                        "Window", //$NON-NLS-1$
-                        "Windscreen", //$NON-NLS-1$
-                        "Wing", //$NON-NLS-1$
-                        "Znap", //$NON-NLS-1$
-                });
+                ev_category_cmb[0] = cmb_category;
+                File categoryFile = new File("categories.txt"); //$NON-NLS-1$
+                if (categoryFile.exists() && categoryFile.isFile()) {
+                    UTF8BufferedReader reader = null;
+                    try {
+                        ArrayList<String> categories = new ArrayList<String>();
+                        categories.add(""); //$NON-NLS-1$
+                        reader = new UTF8BufferedReader(categoryFile.getAbsolutePath());
+                        String line ;
+                        while ((line = reader.readLine()) != null) {
+                            line = line.trim();
+                            if (StringHelper.isNotBlank(line)) {
+                                categories.add(line);
+                            }
+                        }
+                        ev_category_cmb[0].setItems(categories.toArray(new String[categories.size()]));
+                    } catch (LDParsingException e) {
+                        setDefaultCategories();
+                    } catch (FileNotFoundException e) {
+                        setDefaultCategories();
+                    } catch (UnsupportedEncodingException e) {
+                        setDefaultCategories();
+                    } finally {
+                        try {
+                            if (reader != null)
+                                reader.close();
+                        } catch (LDParsingException e1) {
+                        }
+                    }
+                } else {
+                    setDefaultCategories();
+                }
+
                 cmb_category.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmb_category.setText(""); //$NON-NLS-1$
                 cmb_category.select(0);
-                ev_category_cmb[0] = cmb_category;
             }
 
             {
@@ -1104,6 +1060,92 @@ class EditorMetaDesign extends ApplicationWindow {
 
         cmp_scroll.setMinSize(cmp_metaArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
         return container;
+    }
+
+    private void setDefaultCategories() {
+        ev_category_cmb[0].setItems(new String[] {
+                "", //$NON-NLS-1$
+                "Animal", //$NON-NLS-1$
+                "Antenna", //$NON-NLS-1$
+                "Arch", //$NON-NLS-1$
+                "Arm", //$NON-NLS-1$
+                "Bar", //$NON-NLS-1$
+                "Baseplate", //$NON-NLS-1$
+                "Belville", //$NON-NLS-1$
+                "Boat", //$NON-NLS-1$
+                "Bracket", //$NON-NLS-1$
+                "Brick", //$NON-NLS-1$
+                "Canvas", //$NON-NLS-1$
+                "Car", //$NON-NLS-1$
+                "Clikits", //$NON-NLS-1$
+                "Cockpit", //$NON-NLS-1$
+                "Cone", //$NON-NLS-1$
+                "Container", //$NON-NLS-1$
+                "Conveyor", //$NON-NLS-1$
+                "Crane", //$NON-NLS-1$
+                "Cylinder", //$NON-NLS-1$
+                "Dish", //$NON-NLS-1$
+                "Door", //$NON-NLS-1$
+                "Electric", //$NON-NLS-1$
+                "Exhaust", //$NON-NLS-1$
+                "Fence", //$NON-NLS-1$
+                "Figure", //$NON-NLS-1$
+                "Figure Accessory", //$NON-NLS-1$
+                "Flag", //$NON-NLS-1$
+                "Forklift", //$NON-NLS-1$
+                "Freestyle", //$NON-NLS-1$
+                "Garage", //$NON-NLS-1$
+                "Glass", //$NON-NLS-1$
+                "Grab", //$NON-NLS-1$
+                "Hinge", //$NON-NLS-1$
+                "Homemaker", //$NON-NLS-1$
+                "Hose", //$NON-NLS-1$
+                "Ladder", //$NON-NLS-1$
+                "Lever", //$NON-NLS-1$
+                "Magnet", //$NON-NLS-1$
+                "Minifig", //$NON-NLS-1$
+                "Minifig Accessory", //$NON-NLS-1$
+                "Minifig Footwear", //$NON-NLS-1$
+                "Minifig Headwear", //$NON-NLS-1$
+                "Minifig Hipwear", //$NON-NLS-1$
+                "Minifig Neckwear", //$NON-NLS-1$
+                "Monorail", //$NON-NLS-1$
+                "Panel", //$NON-NLS-1$
+                "Plane", //$NON-NLS-1$
+                "Plant", //$NON-NLS-1$
+                "Plate", //$NON-NLS-1$
+                "Platform", //$NON-NLS-1$
+                "Propellor", //$NON-NLS-1$
+                "Rack", //$NON-NLS-1$
+                "Roadsign", //$NON-NLS-1$
+                "Rock", //$NON-NLS-1$
+                "Scala", //$NON-NLS-1$
+                "Screw", //$NON-NLS-1$
+                "Sheet", //$NON-NLS-1$
+                "Slope", //$NON-NLS-1$
+                "Sphere", //$NON-NLS-1$
+                "Staircase", //$NON-NLS-1$
+                "Sticker", //$NON-NLS-1$
+                "Support", //$NON-NLS-1$
+                "Tail", //$NON-NLS-1$
+                "Tap", //$NON-NLS-1$
+                "Technic", //$NON-NLS-1$
+                "Tile", //$NON-NLS-1$
+                "Tipper", //$NON-NLS-1$
+                "Tractor", //$NON-NLS-1$
+                "Trailer", //$NON-NLS-1$
+                "Train", //$NON-NLS-1$
+                "Turntable", //$NON-NLS-1$
+                "Tyre", //$NON-NLS-1$
+                "Vehicle", //$NON-NLS-1$
+                "Wedge", //$NON-NLS-1$
+                "Wheel", //$NON-NLS-1$
+                "Winch", //$NON-NLS-1$
+                "Window", //$NON-NLS-1$
+                "Windscreen", //$NON-NLS-1$
+                "Wing", //$NON-NLS-1$
+                "Znap", //$NON-NLS-1$
+        });
     }
 
     /**

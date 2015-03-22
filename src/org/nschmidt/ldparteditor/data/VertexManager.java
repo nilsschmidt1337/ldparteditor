@@ -18466,6 +18466,9 @@ public class VertexManager {
     private final AtomicInteger openThreads = new AtomicInteger(0);
     private final Lock lock = new ReentrantLock();
     public void syncWithTextEditors() {
+
+        linkedDatFile.addHistory();
+
         try {
             lock.lock();
             if (isUncompiled()) {

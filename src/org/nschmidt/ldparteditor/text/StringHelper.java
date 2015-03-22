@@ -15,6 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.text;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author nils
  *
@@ -62,9 +67,104 @@ public enum StringHelper {
         return count;
     }
 
+    public static boolean isNotBlank(String str) {
+        int strLen;
+        if (str == null || (strLen = str.length()) == 0) {
+            return false;
+        }
+        for (int i = 0; i < strLen; i++) {
+            if (Character.isWhitespace(str.charAt(i)) == false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static final String ld = String.format("%n"); //$NON-NLS-1$
 
     public static String getLineDelimiter() {
         return ld;
     }
+
+
+    public static int[] compress(String uncompressed) {
+        // Build the dictionary.
+        int dictSize = 256;
+        Map<String,Integer> dictionary = new HashMap<String,Integer>();
+        for (int i = 0; i < 256; i++)
+            dictionary.put("" + (char)i, i); //$NON-NLS-1$
+
+        String w = ""; //$NON-NLS-1$
+        List<Integer> result = new ArrayList<Integer>();
+        for (char c : uncompressed.toCharArray()) {
+            String wc = w + c;
+            if (dictionary.containsKey(wc))
+                w = wc;
+            else {
+                // Add wc to the dictionary.
+                dictionary.put(wc, dictSize++);
+                w = "" + c; //$NON-NLS-1$
+            }
+        }
+        dictionary.clear();
+        for (int i = 0; i < 256; i++)
+            dictionary.put("" + (char)i, i); //$NON-NLS-1$
+        for (char c : uncompressed.toCharArray()) {
+            String wc = w + c;
+            if (dictionary.containsKey(wc))
+                w = wc;
+            else {
+                result.add(dictionary.get(w));
+                // Add wc to the dictionary.
+                dictionary.put(wc, dictSize++);
+                w = "" + c; //$NON-NLS-1$
+            }
+        }
+
+        // Output the code for w.
+        if (!w.equals("")) //$NON-NLS-1$
+            result.add(dictionary.get(w));
+
+        int[] result2 = new int[result.size()];
+        for (int i = 0; i < result2.length; i++) {
+            int j = result.get(i);
+            result2[i] = j;
+        }
+        return result2;
+    }
+
+    /** Decompress a list of output ks to a string. */
+    public static String decompress(int[] compressed) {
+        // Build the dictionary.
+        int dictSize = 256;
+        Map<Integer,String> dictionary = new HashMap<Integer,String>();
+        for (int i = 0; i < 256; i++)
+            dictionary.put(i, "" + (char)i); //$NON-NLS-1$
+
+        String w = "" + (char) compressed[0]; //$NON-NLS-1$
+        StringBuffer result = new StringBuffer(w);
+        final int size = compressed.length;
+        for (int i = 1; i < size; i++) {
+            int k = compressed[i];
+            String entry;
+            if (dictionary.containsKey(k))
+                entry = dictionary.get(k);
+            else if (k == dictSize)
+                entry = w + w.charAt(0);
+            else
+                throw new IllegalArgumentException("Bad compressed k: " + k); //$NON-NLS-1$
+
+            result.append(entry);
+
+            // Add w+entry[0] to the dictionary.
+            dictionary.put(dictSize++, w + entry.charAt(0));
+
+            w = entry;
+        }
+        return result.toString();
+    }
+
+
+
+
 }
