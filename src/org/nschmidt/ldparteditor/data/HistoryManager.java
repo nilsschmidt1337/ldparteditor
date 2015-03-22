@@ -18,7 +18,7 @@ public class HistoryManager {
 
     private Queue<Object[]> workQueue = new ConcurrentLinkedQueue<Object[]>();
 
-    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data) {
+    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, boolean[] selectedData, Vertex[] selectedVertices) {
         if (hasNoThread) {
             hasNoThread = false;
             new Thread(new Runnable() {
@@ -46,17 +46,22 @@ public class HistoryManager {
                                 }
                                 NLogger.debug(getClass(), "Compressed undo/redo data"); //$NON-NLS-1$
                             } else {
-                                switch (action.get()) {
-                                case 1:
-                                    // Undo
-                                    break;
-                                case 2:
-                                    // Redo
-                                    break;
-                                default:
-                                    break;
+                                final int action2 = action.get();
+                                if (action2 > 0) {
+                                    switch (action2) {
+                                    case 1:
+                                        // Undo
+                                        NLogger.debug(getClass(), "Requested undo."); //$NON-NLS-1$
+                                        break;
+                                    case 2:
+                                        // Redo
+                                        NLogger.debug(getClass(), "Requested redo."); //$NON-NLS-1$
+                                        break;
+                                    default:
+                                        break;
+                                    }
+                                    action.set(0);
                                 }
-                                action.set(0);
                             }
                             Thread.sleep(100);
                         } catch (InterruptedException e) {}
@@ -66,7 +71,11 @@ public class HistoryManager {
             }).start();
         }
 
-        workQueue.offer(new Object[]{text, selectionStart, selectionEnd, data});
+        while (!workQueue.offer(new Object[]{text, selectionStart, selectionEnd, data, selectedData, selectedVertices})) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
 
     }
 

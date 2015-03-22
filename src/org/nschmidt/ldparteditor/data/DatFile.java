@@ -1387,7 +1387,9 @@ public final class DatFile {
                 null,
                 -1,
                 -1,
-                backup
+                backup,
+                backupSelection,
+                backupSelectedVertices
                 );
         NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
     }
@@ -1400,6 +1402,8 @@ public final class DatFile {
                 text,
                 selectionStart,
                 selectionEnd,
+                null,
+                null,
                 null
                 );
         NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
