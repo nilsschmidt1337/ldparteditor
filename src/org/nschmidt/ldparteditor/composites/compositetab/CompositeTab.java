@@ -41,6 +41,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -566,6 +567,8 @@ public class CompositeTab extends CompositeTabDesign {
             public void modifyText(final ExtendedModifyEvent event) {
                 ViewIdleManager.pause[0].compareAndSet(false, true);
 
+                final String text = compositeText[0].getText();
+
                 int new_line_count = compositeText[0].getLineCount();
                 if (old_line_count != new_line_count) {
                     old_line_count = new_line_count;
@@ -582,8 +585,8 @@ public class CompositeTab extends CompositeTabDesign {
                 }
 
                 DatFile dat = state.getFileNameObj();
-
-                if (compositeText[0].getText().equals(dat.getOriginalText()) && dat.getOldName().equals(dat.getNewName())) {
+                dat.addHistory(text, compositeText[0].getSelectionRange().x, 0);
+                if (text.equals(dat.getOriginalText()) && dat.getOldName().equals(dat.getNewName())) {
                     if (!dat.isVirtual()) state.getTab().setText(state.filename);
                     // Do not remove virtual files from the unsaved file list
                     // (they are virtual, because they were not saved at all!)
@@ -598,7 +601,7 @@ public class CompositeTab extends CompositeTabDesign {
                         Editor3DWindow.getWindow().updateTree_unsavedEntries();
                     }
                 }
-                dat.setText(compositeText[0].getText());
+                dat.setText(text);
                 final int off = event.start + event.length;
                 final String insertedText = event.length == 0 ? "" : compositeText[0].getText(event.start, off - 1); //$NON-NLS-1$
 
@@ -766,6 +769,8 @@ public class CompositeTab extends CompositeTabDesign {
             @Override
             public void caretMoved(CaretEvent event) {
                 ViewIdleManager.pause[0].compareAndSet(false, true);
+                Point r = compositeText[0].getSelectionRange();
+                state.getFileNameObj().addHistory(null, r.x, r.y);
                 try {
                     compositeText[0].setLineBackground(state.currentLineIndex, 1, compositeText[0].getBackground());
                 } catch (Exception a) {

@@ -599,7 +599,7 @@ public class CompositePrimitive extends Composite {
 
             // Creating the categories / Rules
             File rulesFile = new File("primitive_rules.txt"); //$NON-NLS-1$
-            if (rulesFile.exists()) {
+            if (rulesFile.exists() && rulesFile.isFile()) {
                 UTF8BufferedReader reader = null;
                 try {
                     reader = new UTF8BufferedReader(rulesFile.getAbsolutePath());

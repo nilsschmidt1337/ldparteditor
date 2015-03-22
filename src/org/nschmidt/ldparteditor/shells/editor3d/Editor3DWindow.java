@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -174,6 +175,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public static final ArrayList<GLCanvas> canvasList = new ArrayList<GLCanvas>();
     public static final ArrayList<OpenGLRenderer> renders = new ArrayList<OpenGLRenderer>();
+
+    final private static AtomicBoolean alive = new AtomicBoolean(true);
 
     private boolean addingSomething = false;
     private boolean addingVertices = false;
@@ -4327,7 +4330,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 NLogger.error(Editor3DWindow.class, swtEx);
             }
         }
-
+        // All "history threads" needs to know that the main window was closed
+        alive.set(false);
         // Save the workbench
         WorkbenchManager.saveWorkbench();
         setReturnCode(CANCEL);
@@ -5569,5 +5573,9 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public CompositePrimitive getCompositePrimitive() {
         return cmp_Primitives[0];
+    }
+
+    public static AtomicBoolean getAlive() {
+        return alive;
     }
 }
