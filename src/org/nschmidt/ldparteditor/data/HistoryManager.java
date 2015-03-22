@@ -45,6 +45,18 @@ public class HistoryManager {
                                     result = StringHelper.compress(sb.toString());
                                 }
                                 NLogger.debug(getClass(), "Compressed undo/redo data"); //$NON-NLS-1$
+                            } else {
+                                switch (action.get()) {
+                                case 1:
+                                    // Undo
+                                    break;
+                                case 2:
+                                    // Redo
+                                    break;
+                                default:
+                                    break;
+                                }
+                                action.set(0);
                             }
                             Thread.sleep(100);
                         } catch (InterruptedException e) {}
@@ -60,5 +72,23 @@ public class HistoryManager {
 
     public void deleteHistory() {
         isRunning.set(false);
+    }
+
+    public void undo() {
+        action.set(1);
+        while (action.get() > 0) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+    }
+
+    public void redo() {
+        action.set(2);
+        while (action.get() > 0) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
     }
 }

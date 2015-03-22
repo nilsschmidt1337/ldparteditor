@@ -1407,11 +1407,11 @@ public final class DatFile {
 
     // FIXME Needs implementation!
     public void undo() {
-
+        history.undo();
     }
 
     // FIXME Needs implementation!
     public void redo() {
-
+        history.redo();
     }
 }
