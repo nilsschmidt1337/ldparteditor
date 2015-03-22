@@ -751,7 +751,7 @@ public class LibraryManager {
         HashMap<String, DatType> newTypeMap = new HashMap<String, DatType>();
         HashMap<String, DatFileName> newDfnMap = new HashMap<String, DatFileName>();
 
-        HashMap<String, HistoryMock> historyMap = new HashMap<String, HistoryMock>();
+        HashMap<String, HistoryManager> historyMap = new HashMap<String, HistoryManager>();
 
         if (prefix1.isEmpty()) {
 
@@ -940,7 +940,7 @@ public class LibraryManager {
             HashMap<String, CompositeTab> openInTextMap,
             HashMap<String, HashSet<Composite3D>> unsavedIn3DMap,
             HashMap<String, CompositeTab> unsavedInTextMap,
-            HashMap<String, HistoryMock> historyMap,
+            HashMap<String, HistoryManager> historyMap,
             HashMap<String, Boolean> readOnly,
             boolean checkForUnsaved
             ) {
