@@ -98,7 +98,7 @@ public final class DatFile {
 
     private Composite3D lastSelectedComposite = null;
 
-    private HistoryMock history = new HistoryMock();
+    private HistoryManager history = new HistoryManager();
 
     public DatFile(String path) {
         this.projectFile = true;
@@ -1356,12 +1356,12 @@ public final class DatFile {
         this.projectFile = projectFile;
     }
 
-    public HistoryMock getHistory() {
+    public HistoryManager getHistory() {
         // FIXME MOCKUP!
         return history;
     }
 
-    public void setHistory(HistoryMock history) {
+    public void setHistory(HistoryManager history) {
         // FIXME MOCKUP!
         this.history = history;
     }
@@ -1371,7 +1371,7 @@ public final class DatFile {
         NLogger.debug(getClass(), "Added history entry for " + getShortName()); //$NON-NLS-1$
         final long start = System.currentTimeMillis();
         final int objCount = drawPerLine.size();
-        Object[] backup = new Object[objCount];
+        GData[] backup = new GData[objCount];
         boolean[] backupSelection = new boolean[objCount];
         int count = 0;
         GData data2draw = drawChainAnchor;
@@ -1384,7 +1384,10 @@ public final class DatFile {
         }
         Vertex[] backupSelectedVertices = vertices.getSelectedVertices().toArray(new Vertex[vertices.getSelectedVertices().size()]);
         history.pushHistory(
-                null
+                null,
+                -1,
+                -1,
+                backup
                 );
         NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
     }
@@ -1394,7 +1397,10 @@ public final class DatFile {
         final long start = System.currentTimeMillis();
         NLogger.debug(getClass(), "Added history entry for " + getShortName()); //$NON-NLS-1$
         history.pushHistory(
-                text
+                text,
+                selectionStart,
+                selectionEnd,
+                null
                 );
         NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
     }

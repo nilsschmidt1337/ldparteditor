@@ -93,7 +93,6 @@ public enum StringHelper {
         Map<String,Integer> dictionary = new HashMap<String,Integer>();
         for (int i = 0; i < 256; i++)
             dictionary.put("" + (char)i, i); //$NON-NLS-1$
-
         String w = ""; //$NON-NLS-1$
         List<Integer> result = new ArrayList<Integer>();
         for (char c : uncompressed.toCharArray()) {
@@ -101,20 +100,11 @@ public enum StringHelper {
             if (dictionary.containsKey(wc))
                 w = wc;
             else {
-                // Add wc to the dictionary.
-                dictionary.put(wc, dictSize++);
-                w = "" + c; //$NON-NLS-1$
-            }
-        }
-        dictionary.clear();
-        for (int i = 0; i < 256; i++)
-            dictionary.put("" + (char)i, i); //$NON-NLS-1$
-        for (char c : uncompressed.toCharArray()) {
-            String wc = w + c;
-            if (dictionary.containsKey(wc))
-                w = wc;
-            else {
-                result.add(dictionary.get(w));
+                Integer di = dictionary.get(w);
+                if (di == null) {
+                    dictionary.put(w, dictSize++);
+                }
+                result.add(di);
                 // Add wc to the dictionary.
                 dictionary.put(wc, dictSize++);
                 w = "" + c; //$NON-NLS-1$
@@ -151,8 +141,12 @@ public enum StringHelper {
                 entry = dictionary.get(k);
             else if (k == dictSize)
                 entry = w + w.charAt(0);
-            else
-                throw new IllegalArgumentException("Bad compressed k: " + k); //$NON-NLS-1$
+            else {
+                dictionary.put(dictSize++, w);
+                result.append(w);
+                continue;
+            }
+
 
             result.append(entry);
 
