@@ -261,6 +261,45 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
+        btn_Undo[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
+                    selection.getState().getFileNameObj().undo();
+                }
+            }
+        });
+
+        btn_Redo[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
+                    selection.getState().getFileNameObj().redo();
+                }
+            }
+        });
+
+        btn_AddHistory[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
+                    selection.getState().getFileNameObj().addHistory();
+                }
+            }
+        });
+
         btn_Inline[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

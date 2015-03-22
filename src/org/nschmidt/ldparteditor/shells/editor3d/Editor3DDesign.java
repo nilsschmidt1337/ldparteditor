@@ -111,6 +111,10 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_Local = new Button[1];
     final Button[] btn_Global = new Button[1];
 
+    final Button[] btn_Undo = new Button[1];
+    final Button[] btn_AddHistory = new Button[1];
+    final Button[] btn_Redo = new Button[1];
+
     final MenuItem[] btn_Manipulator_0_toOrigin = new MenuItem[1];
     final MenuItem[] btn_Manipulator_X_XReverse = new MenuItem[1];
     final MenuItem[] btn_Manipulator_XI_YReverse = new MenuItem[1];
@@ -433,16 +437,19 @@ class Editor3DDesign extends ApplicationWindow {
         ToolItem toolItem_UndoRedo = new ToolItem(toolBar, SWT.NONE);
         {
             Button btn_Undo = new Button(toolItem_UndoRedo, SWT.NONE);
+            this.btn_Undo[0] = btn_Undo;
             btn_Undo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
             btn_Undo.setToolTipText(I18n.EDITOR3D_Undo);
         }
         {
             Button btn_Snapshot = new Button(toolItem_UndoRedo, SWT.NONE);
+            this.btn_AddHistory[0] = btn_Snapshot;
             btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
             btn_Snapshot.setToolTipText(I18n.EDITOR3D_Snapshot);
         }
         {
             Button btn_Redo = new Button(toolItem_UndoRedo, SWT.NONE);
+            this.btn_Redo[0] = btn_Redo;
             btn_Redo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
             btn_Redo.setToolTipText(I18n.EDITOR3D_Redo);
         }
