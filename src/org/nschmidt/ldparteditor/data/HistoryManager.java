@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -23,6 +24,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
@@ -369,37 +373,46 @@ public class HistoryManager {
     }
 
     public void undo() {
-        if (action.get() == 0) {
-            BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
-                @Override
-                public void run() {
-                    action.set(1);
-                    while (action.get() > 0) {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {}
-                    }
-                    Display.getCurrent().readAndDispatch();
-                }
-            });
-        }
+        action(1);
     }
 
     public void redo() {
+        action(2);
+    }
+
+    private void action(final int mode) {
         if (action.get() == 0) {
             BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
                 @Override
                 public void run() {
-                    action.set(2);
-                    while (action.get() > 0) {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {}
-                    }
+                    action.set(mode);
                     Display.getCurrent().readAndDispatch();
                 }
             });
         }
+        BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
+            @Override
+            public void run() {
+                try
+                {
+                    new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
+                    {
+                        @Override
+                        public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+                        {
+                            monitor.beginTask("Loading Data...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                            while (action.get() > 0) {
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {}
+                            }
+                        }
+                    });
+                } catch (Exception ex) {
+
+                }
+            }
+        });
     }
 
     private void removeFromListAboveOrEqualIndex(List<?> l, int i) {
