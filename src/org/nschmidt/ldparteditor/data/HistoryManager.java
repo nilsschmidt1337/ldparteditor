@@ -24,11 +24,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.swt.custom.BusyIndicator;
+import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
 // FIXME Needs implementation!!
@@ -198,6 +202,7 @@ public class HistoryManager {
                                         break;
                                     }
                                     if (doRestore) {
+                                        df.getVertexManager().setSkipSyncWithTextEditor(true);
                                         final int pointer2 = pointer;
                                         final boolean openTextEditor = historySelectionStart.get(pointer2) != -1;
 
@@ -212,7 +217,18 @@ public class HistoryManager {
                                             return;
                                         }
                                         final String decompressed = StringHelper.decompress(text);
-
+                                        boolean hasTextEditor = false;
+                                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                            for (final CTabItem t : w.getTabFolder().getItems()) {
+                                                final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
+                                                if (txtDat != null && txtDat.equals(df)) {
+                                                    hasTextEditor = true;
+                                                    break;
+                                                }
+                                            }
+                                            if (hasTextEditor) break;
+                                        }
+                                        final AtomicBoolean hasDrawn = new AtomicBoolean(false);
                                         Display.getDefault().asyncExec(new Runnable() {
                                             @Override
                                             public void run() {
@@ -221,9 +237,43 @@ public class HistoryManager {
                                                 Project.getUnsavedFiles().add(df);
                                                 df.setText(decompressed);
                                                 df.parseForData(false);
-                                                if (openTextEditor) {
 
+                                                boolean hasTextEditor = false;
+                                                try {
+                                                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                                        for (final CTabItem t : w.getTabFolder().getItems()) {
+                                                            final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
+                                                            if (txtDat != null && txtDat.equals(df)) {
+                                                                if (!df.getVertexManager().isSyncWithTextEditor()) {
+                                                                    // Don't sync twice...
+                                                                    int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
+                                                                    Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
+                                                                    if (openTextEditor) {
+                                                                        r.x = historySelectionStart.get(pointer2);
+                                                                        r.y = historySelectionEnd.get(pointer2);
+                                                                    }
+                                                                    ((CompositeTab) t).getState().setSync(true);
+                                                                    ((CompositeTab) t).getTextComposite().setText(decompressed);
+                                                                    ((CompositeTab) t).getTextComposite().setTopIndex(ti);
+                                                                    try {
+                                                                        ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
+                                                                    } catch (IllegalArgumentException consumed) {}
+                                                                    ((CompositeTab) t).getTextComposite().redraw();
+                                                                    ((CompositeTab) t).getControl().redraw();
+                                                                    ((CompositeTab) t).getTextComposite().update();
+                                                                    ((CompositeTab) t).getControl().update();
+                                                                    ((CompositeTab) t).getState().setSync(false);
+                                                                }
+                                                                hasTextEditor = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (hasTextEditor) break;
+                                                    }
+                                                } catch (Exception consumed) {
                                                 }
+
+
                                                 final VertexManager vm = df.getVertexManager();
 
                                                 vm.clearSelection2();
@@ -267,15 +317,32 @@ public class HistoryManager {
                                                 }
                                                 vm.updateUnsavedStatus();
 
-                                                if (openTextEditor) {
 
+                                                vm.setSkipSyncWithTextEditor(false);
+                                                if (hasTextEditor) {
+                                                    vm.setModified_NoSync();
+                                                    vm.syncWithTextEditors(false);
+                                                } else {
+                                                    vm.setModified(true, false);
                                                 }
-                                                df.getVertexManager().setModified(true, false);
+                                                if (openTextEditor || hasTextEditor) {
+                                                    vm.setUpdated(true);
+                                                }
                                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                                                hasDrawn.set(true);
                                             }
                                         });
+                                        while (!hasDrawn.get()) {
+                                            try {
+                                                Thread.sleep(100);
+                                            } catch (InterruptedException e) {}
+                                        }
+                                        if (!(!hasTextEditor && openTextEditor)) {
+                                            action.set(0);
+                                        }
+                                    } else {
+                                        action.set(0);
                                     }
-                                    action.set(0);
                                 }
                             }
                             Thread.sleep(100);
@@ -302,31 +369,37 @@ public class HistoryManager {
     }
 
     public void undo() {
-        BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
-            @Override
-            public void run() {
-                action.set(1);
-                while (action.get() > 0) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {}
+        if (action.get() == 0) {
+            BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
+                @Override
+                public void run() {
+                    action.set(1);
+                    while (action.get() > 0) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {}
+                    }
+                    Display.getCurrent().readAndDispatch();
                 }
-            }
-        });
+            });
+        }
     }
 
     public void redo() {
-        BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
-            @Override
-            public void run() {
-                action.set(2);
-                while (action.get() > 0) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {}
+        if (action.get() == 0) {
+            BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
+                @Override
+                public void run() {
+                    action.set(2);
+                    while (action.get() > 0) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {}
+                    }
+                    Display.getCurrent().readAndDispatch();
                 }
-            }
-        });
+            });
+        }
     }
 
     private void removeFromListAboveOrEqualIndex(List<?> l, int i) {
