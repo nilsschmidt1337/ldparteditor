@@ -99,7 +99,7 @@ public class CompositeTabState {
                 String originalText = sb.toString();
 
                 fileNameObj.setOriginalText(originalText);
-                fileNameObj.parseForData();
+                fileNameObj.parseForData(true);
                 this.datFileObj.getVertexManager().setVertexToReplace(null);
                 this.datFileObj.getVertexManager().setModified_NoSync();
                 getTab().getTextComposite().setText(originalText);

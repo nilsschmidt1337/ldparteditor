@@ -155,7 +155,7 @@ public class MouseActions {
                 if (window.isAddingVertices()) {
                     GData vertexLine = vm.addVertex(new Vertex(c3d.getCursorSnapped3Dprecise()[0], c3d.getCursorSnapped3Dprecise()[1], c3d.getCursorSnapped3Dprecise()[2]));
                     if (vertexLine != null) {
-                        vm.setModified(true);
+                        vm.setModified(true, true);
                         if (!Project.getUnsavedFiles().contains(datfile)) {
                             Project.addUnsavedFile(datfile);
                             Editor3DWindow.getWindow().updateTree_unsavedEntries();
@@ -184,7 +184,7 @@ public class MouseActions {
                             GData1 vertexLine = (GData1) subfileLine.get(0).getGraphicalData();
                             if (vertexLine != null) {
                                 datfile.addToTail(vertexLine);
-                                datfile.getVertexManager().setModified(true);
+                                datfile.getVertexManager().setModified(true, true);
                                 if (!Project.getUnsavedFiles().contains(datfile)) {
                                     Project.addUnsavedFile(datfile);
                                     Editor3DWindow.getWindow().updateTree_unsavedEntries();
@@ -658,7 +658,7 @@ public class MouseActions {
                             datfile.setObjVertex2(nv);
                             vm.addLine(datfile.getNearestObjVertex1(), nv);
                             vm.getSelectedVertices().clear();
-                            vm.setModified(true);
+                            vm.setModified(true, true);
                         } else {
                             final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();
                             Vertex v1 = vi.next();
@@ -682,7 +682,7 @@ public class MouseActions {
                             datfile.setObjVertex2(nv);
                             vm.addLine(datfile.getNearestObjVertex1(), nv);
                             vm.getSelectedVertices().clear();
-                            vm.setModified(true);
+                            vm.setModified(true, true);
                         }
                     }
                     if (vm.getSelectedVertices().size() > 2 && vl1 != null) {
@@ -696,7 +696,7 @@ public class MouseActions {
                         Vertex v2 = vi.next();
                         vm.addLine(v1, v2);
                         vm.getSelectedVertices().clear();
-                        vm.setModified(true);
+                        vm.setModified(true, true);
                     }
                 } else if (window.isAddingTriangles()) {
                     Vertex vt1 = datfile.getObjVertex1();
@@ -1001,7 +1001,7 @@ public class MouseActions {
                             datfile.setObjVertex4(nv);
                             vm.addCondline(vc1, vc2, vc3, nv);
                             vm.getSelectedVertices().clear();
-                            vm.setModified(true);
+                            vm.setModified(true, true);
                             return;
                         } else if (vc4 != null) {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
@@ -1040,7 +1040,7 @@ public class MouseActions {
                             datfile.setObjVertex4(nv);
                             vm.addCondline(vc1, vc2, vc3, nv);
                             vm.getSelectedVertices().clear();
-                            vm.setModified(true);
+                            vm.setModified(true, true);
                             return;
                         } else if (vc4 != null) {
                             datfile.setObjVertex1(vn1);
@@ -1066,7 +1066,7 @@ public class MouseActions {
                             datfile.setObjVertex4(nv2);
                             vm.addCondline(vc1, vc2, nv, nv2);
                             vm.getSelectedVertices().clear();
-                            vm.setModified(true);
+                            vm.setModified(true, true);
                             return;
                         } else if (vc1 != null && vc2 != null && vc3 != null && vc4 != null) {
                             datfile.setObjVertex1(vn1);
@@ -1075,7 +1075,7 @@ public class MouseActions {
                             datfile.setObjVertex4(nv2);
                             vm.addCondline(vn1, vn2, nv, nv2);
                             vm.getSelectedVertices().clear();
-                            vm.setModified(true);
+                            vm.setModified(true, true);
                             return;
                         } else if (vc1 != null && vc2 == null && vc3 == null && vc4 == null) {
 
@@ -1091,7 +1091,7 @@ public class MouseActions {
                             datfile.setObjVertex4(nv3);
                             vm.addCondline(vc1, nv, nv2, nv3);
                             vm.getSelectedVertices().clear();
-                            vm.setModified(true);
+                            vm.setModified(true, true);
                             return;
                         } else if (vc1 == null && vc2 == null && vc3 == null && vc4 == null) {
                             datfile.setNearestObjVertex1(nv);
@@ -1122,7 +1122,7 @@ public class MouseActions {
                         datfile.setObjVertex3(v3);
                         datfile.setObjVertex4(v4);
                         vm.addCondline(v1, v2, v3, v4);
-                        vm.setModified(true);
+                        vm.setModified(true, true);
                         vm.getSelectedVertices().clear();
                     }
                 }
@@ -1152,7 +1152,7 @@ public class MouseActions {
                     c3d.getLockableDatFileReference().getVertexManager().selectSubfiles(c3d, event, true);
                     break;
                 }
-                c3d.getLockableDatFileReference().getVertexManager().syncWithTextEditors();
+                c3d.getLockableDatFileReference().getVertexManager().syncWithTextEditors(true);
             } else if (!window.isAddingSomething()) {
                 c3d.getManipulator().applyTranslation(c3d);
             }

@@ -129,7 +129,7 @@ public enum QuickFixer {
 
             }
         }
-        datFile.getVertexManager().setModified(false);
+        datFile.getVertexManager().setModified(false, true);
         cText.setText(restoreLineTermination(text2));
         int tl = cText.getText().length();
         try {

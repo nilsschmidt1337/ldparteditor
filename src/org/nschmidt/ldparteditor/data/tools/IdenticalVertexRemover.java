@@ -115,7 +115,7 @@ public enum IdenticalVertexRemover {
         vm.restoreSelection();
 
         if (syncWithTextEditor) {
-            vm.setModified(true);
+            vm.setModified(true, true);
         } else {
             vm.setModified_NoSync();
         }

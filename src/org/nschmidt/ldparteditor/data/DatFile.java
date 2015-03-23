@@ -98,7 +98,7 @@ public final class DatFile {
 
     private Composite3D lastSelectedComposite = null;
 
-    private HistoryManager history = new HistoryManager();
+    private HistoryManager history = new HistoryManager(this);
 
     public DatFile(String path) {
         this.projectFile = true;
@@ -290,7 +290,7 @@ public final class DatFile {
                     sb.append(StringHelper.getLineDelimiter());
                 }
                 if (data2draw == null) {
-                    vertices.setModified(false);
+                    vertices.setModified(false, true);
                 } else {
                     sb.append(data2draw.toString());
                     text = sb.toString();
@@ -304,7 +304,7 @@ public final class DatFile {
                 description = " - " + descr; //$NON-NLS-1$
             }
         } else {
-            parseForData();
+            parseForData(true);
         }
         return text;
     }
@@ -699,7 +699,7 @@ public final class DatFile {
         return false;
     }
 
-    public void parseForData() {
+    public void parseForData(boolean addHistory) {
 
         Project.getParsedFiles().add(this);
 
@@ -812,7 +812,7 @@ public final class DatFile {
             description = " - " + descr; //$NON-NLS-1$
         }
 
-        addHistory();
+        if (addHistory) addHistory();
     }
 
     public void parseForHints(StyledText compositeText, TreeItem hints) {
@@ -1074,7 +1074,7 @@ public final class DatFile {
     public void disposeData() {
         history.deleteHistory();
         text = ""; //$NON-NLS-1$
-        vertices.setModified(false);
+        vertices.setModified(false, true);
         vertices.clear();
         Set<Integer> lineNumbers = drawPerLine.keySet();
         for (Integer lineNumber : lineNumbers) {
@@ -1223,7 +1223,7 @@ public final class DatFile {
                 return true;
             } else if (result2 == SWT.YES) {
                 Project.removeUnsavedFile(this);
-                parseForData();
+                parseForData(true);
                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                 HashSet<EditorTextWindow> windows = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
                 for (EditorTextWindow win : windows) {

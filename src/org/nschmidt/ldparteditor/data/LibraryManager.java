@@ -859,10 +859,11 @@ public class LibraryManager {
                     if (historyMap.containsKey(path)) {
                         // Copies the undo/redo history if there is one
                         newDf.setHistory(historyMap.get(path));
+                        newDf.getHistory().setDatFile(newDf);
                     }
 
                     if (openIn3DMap.containsKey(path) || openInTextMap.containsKey(path)) {
-                        newDf.parseForData();
+                        newDf.parseForData(true);
                         if (openIn3DMap.containsKey(path)) {
                             for (Composite3D c3d : openIn3DMap.get(path)) {
                                 c3d.setLockableDatFileReference(newDf);

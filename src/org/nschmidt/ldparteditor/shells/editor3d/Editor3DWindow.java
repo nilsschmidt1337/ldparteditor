@@ -1482,7 +1482,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
                                         cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
                                         DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                        df.parseForData();
+                                        df.parseForData(true);
                                         Project.setFileToEdit(df);
                                         cmp_Container.getComposite3D().setLockableDatFileReference(df);
                                         Editor3DWindow.getSashForm().getParent().layout();
@@ -1507,7 +1507,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         if (vm.isModified()) {
                                             df.setText(df.getText());
                                         }
-                                        df.parseForData();
+                                        df.parseForData(true);
 
                                         Project.setFileToEdit(df);
                                         for (OpenGLRenderer renderer : renders) {
@@ -1584,8 +1584,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                 if (canUpdate) {
 
-                                    df.parseForData();
-                                    df.getVertexManager().setModified(true);
+                                    df.parseForData(true);
+                                    df.getVertexManager().setModified(true, true);
 
                                     if (tmpW != null) {
                                         tmpW.getTabFolder().setSelection(tmpT);
@@ -1709,8 +1709,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                     df.setNewName(newPath);
                                     if (!df.getOldName().equals(df.getNewName())) {
                                         if (!Project.getUnsavedFiles().contains(df)) {
-                                            df.parseForData();
-                                            df.getVertexManager().setModified(true);
+                                            df.parseForData(true);
+                                            df.getVertexManager().setModified(true, true);
                                             Project.getUnsavedFiles().add(df);
                                         }
                                     } else {
@@ -2663,7 +2663,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         loadSelectorSettings();
                         vm.selectAll(sels, true);
-                        vm.syncWithTextEditors();
+                        vm.syncWithTextEditors(true);
                         return;
                     }
                 }
@@ -2678,7 +2678,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         loadSelectorSettings();
                         vm.selectAll(sels, false);
-                        vm.syncWithTextEditors();
+                        vm.syncWithTextEditors(true);
                         return;
                     }
                 }
@@ -2693,7 +2693,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         loadSelectorSettings();
                         vm.selectAllWithSameColours(sels, true);
-                        vm.syncWithTextEditors();
+                        vm.syncWithTextEditors(true);
                         return;
                     }
                 }
@@ -2708,7 +2708,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         loadSelectorSettings();
                         vm.selectAllWithSameColours(sels, false);
-                        vm.syncWithTextEditors();
+                        vm.syncWithTextEditors(true);
                         return;
                     }
                 }
@@ -2722,7 +2722,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.clearSelection();
-                        vm.syncWithTextEditors();
+                        vm.syncWithTextEditors(true);
                         return;
                     }
                 }
@@ -2737,7 +2737,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         loadSelectorSettings();
                         vm.selectInverse(sels);
-                        vm.syncWithTextEditors();
+                        vm.syncWithTextEditors(true);
                         return;
                     }
                 }
@@ -2955,7 +2955,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         sels.setScope(SelectorSettings.EVERYTHING);
                         loadSelectorSettings();
                         vm.selector(sels);
-                        vm.syncWithTextEditors();
+                        vm.syncWithTextEditors(true);
                     }
                 }
             }
@@ -2971,7 +2971,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         sels.setScope(SelectorSettings.CONNECTED);
                         loadSelectorSettings();
                         vm.selector(sels);
-                        vm.syncWithTextEditors();
+                        vm.syncWithTextEditors(true);
                     }
                 }
             }
@@ -2987,7 +2987,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         sels.setScope(SelectorSettings.TOUCHING);
                         loadSelectorSettings();
                         vm.selector(sels);
-                        vm.syncWithTextEditors();
+                        vm.syncWithTextEditors(true);
                     }
                 }
             }
@@ -3004,7 +3004,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                                 VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                                 vm.selectIsolatedVertices();
-                                vm.syncWithTextEditors();
+                                vm.syncWithTextEditors(true);
                             }
                         }
                     }
@@ -3476,7 +3476,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                             anchorData.setNext(null);
                             df.setDrawChainTail(anchorData);
-                            vm.setModified(true);
+                            vm.setModified(true, true);
                             return;
                         }
                     }
@@ -5402,7 +5402,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Editor3DWindow.getSashForm().getChildren()[1].dispose();
                     CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
                     cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
-                    df.parseForData();
+                    df.parseForData(true);
                     final VertexManager vm = df.getVertexManager();
                     Project.setFileToEdit(df);
                     cmp_Container.getComposite3D().setLockableDatFileReference(df);
@@ -5424,7 +5424,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (vm.isModified()) {
                         df.setText(df.getText());
                     }
-                    df.parseForData();
+                    df.parseForData(true);
                     Project.setFileToEdit(df);
                     for (OpenGLRenderer renderer : renders) {
                         Composite3D c3d = renderer.getC3D();
