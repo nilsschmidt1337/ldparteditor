@@ -585,7 +585,6 @@ public class CompositeTab extends CompositeTabDesign {
                 }
 
                 DatFile dat = state.getFileNameObj();
-                dat.addHistory(text, compositeText[0].getSelectionRange().x, 0);
                 if (text.equals(dat.getOriginalText()) && dat.getOldName().equals(dat.getNewName())) {
                     if (!dat.isVirtual()) state.getTab().setText(state.filename);
                     // Do not remove virtual files from the unsaved file list
@@ -770,7 +769,7 @@ public class CompositeTab extends CompositeTabDesign {
             public void caretMoved(CaretEvent event) {
                 ViewIdleManager.pause[0].compareAndSet(false, true);
                 Point r = compositeText[0].getSelectionRange();
-                state.getFileNameObj().addHistory(null, r.x, r.y);
+                state.getFileNameObj().addHistory(compositeText[0].getText(), r.x, r.y);
                 try {
                     compositeText[0].setLineBackground(state.currentLineIndex, 1, compositeText[0].getBackground());
                 } catch (Exception a) {
