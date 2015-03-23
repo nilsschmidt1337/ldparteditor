@@ -149,7 +149,7 @@ class EditorTextDesign extends ApplicationWindow {
             btn_Undo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
             btn_Undo.setToolTipText(I18n.EDITOR3D_Undo);
         }
-        {
+        if (NLogger.DEBUG) {
             Button btn_Snapshot = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_AddHistory[0] = btn_Snapshot;
             btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$

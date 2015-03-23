@@ -86,7 +86,11 @@ public enum StringHelper {
         return ld;
     }
 
-
+    /**
+     * Lempel–Ziv–Welch (LZW) Compression for UNICODE Strings
+     * @param uncompressed
+     * @return
+     */
     public static int[] compress(String uncompressed) {
         // Build the dictionary.
         int dictSize = 256;

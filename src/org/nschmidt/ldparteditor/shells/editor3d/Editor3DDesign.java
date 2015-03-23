@@ -58,6 +58,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.text.StringHelper;
@@ -441,7 +442,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Undo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
             btn_Undo.setToolTipText(I18n.EDITOR3D_Undo);
         }
-        {
+        if (NLogger.DEBUG) {
             Button btn_Snapshot = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_AddHistory[0] = btn_Snapshot;
             btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$

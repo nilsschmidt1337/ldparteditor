@@ -549,14 +549,16 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_AddHistory[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (Project.getFileToEdit() != null) {
-                    Project.getFileToEdit().addHistory();
+        if (NLogger.DEBUG) {
+            btn_AddHistory[0].addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    if (Project.getFileToEdit() != null) {
+                        Project.getFileToEdit().addHistory();
+                    }
                 }
-            }
-        });
+            });
+        }
 
         btn_Select[0].addSelectionListener(new SelectionAdapter() {
             @Override
