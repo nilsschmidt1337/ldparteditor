@@ -180,6 +180,7 @@ public class HistoryManager {
                                     case 1:
                                         // Undo
                                         if (pointer > 0) {
+                                            // if (pointerMax - 1 == pointer && pointer > 1) pointer--;
                                             NLogger.debug(getClass(), "Requested undo. " + (pointer - 1)); //$NON-NLS-1$
                                             pointer--;
                                             doRestore = true;
@@ -188,7 +189,7 @@ public class HistoryManager {
                                     case 2:
                                         // Redo
                                         if (pointer < pointerMax - 1) {
-                                            NLogger.debug(getClass(), "Requested redo. " + (pointer + 1)); //$NON-NLS-1$
+                                            NLogger.debug(getClass(), "Requested redo. " + (pointer + 1) + ' ' + pointerMax); //$NON-NLS-1$
                                             pointer++;
                                             doRestore = true;
                                         }
@@ -226,38 +227,43 @@ public class HistoryManager {
                                                 final VertexManager vm = df.getVertexManager();
 
                                                 vm.clearSelection2();
-                                                for (Vertex vertex : historySelectedVertices.get(pointer2)) {
-                                                    vm.getSelectedVertices().add(vertex);
+                                                final Vertex[] verts = historySelectedVertices.get(pointer2);
+                                                if (verts != null) {
+                                                    for (Vertex vertex : verts) {
+                                                        vm.getSelectedVertices().add(vertex);
+                                                    }
                                                 }
                                                 boolean[] selection = historySelectedData.get(pointer2);
-                                                int i = 0;
-                                                final HashBiMap<Integer, GData> map = df.getDrawPerLine_NOCLONE();
-                                                TreeSet<Integer> ts = new TreeSet<Integer>(map.keySet());
-                                                for (Integer key : ts) {
-                                                    if (selection[i]) {
-                                                        GData gd = map.getValue(key);
-                                                        vm.getSelectedData().add(gd);
-                                                        switch (gd.type()) {
-                                                        case 1:
-                                                            vm.getSelectedSubfiles().add((GData1) gd);
-                                                            break;
-                                                        case 2:
-                                                            vm.getSelectedLines().add((GData2) gd);
-                                                            break;
-                                                        case 3:
-                                                            vm.getSelectedTriangles().add((GData3) gd);
-                                                            break;
-                                                        case 4:
-                                                            vm.getSelectedQuads().add((GData4) gd);
-                                                            break;
-                                                        case 5:
-                                                            vm.getSelectedCondlines().add((GData5) gd);
-                                                            break;
-                                                        default:
-                                                            break;
+                                                if (selection != null) {
+                                                    int i = 0;
+                                                    final HashBiMap<Integer, GData> map = df.getDrawPerLine_NOCLONE();
+                                                    TreeSet<Integer> ts = new TreeSet<Integer>(map.keySet());
+                                                    for (Integer key : ts) {
+                                                        if (selection[i]) {
+                                                            GData gd = map.getValue(key);
+                                                            vm.getSelectedData().add(gd);
+                                                            switch (gd.type()) {
+                                                            case 1:
+                                                                vm.getSelectedSubfiles().add((GData1) gd);
+                                                                break;
+                                                            case 2:
+                                                                vm.getSelectedLines().add((GData2) gd);
+                                                                break;
+                                                            case 3:
+                                                                vm.getSelectedTriangles().add((GData3) gd);
+                                                                break;
+                                                            case 4:
+                                                                vm.getSelectedQuads().add((GData4) gd);
+                                                                break;
+                                                            case 5:
+                                                                vm.getSelectedCondlines().add((GData5) gd);
+                                                                break;
+                                                            default:
+                                                                break;
+                                                            }
                                                         }
+                                                        i++;
                                                     }
-                                                    i++;
                                                 }
                                                 vm.updateUnsavedStatus();
 
@@ -265,6 +271,7 @@ public class HistoryManager {
 
                                                 }
                                                 df.getVertexManager().setModified(true, false);
+                                                Editor3DWindow.getWindow().updateTree_unsavedEntries();
                                             }
                                         });
                                     }
