@@ -18,22 +18,33 @@ package org.nschmidt.ldparteditor.data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.eclipse.swt.custom.BusyIndicator;
+import org.eclipse.swt.widgets.Display;
+import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
 // FIXME Needs implementation!!
 public class HistoryManager {
 
+    private DatFile df;
+
     private boolean hasNoThread = true;
     private final AtomicBoolean isRunning = new AtomicBoolean(true);
     private final AtomicInteger action = new AtomicInteger(0);
 
     private Queue<Object[]> workQueue = new ConcurrentLinkedQueue<Object[]>();
+
+    public HistoryManager(DatFile df) {
+        this.df = df;
+    }
 
     public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, boolean[] selectedData, Vertex[] selectedVertices) {
         if (hasNoThread) {
@@ -105,7 +116,7 @@ public class HistoryManager {
                                 historySelectedVertices.add((Vertex[]) newEntry[5]);
                                 historyText.add(result);
 
-                                // Cleanup duplicated text entries
+                                // 1. Cleanup duplicated text entries
                                 if (pointer > 0) {
                                     int pStart = historySelectionStart.get(pointer - 1);
                                     int[] previous;
@@ -126,7 +137,7 @@ public class HistoryManager {
                                                 }
                                             }
 
-                                            if (match) {
+                                            if (match && !Editor3DWindow.getWindow().isAddingSomething()) {
                                                 if (pStart != -1) {
                                                     if ((Integer) newEntry[2] == 0) {
                                                         // Skip saving this entry since only the cursor was moved
@@ -156,6 +167,7 @@ public class HistoryManager {
                                         }
                                     }
                                 }
+                                // FIXME 2. There is still more cleanup work to do
 
                                 pointerMax++;
                                 pointer++;
@@ -163,25 +175,98 @@ public class HistoryManager {
                             } else {
                                 final int action2 = action.get();
                                 if (action2 > 0) {
+                                    boolean doRestore = false;
                                     switch (action2) {
                                     case 1:
                                         // Undo
-                                        NLogger.debug(getClass(), "Requested undo."); //$NON-NLS-1$
                                         if (pointer > 0) {
+                                            NLogger.debug(getClass(), "Requested undo. " + (pointer - 1)); //$NON-NLS-1$
                                             pointer--;
-
+                                            doRestore = true;
                                         }
                                         break;
                                     case 2:
                                         // Redo
-                                        NLogger.debug(getClass(), "Requested redo."); //$NON-NLS-1$
-                                        if (pointer < pointerMax) {
+                                        if (pointer < pointerMax - 1) {
+                                            NLogger.debug(getClass(), "Requested redo. " + (pointer + 1)); //$NON-NLS-1$
                                             pointer++;
-
+                                            doRestore = true;
                                         }
                                         break;
                                     default:
                                         break;
+                                    }
+                                    if (doRestore) {
+                                        final int pointer2 = pointer;
+                                        final boolean openTextEditor = historySelectionStart.get(pointer2) != -1;
+
+                                        int[] text = null;
+                                        int k = 0;
+                                        while ((text = historyText.get(pointer2 - k)) == null) {
+                                            k++;
+                                            if (pointer2 == k) break;
+                                        }
+                                        if (text == null) {
+                                            action.set(0);
+                                            return;
+                                        }
+                                        final String decompressed = StringHelper.decompress(text);
+
+                                        Display.getDefault().asyncExec(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                GDataCSG.resetCSG();
+                                                GDataCSG.forceRecompile();
+                                                Project.getUnsavedFiles().add(df);
+                                                df.setText(decompressed);
+                                                df.parseForData(false);
+                                                if (openTextEditor) {
+
+                                                }
+                                                final VertexManager vm = df.getVertexManager();
+
+                                                vm.clearSelection2();
+                                                for (Vertex vertex : historySelectedVertices.get(pointer2)) {
+                                                    vm.getSelectedVertices().add(vertex);
+                                                }
+                                                boolean[] selection = historySelectedData.get(pointer2);
+                                                int i = 0;
+                                                final HashBiMap<Integer, GData> map = df.getDrawPerLine_NOCLONE();
+                                                TreeSet<Integer> ts = new TreeSet<Integer>(map.keySet());
+                                                for (Integer key : ts) {
+                                                    if (selection[i]) {
+                                                        GData gd = map.getValue(key);
+                                                        vm.getSelectedData().add(gd);
+                                                        switch (gd.type()) {
+                                                        case 1:
+                                                            vm.getSelectedSubfiles().add((GData1) gd);
+                                                            break;
+                                                        case 2:
+                                                            vm.getSelectedLines().add((GData2) gd);
+                                                            break;
+                                                        case 3:
+                                                            vm.getSelectedTriangles().add((GData3) gd);
+                                                            break;
+                                                        case 4:
+                                                            vm.getSelectedQuads().add((GData4) gd);
+                                                            break;
+                                                        case 5:
+                                                            vm.getSelectedCondlines().add((GData5) gd);
+                                                            break;
+                                                        default:
+                                                            break;
+                                                        }
+                                                    }
+                                                    i++;
+                                                }
+                                                vm.updateUnsavedStatus();
+
+                                                if (openTextEditor) {
+
+                                                }
+                                                df.getVertexManager().setModified(true, false);
+                                            }
+                                        });
                                     }
                                     action.set(0);
                                 }
@@ -210,21 +295,31 @@ public class HistoryManager {
     }
 
     public void undo() {
-        action.set(1);
-        while (action.get() > 0) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
+        BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
+            @Override
+            public void run() {
+                action.set(1);
+                while (action.get() > 0) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {}
+                }
+            }
+        });
     }
 
     public void redo() {
-        action.set(2);
-        while (action.get() > 0) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
+        BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
+            @Override
+            public void run() {
+                action.set(2);
+                while (action.get() > 0) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {}
+                }
+            }
+        });
     }
 
     private void removeFromListAboveOrEqualIndex(List<?> l, int i) {
@@ -239,5 +334,9 @@ public class HistoryManager {
         for (int j = i - 1; j > -1; j--) {
             l.remove(j);
         }
+    }
+
+    public void setDatFile(DatFile df) {
+        this.df = df;
     }
 }

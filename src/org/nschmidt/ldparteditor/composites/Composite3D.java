@@ -1123,7 +1123,7 @@ public class Composite3D extends ScalableComposite {
                 GData1 vertexLine = (GData1) subfileLine.get(0).getGraphicalData();
                 if (vertexLine != null) {
                     datfile.addToTail(vertexLine);
-                    datfile.getVertexManager().setModified(true);
+                    datfile.getVertexManager().setModified(true, true);
                     if (!Project.getUnsavedFiles().contains(datfile)) {
                         Project.addUnsavedFile(datfile);
                         Editor3DWindow.getWindow().updateTree_unsavedEntries();

@@ -637,7 +637,7 @@ public class CompositeTab extends CompositeTabDesign {
                 if (state.isSync()) {
                     state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
                             treeItem_Errors[0]);
-                    vm.setModified(false);
+                    vm.setModified(false, true);
                 } else {
                     if (!vm.isModified()) {
                         Display.getCurrent().syncExec(new Runnable() {
@@ -649,7 +649,7 @@ public class CompositeTab extends CompositeTabDesign {
                             }
                         });
                     } else {
-                        vm.setModified(false);
+                        vm.setModified(false, true);
                         GData.CACHE_warningsAndErrors.clear();
                         state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
                                 treeItem_Errors[0]);

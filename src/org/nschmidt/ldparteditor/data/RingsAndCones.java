@@ -544,7 +544,7 @@ public enum RingsAndCones {
         }
 
         if (syncWithTextEditor) {
-            vm.setModified(true);
+            vm.setModified(true, true);
             vm.validateState();
         } else {
             vm.setModified_NoSync();

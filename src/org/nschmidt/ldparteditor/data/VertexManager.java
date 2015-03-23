@@ -635,34 +635,53 @@ public class VertexManager {
     }
 
     /**
-     * Dummy function which returns instantly. All calling methods should use
-     * {@link VertexManager.validateState} in debug mode instead.
-     */
-    public synchronized void doNotvalidateState() {
-    }
-
-    /**
-     * Dummy function which returns instantly. All calling methods should use
-     * {@link VertexManager.validateStateOfTransition} in debug mode instead.
-     */
-    public synchronized void doNotvalidateStateOfTransition() {
-    }
-
-    /**
-     * Validates the current data structure (in transition state) against dead
-     * references and other inconsistencies. All calling methods should use
-     * {@link VertexManager.doNotvalidateState} in the release version instead.
-     */
-    public synchronized void validateStateOfTransition() {
-
-    }
-
-    /**
      * Validates the current data structure against dead references and other
-     * inconsistencies. All calling methods should use
-     * {@link VertexManager.doNotvalidateState} in the release version instead.
+     * inconsistencies. All calls to this method will be "suppressed" in the release version.
+     * Except the correction of 'trivial' selection inconsistancies
      */
     public synchronized void validateState() {
+        // Validate and auto-correct selection inconsistancies
+        if (selectedData.size() != selectedSubfiles.size() + selectedLines.size() + selectedTriangles.size() + selectedQuads.size() + selectedCondlines.size()) {
+            // throw new AssertionError("The selected data is not equal to the content of single selection classes, e.g. 'selectedTriangles'."); //$NON-NLS-1$
+            selectedData.clear();
+            for (Iterator<GData1> gi = selectedSubfiles.iterator(); gi.hasNext();) {
+                GData g = gi.next();
+                if (!exist(g)) {
+                    gi.remove();
+                }
+            }
+            for (Iterator<GData2> gi = selectedLines.iterator(); gi.hasNext();) {
+                GData g = gi.next();
+                if (!exist(g)) {
+                    gi.remove();
+                }
+            }
+            for (Iterator<GData3> gi = selectedTriangles.iterator(); gi.hasNext();) {
+                GData g = gi.next();
+                if (!exist(g)) {
+                    gi.remove();
+                }
+            }
+            for (Iterator<GData4> gi = selectedQuads.iterator(); gi.hasNext();) {
+                GData g = gi.next();
+                if (!exist(g)) {
+                    gi.remove();
+                }
+            }
+            for (Iterator<GData5> gi = selectedCondlines.iterator(); gi.hasNext();) {
+                GData g = gi.next();
+                if (!exist(g)) {
+                    gi.remove();
+                }
+            }
+            selectedData.addAll(selectedSubfiles);
+            selectedData.addAll(selectedLines);
+            selectedData.addAll(selectedTriangles);
+            selectedData.addAll(selectedQuads);
+            selectedData.addAll(selectedCondlines);
+        }
+        // Do not validate more stuff on release, since it costs a lot performance.
+        if (!NLogger.DEBUG) return;
 
         // TreeMap<Vertex, HashSet<VertexManifestation>>
         // vertexLinkedToPositionInFile
@@ -757,47 +776,6 @@ public class VertexManager {
         if (vertexCount != vertexUseCount) {
             throw new AssertionError("The number of vertices displayed is not equal to the number of stored vertices."); //$NON-NLS-1$
         }
-
-        if (selectedData.size() != selectedSubfiles.size() + selectedLines.size() + selectedTriangles.size() + selectedQuads.size() + selectedCondlines.size()) {
-            // throw new AssertionError("The selected data is not equal to the content of single selection classes, e.g. 'selectedTriangles'."); //$NON-NLS-1$
-            selectedData.clear();
-            for (Iterator<GData1> gi = selectedSubfiles.iterator(); gi.hasNext();) {
-                GData g = gi.next();
-                if (!exist(g)) {
-                    gi.remove();
-                }
-            }
-            for (Iterator<GData2> gi = selectedLines.iterator(); gi.hasNext();) {
-                GData g = gi.next();
-                if (!exist(g)) {
-                    gi.remove();
-                }
-            }
-            for (Iterator<GData3> gi = selectedTriangles.iterator(); gi.hasNext();) {
-                GData g = gi.next();
-                if (!exist(g)) {
-                    gi.remove();
-                }
-            }
-            for (Iterator<GData4> gi = selectedQuads.iterator(); gi.hasNext();) {
-                GData g = gi.next();
-                if (!exist(g)) {
-                    gi.remove();
-                }
-            }
-            for (Iterator<GData5> gi = selectedCondlines.iterator(); gi.hasNext();) {
-                GData g = gi.next();
-                if (!exist(g)) {
-                    gi.remove();
-                }
-            }
-            selectedData.addAll(selectedSubfiles);
-            selectedData.addAll(selectedLines);
-            selectedData.addAll(selectedTriangles);
-            selectedData.addAll(selectedQuads);
-            selectedData.addAll(selectedCondlines);
-        }
-
     }
 
     public synchronized void draw(Composite3D c3d) {
@@ -4203,11 +4181,11 @@ public class VertexManager {
         return modified;
     }
 
-    public synchronized void setModified(boolean modified) {
+    public synchronized void setModified(boolean modified, boolean addHistory) {
         if (modified) {
             setUpdated(false);
             setUncompiled(true);
-            syncWithTextEditors();
+            syncWithTextEditors(addHistory);
         }
         this.modified = modified;
     }
@@ -4567,7 +4545,7 @@ public class VertexManager {
                 selectedData.addAll(selectedCondlines);
                 selectedData.addAll(selectedSubfiles);
 
-                syncWithTextEditors();
+                syncWithTextEditors(true);
                 updateUnsavedStatus();
 
             }
@@ -5128,7 +5106,7 @@ public class VertexManager {
             selectedData.addAll(selectedCondlines);
             selectedData.addAll(selectedSubfiles);
 
-            syncWithTextEditors();
+            syncWithTextEditors(true);
             updateUnsavedStatus();
         }
 
@@ -5366,13 +5344,13 @@ public class VertexManager {
             selectedData.addAll(selectedCondlines);
             selectedData.addAll(selectedSubfiles);
 
-            syncWithTextEditors();
+            syncWithTextEditors(true);
             updateUnsavedStatus();
         }
 
     }
 
-    private void updateUnsavedStatus() {
+    public void updateUnsavedStatus() {
         String newText = linkedDatFile.getText();
         linkedDatFile.setText(newText);
         if (newText.equals(linkedDatFile.getOriginalText()) && linkedDatFile.getOldName().equals(linkedDatFile.getNewName())) {
@@ -6673,7 +6651,7 @@ public class VertexManager {
                     linkedDatFile.setDrawChainTail(blankLine);
                 }
 
-                if (setModified) syncWithTextEditors();
+                if (setModified) syncWithTextEditors(true);
                 updateUnsavedStatus();
             }
         }
@@ -7227,7 +7205,7 @@ public class VertexManager {
                 tailData = pasted;
             }
             linkedDatFile.setDrawChainTail(tailData);
-            setModified(true);
+            setModified(true, true);
             updateUnsavedStatus();
         }
     }
@@ -7255,7 +7233,7 @@ public class VertexManager {
         dpl.put(linecount, pasted);
         before.setNext(pasted);
         linkedDatFile.setDrawChainTail(pasted);
-        setModified(true);
+        setModified(true, true);
         updateUnsavedStatus();
         validateState();
     }
@@ -7359,7 +7337,7 @@ public class VertexManager {
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
         linkedDatFile.addToTail(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
-        setModified(true);
+        setModified(true, true);
     }
 
     public void addQuad(Vertex v1, Vertex v2, Vertex v3, Vertex v4, Composite3D c3d) {
@@ -7471,7 +7449,7 @@ public class VertexManager {
             GColour col = Editor3DWindow.getWindow().getLastUsedColour();
             linkedDatFile.addToTail(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
             linkedDatFile.addToTail(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v4, v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
-            setModified(true);
+            setModified(true, true);
             return;
         }
 
@@ -7577,7 +7555,7 @@ public class VertexManager {
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
         linkedDatFile.addToTail(new GData4(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
-        setModified(true);
+        setModified(true, true);
     }
 
     public void addCondline(Vertex v1, Vertex v2, Vertex v3, Vertex v4) {
@@ -7924,7 +7902,7 @@ public class VertexManager {
                 selectedData.addAll(selectedCondlines);
                 selectedData.addAll(selectedSubfiles);
 
-                if (syncWithTextEditors) syncWithTextEditors();
+                if (syncWithTextEditors) syncWithTextEditors(true);
                 updateUnsavedStatus();
             }
 
@@ -9421,7 +9399,7 @@ public class VertexManager {
                 }
                 selectedLine = newData;
             }
-            setModified(true);
+            setModified(true, true);
             updateUnsavedStatus();
             return selectedLine;
         }
@@ -10256,7 +10234,7 @@ public class VertexManager {
         delete(false, false);
 
         if (isModified()) {
-            syncWithTextEditors();
+            syncWithTextEditors(true);
         }
 
         validateState();
@@ -10935,7 +10913,7 @@ public class VertexManager {
             rectify(rs, false);
 
             clearSelection();
-            setModified(true);
+            setModified(true, true);
 
             NLogger.debug(getClass(), "Done."); //$NON-NLS-1$
 
@@ -12017,7 +11995,7 @@ public class VertexManager {
 
             clearSelection();
             if (syncWithTextEditor) {
-                setModified(true);
+                setModified(true, true);
             } else {
                 setModified_NoSync();
             }
@@ -12696,7 +12674,7 @@ public class VertexManager {
         selectedData.addAll(newTriangles);
 
         if (isModified && isModified()) {
-            syncWithTextEditors();
+            syncWithTextEditors(true);
         }
         validateState();
 
@@ -13580,7 +13558,7 @@ public class VertexManager {
             NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
             roundSelection(6, 10, true, false);
 
-            setModified(true);
+            setModified(true, true);
 
             NLogger.debug(getClass(), "Done."); //$NON-NLS-1$
 
@@ -14429,7 +14407,7 @@ public class VertexManager {
         NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
         roundSelection(6, 10, true, false);
 
-        setModified(true);
+        setModified(true, true);
 
         NLogger.debug(getClass(), "Done."); //$NON-NLS-1$
 
@@ -15285,7 +15263,7 @@ public class VertexManager {
                 GDataCSG.forceRecompile();
                 setModified_NoSync();
                 linkedDatFile.setText(symSplitterOutput);
-                linkedDatFile.parseForData();
+                linkedDatFile.parseForData(true);
 
                 setModified_NoSync();
 
@@ -15497,11 +15475,11 @@ public class VertexManager {
                 }
 
                 if (isModified()) {
-                    syncWithTextEditors();
+                    syncWithTextEditors(true);
                 }
 
             } else {
-                setModified(false);
+                setModified(false, true);
             }
 
         }
@@ -15993,7 +15971,7 @@ public class VertexManager {
         selectedData.addAll(selectedCondlines);
 
         if (isModified()) {
-            syncWithTextEditors();
+            syncWithTextEditors(true);
         }
         validateState();
     }
@@ -17224,7 +17202,7 @@ public class VertexManager {
         selectedQuads.addAll(newQuads);
         selectedData.addAll(newQuads);
         roundSelection(6, 10, true, false);
-        setModified(true);
+        setModified(true, true);
         validateState();
 
     }
@@ -17407,7 +17385,7 @@ public class VertexManager {
         }
         roundSelection(6, 10, true, false);
 
-        setModified(true);
+        setModified(true, true);
         validateState();
     }
 
@@ -17538,7 +17516,7 @@ public class VertexManager {
 
         clearSelection();
         if (isModified()) {
-            syncWithTextEditors();
+            syncWithTextEditors(true);
         }
         validateState();
     }
@@ -18465,9 +18443,9 @@ public class VertexManager {
     private final AtomicInteger tid = new AtomicInteger(0);
     private final AtomicInteger openThreads = new AtomicInteger(0);
     private final Lock lock = new ReentrantLock();
-    public void syncWithTextEditors() {
+    public void syncWithTextEditors(boolean addHistory) {
 
-        linkedDatFile.addHistory();
+        if (addHistory) linkedDatFile.addHistory();
 
         try {
             lock.lock();
@@ -18709,7 +18687,7 @@ public class VertexManager {
                 }
             }
             if (syncWithTextEditor) {
-                syncWithTextEditors();
+                syncWithTextEditors(true);
             }
             return;
         case NEAREST_VERTEX:
@@ -18740,7 +18718,7 @@ public class VertexManager {
                 setModified_NoSync();
             }
             if (syncWithTextEditor) {
-                syncWithTextEditors();
+                syncWithTextEditors(true);
             }
             return;
         default:
@@ -19141,7 +19119,7 @@ public class VertexManager {
         selectedSubfiles.add(reloadedSubfile);
         selectSubfiles(null, null, false);
         if (syncWithTextEditor) {
-            setModified(true);
+            setModified(true, true);
         } else {
             setModified_NoSync();
         }
@@ -19499,7 +19477,7 @@ public class VertexManager {
 
                 IdenticalVertexRemover.removeIdenticalVertices(this, false);
 
-                if (syncWithTextEditors) syncWithTextEditors();
+                if (syncWithTextEditors) syncWithTextEditors(true);
                 updateUnsavedStatus();
             }
             selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());

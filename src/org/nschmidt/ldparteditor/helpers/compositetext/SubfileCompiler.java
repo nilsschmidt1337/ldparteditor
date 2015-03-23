@@ -129,7 +129,7 @@ public enum SubfileCompiler {
 
         if (datFile.getVertexManager().isModified()) {
             datFile.setText(datFile.getText());
-            datFile.parseForData();
+            datFile.parseForData(true);
         }
 
         HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
@@ -153,7 +153,7 @@ public enum SubfileCompiler {
         builder = null;
         Editor3DWindow.getWindow().updateTree_unsavedEntries();
         datFile.getVertexManager().clear();
-        datFile.parseForData();
+        datFile.parseForData(true);
 
         // Link last line
         NLogger.debug(SubfileCompiler.class, "" + datFile.getDrawPerLine_NOCLONE().getValue(lineNumbers.size())); //$NON-NLS-1$
@@ -461,7 +461,7 @@ public enum SubfileCompiler {
 
                 Project.addUnsavedFile(df);
 
-                df.parseForData();
+                df.parseForData(true);
 
                 df.setText(df.getText());
 
