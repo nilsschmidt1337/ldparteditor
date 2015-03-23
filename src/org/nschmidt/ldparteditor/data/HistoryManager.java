@@ -58,7 +58,8 @@ public class HistoryManager {
                                     }
                                     result = StringHelper.compress(sb.toString());
                                 } else {
-                                    throw new AssertionError("There must be data to backup!"); //$NON-NLS-1$
+                                    // throw new AssertionError("There must be data to backup!"); //$NON-NLS-1$
+                                    continue;
                                 }
                                 if (pointer != pointerMax) {
                                     // Delete old entries
@@ -91,6 +92,8 @@ public class HistoryManager {
 
                                 // Cleanup duplicated text entries
                                 if (pointer > 0) {
+                                    int pStart = historySelectionStart.get(pointer - 1);
+                                    int pEnd = historySelectionEnd.get(pointer - 1);
                                     int[] previous;
                                     int k = 1;
                                     while ((previous = historyText.get(pointer - k)) == null) {
@@ -98,18 +101,44 @@ public class HistoryManager {
                                         k++;
                                     }
                                     if (previous != null) {
-                                        boolean match = true;
-                                        for (int i = 0; i < previous.length; i++) {
-                                            int v1 = previous[i];
-                                            int v2 = result[i];
-                                            if (v1 != v2) {
-                                                match = false;
-                                                break;
+                                        if (previous.length == result.length) {
+                                            boolean match = true;
+                                            for (int i = 0; i < previous.length; i++) {
+                                                int v1 = previous[i];
+                                                int v2 = result[i];
+                                                if (v1 != v2) {
+                                                    match = false;
+                                                    break;
+                                                }
                                             }
-                                        }
-                                        if (match) {
-                                            historyText.remove(pointer);
-                                            historyText.add(null);
+
+                                            if (match) {
+                                                if (pStart != -1) {
+                                                    if ((Integer) newEntry[2] == 0) {
+                                                        // Skip saving this entry since only the cursor was moved
+                                                        removeFromListAboveOrEqualIndex(historySelectionStart, pointer);
+                                                        removeFromListAboveOrEqualIndex(historySelectionEnd, pointer);
+                                                        removeFromListAboveOrEqualIndex(historySelectedData, pointer);
+                                                        removeFromListAboveOrEqualIndex(historySelectedVertices, pointer);
+                                                        removeFromListAboveOrEqualIndex(historyText, pointer);
+                                                    } else {
+                                                        // Remove the previous entry, because it only contains a new text selection
+                                                        historySelectionStart.remove(pointer - 1);
+                                                        historySelectionEnd.remove(pointer - 1);
+                                                        historySelectedData.remove(pointer - 1);
+                                                        historySelectedVertices.remove(pointer - 1);
+                                                        if (historyText.get(pointer - 1) == null) {
+                                                            historyText.remove(pointer - 1);
+                                                            historyText.remove(pointer);
+                                                            historyText.add(null);
+                                                        } else {
+                                                            historyText.remove(pointer - 1);
+                                                        }
+                                                    }
+                                                    pointerMax--;
+                                                    pointer--;
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -144,7 +173,10 @@ public class HistoryManager {
                                 }
                             }
                             Thread.sleep(100);
-                        } catch (InterruptedException e) {}
+                        } catch (InterruptedException e) {
+                        } catch (Exception e) {
+                            NLogger.debug(getClass(), e);
+                        }
                     }
                     // TODO Cleanup the data here
                 }
