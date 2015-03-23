@@ -18504,13 +18504,6 @@ public class VertexManager {
                                     final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
                                     if (txtDat != null && txtDat.equals(linkedDatFile)) {
                                         notFound = false;
-                                    }
-                                }
-                            }
-                            for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                for (final CTabItem t : w.getTabFolder().getItems()) {
-                                    final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
-                                    if (txtDat != null && txtDat.equals(linkedDatFile)) {
                                         final String txt;
                                         if (isModified()) {
                                             txt = txtDat.getText();
