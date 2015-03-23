@@ -287,18 +287,20 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_AddHistory[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
-                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
-                        return;
+        if (NLogger.DEBUG) {
+            btn_AddHistory[0].addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                    if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                        if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                            return;
+                        }
+                        selection.getState().getFileNameObj().addHistory();
                     }
-                    selection.getState().getFileNameObj().addHistory();
                 }
-            }
-        });
+            });
+        }
 
         btn_Inline[0].addSelectionListener(new SelectionAdapter() {
             @Override
