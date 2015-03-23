@@ -1357,16 +1357,13 @@ public final class DatFile {
     }
 
     public HistoryManager getHistory() {
-        // FIXME MOCKUP!
         return history;
     }
 
     public void setHistory(HistoryManager history) {
-        // FIXME MOCKUP!
         this.history = history;
     }
 
-    // FIXME Needs implementation!
     public void addHistory() {
         NLogger.debug(getClass(), "Added history entry for " + getShortName()); //$NON-NLS-1$
         final long start = System.currentTimeMillis();
@@ -1394,7 +1391,6 @@ public final class DatFile {
         NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    // FIXME Needs implementation!
     public void addHistory(String text, int selectionStart, int selectionEnd) {
         final long start = System.currentTimeMillis();
         NLogger.debug(getClass(), "Added history entry for " + getShortName()); //$NON-NLS-1$
@@ -1409,12 +1405,10 @@ public final class DatFile {
         NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    // FIXME Needs implementation!
     public void undo() {
         history.undo();
     }
 
-    // FIXME Needs implementation!
     public void redo() {
         history.redo();
     }
