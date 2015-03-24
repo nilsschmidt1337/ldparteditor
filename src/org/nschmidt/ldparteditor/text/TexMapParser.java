@@ -18,8 +18,8 @@ package org.nschmidt.ldparteditor.text;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -480,7 +480,7 @@ public enum TexMapParser {
                 if (fileExists) break;
             }
 
-            LinkedList<String> lines = null;
+            ArrayList<String> lines = null;
             String absoluteFilename = null;
             // MARK Virtual file check for project files...
             boolean isVirtual = false;
@@ -493,7 +493,7 @@ public enum TexMapParser {
                         for (int a3 = 0; a3 < suffix.length; a3++) {
                             String s3 = suffix[a3];
                             if (fn.equals(s1 + s2 + s3)) {
-                                lines = new LinkedList<String>();
+                                lines = new ArrayList<String>(4096);
                                 lines.addAll(Arrays.asList(df.getText().split(StringHelper.getLineDelimiter())));
                                 absoluteFilename = fn;
                                 isVirtual = true;
@@ -523,7 +523,7 @@ public enum TexMapParser {
                 absoluteFilename = fileToOpen.getAbsolutePath();
                 UTF8BufferedReader reader;
                 String line = null;
-                lines = new LinkedList<String>();
+                lines = new ArrayList<String>(4096);
                 try {
                     reader = new UTF8BufferedReader(absoluteFilename);
                     while (true) {
