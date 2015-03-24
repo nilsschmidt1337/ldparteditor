@@ -1018,8 +1018,9 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_SyncLpeInline = new MenuItem(mnu_Tools, SWT.CHECK);
                         mntm_SyncLpeInline.setSelection(WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get());
+                        mntm_SyncLpeInline.setEnabled(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
                         this.mntm_SyncLpeInline[0] = mntm_SyncLpeInline;
-                        mntm_SyncLpeInline.setText("Instant !LPE INLINE Parsing (slow!!)"); //$NON-NLS-1$ I18N
+                        mntm_SyncLpeInline.setText("+ Automatic !LPE INLINE Parsing (slow!!)"); //$NON-NLS-1$ I18N
                     }
                 }
             }

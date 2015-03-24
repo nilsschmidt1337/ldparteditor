@@ -342,7 +342,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 }
                 for (DatFile df : dfs) {
-                    SubfileCompiler.compile(df, false);
+                    SubfileCompiler.compile(df, false, false);
                 }
                 for (EditorTextWindow w : Project.getOpenTextWindows()) {
                     for (CTabItem t : w.getTabFolder().getItems()) {
@@ -716,7 +716,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
-                    SubfileCompiler.compile(Project.getFileToEdit(), false);
+                    SubfileCompiler.compile(Project.getFileToEdit(), false, false);
                 }
             }
         });
@@ -733,7 +733,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     dfs.add(renderer.getC3D().getLockableDatFileReference());
                 }
                 for (DatFile df : dfs) {
-                    SubfileCompiler.compile(df, false);
+                    SubfileCompiler.compile(df, false, false);
                 }
                 clickSingleBtn(btn_lineSize1[0]);
             }
@@ -751,7 +751,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     dfs.add(renderer.getC3D().getLockableDatFileReference());
                 }
                 for (DatFile df : dfs) {
-                    SubfileCompiler.compile(df, false);
+                    SubfileCompiler.compile(df, false, false);
                 }
                 clickSingleBtn(btn_lineSize2[0]);
             }
@@ -769,7 +769,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     dfs.add(renderer.getC3D().getLockableDatFileReference());
                 }
                 for (DatFile df : dfs) {
-                    SubfileCompiler.compile(df, false);
+                    SubfileCompiler.compile(df, false, false);
                 }
                 clickSingleBtn(btn_lineSize3[0]);
             }
@@ -787,7 +787,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     dfs.add(renderer.getC3D().getLockableDatFileReference());
                 }
                 for (DatFile df : dfs) {
-                    SubfileCompiler.compile(df, false);
+                    SubfileCompiler.compile(df, false, false);
                 }
                 clickSingleBtn(btn_lineSize4[0]);
             }
@@ -3523,7 +3523,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         dfs.add(renderer.getC3D().getLockableDatFileReference());
                     }
                     for (DatFile df : dfs) {
-                        SubfileCompiler.compile(df, false);
+                        SubfileCompiler.compile(df, false, false);
                     }
                 }
 
@@ -3534,6 +3534,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().getSyncWithTextEditor().set(mntm_SyncWithTextEditor[0].getSelection());
+                mntm_SyncLpeInline[0].setEnabled(mntm_SyncWithTextEditor[0].getSelection());
             }
         });
 

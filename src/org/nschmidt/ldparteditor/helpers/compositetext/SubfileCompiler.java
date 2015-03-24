@@ -89,8 +89,9 @@ public enum SubfileCompiler {
      *
      * @param datFile
      * @param preserveSelection TODO
+     * @param forceParsing TODO
      */
-    public static void compile(final DatFile datFile, boolean preserveSelection) {
+    public static void compile(final DatFile datFile, boolean preserveSelection, boolean forceParsing) {
         final VertexManager vm = datFile.getVertexManager();
         if (!vm.isUpdated()) {
             if (vm.isSyncWithTextEditor()) {
@@ -147,8 +148,8 @@ public enum SubfileCompiler {
         matrixInv = View.ACCURATE_ID;
         matrixProd = View.ACCURATE_ID;
 
-        if (datFile.getVertexManager().isModified()) {
-            datFile.setText(datFile.getText());
+        if (datFile.getVertexManager().isModified() || forceParsing) {
+            if (!forceParsing) datFile.setText(datFile.getText());
             datFile.parseForData(false);
         }
 
@@ -392,7 +393,7 @@ public enum SubfileCompiler {
 
                 Project.addUnsavedFile(df);
 
-                df.parseForData(true);
+                df.parseForData(false);
 
                 df.setText(df.getText());
 
