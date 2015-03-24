@@ -21,7 +21,6 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -960,7 +959,7 @@ public enum DatParser {
                 if (fileExists) break;
             }
 
-            LinkedList<String> lines = null;
+            ArrayList<String> lines = null;
             if (parseError) {
                 result.add(new ParsingResult("Singular matrix", "[E02] Logic Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
             }
@@ -978,7 +977,7 @@ public enum DatParser {
                         for (int a3 = 0; a3 < suffix.length; a3++) {
                             String s3 = suffix[a3];
                             if (fn.equals(s1 + s2 + s3)) {
-                                lines = new LinkedList<String>();
+                                lines = new ArrayList<String>(4096);
                                 lines.addAll(Arrays.asList(df.getText().split(StringHelper.getLineDelimiter())));
                                 absoluteFilename = fn;
                                 isVirtual = true;
@@ -1032,7 +1031,7 @@ public enum DatParser {
                 absoluteFilename = fileToOpen.getAbsolutePath();
                 UTF8BufferedReader reader;
                 String line = null;
-                lines = new LinkedList<String>();
+                lines = new ArrayList<String>(4096);
                 try {
                     reader = new UTF8BufferedReader(absoluteFilename);
                     while (true) {

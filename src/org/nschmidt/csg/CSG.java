@@ -36,7 +36,6 @@ package org.nschmidt.csg;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -47,15 +46,15 @@ import org.nschmidt.ldparteditor.enums.View;
 
 /**
  * Constructive Solid Geometry (CSG).
- * 
+ *
  * This implementation is a Java port of <a
  * href="https://github.com/evanw/csg.js/">https://github.com/evanw/csg.js/</a>
  * with some additional features like polygon extrude, transformations etc.
  * Thanks to the author for creating the CSG.js library.<br>
  * <br>
- * 
+ *
  * <b>Implementation Details</b>
- * 
+ *
  * All CSG operations are implemented in terms of two functions,
  * {@link Node#clipTo(org.nschmidt.csg.Node)} and {@link Node#invert()}, which
  * remove parts of a BSP tree inside another BSP tree and swap solid and empty
@@ -63,25 +62,25 @@ import org.nschmidt.ldparteditor.enums.View;
  * remove everything in {@code a} inside {@code b} and everything in {@code b}
  * inside {@code a}, then combine polygons from {@code a} and {@code b} into one
  * solid:
- * 
+ *
  * <blockquote>
- * 
+ *
  * <pre>
  * a.clipTo(b);
  * b.clipTo(a);
  * a.build(b.allPolygons());
  * </pre>
- * 
+ *
  * </blockquote>
- * 
+ *
  * The only tricky part is handling overlapping coplanar polygons in both trees.
  * The code above keeps both copies, but we need to keep them in one tree and
  * remove them in the other tree. To remove them from {@code b} we can clip the
  * inverse of {@code b} against {@code a}. The code for union now looks like
  * this:
- * 
+ *
  * <blockquote>
- * 
+ *
  * <pre>
  * a.clipTo(b);
  * b.clipTo(a);
@@ -90,9 +89,9 @@ import org.nschmidt.ldparteditor.enums.View;
  * b.invert();
  * a.build(b.allPolygons());
  * </pre>
- * 
+ *
  * </blockquote>
- * 
+ *
  * Subtraction and intersection naturally follow from set operations. If union
  * is {@code A | B}, differenceion is {@code A - B = ~(~A | B)} and intersection
  * is {@code A & B =
@@ -123,7 +122,7 @@ public class CSG {
 
     /**
      * Constructs a CSG from a list of {@link Polygon} instances.
-     * 
+     *
      * @param polygons
      *            polygons
      * @return a CSG instance
@@ -137,7 +136,7 @@ public class CSG {
 
     /**
      * Constructs a CSG from the specified {@link Polygon} instances.
-     * 
+     *
      * @param polygons
      *            polygons
      * @return a CSG instance
@@ -162,7 +161,7 @@ public class CSG {
     }
 
     /**
-     * 
+     *
      * @return the polygons of this CSG
      */
     public List<Polygon> getPolygons() {
@@ -171,7 +170,7 @@ public class CSG {
 
     /**
      * Defines the CSg optimization type.
-     * 
+     *
      * @param type
      *            optimization type
      * @return this CSG
@@ -184,14 +183,14 @@ public class CSG {
     /**
      * Return a new CSG solid representing the union of this csg and the
      * specified csg.
-     * 
+     *
      * <b>Note:</b> Neither this csg nor the specified csg are modified.
-     * 
+     *
      * <blockquote>
-     * 
+     *
      * <pre>
      *    A.union(B)
-     * 
+     *
      *    +-------+            +-------+
      *    |       |            |       |
      *    |   A   |            |       |
@@ -201,13 +200,13 @@ public class CSG {
      *         |       |            |       |
      *         +-------+            +-------+
      * </pre>
-     * 
+     *
      * </blockquote>
-     * 
-     * 
+     *
+     *
      * @param csg
      *            other csg
-     * 
+     *
      * @return union of this csg and the specified csg
      */
     public CSG union(CSG csg) {
@@ -272,14 +271,14 @@ public class CSG {
     /**
      * Return a new CSG solid representing the difference of this csg and the
      * specified csg.
-     * 
+     *
      * <b>Note:</b> Neither this csg nor the specified csg are modified.
-     * 
+     *
      * <blockquote>
-     * 
+     *
      * <pre>
      * A.difference(B)
-     * 
+     *
      * +-------+            +-------+
      * |       |            |       |
      * |   A   |            |       |
@@ -289,9 +288,9 @@ public class CSG {
      *      |       |
      *      +-------+
      * </pre>
-     * 
+     *
      * </blockquote>
-     * 
+     *
      * @param csg
      *            other csg
      * @return difference of this csg and the specified csg
@@ -361,14 +360,14 @@ public class CSG {
     /**
      * Return a new CSG solid representing the intersection of this csg and the
      * specified csg.
-     * 
+     *
      * <b>Note:</b> Neither this csg nor the specified csg are modified.
-     * 
+     *
      * <blockquote>
-     * 
+     *
      * <pre>
      *     A.intersect(B)
-     * 
+     *
      *     +-------+
      *     |       |
      *     |   A   |
@@ -379,9 +378,9 @@ public class CSG {
      *          +-------+
      * }
      * </pre>
-     * 
+     *
      * </blockquote>
-     * 
+     *
      * @param csg
      *            other csg
      * @return intersection of this csg and the specified csg
@@ -401,7 +400,7 @@ public class CSG {
 
     /**
      * Returns this csg in STL string format.
-     * 
+     *
      * @return this csg in STL string format
      */
     public String toStlString() {
@@ -412,10 +411,10 @@ public class CSG {
 
     /**
      * Returns this csg in STL string format.
-     * 
+     *
      * @param sb
      *            string builder
-     * 
+     *
      * @return the specified string builder
      */
     public StringBuilder toStlString(StringBuilder sb) {
@@ -429,7 +428,7 @@ public class CSG {
 
     /**
      * Returns this csg as list of LDraw triangles
-     * 
+     *
      * @return this csg as list of LDraw triangles
      */
     public ArrayList<GData3> toLDrawTriangles(GData1 parent) {
@@ -443,7 +442,7 @@ public class CSG {
     public GData1 compile() {
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
-        GData1 g1 = new GData1(-1, .5f, .5f, .5f, 1f, id, View.ACCURATE_ID, new LinkedList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
+        GData1 g1 = new GData1(-1, .5f, .5f, .5f, 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
                 new HashSet<String>());
         this.result = toLDrawTriangles(g1);
         return g1;
@@ -467,7 +466,7 @@ public class CSG {
 
     /**
      * Returns this csg in OBJ string format.
-     * 
+     *
      * @param sb
      *            string builder
      * @return the specified string builder
@@ -509,9 +508,9 @@ public class CSG {
                 int index3 = pVerts.get(i + 2);
 
                 sb.append("f "). //$NON-NLS-1$
-                        append(index1).append(" "). //$NON-NLS-1$
-                        append(index2).append(" "). //$NON-NLS-1$
-                        append(index3).append("\n"); //$NON-NLS-1$
+                append(index1).append(" "). //$NON-NLS-1$
+                append(index2).append(" "). //$NON-NLS-1$
+                append(index3).append("\n"); //$NON-NLS-1$
             }
         }
 
@@ -522,7 +521,7 @@ public class CSG {
 
     /**
      * Returns this csg in OBJ string format.
-     * 
+     *
      * @return this csg in OBJ string format
      */
     public String toObjString() {
@@ -532,10 +531,10 @@ public class CSG {
 
     /**
      * Returns a transformed copy of this CSG.
-     * 
+     *
      * @param transform
      *            the transform to apply
-     * 
+     *
      * @return a transformed copy of this CSG
      */
     public CSG transformed(Transform transform) {
@@ -549,10 +548,10 @@ public class CSG {
 
     /**
      * Returns a transformed copy of this CSG.
-     * 
+     *
      * @param transform
      *            the transform to apply
-     * 
+     *
      * @return a transformed copy of this CSG
      */
     public CSG transformed(Matrix4f transform) {
@@ -561,7 +560,7 @@ public class CSG {
 
     /**
      * Returns the bounds of this csg.
-     * 
+     *
      * @return bouds of this csg
      */
     public Bounds getBounds() {

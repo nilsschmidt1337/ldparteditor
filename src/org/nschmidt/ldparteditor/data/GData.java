@@ -20,7 +20,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -69,7 +68,7 @@ public abstract class GData implements IGData {
     public static final HashMap<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<GData1, Matrix4f>(1000);
 
     // Cleared before parse
-    public static final HashMap<String, LinkedList<String>> CACHE_parsedFilesSource = new HashMap<String, LinkedList<String>>(1000);
+    public static final HashMap<String, ArrayList<String>> CACHE_parsedFilesSource = new HashMap<String, ArrayList<String>>(1000);
     public static final HashMap<String, GData> parsedLines = new HashMap<String, GData>(1000);
 
     public static final HashMap<GData, ArrayList<ParsingResult>> CACHE_warningsAndErrors = new HashMap<GData, ArrayList<ParsingResult>>(1000); // Cleared

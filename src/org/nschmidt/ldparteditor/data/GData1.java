@@ -21,7 +21,6 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -112,7 +111,7 @@ public final class GData1 extends GData {
         this.readOnly = false;
     }
 
-    public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, Matrix TMatrix, LinkedList<String> lines, String name, String shortName, int depth, boolean det,
+    public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, Matrix TMatrix, ArrayList<String> lines, String name, String shortName, int depth, boolean det,
             Matrix4f pMatrix, Matrix PMatrix, DatFile datFile, GData1 firstRef, boolean readOnly, boolean errorCheckOnly, Set<String> alreadyParsed) {
 
         depth++;
@@ -315,7 +314,7 @@ public final class GData1 extends GData {
      * @param pMatrix
      * @param firstRef
      */
-    public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, LinkedList<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
+    public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, ArrayList<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
             GData1 firstRef, Set<String> alreadyParsed) {
 
         this.accurateLocalMatrix = null;

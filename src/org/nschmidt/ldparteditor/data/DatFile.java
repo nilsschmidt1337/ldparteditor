@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -59,6 +60,8 @@ import org.nschmidt.ldparteditor.widgets.TreeItem;
  *
  */
 public final class DatFile {
+
+    private static final Pattern pattern = Pattern.compile("\r?\n|\r"); //$NON-NLS-1$
 
     private final boolean readOnly;
     private boolean drawSelection = true;
@@ -706,20 +709,21 @@ public final class DatFile {
         Set<String> alreadyParsed = new HashSet<String>();
         alreadyParsed.add(getShortName());
 
-        ArrayList<String> lines = new ArrayList<String>();
+        String[] lines;
         if (Project.getUnsavedFiles().contains(this) ) {
-            lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
-            if (lines.isEmpty())
-                lines.add(""); //$NON-NLS-1$
+            lines = pattern.split(text, -1);
+            if (lines.length == 0) {
+                lines = new String[]{""}; //$NON-NLS-1$
+            }
         } else {
             StringBuilder sb = StringHelper.useAgain();
+            ArrayList<String> lines2 = new ArrayList<String>(4096);
             try {
-
                 UTF8BufferedReader reader = new UTF8BufferedReader(this.getOldName());
                 String line = reader.readLine();
                 if (line != null) {
                     sb.append(line);
-                    lines.add(line);
+                    lines2.add(line);
                     while (true) {
                         String line2 = reader.readLine();
                         if (line2 == null) {
@@ -727,10 +731,10 @@ public final class DatFile {
                         }
                         sb.append(StringHelper.getLineDelimiter());
                         sb.append(line2);
-                        lines.add(line2);
+                        lines2.add(line2);
                     }
                 } else {
-                    lines.add(""); //$NON-NLS-1$
+                    lines2.add(""); //$NON-NLS-1$
                 }
                 reader.close();
 
@@ -739,6 +743,7 @@ public final class DatFile {
             } catch (FileNotFoundException e) {
             } catch (LDParsingException e) {
             } catch (UnsupportedEncodingException e) {}
+            lines = lines2.toArray(new String[lines2.size()]);
             setLastSavedOpened(new Date());
             originalText = sb.toString();
             text = originalText;
@@ -1386,12 +1391,13 @@ public final class DatFile {
                 -1,
                 backup,
                 backupSelection,
-                backupSelectedVertices
+                backupSelectedVertices,
+                -1
                 );
         NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public void addHistory(String text, int selectionStart, int selectionEnd) {
+    public void addHistory(String text, int selectionStart, int selectionEnd, int topIndex) {
         final long start = System.currentTimeMillis();
         NLogger.debug(getClass(), "Added history entry for " + getShortName()); //$NON-NLS-1$
         history.pushHistory(
@@ -1400,7 +1406,8 @@ public final class DatFile {
                 selectionEnd,
                 null,
                 null,
-                null
+                null,
+                topIndex
                 );
         NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
     }

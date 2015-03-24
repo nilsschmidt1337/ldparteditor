@@ -21,8 +21,11 @@ import java.util.List;
 import java.util.Queue;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -47,6 +50,9 @@ public class HistoryManager {
     private boolean hasNoThread = true;
     private final AtomicBoolean isRunning = new AtomicBoolean(true);
     private final AtomicInteger action = new AtomicInteger(0);
+    private final ProgressMonitorDialog[] m = new ProgressMonitorDialog[1];
+    private final SynchronousQueue<Integer> sq = new SynchronousQueue<Integer>();
+    private final Lock lock = new ReentrantLock();
 
     private Queue<Object[]> workQueue = new ConcurrentLinkedQueue<Object[]>();
 
@@ -54,7 +60,8 @@ public class HistoryManager {
         this.df = df;
     }
 
-    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, boolean[] selectedData, Vertex[] selectedVertices) {
+    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, boolean[] selectedData, Vertex[] selectedVertices, int topIndex) {
+        if (df.isReadOnly()) return;
         if (hasNoThread) {
             hasNoThread = false;
             new Thread(new Runnable() {
@@ -66,6 +73,7 @@ public class HistoryManager {
 
                     final ArrayList<Integer> historySelectionStart = new ArrayList<Integer>();
                     final ArrayList<Integer> historySelectionEnd = new ArrayList<Integer>();
+                    final ArrayList<Integer> historyTopIndex = new ArrayList<Integer>();
                     final ArrayList<int[]> historyText = new ArrayList<int[]>();
                     final ArrayList<boolean[]> historySelectedData = new ArrayList<boolean[]>();
                     final ArrayList<Vertex[]> historySelectedVertices = new ArrayList<Vertex[]>();
@@ -102,6 +110,7 @@ public class HistoryManager {
                                     removeFromListAboveOrEqualIndex(historySelectedData, pointer);
                                     removeFromListAboveOrEqualIndex(historySelectedVertices, pointer);
                                     removeFromListAboveOrEqualIndex(historyText, pointer);
+                                    removeFromListAboveOrEqualIndex(historyTopIndex, pointer);
                                     pointerMax = pointer;
                                 }
                                 // Dont store more than hundred undo/redo entries
@@ -112,6 +121,7 @@ public class HistoryManager {
                                     removeFromListLessIndex(historySelectedData, delta);
                                     removeFromListLessIndex(historySelectedVertices, delta);
                                     removeFromListLessIndex(historyText, delta);
+                                    removeFromListLessIndex(historyTopIndex, delta);
                                     pointerMax = pointerMax - delta;
                                     if (pointer > 100) {
                                         pointer = pointer - delta;
@@ -122,6 +132,7 @@ public class HistoryManager {
                                 historySelectionEnd.add((Integer) newEntry[2]);
                                 historySelectedData.add((boolean[]) newEntry[4]);
                                 historySelectedVertices.add((Vertex[]) newEntry[5]);
+                                historyTopIndex.add((Integer) newEntry[6]);
                                 historyText.add(result);
 
                                 // 1. Cleanup duplicated text entries
@@ -154,12 +165,14 @@ public class HistoryManager {
                                                         removeFromListAboveOrEqualIndex(historySelectedData, pointer);
                                                         removeFromListAboveOrEqualIndex(historySelectedVertices, pointer);
                                                         removeFromListAboveOrEqualIndex(historyText, pointer);
+                                                        removeFromListAboveOrEqualIndex(historyTopIndex, pointer);
                                                     } else {
                                                         // Remove the previous entry, because it only contains a new text selection
                                                         historySelectionStart.remove(pointer - 1);
                                                         historySelectionEnd.remove(pointer - 1);
                                                         historySelectedData.remove(pointer - 1);
                                                         historySelectedVertices.remove(pointer - 1);
+                                                        historyTopIndex.remove(pointer - 1);
                                                         if (historyText.get(pointer - 1) == null) {
                                                             historyText.remove(pointer - 1);
                                                             historyText.remove(pointer);
@@ -182,15 +195,17 @@ public class HistoryManager {
                                 NLogger.debug(getClass(), "Added undo/redo data"); //$NON-NLS-1$
                             } else {
                                 final int action2 = action.get();
+                                int delta = 0;
                                 if (action2 > 0) {
                                     boolean doRestore = false;
                                     switch (action2) {
                                     case 1:
                                         // Undo
                                         if (pointer > 0) {
-                                            // if (pointerMax - 1 == pointer && pointer > 1) pointer--;
+                                            if (pointerMax == pointer && pointer > 1) pointer--;
                                             NLogger.debug(getClass(), "Requested undo. " + (pointer - 1)); //$NON-NLS-1$
                                             pointer--;
+                                            delta = -1;
                                             doRestore = true;
                                         }
                                         break;
@@ -199,6 +214,7 @@ public class HistoryManager {
                                         if (pointer < pointerMax - 1) {
                                             NLogger.debug(getClass(), "Requested redo. " + (pointer + 1) + ' ' + pointerMax); //$NON-NLS-1$
                                             pointer++;
+                                            delta = 1;
                                             doRestore = true;
                                         }
                                         break;
@@ -207,20 +223,8 @@ public class HistoryManager {
                                     }
                                     if (doRestore) {
                                         df.getVertexManager().setSkipSyncWithTextEditor(true);
-                                        final int pointer2 = pointer;
-                                        final boolean openTextEditor = historySelectionStart.get(pointer2) != -1;
 
-                                        int[] text = null;
-                                        int k = 0;
-                                        while ((text = historyText.get(pointer2 - k)) == null) {
-                                            k++;
-                                            if (pointer2 == k) break;
-                                        }
-                                        if (text == null) {
-                                            action.set(0);
-                                            return;
-                                        }
-                                        final String decompressed = StringHelper.decompress(text);
+                                        final boolean openTextEditor = historySelectionStart.get(pointer) != -1;
                                         boolean hasTextEditor = false;
                                         for (EditorTextWindow w : Project.getOpenTextWindows()) {
                                             for (final CTabItem t : w.getTabFolder().getItems()) {
@@ -232,16 +236,38 @@ public class HistoryManager {
                                             }
                                             if (hasTextEditor) break;
                                         }
-                                        final AtomicBoolean hasDrawn = new AtomicBoolean(false);
-                                        Display.getDefault().asyncExec(new Runnable() {
+                                        while (!hasTextEditor && historySelectionStart.get(pointer) != -1 && pointer > 0 && pointer < pointerMax - 1) {
+                                            pointer += delta;
+                                        }
+                                        final int pointer2 = pointer;
+                                        int[] text = null;
+                                        int k = 0;
+                                        while ((text = historyText.get(pointer2 - k)) == null) {
+                                            k++;
+                                            if (pointer2 == k) break;
+                                        }
+                                        if (text == null) {
+                                            action.set(0);
+                                            return;
+                                        }
+                                        sq.offer(10);
+                                        final String decompressed = StringHelper.decompress(text);
+                                        Display.getDefault().syncExec(new Runnable() {
                                             @Override
                                             public void run() {
                                                 GDataCSG.resetCSG();
                                                 GDataCSG.forceRecompile();
                                                 Project.getUnsavedFiles().add(df);
                                                 df.setText(decompressed);
+                                                sq.offer(20);
+                                                m[0].getShell().redraw();
+                                                m[0].getShell().update();
+                                                m[0].getShell().getDisplay().readAndDispatch();
                                                 df.parseForData(false);
-
+                                                sq.offer(60);
+                                                m[0].getShell().redraw();
+                                                m[0].getShell().update();
+                                                m[0].getShell().getDisplay().readAndDispatch();
                                                 boolean hasTextEditor = false;
                                                 try {
                                                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
@@ -255,6 +281,7 @@ public class HistoryManager {
                                                                     if (openTextEditor) {
                                                                         r.x = historySelectionStart.get(pointer2);
                                                                         r.y = historySelectionEnd.get(pointer2);
+                                                                        ti = historyTopIndex.get(pointer2);
                                                                     }
                                                                     ((CompositeTab) t).getState().setSync(true);
                                                                     ((CompositeTab) t).getTextComposite().setText(decompressed);
@@ -333,20 +360,12 @@ public class HistoryManager {
                                                     vm.setUpdated(true);
                                                 }
                                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
-                                                hasDrawn.set(true);
+                                                sq.offer(10);
                                             }
                                         });
-                                        while (!hasDrawn.get()) {
-                                            try {
-                                                Thread.sleep(100);
-                                            } catch (InterruptedException e) {}
-                                        }
-                                        if (!(!hasTextEditor && openTextEditor)) {
-                                            action.set(0);
-                                        }
-                                    } else {
-                                        action.set(0);
                                     }
+                                    action.set(0);
+                                    sq.offer(0);
                                 }
                             }
                             Thread.sleep(100);
@@ -360,7 +379,7 @@ public class HistoryManager {
             }).start();
         }
 
-        while (!workQueue.offer(new Object[]{text, selectionStart, selectionEnd, data, selectedData, selectedVertices})) {
+        while (!workQueue.offer(new Object[]{text, selectionStart, selectionEnd, data, selectedData, selectedVertices, topIndex})) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {}
@@ -373,14 +392,25 @@ public class HistoryManager {
     }
 
     public void undo() {
-        action(1);
+        try {
+            lock.lock();
+            action(1);
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void redo() {
-        action(2);
+        try {
+            lock.lock();
+            action(2);
+        } finally {
+            lock.unlock();
+        }
     }
 
     private void action(final int mode) {
+        if (df.isReadOnly()) return;
         if (action.get() == 0) {
             BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
                 @Override
@@ -395,24 +425,26 @@ public class HistoryManager {
             public void run() {
                 try
                 {
-                    new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
+                    final ProgressMonitorDialog mon = new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell());
+                    mon.run(true, false, new IRunnableWithProgress()
                     {
                         @Override
                         public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
                         {
-                            monitor.beginTask("Loading Data...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                            m[0] = mon;
+                            monitor.beginTask("Loading Data...", 100); //$NON-NLS-1$ I18N
                             while (action.get() > 0) {
-                                try {
-                                    Thread.sleep(100);
-                                } catch (InterruptedException e) {}
+                                int inc = sq.take();
+                                monitor.worked(inc);
                             }
                         }
                     });
                 } catch (Exception ex) {
-
+                    NLogger.debug(getClass(), ex);
                 }
             }
         });
+        NLogger.debug(getClass(), "done."); //$NON-NLS-1$
     }
 
     private void removeFromListAboveOrEqualIndex(List<?> l, int i) {
