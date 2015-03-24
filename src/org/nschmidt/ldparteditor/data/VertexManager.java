@@ -183,7 +183,6 @@ public class VertexManager {
 
     private Vertex vertexToReplace = null;
 
-    private boolean uncompiled = false;
     private boolean modified = false;
     private boolean updated = true;
 
@@ -4184,7 +4183,6 @@ public class VertexManager {
     public synchronized void setModified(boolean modified, boolean addHistory) {
         if (modified) {
             setUpdated(false);
-            setUncompiled(true);
             syncWithTextEditors(addHistory);
         }
         this.modified = modified;
@@ -4203,7 +4201,6 @@ public class VertexManager {
 
     public synchronized void setModified_NoSync() {
         this.modified = true;
-        setUncompiled(true);
         setUpdated(false);
     }
 
@@ -18449,10 +18446,6 @@ public class VertexManager {
 
         try {
             lock.lock();
-            if (isUncompiled()) {
-                if (isSyncWithLpeInline()) SubfileCompiler.compile2(linkedDatFile);
-                setUncompiled(false);
-            }
 
             if (isSkipSyncWithTextEditor() || !isSyncWithTextEditor())  {
                 // lock.unlock() call on finally!
@@ -18538,6 +18531,14 @@ public class VertexManager {
                             setUpdated(true);
                         } finally {
                             if (notFound) setUpdated(true);
+                        }
+                        if (WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get() && isUpdated()) {
+                            Display.getDefault().asyncExec(new Runnable() {
+                                @Override
+                                public void run() {
+                                    SubfileCompiler.compile(linkedDatFile, true);
+                                }
+                            });
                         }
                     } finally {
                         lock.unlock();
@@ -19116,14 +19117,6 @@ public class VertexManager {
         } else {
             setModified_NoSync();
         }
-    }
-
-    public boolean isUncompiled() {
-        return uncompiled;
-    }
-
-    public void setUncompiled(boolean uncompiled) {
-        this.uncompiled = uncompiled;
     }
 
     public void setXyzOrTranslateOrTransform(Vertex target, Vertex pivot, TransformationMode tm, boolean x, boolean y, boolean z, boolean moveAdjacentData, boolean syncWithTextEditors) {

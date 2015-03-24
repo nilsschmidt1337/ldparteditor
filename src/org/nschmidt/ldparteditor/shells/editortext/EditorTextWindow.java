@@ -569,7 +569,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
                         return;
                     }
-                    SubfileCompiler.compile(selection.getState().getFileNameObj());
+                    SubfileCompiler.compile(selection.getState().getFileNameObj(), false);
                     final StyledText st = selection.getTextComposite();
                     st.forceFocus();
                 }
