@@ -639,6 +639,7 @@ public class MouseActions {
     // MARK MouseUp
     public void mouseUp(Event event) {
         final DatFile datfile = c3d.getLockableDatFileReference();
+        final VertexManager vm = datfile.getVertexManager();
         if (!datfile.isDrawSelection()) return;
         mouse_button_pressed = 0;
         switch (event.button) {
@@ -647,7 +648,6 @@ public class MouseActions {
             c3d.setDoingSelection(false);
             final Editor3DWindow window = Editor3DWindow.getWindow();
             if (window.isAddingSomething() && !datfile.isReadOnly()) {
-                final VertexManager vm = datfile.getVertexManager();
                 vm.selectVertices(c3d, true); // vm.selectVertices(c3d, window.isAddingSomething());
                 if (window.isAddingLines()) {
                     Vertex vl1 = datfile.getObjVertex1();
@@ -1138,28 +1138,28 @@ public class MouseActions {
             } else if (window.getWorkingAction() == WorkingMode.SELECT) {
                 switch (window.getWorkingType()) {
                 case WorkingMode.VERTICES:
-                    datfile.getVertexManager().selectVertices(c3d, false);
-                    datfile.getVertexManager().reSelectSubFiles();
+                    vm.selectVertices(c3d, false);
+                    vm.reSelectSubFiles();
                     break;
                 case WorkingMode.LINES:
-                    datfile.getVertexManager().selectLines(c3d);
-                    datfile.getVertexManager().reSelectSubFiles();
+                    vm.selectLines(c3d);
+                    vm.reSelectSubFiles();
                     break;
                 case WorkingMode.FACES:
-                    datfile.getVertexManager().selectFaces(c3d, event);
-                    datfile.getVertexManager().reSelectSubFiles();
+                    vm.selectFaces(c3d, event);
+                    vm.reSelectSubFiles();
                     break;
                 case WorkingMode.SUBFILES:
-                    datfile.getVertexManager().selectSubfiles(c3d, event, true);
+                    vm.selectSubfiles(c3d, event, true);
                     break;
                 }
-                datfile.getVertexManager().syncWithTextEditors(true);
+                vm.syncWithTextEditors(true);
             } else if (!window.isAddingSomething()) {
                 c3d.getManipulator().applyTranslation(c3d);
             }
             break;
         case MouseButton.RIGHT:
-            datfile.getVertexManager().setSkipSyncWithTextEditor(false);
+            vm.setSkipSyncWithTextEditor(false);
             KeyStateManager keyboard = c3d.getKeys();
             if (!keyboard.isCtrlPressed()) {
                 datfile.setObjVertex1(null);
@@ -1168,7 +1168,7 @@ public class MouseActions {
                 datfile.setObjVertex4(null);
                 datfile.setNearestObjVertex1(null);
                 datfile.setNearestObjVertex2(null);
-                if (Editor3DWindow.getWindow().isAddingSomething()) datfile.getVertexManager().clearSelection();
+                if (Editor3DWindow.getWindow().isAddingSomething()) vm.clearSelection();
             }
             if (c3d.isDoingSelection())
                 break;

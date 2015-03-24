@@ -21,6 +21,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -38,11 +39,13 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
-import org.nschmidt.ldparteditor.data.GData1;
+import org.nschmidt.ldparteditor.data.GData2;
+import org.nschmidt.ldparteditor.data.GData3;
+import org.nschmidt.ldparteditor.data.GData4;
+import org.nschmidt.ldparteditor.data.GData5;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
-import org.nschmidt.ldparteditor.data.VertexInfo;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
@@ -85,8 +88,9 @@ public enum SubfileCompiler {
      * Compiles outlined subfiles (reverse inlining, clears the selection)
      *
      * @param datFile
+     * @param preserveSelection TODO
      */
-    public static void compile(final DatFile datFile) {
+    public static void compile(final DatFile datFile, boolean preserveSelection) {
         final VertexManager vm = datFile.getVertexManager();
         if (!vm.isUpdated()) {
             if (vm.isSyncWithTextEditor()) {
@@ -120,6 +124,22 @@ public enum SubfileCompiler {
                 }
             }
         }
+        HashSet<Integer> selectedDataIndices = new HashSet<Integer>();
+        HashSet<Vertex> selectedVertices = new HashSet<Vertex>();
+        if (preserveSelection) {
+            selectedVertices.addAll(vm.getSelectedVertices());
+            HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
+            Set<Integer> keys = dpl.keySet();
+            ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
+            lineNumbers.addAll(keys);
+            for (Integer l : dpl.keySet()) {
+                GData gd = datFile.getDrawPerLine_NOCLONE().getValue(l);
+                int type = gd.type();
+                if (type != 1) {
+                    if (vm.getSelectedData().contains(gd)) selectedDataIndices.add(l);
+                }
+            }
+        }
         vm.clearSelection();
         GDataCSG.resetCSG();
         GDataCSG.forceRecompile();
@@ -129,7 +149,7 @@ public enum SubfileCompiler {
 
         if (datFile.getVertexManager().isModified()) {
             datFile.setText(datFile.getText());
-            datFile.parseForData(true);
+            datFile.parseForData(false);
         }
 
         HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
@@ -153,7 +173,7 @@ public enum SubfileCompiler {
         builder = null;
         Editor3DWindow.getWindow().updateTree_unsavedEntries();
         datFile.getVertexManager().clear();
-        datFile.parseForData(true);
+        datFile.parseForData(false);
 
         // Link last line
         NLogger.debug(SubfileCompiler.class, "" + datFile.getDrawPerLine_NOCLONE().getValue(lineNumbers.size())); //$NON-NLS-1$
@@ -167,122 +187,33 @@ public enum SubfileCompiler {
                 }
             }
         }
-    }
 
-    /**
-     * Compiles outlined subfiles (reverse inlining, preserves the selection, except subfiles)
-     *
-     * @param datFile
-     */
-    public static void compile2(DatFile datFile) {
-
-        GDataCSG.resetCSG();
-        GDataCSG.forceRecompile();
-        skipCompile = true;
-        matrixInv = View.ACCURATE_ID;
-        matrixProd = View.ACCURATE_ID;
-
-        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
-
-        Set<Integer> keys = dpl.keySet();
-        ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
-        lineNumbers.addAll(keys);
-        Collections.sort(lineNumbers);
-
-        VertexManager vm = datFile.getVertexManager();
-        for (Integer l : lineNumbers) {
-            GData gd = datFile.getDrawPerLine_NOCLONE().getValue(l);
-            int type = gd.type();
-            if (type == 1) {
-                final Set<VertexInfo> lv = vm.getLineLinkedToVertices().get(gd);
-                if (lv != null) {
-                    for (VertexInfo vertexInfo : lv) {
-                        GData linkedData = vertexInfo.getLinkedData();
-                        Vertex vertex = vertexInfo.getVertex();
-                        switch (linkedData.type()) {
-                        case 0:
-                            vm.getSelectedVertices().remove(vertex);
-                            break;
-                        case 2:
-                            vm.getSelectedLines().remove(linkedData);
-                            vm.getSelectedData().remove(linkedData);
-                            {
-                                Vertex[] verts = vm.getLines().get(linkedData);
-                                for (Vertex v : verts) {
-                                    vm.getSelectedVertices().remove(v);
-                                }
-                            }
-                            break;
-                        case 3:
-                            vm.getSelectedTriangles().remove(linkedData);
-                            vm.getSelectedData().remove(linkedData);
-                            {
-                                Vertex[] verts = vm.getTriangles().get(linkedData);
-                                for (Vertex v : verts) {
-                                    vm.getSelectedVertices().remove(v);
-                                }
-                            }
-                            break;
-                        case 4:
-                            vm.getSelectedQuads().remove(linkedData);
-                            vm.getSelectedData().remove(linkedData);
-                            {
-                                Vertex[] verts = vm.getQuads().get(linkedData);
-                                for (Vertex v : verts) {
-                                    vm.getSelectedVertices().remove(v);
-                                }
-                            }
-                            break;
-                        case 5:
-                            vm.getSelectedCondlines().remove(linkedData);
-                            vm.getSelectedData().remove(linkedData);
-                            {
-                                Vertex[] verts = vm.getCondlines().get(linkedData);
-                                for (Vertex v : verts) {
-                                    vm.getSelectedVertices().remove(v);
-                                }
-                            }
-                            break;
-                        default:
-                            throw new AssertionError();
-                        }
+        if (preserveSelection) {
+            for (Integer l : lineNumbers) {
+                GData gd = dpl.getValue(l);
+                if (selectedDataIndices.contains(l)) {
+                    vm.getSelectedData().add(gd);
+                    switch (gd.type()) {
+                    case 2:
+                        vm.getSelectedLines().add((GData2) gd);
+                        break;
+                    case 3:
+                        vm.getSelectedTriangles().add((GData3) gd);
+                        break;
+                    case 4:
+                        vm.getSelectedQuads().add((GData4) gd);
+                        break;
+                    case 5:
+                        vm.getSelectedCondlines().add((GData5) gd);
+                        break;
+                    default:
+                        break;
                     }
                 }
             }
+            selectedVertices.retainAll(vm.getVertices());
+            vm.getSelectedVertices().addAll(selectedVertices);
         }
-
-        for (Integer l : lineNumbers) {
-            SubfileCompiler.compile(l, datFile);
-        }
-
-        matrixInvStack.clear();
-        matrixProdStack.clear();
-        nameStack.clear();
-        colourStack.clear();
-        builderStack.clear();
-        toFolderStack.clear();
-
-        for (Integer l : lineNumbers) {
-            GData gd = datFile.getDrawPerLine_NOCLONE().getValue(l);
-            int type = gd.type();
-            if (type == 1) {
-                if (vm.getSelectedSubfiles().contains(gd)) {
-                    vm.getSelectedData().remove(gd);
-                    vm.getSelectedSubfiles().remove(gd);
-                    GData1 ns = vm.reloadSubfile((GData1) gd);
-                    vm.getSelectedData().add(ns);
-                    vm.getSelectedSubfiles().add(ns);
-                } else {
-                    vm.reloadSubfile((GData1) gd);
-                }
-
-            }
-        }
-
-        if (!vm.getSelectedSubfiles().isEmpty()) vm.selectSubfiles(null, null, false);
-
-        builder = null;
-        Editor3DWindow.getWindow().updateTree_unsavedEntries();
     }
 
     @SuppressWarnings("unchecked")

@@ -22,6 +22,7 @@ import java.util.Queue;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
@@ -42,7 +43,6 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
-// FIXME Needs implementation!!
 public class HistoryManager {
 
     private DatFile df;
@@ -274,27 +274,24 @@ public class HistoryManager {
                                                         for (final CTabItem t : w.getTabFolder().getItems()) {
                                                             final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
                                                             if (txtDat != null && txtDat.equals(df)) {
-                                                                if (!df.getVertexManager().isSyncWithTextEditor()) {
-                                                                    // Don't sync twice...
-                                                                    int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
-                                                                    Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
-                                                                    if (openTextEditor) {
-                                                                        r.x = historySelectionStart.get(pointer2);
-                                                                        r.y = historySelectionEnd.get(pointer2);
-                                                                        ti = historyTopIndex.get(pointer2);
-                                                                    }
-                                                                    ((CompositeTab) t).getState().setSync(true);
-                                                                    ((CompositeTab) t).getTextComposite().setText(decompressed);
-                                                                    ((CompositeTab) t).getTextComposite().setTopIndex(ti);
-                                                                    try {
-                                                                        ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
-                                                                    } catch (IllegalArgumentException consumed) {}
-                                                                    ((CompositeTab) t).getTextComposite().redraw();
-                                                                    ((CompositeTab) t).getControl().redraw();
-                                                                    ((CompositeTab) t).getTextComposite().update();
-                                                                    ((CompositeTab) t).getControl().update();
-                                                                    ((CompositeTab) t).getState().setSync(false);
+                                                                int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
+                                                                Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
+                                                                if (openTextEditor) {
+                                                                    r.x = historySelectionStart.get(pointer2);
+                                                                    r.y = historySelectionEnd.get(pointer2);
+                                                                    ti = historyTopIndex.get(pointer2);
                                                                 }
+                                                                ((CompositeTab) t).getState().setSync(true);
+                                                                ((CompositeTab) t).getTextComposite().setText(decompressed);
+                                                                ((CompositeTab) t).getTextComposite().setTopIndex(ti);
+                                                                try {
+                                                                    ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
+                                                                } catch (IllegalArgumentException consumed) {}
+                                                                ((CompositeTab) t).getTextComposite().redraw();
+                                                                ((CompositeTab) t).getControl().redraw();
+                                                                ((CompositeTab) t).getTextComposite().update();
+                                                                ((CompositeTab) t).getControl().update();
+                                                                ((CompositeTab) t).getState().setSync(false);
                                                                 hasTextEditor = true;
                                                                 break;
                                                             }
@@ -348,17 +345,19 @@ public class HistoryManager {
                                                 }
                                                 vm.updateUnsavedStatus();
 
-
+                                                vm.setModified_NoSync();
+                                                vm.setUpdated(true);
                                                 vm.setSkipSyncWithTextEditor(false);
-                                                if (hasTextEditor) {
-                                                    vm.setModified_NoSync();
-                                                    vm.syncWithTextEditors(false);
-                                                } else {
-                                                    vm.setModified(true, false);
-                                                }
-                                                if (openTextEditor || hasTextEditor) {
-                                                    vm.setUpdated(true);
-                                                }
+                                                //                                                vm.setSkipSyncWithTextEditor(false);
+                                                //                                                if (hasTextEditor) {
+                                                //                                                    vm.setModified_NoSync();
+                                                //                                                    vm.syncWithTextEditors(false);
+                                                //                                                } else {
+                                                //                                                    vm.setModified(true, false);
+                                                //                                                }
+                                                //                                                if (openTextEditor || hasTextEditor) {
+                                                //                                                    vm.setUpdated(true);
+                                                //                                                }
                                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                                                 sq.offer(10);
                                             }
@@ -434,8 +433,10 @@ public class HistoryManager {
                             m[0] = mon;
                             monitor.beginTask("Loading Data...", 100); //$NON-NLS-1$ I18N
                             while (action.get() > 0) {
-                                int inc = sq.take();
-                                monitor.worked(inc);
+                                Integer inc = sq.poll(1000, TimeUnit.MILLISECONDS);
+                                if (inc != null) {
+                                    monitor.worked(inc);
+                                }
                             }
                         }
                     });
