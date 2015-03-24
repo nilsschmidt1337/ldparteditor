@@ -18464,22 +18464,22 @@ public class VertexManager {
                     do {
                         resetTimer.set(false);
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(450);
                         } catch (InterruptedException e) {
                         }
                         if (tid2.get() != tid.get()) break;
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(450);
                         } catch (InterruptedException e) {
                         }
                         if (tid2.get() != tid.get()) break;
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(450);
                         } catch (InterruptedException e) {
                         }
                         if (tid2.get() != tid.get()) break;
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(450);
                         } catch (InterruptedException e) {
                         }
                         if (tid2.get() != tid.get()) break;
@@ -18532,11 +18532,17 @@ public class VertexManager {
                         } finally {
                             if (notFound) setUpdated(true);
                         }
-                        if (WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get() && isUpdated()) {
+                        if (WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get()) {
+                            while (!isUpdated() && Editor3DWindow.getAlive().get()) {
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                }
+                            }
                             Display.getDefault().asyncExec(new Runnable() {
                                 @Override
                                 public void run() {
-                                    SubfileCompiler.compile(linkedDatFile, true);
+                                    SubfileCompiler.compile(linkedDatFile, true, true);
                                 }
                             });
                         }
