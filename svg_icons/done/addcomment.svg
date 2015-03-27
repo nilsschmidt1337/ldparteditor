@@ -15,7 +15,7 @@
    id="svg2985"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="New document 2">
+   sodipodi:docname="addcomment.svg">
   <defs
      id="defs2987">
     <linearGradient
@@ -65,7 +65,7 @@
      inkscape:grid-bbox="true"
      inkscape:window-width="927"
      inkscape:window-height="1028"
-     inkscape:window-x="63"
+     inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="0" />
   <metadata
@@ -76,7 +76,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -92,18 +92,34 @@
        id="path3835"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="sssssssssssssssssssssssss" />
-    <text
-       xml:space="preserve"
+    <g
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="43"
-       y="103"
-       id="text3004"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan3006"
-         x="43"
-         y="103"
-         style="font-size:72px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">0 //...</tspan></text>
+       id="text3004">
+      <path
+         d="m 65.886719,55.1875 c -3.656269,4.8e-5 -6.410173,1.804734 -8.261719,5.414062 -1.828138,3.585977 -2.742199,8.988315 -2.742188,16.207032 -1.1e-5,7.195331 0.91405,12.59767 2.742188,16.207031 1.851546,3.585944 4.60545,5.378911 8.261719,5.378906 3.679661,5e-6 6.433564,-1.792962 8.261718,-5.378906 1.85153,-3.609361 2.77731,-9.0117 2.777344,-16.207031 C 76.925747,69.589877 75.999967,64.187539 74.148437,60.601562 72.320283,56.992234 69.56638,55.187548 65.886719,55.1875 m 0,-5.625 c 5.882783,5.3e-5 10.37106,2.332082 13.464843,6.996094 3.117149,4.640667 4.675741,11.39066 4.675782,20.25 -4.1e-5,8.835955 -1.558633,15.585948 -4.675782,20.25 -3.093783,4.640626 -7.58206,6.960936 -13.464843,6.960936 -5.88283,0 -10.382825,-2.32031 -13.5,-6.960936 -3.093757,-4.664052 -4.64063,-11.414045 -4.640625,-20.25 -5e-6,-8.85934 1.546868,-15.609333 4.640625,-20.25 3.117175,-4.664012 7.61717,-6.996041 13.5,-6.996094"
+         style="font-size:72px;font-variant:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         id="path3099" />
+      <path
+         d="m 130.04687,50.511719 5.97657,0 -18.28125,59.167971 -5.97656,0 18.28124,-59.167971"
+         style="font-size:72px;font-variant:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         id="path3101" />
+      <path
+         d="m 154.375,50.511719 5.97656,0 -18.28125,59.167971 -5.97656,0 18.28125,-59.167971"
+         style="font-size:72px;font-variant:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         id="path3103" />
+      <path
+         d="m 168.12109,94.070312 7.41797,0 0,8.929688 -7.41797,0 0,-8.929688"
+         style="font-size:72px;font-variant:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         id="path3105" />
+      <path
+         d="m 191.04297,94.070312 7.41797,0 0,8.929688 -7.41797,0 0,-8.929688"
+         style="font-size:72px;font-variant:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         id="path3107" />
+      <path
+         d="m 213.96484,94.070312 7.41797,0 0,8.929688 -7.41797,0 0,-8.929688"
+         style="font-size:72px;font-variant:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         id="path3109" />
+    </g>
     <flowRoot
        xml:space="preserve"
        id="flowRoot3008"
@@ -114,7 +130,7 @@
            height="66"
            x="81"
            y="-171" /></flowRegion><flowPara
-         id="flowPara3014"></flowPara></flowRoot>    <g
+         id="flowPara3014" /></flowRoot>    <g
        transform="translate(-54.72727,54.636368)"
        id="g3178">
       <rect
