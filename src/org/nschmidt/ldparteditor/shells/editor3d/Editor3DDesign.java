@@ -1708,17 +1708,21 @@ class Editor3DDesign extends ApplicationWindow {
                         Project.addUnsavedFile(Project.getFileToEdit());
 
 
-                        try {
-                            UTF8BufferedReader reader = new UTF8BufferedReader("testsource.txt"); //$NON-NLS-1$
-                            StringBuilder sb = new StringBuilder();
-                            String s;
-                            while ((s = reader.readLine()) != null) {
-                                sb.append(s);
-                                sb.append(StringHelper.getLineDelimiter());
-                            }
-                            Project.getFileToEdit().setText(sb.toString());
-                        } catch (Exception e) {
+                        if (NLogger.DEBUG) {
+                            try {
+                                UTF8BufferedReader reader = new UTF8BufferedReader("testsource.txt"); //$NON-NLS-1$
+                                StringBuilder sb = new StringBuilder();
+                                String s;
+                                while ((s = reader.readLine()) != null) {
+                                    sb.append(s);
+                                    sb.append(StringHelper.getLineDelimiter());
+                                }
+                                Project.getFileToEdit().setText(sb.toString());
+                            } catch (Exception e) {
 
+                            }
+                        } else {
+                            Project.getFileToEdit().setText("0 "); //$NON-NLS-1$
                         }
 
                         TreeItem treeItemProjectSubparts = new TreeItem(treeItemProjectName, SWT.NONE);

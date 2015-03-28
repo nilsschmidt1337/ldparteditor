@@ -132,7 +132,7 @@ public class PerspectiveCalculator {
         break;
         case Perspective.TWO_THIRDS: {
             NLogger.debug(PerspectiveCalculator.class, "[Two thirds view]"); //$NON-NLS-1$
-            float[] rpf = new float[] { 0.7071f, -0.5f, -0.5f, 0, 0, 0.7071f, -0.7071f, 0, 0.7071f, 0.5f, 0.5f, 0, 0, 0, 0, 1 };
+            float[] rpf = new float[] { 0.7071f, -0.5f, -0.5f, 0, 0, 0.7071f, -0.7071f, 0, -0.7071f, -0.5f, -0.5f, 0, 0, 0, 0, 1 };
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
             fb.put(rpf);
             fb.flip();
