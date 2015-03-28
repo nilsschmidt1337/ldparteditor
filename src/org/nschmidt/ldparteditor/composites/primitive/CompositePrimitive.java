@@ -573,7 +573,7 @@ public class CompositePrimitive extends Composite {
             searchPaths.add(ldrawPath + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
             searchPaths.add(ldrawPath + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
         }
-        String unofficial = WorkbenchManager.getUserSettingState().getLdrawFolderPath();
+        String unofficial = WorkbenchManager.getUserSettingState().getUnofficialFolderPath();
         if (unofficial != null) {
             searchPaths.add(unofficial + File.separator + "p" + File.separator); //$NON-NLS-1$
             searchPaths.add(unofficial + File.separator + "P" + File.separator); //$NON-NLS-1$
@@ -828,7 +828,7 @@ public class CompositePrimitive extends Composite {
             }
 
             boolean isUppercase = false;
-            boolean isEmpty = false;
+            boolean isEmpty = true;
             for (String folderPath : searchPaths) {
                 File libFolder = new File(folderPath);
                 if (!libFolder.isDirectory()) {
