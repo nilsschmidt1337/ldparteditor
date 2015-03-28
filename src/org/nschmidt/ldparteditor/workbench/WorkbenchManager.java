@@ -58,13 +58,13 @@ public enum WorkbenchManager {
         WindowState w_3d = editor3DWindowState.getWindowState();
         w_3d.setCentered(true);
         w_3d.setMaximized(false);
-        w_3d.setSizeAndPosition(new Rectangle(0, 0, 640, 480));
+        w_3d.setSizeAndPosition(new Rectangle(0, 0, 1024, 768));
         editorTextWindowState = new EditorTextWindowState();
         editorTextWindowState.setWindowState(new WindowState());
         WindowState w_text = editorTextWindowState.getWindowState();
         w_text.setCentered(true);
         w_text.setMaximized(false);
-        w_text.setSizeAndPosition(new Rectangle(0, 0, 640, 480));
+        w_text.setSizeAndPosition(new Rectangle(0, 0, 1024, 768));
         Colour.saveDefaultColours();
         saveWorkbench();
     }
