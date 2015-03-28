@@ -851,18 +851,6 @@ class Editor3DDesign extends ApplicationWindow {
                     mntm_Flip.setText("Flip / Rotate Vertices"); //$NON-NLS-1$ I18N
                 }
                 @SuppressWarnings("unused")
-                final MenuItem mntmSeparator1 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
-                {
-                    MenuItem mntm_SubdivideCatmullClark = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_SubdivideCatmullClark[0] = mntm_SubdivideCatmullClark;
-                    mntm_SubdivideCatmullClark.setText("Subdivide (Catmull-Clark)"); //$NON-NLS-1$ I18N
-                }
-                {
-                    MenuItem mntm_SubdivideLoop = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_SubdivideLoop[0] = mntm_SubdivideLoop;
-                    mntm_SubdivideLoop.setText("Subdivide (Loop)"); //$NON-NLS-1$ I18N
-                }
-                @SuppressWarnings("unused")
                 final MenuItem mntmSeparator2 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
                 {
                     MenuItem mntm_Split = new MenuItem(mnu_Merge, SWT.PUSH);
@@ -922,6 +910,18 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_Scale = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_Scale[0] = mntm_Scale;
                     mntm_Scale.setText("Scale Selection"); //$NON-NLS-1$ I18N
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator1 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_SubdivideCatmullClark = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_SubdivideCatmullClark[0] = mntm_SubdivideCatmullClark;
+                    mntm_SubdivideCatmullClark.setText("Subdivide (Catmull-Clark)"); //$NON-NLS-1$ I18N
+                }
+                {
+                    MenuItem mntm_SubdivideLoop = new MenuItem(mnu_Merge, SWT.PUSH);
+                    this.mntm_SubdivideLoop[0] = mntm_SubdivideLoop;
+                    mntm_SubdivideLoop.setText("Subdivide (Loop)"); //$NON-NLS-1$ I18N
                 }
             }
             {
