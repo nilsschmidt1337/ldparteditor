@@ -391,20 +391,26 @@ public class HistoryManager {
     }
 
     public void undo() {
-        try {
-            lock.lock();
-            action(1);
-        } finally {
-            lock.unlock();
+        if (lock.tryLock()) {
+            try {
+                action(1);
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            NLogger.debug(getClass(), "Undo was skipped due to synchronisation."); //$NON-NLS-1$
         }
     }
 
     public void redo() {
-        try {
-            lock.lock();
-            action(2);
-        } finally {
-            lock.unlock();
+        if (lock.tryLock()) {
+            try {
+                action(2);
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            NLogger.debug(getClass(), "Redo was skipped due to synchronisation."); //$NON-NLS-1$
         }
     }
 
@@ -464,5 +470,9 @@ public class HistoryManager {
 
     public void setDatFile(DatFile df) {
         this.df = df;
+    }
+
+    public Lock getLock() {
+        return lock;
     }
 }
