@@ -4364,6 +4364,11 @@ public class Editor3DWindow extends Editor3DDesign {
         }
         // All "history threads" needs to know that the main window was closed
         alive.set(false);
+
+        Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
+        winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights()[0]);
+        winState.setPrimitiveZoom(cmp_Primitives[0].getZoom());
+        winState.setPrimitiveZoomExponent(cmp_Primitives[0].getZoom_exponent());
         // Save the workbench
         WorkbenchManager.saveWorkbench();
         setReturnCode(CANCEL);

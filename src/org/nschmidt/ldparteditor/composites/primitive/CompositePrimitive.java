@@ -93,8 +93,8 @@ public class CompositePrimitive extends Composite {
     final GLCanvas canvas;
 
     /** The view zoom level */
-    private float zoom = (float) Math.pow(10.0d, 3f / 10 - 3);
-    private float zoom_exponent = 3f;
+    private float zoom = WorkbenchManager.getEditor3DWindowState().getPrimitiveZoom();//(float) Math.pow(10.0d, 3f / 10 - 3);
+    private float zoom_exponent = WorkbenchManager.getEditor3DWindowState().getPrimitiveZoomExponent(); // 3f;
 
     /** The transformation matrix of the view */
     private final Matrix4f viewport_matrix = new Matrix4f();
@@ -397,6 +397,14 @@ public class CompositePrimitive extends Composite {
      */
     public void setZoom(float zoom) {
         this.zoom = zoom;
+    }
+
+    public float getZoom_exponent() {
+        return zoom_exponent;
+    }
+
+    public void setZoom_exponent(float zoom_exponent) {
+        this.zoom_exponent = zoom_exponent;
     }
 
     /**

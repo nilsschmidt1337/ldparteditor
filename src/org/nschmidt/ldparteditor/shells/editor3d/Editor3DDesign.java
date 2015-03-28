@@ -1865,7 +1865,8 @@ class Editor3DDesign extends ApplicationWindow {
                 // Composite cmp_Container = new Composite(sashForm, SWT.NONE);
                 CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
                 int width = WorkbenchManager.getEditor3DWindowState().getWindowState().getSizeAndPosition().width;
-                sashForm.setWeights(new int[] { 170, width - 170 });
+                int sashSize = WorkbenchManager.getEditor3DWindowState().getLeftSashWidth(); // size = 170
+                sashForm.setWeights(new int[] { sashSize, width - sashSize });
             }
         }
         status = new Composite(container, SWT.NONE);
