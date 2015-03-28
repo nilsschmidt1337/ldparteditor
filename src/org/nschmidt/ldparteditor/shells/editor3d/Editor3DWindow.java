@@ -4133,7 +4133,9 @@ public class Editor3DWindow extends Editor3DDesign {
 
         Project.getFileToEdit().setLastSelectedComposite(Editor3DWindow.renders.get(0).getC3D());
         new EditorTextWindow().run(Project.getFileToEdit());
+
         updateBgPictureTab();
+        Project.getFileToEdit().addHistory();
         this.open();
         // Dispose all resources (never delete this!)
         ResourceManager.dispose();

@@ -409,7 +409,7 @@ public class HistoryManager {
     }
 
     private void action(final int mode) {
-        if (df.isReadOnly()) return;
+        if (df.isReadOnly() || !df.getVertexManager().isUpdated()) return;
         if (action.get() == 0) {
             BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
                 @Override
