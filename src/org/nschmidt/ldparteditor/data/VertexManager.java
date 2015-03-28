@@ -18487,66 +18487,76 @@ public class VertexManager {
                     openThreads.decrementAndGet();
                     if (tid2.get() != tid.get() || isSkipSyncWithTextEditor() || !isSyncWithTextEditor()) return;
                     boolean notFound = true;
+                    Lock lock2 = null;
                     try {
+                        lock2 = linkedDatFile.getHistory().getLock();
                         lock.lock();
-                        try {
-                            // A lot of stuff can throw an exception here, since the thread waits two seconds and
-                            // the state of the program may not allow a synchronisation anymore
-                            for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                for (final CTabItem t : w.getTabFolder().getItems()) {
-                                    final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
-                                    if (txtDat != null && txtDat.equals(linkedDatFile)) {
-                                        notFound = false;
-                                        final String txt;
-                                        if (isModified()) {
-                                            txt = txtDat.getText();
-                                        } else {
-                                            txt = null;
-                                        }
-                                        Display.getDefault().asyncExec(new Runnable() {
-                                            @Override
-                                            public void run() {
-
-                                                int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
-
-                                                Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
-                                                ((CompositeTab) t).getState().setSync(true);
-                                                if (isModified() && txt != null) {
-                                                    ((CompositeTab) t).getTextComposite().setText(txt);
-                                                }
-                                                ((CompositeTab) t).getTextComposite().setTopIndex(ti);
-                                                try {
-                                                    ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
-                                                } catch (IllegalArgumentException consumed) {}
-                                                ((CompositeTab) t).getTextComposite().redraw();
-                                                ((CompositeTab) t).getControl().redraw();
-                                                ((CompositeTab) t).getState().setSync(false);
-                                                setUpdated(true);
+                        // "lock2" will be locked, if undo/redo tries to restore the state.
+                        // Any attempt to broke the data structure with an old synchronisation state will be
+                        // prevented with this lock.
+                        if (lock2.tryLock()) {
+                            try {
+                                // A lot of stuff can throw an exception here, since the thread waits two seconds and
+                                // the state of the program may not allow a synchronisation anymore
+                                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                    for (final CTabItem t : w.getTabFolder().getItems()) {
+                                        final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
+                                        if (txtDat != null && txtDat.equals(linkedDatFile)) {
+                                            notFound = false;
+                                            final String txt;
+                                            if (isModified()) {
+                                                txt = txtDat.getText();
+                                            } else {
+                                                txt = null;
                                             }
-                                        });
+                                            Display.getDefault().asyncExec(new Runnable() {
+                                                @Override
+                                                public void run() {
+
+                                                    int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
+
+                                                    Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
+                                                    ((CompositeTab) t).getState().setSync(true);
+                                                    if (isModified() && txt != null) {
+                                                        ((CompositeTab) t).getTextComposite().setText(txt);
+                                                    }
+                                                    ((CompositeTab) t).getTextComposite().setTopIndex(ti);
+                                                    try {
+                                                        ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
+                                                    } catch (IllegalArgumentException consumed) {}
+                                                    ((CompositeTab) t).getTextComposite().redraw();
+                                                    ((CompositeTab) t).getControl().redraw();
+                                                    ((CompositeTab) t).getState().setSync(false);
+                                                    setUpdated(true);
+                                                }
+                                            });
+                                        }
                                     }
                                 }
+                            } catch (Exception consumed) {
+                                setUpdated(true);
+                            } finally {
+                                if (notFound) setUpdated(true);
                             }
-                        } catch (Exception consumed) {
-                            setUpdated(true);
-                        } finally {
-                            if (notFound) setUpdated(true);
-                        }
-                        if (WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get()) {
-                            while (!isUpdated() && Editor3DWindow.getAlive().get()) {
-                                try {
-                                    Thread.sleep(100);
-                                } catch (InterruptedException e) {
+                            if (WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get()) {
+                                while (!isUpdated() && Editor3DWindow.getAlive().get()) {
+                                    try {
+                                        Thread.sleep(100);
+                                    } catch (InterruptedException e) {
+                                    }
                                 }
+                                Display.getDefault().asyncExec(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        SubfileCompiler.compile(linkedDatFile, true, true);
+                                    }
+                                });
                             }
-                            Display.getDefault().asyncExec(new Runnable() {
-                                @Override
-                                public void run() {
-                                    SubfileCompiler.compile(linkedDatFile, true, true);
-                                }
-                            });
+                        } else {
+                            NLogger.debug(getClass(), "Synchronisation was skipped due to undo/redo."); //$NON-NLS-1$
                         }
                     } finally {
+                        if (lock2 != null) lock2.unlock();
                         lock.unlock();
                     }
                 }
