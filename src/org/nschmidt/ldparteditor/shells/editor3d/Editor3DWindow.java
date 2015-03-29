@@ -41,6 +41,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -4366,9 +4367,11 @@ public class Editor3DWindow extends Editor3DDesign {
         alive.set(false);
 
         Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
+        winState.setLeftSashWeights(((SashForm) Editor3DDesign.getSashForm().getChildren()[0]).getWeights());
         winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights()[0]);
         winState.setPrimitiveZoom(cmp_Primitives[0].getZoom());
         winState.setPrimitiveZoomExponent(cmp_Primitives[0].getZoom_exponent());
+        winState.setPrimitiveViewport(cmp_Primitives[0].getViewport2());
         // Save the workbench
         WorkbenchManager.saveWorkbench();
         setReturnCode(CANCEL);

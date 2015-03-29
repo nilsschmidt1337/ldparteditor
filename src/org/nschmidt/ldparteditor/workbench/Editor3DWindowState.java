@@ -17,6 +17,8 @@ package org.nschmidt.ldparteditor.workbench;
 
 import java.io.Serializable;
 
+import org.lwjgl.util.vector.Matrix4f;
+
 /**
  * @author nils
  *
@@ -30,6 +32,8 @@ public class Editor3DWindowState implements Serializable {
     private int leftSashWidth = 170;
     private float primitiveZoom = (float) Math.pow(10.0d, 3f / 10 - 3);
     private float primitiveZoomExponent = 3f;
+    private int[] leftSashWeights = null;
+    private Matrix4f[] primitiveViewport = null;
 
     /**
      * @return The state of the application window
@@ -68,6 +72,22 @@ public class Editor3DWindowState implements Serializable {
 
     public void setPrimitiveZoomExponent(float primitiveZoomExponent) {
         this.primitiveZoomExponent = primitiveZoomExponent;
+    }
+
+    public int[] getLeftSashWeights() {
+        return leftSashWeights;
+    }
+
+    public void setLeftSashWeights(int[] leftSashWeights) {
+        this.leftSashWeights = leftSashWeights;
+    }
+
+    public Matrix4f[] getPrimitiveViewport() {
+        return primitiveViewport;
+    }
+
+    public void setPrimitiveViewport(Matrix4f[] primitiveViewport) {
+        this.primitiveViewport = primitiveViewport;
     }
 
 }

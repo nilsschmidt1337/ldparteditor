@@ -57,7 +57,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.BFC;
 import org.nschmidt.ldparteditor.data.DatFile;
-import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.PGData;
 import org.nschmidt.ldparteditor.data.PGData1;
 import org.nschmidt.ldparteditor.data.PGData2;
@@ -436,9 +435,19 @@ public class CompositePrimitive extends Composite {
      *            the matrix to set.
      */
     public void setViewport(Matrix4f matrix) {
-        GData.CACHE_viewByProjection.clear();
         viewport_matrix.load(matrix);
         viewport_matrix_inv = (Matrix4f) matrix.invert();
+    }
+
+    public void setViewport2(Matrix4f[] m) {
+        viewport_matrix.load(m[0]);
+        viewport_translation.load(m[1]);
+        viewport_rotation.load(m[2]);
+        viewport_matrix_inv = (Matrix4f) m[0].invert();
+    }
+
+    public Matrix4f[] getViewport2() {
+        return new Matrix4f[]{viewport_matrix, viewport_translation, viewport_rotation};
     }
 
     public ArrayList<Primitive> getPrimitives() {
