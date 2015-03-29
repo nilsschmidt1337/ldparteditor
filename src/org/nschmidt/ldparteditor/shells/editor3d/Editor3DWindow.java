@@ -54,6 +54,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
@@ -4365,6 +4366,12 @@ public class Editor3DWindow extends Editor3DDesign {
         }
         // All "history threads" needs to know that the main window was closed
         alive.set(false);
+
+        // FIXME Traverse the sash forms to store the 3D configuration
+        Control c = Editor3DDesign.getSashForm().getChildren()[1];
+        if (c != null && (c instanceof SashForm || c instanceof CompositeContainer)) {
+
+        }
 
         Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
         winState.setLeftSashWeights(((SashForm) Editor3DDesign.getSashForm().getChildren()[0]).getWeights());
