@@ -49,6 +49,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
@@ -66,6 +67,7 @@ import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
+import org.nschmidt.ldparteditor.workbench.Editor3DWindowState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 import swing2swt.layout.BorderLayout;
@@ -339,6 +341,7 @@ class Editor3DDesign extends ApplicationWindow {
      */
     @Override
     protected Control createContents(Composite parent) {
+        final Editor3DWindowState windowState = WorkbenchManager.getEditor3DWindowState();
         setStatus(I18n.EDITOR3D_ReadyStatus);
         Composite container = new Composite(parent, SWT.NONE);
         container.setLayout(new BorderLayout(0, 0));
@@ -1818,6 +1821,12 @@ class Editor3DDesign extends ApplicationWindow {
 
                     CompositePrimitive cmp_Primitives = new CompositePrimitive(cmp_Container4);
                     this.cmp_Primitives[0] = cmp_Primitives;
+
+                    Matrix4f[] primitiveViewport = windowState.getPrimitiveViewport();
+                    if (primitiveViewport != null) {
+                        cmp_Primitives.setViewport2(primitiveViewport);
+                    }
+
                     cmp_Primitives.setLayout(new FillLayout());
 
                     GridData gd = new GridData();
@@ -1858,14 +1867,19 @@ class Editor3DDesign extends ApplicationWindow {
                         this.btn_resetPrimitiveSearch[0] = btn_ResetSearch;
                         btn_ResetSearch.setText("Reset"); //$NON-NLS-1$ I18N Needs translation!
                     }
+
+                    int[] weights = windowState.getLeftSashWeights();
+                    if (weights != null) {
+                        sashForm2.setWeights(weights);
+                    }
                 }
 
                 @SuppressWarnings("unused")
                 // Uncomment when changing the gui
                 // Composite cmp_Container = new Composite(sashForm, SWT.NONE);
                 CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
-                int width = WorkbenchManager.getEditor3DWindowState().getWindowState().getSizeAndPosition().width;
-                int sashSize = WorkbenchManager.getEditor3DWindowState().getLeftSashWidth(); // size = 170
+                int width = windowState.getWindowState().getSizeAndPosition().width;
+                int sashSize = windowState.getLeftSashWidth(); // size = 170
                 sashForm.setWeights(new int[] { sashSize, width - sashSize });
             }
         }
