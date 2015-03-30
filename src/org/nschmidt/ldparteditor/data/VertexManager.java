@@ -62,6 +62,7 @@ import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
+import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
@@ -2318,7 +2319,7 @@ public class VertexManager {
             }
             selectedVertices.clear();
             selectedVertices.addAll(nearVertices);
-        } else if (Editor3DWindow.getWindow().isMovingAdjacentData() && Editor3DWindow.getWindow().getWorkingType() == WorkingMode.VERTICES) {
+        } else if (Editor3DWindow.getWindow().isMovingAdjacentData() && Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) {
             {
                 HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
                 for (Vertex vertex : selectedVertices) {
@@ -2729,7 +2730,7 @@ public class VertexManager {
                     selectedVertices.remove(vertex);
                 } else {
                     selectedVertices.add(vertex);
-                    if (Editor3DWindow.getWindow().getWorkingType() == WorkingMode.VERTICES) lastSelectedVertex = vertex;
+                    if (Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) lastSelectedVertex = vertex;
                 }
             }
         }

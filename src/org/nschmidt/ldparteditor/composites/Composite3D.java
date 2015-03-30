@@ -153,7 +153,7 @@ public class Composite3D extends ScalableComposite {
     /** {@code true} if the grid is shown. */
     private boolean gridShown;
     /** The perspective value */
-    private int viewport_perspective;
+    private Perspective viewport_perspective;
     /** The rotation matrix of the view */
     private Matrix4f viewport_rotation = new Matrix4f();
     /** The transformation matrix of the view */
@@ -253,7 +253,7 @@ public class Composite3D extends ScalableComposite {
         this.setRenderMode(0);
         this.setLockableDatFileReference(Project.getFileToEdit());
         this.setDatFileLockedOnDisplay(false);
-        this.viewport_perspective = 1;
+        this.viewport_perspective = Perspective.FRONT;
         this.zoom = 0.00001f;
         Matrix4f.setIdentity(this.viewport_rotation);
         Matrix4f.setIdentity(this.viewport_translation);
@@ -1219,7 +1219,7 @@ public class Composite3D extends ScalableComposite {
     /**
      * @return the {@linkplain Perspective}-Index of the viewport
      */
-    public int getPerspectiveIndex() {
+    public Perspective getPerspectiveIndex() {
         return viewport_perspective;
     }
 
@@ -1229,7 +1229,7 @@ public class Composite3D extends ScalableComposite {
      * @param perspective
      *            the {@linkplain Perspective}-Index
      */
-    public void setPerspectiveIndex(int perspective) {
+    public void setPerspectiveIndex(Perspective perspective) {
         this.viewport_perspective = perspective;
     }
 

@@ -22,30 +22,5 @@ package org.nschmidt.ldparteditor.enums;
  *
  */
 public enum WorkingMode {
-    INSTANCE;
-
-    /** The VERTICES mode */
-    public static final int VERTICES = 0;
-    /** The SUBFILES mode */
-    public static final int SUBFILES = 1;
-    /** The LINES mode */
-    public static final int LINES = 2;
-    /** The FACES mode */
-    public static final int FACES = 3;
-
-    /** The SELECT mode */
-    public static final int SELECT = 4;
-    /** The MOVE mode */
-    public static final int MOVE = 5;
-    /** The ROTATE mode */
-    public static final int ROTATE = 6;
-    /** The SCALE mode */
-    public static final int SCALE = 7;
-    /** The COMBINED mode */
-    public static final int COMBINED = 8;
-
-    /** The LOCAL mode */
-    public static final int LOCAL = 9;
-    /** The GLOBAL mode */
-    public static final int GLOBAL = 10;
+    SELECT, MOVE, ROTATE, SCALE, COMBINED
 }

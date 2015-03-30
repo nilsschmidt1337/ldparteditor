@@ -20,19 +20,6 @@ package org.nschmidt.ldparteditor.enums;
  *
  * @author nils
  */
-public class Perspective {
-    /** The front perspective. */
-    public final static int FRONT = 1;
-    /** The back perspective. */
-    public final static int BACK = 2;
-    /** The left perspective. */
-    public final static int LEFT = 3;
-    /** The right perspective. */
-    public final static int RIGHT = 4;
-    /** The top perspective. */
-    public final static int TOP = 5;
-    /** The bottom perspective. */
-    public final static int BOTTOM = 6;
-    /** The two-third perspective. */
-    public final static int TWO_THIRDS = 7;
+public enum Perspective {
+    FRONT, BACK, LEFT, RIGHT, TOP, BOTTOM, TWO_THIRDS;
 }

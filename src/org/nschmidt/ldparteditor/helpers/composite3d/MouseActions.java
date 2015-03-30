@@ -44,6 +44,7 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
@@ -255,7 +256,7 @@ public class MouseActions {
                 } else {
                     temp = c3d.getManipulator().transform(old_mouse_position, event.x, event.y, c3d);
                 }
-                if (Editor3DWindow.getWindow().getTransformationMode() == WorkingMode.GLOBAL) {
+                if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
                     c3d.getManipulator().getPosition().set(temp);
                     c3d.getManipulator().setAccuratePosition(new BigDecimal(temp.x / 1000f), new BigDecimal(temp.y / 1000f), new BigDecimal(temp.z / 1000f));
                 }
@@ -1139,19 +1140,19 @@ public class MouseActions {
                 M.setAccurateYaxis(aYx, aYy, aYz);
             } else if (window.getWorkingAction() == WorkingMode.SELECT) {
                 switch (window.getWorkingType()) {
-                case WorkingMode.VERTICES:
+                case VERTICES:
                     vm.selectVertices(c3d, false);
                     vm.reSelectSubFiles();
                     break;
-                case WorkingMode.LINES:
+                case LINES:
                     vm.selectLines(c3d);
                     vm.reSelectSubFiles();
                     break;
-                case WorkingMode.FACES:
+                case FACES:
                     vm.selectFaces(c3d, event);
                     vm.reSelectSubFiles();
                     break;
-                case WorkingMode.SUBFILES:
+                case SUBFILES:
                     vm.selectSubfiles(c3d, event, true);
                     break;
                 }

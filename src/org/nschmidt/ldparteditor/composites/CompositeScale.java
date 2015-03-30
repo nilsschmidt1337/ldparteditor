@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.enums.Font;
-import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -130,26 +129,28 @@ public class CompositeScale extends ScalableComposite {
                     float tenstep = step * 10;
                     // MARK Ruler Perspective Horizontal
                     switch (c3d.getPerspectiveIndex()) {
-                    case Perspective.FRONT:
+                    case FRONT:
                         offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
                         break;
-                    case Perspective.BACK:
+                    case BACK:
                         offset = (int) -(c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
                         factor = -1;
                         break;
-                    case Perspective.LEFT:
+                    case LEFT:
                         offset = (int) -(c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
                         factor = -1;
                         break;
-                    case Perspective.RIGHT:
+                    case RIGHT:
                         offset = (int) (c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
                         break;
-                    case Perspective.TOP:
+                    case TOP:
                         offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
                         break;
-                    case Perspective.BOTTOM:
+                    case BOTTOM:
                         offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
                         break;
+                    case TWO_THIRDS:
+                        throw new AssertionError();
                     }
 
                     float scale_factor = factor / (View.PIXEL_PER_LDU * c3d.getZoom() * 1000f) * View.unit_factor.floatValue();
@@ -289,25 +290,27 @@ public class CompositeScale extends ScalableComposite {
                     float tenstep = step * 10;
                     // MARK Ruler Perspective Vertical
                     switch (c3d.getPerspectiveIndex()) {
-                    case Perspective.FRONT:
+                    case FRONT:
                         offset = (int) (c3d.getTranslation().m31 * c3d.getZoom() * View.PIXEL_PER_LDU);
                         break;
-                    case Perspective.BACK:
+                    case BACK:
                         offset = (int) (c3d.getTranslation().m31 * c3d.getZoom() * View.PIXEL_PER_LDU);
                         break;
-                    case Perspective.LEFT:
+                    case LEFT:
                         offset = (int) (c3d.getTranslation().m31 * c3d.getZoom() * View.PIXEL_PER_LDU);
                         break;
-                    case Perspective.RIGHT:
+                    case RIGHT:
                         offset = (int) (c3d.getTranslation().m31 * c3d.getZoom() * View.PIXEL_PER_LDU);
                         break;
-                    case Perspective.TOP:
+                    case TOP:
                         offset = (int) -(c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU);
                         factor = -1;
                         break;
-                    case Perspective.BOTTOM:
+                    case BOTTOM:
                         offset = (int) (c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU);
                         break;
+                    case TWO_THIRDS:
+                        throw new AssertionError();
                     }
 
                     float scale_factor = factor / (View.PIXEL_PER_LDU * c3d.getZoom() * 1000f) * View.unit_factor.floatValue();

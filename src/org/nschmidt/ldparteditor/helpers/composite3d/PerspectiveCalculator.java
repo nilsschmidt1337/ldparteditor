@@ -74,14 +74,14 @@ public class PerspectiveCalculator {
      * @param perspective
      *            the perspective value from {@linkplain Perspective}.
      */
-    public void setPerspective(int perspective) {
+    public void setPerspective(Perspective perspective) {
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
         c3d.getTranslation().load(id);
         c3d.setClassicPerspective(true);
         c3d.setPerspectiveIndex(perspective);
         switch (perspective) {
-        case Perspective.FRONT: {
+        case FRONT: {
             NLogger.debug(PerspectiveCalculator.class, "[Front view]"); //$NON-NLS-1$
             float[] rpf = new float[] { -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1 };
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
@@ -90,11 +90,11 @@ public class PerspectiveCalculator {
             c3d.getRotation().load(fb);
         }
         break;
-        case Perspective.BACK:
+        case BACK:
             NLogger.debug(PerspectiveCalculator.class, "[Back view]"); //$NON-NLS-1$
             c3d.getRotation().load(id);
             break;
-        case Perspective.LEFT: {
+        case LEFT: {
             NLogger.debug(PerspectiveCalculator.class, "[Left view]"); //$NON-NLS-1$
             float[] rpf = new float[] { 0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 };
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
@@ -103,7 +103,7 @@ public class PerspectiveCalculator {
             c3d.getRotation().load(fb);
         }
         break;
-        case Perspective.RIGHT: {
+        case RIGHT: {
             NLogger.debug(PerspectiveCalculator.class, "[Right view]"); //$NON-NLS-1$
             float[] rpf = new float[] { 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1 };
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
@@ -112,7 +112,7 @@ public class PerspectiveCalculator {
             c3d.getRotation().load(fb);
         }
         break;
-        case Perspective.TOP: {
+        case TOP: {
             NLogger.debug(PerspectiveCalculator.class, "[Top view]"); //$NON-NLS-1$
             float[] rpf = new float[] { -1, 0, 0, 0, 0, 0, -1, 0, 0, -1, 0, 0, 0, 0, 0, 1 };
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
@@ -121,7 +121,7 @@ public class PerspectiveCalculator {
             c3d.getRotation().load(fb);
         }
         break;
-        case Perspective.BOTTOM: {
+        case BOTTOM: {
             NLogger.debug(PerspectiveCalculator.class, "[Bottom view]"); //$NON-NLS-1$
             float[] rpf = new float[] { -1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1 };
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
@@ -130,7 +130,7 @@ public class PerspectiveCalculator {
             c3d.getRotation().load(fb);
         }
         break;
-        case Perspective.TWO_THIRDS: {
+        case TWO_THIRDS: {
             NLogger.debug(PerspectiveCalculator.class, "[Two thirds view]"); //$NON-NLS-1$
             float[] rpf = new float[] { 0.7071f, -0.5f, -0.5f, 0, 0, 0.7071f, -0.7071f, 0, -0.7071f, -0.5f, -0.5f, 0, 0, 0, 0, 1 };
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
@@ -436,19 +436,19 @@ public class PerspectiveCalculator {
      *            the perspective value from {@linkplain Perspective}.
      * @return (e.g. Perspective.FRONT returns Front)
      */
-    public String getPerspectiveString(int perspective) {
+    public String getPerspectiveString(Perspective perspective) {
         switch (perspective) {
-        case Perspective.FRONT:
+        case FRONT:
             return I18n.PERSPECTIVE_FRONT;
-        case Perspective.BACK:
+        case BACK:
             return I18n.PERSPECTIVE_BACK;
-        case Perspective.LEFT:
+        case LEFT:
             return I18n.PERSPECTIVE_LEFT;
-        case Perspective.RIGHT:
+        case RIGHT:
             return I18n.PERSPECTIVE_RIGHT;
-        case Perspective.TOP:
+        case TOP:
             return I18n.PERSPECTIVE_TOP;
-        case Perspective.BOTTOM:
+        case BOTTOM:
             return I18n.PERSPECTIVE_BOTTOM;
         default:
             return ""; //$NON-NLS-1$
