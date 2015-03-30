@@ -35,7 +35,15 @@ public class Composite3DState implements Serializable {
     private boolean showOrigin = false;
     private boolean showGrid = false;
     private float gridScale = 1f;
-
+    private boolean lights = false;
+    private boolean meshlines = false;
+    private boolean subfileMeshlines = false;
+    private boolean vertices = false;
+    private boolean hiddenVertices = false;
+    private boolean studLogo = false;
+    private int lineMode = 0;
+    private boolean alwaysBlackLines = false;
+    private boolean anaglyph3d = false;
 
     private boolean sash = false;
     private boolean vertical = false;
@@ -136,6 +144,78 @@ public class Composite3DState implements Serializable {
 
     public void setGridScale(float gridScale) {
         this.gridScale = gridScale;
+    }
+
+    public boolean isLights() {
+        return lights;
+    }
+
+    public void setLights(boolean lights) {
+        this.lights = lights;
+    }
+
+    public boolean isMeshlines() {
+        return meshlines;
+    }
+
+    public void setMeshlines(boolean meshlines) {
+        this.meshlines = meshlines;
+    }
+
+    public boolean isSubfileMeshlines() {
+        return subfileMeshlines;
+    }
+
+    public void setSubfileMeshlines(boolean subfileMeshlines) {
+        this.subfileMeshlines = subfileMeshlines;
+    }
+
+    public boolean isVertices() {
+        return vertices;
+    }
+
+    public void setVertices(boolean vertices) {
+        this.vertices = vertices;
+    }
+
+    public boolean isHiddenVertices() {
+        return hiddenVertices;
+    }
+
+    public void setHiddenVertices(boolean hiddenVertices) {
+        this.hiddenVertices = hiddenVertices;
+    }
+
+    public boolean isStudLogo() {
+        return studLogo;
+    }
+
+    public void setStudLogo(boolean studLogo) {
+        this.studLogo = studLogo;
+    }
+
+    public int getLineMode() {
+        return lineMode;
+    }
+
+    public void setLineMode(int lineMode) {
+        this.lineMode = lineMode;
+    }
+
+    public boolean isAlwaysBlackLines() {
+        return alwaysBlackLines;
+    }
+
+    public void setAlwaysBlackLines(boolean alwaysBlackLines) {
+        this.alwaysBlackLines = alwaysBlackLines;
+    }
+
+    public boolean isAnaglyph3d() {
+        return anaglyph3d;
+    }
+
+    public void setAnaglyph3d(boolean anaglyph3d) {
+        this.anaglyph3d = anaglyph3d;
     }
 
 }

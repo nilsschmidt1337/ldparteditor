@@ -51,11 +51,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.util.vector.Matrix4f;
+import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
+import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -1901,11 +1903,8 @@ class Editor3DDesign extends ApplicationWindow {
                     final int configSize = threeDconfig.size();
                     if (configSize < 2) {
                         if (configSize == 1) {
-                            // FIXME Load the configuration of one 3D window
                             Composite3DState state = threeDconfig.get(0);
-                            @SuppressWarnings("unused")
-                            CompositeContainer cmp_Container = new CompositeContainer(sashForm, state.hasScales());
-                            throw new UnsupportedOperationException();
+                            createComposite3D(sashForm, state);
                         } else {
                             @SuppressWarnings("unused")
                             CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
@@ -1939,6 +1938,62 @@ class Editor3DDesign extends ApplicationWindow {
             lbl_Status.setText(""); //$NON-NLS-1$
         }
         return container;
+    }
+
+    private void createComposite3D(SashForm sashForm, Composite3DState state) {
+        // Load the configuration of one 3D window
+        final CompositeContainer cmp_Container = new CompositeContainer(sashForm, state.hasScales());
+        final Composite3D c3d = cmp_Container.getComposite3D();
+        final int renderMode = state.getRenderMode();
+        final int lineMode = state.getLineMode();
+        final Perspective perspective = state.getPerspective();
+        c3d.getPerspectiveCalculator().setPerspective(perspective);
+        c3d.setOriginShown(state.isShowOrigin());
+        c3d.setShowingLabels(state.isShowLabel());
+        c3d.setGridShown(state.isShowGrid());
+        c3d.setLightOn(state.isLights());
+        c3d.setMeshLines(state.isMeshlines());
+        c3d.setSubMeshLines(state.isSubfileMeshlines());
+        c3d.setShowingVertices(state.isVertices());
+        c3d.setShowingHiddenVertices(state.isHiddenVertices());
+        c3d.setShowingLogo(state.isStudLogo());
+        c3d.setLineMode(lineMode);
+        c3d.setBlackEdges(state.isAlwaysBlackLines());
+        c3d.setShowingAxis(state.isShowAxis());
+        c3d.setAnaglyph3d(state.isAnaglyph3d());
+        c3d.setRenderMode(renderMode);
+
+        c3d.getMntmFront().setEnabled(perspective == Perspective.FRONT);
+        c3d.getMntmBack().setEnabled(perspective == Perspective.BACK);
+        c3d.getMntmLeft().setEnabled(perspective == Perspective.LEFT);
+        c3d.getMntmRight().setEnabled(perspective == Perspective.RIGHT);
+        c3d.getMntmTop().setEnabled(perspective == Perspective.TOP);
+        c3d.getMntmBottom().setEnabled(perspective == Perspective.BOTTOM);
+        c3d.getMntmTwoThirds().setEnabled(perspective == Perspective.TWO_THIRDS);
+        c3d.getMntmRealPreview().setEnabled(lineMode == 0);
+        c3d.getMntmShowAll().setEnabled(lineMode == 1);
+        c3d.getMntmStdLines().setEnabled(lineMode == 2);
+        c3d.getMntmHideAll().setEnabled(lineMode == 3);
+        c3d.getMntmAlwaysBlack().setEnabled(state.isAlwaysBlackLines());
+        c3d.getMntmShowOrigin().setEnabled(state.isShowOrigin());
+        c3d.getMntmLabel().setEnabled(state.isShowLabel());
+        c3d.getMntmShowGrid().setEnabled(state.isShowGrid());
+        c3d.getMntmShowScale().setEnabled(state.hasScales());
+        c3d.getMntmSwitchLights().setEnabled(state.isLights());
+        c3d.getMntmMeshLines().setEnabled(state.isMeshlines());
+        c3d.getMntmSubMeshLines().setEnabled(state.isSubfileMeshlines());
+        c3d.getMntmVertices().setEnabled(state.isVertices());
+        c3d.getMntmHiddenVertices().setEnabled(state.isHiddenVertices());
+        c3d.getMntmStudLogo().setEnabled(state.isStudLogo());
+        c3d.getMntmAxis().setEnabled(state.isShowAxis());
+        c3d.getMntmAnaglyph().setEnabled(state.isAnaglyph3d());
+        c3d.getMntmNoBFC().setEnabled(renderMode == 0);
+        c3d.getMntmRandomColours().setEnabled(renderMode == 1);
+        c3d.getMntmBFCFrontBack().setEnabled(renderMode == 2);
+        c3d.getMntmBFCBack().setEnabled(renderMode == 3);
+        c3d.getMntmBFCReal().setEnabled(renderMode == 4);
+        c3d.getMntmBFCTextured().setEnabled(renderMode == 5);
+        c3d.getMntmCondlineMode().setEnabled(renderMode == 6);
     }
 
     private void addColorButton(ToolItem toolItem_Colours, GColour gColour, final int index) {
