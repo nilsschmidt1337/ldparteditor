@@ -61,11 +61,13 @@ public enum ReferenceParser {
     ArrayList<DatFile>[1] = Zu entfernende Ziel-Subparts
     ArrayList<DatFile>[2] = Zu entfernende Ziel-Primitives
     ArrayList<DatFile>[3] = Zu entfernende Ziel-Primitives48
+    ArrayList<DatFile>[4] = Zu entfernende Ziel-Primitives8
 
-    ArrayList<DatFile>[4] = Zu erstellende Ziel-Parts (mit Abhängigkeit zu df)
-    ArrayList<DatFile>[5] = Zu erstellende Ziel-Subparts (mit Abhängigkeit zu df)
-    ArrayList<DatFile>[6] = Zu erstellende Ziel-Primitives (mit Abhängigkeit zu df)
-    ArrayList<DatFile>[7] = Zu erstellende Ziel-Primitives48 (mit Abhängigkeit zu df)
+    ArrayList<DatFile>[5] = Zu erstellende Ziel-Parts (mit Abhängigkeit zu df)
+    ArrayList<DatFile>[6] = Zu erstellende Ziel-Subparts (mit Abhängigkeit zu df)
+    ArrayList<DatFile>[7] = Zu erstellende Ziel-Primitives (mit Abhängigkeit zu df)
+    ArrayList<DatFile>[8] = Zu erstellende Ziel-Primitives48 (mit Abhängigkeit zu df)
+    ArrayList<DatFile>[9] = Zu erstellende Ziel-Primitives8 (mit Abhängigkeit zu df)
 
 
     Wenn Dateien zu entfernen sind, soll zusätzlich gefragt werden, ob der Löschvorgang gewünscht ist.
@@ -74,7 +76,7 @@ public enum ReferenceParser {
      */
     public static ArrayList<ArrayList<DatFile>> checkForReferences(DatFile df, References refMode, TreeItem origin, TreeItem target, TreeItem secondSource) {
         ArrayList<ArrayList<DatFile>> result = new ArrayList<ArrayList<DatFile>>();
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 10; i++) {
             result.add(new ArrayList<DatFile>());
         }
 
@@ -105,13 +107,15 @@ public enum ReferenceParser {
 
                     // We can simply copy it to the unofficial lib if "locs" is empty, because it is not located in another
                     if (type == DatType.PART) {
-                        result.get(4).add(getUnofficialDatFileFromPath(ref));
-                    } else if (type == DatType.SUBPART) {
                         result.get(5).add(getUnofficialDatFileFromPath(ref));
-                    } else if (type == DatType.PRIMITIVE) {
+                    } else if (type == DatType.SUBPART) {
                         result.get(6).add(getUnofficialDatFileFromPath(ref));
-                    } else if (type == DatType.PRIMITIVE48) {
+                    } else if (type == DatType.PRIMITIVE) {
                         result.get(7).add(getUnofficialDatFileFromPath(ref));
+                    } else if (type == DatType.PRIMITIVE48) {
+                        result.get(8).add(getUnofficialDatFileFromPath(ref));
+                    } else if (type == DatType.PRIMITIVE8) {
+                        result.get(9).add(getUnofficialDatFileFromPath(ref));
                     }
 
                     if (!locs.isEmpty()) {
@@ -134,6 +138,9 @@ public enum ReferenceParser {
                             } else if (parent.equals(win.getUnofficialPrimitives48())) {
                                 result.get(3).add((DatFile) item.getData());
                                 attemptingOverwrite = true;
+                            } else if (parent.equals(win.getUnofficialPrimitives8())) {
+                                result.get(4).add((DatFile) item.getData());
+                                attemptingOverwrite = true;
                             }
                             if (attemptingOverwrite && !skipOverwriteQuestion) {
                                 OverwriteDialog od = new OverwriteDialog(ref.getShortName());
@@ -143,7 +150,7 @@ public enum ReferenceParser {
                                 } else if (result2 == IDialogConstants.SKIP_ID) {
                                     skipOverwriteQuestion = true;
                                 } else if (result2  == IDialogConstants.NO_ID) {
-                                    for(int i = 0; i < 8; i++) {
+                                    for(int i = 0; i < 10; i++) {
                                         result.get(i).remove(item.getData());
                                     }
                                 }
@@ -195,13 +202,15 @@ public enum ReferenceParser {
 
                             // We can simply copy it to the unofficial lib if "locs" is empty, because it is not located in another
                             if (type == DatType.PART) {
-                                result.get(4).add(getUnofficialDatFileFromPath(df2));
-                            } else if (type == DatType.SUBPART) {
                                 result.get(5).add(getUnofficialDatFileFromPath(df2));
-                            } else if (type == DatType.PRIMITIVE) {
+                            } else if (type == DatType.SUBPART) {
                                 result.get(6).add(getUnofficialDatFileFromPath(df2));
-                            } else if (type == DatType.PRIMITIVE48) {
+                            } else if (type == DatType.PRIMITIVE) {
                                 result.get(7).add(getUnofficialDatFileFromPath(df2));
+                            } else if (type == DatType.PRIMITIVE48) {
+                                result.get(8).add(getUnofficialDatFileFromPath(df2));
+                            } else if (type == DatType.PRIMITIVE8) {
+                                result.get(9).add(getUnofficialDatFileFromPath(df2));
                             }
 
                             if (!locs.isEmpty()) {
@@ -224,6 +233,9 @@ public enum ReferenceParser {
                                     } else if (parent2.equals(win.getUnofficialPrimitives48())) {
                                         result.get(3).add((DatFile) item.getData());
                                         attemptingOverwrite = true;
+                                    } else if (parent2.equals(win.getUnofficialPrimitives8())) {
+                                        result.get(4).add((DatFile) item.getData());
+                                        attemptingOverwrite = true;
                                     }
                                     if (attemptingOverwrite && !skipOverwriteQuestion) {
                                         OverwriteDialog od = new OverwriteDialog(df2.getShortName());
@@ -233,7 +245,7 @@ public enum ReferenceParser {
                                         } else if (result2 == IDialogConstants.SKIP_ID) {
                                             skipOverwriteQuestion = true;
                                         } else if (result2  == IDialogConstants.NO_ID) {
-                                            for(int i = 0; i < 8; i++) {
+                                            for(int i = 0; i < 10; i++) {
                                                 result.get(i).remove(item.getData());
                                             }
                                         }
@@ -264,13 +276,15 @@ public enum ReferenceParser {
 
                 // We can simply copy it to the unofficial lib if "locs" is empty, because it is not located in another
                 if (type == DatType.PART) {
-                    result.get(4).add(getUnofficialDatFileFromPath(ref));
-                } else if (type == DatType.SUBPART) {
                     result.get(5).add(getUnofficialDatFileFromPath(ref));
-                } else if (type == DatType.PRIMITIVE) {
+                } else if (type == DatType.SUBPART) {
                     result.get(6).add(getUnofficialDatFileFromPath(ref));
-                } else if (type == DatType.PRIMITIVE48) {
+                } else if (type == DatType.PRIMITIVE) {
                     result.get(7).add(getUnofficialDatFileFromPath(ref));
+                } else if (type == DatType.PRIMITIVE48) {
+                    result.get(8).add(getUnofficialDatFileFromPath(ref));
+                } else if (type == DatType.PRIMITIVE8) {
+                    result.get(9).add(getUnofficialDatFileFromPath(ref));
                 }
 
                 if (!locs.isEmpty()) {
@@ -293,6 +307,9 @@ public enum ReferenceParser {
                         } else if (parent.equals(win.getUnofficialPrimitives48())) {
                             result.get(3).add((DatFile) item.getData());
                             attemptingOverwrite = true;
+                        } else if (parent.equals(win.getUnofficialPrimitives8())) {
+                            result.get(4).add((DatFile) item.getData());
+                            attemptingOverwrite = true;
                         }
                         if (attemptingOverwrite && !skipOverwriteQuestion) {
                             OverwriteDialog od = new OverwriteDialog(ref.getShortName());
@@ -303,7 +320,7 @@ public enum ReferenceParser {
                             } else if (result2 == IDialogConstants.SKIP_ID) {
                                 skipOverwriteQuestion = true;
                             } else if (result2  == IDialogConstants.NO_ID) {
-                                for(int i = 0; i < 8; i++) {
+                                for(int i = 0; i < 10; i++) {
                                     result.get(i).remove(item.getData());
                                 }
                             }
@@ -408,6 +425,8 @@ public enum ReferenceParser {
                     case 3:
                         if (shortFilename.startsWith("48")) { //$NON-NLS-1$
                             dt = DatType.PRIMITIVE48;
+                        } else if (shortFilename.startsWith("8")) { //$NON-NLS-1$
+                            dt = DatType.PRIMITIVE8;
                         } else {
                             dt = DatType.PRIMITIVE;
                         }
@@ -446,6 +465,8 @@ public enum ReferenceParser {
                         case 3:
                             if (shortFilename.startsWith("48")) { //$NON-NLS-1$
                                 dt = DatType.PRIMITIVE48;
+                            } else if (shortFilename.startsWith("8")) { //$NON-NLS-1$
+                                dt = DatType.PRIMITIVE8;
                             } else {
                                 dt = DatType.PRIMITIVE;
                             }

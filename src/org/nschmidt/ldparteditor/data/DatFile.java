@@ -1107,6 +1107,8 @@ public final class DatFile {
         }
         if (type.equals(DatType.SUBPART)) {
             shortFilename = "S" + File.separator + shortFilename; //$NON-NLS-1$
+        } else if (type.equals(DatType.PRIMITIVE8)) {
+            shortFilename = "8" + File.separator + shortFilename; //$NON-NLS-1$
         } else if (type.equals(DatType.PRIMITIVE48)) {
             shortFilename = "48" + File.separator + shortFilename; //$NON-NLS-1$
         }
