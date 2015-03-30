@@ -75,6 +75,9 @@ public enum Project {
         Editor3DWindow.getWindow().getProjectPrimitives48().getItems().clear();
         Editor3DWindow.getWindow().getProjectPrimitives48().setData(new ArrayList<DatFile>());
 
+        Editor3DWindow.getWindow().getProjectPrimitives8().getItems().clear();
+        Editor3DWindow.getWindow().getProjectPrimitives8().setData(new ArrayList<DatFile>());
+
         Editor3DWindow.getWindow().getShell().update();
         Editor3DWindow.getWindow().getProjectParts().getParent().build();
         Editor3DWindow.getWindow().getProjectParts().getParent().redraw();
@@ -97,6 +100,7 @@ public enum Project {
             projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectSubparts().getData());
             projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives().getData());
             projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives48().getData());
+            projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives8().getData());
             for (DatFile df : projectFiles) {
                 boolean isUnsaved = Project.getUnsavedFiles().contains(df);
                 boolean isParsed = Project.getParsedFiles().contains(df);
@@ -214,6 +218,8 @@ public enum Project {
             primitivesFolder.mkdir();
             File primitives48Folder = new File(getProjectPath() + File.separator + "P" + File.separator + "48"); //$NON-NLS-1$ //$NON-NLS-2$
             primitives48Folder.mkdir();
+            File primitives8Folder = new File(getProjectPath() + File.separator + "P" + File.separator + "8"); //$NON-NLS-1$ //$NON-NLS-2$
+            primitives8Folder.mkdir();
             File texturesFolder = new File(getProjectPath() + File.separator + "TEXTURES"); //$NON-NLS-1$
             texturesFolder.mkdir();
         } catch (SecurityException consumed) {
