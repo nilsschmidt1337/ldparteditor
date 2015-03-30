@@ -1894,6 +1894,7 @@ class Editor3DDesign extends ApplicationWindow {
                 if (threeDconfig == null) {
                     @SuppressWarnings("unused")
                     CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
+                    // cmp_Container.getComposite3D().getMntmBottom().setSelection(true);
                     // cmp_Container.getComposite3D().getPerspectiveCalculator().setPerspective(Perspective.BACK);
                     // cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
                 } else {

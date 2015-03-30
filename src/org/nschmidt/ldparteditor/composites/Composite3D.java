@@ -218,6 +218,38 @@ public class Composite3D extends ScalableComposite {
     /** The grid size */
     private float grid_scale = 1f;
 
+    final MenuItem[] mntmNoBFC = new MenuItem[1];
+    final MenuItem[] mntmRandomColours = new MenuItem[1];
+    final MenuItem[] mntmBFCFrontBack = new MenuItem[1];
+    final MenuItem[] mntmBFCBack = new MenuItem[1];
+    final MenuItem[] mntmBFCReal = new MenuItem[1];
+    final MenuItem[] mntmBFCTextured = new MenuItem[1];
+    final MenuItem[] mntmCondlineMode = new MenuItem[1];
+    final MenuItem[] mntmAnaglyph = new MenuItem[1];
+    final MenuItem[] mntmAxis = new MenuItem[1];
+    final MenuItem[] mntmAlwaysBlack = new MenuItem[1];
+    final MenuItem[] mntmHideAll = new MenuItem[1];
+    final MenuItem[] mntmStdLines = new MenuItem[1];
+    final MenuItem[] mntmShowAll = new MenuItem[1];
+    final MenuItem[] mntmStudLogo = new MenuItem[1];
+    final MenuItem[] mntmHiddenVertices = new MenuItem[1];
+    final MenuItem[] mntmVertices = new MenuItem[1];
+    final MenuItem[] mntmSubMeshLines = new MenuItem[1];
+    final MenuItem[] mntmMeshLines = new MenuItem[1];
+    final MenuItem[] mntmSwitchLights = new MenuItem[1];
+    final MenuItem[] mntmShowOrigin = new MenuItem[1];
+    final MenuItem[] mntmTwoThirds = new MenuItem[1];
+    final MenuItem[] mntmBottom = new MenuItem[1];
+    final MenuItem[] mntmTop = new MenuItem[1];
+    final MenuItem[] mntmRight = new MenuItem[1];
+    final MenuItem[] mntmLeft = new MenuItem[1];
+    final MenuItem[] mntmBack = new MenuItem[1];
+    final MenuItem[] mntmFront = new MenuItem[1];
+    final MenuItem[] mntmShowGrid = new MenuItem[1];
+    final MenuItem[] mntmShowScale = new MenuItem[1];
+    final MenuItem[] mntmLabel = new MenuItem[1];
+    final MenuItem[] mntmRealPreview = new MenuItem[1];
+
     /**
      * Creates a new 3D Composite in a {@link CompositeContainer}
      *
@@ -543,6 +575,7 @@ public class Composite3D extends ScalableComposite {
             mntmViewAngles.setMenu(mnu_viewAngles);
 
             final MenuItem mntmFront = new MenuItem(mnu_viewAngles, SWT.CHECK);
+            this.mntmFront[0] = mntmFront;
             mntmFront.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -556,6 +589,7 @@ public class Composite3D extends ScalableComposite {
             mntmFront.setSelection(true);
 
             final MenuItem mntmBack = new MenuItem(mnu_viewAngles, SWT.CHECK);
+            this.mntmBack[0] = mntmBack;
             mntmBack.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -568,6 +602,7 @@ public class Composite3D extends ScalableComposite {
             mntmBack.setText(I18n.PERSPECTIVE_BACK);
 
             final MenuItem mntmLeft = new MenuItem(mnu_viewAngles, SWT.CHECK);
+            this.mntmLeft[0] = mntmLeft;
             mntmLeft.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -580,6 +615,7 @@ public class Composite3D extends ScalableComposite {
             mntmLeft.setText(I18n.PERSPECTIVE_LEFT);
 
             final MenuItem mntmRight = new MenuItem(mnu_viewAngles, SWT.CHECK);
+            this.mntmRight[0] = mntmRight;
             mntmRight.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -592,6 +628,7 @@ public class Composite3D extends ScalableComposite {
             mntmRight.setText(I18n.PERSPECTIVE_RIGHT);
 
             final MenuItem mntmTop = new MenuItem(mnu_viewAngles, SWT.CHECK);
+            this.mntmTop[0] = mntmTop;
             mntmTop.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -604,6 +641,7 @@ public class Composite3D extends ScalableComposite {
             mntmTop.setText(I18n.PERSPECTIVE_TOP);
 
             final MenuItem mntmBottom = new MenuItem(mnu_viewAngles, SWT.CHECK);
+            this.mntmBottom[0] = mntmBottom;
             mntmBottom.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -619,6 +657,7 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmViewSeparator = new MenuItem(mnu_viewAngles, SWT.SEPARATOR);
 
             final MenuItem mntmTwoThirds = new MenuItem(mnu_viewAngles, SWT.NONE);
+            this.mntmTwoThirds[0] = mntmTwoThirds;
             mntmTwoThirds.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -636,6 +675,7 @@ public class Composite3D extends ScalableComposite {
             mntmViewActions.setMenu(mnu_viewActions);
 
             final MenuItem mntmShowOrigin = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmShowOrigin[0] = mntmShowOrigin;
             mntmShowOrigin.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -646,6 +686,7 @@ public class Composite3D extends ScalableComposite {
             mntmShowOrigin.setSelection(true);
 
             final MenuItem mntmSwitchLights = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmSwitchLights[0] = mntmSwitchLights;
             mntmSwitchLights.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -656,6 +697,7 @@ public class Composite3D extends ScalableComposite {
             mntmSwitchLights.setSelection(true);
 
             final MenuItem mntmMeshLines = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmMeshLines[0] = mntmMeshLines;
             mntmMeshLines.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -666,6 +708,7 @@ public class Composite3D extends ScalableComposite {
             mntmMeshLines.setSelection(true);
 
             final MenuItem mntmSubMeshLines = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmSubMeshLines[0] = mntmSubMeshLines;
             mntmSubMeshLines.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -676,6 +719,7 @@ public class Composite3D extends ScalableComposite {
             mntmSubMeshLines.setSelection(false);
 
             final MenuItem mntmVertices = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmVertices[0] = mntmVertices;
             mntmVertices.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -686,6 +730,7 @@ public class Composite3D extends ScalableComposite {
             mntmVertices.setSelection(true);
 
             final MenuItem mntmHiddenVertices = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmHiddenVertices[0] = mntmHiddenVertices;
             mntmHiddenVertices.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -696,6 +741,7 @@ public class Composite3D extends ScalableComposite {
             mntmHiddenVertices.setSelection(false);
 
             final MenuItem mntmStudLogo = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmStudLogo[0] = mntmStudLogo;
             mntmStudLogo.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -709,6 +755,7 @@ public class Composite3D extends ScalableComposite {
             mntmLDrawLines.setText("LDraw-Lines"); //$NON-NLS-1$ I18N Needs translation
 
             final MenuItem mntmShowGrid = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmShowGrid[0] = mntmShowGrid;
             mntmShowGrid.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -719,6 +766,7 @@ public class Composite3D extends ScalableComposite {
             mntmShowGrid.setSelection(true);
 
             final MenuItem mntmShowScale = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmShowScale[0] = mntmShowScale;
             mntmShowScale.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -728,6 +776,7 @@ public class Composite3D extends ScalableComposite {
             mntmShowScale.setText(I18n.EDITOR3D_Ruler);
 
             final MenuItem mntmAxis = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmAxis[0] = mntmAxis;
             mntmAxis.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -738,6 +787,7 @@ public class Composite3D extends ScalableComposite {
             mntmAxis.setSelection(true);
 
             final MenuItem mntmLabel = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmLabel[0] = mntmLabel;
             mntmLabel.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -748,6 +798,7 @@ public class Composite3D extends ScalableComposite {
             mntmLabel.setSelection(true);
 
             final MenuItem mntmAnaglyph = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmAnaglyph[0] = mntmAnaglyph;
             mntmAnaglyph.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -809,6 +860,7 @@ public class Composite3D extends ScalableComposite {
                 mntmLDrawLines.setMenu(mnu_lineMode);
 
                 final MenuItem mntmRealPreview = new MenuItem(mnu_lineMode, SWT.CHECK);
+                this.mntmRealPreview[0] = mntmRealPreview;
                 mntmRealPreview.addSelectionListener(new SelectionAdapter() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
@@ -822,6 +874,7 @@ public class Composite3D extends ScalableComposite {
                 mntmRealPreview.setSelection(true);
 
                 final MenuItem mntmShowAll = new MenuItem(mnu_lineMode, SWT.CHECK);
+                this.mntmShowAll[0] = mntmShowAll;
                 mntmShowAll.addSelectionListener(new SelectionAdapter() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
@@ -834,6 +887,7 @@ public class Composite3D extends ScalableComposite {
                 mntmShowAll.setText("Show All"); //$NON-NLS-1$ I18N Needs translation
 
                 final MenuItem mntmStdLines = new MenuItem(mnu_lineMode, SWT.CHECK);
+                this.mntmStdLines[0] = mntmStdLines;
                 mntmStdLines.addSelectionListener(new SelectionAdapter() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
@@ -846,6 +900,7 @@ public class Composite3D extends ScalableComposite {
                 mntmStdLines.setText("Show Lines [Type 2]"); //$NON-NLS-1$ I18N Needs translation
 
                 final MenuItem mntmHideAll = new MenuItem(mnu_lineMode, SWT.CHECK);
+                this.mntmHideAll[0] = mntmHideAll;
                 mntmHideAll.addSelectionListener(new SelectionAdapter() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
@@ -869,6 +924,7 @@ public class Composite3D extends ScalableComposite {
                     }
                 });
                 mntmAlwaysBlack[0].setText("Use Always Black Lines"); //$NON-NLS-1$ I18N Needs translation
+                this.mntmAlwaysBlack[0] = mntmAlwaysBlack[0];
             }
 
         }
@@ -879,6 +935,7 @@ public class Composite3D extends ScalableComposite {
             mntmRenderModes.setMenu(mnu_renderMode);
 
             final MenuItem mntmNoBFC = new MenuItem(mnu_renderMode, SWT.CHECK);
+            this.mntmNoBFC[0] = mntmNoBFC;
             mntmNoBFC.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -892,6 +949,7 @@ public class Composite3D extends ScalableComposite {
             mntmNoBFC.setSelection(true);
 
             final MenuItem mntmRandomColours = new MenuItem(mnu_renderMode, SWT.CHECK);
+            this.mntmRandomColours[0] = mntmRandomColours;
             mntmRandomColours.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -904,6 +962,7 @@ public class Composite3D extends ScalableComposite {
             mntmRandomColours.setText("Random Colours"); //$NON-NLS-1$ I18N Needs translation
 
             final MenuItem mntmBFCFrontBack = new MenuItem(mnu_renderMode, SWT.CHECK);
+            this.mntmBFCFrontBack[0] = mntmBFCFrontBack;
             mntmBFCFrontBack.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -916,6 +975,7 @@ public class Composite3D extends ScalableComposite {
             mntmBFCFrontBack.setText("Green Frontfaces / Red Backfaces"); //$NON-NLS-1$ I18N Needs translation
 
             final MenuItem mntmBFCBack = new MenuItem(mnu_renderMode, SWT.CHECK);
+            this.mntmBFCBack[0] = mntmBFCBack;
             mntmBFCBack.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -928,6 +988,7 @@ public class Composite3D extends ScalableComposite {
             mntmBFCBack.setText("Red Backfaces"); //$NON-NLS-1$ I18N Needs translation
 
             final MenuItem mntmBFCReal = new MenuItem(mnu_renderMode, SWT.CHECK);
+            this.mntmBFCReal[0] = mntmBFCReal;
             mntmBFCReal.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -940,6 +1001,7 @@ public class Composite3D extends ScalableComposite {
             mntmBFCReal.setText("Real Backface Culling"); //$NON-NLS-1$ I18N Needs translation
 
             final MenuItem mntmBFCTextured = new MenuItem(mnu_renderMode, SWT.CHECK);
+            this.mntmBFCTextured[0] = mntmBFCTextured;
             mntmBFCTextured.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -956,6 +1018,7 @@ public class Composite3D extends ScalableComposite {
             }
 
             final MenuItem mntmCondlineMode = new MenuItem(mnu_renderMode, SWT.CHECK);
+            this.mntmCondlineMode[0] = mntmCondlineMode;
             mntmCondlineMode.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -1631,5 +1694,129 @@ public class Composite3D extends ScalableComposite {
 
     public void setShowingLabels(boolean showingLabels) {
         this.showingLabels = showingLabels;
+    }
+
+    public MenuItem getMntmNoBFC() {
+        return mntmNoBFC[0];
+    }
+
+    public MenuItem getMntmRandomColours() {
+        return mntmRandomColours[0];
+    }
+
+    public MenuItem getMntmBFCFrontBack() {
+        return mntmBFCFrontBack[0];
+    }
+
+    public MenuItem getMntmBFCBack() {
+        return mntmBFCBack[0];
+    }
+
+    public MenuItem getMntmBFCReal() {
+        return mntmBFCReal[0];
+    }
+
+    public MenuItem getMntmBFCTextured() {
+        return mntmBFCTextured[0];
+    }
+
+    public MenuItem getMntmCondlineMode() {
+        return mntmCondlineMode[0];
+    }
+
+    public MenuItem getMntmAnaglyph() {
+        return mntmAnaglyph[0];
+    }
+
+    public MenuItem getMntmAxis() {
+        return mntmAxis[0];
+    }
+
+    public MenuItem getMntmAlwaysBlack() {
+        return mntmAlwaysBlack[0];
+    }
+
+    public MenuItem getMntmHideAll() {
+        return mntmHideAll[0];
+    }
+
+    public MenuItem getMntmStdLines() {
+        return mntmStdLines[0];
+    }
+
+    public MenuItem getMntmShowAll() {
+        return mntmShowAll[0];
+    }
+
+    public MenuItem getMntmStudLogo() {
+        return mntmStudLogo[0];
+    }
+
+    public MenuItem getMntmHiddenVertices() {
+        return mntmHiddenVertices[0];
+    }
+
+    public MenuItem getMntmVertices() {
+        return mntmVertices[0];
+    }
+
+    public MenuItem getMntmSubMeshLines() {
+        return mntmSubMeshLines[0];
+    }
+
+    public MenuItem getMntmMeshLines() {
+        return mntmMeshLines[0];
+    }
+
+    public MenuItem getMntmSwitchLights() {
+        return mntmSwitchLights[0];
+    }
+
+    public MenuItem getMntmShowOrigin() {
+        return mntmShowOrigin[0];
+    }
+
+    public MenuItem getMntmTwoThirds() {
+        return mntmTwoThirds[0];
+    }
+
+    public MenuItem getMntmBottom() {
+        return mntmBottom[0];
+    }
+
+    public MenuItem getMntmTop() {
+        return mntmTop[0];
+    }
+
+    public MenuItem getMntmRight() {
+        return mntmRight[0];
+    }
+
+    public MenuItem getMntmLeft() {
+        return mntmLeft[0];
+    }
+
+    public MenuItem getMntmBack() {
+        return mntmBack[0];
+    }
+
+    public MenuItem getMntmFront() {
+        return mntmFront[0];
+    }
+
+    public MenuItem getMntmShowGrid() {
+        return mntmShowGrid[0];
+    }
+
+    public MenuItem getMntmShowScale() {
+        return mntmShowScale[0];
+    }
+
+    public MenuItem getMntmLabel() {
+        return mntmLabel[0];
+    }
+
+    public MenuItem getMntmRealPreview() {
+        return mntmRealPreview[0];
     }
 }
