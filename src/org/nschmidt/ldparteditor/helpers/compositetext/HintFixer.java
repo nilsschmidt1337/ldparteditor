@@ -44,9 +44,11 @@ final class HintFixer {
             if (h.hasTITLE())
                 l = h.getLineTITLE();
             if (type == DatType.SUBPART)
-                text = QuickFixer.insertAfterLine(l, "0 Name: s\\" + new File(datFile.getNewName()).getName() + "<br>", text); //$NON-NLS-1$ //$NON-NLS-2$
+                text = QuickFixer.insertAfterLine(l, "0 Name: s\\\\" + new File(datFile.getNewName()).getName() + "<br>", text); //$NON-NLS-1$ //$NON-NLS-2$
+            else if (type == DatType.PRIMITIVE8)
+                text = QuickFixer.insertAfterLine(l, "0 Name: 8\\\\" + new File(datFile.getNewName()).getName() + "<br>", text); //$NON-NLS-1$ //$NON-NLS-2$
             else if (type == DatType.PRIMITIVE48)
-                text = QuickFixer.insertAfterLine(l, "0 Name: 48\\" + new File(datFile.getNewName()).getName() + "<br>", text); //$NON-NLS-1$ //$NON-NLS-2$
+                text = QuickFixer.insertAfterLine(l, "0 Name: 48\\\\" + new File(datFile.getNewName()).getName() + "<br>", text); //$NON-NLS-1$ //$NON-NLS-2$
             else
                 text = QuickFixer.insertAfterLine(l, "0 Name: " + new File(datFile.getNewName()).getName() + "<br>", text); //$NON-NLS-1$ //$NON-NLS-2$
             break;
@@ -76,6 +78,8 @@ final class HintFixer {
                 text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_Subpart<br>", text); //$NON-NLS-1$ I18N Needs translation!
             else if (type == DatType.PRIMITIVE)
                 text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_Primitive<br>", text); //$NON-NLS-1$ I18N Needs translation!
+            else if (type == DatType.PRIMITIVE8)
+                text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_8_Primitive<br>", text); //$NON-NLS-1$ I18N Needs translation!
             else if (type == DatType.PRIMITIVE48)
                 text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_48_Primitive<br>", text); //$NON-NLS-1$ I18N Needs translation!
             else

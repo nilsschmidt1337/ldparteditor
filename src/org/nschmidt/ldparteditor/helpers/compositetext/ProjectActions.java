@@ -153,6 +153,12 @@ public enum ProjectActions {
                     unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals(""); //$NON-NLS-1$
                 }
             }
+            {
+                ArrayList<TreeItem> ta = win.getProjectPrimitives8().getItems();
+                for (TreeItem ti : ta) {
+                    unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals(""); //$NON-NLS-1$
+                }
+            }
         }
 
         if (createOnlyDefault || unsavedProjectFiles && Project.isDefaultProject()) {
