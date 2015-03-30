@@ -4410,7 +4410,7 @@ public class Editor3DWindow extends Editor3DDesign {
         } else {
             // There is no 3D window open at the moment
         }
-        // FIXME winState.setThreeDwindowConfig(c3dStates);
+        winState.setThreeDwindowConfig(c3dStates);
 
         winState.setLeftSashWeights(((SashForm) Editor3DDesign.getSashForm().getChildren()[0]).getWeights());
         winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights());
@@ -4424,7 +4424,6 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     private void saveComposite3DStates(Control c, ArrayList<Composite3DState> c3dStates, String parentPath, String path) {
-        // FIXME Auto-generated method stub
         Composite3DState st = new Composite3DState();
         if (c instanceof CompositeContainer) {
             NLogger.debug(getClass(), path + "C"); //$NON-NLS-1$
@@ -4448,6 +4447,7 @@ public class Editor3DWindow extends Editor3DDesign {
             st.setLineMode(c3d.getLineMode());
             st.setAlwaysBlackLines(c3d.isBlackEdges());
             st.setAnaglyph3d(c3d.isAnaglyph3d());
+            st.setGridScale(c3d.getGrid_scale());
         } else if (c instanceof SashForm) {
             NLogger.debug(getClass(), path);
             SashForm s = (SashForm) c;
