@@ -4397,13 +4397,12 @@ public class Editor3DWindow extends Editor3DDesign {
 
         final Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
 
-        // FIXME Traverse the sash forms to store the 3D configuration
+        // Traverse the sash forms to store the 3D configuration
         final ArrayList<Composite3DState> c3dStates = new ArrayList<Composite3DState>();
         Control c = Editor3DDesign.getSashForm().getChildren()[1];
         if (c != null) {
-            if (c instanceof CompositeContainer) {
-                // Simple case, since its only one 3D view open
-            } else if (c instanceof SashForm) {
+            if (c instanceof SashForm|| c instanceof CompositeContainer) {
+                // c instanceof CompositeContainer: Simple case, since its only one 3D view open -> No recursion!
                 saveComposite3DStates(c, c3dStates, "", "|"); //$NON-NLS-1$ //$NON-NLS-2$
             } else {
                 // There is no 3D window open at the moment
@@ -4440,6 +4439,15 @@ public class Editor3DWindow extends Editor3DDesign {
             st.setShowAxis(c3d.isShowingAxis());
             st.setShowGrid(c3d.isGridShown());
             st.setShowOrigin(c3d.isOriginShown());
+            st.setLights(c3d.isLightOn());
+            st.setMeshlines(c3d.isMeshLines());
+            st.setSubfileMeshlines(c3d.isSubMeshLines());
+            st.setVertices(c3d.isShowingVertices());
+            st.setHiddenVertices(c3d.isShowingHiddenVertices());
+            st.setStudLogo(c3d.isShowingLogo());
+            st.setLineMode(c3d.getLineMode());
+            st.setAlwaysBlackLines(c3d.isBlackEdges());
+            st.setAnaglyph3d(c3d.isAnaglyph3d());
         } else if (c instanceof SashForm) {
             NLogger.debug(getClass(), path);
             SashForm s = (SashForm) c;
