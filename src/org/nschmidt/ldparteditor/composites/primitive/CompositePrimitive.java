@@ -589,6 +589,8 @@ public class CompositePrimitive extends Composite {
             searchPaths.add(ldrawPath + File.separator + "P" + File.separator); //$NON-NLS-1$
             searchPaths.add(ldrawPath + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
             searchPaths.add(ldrawPath + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+            searchPaths.add(ldrawPath + File.separator + "p" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+            searchPaths.add(ldrawPath + File.separator + "P" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
         }
         String unofficial = WorkbenchManager.getUserSettingState().getUnofficialFolderPath();
         if (unofficial != null) {
@@ -596,6 +598,8 @@ public class CompositePrimitive extends Composite {
             searchPaths.add(unofficial + File.separator + "P" + File.separator); //$NON-NLS-1$
             searchPaths.add(unofficial + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
             searchPaths.add(unofficial + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+            searchPaths.add(unofficial + File.separator + "p" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+            searchPaths.add(unofficial + File.separator + "P" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
         }
         String project = Project.getProjectPath();
         if (project != null) {
@@ -603,6 +607,8 @@ public class CompositePrimitive extends Composite {
             searchPaths.add(project + File.separator + "P" + File.separator); //$NON-NLS-1$
             searchPaths.add(project + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
             searchPaths.add(project + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+            searchPaths.add(project + File.separator + "p" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+            searchPaths.add(project + File.separator + "P" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         HashMap<String, Primitive> titleMap = new HashMap<String, Primitive>();
@@ -611,6 +617,7 @@ public class CompositePrimitive extends Composite {
         HashMap<String, Primitive> categoryMap = new HashMap<String, Primitive>();
         HashMap<String, Primitive> leavesMap = new HashMap<String, Primitive>();
         HashMap<String, ArrayList<PrimitiveRule>> leavesRulesMap = new HashMap<String, ArrayList<PrimitiveRule>>();
+        final String lowResSuffix = File.separator + "8" + File.separator; //$NON-NLS-1$
         final String hiResSuffix = File.separator + "48" + File.separator; //$NON-NLS-1$
         try {
 
@@ -891,6 +898,8 @@ public class CompositePrimitive extends Composite {
                                 primitiveMap.put(path, newPrimitive);
                                 if (folderPath.endsWith(hiResSuffix)) {
                                     newPrimitive.setName("48\\" + fileName); //$NON-NLS-1$
+                                } else if (folderPath.endsWith(lowResSuffix)) {
+                                    newPrimitive.setName("8\\" + fileName); //$NON-NLS-1$
                                 } else {
                                     newPrimitive.setName(fileName);
                                 }
