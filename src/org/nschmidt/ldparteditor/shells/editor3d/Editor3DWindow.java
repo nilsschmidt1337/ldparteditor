@@ -4436,6 +4436,10 @@ public class Editor3DWindow extends Editor3DDesign {
             st.setWeights(null);
             st.setPerspective(c3d.isClassicPerspective() ? c3d.getPerspectiveIndex() : Perspective.TWO_THIRDS);
             st.setRenderMode(c3d.getRenderMode());
+            st.setShowLabel(c3d.isShowingLabels());
+            st.setShowAxis(c3d.isShowingAxis());
+            st.setShowGrid(c3d.isGridShown());
+            st.setShowOrigin(c3d.isOriginShown());
         } else if (c instanceof SashForm) {
             NLogger.debug(getClass(), path);
             SashForm s = (SashForm) c;
