@@ -4367,13 +4367,24 @@ public class Editor3DWindow extends Editor3DDesign {
         // All "history threads" needs to know that the main window was closed
         alive.set(false);
 
+        final Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
+
         // FIXME Traverse the sash forms to store the 3D configuration
         Control c = Editor3DDesign.getSashForm().getChildren()[1];
-        if (c != null && (c instanceof SashForm || c instanceof CompositeContainer)) {
+        if (c != null) {
+            if (c instanceof CompositeContainer) {
+                // Simple case, since its only one 3D view open
+            } else if (c instanceof SashForm) {
 
+            } else {
+                // There is no 3D window open at the moment
+                // TODO winState.setThreeDwindowConfig(new ArrayList<Composite3DState>());
+            }
+        } else {
+            // There is no 3D window open at the moment
+            // TODO winState.setThreeDwindowConfig(new ArrayList<Composite3DState>());
         }
 
-        Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
         winState.setLeftSashWeights(((SashForm) Editor3DDesign.getSashForm().getChildren()[0]).getWeights());
         winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights()[0]);
         winState.setPrimitiveZoom(cmp_Primitives[0].getZoom());

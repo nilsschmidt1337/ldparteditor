@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.shells.editor3d;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
@@ -67,6 +68,7 @@ import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
+import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.Editor3DWindowState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -1874,10 +1876,26 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                 }
 
-                @SuppressWarnings("unused")
-                // Uncomment when changing the gui
-                // Composite cmp_Container = new Composite(sashForm, SWT.NONE);
-                CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
+                ArrayList<Composite3DState> threeDconfig = windowState.getThreeDwindowConfig();
+                if (threeDconfig == null) {
+                    @SuppressWarnings("unused")
+                    CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
+                } else {
+                    final int configSize = threeDconfig.size();
+                    if (configSize < 2) {
+                        if (configSize == 1) {
+                            // FIXME Load the configuration of one 3D window
+                            throw new UnsupportedOperationException();
+                        } else {
+                            @SuppressWarnings("unused")
+                            CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
+                        }
+                    } else {
+                        // FIXME Load the configuration of multiple 3D windows
+                        throw new UnsupportedOperationException();
+                    }
+                }
+
                 int width = windowState.getWindowState().getSizeAndPosition().width;
                 int sashSize = windowState.getLeftSashWidth(); // size = 170
                 sashForm.setWeights(new int[] { sashSize, width - sashSize });
