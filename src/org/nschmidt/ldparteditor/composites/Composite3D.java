@@ -1074,12 +1074,12 @@ public class Composite3D extends ScalableComposite {
         target.setTransfer(types);
         target.addDropListener(new DropTargetAdapter() {
 
-        	@Override
-        	public void dragEnter(DropTargetEvent event) {
-        		  final org.nschmidt.ldparteditor.data.Primitive p = Editor3DWindow.getWindow().getCompositePrimitive().getSelectedPrimitive();
-                  if (p == null || p.isCategory()) return;
-                  setDraggedPrimitive(p);
-        	}
+            @Override
+            public void dragEnter(DropTargetEvent event) {
+                final org.nschmidt.ldparteditor.data.Primitive p = Editor3DWindow.getWindow().getCompositePrimitive().getSelectedPrimitive();
+                if (p == null || p.isCategory()) return;
+                setDraggedPrimitive(p);
+            }
 
             @Override
             public void dragOver(DropTargetEvent event) {
@@ -1091,13 +1091,13 @@ public class Composite3D extends ScalableComposite {
                 ev.y = event.y - toDisplay(1, 1).y;
                 ev.stateMask = ev.stateMask;
                 Display.getCurrent().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						try {
-						mouse.mouseMove(ev);
-						} catch (SWTException swtEx) { /* consumed */ }
-					}
-				});
+                    @Override
+                    public void run() {
+                        try {
+                            mouse.mouseMove(ev);
+                        } catch (SWTException swtEx) { /* consumed */ }
+                    }
+                });
             }
 
             @Override
@@ -1110,8 +1110,8 @@ public class Composite3D extends ScalableComposite {
                 NLogger.debug(getClass(), "Primitive dropped at: " + new Point(event.x, event.y).toString()); //$NON-NLS-1$
                 final Editor3DWindow window = Editor3DWindow.getWindow();
                 final org.nschmidt.ldparteditor.data.Primitive p = window.getCompositePrimitive().getSelectedPrimitive();
-                if (p == null || p.isCategory()) return;
                 final DatFile datfile = getLockableDatFileReference();
+                if (p == null || p.isCategory() || datfile.isReadOnly()) return;
                 NLogger.debug(getClass(), "Primitive: " + p); //$NON-NLS-1$
                 String ref = p.getName();
                 final BigDecimal[] cur = getCursorSnapped3Dprecise();
