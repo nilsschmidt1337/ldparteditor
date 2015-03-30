@@ -17,6 +17,8 @@ package org.nschmidt.ldparteditor.workbench;
 
 import java.io.Serializable;
 
+import org.nschmidt.ldparteditor.enums.Perspective;
+
 /**
  * @author nils
  *
@@ -24,5 +26,45 @@ import java.io.Serializable;
 public class Composite3DState implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    private boolean scales = false;
+    private int perspective = Perspective.TWO_THIRDS;
+
+
+    private boolean sash = false;
+    private boolean vertical = false;
+
+    public Composite3DState() {
+
+    }
+
+    public Composite3DState(boolean vertical) {
+        this.sash = true;
+        this.vertical = vertical;
+    }
+
+    public boolean hasScales() {
+        return scales;
+    }
+
+    public void setScales(boolean scales) {
+        this.scales = scales;
+    }
+
+    public boolean isSash() {
+        return sash;
+    }
+
+    public void setSash(boolean sash) {
+        this.sash = sash;
+    }
+
+    public boolean isVertical() {
+        return vertical;
+    }
+
+    public void setVertical(boolean vertical) {
+        this.vertical = vertical;
+    }
 
 }

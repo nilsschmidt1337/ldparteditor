@@ -30,7 +30,7 @@ public class Editor3DWindowState implements Serializable {
     private static final long serialVersionUID = 1L;
     /** The state of the application window */
     private WindowState windowState;
-    private int leftSashWidth = 170;
+    private int[] leftSashWidth = null;
     private float primitiveZoom = (float) Math.pow(10.0d, 3f / 10 - 3);
     private float primitiveZoomExponent = 3f;
     private int[] leftSashWeights = null;
@@ -52,11 +52,11 @@ public class Editor3DWindowState implements Serializable {
         this.windowState = windowState;
     }
 
-    public int getLeftSashWidth() {
+    public int[] getLeftSashWidth() {
         return leftSashWidth;
     }
 
-    public void setLeftSashWidth(int leftSashWidth) {
+    public void setLeftSashWidth(int[] leftSashWidth) {
         this.leftSashWidth = leftSashWidth;
     }
 
