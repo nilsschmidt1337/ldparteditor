@@ -20,5 +20,5 @@ package org.nschmidt.ldparteditor.data;
  *
  */
 public enum DatType {
-    PART, SUBPART, PRIMITIVE, PRIMITIVE48
+    PART, SUBPART, PRIMITIVE, PRIMITIVE48, PRIMITIVE8
 }

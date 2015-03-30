@@ -113,6 +113,18 @@ public class LibraryManager {
     }
 
     /**
+     * Reads all paths to project library low-res primirives case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static void readProjectLowResPrimitives(TreeItem treeItem) {
+        readLibraryFolder(Project.getProjectPath(), "P", "8", treeItem, true, false, DatType.PRIMITIVE8); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
      * Reads all paths to unofficial library parts case insensitive <br>
      * <b>NOTE:</b> The base path is still case sensitive!
      *
@@ -161,6 +173,18 @@ public class LibraryManager {
     }
 
     /**
+     * Reads all paths to unofficial library low-res primirives case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static void readUnofficialLowResPrimitives(TreeItem treeItem) {
+        readLibraryFolder(WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), "P", "8", treeItem, true, false, DatType.PRIMITIVE8); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
      * Reads all paths to official library parts case insensitive <br>
      * <b>NOTE:</b> The base path is still case sensitive!
      *
@@ -206,6 +230,18 @@ public class LibraryManager {
      */
     public static void readOfficialHiResPrimitives(TreeItem treeItem) {
         readLibraryFolder(WorkbenchManager.getUserSettingState().getLdrawFolderPath(), "P", "48", treeItem, true, true, DatType.PRIMITIVE48); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Reads all paths to official library low-res primitives case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static void readOfficialLowResPrimitives(TreeItem treeItem) {
+        readLibraryFolder(WorkbenchManager.getUserSettingState().getLdrawFolderPath(), "P", "8", treeItem, true, true, DatType.PRIMITIVE8); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -270,6 +306,18 @@ public class LibraryManager {
     }
 
     /**
+     * Synchronises all paths to unofficial library low-res primirives case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static int[] syncUnofficialLowResPrimitives(TreeItem treeItem) {
+        return syncLibraryFolder(WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), "P", "8", treeItem, true, false, DatType.PRIMITIVE8); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
      * Synchronises all paths to official library parts case insensitive <br>
      * <b>NOTE:</b> The base path is still case sensitive!
      *
@@ -315,6 +363,18 @@ public class LibraryManager {
      */
     public static int[] syncOfficialHiResPrimitives(TreeItem treeItem) {
         return syncLibraryFolder(WorkbenchManager.getUserSettingState().getLdrawFolderPath(), "P", "48", treeItem, true, true, DatType.PRIMITIVE48); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Synchronises all paths to official library low-res primitives case insensitive <br>
+     * <b>NOTE:</b> The base path is still case sensitive!
+     *
+     * @param treeItem
+     *            the target {@code TreeItem} from the Parts Tree of the 3D
+     *            editor.
+     */
+    public static int[] syncOfficialLowResPrimitives(TreeItem treeItem) {
+        return syncLibraryFolder(WorkbenchManager.getUserSettingState().getLdrawFolderPath(), "P", "8", treeItem, true, true, DatType.PRIMITIVE8); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -577,6 +637,11 @@ public class LibraryManager {
                                             type = DatType.PRIMITIVE48;
                                             break;
                                         }
+                                        i2 = typ.indexOf("8_Primitive"); //$NON-NLS-1$
+                                        if (i2 > -1 && i1 < i2) {
+                                            type = DatType.PRIMITIVE8;
+                                            break;
+                                        }
                                         i2 = typ.indexOf("Primitive"); //$NON-NLS-1$
                                         if (i2 > -1 && i1 < i2) {
                                             type = DatType.PRIMITIVE;
@@ -615,7 +680,7 @@ public class LibraryManager {
                         } catch (LDParsingException e1) {
                         }
                     }
-                    DatFileName name = new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48);
+                    DatFileName name = new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48  || type == DatType.PRIMITIVE8);
                     datFiles.add(name);
                     parentMap.put(name, treeItem);
                     typeMap.put(name, type);
@@ -763,11 +828,13 @@ public class LibraryManager {
             final TreeItem treeItem_ProjectSubparts = treeItem.getItems().get(1);
             final TreeItem treeItem_ProjectPrimitives = treeItem.getItems().get(2);
             final TreeItem treeItem_ProjectPrimitives48 = treeItem.getItems().get(3);
+            final TreeItem treeItem_ProjectPrimitives8 = treeItem.getItems().get(4);
 
             readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
             readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
             readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
             readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives8, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
 
             readAllUnsavedFiles(parentMap, typeMap, dfnMap, locked, existingMap);
 
@@ -777,6 +844,7 @@ public class LibraryManager {
             treeItem_ProjectSubparts.getItems().clear();
             treeItem_ProjectPrimitives.getItems().clear();
             treeItem_ProjectPrimitives48.getItems().clear();
+            treeItem_ProjectPrimitives8.getItems().clear();
 
             // 3. Scan for new files
 
@@ -786,6 +854,7 @@ public class LibraryManager {
             readActualDataFromFolder(result, basePath, DatType.SUBPART, "PARTS", "S", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectSubparts, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
             readActualDataFromFolder(result, basePath, DatType.PRIMITIVE, "P", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives, true, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
             readActualDataFromFolder(result, basePath, DatType.PRIMITIVE48, "P", "48", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives48, true, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE8, "P", "8", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives8, true, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
 
         } else {
 
@@ -923,7 +992,7 @@ public class LibraryManager {
                 parentMap.put(old, Editor3DWindow.getWindow().getUnsaved());
                 typeMap.put(old, df.getType());
                 existingMap.put(old, df);
-                dfnMap.put(old, new DatFileName(old, new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
+                dfnMap.put(old, new DatFileName(old, new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48 || df.getType() == DatType.PRIMITIVE8));
             }
         }
     }
@@ -957,7 +1026,7 @@ public class LibraryManager {
                 parentMap.put(old, treeItem);
                 typeMap.put(old, df.getType());
                 existingMap.put(old, df);
-                dfnMap.put(old, new DatFileName(old, new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48));
+                dfnMap.put(old, new DatFileName(old, new File(df.getNewName()).getName(), df.getDescription(), df.getType() == DatType.PRIMITIVE || df.getType() == DatType.PRIMITIVE48 || df.getType() == DatType.PRIMITIVE8));
             } else {
                 if (!new File(old).exists()) {
                     // 2. Check which "saved" files are not on the disk anymore (only for the statistic)
@@ -1079,6 +1148,11 @@ public class LibraryManager {
                                             type = DatType.PRIMITIVE48;
                                             break;
                                         }
+                                        i2 = typ.indexOf("8_Primitive"); //$NON-NLS-1$
+                                        if (i2 > -1 && i1 < i2) {
+                                            type = DatType.PRIMITIVE8;
+                                            break;
+                                        }
                                         i2 = typ.indexOf("Primitive"); //$NON-NLS-1$
                                         if (i2 > -1 && i1 < i2) {
                                             type = DatType.PRIMITIVE;
@@ -1104,6 +1178,9 @@ public class LibraryManager {
                         case PRIMITIVE48:
                             treeItem2 = Editor3DWindow.getWindow().getProjectPrimitives48();
                             break;
+                        case PRIMITIVE8:
+                            treeItem2 = Editor3DWindow.getWindow().getProjectPrimitives8();
+                            break;
                         default:
                             break;
                         }
@@ -1118,7 +1195,7 @@ public class LibraryManager {
                         }
                     }
 
-                    newDfnMap.put(path, new DatFileName(path, f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48));
+                    newDfnMap.put(path, new DatFileName(path, f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48 || type == DatType.PRIMITIVE8));
                     newParentMap.put(path, treeItem2);
                     newTypeMap.put(path, type);
                     readOnly.put(path, isReadOnlyFolder);
