@@ -315,7 +315,11 @@ public enum DatParser {
                             || "0 !LDRAW_ORG Unofficial_Subpart".equals(line) //$NON-NLS-1$
                             || "0 !LDRAW_ORG Unofficial_Primitive".equals(line) //$NON-NLS-1$
                             || "0 !LDRAW_ORG Unofficial_48_Primitive".equals(line) //$NON-NLS-1$
+                            || "0 !LDRAW_ORG Unofficial_8_Primitive".equals(line) //$NON-NLS-1$
                             || "0 !LDRAW_ORG Unofficial_Shortcut".equals(line) //$NON-NLS-1$
+                            || "0 !LDRAW_ORG Unofficial_Shortcut Alias".equals(line) //$NON-NLS-1$
+                            || "0 !LDRAW_ORG Unofficial_Shortcut Physical_Colour".equals(line) //$NON-NLS-1$
+                            || "0 !LDRAW_ORG Unofficial_Shortcut Physical_Colour Alias".equals(line) //$NON-NLS-1$
                             || "0 !LDRAW_ORG Unofficial_Part Alias".equals(line) //$NON-NLS-1$
                             || "0 !LDRAW_ORG Unofficial_Part Physical_Colour".equals(line)) { //$NON-NLS-1$
                         h.setLineTYPE(lineNumber);
@@ -330,8 +334,12 @@ public enum DatParser {
                     if ("0 !LDRAW_ORG Unofficial_Part".equals(line) //$NON-NLS-1$
                             || "0 !LDRAW_ORG Unofficial_Subpart".equals(line) //$NON-NLS-1$
                             || "0 !LDRAW_ORG Unofficial_Primitive".equals(line) //$NON-NLS-1$
+                            || "0 !LDRAW_ORG Unofficial_8_Primitive".equals(line) //$NON-NLS-1$
                             || "0 !LDRAW_ORG Unofficial_48_Primitive".equals(line) //$NON-NLS-1$
                             || "0 !LDRAW_ORG Unofficial_Shortcut".equals(line) //$NON-NLS-1$
+                            || "0 !LDRAW_ORG Unofficial_Shortcut Alias".equals(line) //$NON-NLS-1$
+                            || "0 !LDRAW_ORG Unofficial_Shortcut Physical_Colour".equals(line) //$NON-NLS-1$
+                            || "0 !LDRAW_ORG Unofficial_Shortcut Physical_Colour Alias".equals(line) //$NON-NLS-1$
                             || "0 !LDRAW_ORG Unofficial_Part Alias".equals(line) //$NON-NLS-1$
                             || "0 !LDRAW_ORG Unofficial_Part Physical_Colour".equals(line)) { //$NON-NLS-1$
                         // Its duplicated
