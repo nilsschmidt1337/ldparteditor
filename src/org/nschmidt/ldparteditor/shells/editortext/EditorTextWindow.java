@@ -771,6 +771,13 @@ public class EditorTextWindow extends EditorTextDesign {
         }
         {
             @SuppressWarnings("unchecked")
+            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives8().getData();
+            for (DatFile ti : ta) {
+                unsavedFiles.remove(ti);
+            }
+        }
+        {
+            @SuppressWarnings("unchecked")
             ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getUnofficialParts().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
@@ -799,6 +806,13 @@ public class EditorTextWindow extends EditorTextDesign {
         }
         {
             @SuppressWarnings("unchecked")
+            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getUnofficialPrimitives8().getData();
+            for (DatFile ti : ta) {
+                unsavedFiles.remove(ti);
+            }
+        }
+        {
+            @SuppressWarnings("unchecked")
             ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getOfficialParts().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
@@ -821,6 +835,13 @@ public class EditorTextWindow extends EditorTextDesign {
         {
             @SuppressWarnings("unchecked")
             ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getOfficialPrimitives48().getData();
+            for (DatFile ti : ta) {
+                unsavedFiles.remove(ti);
+            }
+        }
+        {
+            @SuppressWarnings("unchecked")
+            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getOfficialPrimitives8().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
