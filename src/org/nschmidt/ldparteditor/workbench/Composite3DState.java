@@ -29,10 +29,12 @@ public class Composite3DState implements Serializable {
 
     private boolean scales = false;
     private Perspective perspective = Perspective.TWO_THIRDS;
+    private int renderMode = 0;
 
 
     private boolean sash = false;
     private boolean vertical = false;
+    private int[] weights = null;
 
     public Composite3DState() {
 
@@ -73,6 +75,22 @@ public class Composite3DState implements Serializable {
 
     public void setPerspective(Perspective perspective) {
         this.perspective = perspective;
+    }
+
+    public int[] getWeights() {
+        return weights;
+    }
+
+    public void setWeights(int[] weights) {
+        this.weights = weights;
+    }
+
+    public int getRenderMode() {
+        return renderMode;
+    }
+
+    public void setRenderMode(int renderMode) {
+        this.renderMode = renderMode;
     }
 
 }
