@@ -30,6 +30,11 @@ public class Composite3DState implements Serializable {
     private boolean scales = false;
     private Perspective perspective = Perspective.TWO_THIRDS;
     private int renderMode = 0;
+    private boolean showLabel = false;
+    private boolean showAxis = false;
+    private boolean showOrigin = false;
+    private boolean showGrid = false;
+    private float gridScale = 1f;
 
 
     private boolean sash = false;
@@ -91,6 +96,46 @@ public class Composite3DState implements Serializable {
 
     public void setRenderMode(int renderMode) {
         this.renderMode = renderMode;
+    }
+
+    public boolean isShowLabel() {
+        return showLabel;
+    }
+
+    public void setShowLabel(boolean showLabel) {
+        this.showLabel = showLabel;
+    }
+
+    public boolean isShowAxis() {
+        return showAxis;
+    }
+
+    public void setShowAxis(boolean showAxis) {
+        this.showAxis = showAxis;
+    }
+
+    public boolean isShowOrigin() {
+        return showOrigin;
+    }
+
+    public void setShowOrigin(boolean showOrigin) {
+        this.showOrigin = showOrigin;
+    }
+
+    public boolean isShowGrid() {
+        return showGrid;
+    }
+
+    public void setShowGrid(boolean showGrid) {
+        this.showGrid = showGrid;
+    }
+
+    public float getGridScale() {
+        return gridScale;
+    }
+
+    public void setGridScale(float gridScale) {
+        this.gridScale = gridScale;
     }
 
 }
