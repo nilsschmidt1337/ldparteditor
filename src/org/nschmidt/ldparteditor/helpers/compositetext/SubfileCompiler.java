@@ -355,6 +355,9 @@ public enum SubfileCompiler {
                 } else if (name.startsWith("48" + File.separator)) { //$NON-NLS-1$
                     df.setType(DatType.PRIMITIVE48);
                     treeToSearch = Editor3DWindow.getWindow().getProjectPrimitives48();
+                } else if (name.startsWith("8" + File.separator)) { //$NON-NLS-1$
+                    df.setType(DatType.PRIMITIVE8);
+                    treeToSearch = Editor3DWindow.getWindow().getProjectPrimitives8();
                 } else if (writeToPartFolder) {
                     df.setType(DatType.PART);
                     treeToSearch = Editor3DWindow.getWindow().getProjectParts();
