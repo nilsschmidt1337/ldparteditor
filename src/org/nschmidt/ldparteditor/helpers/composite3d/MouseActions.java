@@ -174,6 +174,8 @@ public class MouseActions {
                                 ref = "s\\" + ref; //$NON-NLS-1$
                             if (data.getType().equals(DatType.PRIMITIVE48))
                                 ref = "48\\" + ref; //$NON-NLS-1$
+                            if (data.getType().equals(DatType.PRIMITIVE8))
+                                ref = "8\\" + ref; //$NON-NLS-1$
                             final BigDecimal[] cur = c3d.getCursorSnapped3Dprecise();
 
                             Set<String> alreadyParsed = new HashSet<String>();
