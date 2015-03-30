@@ -71,6 +71,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
+import org.nschmidt.ldparteditor.composites.CompositeScale;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
@@ -109,15 +110,16 @@ import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialogInt;
 import org.nschmidt.ldparteditor.enums.GLPrimitives;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MouseButton;
+import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
+import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
-import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.Version;
@@ -155,6 +157,7 @@ import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
+import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.Editor3DWindowState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -4395,20 +4398,20 @@ public class Editor3DWindow extends Editor3DDesign {
         final Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
 
         // FIXME Traverse the sash forms to store the 3D configuration
+        final ArrayList<Composite3DState> c3dStates = new ArrayList<Composite3DState>();
         Control c = Editor3DDesign.getSashForm().getChildren()[1];
         if (c != null) {
             if (c instanceof CompositeContainer) {
                 // Simple case, since its only one 3D view open
             } else if (c instanceof SashForm) {
-
+                saveComposite3DStates(c, c3dStates, "", "|"); //$NON-NLS-1$ //$NON-NLS-2$
             } else {
                 // There is no 3D window open at the moment
-                // TODO winState.setThreeDwindowConfig(new ArrayList<Composite3DState>());
             }
         } else {
             // There is no 3D window open at the moment
-            // TODO winState.setThreeDwindowConfig(new ArrayList<Composite3DState>());
         }
+        // FIXME winState.setThreeDwindowConfig(c3dStates);
 
         winState.setLeftSashWeights(((SashForm) Editor3DDesign.getSashForm().getChildren()[0]).getWeights());
         winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights());
@@ -4419,6 +4422,34 @@ public class Editor3DWindow extends Editor3DDesign {
         WorkbenchManager.saveWorkbench();
         setReturnCode(CANCEL);
         close();
+    }
+
+    private void saveComposite3DStates(Control c, ArrayList<Composite3DState> c3dStates, String parentPath, String path) {
+        // FIXME Auto-generated method stub
+        Composite3DState st = new Composite3DState();
+        if (c instanceof CompositeContainer) {
+            NLogger.debug(getClass(), path + "C"); //$NON-NLS-1$
+            final Composite3D c3d = ((CompositeContainer) c).getComposite3D();
+            st.setSash(false);
+            st.setScales(c3d.getParent() instanceof CompositeScale);
+            st.setVertical(false);
+            st.setWeights(null);
+            st.setPerspective(c3d.isClassicPerspective() ? c3d.getPerspectiveIndex() : Perspective.TWO_THIRDS);
+            st.setRenderMode(c3d.getRenderMode());
+        } else if (c instanceof SashForm) {
+            NLogger.debug(getClass(), path);
+            SashForm s = (SashForm) c;
+            st.setSash(true);
+            st.setVertical((s.getStyle() & SWT.VERTICAL) != 0);
+            st.setWeights(s.getWeights());
+            Control c1 = s.getChildren()[0];
+            Control c2 = s.getChildren()[1];
+            saveComposite3DStates(c1, c3dStates, path, path + "s1|"); //$NON-NLS-1$
+            saveComposite3DStates(c2, c3dStates, path, path + "s2|"); //$NON-NLS-1$
+        } else {
+            return;
+        }
+        c3dStates.add(st);
     }
 
     /**
