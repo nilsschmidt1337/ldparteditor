@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.workbench;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Matrix4f;
 
@@ -34,6 +35,7 @@ public class Editor3DWindowState implements Serializable {
     private float primitiveZoomExponent = 3f;
     private int[] leftSashWeights = null;
     private Matrix4f[] primitiveViewport = null;
+    private ArrayList<Composite3DState> threeDwindowConfig = null;
 
     /**
      * @return The state of the application window
@@ -88,6 +90,14 @@ public class Editor3DWindowState implements Serializable {
 
     public void setPrimitiveViewport(Matrix4f[] primitiveViewport) {
         this.primitiveViewport = primitiveViewport;
+    }
+
+    public ArrayList<Composite3DState> getThreeDwindowConfig() {
+        return threeDwindowConfig;
+    }
+
+    public void setThreeDwindowConfig(ArrayList<Composite3DState> threeDwindowConfig) {
+        this.threeDwindowConfig = threeDwindowConfig;
     }
 
 }
