@@ -115,7 +115,9 @@ import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
+import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.Version;
@@ -190,12 +192,12 @@ public class Editor3DWindow extends Editor3DDesign {
     private boolean movingAdjacentData = false;
     private boolean noTransparentSelection = false;
     private boolean bfcToggle = false;
-    private int workingType = WorkingMode.VERTICES;
-    private int workingAction = WorkingMode.SELECT;
+    private ObjectMode workingType = ObjectMode.VERTICES;
+    private WorkingMode workingAction = WorkingMode.SELECT;
 
     private GColour lastUsedColour = new GColour(16, .5f, .5f, .5f, 1f);
 
-    private int transformationMode = WorkingMode.LOCAL;
+    private ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
     private int snapSize = 1;
 
@@ -607,14 +609,14 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Local[0]);
-                transformationMode = WorkingMode.LOCAL;
+                transformationMode = ManipulatorScope.LOCAL;
             }
         });
         btn_Global[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Global[0]);
-                transformationMode = WorkingMode.GLOBAL;
+                transformationMode = ManipulatorScope.GLOBAL;
             }
         });
 
@@ -622,21 +624,21 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Vertices[0]);
-                setWorkingType(WorkingMode.VERTICES);
+                setWorkingType(ObjectMode.VERTICES);
             }
         });
         btn_TrisNQuads[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_TrisNQuads[0]);
-                setWorkingType(WorkingMode.FACES);
+                setWorkingType(ObjectMode.FACES);
             }
         });
         btn_Lines[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Lines[0]);
-                setWorkingType(WorkingMode.LINES);
+                setWorkingType(ObjectMode.LINES);
             }
         });
         btn_Subfiles[0].addSelectionListener(new SelectionAdapter() {
@@ -644,7 +646,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
                     clickBtnTest(btn_Subfiles[0]);
-                    setWorkingType(WorkingMode.SUBFILES);
+                    setWorkingType(ObjectMode.SUBFILES);
                 }
             }
         });
@@ -4932,11 +4934,11 @@ public class Editor3DWindow extends Editor3DDesign {
         return treeItem_Unsaved[0];
     }
 
-    public int getWorkingType() {
+    public ObjectMode getWorkingType() {
         return workingType;
     }
 
-    public void setWorkingType(int workingMode) {
+    public void setWorkingType(ObjectMode workingMode) {
         this.workingType = workingMode;
     }
 
@@ -4948,15 +4950,15 @@ public class Editor3DWindow extends Editor3DDesign {
         this.movingAdjacentData = movingAdjacentData;
     }
 
-    public int getWorkingAction() {
+    public WorkingMode getWorkingAction() {
         return workingAction;
     }
 
-    public void setWorkingAction(int workingAction) {
+    public void setWorkingAction(WorkingMode workingAction) {
         this.workingAction = workingAction;
     }
 
-    public int getTransformationMode() {
+    public ManipulatorScope getTransformationMode() {
         return transformationMode;
     }
 

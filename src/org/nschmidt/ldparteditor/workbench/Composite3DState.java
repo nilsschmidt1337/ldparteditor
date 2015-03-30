@@ -28,7 +28,7 @@ public class Composite3DState implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private boolean scales = false;
-    private int perspective = Perspective.TWO_THIRDS;
+    private Perspective perspective = Perspective.TWO_THIRDS;
 
 
     private boolean sash = false;
@@ -65,6 +65,14 @@ public class Composite3DState implements Serializable {
 
     public void setVertical(boolean vertical) {
         this.vertical = vertical;
+    }
+
+    public Perspective getPerspective() {
+        return perspective;
+    }
+
+    public void setPerspective(Perspective perspective) {
+        this.perspective = perspective;
     }
 
 }

@@ -40,9 +40,7 @@ import org.nschmidt.ldparteditor.data.GTexture;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
-import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Arc;
 import org.nschmidt.ldparteditor.helpers.Arrow;
 import org.nschmidt.ldparteditor.helpers.ArrowBlunt;
@@ -373,9 +371,9 @@ public class OpenGLRenderer {
             boolean singleMode = true;
             GColour c;
             switch (window.getWorkingAction()) {
-            case WorkingMode.COMBINED:
+            case COMBINED:
                 singleMode = false;
-            case WorkingMode.MOVE:
+            case MOVE:
                 c = manipulator.checkManipulatorStatus(1f, 0f, 0f, Manipulator.X_TRANSLATE, c3d, zoom);
                 new Arrow(c.getR(), c.getG(), c.getB(), 1f, 140f * manipulator.getXaxis().x, 140f * manipulator.getXaxis().y, 140f * manipulator.getXaxis().z, .015f, .004f).draw(mx, my, mz, zoom);
                 c = manipulator.checkManipulatorStatus(0f, 1f, 0f, Manipulator.Y_TRANSLATE, c3d, zoom);
@@ -384,7 +382,7 @@ public class OpenGLRenderer {
                 new Arrow(c.getR(), c.getG(), c.getB(), 1f, 140f * manipulator.getZaxis().x, 140f * manipulator.getZaxis().y, 140f * manipulator.getZaxis().z, .015f, .004f).draw(mx, my, mz, zoom);
                 if (singleMode)
                     break;
-            case WorkingMode.SCALE:
+            case SCALE:
                 c = manipulator.checkManipulatorStatus(1f, 0f, 0f, Manipulator.X_SCALE, c3d, zoom);
                 new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, 60f * manipulator.getXaxis().x, 60f * manipulator.getXaxis().y, 60f * manipulator.getXaxis().z, .01f).draw(mx, my, mz, zoom);
                 c = manipulator.checkManipulatorStatus(0f, 1f, 0f, Manipulator.Y_SCALE, c3d, zoom);
@@ -393,7 +391,7 @@ public class OpenGLRenderer {
                 new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, 60f * manipulator.getZaxis().x, 60f * manipulator.getZaxis().y, 60f * manipulator.getZaxis().z, .01f).draw(mx, my, mz, zoom);
                 if (singleMode)
                     break;
-            case WorkingMode.ROTATE:
+            case ROTATE:
                 c = manipulator.checkManipulatorStatus(1f, 0f, 0f, Manipulator.X_ROTATE, c3d, zoom);
                 new Arc(c.getR(), c.getG(), c.getB(), 1f, manipulator.getXaxis().x, manipulator.getXaxis().y, manipulator.getXaxis().z, 100f, 0.002f).draw(mx, my, mz, zoom);
 
@@ -736,36 +734,37 @@ public class OpenGLRenderer {
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 if (c3d.isShowingLabels() && c3d.isClassicPerspective()) {
                     switch (c3d.getPerspectiveIndex()) {
-                    case Perspective.FRONT:
+                    case FRONT:
                         for (PGData3 tri : View.FRONT) {
                             tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
-                    case Perspective.BACK:
+                    case BACK:
                         for (PGData3 tri : View.BACK) {
                             tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
-                    case Perspective.TOP:
+                    case TOP:
                         for (PGData3 tri : View.TOP) {
                             tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
-                    case Perspective.BOTTOM:
+                    case BOTTOM:
                         for (PGData3 tri : View.BOTTOM) {
                             tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
-                    case Perspective.LEFT:
+                    case LEFT:
                         for (PGData3 tri : View.LEFT) {
                             tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
-                    case Perspective.RIGHT:
+                    case RIGHT:
                         for (PGData3 tri : View.RIGHT) {
                             tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
+                    case TWO_THIRDS:
                     default:
                         break;
                     }
