@@ -252,14 +252,17 @@ class Editor3DDesign extends ApplicationWindow {
     final TreeItem[] treeItem_ProjectParts = new TreeItem[1];
     final TreeItem[] treeItem_ProjectSubparts = new TreeItem[1];
     final TreeItem[] treeItem_ProjectPrimitives = new TreeItem[1];
+    final TreeItem[] treeItem_ProjectPrimitives8 = new TreeItem[1];
     final TreeItem[] treeItem_ProjectPrimitives48 = new TreeItem[1];
     final TreeItem[] treeItem_UnofficialParts = new TreeItem[1];
     final TreeItem[] treeItem_UnofficialSubparts = new TreeItem[1];
     final TreeItem[] treeItem_UnofficialPrimitives = new TreeItem[1];
+    final TreeItem[] treeItem_UnofficialPrimitives8 = new TreeItem[1];
     final TreeItem[] treeItem_UnofficialPrimitives48 = new TreeItem[1];
     final TreeItem[] treeItem_OfficialParts = new TreeItem[1];
     final TreeItem[] treeItem_OfficialSubparts = new TreeItem[1];
     final TreeItem[] treeItem_OfficialPrimitives = new TreeItem[1];
+    final TreeItem[] treeItem_OfficialPrimitives8 = new TreeItem[1];
     final TreeItem[] treeItem_OfficialPrimitives48 = new TreeItem[1];
     final Tree[] treeParts = new Tree[1];
 
@@ -1739,6 +1742,9 @@ class Editor3DDesign extends ApplicationWindow {
                         TreeItem treeItemProjectHiResPrimitives = new TreeItem(treeItemProjectName, SWT.NONE);
                         this.treeItem_ProjectPrimitives48[0] = treeItemProjectHiResPrimitives;
                         treeItemProjectHiResPrimitives.setText(I18n.PARTS_HiResPrimitives);
+                        TreeItem treeItemProjectLowResPrimitives = new TreeItem(treeItemProjectName, SWT.NONE);
+                        this.treeItem_ProjectPrimitives8[0] = treeItemProjectLowResPrimitives;
+                        treeItemProjectLowResPrimitives.setText(I18n.PARTS_LowResPrimitives);
 
                         TreeItem treeItemUnsaved = new TreeItem(treeAllParts, SWT.NONE);
                         this.treeItem_Unsaved[0] = treeItemUnsaved;
@@ -1768,6 +1774,10 @@ class Editor3DDesign extends ApplicationWindow {
                         this.treeItem_UnofficialPrimitives48[0] = treeItemUnofficialHiResPrimitives;
                         treeItemUnofficialHiResPrimitives.setText(I18n.PARTS_HiResPrimitives);
                         treeItemUnofficialHiResPrimitives.setVisible(false);
+                        TreeItem treeItemUnofficialLowResPrimitives = new TreeItem(treeItemUnofficial, SWT.NONE);
+                        this.treeItem_UnofficialPrimitives8[0] = treeItemUnofficialLowResPrimitives;
+                        treeItemUnofficialLowResPrimitives.setText(I18n.PARTS_LowResPrimitives);
+                        treeItemUnofficialLowResPrimitives.setVisible(false);
 
                         TreeItem treeItemOfficial = new TreeItem(treeAllParts, SWT.NONE);
                         this.treeItem_Official[0] = treeItemOfficial;
@@ -1789,6 +1799,10 @@ class Editor3DDesign extends ApplicationWindow {
                         this.treeItem_OfficialPrimitives48[0] = treeItemOfficialHiResPrimitives;
                         treeItemOfficialHiResPrimitives.setText(I18n.PARTS_HiResPrimitives);
                         treeItemOfficialHiResPrimitives.setVisible(false);
+                        TreeItem treeItemOfficialLowResPrimitives = new TreeItem(treeItemOfficial, SWT.NONE);
+                        this.treeItem_OfficialPrimitives8[0] = treeItemOfficialLowResPrimitives;
+                        treeItemOfficialLowResPrimitives.setText(I18n.PARTS_LowResPrimitives);
+                        treeItemOfficialLowResPrimitives.setVisible(false);
 
                         GridData gridData = new GridData();
                         gridData.horizontalAlignment = SWT.FILL;
@@ -1880,11 +1894,15 @@ class Editor3DDesign extends ApplicationWindow {
                 if (threeDconfig == null) {
                     @SuppressWarnings("unused")
                     CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
+                    // cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
                 } else {
                     final int configSize = threeDconfig.size();
                     if (configSize < 2) {
                         if (configSize == 1) {
                             // FIXME Load the configuration of one 3D window
+                            Composite3DState state = threeDconfig.get(0);
+                            @SuppressWarnings("unused")
+                            CompositeContainer cmp_Container = new CompositeContainer(sashForm, state.hasScales());
                             throw new UnsupportedOperationException();
                         } else {
                             @SuppressWarnings("unused")
@@ -1897,8 +1915,16 @@ class Editor3DDesign extends ApplicationWindow {
                 }
 
                 int width = windowState.getWindowState().getSizeAndPosition().width;
-                int sashSize = windowState.getLeftSashWidth(); // size = 170
-                sashForm.setWeights(new int[] { sashSize, width - sashSize });
+                int[] sashSize = windowState.getLeftSashWidth();
+                if (sashSize == null) {
+                    sashForm.setWeights(new int[] { width / 3, width - width / 3 });
+                } else {
+                    try {
+                        sashForm.setWeights(sashSize);
+                    } catch (IllegalArgumentException iae) {
+                        sashForm.setWeights(new int[] { width / 3, width - width / 3 });
+                    }
+                }
             }
         }
         status = new Composite(container, SWT.NONE);

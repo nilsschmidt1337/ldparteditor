@@ -308,16 +308,18 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
 
                 resetSearch();
-                int[][] stats = new int[13][3];
+                int[][] stats = new int[15][3];
                 stats[0] = LibraryManager.syncProjectElements(treeItem_Project[0]);
                 stats[5] = LibraryManager.syncUnofficialParts(treeItem_UnofficialParts[0]);
                 stats[6] = LibraryManager.syncUnofficialSubparts(treeItem_UnofficialSubparts[0]);
                 stats[7] = LibraryManager.syncUnofficialPrimitives(treeItem_UnofficialPrimitives[0]);
                 stats[8] = LibraryManager.syncUnofficialHiResPrimitives(treeItem_UnofficialPrimitives48[0]);
-                stats[9] = LibraryManager.syncOfficialParts(treeItem_OfficialParts[0]);
-                stats[10] = LibraryManager.syncOfficialSubparts(treeItem_OfficialSubparts[0]);
-                stats[11] = LibraryManager.syncOfficialPrimitives(treeItem_OfficialPrimitives[0]);
-                stats[12] = LibraryManager.syncOfficialHiResPrimitives(treeItem_OfficialPrimitives48[0]);
+                stats[9] = LibraryManager.syncUnofficialLowResPrimitives(treeItem_UnofficialPrimitives8[0]);
+                stats[10] = LibraryManager.syncOfficialParts(treeItem_OfficialParts[0]);
+                stats[11] = LibraryManager.syncOfficialSubparts(treeItem_OfficialSubparts[0]);
+                stats[12] = LibraryManager.syncOfficialPrimitives(treeItem_OfficialPrimitives[0]);
+                stats[13] = LibraryManager.syncOfficialHiResPrimitives(treeItem_OfficialPrimitives48[0]);
+                stats[14] = LibraryManager.syncOfficialLowResPrimitives(treeItem_OfficialPrimitives8[0]);
 
                 int additions = 0;
                 int deletions = 0;
@@ -404,6 +406,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     LibraryManager.readProjectSubparts(treeItem_ProjectSubparts[0]);
                     LibraryManager.readProjectPrimitives(treeItem_ProjectPrimitives[0]);
                     LibraryManager.readProjectHiResPrimitives(treeItem_ProjectPrimitives48[0]);
+                    LibraryManager.readProjectLowResPrimitives(treeItem_ProjectPrimitives8[0]);
                     treeItem_OfficialParts[0].setData(null);
                     txt_Search[0].setText(" "); //$NON-NLS-1$
                     txt_Search[0].setText(""); //$NON-NLS-1$
@@ -458,11 +461,13 @@ public class Editor3DWindow extends Editor3DDesign {
                             iterateOverItems(treeItem_ProjectSubparts[0]);
                             iterateOverItems(treeItem_ProjectPrimitives[0]);
                             iterateOverItems(treeItem_ProjectPrimitives48[0]);
+                            iterateOverItems(treeItem_ProjectPrimitives8[0]);
                         } else if (treeParts[0].getSelection()[0].equals(treeItem_Unofficial[0])) {
                             iterateOverItems(treeItem_UnofficialParts[0]);
                             iterateOverItems(treeItem_UnofficialSubparts[0]);
                             iterateOverItems(treeItem_UnofficialPrimitives[0]);
                             iterateOverItems(treeItem_UnofficialPrimitives48[0]);
+                            iterateOverItems(treeItem_UnofficialPrimitives8[0]);
                         }
                         NLogger.debug(getClass(), "Saving all files from this group to"); //$NON-NLS-1$
                         NLogger.debug(getClass(), (String) treeParts[0].getSelection()[0].getData());
@@ -1830,6 +1835,11 @@ public class Editor3DWindow extends Editor3DDesign {
                                     targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
                                     targetTreeItem = treeItem_UnofficialPrimitives48[0];
                                     projectIsFileOrigin = true;
+                                } else if (treeItem_ProjectPrimitives8[0].equals(p)) {
+                                    targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
+                                    targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
+                                    targetTreeItem = treeItem_UnofficialPrimitives8[0];
+                                    projectIsFileOrigin = true;
                                 } else if (treeItem_ProjectSubparts[0].equals(p)) {
                                     targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"+ File.separator + "S"; //$NON-NLS-1$ //$NON-NLS-2$
                                     targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -1847,6 +1857,10 @@ public class Editor3DWindow extends Editor3DDesign {
                                     targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
                                     targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
                                     targetTreeItem = treeItem_UnofficialPrimitives48[0];
+                                } else if (treeItem_OfficialPrimitives8[0].equals(p)) {
+                                    targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
+                                    targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
+                                    targetTreeItem = treeItem_UnofficialPrimitives8[0];
                                 } else if (treeItem_OfficialSubparts[0].equals(p)) {
                                     targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"+ File.separator + "S"; //$NON-NLS-1$ //$NON-NLS-2$
                                     targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -1871,11 +1885,12 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                 DatFile targetFile = null;
 
-                                TreeItem[] folders = new TreeItem[4];
+                                TreeItem[] folders = new TreeItem[5];
                                 folders[0] = treeItem_UnofficialParts[0];
                                 folders[1] = treeItem_UnofficialPrimitives[0];
                                 folders[2] = treeItem_UnofficialPrimitives48[0];
-                                folders[3] = treeItem_UnofficialSubparts[0];
+                                folders[3] = treeItem_UnofficialPrimitives8[0];
+                                folders[4] = treeItem_UnofficialSubparts[0];
 
                                 for (TreeItem folder : folders) {
                                     ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
@@ -1990,7 +2005,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                     if (refResult != null) {
                                         // Remove old data
-                                        for(int i = 0; i < 4; i++) {
+                                        for(int i = 0; i < 5; i++) {
                                             ArrayList<DatFile> toRemove = refResult.get(i);
                                             for (DatFile datToRemove : toRemove) {
                                                 datToRemove.disposeData();
@@ -1998,8 +2013,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                             }
                                         }
                                         // Create new data
-                                        TreeItem[] targetTrees = new TreeItem[]{treeItem_UnofficialParts[0], treeItem_UnofficialSubparts[0], treeItem_UnofficialPrimitives[0], treeItem_UnofficialPrimitives48[0]};
-                                        for(int i = 4; i < 8; i++) {
+                                        TreeItem[] targetTrees = new TreeItem[]{treeItem_UnofficialParts[0], treeItem_UnofficialSubparts[0], treeItem_UnofficialPrimitives[0], treeItem_UnofficialPrimitives48[0], treeItem_UnofficialPrimitives8[0]};
+                                        for(int i = 5; i < 10; i++) {
                                             ArrayList<DatFile> toCreate = refResult.get(i);
                                             for (DatFile datToCreate : toCreate) {
                                                 DatFile newDatFile = new DatFile(datToCreate.getOldName());
@@ -2008,8 +2023,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                                 newDatFile.setOriginalText(source);
                                                 newDatFile.saveForced();
                                                 newDatFile.setType(datToCreate.getType());
-                                                ((ArrayList<DatFile>) targetTrees[i - 4].getData()).add(newDatFile);
-                                                TreeItem ti = new TreeItem(targetTrees[i - 4], SWT.NONE);
+                                                ((ArrayList<DatFile>) targetTrees[i - 5].getData()).add(newDatFile);
+                                                TreeItem ti = new TreeItem(targetTrees[i - 5], SWT.NONE);
                                                 ti.setText(new File(datToCreate.getOldName()).getName());
                                                 ti.setData(newDatFile);
                                             }
@@ -4126,10 +4141,12 @@ public class Editor3DWindow extends Editor3DDesign {
         LibraryManager.readUnofficialSubparts(treeItem_UnofficialSubparts[0]);
         LibraryManager.readUnofficialPrimitives(treeItem_UnofficialPrimitives[0]);
         LibraryManager.readUnofficialHiResPrimitives(treeItem_UnofficialPrimitives48[0]);
+        LibraryManager.readUnofficialLowResPrimitives(treeItem_UnofficialPrimitives8[0]);
         LibraryManager.readOfficialParts(treeItem_OfficialParts[0]);
         LibraryManager.readOfficialSubparts(treeItem_OfficialSubparts[0]);
         LibraryManager.readOfficialPrimitives(treeItem_OfficialPrimitives[0]);
         LibraryManager.readOfficialHiResPrimitives(treeItem_OfficialPrimitives48[0]);
+        LibraryManager.readOfficialLowResPrimitives(treeItem_OfficialPrimitives8[0]);
         txt_Search[0].setText(" "); //$NON-NLS-1$
         txt_Search[0].setText(""); //$NON-NLS-1$
 
@@ -4285,6 +4302,12 @@ public class Editor3DWindow extends Editor3DDesign {
                 unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals("") || !Project.getUnsavedFiles().contains(ti.getData()); ; //$NON-NLS-1$
             }
         }
+        {
+            ArrayList<TreeItem> ta = getProjectPrimitives8().getItems();
+            for (TreeItem ti : ta) {
+                unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals("") || !Project.getUnsavedFiles().contains(ti.getData()); ; //$NON-NLS-1$
+            }
+        }
 
         if (unsavedProjectFiles && Project.isDefaultProject()) {
             // Save new project here, if the project contains at least one non-empty file
@@ -4386,7 +4409,7 @@ public class Editor3DWindow extends Editor3DDesign {
         }
 
         winState.setLeftSashWeights(((SashForm) Editor3DDesign.getSashForm().getChildren()[0]).getWeights());
-        winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights()[0]);
+        winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights());
         winState.setPrimitiveZoom(cmp_Primitives[0].getZoom());
         winState.setPrimitiveZoomExponent(cmp_Primitives[0].getZoom_exponent());
         winState.setPrimitiveViewport(cmp_Primitives[0].getViewport2());
@@ -4427,10 +4450,12 @@ public class Editor3DWindow extends Editor3DDesign {
         categories.add(this.treeItem_ProjectSubparts[0]);
         categories.add(this.treeItem_ProjectPrimitives[0]);
         categories.add(this.treeItem_ProjectPrimitives48[0]);
+        categories.add(this.treeItem_ProjectPrimitives8[0]);
         categories.add(this.treeItem_UnofficialParts[0]);
         categories.add(this.treeItem_UnofficialSubparts[0]);
         categories.add(this.treeItem_UnofficialPrimitives[0]);
         categories.add(this.treeItem_UnofficialPrimitives48[0]);
+        categories.add(this.treeItem_UnofficialPrimitives8[0]);
         int counter = 0;
         for (TreeItem item : categories) {
             counter++;
@@ -4439,7 +4464,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 DatFile d = (DatFile) df.getData();
                 StringBuilder nameSb = new StringBuilder(new File(d.getNewName()).getName());
                 final String d2 = d.getDescription();
-                if (counter < 5 && (!d.getNewName().startsWith(Project.getProjectPath()) || !d.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
+                if (counter < 6 && (!d.getNewName().startsWith(Project.getProjectPath()) || !d.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
                     nameSb.insert(0, "(!) "); //$NON-NLS-1$
                 }
 
@@ -4453,6 +4478,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 //                    nameSb.append(" PRIMITIVE"); //$NON-NLS-1$
                 //                } else if (t == DatType.PRIMITIVE48) {
                 //                    nameSb.append(" PRIMITIVE48"); //$NON-NLS-1$
+                //                } else if (t == DatType.PRIMITIVE8) {
+                //                    nameSb.append(" PRIMITIVE8"); //$NON-NLS-1$
                 //                }
 
                 if (d2 != null)
@@ -4528,6 +4555,18 @@ public class Editor3DWindow extends Editor3DDesign {
             types.put(s, DatType.PRIMITIVE48);
         }
         {
+            String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
+            validPrefixes.add(s);
+            categories.put(s, this.treeItem_UnofficialPrimitives8[0]);
+            types.put(s, DatType.PRIMITIVE8);
+        }
+        {
+            String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
+            validPrefixes.add(s);
+            categories.put(s, this.treeItem_UnofficialPrimitives8[0]);
+            types.put(s, DatType.PRIMITIVE8);
+        }
+        {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator; //$NON-NLS-1$
             validPrefixes.add(s);
             categories.put(s, this.treeItem_UnofficialPrimitives[0]);
@@ -4574,6 +4613,18 @@ public class Editor3DWindow extends Editor3DDesign {
             validPrefixes.add(s);
             categories.put(s, this.treeItem_ProjectPrimitives48[0]);
             types.put(s, DatType.PRIMITIVE48);
+        }
+        {
+            String s = Project.getProjectPath() + File.separator + "P" + File.separator + "8" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
+            validPrefixes.add(s);
+            categories.put(s, this.treeItem_ProjectPrimitives8[0]);
+            types.put(s, DatType.PRIMITIVE8);
+        }
+        {
+            String s = Project.getProjectPath() + File.separator + "p" + File.separator + "8" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
+            validPrefixes.add(s);
+            categories.put(s, this.treeItem_ProjectPrimitives8[0]);
+            types.put(s, DatType.PRIMITIVE8);
         }
         {
             String s = Project.getProjectPath() + File.separator + "P" + File.separator; //$NON-NLS-1$
@@ -4652,10 +4703,12 @@ public class Editor3DWindow extends Editor3DDesign {
         categories.add(this.treeItem_ProjectParts[0]);
         categories.add(this.treeItem_ProjectSubparts[0]);
         categories.add(this.treeItem_ProjectPrimitives[0]);
+        categories.add(this.treeItem_ProjectPrimitives8[0]);
         categories.add(this.treeItem_ProjectPrimitives48[0]);
         categories.add(this.treeItem_UnofficialParts[0]);
         categories.add(this.treeItem_UnofficialSubparts[0]);
         categories.add(this.treeItem_UnofficialPrimitives[0]);
+        categories.add(this.treeItem_UnofficialPrimitives8[0]);
         categories.add(this.treeItem_UnofficialPrimitives48[0]);
         int counter = 0;
         for (TreeItem item : categories) {
@@ -4668,7 +4721,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 } else {
                     StringBuilder nameSb = new StringBuilder(new File(d.getNewName()).getName());
                     final String d2 = d.getDescription();
-                    if (counter < 5 && (!d.getNewName().startsWith(Project.getProjectPath()) || !d.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
+                    if (counter < 6 && (!d.getNewName().startsWith(Project.getProjectPath()) || !d.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
                         nameSb.insert(0, "(!) "); //$NON-NLS-1$
                     }
                     if (d2 != null)
@@ -4705,16 +4758,18 @@ public class Editor3DWindow extends Editor3DDesign {
             ti.setData(df);
         }
 
-        TreeItem[] folders = new TreeItem[8];
+        TreeItem[] folders = new TreeItem[10];
         folders[0] = treeItem_ProjectParts[0];
         folders[1] = treeItem_ProjectPrimitives[0];
-        folders[2] = treeItem_ProjectPrimitives48[0];
-        folders[3] = treeItem_ProjectSubparts[0];
+        folders[2] = treeItem_ProjectPrimitives8[0];
+        folders[3] = treeItem_ProjectPrimitives48[0];
+        folders[4] = treeItem_ProjectSubparts[0];
 
-        folders[4] = treeItem_UnofficialParts[0];
-        folders[5] = treeItem_UnofficialPrimitives[0];
-        folders[6] = treeItem_UnofficialPrimitives48[0];
-        folders[7] = treeItem_UnofficialSubparts[0];
+        folders[5] = treeItem_UnofficialParts[0];
+        folders[6] = treeItem_UnofficialPrimitives[0];
+        folders[7] = treeItem_UnofficialPrimitives8[0];
+        folders[8] = treeItem_UnofficialPrimitives48[0];
+        folders[9] = treeItem_UnofficialSubparts[0];
 
         for (TreeItem folder : folders) {
             @SuppressWarnings("unchecked")
@@ -4825,6 +4880,10 @@ public class Editor3DWindow extends Editor3DDesign {
         return treeItem_ProjectPrimitives48[0];
     }
 
+    public TreeItem getProjectPrimitives8() {
+        return treeItem_ProjectPrimitives8[0];
+    }
+
     public TreeItem getProjectSubparts() {
         return treeItem_ProjectSubparts[0];
     }
@@ -4841,6 +4900,10 @@ public class Editor3DWindow extends Editor3DDesign {
         return treeItem_UnofficialPrimitives48[0];
     }
 
+    public TreeItem getUnofficialPrimitives8() {
+        return treeItem_UnofficialPrimitives8[0];
+    }
+
     public TreeItem getUnofficialSubparts() {
         return treeItem_UnofficialSubparts[0];
     }
@@ -4855,6 +4918,10 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public TreeItem getOfficialPrimitives48() {
         return treeItem_OfficialPrimitives48[0];
+    }
+
+    public TreeItem getOfficialPrimitives8() {
+        return treeItem_OfficialPrimitives8[0];
     }
 
     public TreeItem getOfficialSubparts() {
@@ -4960,21 +5027,24 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 String criteria = ".*" + word + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
 
-                TreeItem[] folders = new TreeItem[12];
+                TreeItem[] folders = new TreeItem[15];
                 folders[0] = treeItem_OfficialParts[0];
                 folders[1] = treeItem_OfficialPrimitives[0];
-                folders[2] = treeItem_OfficialPrimitives48[0];
-                folders[3] = treeItem_OfficialSubparts[0];
+                folders[2] = treeItem_OfficialPrimitives8[0];
+                folders[3] = treeItem_OfficialPrimitives48[0];
+                folders[4] = treeItem_OfficialSubparts[0];
 
-                folders[4] = treeItem_UnofficialParts[0];
-                folders[5] = treeItem_UnofficialPrimitives[0];
-                folders[6] = treeItem_UnofficialPrimitives48[0];
-                folders[7] = treeItem_UnofficialSubparts[0];
+                folders[5] = treeItem_UnofficialParts[0];
+                folders[6] = treeItem_UnofficialPrimitives[0];
+                folders[7] = treeItem_UnofficialPrimitives8[0];
+                folders[8] = treeItem_UnofficialPrimitives48[0];
+                folders[9] = treeItem_UnofficialSubparts[0];
 
-                folders[8] = treeItem_ProjectParts[0];
-                folders[9] = treeItem_ProjectPrimitives[0];
-                folders[10] = treeItem_ProjectPrimitives48[0];
-                folders[11] = treeItem_ProjectSubparts[0];
+                folders[10] = treeItem_ProjectParts[0];
+                folders[11] = treeItem_ProjectPrimitives[0];
+                folders[12] = treeItem_ProjectPrimitives8[0];
+                folders[13] = treeItem_ProjectPrimitives48[0];
+                folders[14] = treeItem_ProjectSubparts[0];
 
                 if (folders[0].getData() == null) {
                     for (TreeItem folder : folders) {
@@ -4992,12 +5062,12 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
 
                 final Pattern pattern = Pattern.compile(criteria);
-                for (int i = 0; i < 12; i++) {
+                for (int i = 0; i < 15; i++) {
                     TreeItem folder = folders[i];
                     folder.removeAll();
                     for (DatFile part : (ArrayList<DatFile>) folder.getData()) {
                         StringBuilder nameSb = new StringBuilder(new File(part.getNewName()).getName());
-                        if (i > 7 && (!part.getNewName().startsWith(Project.getProjectPath()) || !part.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
+                        if (i > 9 && (!part.getNewName().startsWith(Project.getProjectPath()) || !part.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
                             nameSb.insert(0, "(!) "); //$NON-NLS-1$
                         }
                         final String d = part.getDescription();
@@ -5040,14 +5110,17 @@ public class Editor3DWindow extends Editor3DDesign {
         categories.add(this.treeItem_ProjectSubparts[0]);
         categories.add(this.treeItem_ProjectPrimitives[0]);
         categories.add(this.treeItem_ProjectPrimitives48[0]);
+        categories.add(this.treeItem_ProjectPrimitives8[0]);
         categories.add(this.treeItem_UnofficialParts[0]);
         categories.add(this.treeItem_UnofficialSubparts[0]);
         categories.add(this.treeItem_UnofficialPrimitives[0]);
         categories.add(this.treeItem_UnofficialPrimitives48[0]);
+        categories.add(this.treeItem_UnofficialPrimitives8[0]);
         categories.add(this.treeItem_OfficialParts[0]);
         categories.add(this.treeItem_OfficialSubparts[0]);
         categories.add(this.treeItem_OfficialPrimitives[0]);
         categories.add(this.treeItem_OfficialPrimitives48[0]);
+        categories.add(this.treeItem_OfficialPrimitives8[0]);
         categories.add(this.treeItem_Unsaved[0]);
         for (TreeItem item : categories) {
             ArrayList<TreeItem> datFileTreeItems = item.getItems();
@@ -5296,6 +5369,11 @@ public class Editor3DWindow extends Editor3DDesign {
                                         type = DatType.PRIMITIVE48;
                                         break;
                                     }
+                                    i2 = typ.indexOf("8_Primitive"); //$NON-NLS-1$
+                                    if (i2 > -1 && i1 < i2) {
+                                        type = DatType.PRIMITIVE8;
+                                        break;
+                                    }
                                     i2 = typ.indexOf("Primitive"); //$NON-NLS-1$
                                     if (i2 > -1 && i1 < i2) {
                                         type = DatType.PRIMITIVE;
@@ -5360,6 +5438,14 @@ public class Editor3DWindow extends Editor3DDesign {
                         return df;
                     }
                 }
+                {
+                    @SuppressWarnings("unchecked")
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives8[0].getData();
+                    if (cachedReferences.contains(df)) {
+                        openDatFile(df, where, null);
+                        return df;
+                    }
+                }
                 type = original.getType();
                 df = original;
             }
@@ -5397,6 +5483,14 @@ public class Editor3DWindow extends Editor3DDesign {
                 cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItem_ProjectPrimitives48[0], SWT.NONE);
+            break;
+            case PRIMITIVE8:
+            {
+                @SuppressWarnings("unchecked")
+                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives8[0].getData();
+                cachedReferences.add(df);
+            }
+            ti = new TreeItem(this.treeItem_ProjectPrimitives8[0], SWT.NONE);
             break;
             default:
             {
@@ -5559,21 +5653,24 @@ public class Editor3DWindow extends Editor3DDesign {
 
     private boolean isFileNameAllocated(String dir, DatFile df, boolean createNew) {
 
-        TreeItem[] folders = new TreeItem[12];
+        TreeItem[] folders = new TreeItem[15];
         folders[0] = treeItem_OfficialParts[0];
         folders[1] = treeItem_OfficialPrimitives[0];
-        folders[2] = treeItem_OfficialPrimitives48[0];
-        folders[3] = treeItem_OfficialSubparts[0];
+        folders[2] = treeItem_OfficialPrimitives8[0];
+        folders[3] = treeItem_OfficialPrimitives48[0];
+        folders[4] = treeItem_OfficialSubparts[0];
 
-        folders[4] = treeItem_UnofficialParts[0];
-        folders[5] = treeItem_UnofficialPrimitives[0];
-        folders[6] = treeItem_UnofficialPrimitives48[0];
-        folders[7] = treeItem_UnofficialSubparts[0];
+        folders[5] = treeItem_UnofficialParts[0];
+        folders[6] = treeItem_UnofficialPrimitives[0];
+        folders[7] = treeItem_UnofficialPrimitives8[0];
+        folders[8] = treeItem_UnofficialPrimitives48[0];
+        folders[9] = treeItem_UnofficialSubparts[0];
 
-        folders[8] = treeItem_ProjectParts[0];
-        folders[9] = treeItem_ProjectPrimitives[0];
-        folders[10] = treeItem_ProjectPrimitives48[0];
-        folders[11] = treeItem_ProjectSubparts[0];
+        folders[10] = treeItem_ProjectParts[0];
+        folders[11] = treeItem_ProjectPrimitives[0];
+        folders[12] = treeItem_ProjectPrimitives8[0];
+        folders[13] = treeItem_ProjectPrimitives48[0];
+        folders[14] = treeItem_ProjectSubparts[0];
 
         for (TreeItem folder : folders) {
             @SuppressWarnings("unchecked")
@@ -5591,21 +5688,24 @@ public class Editor3DWindow extends Editor3DDesign {
 
     private DatFile isFileNameAllocated2(String dir, DatFile df) {
 
-        TreeItem[] folders = new TreeItem[12];
+        TreeItem[] folders = new TreeItem[15];
         folders[0] = treeItem_OfficialParts[0];
         folders[1] = treeItem_OfficialPrimitives[0];
-        folders[2] = treeItem_OfficialPrimitives48[0];
-        folders[3] = treeItem_OfficialSubparts[0];
+        folders[2] = treeItem_OfficialPrimitives8[0];
+        folders[3] = treeItem_OfficialPrimitives48[0];
+        folders[4] = treeItem_OfficialSubparts[0];
 
-        folders[4] = treeItem_UnofficialParts[0];
-        folders[5] = treeItem_UnofficialPrimitives[0];
-        folders[6] = treeItem_UnofficialPrimitives48[0];
-        folders[7] = treeItem_UnofficialSubparts[0];
+        folders[5] = treeItem_UnofficialParts[0];
+        folders[6] = treeItem_UnofficialPrimitives[0];
+        folders[7] = treeItem_UnofficialPrimitives8[0];
+        folders[8] = treeItem_UnofficialPrimitives48[0];
+        folders[9] = treeItem_UnofficialSubparts[0];
 
-        folders[8] = treeItem_ProjectParts[0];
-        folders[9] = treeItem_ProjectPrimitives[0];
-        folders[10] = treeItem_ProjectPrimitives48[0];
-        folders[11] = treeItem_ProjectSubparts[0];
+        folders[10] = treeItem_ProjectParts[0];
+        folders[11] = treeItem_ProjectPrimitives[0];
+        folders[12] = treeItem_ProjectPrimitives8[0];
+        folders[13] = treeItem_ProjectPrimitives48[0];
+        folders[14] = treeItem_ProjectSubparts[0];
 
         for (TreeItem folder : folders) {
             @SuppressWarnings("unchecked")
