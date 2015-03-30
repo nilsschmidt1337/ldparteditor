@@ -177,6 +177,7 @@ public final class I18n {
     public static final String EDITORTEXT_Warning = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Warnings = EDITORTEXT.getString(getProperty());
     public static final String PARTS_HiResPrimitives = PARTS.getString(getProperty());
+    public static final String PARTS_LowResPrimitives = PARTS.getString(getProperty());
     public static final String PARTS_Parts = PARTS.getString(getProperty());
     public static final String PARTS_Primitives = PARTS.getString(getProperty());
     public static final String PARTS_Subparts = PARTS.getString(getProperty());
