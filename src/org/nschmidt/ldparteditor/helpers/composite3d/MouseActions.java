@@ -41,10 +41,10 @@ import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.ParsingResult;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
@@ -202,12 +202,14 @@ public class MouseActions {
 
             break;
         case MouseButton.MIDDLE:
+            c3d.getCanvas().forceFocus();
             Project.setFileToEdit(datfile);
             if (c3d.isDoingSelection())
                 break;
             Matrix4f.load(c3d.getRotation(), old_viewport_rotation);
             break;
         case MouseButton.RIGHT:
+            c3d.getCanvas().forceFocus();
             vm.setSkipSyncWithTextEditor(true);
             Project.setFileToEdit(datfile);
             if (c3d.isDoingSelection())

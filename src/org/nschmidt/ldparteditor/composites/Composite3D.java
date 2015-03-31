@@ -1081,6 +1081,7 @@ public class Composite3D extends ScalableComposite {
             public void handleEvent(Event event) {
                 Project.setFileToEdit(lockableDatFileReference);
                 final Composite3D c3d = getComposite3D();
+                canvas.forceFocus();
                 lockableDatFileReference.setLastSelectedComposite(c3d);
                 sb1.setSelection(0);
                 sb2.setSelection(0);
