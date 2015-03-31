@@ -4425,6 +4425,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
     private void saveComposite3DStates(Control c, ArrayList<Composite3DState> c3dStates, String parentPath, String path) {
         Composite3DState st = new Composite3DState();
+        st.setParentPath(parentPath);
+        st.setPath(path);
         if (c instanceof CompositeContainer) {
             NLogger.debug(getClass(), path + "C"); //$NON-NLS-1$
             final Composite3D c3d = ((CompositeContainer) c).getComposite3D();

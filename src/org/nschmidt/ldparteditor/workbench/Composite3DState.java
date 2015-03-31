@@ -49,6 +49,9 @@ public class Composite3DState implements Serializable {
     private boolean vertical = false;
     private int[] weights = null;
 
+    private String path = null;
+    private String parentPath = null;
+
     public Composite3DState() {
 
     }
@@ -216,6 +219,27 @@ public class Composite3DState implements Serializable {
 
     public void setAnaglyph3d(boolean anaglyph3d) {
         this.anaglyph3d = anaglyph3d;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getParentPath() {
+        return parentPath;
+    }
+
+    public void setParentPath(String parentPath) {
+        this.parentPath = parentPath;
+    }
+
+    @Override
+    public String toString() {
+        return this.parentPath + " -> " + path; //$NON-NLS-1$
     }
 
 }

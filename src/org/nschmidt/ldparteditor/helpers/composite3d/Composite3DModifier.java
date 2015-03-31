@@ -164,7 +164,7 @@ public class Composite3DModifier {
      * {@link org.nschmidt.ldparteditor.composites.Composite3D} and including
      * the old composite in the north of the vertical SashForm.
      */
-    public void splitViewHorizontally() {
+    public SashForm splitViewHorizontally() {
         NLogger.debug(Composite3DModifier.class, "[Split horizontally]"); //$NON-NLS-1$
 
         int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
@@ -196,6 +196,7 @@ public class Composite3DModifier {
         newParentSashForm.getParent().layout();
         ((SashForm) newParentSashForm.getParent()).setWeights(superSashWeights);
         Editor3DWindow.getSashForm().setWeights(mainSashWeights);
+        return newParentSashForm;
     }
 
     /**
@@ -204,7 +205,7 @@ public class Composite3DModifier {
      * {@link org.nschmidt.ldparteditor.composites.Composite3D} and including
      * the old composite in the west of the horizontal SashForm.
      */
-    public void splitViewVertically() {
+    public SashForm splitViewVertically() {
         NLogger.debug(Composite3DModifier.class, "[Split vertically]"); //$NON-NLS-1$
 
         int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
@@ -236,6 +237,7 @@ public class Composite3DModifier {
         newParentSashForm.getParent().layout();
         ((SashForm) newParentSashForm.getParent()).setWeights(superSashWeights);
         Editor3DWindow.getSashForm().setWeights(mainSashWeights);
+        return newParentSashForm;
     }
 
     /**
