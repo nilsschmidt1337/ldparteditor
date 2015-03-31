@@ -134,9 +134,9 @@ class ColourDesign extends Dialog {
                     e.gc.setBackground(col);
                     e.gc.fillRectangle(x, y, w, h);
                     if (gColour2.getA() == 1f) {
-                        e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                        e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png", 0), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
                     } else {
-                        e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                        e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png", 0), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
                     }
                 }
             });

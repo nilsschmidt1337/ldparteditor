@@ -83,6 +83,8 @@ public class UserSettingState implements Serializable {
     /** {@code true} if the user wants active synchronisation with the text editor */
     private AtomicBoolean syncWithLpeInline = new AtomicBoolean(false);
 
+    private int iconSize = 0;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -349,6 +351,14 @@ public class UserSettingState implements Serializable {
 
     public void setSyncWithLpeInline(AtomicBoolean syncWithLpeInline) {
         this.syncWithLpeInline = syncWithLpeInline;
+    }
+
+    public int getIconSize() {
+        return iconSize;
+    }
+
+    public void setIconSize(int iconSize) {
+        this.iconSize = iconSize;
     }
 
 }

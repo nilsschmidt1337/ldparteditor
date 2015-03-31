@@ -4138,6 +4138,43 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        mntm_IconSize1[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().setIconSize(0);
+            }
+        });
+        mntm_IconSize2[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().setIconSize(1);
+            }
+        });
+        mntm_IconSize3[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().setIconSize(2);
+            }
+        });
+        mntm_IconSize4[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().setIconSize(3);
+            }
+        });
+        mntm_IconSize5[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().setIconSize(4);
+            }
+        });
+        mntm_IconSize6[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().setIconSize(5);
+            }
+        });
+
         Project.createDefault();
         treeItem_Project[0].setData(Project.getProjectPath());
         treeItem_Official[0].setData(WorkbenchManager.getUserSettingState().getLdrawFolderPath());

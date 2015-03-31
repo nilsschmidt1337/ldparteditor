@@ -48,6 +48,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 import swing2swt.layout.BorderLayout;
@@ -371,6 +372,31 @@ class EditorTextDesign extends ApplicationWindow {
 
 
     private void addColorButton(ToolItem toolItem_Colours, GColour gColour, final int index) {
+        final int imgSize;
+        switch (Editor3DWindow.getIconsize()) {
+        case 0:
+            imgSize = 16;
+            break;
+        case 1:
+            imgSize = 24;
+            break;
+        case 2:
+            imgSize = 32;
+            break;
+        case 3:
+            imgSize = 48;
+            break;
+        case 4:
+            imgSize = 64;
+            break;
+        case 5:
+            imgSize = 72;
+            break;
+        default:
+            imgSize = 16;
+            break;
+        }
+
         final GColour[] gColour2 = new GColour[] { gColour };
         final Color[] col = new Color[1];
         col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
@@ -459,9 +485,9 @@ class EditorTextDesign extends ApplicationWindow {
                 e.gc.setBackground(col[0]);
                 e.gc.fillRectangle(x, y, w, h);
                 if (gColour2[0].getA() == 1f) {
-                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 } else {
-                    e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                    e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 }
             }
         });
