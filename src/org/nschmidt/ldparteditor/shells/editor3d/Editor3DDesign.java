@@ -108,6 +108,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuManager[] mnu_File = new MenuManager[1];
     private Composite toolBar;
     private static Composite status;
+    private static final int iconSize = WorkbenchManager.getUserSettingState().getIconSize();
     final Button[] btn_Sync = new Button[1];
     final Button[] btn_New = new Button[1];
     final Button[] btn_Open = new Button[1];
@@ -333,6 +334,14 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_SCLines = new MenuItem[1];
     final MenuItem[] mntm_SVertices = new MenuItem[1];
     final MenuItem[] mntm_SLines = new MenuItem[1];
+
+
+    final MenuItem[] mntm_IconSize1 = new MenuItem[1];
+    final MenuItem[] mntm_IconSize2 = new MenuItem[1];
+    final MenuItem[] mntm_IconSize3 = new MenuItem[1];
+    final MenuItem[] mntm_IconSize4 = new MenuItem[1];
+    final MenuItem[] mntm_IconSize5 = new MenuItem[1];
+    final MenuItem[] mntm_IconSize6 = new MenuItem[1];
 
     private static SashForm sashForm;
 
@@ -1020,6 +1029,56 @@ class Editor3DDesign extends ApplicationWindow {
                         MenuItem mntm_SelectAnotherLDConfig = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_SelectAnotherLDConfig[0] = mntm_SelectAnotherLDConfig;
                         mntm_SelectAnotherLDConfig.setText("Select LDConfig.ldr"); //$NON-NLS-1$ I18N
+                    }
+                    {
+                        final MenuItem mntm_SetIconSize = new MenuItem(mnu_Tools, SWT.CASCADE);
+                        mntm_SetIconSize.setText("Set Icon Size"); //$NON-NLS-1$ I18N
+                        final Menu mnu_IconSize = new Menu(mntm_SetIconSize);
+                        mntm_SetIconSize.setMenu(mnu_IconSize);
+                        final int iconSize = Editor3DWindow.getIconsize();
+                        {
+                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
+                            this.mntm_IconSize1[0] = mntm_IconSize;
+                            mntm_IconSize.setText("Icon Size 1"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setSelection(iconSize == 0);
+                        }
+                        {
+                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
+                            this.mntm_IconSize2[0] = mntm_IconSize;
+                            mntm_IconSize.setText("Icon Size 2"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setSelection(iconSize == 1);
+                        }
+                        {
+                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
+                            this.mntm_IconSize3[0] = mntm_IconSize;
+                            mntm_IconSize.setText("Icon Size 3"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setSelection(iconSize == 2);
+                        }
+                        {
+                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
+                            this.mntm_IconSize4[0] = mntm_IconSize;
+                            mntm_IconSize.setText("Icon Size 4"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setSelection(iconSize == 3);
+                        }
+                        {
+                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
+                            this.mntm_IconSize5[0] = mntm_IconSize;
+                            mntm_IconSize.setText("Icon Size 5"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setSelection(iconSize == 4);
+                        }
+                        {
+                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
+                            this.mntm_IconSize6[0] = mntm_IconSize;
+                            mntm_IconSize.setText("Icon Size 6"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setSelection(iconSize == 5);
+                        }
+                        @SuppressWarnings("unused")
+                        final MenuItem mntmSeparator2 = new MenuItem(mnu_IconSize, SWT.SEPARATOR);
+                        {
+                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.PUSH);
+                            mntm_IconSize.setText("(Requires restart)"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setEnabled(false);
+                        }
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator2 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
@@ -2070,6 +2129,31 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private void addColorButton(ToolItem toolItem_Colours, GColour gColour, final int index) {
+        final int imgSize;
+        switch (Editor3DWindow.getIconsize()) {
+        case 0:
+            imgSize = 16;
+            break;
+        case 1:
+            imgSize = 24;
+            break;
+        case 2:
+            imgSize = 32;
+            break;
+        case 3:
+            imgSize = 48;
+            break;
+        case 4:
+            imgSize = 64;
+            break;
+        case 5:
+            imgSize = 72;
+            break;
+        default:
+            imgSize = 16;
+            break;
+        }
+
         final GColour[] gColour2 = new GColour[] { gColour };
         final Color[] col = new Color[1];
         col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
@@ -2138,9 +2222,9 @@ class Editor3DDesign extends ApplicationWindow {
                             e.gc.setBackground(col);
                             e.gc.fillRectangle(x, y, w, h);
                             if (gColour2[0].getA() == 1f) {
-                                e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                                e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                             } else {
-                                e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                                e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                             }
                         }
                     });
@@ -2190,9 +2274,9 @@ class Editor3DDesign extends ApplicationWindow {
                 e.gc.setBackground(col[0]);
                 e.gc.fillRectangle(x, y, w, h);
                 if (gColour2[0].getA() == 1f) {
-                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 } else {
-                    e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                    e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 }
             }
         });
@@ -2263,5 +2347,9 @@ class Editor3DDesign extends ApplicationWindow {
         Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
         mnu_Select.setLocation(getShell().getDisplay().map(btn_Select2[0].getParent(), null, mLoc));
         mnu_Select.setVisible(true);
+    }
+
+    public static int getIconsize() {
+        return iconSize;
     }
 }

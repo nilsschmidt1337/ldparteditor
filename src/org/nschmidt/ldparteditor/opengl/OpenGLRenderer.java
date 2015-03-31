@@ -723,12 +723,47 @@ public class OpenGLRenderer {
                 state3d++;
             } else {
                 if (c3d.isShowingAxis()) {
+                    final float l;
+                    final float ox;
+                    final float oy;
+                    final float cone_height;
+                    final float cone_width;
+                    final float line_width;
+                    switch (Editor3DWindow.getIconsize()) {
+                    case 4:
+                    case 5:
+                        l = 1f;
+                        ox = .1f;
+                        oy = .11f;
+                        cone_height = .00030f;
+                        cone_width = .00008f;
+                        line_width = 6f;
+                        break;
+                    case 2:
+                    case 3:
+                        l = .75f;
+                        ox = .075f;
+                        oy = .085f;
+                        cone_height = .00023f;
+                        cone_width = .00006f;
+                        line_width = 4f;
+                        break;
+                    case 0:
+                    case 1:
+                    default:
+                        l = .5f;
+                        ox = .05f;
+                        oy = .06f;
+                        cone_height = .00015f;
+                        cone_width = .00004f;
+                        line_width = 2f;
+                    }
                     GL11.glPushMatrix();
-                    GL11.glTranslatef(.05f - viewport_width, viewport_height - .06f, 0f);
+                    GL11.glTranslatef(ox - viewport_width, viewport_height - oy, 0f);
                     GL11.glMultMatrix(rotation);
-                    new Arrow(1f, 0f, 0f, 1f,.5f, 0f, 0f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
-                    new Arrow(0f, 1f, 0f, 1f, 0f,.5f, 0f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
-                    new Arrow(0f, 0f, 1f, 1f, 0f, 0f,.5f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
+                    new Arrow(1f, 0f, 0f, 1f,l, 0f, 0f, cone_height, cone_width).draw(0f, 0f, 0f, .01f, line_width);
+                    new Arrow(0f, 1f, 0f, 1f, 0f,l, 0f, cone_height, cone_width).draw(0f, 0f, 0f, .01f, line_width);
+                    new Arrow(0f, 0f, 1f, 1f, 0f, 0f,l, cone_height, cone_width).draw(0f, 0f, 0f, .01f, line_width);
                     GL11.glPopMatrix();
                 }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);

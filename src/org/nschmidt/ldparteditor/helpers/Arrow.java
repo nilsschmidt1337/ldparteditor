@@ -133,6 +133,10 @@ public class Arrow {
     }
 
     public void draw(float x, float y, float z, float zoom) {
+        draw(x, y, z, zoom, 2f);
+    }
+
+    public void draw(float x, float y, float z, float zoom, float lineWidth) {
         final float zoom_inv = 1f / zoom;
         GL11.glPushMatrix();
 
@@ -140,7 +144,7 @@ public class Arrow {
         GL11.glMultMatrix(matrix);
         GL11.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
-        GL11.glLineWidth(2f);
+        GL11.glLineWidth(lineWidth);
         GL11.glColor4f(r, g, b, a);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(0f, 0f, 0f);

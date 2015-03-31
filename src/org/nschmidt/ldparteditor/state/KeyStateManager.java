@@ -85,6 +85,7 @@ public class KeyStateManager {
      */
     public void setStates(int keyCode, int keyEventType) {
         if (cp == null) {
+            // Logic for Composite3D
             if (keyEventType == SWT.KeyDown && !pressedKeyCodes.contains(keyCode)) {
                 NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") down]"); //$NON-NLS-1$ //$NON-NLS-2$
                 if (keyCode == SWT.ESC) {
@@ -118,6 +119,7 @@ public class KeyStateManager {
                 renderer.getC3D().getKeys().synchronise(this);
             }
         } else {
+            // Logic for CompositePrimitive
             if (keyEventType == SWT.KeyDown && !pressedKeyCodes.contains(keyCode)) {
                 NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") down]"); //$NON-NLS-1$ //$NON-NLS-2$
                 if (keyCode == SWT.PAGE_UP || keyCode == SWT.UP) {
