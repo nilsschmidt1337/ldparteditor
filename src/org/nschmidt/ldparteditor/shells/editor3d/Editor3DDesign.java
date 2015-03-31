@@ -17,6 +17,10 @@ package org.nschmidt.ldparteditor.shells.editor3d;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
@@ -1904,14 +1908,78 @@ class Editor3DDesign extends ApplicationWindow {
                     if (configSize < 2) {
                         if (configSize == 1) {
                             Composite3DState state = threeDconfig.get(0);
-                            createComposite3D(sashForm, state);
+                            createComposite3D(sashForm, null, state);
                         } else {
                             @SuppressWarnings("unused")
                             CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
                         }
                     } else {
                         // FIXME Load the configuration of multiple 3D windows
-                        throw new UnsupportedOperationException();
+                        Collections.sort(threeDconfig, new Comparator<Composite3DState>(
+                                ) {
+                            @Override
+                            public int compare(Composite3DState o1, Composite3DState o2) {
+                                final int cmp = Integer.compare(o1.getPath().length(), o2.getPath().length());
+                                if (cmp == 0) {
+                                    return o1.getPath().compareTo(o2.getPath());
+                                }
+                                return cmp;
+                            }
+                        });
+                        CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
+
+                        HashSet<String> splitCandidate = new HashSet<String>();
+                        HashSet<String> splitAlready = new HashSet<String>();
+                        HashMap<String, CompositeContainer> cmpMap = new HashMap<String, CompositeContainer>();
+                        HashMap<String, Composite3DState> sMap = new HashMap<String, Composite3DState>();
+
+                        splitCandidate.add("|"); //$NON-NLS-1$
+                        splitAlready.add("|"); //$NON-NLS-1$
+                        {
+                            SashForm sf;
+                            if (!threeDconfig.get(0).isVertical()) {
+                                sf = cmp_Container.getComposite3D().getModifier().splitViewVertically();
+                            } else {
+                                sf = cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
+                            }
+                            sf.setWeights(threeDconfig.get(0).getWeights());
+                            cmpMap.put("|s1|", (CompositeContainer) sf.getChildren()[0]); //$NON-NLS-1$
+                            cmpMap.put("|s2|", (CompositeContainer) sf.getChildren()[1]); //$NON-NLS-1$
+                        }
+                        for (Composite3DState state : threeDconfig) {
+                            String path = state.getPath();
+                            String parentPath = state.getParentPath();
+                            if (state.isSash()) {
+                                sMap.put(path, state);
+                            }
+                            if (!splitAlready.contains(path) && !splitCandidate.contains(path)) {
+                                splitCandidate.add(path);
+                            }
+                            if (splitCandidate.contains(parentPath) && !splitAlready.contains(parentPath) && cmpMap.containsKey(parentPath) && sMap.containsKey(parentPath)) {
+                                {
+                                    Composite3DState state2 = sMap.get(parentPath);
+                                    CompositeContainer c = cmpMap.get(parentPath);
+                                    SashForm sf;
+                                    if (!state2.isVertical()) {
+                                        sf = c.getComposite3D().getModifier().splitViewVertically();
+                                    } else {
+                                        sf = c.getComposite3D().getModifier().splitViewHorizontally();
+                                    }
+                                    sf.setWeights(state2.getWeights());
+                                    cmpMap.remove(parentPath);
+                                    cmpMap.put(parentPath + "s1|", (CompositeContainer) sf.getChildren()[0]); //$NON-NLS-1$
+                                    cmpMap.put(parentPath + "s2|", (CompositeContainer) sf.getChildren()[1]); //$NON-NLS-1$
+                                }
+                                splitAlready.add(parentPath);
+                            }
+                        }
+
+                        for (Composite3DState state : threeDconfig) {
+                            String path = state.getPath();
+                            if (cmpMap.containsKey(path)) {
+                                createComposite3D(null, cmpMap.get(path), state);
+                            }
+                        }
                     }
                 }
 
@@ -1940,10 +2008,15 @@ class Editor3DDesign extends ApplicationWindow {
         return container;
     }
 
-    private void createComposite3D(SashForm sashForm, Composite3DState state) {
+    private void createComposite3D(SashForm sashForm, CompositeContainer c, Composite3DState state) {
         // Load the configuration of one 3D window
-        final CompositeContainer cmp_Container = new CompositeContainer(sashForm, state.hasScales());
-        final Composite3D c3d = cmp_Container.getComposite3D();
+        final Composite3D c3d;
+        if (c == null) {
+            final CompositeContainer cmp_Container = new CompositeContainer(sashForm, state.hasScales());
+            c3d = cmp_Container.getComposite3D();
+        } else {
+            c3d = c.getComposite3D();
+        }
         final int renderMode = state.getRenderMode();
         final int lineMode = state.getLineMode();
         final Perspective perspective = state.getPerspective();
