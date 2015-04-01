@@ -42,6 +42,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class HistoryManager {
 
@@ -415,7 +416,7 @@ public class HistoryManager {
     }
 
     private void action(final int mode) {
-        if (df.isReadOnly() || !df.getVertexManager().isUpdated()) return;
+        if (df.isReadOnly() || !df.getVertexManager().isUpdated() && WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) return;
         if (action.get() == 0) {
             BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
                 @Override
