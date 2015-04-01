@@ -450,7 +450,9 @@ class EditorTextDesign extends ApplicationWindow {
                     }
                 } else {
                     int num = gColour2[0].getColourNumber();
-                    if (View.getLDConfigColour(num) == null) {
+                    if (View.hasLDConfigColour(num)) {
+                        gColour2[0] = View.getLDConfigColour(num);
+                    } else {
                         num = -1;
                     }
 
