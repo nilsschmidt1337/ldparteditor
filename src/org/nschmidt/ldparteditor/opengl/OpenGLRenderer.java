@@ -444,13 +444,8 @@ public class OpenGLRenderer {
                     new Arc(c.getR(), c.getG(), c.getB(), 1f, manipulator.getXaxis().x, manipulator.getXaxis().y, manipulator.getXaxis().z, rotateSize, arcWidth).draw(mx, my, mz, zoom);
 
                     if (manipulator.isX_Rotate()) {
-                        c = manipulator.checkManipulatorStatus(.5f, 0f, 0f, Manipulator.X_ROTATE_BACKWARDS, c3d, zoom);
-                        if (!manipulator.isX_rotatingBackwards_lock())
-                            new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getX_Backwards().x, rotateSize * manipulator.getX_Backwards().y, rotateSize * manipulator.getX_Backwards().z, cone_height, cone_width, lineWidth)
-                        .draw(mx, my, mz, zoom);
-                        c = manipulator.checkManipulatorStatus(.25f, 0f, 0f, Manipulator.X_ROTATE_FORWARDS, c3d, zoom);
-                        if (!manipulator.isX_rotatingForwards_lock())
-                            new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getX_Forwards().x, rotateSize * manipulator.getX_Forwards().y, rotateSize * manipulator.getX_Forwards().z, cone_height, cone_width, lineWidth)
+                        c = manipulator.checkManipulatorStatus(.5f, 0f, 0f, Manipulator.X_ROTATE_ARROW, c3d, zoom);
+                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getX_RotateArrow().x, rotateSize * manipulator.getX_RotateArrow().y, rotateSize * manipulator.getX_RotateArrow().z, cone_height, cone_width, lineWidth)
                         .draw(mx, my, mz, zoom);
                     }
 
@@ -458,13 +453,8 @@ public class OpenGLRenderer {
                     new Arc(c.getR(), c.getG(), c.getB(), 1f, manipulator.getYaxis().x, manipulator.getYaxis().y, manipulator.getYaxis().z, rotateSize, arcWidth).draw(mx, my, mz, zoom);
 
                     if (manipulator.isY_Rotate()) {
-                        c = manipulator.checkManipulatorStatus(0f, .5f, 0f, Manipulator.Y_ROTATE_BACKWARDS, c3d, zoom);
-                        if (!manipulator.isY_rotatingBackwards_lock())
-                            new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getY_Backwards().x, rotateSize * manipulator.getY_Backwards().y, rotateSize * manipulator.getY_Backwards().z, cone_height, cone_width, lineWidth)
-                        .draw(mx, my, mz, zoom);
-                        c = manipulator.checkManipulatorStatus(0f, .25f, 0f, Manipulator.Y_ROTATE_FORWARDS, c3d, zoom);
-                        if (!manipulator.isY_rotatingForwards_lock())
-                            new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getY_Forwards().x, rotateSize * manipulator.getY_Forwards().y, rotateSize * manipulator.getY_Forwards().z, cone_height, cone_width, lineWidth)
+                        c = manipulator.checkManipulatorStatus(0f, .5f, 0f, Manipulator.Y_ROTATE_ARROW, c3d, zoom);
+                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getY_RotateArrow().x, rotateSize * manipulator.getY_RotateArrow().y, rotateSize * manipulator.getY_RotateArrow().z, cone_height, cone_width, lineWidth)
                         .draw(mx, my, mz, zoom);
                     }
 
@@ -473,12 +463,7 @@ public class OpenGLRenderer {
 
                     if (manipulator.isZ_Rotate()) {
                         c = manipulator.checkManipulatorStatus(0f, 0f, .5f, Manipulator.Z_ROTATE_ARROW, c3d, zoom);
-                        if (!manipulator.isZ_rotating_lock())
-                            new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getZ_RotateArrow().x, rotateSize * manipulator.getZ_RotateArrow().y, rotateSize * manipulator.getZ_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .draw(mx, my, mz, zoom);
-                        c = manipulator.checkManipulatorStatus(0f, 0f, .25f, Manipulator.Z_ROTATE_FORWARDS, c3d, zoom);
-                        if (!manipulator.isZ_rotatingForwards_lock())
-                            new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getZ_Forwards().x, rotateSize * manipulator.getZ_Forwards().y, rotateSize * manipulator.getZ_Forwards().z, cone_height, cone_width, lineWidth)
+                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getZ_RotateArrow().x, rotateSize * manipulator.getZ_RotateArrow().y, rotateSize * manipulator.getZ_RotateArrow().z, cone_height, cone_width, lineWidth)
                         .draw(mx, my, mz, zoom);
                     }
 
@@ -489,7 +474,7 @@ public class OpenGLRenderer {
 
                     if (manipulator.isV_Rotate()) {
                         c = manipulator.checkManipulatorStatus(.7f, .7f, .7f, Manipulator.V_ROTATE_ARROW, c3d, zoom);
-                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateOuterSize * manipulator.getV_Backwards().x, rotateOuterSize * manipulator.getV_Backwards().y, rotateOuterSize * manipulator.getV_Backwards().z, cone_height, cone_width, lineWidth)
+                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateOuterSize * manipulator.getV_RotateArrow().x, rotateOuterSize * manipulator.getV_RotateArrow().y, rotateOuterSize * manipulator.getV_RotateArrow().z, cone_height, cone_width, lineWidth)
                         .draw(mx, my, mz, zoom);
                     }
                     if (singleMode)

@@ -33,7 +33,6 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
-import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -56,15 +55,9 @@ public class Manipulator {
 
     public static final int V_ROTATE = 9;
 
-    public static final int X_ROTATE_FORWARDS = 10;
-    public static final int X_ROTATE_BACKWARDS = 11;
-
-    public static final int Y_ROTATE_FORWARDS = 12;
-    public static final int Y_ROTATE_BACKWARDS = 13;
-
-    public static final int Z_ROTATE_FORWARDS = 14;
+    public static final int X_ROTATE_ARROW = 11;
+    public static final int Y_ROTATE_ARROW = 13;
     public static final int Z_ROTATE_ARROW = 15;
-
     public static final int V_ROTATE_ARROW = 17;
 
     private final Matrix4f result = new Matrix4f();
@@ -90,14 +83,10 @@ public class Manipulator {
     private BigDecimal[] accurateYaxis = new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO };
     private BigDecimal[] accurateZaxis = new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE };
 
-    private Vector4f x_forwards = new Vector4f(0f, 0f, 1f, 1f);
-    private Vector4f x_backwards = new Vector4f(0f, 0f, 1f, 1f);
-    private Vector4f y_forwards = new Vector4f(0f, 0f, 1f, 1f);
-    private Vector4f y_backwards = new Vector4f(0f, 0f, 1f, 1f);
-    private Vector4f z_forwards = new Vector4f(0f, 0f, 1f, 1f);
+    private Vector4f x_rotateArrow = new Vector4f(0f, 0f, 1f, 1f);
+    private Vector4f y_rotateArrow = new Vector4f(0f, 0f, 1f, 1f);
     private Vector4f z_rotateArrow = new Vector4f(0f, 0f, 1f, 1f);
-    private Vector4f v_forwards = new Vector4f(0f, 0f, 1f, 1f);
-    private Vector4f v_backwards = new Vector4f(0f, 0f, 1f, 1f);
+    private Vector4f v_rotateArrow = new Vector4f(0f, 0f, 1f, 1f);
 
     private static BigDecimal snap_x_Translate = new BigDecimal("100"); //$NON-NLS-1$
     private static BigDecimal snap_y_Translate = new BigDecimal("100"); //$NON-NLS-1$
@@ -254,15 +243,6 @@ public class Manipulator {
 
     private int calmDownCounter = 1;
 
-    private boolean x_rotatingForwards_lock = false;
-    private boolean x_rotatingBackwards_lock = false;
-
-    private boolean y_rotatingForwards_lock = false;
-    private boolean y_rotatingBackwards_lock = false;
-
-    private boolean z_rotatingForwards_lock = false;
-    private boolean z_rotating_lock = false;
-
     private final float PI16TH = (float) (Math.PI / 16d);
 
     private Vector4f x_Rotate_start = new Vector4f(1f, 0f, 0f, 1f);
@@ -307,36 +287,20 @@ public class Manipulator {
         return zAxis;
     }
 
-    public Vector4f getX_Forwards() {
-        return x_forwards;
+    public Vector4f getX_RotateArrow() {
+        return x_rotateArrow;
     }
 
-    public Vector4f getX_Backwards() {
-        return x_backwards;
-    }
-
-    public Vector4f getY_Forwards() {
-        return y_forwards;
-    }
-
-    public Vector4f getY_Backwards() {
-        return y_backwards;
-    }
-
-    public Vector4f getZ_Forwards() {
-        return z_forwards;
+    public Vector4f getY_RotateArrow() {
+        return y_rotateArrow;
     }
 
     public Vector4f getZ_RotateArrow() {
         return z_rotateArrow;
     }
 
-    public Vector4f getV_Forwards() {
-        return v_forwards;
-    }
-
-    public Vector4f getV_Backwards() {
-        return v_backwards;
+    public Vector4f getV_RotateArrow() {
+        return v_rotateArrow;
     }
 
     public Vector4f getPosition() {
@@ -487,33 +451,24 @@ public class Manipulator {
         this.v_rotatingBackwards = v_rotatingBackwards;
     }
 
-    public boolean isX_rotatingForwards_lock() {
-        return x_rotatingForwards_lock;
-    }
-
-    public boolean isX_rotatingBackwards_lock() {
-        return x_rotatingBackwards_lock;
-    }
-
-    public boolean isY_rotatingForwards_lock() {
-        return y_rotatingForwards_lock;
-    }
-
-    public boolean isY_rotatingBackwards_lock() {
-        return y_rotatingBackwards_lock;
-    }
-
-    public boolean isZ_rotatingForwards_lock() {
-        return z_rotatingForwards_lock;
-    }
-
-    public boolean isZ_rotating_lock() {
-        return z_rotating_lock;
-    }
-
     public GColour checkManipulatorStatus(float r, float g, float b, int type, Composite3D c3d, float zoom) {
         Vector4f[] gen = c3d.getGenerator();
+        Vector3f axis = null;
         // Check if its rotation
+        switch (type) {
+        case X_ROTATE_ARROW:
+            axis = new Vector3f(xAxis.x, xAxis.y, xAxis.z);
+            break;
+        case Y_ROTATE_ARROW:
+            axis = new Vector3f(yAxis.x, yAxis.y, yAxis.z);
+            break;
+        case Z_ROTATE_ARROW:
+            axis = new Vector3f(zAxis.x, zAxis.y, zAxis.z);
+            break;
+        case V_ROTATE_ARROW:
+            axis = new Vector3f(gen[2].x, gen[2].y, gen[2].z);
+            break;
+        }
         switch (type) {
         case X_ROTATE:
         case Y_ROTATE:
@@ -521,7 +476,6 @@ public class Manipulator {
         case V_ROTATE:
             // Take the axis
             Vector4f vector = null;
-            Vector3f axis = null;
             switch (type) {
             case X_ROTATE:
                 if (lock) {
@@ -694,32 +648,16 @@ public class Manipulator {
                     z_Translate = false;
                 size = translate_size;
                 break;
-            case X_ROTATE_BACKWARDS:
-                x_rotatingBackwards = false;
+            case X_ROTATE_ARROW:
                 size = rotate_size;
                 break;
-            case X_ROTATE_FORWARDS:
-                x_rotatingForwards = false;
-                size = rotate_size;
-                break;
-            case Y_ROTATE_BACKWARDS:
-                y_rotatingBackwards = false;
-                size = rotate_size;
-                break;
-            case Y_ROTATE_FORWARDS:
-                y_rotatingForwards = false;
+            case Y_ROTATE_ARROW:
                 size = rotate_size;
                 break;
             case Z_ROTATE_ARROW:
-                z_rotatingBackwards = false;
-                size = rotate_size;
-                break;
-            case Z_ROTATE_FORWARDS:
-                z_rotatingForwards = false;
                 size = rotate_size;
                 break;
             case V_ROTATE_ARROW:
-                v_rotatingBackwards = false;
                 size = rotate_outer_size;
                 break;
             }
@@ -738,167 +676,177 @@ public class Manipulator {
             case Z_SCALE:
                 vector = new Vector4f(zAxis);
                 break;
-            case X_ROTATE_BACKWARDS:
+            case X_ROTATE_ARROW:
                 vector = new Vector4f(x_Rotate_start);
-                Matrix4f m = new Matrix4f();
-                Matrix4f.setIdentity(m);
-                m.rotate(-Math.max(snap_x_Rotate.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
-                Matrix4f.transform(m, vector, vector);
                 vector.setW(0f);
                 vector.normalise();
                 vector.setW(1f);
-                x_backwards.set(vector);
+                x_rotateArrow.set(vector);
                 break;
-            case X_ROTATE_FORWARDS:
-                vector = new Vector4f(x_Rotate_start);
-                m = new Matrix4f();
-                Matrix4f.setIdentity(m);
-                m.rotate(Math.max(snap_x_Rotate.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
-                Matrix4f.transform(m, vector, vector);
-                vector.setW(0f);
-                vector.normalise();
-                vector.setW(1f);
-                x_forwards.set(vector);
-                break;
-            case Y_ROTATE_BACKWARDS:
+            case Y_ROTATE_ARROW:
                 vector = new Vector4f(y_Rotate_start);
-                m = new Matrix4f();
-                Matrix4f.setIdentity(m);
-                m.rotate(-Math.max(snap_y_Rotate.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
-                Matrix4f.transform(m, vector, vector);
                 vector.setW(0f);
                 vector.normalise();
                 vector.setW(1f);
-                y_backwards.set(vector);
-                break;
-            case Y_ROTATE_FORWARDS:
-                vector = new Vector4f(y_Rotate_start);
-                m = new Matrix4f();
-                Matrix4f.setIdentity(m);
-                m.rotate(Math.max(snap_y_Rotate.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
-                Matrix4f.transform(m, vector, vector);
-                vector.setW(0f);
-                vector.normalise();
-                vector.setW(1f);
-                y_forwards.set(vector);
+                y_rotateArrow.set(vector);
                 break;
             case Z_ROTATE_ARROW:
                 vector = new Vector4f(z_Rotate_start);
-                m = new Matrix4f();
-                Matrix4f.setIdentity(m);
-                m.rotate(-Math.max(snap_z_Rotate.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
-                Matrix4f.transform(m, vector, vector);
                 vector.setW(0f);
                 vector.normalise();
                 vector.setW(1f);
                 z_rotateArrow.set(vector);
                 break;
-            case Z_ROTATE_FORWARDS:
-                vector = new Vector4f(z_Rotate_start);
-                m = new Matrix4f();
-                Matrix4f.setIdentity(m);
-                m.rotate(Math.max(snap_z_Rotate.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
-                Matrix4f.transform(m, vector, vector);
-                vector.setW(0f);
-                vector.normalise();
-                vector.setW(1f);
-                z_forwards.set(vector);
-                break;
             case V_ROTATE_ARROW:
                 vector = new Vector4f(v_Rotate_start);
-                //                m = new Matrix4f();
-                //                Matrix4f.setIdentity(m);
-                //                m.rotate(-Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-                //                Matrix4f.transform(m, vector, vector);
                 vector.setW(0f);
                 vector.normalise();
                 vector.setW(1f);
-                v_backwards.set(vector);
+                v_rotateArrow.set(vector);
                 break;
             }
             vector.scale(size / zoom / 1000f);
 
             final boolean rotate;
-            final boolean rotate2;
             switch (type) {
-            case X_ROTATE_BACKWARDS:
-            case X_ROTATE_FORWARDS:
-            case Y_ROTATE_BACKWARDS:
-            case Y_ROTATE_FORWARDS:
+            case X_ROTATE_ARROW:
+            case Y_ROTATE_ARROW:
             case Z_ROTATE_ARROW:
-            case Z_ROTATE_FORWARDS:
             case V_ROTATE_ARROW:
-                rotate2 = lock;
                 rotate = true;
                 break;
             default:
-                rotate2 = false;
                 rotate = false;
             }
-            Vector4f virtpos = new Vector4f(Vector4f.add(vector, position, null));
-            Vector4f screenpos = c3d.getPerspectiveCalculator().getScreenCoordinatesFrom3D(virtpos.x, virtpos.y, virtpos.z);
 
             if (rotate) {
-                Vector4f screenpos0 = c3d.getPerspectiveCalculator().getScreenCoordinatesFrom3D(position.x, position.y, position.z);
-
-                float position = Math.signum((screenpos.x-screenpos0.x)*(c3d.getMousePosition().y-screenpos0.y) - (screenpos.y-screenpos0.y)*(c3d.getMousePosition().x-screenpos0.x));
-
-                if (rotate2) {
-                    NLogger.debug(getClass(), "Calculate..." + position); //$NON-NLS-1$
-                }
-
-                float dists = (float) (Math.pow(c3d.getMousePosition().x - screenpos.x, 2) + Math.pow(c3d.getMousePosition().y - screenpos.y, 2));
-                if (dists < activationTreshold || lock) {
+                Vector4f vector3 = new Vector4f(vector);
+                vector3.scale(.25f);
+                Vector4f virtpos3 = new Vector4f(Vector4f.add(vector3, position, null));
+                Vector4f screenpos3 = c3d.getPerspectiveCalculator().getScreenCoordinatesFrom3D(virtpos3.x, virtpos3.y, virtpos3.z);
+                float dists = (float) (Math.pow(c3d.getMousePosition().x - screenpos3.x, 2) + Math.pow(c3d.getMousePosition().y - screenpos3.y, 2));
+                float dists3 = Float.MAX_VALUE;
+                int position2 = 0;
+                {
+                    Vector4f vector2 = new Vector4f(vector);
+                    vector2.scale(.25f);
+                    Matrix4f m = new Matrix4f();
+                    Matrix4f.setIdentity(m);
                     switch (type) {
-                    case X_ROTATE_BACKWARDS:
-                        if (position > 0) {
-                            x_rotatingBackwards = true;
-                        }else {
-                            x_rotatingForwards = true;
-                        }
+                    case X_ROTATE_ARROW:
+                        m.rotate(Math.max(snap_x_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
                         break;
-                    case X_ROTATE_FORWARDS:
-                        if (position > 0) {
-                            x_rotatingForwards = true;
-                        }else {
-                            x_rotatingBackwards = true;
-                        }
-                        break;
-                    case Y_ROTATE_BACKWARDS:
-                        if (position > 0) {
-                            y_rotatingBackwards = true;
-                        }else {
-                            y_rotatingForwards = true;
-                        }
-                        break;
-                    case Y_ROTATE_FORWARDS:
-                        if (position > 0) {
-                            y_rotatingForwards = true;
-                        }else {
-                            y_rotatingBackwards = true;
-                        }
+                    case Y_ROTATE_ARROW:
+                        m.rotate(Math.max(snap_y_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
                         break;
                     case Z_ROTATE_ARROW:
-                        if (position > 0) {
-                            z_rotatingBackwards = true;
-                        }else {
-                            z_rotatingForwards = true;
-                        }
-                        break;
-                    case Z_ROTATE_FORWARDS:
-                        if (position > 0) {
-                            z_rotatingForwards = true;
-                        }else {
-                            z_rotatingBackwards = true;
-                        }
+                        m.rotate(Math.max(snap_z_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
                         break;
                     case V_ROTATE_ARROW:
-                        if (position < 0) {
+                        m.rotate(Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        break;
+                    }
+                    Matrix4f.transform(m, vector2, vector2);
+                    Vector4f virtpos2 = new Vector4f(Vector4f.add(vector2, position, null));
+                    Vector4f screenpos2 = c3d.getPerspectiveCalculator().getScreenCoordinatesFrom3D(virtpos2.x, virtpos2.y, virtpos2.z);
+                    dists3 = (float) (Math.pow(c3d.getMousePosition().x - screenpos2.x, 2) + Math.pow(c3d.getMousePosition().y - screenpos2.y, 2));
+                    if (dists3 < dists) {
+                        position2 = -1;
+                    }
+                }
+                {
+                    Vector4f vector2 = new Vector4f(vector);
+                    vector2.scale(.25f);
+                    Matrix4f m = new Matrix4f();
+                    Matrix4f.setIdentity(m);
+                    switch (type) {
+                    case X_ROTATE_ARROW:
+                        m.rotate(-Math.max(snap_x_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        break;
+                    case Y_ROTATE_ARROW:
+                        m.rotate(-Math.max(snap_y_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        break;
+                    case Z_ROTATE_ARROW:
+                        m.rotate(-Math.max(snap_z_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        break;
+                    case V_ROTATE_ARROW:
+                        m.rotate(-Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        break;
+                    }
+                    Matrix4f.transform(m, vector2, vector2);
+                    Vector4f virtpos2 = new Vector4f(Vector4f.add(vector2, position, null));
+                    Vector4f screenpos2 = c3d.getPerspectiveCalculator().getScreenCoordinatesFrom3D(virtpos2.x, virtpos2.y, virtpos2.z);
+                    float dists2 = (float) (Math.pow(c3d.getMousePosition().x - screenpos2.x, 2) + Math.pow(c3d.getMousePosition().y - screenpos2.y, 2));
+                    if (dists2 < dists3 && dists2 < dists) {
+                        position2 = 1;
+                    }
+                }
+                if (dists < activationTreshold || position2 != 0) {
+                    switch (type) {
+                    case X_ROTATE_ARROW:
+                        if (position2 < 0) {
                             if (calmDownCounter > 0) {
                                 calmDownCounter -= 1;
                                 break;
                             } else {
-                                calmDownCounter = -10;
+                                calmDownCounter = -2;
+                                x_rotatingForwards = true;
+                            }
+                        }else {
+                            if (calmDownCounter < 0) {
+                                calmDownCounter += 1;
+                                break;
+                            } else {
+                                calmDownCounter = 2;
+                                x_rotatingBackwards = true;
+                            }
+                        }
+                        break;
+                    case Y_ROTATE_ARROW:
+                        if (position2 < 0) {
+                            if (calmDownCounter > 0) {
+                                calmDownCounter -= 1;
+                                break;
+                            } else {
+                                calmDownCounter = -2;
+                                y_rotatingForwards = true;
+                            }
+                        }else {
+                            if (calmDownCounter < 0) {
+                                calmDownCounter += 1;
+                                break;
+                            } else {
+                                calmDownCounter = 2;
+                                y_rotatingBackwards = true;
+                            }
+                        }
+                        break;
+                    case Z_ROTATE_ARROW:
+                        if (position2 < 0) {
+                            if (calmDownCounter > 0) {
+                                calmDownCounter -= 1;
+                                break;
+                            } else {
+                                calmDownCounter = -2;
+                                z_rotatingForwards = true;
+                            }
+                        }else {
+                            if (calmDownCounter < 0) {
+                                calmDownCounter += 1;
+                                break;
+                            } else {
+                                calmDownCounter = 2;
+                                z_rotatingBackwards = true;
+                            }
+                        }
+                        break;
+                    case V_ROTATE_ARROW:
+                        if (position2 < 0) {
+                            if (calmDownCounter > 0) {
+                                calmDownCounter -= 1;
+                                break;
+                            } else {
+                                calmDownCounter = -2;
                                 v_rotatingForwards = true;
                             }
                         }else {
@@ -906,7 +854,7 @@ public class Manipulator {
                                 calmDownCounter += 1;
                                 break;
                             } else {
-                                calmDownCounter = 10;
+                                calmDownCounter = 2;
                                 v_rotatingBackwards = true;
                             }
                         }
@@ -917,6 +865,8 @@ public class Manipulator {
                     return new GColour(-1, r, g, b, 1f);
                 }
             } else {
+                Vector4f virtpos = new Vector4f(Vector4f.add(vector, position, null));
+                Vector4f screenpos = c3d.getPerspectiveCalculator().getScreenCoordinatesFrom3D(virtpos.x, virtpos.y, virtpos.z);
                 float dists = (float) (Math.pow(c3d.getMousePosition().x - screenpos.x, 2) + Math.pow(c3d.getMousePosition().y - screenpos.y, 2));
                 if (dists < activationTreshold) {
                     switch (type) {
@@ -949,15 +899,10 @@ public class Manipulator {
 
     public void lock() {
         lock = true;
+        calmDownCounter = 0;
     }
 
     public void unlock() {
-        x_rotatingForwards_lock = false;
-        x_rotatingBackwards_lock = false;
-        y_rotatingForwards_lock = false;
-        y_rotatingBackwards_lock = false;
-        z_rotatingForwards_lock = false;
-        z_rotating_lock = false;
         lock = false;
     }
 
@@ -1161,16 +1106,32 @@ public class Manipulator {
 
         if (x_Rotate) {
             while (true) {
-                if (x_rotatingForwards && !x_rotatingForwards_lock) {
-                    x_rotatingBackwards_lock = true;
+                if (x_rotatingForwards) {
                     transformation.rotate(snap_x_Rotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_x_Rotate, snap_x_RotateFlag, accurateXaxis);
-                    x_Rotate_start.set(x_forwards);
-                } else if (x_rotatingBackwards && !x_rotatingBackwards_lock) {
-                    x_rotatingForwards_lock = true;
+                    Vector4f vector = new Vector4f(x_rotateArrow);
+                    Matrix4f m = new Matrix4f();
+                    Matrix4f.setIdentity(m);
+                    m.rotate(Math.max(snap_x_Rotate.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+                    Matrix4f.transform(m, vector, vector);
+                    vector.setW(0f);
+                    vector.normalise();
+                    vector.setW(1f);
+                    x_rotateArrow.set(vector);
+                    x_Rotate_start.set(x_rotateArrow);
+                } else if (x_rotatingBackwards) {
                     transformation.rotate(-snap_x_Rotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_x_Rotate.negate(), snap_x_RotateFlag, accurateXaxis);
-                    x_Rotate_start.set(x_backwards);
+                    Vector4f vector = new Vector4f(x_rotateArrow);
+                    Matrix4f m = new Matrix4f();
+                    Matrix4f.setIdentity(m);
+                    m.rotate(-Math.max(snap_x_Rotate.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+                    Matrix4f.transform(m, vector, vector);
+                    vector.setW(0f);
+                    vector.normalise();
+                    vector.setW(1f);
+                    x_rotateArrow.set(vector);
+                    x_Rotate_start.set(x_rotateArrow);
                 } else {
                     break;
                 }
@@ -1192,16 +1153,32 @@ public class Manipulator {
 
         if (y_Rotate) {
             while (true) {
-                if (y_rotatingForwards && !y_rotatingForwards_lock) {
-                    y_rotatingBackwards_lock = true;
+                if (y_rotatingForwards) {
                     transformation.rotate(snap_y_Rotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_y_Rotate, snap_y_RotateFlag, accurateYaxis);
-                    y_Rotate_start.set(y_forwards);
-                } else if (y_rotatingBackwards && !y_rotatingBackwards_lock) {
-                    y_rotatingForwards_lock = true;
+                    Vector4f vector = new Vector4f(y_rotateArrow);
+                    Matrix4f m = new Matrix4f();
+                    Matrix4f.setIdentity(m);
+                    m.rotate(Math.max(snap_y_Rotate.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+                    Matrix4f.transform(m, vector, vector);
+                    vector.setW(0f);
+                    vector.normalise();
+                    vector.setW(1f);
+                    y_rotateArrow.set(vector);
+                    y_Rotate_start.set(y_rotateArrow);
+                } else if (y_rotatingBackwards) {
                     transformation.rotate(-snap_y_Rotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_y_Rotate.negate(), snap_y_RotateFlag, accurateYaxis);
-                    y_Rotate_start.set(y_backwards);
+                    Vector4f vector = new Vector4f(y_rotateArrow);
+                    Matrix4f m = new Matrix4f();
+                    Matrix4f.setIdentity(m);
+                    m.rotate(-Math.max(snap_y_Rotate.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+                    Matrix4f.transform(m, vector, vector);
+                    vector.setW(0f);
+                    vector.normalise();
+                    vector.setW(1f);
+                    y_rotateArrow.set(vector);
+                    y_Rotate_start.set(y_rotateArrow);
                 } else {
                     break;
                 }
@@ -1223,15 +1200,31 @@ public class Manipulator {
 
         if (z_Rotate) {
             while (true) {
-                if (z_rotatingForwards && !z_rotatingForwards_lock) {
-                    z_rotating_lock = true;
+                if (z_rotatingForwards) {
                     transformation.rotate(snap_z_Rotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_z_Rotate, snap_z_RotateFlag, accurateZaxis);
-                    z_Rotate_start.set(z_forwards);
-                } else if (z_rotatingBackwards && !z_rotating_lock) {
-                    z_rotatingForwards_lock = true;
+                    Vector4f vector = new Vector4f(z_rotateArrow);
+                    Matrix4f m = new Matrix4f();
+                    Matrix4f.setIdentity(m);
+                    m.rotate(Math.max(snap_z_Rotate.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+                    Matrix4f.transform(m, vector, vector);
+                    vector.setW(0f);
+                    vector.normalise();
+                    vector.setW(1f);
+                    z_rotateArrow.set(vector);
+                    z_Rotate_start.set(z_rotateArrow);
+                } else if (z_rotatingBackwards) {
                     transformation.rotate(-snap_z_Rotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_z_Rotate.negate(), snap_z_RotateFlag, accurateZaxis);
+                    Vector4f vector = new Vector4f(z_rotateArrow);
+                    Matrix4f m = new Matrix4f();
+                    Matrix4f.setIdentity(m);
+                    m.rotate(-Math.max(snap_z_Rotate.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+                    Matrix4f.transform(m, vector, vector);
+                    vector.setW(0f);
+                    vector.normalise();
+                    vector.setW(1f);
+                    z_rotateArrow.set(vector);
                     z_Rotate_start.set(z_rotateArrow);
                 } else {
                     break;
@@ -1258,7 +1251,7 @@ public class Manipulator {
                 if (v_rotatingForwards) {
                     transformation.rotate(snap_v_Rotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_v_Rotate, snap_v_RotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
-                    Vector4f vector = new Vector4f(v_backwards);
+                    Vector4f vector = new Vector4f(v_rotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
                     m.rotate(Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
@@ -1266,12 +1259,12 @@ public class Manipulator {
                     vector.setW(0f);
                     vector.normalise();
                     vector.setW(1f);
-                    v_backwards.set(vector);
-                    v_Rotate_start.set(v_backwards);
+                    v_rotateArrow.set(vector);
+                    v_Rotate_start.set(v_rotateArrow);
                 } else if (v_rotatingBackwards) {
                     transformation.rotate(-snap_v_Rotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_v_Rotate.negate(), snap_v_RotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
-                    Vector4f vector = new Vector4f(v_backwards);
+                    Vector4f vector = new Vector4f(v_rotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
                     m.rotate(-Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
@@ -1279,8 +1272,8 @@ public class Manipulator {
                     vector.setW(0f);
                     vector.normalise();
                     vector.setW(1f);
-                    v_backwards.set(vector);
-                    v_Rotate_start.set(v_backwards);
+                    v_rotateArrow.set(vector);
+                    v_Rotate_start.set(v_rotateArrow);
                 } else {
                     break;
                 }
