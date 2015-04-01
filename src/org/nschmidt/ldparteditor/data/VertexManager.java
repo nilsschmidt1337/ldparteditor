@@ -57,12 +57,12 @@ import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
 import org.nschmidt.ldparteditor.data.tools.Merger;
 import org.nschmidt.ldparteditor.enums.MergeTo;
+import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.enums.RotationSnap;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
-import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
@@ -4560,6 +4560,7 @@ public class VertexManager {
      * @param moveAdjacentData
      */
     private void transform(Set<GData> allData, Set<Vertex> allVertices, Matrix transformation, boolean updateSelection, boolean moveAdjacentData) {
+        HashSet<GData> allData2 = new HashSet<GData>(allData);
         TreeSet<Vertex> verticesToTransform = new TreeSet<Vertex>();
         verticesToTransform.addAll(allVertices);
         for (GData gd : allData) {
@@ -4600,7 +4601,7 @@ public class VertexManager {
                     } else {
                         verticesCountPerGData.put(gd, 1);
                     }
-                    allData.add(gd);
+                    allData2.add(gd);
                 }
             }
         }
@@ -4613,7 +4614,7 @@ public class VertexManager {
             selectedCondlines.clear();
         }
         HashSet<GData> allNewData = new HashSet<GData>();
-        for (GData gd : allData) {
+        for (GData gd : allData2) {
             GData newData = null;
             final int type = gd.type();
             switch (type) {
@@ -4640,7 +4641,7 @@ public class VertexManager {
                     Vertex v2 = oldToNewVertex.get(verts[1]);
                     if (v1 == null) v1 = verts[0]; else avc++;
                     if (v2 == null) v2 = verts[1]; else avc++;
-                    if (!moveAdjacentData && avc != 2) continue;
+                    if (!moveAdjacentData && (avc != 2 || !allData.contains(gd))) continue;
                     if (updateSelection) {
                         if (selectedVertices.contains(verts[0])) {
                             selectedVertices.remove(verts[0]);
@@ -4667,7 +4668,7 @@ public class VertexManager {
                     if (v1 == null) v1 = verts[0]; else avc++;
                     if (v2 == null) v2 = verts[1]; else avc++;
                     if (v3 == null) v3 = verts[2]; else avc++;
-                    if (!moveAdjacentData && avc != 3) continue;
+                    if (!moveAdjacentData && (avc != 3 || !allData.contains(gd))) continue;
                     if (updateSelection) {
                         if (selectedVertices.contains(verts[0])) {
                             selectedVertices.remove(verts[0]);
@@ -4700,7 +4701,7 @@ public class VertexManager {
                     if (v2 == null) v2 = verts[1]; else avc++;
                     if (v3 == null) v3 = verts[2]; else avc++;
                     if (v4 == null) v4 = verts[3]; else avc++;
-                    if (!moveAdjacentData && avc != 4) continue;
+                    if (!moveAdjacentData && (avc != 4 || !allData.contains(gd))) continue;
                     if (updateSelection) {
                         if (selectedVertices.contains(verts[0])) {
                             selectedVertices.remove(verts[0]);
@@ -4737,7 +4738,7 @@ public class VertexManager {
                     if (v2 == null) v2 = verts[1]; else avc++;
                     if (v3 == null) v3 = verts[2]; else avc++;
                     if (v4 == null) v4 = verts[3]; else avc++;
-                    if (!moveAdjacentData && avc != 4) continue;
+                    if (!moveAdjacentData && (avc != 4 || !allData.contains(gd))) continue;
                     if (updateSelection) {
                         if (selectedVertices.contains(verts[0])) {
                             selectedVertices.remove(verts[0]);

@@ -2129,6 +2129,11 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private void addColorButton(ToolItem toolItem_Colours, GColour gColour, final int index) {
+        int cn = gColour.getColourNumber();
+        if (cn != -1 && View.hasLDConfigColour(cn)) {
+            gColour = View.getLDConfigColour(cn);
+        }
+
         final int imgSize;
         switch (Editor3DWindow.getIconsize()) {
         case 0:
@@ -2186,7 +2191,9 @@ class Editor3DDesign extends ApplicationWindow {
                     WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
                     col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
                     int num = gColour2[0].getColourNumber();
-                    if (!View.hasLDConfigColour(num)) {
+                    if (View.hasLDConfigColour(num)) {
+                        gColour2[0] = View.getLDConfigColour(num);
+                    } else {
                         num = -1;
                     }
                     if (num != -1) {

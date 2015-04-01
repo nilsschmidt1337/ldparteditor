@@ -22,6 +22,8 @@ import org.eclipse.swt.SWT;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -47,6 +49,8 @@ public class KeyStateManager {
     private boolean shiftPressed;
     /** Indicates that CTRL is pressed */
     private boolean ctrlPressed;
+    /** Indicates that ALT is pressed */
+    private boolean altPressed;
 
     public KeyStateManager(Composite3D c3d) {
         this.c3d = c3d;
@@ -75,6 +79,13 @@ public class KeyStateManager {
     }
 
     /**
+     * @return {@code true} if ALT is pressed
+     */
+    public boolean isAltPressed() {
+        return altPressed;
+    }
+
+    /**
      * Sets the state of released and pressed keys and triggers eventually a
      * function
      *
@@ -88,11 +99,15 @@ public class KeyStateManager {
             // Logic for Composite3D
             if (keyEventType == SWT.KeyDown && !pressedKeyCodes.contains(keyCode)) {
                 NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") down]"); //$NON-NLS-1$ //$NON-NLS-2$
+                setKeyState(keyCode, true);
+                final DatFile df = c3d.getLockableDatFileReference();
+                final Editor3DWindow win = Editor3DWindow.getWindow();
+                final VertexManager vm = df.getVertexManager();
+
                 if (keyCode == SWT.ESC) {
                     // c3d.getModifier().closeView();
-                    DatFile df = c3d.getLockableDatFileReference();
                     if (df.getObjVertex1() == null && df.getObjVertex2() == null && df.getObjVertex3() == null && df.getObjVertex4() == null) {
-                        Editor3DWindow.getWindow().disableAddAction();
+                        win.disableAddAction();
                     }
                     df.setObjVertex1(null);
                     df.setObjVertex2(null);
@@ -100,13 +115,34 @@ public class KeyStateManager {
                     df.setObjVertex4(null);
                     df.setNearestObjVertex1(null);
                     df.setNearestObjVertex2(null);
-                    df.getVertexManager().clearSelection();
+                    vm.clearSelection();
                 }
                 if (keyCode == SWT.DEL) {
-                    c3d.getLockableDatFileReference().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
+                    vm.delete(win.isMovingAdjacentData(), true);
+                }
+
+                if (keyCode == 'c' && ctrlPressed && !(altPressed || shiftPressed)) {
+                    vm.copy();
+                } else if (keyCode == 'x' && ctrlPressed && !(altPressed || shiftPressed)) {
+                    vm.copy();
+                    vm.delete(win.isMovingAdjacentData(), true);
+                }else if (keyCode == 'v' && ctrlPressed && !(altPressed || shiftPressed)) {
+                    vm.paste();
+                    win.setMovingAdjacentData(false);
+                }
+
+                if (keyCode == '1' && !(altPressed || shiftPressed || ctrlPressed)) {
+                    win.setWorkingAction(WorkingMode.SELECT);
+                } else if (keyCode == '2' && !(altPressed || shiftPressed || ctrlPressed)) {
+                    win.setWorkingAction(WorkingMode.MOVE);
+                } else if (keyCode == '3' && !(altPressed || shiftPressed || ctrlPressed)) {
+                    win.setWorkingAction(WorkingMode.ROTATE);
+                } else if (keyCode == '4' && !(altPressed || shiftPressed || ctrlPressed)) {
+                    win.setWorkingAction(WorkingMode.SCALE);
+                } else if (keyCode == 'c' && !(altPressed || shiftPressed || ctrlPressed)) {
+                    win.setWorkingAction(WorkingMode.COMBINED);
                 }
                 pressedKeyCodes.add(keyCode);
-                setKeyState(keyCode, true);
             } else if (keyEventType == SWT.KeyUp) {
                 NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") up]"); //$NON-NLS-1$ //$NON-NLS-2$
                 pressedKeyCodes.remove(keyCode);
@@ -148,6 +184,9 @@ public class KeyStateManager {
      */
     public void setKeyState(int keyCode, boolean isPressed) {
         switch (keyCode) {
+        case SWT.ALT:
+            altPressed = isPressed;
+            break;
         case SWT.SHIFT:
             shiftPressed = isPressed;
             break;
@@ -158,6 +197,7 @@ public class KeyStateManager {
     }
 
     public void synchronise(KeyStateManager ksm) {
+        this.altPressed = ksm.altPressed;
         this.shiftPressed = ksm.shiftPressed;
         this.ctrlPressed = ksm.ctrlPressed;
     }

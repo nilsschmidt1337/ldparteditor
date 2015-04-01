@@ -2178,7 +2178,10 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_Paste[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (Project.getFileToEdit() != null) Project.getFileToEdit().getVertexManager().paste();
+                if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().paste();
+                    setMovingAdjacentData(false);
+                }
             }
         });
 
@@ -5029,6 +5032,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void setMovingAdjacentData(boolean movingAdjacentData) {
+        btn_MoveAdjacentData[0].setSelection(movingAdjacentData);
         this.movingAdjacentData = movingAdjacentData;
     }
 
@@ -5038,6 +5042,30 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public void setWorkingAction(WorkingMode workingAction) {
         this.workingAction = workingAction;
+        switch (workingAction) {
+        case COMBINED:
+            clickBtnTest(btn_Combined[0]);
+            workingAction = WorkingMode.COMBINED;
+            break;
+        case MOVE:
+            clickBtnTest(btn_Move[0]);
+            workingAction = WorkingMode.MOVE;
+            break;
+        case ROTATE:
+            clickBtnTest(btn_Rotate[0]);
+            workingAction = WorkingMode.ROTATE;
+            break;
+        case SCALE:
+            clickBtnTest(btn_Scale[0]);
+            workingAction = WorkingMode.SCALE;
+            break;
+        case SELECT:
+            clickBtnTest(btn_Select[0]);
+            workingAction = WorkingMode.SELECT;
+            break;
+        default:
+            break;
+        }
     }
 
     public ManipulatorScope getTransformationMode() {
