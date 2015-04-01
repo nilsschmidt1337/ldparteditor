@@ -1587,6 +1587,24 @@ public class Manipulator {
 
         old_mouse_position.set(new_x, new_y);
 
+        xAxis.x = accurateXaxis[0].floatValue();
+        xAxis.y = accurateXaxis[1].floatValue();
+        xAxis.z = accurateXaxis[2].floatValue();
+        yAxis.x = accurateYaxis[0].floatValue();
+        yAxis.y = accurateYaxis[1].floatValue();
+        yAxis.z = accurateYaxis[2].floatValue();
+        zAxis.x = accurateZaxis[0].floatValue();
+        zAxis.y = accurateZaxis[1].floatValue();
+        zAxis.z = accurateZaxis[2].floatValue();
+        xAxis.setW(0f);
+        xAxis.normalise();
+        xAxis.setW(1f);
+        yAxis.setW(0f);
+        yAxis.normalise();
+        yAxis.setW(1f);
+        zAxis.setW(0f);
+        zAxis.normalise();
+        zAxis.setW(1f);
         return temp;
     }
 
