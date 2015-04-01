@@ -21,7 +21,13 @@ package org.nschmidt.ldparteditor.enums;
  *
  */
 public enum Task {
-    DELETE, COPY, CUT, PASTE, ESC, MODE_SELECT, MODE_MOVE, MODE_ROTATE, MODE_SCALE, MODE_COMBINED,
+    DELETE, COPY, CUT, PASTE, ESC,
+
+    MODE_SELECT,
+    MODE_MOVE,
+    MODE_ROTATE,
+    MODE_SCALE,
+    MODE_COMBINED,
 
     COLOUR_NUMBER0,
     COLOUR_NUMBER1,
@@ -32,5 +38,12 @@ public enum Task {
     COLOUR_NUMBER6,
     COLOUR_NUMBER7,
     COLOUR_NUMBER8,
-    COLOUR_NUMBER9
+    COLOUR_NUMBER9,
+
+    ADD_VERTEX,
+    ADD_LINE,
+    ADD_TRIANGLE,
+    ADD_QUAD,
+    ADD_CONDLINE,
+    ADD_COMMENTS
 }

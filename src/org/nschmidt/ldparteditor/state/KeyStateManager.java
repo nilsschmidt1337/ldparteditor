@@ -91,6 +91,13 @@ public class KeyStateManager {
         taskMap.put((int) '3' + "", Task.MODE_ROTATE); //$NON-NLS-1$
         taskMap.put((int) '4' + "", Task.MODE_SCALE); //$NON-NLS-1$
         taskMap.put((int) 'c' + "", Task.MODE_COMBINED); //$NON-NLS-1$
+
+        taskMap.put((int) '5' + "", Task.ADD_VERTEX); //$NON-NLS-1$
+        taskMap.put((int) '6' + "", Task.ADD_TRIANGLE); //$NON-NLS-1$
+        taskMap.put((int) '7' + "", Task.ADD_QUAD); //$NON-NLS-1$
+        taskMap.put((int) '8' + "", Task.ADD_LINE); //$NON-NLS-1$
+        taskMap.put((int) '9' + "", Task.ADD_CONDLINE); //$NON-NLS-1$
+        taskMap.put((int) '0' + "", Task.ADD_COMMENTS); //$NON-NLS-1$
     }
 
     /** Indicates that SHIFT is pressed */
@@ -244,7 +251,23 @@ public class KeyStateManager {
                             colourNumber = 0;
                         }
                         break;
-                    default:
+                    case ADD_COMMENTS:
+                        win.setAddState(0);
+                        break;
+                    case ADD_CONDLINE:
+                        win.setAddState(5);
+                        break;
+                    case ADD_LINE:
+                        win.setAddState(2);
+                        break;
+                    case ADD_QUAD:
+                        win.setAddState(4);
+                        break;
+                    case ADD_TRIANGLE:
+                        win.setAddState(3);
+                        break;
+                    case ADD_VERTEX:
+                        win.setAddState(1);
                         break;
                     }
                 }

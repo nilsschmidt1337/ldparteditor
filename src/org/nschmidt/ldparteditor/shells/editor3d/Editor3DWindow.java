@@ -4242,6 +4242,46 @@ public class Editor3DWindow extends Editor3DDesign {
         }
     }
 
+    public void setAddState(int type) {
+        if (isAddingSomething()) resetAddState();
+        switch (type) {
+        case 0:
+            btn_AddComment[0].notifyListeners(SWT.Selection, new Event());
+            break;
+        case 1:
+            setAddingVertices(!isAddingVertices());
+            btn_AddVertex[0].setSelection(isAddingVertices());
+            setAddingSomething(isAddingVertices());
+            clickSingleBtn(btn_AddVertex[0]);
+            break;
+        case 2:
+            setAddingLines(!isAddingLines());
+            btn_AddLine[0].setSelection(isAddingLines());
+            setAddingSomething(isAddingLines());
+            clickSingleBtn(btn_AddLine[0]);
+            break;
+        case 3:
+            setAddingTriangles(!isAddingTriangles());
+            btn_AddTriangle[0].setSelection(isAddingTriangles());
+            setAddingSomething(isAddingTriangles());
+            clickSingleBtn(btn_AddTriangle[0]);
+            break;
+        case 4:
+            setAddingQuads(!isAddingQuads());
+            btn_AddQuad[0].setSelection(isAddingQuads());
+            setAddingSomething(isAddingQuads());
+            clickSingleBtn(btn_AddQuad[0]);
+            break;
+        case 5:
+            setAddingCondlines(!isAddingCondlines());
+            btn_AddCondline[0].setSelection(isAddingCondlines());
+            setAddingSomething(isAddingCondlines());
+            clickSingleBtn(btn_AddCondline[0]);
+            break;
+        }
+        if (!isAddingSomething()) resetAddState();
+    }
+
     /**
      * Create the actions.
      */
