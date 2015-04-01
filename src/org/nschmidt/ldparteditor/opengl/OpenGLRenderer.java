@@ -769,6 +769,7 @@ public class OpenGLRenderer {
                 state3d++;
             } else {
                 if (c3d.isShowingAxis()) {
+                    GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
                     final float l;
                     final float ox;
                     final float oy;
