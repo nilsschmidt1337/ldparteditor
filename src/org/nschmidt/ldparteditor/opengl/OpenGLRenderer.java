@@ -41,6 +41,7 @@ import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Arc;
 import org.nschmidt.ldparteditor.helpers.Arrow;
 import org.nschmidt.ldparteditor.helpers.ArrowBlunt;
@@ -50,6 +51,7 @@ import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * This class draws all 3D models
@@ -370,89 +372,148 @@ public class OpenGLRenderer {
             // MARK Manipulator
             boolean singleMode = true;
             GColour c;
-            switch (window.getWorkingAction()) {
-            case COMBINED:
-                singleMode = false;
-            case MOVE:
-                c = manipulator.checkManipulatorStatus(1f, 0f, 0f, Manipulator.X_TRANSLATE, c3d, zoom);
-                new Arrow(c.getR(), c.getG(), c.getB(), 1f, 140f * manipulator.getXaxis().x, 140f * manipulator.getXaxis().y, 140f * manipulator.getXaxis().z, .015f, .004f).draw(mx, my, mz, zoom);
-                c = manipulator.checkManipulatorStatus(0f, 1f, 0f, Manipulator.Y_TRANSLATE, c3d, zoom);
-                new Arrow(c.getR(), c.getG(), c.getB(), 1f, 140f * manipulator.getYaxis().x, 140f * manipulator.getYaxis().y, 140f * manipulator.getYaxis().z, .015f, .004f).draw(mx, my, mz, zoom);
-                c = manipulator.checkManipulatorStatus(0f, 0f, 1f, Manipulator.Z_TRANSLATE, c3d, zoom);
-                new Arrow(c.getR(), c.getG(), c.getB(), 1f, 140f * manipulator.getZaxis().x, 140f * manipulator.getZaxis().y, 140f * manipulator.getZaxis().z, .015f, .004f).draw(mx, my, mz, zoom);
-                if (singleMode)
+            if (window.getWorkingAction() != WorkingMode.SELECT) {
+                final float lineWidth;
+                final float cone_height;
+                final float cone_width;
+                final float circleWidth;
+                final float arcWidth;
+                final float bluntSize;
+                // The size will be set on application start!
+                final float moveSize = Manipulator.getTranslate_size();
+                final float rotateSize = Manipulator.getRotate_size();
+                final float rotateOuterSize = Manipulator.getRotate_outer_size();
+                final float scaleSize = Manipulator.getScale_size();
+                // mSize has normally a length of 11
+                // (lineWidth, cone_height, cone_width, bluntSize, circleWidth, arcWidth,
+                // moveSizeFactor, rotateSizeFactor, rotateOuterSizeFactor, scaleSizeFactor
+                // and activationTreshold)
+                float[] mSize = WorkbenchManager.getUserSettingState().getManipulatorSize();
+                if (mSize == null) {
+                    // We have no custom manipulator settings yet => create a fake array
+                    mSize = new float[]{1f, 1f, 1f, 1f, 1f, 1f};
+                }
+                switch (Editor3DWindow.getIconsize()) {
+                case 2:
+                    lineWidth = 4f * mSize[0];
+                    cone_height = .030f * mSize[1];
+                    cone_width = .008f * mSize[2];
+                    bluntSize = .02f * mSize[3];
+                    circleWidth = 0.02f * mSize[4];
+                    arcWidth = 0.004f * mSize[5];
                     break;
-            case SCALE:
-                c = manipulator.checkManipulatorStatus(1f, 0f, 0f, Manipulator.X_SCALE, c3d, zoom);
-                new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, 60f * manipulator.getXaxis().x, 60f * manipulator.getXaxis().y, 60f * manipulator.getXaxis().z, .01f).draw(mx, my, mz, zoom);
-                c = manipulator.checkManipulatorStatus(0f, 1f, 0f, Manipulator.Y_SCALE, c3d, zoom);
-                new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, 60f * manipulator.getYaxis().x, 60f * manipulator.getYaxis().y, 60f * manipulator.getYaxis().z, .01f).draw(mx, my, mz, zoom);
-                c = manipulator.checkManipulatorStatus(0f, 0f, 1f, Manipulator.Z_SCALE, c3d, zoom);
-                new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, 60f * manipulator.getZaxis().x, 60f * manipulator.getZaxis().y, 60f * manipulator.getZaxis().z, .01f).draw(mx, my, mz, zoom);
-                if (singleMode)
+                case 3:
+                    lineWidth = 6f * mSize[0];
+                    cone_height = .045f * mSize[1];
+                    cone_width = .012f * mSize[2];
+                    bluntSize = .03f * mSize[3];
+                    circleWidth = 0.03f * mSize[4];
+                    arcWidth = 0.006f * mSize[5];
                     break;
-            case ROTATE:
-                c = manipulator.checkManipulatorStatus(1f, 0f, 0f, Manipulator.X_ROTATE, c3d, zoom);
-                new Arc(c.getR(), c.getG(), c.getB(), 1f, manipulator.getXaxis().x, manipulator.getXaxis().y, manipulator.getXaxis().z, 100f, 0.002f).draw(mx, my, mz, zoom);
-
-                if (manipulator.isX_Rotate()) {
-                    c = manipulator.checkManipulatorStatus(.5f, 0f, 0f, Manipulator.X_ROTATE_BACKWARDS, c3d, zoom);
-                    if (!manipulator.isX_rotatingBackwards_lock())
-                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, 100f * manipulator.getX_Backwards().x, 100f * manipulator.getX_Backwards().y, 100f * manipulator.getX_Backwards().z, .015f, .004f)
-                    .draw(mx, my, mz, zoom);
-                    c = manipulator.checkManipulatorStatus(.25f, 0f, 0f, Manipulator.X_ROTATE_FORWARDS, c3d, zoom);
-                    if (!manipulator.isX_rotatingForwards_lock())
-                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, 100f * manipulator.getX_Forwards().x, 100f * manipulator.getX_Forwards().y, 100f * manipulator.getX_Forwards().z, .015f, .004f)
-                    .draw(mx, my, mz, zoom);
+                case 4:
+                    lineWidth = 8f * mSize[0];
+                    cone_height = .060f * mSize[1];
+                    cone_width = .016f * mSize[2];
+                    bluntSize = .04f * mSize[3];
+                    circleWidth = 0.04f * mSize[4];
+                    arcWidth = 0.008f * mSize[5];
+                    break;
+                case 5:
+                    lineWidth = 9f * mSize[0];
+                    cone_height = .075f * mSize[1];
+                    cone_width = .018f * mSize[2];
+                    bluntSize = .045f * mSize[3];
+                    circleWidth = 0.045f * mSize[4];
+                    arcWidth = 0.009f * mSize[5];
+                    break;
+                case 0:
+                case 1:
+                default:
+                    lineWidth = 2f * mSize[0];
+                    cone_height = .015f * mSize[1];
+                    cone_width = .004f * mSize[2];
+                    bluntSize = .01f * mSize[3];
+                    circleWidth = 0.01f * mSize[4];
+                    arcWidth = 0.002f * mSize[5];
                 }
+                switch (window.getWorkingAction()) {
+                case COMBINED:
+                    singleMode = false;
+                case ROTATE:
+                    c = manipulator.checkManipulatorStatus(1f, 0f, 0f, Manipulator.X_ROTATE, c3d, zoom);
+                    new Arc(c.getR(), c.getG(), c.getB(), 1f, manipulator.getXaxis().x, manipulator.getXaxis().y, manipulator.getXaxis().z, rotateSize, arcWidth).draw(mx, my, mz, zoom);
 
-                c = manipulator.checkManipulatorStatus(0f, 1f, 0f, Manipulator.Y_ROTATE, c3d, zoom);
-                new Arc(c.getR(), c.getG(), c.getB(), 1f, manipulator.getYaxis().x, manipulator.getYaxis().y, manipulator.getYaxis().z, 100f, 0.002f).draw(mx, my, mz, zoom);
+                    if (manipulator.isX_Rotate()) {
+                        c = manipulator.checkManipulatorStatus(.5f, 0f, 0f, Manipulator.X_ROTATE_BACKWARDS, c3d, zoom);
+                        if (!manipulator.isX_rotatingBackwards_lock())
+                            new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getX_Backwards().x, rotateSize * manipulator.getX_Backwards().y, rotateSize * manipulator.getX_Backwards().z, cone_height, cone_width, lineWidth)
+                        .draw(mx, my, mz, zoom);
+                        c = manipulator.checkManipulatorStatus(.25f, 0f, 0f, Manipulator.X_ROTATE_FORWARDS, c3d, zoom);
+                        if (!manipulator.isX_rotatingForwards_lock())
+                            new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getX_Forwards().x, rotateSize * manipulator.getX_Forwards().y, rotateSize * manipulator.getX_Forwards().z, cone_height, cone_width, lineWidth)
+                        .draw(mx, my, mz, zoom);
+                    }
 
-                if (manipulator.isY_Rotate()) {
-                    c = manipulator.checkManipulatorStatus(0f, .5f, 0f, Manipulator.Y_ROTATE_BACKWARDS, c3d, zoom);
-                    if (!manipulator.isY_rotatingBackwards_lock())
-                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, 100f * manipulator.getY_Backwards().x, 100f * manipulator.getY_Backwards().y, 100f * manipulator.getY_Backwards().z, .015f, .004f)
-                    .draw(mx, my, mz, zoom);
-                    c = manipulator.checkManipulatorStatus(0f, .25f, 0f, Manipulator.Y_ROTATE_FORWARDS, c3d, zoom);
-                    if (!manipulator.isY_rotatingForwards_lock())
-                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, 100f * manipulator.getY_Forwards().x, 100f * manipulator.getY_Forwards().y, 100f * manipulator.getY_Forwards().z, .015f, .004f)
-                    .draw(mx, my, mz, zoom);
+                    c = manipulator.checkManipulatorStatus(0f, 1f, 0f, Manipulator.Y_ROTATE, c3d, zoom);
+                    new Arc(c.getR(), c.getG(), c.getB(), 1f, manipulator.getYaxis().x, manipulator.getYaxis().y, manipulator.getYaxis().z, rotateSize, arcWidth).draw(mx, my, mz, zoom);
+
+                    if (manipulator.isY_Rotate()) {
+                        c = manipulator.checkManipulatorStatus(0f, .5f, 0f, Manipulator.Y_ROTATE_BACKWARDS, c3d, zoom);
+                        if (!manipulator.isY_rotatingBackwards_lock())
+                            new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getY_Backwards().x, rotateSize * manipulator.getY_Backwards().y, rotateSize * manipulator.getY_Backwards().z, cone_height, cone_width, lineWidth)
+                        .draw(mx, my, mz, zoom);
+                        c = manipulator.checkManipulatorStatus(0f, .25f, 0f, Manipulator.Y_ROTATE_FORWARDS, c3d, zoom);
+                        if (!manipulator.isY_rotatingForwards_lock())
+                            new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getY_Forwards().x, rotateSize * manipulator.getY_Forwards().y, rotateSize * manipulator.getY_Forwards().z, cone_height, cone_width, lineWidth)
+                        .draw(mx, my, mz, zoom);
+                    }
+
+                    c = manipulator.checkManipulatorStatus(0f, 0f, 1f, Manipulator.Z_ROTATE, c3d, zoom);
+                    new Arc(c.getR(), c.getG(), c.getB(), 1f, manipulator.getZaxis().x, manipulator.getZaxis().y, manipulator.getZaxis().z, rotateSize, arcWidth).draw(mx, my, mz, zoom);
+
+                    if (manipulator.isZ_Rotate()) {
+                        c = manipulator.checkManipulatorStatus(0f, 0f, .5f, Manipulator.Z_ROTATE_ARROW, c3d, zoom);
+                        if (!manipulator.isZ_rotating_lock())
+                            new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getZ_RotateArrow().x, rotateSize * manipulator.getZ_RotateArrow().y, rotateSize * manipulator.getZ_RotateArrow().z, cone_height, cone_width, lineWidth)
+                        .draw(mx, my, mz, zoom);
+                        c = manipulator.checkManipulatorStatus(0f, 0f, .25f, Manipulator.Z_ROTATE_FORWARDS, c3d, zoom);
+                        if (!manipulator.isZ_rotatingForwards_lock())
+                            new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getZ_Forwards().x, rotateSize * manipulator.getZ_Forwards().y, rotateSize * manipulator.getZ_Forwards().z, cone_height, cone_width, lineWidth)
+                        .draw(mx, my, mz, zoom);
+                    }
+
+                    Vector4f[] gen = c3d.getGenerator();
+                    new Circle(.3f, .3f, .3f, 1f, gen[2].x, gen[2].y, gen[2].z, rotateSize, circleWidth).draw(mx, my, mz, zoom);
+                    c = manipulator.checkManipulatorStatus(.85f, .85f, .85f, Manipulator.V_ROTATE, c3d, zoom);
+                    new Circle(c.getR(), c.getG(), c.getB(), 1f, gen[2].x, gen[2].y, gen[2].z, rotateOuterSize, circleWidth).draw(mx, my, mz, zoom);
+
+                    if (manipulator.isV_Rotate()) {
+                        c = manipulator.checkManipulatorStatus(.7f, .7f, .7f, Manipulator.V_ROTATE_ARROW, c3d, zoom);
+                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateOuterSize * manipulator.getV_Backwards().x, rotateOuterSize * manipulator.getV_Backwards().y, rotateOuterSize * manipulator.getV_Backwards().z, cone_height, cone_width, lineWidth)
+                        .draw(mx, my, mz, zoom);
+                    }
+                    if (singleMode)
+                        break;
+                case SCALE:
+                    c = manipulator.checkManipulatorStatus(1f, 0f, 0f, Manipulator.X_SCALE, c3d, zoom);
+                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, scaleSize * manipulator.getXaxis().x, scaleSize * manipulator.getXaxis().y, scaleSize * manipulator.getXaxis().z, bluntSize, lineWidth).draw(mx, my, mz, zoom);
+                    c = manipulator.checkManipulatorStatus(0f, 1f, 0f, Manipulator.Y_SCALE, c3d, zoom);
+                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, scaleSize * manipulator.getYaxis().x, scaleSize * manipulator.getYaxis().y, scaleSize * manipulator.getYaxis().z, bluntSize, lineWidth).draw(mx, my, mz, zoom);
+                    c = manipulator.checkManipulatorStatus(0f, 0f, 1f, Manipulator.Z_SCALE, c3d, zoom);
+                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, scaleSize * manipulator.getZaxis().x, scaleSize * manipulator.getZaxis().y, scaleSize * manipulator.getZaxis().z, bluntSize, lineWidth).draw(mx, my, mz, zoom);
+                    if (singleMode)
+                        break;
+                case MOVE:
+                    c = manipulator.checkManipulatorStatus(1f, 0f, 0f, Manipulator.X_TRANSLATE, c3d, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getXaxis().x, moveSize * manipulator.getXaxis().y, moveSize * manipulator.getXaxis().z, cone_height, cone_width, lineWidth).draw(mx, my, mz, zoom);
+                    c = manipulator.checkManipulatorStatus(0f, 1f, 0f, Manipulator.Y_TRANSLATE, c3d, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getYaxis().x, moveSize * manipulator.getYaxis().y, moveSize * manipulator.getYaxis().z, cone_height, cone_width, lineWidth).draw(mx, my, mz, zoom);
+                    c = manipulator.checkManipulatorStatus(0f, 0f, 1f, Manipulator.Z_TRANSLATE, c3d, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getZaxis().x, moveSize * manipulator.getZaxis().y, moveSize * manipulator.getZaxis().z, cone_height, cone_width, lineWidth).draw(mx, my, mz, zoom);
+                    break;
+                default:
+                    break;
                 }
-
-                c = manipulator.checkManipulatorStatus(0f, 0f, 1f, Manipulator.Z_ROTATE, c3d, zoom);
-                new Arc(c.getR(), c.getG(), c.getB(), 1f, manipulator.getZaxis().x, manipulator.getZaxis().y, manipulator.getZaxis().z, 100f, 0.002f).draw(mx, my, mz, zoom);
-
-                if (manipulator.isZ_Rotate()) {
-                    c = manipulator.checkManipulatorStatus(0f, 0f, .5f, Manipulator.Z_ROTATE_BACKWARDS, c3d, zoom);
-                    if (!manipulator.isZ_rotatingBackwards_lock())
-                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, 100f * manipulator.getZ_Backwards().x, 100f * manipulator.getZ_Backwards().y, 100f * manipulator.getZ_Backwards().z, .015f, .004f)
-                    .draw(mx, my, mz, zoom);
-                    c = manipulator.checkManipulatorStatus(0f, 0f, .25f, Manipulator.Z_ROTATE_FORWARDS, c3d, zoom);
-                    if (!manipulator.isZ_rotatingForwards_lock())
-                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, 100f * manipulator.getZ_Forwards().x, 100f * manipulator.getZ_Forwards().y, 100f * manipulator.getZ_Forwards().z, .015f, .004f)
-                    .draw(mx, my, mz, zoom);
-                }
-
-                Vector4f[] gen = c3d.getGenerator();
-                new Circle(.3f, .3f, .3f, 1f, gen[2].x, gen[2].y, gen[2].z, 101f, 0.01f).draw(mx, my, mz, zoom);
-                c = manipulator.checkManipulatorStatus(.85f, .85f, .85f, Manipulator.V_ROTATE, c3d, zoom);
-                new Circle(c.getR(), c.getG(), c.getB(), 1f, gen[2].x, gen[2].y, gen[2].z, 120f, 0.01f).draw(mx, my, mz, zoom);
-
-                if (manipulator.isV_Rotate()) {
-                    c = manipulator.checkManipulatorStatus(.7f, .7f, .7f, Manipulator.V_ROTATE_BACKWARDS, c3d, zoom);
-                    if (!manipulator.isV_rotatingBackwards_lock())
-                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, 120f * manipulator.getV_Backwards().x, 120f * manipulator.getV_Backwards().y, 120f * manipulator.getV_Backwards().z, .015f, .004f)
-                    .draw(mx, my, mz, zoom);
-                    c = manipulator.checkManipulatorStatus(.5f, .5f, .5f, Manipulator.V_ROTATE_FORWARDS, c3d, zoom);
-                    if (!manipulator.isV_rotatingForwards_lock())
-                        new Arrow(c.getR(), c.getG(), c.getB(), 1f, 120f * manipulator.getV_Forwards().x, 120f * manipulator.getV_Forwards().y, 120f * manipulator.getV_Forwards().z, .015f, .004f)
-                    .draw(mx, my, mz, zoom);
-
-                }
-                break;
-            default:
-                break;
             }
 
             // MARK Draw temporary objects for all "Add..." functions here
@@ -761,9 +822,9 @@ public class OpenGLRenderer {
                     GL11.glPushMatrix();
                     GL11.glTranslatef(ox - viewport_width, viewport_height - oy, 0f);
                     GL11.glMultMatrix(rotation);
-                    new Arrow(1f, 0f, 0f, 1f,l, 0f, 0f, cone_height, cone_width).draw(0f, 0f, 0f, .01f, line_width);
-                    new Arrow(0f, 1f, 0f, 1f, 0f,l, 0f, cone_height, cone_width).draw(0f, 0f, 0f, .01f, line_width);
-                    new Arrow(0f, 0f, 1f, 1f, 0f, 0f,l, cone_height, cone_width).draw(0f, 0f, 0f, .01f, line_width);
+                    new Arrow(1f, 0f, 0f, 1f,l, 0f, 0f, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
+                    new Arrow(0f, 1f, 0f, 1f, 0f,l, 0f, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
+                    new Arrow(0f, 0f, 1f, 1f, 0f, 0f,l, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
                     GL11.glPopMatrix();
                 }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);

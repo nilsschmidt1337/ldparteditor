@@ -1973,7 +1973,7 @@ class Editor3DDesign extends ApplicationWindow {
                             CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
                         }
                     } else {
-                        // FIXME Load the configuration of multiple 3D windows
+                        // MARK Load the configuration of multiple 3D windows
                         Collections.sort(threeDconfig, new Comparator<Composite3DState>(
                                 ) {
                             @Override

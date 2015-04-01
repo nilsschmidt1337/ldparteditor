@@ -40,10 +40,11 @@ public class Arrow {
     final float length;
     final float cone_start;
     final float line_end;
+    final float line_width;
 
     final float[] cone = new float[34];
 
-    public Arrow(float r, float g, float b, float a, float dir_x, float dir_y, float dir_z, float cone_height, float cone_width) {
+    public Arrow(float r, float g, float b, float a, float dir_x, float dir_y, float dir_z, float cone_height, float cone_width, float line_width) {
         dir_x = dir_x / 1000f;
         dir_y = dir_y / 1000f;
         dir_z = dir_z / 1000f;
@@ -51,6 +52,7 @@ public class Arrow {
         this.g = g;
         this.b = b;
         this.a = a;
+        this.line_width = line_width;
         length = (float) Math.sqrt(dir_x * dir_x + dir_y * dir_y + dir_z * dir_z);
         cone_start = length - cone_height;
         line_end = length - cone_height / 3f;
@@ -133,10 +135,6 @@ public class Arrow {
     }
 
     public void draw(float x, float y, float z, float zoom) {
-        draw(x, y, z, zoom, 2f);
-    }
-
-    public void draw(float x, float y, float z, float zoom, float lineWidth) {
         final float zoom_inv = 1f / zoom;
         GL11.glPushMatrix();
 
@@ -144,7 +142,7 @@ public class Arrow {
         GL11.glMultMatrix(matrix);
         GL11.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
-        GL11.glLineWidth(lineWidth);
+        GL11.glLineWidth(line_width);
         GL11.glColor4f(r, g, b, a);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(0f, 0f, 0f);
