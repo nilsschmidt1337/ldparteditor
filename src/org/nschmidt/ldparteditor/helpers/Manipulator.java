@@ -26,13 +26,14 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.Matrix;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.RotationSnap;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -62,10 +63,9 @@ public class Manipulator {
     public static final int Y_ROTATE_BACKWARDS = 13;
 
     public static final int Z_ROTATE_FORWARDS = 14;
-    public static final int Z_ROTATE_BACKWARDS = 15;
+    public static final int Z_ROTATE_ARROW = 15;
 
-    public static final int V_ROTATE_FORWARDS = 16;
-    public static final int V_ROTATE_BACKWARDS = 17;
+    public static final int V_ROTATE_ARROW = 17;
 
     private final Matrix4f result = new Matrix4f();
     private final Matrix4f resultinv = new Matrix4f();
@@ -95,7 +95,7 @@ public class Manipulator {
     private Vector4f y_forwards = new Vector4f(0f, 0f, 1f, 1f);
     private Vector4f y_backwards = new Vector4f(0f, 0f, 1f, 1f);
     private Vector4f z_forwards = new Vector4f(0f, 0f, 1f, 1f);
-    private Vector4f z_backwards = new Vector4f(0f, 0f, 1f, 1f);
+    private Vector4f z_rotateArrow = new Vector4f(0f, 0f, 1f, 1f);
     private Vector4f v_forwards = new Vector4f(0f, 0f, 1f, 1f);
     private Vector4f v_backwards = new Vector4f(0f, 0f, 1f, 1f);
 
@@ -251,6 +251,9 @@ public class Manipulator {
     private boolean v_rotatingForwards;
     private boolean v_rotatingBackwards;
 
+
+    private int calmDownCounter = 1;
+
     private boolean x_rotatingForwards_lock = false;
     private boolean x_rotatingBackwards_lock = false;
 
@@ -258,10 +261,7 @@ public class Manipulator {
     private boolean y_rotatingBackwards_lock = false;
 
     private boolean z_rotatingForwards_lock = false;
-    private boolean z_rotatingBackwards_lock = false;
-
-    private boolean v_rotatingForwards_lock = false;
-    private boolean v_rotatingBackwards_lock = false;
+    private boolean z_rotating_lock = false;
 
     private final float PI16TH = (float) (Math.PI / 16d);
 
@@ -327,8 +327,8 @@ public class Manipulator {
         return z_forwards;
     }
 
-    public Vector4f getZ_Backwards() {
-        return z_backwards;
+    public Vector4f getZ_RotateArrow() {
+        return z_rotateArrow;
     }
 
     public Vector4f getV_Forwards() {
@@ -507,16 +507,8 @@ public class Manipulator {
         return z_rotatingForwards_lock;
     }
 
-    public boolean isZ_rotatingBackwards_lock() {
-        return z_rotatingBackwards_lock;
-    }
-
-    public boolean isV_rotatingForwards_lock() {
-        return v_rotatingForwards_lock;
-    }
-
-    public boolean isV_rotatingBackwards_lock() {
-        return v_rotatingBackwards_lock;
+    public boolean isZ_rotating_lock() {
+        return z_rotating_lock;
     }
 
     public GColour checkManipulatorStatus(float r, float g, float b, int type, Composite3D c3d, float zoom) {
@@ -718,7 +710,7 @@ public class Manipulator {
                 y_rotatingForwards = false;
                 size = rotate_size;
                 break;
-            case Z_ROTATE_BACKWARDS:
+            case Z_ROTATE_ARROW:
                 z_rotatingBackwards = false;
                 size = rotate_size;
                 break;
@@ -726,12 +718,8 @@ public class Manipulator {
                 z_rotatingForwards = false;
                 size = rotate_size;
                 break;
-            case V_ROTATE_BACKWARDS:
+            case V_ROTATE_ARROW:
                 v_rotatingBackwards = false;
-                size = rotate_outer_size;
-                break;
-            case V_ROTATE_FORWARDS:
-                v_rotatingForwards = false;
                 size = rotate_outer_size;
                 break;
             }
@@ -794,7 +782,7 @@ public class Manipulator {
                 vector.setW(1f);
                 y_forwards.set(vector);
                 break;
-            case Z_ROTATE_BACKWARDS:
+            case Z_ROTATE_ARROW:
                 vector = new Vector4f(z_Rotate_start);
                 m = new Matrix4f();
                 Matrix4f.setIdentity(m);
@@ -803,7 +791,7 @@ public class Manipulator {
                 vector.setW(0f);
                 vector.normalise();
                 vector.setW(1f);
-                z_backwards.set(vector);
+                z_rotateArrow.set(vector);
                 break;
             case Z_ROTATE_FORWARDS:
                 vector = new Vector4f(z_Rotate_start);
@@ -816,82 +804,145 @@ public class Manipulator {
                 vector.setW(1f);
                 z_forwards.set(vector);
                 break;
-            case V_ROTATE_BACKWARDS:
+            case V_ROTATE_ARROW:
                 vector = new Vector4f(v_Rotate_start);
-                m = new Matrix4f();
-                Matrix4f.setIdentity(m);
-                m.rotate(-Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-                Matrix4f.transform(m, vector, vector);
+                //                m = new Matrix4f();
+                //                Matrix4f.setIdentity(m);
+                //                m.rotate(-Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+                //                Matrix4f.transform(m, vector, vector);
                 vector.setW(0f);
                 vector.normalise();
                 vector.setW(1f);
                 v_backwards.set(vector);
                 break;
-            case V_ROTATE_FORWARDS:
-                vector = new Vector4f(v_Rotate_start);
-                m = new Matrix4f();
-                Matrix4f.setIdentity(m);
-                m.rotate(Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-                Matrix4f.transform(m, vector, vector);
-                vector.setW(0f);
-                vector.normalise();
-                vector.setW(1f);
-                v_forwards.set(vector);
-
             }
             vector.scale(size / zoom / 1000f);
 
+            final boolean rotate;
+            final boolean rotate2;
+            switch (type) {
+            case X_ROTATE_BACKWARDS:
+            case X_ROTATE_FORWARDS:
+            case Y_ROTATE_BACKWARDS:
+            case Y_ROTATE_FORWARDS:
+            case Z_ROTATE_ARROW:
+            case Z_ROTATE_FORWARDS:
+            case V_ROTATE_ARROW:
+                rotate2 = lock;
+                rotate = true;
+                break;
+            default:
+                rotate2 = false;
+                rotate = false;
+            }
             Vector4f virtpos = new Vector4f(Vector4f.add(vector, position, null));
             Vector4f screenpos = c3d.getPerspectiveCalculator().getScreenCoordinatesFrom3D(virtpos.x, virtpos.y, virtpos.z);
-            float dists = (float) (Math.pow(c3d.getMousePosition().x - screenpos.x, 2) + Math.pow(c3d.getMousePosition().y - screenpos.y, 2));
-            if (dists < activationTreshold) {
-                switch (type) {
-                case X_TRANSLATE:
-                    x_Translate = true;
-                    break;
-                case X_SCALE:
-                    x_Scale = true;
-                    break;
-                case Y_TRANSLATE:
-                    y_Translate = true;
-                    break;
-                case Y_SCALE:
-                    y_Scale = true;
-                    break;
-                case Z_TRANSLATE:
-                    z_Translate = true;
-                    break;
-                case Z_SCALE:
-                    z_Scale = true;
-                    break;
-                case X_ROTATE_BACKWARDS:
-                    x_rotatingBackwards = true;
-                    break;
-                case X_ROTATE_FORWARDS:
-                    x_rotatingForwards = true;
-                    break;
-                case Y_ROTATE_BACKWARDS:
-                    y_rotatingBackwards = true;
-                    break;
-                case Y_ROTATE_FORWARDS:
-                    y_rotatingForwards = true;
-                    break;
-                case Z_ROTATE_BACKWARDS:
-                    z_rotatingBackwards = true;
-                    break;
-                case Z_ROTATE_FORWARDS:
-                    z_rotatingForwards = true;
-                    break;
-                case V_ROTATE_BACKWARDS:
-                    v_rotatingBackwards = true;
-                    break;
-                case V_ROTATE_FORWARDS:
-                    v_rotatingForwards = true;
-                    break;
+
+            if (rotate) {
+                Vector4f screenpos0 = c3d.getPerspectiveCalculator().getScreenCoordinatesFrom3D(position.x, position.y, position.z);
+
+                float position = Math.signum((screenpos.x-screenpos0.x)*(c3d.getMousePosition().y-screenpos0.y) - (screenpos.y-screenpos0.y)*(c3d.getMousePosition().x-screenpos0.x));
+
+                if (rotate2) {
+                    NLogger.debug(getClass(), "Calculate..." + position); //$NON-NLS-1$
                 }
-                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+
+                float dists = (float) (Math.pow(c3d.getMousePosition().x - screenpos.x, 2) + Math.pow(c3d.getMousePosition().y - screenpos.y, 2));
+                if (dists < activationTreshold || lock) {
+                    switch (type) {
+                    case X_ROTATE_BACKWARDS:
+                        if (position > 0) {
+                            x_rotatingBackwards = true;
+                        }else {
+                            x_rotatingForwards = true;
+                        }
+                        break;
+                    case X_ROTATE_FORWARDS:
+                        if (position > 0) {
+                            x_rotatingForwards = true;
+                        }else {
+                            x_rotatingBackwards = true;
+                        }
+                        break;
+                    case Y_ROTATE_BACKWARDS:
+                        if (position > 0) {
+                            y_rotatingBackwards = true;
+                        }else {
+                            y_rotatingForwards = true;
+                        }
+                        break;
+                    case Y_ROTATE_FORWARDS:
+                        if (position > 0) {
+                            y_rotatingForwards = true;
+                        }else {
+                            y_rotatingBackwards = true;
+                        }
+                        break;
+                    case Z_ROTATE_ARROW:
+                        if (position > 0) {
+                            z_rotatingBackwards = true;
+                        }else {
+                            z_rotatingForwards = true;
+                        }
+                        break;
+                    case Z_ROTATE_FORWARDS:
+                        if (position > 0) {
+                            z_rotatingForwards = true;
+                        }else {
+                            z_rotatingBackwards = true;
+                        }
+                        break;
+                    case V_ROTATE_ARROW:
+                        if (position < 0) {
+                            if (calmDownCounter > 0) {
+                                calmDownCounter -= 1;
+                                break;
+                            } else {
+                                calmDownCounter = -10;
+                                v_rotatingForwards = true;
+                            }
+                        }else {
+                            if (calmDownCounter < 0) {
+                                calmDownCounter += 1;
+                                break;
+                            } else {
+                                calmDownCounter = 10;
+                                v_rotatingBackwards = true;
+                            }
+                        }
+                        break;
+                    }
+                    return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                } else {
+                    return new GColour(-1, r, g, b, 1f);
+                }
             } else {
-                return new GColour(-1, r, g, b, 1f);
+                float dists = (float) (Math.pow(c3d.getMousePosition().x - screenpos.x, 2) + Math.pow(c3d.getMousePosition().y - screenpos.y, 2));
+                if (dists < activationTreshold) {
+                    switch (type) {
+                    case X_TRANSLATE:
+                        x_Translate = true;
+                        break;
+                    case X_SCALE:
+                        x_Scale = true;
+                        break;
+                    case Y_TRANSLATE:
+                        y_Translate = true;
+                        break;
+                    case Y_SCALE:
+                        y_Scale = true;
+                        break;
+                    case Z_TRANSLATE:
+                        z_Translate = true;
+                        break;
+                    case Z_SCALE:
+                        z_Scale = true;
+                        break;
+                    }
+                    return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                } else {
+                    return new GColour(-1, r, g, b, 1f);
+                }
             }
         }
     }
@@ -906,9 +957,7 @@ public class Manipulator {
         y_rotatingForwards_lock = false;
         y_rotatingBackwards_lock = false;
         z_rotatingForwards_lock = false;
-        z_rotatingBackwards_lock = false;
-        v_rotatingForwards_lock = false;
-        v_rotatingBackwards_lock = false;
+        z_rotating_lock = false;
         lock = false;
     }
 
@@ -1175,15 +1224,15 @@ public class Manipulator {
         if (z_Rotate) {
             while (true) {
                 if (z_rotatingForwards && !z_rotatingForwards_lock) {
-                    z_rotatingBackwards_lock = true;
+                    z_rotating_lock = true;
                     transformation.rotate(snap_z_Rotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_z_Rotate, snap_z_RotateFlag, accurateZaxis);
                     z_Rotate_start.set(z_forwards);
-                } else if (z_rotatingBackwards && !z_rotatingBackwards_lock) {
+                } else if (z_rotatingBackwards && !z_rotating_lock) {
                     z_rotatingForwards_lock = true;
                     transformation.rotate(-snap_z_Rotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_z_Rotate.negate(), snap_z_RotateFlag, accurateZaxis);
-                    z_Rotate_start.set(z_backwards);
+                    z_Rotate_start.set(z_rotateArrow);
                 } else {
                     break;
                 }
@@ -1206,15 +1255,31 @@ public class Manipulator {
         if (v_Rotate) {
             while (true) {
                 Vector4f[] gen = c3d.getGenerator();
-                if (v_rotatingForwards && !v_rotatingForwards_lock) {
-                    v_rotatingBackwards_lock = true;
+                if (v_rotatingForwards) {
                     transformation.rotate(snap_v_Rotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_v_Rotate, snap_v_RotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
-                    v_Rotate_start.set(v_forwards);
-                } else if (v_rotatingBackwards && !v_rotatingBackwards_lock) {
-                    v_rotatingForwards_lock = true;
+                    Vector4f vector = new Vector4f(v_backwards);
+                    Matrix4f m = new Matrix4f();
+                    Matrix4f.setIdentity(m);
+                    m.rotate(Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+                    Matrix4f.transform(m, vector, vector);
+                    vector.setW(0f);
+                    vector.normalise();
+                    vector.setW(1f);
+                    v_backwards.set(vector);
+                    v_Rotate_start.set(v_backwards);
+                } else if (v_rotatingBackwards) {
                     transformation.rotate(-snap_v_Rotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_v_Rotate.negate(), snap_v_RotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
+                    Vector4f vector = new Vector4f(v_backwards);
+                    Matrix4f m = new Matrix4f();
+                    Matrix4f.setIdentity(m);
+                    m.rotate(-Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+                    Matrix4f.transform(m, vector, vector);
+                    vector.setW(0f);
+                    vector.normalise();
+                    vector.setW(1f);
+                    v_backwards.set(vector);
                     v_Rotate_start.set(v_backwards);
                 } else {
                     break;
@@ -1712,5 +1777,45 @@ public class Manipulator {
         Y.normalise(Y);
         Z.normalise(Z);
         return new Matrix(X.X, X.Y, X.Z, BigDecimal.ZERO, Y.X, Y.Y, Y.Z, BigDecimal.ZERO, Z.X, Z.Y, Z.Z, BigDecimal.ZERO, accuratePosition[0], accuratePosition[1], accuratePosition[2], BigDecimal.ONE);
+    }
+
+    public static float getTranslate_size() {
+        return translate_size;
+    }
+
+    public static void setTranslate_size(float translate_size) {
+        Manipulator.translate_size = translate_size;
+    }
+
+    public static float getRotate_size() {
+        return rotate_size;
+    }
+
+    public static void setRotate_size(float rotate_size) {
+        Manipulator.rotate_size = rotate_size;
+    }
+
+    public static float getRotate_outer_size() {
+        return rotate_outer_size;
+    }
+
+    public static void setRotate_outer_size(float rotate_outer_size) {
+        Manipulator.rotate_outer_size = rotate_outer_size;
+    }
+
+    public static float getScale_size() {
+        return scale_size;
+    }
+
+    public static void setScale_size(float scale_size) {
+        Manipulator.scale_size = scale_size;
+    }
+
+    public static float getActivationTreshold() {
+        return activationTreshold;
+    }
+
+    public static void setActivationTreshold(float activationTreshold) {
+        Manipulator.activationTreshold = activationTreshold;
     }
 }

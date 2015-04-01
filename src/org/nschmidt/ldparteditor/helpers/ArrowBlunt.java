@@ -38,12 +38,13 @@ public class ArrowBlunt {
     final float a;
 
     final float line_end;
+    final float line_width;
 
     final float[] cube_x = new float[8];
     final float[] cube_y = new float[8];
     final float[] cube_z = new float[8];
 
-    public ArrowBlunt(float r, float g, float b, float a, float dir_x, float dir_y, float dir_z, float edge_length) {
+    public ArrowBlunt(float r, float g, float b, float a, float dir_x, float dir_y, float dir_z, float edge_length, float line_width) {
         dir_x = dir_x / 1000f;
         dir_y = dir_y / 1000f;
         dir_z = dir_z / 1000f;
@@ -51,6 +52,7 @@ public class ArrowBlunt {
         this.g = g;
         this.b = b;
         this.a = a;
+        this.line_width = line_width;
         final float length = (float) Math.sqrt(dir_x * dir_x + dir_y * dir_y + dir_z * dir_z);
         final float cube_start = length - edge_length;
         line_end = length - edge_length / 3f;
@@ -159,7 +161,7 @@ public class ArrowBlunt {
         GL11.glMultMatrix(matrix);
         GL11.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
-        GL11.glLineWidth(2f);
+        GL11.glLineWidth(line_width);
         GL11.glColor4f(r, g, b, a);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(0f, 0f, 0f);

@@ -261,9 +261,9 @@ public class OpenGLRendererPrimitives {
         GL11.glPushMatrix();
         GL11.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
         GL11.glMultMatrix(rotation);
-        new Arrow(1f, 0f, 0f, 1f,-.5f, 0f, 0f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
-        new Arrow(0f, 1f, 0f, 1f, 0f,.5f, 0f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
-        new Arrow(0f, 0f, 1f, 1f, 0f, 0f,.5f, .00015f, .00004f).draw(0f, 0f, 0f, .01f);
+        new Arrow(1f, 0f, 0f, 1f,-.5f, 0f, 0f, .00015f, .00004f, 2f).draw(0f, 0f, 0f, .01f);
+        new Arrow(0f, 1f, 0f, 1f, 0f,.5f, 0f, .00015f, .00004f, 2f).draw(0f, 0f, 0f, .01f);
+        new Arrow(0f, 0f, 1f, 1f, 0f, 0f,.5f, .00015f, .00004f, 2f).draw(0f, 0f, 0f, .01f);
         GL11.glPopMatrix();
 
 

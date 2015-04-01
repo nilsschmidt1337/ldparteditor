@@ -85,6 +85,8 @@ public class UserSettingState implements Serializable {
 
     private int iconSize = 0;
 
+    private float[] manipulatorSize = null;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -359,6 +361,14 @@ public class UserSettingState implements Serializable {
 
     public void setIconSize(int iconSize) {
         this.iconSize = iconSize;
+    }
+
+    public float[] getManipulatorSize() {
+        return manipulatorSize;
+    }
+
+    public void setManipulatorSize(float[] manipulatorSize) {
+        this.manipulatorSize = manipulatorSize;
     }
 
 }
