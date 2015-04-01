@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.state;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.eclipse.swt.SWT;
@@ -23,6 +24,8 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.Task;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -44,6 +47,51 @@ public class KeyStateManager {
 
     /** A set of all keys which are pressed at the moment */
     private HashSet<Integer> pressedKeyCodes = new HashSet<Integer>();
+    /** A map which assigns a pressed key to a task */
+    private static final HashMap<String, Task> taskMap = new HashMap<String, Task>();
+    /** A set of all reserved keys */
+    private static final HashSet<String> reservedKeyCodes = new HashSet<String>();
+
+    private StringBuilder sb = new StringBuilder();
+
+    private int multi = 100;
+    private int colourNumber = 0;
+
+    static {
+
+        reservedKeyCodes.add(SWT.KEYPAD_0 + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.KEYPAD_1 + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.KEYPAD_2 + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.KEYPAD_3 + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.KEYPAD_4 + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.KEYPAD_5 + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.KEYPAD_6 + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.KEYPAD_7 + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.KEYPAD_8 + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.KEYPAD_9 + ""); //$NON-NLS-1$
+
+        taskMap.put(SWT.KEYPAD_0 + "", Task.COLOUR_NUMBER0); //$NON-NLS-1$
+        taskMap.put(SWT.KEYPAD_1 + "", Task.COLOUR_NUMBER1); //$NON-NLS-1$
+        taskMap.put(SWT.KEYPAD_2 + "", Task.COLOUR_NUMBER2); //$NON-NLS-1$
+        taskMap.put(SWT.KEYPAD_3 + "", Task.COLOUR_NUMBER3); //$NON-NLS-1$
+        taskMap.put(SWT.KEYPAD_4 + "", Task.COLOUR_NUMBER4); //$NON-NLS-1$
+        taskMap.put(SWT.KEYPAD_5 + "", Task.COLOUR_NUMBER5); //$NON-NLS-1$
+        taskMap.put(SWT.KEYPAD_6 + "", Task.COLOUR_NUMBER6); //$NON-NLS-1$
+        taskMap.put(SWT.KEYPAD_7 + "", Task.COLOUR_NUMBER7); //$NON-NLS-1$
+        taskMap.put(SWT.KEYPAD_8 + "", Task.COLOUR_NUMBER8); //$NON-NLS-1$
+        taskMap.put(SWT.KEYPAD_9 + "", Task.COLOUR_NUMBER9); //$NON-NLS-1$
+
+        taskMap.put((int) SWT.DEL + "", Task.DELETE); //$NON-NLS-1$
+        taskMap.put((int) SWT.ESC + "", Task.ESC); //$NON-NLS-1$
+        taskMap.put((int) 'c' + "+Ctrl", Task.COPY); //$NON-NLS-1$
+        taskMap.put((int) 'x' + "+Ctrl", Task.CUT); //$NON-NLS-1$
+        taskMap.put((int) 'v' + "+Ctrl", Task.PASTE); //$NON-NLS-1$
+        taskMap.put((int) '1' + "", Task.MODE_SELECT); //$NON-NLS-1$
+        taskMap.put((int) '2' + "", Task.MODE_MOVE); //$NON-NLS-1$
+        taskMap.put((int) '3' + "", Task.MODE_ROTATE); //$NON-NLS-1$
+        taskMap.put((int) '4' + "", Task.MODE_SCALE); //$NON-NLS-1$
+        taskMap.put((int) 'c' + "", Task.MODE_COMBINED); //$NON-NLS-1$
+    }
 
     /** Indicates that SHIFT is pressed */
     private boolean shiftPressed;
@@ -100,49 +148,106 @@ public class KeyStateManager {
             if (keyEventType == SWT.KeyDown && !pressedKeyCodes.contains(keyCode)) {
                 NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") down]"); //$NON-NLS-1$ //$NON-NLS-2$
                 setKeyState(keyCode, true);
-                final DatFile df = c3d.getLockableDatFileReference();
-                final Editor3DWindow win = Editor3DWindow.getWindow();
-                final VertexManager vm = df.getVertexManager();
-
-                if (keyCode == SWT.ESC) {
-                    // c3d.getModifier().closeView();
-                    if (df.getObjVertex1() == null && df.getObjVertex2() == null && df.getObjVertex3() == null && df.getObjVertex4() == null) {
-                        win.disableAddAction();
-                    }
-                    df.setObjVertex1(null);
-                    df.setObjVertex2(null);
-                    df.setObjVertex3(null);
-                    df.setObjVertex4(null);
-                    df.setNearestObjVertex1(null);
-                    df.setNearestObjVertex2(null);
-                    vm.clearSelection();
-                }
-                if (keyCode == SWT.DEL) {
-                    vm.delete(win.isMovingAdjacentData(), true);
-                }
-
-                if (keyCode == 'c' && ctrlPressed && !(altPressed || shiftPressed)) {
-                    vm.copy();
-                } else if (keyCode == 'x' && ctrlPressed && !(altPressed || shiftPressed)) {
-                    vm.copy();
-                    vm.delete(win.isMovingAdjacentData(), true);
-                }else if (keyCode == 'v' && ctrlPressed && !(altPressed || shiftPressed)) {
-                    vm.paste();
-                    win.setMovingAdjacentData(false);
-                }
-
-                if (keyCode == '1' && !(altPressed || shiftPressed || ctrlPressed)) {
-                    win.setWorkingAction(WorkingMode.SELECT);
-                } else if (keyCode == '2' && !(altPressed || shiftPressed || ctrlPressed)) {
-                    win.setWorkingAction(WorkingMode.MOVE);
-                } else if (keyCode == '3' && !(altPressed || shiftPressed || ctrlPressed)) {
-                    win.setWorkingAction(WorkingMode.ROTATE);
-                } else if (keyCode == '4' && !(altPressed || shiftPressed || ctrlPressed)) {
-                    win.setWorkingAction(WorkingMode.SCALE);
-                } else if (keyCode == 'c' && !(altPressed || shiftPressed || ctrlPressed)) {
-                    win.setWorkingAction(WorkingMode.COMBINED);
-                }
                 pressedKeyCodes.add(keyCode);
+                sb.setLength(0);
+                sb.append(keyCode);
+                sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                final String key = sb.toString();
+                final Task t = taskMap.get(key);
+                if (t != null) {
+                    boolean hasNumber = false;
+                    final DatFile df = c3d.getLockableDatFileReference();
+                    final Editor3DWindow win = Editor3DWindow.getWindow();
+                    final VertexManager vm = df.getVertexManager();
+                    switch (t) {
+                    case DELETE:
+                        vm.delete(win.isMovingAdjacentData(), true);
+                        break;
+                    case ESC:
+                        multi = 100;
+                        colourNumber = 0;
+                        // c3d.getModifier().closeView();
+                        if (df.getObjVertex1() == null && df.getObjVertex2() == null && df.getObjVertex3() == null && df.getObjVertex4() == null) {
+                            win.disableAddAction();
+                        }
+                        df.setObjVertex1(null);
+                        df.setObjVertex2(null);
+                        df.setObjVertex3(null);
+                        df.setObjVertex4(null);
+                        df.setNearestObjVertex1(null);
+                        df.setNearestObjVertex2(null);
+                        vm.clearSelection();
+                        break;
+                    case COPY:
+                        vm.copy();
+                        break;
+                    case CUT:
+                        vm.copy();
+                        vm.delete(win.isMovingAdjacentData(), true);
+                        break;
+                    case PASTE:
+                        vm.paste();
+                        win.setMovingAdjacentData(false);
+                        break;
+                    case MODE_COMBINED:
+                        win.setWorkingAction(WorkingMode.COMBINED);
+                        break;
+                    case MODE_MOVE:
+                        win.setWorkingAction(WorkingMode.MOVE);
+                        break;
+                    case MODE_ROTATE:
+                        win.setWorkingAction(WorkingMode.ROTATE);
+                        break;
+                    case MODE_SCALE:
+                        win.setWorkingAction(WorkingMode.SCALE);
+                        break;
+                    case MODE_SELECT:
+                        win.setWorkingAction(WorkingMode.SELECT);
+                        break;
+                    case COLOUR_NUMBER0:
+
+                        hasNumber = true;
+                    case COLOUR_NUMBER1:
+                        if (!hasNumber) colourNumber += multi;
+                        hasNumber = true;
+                    case COLOUR_NUMBER2:
+                        if (!hasNumber) colourNumber += multi * 2;
+                        hasNumber = true;
+                    case COLOUR_NUMBER3:
+                        if (!hasNumber) colourNumber += multi * 3;
+                        hasNumber = true;
+                    case COLOUR_NUMBER4:
+                        if (!hasNumber) colourNumber += multi * 4;
+                        hasNumber = true;
+                    case COLOUR_NUMBER5:
+                        if (!hasNumber) colourNumber += multi * 5;
+                        hasNumber = true;
+                    case COLOUR_NUMBER6:
+                        if (!hasNumber) colourNumber += multi * 6;
+                        hasNumber = true;
+                    case COLOUR_NUMBER7:
+                        if (!hasNumber) colourNumber += multi * 7;
+                        hasNumber = true;
+                    case COLOUR_NUMBER8:
+                        if (!hasNumber) colourNumber += multi * 8;
+                        hasNumber = true;
+                    case COLOUR_NUMBER9:
+                        if (!hasNumber) colourNumber += multi * 9;
+                        multi /= 10;
+                        if (multi == 0) {
+                            multi = 100;
+                            if (View.hasLDConfigColour(colourNumber)) {
+                                win.setLastUsedColour2(View.getLDConfigColour(colourNumber));
+                            }
+                            colourNumber = 0;
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                }
             } else if (keyEventType == SWT.KeyUp) {
                 NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") up]"); //$NON-NLS-1$ //$NON-NLS-2$
                 pressedKeyCodes.remove(keyCode);
@@ -200,5 +305,13 @@ public class KeyStateManager {
         this.altPressed = ksm.altPressed;
         this.shiftPressed = ksm.shiftPressed;
         this.ctrlPressed = ksm.ctrlPressed;
+    }
+
+    public static HashSet<String> getReservedkeycodes() {
+        return reservedKeyCodes;
+    }
+
+    public static HashMap<String, Task> getTaskmap() {
+        return taskMap;
     }
 }

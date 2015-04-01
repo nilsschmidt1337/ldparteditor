@@ -5096,6 +5096,89 @@ public class Editor3DWindow extends Editor3DDesign {
         this.lastUsedColour = lastUsedColour;
     }
 
+    public void setLastUsedColour2(GColour lastUsedColour) {
+        final int imgSize;
+        switch (Editor3DWindow.getIconsize()) {
+        case 0:
+            imgSize = 16;
+            break;
+        case 1:
+            imgSize = 24;
+            break;
+        case 2:
+            imgSize = 32;
+            break;
+        case 3:
+            imgSize = 48;
+            break;
+        case 4:
+            imgSize = 64;
+            break;
+        case 5:
+            imgSize = 72;
+            break;
+        default:
+            imgSize = 16;
+            break;
+        }
+        final GColour[] gColour2 = new GColour[] { lastUsedColour };
+        int num = gColour2[0].getColourNumber();
+        if (View.hasLDConfigColour(num)) {
+            gColour2[0] = View.getLDConfigColour(num);
+        } else {
+            num = -1;
+        }
+        Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
+        btn_LastUsedColour[0].removeListener(SWT.Paint, btn_LastUsedColour[0].getListeners(SWT.Paint)[0]);
+        btn_LastUsedColour[0].removeListener(SWT.Selection, btn_LastUsedColour[0].getListeners(SWT.Selection)[0]);
+        final Color col = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
+        final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
+        final int x = size.x / 4;
+        final int y = size.y / 4;
+        final int w = size.x / 2;
+        final int h = size.y / 2;
+        btn_LastUsedColour[0].addPaintListener(new PaintListener() {
+            @Override
+            public void paintControl(PaintEvent e) {
+                e.gc.setBackground(col);
+                e.gc.fillRectangle(x, y, w, h);
+                if (gColour2[0].getA() == 1f) {
+                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
+                } else {
+                    e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
+                }
+            }
+        });
+        btn_LastUsedColour[0].addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (Project.getFileToEdit() != null) {
+                    Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
+                    int num = gColour2[0].getColourNumber();
+                    if (!View.hasLDConfigColour(num)) {
+                        num = -1;
+                    }
+                    Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
+                }
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+        });
+        if (num != -1) {
+            btn_LastUsedColour[0].setToolTipText("Colour [" + num + "]: " + View.getLDConfigColourName(num)); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+        } else {
+            StringBuilder colourBuilder = new StringBuilder();
+            colourBuilder.append("0x2"); //$NON-NLS-1$
+            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
+            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
+            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
+            btn_LastUsedColour[0].setToolTipText("Colour [" + colourBuilder.toString() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+        }
+        btn_LastUsedColour[0].redraw();
+    }
+
     public void cleanupClosedData() {
         Set<DatFile> openFiles = new HashSet<DatFile>(Project.getUnsavedFiles());
         for (OpenGLRenderer renderer : renders) {
