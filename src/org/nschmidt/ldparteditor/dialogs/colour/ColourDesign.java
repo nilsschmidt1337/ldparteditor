@@ -106,7 +106,7 @@ class ColourDesign extends Dialog {
 
         TreeSet<Integer> ldConfIndices = new TreeSet<Integer>(View.getColourMap().keySet());
 
-        final int btnSize = 24;
+        final int btnSize = (int) (lbl_stdColour.computeSize(SWT.DEFAULT, SWT.DEFAULT).y * 1.5f);
 
         for (Integer index : ldConfIndices) {
             final Button btn_stdColour = new Button(cmpStdColours, SWT.FLAT);
@@ -124,10 +124,10 @@ class ColourDesign extends Dialog {
             final GColour gColour2 = View.getLDConfigColour(index);
             btn_stdColour.setData(gColour2);
             final Color col = SWTResourceManager.getColor((int) (gColour2.getR() * 255f), (int) (gColour2.getG() * 255f), (int) (gColour2.getB() * 255f));
-            final int x = btnSize / 4;
-            final int y = btnSize / 4;
-            final int w = btnSize / 2;
-            final int h = btnSize / 2;
+            final int x = (int) (btnSize / 5f);
+            final int y = (int) (btnSize / 5f);
+            final int w = (int) (btnSize * (3f / 5f));
+            final int h = (int) (btnSize * (3f / 5f));
             btn_stdColour.addPaintListener(new PaintListener() {
                 @Override
                 public void paintControl(PaintEvent e) {

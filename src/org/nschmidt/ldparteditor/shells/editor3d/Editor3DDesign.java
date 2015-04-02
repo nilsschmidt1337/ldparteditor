@@ -398,7 +398,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Save = new Button(toolItem_NewOpenSave, SWT.NONE);
                 this.btn_Save[0] = btn_Save;
-                btn_Save.setToolTipText(I18n.EDITOR3D_Save);
+                KeyStateManager.addTooltipText(btn_Save, I18n.EDITOR3D_Save, Task.SAVE);
                 btn_Save.setImage(ResourceManager.getImage("icon16_document-save.png")); //$NON-NLS-1$
             }
             {
@@ -714,12 +714,12 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_SelectAll = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectAll[0] = mntm_SelectAll;
-                        mntm_SelectAll.setText("…All.\tCtrl+A"); //$NON-NLS-1$ I18N
+                        KeyStateManager.addKeyText(mntm_SelectAll, "…All.", Task.SELECT_ALL); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_SelectNone = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectNone[0] = mntm_SelectNone;
-                        mntm_SelectNone.setText("…None.\tCtrl+Shift+A"); //$NON-NLS-1$ I18N
+                        KeyStateManager.addKeyText(mntm_SelectNone, "…None.", Task.SELECT_NONE); //$NON-NLS-1$ I18N
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator0 = new MenuItem(mnu_Select, SWT.SEPARATOR);
@@ -738,8 +738,7 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_SelectAllWithColours = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectAllWithColours[0] = mntm_SelectAllWithColours;
-                        mntm_SelectAllWithColours.setText("…All with Same Colours.\tCtrl+Alt+C"); //$NON-NLS-1$ I18N
-                        // mntm_SelectAllWithColours.setAccelerator(SWT.CTRL | 'A');
+                        KeyStateManager.addKeyText(mntm_SelectAllWithColours, "…All with Same Colours.", Task.SELECT_ALL_WITH_SAME_COLOURS); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_SelectAllVisibleWithColours = new MenuItem(mnu_Select, SWT.PUSH);
@@ -1224,13 +1223,13 @@ class Editor3DDesign extends ApplicationWindow {
                 Button btn_LastUsedColour = new Button(toolItem_ColourFunctions, SWT.NONE);
                 this.btn_LastUsedColour[0] = btn_LastUsedColour;
                 btn_LastUsedColour.setToolTipText("Colour [16]"); //$NON-NLS-1$ I18N
-                btn_LastUsedColour.setImage(ResourceManager.getImage("icon16_transparent.png")); //$NON-NLS-1$
+                btn_LastUsedColour.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
                 final Color col = SWTResourceManager.getColor(128, 128, 128);
                 final Point size = btn_LastUsedColour.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-                final int x = size.x / 4;
-                final int y = size.y / 4;
-                final int w = size.x / 2;
-                final int h = size.y / 2;
+                final int x = Math.round(size.x / 5f);
+                final int y = Math.round(size.y / 5f);
+                final int w = Math.round(size.x * (3f / 5f));
+                final int h = Math.round(size.y * (3f / 5f));
                 btn_LastUsedColour.addPaintListener(new PaintListener() {
                     @Override
                     public void paintControl(PaintEvent e) {
@@ -2179,7 +2178,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Col.setToolTipText("Colour [" + colourBuilder.toString() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ I18N
         }
 
-        btn_Col.setImage(ResourceManager.getImage("icon16_transparent.png")); //$NON-NLS-1$
+        btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
 
         btn_Col.addSelectionListener(new SelectionListener() {
             @Override
@@ -2220,10 +2219,10 @@ class Editor3DDesign extends ApplicationWindow {
                     btn_LastUsedColour[0].removeListener(SWT.Selection, btn_LastUsedColour[0].getListeners(SWT.Selection)[0]);
                     final Color col = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
                     final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
-                    final int x = size.x / 4;
-                    final int y = size.y / 4;
-                    final int w = size.x / 2;
-                    final int h = size.y / 2;
+                    final int x = Math.round(size.x / 5f);
+                    final int y = Math.round(size.y / 5f);
+                    final int w = Math.round(size.x * (3f / 5f));
+                    final int h = Math.round(size.y * (3f / 5f));
                     btn_LastUsedColour[0].addPaintListener(new PaintListener() {
                         @Override
                         public void paintControl(PaintEvent e) {
@@ -2274,10 +2273,10 @@ class Editor3DDesign extends ApplicationWindow {
             }
         });
         final Point size = btn_Col.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-        final int x = size.x / 4;
-        final int y = size.y / 4;
-        final int w = size.x / 2;
-        final int h = size.y / 2;
+        final int x = Math.round(size.x / 5f);
+        final int y = Math.round(size.y / 5f);
+        final int w = Math.round(size.x * (3f / 5f));
+        final int h = Math.round(size.y * (3f / 5f));
         btn_Col.addPaintListener(new PaintListener() {
             @Override
             public void paintControl(PaintEvent e) {
