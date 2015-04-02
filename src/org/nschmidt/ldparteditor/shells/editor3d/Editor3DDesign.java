@@ -713,13 +713,11 @@ class Editor3DDesign extends ApplicationWindow {
                         MenuItem mntm_SelectAll = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectAll[0] = mntm_SelectAll;
                         mntm_SelectAll.setText("…All.\tCtrl+A"); //$NON-NLS-1$ I18N
-                        mntm_SelectAll.setAccelerator(SWT.CTRL | 'A');
                     }
                     {
                         MenuItem mntm_SelectNone = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectNone[0] = mntm_SelectNone;
-                        mntm_SelectNone.setText("…None.\tShift+Ctrl+A"); //$NON-NLS-1$ I18N
-                        mntm_SelectNone.setAccelerator(SWT.CTRL | SWT.SHIFT | 'A');
+                        mntm_SelectNone.setText("…None.\tCtrl+Shift+A"); //$NON-NLS-1$ I18N
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator0 = new MenuItem(mnu_Select, SWT.SEPARATOR);
@@ -738,8 +736,8 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_SelectAllWithColours = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectAllWithColours[0] = mntm_SelectAllWithColours;
-                        mntm_SelectAllWithColours.setText("…All with Same Colours."); //$NON-NLS-1$ I18N
-                        mntm_SelectAllWithColours.setAccelerator(SWT.CTRL | 'A');
+                        mntm_SelectAllWithColours.setText("…All with Same Colours.\tCtrl+Alt+C"); //$NON-NLS-1$ I18N
+                        // mntm_SelectAllWithColours.setAccelerator(SWT.CTRL | 'A');
                     }
                     {
                         MenuItem mntm_SelectAllVisibleWithColours = new MenuItem(mnu_Select, SWT.PUSH);
@@ -965,8 +963,7 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Edger2[0] = mntm_Edger2;
-                        mntm_Edger2.setText("Edger2\tAlt+E"); //$NON-NLS-1$ I18N
-                        mntm_Edger2.setAccelerator(SWT.ALT | 'E');
+                        mntm_Edger2.setText("Edger2"); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);

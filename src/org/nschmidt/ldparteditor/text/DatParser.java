@@ -688,7 +688,7 @@ public enum DatParser {
             } else if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
                 GData0 newLPEmetaTag = new GData0(line);
                 result.add(new ParsingResult(newLPEmetaTag));
-                result.add(new ParsingResult("Unofficial Meta Command", "[WFA] Warning", ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult("Unofficial Meta Command", "[W0D] Warning", ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                 if (line.startsWith("TODO ", 7)) { //$NON-NLS-1$
                     result.add(new ParsingResult(line.substring(12), "[WFF] TODO", ResultType.WARN)); //$NON-NLS-1$
                 } else if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$

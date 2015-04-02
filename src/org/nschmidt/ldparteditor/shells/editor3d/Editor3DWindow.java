@@ -5904,7 +5904,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
 
-    private void loadSelectorSettings()  {
+    public SelectorSettings loadSelectorSettings()  {
         sels.setColour(mntm_WithSameColour[0].getSelection());
         sels.setEdgeStop(mntm_StopAtEdges[0].getSelection());
         sels.setHidden(mntm_WithHiddenData[0].getSelection());
@@ -5917,6 +5917,7 @@ public class Editor3DWindow extends Editor3DDesign {
         sels.setTriangles(mntm_STriangles[0].getSelection());
         sels.setQuads(mntm_SQuads[0].getSelection());
         sels.setCondlines(mntm_SCLines[0].getSelection());
+        return sels;
     }
 
     private boolean isFileNameAllocated(String dir, DatFile df, boolean createNew) {
