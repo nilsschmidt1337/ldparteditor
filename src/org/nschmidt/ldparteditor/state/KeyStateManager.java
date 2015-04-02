@@ -25,6 +25,7 @@ import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.Task;
+import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -51,6 +52,8 @@ public class KeyStateManager {
     private static final HashMap<String, Task> taskMap = new HashMap<String, Task>();
     /** A set of all reserved keys */
     private static final HashSet<String> reservedKeyCodes = new HashSet<String>();
+    /** A map which assigns a pressed key to a task (for the text editor)*/
+    private static final HashMap<String, TextTask> textTaskMap = new HashMap<String, TextTask>();
 
     private StringBuilder sb = new StringBuilder();
 
@@ -69,6 +72,9 @@ public class KeyStateManager {
         reservedKeyCodes.add(SWT.KEYPAD_7 + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.KEYPAD_8 + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.KEYPAD_9 + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.ALT + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.CTRL + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.SHIFT + ""); //$NON-NLS-1$
 
         taskMap.put(SWT.KEYPAD_0 + "", Task.COLOUR_NUMBER0); //$NON-NLS-1$
         taskMap.put(SWT.KEYPAD_1 + "", Task.COLOUR_NUMBER1); //$NON-NLS-1$
@@ -98,6 +104,13 @@ public class KeyStateManager {
         taskMap.put((int) '8' + "", Task.ADD_LINE); //$NON-NLS-1$
         taskMap.put((int) '9' + "", Task.ADD_CONDLINE); //$NON-NLS-1$
         taskMap.put((int) '0' + "", Task.ADD_COMMENTS); //$NON-NLS-1$
+
+        textTaskMap.put((int) 'r' + "+Alt+Shift", TextTask.EDITORTEXT_REPLACE_VERTEX); //$NON-NLS-1$
+        textTaskMap.put((int) SWT.ESC + "", TextTask.EDITORTEXT_ESC); //$NON-NLS-1$
+        textTaskMap.put((int) 'f' + "+Alt", TextTask.EDITORTEXT_QUICKFIX); //$NON-NLS-1$
+        textTaskMap.put((int) 'a' + "+Ctrl", TextTask.EDITORTEXT_SELECTALL); //$NON-NLS-1$
+        textTaskMap.put((int) 'i' + "+Alt", TextTask.EDITORTEXT_INLINE); //$NON-NLS-1$
+        textTaskMap.put((int) 'c' + "+Alt", TextTask.EDITORTEXT_ROUND); //$NON-NLS-1$
     }
 
     /** Indicates that SHIFT is pressed */
@@ -116,8 +129,6 @@ public class KeyStateManager {
         this.c3d = null;
         this.cp = cp;
     }
-
-
 
     /**
      * @return {@code true} if SHIFT is pressed
@@ -336,5 +347,9 @@ public class KeyStateManager {
 
     public static HashMap<String, Task> getTaskmap() {
         return taskMap;
+    }
+
+    public static HashMap<String, TextTask> getTextTaskmap() {
+        return textTaskMap;
     }
 }

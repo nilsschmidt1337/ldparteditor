@@ -818,7 +818,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
                     if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
-                        new RoundDialog(getShell()).open();
+                        if (new RoundDialog(getShell()).open() == IDialogConstants.CANCEL_ID) return;
                     }
                     Project.getFileToEdit().getVertexManager()
                     .roundSelection(WorkbenchManager.getUserSettingState().getCoordsPrecision(), WorkbenchManager.getUserSettingState().getTransMatrixPrecision(), isMovingAdjacentData(), true);
