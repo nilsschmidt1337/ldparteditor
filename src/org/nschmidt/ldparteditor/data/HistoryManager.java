@@ -194,6 +194,7 @@ public class HistoryManager {
                                 pointerMax++;
                                 pointer++;
                                 NLogger.debug(getClass(), "Added undo/redo data"); //$NON-NLS-1$
+                                if (workQueue.isEmpty()) Thread.sleep(100);
                             } else {
                                 final int action2 = action.get();
                                 int delta = 0;
@@ -366,9 +367,10 @@ public class HistoryManager {
                                     }
                                     action.set(0);
                                     sq.offer(0);
+                                } else {
+                                    if (workQueue.isEmpty()) Thread.sleep(100);
                                 }
                             }
-                            Thread.sleep(100);
                         } catch (InterruptedException e) {
                         } catch (Exception e) {
                             NLogger.debug(getClass(), e);

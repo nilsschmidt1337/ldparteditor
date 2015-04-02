@@ -58,5 +58,8 @@ public enum Task {
     OBJ_VERTEX,
     OBJ_FACE,
     OBJ_LINE,
-    OBJ_PRIMITIVE
+    OBJ_PRIMITIVE,
+
+    UNDO,
+    REDO
 }

@@ -115,12 +115,18 @@ public class KeyStateManager {
         taskMap.put((int) '-' + "", Task.ZOOM_OUT); //$NON-NLS-1$
         taskMap.put((int) 'r' + "+Ctrl", Task.RESET_VIEW); //$NON-NLS-1$
 
+        taskMap.put((int) 'Z' + "+Ctrl", Task.UNDO); //$NON-NLS-1$
+        taskMap.put((int) 'Y' + "+Ctrl", Task.REDO); //$NON-NLS-1$
+
         textTaskMap.put((int) 'r' + "+Alt+Shift", TextTask.EDITORTEXT_REPLACE_VERTEX); //$NON-NLS-1$
         textTaskMap.put((int) SWT.ESC + "", TextTask.EDITORTEXT_ESC); //$NON-NLS-1$
         textTaskMap.put((int) 'f' + "+Alt", TextTask.EDITORTEXT_QUICKFIX); //$NON-NLS-1$
         textTaskMap.put((int) 'a' + "+Ctrl", TextTask.EDITORTEXT_SELECTALL); //$NON-NLS-1$
         textTaskMap.put((int) 'i' + "+Alt", TextTask.EDITORTEXT_INLINE); //$NON-NLS-1$
         textTaskMap.put((int) 'c' + "+Alt", TextTask.EDITORTEXT_ROUND); //$NON-NLS-1$
+
+        textTaskMap.put((int) 'Z' + "+Ctrl", TextTask.EDITORTEXT_UNDO); //$NON-NLS-1$
+        textTaskMap.put((int) 'Y' + "+Ctrl", TextTask.EDITORTEXT_REDO); //$NON-NLS-1$
     }
 
     /** Indicates that SHIFT is pressed */
@@ -310,6 +316,12 @@ public class KeyStateManager {
                         break;
                     case OBJ_VERTEX:
                         win.setObjMode(0);
+                        break;
+                    case REDO:
+                        df.redo();
+                        break;
+                    case UNDO:
+                        df.undo();
                         break;
                     }
                 }

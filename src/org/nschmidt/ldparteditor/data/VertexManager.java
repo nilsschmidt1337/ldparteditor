@@ -7637,6 +7637,12 @@ public class VertexManager {
             c3d.setZoom(b.height / (max_y * 4f * View.PIXEL_PER_LDU));
         }
         pc.setZoom_exponent((float) (Math.log10(c3d.getZoom()) + 3f) * 10f);
+
+        if (Float.isInfinite(c3d.getZoom()) || Float.isInfinite(pc.getZoom_exponent()) || Float.isNaN(c3d.getZoom()) || Float.isNaN(pc.getZoom_exponent())) {
+            pc.setZoom_exponent(-20f);
+            c3d.setZoom((float) Math.pow(10.0d, -20f / 10 - 3));
+        }
+
         c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
         GuiManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();

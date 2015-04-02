@@ -765,6 +765,12 @@ public class CompositeTab extends CompositeTabDesign {
                         st.forceFocus();
                         break;
                     }
+                    case EDITORTEXT_REDO:
+                        if (state.getFileNameObj().getVertexManager().isUpdated()) state.getFileNameObj().redo();
+                        break;
+                    case EDITORTEXT_UNDO:
+                        if (state.getFileNameObj().getVertexManager().isUpdated()) state.getFileNameObj().undo();
+                        break;
                     }
                 }
             }
