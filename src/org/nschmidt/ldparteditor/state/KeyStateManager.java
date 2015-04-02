@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -30,6 +33,7 @@ import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
+import org.nschmidt.ldparteditor.helpers.KeyBoardHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -54,10 +58,12 @@ public class KeyStateManager {
     private HashSet<Integer> pressedKeyCodes = new HashSet<Integer>();
     /** A map which assigns a pressed key to a task */
     private static final HashMap<String, Task> taskMap = new HashMap<String, Task>();
+    private static final HashMap<Task, String> taskKeyMap = new HashMap<Task, String>();
     /** A set of all reserved keys */
     private static final HashSet<String> reservedKeyCodes = new HashSet<String>();
     /** A map which assigns a pressed key to a task (for the text editor)*/
     private static final HashMap<String, TextTask> textTaskMap = new HashMap<String, TextTask>();
+    private static final HashMap<TextTask, String> textTaskKeyMap = new HashMap<TextTask, String>();
 
     private StringBuilder sb = new StringBuilder();
 
@@ -80,65 +86,65 @@ public class KeyStateManager {
         reservedKeyCodes.add(SWT.CTRL + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.SHIFT + ""); //$NON-NLS-1$
 
-        taskMap.put(SWT.KEYPAD_0 + "", Task.COLOUR_NUMBER0); //$NON-NLS-1$
-        taskMap.put(SWT.KEYPAD_1 + "", Task.COLOUR_NUMBER1); //$NON-NLS-1$
-        taskMap.put(SWT.KEYPAD_2 + "", Task.COLOUR_NUMBER2); //$NON-NLS-1$
-        taskMap.put(SWT.KEYPAD_3 + "", Task.COLOUR_NUMBER3); //$NON-NLS-1$
-        taskMap.put(SWT.KEYPAD_4 + "", Task.COLOUR_NUMBER4); //$NON-NLS-1$
-        taskMap.put(SWT.KEYPAD_5 + "", Task.COLOUR_NUMBER5); //$NON-NLS-1$
-        taskMap.put(SWT.KEYPAD_6 + "", Task.COLOUR_NUMBER6); //$NON-NLS-1$
-        taskMap.put(SWT.KEYPAD_7 + "", Task.COLOUR_NUMBER7); //$NON-NLS-1$
-        taskMap.put(SWT.KEYPAD_8 + "", Task.COLOUR_NUMBER8); //$NON-NLS-1$
-        taskMap.put(SWT.KEYPAD_9 + "", Task.COLOUR_NUMBER9); //$NON-NLS-1$
+        addTask(Task.COLOUR_NUMBER0, SWT.KEYPAD_0);
+        addTask(Task.COLOUR_NUMBER1, SWT.KEYPAD_1);
+        addTask(Task.COLOUR_NUMBER2, SWT.KEYPAD_2);
+        addTask(Task.COLOUR_NUMBER3, SWT.KEYPAD_3);
+        addTask(Task.COLOUR_NUMBER4, SWT.KEYPAD_4);
+        addTask(Task.COLOUR_NUMBER5, SWT.KEYPAD_5);
+        addTask(Task.COLOUR_NUMBER6, SWT.KEYPAD_6);
+        addTask(Task.COLOUR_NUMBER7, SWT.KEYPAD_7);
+        addTask(Task.COLOUR_NUMBER8, SWT.KEYPAD_8);
+        addTask(Task.COLOUR_NUMBER9, SWT.KEYPAD_9);
 
-        taskMap.put((int) SWT.DEL + "", Task.DELETE); //$NON-NLS-1$
-        taskMap.put((int) SWT.ESC + "", Task.ESC); //$NON-NLS-1$
-        taskMap.put((int) 'c' + "+Ctrl", Task.COPY); //$NON-NLS-1$
-        taskMap.put((int) 'x' + "+Ctrl", Task.CUT); //$NON-NLS-1$
-        taskMap.put((int) 'v' + "+Ctrl", Task.PASTE); //$NON-NLS-1$
+        addTask(Task.DELETE, SWT.DEL);
+        addTask(Task.ESC, SWT.ESC);
+        addTask(Task.COPY, SWT.CTRL, 'c');
+        addTask(Task.CUT, SWT.CTRL, 'x');
+        addTask(Task.PASTE, SWT.CTRL, 'v');
 
-        taskMap.put(SWT.F2 + "", Task.OBJ_VERTEX); //$NON-NLS-1$
-        taskMap.put(SWT.F3 + "", Task.OBJ_FACE); //$NON-NLS-1$
-        taskMap.put(SWT.F4 + "", Task.OBJ_LINE); //$NON-NLS-1$
-        taskMap.put(SWT.F5 + "", Task.OBJ_PRIMITIVE); //$NON-NLS-1$
+        addTask(Task.OBJ_VERTEX, SWT.F2);
+        addTask(Task.OBJ_FACE, SWT.F3);
+        addTask(Task.OBJ_LINE, SWT.F4);
+        addTask(Task.OBJ_PRIMITIVE, SWT.F5);
 
-        taskMap.put((int) '1' + "", Task.MODE_SELECT); //$NON-NLS-1$
-        taskMap.put((int) '2' + "", Task.MODE_MOVE); //$NON-NLS-1$
-        taskMap.put((int) '3' + "", Task.MODE_ROTATE); //$NON-NLS-1$
-        taskMap.put((int) '4' + "", Task.MODE_SCALE); //$NON-NLS-1$
-        taskMap.put((int) 'c' + "", Task.MODE_COMBINED); //$NON-NLS-1$
+        addTask(Task.MODE_SELECT, '1');
+        addTask(Task.MODE_MOVE, '2');
+        addTask(Task.MODE_ROTATE,'3');
+        addTask(Task.MODE_SCALE, '4');
+        addTask(Task.MODE_COMBINED, 'c');
 
-        taskMap.put((int) '5' + "", Task.ADD_VERTEX); //$NON-NLS-1$
-        taskMap.put((int) '6' + "", Task.ADD_TRIANGLE); //$NON-NLS-1$
-        taskMap.put((int) '7' + "", Task.ADD_QUAD); //$NON-NLS-1$
-        taskMap.put((int) '8' + "", Task.ADD_LINE); //$NON-NLS-1$
-        taskMap.put((int) '9' + "", Task.ADD_CONDLINE); //$NON-NLS-1$
-        taskMap.put((int) '0' + "", Task.ADD_COMMENTS); //$NON-NLS-1$
+        addTask(Task.ADD_VERTEX, '5');
+        addTask(Task.ADD_TRIANGLE, '6');
+        addTask(Task.ADD_QUAD, '7');
+        addTask(Task.ADD_LINE, '8');
+        addTask(Task.ADD_CONDLINE, '9');
+        addTask(Task.ADD_COMMENTS, '0');
 
-        taskMap.put((int) '+' + "", Task.ZOOM_IN); //$NON-NLS-1$
-        taskMap.put((int) '-' + "", Task.ZOOM_OUT); //$NON-NLS-1$
-        taskMap.put((int) 'r' + "+Ctrl", Task.RESET_VIEW); //$NON-NLS-1$
+        addTask(Task.ZOOM_IN,  '+');
+        addTask(Task.ZOOM_OUT,  '-');
+        addTask(Task.RESET_VIEW, SWT.CTRL, 'r');
 
-        taskMap.put((int) 'z' + "+Ctrl", Task.UNDO); //$NON-NLS-1$
-        taskMap.put((int) 'y' + "+Ctrl", Task.REDO); //$NON-NLS-1$
+        addTask(Task.UNDO, SWT.CTRL, 'z');
+        addTask(Task.REDO, SWT.CTRL, 'y');
 
-        taskMap.put((int) 's' + "+Ctrl", Task.SAVE); //$NON-NLS-1$
+        addTask(Task.SAVE, SWT.CTRL, 's');
 
-        taskMap.put((int) 'a' + "+Ctrl", Task.SELECT_ALL); //$NON-NLS-1$
-        taskMap.put((int) 'a' + "+Ctrl+Shift", Task.SELECT_NONE); //$NON-NLS-1$
-        taskMap.put((int) 'c' + "+Ctrl+Alt", Task.SELECT_ALL_WITH_SAME_COLOURS); //$NON-NLS-1$
+        addTask(Task.SELECT_ALL, SWT.CTRL, 'a');
+        addTask(Task.SELECT_NONE,SWT.CTRL | SWT.SHIFT, 'a');
+        addTask(Task.SELECT_ALL_WITH_SAME_COLOURS, SWT.CTRL | SWT.ALT,  'c');
 
-        textTaskMap.put((int) 'r' + "+Alt+Shift", TextTask.EDITORTEXT_REPLACE_VERTEX); //$NON-NLS-1$
-        textTaskMap.put((int) SWT.ESC + "", TextTask.EDITORTEXT_ESC); //$NON-NLS-1$
-        textTaskMap.put((int) 'f' + "+Alt", TextTask.EDITORTEXT_QUICKFIX); //$NON-NLS-1$
-        textTaskMap.put((int) 'a' + "+Ctrl", TextTask.EDITORTEXT_SELECTALL); //$NON-NLS-1$
-        textTaskMap.put((int) 'i' + "+Alt", TextTask.EDITORTEXT_INLINE); //$NON-NLS-1$
-        textTaskMap.put((int) 'c' + "+Alt", TextTask.EDITORTEXT_ROUND); //$NON-NLS-1$
+        addTask(TextTask.EDITORTEXT_REPLACE_VERTEX, SWT.ALT | SWT.SHIFT, 'r');
+        addTask(TextTask.EDITORTEXT_ESC, SWT.ESC);
+        addTask(TextTask.EDITORTEXT_QUICKFIX, SWT.ALT, 'f');
+        addTask(TextTask.EDITORTEXT_SELECTALL, SWT.CTRL, 'a');
+        addTask(TextTask.EDITORTEXT_INLINE, SWT.ALT, 'i');
+        addTask(TextTask.EDITORTEXT_ROUND, SWT.ALT, 'c');
 
-        textTaskMap.put((int) 'z' + "+Ctrl", TextTask.EDITORTEXT_UNDO); //$NON-NLS-1$
-        textTaskMap.put((int) 'y' + "+Ctrl", TextTask.EDITORTEXT_REDO); //$NON-NLS-1$
+        addTask(TextTask.EDITORTEXT_UNDO, SWT.CTRL, 'z');
+        addTask(TextTask.EDITORTEXT_REDO, SWT.CTRL, 'y');
 
-        textTaskMap.put((int) 's' + "+Ctrl", TextTask.EDITORTEXT_SAVE); //$NON-NLS-1$
+        addTask(TextTask.EDITORTEXT_SAVE, SWT.CTRL, 's');
     }
 
     /** Indicates that SHIFT is pressed */
@@ -427,7 +433,7 @@ public class KeyStateManager {
         this.ctrlPressed = ksm.ctrlPressed;
     }
 
-    public static HashSet<String> getReservedkeycodes() {
+    public static HashSet<String> getReservedKeyCodes() {
         return reservedKeyCodes;
     }
 
@@ -437,5 +443,75 @@ public class KeyStateManager {
 
     public static HashMap<String, TextTask> getTextTaskmap() {
         return textTaskMap;
+    }
+
+    public static HashMap<Task, String> getTaskKeymap() {
+        return taskKeyMap;
+    }
+
+    public static HashMap<TextTask, String> getTextTaskKeymap() {
+        return textTaskKeyMap;
+    }
+
+    public static void addTask(Task t, int keyCode) {
+        addTask(t, SWT.NONE, keyCode);
+    }
+
+    public static void addTask(TextTask t, int keyCode) {
+        addTask(t, SWT.NONE, keyCode);
+    }
+
+    public static void addTask(Task t, int stateMask, int keyCode) {
+        String[] s = getStrings(keyCode, stateMask);
+        taskMap.put(s[0], t);
+        taskKeyMap.put(t, s[1]);
+    }
+
+    public static void addTask(TextTask t, int stateMask, int keyCode) {
+        String[] s = getStrings(keyCode, stateMask);
+        textTaskMap.put(s[0], t);
+        textTaskKeyMap.put(t, s[1]);
+    }
+
+    private static String[] getStrings(int keyCode, int stateMask) {
+        final boolean ctrlPressed = (stateMask & SWT.CTRL) != 0;
+        final boolean altPressed = (stateMask & SWT.ALT) != 0;
+        final boolean shiftPressed = (stateMask & SWT.SHIFT) != 0;
+        String[] s = new String[2];
+        final StringBuilder sb = new StringBuilder();
+        sb.append(keyCode);
+        sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+        sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
+        sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+        s[0] = sb.toString();
+        Event event = new Event();
+        event.keyCode = keyCode;
+        if (ctrlPressed) event.stateMask = event.stateMask | SWT.CTRL;
+        if (altPressed) event.stateMask = event.stateMask | SWT.ALT;
+        if (shiftPressed) event.stateMask = event.stateMask | SWT.SHIFT;
+        s[1] = KeyBoardHelper.getKeyString(event);
+        return s;
+    }
+
+    public static void addTooltipText(final Button btn, final String text, final TextTask t) {
+        btn.addMouseMoveListener(new MouseMoveListener() {
+            @Override
+            public void mouseMove(MouseEvent e) {
+                btn.setToolTipText(text + " (" + textTaskKeyMap.get(t) +")"); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        });
+    }
+
+    public static void addTooltipText(final Button btn, final String text, final Task t) {
+        btn.addMouseMoveListener(new MouseMoveListener() {
+            @Override
+            public void mouseMove(MouseEvent e) {
+                btn.setToolTipText(text + " (" + taskKeyMap.get(t) +")"); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        });
+    }
+
+    public static void addTooltipText(Button btn, final String text) {
+        btn.setToolTipText(text);
     }
 }
