@@ -43,7 +43,7 @@ public enum KeyBoardHelper {
         int accelerator = SWTKeySupport.convertEventToUnmodifiedAccelerator(event);
         KeyStroke keyStroke = SWTKeySupport.convertAcceleratorToKeyStroke(accelerator);
         KeySequence sequence = KeySequence.getInstance(keyStroke);
-        return sequence.toString();
+        return sequence.toString().replace("CTRL", "Ctrl").replace("SHIFT", "Shift").replace("ALT", "Alt").replace("DEL", "Delete"); // I18N //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
     }
 
 }

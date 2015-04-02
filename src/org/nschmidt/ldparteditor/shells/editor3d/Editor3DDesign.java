@@ -62,6 +62,7 @@ import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
 import org.nschmidt.ldparteditor.enums.Perspective;
+import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -69,6 +70,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
+import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
@@ -463,7 +465,7 @@ class Editor3DDesign extends ApplicationWindow {
             Button btn_Undo = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_Undo[0] = btn_Undo;
             btn_Undo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
-            btn_Undo.setToolTipText(I18n.EDITOR3D_Undo);
+            KeyStateManager.addTooltipText(btn_Undo, I18n.EDITOR3D_Undo, Task.UNDO);
         }
         if (NLogger.DEBUG) {
             Button btn_Snapshot = new Button(toolItem_UndoRedo, SWT.NONE);
@@ -475,39 +477,39 @@ class Editor3DDesign extends ApplicationWindow {
             Button btn_Redo = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_Redo[0] = btn_Redo;
             btn_Redo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
-            btn_Redo.setToolTipText(I18n.EDITOR3D_Redo);
+            KeyStateManager.addTooltipText(btn_Redo, I18n.EDITOR3D_Redo, Task.REDO);
         }
         {
             ToolItem toolItem_Transformations = new ToolItem(toolBar, SWT.NONE);
             {
                 Button btn_Select = new Button(toolItem_Transformations, SWT.TOGGLE);
                 this.btn_Select[0] = btn_Select;
-                btn_Select.setToolTipText(I18n.EDITOR3D_Select);
+                KeyStateManager.addTooltipText(btn_Select, I18n.EDITOR3D_Select, Task.MODE_SELECT);
                 btn_Select.setSelection(true);
                 btn_Select.setImage(ResourceManager.getImage("icon16_select.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Move = new Button(toolItem_Transformations, SWT.TOGGLE);
                 this.btn_Move[0] = btn_Move;
-                btn_Move.setToolTipText(I18n.EDITOR3D_Move);
+                KeyStateManager.addTooltipText(btn_Move, I18n.EDITOR3D_Move, Task.MODE_MOVE);
                 btn_Move.setImage(ResourceManager.getImage("icon16_move.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Rotate = new Button(toolItem_Transformations, SWT.TOGGLE);
                 this.btn_Rotate[0] = btn_Rotate;
-                btn_Rotate.setToolTipText(I18n.EDITOR3D_Rotate);
+                KeyStateManager.addTooltipText(btn_Rotate, I18n.EDITOR3D_Rotate, Task.MODE_ROTATE);
                 btn_Rotate.setImage(ResourceManager.getImage("icon16_rotate.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Scale = new Button(toolItem_Transformations, SWT.TOGGLE);
                 this.btn_Scale[0] = btn_Scale;
-                btn_Scale.setToolTipText(I18n.EDITOR3D_Scale);
+                KeyStateManager.addTooltipText(btn_Scale, I18n.EDITOR3D_Scale, Task.MODE_SCALE);
                 btn_Scale.setImage(ResourceManager.getImage("icon16_scale.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Combined = new Button(toolItem_Transformations, SWT.TOGGLE);
                 this.btn_Combined[0] = btn_Combined;
-                btn_Combined.setToolTipText("Combined Mode"); // I18N Needs translation! //$NON-NLS-1$
+                KeyStateManager.addTooltipText(btn_Combined, "Combined Mode", Task.MODE_COMBINED); // I18N Needs translation! //$NON-NLS-1$
                 btn_Combined.setImage(ResourceManager.getImage("icon16_combined.png")); //$NON-NLS-1$
             }
         }
