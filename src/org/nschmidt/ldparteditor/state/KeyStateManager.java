@@ -92,6 +92,12 @@ public class KeyStateManager {
         taskMap.put((int) 'c' + "+Ctrl", Task.COPY); //$NON-NLS-1$
         taskMap.put((int) 'x' + "+Ctrl", Task.CUT); //$NON-NLS-1$
         taskMap.put((int) 'v' + "+Ctrl", Task.PASTE); //$NON-NLS-1$
+
+        taskMap.put(SWT.F2 + "", Task.OBJ_VERTEX); //$NON-NLS-1$
+        taskMap.put(SWT.F3 + "", Task.OBJ_FACE); //$NON-NLS-1$
+        taskMap.put(SWT.F4 + "", Task.OBJ_LINE); //$NON-NLS-1$
+        taskMap.put(SWT.F5 + "", Task.OBJ_PRIMITIVE); //$NON-NLS-1$
+
         taskMap.put((int) '1' + "", Task.MODE_SELECT); //$NON-NLS-1$
         taskMap.put((int) '2' + "", Task.MODE_MOVE); //$NON-NLS-1$
         taskMap.put((int) '3' + "", Task.MODE_ROTATE); //$NON-NLS-1$
@@ -104,6 +110,10 @@ public class KeyStateManager {
         taskMap.put((int) '8' + "", Task.ADD_LINE); //$NON-NLS-1$
         taskMap.put((int) '9' + "", Task.ADD_CONDLINE); //$NON-NLS-1$
         taskMap.put((int) '0' + "", Task.ADD_COMMENTS); //$NON-NLS-1$
+
+        taskMap.put((int) '+' + "", Task.ZOOM_IN); //$NON-NLS-1$
+        taskMap.put((int) '-' + "", Task.ZOOM_OUT); //$NON-NLS-1$
+        taskMap.put((int) 'r' + "+Ctrl", Task.RESET_VIEW); //$NON-NLS-1$
 
         textTaskMap.put((int) 'r' + "+Alt+Shift", TextTask.EDITORTEXT_REPLACE_VERTEX); //$NON-NLS-1$
         textTaskMap.put((int) SWT.ESC + "", TextTask.EDITORTEXT_ESC); //$NON-NLS-1$
@@ -279,6 +289,27 @@ public class KeyStateManager {
                         break;
                     case ADD_VERTEX:
                         win.setAddState(1);
+                        break;
+                    case ZOOM_IN:
+                        c3d.getPerspectiveCalculator().zoomIn();
+                        break;
+                    case ZOOM_OUT:
+                        c3d.getPerspectiveCalculator().zoomOut();
+                        break;
+                    case RESET_VIEW:
+                        c3d.getPerspectiveCalculator().zoomReset();
+                        break;
+                    case OBJ_FACE:
+                        win.setObjMode(1);
+                        break;
+                    case OBJ_LINE:
+                        win.setObjMode(2);
+                        break;
+                    case OBJ_PRIMITIVE:
+                        win.setObjMode(3);
+                        break;
+                    case OBJ_VERTEX:
+                        win.setObjMode(0);
                         break;
                     }
                 }

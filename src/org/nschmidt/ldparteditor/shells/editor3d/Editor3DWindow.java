@@ -4243,7 +4243,16 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void setAddState(int type) {
-        if (isAddingSomething()) resetAddState();
+        if (isAddingSomething()) {
+            resetAddState();
+            btn_AddVertex[0].setSelection(false);
+            btn_AddLine[0].setSelection(false);
+            btn_AddTriangle[0].setSelection(false);
+            btn_AddQuad[0].setSelection(false);
+            btn_AddCondline[0].setSelection(false);
+            btn_AddPrimitive[0].setSelection(false);
+            setAddingSomething(false);
+        }
         switch (type) {
         case 0:
             btn_AddComment[0].notifyListeners(SWT.Selection, new Event());
@@ -4279,7 +4288,31 @@ public class Editor3DWindow extends Editor3DDesign {
             clickSingleBtn(btn_AddCondline[0]);
             break;
         }
-        if (!isAddingSomething()) resetAddState();
+    }
+
+    public void setObjMode(int type) {
+        switch (type) {
+        case 0:
+            btn_Vertices[0].setSelection(true);
+            setWorkingType(ObjectMode.VERTICES);
+            clickSingleBtn(btn_Vertices[0]);
+            break;
+        case 1:
+            btn_TrisNQuads[0].setSelection(true);
+            setWorkingType(ObjectMode.FACES);
+            clickSingleBtn(btn_TrisNQuads[0]);
+            break;
+        case 2:
+            btn_Lines[0].setSelection(true);
+            setWorkingType(ObjectMode.LINES);
+            clickSingleBtn(btn_Lines[0]);
+            break;
+        case 3:
+            btn_Subfiles[0].setSelection(true);
+            setWorkingType(ObjectMode.SUBFILES);
+            clickSingleBtn(btn_Subfiles[0]);
+            break;
+        }
     }
 
     /**
@@ -5971,4 +6004,5 @@ public class Editor3DWindow extends Editor3DDesign {
     public static AtomicBoolean getAlive() {
         return alive;
     }
+
 }
