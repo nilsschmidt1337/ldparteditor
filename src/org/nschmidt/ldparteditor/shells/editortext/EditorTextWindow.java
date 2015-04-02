@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder2Listener;
 import org.eclipse.swt.custom.CTabFolderEvent;
@@ -584,7 +585,7 @@ public class EditorTextWindow extends EditorTextDesign {
                         return;
                     }
                     if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
-                        new RoundDialog(getShell()).open();
+                        if (new RoundDialog(getShell()).open() == IDialogConstants.CANCEL_ID) return;
                     }
                     NLogger.debug(getClass(), "Rounding.."); //$NON-NLS-1$
                     final StyledText st = selection.getTextComposite();

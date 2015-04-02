@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.composites.compositetab;
 import java.math.BigDecimal;
 import java.util.HashSet;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Listener;
@@ -54,7 +55,7 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
-import org.nschmidt.ldparteditor.helpers.KeyBoardHelper;
+import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helpers.compositetext.QuickFixer;
@@ -65,6 +66,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shells.searchnreplace.SearchWindow;
+import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.SyntaxFormatter;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
@@ -84,6 +86,7 @@ public class CompositeTab extends CompositeTabDesign {
 
     final SyntaxFormatter syntaxFormatter = new SyntaxFormatter(compositeText[0]);
     final int caretHeight = compositeText[0].getCaret().getSize().y;
+    private final StringBuilder sb = new StringBuilder();
 
     /** The state of this tab */
     private CompositeTabState state = new CompositeTabState();
@@ -669,68 +672,100 @@ public class CompositeTab extends CompositeTabDesign {
             @Override
             // MARK KeyDown (Quick Fix)
             public void handleEvent(Event event) {
+
                 // NLogger.debug(getClass(),
                 // KeyBoardHelper.getKeyString(event));
-                ViewIdleManager.pause[0].compareAndSet(false, true);
-                if (compositeText[0].getEditable() && "ALT+SHIFT+R".equals(KeyBoardHelper.getKeyString(event))) { //$NON-NLS-1$
-                    VertexMarker.markTheVertex(state, compositeText[0], state.getFileNameObj());
-                } else if (compositeText[0].getEditable() && "ESC".equals(KeyBoardHelper.getKeyString(event))) { //$NON-NLS-1$
-                    state.setReplacingVertex(false);
-                    state.getFileNameObj().getVertexManager().setVertexToReplace(null);
-                    compositeText[0].redraw(0, 0, compositeText[0].getBounds().width, compositeText[0].getBounds().height, true);
-                } else if (compositeText[0].getEditable() && "CTRL+F".equals(KeyBoardHelper.getKeyString(event))) { //$NON-NLS-1$
-                    HashSet<TreeItem> items = new HashSet<TreeItem>();
-                    int offset = compositeText[0].getOffsetAtLine(state.currentLineIndex);
-                    for (TreeItem t : treeItem_Hints[0].getItems()) {
-                        if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
-                            NLogger.debug(getClass(), "Found hint at " + t.getText(1)); //$NON-NLS-1$
-                            items.add(t);
-                        }
-                    }
-                    for (TreeItem t : treeItem_Warnings[0].getItems()) {
-                        if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
-                            NLogger.debug(getClass(), "Found warning at " + t.getText(1)); //$NON-NLS-1$
-                            items.add(t);
-                        }
-                    }
-                    for (TreeItem t : treeItem_Errors[0].getItems()) {
-                        if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
-                            NLogger.debug(getClass(), "Found error at " + t.getText(1)); //$NON-NLS-1$
-                            items.add(t);
-                        }
-                    }
 
-                    QuickFixer.fixTextIssues(compositeText[0], items, getState().getFileNameObj());
-                } else if ("CTRL+A".equals(KeyBoardHelper.getKeyString(event))) { //$NON-NLS-1$
-                    compositeText[0].setSelection(0, compositeText[0].getText().length());
-                } else if ("ALT+I".equals(KeyBoardHelper.getKeyString(event))) { //$NON-NLS-1$
-                    NLogger.debug(getClass(), "Inlining per action key.."); //$NON-NLS-1$
-                    final StyledText st = compositeText[0];
-                    int s1 = st.getSelectionRange().x;
-                    int s2 = s1 + st.getSelectionRange().y;
-                    int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                    int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                    fromLine++;
-                    toLine++;
-                    Inliner.withSubfileReference = false;
-                    NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                    NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
-                    Inliner.inline(st, fromLine, toLine, state.getFileNameObj());
-                    st.forceFocus();
-                } else if ("ALT+C".equals(KeyBoardHelper.getKeyString(event))) { //$NON-NLS-1$
-                    new RoundDialog(compositeText[0].getShell()).open();
-                    NLogger.debug(getClass(), "Rounding.."); //$NON-NLS-1$
-                    final StyledText st = compositeText[0];
-                    int s1 = st.getSelectionRange().x;
-                    int s2 = s1 + st.getSelectionRange().y;
-                    int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                    int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                    fromLine++;
-                    toLine++;
-                    NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                    NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
-                    Rounder.round(state, st, fromLine, toLine, state.getFileNameObj());
-                    st.forceFocus();
+                final int keyCode = event.keyCode;
+                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
+                final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
+                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
+                sb.setLength(0);
+                sb.append(keyCode);
+                sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                TextTask task = KeyStateManager.getTextTaskmap().get(sb.toString());
+
+                if (task != null) {
+                    ViewIdleManager.pause[0].compareAndSet(false, true);
+                    switch (task) {
+                    case EDITORTEXT_REPLACE_VERTEX:
+                        if (compositeText[0].getEditable()) {
+                            VertexMarker.markTheVertex(state, compositeText[0], state.getFileNameObj());
+                        }
+                        break;
+                    case EDITORTEXT_ESC:
+                        if (compositeText[0].getEditable()) {
+                            state.setReplacingVertex(false);
+                            state.getFileNameObj().getVertexManager().setVertexToReplace(null);
+                            compositeText[0].redraw(0, 0, compositeText[0].getBounds().width, compositeText[0].getBounds().height, true);
+                        }
+                        break;
+                    case EDITORTEXT_QUICKFIX:
+                        if (compositeText[0].getEditable()) {
+                            HashSet<TreeItem> items = new HashSet<TreeItem>();
+                            int offset = compositeText[0].getOffsetAtLine(state.currentLineIndex);
+                            for (TreeItem t : treeItem_Hints[0].getItems()) {
+                                if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
+                                    NLogger.debug(getClass(), "Found hint at " + t.getText(1)); //$NON-NLS-1$
+                                    items.add(t);
+                                }
+                            }
+                            for (TreeItem t : treeItem_Warnings[0].getItems()) {
+                                if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
+                                    NLogger.debug(getClass(), "Found warning at " + t.getText(1)); //$NON-NLS-1$
+                                    items.add(t);
+                                }
+                            }
+                            for (TreeItem t : treeItem_Errors[0].getItems()) {
+                                if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
+                                    NLogger.debug(getClass(), "Found error at " + t.getText(1)); //$NON-NLS-1$
+                                    items.add(t);
+                                }
+                            }
+
+                            QuickFixer.fixTextIssues(compositeText[0], items, getState().getFileNameObj());
+                        }
+                        break;
+                    case EDITORTEXT_SELECTALL:
+                        compositeText[0].setSelection(0, compositeText[0].getText().length());
+                        break;
+                    case EDITORTEXT_INLINE:
+                    {
+                        NLogger.debug(getClass(), "Inlining per action key.."); //$NON-NLS-1$
+                        final StyledText st = compositeText[0];
+                        int s1 = st.getSelectionRange().x;
+                        int s2 = s1 + st.getSelectionRange().y;
+                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                        fromLine++;
+                        toLine++;
+                        Inliner.withSubfileReference = false;
+                        NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                        Inliner.inline(st, fromLine, toLine, state.getFileNameObj());
+                        st.forceFocus();
+                        break;
+                    }
+                    case EDITORTEXT_ROUND:
+                    {
+                        if (new RoundDialog(compositeText[0].getShell()).open() == IDialogConstants.CANCEL_ID) return;
+                        NLogger.debug(getClass(), "Rounding.."); //$NON-NLS-1$
+                        final StyledText st = compositeText[0];
+                        int s1 = st.getSelectionRange().x;
+                        int s2 = s1 + st.getSelectionRange().y;
+                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                        fromLine++;
+                        toLine++;
+                        NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                        Rounder.round(state, st, fromLine, toLine, state.getFileNameObj());
+                        st.forceFocus();
+                        break;
+                    }
+                    }
                 }
             }
         });
