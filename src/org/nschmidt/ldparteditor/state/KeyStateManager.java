@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -28,8 +30,10 @@ import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -180,13 +184,16 @@ public class KeyStateManager {
      * @param keyEventType
      *            the event type can be {@code SWT.KeyDown} or {@code SWT.KeyUp}
      */
-    public void setStates(int keyCode, int keyEventType) {
+    public void setStates(int keyCode, int keyEventType, Event event) {
         if (cp == null) {
             // Logic for Composite3D
             if (keyEventType == SWT.KeyDown && !pressedKeyCodes.contains(keyCode)) {
                 NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") down]"); //$NON-NLS-1$ //$NON-NLS-2$
                 setKeyState(keyCode, true);
                 pressedKeyCodes.add(keyCode);
+                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0 || this.ctrlPressed;
+                final boolean altPressed = (event.stateMask & SWT.ALT) != 0 || this.altPressed;
+                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0 || this.shiftPressed;
                 sb.setLength(0);
                 sb.append(keyCode);
                 sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
@@ -323,12 +330,25 @@ public class KeyStateManager {
                         break;
                     case REDO:
                         df.redo();
+                        pressedKeyCodes.remove(keyCode);
                         break;
                     case UNDO:
                         df.undo();
+                        pressedKeyCodes.remove(keyCode);
                         break;
                     case SAVE:
-                        if (!df.isReadOnly()) df.save();
+                        if (!df.isReadOnly()) {
+                            if (df.save()) {
+                                Project.removeUnsavedFile(df);
+                                Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                                pressedKeyCodes.remove(keyCode);
+                            } else {
+                                MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
+                                messageBoxError.setText(I18n.DIALOG_Error);
+                                messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                                messageBoxError.open();
+                            }
+                        }
                         break;
                     }
                 }

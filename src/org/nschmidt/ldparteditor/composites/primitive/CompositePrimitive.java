@@ -246,7 +246,7 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK KeyDown
             public void handleEvent(Event event) {
-                keyboard.setStates(event.keyCode, SWT.KeyDown);
+                keyboard.setStates(event.keyCode, SWT.KeyDown, event);
             }
         });
 
@@ -254,7 +254,7 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK KeyUp
             public void handleEvent(Event event) {
-                keyboard.setStates(event.keyCode, SWT.KeyUp);
+                keyboard.setStates(event.keyCode, SWT.KeyUp, event);
             }
         });
 

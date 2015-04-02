@@ -1111,7 +1111,7 @@ public class Composite3D extends ScalableComposite {
             public void handleEvent(Event event) {
                 final Composite3D c3d = getComposite3D();
                 ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
-                keyboard.setStates(event.keyCode, SWT.KeyDown);
+                keyboard.setStates(event.keyCode, SWT.KeyDown, event);
             }
         });
 
@@ -1121,7 +1121,7 @@ public class Composite3D extends ScalableComposite {
             public void handleEvent(Event event) {
                 final Composite3D c3d = getComposite3D();
                 ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
-                keyboard.setStates(event.keyCode, SWT.KeyUp);
+                keyboard.setStates(event.keyCode, SWT.KeyUp, event);
             }
         });
 

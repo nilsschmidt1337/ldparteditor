@@ -47,6 +47,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.Rounder;
@@ -689,16 +690,20 @@ public class CompositeTab extends CompositeTabDesign {
 
                 if (task != null) {
                     ViewIdleManager.pause[0].compareAndSet(false, true);
+
+                    final DatFile df = state.getFileNameObj();
+                    final VertexManager vm = df.getVertexManager();
+
                     switch (task) {
                     case EDITORTEXT_REPLACE_VERTEX:
                         if (compositeText[0].getEditable()) {
-                            VertexMarker.markTheVertex(state, compositeText[0], state.getFileNameObj());
+                            VertexMarker.markTheVertex(state, compositeText[0], df);
                         }
                         break;
                     case EDITORTEXT_ESC:
                         if (compositeText[0].getEditable()) {
                             state.setReplacingVertex(false);
-                            state.getFileNameObj().getVertexManager().setVertexToReplace(null);
+                            vm.setVertexToReplace(null);
                             compositeText[0].redraw(0, 0, compositeText[0].getBounds().width, compositeText[0].getBounds().height, true);
                         }
                         break;
@@ -725,7 +730,7 @@ public class CompositeTab extends CompositeTabDesign {
                                 }
                             }
 
-                            QuickFixer.fixTextIssues(compositeText[0], items, getState().getFileNameObj());
+                            QuickFixer.fixTextIssues(compositeText[0], items, df);
                         }
                         break;
                     case EDITORTEXT_SELECTALL:
@@ -744,7 +749,7 @@ public class CompositeTab extends CompositeTabDesign {
                         Inliner.withSubfileReference = false;
                         NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
                         NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
-                        Inliner.inline(st, fromLine, toLine, state.getFileNameObj());
+                        Inliner.inline(st, fromLine, toLine, df);
                         st.forceFocus();
                         break;
                     }
@@ -761,18 +766,28 @@ public class CompositeTab extends CompositeTabDesign {
                         toLine++;
                         NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
                         NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
-                        Rounder.round(state, st, fromLine, toLine, state.getFileNameObj());
+                        Rounder.round(state, st, fromLine, toLine, df);
                         st.forceFocus();
                         break;
                     }
                     case EDITORTEXT_REDO:
-                        if (state.getFileNameObj().getVertexManager().isUpdated()) state.getFileNameObj().redo();
+                        if (vm.isUpdated()) df.redo();
                         break;
                     case EDITORTEXT_UNDO:
-                        if (state.getFileNameObj().getVertexManager().isUpdated()) state.getFileNameObj().undo();
+                        if (vm.isUpdated()) df.undo();
                         break;
                     case EDITORTEXT_SAVE:
-                        if (!state.getFileNameObj().isReadOnly()) state.getFileNameObj().save();
+                        if (!df.isReadOnly()) {
+                            if (df.save()) {
+                                Project.removeUnsavedFile(df);
+                                Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                            } else {
+                                MessageBox messageBoxError = new MessageBox(getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
+                                messageBoxError.setText(I18n.DIALOG_Error);
+                                messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                                messageBoxError.open();
+                            }
+                        }
                         break;
                     }
                 }
