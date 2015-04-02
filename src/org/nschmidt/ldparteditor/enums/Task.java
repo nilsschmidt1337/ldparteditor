@@ -61,5 +61,7 @@ public enum Task {
     OBJ_PRIMITIVE,
 
     UNDO,
-    REDO
+    REDO,
+
+    SAVE
 }

@@ -115,8 +115,10 @@ public class KeyStateManager {
         taskMap.put((int) '-' + "", Task.ZOOM_OUT); //$NON-NLS-1$
         taskMap.put((int) 'r' + "+Ctrl", Task.RESET_VIEW); //$NON-NLS-1$
 
-        taskMap.put((int) 'Z' + "+Ctrl", Task.UNDO); //$NON-NLS-1$
-        taskMap.put((int) 'Y' + "+Ctrl", Task.REDO); //$NON-NLS-1$
+        taskMap.put((int) 'z' + "+Ctrl", Task.UNDO); //$NON-NLS-1$
+        taskMap.put((int) 'y' + "+Ctrl", Task.REDO); //$NON-NLS-1$
+
+        taskMap.put((int) 's' + "+Ctrl", Task.SAVE); //$NON-NLS-1$
 
         textTaskMap.put((int) 'r' + "+Alt+Shift", TextTask.EDITORTEXT_REPLACE_VERTEX); //$NON-NLS-1$
         textTaskMap.put((int) SWT.ESC + "", TextTask.EDITORTEXT_ESC); //$NON-NLS-1$
@@ -125,8 +127,10 @@ public class KeyStateManager {
         textTaskMap.put((int) 'i' + "+Alt", TextTask.EDITORTEXT_INLINE); //$NON-NLS-1$
         textTaskMap.put((int) 'c' + "+Alt", TextTask.EDITORTEXT_ROUND); //$NON-NLS-1$
 
-        textTaskMap.put((int) 'Z' + "+Ctrl", TextTask.EDITORTEXT_UNDO); //$NON-NLS-1$
-        textTaskMap.put((int) 'Y' + "+Ctrl", TextTask.EDITORTEXT_REDO); //$NON-NLS-1$
+        textTaskMap.put((int) 'z' + "+Ctrl", TextTask.EDITORTEXT_UNDO); //$NON-NLS-1$
+        textTaskMap.put((int) 'y' + "+Ctrl", TextTask.EDITORTEXT_REDO); //$NON-NLS-1$
+
+        textTaskMap.put((int) 's' + "+Ctrl", TextTask.EDITORTEXT_SAVE); //$NON-NLS-1$
     }
 
     /** Indicates that SHIFT is pressed */
@@ -322,6 +326,9 @@ public class KeyStateManager {
                         break;
                     case UNDO:
                         df.undo();
+                        break;
+                    case SAVE:
+                        if (!df.isReadOnly()) df.save();
                         break;
                     }
                 }
