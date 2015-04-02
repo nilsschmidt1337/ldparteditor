@@ -63,5 +63,9 @@ public enum Task {
     UNDO,
     REDO,
 
-    SAVE
+    SAVE,
+
+    SELECT_ALL,
+    SELECT_NONE,
+    SELECT_ALL_WITH_SAME_COLOURS,
 }

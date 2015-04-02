@@ -124,6 +124,10 @@ public class KeyStateManager {
 
         taskMap.put((int) 's' + "+Ctrl", Task.SAVE); //$NON-NLS-1$
 
+        taskMap.put((int) 'a' + "+Ctrl", Task.SELECT_ALL); //$NON-NLS-1$
+        taskMap.put((int) 'a' + "+Ctrl+Shift", Task.SELECT_NONE); //$NON-NLS-1$
+        taskMap.put((int) 'c' + "+Ctrl+Alt", Task.SELECT_ALL_WITH_SAME_COLOURS); //$NON-NLS-1$
+
         textTaskMap.put((int) 'r' + "+Alt+Shift", TextTask.EDITORTEXT_REPLACE_VERTEX); //$NON-NLS-1$
         textTaskMap.put((int) SWT.ESC + "", TextTask.EDITORTEXT_ESC); //$NON-NLS-1$
         textTaskMap.put((int) 'f' + "+Alt", TextTask.EDITORTEXT_QUICKFIX); //$NON-NLS-1$
@@ -349,6 +353,18 @@ public class KeyStateManager {
                                 messageBoxError.open();
                             }
                         }
+                        break;
+                    case SELECT_ALL:
+                        vm.selectAll(win.loadSelectorSettings(), true);
+                        vm.syncWithTextEditors(true);
+                        break;
+                    case SELECT_ALL_WITH_SAME_COLOURS:
+                        vm.selectAllWithSameColours(win.loadSelectorSettings(), true);
+                        vm.syncWithTextEditors(true);
+                        break;
+                    case SELECT_NONE:
+                        vm.clearSelection();
+                        vm.syncWithTextEditors(true);
                         break;
                     }
                 }
