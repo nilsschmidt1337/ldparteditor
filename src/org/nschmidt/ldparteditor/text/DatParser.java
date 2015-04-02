@@ -91,7 +91,7 @@ public enum DatParser {
         final String[] data_segments = WHITESPACE.split(line.trim());
 
         char c;
-        if (!(data_segments.length > 0 && data_segments[0].length() == 1 && Character.isDigit(c = data_segments[0].charAt(0)))) {
+        if (data_segments.length < 1 || data_segments[0].length() > 1 || !Character.isDigit(c = data_segments[0].charAt(0))) {
             result.add(new ParsingResult("Invalid line type", "[E0D] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
             return result;
         }

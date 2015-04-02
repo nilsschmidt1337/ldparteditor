@@ -771,6 +771,9 @@ public class CompositeTab extends CompositeTabDesign {
                     case EDITORTEXT_UNDO:
                         if (state.getFileNameObj().getVertexManager().isUpdated()) state.getFileNameObj().undo();
                         break;
+                    case EDITORTEXT_SAVE:
+                        if (!state.getFileNameObj().isReadOnly()) state.getFileNameObj().save();
+                        break;
                     }
                 }
             }
