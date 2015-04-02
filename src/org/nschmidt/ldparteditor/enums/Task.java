@@ -21,7 +21,10 @@ package org.nschmidt.ldparteditor.enums;
  *
  */
 public enum Task {
-    DELETE, COPY, CUT, PASTE, ESC,
+
+    DELETE, COPY, CUT, PASTE,
+
+    ESC,
 
     MODE_SELECT,
     MODE_MOVE,
@@ -46,4 +49,14 @@ public enum Task {
     ADD_QUAD,
     ADD_CONDLINE,
     ADD_COMMENTS,
+
+    ZOOM_IN,
+    ZOOM_OUT,
+
+    RESET_VIEW,
+
+    OBJ_VERTEX,
+    OBJ_FACE,
+    OBJ_LINE,
+    OBJ_PRIMITIVE
 }

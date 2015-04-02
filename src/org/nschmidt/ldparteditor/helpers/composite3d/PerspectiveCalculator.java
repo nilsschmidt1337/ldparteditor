@@ -433,6 +433,18 @@ public class PerspectiveCalculator {
         initializeViewportPerspective();
     }
 
+    public void zoomReset() {
+        if (c3d.isDoingSelection())
+            return;
+        zoom_exponent = -20;
+        c3d.setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
+        c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
+        c3d.getTranslation().setIdentity();
+        GuiManager.updateStatus(c3d);
+        ((ScalableComposite) c3d.getParent()).redrawScales();
+        initializeViewportPerspective();
+    }
+
     /**
      * Gets the translated String for the perspective value
      *
