@@ -43,12 +43,15 @@ import org.nschmidt.ldparteditor.data.ColourChanger;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
+import org.nschmidt.ldparteditor.enums.Task;
+import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 import swing2swt.layout.BorderLayout;
@@ -140,7 +143,7 @@ class EditorTextDesign extends ApplicationWindow {
         {
             Button btn_Save = new Button(toolItem_NewOpenSave, SWT.NONE);
             this.btn_Save[0] = btn_Save;
-            btn_Save.setToolTipText(I18n.EDITOR3D_Save);
+            KeyStateManager.addTooltipText(btn_Save, I18n.EDITOR3D_Save, Task.SAVE);
             btn_Save.setImage(ResourceManager.getImage("icon16_document-save.png")); //$NON-NLS-1$
         }
         ToolItem toolItem_UndoRedo = new ToolItem(toolBar, SWT.NONE);
@@ -148,7 +151,7 @@ class EditorTextDesign extends ApplicationWindow {
             Button btn_Undo = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_Undo[0] = btn_Undo;
             btn_Undo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
-            btn_Undo.setToolTipText(I18n.EDITOR3D_Undo);
+            KeyStateManager.addTooltipText(btn_Undo, I18n.EDITOR3D_Undo, TextTask.EDITORTEXT_UNDO);
         }
         if (NLogger.DEBUG) {
             Button btn_Snapshot = new Button(toolItem_UndoRedo, SWT.NONE);
@@ -160,32 +163,32 @@ class EditorTextDesign extends ApplicationWindow {
             Button btn_Redo = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_Redo[0] = btn_Redo;
             btn_Redo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
-            btn_Redo.setToolTipText(I18n.EDITOR3D_Redo);
+            KeyStateManager.addTooltipText(btn_Redo, I18n.EDITOR3D_Redo, TextTask.EDITORTEXT_REDO);
         }
         ToolItem toolItem_CCPD = new ToolItem(toolBar, SWT.NONE);
         {
             Button btn_Cut = new Button(toolItem_CCPD, SWT.NONE);
             this.btn_Cut[0] = btn_Cut;
             btn_Cut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
-            btn_Cut.setToolTipText(I18n.COPYNPASTE_Cut);
+            KeyStateManager.addTooltipText(btn_Cut, I18n.COPYNPASTE_Cut, Task.CUT);
         }
         {
             Button btn_Copy = new Button(toolItem_CCPD, SWT.NONE);
             this.btn_Copy[0] = btn_Copy;
             btn_Copy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
-            btn_Copy.setToolTipText(I18n.COPYNPASTE_Copy);
+            KeyStateManager.addTooltipText(btn_Copy, I18n.COPYNPASTE_Copy, Task.COPY);
         }
         {
             Button btn_Paste = new Button(toolItem_CCPD, SWT.NONE);
             this.btn_Paste[0] = btn_Paste;
             btn_Paste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
-            btn_Paste.setToolTipText(I18n.COPYNPASTE_Paste);
+            KeyStateManager.addTooltipText(btn_Paste, I18n.COPYNPASTE_Paste, Task.PASTE);
         }
         {
             Button btn_Delete = new Button(toolItem_CCPD, SWT.NONE);
             this.btn_Delete[0] = btn_Delete;
             btn_Delete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
-            btn_Delete.setToolTipText(I18n.COPYNPASTE_Delete);
+            KeyStateManager.addTooltipText(btn_Delete, I18n.COPYNPASTE_Delete, Task.DELETE);
         }
         ToolItem toolItem_Debug = new ToolItem(toolBar, SWT.NONE);
         {
@@ -228,7 +231,7 @@ class EditorTextDesign extends ApplicationWindow {
             Button btn_Inline = new Button(toolItem_Debug, SWT.NONE);
             this.btn_Inline[0] = btn_Inline;
             btn_Inline.setImage(ResourceManager.getImage("icon16_inline.png")); //$NON-NLS-1$
-            btn_Inline.setToolTipText("Inline selection (partial BFC conformity)"); //$NON-NLS-1$ I18N Needs translation!
+            KeyStateManager.addTooltipText(btn_Inline, "Inline selection (partial BFC conformity)", TextTask.EDITORTEXT_INLINE); //$NON-NLS-1$ I18N Needs translation!
         }
         {
             Button btn_InlineDeep = new Button(toolItem_Debug, SWT.NONE);
@@ -251,7 +254,7 @@ class EditorTextDesign extends ApplicationWindow {
         {
             Button btn_RoundSelection = new Button(toolItem_Debug, SWT.NONE);
             this.btn_RoundSelection[0] = btn_RoundSelection;
-            btn_RoundSelection.setToolTipText("Round"); //$NON-NLS-1$ I18N
+            KeyStateManager.addTooltipText(btn_RoundSelection, "Round", TextTask.EDITORTEXT_ROUND); //$NON-NLS-1$ I18N
             btn_RoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
         }
 
@@ -422,7 +425,7 @@ class EditorTextDesign extends ApplicationWindow {
             btn_Col.setToolTipText("Colour [" + colourBuilder.toString() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ I18N
         }
 
-        btn_Col.setImage(ResourceManager.getImage("icon16_transparent.png")); //$NON-NLS-1$
+        btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
 
         btn_Col.addSelectionListener(new SelectionListener() {
             @Override
@@ -483,10 +486,10 @@ class EditorTextDesign extends ApplicationWindow {
             }
         });
         final Point size = btn_Col.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-        final int x = size.x / 4;
-        final int y = size.y / 4;
-        final int w = size.x / 2;
-        final int h = size.y / 2;
+        final int x = Math.round(size.x / 5f);
+        final int y = Math.round(size.y / 5f);
+        final int w = Math.round(size.x * (3f / 5f));
+        final int h = Math.round(size.y * (3f / 5f));
         btn_Col.addPaintListener(new PaintListener() {
             @Override
             public void paintControl(PaintEvent e) {

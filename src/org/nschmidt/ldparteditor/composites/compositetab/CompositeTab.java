@@ -697,11 +697,13 @@ public class CompositeTab extends CompositeTabDesign {
                     switch (task) {
                     case EDITORTEXT_REPLACE_VERTEX:
                         if (compositeText[0].getEditable()) {
+                            if (!vm.isUpdated()) return;
                             VertexMarker.markTheVertex(state, compositeText[0], df);
                         }
                         break;
                     case EDITORTEXT_ESC:
                         if (compositeText[0].getEditable()) {
+                            if (!vm.isUpdated()) return;
                             state.setReplacingVertex(false);
                             vm.setVertexToReplace(null);
                             compositeText[0].redraw(0, 0, compositeText[0].getBounds().width, compositeText[0].getBounds().height, true);
@@ -709,6 +711,7 @@ public class CompositeTab extends CompositeTabDesign {
                         break;
                     case EDITORTEXT_QUICKFIX:
                         if (compositeText[0].getEditable()) {
+                            if (!vm.isUpdated()) return;
                             HashSet<TreeItem> items = new HashSet<TreeItem>();
                             int offset = compositeText[0].getOffsetAtLine(state.currentLineIndex);
                             for (TreeItem t : treeItem_Hints[0].getItems()) {
@@ -738,6 +741,7 @@ public class CompositeTab extends CompositeTabDesign {
                         break;
                     case EDITORTEXT_INLINE:
                     {
+                        if (!vm.isUpdated()) return;
                         NLogger.debug(getClass(), "Inlining per action key.."); //$NON-NLS-1$
                         final StyledText st = compositeText[0];
                         int s1 = st.getSelectionRange().x;
@@ -747,6 +751,8 @@ public class CompositeTab extends CompositeTabDesign {
                         fromLine++;
                         toLine++;
                         Inliner.withSubfileReference = false;
+                        Inliner.recursively = false;
+                        Inliner.noComment = false;
                         NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
                         NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
                         Inliner.inline(st, fromLine, toLine, df);
@@ -755,6 +761,7 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                     case EDITORTEXT_ROUND:
                     {
+                        if (!vm.isUpdated()) return;
                         if (new RoundDialog(compositeText[0].getShell()).open() == IDialogConstants.CANCEL_ID) return;
                         NLogger.debug(getClass(), "Rounding.."); //$NON-NLS-1$
                         final StyledText st = compositeText[0];

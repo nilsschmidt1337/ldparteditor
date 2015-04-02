@@ -20,10 +20,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ArmEvent;
+import org.eclipse.swt.events.ArmListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
@@ -85,6 +88,12 @@ public class KeyStateManager {
         reservedKeyCodes.add(SWT.ALT + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.CTRL + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.SHIFT + ""); //$NON-NLS-1$
+
+
+        reservedKeyCodes.add(SWT.DEL + ""); //$NON-NLS-1$
+        reservedKeyCodes.add((int) 'x' + "+Ctrl"); //$NON-NLS-1$
+        reservedKeyCodes.add((int) 'c' + "+Ctrl"); //$NON-NLS-1$
+        reservedKeyCodes.add((int) 'v' + "+Ctrl"); //$NON-NLS-1$
 
         addTask(Task.COLOUR_NUMBER0, SWT.KEYPAD_0);
         addTask(Task.COLOUR_NUMBER1, SWT.KEYPAD_1);
@@ -509,6 +518,30 @@ public class KeyStateManager {
                 btn.setToolTipText(text + " (" + taskKeyMap.get(t) +")"); //$NON-NLS-1$ //$NON-NLS-2$
             }
         });
+    }
+
+    public static void addKeyText(final MenuItem mntm, final String text, final Task t) {
+        mntm.setText(text + "\t" + taskKeyMap.get(t)); //$NON-NLS-1$
+        mntm.addArmListener(new ArmListener() {
+            @Override
+            public void widgetArmed(ArmEvent e) {
+                mntm.setText(text + "\t" + taskKeyMap.get(t)); //$NON-NLS-1$
+            }
+        });
+    }
+
+    public static void addKeyText(final MenuItem mntm, final String text, final TextTask t) {
+        mntm.setText(text + "\t" + taskKeyMap.get(t)); //$NON-NLS-1$
+        mntm.addArmListener(new ArmListener() {
+            @Override
+            public void widgetArmed(ArmEvent e) {
+                mntm.setText(text + "\t" + textTaskKeyMap.get(t)); //$NON-NLS-1$
+            }
+        });
+    }
+
+    public static void addKeyText(final MenuItem mntm, final String text) {
+        mntm.setText(text);
     }
 
     public static void addTooltipText(Button btn, final String text) {
