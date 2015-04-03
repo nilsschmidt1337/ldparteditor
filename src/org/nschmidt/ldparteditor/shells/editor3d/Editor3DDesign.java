@@ -1103,25 +1103,25 @@ class Editor3DDesign extends ApplicationWindow {
                 Button btn_Cut = new Button(toolItem_CCPD, SWT.NONE);
                 this.btn_Cut[0] = btn_Cut;
                 btn_Cut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
-                btn_Cut.setToolTipText(I18n.COPYNPASTE_Cut);
+                KeyStateManager.addTooltipText(btn_Cut, I18n.COPYNPASTE_Cut, Task.CUT);
             }
             {
                 Button btn_Copy = new Button(toolItem_CCPD, SWT.NONE);
                 this.btn_Copy[0] = btn_Copy;
                 btn_Copy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
-                btn_Copy.setToolTipText(I18n.COPYNPASTE_Copy);
+                KeyStateManager.addTooltipText(btn_Copy, I18n.COPYNPASTE_Copy, Task.COPY);
             }
             {
                 Button btn_Paste = new Button(toolItem_CCPD, SWT.NONE);
                 this.btn_Paste[0] = btn_Paste;
                 btn_Paste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
-                btn_Paste.setToolTipText(I18n.COPYNPASTE_Paste);
+                KeyStateManager.addTooltipText(btn_Paste, I18n.COPYNPASTE_Paste, Task.PASTE);
             }
             {
                 Button btn_Delete = new Button(toolItem_CCPD, SWT.NONE);
                 this.btn_Delete[0] = btn_Delete;
                 btn_Delete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
-                btn_Delete.setToolTipText(I18n.COPYNPASTE_Delete);
+                KeyStateManager.addTooltipText(btn_Delete, I18n.COPYNPASTE_Delete, Task.DELETE);
             }
         }
         {
@@ -1129,26 +1129,26 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Vertices = new Button(toolItem_Mode, SWT.TOGGLE);
                 this.btn_Vertices[0] = btn_Vertices;
-                btn_Vertices.setToolTipText(I18n.EDITOR3D_ModeVertex);
+                KeyStateManager.addTooltipText(btn_Vertices, I18n.EDITOR3D_ModeVertex, Task.OBJ_VERTEX);
                 btn_Vertices.setSelection(true);
                 btn_Vertices.setImage(ResourceManager.getImage("icon16_vertices.png")); //$NON-NLS-1$
             }
             {
                 Button btn_TrisNQuads = new Button(toolItem_Mode, SWT.TOGGLE);
                 this.btn_TrisNQuads[0] = btn_TrisNQuads;
-                btn_TrisNQuads.setToolTipText(I18n.EDITOR3D_ModeSurface);
+                KeyStateManager.addTooltipText(btn_TrisNQuads, I18n.EDITOR3D_ModeSurface, Task.OBJ_FACE);
                 btn_TrisNQuads.setImage(ResourceManager.getImage("icon16_trisNquads.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Lines = new Button(toolItem_Mode, SWT.TOGGLE);
                 this.btn_Lines[0] = btn_Lines;
-                btn_Lines.setToolTipText(I18n.EDITOR3D_ModeLine);
+                KeyStateManager.addTooltipText(btn_Lines, I18n.EDITOR3D_ModeLine, Task.OBJ_LINE);
                 btn_Lines.setImage(ResourceManager.getImage("icon16_lines.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Subfiles = new Button(toolItem_Mode, SWT.TOGGLE);
                 this.btn_Subfiles[0] = btn_Subfiles;
-                btn_Subfiles.setToolTipText(I18n.EDITOR3D_ModeSubpart);
+                KeyStateManager.addTooltipText(btn_Subfiles, I18n.EDITOR3D_ModeSubpart, Task.OBJ_PRIMITIVE);
                 btn_Subfiles.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
             }
         }
@@ -1157,12 +1157,12 @@ class Editor3DDesign extends ApplicationWindow {
 
             Button btn_AddComment = new Button(toolItem_Add, SWT.NONE);
             this.btn_AddComment[0] = btn_AddComment;
-            btn_AddComment.setToolTipText(I18n.EDITOR3D_AddComment);
+            KeyStateManager.addTooltipText(btn_AddComment, I18n.EDITOR3D_AddComment, Task.ADD_COMMENTS);
             btn_AddComment.setImage(ResourceManager.getImage("icon16_addcomment.png")); //$NON-NLS-1$
 
             Button btn_AddVertex = new Button(toolItem_Add, SWT.TOGGLE);
             this.btn_AddVertex[0] = btn_AddVertex;
-            btn_AddVertex.setToolTipText(I18n.EDITOR3D_AddVertex);
+            KeyStateManager.addTooltipText(btn_AddVertex, I18n.EDITOR3D_AddVertex, Task.ADD_VERTEX);
             btn_AddVertex.setImage(ResourceManager.getImage("icon16_addvertex.png")); //$NON-NLS-1$
 
             Button btn_AddPrimitive = new Button(toolItem_Add, SWT.TOGGLE);
@@ -1172,22 +1172,22 @@ class Editor3DDesign extends ApplicationWindow {
 
             Button btn_AddLine = new Button(toolItem_Add, SWT.TOGGLE);
             this.btn_AddLine[0] = btn_AddLine;
-            btn_AddLine.setToolTipText(I18n.EDITOR3D_AddLine);
+            KeyStateManager.addTooltipText(btn_AddLine, I18n.EDITOR3D_AddLine, Task.ADD_LINE);
             btn_AddLine.setImage(ResourceManager.getImage("icon16_addline.png")); //$NON-NLS-1$
 
             Button btn_AddTriangle = new Button(toolItem_Add, SWT.TOGGLE);
             this.btn_AddTriangle[0] = btn_AddTriangle;
-            btn_AddTriangle.setToolTipText(I18n.EDITOR3D_AddTriangle);
+            KeyStateManager.addTooltipText(btn_AddTriangle, I18n.EDITOR3D_AddTriangle, Task.ADD_TRIANGLE);
             btn_AddTriangle.setImage(ResourceManager.getImage("icon16_addtriangle.png")); //$NON-NLS-1$
 
             Button btn_AddQuad = new Button(toolItem_Add, SWT.TOGGLE);
             this.btn_AddQuad[0] = btn_AddQuad;
-            btn_AddQuad.setToolTipText(I18n.EDITOR3D_AddQuad);
+            KeyStateManager.addTooltipText(btn_AddQuad, I18n.EDITOR3D_AddQuad, Task.ADD_QUAD);
             btn_AddQuad.setImage(ResourceManager.getImage("icon16_addquad.png")); //$NON-NLS-1$
 
             Button btn_AddCondline = new Button(toolItem_Add, SWT.TOGGLE);
             this.btn_AddCondline[0] = btn_AddCondline;
-            btn_AddCondline.setToolTipText(I18n.EDITOR3D_AddCondline);
+            KeyStateManager.addTooltipText(btn_AddCondline, I18n.EDITOR3D_AddCondline, Task.ADD_CONDLINE);
             btn_AddCondline.setImage(ResourceManager.getImage("icon16_addcondline.png")); //$NON-NLS-1$
         }
         {
