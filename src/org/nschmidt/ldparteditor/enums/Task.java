@@ -54,6 +54,8 @@ public enum Task {
     ZOOM_OUT,
 
     RESET_VIEW,
+    SHOW_GRID,
+    SHOW_RULER,
 
     OBJ_VERTEX,
     OBJ_FACE,

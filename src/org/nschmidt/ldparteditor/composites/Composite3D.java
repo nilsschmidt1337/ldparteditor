@@ -70,6 +70,7 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
 import org.nschmidt.ldparteditor.enums.Perspective;
+import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
@@ -762,7 +763,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.showGrid(mntmShowGrid.getSelection());
                 }
             });
-            mntmShowGrid.setText(I18n.EDITOR3D_Grid);
+            KeyStateManager.addKeyText(mntmShowGrid, I18n.EDITOR3D_Grid, Task.SHOW_GRID);
             mntmShowGrid.setSelection(true);
 
             final MenuItem mntmShowScale = new MenuItem(mnu_viewActions, SWT.CHECK);
@@ -773,7 +774,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.showScale(mntmShowScale.getSelection());
                 }
             });
-            mntmShowScale.setText(I18n.EDITOR3D_Ruler);
+            KeyStateManager.addKeyText(mntmShowScale, I18n.EDITOR3D_Ruler, Task.SHOW_RULER);
 
             final MenuItem mntmAxis = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmAxis[0] = mntmAxis;
