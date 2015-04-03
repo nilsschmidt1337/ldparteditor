@@ -395,10 +395,10 @@ public class OpenGLRenderer {
 
             if (raytraceMode) {
                 Rectangle b = c3d.getCanvas().getBounds();
-                final int w =  b.width;
-                final int h =  b.height;
-                FloatBuffer pixels = BufferUtils.createFloatBuffer(w * h * 4);
-                GL11.glReadPixels(0, 0, w, h, GL11.GL_RGBA, GL11.GL_FLOAT, pixels);
+                final float w =  b.width;
+                final float h =  b.height;
+                FloatBuffer pixels = BufferUtils.createFloatBuffer((int) (w * h * 4));
+                GL11.glReadPixels(0, 0, (int) w, (int) h, GL11.GL_RGBA, GL11.GL_FLOAT, pixels);
                 pixels.position(0);
                 float[] arr = new float[pixels.capacity()];
                 pixels.get(arr);
@@ -413,7 +413,34 @@ public class OpenGLRenderer {
                         GL11.glLoadIdentity();
                         if (renderedPoints[0] != null) {
 
+
                         }
+
+                        GL20.glUseProgram(0);
+                        boolean red = false;
+                        boolean green = false;
+                        float wi = 2f / h;
+                        float ratio = w / h;
+                        for (float x = 0; x < w; x += 2f) {
+                            green = red;
+                            for (float y = 0; y < h; y += 2f) {
+                                red = !red;
+                                float sx = (x / w  - .5f) * ratio;
+                                float sy = y / h - .5f;
+                                GL11.glBegin(GL11.GL_QUADS);
+                                GL11.glColor3f(1f, 0f, red ? 1f : 0f);
+                                GL11.glVertex3f(sx, sy, 0f);
+                                GL11.glVertex3f(sx, sy + wi, 0f);
+                                GL11.glVertex3f(sx + wi, sy + wi, 0f);
+                                GL11.glVertex3f(sx + wi, sy, 0f);
+                                GL11.glEnd();
+                            }
+                            if (red == green) {
+                                red = !red;
+                            }
+                        }
+
+
                         GL11.glPopMatrix();
                     } finally {
                         lock.unlock();
@@ -427,10 +454,19 @@ public class OpenGLRenderer {
                             while(alive.get()) {
 
                                 needData.set(1);
+                                int counter = 0;
                                 while (needData.get() < 2) {
+                                    counter++;
+                                    if (counter > 100) {
+                                        break;
+                                    }
                                     try {
                                         Thread.sleep(100);
                                     } catch (InterruptedException e) {}
+                                }
+                                counter++;
+                                if (counter > 100) {
+                                    break;
                                 }
 
                                 float[] sc = Arrays.copyOf(solidColours[0], solidColours[0].length);
@@ -452,7 +488,7 @@ public class OpenGLRenderer {
                                 }
 
                                 alive.set(false);
-                                int counter = 0;
+                                counter = 0;
                                 while(!alive.get()) {
                                     counter++;
                                     if (counter > 100) {
