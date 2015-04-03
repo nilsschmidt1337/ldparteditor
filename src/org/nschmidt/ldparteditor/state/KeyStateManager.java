@@ -144,6 +144,8 @@ public class KeyStateManager {
         addTask(Task.SELECT_ALL, SWT.CTRL, 'a');
         addTask(Task.SELECT_NONE,SWT.CTRL | SWT.SHIFT, 'a');
         addTask(Task.SELECT_ALL_WITH_SAME_COLOURS, SWT.CTRL | SWT.ALT,  'c');
+        addTask(Task.SELECT_OPTION_WITH_SAME_COLOURS, SWT.ALT, 's');
+
 
         addTask(TextTask.EDITORTEXT_REPLACE_VERTEX, SWT.ALT | SWT.SHIFT, 'r');
         addTask(TextTask.EDITORTEXT_ESC, SWT.ESC);
@@ -388,10 +390,16 @@ public class KeyStateManager {
                         c3d.getMntmShowGrid().setSelection(c3d.isGridShown());
                         break;
                     case SHOW_RULER:
+                    {
                         boolean scale = !c3d.getMntmShowScale().getSelection();
                         c3d.getMntmShowScale().setSelection(scale);
                         c3d.getModifier().showScale(scale);
                         c3d.getCanvas().forceFocus();
+                        break;
+                    }
+                    case SELECT_OPTION_WITH_SAME_COLOURS:
+                        win.getMntmWithSameColour().setSelection(!win.getMntmWithSameColour().getSelection());
+                        win.loadSelectorSettings();
                         break;
                     }
                 }

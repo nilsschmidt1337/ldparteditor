@@ -324,7 +324,7 @@ public class CompositeScale extends ScalableComposite {
                         // Big lines
                         for (float y = origin + tenstep; y < height; y = y + tenstep) {
                             Transform tr = new Transform(Display.getCurrent());
-                            tr.translate(0, (int) y - 10);
+                            tr.translate(0, (int) y);
                             tr.rotate(-90);
                             gc.setTransform(tr);
                             gc.drawText(View.NUMBER_FORMAT2F.format((y - origin2) * scale_factor), 0, 0);
@@ -347,7 +347,7 @@ public class CompositeScale extends ScalableComposite {
                         // Big lines
                         for (float y = origin - tenstep; y > 0; y = y - tenstep) {
                             Transform tr = new Transform(Display.getCurrent());
-                            tr.translate(0, (int) y - 10);
+                            tr.translate(0, (int) y);
                             tr.rotate(-90);
                             gc.setTransform(tr);
                             gc.drawText(View.NUMBER_FORMAT2F.format((y - origin2) * scale_factor), 0, 0);
@@ -373,7 +373,7 @@ public class CompositeScale extends ScalableComposite {
                         // Big lines
                         for (float y = origin - tenstep; y > 0; y = y - tenstep) {
                             Transform tr = new Transform(Display.getCurrent());
-                            tr.translate(0, (int) y - 10);
+                            tr.translate(0, (int) y);
                             tr.rotate(-90);
                             gc.setTransform(tr);
                             gc.drawText(View.NUMBER_FORMAT2F.format((y - origin) * scale_factor), 0, 0);
@@ -382,7 +382,7 @@ public class CompositeScale extends ScalableComposite {
                         }
                         for (float y = origin + tenstep; y < height; y = y + tenstep) {
                             Transform tr = new Transform(Display.getCurrent());
-                            tr.translate(0, (int) y - 10);
+                            tr.translate(0, (int) y);
                             tr.rotate(-90);
                             gc.setTransform(tr);
                             gc.drawText(View.NUMBER_FORMAT2F.format((y - origin) * scale_factor), 0, 0);
