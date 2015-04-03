@@ -30,16 +30,13 @@ import org.nschmidt.ldparteditor.text.FontMetrics;
 public enum Font {
     INSTANCE;
 
-    /** The standard system fond (copy) */
+    /** The standard system font (copy) */
     public static final org.eclipse.swt.graphics.Font SYSTEM = SWTResourceManager.getFont(Display.getCurrent().getSystemFont().getFontData()[0].getName(), Display.getCurrent().getSystemFont()
             .getFontData()[0].getHeight(), SWT.NORMAL);
-    /** The system fond with the height of 8 */
+    /** The system font with the height of 8 */
     public static final org.eclipse.swt.graphics.Font SMALL = SWTResourceManager.getFont(Display.getCurrent().getSystemFont().getFontData()[0].getName(), 8, SWT.NORMAL);
-    /** The standard monospaced fond for terminals */
+    /** The standard monospaced font for terminals */
     public static final org.eclipse.swt.graphics.Font MONOSPACE = JFaceResources.getFont(JFaceResources.TEXT_FONT);
-    /** The height of the standard monospaced font (in pixels) */
-    // public static final int MONOSPACE_HEIGHT =
-    // FontMetrics.getFontHeight(Font.MONOSPACE);
     /** The width of the standard monospaced font (in pixels) */
     public static final int MONOSPACE_WIDTH = FontMetrics.getStringWidth(" ", Font.MONOSPACE); //$NON-NLS-1$
 }

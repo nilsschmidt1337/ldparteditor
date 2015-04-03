@@ -25,6 +25,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -164,7 +165,7 @@ public class CompositeScale extends ScalableComposite {
                         for (float x = origin + tenstep; x < width; x = x + tenstep) {
                             if (x > 20) {
                                 gc.drawText(View.NUMBER_FORMAT2F.format((x - origin2) * scale_factor), (int) x + 2, -2);
-                                gc.drawLine((int) x, 5, (int) x, 9);
+                                gc.drawLine((int) x, 5, (int) x, 10);
                             }
                         }
                         // Small lines
@@ -187,7 +188,7 @@ public class CompositeScale extends ScalableComposite {
                         // Big lines
                         for (float x = origin - tenstep; x > 20; x = x - tenstep) {
                             gc.drawText(View.NUMBER_FORMAT2F.format((x - origin2) * scale_factor), (int) x + 2, -2);
-                            gc.drawLine((int) x, 5, (int) x, 9);
+                            gc.drawLine((int) x, 5, (int) x, 10);
                         }
                         // Small lines
                         for (float x = origin - step; x > 20; x = x - twostep) {
@@ -210,11 +211,11 @@ public class CompositeScale extends ScalableComposite {
                         // Big lines
                         for (float x = origin - tenstep; x > 20; x = x - tenstep) {
                             gc.drawText(View.NUMBER_FORMAT2F.format((x - origin) * scale_factor), (int) x + 2, -2);
-                            gc.drawLine((int) x, 5, (int) x, 9);
+                            gc.drawLine((int) x, 5, (int) x, 10);
                         }
                         for (float x = origin + tenstep; x < width; x = x + tenstep) {
                             gc.drawText(View.NUMBER_FORMAT2F.format((x - origin) * scale_factor), (int) x + 2, -2);
-                            gc.drawLine((int) x, 5, (int) x, 9);
+                            gc.drawLine((int) x, 5, (int) x, 10);
                         }
                         // Small lines
                         for (float x = origin - step; x > 20; x = x - twostep) {
@@ -322,8 +323,13 @@ public class CompositeScale extends ScalableComposite {
                         float origin2 = offset + halfheight;
                         // Big lines
                         for (float y = origin + tenstep; y < height; y = y + tenstep) {
-                            gc.drawText(generateVerticalString(View.NUMBER_FORMAT2F.format((y - origin2) * scale_factor)), 0, (int) y - 10);
-                            gc.drawLine(5, (int) y, 9, (int) y);
+                            Transform tr = new Transform(Display.getCurrent());
+                            tr.translate(0, (int) y - 10);
+                            tr.rotate(-90);
+                            gc.setTransform(tr);
+                            gc.drawText(View.NUMBER_FORMAT2F.format((y - origin2) * scale_factor), 0, 0);
+                            gc.setTransform(null);
+                            gc.drawLine(5, (int) y, 10, (int) y);
                         }
                         // Small lines
                         for (float y = origin + step; y < height; y = y + twostep) {
@@ -340,8 +346,13 @@ public class CompositeScale extends ScalableComposite {
                         float origin2 = offset + halfheight;
                         // Big lines
                         for (float y = origin - tenstep; y > 0; y = y - tenstep) {
-                            gc.drawText(generateVerticalString(View.NUMBER_FORMAT2F.format((y - origin2) * scale_factor)), 0, (int) y - 10);
-                            gc.drawLine(5, (int) y, 9, (int) y);
+                            Transform tr = new Transform(Display.getCurrent());
+                            tr.translate(0, (int) y - 10);
+                            tr.rotate(-90);
+                            gc.setTransform(tr);
+                            gc.drawText(View.NUMBER_FORMAT2F.format((y - origin2) * scale_factor), 0, 0);
+                            gc.setTransform(null);
+                            gc.drawLine(5, (int) y, 10, (int) y);
                         }
                         // Small lines
                         for (float y = origin - step; y > 0; y = y - twostep) {
@@ -361,12 +372,22 @@ public class CompositeScale extends ScalableComposite {
                         gc.drawLine(0, origin_int + 1, 16, origin_int + 1);
                         // Big lines
                         for (float y = origin - tenstep; y > 0; y = y - tenstep) {
-                            gc.drawText(generateVerticalString(View.NUMBER_FORMAT2F.format((y - origin) * scale_factor)), 0, (int) y - 10);
-                            gc.drawLine(5, (int) y, 9, (int) y);
+                            Transform tr = new Transform(Display.getCurrent());
+                            tr.translate(0, (int) y - 10);
+                            tr.rotate(-90);
+                            gc.setTransform(tr);
+                            gc.drawText(View.NUMBER_FORMAT2F.format((y - origin) * scale_factor), 0, 0);
+                            gc.setTransform(null);
+                            gc.drawLine(5, (int) y, 10, (int) y);
                         }
                         for (float y = origin + tenstep; y < height; y = y + tenstep) {
-                            gc.drawText(generateVerticalString(View.NUMBER_FORMAT2F.format((y - origin) * scale_factor)), 0, (int) y - 10);
-                            gc.drawLine(5, (int) y, 9, (int) y);
+                            Transform tr = new Transform(Display.getCurrent());
+                            tr.translate(0, (int) y - 10);
+                            tr.rotate(-90);
+                            gc.setTransform(tr);
+                            gc.drawText(View.NUMBER_FORMAT2F.format((y - origin) * scale_factor), 0, 0);
+                            gc.setTransform(null);
+                            gc.drawLine(5, (int) y, 10, (int) y);
                         }
                         // Small lines
                         for (float y = origin - step; y > 0; y = y - twostep) {
@@ -392,17 +413,6 @@ public class CompositeScale extends ScalableComposite {
                 // Clean up
                 image.dispose();
                 gc.dispose();
-            }
-
-            private String generateVerticalString(String s) {
-                StringBuilder sb = new StringBuilder();
-                int l = s.length();
-                String br = System.getProperty("line.separator"); //$NON-NLS-1$
-                for (int i = 0; i < l; i++) {
-                    sb.append(s.charAt(i));
-                    sb.append(br);
-                }
-                return sb.toString();
             }
         };
         canvas_vertical.addListener(SWT.Resize, paintVerticalScaleListener);

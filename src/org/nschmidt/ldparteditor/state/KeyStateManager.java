@@ -133,6 +133,8 @@ public class KeyStateManager {
         addTask(Task.ZOOM_IN,  '+');
         addTask(Task.ZOOM_OUT,  '-');
         addTask(Task.RESET_VIEW, SWT.CTRL, 'r');
+        addTask(Task.SHOW_GRID, SWT.CTRL, 'g');
+        addTask(Task.SHOW_RULER, SWT.CTRL, 'l');
 
         addTask(Task.UNDO, SWT.CTRL, 'z');
         addTask(Task.REDO, SWT.CTRL, 'y');
@@ -380,6 +382,16 @@ public class KeyStateManager {
                     case SELECT_NONE:
                         vm.clearSelection();
                         vm.syncWithTextEditors(true);
+                        break;
+                    case SHOW_GRID:
+                        c3d.setGridShown(!c3d.isGridShown());
+                        c3d.getMntmShowGrid().setSelection(c3d.isGridShown());
+                        break;
+                    case SHOW_RULER:
+                        boolean scale = !c3d.getMntmShowScale().getSelection();
+                        c3d.getMntmShowScale().setSelection(scale);
+                        c3d.getModifier().showScale(scale);
+                        c3d.getCanvas().forceFocus();
                         break;
                     }
                 }
