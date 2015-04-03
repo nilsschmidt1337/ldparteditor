@@ -772,6 +772,7 @@ public class Composite3D extends ScalableComposite {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.showScale(mntmShowScale.getSelection());
+                    getCanvas().forceFocus();
                 }
             });
             KeyStateManager.addKeyText(mntmShowScale, I18n.EDITOR3D_Ruler, Task.SHOW_RULER);

@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.SynchronousQueue;
@@ -37,6 +38,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -343,6 +345,33 @@ public class HistoryManager {
                                                             }
                                                         }
                                                         i++;
+                                                    }
+                                                    ThreadsafeHashMap<GData, Set<VertexInfo>> llv = vm.getLineLinkedToVertices();
+                                                    for (GData1 g1 : vm.getSelectedSubfiles()) {
+                                                        final Set<VertexInfo> vis = llv.get(g1);
+                                                        if (vis != null) {
+                                                            for (VertexInfo vi : vis) {
+                                                                vm.getSelectedVertices().add(vi.vertex);
+                                                                GData gd = vi.getLinkedData();
+                                                                vm.getSelectedData().add(gd);
+                                                                switch (gd.type()) {
+                                                                case 2:
+                                                                    vm.getSelectedLines().add((GData2) gd);
+                                                                    break;
+                                                                case 3:
+                                                                    vm.getSelectedTriangles().add((GData3) gd);
+                                                                    break;
+                                                                case 4:
+                                                                    vm.getSelectedQuads().add((GData4) gd);
+                                                                    break;
+                                                                case 5:
+                                                                    vm.getSelectedCondlines().add((GData5) gd);
+                                                                    break;
+                                                                default:
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                                 vm.updateUnsavedStatus();

@@ -6006,4 +6006,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return alive;
     }
 
+    public MenuItem getMntmWithSameColour() {
+        return mntm_WithSameColour[0];
+    }
 }

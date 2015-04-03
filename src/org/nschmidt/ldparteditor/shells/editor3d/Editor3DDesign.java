@@ -766,7 +766,7 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_WithSameColour = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_WithSameColour[0] = mntm_WithSameColour;
-                        mntm_WithSameColour.setText("…  with Same Colour."); //$NON-NLS-1$ I18N
+                        KeyStateManager.addKeyText(mntm_WithSameColour, "…  with Same Colour.", Task.SELECT_OPTION_WITH_SAME_COLOURS); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_WithSameOrientation = new MenuItem(mnu_Select, SWT.CHECK);
