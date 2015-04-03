@@ -182,7 +182,7 @@ public enum SubfileCompiler {
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {
                 if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                    ((CompositeTab) t).parseForError();
+                    ((CompositeTab) t).parseForErrorAndHints();
                     ((CompositeTab) t).getTextComposite().redraw();
                     break;
                 }

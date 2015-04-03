@@ -357,7 +357,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     for (CTabItem t : w.getTabFolder().getItems()) {
                         DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
                         if (txtDat != null) {
-                            ((CompositeTab) t).parseForError();
+                            ((CompositeTab) t).parseForErrorAndHints();
                             ((CompositeTab) t).getTextComposite().redraw();
 
                             ((CompositeTab) t).getState().getTab().setText(((CompositeTab) t).getState().getFilenameWithStar());

@@ -135,6 +135,7 @@ public class EditorTextWindow extends EditorTextDesign {
             CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
             tbtmnewItem.setWindow(editorTextWindow);
             tbtmnewItem.getState().setFileNameObj(fileToOpen);
+            tbtmnewItem.parseForErrorAndHints();
             tabFolder[0].setSelection(tbtmnewItem);
         }
 

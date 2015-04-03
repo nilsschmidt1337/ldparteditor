@@ -17404,9 +17404,6 @@ public class VertexManager {
         final Set<GData3> newTriangles = new HashSet<GData3>();
         final Set<GData5> newCondlines = new HashSet<GData5>();
 
-        final Set<GData2> effSelectedLines = new HashSet<GData2>();
-        final Set<GData5> effSelectedCondlines = new HashSet<GData5>();
-
         final Set<GData2> linesToDelete2 = new HashSet<GData2>();
         final Set<GData3> trisToDelete2 = new HashSet<GData3>();
         final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
@@ -17434,7 +17431,6 @@ public class VertexManager {
         {
             for (GData2 g2 : selectedLines) {
                 if (!lineLinkedToVertices.containsKey(g2)) continue;
-                effSelectedLines.add(g2);
                 Vertex[] verts = lines.get(g2);
                 edgesToSplit.add(new AccurateEdge(verts[0], verts[1]));
             }
@@ -17455,7 +17451,6 @@ public class VertexManager {
             }
             for (GData5 g5 : selectedCondlines) {
                 if (!lineLinkedToVertices.containsKey(g5)) continue;
-                effSelectedCondlines.add(g5);
                 Vertex[] verts = condlines.get(g5);
                 edgesToSplit.add(new AccurateEdge(verts[0], verts[1]));
             }
@@ -17463,8 +17458,10 @@ public class VertexManager {
 
         clearSelection();
 
-        for (GData2 g : effSelectedLines) {
-            List<GData2> result = split(g, fractions);
+        for (GData2 g : new HashSet<GData2>(lines.keySet())) {
+            if (!lineLinkedToVertices.containsKey(g)) continue;
+            List<GData2> result = split(g, fractions, edgesToSplit);
+            if (result.isEmpty()) continue;
             newLines.addAll(result);
             for (GData n : result) {
                 linkedDatFile.insertAfter(g, n);
@@ -17494,8 +17491,9 @@ public class VertexManager {
             quadsToDelete2.add(g);
         }
 
-        for (GData5 g : effSelectedCondlines) {
-            List<GData5> result = split(g, fractions);
+        for (GData5 g : new HashSet<GData5>(condlines.keySet())) {
+            List<GData5> result = split(g, fractions, edgesToSplit);
+            if (result.isEmpty()) continue;
             newCondlines.addAll(result);
             for (GData n : result) {
                 linkedDatFile.insertAfter(g, n);
@@ -17528,43 +17526,52 @@ public class VertexManager {
         validateState();
     }
 
-    private List<GData5> split(GData5 g, int fractions) {
+    private List<GData5> split(GData5 g, int fractions, Set<AccurateEdge> edgesToSplit) {
 
         ArrayList<GData5> result = new ArrayList<GData5>(fractions);
 
-        Vector3d A = new Vector3d(lines.get(g)[0]);
-        Vector3d B = new Vector3d(lines.get(g)[1]);
+        // Detect how many edges are affected
+        Vertex[] verts = condlines.get(g);
+        int ec = edgesToSplit.contains(new AccurateEdge(verts[0], verts[1])) ? 1 :0;
 
-        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
-        BigDecimal cur = BigDecimal.ZERO;
-        BigDecimal next = BigDecimal.ZERO;
-        for (int i = 0; i < fractions; i++) {
-            if (i == fractions - 1) {
-                next = BigDecimal.ONE;
-            } else {
-                next = next.add(step);
+        switch (ec) {
+        case 0:
+            return result;
+        case 1:
+
+            Vector3d A = new Vector3d(lines.get(g)[0]);
+            Vector3d B = new Vector3d(lines.get(g)[1]);
+
+            BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+            BigDecimal cur = BigDecimal.ZERO;
+            BigDecimal next = BigDecimal.ZERO;
+            for (int i = 0; i < fractions; i++) {
+                if (i == fractions - 1) {
+                    next = BigDecimal.ONE;
+                } else {
+                    next = next.add(step);
+                }
+
+                BigDecimal oneMinusCur = BigDecimal.ONE.subtract(cur);
+                BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
+
+                result.add(new GData5(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
+                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
+                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+
+                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
+                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
+                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+
+                        g.X3, g.Y3, g.Z3,
+                        g.X4, g.Y4, g.Z4,
+
+                        View.DUMMY_REFERENCE, linkedDatFile));
+                cur = next;
             }
-
-            BigDecimal oneMinusCur = BigDecimal.ONE.subtract(cur);
-            BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
-
-            result.add(new GData5(g.colourNumber, g.r, g.g, g.b, g.a,
-
-                    A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                    A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                    A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
-
-                    A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                    A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                    A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
-
-                    g.X3, g.Y3, g.Z3,
-                    g.X4, g.Y4, g.Z4,
-
-                    View.DUMMY_REFERENCE, linkedDatFile));
-            cur = next;
         }
-
         return result;
     }
 
@@ -18406,43 +18413,52 @@ public class VertexManager {
         return result;
     }
 
-    private List<GData2> split(GData2 g, int fractions) {
+    private List<GData2> split(GData2 g, int fractions, Set<AccurateEdge> edgesToSplit) {
 
         ArrayList<GData2> result = new ArrayList<GData2>(fractions);
 
-        Vector3d A = new Vector3d(lines.get(g)[0]);
-        Vector3d B = new Vector3d(lines.get(g)[1]);
+        // Detect how many edges are affected
+        Vertex[] verts = lines.get(g);
+        int ec = edgesToSplit.contains(new AccurateEdge(verts[0], verts[1])) ? 1 :0;
 
-        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
-        BigDecimal cur = BigDecimal.ZERO;
-        BigDecimal next = BigDecimal.ZERO;
-        for (int i = 0; i < fractions; i++) {
-            if (i == fractions - 1) {
-                next = BigDecimal.ONE;
-            } else {
-                next = next.add(step);
+        switch (ec) {
+        case 0:
+            return result;
+        case 1:
+
+            Vector3d A = new Vector3d(lines.get(g)[0]);
+            Vector3d B = new Vector3d(lines.get(g)[1]);
+
+            BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+            BigDecimal cur = BigDecimal.ZERO;
+            BigDecimal next = BigDecimal.ZERO;
+            for (int i = 0; i < fractions; i++) {
+                if (i == fractions - 1) {
+                    next = BigDecimal.ONE;
+                } else {
+                    next = next.add(step);
+                }
+
+                BigDecimal oneMinusCur = BigDecimal.ONE.subtract(cur);
+                BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
+
+                // Cx = Ax * (1-t) + Bx * t
+                // Cy = Ay * (1-t) + By * t
+
+                result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a,
+
+                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
+                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
+                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+
+                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
+                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
+                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+
+                        View.DUMMY_REFERENCE, linkedDatFile));
+                cur = next;
             }
-
-            BigDecimal oneMinusCur = BigDecimal.ONE.subtract(cur);
-            BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
-
-            // Cx = Ax * (1-t) + Bx * t
-            // Cy = Ay * (1-t) + By * t
-
-            result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a,
-
-                    A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                    A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                    A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
-
-                    A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                    A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                    A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
-
-                    View.DUMMY_REFERENCE, linkedDatFile));
-            cur = next;
         }
-
         return result;
     }
 

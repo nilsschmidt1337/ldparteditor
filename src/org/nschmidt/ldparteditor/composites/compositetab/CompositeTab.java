@@ -1199,7 +1199,8 @@ public class CompositeTab extends CompositeTabDesign {
         return this.state.getTab().compositeText[0];
     }
 
-    public void parseForError() {
+    public void parseForErrorAndHints() {
+        this.state.getFileNameObj().parseForHints(getTextComposite(), treeItem_Hints[0]);
         this.state.getFileNameObj().parseForError(getTextComposite(), 0, getTextComposite().getText().length(), getTextComposite().getText().length(), getTextComposite().getText(), getTextComposite().getText(), treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0]);
         int errorCount = treeItem_Errors[0].getItems().size();
         int warningCount = treeItem_Warnings[0].getItems().size();
