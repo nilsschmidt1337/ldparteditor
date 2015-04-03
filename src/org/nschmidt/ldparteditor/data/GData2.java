@@ -461,7 +461,7 @@ public final class GData2 extends GData {
             GL20.glUniform1f(r.getNoCubeMapSwitch(), 1f);
             if (!visible)
                 return;
-            if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
+            if (!c3d.isDrawingSolidMaterials())
                 return;
             switch (c3d.getLineMode()) {
             case 3:
@@ -474,23 +474,20 @@ public final class GData2 extends GData {
             float r2;
             float g2;
             float b2;
-            float a2;
             int cn;
             if (colourNumber == 24 && (cn = parent.r == .5f && parent.g == .5f && parent.b == .5f && (parent.a == 1.1f || parent.a == -1)  ? 16 : View.getLDConfigIndex(parent.r,  parent.g,  parent.b)) != 16) {
                 GColour c = View.getLDConfigEdgeColour(cn, c3d);
                 r2 = c.getR();
                 g2 = c.getG();
                 b2 = c.getB();
-                a2 = c.getA();
             } else {
                 r2 = this.r;
                 g2 = this.g;
                 b2 = this.b;
-                a2 = this.a;
             }
 
             GL11.glLineWidth(View.lineWidthGL[0]);
-            GL11.glColor4f(r2, g2, b2, a2);
+            GL11.glColor4f(r2, g2, b2, 1f);
             GL11.glBegin(GL11.GL_LINES);
             c3d.getVertexManager().setVertex(x1, y1, z1, this, true);
             c3d.getVertexManager().setVertex(x2, y2, z2, this, true);

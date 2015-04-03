@@ -19,9 +19,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.opengl.GLCanvas;
@@ -67,6 +72,18 @@ public class OpenGLRenderer {
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
     private final FloatBuffer viewport = BufferUtils.createFloatBuffer(16);
     private final FloatBuffer rotation = BufferUtils.createFloatBuffer(16);
+
+    private final float[][][][] renderedPoints = new float[1][][][];
+    private final float[][] solidColours = new float[1][];
+    private final float[][] transparentColours = new float[1][];
+    private final float[] cWidth = new float[1];
+    private final float[] cHeight = new float[1];
+
+    private final Lock lock = new ReentrantLock();
+
+    private final AtomicBoolean alive = new AtomicBoolean(true);
+    private final AtomicInteger needData = new AtomicInteger(0);
+    private Thread raytracer = null;
 
     public FloatBuffer getViewport() {
         return viewport;
@@ -196,6 +213,7 @@ public class OpenGLRenderer {
     public void drawScene() {
 
         final int negDet = c3d.hasNegDeterminant();
+        final boolean raytraceMode = c3d.getRenderMode() == 5;
 
         final GLCanvas canvas = c3d.getCanvas();
 
@@ -212,9 +230,7 @@ public class OpenGLRenderer {
 
         // MARK OpenGL Draw Scene
 
-        if (c3d.getRenderMode() != 5) {
-            GL20.glUseProgram(0);
-        } else {
+        if (raytraceMode) {
             if (skipFrame < 2) {
                 skipFrame++;
 
@@ -223,10 +239,12 @@ public class OpenGLRenderer {
                 return;
             }
             GL20.glUseProgram(pGlossId);
+        } else {
+            GL20.glUseProgram(0);
         }
 
         int state3d = 0;
-        if (c3d.isAnaglyph3d()) {
+        if (c3d.isAnaglyph3d() && !raytraceMode) {
             GL11.glColorMask(true, false, false, true);
         } else {
             GL11.glColorMask(true, true, true, true);
@@ -262,7 +280,7 @@ public class OpenGLRenderer {
             viewport.flip();
             GL11.glLoadMatrix(viewport);
 
-            if (c3d.isAnaglyph3d()) {
+            if (c3d.isAnaglyph3d() && !raytraceMode) {
 
                 Matrix4f viewport_rotation2 = new Matrix4f();
 
@@ -346,6 +364,20 @@ public class OpenGLRenderer {
             // TODO Implement high quaity transparency via subdivision and sorting (only for the semi-realtime LDraw-Standard Mode, which has frame skipping)
             c3d.setDrawingSolidMaterials(true);
             c3d.getLockableDatFileReference().draw(c3d);
+            if (raytraceMode) {
+                Rectangle b = c3d.getCanvas().getBounds();
+                final int w =  b.width;
+                final int h =  b.height;
+                FloatBuffer pixels = BufferUtils.createFloatBuffer(w * h * 4);
+                GL11.glReadPixels(0, 0, w, h, GL11.GL_RGBA, GL11.GL_FLOAT, pixels);
+                pixels.position(0);
+                float[] arr = new float[pixels.capacity()];
+                pixels.get(arr);
+                solidColours[0] = arr;
+                // NLogger.debug(getClass(), arr[(int) (w * 50.5f * 4)] + " " + arr[(int) (w * 50.5f * 4 + 1)] + " " + arr[(int) (w * 50.5f * 4 + 2)] + " " + arr[(int) (w * 50.5f * 4 + 3)]);  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+            }
+
+
             if (window.getCompositePrimitive().isDoingDND()) {
                 final Primitive p = c3d.getDraggedPrimitive();
                 if (p != null) {
@@ -361,8 +393,98 @@ public class OpenGLRenderer {
             c3d.setDrawingSolidMaterials(false);
             c3d.getLockableDatFileReference().draw(c3d);
 
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            if (raytraceMode) {
+                Rectangle b = c3d.getCanvas().getBounds();
+                final int w =  b.width;
+                final int h =  b.height;
+                FloatBuffer pixels = BufferUtils.createFloatBuffer(w * h * 4);
+                GL11.glReadPixels(0, 0, w, h, GL11.GL_RGBA, GL11.GL_FLOAT, pixels);
+                pixels.position(0);
+                float[] arr = new float[pixels.capacity()];
+                pixels.get(arr);
+                transparentColours[0] = arr;
+                // NLogger.debug(getClass(), "Trans: " + arr[(int) (w * 50.5f * 4)] + " " + arr[(int) (w * 50.5f * 4 + 1)] + " " + arr[(int) (w * 50.5f * 4 + 2)] + " " + arr[(int) (w * 50.5f * 4 + 3)]);  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+
+                if (lock.tryLock()) {
+                    try {
+                        GL11.glPushMatrix();
+                        GL11.glLoadIdentity();
+                        if (renderedPoints[0] != null) {
+
+                        }
+                        GL11.glPopMatrix();
+                    } finally {
+                        lock.unlock();
+                    }
+                }
+
+                if (raytracer == null || !raytracer.isAlive()) {
+                    raytracer = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while(alive.get()) {
+
+                                needData.set(1);
+                                while (needData.get() < 2) {
+                                    try {
+                                        Thread.sleep(100);
+                                    } catch (InterruptedException e) {}
+                                }
+
+                                float[] sc = Arrays.copyOf(solidColours[0], solidColours[0].length);
+                                float[] tc = Arrays.copyOf(transparentColours[0], transparentColours[0].length);
+                                float w = cWidth[0];
+                                float h = cHeight[0];
+
+                                needData.decrementAndGet();
+                                needData.decrementAndGet();
+
+
+                                NLogger.debug(getClass(), "Started raytracer."); //$NON-NLS-1$
+
+                                try {
+                                    lock.lock();
+                                    // FIXME Update renderedPoints here!
+                                } finally {
+                                    lock.unlock();
+                                }
+
+                                alive.set(false);
+                                int counter = 0;
+                                while(!alive.get()) {
+                                    counter++;
+                                    if (counter > 100) {
+                                        break;
+                                    }
+                                    try {
+                                        Thread.sleep(100);
+                                    } catch (InterruptedException e) {}
+                                }
+                                if (counter > 100) {
+                                    NLogger.debug(getClass(), "Stopped raytracer."); //$NON-NLS-1$
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                    raytracer.start();
+                } else {
+                    if (needData.get() > 0) {
+                        needData.incrementAndGet();
+                        while(needData.get() > 0) {
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {}
+                        }
+                    }
+                }
+                alive.set(true);
+            } else {
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+            }
 
             Manipulator manipulator = c3d.getManipulator();
             final float mx = manipulator.getPosition().x;
@@ -764,7 +886,7 @@ public class OpenGLRenderer {
                 GL11.glEnd();
             }
 
-            if (c3d.isAnaglyph3d() && state3d == 0) {
+            if (c3d.isAnaglyph3d() && !raytraceMode && state3d == 0) {
                 GL11.glColorMask(false, true, true, true);
                 state3d++;
             } else {
