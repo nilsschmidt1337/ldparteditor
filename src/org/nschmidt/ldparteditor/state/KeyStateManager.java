@@ -32,11 +32,13 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.KeyBoardHelper;
+import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -142,9 +144,16 @@ public class KeyStateManager {
         addTask(Task.SAVE, SWT.CTRL, 's');
 
         addTask(Task.SELECT_ALL, SWT.CTRL, 'a');
-        addTask(Task.SELECT_NONE,SWT.CTRL | SWT.SHIFT, 'a');
+        addTask(Task.SELECT_NONE, SWT.CTRL | SWT.SHIFT, 'a');
         addTask(Task.SELECT_ALL_WITH_SAME_COLOURS, SWT.CTRL | SWT.ALT,  'c');
+        addTask(Task.SELECT_CONNECTED, SWT.ALT, 'c');
+        addTask(Task.SELECT_TOUCHING, SWT.ALT, 't');
+
         addTask(Task.SELECT_OPTION_WITH_SAME_COLOURS, SWT.ALT, 's');
+
+        addTask(Task.MERGE_TO_AVERAGE, SWT.CTRL, 'w');
+        addTask(Task.MERGE_TO_LAST, SWT.CTRL, 'e');
+        addTask(Task.SPLIT, SWT.ALT, 'v');
 
 
         addTask(TextTask.EDITORTEXT_REPLACE_VERTEX, SWT.ALT | SWT.SHIFT, 'r');
@@ -214,9 +223,9 @@ public class KeyStateManager {
                 NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") down]"); //$NON-NLS-1$ //$NON-NLS-2$
                 setKeyState(keyCode, true);
                 pressedKeyCodes.add(keyCode);
-                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0 || this.ctrlPressed;
-                final boolean altPressed = (event.stateMask & SWT.ALT) != 0 || this.altPressed;
-                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0 || this.shiftPressed;
+                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
+                final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
+                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
                 sb.setLength(0);
                 sb.append(keyCode);
                 sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
@@ -400,6 +409,31 @@ public class KeyStateManager {
                     case SELECT_OPTION_WITH_SAME_COLOURS:
                         win.getMntmWithSameColour().setSelection(!win.getMntmWithSameColour().getSelection());
                         win.loadSelectorSettings();
+                        break;
+                    case SELECT_CONNECTED:
+                    {
+                        final SelectorSettings sels = win.loadSelectorSettings();
+                        sels.setScope(SelectorSettings.CONNECTED);
+                        vm.selector(sels);
+                        vm.syncWithTextEditors(true);
+                        break;
+                    }
+                    case SELECT_TOUCHING:
+                    {
+                        final SelectorSettings sels = win.loadSelectorSettings();
+                        sels.setScope(SelectorSettings.TOUCHING);
+                        vm.selector(sels);
+                        vm.syncWithTextEditors(true);
+                        break;
+                    }
+                    case MERGE_TO_AVERAGE:
+                        vm.merge(MergeTo.AVERAGE, true);
+                        break;
+                    case MERGE_TO_LAST:
+                        vm.merge(MergeTo.LAST_SELECTED, true);
+                        break;
+                    case SPLIT:
+                        vm.split(2);
                         break;
                     }
                 }

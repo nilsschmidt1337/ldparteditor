@@ -756,12 +756,12 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_SelectConnected = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectConnected[0] = mntm_SelectConnected;
-                        mntm_SelectConnected.setText("…Connected…"); //$NON-NLS-1$ I18N
+                        KeyStateManager.addKeyText(mntm_SelectConnected, "…Connected…", Task.SELECT_CONNECTED); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_SelectTouching = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectTouching[0] = mntm_SelectTouching;
-                        mntm_SelectTouching.setText("…Touching…"); //$NON-NLS-1$ I18N
+                        KeyStateManager.addKeyText(mntm_SelectTouching, "…Touching…", Task.SELECT_TOUCHING); //$NON-NLS-1$ I18N
                     }
                     {
                         MenuItem mntm_WithSameColour = new MenuItem(mnu_Select, SWT.CHECK);
@@ -877,7 +877,7 @@ class Editor3DDesign extends ApplicationWindow {
                 {
                     MenuItem mntm_Split = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_Split[0] = mntm_Split;
-                    mntm_Split.setText("Split"); //$NON-NLS-1$ I18N
+                    KeyStateManager.addKeyText(mntm_Split, "Split", Task.SPLIT); //$NON-NLS-1$ I18N
                 }
                 {
                     MenuItem mntm_SplitNTimes = new MenuItem(mnu_Merge, SWT.PUSH);
@@ -889,12 +889,12 @@ class Editor3DDesign extends ApplicationWindow {
                 {
                     MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_MergeToAverage[0] = mntm_mergeTo;
-                    mntm_mergeTo.setText("Merge To Average"); //$NON-NLS-1$ I18N
+                    KeyStateManager.addKeyText(mntm_mergeTo, "Merge To Average", Task.MERGE_TO_AVERAGE); //$NON-NLS-1$ I18N
                 }
                 {
                     MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_MergeToLastSelected[0] = mntm_mergeTo;
-                    mntm_mergeTo.setText("Merge To Last Selected Vertex"); //$NON-NLS-1$ I18N
+                    KeyStateManager.addKeyText(mntm_mergeTo, "Merge To Last Selected Vertex", Task.MERGE_TO_LAST); //$NON-NLS-1$ I18N
                 }
                 {
                     MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
