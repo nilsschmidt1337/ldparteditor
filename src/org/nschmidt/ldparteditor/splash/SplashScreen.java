@@ -208,6 +208,10 @@ public class SplashScreen extends ApplicationWindow {
              */
         }
         // Close the splash..
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+        }
         close();
         while (!bar.isDisposed()) {
             if (!Display.getCurrent().readAndDispatch()) {
@@ -320,7 +324,7 @@ public class SplashScreen extends ApplicationWindow {
 
         bar.setMaximum(100);
 
-        titleLabel.setText(Version.getApplicationName() + " " + Version.getVersion() + "\n" + Version.getStage()); //$NON-NLS-1$ //$NON-NLS-2$
+        titleLabel.setText(Version.getApplicationName() + " " + Version.getVersion() + "\n" + Version.getStage() + "\n(C) " + Version.getDevelopmentLead()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         titleLabel.setBackground(bgColor);
         bar.setBackground(bgColor);
