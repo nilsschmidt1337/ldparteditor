@@ -19,7 +19,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -41,6 +43,8 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.data.GData3;
+import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GTexture;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
@@ -104,7 +108,6 @@ public class OpenGLRenderer {
     private int baseImageLoc = -1;
     private int glossMapLoc = -1;
     private int cubeMapLoc = -1;
-    private int alphaSwitchLoc = -1;
     private int normalSwitchLoc = -1;
     private int noTextureSwitch = -1;
     private int noLightSwitch = -1;
@@ -197,7 +200,6 @@ public class OpenGLRenderer {
                 baseImageLoc = GL20.glGetUniformLocation(pGlossId, "colorMap"); //$NON-NLS-1$
                 glossMapLoc = GL20.glGetUniformLocation(pGlossId, "glossMap"); //$NON-NLS-1$
                 cubeMapLoc = GL20.glGetUniformLocation(pGlossId, "cubeMap"); //$NON-NLS-1$
-                alphaSwitchLoc = GL20.glGetUniformLocation(pGlossId, "alphaSwitch"); //$NON-NLS-1$
                 normalSwitchLoc = GL20.glGetUniformLocation(pGlossId, "normalSwitch"); //$NON-NLS-1$
                 noTextureSwitch = GL20.glGetUniformLocation(pGlossId, "noTextureSwitch"); //$NON-NLS-1$
                 noGlossMapSwitch = GL20.glGetUniformLocation(pGlossId, "noGlossMapSwitch"); //$NON-NLS-1$
@@ -361,7 +363,6 @@ public class OpenGLRenderer {
             if (c3d.isLightOn())
                 GL11.glEnable(GL11.GL_LIGHTING);
 
-            // TODO Implement high quaity transparency via subdivision and sorting (only for the semi-realtime LDraw-Standard Mode, which has frame skipping)
             c3d.setDrawingSolidMaterials(true);
             c3d.getLockableDatFileReference().draw(c3d);
             if (raytraceMode) {
@@ -404,9 +405,7 @@ public class OpenGLRenderer {
                 pixels.get(arr);
                 transparentColours[0] = arr;
                 cWidth[0] = w;
-                cWidth[1] = viewport_width;
                 cHeight[0] = h;
-                cHeight[1] = viewport_height;
                 // NLogger.debug(getClass(), "Trans: " + arr[(int) (w * 50.5f * 4)] + " " + arr[(int) (w * 50.5f * 4 + 1)] + " " + arr[(int) (w * 50.5f * 4 + 2)] + " " + arr[(int) (w * 50.5f * 4 + 3)]);  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -425,32 +424,32 @@ public class OpenGLRenderer {
                             for (float[] p : renderedPoints[0]) {
                                 GL11.glBegin(GL11.GL_QUADS);
                                 GL11.glColor3f(p[0], p[1], p[2]);
-                                GL11.glVertex3f(p[3], p[4], p[5]);
-                                GL11.glVertex3f(p[6], p[7], p[8]);
-                                GL11.glVertex3f(p[9], p[10], p[11]);
-                                GL11.glVertex3f(p[12], p[13], p[14]);
+                                GL11.glVertex3f(p[3], p[4], 0f);
+                                GL11.glVertex3f(p[5], p[6], 0f);
+                                GL11.glVertex3f(p[7], p[8], 0f);
+                                GL11.glVertex3f(p[9], p[10], 0f);
                                 GL11.glEnd();
                             }
-                            boolean red = false;
-                            boolean green = false;
-                            for (float x = 0; x < w; x += 1f) {
-                                green = red;
-                                for (float y = 0; y < h; y += 1f) {
-                                    red = !red;
-                                    float sx = x;
-                                    float sy = y;
-                                    GL11.glBegin(GL11.GL_QUADS);
-                                    GL11.glColor3f(1f, 0f, red ? 1f : 0f);
-                                    GL11.glVertex3f(sx, sy, 0f);
-                                    GL11.glVertex3f(sx, sy + 1f, 0f);
-                                    GL11.glVertex3f(sx + 1f, sy + 1f, 0f);
-                                    GL11.glVertex3f(sx + 1f, sy, 0f);
-                                    GL11.glEnd();
-                                }
-                                if (red == green) {
-                                    red = !red;
-                                }
-                            }
+                            //                            boolean red = false;
+                            //                            boolean green = false;
+                            //                            for (float x = 0; x < w; x += 1f) {
+                            //                                green = red;
+                            //                                for (float y = 0; y < h; y += 1f) {
+                            //                                    red = !red;
+                            //                                    float sx = x;
+                            //                                    float sy = y;
+                            //                                    GL11.glBegin(GL11.GL_QUADS);
+                            //                                    GL11.glColor3f(1f, 0f, red ? 1f : 0f);
+                            //                                    GL11.glVertex3f(sx, sy, 0f);
+                            //                                    GL11.glVertex3f(sx, sy + 1f, 0f);
+                            //                                    GL11.glVertex3f(sx + 1f, sy + 1f, 0f);
+                            //                                    GL11.glVertex3f(sx + 1f, sy, 0f);
+                            //                                    GL11.glEnd();
+                            //                                }
+                            //                                if (red == green) {
+                            //                                    red = !red;
+                            //                                }
+                            //                            }
                             GL11.glPopMatrix();
                         }
                     } finally {
@@ -478,21 +477,70 @@ public class OpenGLRenderer {
                                 }
                                 counter++;
 
-                                float[] sc = Arrays.copyOf(solidColours[0], solidColours[0].length);
-                                float[] tc = Arrays.copyOf(transparentColours[0], transparentColours[0].length);
-                                float w = cWidth[0];
-                                float h = cHeight[0];
+                                final int cs = solidColours[0].length;
+                                float[] sc = Arrays.copyOf(solidColours[0], cs);
+                                float[] tc = Arrays.copyOf(transparentColours[0], cs);
+                                int w = (int) cWidth[0];
+                                int h = (int) cHeight[0];
 
                                 needData.decrementAndGet();
                                 needData.decrementAndGet();
+
+                                NLogger.debug(getClass(), "Initialised raytracer."); //$NON-NLS-1$
+                                // Read triangles and quads
+                                ArrayList<float[]> tris = new ArrayList<float[]>();
+                                {
+                                    HashMap<GData4, Vertex[]> quads = c3d.getLockableDatFileReference().getVertexManager().getQuads();
+                                    HashMap<GData3, Vertex[]> tris2 = c3d.getLockableDatFileReference().getVertexManager().getTriangles();
+                                }
 
 
                                 NLogger.debug(getClass(), "Started raytracer."); //$NON-NLS-1$
+                                ArrayList<float[]> points = new ArrayList<float[]>(10000);
+
+                                // FIXME Needs implementation
+
+                                {
+                                    int i = 0;
+                                    for (int y = 0; y < h; y++) {
+                                        final int sy = h - y;
+                                        for (int x = 0; x < w; x++) {
+                                            final int sx = w - x;
+                                            float rS = sc[i];
+                                            float gS = sc[i + 1];
+                                            float bS = sc[i + 2];
+                                            float rT = tc[i];
+                                            float gT = tc[i + 1];
+                                            float bT = tc[i + 2];
+                                            if (rS != rT || gS != gT || bS != bT) {
+                                                float[] point = new float[11];
+                                                point[0] = rT * rS;
+                                                point[1] = gT * gS;
+                                                point[2] = bT * bS;
+                                                point[3] = sx;
+                                                point[4] = sy;
+                                                point[5] = sx;
+                                                point[6] = sy + 1;
+                                                point[7] = sx + 1;
+                                                point[8] = sy + 1;
+                                                point[9] = sx + 1;
+                                                point[10] = sy;
+                                                points.add(point);
+                                            }
+                                            i += 4;
+                                        }
+                                    }
+                                }
+
+                                final int size = points.size();
+                                float[][] r = new float[size][];
+                                for (int i = 0; i < size; i++) {
+                                    r[i] = points.get(i);
+                                }
 
                                 try {
                                     lock.lock();
                                     // FIXME Update renderedPoints here!
-                                    float[][] r = new float[0][];
                                     renderedPoints[0] = r;
                                 } finally {
                                     lock.unlock();
@@ -1192,10 +1240,6 @@ public class OpenGLRenderer {
 
     public int getCubeMapLoc() {
         return cubeMapLoc;
-    }
-
-    public int getAlphaSwitchLoc() {
-        return alphaSwitchLoc;
     }
 
     public int getNormalSwitchLoc() {

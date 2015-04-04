@@ -427,7 +427,7 @@ public class GTexture {
         }
     }
 
-    public void bind(boolean drawSolidMaterials, boolean normalSwitch, boolean lightOn, OpenGLRenderer renderer, boolean useCubeMap) {
+    public void bind(boolean normalSwitch, boolean lightOn, OpenGLRenderer renderer, boolean useCubeMap) {
 
         int ID = -1;
         int ID_glossmap = -1;
@@ -459,7 +459,6 @@ public class GTexture {
             accessTime = System.currentTimeMillis();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID);
-            GL20.glUniform1f(renderer.getAlphaSwitchLoc(), drawSolidMaterials ? 1f : 0f); // Draw
             // transparent
             GL20.glUniform1f(renderer.getNormalSwitchLoc(), normalSwitch ? 1f : 0f); // Draw
             // transparent
