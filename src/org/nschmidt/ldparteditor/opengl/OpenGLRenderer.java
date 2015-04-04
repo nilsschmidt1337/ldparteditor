@@ -569,7 +569,7 @@ public class OpenGLRenderer {
                                                     points.add(point);
                                                 } else {
                                                     float[] point = new float[11];
-                                                    point[0] = Math.min(zSort.firstKey() / 100f, 1f);
+                                                    point[0] = Math.min(Math.abs(zSort.lastKey()) * 5f * Math.abs(zSort.lastKey()) * 5f, 1f);
                                                     point[1] = 0f;
                                                     point[2] = 0f;
                                                     point[3] = sx;
