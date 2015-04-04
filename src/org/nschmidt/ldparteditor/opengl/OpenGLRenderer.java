@@ -514,9 +514,9 @@ public class OpenGLRenderer {
                                             float bT = tc[i + 2];
                                             if (rS != rT || gS != gT || bS != bT) {
                                                 float[] point = new float[11];
-                                                point[0] = rT * rS;
-                                                point[1] = gT * gS;
-                                                point[2] = bT * bS;
+                                                point[0] = (rT + rS) / 2f;
+                                                point[1] = (gT + gS) / 2f;
+                                                point[2] = (bT + bS) / 2f;
                                                 point[3] = sx;
                                                 point[4] = sy;
                                                 point[5] = sx;
