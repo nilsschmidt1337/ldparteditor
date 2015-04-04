@@ -483,6 +483,7 @@ public class OpenGLRenderer {
                                 needData.decrementAndGet();
 
                                 NLogger.debug(getClass(), "Initialised raytracer."); //$NON-NLS-1$
+                                final boolean lights = c3d.isLightOn();
                                 // Read triangles and quads
                                 ArrayList<float[]> tris = new ArrayList<float[]>();
                                 {
@@ -533,6 +534,12 @@ public class OpenGLRenderer {
 
                                 // FIXME Needs implementation
 
+                                // Light positions
+                                final Vector3f lp1 = new Vector3f(2.0f, 2.0f, 2.0f);
+                                final Vector3f lp2 = new Vector3f(-2.0f, 2.0f, 2.0f);
+                                final Vector3f lp3 = new Vector3f(2.0f, -2.0f, 2.0f);
+                                final Vector3f lp4 = new Vector3f(-2.0f, -2.0f, 2.0f);
+
                                 int skip = 0;
                                 {
                                     int i = 0;
@@ -548,18 +555,22 @@ public class OpenGLRenderer {
                                             float bT = tc[i + 2];
                                             if (rS != rT || gS != gT || bS != bT) {
                                                 TreeMap<Float, float[]>  zSort = new TreeMap<Float, float[]>();
+                                                TreeMap<Float, Vector4f>  hitSort = new TreeMap<Float, Vector4f>();
                                                 for (float[] tri : tris) {
                                                     float[] zHit = pr.TRIANGLE_INTERSECT(get3DCoordinatesFromScreen(x, y, z, w, h, vInverse), ray, tri);
                                                     if (zHit != null) {
-                                                        float sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], vM);
-                                                        zSort.put(sz, tri);
+                                                        Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], vM);
+                                                        hitSort.put(sz.z, sz);
+                                                        zSort.put(sz.z, tri);
                                                     }
                                                 }
-                                                if (zSort.size() < 2) {
+                                                switch(zSort.size()) {
+                                                case 0:
+                                                {
                                                     float[] point = new float[11];
-                                                    point[0] = (rT + rS) / 2f;
-                                                    point[1] = (gT + gS) / 2f;
-                                                    point[2] = (bT + bS) / 2f;
+                                                    point[0] = rT;
+                                                    point[1] = gT;
+                                                    point[2] = bT;
                                                     point[3] = sx;
                                                     point[4] = sy;
                                                     point[5] = sx;
@@ -569,11 +580,88 @@ public class OpenGLRenderer {
                                                     point[9] = sx + 1;
                                                     point[10] = sy;
                                                     points.add(point);
-                                                } else {
+                                                    break;
+                                                }
+                                                case 1:
+                                                {
+                                                    float[] ze = zSort.get(zSort.firstKey());
                                                     float[] point = new float[11];
-                                                    point[0] = Math.min(Math.abs(zSort.lastKey()) * 5f * Math.abs(zSort.lastKey()) * 5f, 1f);
-                                                    point[1] = 0f;
-                                                    point[2] = 0f;
+                                                    float a = ze[15];
+                                                    float oneMinusAlpha = 1f - a;
+                                                    point[0] = rT * a + rS * oneMinusAlpha;
+                                                    point[1] = gT * a + gS * oneMinusAlpha;
+                                                    point[2] = bT * a + bS * oneMinusAlpha;
+                                                    point[3] = sx;
+                                                    point[4] = sy;
+                                                    point[5] = sx;
+                                                    point[6] = sy + 1;
+                                                    point[7] = sx + 1;
+                                                    point[8] = sy + 1;
+                                                    point[9] = sx + 1;
+                                                    point[10] = sy;
+                                                    points.add(point);
+                                                    break;
+                                                }
+                                                default:
+                                                    float[] point = new float[11];
+                                                    boolean init = true;
+                                                    for (Float f : zSort.keySet()) {
+                                                        float[] ze = zSort.get(f);
+                                                        float a = ze[15];
+                                                        float r = ze[12];
+                                                        float g = ze[13];
+                                                        float b = ze[14];
+
+                                                        // Compute light (without specular!)
+                                                        if (lights) {
+                                                            Vector4f pos = hitSort.get(f);
+                                                            Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
+
+                                                            Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
+                                                            normal.normalise();
+                                                            Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
+                                                            Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
+                                                            Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
+                                                            Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
+
+                                                            float dist1  = lightDir1.length();
+                                                            float dist2  = lightDir2.length();
+                                                            float dist3  = lightDir3.length();
+                                                            float dist4  = lightDir4.length();
+                                                            float attenFactor1 = 1.0f / (.1f * dist1);
+                                                            float attenFactor2 = 1.0f / (.1f * dist2);
+                                                            float attenFactor3 = 1.0f / (.1f * dist3);
+                                                            float attenFactor4 = 1.0f / (.1f * dist4);
+
+                                                            lightDir1.normalise();
+                                                            lightDir2.normalise();
+                                                            lightDir3.normalise();
+                                                            lightDir4.normalise();
+                                                            // attenuation and light direction
+                                                            // ambient + diffuse
+                                                            float light;
+                                                            light = (float) (0.8f * Math.max(Vector3f.dot(normal, lightDir1), 0.0) * attenFactor1);
+                                                            light += 0.25f * Math.max(Vector3f.dot(normal, lightDir2), 0.0) * attenFactor2;
+                                                            light += 0.25f * Math.max(Vector3f.dot(normal, lightDir3), 0.0) * attenFactor3;
+                                                            light += 0.25f * Math.max(Vector3f.dot(normal, lightDir4), 0.0) * attenFactor4;
+                                                            // compute final color
+                                                            r = r + light;
+                                                            g = g + light;
+                                                            b = b + light;
+                                                        }
+
+                                                        float oneMinusAlpha = 1f - a;
+                                                        if (init || a == 1f) {
+                                                            init = false;
+                                                            point[0] = r * a + oneMinusAlpha;
+                                                            point[1] = g * a + oneMinusAlpha;
+                                                            point[2] = b * a + oneMinusAlpha;
+                                                        } else {
+                                                            point[0] = r * a + point[0] * oneMinusAlpha;
+                                                            point[1] = g * a + point[1] * oneMinusAlpha;
+                                                            point[2] = b * a + point[2] * oneMinusAlpha;
+                                                        }
+                                                    }
                                                     point[3] = sx;
                                                     point[4] = sy;
                                                     point[5] = sx;
@@ -641,10 +729,10 @@ public class OpenGLRenderer {
                             }
                         }
 
-                        private float getScreenZFrom3D(float x, float y, float z, Matrix4f v) {
+                        private Vector4f getScreenZFrom3D(float x, float y, float z, Matrix4f v) {
                             Vector4f relPos = new Vector4f(x, y, z, 1f);
                             Matrix4f.transform(v, relPos, relPos);
-                            return relPos.z;
+                            return relPos;
                         }
 
                         private Vector4f get3DCoordinatesFromScreen(int x, int y, float z, int w, int h, Matrix4f v_inverse) {
