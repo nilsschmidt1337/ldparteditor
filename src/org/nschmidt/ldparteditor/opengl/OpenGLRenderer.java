@@ -76,8 +76,8 @@ public class OpenGLRenderer {
     private final float[][][] renderedPoints = new float[1][][];
     private final float[][] solidColours = new float[1][];
     private final float[][] transparentColours = new float[1][];
-    private final float[] cWidth = new float[2];
-    private final float[] cHeight = new float[2];
+    private final float[] cWidth = new float[1];
+    private final float[] cHeight = new float[1];
 
     private final Lock lock = new ReentrantLock();
 
@@ -411,42 +411,48 @@ public class OpenGLRenderer {
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
 
+                GL20.glUseProgram(0);
+
                 if (lock.tryLock()) {
                     try {
-                        GL11.glPushMatrix();
-                        GL11.glLoadIdentity();
-                        GL11.glTranslatef(-viewport_width, -viewport_height, 0f);
                         if (renderedPoints[0] != null) {
-                            GL20.glUseProgram(0);
-                            for (float[] point : renderedPoints[0]) {
-
+                            GL11.glPushMatrix();
+                            GL11.glLoadIdentity();
+                            final float xf = 2f * viewport_width;
+                            final float yf = 2f * viewport_height;
+                            GL11.glTranslatef(-viewport_width, -viewport_height, 0f);
+                            GL11.glScalef(1f / w * xf, 1f / h * yf, 1f);
+                            for (float[] p : renderedPoints[0]) {
+                                GL11.glBegin(GL11.GL_QUADS);
+                                GL11.glColor3f(p[0], p[1], p[2]);
+                                GL11.glVertex3f(p[3], p[4], p[5]);
+                                GL11.glVertex3f(p[6], p[7], p[8]);
+                                GL11.glVertex3f(p[9], p[10], p[11]);
+                                GL11.glVertex3f(p[12], p[13], p[14]);
+                                GL11.glEnd();
                             }
                             boolean red = false;
                             boolean green = false;
-                            float wi =  1f / w * 2f * viewport_width;
-                            final float xf = 2f * viewport_width;
-                            final float yf = 2f * viewport_height;
                             for (float x = 0; x < w; x += 1f) {
                                 green = red;
                                 for (float y = 0; y < h; y += 1f) {
                                     red = !red;
-                                    float sx = x / w * xf ;
-                                    float sy = y / h * yf;
+                                    float sx = x;
+                                    float sy = y;
                                     GL11.glBegin(GL11.GL_QUADS);
                                     GL11.glColor3f(1f, 0f, red ? 1f : 0f);
                                     GL11.glVertex3f(sx, sy, 0f);
-                                    GL11.glVertex3f(sx, sy + wi, 0f);
-                                    GL11.glVertex3f(sx + wi, sy + wi, 0f);
-                                    GL11.glVertex3f(sx + wi, sy, 0f);
+                                    GL11.glVertex3f(sx, sy + 1f, 0f);
+                                    GL11.glVertex3f(sx + 1f, sy + 1f, 0f);
+                                    GL11.glVertex3f(sx + 1f, sy, 0f);
                                     GL11.glEnd();
                                 }
                                 if (red == green) {
                                     red = !red;
                                 }
                             }
+                            GL11.glPopMatrix();
                         }
-
-                        GL11.glPopMatrix();
                     } finally {
                         lock.unlock();
                     }
@@ -463,16 +469,14 @@ public class OpenGLRenderer {
                                 while (needData.get() < 2) {
                                     counter++;
                                     if (counter > 100) {
-                                        break;
+                                        NLogger.debug(getClass(), "Stopped raytracer."); //$NON-NLS-1$
+                                        return;
                                     }
                                     try {
                                         Thread.sleep(100);
                                     } catch (InterruptedException e) {}
                                 }
                                 counter++;
-                                if (counter > 100) {
-                                    break;
-                                }
 
                                 float[] sc = Arrays.copyOf(solidColours[0], solidColours[0].length);
                                 float[] tc = Arrays.copyOf(transparentColours[0], transparentColours[0].length);
@@ -488,7 +492,8 @@ public class OpenGLRenderer {
                                 try {
                                     lock.lock();
                                     // FIXME Update renderedPoints here!
-                                    renderedPoints[0] = new float[1][];
+                                    float[][] r = new float[0][];
+                                    renderedPoints[0] = r;
                                 } finally {
                                     lock.unlock();
                                 }
@@ -498,15 +503,12 @@ public class OpenGLRenderer {
                                 while(!alive.get()) {
                                     counter++;
                                     if (counter > 100) {
-                                        break;
+                                        NLogger.debug(getClass(), "Stopped raytracer."); //$NON-NLS-1$
+                                        return;
                                     }
                                     try {
                                         Thread.sleep(100);
                                     } catch (InterruptedException e) {}
-                                }
-                                if (counter > 100) {
-                                    NLogger.debug(getClass(), "Stopped raytracer."); //$NON-NLS-1$
-                                    break;
                                 }
                             }
                         }
