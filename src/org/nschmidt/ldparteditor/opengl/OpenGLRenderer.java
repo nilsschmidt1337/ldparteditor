@@ -432,26 +432,6 @@ public class OpenGLRenderer {
                                 GL11.glVertex3f(p[9], p[10], 0f);
                                 GL11.glEnd();
                             }
-                            //                            boolean red = false;
-                            //                            boolean green = false;
-                            //                            for (float x = 0; x < w; x += 1f) {
-                            //                                green = red;
-                            //                                for (float y = 0; y < h; y += 1f) {
-                            //                                    red = !red;
-                            //                                    float sx = x;
-                            //                                    float sy = y;
-                            //                                    GL11.glBegin(GL11.GL_QUADS);
-                            //                                    GL11.glColor3f(1f, 0f, red ? 1f : 0f);
-                            //                                    GL11.glVertex3f(sx, sy, 0f);
-                            //                                    GL11.glVertex3f(sx, sy + 1f, 0f);
-                            //                                    GL11.glVertex3f(sx + 1f, sy + 1f, 0f);
-                            //                                    GL11.glVertex3f(sx + 1f, sy, 0f);
-                            //                                    GL11.glEnd();
-                            //                                }
-                            //                                if (red == green) {
-                            //                                    red = !red;
-                            //                                }
-                            //                            }
                             GL11.glPopMatrix();
                         }
                     } finally {
@@ -487,8 +467,9 @@ public class OpenGLRenderer {
 
                                 final PowerRay pr = new PowerRay();
                                 final float[] ray;
-                                final Matrix4f vInverse = Matrix4f.invert(c3d.getViewport(), null);
-                                final float z = c3d.hasNegDeterminant() == 1 ? -10000f : 10000f;
+                                final Matrix4f vInverse = c3d.getViewport_Inverse();
+                                final Matrix4f vM = c3d.getViewport();
+                                final float z = c3d.hasNegDeterminant() == 1 ? -100f : 100f;
                                 {
                                     Vector4f zAxis4f = new Vector4f(0, 0, c3d.hasNegDeterminant() == 1 ? -1f : 1f, 1f);
                                     Matrix4f ovr_inverse2 = Matrix4f.invert(c3d.getRotation(), null);
@@ -564,11 +545,12 @@ public class OpenGLRenderer {
                                             float gT = tc[i + 1];
                                             float bT = tc[i + 2];
                                             if (rS != rT || gS != gT || bS != bT) {
-                                                TreeMap<Double, float[]>  zSort = new TreeMap<Double, float[]>();
+                                                TreeMap<Float, float[]>  zSort = new TreeMap<Float, float[]>();
                                                 for (float[] tri : tris) {
-                                                    double[] zHit = pr.TRIANGLE_INTERSECT(get3DCoordinatesFromScreen(x, y, z, w, h, vInverse), ray, tri);
+                                                    float[] zHit = pr.TRIANGLE_INTERSECT(get3DCoordinatesFromScreen(x, y, z, w, h, vInverse), ray, tri);
                                                     if (zHit != null) {
-                                                        zSort.put(zHit[0], tri);
+                                                        float sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], vM);
+                                                        zSort.put(sz, tri);
                                                     }
                                                 }
                                                 if (zSort.size() < 2) {
@@ -587,7 +569,7 @@ public class OpenGLRenderer {
                                                     points.add(point);
                                                 } else {
                                                     float[] point = new float[11];
-                                                    point[0] = 1f;
+                                                    point[0] = Math.min(zSort.firstKey() / 100f, 1f);
                                                     point[1] = 0f;
                                                     point[2] = 0f;
                                                     point[3] = sx;
@@ -603,15 +585,33 @@ public class OpenGLRenderer {
                                             }
                                             i += 4;
                                         }
+
+                                        int size = points.size();
+                                        int size2 = renderedPoints[0] == null ? -1 :renderedPoints[0].length;
+                                        float[][] r;
+                                        if (size2 < size) {
+                                            r = new float[size][];
+                                        } else {
+                                            r = renderedPoints[0];
+                                        }
+                                        for (int j = 0; j < size; j++) {
+                                            r[j] = points.get(j);
+                                        }
+                                        try {
+                                            lock.lock();
+                                            // FIXME Update renderedPoints here!
+                                            renderedPoints[0] = r;
+                                        } finally {
+                                            lock.unlock();
+                                        }
                                     }
                                 }
 
                                 final int size = points.size();
                                 float[][] r = new float[size][];
-                                for (int i = 0; i < size; i++) {
-                                    r[i] = points.get(i);
+                                for (int j = 0; j < size; j++) {
+                                    r[j] = points.get(j);
                                 }
-
                                 try {
                                     lock.lock();
                                     // FIXME Update renderedPoints here!
@@ -635,15 +635,22 @@ public class OpenGLRenderer {
                             }
                         }
 
+                        private float getScreenZFrom3D(float x, float y, float z, Matrix4f v) {
+                            Vector4f relPos = new Vector4f(x, y, z, 1f);
+                            Matrix4f.transform(v, relPos, relPos);
+                            return relPos.z;
+                        }
+
                         private Vector4f get3DCoordinatesFromScreen(int x, int y, float z, int w, int h, Matrix4f v_inverse) {
                             Vector4f relPos = new Vector4f();
-                            relPos.x = (x- 0.5f * w) / View.PIXEL_PER_LDU;
-                            relPos.y = (y - 0.5f * h) / View.PIXEL_PER_LDU;
-                            relPos.z = -z;
+                            relPos.x = (0.5f * w - x) / View.PIXEL_PER_LDU;
+                            relPos.y = (0.5f * h - y) / View.PIXEL_PER_LDU;
+                            relPos.z = 0f;
                             relPos.w = 1.0f;
                             Matrix4f.transform(v_inverse, relPos, relPos);
                             return relPos;
                         }
+
                     });
                     raytracer.start();
                 } else {

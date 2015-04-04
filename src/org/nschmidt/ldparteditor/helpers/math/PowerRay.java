@@ -168,7 +168,7 @@ public final class PowerRay {
         return new double[] { u, v, w };
     }
 
-    public double[] TRIANGLE_INTERSECT(Vector4f orig, float[] dir, float[] tri) {
+    public float[] TRIANGLE_INTERSECT(Vector4f orig, float[] dir, float[] tri) {
         double diskr = 0;
         double inv_diskr = 0;
         corner1[0] = tri[3] - tri[0];
@@ -199,6 +199,6 @@ public final class PowerRay {
         t = (corner2[0] * qvec[0] + corner2[1] * qvec[1] + corner2[2] * qvec[2]) * inv_diskr;
         //        if (t < 0)
         //            return null;
-        return new double[]{orig.z + dir[2] * t, u, v};
+        return new float[]{(float) (orig.x + dir[0] * t), (float) (orig.y + dir[1] * t), (float) (orig.z + dir[2] * t), (float) u, (float) v};
     }
 }
