@@ -167,4 +167,38 @@ public final class PowerRay {
         intersection_point.set((float) (vert0[0] * w + vert1[0] * u + vert2[0] * v), (float) (vert0[1] * w + vert1[1] * u + vert2[1] * v), (float) (vert0[2] * w + vert1[2] * u + vert2[2] * v), 1f);
         return new double[] { u, v, w };
     }
+
+    public double[] TRIANGLE_INTERSECT(Vector4f orig, float[] dir, float[] tri) {
+        double diskr = 0;
+        double inv_diskr = 0;
+        corner1[0] = tri[3] - tri[0];
+        corner1[1] = tri[4] - tri[1];
+        corner1[2] = tri[5] - tri[2];
+        corner2[0] = tri[6] - tri[0];
+        corner2[1] = tri[7] - tri[1];
+        corner2[2] = tri[8] - tri[2];
+        pvec[0] = dir[1] * corner2[2] - dir[2] * corner2[1];
+        pvec[1] = dir[2] * corner2[0] - dir[0] * corner2[2];
+        pvec[2] = dir[0] * corner2[1] - dir[1] * corner2[0];
+        diskr = corner1[0] * pvec[0] + corner1[1] * pvec[1] + corner1[2] * pvec[2];
+        if (diskr > -TOLERANCE && diskr < TOLERANCE)
+            return null;
+        inv_diskr = 1d / diskr;
+        tvec[0] = orig.x - tri[0];
+        tvec[1] = orig.y - tri[1];
+        tvec[2] = orig.z - tri[2];
+        u = (tvec[0] * pvec[0] + tvec[1] * pvec[1] + tvec[2] * pvec[2]) * inv_diskr;
+        if (u < 0 || u > 1)
+            return null;
+        qvec[0] = tvec[1] * corner1[2] - tvec[2] * corner1[1];
+        qvec[1] = tvec[2] * corner1[0] - tvec[0] * corner1[2];
+        qvec[2] = tvec[0] * corner1[1] - tvec[1] * corner1[0];
+        v = (dir[0] * qvec[0] + dir[1] * qvec[1] + dir[2] * qvec[2]) * inv_diskr;
+        if (v < 0 || u + v > 1)
+            return null;
+        t = (corner2[0] * qvec[0] + corner2[1] * qvec[1] + corner2[2] * qvec[2]) * inv_diskr;
+        //        if (t < 0)
+        //            return null;
+        return new double[]{orig.z + dir[2] * t, u, v};
+    }
 }
