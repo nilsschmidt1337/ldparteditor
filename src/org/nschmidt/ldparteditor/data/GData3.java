@@ -880,9 +880,9 @@ public final class GData3 extends GData {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
-                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                     GL11.glEnd();
                 } else {
                     GL11.glColor4f(r, g, b, 1f);
@@ -896,9 +896,9 @@ public final class GData3 extends GData {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
-                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
                     GL11.glEnd();
                 } else {
                     GL11.glColor4f(r, g, b, 1f);
@@ -915,9 +915,9 @@ public final class GData3 extends GData {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
-                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
                     GL11.glEnd();
                 } else {
                     GL11.glColor4f(r, g, b, 1f);
@@ -932,9 +932,9 @@ public final class GData3 extends GData {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
-                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
                     GL11.glEnd();
                 } else {
                     GL11.glColor4f(r, g, b, 1f);
