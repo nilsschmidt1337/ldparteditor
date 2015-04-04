@@ -73,16 +73,16 @@ public class OpenGLRenderer {
     private final FloatBuffer viewport = BufferUtils.createFloatBuffer(16);
     private final FloatBuffer rotation = BufferUtils.createFloatBuffer(16);
 
-    private final float[][][][] renderedPoints = new float[1][][][];
+    private final float[][][] renderedPoints = new float[1][][];
     private final float[][] solidColours = new float[1][];
     private final float[][] transparentColours = new float[1][];
-    private final float[] cWidth = new float[1];
-    private final float[] cHeight = new float[1];
+    private final float[] cWidth = new float[2];
+    private final float[] cHeight = new float[2];
 
     private final Lock lock = new ReentrantLock();
 
     private final AtomicBoolean alive = new AtomicBoolean(true);
-    private final AtomicInteger needData = new AtomicInteger(0);
+    private final AtomicInteger needData = new AtomicInteger(1);
     private Thread raytracer = null;
 
     public FloatBuffer getViewport() {
@@ -403,6 +403,10 @@ public class OpenGLRenderer {
                 float[] arr = new float[pixels.capacity()];
                 pixels.get(arr);
                 transparentColours[0] = arr;
+                cWidth[0] = w;
+                cWidth[1] = viewport_width;
+                cHeight[0] = h;
+                cHeight[1] = viewport_height;
                 // NLogger.debug(getClass(), "Trans: " + arr[(int) (w * 50.5f * 4)] + " " + arr[(int) (w * 50.5f * 4 + 1)] + " " + arr[(int) (w * 50.5f * 4 + 2)] + " " + arr[(int) (w * 50.5f * 4 + 3)]);  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -411,35 +415,36 @@ public class OpenGLRenderer {
                     try {
                         GL11.glPushMatrix();
                         GL11.glLoadIdentity();
+                        GL11.glTranslatef(-viewport_width, -viewport_height, 0f);
                         if (renderedPoints[0] != null) {
+                            GL20.glUseProgram(0);
+                            for (float[] point : renderedPoints[0]) {
 
-
-                        }
-
-                        GL20.glUseProgram(0);
-                        boolean red = false;
-                        boolean green = false;
-                        float wi = 2f / h;
-                        float ratio = w / h;
-                        for (float x = 0; x < w; x += 2f) {
-                            green = red;
-                            for (float y = 0; y < h; y += 2f) {
-                                red = !red;
-                                float sx = (x / w  - .5f) * ratio;
-                                float sy = y / h - .5f;
-                                GL11.glBegin(GL11.GL_QUADS);
-                                GL11.glColor3f(1f, 0f, red ? 1f : 0f);
-                                GL11.glVertex3f(sx, sy, 0f);
-                                GL11.glVertex3f(sx, sy + wi, 0f);
-                                GL11.glVertex3f(sx + wi, sy + wi, 0f);
-                                GL11.glVertex3f(sx + wi, sy, 0f);
-                                GL11.glEnd();
                             }
-                            if (red == green) {
-                                red = !red;
+                            boolean red = false;
+                            boolean green = false;
+                            float wi =  1f / w * 2f * viewport_width;
+                            final float xf = 2f * viewport_width;
+                            final float yf = 2f * viewport_height;
+                            for (float x = 0; x < w; x += 1f) {
+                                green = red;
+                                for (float y = 0; y < h; y += 1f) {
+                                    red = !red;
+                                    float sx = x / w * xf ;
+                                    float sy = y / h * yf;
+                                    GL11.glBegin(GL11.GL_QUADS);
+                                    GL11.glColor3f(1f, 0f, red ? 1f : 0f);
+                                    GL11.glVertex3f(sx, sy, 0f);
+                                    GL11.glVertex3f(sx, sy + wi, 0f);
+                                    GL11.glVertex3f(sx + wi, sy + wi, 0f);
+                                    GL11.glVertex3f(sx + wi, sy, 0f);
+                                    GL11.glEnd();
+                                }
+                                if (red == green) {
+                                    red = !red;
+                                }
                             }
                         }
-
 
                         GL11.glPopMatrix();
                     } finally {
@@ -483,6 +488,7 @@ public class OpenGLRenderer {
                                 try {
                                     lock.lock();
                                     // FIXME Update renderedPoints here!
+                                    renderedPoints[0] = new float[1][];
                                 } finally {
                                     lock.unlock();
                                 }
