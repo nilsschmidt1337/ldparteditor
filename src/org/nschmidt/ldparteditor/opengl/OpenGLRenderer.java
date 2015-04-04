@@ -58,6 +58,7 @@ import org.nschmidt.ldparteditor.helpers.ArrowBlunt;
 import org.nschmidt.ldparteditor.helpers.BufferFactory;
 import org.nschmidt.ldparteditor.helpers.Circle;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
+import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
@@ -532,6 +533,7 @@ public class OpenGLRenderer {
 
                                 // FIXME Needs implementation
 
+                                int skip = 0;
                                 {
                                     int i = 0;
                                     for (int y = 0; y < h; y++) {
@@ -591,12 +593,14 @@ public class OpenGLRenderer {
                                         float[][] r;
                                         if (size2 < size) {
                                             r = new float[size][];
+                                            skip = 0;
                                         } else {
                                             r = renderedPoints[0];
                                         }
-                                        for (int j = 0; j < size; j++) {
+                                        for (int j = skip; j < size; j++) {
                                             r[j] = points.get(j);
                                         }
+                                        skip = size;
                                         try {
                                             lock.lock();
                                             // FIXME Update renderedPoints here!
@@ -609,13 +613,15 @@ public class OpenGLRenderer {
 
                                 final int size = points.size();
                                 float[][] r = new float[size][];
+                                skip = 0;
                                 for (int j = 0; j < size; j++) {
                                     r[j] = points.get(j);
                                 }
                                 try {
                                     lock.lock();
-                                    // FIXME Update renderedPoints here!
+                                    // Update renderedPoints here!
                                     renderedPoints[0] = r;
+                                    ViewIdleManager.renderLDrawStandard[0].set(true);
                                 } finally {
                                     lock.unlock();
                                 }
