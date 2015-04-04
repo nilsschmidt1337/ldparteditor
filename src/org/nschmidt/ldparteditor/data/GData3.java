@@ -878,14 +878,14 @@ public final class GData3 extends GData {
         case BFC.CCW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
-                    if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                    if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
                     GL11.glEnd();
                 } else {
-                    if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                    if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
@@ -894,14 +894,14 @@ public final class GData3 extends GData {
                 }
             } else {
                 if (GData.globalInvertNext) {
-                    if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                    if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
                     GL11.glEnd();
                 } else {
-                    if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                    if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
@@ -913,14 +913,14 @@ public final class GData3 extends GData {
         case BFC.CW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
-                    if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                    if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
                     GL11.glEnd();
                 } else {
-                    if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                    if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     GL11.glNormal3f(xn, yn, zn);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
@@ -930,14 +930,14 @@ public final class GData3 extends GData {
                 }
             } else {
                 if (GData.globalInvertNext) {
-                    if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                    if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                     GL11.glEnd();
                 } else {
-                    if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                    if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
@@ -949,7 +949,7 @@ public final class GData3 extends GData {
         case BFC.NOCERTIFY:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
-                    if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                    if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
@@ -959,7 +959,7 @@ public final class GData3 extends GData {
                     c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
                     GL11.glEnd();
                 } else {
-                    if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                    if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
@@ -971,7 +971,7 @@ public final class GData3 extends GData {
                 }
             } else {
                 if (GData.globalInvertNext) {
-                    if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                    if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
@@ -981,7 +981,7 @@ public final class GData3 extends GData {
                     c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
                     GL11.glEnd();
                 } else {
-                    if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                    if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
@@ -1029,7 +1029,7 @@ public final class GData3 extends GData {
                 case BFC.CCW:
                     if (GData.globalNegativeDeterminant) {
                         if (GData.globalInvertNext) {
-                            if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                            if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x3, y3, z3, parent);
@@ -1043,7 +1043,7 @@ public final class GData3 extends GData {
                             c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
                             GL11.glEnd();
                         } else {
-                            if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                            if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1059,7 +1059,7 @@ public final class GData3 extends GData {
                         }
                     } else {
                         if (GData.globalInvertNext) {
-                            if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                            if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1073,7 +1073,7 @@ public final class GData3 extends GData {
                             c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
                             GL11.glEnd();
                         } else {
-                            if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                            if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x3, y3, z3, parent);
@@ -1092,7 +1092,7 @@ public final class GData3 extends GData {
                 case BFC.CW:
                     if (GData.globalNegativeDeterminant) {
                         if (GData.globalInvertNext) {
-                            if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                            if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1106,7 +1106,7 @@ public final class GData3 extends GData {
                             c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
                             GL11.glEnd();
                         } else {
-                            if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                            if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x3, y3, z3, parent);
@@ -1122,7 +1122,7 @@ public final class GData3 extends GData {
                         }
                     } else {
                         if (GData.globalInvertNext) {
-                            if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                            if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x3, y3, z3, parent);
@@ -1136,7 +1136,7 @@ public final class GData3 extends GData {
                             c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                             GL11.glEnd();
                         } else {
-                            if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                            if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1154,7 +1154,7 @@ public final class GData3 extends GData {
                     break;
                 case BFC.NOCERTIFY:
                     if (GData.globalNegativeDeterminant) {
-                        if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                        if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                         GL11.glBegin(GL11.GL_TRIANGLES);
                         tex.calcUVcoords1(x1, y1, z1, parent, null);
                         tex.calcUVcoords2(x3, y3, z3, parent);
@@ -1180,7 +1180,7 @@ public final class GData3 extends GData {
                         c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
                         GL11.glEnd();
                     } else {
-                        if (a < 1f) GL11.glColor4f(.75f, 0f, .75f, 2f); else GL11.glColor4f(r, g, b, 1f);
+                        if (a < 1f) GL11.glColor4f(.5f, .5f, .5f, 1f); else GL11.glColor4f(r, g, b, 1f);
                         GL11.glBegin(GL11.GL_TRIANGLES);
                         tex.calcUVcoords1(x1, y1, z1, parent, null);
                         tex.calcUVcoords2(x2, y2, z2, parent);
