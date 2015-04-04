@@ -38,12 +38,12 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
  */
 public final class GData4 extends GData {
 
-    final int colourNumber;
+    public final int colourNumber;
 
-    final float r;
-    final float g;
-    final float b;
-    final float a;
+    public final float r;
+    public final float g;
+    public final float b;
+    public final float a;
 
     final float x1;
     final float y1;
@@ -74,9 +74,9 @@ public final class GData4 extends GData {
     final BigDecimal Y4;
     final BigDecimal Z4;
 
-    final float xn;
-    final float yn;
-    final float zn;
+    public final float xn;
+    public final float yn;
+    public final float zn;
 
     final GData1 parent;
 

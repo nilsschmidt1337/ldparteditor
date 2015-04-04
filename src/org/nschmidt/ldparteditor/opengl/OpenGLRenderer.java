@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
@@ -57,6 +58,7 @@ import org.nschmidt.ldparteditor.helpers.ArrowBlunt;
 import org.nschmidt.ldparteditor.helpers.BufferFactory;
 import org.nschmidt.ldparteditor.helpers.Circle;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
+import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -480,8 +482,20 @@ public class OpenGLRenderer {
                                 final int cs = solidColours[0].length;
                                 float[] sc = Arrays.copyOf(solidColours[0], cs);
                                 float[] tc = Arrays.copyOf(transparentColours[0], cs);
-                                int w = (int) cWidth[0];
-                                int h = (int) cHeight[0];
+                                final int w = (int) cWidth[0];
+                                final int h = (int) cHeight[0];
+
+                                final PowerRay pr = new PowerRay();
+                                final float[] ray;
+                                final Matrix4f vInverse = Matrix4f.invert(c3d.getViewport(), null);
+                                final float z = c3d.hasNegDeterminant() == 1 ? -10000f : 10000f;
+                                {
+                                    Vector4f zAxis4f = new Vector4f(0, 0, c3d.hasNegDeterminant() == 1 ? -1f : 1f, 1f);
+                                    Matrix4f ovr_inverse2 = Matrix4f.invert(c3d.getRotation(), null);
+                                    Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
+                                    Vector4f ray2 = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
+                                    ray = new float[]{ray2.x, ray2.y, ray2.z};
+                                }
 
                                 needData.decrementAndGet();
                                 needData.decrementAndGet();
@@ -492,6 +506,43 @@ public class OpenGLRenderer {
                                 {
                                     HashMap<GData4, Vertex[]> quads = c3d.getLockableDatFileReference().getVertexManager().getQuads();
                                     HashMap<GData3, Vertex[]> tris2 = c3d.getLockableDatFileReference().getVertexManager().getTriangles();
+                                    for (GData3 g : tris2.keySet()) {
+                                        Vertex[] v = tris2.get(g);
+                                        float[] nt = new float[]{
+                                                v[0].x, v[0].y, v[0].z,
+                                                v[1].x, v[1].y, v[1].z,
+                                                v[2].x, v[2].y, v[2].z,
+                                                (v[2].y - v[0].y) * (v[1].z - v[0].z) - (v[2].z - v[0].z) * (v[1].y - v[0].y),
+                                                (v[2].z - v[0].z) * (v[1].x - v[0].x) - (v[2].x - v[0].x) * (v[1].z - v[0].z),
+                                                (v[2].x - v[0].x) * (v[1].y - v[0].y) - (v[2].y - v[0].y) * (v[1].x - v[0].x),
+                                                g.r, g.g, g.b, g.a, g.colourNumber
+                                        };
+                                        tris.add(nt);
+
+                                    }
+                                    for (GData4 g : quads.keySet()) {
+                                        Vertex[] v = quads.get(g);
+                                        float[] nt = new float[]{
+                                                v[0].x, v[0].y, v[0].z,
+                                                v[1].x, v[1].y, v[1].z,
+                                                v[2].x, v[2].y, v[2].z,
+                                                (v[2].y - v[0].y) * (v[1].z - v[0].z) - (v[2].z - v[0].z) * (v[1].y - v[0].y),
+                                                (v[2].z - v[0].z) * (v[1].x - v[0].x) - (v[2].x - v[0].x) * (v[1].z - v[0].z),
+                                                (v[2].x - v[0].x) * (v[1].y - v[0].y) - (v[2].y - v[0].y) * (v[1].x - v[0].x),
+                                                g.r, g.g, g.b, g.a, g.colourNumber
+                                        };
+                                        tris.add(nt);
+                                        float[] nt2 = new float[]{
+                                                v[2].x, v[2].y, v[2].z,
+                                                v[3].x, v[3].y, v[3].z,
+                                                v[0].x, v[0].y, v[0].z,
+                                                (v[0].y - v[2].y) * (v[3].z - v[0].z) - (v[0].z - v[2].z) * (v[3].y - v[2].y),
+                                                (v[0].z - v[2].z) * (v[3].x - v[0].x) - (v[0].x - v[2].x) * (v[3].z - v[2].z),
+                                                (v[0].x - v[2].x) * (v[3].y - v[0].y) - (v[0].y - v[2].y) * (v[3].x - v[2].x),
+                                                g.r, g.g, g.b, g.a, g.colourNumber
+                                        };
+                                        tris.add(nt2);
+                                    }
                                 }
 
 
@@ -513,19 +564,42 @@ public class OpenGLRenderer {
                                             float gT = tc[i + 1];
                                             float bT = tc[i + 2];
                                             if (rS != rT || gS != gT || bS != bT) {
-                                                float[] point = new float[11];
-                                                point[0] = (rT + rS) / 2f;
-                                                point[1] = (gT + gS) / 2f;
-                                                point[2] = (bT + bS) / 2f;
-                                                point[3] = sx;
-                                                point[4] = sy;
-                                                point[5] = sx;
-                                                point[6] = sy + 1;
-                                                point[7] = sx + 1;
-                                                point[8] = sy + 1;
-                                                point[9] = sx + 1;
-                                                point[10] = sy;
-                                                points.add(point);
+                                                TreeMap<Double, float[]>  zSort = new TreeMap<Double, float[]>();
+                                                for (float[] tri : tris) {
+                                                    double[] zHit = pr.TRIANGLE_INTERSECT(get3DCoordinatesFromScreen(x, y, z, w, h, vInverse), ray, tri);
+                                                    if (zHit != null) {
+                                                        zSort.put(zHit[0], tri);
+                                                    }
+                                                }
+                                                if (zSort.size() < 2) {
+                                                    float[] point = new float[11];
+                                                    point[0] = (rT + rS) / 2f;
+                                                    point[1] = (gT + gS) / 2f;
+                                                    point[2] = (bT + bS) / 2f;
+                                                    point[3] = sx;
+                                                    point[4] = sy;
+                                                    point[5] = sx;
+                                                    point[6] = sy + 1;
+                                                    point[7] = sx + 1;
+                                                    point[8] = sy + 1;
+                                                    point[9] = sx + 1;
+                                                    point[10] = sy;
+                                                    points.add(point);
+                                                } else {
+                                                    float[] point = new float[11];
+                                                    point[0] = 1f;
+                                                    point[1] = 0f;
+                                                    point[2] = 0f;
+                                                    point[3] = sx;
+                                                    point[4] = sy;
+                                                    point[5] = sx;
+                                                    point[6] = sy + 1;
+                                                    point[7] = sx + 1;
+                                                    point[8] = sy + 1;
+                                                    point[9] = sx + 1;
+                                                    point[10] = sy;
+                                                    points.add(point);
+                                                }
                                             }
                                             i += 4;
                                         }
@@ -559,6 +633,16 @@ public class OpenGLRenderer {
                                     } catch (InterruptedException e) {}
                                 }
                             }
+                        }
+
+                        private Vector4f get3DCoordinatesFromScreen(int x, int y, float z, int w, int h, Matrix4f v_inverse) {
+                            Vector4f relPos = new Vector4f();
+                            relPos.x = (x- 0.5f * w) / View.PIXEL_PER_LDU;
+                            relPos.y = (y - 0.5f * h) / View.PIXEL_PER_LDU;
+                            relPos.z = -z;
+                            relPos.w = 1.0f;
+                            Matrix4f.transform(v_inverse, relPos, relPos);
+                            return relPos;
                         }
                     });
                     raytracer.start();
