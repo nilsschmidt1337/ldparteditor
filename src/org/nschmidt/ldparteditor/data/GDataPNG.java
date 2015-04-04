@@ -105,7 +105,7 @@ public final class GDataPNG extends GData {
         GL11.glMultMatrix(matrix);
 
         final OpenGLRenderer ren = c3d.getRenderer();
-        texture.bind(c3d.isDrawingSolidMaterials(), GData.globalNegativeDeterminant ^ GData.globalInvertNext, true, ren, false);
+        texture.bind(GData.globalNegativeDeterminant ^ GData.globalInvertNext, true, ren, false);
 
         float w;
         if (this.texture.getHeight() != 0f) {

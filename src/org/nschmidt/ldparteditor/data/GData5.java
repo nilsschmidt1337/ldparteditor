@@ -772,7 +772,6 @@ public final class GData5 extends GData {
         // done :)
         if (GData.globalDrawObjects) {
             final OpenGLRenderer r = c3d.getRenderer();
-            GL20.glUniform1f(r.getAlphaSwitchLoc(), c3d.isDrawingSolidMaterials() ? 1f : 0f); // Draw transparent
             GL20.glUniform1f(r.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);
             GL20.glUniform1f(r.getNoTextureSwitch(), 1f);
             GL20.glUniform1f(r.getNoLightSwitch(), 1f);
