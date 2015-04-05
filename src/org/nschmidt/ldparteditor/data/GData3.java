@@ -874,7 +874,7 @@ public final class GData3 extends GData {
         GColour c = View.getLDConfigColour(View.getLDConfigIndex(r, g, b));
         GColourType ct = c.getType();
         boolean useCubeMap = ct != null && ct.type().equals(GCType.CHROME);
-        switch (GData.localWinding) {
+        switch (a < 1f ? BFC.NOCERTIFY : GData.localWinding) {
         case BFC.CCW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
@@ -1003,6 +1003,7 @@ public final class GData3 extends GData {
             boolean useCubeMap = ct != null && ct.type().equals(GCType.CHROME);
             final OpenGLRenderer ren = c3d.getRenderer();
             if (GData.globalTextureStack.isEmpty()) {
+                GL20.glUniform1f(ren.getAlphaSwitchLoc(), c3d.isDrawingSolidMaterials() ? 1f : 0f); // Draw transparent
                 GL20.glUniform1f(ren.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);
                 GL20.glUniform1f(ren.getNoTextureSwitch(), 1f);
                 GL20.glUniform1f(ren.getNoLightSwitch(), c3d.isLightOn() ? 0f : 1f);
@@ -1022,9 +1023,9 @@ public final class GData3 extends GData {
                 if (!visible)
                     return;
                 GTexture tex = GData.globalTextureStack.peek();
-                tex.bind(GData.globalNegativeDeterminant ^ GData.globalInvertNext, c3d.isLightOn(), ren, useCubeMap);
+                tex.bind(c3d.isDrawingSolidMaterials(), GData.globalNegativeDeterminant ^ GData.globalInvertNext, c3d.isLightOn(), ren, useCubeMap);
                 float[] uv;
-                switch (GData.accumClip > 0 ? BFC.NOCERTIFY : GData.localWinding) {
+                switch (a < 1f || GData.accumClip > 0 ? BFC.NOCERTIFY : GData.localWinding) {
                 case BFC.CCW:
                     if (GData.globalNegativeDeterminant) {
                         if (GData.globalInvertNext) {

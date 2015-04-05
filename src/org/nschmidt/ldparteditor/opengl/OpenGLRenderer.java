@@ -111,6 +111,7 @@ public class OpenGLRenderer {
     private int baseImageLoc = -1;
     private int glossMapLoc = -1;
     private int cubeMapLoc = -1;
+    private int alphaSwitchLoc = -1;
     private int normalSwitchLoc = -1;
     private int noTextureSwitch = -1;
     private int noLightSwitch = -1;
@@ -203,6 +204,7 @@ public class OpenGLRenderer {
                 baseImageLoc = GL20.glGetUniformLocation(pGlossId, "colorMap"); //$NON-NLS-1$
                 glossMapLoc = GL20.glGetUniformLocation(pGlossId, "glossMap"); //$NON-NLS-1$
                 cubeMapLoc = GL20.glGetUniformLocation(pGlossId, "cubeMap"); //$NON-NLS-1$
+                alphaSwitchLoc = GL20.glGetUniformLocation(pGlossId, "alphaSwitch"); //$NON-NLS-1$
                 normalSwitchLoc = GL20.glGetUniformLocation(pGlossId, "normalSwitch"); //$NON-NLS-1$
                 noTextureSwitch = GL20.glGetUniformLocation(pGlossId, "noTextureSwitch"); //$NON-NLS-1$
                 noGlossMapSwitch = GL20.glGetUniformLocation(pGlossId, "noGlossMapSwitch"); //$NON-NLS-1$
@@ -1445,6 +1447,10 @@ public class OpenGLRenderer {
 
     public int getCubeMapLoc() {
         return cubeMapLoc;
+    }
+
+    public int getAlphaSwitchLoc() {
+        return alphaSwitchLoc;
     }
 
     public int getNormalSwitchLoc() {

@@ -1,6 +1,7 @@
 uniform sampler2D colorMap;
 uniform sampler2D glossMap;
 uniform sampler2D cubeMap;
+uniform float alphaSwitch;
 uniform float normalSwitch;
 uniform float noTextureSwitch;
 uniform float noGlossMapSwitch;
