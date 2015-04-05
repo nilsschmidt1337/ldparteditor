@@ -33,6 +33,8 @@ V = ((-Y/|X|) + 1)/2
 
 */
 
+// Standard Cubemap approach
+
 if (ax >= ay) {
   if (ax >= az) {
     // X
@@ -84,12 +86,18 @@ if (az >= ax) {
   }
 }
 
+// uv.x = (pos.x + 1.0f) / 2.0f;
+//uv.y = (pos.y + 1.0f) / 2.0f;
+
 
    vec4   cubeColor = texture2D(cubeMap, uv);
    cubeColor = mix(cubeColor, col, cubeColor);
    gl_FragColor.r = cubeColor.r;
    gl_FragColor.g = cubeColor.g;
    gl_FragColor.b = cubeColor.b;
+   // gl_FragColor.r = (pos.x + 1.0f) / 2.0f;
+   // gl_FragColor.g = (pos.y + 1.0f) / 2.0f;
+   // gl_FragColor.b = (pos.z + 1.0f) / 2.0f;
    gl_FragColor.a = 1.0f;
 }
 
@@ -163,7 +171,7 @@ void main (void)
     if (gl_FrontLightModelProduct.sceneColor.a < 1.0f) {
           if (alphaSwitch < 1.0f) {
               gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
-              gl_FragColor.a = gl_FrontLightModelProduct.sceneColor.a;
+              gl_FragColor.a = 1.0f;
           } else {
              discard;
           }
@@ -184,7 +192,7 @@ void main (void)
           // OK
           if (alphaSwitch < 1.0f) {
               gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
-              gl_FragColor.a = gl_FrontLightModelProduct.sceneColor.a;
+              gl_FragColor.a = 1.0f;
           } else {
              discard;
           }
@@ -210,7 +218,7 @@ void main (void)
             gl_FragColor.r = textureColor.r;
             gl_FragColor.g = textureColor.g;
             gl_FragColor.b = textureColor.b;
-            gl_FragColor.a = 1f;
+            gl_FragColor.a = 1.0f;
          } else {
             discard;
          }
@@ -221,7 +229,7 @@ void main (void)
             gl_FragColor.r = textureColor.r;
             gl_FragColor.g = textureColor.g;
             gl_FragColor.b = textureColor.b;
-            gl_FragColor.a = textureColor.a;
+            gl_FragColor.a = 1.0f;
          } else {
             discard;
          }
