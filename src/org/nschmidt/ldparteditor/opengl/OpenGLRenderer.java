@@ -485,7 +485,7 @@ public class OpenGLRenderer {
                                 NLogger.debug(getClass(), "Initialised raytracer."); //$NON-NLS-1$
                                 final boolean lights = c3d.isLightOn();
                                 // Read triangles and quads
-                                ArrayList<float[]> tris = new ArrayList<float[]>();
+                                final ArrayList<float[]> tris = new ArrayList<float[]>();
                                 {
                                     HashMap<GData4, Vertex[]> quads = c3d.getLockableDatFileReference().getVertexManager().getQuads();
                                     HashMap<GData3, Vertex[]> tris2 = c3d.getLockableDatFileReference().getVertexManager().getTriangles();
@@ -559,7 +559,7 @@ public class OpenGLRenderer {
                                                 for (float[] tri : tris) {
                                                     float[] zHit = pr.TRIANGLE_INTERSECT(get3DCoordinatesFromScreen(x, y, z, w, h, vInverse), ray, tri);
                                                     if (zHit != null) {
-                                                        Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], vM);
+                                                        Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], w, h, vM);
                                                         hitSort.put(sz.z, sz);
                                                         zSort.put(sz.z, tri);
                                                     }
@@ -739,9 +739,13 @@ public class OpenGLRenderer {
                             }
                         }
 
-                        private Vector4f getScreenZFrom3D(float x, float y, float z, Matrix4f v) {
+                        private Vector4f getScreenZFrom3D(float x, float y, float z, int w, int h, Matrix4f v) {
                             Vector4f relPos = new Vector4f(x, y, z, 1f);
                             Matrix4f.transform(v, relPos, relPos);
+                            float cursor_x = 0.5f * w - relPos.x * View.PIXEL_PER_LDU;
+                            float cursor_y = 0.5f * h + relPos.y * View.PIXEL_PER_LDU;
+                            relPos.x = cursor_x;
+                            relPos.y = cursor_y;
                             return relPos;
                         }
 
