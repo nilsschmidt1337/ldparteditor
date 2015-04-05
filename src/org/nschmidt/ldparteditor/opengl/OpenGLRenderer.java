@@ -564,7 +564,8 @@ public class OpenGLRenderer {
                                                         zSort.put(sz.z, tri);
                                                     }
                                                 }
-                                                switch(zSort.size()) {
+                                                final int size = zSort.size();
+                                                switch(size) {
                                                 case 0:
                                                 {
                                                     float[] point = new float[11];
@@ -604,62 +605,71 @@ public class OpenGLRenderer {
                                                 }
                                                 default:
                                                     float[] point = new float[11];
-                                                    boolean init = true;
+                                                    int k = 0;
+
+                                                    point[0] = 1f;
+                                                    point[1] = 1f;
+                                                    point[2] = 1f;
+
                                                     for (Float f : zSort.keySet()) {
+                                                        k++;
                                                         float[] ze = zSort.get(f);
                                                         float a = ze[15];
                                                         float r = ze[12];
                                                         float g = ze[13];
                                                         float b = ze[14];
 
-                                                        // Compute light (without specular!)
-                                                        if (lights) {
-                                                            Vector4f pos = hitSort.get(f);
-                                                            Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
-
-                                                            Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                            normal.normalise();
-                                                            Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
-                                                            Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
-                                                            Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
-                                                            Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
-
-                                                            float dist1  = lightDir1.length();
-                                                            float dist2  = lightDir2.length();
-                                                            float dist3  = lightDir3.length();
-                                                            float dist4  = lightDir4.length();
-                                                            float attenFactor1 = 1.0f / (.1f * dist1);
-                                                            float attenFactor2 = 1.0f / (.1f * dist2);
-                                                            float attenFactor3 = 1.0f / (.1f * dist3);
-                                                            float attenFactor4 = 1.0f / (.1f * dist4);
-
-                                                            lightDir1.normalise();
-                                                            lightDir2.normalise();
-                                                            lightDir3.normalise();
-                                                            lightDir4.normalise();
-                                                            // attenuation and light direction
-                                                            // ambient + diffuse
-                                                            float light;
-                                                            light = (float) (0.8f * Math.max(Vector3f.dot(normal, lightDir1), 0.0) * attenFactor1);
-                                                            light += 0.25f * Math.max(Vector3f.dot(normal, lightDir2), 0.0) * attenFactor2;
-                                                            light += 0.25f * Math.max(Vector3f.dot(normal, lightDir3), 0.0) * attenFactor3;
-                                                            light += 0.25f * Math.max(Vector3f.dot(normal, lightDir4), 0.0) * attenFactor4;
-                                                            // compute final color
-                                                            r = r + light;
-                                                            g = g + light;
-                                                            b = b + light;
-                                                        }
-
                                                         float oneMinusAlpha = 1f - a;
-                                                        if (init || a == 1f) {
-                                                            init = false;
-                                                            point[0] = r * a + oneMinusAlpha;
-                                                            point[1] = g * a + oneMinusAlpha;
-                                                            point[2] = b * a + oneMinusAlpha;
-                                                        } else {
+                                                        if (a == 1f) {
+                                                            point[0] = rS;
+                                                            point[1] = gS;
+                                                            point[2] = bS;
+                                                        } else if (k < size) {
                                                             point[0] = r * a + point[0] * oneMinusAlpha;
                                                             point[1] = g * a + point[1] * oneMinusAlpha;
                                                             point[2] = b * a + point[2] * oneMinusAlpha;
+
+                                                            // Compute light (without specular!)
+                                                            if (lights) {
+                                                                Vector4f pos = hitSort.get(f);
+                                                                Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
+
+                                                                Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
+                                                                normal.normalise();
+                                                                Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
+                                                                Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
+                                                                Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
+                                                                Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
+
+                                                                float dist1  = lightDir1.length();
+                                                                float dist2  = lightDir2.length();
+                                                                float dist3  = lightDir3.length();
+                                                                float dist4  = lightDir4.length();
+                                                                float attenFactor1 = 1.0f / (.001f * dist1);
+                                                                float attenFactor2 = 1.0f / (.001f * dist2);
+                                                                float attenFactor3 = 1.0f / (.001f * dist3);
+                                                                float attenFactor4 = 1.0f / (.001f * dist4);
+
+                                                                lightDir1.normalise();
+                                                                lightDir2.normalise();
+                                                                lightDir3.normalise();
+                                                                lightDir4.normalise();
+                                                                // attenuation and light direction
+                                                                // ambient + diffuse
+                                                                float light;
+                                                                light = (float) (0.8f * Math.max(Vector3f.dot(normal, lightDir1), 0.0) * attenFactor1);
+                                                                light += 0.25f * Math.max(Vector3f.dot(normal, lightDir2), 0.0) * attenFactor2;
+                                                                light += 0.25f * Math.max(Vector3f.dot(normal, lightDir3), 0.0) * attenFactor3;
+                                                                light += 0.25f * Math.max(Vector3f.dot(normal, lightDir4), 0.0) * attenFactor4;
+                                                                // compute final color
+                                                                r = r + light;
+                                                                g = g + light;
+                                                                b = b + light;
+                                                            }
+                                                        } else {
+                                                            point[0] = rT * a + point[0] * oneMinusAlpha;
+                                                            point[1] = gT * a + point[1] * oneMinusAlpha;
+                                                            point[2] = bT * a + point[2] * oneMinusAlpha;
                                                         }
                                                     }
                                                     point[3] = sx;
