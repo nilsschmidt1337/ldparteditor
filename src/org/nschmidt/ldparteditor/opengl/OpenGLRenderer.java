@@ -424,6 +424,7 @@ public class OpenGLRenderer {
                             final float yf = 2f * viewport_height;
                             GL11.glTranslatef(-viewport_width, -viewport_height, 0f);
                             GL11.glScalef(1f / w * xf, 1f / h * yf, 1f);
+                            // FIXME Needs adjutments for negative determinants!
                             for (float[] p : renderedPoints[0]) {
                                 GL11.glBegin(GL11.GL_QUADS);
                                 GL11.glColor3f(p[0], p[1], p[2]);
@@ -470,9 +471,10 @@ public class OpenGLRenderer {
                                 final float[] ray;
                                 final Matrix4f vInverse = c3d.getViewport_Inverse();
                                 final Matrix4f vM = c3d.getViewport();
-                                final float z = c3d.hasNegDeterminant() == 1 ? -100f : 100f;
+                                final float z = 100f;
                                 {
-                                    Vector4f zAxis4f = new Vector4f(0, 0, c3d.hasNegDeterminant() == 1 ? -1f : 1f, 1f);
+                                    // FIXME Negative Determinant check is needed somewhere???
+                                    Vector4f zAxis4f = new Vector4f(0, 0, 1f, 1f);
                                     Matrix4f ovr_inverse2 = Matrix4f.invert(c3d.getRotation(), null);
                                     Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
                                     Vector4f ray2 = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
@@ -658,9 +660,13 @@ public class OpenGLRenderer {
                                                                 // ambient + diffuse
                                                                 float light;
                                                                 light = (float) (0.8f * Math.max(Vector3f.dot(normal, lightDir1), 0.0) * attenFactor1);
+                                                                light += 0.09f;
                                                                 light += 0.25f * Math.max(Vector3f.dot(normal, lightDir2), 0.0) * attenFactor2;
+
                                                                 light += 0.25f * Math.max(Vector3f.dot(normal, lightDir3), 0.0) * attenFactor3;
+
                                                                 light += 0.25f * Math.max(Vector3f.dot(normal, lightDir4), 0.0) * attenFactor4;
+
                                                                 // compute final color
                                                                 r = r + light;
                                                                 g = g + light;
