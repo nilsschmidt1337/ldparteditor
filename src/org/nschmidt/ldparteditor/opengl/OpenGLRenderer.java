@@ -40,6 +40,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -53,6 +54,7 @@ import org.nschmidt.ldparteditor.data.GTexture;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.data.colour.GCType;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Arc;
@@ -514,7 +516,7 @@ public class OpenGLRenderer {
                                     HashMap<GData3, Vertex[]> tris2 = c3d.getLockableDatFileReference().getVertexManager().getTriangles();
                                     for (GData3 g : tris2.keySet()) {
                                         Vertex[] v = tris2.get(g);
-
+                                        Vector4f[] nv = new Vector4f[3];
                                         {
                                             boolean notShown = true;
                                             float max_x = -Float.MAX_VALUE;
@@ -523,6 +525,7 @@ public class OpenGLRenderer {
                                             float min_y = Float.MAX_VALUE;
                                             for(int i = 0; i < 3; i++) {
                                                 Vector4f sz = getScreenZFrom3D(v[i].x, v[i].y, v[i].z, w, h, vM);
+                                                nv[i] = sz;
                                                 max_x = Math.max(max_x, sz.x);
                                                 min_x = Math.min(min_x, sz.x);
                                                 max_y = Math.max(max_y, sz.y);
@@ -556,13 +559,19 @@ public class OpenGLRenderer {
                                             p = p.parent;
                                         }
 
+                                        Vector3f normal = new Vector3f(
+                                                (nv[2].y - nv[0].y) * (nv[1].z - nv[0].z) - (nv[2].z - nv[0].z) * (nv[1].y - nv[0].y),
+                                                (nv[2].z - nv[0].z) * (nv[1].x - nv[0].x) - (nv[2].x - nv[0].x) * (nv[1].z - nv[0].z),
+                                                (nv[2].x - nv[0].x) * (nv[1].y - nv[0].y) - (nv[2].y - nv[0].y) * (nv[1].x - nv[0].x));
+                                        normal.normalise();
+                                        normal.negate();
                                         float[] nt = new float[]{
                                                 v[0].x, v[0].y, v[0].z,
                                                 v[1].x, v[1].y, v[1].z,
                                                 v[2].x, v[2].y, v[2].z,
-                                                (v[2].y - v[0].y) * (v[1].z - v[0].z) - (v[2].z - v[0].z) * (v[1].y - v[0].y),
-                                                (v[2].z - v[0].z) * (v[1].x - v[0].x) - (v[2].x - v[0].x) * (v[1].z - v[0].z),
-                                                (v[2].x - v[0].x) * (v[1].y - v[0].y) - (v[2].y - v[0].y) * (v[1].x - v[0].x),
+                                                normal.x,
+                                                normal.y,
+                                                normal.z,
                                                 rv, gv, bv, av, c
                                         };
                                         tris.add(nt);
@@ -572,7 +581,7 @@ public class OpenGLRenderer {
                                     }
                                     for (GData4 g : quads.keySet()) {
                                         Vertex[] v = quads.get(g);
-
+                                        Vector4f[] nv = new Vector4f[4];
                                         {
                                             boolean notShown = true;
                                             float max_x = -Float.MAX_VALUE;
@@ -581,6 +590,7 @@ public class OpenGLRenderer {
                                             float min_y = Float.MAX_VALUE;
                                             for(int i = 0; i < 4; i++) {
                                                 Vector4f sz = getScreenZFrom3D(v[i].x, v[i].y, v[i].z, w, h, vM);
+                                                nv[i] = sz;
                                                 max_x = Math.max(max_x, sz.x);
                                                 min_x = Math.min(min_x, sz.x);
                                                 max_y = Math.max(max_y, sz.y);
@@ -602,10 +612,10 @@ public class OpenGLRenderer {
                                         final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
                                         {
                                             final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
-                                            Vector3f.sub(new Vector3f(v[1].x, v[1].y, v[1].z), new Vector3f(v[0].x, v[0].y, v[0].z), lineVectors[0]);
-                                            Vector3f.sub(new Vector3f(v[2].x, v[2].y, v[2].z), new Vector3f(v[1].x, v[1].y, v[1].z), lineVectors[1]);
-                                            Vector3f.sub(new Vector3f(v[3].x, v[3].y, v[3].z), new Vector3f(v[2].x, v[2].y, v[2].z), lineVectors[2]);
-                                            Vector3f.sub(new Vector3f(v[0].x, v[0].y, v[0].z), new Vector3f(v[3].x, v[3].y, v[3].z), lineVectors[3]);
+                                            Vector3f.sub(new Vector3f(nv[1].x, nv[1].y, nv[1].z), new Vector3f(nv[0].x, nv[0].y, nv[0].z), lineVectors[0]);
+                                            Vector3f.sub(new Vector3f(nv[2].x, nv[2].y, nv[2].z), new Vector3f(nv[1].x, nv[1].y, nv[1].z), lineVectors[1]);
+                                            Vector3f.sub(new Vector3f(nv[3].x, nv[3].y, nv[3].z), new Vector3f(nv[2].x, nv[2].y, nv[2].z), lineVectors[2]);
+                                            Vector3f.sub(new Vector3f(nv[0].x, nv[0].y, nv[0].z), new Vector3f(nv[3].x, nv[3].y, nv[3].z), lineVectors[3]);
                                             Vector3f.cross(lineVectors[0], lineVectors[1], normals[0]);
                                             Vector3f.cross(lineVectors[1], lineVectors[2], normals[1]);
                                             Vector3f.cross(lineVectors[2], lineVectors[3], normals[2]);
@@ -615,6 +625,7 @@ public class OpenGLRenderer {
                                         for (int i = 0; i < 4; i++) {
                                             Vector3f.add(normals[i], normal, normal);
                                         }
+                                        normal.normalise();
 
                                         int c = g.colourNumber;
                                         float rv = g.r;
@@ -635,9 +646,9 @@ public class OpenGLRenderer {
                                                 v[0].x, v[0].y, v[0].z,
                                                 v[1].x, v[1].y, v[1].z,
                                                 v[2].x, v[2].y, v[2].z,
-                                                -normal.x,
-                                                -normal.y,
-                                                -normal.z,
+                                                normal.x,
+                                                normal.y,
+                                                normal.z,
                                                 rv, gv, bv, av, c
                                         };
                                         tris.add(nt);
@@ -645,9 +656,9 @@ public class OpenGLRenderer {
                                                 v[2].x, v[2].y, v[2].z,
                                                 v[3].x, v[3].y, v[3].z,
                                                 v[0].x, v[0].y, v[0].z,
-                                                -normal.x,
-                                                -normal.y,
-                                                -normal.z,
+                                                normal.x,
+                                                normal.y,
+                                                normal.z,
                                                 rv, gv, bv, av, c
                                         };
                                         tris.add(nt2);
@@ -678,6 +689,7 @@ public class OpenGLRenderer {
                                         threads[j] = new Thread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                final Random tRnd = new Random(12348729642643L * start[0]);
                                                 ArrayList<float[]> points2 = new ArrayList<float[]>(10000 / chunks);
                                                 final PowerRay pr = new PowerRay();
                                                 final int s = start[0];
@@ -749,26 +761,9 @@ public class OpenGLRenderer {
                                                                     point[10] = sy;
                                                                     points2.add(point);
                                                                 } else {
-                                                                    Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                                    normal.normalise();
-                                                                    float r = ze[12];
-                                                                    float g = ze[13];
-                                                                    float b = ze[14];
-                                                                    switch (ct.type()) {
-                                                                    case PEARL:
-                                                                    {
-                                                                        float sp = Vector3f.dot(normal, ray3f);
-                                                                        float spI = 1f - sp;
-                                                                        Vector3f v = Vector3f.cross(ray3f, normal, null);
-                                                                        Random rnd = new Random((long) (129642643f * (1f + r) * (1f + g) * (1f + b)));
-                                                                        r = r + sp * rnd.nextFloat() + v.x * spI;
-                                                                        g = g + sp * rnd.nextFloat() + v.y * spI;
-                                                                        b = b + sp * rnd.nextFloat() + v.z * spI;
-                                                                    }
-                                                                    break;
-                                                                    }
-
                                                                     // Compute light (without specular!)
+                                                                    float light = 0f;
+                                                                    Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
                                                                     if (lights) {
                                                                         Vector4f pos = hitSort.get(hitSort.firstKey());
                                                                         Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
@@ -782,17 +777,39 @@ public class OpenGLRenderer {
                                                                         lightDir4.normalise();
                                                                         // attenuation and light direction
                                                                         // ambient + diffuse
-                                                                        float light = 0.09f; // Ambient
+                                                                        light = 0.09f; // Ambient
                                                                         light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
                                                                         light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
                                                                         light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
                                                                         light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
-
-                                                                        // compute final color
-                                                                        r = r + light;
-                                                                        g = g + light;
-                                                                        b = b + light;
                                                                     }
+                                                                    float r = ze[12];
+                                                                    float g = ze[13];
+                                                                    float b = ze[14];
+                                                                    switch (ct.type()) {
+                                                                    case PEARL:
+                                                                    {
+                                                                        Vector3f normal2 = new Vector3f(
+                                                                                normal.x * (.8f + .2f * tRnd.nextFloat()),
+                                                                                normal.y * (.8f + .2f * tRnd.nextFloat()),
+                                                                                normal.z * (.8f + .2f * tRnd.nextFloat())
+                                                                                );
+                                                                        float sp = Vector3f.dot(normal2, ray3f);
+                                                                        float spI = 1f - sp;
+                                                                        Vector3f v = Vector3f.cross(ray3f, normal2, null);
+                                                                        Random rnd = new Random((long) (129642643f * (1f + r) * (1f + g) * (1f + b)));
+                                                                        r = r + Math.abs(sp + v.x * spI) * rnd.nextFloat() / 4f;
+                                                                        g = g + Math.abs(sp + v.y * spI) * rnd.nextFloat() / 4f;
+                                                                        b = b + Math.abs(sp + v.z * spI) * rnd.nextFloat() / 4f;
+                                                                        if (lights) {
+                                                                            r = light / 4f + r;
+                                                                            g = light / 4f + g;
+                                                                            b = light / 4f + b;
+                                                                        }
+                                                                    }
+                                                                    break;
+                                                                    }
+
                                                                     float[] point = new float[11];
                                                                     point[0] = r;
                                                                     point[1] = g;
@@ -827,7 +844,7 @@ public class OpenGLRenderer {
 
                                                                     GColour c = View.getLDConfigColour((int) ze[16]);
                                                                     GColourType ct = c.getType();
-                                                                    if (ct == null) {
+                                                                    if (ct == null || ct.type().equals(GCType.CHROME)) {
                                                                         float oneMinusAlpha = 1f - a;
                                                                         if (a == 1f) {
                                                                             point[0] = rS;
@@ -838,9 +855,7 @@ public class OpenGLRenderer {
                                                                             if (lights) {
                                                                                 Vector4f pos = hitSort.get(f);
                                                                                 Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
-
                                                                                 Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                                                normal.normalise();
                                                                                 Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
                                                                                 Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
                                                                                 Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
@@ -873,24 +888,11 @@ public class OpenGLRenderer {
                                                                             point[2] = bT * a + point[2] * oneMinusAlpha;
                                                                         }
                                                                     } else {
-                                                                        Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                                        normal.normalise();
-                                                                        switch (ct.type()) {
-                                                                        case PEARL:
-                                                                        {
-                                                                            float sp = Vector3f.dot(normal, ray3f);
-                                                                            float spI = 1f - sp;
-                                                                            Vector3f v = Vector3f.cross(ray3f, normal, null);
-                                                                            Random rnd = new Random((long) (129642643f * (1f + r) * (1f + g) * (1f + b)));
-                                                                            r = r + Math.abs(sp + v.x * spI) * rnd.nextFloat() / 10f;
-                                                                            g = g + Math.abs(sp + v.y * spI) * rnd.nextFloat() / 10f;
-                                                                            b = b + Math.abs(sp + v.z * spI) * rnd.nextFloat() / 10f;
-                                                                        }
-                                                                        break;
-                                                                        }
                                                                         // Compute light (without specular!)
+                                                                        float light = 0f;
+                                                                        Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
                                                                         if (lights) {
-                                                                            Vector4f pos = hitSort.get(f);
+                                                                            Vector4f pos = hitSort.get(hitSort.firstKey());
                                                                             Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
                                                                             Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
                                                                             Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
@@ -902,16 +904,34 @@ public class OpenGLRenderer {
                                                                             lightDir4.normalise();
                                                                             // attenuation and light direction
                                                                             // ambient + diffuse
-                                                                            float light = 0.09f; // Ambient
+                                                                            light = 0.09f; // Ambient
                                                                             light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
                                                                             light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
                                                                             light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
                                                                             light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
-
-                                                                            // compute final color
-                                                                            r = r + light;
-                                                                            g = g + light;
-                                                                            b = b + light;
+                                                                        }
+                                                                        switch (ct.type()) {
+                                                                        case PEARL:
+                                                                        {
+                                                                            Vector3f normal2 = new Vector3f(
+                                                                                    normal.x * (.8f + .2f * tRnd.nextFloat()),
+                                                                                    normal.y * (.8f + .2f * tRnd.nextFloat()),
+                                                                                    normal.z * (.8f + .2f * tRnd.nextFloat())
+                                                                                    );
+                                                                            float sp = Vector3f.dot(normal2, ray3f);
+                                                                            float spI = 1f - sp;
+                                                                            Vector3f v = Vector3f.cross(ray3f, normal2, null);
+                                                                            Random rnd = new Random((long) (129642643f * (1f + r) * (1f + g) * (1f + b)));
+                                                                            r = r + Math.abs(sp + v.x * spI) * rnd.nextFloat() / 4f;
+                                                                            g = g + Math.abs(sp + v.y * spI) * rnd.nextFloat() / 4f;
+                                                                            b = b + Math.abs(sp + v.z * spI) * rnd.nextFloat() / 4f;
+                                                                            if (lights) {
+                                                                                r = light / 4f + r;
+                                                                                g = light / 4f + g;
+                                                                                b = light / 4f + b;
+                                                                            }
+                                                                        }
+                                                                        break;
                                                                         }
                                                                         point[0] = r;
                                                                         point[1] = g;
@@ -1011,8 +1031,8 @@ public class OpenGLRenderer {
                         private Vector4f getScreenZFrom3D(float x, float y, float z, int w, int h, Matrix4f v) {
                             Vector4f relPos = new Vector4f(x, y, z, 1f);
                             Matrix4f.transform(v, relPos, relPos);
-                            float cursor_x = 0.5f * w - relPos.x * View.PIXEL_PER_LDU;
-                            float cursor_y = 0.5f * h - relPos.y * View.PIXEL_PER_LDU;
+                            float cursor_x = 0.5f * w - relPos.x * View.PIXEL_PER_LDU / w;
+                            float cursor_y = 0.5f * h - relPos.y * View.PIXEL_PER_LDU / h;
                             relPos.x = cursor_x;
                             relPos.y = cursor_y;
                             return relPos;
@@ -1028,6 +1048,77 @@ public class OpenGLRenderer {
                             return relPos;
                         }
 
+                        private float[] textureCube(Vector3f pos) {
+                            float[] r = new float[3];
+
+                            Vector2f uv = new Vector2f(0f, 0f);
+
+                            float ax = Math.abs(pos.x) + 0.0001f;
+                            float ay = Math.abs(pos.y) + 0.0001f;
+                            float az = Math.abs(pos.z) + 0.0001f;
+
+                            /*
+                            Cubemap UV calculation for the +X layer
+                            U = ((-Z/|X|) + 1)/2
+                            V = ((-Y/|X|) + 1)/2
+                             */
+
+                            // Standard Cubemap approach
+                            if (ax >= ay) {
+                                if (ax >= az) {
+                                    // X
+                                    if (pos.x >= 0f) {
+                                        uv.x = (-pos.z / ax + 1.0f) / 2.0f;
+                                        uv.y = (pos.y / ax + 1.0f) / 2.0f;
+                                        uv.x = uv.x * 0.25f + 0.5f;
+                                        uv.y = uv.y * 0.33f + 0.33f;
+                                    } else {
+                                        uv.x = (-pos.z / ax + 1.0f) / 2.0f;
+                                        uv.y = (pos.y / ax + 1.0f) / 2.0f;
+                                        uv.x = uv.x * 0.25f;
+                                        uv.y = uv.y * 0.33f + 0.33f;
+                                    }
+                                }
+                            }
+                            if (ay >= ax) {
+                                if (ay >= az) {
+                                    // Y
+                                    if (pos.y >= 0f) {
+                                        uv.x = (pos.x / ay + 1.0f) / 2.0f;
+                                        uv.y = (pos.z / ay + 1.0f) / 2.0f;
+                                        uv.x = uv.x * 0.25f + 0.25f;
+                                        uv.y = uv.y * 0.33f + 0.66f;
+                                    } else {
+                                        uv.x = (pos.x / ay + 1.0f) / 2.0f;
+                                        uv.y = (pos.z / ay + 1.0f) / 2.0f;
+                                        uv.x = uv.x * 0.25f + 0.25f;
+                                        uv.y = uv.y * 0.33f;
+                                    }
+                                }
+                            }
+                            if (az >= ax) {
+                                if (az >= ay) {
+                                    // Z
+                                    if (pos.z >= 0f) {
+                                        uv.x = (pos.x / az + 1.0f) / 2.0f;
+                                        uv.y = (pos.y / az + 1.0f) / 2.0f;
+                                        uv.x = uv.x * 0.25f + 0.25f;
+                                        uv.y = uv.y * 0.33f + 0.33f;
+                                    } else {
+                                        uv.x = (pos.x / az + 1.0f) / 2.0f;
+                                        uv.y = (pos.y / az + 1.0f) / 2.0f;
+                                        uv.x = uv.x * 0.25f + 0.75f;
+                                        uv.y = uv.y * 0.33f + 0.33f;
+                                    }
+                                }
+                            }
+                            int index = Math.round(uv.x * cw[0]) * 4 + (int)cw[0] * Math.round(uv.y * ch[0]) * 4;
+                            index = cmap[0].length - Math.max(cmap[0].length - index, 0);
+                            r[0] = cmap[0][index];
+                            r[1] = cmap[0][index + 1];
+                            r[2] = cmap[0][index + 2];
+                            return r;
+                        }
                     });
                     raytracer.start();
                 } else {
