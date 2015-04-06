@@ -613,7 +613,6 @@ public class OpenGLRenderer {
                                 final Vector3f lp3 = new Vector3f(2.0f, -2.0f, 2.0f);
                                 final Vector3f lp4 = new Vector3f(2.0f, 2.0f, 2.0f);
 
-                                int skip = 0;
                                 {
 
                                     final Lock lock = new ReentrantLock();
@@ -628,8 +627,9 @@ public class OpenGLRenderer {
                                             public void run() {
                                                 ArrayList<float[]> points2 = new ArrayList<float[]>(10000 / chunks);
                                                 final PowerRay pr = new PowerRay();
-                                                int s = start[0];
+                                                final int s = start[0];
                                                 int i = ti[0];
+                                                int skip = 0;
                                                 for (int y = s; y < h; y += chunks) {
                                                     final int sy = h - y - 1;
                                                     for (int x = 0; x < w; x++) {
@@ -768,6 +768,28 @@ public class OpenGLRenderer {
                                                         }
                                                         i += 4;
                                                     }
+                                                    if (s < 1) {
+                                                        int size = points2.size();
+                                                        int size2 = renderedPoints[0] == null ? -1 : renderedPoints[0].length;
+                                                        float[][] r;
+                                                        if (size2 < size) {
+                                                            r = new float[size][];
+                                                            skip = 0;
+                                                        } else {
+                                                            r = renderedPoints[0];
+                                                        }
+                                                        for (int j = skip; j < size; j++) {
+                                                            r[j] = points2.get(j);
+                                                        }
+                                                        skip = size;
+                                                        try {
+                                                            lock.lock();
+                                                            // FIXME Update renderedPoints here!
+                                                            renderedPoints[0] = r;
+                                                        } finally {
+                                                            lock.unlock();
+                                                        }
+                                                    }
                                                     i += 4 * w * (chunks - 1);
                                                 }
                                                 try {
@@ -792,173 +814,10 @@ public class OpenGLRenderer {
                                                 isRunning = true;
                                         }
                                     }
-
-                                    /* int i = 0;
-                                    for (int y = 0; y < h; y++) {
-                                        final int sy = h - y - 1;
-                                        for (int x = 0; x < w; x++) {
-                                            final int sx = w - x - 1;
-                                            float rS = sc[i];
-                                            float gS = sc[i + 1];
-                                            float bS = sc[i + 2];
-                                            float rT = tc[i];
-                                            float gT = tc[i + 1];
-                                            float bT = tc[i + 2];
-                                            if (rS != rT || gS != gT || bS != bT) {
-                                                TreeMap<Float, float[]>  zSort = new TreeMap<Float, float[]>();
-                                                TreeMap<Float, Vector4f>  hitSort = new TreeMap<Float, Vector4f>();
-
-                                                for (float[] tri : tris) {
-                                                    float[] zHit = pr.TRIANGLE_INTERSECT(get3DCoordinatesFromScreen(x, y, z, w, h, vInverse), ray, tri);
-                                                    if (zHit != null) {
-                                                        Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], w, h, vM);
-                                                        hitSort.put(sz.z, sz);
-                                                        zSort.put(sz.z, tri);
-                                                    }
-                                                }
-
-
-                                                final int size = zSort.size();
-
-                                                switch(size) {
-                                                case 0:
-                                                {
-                                                    float[] point = new float[11];
-                                                    point[0] = rT;
-                                                    point[1] = gT;
-                                                    point[2] = bT;
-                                                    point[3] = sx;
-                                                    point[4] = sy;
-                                                    point[5] = sx;
-                                                    point[6] = sy + 1;
-                                                    point[7] = sx + 1;
-                                                    point[8] = sy + 1;
-                                                    point[9] = sx + 1;
-                                                    point[10] = sy;
-                                                    points.add(point);
-                                                    break;
-                                                }
-                                                case 1:
-                                                {
-                                                    float[] ze = zSort.get(zSort.firstKey());
-                                                    float[] point = new float[11];
-                                                    float a = ze[15];
-                                                    float oneMinusAlpha = 1f - a;
-                                                    point[0] = rT * a + rS * oneMinusAlpha;
-                                                    point[1] = gT * a + gS * oneMinusAlpha;
-                                                    point[2] = bT * a + bS * oneMinusAlpha;
-                                                    point[3] = sx;
-                                                    point[4] = sy;
-                                                    point[5] = sx;
-                                                    point[6] = sy + 1;
-                                                    point[7] = sx + 1;
-                                                    point[8] = sy + 1;
-                                                    point[9] = sx + 1;
-                                                    point[10] = sy;
-                                                    points.add(point);
-                                                    break;
-                                                }
-                                                default:
-                                                    float[] point = new float[11];
-                                                    int k = 0;
-
-                                                    point[0] = 1f;
-                                                    point[1] = 1f;
-                                                    point[2] = 1f;
-
-                                                    for (Float f : zSort.keySet()) {
-                                                        k++;
-                                                        float[] ze = zSort.get(f);
-                                                        float a = ze[15];
-                                                        float r = ze[12];
-                                                        float g = ze[13];
-                                                        float b = ze[14];
-
-                                                        float oneMinusAlpha = 1f - a;
-                                                        if (a == 1f) {
-                                                            point[0] = rS;
-                                                            point[1] = gS;
-                                                            point[2] = bS;
-                                                        } else if (k < size) {
-                                                            // Compute light (without specular!)
-                                                            if (lights) {
-                                                                Vector4f pos = hitSort.get(f);
-                                                                Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
-
-                                                                Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                                normal.normalise();
-                                                                Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
-                                                                Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
-                                                                Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
-                                                                Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
-                                                                lightDir1.normalise();
-                                                                lightDir2.normalise();
-                                                                lightDir3.normalise();
-                                                                lightDir4.normalise();
-                                                                // attenuation and light direction
-                                                                // ambient + diffuse
-                                                                float light = 0.09f; // Ambient
-                                                                light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
-                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
-                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
-                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
-
-                                                                // compute final color
-                                                                r = r + light;
-                                                                g = g + light;
-                                                                b = b + light;
-                                                            }
-
-                                                            point[0] = r * a + point[0] * oneMinusAlpha;
-                                                            point[1] = g * a + point[1] * oneMinusAlpha;
-                                                            point[2] = b * a + point[2] * oneMinusAlpha;
-
-                                                        } else {
-                                                            point[0] = rT * a + point[0] * oneMinusAlpha;
-                                                            point[1] = gT * a + point[1] * oneMinusAlpha;
-                                                            point[2] = bT * a + point[2] * oneMinusAlpha;
-                                                        }
-                                                    }
-                                                    point[3] = sx;
-                                                    point[4] = sy;
-                                                    point[5] = sx;
-                                                    point[6] = sy + 1;
-                                                    point[7] = sx + 1;
-                                                    point[8] = sy + 1;
-                                                    point[9] = sx + 1;
-                                                    point[10] = sy;
-                                                    points.add(point);
-                                                }
-                                            }
-                                            i += 4;
-                                        }
-
-                                        int size = points.size();
-                                        int size2 = renderedPoints[0] == null ? -1 :renderedPoints[0].length;
-                                        float[][] r;
-                                        if (size2 < size) {
-                                            r = new float[size][];
-                                            skip = 0;
-                                        } else {
-                                            r = renderedPoints[0];
-                                        }
-                                        for (int j = skip; j < size; j++) {
-                                            r[j] = points.get(j);
-                                        }
-                                        skip = size;
-                                        try {
-                                            lock.lock();
-                                            // FIXME Update renderedPoints here!
-                                            renderedPoints[0] = r;
-                                        } finally {
-                                            lock.unlock();
-                                        }
-                                    } */
                                 }
 
                                 final int size = points.size();
                                 float[][] r = new float[size][];
-                                skip = 0;
                                 for (int j = 0; j < size; j++) {
                                     r[j] = points.get(j);
                                 }
