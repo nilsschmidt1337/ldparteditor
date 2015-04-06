@@ -1,8 +1,14 @@
 
 0 BFC CERTIFY CCW
 
-1 80 0 -30 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+0 // METAL
+1 80 0 -40 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+0 // MATTE_METALLIC Test Colour 900
+1 900 0 -30 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+0 // CHROME
 1 63 0 -20 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+0 // ALPHA
 1 41 0 -10 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+0 // PEARLESCENT
 1 150 0 0 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
 
