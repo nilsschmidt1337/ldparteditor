@@ -443,7 +443,7 @@ public class CSG {
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
         GData1 g1 = new GData1(-1, .5f, .5f, .5f, 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
-                new HashSet<String>());
+                new HashSet<String>(), View.DUMMY_REFERENCE);
         this.result = toLDrawTriangles(g1);
         return g1;
     }
