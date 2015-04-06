@@ -89,7 +89,7 @@ public class OpenGLRenderer {
     private final Lock lock = new ReentrantLock();
 
     private final AtomicBoolean alive = new AtomicBoolean(true);
-    private final AtomicInteger needData = new AtomicInteger(1);
+    private final AtomicInteger needData = new AtomicInteger(0);
     private Thread raytracer = null;
 
     public FloatBuffer getViewport() {
@@ -464,12 +464,11 @@ public class OpenGLRenderer {
                                 counter++;
 
                                 final int cs = solidColours[0].length;
-                                float[] sc = Arrays.copyOf(solidColours[0], cs);
-                                float[] tc = Arrays.copyOf(transparentColours[0], cs);
+                                final float[] sc = Arrays.copyOf(solidColours[0], cs);
+                                final float[] tc = Arrays.copyOf(transparentColours[0], cs);
                                 final int w = (int) cWidth[0];
                                 final int h = (int) cHeight[0];
 
-                                final PowerRay pr = new PowerRay();
                                 final float[] ray;
                                 final Matrix4f vInverse = c3d.getViewport_Inverse();
                                 final Matrix4f vM = c3d.getViewport();
@@ -495,6 +494,33 @@ public class OpenGLRenderer {
                                     HashMap<GData3, Vertex[]> tris2 = c3d.getLockableDatFileReference().getVertexManager().getTriangles();
                                     for (GData3 g : tris2.keySet()) {
                                         Vertex[] v = tris2.get(g);
+
+                                        {
+                                            boolean notShown = true;
+                                            float max_x = -Float.MAX_VALUE;
+                                            float min_x = Float.MAX_VALUE;
+                                            float max_y = -Float.MAX_VALUE;
+                                            float min_y = Float.MAX_VALUE;
+                                            for(int i = 0; i < 3; i++) {
+                                                Vector4f sz = getScreenZFrom3D(v[i].x, v[i].y, v[i].z, w, h, vM);
+                                                max_x = Math.max(max_x, sz.x);
+                                                min_x = Math.min(min_x, sz.x);
+                                                max_y = Math.max(max_y, sz.y);
+                                                min_y = Math.min(min_y, sz.y);
+                                            }
+
+                                            Rectangle bounds = new Rectangle(0, 0, w, h);
+                                            Rectangle boundingBox = new Rectangle((int) min_x, (int) min_y, (int) (max_x - min_x), (int) (max_y - min_y));
+
+                                            if (boundingBox.intersects(bounds) || boundingBox.contains(0, 0) || boundingBox.contains(bounds.width, bounds.height) || boundingBox.contains(bounds.width, 0)
+                                                    || boundingBox.contains(0, bounds.height) || bounds.contains(boundingBox.x, boundingBox.y) || bounds.contains(boundingBox.x, boundingBox.y + boundingBox.height)
+                                                    || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
+                                                notShown = false;
+                                            }
+
+                                            if (notShown) continue;
+                                        }
+
                                         float[] nt = new float[]{
                                                 v[0].x, v[0].y, v[0].z,
                                                 v[1].x, v[1].y, v[1].z,
@@ -509,13 +535,56 @@ public class OpenGLRenderer {
                                     }
                                     for (GData4 g : quads.keySet()) {
                                         Vertex[] v = quads.get(g);
+
+                                        {
+                                            boolean notShown = true;
+                                            float max_x = -Float.MAX_VALUE;
+                                            float min_x = Float.MAX_VALUE;
+                                            float max_y = -Float.MAX_VALUE;
+                                            float min_y = Float.MAX_VALUE;
+                                            for(int i = 0; i < 4; i++) {
+                                                Vector4f sz = getScreenZFrom3D(v[i].x, v[i].y, v[i].z, w, h, vM);
+                                                max_x = Math.max(max_x, sz.x);
+                                                min_x = Math.min(min_x, sz.x);
+                                                max_y = Math.max(max_y, sz.y);
+                                                min_y = Math.min(min_y, sz.y);
+                                            }
+
+                                            Rectangle bounds = new Rectangle(0, 0, w, h);
+                                            Rectangle boundingBox = new Rectangle((int) min_x, (int) min_y, (int) (max_x - min_x), (int) (max_y - min_y));
+
+                                            if (boundingBox.intersects(bounds) || boundingBox.contains(0, 0) || boundingBox.contains(bounds.width, bounds.height) || boundingBox.contains(bounds.width, 0)
+                                                    || boundingBox.contains(0, bounds.height) || bounds.contains(boundingBox.x, boundingBox.y) || bounds.contains(boundingBox.x, boundingBox.y + boundingBox.height)
+                                                    || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
+                                                notShown = false;
+                                            }
+
+                                            if (notShown) continue;
+                                        }
+
+                                        final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
+                                        {
+                                            final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
+                                            Vector3f.sub(new Vector3f(v[1].x, v[1].y, v[1].z), new Vector3f(v[0].x, v[0].y, v[0].z), lineVectors[0]);
+                                            Vector3f.sub(new Vector3f(v[2].x, v[2].y, v[2].z), new Vector3f(v[1].x, v[1].y, v[1].z), lineVectors[1]);
+                                            Vector3f.sub(new Vector3f(v[3].x, v[3].y, v[3].z), new Vector3f(v[2].x, v[2].y, v[2].z), lineVectors[2]);
+                                            Vector3f.sub(new Vector3f(v[0].x, v[0].y, v[0].z), new Vector3f(v[3].x, v[3].y, v[3].z), lineVectors[3]);
+                                            Vector3f.cross(lineVectors[0], lineVectors[1], normals[0]);
+                                            Vector3f.cross(lineVectors[1], lineVectors[2], normals[1]);
+                                            Vector3f.cross(lineVectors[2], lineVectors[3], normals[2]);
+                                            Vector3f.cross(lineVectors[3], lineVectors[0], normals[3]);
+                                        }
+                                        Vector3f normal = new Vector3f();
+                                        for (int i = 0; i < 4; i++) {
+                                            Vector3f.add(normals[i], normal, normal);
+                                        }
                                         float[] nt = new float[]{
                                                 v[0].x, v[0].y, v[0].z,
                                                 v[1].x, v[1].y, v[1].z,
                                                 v[2].x, v[2].y, v[2].z,
-                                                (v[2].y - v[0].y) * (v[1].z - v[0].z) - (v[2].z - v[0].z) * (v[1].y - v[0].y),
-                                                (v[2].z - v[0].z) * (v[1].x - v[0].x) - (v[2].x - v[0].x) * (v[1].z - v[0].z),
-                                                (v[2].x - v[0].x) * (v[1].y - v[0].y) - (v[2].y - v[0].y) * (v[1].x - v[0].x),
+                                                -normal.x,
+                                                -normal.y,
+                                                -normal.z,
                                                 g.r, g.g, g.b, g.a, g.colourNumber
                                         };
                                         tris.add(nt);
@@ -523,34 +592,212 @@ public class OpenGLRenderer {
                                                 v[2].x, v[2].y, v[2].z,
                                                 v[3].x, v[3].y, v[3].z,
                                                 v[0].x, v[0].y, v[0].z,
-                                                (v[0].y - v[2].y) * (v[3].z - v[0].z) - (v[0].z - v[2].z) * (v[3].y - v[2].y),
-                                                (v[0].z - v[2].z) * (v[3].x - v[0].x) - (v[0].x - v[2].x) * (v[3].z - v[2].z),
-                                                (v[0].x - v[2].x) * (v[3].y - v[0].y) - (v[0].y - v[2].y) * (v[3].x - v[2].x),
+                                                -normal.x,
+                                                -normal.y,
+                                                -normal.z,
                                                 g.r, g.g, g.b, g.a, g.colourNumber
                                         };
                                         tris.add(nt2);
                                     }
                                 }
 
-
                                 NLogger.debug(getClass(), "Started raytracer."); //$NON-NLS-1$
-                                ArrayList<float[]> points = new ArrayList<float[]>(10000);
+
+                                final ArrayList<float[]> points = new ArrayList<float[]>(10000);
 
                                 // FIXME Needs implementation
 
                                 // Light positions
-                                final Vector3f lp1 = new Vector3f(2.0f, 2.0f, 2.0f);
+                                final Vector3f lp1 = new Vector3f(-2.0f, -2.0f, 2.0f);
                                 final Vector3f lp2 = new Vector3f(-2.0f, 2.0f, 2.0f);
                                 final Vector3f lp3 = new Vector3f(2.0f, -2.0f, 2.0f);
-                                final Vector3f lp4 = new Vector3f(-2.0f, -2.0f, 2.0f);
+                                final Vector3f lp4 = new Vector3f(2.0f, 2.0f, 2.0f);
 
                                 int skip = 0;
                                 {
-                                    int i = 0;
+
+                                    final Lock lock = new ReentrantLock();
+
+                                    final int chunks = Math.max(View.NUM_CORES - 1, 1);
+                                    final Thread[] threads = new Thread[chunks];
+                                    for (int j = 0; j < chunks; ++j) {
+                                        final int[] start = new int[] { j };
+                                        final int[] ti = new int[] { start[0] * 4 * w};
+                                        threads[j] = new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ArrayList<float[]> points2 = new ArrayList<float[]>(10000 / chunks);
+                                                final PowerRay pr = new PowerRay();
+                                                int s = start[0];
+                                                int i = ti[0];
+                                                for (int y = s; y < h; y += chunks) {
+                                                    final int sy = h - y - 1;
+                                                    for (int x = 0; x < w; x++) {
+                                                        final int sx = w - x - 1;
+                                                        float rS = sc[i];
+                                                        float gS = sc[i + 1];
+                                                        float bS = sc[i + 2];
+                                                        float rT = tc[i];
+                                                        float gT = tc[i + 1];
+                                                        float bT = tc[i + 2];
+                                                        if (rS != rT || gS != gT || bS != bT) {
+                                                            TreeMap<Float, float[]>  zSort = new TreeMap<Float, float[]>();
+                                                            TreeMap<Float, Vector4f>  hitSort = new TreeMap<Float, Vector4f>();
+
+                                                            for (float[] tri : tris) {
+                                                                float[] zHit = pr.TRIANGLE_INTERSECT(get3DCoordinatesFromScreen(x, y, z, w, h, vInverse), ray, tri);
+                                                                if (zHit != null) {
+                                                                    Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], w, h, vM);
+                                                                    hitSort.put(sz.z, sz);
+                                                                    zSort.put(sz.z, tri);
+                                                                }
+                                                            }
+
+
+                                                            final int size = zSort.size();
+
+                                                            switch(size) {
+                                                            case 0:
+                                                            {
+                                                                float[] point = new float[11];
+                                                                point[0] = rT;
+                                                                point[1] = gT;
+                                                                point[2] = bT;
+                                                                point[3] = sx;
+                                                                point[4] = sy;
+                                                                point[5] = sx;
+                                                                point[6] = sy + 1;
+                                                                point[7] = sx + 1;
+                                                                point[8] = sy + 1;
+                                                                point[9] = sx + 1;
+                                                                point[10] = sy;
+                                                                points2.add(point);
+                                                                break;
+                                                            }
+                                                            case 1:
+                                                            {
+                                                                float[] ze = zSort.get(zSort.firstKey());
+                                                                float[] point = new float[11];
+                                                                float a = ze[15];
+                                                                float oneMinusAlpha = 1f - a;
+                                                                point[0] = rT * a + rS * oneMinusAlpha;
+                                                                point[1] = gT * a + gS * oneMinusAlpha;
+                                                                point[2] = bT * a + bS * oneMinusAlpha;
+                                                                point[3] = sx;
+                                                                point[4] = sy;
+                                                                point[5] = sx;
+                                                                point[6] = sy + 1;
+                                                                point[7] = sx + 1;
+                                                                point[8] = sy + 1;
+                                                                point[9] = sx + 1;
+                                                                point[10] = sy;
+                                                                points2.add(point);
+                                                                break;
+                                                            }
+                                                            default:
+                                                                float[] point = new float[11];
+                                                                int k = 0;
+
+                                                                point[0] = 1f;
+                                                                point[1] = 1f;
+                                                                point[2] = 1f;
+
+                                                                for (Float f : zSort.keySet()) {
+                                                                    k++;
+                                                                    float[] ze = zSort.get(f);
+                                                                    float a = ze[15];
+                                                                    float r = ze[12];
+                                                                    float g = ze[13];
+                                                                    float b = ze[14];
+
+                                                                    float oneMinusAlpha = 1f - a;
+                                                                    if (a == 1f) {
+                                                                        point[0] = rS;
+                                                                        point[1] = gS;
+                                                                        point[2] = bS;
+                                                                    } else if (k < size) {
+                                                                        // Compute light (without specular!)
+                                                                        if (lights) {
+                                                                            Vector4f pos = hitSort.get(f);
+                                                                            Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
+
+                                                                            Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
+                                                                            normal.normalise();
+                                                                            Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
+                                                                            Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
+                                                                            Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
+                                                                            Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
+                                                                            lightDir1.normalise();
+                                                                            lightDir2.normalise();
+                                                                            lightDir3.normalise();
+                                                                            lightDir4.normalise();
+                                                                            // attenuation and light direction
+                                                                            // ambient + diffuse
+                                                                            float light = 0.09f; // Ambient
+                                                                            light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
+                                                                            light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
+                                                                            light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
+                                                                            light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
+
+                                                                            // compute final color
+                                                                            r = r + light;
+                                                                            g = g + light;
+                                                                            b = b + light;
+                                                                        }
+
+                                                                        point[0] = r * a + point[0] * oneMinusAlpha;
+                                                                        point[1] = g * a + point[1] * oneMinusAlpha;
+                                                                        point[2] = b * a + point[2] * oneMinusAlpha;
+
+                                                                    } else {
+                                                                        point[0] = rT * a + point[0] * oneMinusAlpha;
+                                                                        point[1] = gT * a + point[1] * oneMinusAlpha;
+                                                                        point[2] = bT * a + point[2] * oneMinusAlpha;
+                                                                    }
+                                                                }
+                                                                point[3] = sx;
+                                                                point[4] = sy;
+                                                                point[5] = sx;
+                                                                point[6] = sy + 1;
+                                                                point[7] = sx + 1;
+                                                                point[8] = sy + 1;
+                                                                point[9] = sx + 1;
+                                                                point[10] = sy;
+                                                                points2.add(point);
+                                                            }
+                                                        }
+                                                        i += 4;
+                                                    }
+                                                    i += 4 * w * (chunks - 1);
+                                                }
+                                                try {
+                                                    lock.lock();
+                                                    points.addAll(points2);
+                                                } finally {
+                                                    lock.unlock();
+                                                }
+                                            }
+                                        });
+                                        threads[j].start();
+                                    }
+                                    boolean isRunning = true;
+                                    while (isRunning) {
+                                        try {
+                                            Thread.sleep(100);
+                                        } catch (InterruptedException e) {
+                                        }
+                                        isRunning = false;
+                                        for (Thread thread : threads) {
+                                            if (thread.isAlive())
+                                                isRunning = true;
+                                        }
+                                    }
+
+                                    /* int i = 0;
                                     for (int y = 0; y < h; y++) {
-                                        final int sy = h - y;
+                                        final int sy = h - y - 1;
                                         for (int x = 0; x < w; x++) {
-                                            final int sx = w - x;
+                                            final int sx = w - x - 1;
                                             float rS = sc[i];
                                             float gS = sc[i + 1];
                                             float bS = sc[i + 2];
@@ -560,6 +807,7 @@ public class OpenGLRenderer {
                                             if (rS != rT || gS != gT || bS != bT) {
                                                 TreeMap<Float, float[]>  zSort = new TreeMap<Float, float[]>();
                                                 TreeMap<Float, Vector4f>  hitSort = new TreeMap<Float, Vector4f>();
+
                                                 for (float[] tri : tris) {
                                                     float[] zHit = pr.TRIANGLE_INTERSECT(get3DCoordinatesFromScreen(x, y, z, w, h, vInverse), ray, tri);
                                                     if (zHit != null) {
@@ -568,7 +816,10 @@ public class OpenGLRenderer {
                                                         zSort.put(sz.z, tri);
                                                     }
                                                 }
+
+
                                                 final int size = zSort.size();
+
                                                 switch(size) {
                                                 case 0:
                                                 {
@@ -629,10 +880,6 @@ public class OpenGLRenderer {
                                                             point[1] = gS;
                                                             point[2] = bS;
                                                         } else if (k < size) {
-                                                            point[0] = r * a + point[0] * oneMinusAlpha;
-                                                            point[1] = g * a + point[1] * oneMinusAlpha;
-                                                            point[2] = b * a + point[2] * oneMinusAlpha;
-
                                                             // Compute light (without specular!)
                                                             if (lights) {
                                                                 Vector4f pos = hitSort.get(f);
@@ -644,36 +891,28 @@ public class OpenGLRenderer {
                                                                 Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
                                                                 Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
                                                                 Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
-
-                                                                float dist1  = lightDir1.length();
-                                                                float dist2  = lightDir2.length();
-                                                                float dist3  = lightDir3.length();
-                                                                float dist4  = lightDir4.length();
-                                                                float attenFactor1 = 1.0f / (.001f * dist1);
-                                                                float attenFactor2 = 1.0f / (.001f * dist2);
-                                                                float attenFactor3 = 1.0f / (.001f * dist3);
-                                                                float attenFactor4 = 1.0f / (.001f * dist4);
-
                                                                 lightDir1.normalise();
                                                                 lightDir2.normalise();
                                                                 lightDir3.normalise();
                                                                 lightDir4.normalise();
                                                                 // attenuation and light direction
                                                                 // ambient + diffuse
-                                                                float light;
-                                                                light = (float) (0.8f * Math.max(Vector3f.dot(normal, lightDir1), 0.0) * attenFactor1);
-                                                                light += 0.09f;
-                                                                light += 0.25f * Math.max(Vector3f.dot(normal, lightDir2), 0.0) * attenFactor2;
-
-                                                                light += 0.25f * Math.max(Vector3f.dot(normal, lightDir3), 0.0) * attenFactor3;
-
-                                                                light += 0.25f * Math.max(Vector3f.dot(normal, lightDir4), 0.0) * attenFactor4;
+                                                                float light = 0.09f; // Ambient
+                                                                light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
+                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
+                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
+                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
 
                                                                 // compute final color
                                                                 r = r + light;
                                                                 g = g + light;
                                                                 b = b + light;
                                                             }
+
+                                                            point[0] = r * a + point[0] * oneMinusAlpha;
+                                                            point[1] = g * a + point[1] * oneMinusAlpha;
+                                                            point[2] = b * a + point[2] * oneMinusAlpha;
+
                                                         } else {
                                                             point[0] = rT * a + point[0] * oneMinusAlpha;
                                                             point[1] = gT * a + point[1] * oneMinusAlpha;
@@ -714,7 +953,7 @@ public class OpenGLRenderer {
                                         } finally {
                                             lock.unlock();
                                         }
-                                    }
+                                    } */
                                 }
 
                                 final int size = points.size();
@@ -751,7 +990,7 @@ public class OpenGLRenderer {
                             Vector4f relPos = new Vector4f(x, y, z, 1f);
                             Matrix4f.transform(v, relPos, relPos);
                             float cursor_x = 0.5f * w - relPos.x * View.PIXEL_PER_LDU;
-                            float cursor_y = 0.5f * h + relPos.y * View.PIXEL_PER_LDU;
+                            float cursor_y = 0.5f * h - relPos.y * View.PIXEL_PER_LDU;
                             relPos.x = cursor_x;
                             relPos.y = cursor_y;
                             return relPos;
@@ -761,7 +1000,7 @@ public class OpenGLRenderer {
                             Vector4f relPos = new Vector4f();
                             relPos.x = (0.5f * w - x) / View.PIXEL_PER_LDU;
                             relPos.y = (0.5f * h - y) / View.PIXEL_PER_LDU;
-                            relPos.z = 0f;
+                            relPos.z = z;
                             relPos.w = 1.0f;
                             Matrix4f.transform(v_inverse, relPos, relPos);
                             return relPos;
