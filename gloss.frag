@@ -140,7 +140,7 @@ void main (void)
        if (normalSwitch == 0f) lightDir = vec3(-lightDir.x, -lightDir.y, -lightDir.z);
     }
     // ambient + diffuse
-    lightAmbientDiffuse     += gl_FrontLightProduct[i].ambient*attenFactor;
+    // lightAmbientDiffuse     += gl_FrontLightProduct[i].ambient*attenFactor;
     lightAmbientDiffuse     += gl_FrontLightProduct[i].diffuse * max(dot(normal, lightDir), 0.0) * attenFactor;
     // specular
     vec3 r      = normalize(reflect(-lightDir, normal));
@@ -223,12 +223,12 @@ void main (void)
             discard;
          }
        } else {
-         if (alphaSwitch < 1.0f) {
+         if (alphaSwitch > 0.0f) {
             vec4 textureColor =  (gl_FrontLightModelProduct.sceneColor + lightTextureDiffuse) + lightTextureSpecular * reflectivity;
-            textureColor = textureColor * groundColor;
-            gl_FragColor.r = textureColor.r;
-            gl_FragColor.g = textureColor.g;
-            gl_FragColor.b = textureColor.b;
+            float oneMinusGroundAlpha = 1.0f - groundAlpha;
+            gl_FragColor.r = textureColor.r * oneMinusGroundAlpha - groundColor.r * groundAlpha;
+            gl_FragColor.g = textureColor.g * oneMinusGroundAlpha - groundColor.g * groundAlpha;
+            gl_FragColor.b = textureColor.b * oneMinusGroundAlpha - groundColor.b * groundAlpha;
             gl_FragColor.a = 1.0f;
          } else {
             discard;
