@@ -448,6 +448,11 @@ public class OpenGLRenderer {
 
                 if (raytracer == null || !raytracer.isAlive()) {
                     raytracer = new Thread(new Runnable() {
+
+                        final float[] cw = new float[1];
+                        final float[] ch = new float[1];
+                        final float[][] cmap  = new float[][]{new float[0]};
+
                         @Override
                         public void run() {
                             while(alive.get()) {
@@ -489,6 +494,16 @@ public class OpenGLRenderer {
 
                                 needData.decrementAndGet();
                                 needData.decrementAndGet();
+
+                                {
+                                    float cw = GTexture.getCubeMapWidth();
+                                    float ch = GTexture.getCubeMapHeight();
+                                    float[] cmap  = GTexture.getCubeMap();
+                                    if (cmap == null) continue;
+                                    this.cw[0] = cw;
+                                    this.ch[0] = ch;
+                                    this.cmap[0] = cmap;
+                                }
 
                                 NLogger.debug(getClass(), "Initialised raytracer."); //$NON-NLS-1$
                                 final boolean lights = c3d.isLightOn();
