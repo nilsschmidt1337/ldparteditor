@@ -32,6 +32,7 @@ import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.colour.GCChrome;
+import org.nschmidt.ldparteditor.data.colour.GCPearl;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.TextTriangulator;
@@ -245,6 +246,9 @@ public enum View {
                                 colourFromIndex.put(index, colour);
                             } else if (line.contains(" CHROME")) { //$NON-NLS-1$
                                 GColour colour = new GColour(index, R, G, B, 1f, new GCChrome());
+                                colourFromIndex.put(index, colour);
+                            } else if (line.contains(" PEARLESCENT")) { //$NON-NLS-1$
+                                GColour colour = new GColour(index, R, G, B, 1f, new GCPearl());
                                 colourFromIndex.put(index, colour);
                             } else {
                                 GColour colour = new GColour(index, R, G, B, 1f);

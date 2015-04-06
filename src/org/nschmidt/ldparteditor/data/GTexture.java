@@ -76,6 +76,12 @@ public class GTexture {
     private Map<GData, UV> uvCache = new HashMap<GData, UV>();
     private Set<GData> cacheUsage = new HashSet<GData>();
 
+
+    private static int cubeMapWidth = 1;
+    private static int cubeMapHeight = 1;
+    private static byte[] cubeMap;
+
+
     public GTexture(TexType type, String texture, String glossmap, boolean useCubemap, Vector3f point1, Vector3f point2, Vector3f point3, float a, float b) {
         this.type = type;
         this.point1.set(point1);
@@ -584,6 +590,12 @@ public class GTexture {
                     for (final byte b : tbytes) {
                         bytes.add(b);
                     }
+                    if (textureUnit == GL13.GL_TEXTURE2) {
+                        // Store the cubemap for raytracer access
+                        setCubeMapHeight(tHeight);
+                        setCubeMapWidth(tWidth);
+                        setCubeMap(tbytes);
+                    }
                 }
 
                 // TODO angle dependent adjustment (alpha fill)
@@ -754,6 +766,30 @@ public class GTexture {
 
     public Vector4f getPoint3() {
         return new Vector4f(point3.x, point3.y, point3.z, 1f);
+    }
+
+    public static int getCubeMapWidth() {
+        return cubeMapWidth;
+    }
+
+    public static void setCubeMapWidth(int cubeMapWidth) {
+        GTexture.cubeMapWidth = cubeMapWidth;
+    }
+
+    public static int getCubeMapHeight() {
+        return cubeMapHeight;
+    }
+
+    public static void setCubeMapHeight(int cubeMapHeight) {
+        GTexture.cubeMapHeight = cubeMapHeight;
+    }
+
+    public static byte[] getCubeMap() {
+        return cubeMap;
+    }
+
+    public static void setCubeMap(byte[] cubeMap) {
+        GTexture.cubeMap = cubeMap;
     }
 
 }

@@ -17,5 +17,5 @@ package org.nschmidt.ldparteditor.data.colour;
 
 
 public enum GCType {
-    CHROME
+    CHROME, PEARL, METAL, RUBBER, MATTE_METALLIC, GLITTER, SPECKLE
 }

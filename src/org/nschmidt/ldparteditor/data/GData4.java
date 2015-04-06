@@ -78,7 +78,7 @@ public final class GData4 extends GData {
     public final float yn;
     public final float zn;
 
-    final GData1 parent;
+    public final GData1 parent;
 
     public GData4(final int colourNumber, float r, float g, float b, float a, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4,
             Vector3d normal, GData1 parent, DatFile datFile) {
@@ -924,7 +924,7 @@ public final class GData4 extends GData {
         }
     }
 
-    private void drawBFC_Colour2(Composite3D c3d) {
+    private void drawBFC_Colour2(Composite3D c3d, float a) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -1046,7 +1046,12 @@ public final class GData4 extends GData {
         if (GData.globalDrawObjects) {
             GColour c = View.getLDConfigColour(View.getLDConfigIndex(r, g, b));
             GColourType ct = c.getType();
-            boolean useCubeMap = ct != null && ct.type().equals(GCType.CHROME);
+            boolean hasColourType = ct != null;
+            boolean useCubeMap = hasColourType && ct.type().equals(GCType.CHROME);
+            float a = this.a;
+            if (hasColourType && !useCubeMap) {
+                a = 0.99f;
+            }
             final OpenGLRenderer ren = c3d.getRenderer();
             if (GData.globalTextureStack.isEmpty()) {
                 GL20.glUniform1f(ren.getAlphaSwitchLoc(), c3d.isDrawingSolidMaterials() ? 1f : 0f); // Draw transparent
@@ -1056,12 +1061,12 @@ public final class GData4 extends GData {
                 GL20.glUniform1f(ren.getNoCubeMapSwitch(), useCubeMap ? 0f : 1f);
                 switch (GData.accumClip) {
                 case 0:
-                    drawBFC_Colour2(c3d);
+                    drawBFC_Colour2(c3d, a);
                     break;
                 default:
                     byte tmp = GData.localWinding;
                     GData.localWinding = BFC.NOCERTIFY;
-                    drawBFC_Colour2(c3d);
+                    drawBFC_Colour2(c3d, a);
                     GData.localWinding = tmp;
                     break;
                 }
