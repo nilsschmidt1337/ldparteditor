@@ -806,8 +806,15 @@ public class OpenGLRenderer {
                                                                             g = light / 4f + g;
                                                                             b = light / 4f + b;
                                                                         }
+                                                                        break;
                                                                     }
-                                                                    break;
+                                                                    case MATTE_METALLIC:
+                                                                    {
+                                                                        r = light + r;
+                                                                        g = light + g;
+                                                                        b = light + b;
+                                                                        break;
+                                                                    }
                                                                     }
 
                                                                     float[] point = new float[11];
@@ -930,8 +937,15 @@ public class OpenGLRenderer {
                                                                                 g = light / 4f + g;
                                                                                 b = light / 4f + b;
                                                                             }
+                                                                            break;
                                                                         }
-                                                                        break;
+                                                                        case MATTE_METALLIC:
+                                                                        {
+                                                                            r = light + r;
+                                                                            g = light + g;
+                                                                            b = light + b;
+                                                                            break;
+                                                                        }
                                                                         }
                                                                         point[0] = r;
                                                                         point[1] = g;
