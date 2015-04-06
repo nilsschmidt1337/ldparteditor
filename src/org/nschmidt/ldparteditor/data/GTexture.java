@@ -79,7 +79,7 @@ public class GTexture {
 
     private static int cubeMapWidth = 1;
     private static int cubeMapHeight = 1;
-    private static byte[] cubeMap;
+    private static float[] cubeMap;
 
 
     public GTexture(TexType type, String texture, String glossmap, boolean useCubemap, Vector3f point1, Vector3f point2, Vector3f point3, float a, float b) {
@@ -590,7 +590,7 @@ public class GTexture {
                     for (final byte b : tbytes) {
                         bytes.add(b);
                     }
-                    if (textureUnit == GL13.GL_TEXTURE2) {
+                    if (textureUnit == GL13.GL_TEXTURE2 && getCubeMap() == null) {
                         // Store the cubemap for raytracer access
                         setCubeMapHeight(tHeight);
                         setCubeMapWidth(tWidth);
@@ -784,12 +784,17 @@ public class GTexture {
         GTexture.cubeMapHeight = cubeMapHeight;
     }
 
-    public static byte[] getCubeMap() {
+    public static float[] getCubeMap() {
         return cubeMap;
     }
 
     public static void setCubeMap(byte[] cubeMap) {
-        GTexture.cubeMap = cubeMap;
+        float[] map = new float[cubeMap.length];
+        for (int i = 0; i < cubeMap.length; i++) {
+            float f = cubeMap[i];
+            map[i] = f / 255f;
+        }
+        GTexture.cubeMap = map;
     }
 
 }
