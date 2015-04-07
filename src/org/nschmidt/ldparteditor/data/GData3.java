@@ -1009,6 +1009,9 @@ public final class GData3 extends GData {
                 case METAL:
                     useCubeMap = 3;
                     break;
+                case RUBBER:
+                    hasColourType = false;
+                    break;
                 default:
                     break;
                 }
