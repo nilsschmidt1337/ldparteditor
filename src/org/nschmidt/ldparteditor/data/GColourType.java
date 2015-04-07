@@ -18,9 +18,12 @@ package org.nschmidt.ldparteditor.data;
 import java.io.Serializable;
 
 import org.nschmidt.ldparteditor.data.colour.GCChrome;
+import org.nschmidt.ldparteditor.data.colour.GCGlitter;
 import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
 import org.nschmidt.ldparteditor.data.colour.GCMetal;
 import org.nschmidt.ldparteditor.data.colour.GCPearl;
+import org.nschmidt.ldparteditor.data.colour.GCRubber;
+import org.nschmidt.ldparteditor.data.colour.GCSpeckle;
 import org.nschmidt.ldparteditor.data.colour.GCType;
 
 
@@ -45,6 +48,14 @@ public abstract class GColourType implements Serializable {
                 return new GCMatteMetal();
             case METAL:
                 return new GCMetal();
+            case RUBBER:
+                return new GCRubber();
+            case GLITTER:
+                GCGlitter g = (GCGlitter) type;
+                return new GCGlitter(g.getR(), g.getG(), g.getB(), g.getFraction(), g.getMinSize(), g.getMaxSize());
+            case SPECKLE:
+                GCSpeckle s = (GCSpeckle) type;
+                return new GCSpeckle(s.getR(), s.getG(), s.getB(), s.getFraction(), s.getMinSize(), s.getMaxSize());
             }
         }
         return null;

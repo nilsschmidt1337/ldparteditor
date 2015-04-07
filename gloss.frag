@@ -189,6 +189,7 @@ void main (void)
              if (cubeMapSwitch < 1.0f) {
                gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
              } else {
+               if (cubeMapSwitch == 2.0f && noLightSwitch > 0.0f) lightSpecular *= .05;
                MyFunction((gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular);
              }
           } else {
@@ -211,6 +212,7 @@ void main (void)
             if (cubeMapSwitch < 1.0f) {
               gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
             } else {
+              if (cubeMapSwitch == 2.0f && noLightSwitch > 0.0f) lightSpecular *= .05;
               MyFunction((gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular);
             }
           } else {
@@ -257,17 +259,4 @@ void main (void)
     }
 }
 
-  /*
-  else if (gloss_color.x == 0.0)
-  {
-    texColor = gl_Color * texColor;
-    gl_FragColor  = texColor * (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular;
-    gl_FragColor.w = gl_Color.w;
-  } else {
-    float reflectivity = 0.30*gloss_color.r + 0.59*gloss_color.g + 0.11*gloss_color.b;
-    texColor = gl_Color * texColor;
-    gl_FragColor  = texColor * (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
-    gl_FragColor.w = gl_Color.w;
-  }
-  */
 }

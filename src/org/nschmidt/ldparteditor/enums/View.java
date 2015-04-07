@@ -219,7 +219,13 @@ public enum View {
             edgeColourFromIndex.clear();
             colourFromIndex.clear();
             colourNameFromIndex.clear();
-            Pattern p = Pattern.compile("ALPHA\\s+\\d+"); //$NON-NLS-1$
+            Pattern pAlpha = Pattern.compile("ALPHA\\s+\\d+"); //$NON-NLS-1$
+            Pattern pFraction = Pattern.compile("\\sFRACTION\\s+\\d+?\\.\\d*"); //$NON-NLS-1$
+            Pattern pSize = Pattern.compile("\\sSIZE\\s+\\d+"); //$NON-NLS-1$
+            Pattern pMinSize = Pattern.compile("\\sMINSIZE\\s+\\d+?\\.\\d*"); //$NON-NLS-1$
+            Pattern pMaxSize = Pattern.compile("\\sMAXSIZE\\s+\\d+?\\.\\d*"); //$NON-NLS-1$
+            Pattern pSpeckle = Pattern.compile("\\sSPECKLE\\s+\\d+?\\.\\d*"); //$NON-NLS-1$
+            Pattern pGlitter = Pattern.compile("\\sGLITTER\\s+\\d+?\\.\\d*"); //$NON-NLS-1$
             try {
                 indexFromColour.put(new IndexedEntry(View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0]), 24);
                 UTF8BufferedReader reader = new UTF8BufferedReader(location);
@@ -240,12 +246,30 @@ public enum View {
                             float G2 = Integer.parseInt(data_segments[8].substring(3, 5), 16) / 255f;
                             float B2 = Integer.parseInt(data_segments[8].substring(5, 7), 16) / 255f;
 
-                            Matcher m = p.matcher(line);
+                            Matcher m = pAlpha.matcher(line);
 
                             if (m.find()) {
                                 String alphaStr = m.group().replaceAll("ALPHA", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                                 float alpha = Float.parseFloat(alphaStr) / 255f;
                                 GColour colour = new GColour(index, R, G, B, alpha);
+                                if (line.contains(" MATERIAL")) { //$NON-NLS-1$
+                                    try {
+
+                                        Matcher m2 = pFraction.matcher(line);
+                                        Matcher m3 = pSize.matcher(line);
+                                        Matcher m4 = pMinSize.matcher(line);
+                                        Matcher m5 = pMaxSize.matcher(line);
+
+                                        if (line.contains(" GLITTER")) { //$NON-NLS-1$
+                                            Matcher m6 = pGlitter.matcher(line);
+
+                                        } else if (line.contains(" SPECKLE")) { //$NON-NLS-1$
+                                            Matcher m6 = pSpeckle.matcher(line);
+
+                                        }
+                                    } catch (Exception e) {
+                                    }
+                                }
                                 colourFromIndex.put(index, colour);
                             } else if (line.contains(" CHROME")) { //$NON-NLS-1$
                                 GColour colour = new GColour(index, R, G, B, 1f, new GCChrome());

@@ -997,6 +997,7 @@ public final class GData3 extends GData {
             GColour c = View.getLDConfigColour(View.getLDConfigIndex(r, g, b));
             GColourType ct = c.getType();
             boolean hasColourType = ct != null;
+            boolean matLight = true;
             int useCubeMap = 0;
             if (hasColourType) {
                 switch (ct.type()) {
@@ -1010,7 +1011,8 @@ public final class GData3 extends GData {
                     useCubeMap = 3;
                     break;
                 case RUBBER:
-                    hasColourType = false;
+                    useCubeMap = 2;
+                    matLight = false;
                     break;
                 default:
                     break;
@@ -1028,7 +1030,7 @@ public final class GData3 extends GData {
                 GL20.glUniform1f(ren.getAlphaSwitchLoc(), c3d.isDrawingSolidMaterials() ? 1f : 0f); // Draw transparent
                 GL20.glUniform1f(ren.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);
                 GL20.glUniform1f(ren.getNoTextureSwitch(), 1f);
-                GL20.glUniform1f(ren.getNoLightSwitch(), c3d.isLightOn() ? 0f : 1f);
+                GL20.glUniform1f(ren.getNoLightSwitch(), c3d.isLightOn() && matLight ? 0f : 1f);
                 GL20.glUniform1f(ren.getCubeMapSwitch(), useCubeMap);
                 switch (GData.accumClip) {
                 case 0:
@@ -1045,7 +1047,7 @@ public final class GData3 extends GData {
                 if (!visible)
                     return;
                 GTexture tex = GData.globalTextureStack.peek();
-                tex.bind(c3d.isDrawingSolidMaterials(), GData.globalNegativeDeterminant ^ GData.globalInvertNext, c3d.isLightOn(), ren, useCubeMap);
+                tex.bind(c3d.isDrawingSolidMaterials(), GData.globalNegativeDeterminant ^ GData.globalInvertNext, c3d.isLightOn() && matLight, ren, useCubeMap);
                 float[] uv;
                 switch (a < 1f || GData.accumClip > 0 ? BFC.NOCERTIFY : GData.localWinding) {
                 case BFC.CCW:
