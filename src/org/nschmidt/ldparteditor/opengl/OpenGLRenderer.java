@@ -53,6 +53,8 @@ import org.nschmidt.ldparteditor.data.GTexture;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.data.colour.GCGlitter;
+import org.nschmidt.ldparteditor.data.colour.GCSpeckle;
 import org.nschmidt.ldparteditor.data.colour.GCType;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
@@ -703,7 +705,6 @@ public class OpenGLRenderer {
                                                                 float[] zHit = pr.TRIANGLE_INTERSECT(get3DCoordinatesFromScreen(x, y, z, w, h, vInverse), ray, tri);
                                                                 if (zHit != null) {
                                                                     Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], w, h, vM);
-                                                                    sz.setW(Math.round(zHit[3] * 1000f) * 1000f + zHit[4] * 1000f);
                                                                     hitSort.put(sz.z, sz);
                                                                     zSort.put(sz.z, tri);
                                                                 }
@@ -806,7 +807,7 @@ public class OpenGLRenderer {
                                                                         // FIXME Needs implementation!
                                                                         float uv = pos.w;
                                                                         float u = Math.round(uv / 1000f) / 1000f;
-                                                                        float v = uv - u * 1000000f;
+                                                                        float v = (uv - u * 1000000f) / 1000f;
                                                                         float a = ze[15];
                                                                         float oneMinusAlpha = 1f - a;
                                                                         if (lights) {
@@ -825,7 +826,7 @@ public class OpenGLRenderer {
                                                                         // FIXME Needs implementation!
                                                                         float uv = pos.w;
                                                                         float u = Math.round(uv / 1000f) / 1000f;
-                                                                        float v = uv - u * 1000000f;
+                                                                        float v = (uv - u * 1000000f) / 1000f;
                                                                         float a = ze[15];
                                                                         float oneMinusAlpha = 1f - a;
                                                                         if (lights) {
@@ -973,37 +974,89 @@ public class OpenGLRenderer {
                                                                         }
                                                                         case GLITTER:
                                                                         {
+
+                                                                            GCGlitter type = (GCGlitter) ct;
+
+                                                                            float fraction = type.getFraction();
+
+                                                                            int cnx = (int) ((ze[9] - ze[9] % fraction) * 100f);
+                                                                            int cny = (int) ((ze[10] - ze[10] % fraction) * 100f);
+                                                                            int cnz = (int) ((ze[11] - ze[11] % fraction) * 100f);
+
+                                                                            Random rnd = new Random((long) (129642643f * (1f + cnx) * (1f + cny) * (1f + cnz)));
+
+                                                                            float min = type.getMinSize();
+                                                                            float delta = type.getMaxSize() - min;
+
                                                                             // FIXME Needs implementation!
                                                                             float uv = pos.w;
                                                                             float u = Math.round(uv / 1000f) / 1000f;
-                                                                            float v = uv - u * 1000000f;
+                                                                            float v = (uv - u * 1000000f) / 1000f;
+
+                                                                            float dx = ze[0] - ze[3];
+                                                                            float dy = ze[1] - ze[4];
+                                                                            float dz = ze[2] - ze[5];
+                                                                            float scaleFactor = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+                                                                            float rSquare = min + rnd.nextFloat() * delta;
+
+                                                                            if (scaleFactor < rSquare) {
+                                                                                if (rnd.nextBoolean()) {
+                                                                                    r = type.getR();
+                                                                                    g = type.getG();
+                                                                                    b = type.getB();
+                                                                                }
+                                                                            } else {
+                                                                                rSquare = rSquare / type.getMaxSize();
+                                                                                rSquare = rSquare * rSquare;
+                                                                                if (u * u + v * v < rSquare) {
+                                                                                    if (rnd.nextBoolean()) {
+                                                                                        r = type.getR();
+                                                                                        g = type.getG();
+                                                                                        b = type.getB();
+                                                                                    }
+                                                                                }
+                                                                            }
                                                                             float oneMinusAlpha = 1f - a;
                                                                             if (lights) {
                                                                                 float resLight = light / 4f;
                                                                                 r = resLight + r;
                                                                                 g = resLight + g;
                                                                                 b = resLight + b;
+                                                                            } else {
+                                                                                lightSpecular = 0f;
                                                                             }
-                                                                            r = u; // (r + lightSpecular) * a + point[0] * oneMinusAlpha;
-                                                                            g = v; // (g + lightSpecular)  * a + point[1] * oneMinusAlpha;
+                                                                            r = (r + lightSpecular) * a + point[0] * oneMinusAlpha;
+                                                                            g = (g + lightSpecular)  * a + point[1] * oneMinusAlpha;
                                                                             b = (b + lightSpecular) * a + point[2] * oneMinusAlpha;
                                                                             break;
                                                                         }
                                                                         case SPECKLE:
                                                                         {
-                                                                            // FIXME Needs implementation!
-                                                                            float uv = pos.w;
-                                                                            float u = Math.round(uv / 1000f) / 1000f;
-                                                                            float v = uv - u * 1000000f;
+                                                                            GCSpeckle type = (GCSpeckle) ct;
+
+                                                                            Random rnd = new Random((long) ((ze[0] * pos.x - ze[0] % (.000001f / zoom)) * (ze[1] * pos.y - ze[1] % (.000001f / zoom)) * 129642643f * (1f + ze[9]) * (1f + ze[10]) * (1f + ze[11])));
+
+                                                                            Random rnd2 = new Random(rnd.nextLong() + x + 31 * y);
+                                                                            // FIXME !!! Needs implementation!
+                                                                            if (rnd2.nextFloat() * zoom * 100000f < type.getFraction()) {
+                                                                                r = type.getR();
+                                                                                g = type.getG();
+                                                                                b = type.getB();
+                                                                            }
+
+
                                                                             float oneMinusAlpha = 1f - a;
                                                                             if (lights) {
                                                                                 float resLight = light / 4f;
                                                                                 r = resLight + r;
                                                                                 g = resLight + g;
                                                                                 b = resLight + b;
+                                                                            } else {
+                                                                                lightSpecular = 0f;
                                                                             }
-                                                                            r = u; // (r + lightSpecular) * a + point[0] * oneMinusAlpha;
-                                                                            g = v; // (g + lightSpecular)  * a + point[1] * oneMinusAlpha;
+                                                                            r = (r + lightSpecular) * a + point[0] * oneMinusAlpha;
+                                                                            g = (g + lightSpecular)  * a + point[1] * oneMinusAlpha;
                                                                             b = (b + lightSpecular) * a + point[2] * oneMinusAlpha;
                                                                             break;
                                                                         }
