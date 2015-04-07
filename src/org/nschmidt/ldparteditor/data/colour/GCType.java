@@ -18,4 +18,27 @@ package org.nschmidt.ldparteditor.data.colour;
 
 public enum GCType {
     CHROME, PEARL, METAL, RUBBER, MATTE_METALLIC, GLITTER, SPECKLE
+
+    ;
+    public static boolean hasCubeMap(GCType t) {
+        switch (t) {
+        case CHROME:
+            return true;
+        case GLITTER:
+            return true;
+        case MATTE_METALLIC:
+            break;
+        case METAL:
+            return true;
+        case PEARL:
+            break;
+        case RUBBER:
+            break;
+        case SPECKLE:
+            break;
+        default:
+            break;
+        }
+        return false;
+    }
 }

@@ -274,7 +274,7 @@ public enum TexMapParser {
                     if (glossmap.isEmpty())
                         glossmap = null;
 
-                    return new GDataTEX(null, line, meta, new GTexture(type, texture, glossmap, true, new Vector3f(v1.x, v1.y, v1.z), new Vector3f(v2.x, v2.y, v2.z), new Vector3f(v3.x, v3.y, v3.z), a, b));
+                    return new GDataTEX(null, line, meta, new GTexture(type, texture, glossmap, 1, new Vector3f(v1.x, v1.y, v1.z), new Vector3f(v2.x, v2.y, v2.z), new Vector3f(v3.x, v3.y, v3.z), a, b));
                 }
             }
         }

@@ -115,12 +115,14 @@ public class OpenGLRenderer {
     private int baseImageLoc = -1;
     private int glossMapLoc = -1;
     private int cubeMapLoc = -1;
+    private int cubeMapMatteLoc = -1;
+    private int cubeMapMetalLoc = -1;
     private int alphaSwitchLoc = -1;
     private int normalSwitchLoc = -1;
     private int noTextureSwitch = -1;
     private int noLightSwitch = -1;
     private int noGlossMapSwitch = -1;
-    private int noCubeMapSwitch = -1;
+    private int cubeMapSwitch = -1;
 
     /** The set, which stores already loaded textures in-memory. */
     private Set<GTexture> textureSet = new HashSet<GTexture>();
@@ -208,11 +210,13 @@ public class OpenGLRenderer {
                 baseImageLoc = GL20.glGetUniformLocation(pGlossId, "colorMap"); //$NON-NLS-1$
                 glossMapLoc = GL20.glGetUniformLocation(pGlossId, "glossMap"); //$NON-NLS-1$
                 cubeMapLoc = GL20.glGetUniformLocation(pGlossId, "cubeMap"); //$NON-NLS-1$
+                cubeMapMatteLoc = GL20.glGetUniformLocation(pGlossId, "cubeMapMatte"); //$NON-NLS-1$
+                cubeMapMetalLoc = GL20.glGetUniformLocation(pGlossId, "cubeMapMetal"); //$NON-NLS-1$
                 alphaSwitchLoc = GL20.glGetUniformLocation(pGlossId, "alphaSwitch"); //$NON-NLS-1$
                 normalSwitchLoc = GL20.glGetUniformLocation(pGlossId, "normalSwitch"); //$NON-NLS-1$
                 noTextureSwitch = GL20.glGetUniformLocation(pGlossId, "noTextureSwitch"); //$NON-NLS-1$
                 noGlossMapSwitch = GL20.glGetUniformLocation(pGlossId, "noGlossMapSwitch"); //$NON-NLS-1$
-                noCubeMapSwitch = GL20.glGetUniformLocation(pGlossId, "noCubeMapSwitch"); //$NON-NLS-1$
+                cubeMapSwitch = GL20.glGetUniformLocation(pGlossId, "cubeMapSwitch"); //$NON-NLS-1$
                 noLightSwitch = GL20.glGetUniformLocation(pGlossId, "noLightSwitch"); //$NON-NLS-1$
             }
         }
@@ -449,11 +453,6 @@ public class OpenGLRenderer {
 
                 if (raytracer == null || !raytracer.isAlive()) {
                     raytracer = new Thread(new Runnable() {
-
-                        final float[] cw = new float[1];
-                        final float[] ch = new float[1];
-                        final float[][] cmap  = new float[][]{new float[0]};
-
                         @Override
                         public void run() {
                             while(alive.get()) {
@@ -801,24 +800,6 @@ public class OpenGLRenderer {
                                                                         }
                                                                         break;
                                                                     }
-                                                                    case MATTE_METALLIC:
-                                                                    {
-                                                                        Vector3f normal2 = new Vector3f(
-                                                                                normal.x * (.8f + .2f * tRnd.nextFloat()),
-                                                                                normal.y * (.8f + .2f * tRnd.nextFloat()),
-                                                                                normal.z * (.8f + .2f * tRnd.nextFloat())
-                                                                                );
-                                                                        float sp = Math.abs(Vector3f.dot(normal2, ray3f2)) / 10f;
-                                                                        r = r + sp;
-                                                                        g = g + sp;
-                                                                        b = b + sp;
-                                                                        if (lights) {
-                                                                            float effLight = light / 3f -.2f;
-                                                                            r = effLight + r;
-                                                                            g = effLight + g;
-                                                                            b = (effLight + .1f) * 1.1f + b + lightSpecular * 2f;
-                                                                        }
-                                                                    }
                                                                     }
 
                                                                     float[] point = new float[11];
@@ -855,7 +836,7 @@ public class OpenGLRenderer {
 
                                                                     GColour c = View.getLDConfigColour((int) ze[16]);
                                                                     GColourType ct = c.getType();
-                                                                    if (ct == null || ct.type().equals(GCType.CHROME)) {
+                                                                    if (ct == null || GCType.hasCubeMap(ct.type())) {
                                                                         float oneMinusAlpha = 1f - a;
                                                                         if (a == 1f) {
                                                                             point[0] = rS;
@@ -948,24 +929,6 @@ public class OpenGLRenderer {
                                                                                 b = (light + lightSpecular) / 4f + b;
                                                                             }
                                                                             break;
-                                                                        }
-                                                                        case MATTE_METALLIC:
-                                                                        {
-                                                                            Vector3f normal2 = new Vector3f(
-                                                                                    normal.x * (.8f + .2f * tRnd.nextFloat()),
-                                                                                    normal.y * (.8f + .2f * tRnd.nextFloat()),
-                                                                                    normal.z * (.8f + .2f * tRnd.nextFloat())
-                                                                                    );
-                                                                            float sp = Math.abs(Vector3f.dot(normal2, ray3f2)) / 10f;
-                                                                            r = r + sp;
-                                                                            g = g + sp;
-                                                                            b = b + sp;
-                                                                            if (lights) {
-                                                                                float effLight = light / 3f -.2f;
-                                                                                r = effLight + r;
-                                                                                g = effLight + g;
-                                                                                b = (effLight + .1f) * 1.1f + b + lightSpecular * 2f;
-                                                                            }
                                                                         }
                                                                         }
                                                                         point[0] = r;
@@ -1784,11 +1747,25 @@ public class OpenGLRenderer {
         return noLightSwitch;
     }
 
-    public int getNoCubeMapSwitch() {
-        return noCubeMapSwitch;
+    public int getCubeMapSwitch() {
+        return cubeMapSwitch;
     }
 
-    public boolean isLastTexture() {
-        return textureSet.size() <= 1;
+    public boolean containsOnlyCubeMaps() {
+        int counter = 0;
+        for (GTexture tex : textureSet) {
+            if (tex.getCubeMapIndex() > 0) {
+                counter++;
+            }
+        }
+        return textureSet.size() == counter;
+    }
+
+    public int getCubeMapMatteLoc() {
+        return cubeMapMatteLoc;
+    }
+
+    public int getCubeMapMetalLoc() {
+        return cubeMapMetalLoc;
     }
 }

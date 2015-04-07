@@ -13,41 +13,19 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.data;
+package org.nschmidt.ldparteditor.data.colour;
 
 import java.io.Serializable;
 
-import org.nschmidt.ldparteditor.data.colour.GCChrome;
-import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
-import org.nschmidt.ldparteditor.data.colour.GCMetal;
-import org.nschmidt.ldparteditor.data.colour.GCPearl;
-import org.nschmidt.ldparteditor.data.colour.GCType;
+import org.nschmidt.ldparteditor.data.GColourType;
 
-
-/**
- * @author nils
- *
- */
-public abstract class GColourType implements Serializable {
+public class GCMetal extends GColourType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public abstract GCType type();
-
-    public static GColourType clone(GColourType type) {
-        if (type != null) {
-            switch (type.type()) {
-            case CHROME:
-                return new GCChrome();
-            case PEARL:
-                return new GCPearl();
-            case MATTE_METALLIC:
-                return new GCMatteMetal();
-            case METAL:
-                return new GCMetal();
-            }
-        }
-        return null;
+    @Override
+    public GCType type() {
+        return GCType.METAL;
     }
 
 }

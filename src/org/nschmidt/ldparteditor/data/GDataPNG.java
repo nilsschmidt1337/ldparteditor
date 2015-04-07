@@ -49,7 +49,7 @@ public final class GDataPNG extends GData {
     public GDataPNG(String text, Vertex offset, BigDecimal angleA, BigDecimal angleB, BigDecimal angleC, Vertex scale, String texturePath) {
         this.text = text;
         this.texturePath = texturePath;
-        this.texture = new GTexture(TexType.PLANAR, texturePath, null, false, new Vector3f(), new Vector3f(), new Vector3f(), 0, 0);
+        this.texture = new GTexture(TexType.PLANAR, texturePath, null, 1, new Vector3f(), new Vector3f(), new Vector3f(), 0, 0);
         this.offset = offset;
         this.scale = scale;
         this.angleA = angleA;
@@ -105,7 +105,7 @@ public final class GDataPNG extends GData {
         GL11.glMultMatrix(matrix);
 
         final OpenGLRenderer ren = c3d.getRenderer();
-        texture.bind(c3d.isDrawingSolidMaterials(), GData.globalNegativeDeterminant ^ GData.globalInvertNext, true, ren, false);
+        texture.bind(c3d.isDrawingSolidMaterials(), GData.globalNegativeDeterminant ^ GData.globalInvertNext, true, ren, 0);
 
         float w;
         if (this.texture.getHeight() != 0f) {

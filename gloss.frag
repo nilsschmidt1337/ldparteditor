@@ -1,11 +1,13 @@
 uniform sampler2D colorMap;
 uniform sampler2D glossMap;
 uniform sampler2D cubeMap;
+uniform sampler2D cubeMapMatte;
+uniform sampler2D cubeMapMetal;
 uniform float alphaSwitch;
 uniform float normalSwitch;
 uniform float noTextureSwitch;
 uniform float noGlossMapSwitch;
-uniform float noCubeMapSwitch;
+uniform float cubeMapSwitch;
 uniform float noLightSwitch;
 varying vec3 normal, position;
 
@@ -90,7 +92,14 @@ if (az >= ax) {
 //uv.y = (pos.y + 1.0f) / 2.0f;
 
 
-   vec4   cubeColor = texture2D(cubeMap, uv);
+   vec4 cubeColor = vec4(0.0,0.0,0.0,0.0);
+   if (cubeMapSwitch < 2f) {
+      cubeColor = texture2D(cubeMap, uv);
+   } else if (cubeMapSwitch < 3f) {
+      cubeColor = texture2D(cubeMapMatte, uv);
+   } else {
+      cubeColor = texture2D(cubeMapMetal, uv);
+   }
    cubeColor = mix(cubeColor, col, cubeColor);
    gl_FragColor.r = cubeColor.r;
    gl_FragColor.g = cubeColor.g;
@@ -144,7 +153,7 @@ void main (void)
     lightAmbientDiffuse     += gl_FrontLightProduct[i].diffuse * max(dot(normal, lightDir), 0.0) * attenFactor;
     // specular
     vec3 r      = normalize(reflect(-lightDir, normal));
-    if (noCubeMapSwitch < 1.0f) {
+    if (cubeMapSwitch > 0.0f) {
        lightSpecular          += vec4(1.0f, 1.0f, 1.0f, 1.0f) * pow(max(dot(r, eyeDir), 0.0), gl_FrontMaterial.shininess) * attenFactor;
     } else {
        lightSpecular          += gl_FrontLightProduct[i].specular * pow(max(dot(r, eyeDir), 0.0), gl_FrontMaterial.shininess) * attenFactor;
@@ -177,7 +186,7 @@ void main (void)
           }
        } else {
           if (alphaSwitch > 0.0f) {
-             if (noCubeMapSwitch > 0.0f) {
+             if (cubeMapSwitch < 0.0f) {
                gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
              } else {
                MyFunction((gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular);
@@ -199,7 +208,7 @@ void main (void)
        } else {
           // OK
           if (alphaSwitch > 0.0f) {
-            if (noCubeMapSwitch > 0.0f) {
+            if (cubeMapSwitch < 0.0f) {
               gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
             } else {
               MyFunction((gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular);
