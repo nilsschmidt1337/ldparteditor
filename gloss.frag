@@ -186,7 +186,7 @@ void main (void)
           }
        } else {
           if (alphaSwitch > 0.0f) {
-             if (cubeMapSwitch < 0.0f) {
+             if (cubeMapSwitch < 1.0f) {
                gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
              } else {
                MyFunction((gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular);
@@ -208,7 +208,7 @@ void main (void)
        } else {
           // OK
           if (alphaSwitch > 0.0f) {
-            if (cubeMapSwitch < 0.0f) {
+            if (cubeMapSwitch < 1.0f) {
               gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
             } else {
               MyFunction((gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular);

@@ -35,6 +35,7 @@ import org.nschmidt.ldparteditor.data.colour.GCChrome;
 import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
 import org.nschmidt.ldparteditor.data.colour.GCMetal;
 import org.nschmidt.ldparteditor.data.colour.GCPearl;
+import org.nschmidt.ldparteditor.data.colour.GCRubber;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.TextTriangulator;
@@ -248,6 +249,9 @@ public enum View {
                                 colourFromIndex.put(index, colour);
                             } else if (line.contains(" CHROME")) { //$NON-NLS-1$
                                 GColour colour = new GColour(index, R, G, B, 1f, new GCChrome());
+                                colourFromIndex.put(index, colour);
+                            } else if (line.contains(" RUBBER")) { //$NON-NLS-1$
+                                GColour colour = new GColour(index, R, G, B, 1f, new GCRubber());
                                 colourFromIndex.put(index, colour);
                             } else if (line.contains(" MATTE_METALLIC")) { //$NON-NLS-1$
                                 GColour colour = new GColour(index, R, G, B, 1f, new GCMatteMetal());
