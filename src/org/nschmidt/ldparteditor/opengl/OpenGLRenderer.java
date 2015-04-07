@@ -703,6 +703,7 @@ public class OpenGLRenderer {
                                                                 float[] zHit = pr.TRIANGLE_INTERSECT(get3DCoordinatesFromScreen(x, y, z, w, h, vInverse), ray, tri);
                                                                 if (zHit != null) {
                                                                     Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], w, h, vM);
+                                                                    sz.setW(Math.round(zHit[3] * 1000f) * 1000f + zHit[4] * 1000f);
                                                                     hitSort.put(sz.z, sz);
                                                                     zSort.put(sz.z, tri);
                                                                 }
@@ -800,6 +801,46 @@ public class OpenGLRenderer {
                                                                         }
                                                                         break;
                                                                     }
+                                                                    case GLITTER:
+                                                                    {
+                                                                        // FIXME Needs implementation!
+                                                                        float uv = pos.w;
+                                                                        float u = Math.round(uv / 1000f) / 1000f;
+                                                                        float v = uv - u * 1000000f;
+                                                                        float a = ze[15];
+                                                                        float oneMinusAlpha = 1f - a;
+                                                                        if (lights) {
+                                                                            float resLight = light / 4f;
+                                                                            r = resLight + r;
+                                                                            g = resLight + g;
+                                                                            b = resLight + b;
+                                                                        }
+                                                                        r = u; // (r + lightSpecular) * a + rS * oneMinusAlpha;
+                                                                        g = v; // (g + lightSpecular)  * a + gS * oneMinusAlpha;
+                                                                        b = (b + lightSpecular) * a + bS * oneMinusAlpha;
+                                                                        break;
+                                                                    }
+                                                                    case SPECKLE:
+                                                                    {
+                                                                        // FIXME Needs implementation!
+                                                                        float uv = pos.w;
+                                                                        float u = Math.round(uv / 1000f) / 1000f;
+                                                                        float v = uv - u * 1000000f;
+                                                                        float a = ze[15];
+                                                                        float oneMinusAlpha = 1f - a;
+                                                                        if (lights) {
+                                                                            float resLight = light / 4f;
+                                                                            r = resLight + r;
+                                                                            g = resLight + g;
+                                                                            b = resLight + b;
+                                                                        }
+                                                                        r = u; // (r + lightSpecular) * a + rS * oneMinusAlpha;
+                                                                        g = v; // (g + lightSpecular)  * a + gS * oneMinusAlpha;
+                                                                        b = (b + lightSpecular) * a + bS * oneMinusAlpha;
+                                                                        break;
+                                                                    }
+                                                                    default:
+                                                                        break;
                                                                     }
 
                                                                     float[] point = new float[11];
@@ -930,6 +971,44 @@ public class OpenGLRenderer {
                                                                             }
                                                                             break;
                                                                         }
+                                                                        case GLITTER:
+                                                                        {
+                                                                            // FIXME Needs implementation!
+                                                                            float uv = pos.w;
+                                                                            float u = Math.round(uv / 1000f) / 1000f;
+                                                                            float v = uv - u * 1000000f;
+                                                                            float oneMinusAlpha = 1f - a;
+                                                                            if (lights) {
+                                                                                float resLight = light / 4f;
+                                                                                r = resLight + r;
+                                                                                g = resLight + g;
+                                                                                b = resLight + b;
+                                                                            }
+                                                                            r = u; // (r + lightSpecular) * a + point[0] * oneMinusAlpha;
+                                                                            g = v; // (g + lightSpecular)  * a + point[1] * oneMinusAlpha;
+                                                                            b = (b + lightSpecular) * a + point[2] * oneMinusAlpha;
+                                                                            break;
+                                                                        }
+                                                                        case SPECKLE:
+                                                                        {
+                                                                            // FIXME Needs implementation!
+                                                                            float uv = pos.w;
+                                                                            float u = Math.round(uv / 1000f) / 1000f;
+                                                                            float v = uv - u * 1000000f;
+                                                                            float oneMinusAlpha = 1f - a;
+                                                                            if (lights) {
+                                                                                float resLight = light / 4f;
+                                                                                r = resLight + r;
+                                                                                g = resLight + g;
+                                                                                b = resLight + b;
+                                                                            }
+                                                                            r = u; // (r + lightSpecular) * a + point[0] * oneMinusAlpha;
+                                                                            g = v; // (g + lightSpecular)  * a + point[1] * oneMinusAlpha;
+                                                                            b = (b + lightSpecular) * a + point[2] * oneMinusAlpha;
+                                                                            break;
+                                                                        }
+                                                                        default:
+                                                                            break;
                                                                         }
                                                                         point[0] = r;
                                                                         point[1] = g;
