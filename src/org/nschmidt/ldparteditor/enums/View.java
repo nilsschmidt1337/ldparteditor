@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.colour.GCChrome;
 import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
+import org.nschmidt.ldparteditor.data.colour.GCMetal;
 import org.nschmidt.ldparteditor.data.colour.GCPearl;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -250,6 +251,9 @@ public enum View {
                                 colourFromIndex.put(index, colour);
                             } else if (line.contains(" MATTE_METALLIC")) { //$NON-NLS-1$
                                 GColour colour = new GColour(index, R, G, B, 1f, new GCMatteMetal());
+                                colourFromIndex.put(index, colour);
+                            } else if (line.contains(" METAL")) { //$NON-NLS-1$
+                                GColour colour = new GColour(index, R, G, B, 1f, new GCMetal());
                                 colourFromIndex.put(index, colour);
                             } else if (line.contains(" PEARLESCENT")) { //$NON-NLS-1$
                                 GColour colour = new GColour(index, R, G, B, 1f, new GCPearl());

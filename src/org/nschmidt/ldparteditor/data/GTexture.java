@@ -61,7 +61,7 @@ public class GTexture {
     private String glossmap = ""; //$NON-NLS-1$
 
     private boolean glossy = false;
-    private int cuby = 0;
+    private int cubeMapIndex = 0;
 
     final private TexType type;
     private Vector3f point1 = new Vector3f();
@@ -78,7 +78,7 @@ public class GTexture {
     private Map<GData, UV> uvCache = new HashMap<GData, UV>();
     private Set<GData> cacheUsage = new HashSet<GData>();
 
-    public GTexture(TexType type, String texture, String glossmap, boolean useCubemap, Vector3f point1, Vector3f point2, Vector3f point3, float a, float b) {
+    public GTexture(TexType type, String texture, String glossmap, int useCubemap, Vector3f point1, Vector3f point2, Vector3f point3, float a, float b) {
         this.type = type;
         this.point1.set(point1);
         this.point2.set(point2);
@@ -86,7 +86,7 @@ public class GTexture {
         this.a = a;
         this.b = b;
         glossy = glossmap != null;
-        cuby = useCubemap ? 1 : 0;
+        cubeMapIndex = useCubemap;
         this.texture = texture;
         this.glossmap = glossmap;
     }
@@ -401,6 +401,8 @@ public class GTexture {
             int ID = OpenGlID.get(renderer);
             int ID_glossmap = OpenGlID_glossmap.get(renderer);
             int ID_cubemap = OpenGlID_cubemap.get(renderer);
+            int ID_cubemapMatte = OpenGlID_cubemapMatte.get(renderer);
+            int ID_cubemapMetal = OpenGlID_cubemapMetal.get(renderer);
             if (!disposed) {
                 uvCache.clear();
                 cacheUsage.clear();
@@ -408,12 +410,17 @@ public class GTexture {
                     GL11.glDeleteTextures(ID);
                 if (ID_glossmap != -1)
                     GL11.glDeleteTextures(ID_glossmap);
-                if (ID_cubemap != -1 && renderer.isLastTexture() && renderer.getC3D().getRenderMode() != 5)
-                    GL11.glDeleteTextures(ID_cubemap);
+                if (renderer.containsOnlyCubeMaps() && renderer.getC3D().getRenderMode() != 5) {
+                    if (ID_cubemap != -1) GL11.glDeleteTextures(ID_cubemap);
+                    if (ID_cubemapMatte != -1) GL11.glDeleteTextures(ID_cubemapMatte);
+                    if (ID_cubemapMetal != -1) GL11.glDeleteTextures(ID_cubemapMetal);
+                }
                 OpenGlDisposed.put(renderer, true);
                 OpenGlID.put(renderer, -1);
                 OpenGlID_glossmap.put(renderer, -1);
                 OpenGlID_cubemap.put(renderer, -1);
+                OpenGlID_cubemapMatte.put(renderer, -1);
+                OpenGlID_cubemapMetal.put(renderer, -1);
             }
         }
     }
@@ -429,7 +436,7 @@ public class GTexture {
         }
     }
 
-    public void bind(boolean drawSolidMaterials, boolean normalSwitch, boolean lightOn, OpenGLRenderer renderer, boolean useCubeMap) {
+    public void bind(boolean drawSolidMaterials, boolean normalSwitch, boolean lightOn, OpenGLRenderer renderer, int useCubeMap) {
 
         int ID = -1;
         int ID_glossmap = -1;
@@ -443,6 +450,8 @@ public class GTexture {
             ID = OpenGlID.get(renderer);
             ID_glossmap = OpenGlID_glossmap.get(renderer);
             ID_cubemap = OpenGlID_cubemap.get(renderer);
+            ID_cubemap_matte = OpenGlID_cubemapMatte.get(renderer);
+            ID_cubemap_metal = OpenGlID_cubemapMetal.get(renderer);
         } else {
             OpenGlDisposed.put(renderer, true);
         }
@@ -452,13 +461,26 @@ public class GTexture {
             ID = loadPNGTexture(texture, GL13.GL_TEXTURE0);
             if (glossy)
                 ID_glossmap = loadPNGTexture(glossmap, GL13.GL_TEXTURE1);
-            if (cuby > 0)
-                ID_cubemap = loadPNGTexture("cmap.png", GL13.GL_TEXTURE2); //$NON-NLS-1$
+            if (cubeMapIndex > 0) {
+                switch (cubeMapIndex) {
+                case 1:
+                    ID_cubemap = loadPNGTexture("cmap.png", GL13.GL_TEXTURE2); //$NON-NLS-1$
+                    break;
+                case 2:
+                    ID_cubemap_matte = loadPNGTexture("matte_metal.png", GL13.GL_TEXTURE3); //$NON-NLS-1$
+                    break;
+                case 3:
+                    ID_cubemap_metal = loadPNGTexture("metal.png", GL13.GL_TEXTURE4); //$NON-NLS-1$
+                    break;
+                }
+            }
             OpenGlDisposed.put(renderer, false);
             renderer.registerTexture(this);
             OpenGlID.put(renderer, ID);
             OpenGlID_glossmap.put(renderer, ID_glossmap);
             OpenGlID_cubemap.put(renderer, ID_cubemap);
+            OpenGlID_cubemapMatte.put(renderer, ID_cubemap_matte);
+            OpenGlID_cubemapMetal.put(renderer, ID_cubemap_metal);
         } else if (ID != -1) {
             accessTime = System.currentTimeMillis();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
@@ -472,7 +494,7 @@ public class GTexture {
             // images.
             GL20.glUniform1f(renderer.getNoTextureSwitch(), 0f);
             GL20.glUniform1f(renderer.getNoLightSwitch(), lightOn ? 0f : 1f);
-            GL20.glUniform1f(renderer.getNoCubeMapSwitch(), useCubeMap ? 0f : 1f);
+            GL20.glUniform1f(renderer.getCubeMapSwitch(), useCubeMap);
 
             if (glossy) {
                 GL13.glActiveTexture(GL13.GL_TEXTURE0 + 2);
@@ -482,10 +504,24 @@ public class GTexture {
             } else {
                 GL20.glUniform1f(renderer.getNoGlossMapSwitch(), 1f);
             }
-            if (cuby > 0) {
-                GL13.glActiveTexture(GL13.GL_TEXTURE0 + 4);
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap);
-                GL20.glUniform1i(renderer.getCubeMapLoc(), 4); // Texture unit 4 is for cube maps.
+            if (cubeMapIndex > 0) {
+                switch (cubeMapIndex) {
+                case 1:
+                    GL13.glActiveTexture(GL13.GL_TEXTURE0 + 4);
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap);
+                    GL20.glUniform1i(renderer.getCubeMapLoc(), 4); // Texture unit 4 is for cube maps.
+                    break;
+                case 2:
+                    GL13.glActiveTexture(GL13.GL_TEXTURE0 + 8);
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap_matte);
+                    GL20.glUniform1i(renderer.getCubeMapMatteLoc(), 8); // Texture unit 8 is for cube maps.
+                    break;
+                case 3:
+                    GL13.glActiveTexture(GL13.GL_TEXTURE0 + 16);
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap_metal);
+                    GL20.glUniform1i(renderer.getCubeMapMetalLoc(), 16); // Texture unit 16 is for cube maps.
+                    break;
+                }
             }
 
 
@@ -758,5 +794,9 @@ public class GTexture {
 
     public Vector4f getPoint3() {
         return new Vector4f(point3.x, point3.y, point3.z, 1f);
+    }
+
+    public int getCubeMapIndex() {
+        return cubeMapIndex;
     }
 }

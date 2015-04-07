@@ -24,7 +24,6 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.data.colour.GCType;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -866,7 +865,7 @@ public final class GData3 extends GData {
         }
     }
 
-    private void drawBFC_Colour2(Composite3D c3d, float r, float g, float b, float a, boolean useCubeMap) {
+    private void drawBFC_Colour2(Composite3D c3d, float r, float g, float b, float a, int useCubeMap) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -998,12 +997,27 @@ public final class GData3 extends GData {
             GColour c = View.getLDConfigColour(View.getLDConfigIndex(r, g, b));
             GColourType ct = c.getType();
             boolean hasColourType = ct != null;
-            boolean useCubeMap = hasColourType && ct.type().equals(GCType.CHROME);
+            int useCubeMap = 0;
+            if (hasColourType) {
+                switch (ct.type()) {
+                case CHROME:
+                    useCubeMap = 1;
+                    break;
+                case MATTE_METALLIC:
+                    useCubeMap = 2;
+                    break;
+                case METAL:
+                    useCubeMap = 3;
+                    break;
+                default:
+                    break;
+                }
+            }
             float r = this.r;
             float g = this.g;
             float b = this.b;
             float a = this.a;
-            if (hasColourType && !useCubeMap) {
+            if (hasColourType && useCubeMap < 1) {
                 a = 0.99f;
             }
             final OpenGLRenderer ren = c3d.getRenderer();
@@ -1012,7 +1026,7 @@ public final class GData3 extends GData {
                 GL20.glUniform1f(ren.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);
                 GL20.glUniform1f(ren.getNoTextureSwitch(), 1f);
                 GL20.glUniform1f(ren.getNoLightSwitch(), c3d.isLightOn() ? 0f : 1f);
-                GL20.glUniform1f(ren.getNoCubeMapSwitch(), useCubeMap ? 0f : 1f);
+                GL20.glUniform1f(ren.getCubeMapSwitch(), useCubeMap);
                 switch (GData.accumClip) {
                 case 0:
                     drawBFC_Colour2(c3d, r, g, b, a, useCubeMap);

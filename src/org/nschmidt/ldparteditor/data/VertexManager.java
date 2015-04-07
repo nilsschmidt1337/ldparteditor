@@ -9140,8 +9140,8 @@ public class VertexManager {
         this.selectedBgPictureIndex = selectedBgPictureIndex;
     }
 
-    public void setVertexAndNormal(float x, float y, float z, boolean negate, GData gd, boolean useCache) {
-
+    public void setVertexAndNormal(float x, float y, float z, boolean negate, GData gd, int useCubeMapCache) {
+        boolean useCache = useCubeMapCache > 0;
         // TODO Needs better caching since the connectivity information of TEXMAP data is unknown and the orientation of the normals can vary.
         Vector4f v;
         switch (gd.type()) {
