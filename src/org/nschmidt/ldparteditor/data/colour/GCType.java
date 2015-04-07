@@ -22,20 +22,15 @@ public enum GCType {
     ;
     public static boolean hasCubeMap(GCType t) {
         switch (t) {
+        case RUBBER:
         case CHROME:
-            return true;
-        case GLITTER:
-            return true;
         case MATTE_METALLIC:
-            break;
         case METAL:
             return true;
         case PEARL:
-            break;
-        case RUBBER:
-            break;
+        case GLITTER:
         case SPECKLE:
-            break;
+            return false;
         default:
             break;
         }
