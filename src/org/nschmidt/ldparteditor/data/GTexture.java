@@ -53,13 +53,15 @@ public class GTexture {
     private HashMap<OpenGLRenderer, Integer> OpenGlID = new HashMap<OpenGLRenderer, Integer>();
     private HashMap<OpenGLRenderer, Integer> OpenGlID_glossmap = new HashMap<OpenGLRenderer, Integer>();
     private HashMap<OpenGLRenderer, Integer> OpenGlID_cubemap = new HashMap<OpenGLRenderer, Integer>();
+    private HashMap<OpenGLRenderer, Integer> OpenGlID_cubemapMatte = new HashMap<OpenGLRenderer, Integer>();
+    private HashMap<OpenGLRenderer, Integer> OpenGlID_cubemapMetal = new HashMap<OpenGLRenderer, Integer>();
     private HashMap<OpenGLRenderer, Boolean> OpenGlDisposed = new HashMap<OpenGLRenderer, Boolean>();
 
     private String texture = ""; //$NON-NLS-1$
     private String glossmap = ""; //$NON-NLS-1$
 
     private boolean glossy = false;
-    private boolean cuby = false;
+    private int cuby = 0;
 
     final private TexType type;
     private Vector3f point1 = new Vector3f();
@@ -76,12 +78,6 @@ public class GTexture {
     private Map<GData, UV> uvCache = new HashMap<GData, UV>();
     private Set<GData> cacheUsage = new HashSet<GData>();
 
-
-    private static int cubeMapWidth = 1;
-    private static int cubeMapHeight = 1;
-    private static float[] cubeMap;
-
-
     public GTexture(TexType type, String texture, String glossmap, boolean useCubemap, Vector3f point1, Vector3f point2, Vector3f point3, float a, float b) {
         this.type = type;
         this.point1.set(point1);
@@ -90,7 +86,7 @@ public class GTexture {
         this.a = a;
         this.b = b;
         glossy = glossmap != null;
-        cuby = useCubemap;
+        cuby = useCubemap ? 1 : 0;
         this.texture = texture;
         this.glossmap = glossmap;
     }
@@ -438,6 +434,8 @@ public class GTexture {
         int ID = -1;
         int ID_glossmap = -1;
         int ID_cubemap = -1;
+        int ID_cubemap_matte = -1;
+        int ID_cubemap_metal = -1;
         boolean disposed = true;
 
         if (OpenGlDisposed.containsKey(renderer)) {
@@ -454,7 +452,7 @@ public class GTexture {
             ID = loadPNGTexture(texture, GL13.GL_TEXTURE0);
             if (glossy)
                 ID_glossmap = loadPNGTexture(glossmap, GL13.GL_TEXTURE1);
-            if (cuby)
+            if (cuby > 0)
                 ID_cubemap = loadPNGTexture("cmap.png", GL13.GL_TEXTURE2); //$NON-NLS-1$
             OpenGlDisposed.put(renderer, false);
             renderer.registerTexture(this);
@@ -484,7 +482,7 @@ public class GTexture {
             } else {
                 GL20.glUniform1f(renderer.getNoGlossMapSwitch(), 1f);
             }
-            if (cuby) {
+            if (cuby > 0) {
                 GL13.glActiveTexture(GL13.GL_TEXTURE0 + 4);
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap);
                 GL20.glUniform1i(renderer.getCubeMapLoc(), 4); // Texture unit 4 is for cube maps.
@@ -590,16 +588,10 @@ public class GTexture {
                     for (final byte b : tbytes) {
                         bytes.add(b);
                     }
-                    if (textureUnit == GL13.GL_TEXTURE2 && getCubeMap() == null) {
-                        // Store the cubemap for raytracer access
-                        setCubeMapHeight(tHeight);
-                        setCubeMapWidth(tWidth);
-                        setCubeMap(tbytes);
-                    }
                 }
 
                 // TODO angle dependent adjustment (alpha fill)
-                if (textureUnit != GL13.GL_TEXTURE2 && (type == TexType.CYLINDRICAL || type == TexType.SPHERICAL)) {
+                if (textureUnit != GL13.GL_TEXTURE2 && textureUnit != GL13.GL_TEXTURE3 && textureUnit != GL13.GL_TEXTURE4 && (type == TexType.CYLINDRICAL || type == TexType.SPHERICAL)) {
 
                     int delta = (int) (tWidth * (Math.PI / a - 1f) / 2f);
                     if (tWidth + delta > max || delta / a > max)
@@ -767,34 +759,4 @@ public class GTexture {
     public Vector4f getPoint3() {
         return new Vector4f(point3.x, point3.y, point3.z, 1f);
     }
-
-    public static int getCubeMapWidth() {
-        return cubeMapWidth;
-    }
-
-    public static void setCubeMapWidth(int cubeMapWidth) {
-        GTexture.cubeMapWidth = cubeMapWidth;
-    }
-
-    public static int getCubeMapHeight() {
-        return cubeMapHeight;
-    }
-
-    public static void setCubeMapHeight(int cubeMapHeight) {
-        GTexture.cubeMapHeight = cubeMapHeight;
-    }
-
-    public static float[] getCubeMap() {
-        return cubeMap;
-    }
-
-    public static void setCubeMap(byte[] cubeMap) {
-        float[] map = new float[cubeMap.length];
-        for (int i = 0; i < cubeMap.length; i++) {
-            float f = cubeMap[i];
-            map[i] = f / 255f;
-        }
-        GTexture.cubeMap = map;
-    }
-
 }

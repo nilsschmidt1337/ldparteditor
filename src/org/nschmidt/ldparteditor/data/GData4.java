@@ -924,14 +924,11 @@ public final class GData4 extends GData {
         }
     }
 
-    private void drawBFC_Colour2(Composite3D c3d, float a) {
+    private void drawBFC_Colour2(Composite3D c3d, float r, float g, float b, float a, boolean useCubeMap) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
-        GColour c = View.getLDConfigColour(View.getLDConfigIndex(r, g, b));
-        GColourType ct = c.getType();
-        boolean useCubeMap = ct != null && ct.type().equals(GCType.CHROME);
         switch (a < 1f ? BFC.NOCERTIFY : GData.localWinding) {
         case BFC.CCW:
             if (GData.globalNegativeDeterminant) {
@@ -1048,6 +1045,9 @@ public final class GData4 extends GData {
             GColourType ct = c.getType();
             boolean hasColourType = ct != null;
             boolean useCubeMap = hasColourType && ct.type().equals(GCType.CHROME);
+            float r = this.r;
+            float g = this.g;
+            float b = this.b;
             float a = this.a;
             if (hasColourType && !useCubeMap) {
                 a = 0.99f;
@@ -1061,12 +1061,12 @@ public final class GData4 extends GData {
                 GL20.glUniform1f(ren.getNoCubeMapSwitch(), useCubeMap ? 0f : 1f);
                 switch (GData.accumClip) {
                 case 0:
-                    drawBFC_Colour2(c3d, a);
+                    drawBFC_Colour2(c3d, r, g, b, a, useCubeMap);
                     break;
                 default:
                     byte tmp = GData.localWinding;
                     GData.localWinding = BFC.NOCERTIFY;
-                    drawBFC_Colour2(c3d, a);
+                    drawBFC_Colour2(c3d, r, g, b, a, useCubeMap);
                     GData.localWinding = tmp;
                     break;
                 }
