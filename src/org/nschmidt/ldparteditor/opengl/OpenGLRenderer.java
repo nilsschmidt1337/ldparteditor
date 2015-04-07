@@ -40,7 +40,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -279,7 +278,7 @@ public class OpenGLRenderer {
             Matrix4f viewport_transform = new Matrix4f();
             Matrix4f.setIdentity(viewport_transform);
 
-            float zoom = c3d.getZoom();
+            final float zoom = c3d.getZoom();
             Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewport_transform, viewport_transform);
             Matrix4f viewport_rotation = c3d.getRotation();
             viewport_rotation.store(rotation);
@@ -481,6 +480,8 @@ public class OpenGLRenderer {
 
                                 final float[] ray;
                                 final Vector3f ray3f;
+                                final Vector3f ray3f2 = new Vector3f(-20f, -20f, 100f);
+                                ray3f2.normalise();
                                 final Matrix4f vInverse = c3d.getViewport_Inverse();
                                 final Matrix4f vM = c3d.getViewport();
                                 final float z = 100f;
@@ -496,16 +497,6 @@ public class OpenGLRenderer {
 
                                 needData.decrementAndGet();
                                 needData.decrementAndGet();
-
-                                {
-                                    float cw = GTexture.getCubeMapWidth();
-                                    float ch = GTexture.getCubeMapHeight();
-                                    float[] cmap  = GTexture.getCubeMap();
-                                    if (cmap == null) continue;
-                                    this.cw[0] = cw;
-                                    this.ch[0] = ch;
-                                    this.cmap[0] = cmap;
-                                }
 
                                 NLogger.debug(getClass(), "Initialised raytracer."); //$NON-NLS-1$
                                 final boolean lights = c3d.isLightOn();
@@ -761,11 +752,12 @@ public class OpenGLRenderer {
                                                                     point[10] = sy;
                                                                     points2.add(point);
                                                                 } else {
-                                                                    // Compute light (without specular!)
+                                                                    // Compute light (with specular!)
                                                                     float light = 0f;
-                                                                    Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
+                                                                    float lightSpecular = 0f;
+                                                                    final Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
+                                                                    final Vector4f pos = hitSort.get(hitSort.firstKey());
                                                                     if (lights) {
-                                                                        Vector4f pos = hitSort.get(hitSort.firstKey());
                                                                         Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
                                                                         Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
                                                                         Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
@@ -782,6 +774,7 @@ public class OpenGLRenderer {
                                                                         light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
                                                                         light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
                                                                         light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
+                                                                        lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
                                                                     }
                                                                     float r = ze[12];
                                                                     float g = ze[13];
@@ -802,18 +795,29 @@ public class OpenGLRenderer {
                                                                         g = g + Math.abs(sp + v.y * spI) * rnd.nextFloat() / 4f;
                                                                         b = b + Math.abs(sp + v.z * spI) * rnd.nextFloat() / 4f;
                                                                         if (lights) {
-                                                                            r = light / 4f + r;
-                                                                            g = light / 4f + g;
-                                                                            b = light / 4f + b;
+                                                                            r = (light + lightSpecular) / 4f + r;
+                                                                            g = (light + lightSpecular) / 4f + g;
+                                                                            b = (light + lightSpecular) / 4f + b;
                                                                         }
                                                                         break;
                                                                     }
                                                                     case MATTE_METALLIC:
                                                                     {
-                                                                        r = light + r;
-                                                                        g = light + g;
-                                                                        b = light + b;
-                                                                        break;
+                                                                        Vector3f normal2 = new Vector3f(
+                                                                                normal.x * (.8f + .2f * tRnd.nextFloat()),
+                                                                                normal.y * (.8f + .2f * tRnd.nextFloat()),
+                                                                                normal.z * (.8f + .2f * tRnd.nextFloat())
+                                                                                );
+                                                                        float sp = Math.abs(Vector3f.dot(normal2, ray3f2)) / 10f;
+                                                                        r = r + sp;
+                                                                        g = g + sp;
+                                                                        b = b + sp;
+                                                                        if (lights) {
+                                                                            float effLight = light / 3f -.2f;
+                                                                            r = effLight + r;
+                                                                            g = effLight + g;
+                                                                            b = (effLight + .1f) * 1.1f + b + lightSpecular * 2f;
+                                                                        }
                                                                     }
                                                                     }
 
@@ -858,7 +862,8 @@ public class OpenGLRenderer {
                                                                             point[1] = gS;
                                                                             point[2] = bS;
                                                                         } else if (k < size) {
-                                                                            // Compute light (without specular!)
+                                                                            // Compute light (with specular!)
+                                                                            float lightSpecular = 0f;
                                                                             if (lights) {
                                                                                 Vector4f pos = hitSort.get(f);
                                                                                 Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
@@ -878,28 +883,32 @@ public class OpenGLRenderer {
                                                                                 light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
                                                                                 light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
                                                                                 light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
-
+                                                                                lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
                                                                                 // compute final color
                                                                                 r = r + light;
                                                                                 g = g + light;
                                                                                 b = b + light;
                                                                             }
 
-                                                                            point[0] = r * a + point[0] * oneMinusAlpha;
-                                                                            point[1] = g * a + point[1] * oneMinusAlpha;
-                                                                            point[2] = b * a + point[2] * oneMinusAlpha;
+                                                                            point[0] = (r + lightSpecular) * a + point[0] * oneMinusAlpha;
+                                                                            point[1] = (g + lightSpecular)  * a + point[1] * oneMinusAlpha;
+                                                                            point[2] = (b + lightSpecular) * a + point[2] * oneMinusAlpha;
 
                                                                         } else {
-                                                                            point[0] = rT * a + point[0] * oneMinusAlpha;
-                                                                            point[1] = gT * a + point[1] * oneMinusAlpha;
-                                                                            point[2] = bT * a + point[2] * oneMinusAlpha;
+                                                                            float lightSpecular = 0f;
+                                                                            Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
+                                                                            lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
+                                                                            point[0] = (rT + lightSpecular) * a + point[0] * oneMinusAlpha;
+                                                                            point[1] = (gT + lightSpecular) * a + point[1] * oneMinusAlpha;
+                                                                            point[2] = (bT + lightSpecular) * a + point[2] * oneMinusAlpha;
                                                                         }
                                                                     } else {
-                                                                        // Compute light (without specular!)
+                                                                        // Compute light (with specular!)
                                                                         float light = 0f;
-                                                                        Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
+                                                                        float lightSpecular = 0f;
+                                                                        final Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
+                                                                        final Vector4f pos = hitSort.get(hitSort.firstKey());
                                                                         if (lights) {
-                                                                            Vector4f pos = hitSort.get(hitSort.firstKey());
                                                                             Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
                                                                             Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
                                                                             Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
@@ -916,6 +925,7 @@ public class OpenGLRenderer {
                                                                             light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
                                                                             light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
                                                                             light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
+                                                                            lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
                                                                         }
                                                                         switch (ct.type()) {
                                                                         case PEARL:
@@ -933,18 +943,29 @@ public class OpenGLRenderer {
                                                                             g = g + Math.abs(sp + v.y * spI) * rnd.nextFloat() / 4f;
                                                                             b = b + Math.abs(sp + v.z * spI) * rnd.nextFloat() / 4f;
                                                                             if (lights) {
-                                                                                r = light / 4f + r;
-                                                                                g = light / 4f + g;
-                                                                                b = light / 4f + b;
+                                                                                r = (light + lightSpecular) / 4f + r;
+                                                                                g = (light + lightSpecular) / 4f + g;
+                                                                                b = (light + lightSpecular) / 4f + b;
                                                                             }
                                                                             break;
                                                                         }
                                                                         case MATTE_METALLIC:
                                                                         {
-                                                                            r = light + r;
-                                                                            g = light + g;
-                                                                            b = light + b;
-                                                                            break;
+                                                                            Vector3f normal2 = new Vector3f(
+                                                                                    normal.x * (.8f + .2f * tRnd.nextFloat()),
+                                                                                    normal.y * (.8f + .2f * tRnd.nextFloat()),
+                                                                                    normal.z * (.8f + .2f * tRnd.nextFloat())
+                                                                                    );
+                                                                            float sp = Math.abs(Vector3f.dot(normal2, ray3f2)) / 10f;
+                                                                            r = r + sp;
+                                                                            g = g + sp;
+                                                                            b = b + sp;
+                                                                            if (lights) {
+                                                                                float effLight = light / 3f -.2f;
+                                                                                r = effLight + r;
+                                                                                g = effLight + g;
+                                                                                b = (effLight + .1f) * 1.1f + b + lightSpecular * 2f;
+                                                                            }
                                                                         }
                                                                         }
                                                                         point[0] = r;
@@ -1060,78 +1081,6 @@ public class OpenGLRenderer {
                             relPos.w = 1.0f;
                             Matrix4f.transform(v_inverse, relPos, relPos);
                             return relPos;
-                        }
-
-                        private float[] textureCube(Vector3f pos) {
-                            float[] r = new float[3];
-
-                            Vector2f uv = new Vector2f(0f, 0f);
-
-                            float ax = Math.abs(pos.x) + 0.0001f;
-                            float ay = Math.abs(pos.y) + 0.0001f;
-                            float az = Math.abs(pos.z) + 0.0001f;
-
-                            /*
-                            Cubemap UV calculation for the +X layer
-                            U = ((-Z/|X|) + 1)/2
-                            V = ((-Y/|X|) + 1)/2
-                             */
-
-                            // Standard Cubemap approach
-                            if (ax >= ay) {
-                                if (ax >= az) {
-                                    // X
-                                    if (pos.x >= 0f) {
-                                        uv.x = (-pos.z / ax + 1.0f) / 2.0f;
-                                        uv.y = (pos.y / ax + 1.0f) / 2.0f;
-                                        uv.x = uv.x * 0.25f + 0.5f;
-                                        uv.y = uv.y * 0.33f + 0.33f;
-                                    } else {
-                                        uv.x = (-pos.z / ax + 1.0f) / 2.0f;
-                                        uv.y = (pos.y / ax + 1.0f) / 2.0f;
-                                        uv.x = uv.x * 0.25f;
-                                        uv.y = uv.y * 0.33f + 0.33f;
-                                    }
-                                }
-                            }
-                            if (ay >= ax) {
-                                if (ay >= az) {
-                                    // Y
-                                    if (pos.y >= 0f) {
-                                        uv.x = (pos.x / ay + 1.0f) / 2.0f;
-                                        uv.y = (pos.z / ay + 1.0f) / 2.0f;
-                                        uv.x = uv.x * 0.25f + 0.25f;
-                                        uv.y = uv.y * 0.33f + 0.66f;
-                                    } else {
-                                        uv.x = (pos.x / ay + 1.0f) / 2.0f;
-                                        uv.y = (pos.z / ay + 1.0f) / 2.0f;
-                                        uv.x = uv.x * 0.25f + 0.25f;
-                                        uv.y = uv.y * 0.33f;
-                                    }
-                                }
-                            }
-                            if (az >= ax) {
-                                if (az >= ay) {
-                                    // Z
-                                    if (pos.z >= 0f) {
-                                        uv.x = (pos.x / az + 1.0f) / 2.0f;
-                                        uv.y = (pos.y / az + 1.0f) / 2.0f;
-                                        uv.x = uv.x * 0.25f + 0.25f;
-                                        uv.y = uv.y * 0.33f + 0.33f;
-                                    } else {
-                                        uv.x = (pos.x / az + 1.0f) / 2.0f;
-                                        uv.y = (pos.y / az + 1.0f) / 2.0f;
-                                        uv.x = uv.x * 0.25f + 0.75f;
-                                        uv.y = uv.y * 0.33f + 0.33f;
-                                    }
-                                }
-                            }
-                            int index = Math.round(uv.x * cw[0]) * 4 + (int)cw[0] * Math.round(uv.y * ch[0]) * 4;
-                            index = cmap[0].length - Math.max(cmap[0].length - index, 0);
-                            r[0] = cmap[0][index];
-                            r[1] = cmap[0][index + 1];
-                            r[2] = cmap[0][index + 2];
-                            return r;
                         }
                     });
                     raytracer.start();
