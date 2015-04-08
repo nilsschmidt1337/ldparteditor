@@ -303,7 +303,7 @@ public final class DatFile {
         final boolean modified = vertices.isModified();
         if (modified || Project.getUnsavedFiles().contains(this)) {
             if (modified) {
-                StringBuilder sb = StringHelper.useAgain();
+                StringBuilder sb = new StringBuilder();
                 GData data2draw = drawChainAnchor;
                 while ((data2draw = data2draw.getNext()) != null && data2draw.getNext() != null) {
                     sb.append(data2draw.toString());
@@ -733,7 +733,7 @@ public final class DatFile {
                 lines = new String[]{""}; //$NON-NLS-1$
             }
         } else {
-            StringBuilder sb = StringHelper.useAgain();
+            StringBuilder sb = new StringBuilder();
             ArrayList<String> lines2 = new ArrayList<String>(4096);
             try {
                 UTF8BufferedReader reader = new UTF8BufferedReader(this.getOldName());
