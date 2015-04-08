@@ -94,6 +94,9 @@ public class OpenGLRenderer {
 
     private final Lock lock = new ReentrantLock();
 
+    private final Lock lockSpeckle = new ReentrantLock();
+    private final Lock lockGlitter = new ReentrantLock();
+
     private final AtomicBoolean alive = new AtomicBoolean(true);
     private final AtomicInteger needData = new AtomicInteger(0);
     private Thread raytracer = null;
@@ -661,6 +664,24 @@ public class OpenGLRenderer {
 
                                 final ArrayList<float[]> points = new ArrayList<float[]>(10000);
 
+
+                                final ArrayList<float[]> speckles = new ArrayList<float[]>(100);
+                                final ArrayList<float[]> glitters = new ArrayList<float[]>(100);
+
+                                final float[] bbX_min_speckles = new float[]{Float.MAX_VALUE};
+                                final float[] bbX_max_speckles = new float[]{-Float.MAX_VALUE};
+                                final float[] bbY_min_speckles = new float[]{Float.MAX_VALUE};
+                                final float[] bbY_max_speckles = new float[]{-Float.MAX_VALUE};
+                                final float[] bbZ_min_speckles = new float[]{Float.MAX_VALUE};
+                                final float[] bbZ_max_speckles = new float[]{-Float.MAX_VALUE};
+
+                                final float[] bbX_min_glitters = new float[]{Float.MAX_VALUE};
+                                final float[] bbX_max_glitters = new float[]{-Float.MAX_VALUE};
+                                final float[] bbY_min_glitters = new float[]{Float.MAX_VALUE};
+                                final float[] bbY_max_glitters = new float[]{-Float.MAX_VALUE};
+                                final float[] bbZ_min_glitters = new float[]{Float.MAX_VALUE};
+                                final float[] bbZ_max_glitters = new float[]{-Float.MAX_VALUE};
+
                                 // FIXME Needs implementation
 
                                 // Light positions
@@ -804,7 +825,7 @@ public class OpenGLRenderer {
                                                                     }
                                                                     case GLITTER:
                                                                     {
-                                                                        // FIXME Needs implementation!
+                                                                        // FIXME @Needs implementation!
                                                                         float uv = pos.w;
                                                                         float u = Math.round(uv / 1000f) / 1000f;
                                                                         float v = (uv - u * 1000000f) / 1000f;
@@ -823,7 +844,7 @@ public class OpenGLRenderer {
                                                                     }
                                                                     case SPECKLE:
                                                                     {
-                                                                        // FIXME Needs implementation!
+                                                                        // FIXME @Needs implementation!
                                                                         float uv = pos.w;
                                                                         float u = Math.round(uv / 1000f) / 1000f;
                                                                         float v = (uv - u * 1000000f) / 1000f;
@@ -976,47 +997,16 @@ public class OpenGLRenderer {
                                                                         {
 
                                                                             GCGlitter type = (GCGlitter) ct;
+                                                                            Random rnd = new Random((long) (129642643f * (1f + ze[9]) * (1f + ze[10]) * (1f + ze[11])));
+                                                                            // FIXME ! Needs implementation!
 
-                                                                            float fraction = type.getFraction();
+                                                                            try {
+                                                                                lockGlitter.lock();
 
-                                                                            int cnx = (int) ((ze[9] - ze[9] % fraction) * 100f);
-                                                                            int cny = (int) ((ze[10] - ze[10] % fraction) * 100f);
-                                                                            int cnz = (int) ((ze[11] - ze[11] % fraction) * 100f);
-
-                                                                            Random rnd = new Random((long) (129642643f * (1f + cnx) * (1f + cny) * (1f + cnz)));
-
-                                                                            float min = type.getMinSize();
-                                                                            float delta = type.getMaxSize() - min;
-
-                                                                            // FIXME Needs implementation!
-                                                                            float uv = pos.w;
-                                                                            float u = Math.round(uv / 1000f) / 1000f;
-                                                                            float v = (uv - u * 1000000f) / 1000f;
-
-                                                                            float dx = ze[0] - ze[3];
-                                                                            float dy = ze[1] - ze[4];
-                                                                            float dz = ze[2] - ze[5];
-                                                                            float scaleFactor = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-                                                                            float rSquare = min + rnd.nextFloat() * delta;
-
-                                                                            if (scaleFactor < rSquare) {
-                                                                                if (rnd.nextBoolean()) {
-                                                                                    r = type.getR();
-                                                                                    g = type.getG();
-                                                                                    b = type.getB();
-                                                                                }
-                                                                            } else {
-                                                                                rSquare = rSquare / type.getMaxSize();
-                                                                                rSquare = rSquare * rSquare;
-                                                                                if (u * u + v * v < rSquare) {
-                                                                                    if (rnd.nextBoolean()) {
-                                                                                        r = type.getR();
-                                                                                        g = type.getG();
-                                                                                        b = type.getB();
-                                                                                    }
-                                                                                }
+                                                                            } finally {
+                                                                                lockGlitter.unlock();
                                                                             }
+
                                                                             float oneMinusAlpha = 1f - a;
                                                                             if (lights) {
                                                                                 float resLight = light / 4f;
@@ -1035,16 +1025,45 @@ public class OpenGLRenderer {
                                                                         {
                                                                             GCSpeckle type = (GCSpeckle) ct;
 
-                                                                            Random rnd = new Random((long) ((ze[0] * pos.x - ze[0] % (.000001f / zoom)) * (ze[1] * pos.y - ze[1] % (.000001f / zoom)) * 129642643f * (1f + ze[9]) * (1f + ze[10]) * (1f + ze[11])));
-
-                                                                            Random rnd2 = new Random(rnd.nextLong() + x + 31 * y);
+                                                                            Random rnd = new Random((long) (129642643f * (1f + ze[9]) * (1f + ze[10]) * (1f + ze[11])));
                                                                             // FIXME !!! Needs implementation!
-                                                                            if (rnd2.nextFloat() * zoom * 100000f < type.getFraction()) {
-                                                                                r = type.getR();
-                                                                                g = type.getG();
-                                                                                b = type.getB();
+
+                                                                            {
+                                                                                final int sSize = speckles.size();
+                                                                                for (int l = 0; l < sSize; l++) {
+                                                                                    rnd.nextFloat();
+                                                                                }
                                                                             }
 
+                                                                            float radi = type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * rnd.nextFloat();
+                                                                            // Squared distance..
+                                                                            radi = radi * radi;
+                                                                            boolean hit = false;
+                                                                            boolean buildable = true;
+                                                                            final float px = pos.x;
+                                                                            final float py = pos.y;
+                                                                            final float pz = pos.z;
+                                                                            try {
+                                                                                lockSpeckle.lock();
+                                                                                for (float[] speckle : speckles) {
+                                                                                    float dx = speckle[0] - px;
+                                                                                    float dy = speckle[1] - py;
+                                                                                    float dz = speckle[2] - pz;
+                                                                                    float dist = dx * dx + dy * dy + dz * dz;
+                                                                                    if (dist < speckle[3]) {
+                                                                                        hit = true;
+                                                                                        break;
+                                                                                    }
+                                                                                    if (buildable && dist < radi) {
+                                                                                        buildable = false;
+                                                                                    }
+                                                                                }
+                                                                                if (buildable && !hit) {
+                                                                                    speckles.add(new float[]{px, py, pz, radi});
+                                                                                }
+                                                                            } finally {
+                                                                                lockSpeckle.unlock();
+                                                                            }
 
                                                                             float oneMinusAlpha = 1f - a;
                                                                             if (lights) {
@@ -1097,7 +1116,7 @@ public class OpenGLRenderer {
                                                         skip = size;
                                                         try {
                                                             lock.lock();
-                                                            // FIXME Update renderedPoints here!
+                                                            // Update renderedPoints here!
                                                             renderedPoints[0] = r;
                                                         } finally {
                                                             lock.unlock();

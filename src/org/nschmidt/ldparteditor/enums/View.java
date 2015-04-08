@@ -223,7 +223,7 @@ public enum View {
             colourFromIndex.clear();
             colourNameFromIndex.clear();
             Pattern pAlpha = Pattern.compile("ALPHA\\s+\\d+"); //$NON-NLS-1$
-            Pattern pFraction = Pattern.compile("FRACTION\\s+\\d+.?\\d*"); //$NON-NLS-1$
+            Pattern pFraction = Pattern.compile("VFRACTION\\s+\\d+.?\\d*"); //$NON-NLS-1$
             Pattern pSize = Pattern.compile("SIZE\\s+\\d+.?\\d*"); //$NON-NLS-1$
             Pattern pMinSize = Pattern.compile("MINSIZE\\s+\\d+.?\\d*"); //$NON-NLS-1$
             Pattern pMaxSize = Pattern.compile("MAXSIZE\\s+\\d+.?\\d*"); //$NON-NLS-1$
@@ -265,7 +265,7 @@ public enum View {
 
                                         m2.find();
 
-                                        float fraction = Float.parseFloat(m2.group().replaceAll("FRACTION\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
+                                        float fraction = Float.parseFloat(m2.group().replaceAll("VFRACTION\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
                                         float minSize = 0f;
                                         float maxSize = 0f;
                                         if (!m4.find()) {
