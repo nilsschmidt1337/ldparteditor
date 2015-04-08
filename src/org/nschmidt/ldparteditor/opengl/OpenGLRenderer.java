@@ -671,20 +671,6 @@ public class OpenGLRenderer {
                                 final HashMap<float[], Long> specklesCreation = new HashMap<float[], Long>();
                                 final HashMap<float[], Long> glittersCreation = new HashMap<float[], Long>();
 
-                                final float[] bbX_min_speckles = new float[]{Float.MAX_VALUE};
-                                final float[] bbX_max_speckles = new float[]{-Float.MAX_VALUE};
-                                final float[] bbY_min_speckles = new float[]{Float.MAX_VALUE};
-                                final float[] bbY_max_speckles = new float[]{-Float.MAX_VALUE};
-                                final float[] bbZ_min_speckles = new float[]{Float.MAX_VALUE};
-                                final float[] bbZ_max_speckles = new float[]{-Float.MAX_VALUE};
-
-                                final float[] bbX_min_glitters = new float[]{Float.MAX_VALUE};
-                                final float[] bbX_max_glitters = new float[]{-Float.MAX_VALUE};
-                                final float[] bbY_min_glitters = new float[]{Float.MAX_VALUE};
-                                final float[] bbY_max_glitters = new float[]{-Float.MAX_VALUE};
-                                final float[] bbZ_min_glitters = new float[]{Float.MAX_VALUE};
-                                final float[] bbZ_max_glitters = new float[]{-Float.MAX_VALUE};
-
                                 // FIXME Needs implementation
 
                                 // Light positions
