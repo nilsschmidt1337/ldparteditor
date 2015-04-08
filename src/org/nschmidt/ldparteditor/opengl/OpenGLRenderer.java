@@ -1024,46 +1024,38 @@ public class OpenGLRenderer {
                                                                         case SPECKLE:
                                                                         {
                                                                             GCSpeckle type = (GCSpeckle) ct;
-
-                                                                            Random rnd = new Random((long) (129642643f * (1f + ze[9]) * (1f + ze[10]) * (1f + ze[11])));
                                                                             // FIXME !!! Needs implementation!
                                                                             final int sSize = speckles.size();
-                                                                            {
-                                                                                for (int l = 0; l < sSize; l++) {
-                                                                                    rnd.nextFloat();
-                                                                                }
-                                                                            }
-
-                                                                            final float scale = 1f;
-                                                                            float radi = type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * rnd.nextFloat();
+                                                                            float radi = 1000f * (type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat());
                                                                             // Squared distance..
-                                                                            radi = radi * radi * scale * scale;
                                                                             boolean hit = false;
-                                                                            boolean buildable = sSize < 1;
-                                                                            final float px = pos.x * scale;
-                                                                            final float py = pos.y * scale;
-                                                                            final float pz = pos.z * scale;
+                                                                            final int speckleCount = 10;
+                                                                            boolean buildable = sSize < speckleCount;
+                                                                            Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, w, h, vInverse);
+                                                                            final float px = v.x;
+                                                                            final float py = v.y;
+                                                                            final float pz = v.z;
                                                                             try {
-                                                                                if (sSize < 1) lockSpeckle.lock();
+                                                                                if (sSize < 10) lockSpeckle.lock();
                                                                                 for (float[] speckle : speckles) {
-                                                                                    float dx = speckle[0] - px;
-                                                                                    float dy = speckle[1] - py;
-                                                                                    float dz = speckle[2] - pz;
-                                                                                    float dist = dx * dx + dy * dy + dz * dz;
+                                                                                    double dx = speckle[0] - px;
+                                                                                    double dy = speckle[1] - py;
+                                                                                    double dz = speckle[2] - pz;
+                                                                                    float dist = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
                                                                                     if (dist < speckle[3]) {
                                                                                         hit = true;
                                                                                         break;
                                                                                     }
-                                                                                    if (buildable && dist < radi) {
-                                                                                        buildable = false;
-                                                                                    }
+                                                                                    //                                                                                    if (buildable && dist < radi) {
+                                                                                    //                                                                                        buildable = false;
+                                                                                    //                                                                                    }
                                                                                 }
                                                                                 if (buildable && !hit) {
-                                                                                    speckles.add(new float[]{47.5f, 0, 0, 10000f});
-                                                                                    if (sSize == 1) lockSpeckle.unlock();
+                                                                                    speckles.add(new float[]{px, py, pz, radi});
+                                                                                    if (sSize == speckleCount) lockSpeckle.unlock();
                                                                                 }
                                                                             } finally {
-                                                                                if (sSize < 1) lockSpeckle.unlock();
+                                                                                if (sSize < speckleCount) lockSpeckle.unlock();
                                                                             }
 
                                                                             if (hit) {
@@ -1196,6 +1188,16 @@ public class OpenGLRenderer {
                         }
 
                         private Vector4f get3DCoordinatesFromScreen(int x, int y, float z, int w, int h, Matrix4f v_inverse) {
+                            Vector4f relPos = new Vector4f();
+                            relPos.x = (0.5f * w - x) / View.PIXEL_PER_LDU;
+                            relPos.y = (0.5f * h - y) / View.PIXEL_PER_LDU;
+                            relPos.z = z;
+                            relPos.w = 1.0f;
+                            Matrix4f.transform(v_inverse, relPos, relPos);
+                            return relPos;
+                        }
+
+                        private Vector4f get3DCoordinatesFromScreen(float x, float y, float z, int w, int h, Matrix4f v_inverse) {
                             Vector4f relPos = new Vector4f();
                             relPos.x = (0.5f * w - x) / View.PIXEL_PER_LDU;
                             relPos.y = (0.5f * h - y) / View.PIXEL_PER_LDU;
