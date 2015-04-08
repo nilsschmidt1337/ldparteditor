@@ -36,7 +36,7 @@ public enum NLogger {
     INSTANCE;
 
     // TODO _Set debug variable to false on release!
-    public final static boolean DEBUG = true;
+    public final static boolean DEBUG = false;
     /**
      * The error counter. If it reaches 100 within one session, no more caught
      * errors will be evaluated.

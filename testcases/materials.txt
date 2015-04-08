@@ -2,20 +2,21 @@
 0 BFC CERTIFY CCW
 
 0 // SPECKLE
-1 133 0 -70 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+1 133 0 -147 0 10 0 0 0 10 0 0 0 10 48\8-8sphe.dat
 0 // GLITTER_TRANSPARENT
-1 114 0 -60 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+1 114 0 -126 0 10 0 0 0 10 0 0 0 10 48\8-8sphe.dat
 0 // RUBBER
-1 324 0 -50 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+1 324 0 -105 0 10 0 0 0 10 0 0 0 10 48\8-8sphe.dat
 0 // METAL
-1 80 0 -40 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+1 80 0 -84 0 10 0 0 0 10 0 0 0 10 48\8-8sphe.dat
 0 // CHROME
-1 63 0 -30 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
-0 // MATTE_METALLIC Test Colour 900
-1 900 0 -20 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+1 63 0 -63 0 10 0 0 0 10 0 0 0 10 48\8-8sphe.dat
+0 // MATTE_METALLIC Custom Test Colour 900 0 !COLOUR Test_MATTE_METALLIC CODE 900 VALUE #D0D0D0 EDGE #333333 MATTE_METALLIC
+0 // Please note, that LDPartEditor does not parse the !COLOUR Meta Command at runtime!
+1 900 0 -42 0 10 0 0 0 10 0 0 0 10 48\8-8sphe.dat
 0 // ALPHA
-1 41 0 -10 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+1 41 0 -21 0 10 0 0 0 10 0 0 0 10 48\8-8sphe.dat
 0 // PEARLESCENT
-1 150 0 0 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+1 150 0 0 0 10 0 0 0 10 0 0 0 10 48\8-8sphe.dat
 0 // NO MATERIAL
-1 14 0 10 0 5 0 0 0 5 0 0 0 5 48\8-8sphe.dat
+1 14 0 21  0 10 0 0 0 10 0 0 0 10 48\8-8sphe.dat

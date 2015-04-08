@@ -683,7 +683,7 @@ public class OpenGLRenderer {
 
                                     final Lock lock = new ReentrantLock();
 
-                                    final int chunks = 1;  //Math.max(View.NUM_CORES - 1, 1);
+                                    final int chunks = Math.max(View.NUM_CORES - 1, 1);
                                     final Thread[] threads = new Thread[chunks];
                                     for (int j = 0; j < chunks; ++j) {
                                         final int[] start = new int[] { j };
@@ -815,39 +815,141 @@ public class OpenGLRenderer {
                                                                     case GLITTER:
                                                                     {
                                                                         // FIXME @Needs implementation!
-                                                                        float uv = pos.w;
-                                                                        float u = Math.round(uv / 1000f) / 1000f;
-                                                                        float v = (uv - u * 1000000f) / 1000f;
                                                                         float a = ze[15];
+                                                                        GCGlitter type = (GCGlitter) ct;
+                                                                        final int sSize = glitters.size();
+                                                                        float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
+                                                                        boolean hit = false;
+                                                                        final int glitterCount = 30000;
+                                                                        boolean buildable = sSize < glitterCount;
+                                                                        Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, w, h, vInverse);
+                                                                        final float px = v.x;
+                                                                        final float py = v.y;
+                                                                        final float pz = v.z;
+                                                                        float[] newGlitter = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
+                                                                        try {
+                                                                            lockGlitter.lock();
+                                                                            final long now = System.currentTimeMillis();
+                                                                            for (Iterator<float[]> iterator = glitters.iterator(); iterator.hasNext();) {
+                                                                                float[] glitter = iterator.next();
+                                                                                final long age = now - glittersCreation.get(glitter);
+                                                                                if (age > 500L) {
+                                                                                    iterator.remove();
+                                                                                } else {
+                                                                                    float dx = glitter[0] - px;
+                                                                                    float dy = glitter[1] - py;
+                                                                                    float dz = glitter[2] - pz;
+                                                                                    float dist = Math.abs(dx) + Math.abs(dy) + Math.abs(dz);
+                                                                                    if (dist < glitter[3]) {
+                                                                                        hit = true;
+                                                                                        break;
+                                                                                    }
+                                                                                    if (buildable) {
+                                                                                        if (dist * 0.5 < radi) {
+                                                                                            buildable = false;
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            if (buildable && !hit) {
+                                                                                glittersCreation.put(newGlitter, System.currentTimeMillis());
+                                                                                glitters.add(newGlitter);
+                                                                            }
+                                                                        } finally {
+                                                                            lockGlitter.unlock();
+                                                                        }
+
+                                                                        float vari = tRnd.nextFloat();
+                                                                        if (hit) {
+                                                                            lightSpecular *= 1f + vari;
+                                                                            r = type.getR();
+                                                                            g = type.getG();
+                                                                            b = type.getB();
+                                                                            a = 1f;
+                                                                        } else {
+                                                                            r = r * .8f + vari * .2f * r;
+                                                                            g = g * .8f + vari * .2f * g;
+                                                                            b = b * .8f + vari * .2f * b;
+                                                                        }
                                                                         float oneMinusAlpha = 1f - a;
                                                                         if (lights) {
-                                                                            float resLight = light / 4f;
+                                                                            float resLight = light + lightSpecular * 2f;
                                                                             r = resLight + r;
                                                                             g = resLight + g;
                                                                             b = resLight + b;
                                                                         }
-                                                                        r = u; // (r + lightSpecular) * a + rS * oneMinusAlpha;
-                                                                        g = v; // (g + lightSpecular)  * a + gS * oneMinusAlpha;
-                                                                        b = (b + lightSpecular) * a + bS * oneMinusAlpha;
+                                                                        r = r * a + rS * oneMinusAlpha;
+                                                                        g = g * a + gS * oneMinusAlpha;
+                                                                        b = b * a + bS * oneMinusAlpha;
                                                                         break;
                                                                     }
                                                                     case SPECKLE:
                                                                     {
-                                                                        // FIXME @Needs implementation!
-                                                                        float uv = pos.w;
-                                                                        float u = Math.round(uv / 1000f) / 1000f;
-                                                                        float v = (uv - u * 1000000f) / 1000f;
                                                                         float a = ze[15];
+                                                                        GCSpeckle type = (GCSpeckle) ct;
+                                                                        final int sSize = speckles.size();
+                                                                        float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
+                                                                        boolean hit = false;
+                                                                        final int speckleCount = 30000;
+                                                                        boolean buildable = sSize < speckleCount;
+                                                                        Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, w, h, vInverse);
+                                                                        final float px = v.x;
+                                                                        final float py = v.y;
+                                                                        final float pz = v.z;
+                                                                        float[] newSpeckle = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
+                                                                        try {
+                                                                            lockSpeckle.lock();
+                                                                            final long now = System.currentTimeMillis();
+                                                                            for (Iterator<float[]> iterator = speckles.iterator(); iterator.hasNext();) {
+                                                                                float[] speckle = iterator.next();
+                                                                                final long age = now - specklesCreation.get(speckle);
+                                                                                if (age > 500L) {
+                                                                                    iterator.remove();
+                                                                                } else {
+                                                                                    double dx = speckle[0] - px;
+                                                                                    double dy = speckle[1] - py;
+                                                                                    double dz = speckle[2] - pz;
+                                                                                    float dist = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
+                                                                                    if (dist < speckle[3]) {
+                                                                                        hit = true;
+                                                                                        break;
+                                                                                    }
+                                                                                    if (buildable) {
+                                                                                        if (dist * 0.5 < radi) {
+                                                                                            buildable = false;
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            if (buildable && !hit) {
+                                                                                specklesCreation.put(newSpeckle, System.currentTimeMillis());
+                                                                                speckles.add(newSpeckle);
+                                                                            }
+                                                                        } finally {
+                                                                            lockSpeckle.unlock();
+                                                                        }
+
+                                                                        float vari = tRnd.nextFloat();
+                                                                        if (hit) {
+                                                                            r = (type.getR() * .8f + vari * .2f * type.getR()) * .5f + r * .5f;
+                                                                            g = (type.getG() * .8f + vari * .2f * type.getG()) * .5f + g * .5f;
+                                                                            b = (type.getB() * .8f + vari * .2f * type.getB()) * .5f + b * .5f;
+                                                                            a = 1f;
+                                                                        } else {
+                                                                            r = r * .8f + vari * .2f * r;
+                                                                            g = g * .8f + vari * .2f * g;
+                                                                            b = b * .8f + vari * .2f * b;
+                                                                        }
                                                                         float oneMinusAlpha = 1f - a;
                                                                         if (lights) {
-                                                                            float resLight = light / 4f;
+                                                                            float resLight = light + lightSpecular * 2f;
                                                                             r = resLight + r;
                                                                             g = resLight + g;
                                                                             b = resLight + b;
                                                                         }
-                                                                        r = u; // (r + lightSpecular) * a + rS * oneMinusAlpha;
-                                                                        g = v; // (g + lightSpecular)  * a + gS * oneMinusAlpha;
-                                                                        b = (b + lightSpecular) * a + bS * oneMinusAlpha;
+                                                                        r = r * a + rS * oneMinusAlpha;
+                                                                        g = g * a + gS * oneMinusAlpha;
+                                                                        b = b * a + bS * oneMinusAlpha;
                                                                         break;
                                                                     }
                                                                     default:
@@ -984,39 +1086,78 @@ public class OpenGLRenderer {
                                                                         }
                                                                         case GLITTER:
                                                                         {
-
                                                                             GCGlitter type = (GCGlitter) ct;
-                                                                            Random rnd = new Random((long) (129642643f * (1f + ze[9]) * (1f + ze[10]) * (1f + ze[11])));
-                                                                            // FIXME ! Needs implementation!
-
+                                                                            final int sSize = glitters.size();
+                                                                            float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
+                                                                            boolean hit = false;
+                                                                            final int glitterCount = 30000;
+                                                                            boolean buildable = sSize < glitterCount;
+                                                                            Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, w, h, vInverse);
+                                                                            final float px = v.x;
+                                                                            final float py = v.y;
+                                                                            final float pz = v.z;
+                                                                            float[] newGlitter = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
                                                                             try {
                                                                                 lockGlitter.lock();
-
+                                                                                final long now = System.currentTimeMillis();
+                                                                                for (Iterator<float[]> iterator = glitters.iterator(); iterator.hasNext();) {
+                                                                                    float[] glitter = iterator.next();
+                                                                                    final long age = now - glittersCreation.get(glitter);
+                                                                                    if (age > 500L) {
+                                                                                        iterator.remove();
+                                                                                    } else {
+                                                                                        float dx = glitter[0] - px;
+                                                                                        float dy = glitter[1] - py;
+                                                                                        float dz = glitter[2] - pz;
+                                                                                        float dist = Math.abs(dx) + Math.abs(dy) + Math.abs(dz);
+                                                                                        if (dist < glitter[3]) {
+                                                                                            hit = true;
+                                                                                            break;
+                                                                                        }
+                                                                                        if (buildable) {
+                                                                                            if (dist * 0.5 < radi) {
+                                                                                                buildable = false;
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                                if (buildable && !hit) {
+                                                                                    glittersCreation.put(newGlitter, System.currentTimeMillis());
+                                                                                    glitters.add(newGlitter);
+                                                                                }
                                                                             } finally {
                                                                                 lockGlitter.unlock();
                                                                             }
 
+                                                                            float vari = tRnd.nextFloat();
+                                                                            if (hit) {
+                                                                                lightSpecular *= 1f + vari;
+                                                                                r = type.getR();
+                                                                                g = type.getG();
+                                                                                b = type.getB();
+                                                                                a = 1f;
+                                                                            } else {
+                                                                                r = r * .8f + vari * .2f * r;
+                                                                                g = g * .8f + vari * .2f * g;
+                                                                                b = b * .8f + vari * .2f * b;
+                                                                            }
                                                                             float oneMinusAlpha = 1f - a;
                                                                             if (lights) {
-                                                                                float resLight = light / 4f;
+                                                                                float resLight = light + lightSpecular * 2f;
                                                                                 r = resLight + r;
                                                                                 g = resLight + g;
                                                                                 b = resLight + b;
-                                                                            } else {
-                                                                                lightSpecular = 0f;
                                                                             }
-                                                                            r = (r + lightSpecular) * a + point[0] * oneMinusAlpha;
-                                                                            g = (g + lightSpecular)  * a + point[1] * oneMinusAlpha;
-                                                                            b = (b + lightSpecular) * a + point[2] * oneMinusAlpha;
+                                                                            r = r * a + point[0] * oneMinusAlpha;
+                                                                            g = g * a + point[1] * oneMinusAlpha;
+                                                                            b = b * a + point[2] * oneMinusAlpha;
                                                                             break;
                                                                         }
                                                                         case SPECKLE:
                                                                         {
                                                                             GCSpeckle type = (GCSpeckle) ct;
-                                                                            // FIXME !!! Needs implementation!
                                                                             final int sSize = speckles.size();
                                                                             float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
-                                                                            // Squared distance..
                                                                             boolean hit = false;
                                                                             final int speckleCount = 30000;
                                                                             boolean buildable = sSize < speckleCount;
@@ -1024,12 +1165,13 @@ public class OpenGLRenderer {
                                                                             final float px = v.x;
                                                                             final float py = v.y;
                                                                             final float pz = v.z;
+                                                                            float[] newSpeckle = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
                                                                             try {
                                                                                 lockSpeckle.lock();
                                                                                 final long now = System.currentTimeMillis();
                                                                                 for (Iterator<float[]> iterator = speckles.iterator(); iterator.hasNext();) {
                                                                                     float[] speckle = iterator.next();
-                                                                                    final long age = now - System.currentTimeMillis();
+                                                                                    final long age = now - specklesCreation.get(speckle);
                                                                                     if (age > 500L) {
                                                                                         iterator.remove();
                                                                                     } else {
@@ -1049,7 +1191,6 @@ public class OpenGLRenderer {
                                                                                     }
                                                                                 }
                                                                                 if (buildable && !hit) {
-                                                                                    float[] newSpeckle = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
                                                                                     specklesCreation.put(newSpeckle, System.currentTimeMillis());
                                                                                     speckles.add(newSpeckle);
                                                                                 }
@@ -1057,25 +1198,27 @@ public class OpenGLRenderer {
                                                                                 lockSpeckle.unlock();
                                                                             }
 
+                                                                            float vari = tRnd.nextFloat();
                                                                             if (hit) {
-                                                                                r = type.getR();
-                                                                                g = type.getG();
-                                                                                b = type.getB();
+                                                                                r = (type.getR() * .8f + vari * .2f * type.getR()) * .5f + r * .5f;
+                                                                                g = (type.getG() * .8f + vari * .2f * type.getG()) * .5f + g * .5f;
+                                                                                b = (type.getB() * .8f + vari * .2f * type.getB()) * .5f + b * .5f;
                                                                                 a = 1f;
+                                                                            } else {
+                                                                                r = r * .8f + vari * .2f * r;
+                                                                                g = g * .8f + vari * .2f * g;
+                                                                                b = b * .8f + vari * .2f * b;
                                                                             }
-
                                                                             float oneMinusAlpha = 1f - a;
                                                                             if (lights) {
-                                                                                float resLight = light / 4f;
+                                                                                float resLight = light + lightSpecular * 2f;
                                                                                 r = resLight + r;
                                                                                 g = resLight + g;
                                                                                 b = resLight + b;
-                                                                            } else {
-                                                                                lightSpecular = 0f;
                                                                             }
-                                                                            r = (r + lightSpecular) * a + point[0] * oneMinusAlpha;
-                                                                            g = (g + lightSpecular)  * a + point[1] * oneMinusAlpha;
-                                                                            b = (b + lightSpecular) * a + point[2] * oneMinusAlpha;
+                                                                            r = r * a + point[0] * oneMinusAlpha;
+                                                                            g = g * a + point[1] * oneMinusAlpha;
+                                                                            b = b * a + point[2] * oneMinusAlpha;
                                                                             break;
                                                                         }
                                                                         default:
