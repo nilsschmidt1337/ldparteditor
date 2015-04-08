@@ -694,7 +694,7 @@ public class OpenGLRenderer {
 
                                     final Lock lock = new ReentrantLock();
 
-                                    final int chunks = Math.max(View.NUM_CORES - 1, 1);
+                                    final int chunks = 1;  //Math.max(View.NUM_CORES - 1, 1);
                                     final Thread[] threads = new Thread[chunks];
                                     for (int j = 0; j < chunks; ++j) {
                                         final int[] start = new int[] { j };
@@ -1027,24 +1027,24 @@ public class OpenGLRenderer {
 
                                                                             Random rnd = new Random((long) (129642643f * (1f + ze[9]) * (1f + ze[10]) * (1f + ze[11])));
                                                                             // FIXME !!! Needs implementation!
-
+                                                                            final int sSize = speckles.size();
                                                                             {
-                                                                                final int sSize = speckles.size();
                                                                                 for (int l = 0; l < sSize; l++) {
                                                                                     rnd.nextFloat();
                                                                                 }
                                                                             }
 
+                                                                            final float scale = 1f;
                                                                             float radi = type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * rnd.nextFloat();
                                                                             // Squared distance..
-                                                                            radi = radi * radi;
+                                                                            radi = radi * radi * scale * scale;
                                                                             boolean hit = false;
-                                                                            boolean buildable = true;
-                                                                            final float px = pos.x;
-                                                                            final float py = pos.y;
-                                                                            final float pz = pos.z;
+                                                                            boolean buildable = sSize < 1;
+                                                                            final float px = pos.x * scale;
+                                                                            final float py = pos.y * scale;
+                                                                            final float pz = pos.z * scale;
                                                                             try {
-                                                                                lockSpeckle.lock();
+                                                                                if (sSize < 1) lockSpeckle.lock();
                                                                                 for (float[] speckle : speckles) {
                                                                                     float dx = speckle[0] - px;
                                                                                     float dy = speckle[1] - py;
@@ -1059,10 +1059,18 @@ public class OpenGLRenderer {
                                                                                     }
                                                                                 }
                                                                                 if (buildable && !hit) {
-                                                                                    speckles.add(new float[]{px, py, pz, radi});
+                                                                                    speckles.add(new float[]{47.5f, 0, 0, 10000f});
+                                                                                    if (sSize == 1) lockSpeckle.unlock();
                                                                                 }
                                                                             } finally {
-                                                                                lockSpeckle.unlock();
+                                                                                if (sSize < 1) lockSpeckle.unlock();
+                                                                            }
+
+                                                                            if (hit) {
+                                                                                r = type.getR();
+                                                                                g = type.getG();
+                                                                                b = type.getB();
+                                                                                a = 1f;
                                                                             }
 
                                                                             float oneMinusAlpha = 1f - a;
