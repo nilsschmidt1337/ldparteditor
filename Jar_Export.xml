@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar" name="Create Runnable Jar for Project LDPartEditor_linux">
-    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
+    	<!-- Copy resource files (shaders, PNGs, txt) -->
+    	<copy file="/home/nils/workspace/LDPartEditor_linux/cmap.png" overwrite="true" todir="/home/nils/workspace/LDPartEditor/LDPartEditor_linux_x86"/>
+        <copy file="/home/nils/workspace/LDPartEditor_linux/matte_metal.png" overwrite="true" todir="/home/nils/workspace/LDPartEditor/LDPartEditor_linux_x86"/>
+        <copy file="/home/nils/workspace/LDPartEditor_linux/metal.png" overwrite="true" todir="/home/nils/workspace/LDPartEditor/LDPartEditor_linux_x86"/>
+        <copy file="/home/nils/workspace/LDPartEditor_linux/categories.txt" overwrite="true" todir="/home/nils/workspace/LDPartEditor/LDPartEditor_linux_x86"/>
+        <copy file="/home/nils/workspace/LDPartEditor_linux/gloss.frag" overwrite="true" todir="/home/nils/workspace/LDPartEditor/LDPartEditor_linux_x86"/>
+        <copy file="/home/nils/workspace/LDPartEditor_linux/gloss.vert" overwrite="true" todir="/home/nils/workspace/LDPartEditor/LDPartEditor_linux_x86"/>
+        <copy file="/home/nils/workspace/LDPartEditor_linux/primitive_rules.txt" overwrite="true" todir="/home/nils/workspace/LDPartEditor/LDPartEditor_linux_x86"/>
+    	<!-- Create JAR file -->
         <jar destfile="/home/nils/workspace/LDPartEditor/LDPartEditor_linux_x86/LDPartEditor.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="org.nschmidt.ldparteditor.main.LDPartEditor"/>
@@ -31,5 +39,10 @@
             <zipfileset excludes="META-INF/*.SF" src="/home/nils/eclipse/plugins/org.eclipse.jface.databinding_1.6.200.v20130515-1857.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/home/nils/eclipse/plugins/com.ibm.icu_50.1.1.v201304230130.jar"/>
         </jar>
+    	<!-- Create update file -->
+        <zip destfile="/home/nils/workspace/LDPartEditor/Updater/linux_x86/update.zip"
+    	       basedir="/home/nils/workspace/LDPartEditor/LDPartEditor_linux_x86"
+    	       excludes="SearchForUpdates.jar, update.sh, plugin/**"
+        />
     </target>
 </project>
