@@ -777,9 +777,9 @@ public enum DatParser {
                         sb.append(data_segments[data_segments.length - 1]);
                         result.remove(0);
                         final GDataPNG gpng = new GDataPNG(line, offset, a1, a2, a3, scale, sb.toString());
-                        datFile.getVertexManager().setSelectedBgPicture(gpng);
+                        if (!errorCheckOnly) datFile.getVertexManager().setSelectedBgPicture(gpng);
                         result.add(0, new ParsingResult(gpng));
-                        upatePngImages = true;
+                        if (!errorCheckOnly) upatePngImages = true;
                     } catch (Exception ex) {}
                 }
             } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
