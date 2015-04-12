@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.startup;
 
+import java.io.File;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -92,6 +94,11 @@ class StartupDesign extends Dialog {
         txt_ldrawPath.setEditable(false);
         txt_ldrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
 
+        String ldrawDir = System.getenv("LDRAWDIR"); //$NON-NLS-1$
+        if (ldrawDir != null) {
+        	txt_ldrawPath.setText(ldrawDir);
+        }
+
         Button btn_BrowseLdrawPath = new Button(cmp_pathChooser1, SWT.NONE);
         this.btn_browseLdrawPath[0] = btn_BrowseLdrawPath;
         btn_BrowseLdrawPath.setText(I18n.DIALOG_Browse);
@@ -145,6 +152,10 @@ class StartupDesign extends Dialog {
         this.txt_unofficialPath[0] = txt_unofficialPath;
         txt_unofficialPath.setEditable(false);
         txt_unofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
+
+        if (ldrawDir != null) {
+        	txt_unofficialPath.setText(ldrawDir + File.separator + "Unofficial");
+        }
 
         Button btn_browseUnofficialPath = new Button(cmp_pathChooser3, SWT.NONE);
         this.btn_browseUnofficialPath[0] = btn_browseUnofficialPath;
