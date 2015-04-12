@@ -22,6 +22,8 @@ import java.util.TreeSet;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
@@ -79,6 +81,7 @@ class ColourTableDesign extends Dialog {
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         final Table table = new Table(composite, SWT.NO_SCROLL | SWT.FULL_SELECTION);
+        table.setLayout(new GridLayout());
         this.tbl_Colours[0] = table;
         table.addListener(SWT.MouseDoubleClick, new Listener() {
             @Override
@@ -88,6 +91,17 @@ class ColourTableDesign extends Dialog {
             }
         });
         table.setHeaderVisible(false);
+
+        table.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+                composite.forceFocus();
+			}
+		});
 
         composite.setContent(table);
         composite.setExpandHorizontal(true);
@@ -134,7 +148,7 @@ class ColourTableDesign extends Dialog {
         {
             Label tmp = new Label(cmp_container, SWT.NONE);
             GC gc = new GC(tmp);
-            Point size = gc.textExtent(longestName + "   99999"); //$NON-NLS-1$
+            Point size = gc.textExtent(longestName + "           99999"); //$NON-NLS-1$
             bestWidth = size.x + table.getItemHeight()+ ((GridLayout) cmp_container.getLayout()).horizontalSpacing * 4;
             gc.dispose ();
             tmp.dispose();
@@ -147,10 +161,8 @@ class ColourTableDesign extends Dialog {
         this.txt_Search[0] = txt_Search;
         txt_Search.setLayoutData(new GridData(SWT.FILL, SWT.END, true, false));
 
+        cmp_container.layout();
         composite.setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-
-        cmp_container.pack();
-        cmp_container.setSize(cmp_container.getBounds().width, getShell().getParent().getShell().getBounds().height);
         return cmp_container;
     }
 
@@ -169,7 +181,7 @@ class ColourTableDesign extends Dialog {
      */
     @Override
     protected Point getInitialSize() {
-        return new Point(bestWidth, getShell().getParent().getShell().getBounds().height);
+        return new Point(bestWidth, bestWidth * 2);
     }
 
 }
