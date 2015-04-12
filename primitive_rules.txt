@@ -46,6 +46,6 @@ Stud Groups; Title "stug-2x2.dat"; Matches ".*Stud.*Group.*"
 Znap; Title "znap5.dat"; Matches ".*Znap.*"
 
 Torus; Title "t01q1429.dat"
-Torus|Inside; Title "t01i5556.dat"; Contains "Torus_Inside"
+Torus|Inside; Title "t01i3333.dat"; Contains "Torus_Inside"
 Torus|Outside; Title "t01o4000.dat"; Contains "Torus_Outside"
 Torus|Tube; Title "t01q1429.dat"; Contains "Torus_Tube"
