@@ -72,7 +72,7 @@ class ColourTableDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(final Composite parent) {
-        Composite cmp_container = parent; // (Composite) super.createDialogArea(parent);
+        Composite cmp_container = parent;
         cmp_container.setLayout(new GridLayout());
 
         final ScrolledComposite composite = new ScrolledComposite(cmp_container, SWT.V_SCROLL);
@@ -93,15 +93,15 @@ class ColourTableDesign extends Dialog {
         table.setHeaderVisible(false);
 
         table.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent e) {
-			}
+            @Override
+            public void focusLost(FocusEvent e) {
+            }
 
-			@Override
-			public void focusGained(FocusEvent e) {
+            @Override
+            public void focusGained(FocusEvent e) {
                 composite.forceFocus();
-			}
-		});
+            }
+        });
 
         composite.setContent(table);
         composite.setExpandHorizontal(true);
