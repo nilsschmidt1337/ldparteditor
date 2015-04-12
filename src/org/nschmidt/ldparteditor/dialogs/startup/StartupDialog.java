@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.startup;
 
+import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Event;
@@ -40,7 +42,8 @@ public class StartupDialog extends StartupDesign {
 
     private String partAuthoringPath = ""; //$NON-NLS-1$
     private String ldrawPath = ""; //$NON-NLS-1$
-    private String unofficialPath = ""; //$NON-NLS-1$
+
+	private String unofficialPath = ""; //$NON-NLS-1$
     private String ldrawUserName = ""; //$NON-NLS-1$
     private String license = "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"; //$NON-NLS-1$
     private String realName = ""; //$NON-NLS-1$
@@ -60,6 +63,15 @@ public class StartupDialog extends StartupDesign {
 
     @Override
     public int open() {
+
+    	 String ldrawDir = System.getenv("LDRAWDIR"); //$NON-NLS-1$
+         if (ldrawDir != null) {
+         	setLdrawPath(ldrawDir);
+         	setUnofficialPath(ldrawDir + File.separator + "Unofficial");
+         	path1valid = FileHelper.canReadFromPath(ldrawPath);
+         	path3valid = FileHelper.canReadFromPath(unofficialPath);
+         }
+
         super.create();
         btn_ok[0].setEnabled(false);
         // MARK All final listeners will be configured here..
@@ -182,4 +194,12 @@ public class StartupDialog extends StartupDesign {
         return super.open();
     }
 
+
+    public void setLdrawPath(String ldrawPath) {
+		this.ldrawPath = ldrawPath;
+	}
+
+	public void setUnofficialPath(String unofficialPath) {
+		this.unofficialPath = unofficialPath;
+	}
 }
