@@ -496,6 +496,7 @@ public class Composite3D extends ScalableComposite {
         mntmSelectionInTextEditor.setText("Show Selection in Text Editor"); //$NON-NLS-1$ I18N
         mntmSelectionInTextEditor.setSelection(false);
 
+        /* TODO I need another solution for clipping planes
         @SuppressWarnings("unused")
         final MenuItem mntmSeparator = new MenuItem(menu, SWT.SEPARATOR);
 
@@ -542,6 +543,7 @@ public class Composite3D extends ScalableComposite {
             }
         });
         mntmMinClip.setText(I18n.EDITOR3D_FarClipping);
+         */
 
         @SuppressWarnings("unused")
         final MenuItem mntmSeparator2 = new MenuItem(menu, SWT.SEPARATOR);
