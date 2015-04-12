@@ -483,6 +483,9 @@ public class HistoryManager {
                 }
             }
         });
+        df.getVertexManager().setSelectedBgPicture(null);
+        df.getVertexManager().setSelectedBgPictureIndex(0);
+        Editor3DWindow.getWindow().updateBgPictureTab();
         NLogger.debug(getClass(), "done."); //$NON-NLS-1$
     }
 
