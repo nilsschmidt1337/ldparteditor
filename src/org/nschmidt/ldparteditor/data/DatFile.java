@@ -616,7 +616,7 @@ public final class DatFile {
      * @param warnings
      * @param errors
      */
-    public void parseForError(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors) {
+    public void parseForError(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors, boolean unselectBgPicture) {
 
         if (compositeText.getText().isEmpty()) {
             return;
@@ -694,9 +694,11 @@ public final class DatFile {
             position += line.length() + offset;
         }
 
-        vertices.setSelectedBgPicture(null);
-        vertices.setSelectedBgPictureIndex(0);
-        Editor3DWindow.getWindow().updateBgPictureTab();
+        if (unselectBgPicture) {
+            vertices.setSelectedBgPicture(null);
+            vertices.setSelectedBgPictureIndex(0);
+            Editor3DWindow.getWindow().updateBgPictureTab();
+        }
         hints.sortItems();
         warnings.sortItems();
         errors.sortItems();

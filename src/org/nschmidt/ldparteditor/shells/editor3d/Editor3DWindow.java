@@ -3635,9 +3635,9 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (png == null) {
                     if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
                         vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                    } else {
-                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                        vm.setModified(true, true);
                     }
+                    vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
                     png = vm.getSelectedBgPicture();
                     updateBgPictureTab();
                 }
@@ -3685,8 +3685,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 c3d.getTranslation().load(transMatrix);
                 c3d.getPerspectiveCalculator().calculateOriginData();
 
-                vm.setSelectedBgPicture(png);
-
+                vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
                 return;
             }
         });
@@ -3701,10 +3700,13 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (updatingPngPictureTab) return;
                         if (png == null) {
                             if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
+                                for (OpenGLRenderer renderer2 : renders) {
+                                    renderer2.disposeAllTextures();
+                                }
                                 vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                            } else {
-                                vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                                vm.setModified(true, true);
                             }
+                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
                             png = vm.getSelectedBgPicture();
                             updateBgPictureTab();
                         }
@@ -3740,7 +3742,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                 pngPictureUpdateCounter = 0;
                             }
 
-                            vm.setModified_NoSync();
+                            vm.setModified(true, true);
+                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
                         }
 
                         return;
@@ -3766,6 +3769,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                 renderer2.disposeAllTextures();
                             }
                             vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
+                            vm.setModified(true, true);
+                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
                         } else {
                             if (indexOutOfBounds) vm.setSelectedBgPictureIndex(0);
                             if (noRealData) {
@@ -3798,6 +3803,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                 renderer2.disposeAllTextures();
                             }
                             vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
+                            vm.setModified(true, true);
+                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
                         } else {
                             if (indexOutOfBounds) vm.setSelectedBgPictureIndex(df.getBackgroundPictureCount() - 1);
                             if (noRealData) {
@@ -3827,9 +3834,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     renderer2.disposeAllTextures();
                                 }
                                 vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                            } else {
-                                vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                                vm.setModified(true, true);
                             }
+                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
                             png = vm.getSelectedBgPicture();
                             updateBgPictureTab();
                         }
@@ -3849,7 +3856,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified_NoSync();
+                        vm.setModified(true, true);
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
                         return;
                     }
                 }
@@ -3870,9 +3878,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     renderer2.disposeAllTextures();
                                 }
                                 vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                            } else {
-                                vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                                vm.setModified(true, true);
                             }
+                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
                             png = vm.getSelectedBgPicture();
                             updateBgPictureTab();
                         }
@@ -3890,7 +3898,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified_NoSync();
+                        vm.setModified(true, true);
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
                         return;
                     }
                 }
@@ -3911,9 +3920,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     renderer2.disposeAllTextures();
                                 }
                                 vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                            } else {
-                                vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                                vm.setModified(true, true);
                             }
+                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
                             png = vm.getSelectedBgPicture();
                             updateBgPictureTab();
                         }
@@ -3931,7 +3940,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified_NoSync();
+                        vm.setModified(true, true);
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
                         return;
                     }
                 }
@@ -3952,9 +3962,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     renderer2.disposeAllTextures();
                                 }
                                 vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                            } else {
-                                vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                                vm.setModified(true, true);
                             }
+                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
                             png = vm.getSelectedBgPicture();
                             updateBgPictureTab();
                         }
@@ -3973,7 +3983,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified_NoSync();
+                        vm.setModified(true, true);
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
                         return;
                     }
                 }
@@ -3994,9 +4005,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     renderer2.disposeAllTextures();
                                 }
                                 vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                            } else {
-                                vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                                vm.setModified(true, true);
                             }
+                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
                             png = vm.getSelectedBgPicture();
                             updateBgPictureTab();
                         }
@@ -4007,7 +4018,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath);
                         replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
 
-                        vm.setModified_NoSync();
+                        vm.setModified(true, true);
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
                         return;
                     }
                 }
@@ -4028,9 +4040,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     renderer2.disposeAllTextures();
                                 }
                                 vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                            } else {
-                                vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                                vm.setModified(true, true);
                             }
+                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
                             png = vm.getSelectedBgPicture();
                             updateBgPictureTab();
                         }
@@ -4050,7 +4062,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified_NoSync();
+                        vm.setModified(true, true);
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
                         return;
                     }
                 }
@@ -4071,9 +4084,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     renderer2.disposeAllTextures();
                                 }
                                 vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                            } else {
-                                vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                                vm.setModified(true, true);
                             }
+                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
                             png = vm.getSelectedBgPicture();
                             updateBgPictureTab();
                         }
@@ -4092,7 +4105,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified_NoSync();
+                        vm.setModified(true, true);
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
                         return;
                     }
                 }
@@ -4113,9 +4127,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     renderer2.disposeAllTextures();
                                 }
                                 vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                            } else {
-                                vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                                vm.setModified(true, true);
                             }
+                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
                             png = vm.getSelectedBgPicture();
                             updateBgPictureTab();
                         }
@@ -4134,7 +4148,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             pngPictureUpdateCounter = 0;
                         }
 
-                        vm.setModified_NoSync();
+                        vm.setModified(true, true);
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
                         return;
                     }
                 }
