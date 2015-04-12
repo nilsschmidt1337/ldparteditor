@@ -228,28 +228,6 @@
          offset="1"
          id="stop2253" />
     </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient2268"
-       id="linearGradient2474"
-       gradientUnits="userSpaceOnUse"
-       x1="21.875"
-       y1="7.6059465"
-       x2="21.875"
-       y2="18.51421"
-       gradientTransform="matrix(4.9563054,0,0,4.9563054,-237.03876,-250.88407)" />
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient2268">
-      <stop
-         style="stop-color:#eeeeec"
-         offset="0"
-         id="stop2270" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1"
-         offset="1"
-         id="stop2272" />
-    </linearGradient>
     <radialGradient
        r="24.25"
        fy="39.75"
@@ -269,17 +247,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.6875"
-     inkscape:cx="107.38785"
-     inkscape:cy="125.96426"
+     inkscape:zoom="0.12153398"
+     inkscape:cx="-403.72801"
+     inkscape:cy="285.92168"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="472"
+     inkscape:window-width="475"
      inkscape:window-height="383"
-     inkscape:window-x="362"
-     inkscape:window-y="359"
+     inkscape:window-x="1094"
+     inkscape:window-y="434"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata4871">
@@ -390,7 +368,7 @@
        id="rect2247"
        sodipodi:nodetypes="ccccccc" />
     <rect
-       style="color:#000000;fill:url(#linearGradient2474);fill-opacity:1;fill-rule:nonzero;stroke:#e2e2df;stroke-width:4.9563055;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible"
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#e2e2df;stroke-width:4.95630550000000003;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible"
        id="rect2257"
        width="138.77655"
        height="104.08241"
