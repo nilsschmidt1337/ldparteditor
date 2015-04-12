@@ -150,7 +150,7 @@ class ColourTableDesign extends Dialog {
         composite.setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
         cmp_container.pack();
-        cmp_container.setSize(bestWidth, getShell().getParent().getShell().getBounds().height);
+        cmp_container.setSize(cmp_container.getBounds().width, getShell().getParent().getShell().getBounds().height);
         return cmp_container;
     }
 
