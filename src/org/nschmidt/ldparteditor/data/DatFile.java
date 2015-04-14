@@ -109,6 +109,7 @@ public final class DatFile {
     private GData drawChainTail = null;
 
     private Composite3D lastSelectedComposite = null;
+    private static Composite3D lastHoveredComposite = null;
 
     private HistoryManager history = new HistoryManager(this);
 
@@ -1439,5 +1440,13 @@ public final class DatFile {
 
     public void redo() {
         history.redo();
+    }
+
+    public static Composite3D getLastHoveredComposite() {
+        return lastHoveredComposite;
+    }
+
+    public static void setLastHoveredComposite(Composite3D lastHoveredComposite) {
+        DatFile.lastHoveredComposite = lastHoveredComposite;
     }
 }
