@@ -43,7 +43,7 @@ public class StartupDialog extends StartupDesign {
     private String partAuthoringPath = ""; //$NON-NLS-1$
     private String ldrawPath = ""; //$NON-NLS-1$
 
-	private String unofficialPath = ""; //$NON-NLS-1$
+    private String unofficialPath = ""; //$NON-NLS-1$
     private String ldrawUserName = ""; //$NON-NLS-1$
     private String license = "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"; //$NON-NLS-1$
     private String realName = ""; //$NON-NLS-1$
@@ -64,13 +64,13 @@ public class StartupDialog extends StartupDesign {
     @Override
     public int open() {
 
-    	 String ldrawDir = System.getenv("LDRAWDIR"); //$NON-NLS-1$
-         if (ldrawDir != null) {
-         	setLdrawPath(ldrawDir);
-         	setUnofficialPath(ldrawDir + File.separator + "Unofficial");
-         	path1valid = FileHelper.canReadFromPath(ldrawPath);
-         	path3valid = FileHelper.canReadFromPath(unofficialPath);
-         }
+        String ldrawDir = System.getenv("LDRAWDIR"); //$NON-NLS-1$
+        if (ldrawDir != null) {
+            setLdrawPath(ldrawDir);
+            setUnofficialPath(ldrawDir + File.separator + "Unofficial"); //$NON-NLS-1$
+            path1valid = FileHelper.canReadFromPath(ldrawPath);
+            path3valid = FileHelper.canReadFromPath(unofficialPath);
+        }
 
         super.create();
         btn_ok[0].setEnabled(false);
@@ -196,10 +196,10 @@ public class StartupDialog extends StartupDesign {
 
 
     public void setLdrawPath(String ldrawPath) {
-		this.ldrawPath = ldrawPath;
-	}
+        this.ldrawPath = ldrawPath;
+    }
 
-	public void setUnofficialPath(String unofficialPath) {
-		this.unofficialPath = unofficialPath;
-	}
+    public void setUnofficialPath(String unofficialPath) {
+        this.unofficialPath = unofficialPath;
+    }
 }
