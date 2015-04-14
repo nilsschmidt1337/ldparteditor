@@ -1660,7 +1660,7 @@ public class OpenGLRenderer {
                 }
             }
 
-            {
+            if (!raytraceMode && DatFile.getLastHoveredComposite() == c3d) {
                 Vector4f selectionEnd_MODELVIEW = new Vector4f(c3d.getCursor3D());
                 float viewport_pixel_per_ldu = c3d.getViewportPixelPerLDU();
                 float dx = 0;
