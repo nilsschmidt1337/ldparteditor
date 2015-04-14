@@ -1660,6 +1660,38 @@ public class OpenGLRenderer {
                 }
             }
 
+            {
+                Vector4f selectionEnd_MODELVIEW = new Vector4f(c3d.getCursor3D());
+                float viewport_pixel_per_ldu = c3d.getViewportPixelPerLDU();
+                float dx = 0;
+                float dy = 0;
+                dx = 100f / viewport_pixel_per_ldu;
+                dy = 100f / viewport_pixel_per_ldu;
+                Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
+                Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
+                Matrix4f ovr_inverse2 = Matrix4f.invert(viewport_rotation, null);
+                Matrix4f.transform(ovr_inverse2, xAxis4f_translation, xAxis4f_translation);
+                Matrix4f.transform(ovr_inverse2, yAxis4f_translation, yAxis4f_translation);
+                Vector4f width = new Vector4f(xAxis4f_translation.x / 2f, xAxis4f_translation.y / 2f, xAxis4f_translation.z / 2f, 1f);
+                Vector4f height = new Vector4f(yAxis4f_translation.x / 2f, yAxis4f_translation.y / 2f, yAxis4f_translation.z / 2f, 1f);
+
+                Vector4f selectionCorner1 = new Vector4f(selectionEnd_MODELVIEW.x + width.x, selectionEnd_MODELVIEW.y + width.y, selectionEnd_MODELVIEW.z + width.z, 1f);
+                Vector4f selectionCorner2 = new Vector4f(selectionEnd_MODELVIEW.x + height.x, selectionEnd_MODELVIEW.y + height.y, selectionEnd_MODELVIEW.z + height.z, 1f);
+                Vector4f selectionCorner3 = new Vector4f(selectionEnd_MODELVIEW.x - width.x, selectionEnd_MODELVIEW.y - width.y, selectionEnd_MODELVIEW.z - width.z, 1f);
+                Vector4f selectionCorner4 = new Vector4f(selectionEnd_MODELVIEW.x - height.x, selectionEnd_MODELVIEW.y - height.y, selectionEnd_MODELVIEW.z - height.z, 1f);
+
+                GL11.glLineWidth(2f);
+                GL11.glBegin(GL11.GL_LINES);
+                GL11.glColor3f(1f, 0f, 0f);
+                GL11.glVertex3f(selectionCorner3.x, selectionCorner3.y, selectionCorner3.z);
+                GL11.glVertex3f(selectionCorner1.x, selectionCorner1.y, selectionCorner1.z);
+                GL11.glColor3f(0f, 0f, 1f);
+                GL11.glVertex3f(selectionCorner4.x, selectionCorner4.y, selectionCorner4.z);
+                GL11.glVertex3f(selectionCorner2.x, selectionCorner2.y, selectionCorner2.z);
+
+                GL11.glEnd();
+            }
+
             GL11.glEnable(GL11.GL_DEPTH_TEST);
 
             // MARK Drawing the selection Rectangle

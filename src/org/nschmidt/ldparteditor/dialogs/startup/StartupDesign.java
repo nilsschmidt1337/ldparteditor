@@ -96,7 +96,7 @@ class StartupDesign extends Dialog {
 
         String ldrawDir = System.getenv("LDRAWDIR"); //$NON-NLS-1$
         if (ldrawDir != null) {
-        	txt_ldrawPath.setText(ldrawDir);
+            txt_ldrawPath.setText(ldrawDir);
         }
 
         Button btn_BrowseLdrawPath = new Button(cmp_pathChooser1, SWT.NONE);
@@ -154,7 +154,7 @@ class StartupDesign extends Dialog {
         txt_unofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
 
         if (ldrawDir != null) {
-        	txt_unofficialPath.setText(ldrawDir + File.separator + "Unofficial");
+            txt_unofficialPath.setText(ldrawDir + File.separator + "Unofficial"); //$NON-NLS-1$
         }
 
         Button btn_browseUnofficialPath = new Button(cmp_pathChooser3, SWT.NONE);
