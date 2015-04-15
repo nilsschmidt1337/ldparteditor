@@ -112,6 +112,7 @@ class Editor3DDesign extends ApplicationWindow {
     private static Composite status;
     private static final int iconSize = WorkbenchManager.getUserSettingState().getIconSize();
     final Button[] btn_Sync = new Button[1];
+    final Button[] btn_LastOpen = new Button[1];
     final Button[] btn_New = new Button[1];
     final Button[] btn_Open = new Button[1];
     final Button[] btn_Save = new Button[1];
@@ -379,6 +380,12 @@ class Editor3DDesign extends ApplicationWindow {
                 this.btn_Sync[0] = btn_Sync;
                 btn_Sync.setToolTipText("Synchronise Folders / Editor Content"); //$NON-NLS-1$ I18N Needs translation!
                 btn_Sync.setImage(ResourceManager.getImage("icon16_sync.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Snapshot = new Button(toolItem_Sync, SWT.NONE);
+                this.btn_LastOpen[0] = btn_Snapshot;
+                btn_Snapshot.setToolTipText("Last opened Files/Projects");//$NON-NLS-1$ I18N Needs translation!
+                btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
             }
         }
         {
