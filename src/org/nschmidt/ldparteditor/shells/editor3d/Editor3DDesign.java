@@ -610,7 +610,7 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator3 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
-                    {
+                    if (NLogger.DEBUG) {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_1_cameraToPos[0] = btn_Mani;
                         btn_Mani.setText("Move the Camera to the Manipulator Position"); //$NON-NLS-1$ I18N
