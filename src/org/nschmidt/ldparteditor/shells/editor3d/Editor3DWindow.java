@@ -2314,37 +2314,38 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_Manipulator_1_cameraToPos[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
-                    Vector4f pos = c3d.getManipulator().getPosition();
-                    Vector4f a1 = c3d.getManipulator().getXaxis();
-                    Vector4f a2 = c3d.getManipulator().getYaxis();
-                    Vector4f a3 = c3d.getManipulator().getZaxis();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                        Matrix4f rot = new Matrix4f();
-                        Matrix4f.setIdentity(rot);
-                        rot.m00 = a1.x;
-                        rot.m10 = a1.y;
-                        rot.m20 = a1.z;
-                        rot.m01 = a2.x;
-                        rot.m11 = a2.y;
-                        rot.m21 = a2.z;
-                        rot.m02 = a3.x;
-                        rot.m12 = a3.y;
-                        rot.m22 = a3.z;
-                        c3d.getRotation().load(rot);
-                        Matrix4f trans = new Matrix4f();
-                        Matrix4f.setIdentity(trans);
-                        trans.translate(new Vector3f(-pos.x, -pos.y, -pos.z));
-                        c3d.getTranslation().load(trans);
-                        c3d.getPerspectiveCalculator().calculateOriginData();
+        if (NLogger.DEBUG)
+            btn_Manipulator_1_cameraToPos[0].addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    for (OpenGLRenderer renderer : renders) {
+                        Composite3D c3d = renderer.getC3D();
+                        Vector4f pos = c3d.getManipulator().getPosition();
+                        Vector4f a1 = c3d.getManipulator().getXaxis();
+                        Vector4f a2 = c3d.getManipulator().getYaxis();
+                        Vector4f a3 = c3d.getManipulator().getZaxis();
+                        if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                            Matrix4f rot = new Matrix4f();
+                            Matrix4f.setIdentity(rot);
+                            rot.m00 = a1.x;
+                            rot.m10 = a1.y;
+                            rot.m20 = a1.z;
+                            rot.m01 = a2.x;
+                            rot.m11 = a2.y;
+                            rot.m21 = a2.z;
+                            rot.m02 = a3.x;
+                            rot.m12 = a3.y;
+                            rot.m22 = a3.z;
+                            c3d.getRotation().load(rot);
+                            Matrix4f trans = new Matrix4f();
+                            Matrix4f.setIdentity(trans);
+                            trans.translate(new Vector3f(-pos.x, -pos.y, -pos.z));
+                            c3d.getTranslation().load(trans);
+                            c3d.getPerspectiveCalculator().calculateOriginData();
+                        }
                     }
                 }
-            }
-        });
+            });
         btn_Manipulator_2_toAverage[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
