@@ -1,4 +1,4 @@
-# LDPartEditor
+# LDPartEditor - The LDraw Part Editor
 "Create and edit LDraw Parts quick and easy."
 
 This repository contains the full sourcecode of "LDPartEditor" (further referred to as LPE).
