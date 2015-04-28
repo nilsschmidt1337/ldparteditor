@@ -2325,6 +2325,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         Vector4f a2 = c3d.getManipulator().getYaxis();
                         Vector4f a3 = c3d.getManipulator().getZaxis();
                         if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                            c3d.setClassicPerspective(false);
+                            WidgetSelectionHelper.unselectAllChildButtons(c3d.getViewAnglesMenu());
                             Matrix4f rot = new Matrix4f();
                             Matrix4f.setIdentity(rot);
                             rot.m00 = a1.x;
