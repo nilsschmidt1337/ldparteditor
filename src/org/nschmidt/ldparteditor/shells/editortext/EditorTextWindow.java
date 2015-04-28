@@ -172,13 +172,16 @@ public class EditorTextWindow extends EditorTextDesign {
         btn_Open[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D);
-                if (df != null && !Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
-                    {
-                        CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
-                        tbtmnewItem.setWindow(editorTextWindow);
-                        tbtmnewItem.getState().setFileNameObj(df);
-                        tabFolder[0].setSelection(tbtmnewItem);
+                DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, null);
+                if (df != null) {
+                    Editor3DWindow.getWindow().addRecentFile(df);
+                    if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
+                        {
+                            CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
+                            tbtmnewItem.setWindow(editorTextWindow);
+                            tbtmnewItem.getState().setFileNameObj(df);
+                            tabFolder[0].setSelection(tbtmnewItem);
+                        }
                     }
                 }
             }
@@ -189,8 +192,10 @@ public class EditorTextWindow extends EditorTextDesign {
                 if (tabFolder[0].getSelection() != null) {
                     CompositeTabState state = ((CompositeTab) tabFolder[0].getSelection()).getState();
                     DatFile df = state.getFileNameObj();
+                    Editor3DWindow.getWindow().addRecentFile(df);
                     if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                         if (df.save()) {
+                            Editor3DWindow.getWindow().addRecentFile(df);
                             Editor3DWindow.getWindow().updateTree_unsavedEntries();
                             ((CompositeTab) tabFolder[0].getSelection()).getTextComposite().setText(state.getFileNameObj().getText());
                         } else {
@@ -867,6 +872,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     Project.removeUnsavedFile(df);
                 } if (result == SWT.YES) {
                     if (df.save()) {
+                        Editor3DWindow.getWindow().addRecentFile(df);
                         ((CompositeTab) tabFolder[0].getSelection()).getTextComposite().setText(df.getText());
                     } else {
                         MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);

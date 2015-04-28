@@ -222,6 +222,8 @@ public class Editor3DWindow extends Editor3DDesign {
     private final EditorMetaWindow metaWindow = new EditorMetaWindow();
     private boolean updatingSelectionTab = true;
 
+    private ArrayList<String> recentItems = new ArrayList<String>();
+
     /**
      * Create the application window.
      */
@@ -283,6 +285,9 @@ public class Editor3DWindow extends Editor3DDesign {
      */
     public void run() {
         window = this;
+        // Load recent files
+        recentItems = WorkbenchManager.getUserSettingState().getRecentItems();
+        if (recentItems == null) recentItems = new ArrayList<String>();
         // Load the window state data
         editor3DWindowState = WorkbenchManager.getEditor3DWindowState();
         WorkbenchManager.setEditor3DWindow(this);
@@ -393,16 +398,77 @@ public class Editor3DWindow extends Editor3DDesign {
                 messageBox.open();
             }
         });
+
+        btn_LastOpen[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+
+                Menu lastOpenedMenu = new Menu(treeParts[0].getTree());
+                btn_LastOpen[0].setMenu(lastOpenedMenu);
+
+                final int size = recentItems.size() - 1;
+                for (int i = size; i > -1; i--) {
+                    final String path = recentItems.get(i);
+                    File f = new File(path);
+                    if (f.exists() && f.canRead()) {
+                        if (f.isFile()) {
+                            MenuItem mntmItem = new MenuItem(lastOpenedMenu, I18n.I18N_NON_BIDIRECT());
+                            mntmItem.setEnabled(true);
+                            mntmItem.setText(path);
+                            mntmItem.addSelectionListener(new SelectionAdapter() {
+                                @Override
+                                public void widgetSelected(SelectionEvent e) {
+                                    openDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, path);
+                                }
+                            });
+                        } else if (f.isDirectory()) {
+                            MenuItem mntmItem = new MenuItem(lastOpenedMenu, I18n.I18N_NON_BIDIRECT());
+                            mntmItem.setEnabled(true);
+                            mntmItem.setText("Project: " + path); //$NON-NLS-1$ I18N
+                            mntmItem.addSelectionListener(new SelectionAdapter() {
+                                @Override
+                                public void widgetSelected(SelectionEvent e) {
+                                    if (ProjectActions.openProject(path)) {
+                                        Project.create(false);
+                                        treeItem_Project[0].setData(Project.getProjectPath());
+                                        resetSearch();
+                                        LibraryManager.readProjectPartsParent(treeItem_ProjectParts[0]);
+                                        LibraryManager.readProjectParts(treeItem_ProjectParts[0]);
+                                        LibraryManager.readProjectSubparts(treeItem_ProjectSubparts[0]);
+                                        LibraryManager.readProjectPrimitives(treeItem_ProjectPrimitives[0]);
+                                        LibraryManager.readProjectHiResPrimitives(treeItem_ProjectPrimitives48[0]);
+                                        LibraryManager.readProjectLowResPrimitives(treeItem_ProjectPrimitives8[0]);
+                                        treeItem_OfficialParts[0].setData(null);
+                                        txt_Search[0].setText(" "); //$NON-NLS-1$
+                                        txt_Search[0].setText(""); //$NON-NLS-1$
+                                        updateTree_unsavedEntries();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+
+                java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
+                final int x = (int) b.getX();
+                final int y = (int) b.getY();
+
+                lastOpenedMenu.setLocation(x, y);
+                lastOpenedMenu.setVisible(true);
+            }
+        });
         btn_New[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 ProjectActions.createNewProject(Editor3DWindow.getWindow(), false);
+                addRecentFile(Project.getProjectPath());
             }
         });
         btn_Open[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (ProjectActions.openProject()) {
+                if (ProjectActions.openProject(null)) {
+                    addRecentFile(Project.getProjectPath());
                     Project.create(false);
                     treeItem_Project[0].setData(Project.getProjectPath());
                     resetSearch();
@@ -427,6 +493,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
                         if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                             if (df.save()) {
+                                Editor3DWindow.getWindow().addRecentFile(df);
                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                             } else {
                                 MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
@@ -444,6 +511,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             for (DatFile df : dfs) {
                                 if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                                     if (df.save()) {
+                                        Editor3DWindow.getWindow().addRecentFile(df);
                                         Project.removeUnsavedFile(df);
                                         Editor3DWindow.getWindow().updateTree_unsavedEntries();
                                     } else {
@@ -492,6 +560,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     for (DatFile df : dfs) {
                         if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                             if (df.save()) {
+                                Editor3DWindow.getWindow().addRecentFile(df);
                                 Project.removeUnsavedFile(df);
                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                             } else {
@@ -513,6 +582,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (DatFile df : dfs) {
                     if (!df.isReadOnly()) {
                         if (df.save()) {
+                            Editor3DWindow.getWindow().addRecentFile(df);
                             Project.removeUnsavedFile(df);
                         } else {
                             MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
@@ -532,14 +602,20 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_NewDat[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                createNewDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D);
+                DatFile dat = createNewDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D);
+                if (dat != null) {
+                    addRecentFile(dat);
+                }
             }
         });
 
         btn_OpenDat[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                openDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D);
+                DatFile dat = openDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, null);
+                if (dat != null) {
+                    addRecentFile(dat);
+                }
             }
         });
 
@@ -4248,6 +4324,20 @@ public class Editor3DWindow extends Editor3DDesign {
         Display.getCurrent().dispose();
     }
 
+    protected void addRecentFile(String projectPath) {
+        final int index = recentItems.indexOf(projectPath);
+        if (index > -1) {
+            recentItems.remove(index);
+        } else if (recentItems.size() > 20) {
+            recentItems.remove(0);
+        }
+        recentItems.add(projectPath);
+    }
+
+    public void addRecentFile(DatFile dat) {
+        addRecentFile(dat.getNewName());
+    }
+
     private void replaceBgPicture(GDataPNG selectedBgPicture, GDataPNG newBgPicture, DatFile linkedDatFile) {
         if (linkedDatFile.getDrawPerLine_NOCLONE().getKey(selectedBgPicture) == null) return;
         GData before = selectedBgPicture.getBefore();
@@ -4415,6 +4505,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     updateTree_removeEntry(df);
                 } else if (result == SWT.YES) {
                     if (df.save()) {
+                        Editor3DWindow.getWindow().addRecentFile(df);
                     } else {
                         MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
                         messageBoxError.setText(I18n.DIALOG_Error);
@@ -4570,6 +4661,8 @@ public class Editor3DWindow extends Editor3DDesign {
         winState.setPrimitiveZoom(cmp_Primitives[0].getZoom());
         winState.setPrimitiveZoomExponent(cmp_Primitives[0].getZoom_exponent());
         winState.setPrimitiveViewport(cmp_Primitives[0].getViewport2());
+
+        WorkbenchManager.getUserSettingState().setRecentItems(getRecentItems());
         // Save the workbench
         WorkbenchManager.saveWorkbench();
         setReturnCode(CANCEL);
@@ -5601,7 +5694,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return null;
     }
 
-    public DatFile openDatFile(Shell sh, OpenInWhat where) {
+    public DatFile openDatFile(Shell sh, OpenInWhat where, String filePath) {
 
         FileDialog fd = new FileDialog(sh, SWT.OPEN);
         fd.setText("Open *.dat file"); //$NON-NLS-1$ I18N Needs translation!
@@ -5624,7 +5717,7 @@ public class Editor3DWindow extends Editor3DDesign {
         String[] filterNames = { "LDraw Source File (*.dat)", "All Files" }; //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
         fd.setFilterNames(filterNames);
 
-        String selected = fd.open();
+        String selected = filePath == null ? fd.open() : filePath;
         System.out.println(selected);
 
         if (selected != null) {
@@ -6048,5 +6141,9 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public MenuItem getMntmWithSameColour() {
         return mntm_WithSameColour[0];
+    }
+
+    public ArrayList<String> getRecentItems() {
+        return recentItems;
     }
 }
