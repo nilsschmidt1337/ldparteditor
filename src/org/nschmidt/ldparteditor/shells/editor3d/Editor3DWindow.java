@@ -418,7 +418,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             mntmItem.addSelectionListener(new SelectionAdapter() {
                                 @Override
                                 public void widgetSelected(SelectionEvent e) {
-                                    openDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, path);
+                                    File f = new File(path);
+                                    if (f.exists() && f.isFile() && f.canRead()) openDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, path);
                                 }
                             });
                         } else if (f.isDirectory()) {
@@ -428,7 +429,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             mntmItem.addSelectionListener(new SelectionAdapter() {
                                 @Override
                                 public void widgetSelected(SelectionEvent e) {
-                                    if (ProjectActions.openProject(path)) {
+                                    File f = new File(path);
+                                    if (f.exists() && f.isDirectory() && f.canRead() && ProjectActions.openProject(path)) {
                                         Project.create(false);
                                         treeItem_Project[0].setData(Project.getProjectPath());
                                         resetSearch();
