@@ -3631,6 +3631,11 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 }
 
+                if (c3d == null) return;
+
+                c3d.setClassicPerspective(false);
+                WidgetSelectionHelper.unselectAllChildButtons(c3d.getViewAnglesMenu());
+
                 VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                 GDataPNG png = vm.getSelectedBgPicture();
                 if (png == null) {
