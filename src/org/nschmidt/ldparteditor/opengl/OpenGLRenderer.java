@@ -440,7 +440,7 @@ public class OpenGLRenderer {
                             final float yf = 2f * viewport_height;
                             GL11.glTranslatef(-viewport_width, -viewport_height, 0f);
                             GL11.glScalef(1f / w * xf, 1f / h * yf, 1f);
-                            // FIXME Needs adjutments for negative determinants!
+                            // FIXME Needs adjustments for negative determinants!
                             for (float[] p : renderedPoints[0]) {
                                 GL11.glBegin(GL11.GL_QUADS);
                                 GL11.glColor3f(p[0], p[1], p[2]);
@@ -670,8 +670,6 @@ public class OpenGLRenderer {
                                 final LinkedList<float[]> glitters = new LinkedList<float[]>();
                                 final HashMap<float[], Long> specklesCreation = new HashMap<float[], Long>();
                                 final HashMap<float[], Long> glittersCreation = new HashMap<float[], Long>();
-
-                                // FIXME Needs implementation
 
                                 // Light positions
                                 final Vector3f lp1 = new Vector3f(-2.0f, -2.0f, 2.0f);
