@@ -2314,39 +2314,39 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-            btn_Manipulator_1_cameraToPos[0].addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    for (OpenGLRenderer renderer : renders) {
-                        Composite3D c3d = renderer.getC3D();
-                        Vector4f pos = c3d.getManipulator().getPosition();
-                        Vector4f a1 = c3d.getManipulator().getXaxis();
-                        Vector4f a2 = c3d.getManipulator().getYaxis();
-                        Vector4f a3 = c3d.getManipulator().getZaxis();
-                        if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                            c3d.setClassicPerspective(false);
-                            WidgetSelectionHelper.unselectAllChildButtons(c3d.getViewAnglesMenu());
-                            Matrix4f rot = new Matrix4f();
-                            Matrix4f.setIdentity(rot);
-                            rot.m00 = a1.x;
-                            rot.m10 = a1.y;
-                            rot.m20 = a1.z;
-                            rot.m01 = a2.x;
-                            rot.m11 = a2.y;
-                            rot.m21 = a2.z;
-                            rot.m02 = a3.x;
-                            rot.m12 = a3.y;
-                            rot.m22 = a3.z;
-                            c3d.getRotation().load(rot);
-                            Matrix4f trans = new Matrix4f();
-                            Matrix4f.setIdentity(trans);
-                            trans.translate(new Vector3f(-pos.x, -pos.y, -pos.z));
-                            c3d.getTranslation().load(trans);
-                            c3d.getPerspectiveCalculator().calculateOriginData();
-                        }
+        btn_Manipulator_1_cameraToPos[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    Vector4f pos = c3d.getManipulator().getPosition();
+                    Vector4f a1 = c3d.getManipulator().getXaxis();
+                    Vector4f a2 = c3d.getManipulator().getYaxis();
+                    Vector4f a3 = c3d.getManipulator().getZaxis();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        c3d.setClassicPerspective(false);
+                        WidgetSelectionHelper.unselectAllChildButtons(c3d.getViewAnglesMenu());
+                        Matrix4f rot = new Matrix4f();
+                        Matrix4f.setIdentity(rot);
+                        rot.m00 = a1.x;
+                        rot.m10 = a1.y;
+                        rot.m20 = a1.z;
+                        rot.m01 = a2.x;
+                        rot.m11 = a2.y;
+                        rot.m21 = a2.z;
+                        rot.m02 = a3.x;
+                        rot.m12 = a3.y;
+                        rot.m22 = a3.z;
+                        c3d.getRotation().load(rot);
+                        Matrix4f trans = new Matrix4f();
+                        Matrix4f.setIdentity(trans);
+                        trans.translate(new Vector3f(-pos.x, -pos.y, -pos.z));
+                        c3d.getTranslation().load(trans);
+                        c3d.getPerspectiveCalculator().calculateOriginData();
                     }
                 }
-            });
+            }
+        });
         btn_Manipulator_2_toAverage[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -4204,16 +4204,34 @@ public class Editor3DWindow extends Editor3DDesign {
         treeItem_Project[0].setData(Project.getProjectPath());
         treeItem_Official[0].setData(WorkbenchManager.getUserSettingState().getLdrawFolderPath());
         treeItem_Unofficial[0].setData(WorkbenchManager.getUserSettingState().getUnofficialFolderPath());
-        LibraryManager.readUnofficialParts(treeItem_UnofficialParts[0]);
-        LibraryManager.readUnofficialSubparts(treeItem_UnofficialSubparts[0]);
-        LibraryManager.readUnofficialPrimitives(treeItem_UnofficialPrimitives[0]);
-        LibraryManager.readUnofficialHiResPrimitives(treeItem_UnofficialPrimitives48[0]);
-        LibraryManager.readUnofficialLowResPrimitives(treeItem_UnofficialPrimitives8[0]);
-        LibraryManager.readOfficialParts(treeItem_OfficialParts[0]);
-        LibraryManager.readOfficialSubparts(treeItem_OfficialSubparts[0]);
-        LibraryManager.readOfficialPrimitives(treeItem_OfficialPrimitives[0]);
-        LibraryManager.readOfficialHiResPrimitives(treeItem_OfficialPrimitives48[0]);
-        LibraryManager.readOfficialLowResPrimitives(treeItem_OfficialPrimitives8[0]);
+
+        try {
+            new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
+                @Override
+                public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                    monitor.beginTask("Loading Library...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                    Display.getDefault().asyncExec(new Runnable() {
+                        @Override
+                        public void run() {
+                            LibraryManager.readUnofficialParts(treeItem_UnofficialParts[0]);
+                            LibraryManager.readUnofficialSubparts(treeItem_UnofficialSubparts[0]);
+                            LibraryManager.readUnofficialPrimitives(treeItem_UnofficialPrimitives[0]);
+                            LibraryManager.readUnofficialHiResPrimitives(treeItem_UnofficialPrimitives48[0]);
+                            LibraryManager.readUnofficialLowResPrimitives(treeItem_UnofficialPrimitives8[0]);
+                            LibraryManager.readOfficialParts(treeItem_OfficialParts[0]);
+                            LibraryManager.readOfficialSubparts(treeItem_OfficialSubparts[0]);
+                            LibraryManager.readOfficialPrimitives(treeItem_OfficialPrimitives[0]);
+                            LibraryManager.readOfficialHiResPrimitives(treeItem_OfficialPrimitives48[0]);
+                            LibraryManager.readOfficialLowResPrimitives(treeItem_OfficialPrimitives8[0]);
+                        }
+                    });
+                    Thread.sleep(1500);
+                }
+            });
+        } catch (InvocationTargetException consumed) {
+        } catch (InterruptedException consumed) {
+        }
+
         txt_Search[0].setText(" "); //$NON-NLS-1$
         txt_Search[0].setText(""); //$NON-NLS-1$
 
