@@ -65,12 +65,21 @@ public final class GDataPNG extends GData {
         dMatrix.setIdentity();
 
         Vector4f direction = new Vector4f(0f, 0f, -1f, 1f);
-        Matrix4f.rotate((float) (angleC.doubleValue() / 180.0 * Math.PI), new Vector3f(0f, 0f, 1f), dMatrix, dMatrix);
+        // Matrix4f.rotate((float) (angleC.doubleValue() / 180.0 * Math.PI), new Vector3f(0f, 0f, 1f), dMatrix, dMatrix);
         Matrix4f.rotate((float) (angleB.doubleValue() / 180.0 * Math.PI), new Vector3f(1f, 0f, 0f), dMatrix, dMatrix);
         Matrix4f.rotate((float) (angleA.doubleValue() / 180.0 * Math.PI), new Vector3f(0f, 1f, 0f), dMatrix, dMatrix);
 
         Matrix4f.transform(dMatrix, direction, direction);
+        direction.w = 0f;
+        direction.normalise();
+        direction.w = 1f;
         this.direction = direction;
+
+        dMatrix.setIdentity();
+
+        Matrix4f.rotate((float) (angleC.doubleValue() / 180.0 * Math.PI), new Vector3f(0f, 0f, 1f), dMatrix, dMatrix);
+        Matrix4f.rotate((float) (angleB.doubleValue() / 180.0 * Math.PI), new Vector3f(1f, 0f, 0f), dMatrix, dMatrix);
+        Matrix4f.rotate((float) (angleA.doubleValue() / 180.0 * Math.PI), new Vector3f(0f, 1f, 0f), dMatrix, dMatrix);
 
         Matrix4f.mul(dMatrix, tMatrix, tMatrix);
 
