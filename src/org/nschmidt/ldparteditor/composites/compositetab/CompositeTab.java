@@ -786,6 +786,7 @@ public class CompositeTab extends CompositeTabDesign {
                     case EDITORTEXT_SAVE:
                         if (!df.isReadOnly()) {
                             if (df.save()) {
+                                Editor3DWindow.getWindow().addRecentFile(df);
                                 Project.removeUnsavedFile(df);
                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                             } else {
