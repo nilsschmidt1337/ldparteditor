@@ -101,6 +101,7 @@ public enum ProjectActions {
                         Editor3DWindow.getWindow().updateTree_removeEntry(df);
                     } else if (result == SWT.YES) {
                         if (df.save()) {
+                            Editor3DWindow.getWindow().addRecentFile(df);
                             Editor3DWindow.getWindow().updateTree_unsavedEntries();
                         } else {
                             MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
@@ -241,8 +242,9 @@ public enum ProjectActions {
 
     /**
      * Opens a existing project
+     * @param path
      */
-    public static boolean openProject() {
+    public static boolean openProject(String path) {
 
         if (askForUnsavedChanges(Editor3DWindow.getWindow(), false, true)) {
 
@@ -267,7 +269,7 @@ public enum ProjectActions {
             // Calling open() will open and run the dialog.
             // It will return the selected directory, or
             // null if user cancels
-            String dir = dlg.open();
+            String dir = path == null ? dlg.open() : path;
             if (dir != null && dir.contains(authorFolder)) {
                 Project.setProjectPath(dir);
                 Project.setProjectName(new File(dir).getName());

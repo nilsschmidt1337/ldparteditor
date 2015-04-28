@@ -371,6 +371,7 @@ public class KeyStateManager {
                     case SAVE:
                         if (!df.isReadOnly()) {
                             if (df.save()) {
+                                Editor3DWindow.getWindow().addRecentFile(df);
                                 Project.removeUnsavedFile(df);
                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                                 pressedKeyCodes.remove(keyCode);
