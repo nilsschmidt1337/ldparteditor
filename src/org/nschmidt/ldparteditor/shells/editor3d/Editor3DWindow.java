@@ -2314,7 +2314,6 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        if (NLogger.DEBUG)
             btn_Manipulator_1_cameraToPos[0].addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {

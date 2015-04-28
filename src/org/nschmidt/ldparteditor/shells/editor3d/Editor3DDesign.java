@@ -610,7 +610,7 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator3 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
-                    if (NLogger.DEBUG) {
+                    {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_1_cameraToPos[0] = btn_Mani;
                         btn_Mani.setText("Move the Camera to the Manipulator Position"); //$NON-NLS-1$ I18N
@@ -1646,7 +1646,6 @@ class Editor3DDesign extends ApplicationWindow {
                                 btn_PngFocus[0] = btnFocusBG;
                                 btnFocusBG.setImage(ResourceManager.getImage("icon8_focus.png")); //$NON-NLS-1$
                                 btnFocusBG.setToolTipText("Focus"); //$NON-NLS-1$ I18N Needs translation!
-                                btnFocusBG.setVisible(NLogger.DEBUG); // FIXME Delete line if issue #14 is fixed
 
                                 Button btnNext = new Button(cmp_dummy, SWT.NONE);
                                 btn_PngNext[0] = btnNext;
