@@ -110,6 +110,7 @@ import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialogInt;
 import org.nschmidt.ldparteditor.enums.GLPrimitives;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MouseButton;
@@ -391,7 +392,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 Object[] messageArguments = {additions, deletions, conflicts};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(View.LOCALE);
+                formatter.setLocale(MyLanguage.LOCALE);
                 formatter.applyPattern(I18n.DIALOG_Sync);
                 messageBox.setMessage(formatter.format(messageArguments));
 
@@ -1631,7 +1632,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                 Object[] messageArguments = {df.getShortName(), df.getLastSavedOpened()};
                                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                formatter.setLocale(View.LOCALE);
+                                formatter.setLocale(MyLanguage.LOCALE);
                                 formatter.applyPattern(I18n.DIALOG_Revert);
                                 messageBox.setMessage(formatter.format(messageArguments));
 
@@ -1710,7 +1711,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                 Object[] messageArguments = {df.getShortName()};
                                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                formatter.setLocale(View.LOCALE);
+                                formatter.setLocale(MyLanguage.LOCALE);
                                 formatter.applyPattern(I18n.DIALOG_Delete);
                                 messageBox.setMessage(formatter.format(messageArguments));
 
@@ -1785,7 +1786,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                         Object[] messageArguments = {new File(newPath).getName()};
                                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                        formatter.setLocale(View.LOCALE);
+                                        formatter.setLocale(MyLanguage.LOCALE);
                                         formatter.applyPattern(I18n.DIALOG_NoProjectLocation);
                                         messageBox.setMessage(formatter.format(messageArguments));
 
@@ -1991,7 +1992,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                     Object[] messageArguments = {newName};
                                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                    formatter.setLocale(View.LOCALE);
+                                    formatter.setLocale(MyLanguage.LOCALE);
                                     formatter.applyPattern(I18n.DIALOG_Replace);
                                     messageBox.setMessage(formatter.format(messageArguments));
 
@@ -4496,7 +4497,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 Object[] messageArguments = {df.getShortName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(View.LOCALE);
+                formatter.setLocale(MyLanguage.LOCALE);
                 formatter.applyPattern(I18n.DIALOG_UnsavedChanges);
                 messageBox.setMessage(formatter.format(messageArguments));
 
@@ -4600,7 +4601,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     Object[] messageArguments = {I18n.DIALOG_TheNewProject};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(View.LOCALE);
+                    formatter.setLocale(MyLanguage.LOCALE);
                     formatter.applyPattern(I18n.DIALOG_UnsavedChanges);
                     messageBox.setMessage(formatter.format(messageArguments));
 

@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
 /**
@@ -73,7 +73,7 @@ class CopyDesign extends Dialog {
         {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(View.LOCALE);
+            formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.DIALOG_CopyFileOnly);
             btn_1.setText(formatter.format(messageArguments));
         }
@@ -85,7 +85,7 @@ class CopyDesign extends Dialog {
         {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(View.LOCALE);
+            formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.DIALOG_CopyFileAndRequired);
             btn_2.setText(formatter.format(messageArguments));
         }
@@ -97,7 +97,7 @@ class CopyDesign extends Dialog {
         {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(View.LOCALE);
+            formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.DIALOG_CopyFileAndRequiredAndRelated);
             btn_3.setText(formatter.format(messageArguments));
         }

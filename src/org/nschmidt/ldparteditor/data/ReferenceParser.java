@@ -28,7 +28,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.dialogs.overwrite.OverwriteDialog;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.composite3d.TreeData;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -516,7 +516,7 @@ public enum ReferenceParser {
                     messageBoxError.setText(I18n.DIALOG_NotFoundRequiredTitle);
                     Object[] messageArguments = {shortFilename, dfToParse.getShortName()};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(View.LOCALE);
+                    formatter.setLocale(MyLanguage.LOCALE);
                     formatter.applyPattern(I18n.DIALOG_NotFoundRequired);
                     messageBoxError.setMessage(formatter.format(messageArguments));
                     messageBoxError.open();

@@ -38,6 +38,7 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.colour.GCChrome;
 import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
 import org.nschmidt.ldparteditor.data.colour.GCMetal;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
@@ -1241,7 +1242,7 @@ public final class DatFile {
 
             Object[] messageArguments = {getShortName(), getLastSavedOpened()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(View.LOCALE);
+            formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.DIALOG_Modified);
             messageBox.setMessage(formatter.format(messageArguments));
 

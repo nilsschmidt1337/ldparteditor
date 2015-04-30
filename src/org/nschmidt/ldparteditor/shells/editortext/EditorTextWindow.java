@@ -59,6 +59,7 @@ import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.dialogs.sort.SortDialog;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer;
 import org.nschmidt.ldparteditor.dnd.MyDummyType;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
@@ -861,7 +862,7 @@ public class EditorTextWindow extends EditorTextDesign {
 
                 Object[] messageArguments = {df.getShortName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(View.LOCALE);
+                formatter.setLocale(MyLanguage.LOCALE);
                 formatter.applyPattern(I18n.DIALOG_UnsavedChanges);
                 messageBox.setMessage(formatter.format(messageArguments));
 
