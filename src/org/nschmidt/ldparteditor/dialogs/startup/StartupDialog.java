@@ -16,14 +16,15 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialogs.startup;
 
 import java.io.File;
+import java.util.Locale;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
-import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -47,6 +48,7 @@ public class StartupDialog extends StartupDesign {
     private String ldrawUserName = ""; //$NON-NLS-1$
     private String license = "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"; //$NON-NLS-1$
     private String realName = ""; //$NON-NLS-1$
+    private Locale locale = Locale.US;
 
     private boolean path1valid = false;
     private boolean path2valid = false;
@@ -84,10 +86,10 @@ public class StartupDialog extends StartupDesign {
                 dlg.setFilterPath(null);
 
                 // Change the title bar text
-                dlg.setText(I18n.STARTUP_DefineLDrawPath);
+                dlg.setText("Define the LDraw Folder Path:"); //$NON-NLS-1$ NO_I18N!!
 
                 // Customizable message displayed in the dialog
-                dlg.setMessage(I18n.DIALOG_DirectorySelect);
+                dlg.setMessage("Select a Directory"); //$NON-NLS-1$ NO_I18N!!
 
                 // Calling open() will open and run the dialog.
                 // It will return the selected directory, or
@@ -111,10 +113,10 @@ public class StartupDialog extends StartupDesign {
                 dlg.setFilterPath(null);
 
                 // Change the title bar text
-                dlg.setText(I18n.STARTUP_DefineAuthoringPath);
+                dlg.setText("Where is your parts authoring folder located?"); //$NON-NLS-1$ NO_I18N!!
 
                 // Customizable message displayed in the dialog
-                dlg.setMessage(I18n.DIALOG_DirectorySelect);
+                dlg.setMessage("Select a Directory"); //$NON-NLS-1$ NO_I18N!!
 
                 // Calling open() will open and run the dialog.
                 // It will return the selected directory, or
@@ -138,10 +140,10 @@ public class StartupDialog extends StartupDesign {
                 dlg.setFilterPath(null);
 
                 // Change the title bar text
-                dlg.setText(I18n.STARTUP_DefineUnofficialPath);
+                dlg.setText("Where is your unofficial parts folder located?"); //$NON-NLS-1$ NO_I18N!!
 
                 // Customizable message displayed in the dialog
-                dlg.setMessage(I18n.DIALOG_DirectorySelect);
+                dlg.setMessage("Select a Directory"); //$NON-NLS-1$ NO_I18N!!
 
                 // Calling open() will open and run the dialog.
                 // It will return the selected directory, or
@@ -177,6 +179,14 @@ public class StartupDialog extends StartupDesign {
                 btn_ok[0].setEnabled(path1valid && path2valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
             }
         });
+        cmb_locale[0].addListener(SWT.Modify, new Listener() {
+            @Override
+            public void handleEvent(Event e) {
+                if (localeMap.containsKey(cmb_locale[0].getText())) {
+                    locale = localeMap.get(cmb_locale[0].getText());
+                }
+            }
+        });
         btn_ok[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
@@ -188,6 +198,8 @@ public class StartupDialog extends StartupDesign {
                 userSettingState.setLicense(license);
                 userSettingState.setRealUserName(realName);
                 userSettingState.setUsingRelativePaths(false);
+                userSettingState.setLocale(locale);
+                MyLanguage.LOCALE = locale;
                 WorkbenchManager.setUserSettingState(userSettingState);
             }
         });

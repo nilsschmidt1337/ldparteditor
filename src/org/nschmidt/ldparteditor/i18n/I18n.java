@@ -18,11 +18,11 @@ package org.nschmidt.ldparteditor.i18n;
 import java.awt.ComponentOrientation;
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import org.eclipse.swt.SWT;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 
 /**
@@ -48,17 +48,16 @@ public final class I18n {
     private static int line_offset;
 
     // Bundles
-    private static final ResourceBundle EDITORTEXT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TextEditor"); //$NON-NLS-1$
-    private static final ResourceBundle UNITS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Units"); //$NON-NLS-1$
-    private static final ResourceBundle PARTS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Parts"); //$NON-NLS-1$
-    private static final ResourceBundle VERSION = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Version"); //$NON-NLS-1$
-    private static final ResourceBundle PERSPECTIVE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Perspective"); //$NON-NLS-1$
-    private static final ResourceBundle SPLASH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.SplashScreen"); //$NON-NLS-1$
-    private static final ResourceBundle PROJECT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Project"); //$NON-NLS-1$
-    private static final ResourceBundle COPYNPASTE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CopyAndPaste"); //$NON-NLS-1$
-    private static final ResourceBundle STARTUP = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Startup"); //$NON-NLS-1$
-    private static final ResourceBundle DIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Dialog"); //$NON-NLS-1$
-    private static final ResourceBundle EDITOR3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.3DEditor"); //$NON-NLS-1$
+    private static final ResourceBundle EDITORTEXT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TextEditor", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle UNITS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Units", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle PARTS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Parts", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle VERSION = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Version", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle PERSPECTIVE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Perspective", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle SPLASH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.SplashScreen", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle PROJECT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Project", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle COPYNPASTE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CopyAndPaste", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle DIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Dialog", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle EDITOR3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.3DEditor", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -209,17 +208,6 @@ public final class I18n {
     public static final String SPLASH_NoRead = SPLASH.getString(getProperty());
     public static final String SPLASH_NoWrite = SPLASH.getString(getProperty());
     public static final String SPLASH_Title = SPLASH.getString(getProperty());
-    public static final String STARTUP_AuthoringFolderQuestion = STARTUP.getString(getProperty());
-    public static final String STARTUP_DefineAuthoringPath = STARTUP.getString(getProperty());
-    public static final String STARTUP_DefineLDrawPath = STARTUP.getString(getProperty());
-    public static final String STARTUP_DefineUnofficialPath = STARTUP.getString(getProperty());
-    public static final String STARTUP_FirstPrompt = STARTUP.getString(getProperty());
-    public static final String STARTUP_LDrawFolderQuestion = STARTUP.getString(getProperty());
-    public static final String STARTUP_LDrawUserQuestion = STARTUP.getString(getProperty());
-    public static final String STARTUP_LicenseQuestion = STARTUP.getString(getProperty());
-    public static final String STARTUP_RealNameQuestion = STARTUP.getString(getProperty());
-    public static final String STARTUP_UnofficialPathQuestion = STARTUP.getString(getProperty());
-    public static final String STARTUP_WelcomeMessage = STARTUP.getString(getProperty());
     public static final String UNITS_Factor_primary = UNITS.getString(getProperty());
     public static final String UNITS_Factor_secondary = UNITS.getString(getProperty());
     public static final String UNITS_LDU = UNITS.getString(getProperty());
@@ -266,7 +254,7 @@ public final class I18n {
     }
 
     static { // Make a test if the current locale use RTL layout
-        if (!ComponentOrientation.getOrientation(new Locale(System.getProperty("user.language"))).isLeftToRight()) { //$NON-NLS-1$
+        if (!ComponentOrientation.getOrientation(MyLanguage.LOCALE).isLeftToRight()) {
             isRtl = true;
             I18N_RTL = SWT.RIGHT_TO_LEFT;
         } else {

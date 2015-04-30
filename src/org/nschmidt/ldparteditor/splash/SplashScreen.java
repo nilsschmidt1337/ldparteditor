@@ -83,8 +83,33 @@ public class SplashScreen extends ApplicationWindow {
      */
     public void run() {
 
-        // Indicates that the editor starts for the first time.
-        final boolean[] firstApplicationRun = new boolean[1];
+        final File configGzFile = new File("config.gz"); //$NON-NLS-1$
+
+        // Load the workbench here if config.gz exists
+        if (configGzFile.exists()) {
+            WorkbenchManager.loadWorkbench();
+            if (WorkbenchManager.getUserSettingState().isResetOnStart()) {
+                // Do a reset, if needed.
+                configGzFile.delete();
+            }
+        }
+        if (!configGzFile.exists()) {
+            WorkbenchManager.createDefaultWorkbench();
+            // This is our first time we use the application.
+            // Start a little wizard for the user dependent properties.
+            if (new StartupDialog(Display.getDefault().getActiveShell()).open() == IDialogConstants.OK_ID) {
+                // Save the changes, which are made by the user
+                WorkbenchManager.saveWorkbench();
+            } else {
+                configGzFile.delete();
+                // Oops..
+                // Dispose all resources (never delete this!)
+                ResourceManager.dispose();
+                // Dispose the display (never delete this, too!)
+                Display.getCurrent().dispose();
+                return;
+            }
+        }
 
         this.setShellStyle(SWT.ON_TOP);
         this.create();
@@ -151,35 +176,10 @@ public class SplashScreen extends ApplicationWindow {
                     return;
                 }
 
-                // Check if there is the /views folder and create it if not
-                /*
-                 * dequeueTask(); try { File viewsFolder = new File("views");
-                 * //$NON-NLS-1$ if (!viewsFolder.exists()) {
-                 * viewsFolder.mkdir(); } } catch (SecurityException s) { //
-                 * Return with a warning threadReturn[0] =
-                 * ReturnType.MKDIR_READ_ERROR; return; }
-                 */
-
-                // Now load the workbench
+                // Now check the workbench
                 dequeueTask();
                 try {
-                    // Create the default workbench if config.gz does not exist
-                    File configGzFile = new File("config.gz"); //$NON-NLS-1$
                     if (!configGzFile.exists()) {
-                        WorkbenchManager.createDefaultWorkbench();
-                        // Assuming, this is our first run of LD Part Editor
-                        firstApplicationRun[0] = true;
-                    }
-                    // Load the workbench here if config.gz exists
-                    if (configGzFile.exists()) {
-                        WorkbenchManager.loadWorkbench();
-                        if (WorkbenchManager.getUserSettingState().isResetOnStart()) {
-                            // Do a reset, if needed.
-                            configGzFile.delete();
-                            WorkbenchManager.createDefaultWorkbench();
-                            firstApplicationRun[0] = true;
-                        }
-                    } else {
                         // Return with a warning
                         threadReturn[0] = ReturnType.WRITE_ERROR;
                         return;
@@ -265,23 +265,6 @@ public class SplashScreen extends ApplicationWindow {
             Display.getCurrent().dispose();
         } else {
             // Everything's under control..
-            // Check if this is our first time we use the application
-            // and start a little wizard for the user dependent properties.
-            if (firstApplicationRun[0]) {
-                if (new StartupDialog(sh).open() == IDialogConstants.OK_ID) {
-                    // Save the changes, which are made by the user
-                    WorkbenchManager.saveWorkbench();
-                } else {
-                    File configGzFile = new File("config.gz"); //$NON-NLS-1$
-                    configGzFile.delete();
-                    // Oops..
-                    // Dispose all resources (never delete this!)
-                    ResourceManager.dispose();
-                    // Dispose the display (never delete this, too!)
-                    Display.getCurrent().dispose();
-                    return;
-                }
-            }
             // Prepare the default project folder
             try {
                 File projectFolder = new File("project"); //$NON-NLS-1$

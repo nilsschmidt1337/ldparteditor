@@ -16,6 +16,12 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialogs.startup;
 
 import java.io.File;
+import java.text.Collator;
+import java.text.DateFormat;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Locale;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -32,7 +38,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.nschmidt.ldparteditor.i18n.I18n;
 
 /**
  * This first dialog - shown on startup - asks for mandatory information about
@@ -48,6 +53,7 @@ class StartupDesign extends Dialog {
 
     // Use final only for subclass/listener references!
     final Button[] btn_ok = new Button[1];
+    final Combo[] cmb_locale = new Combo[1];
     final Text[] txt_ldrawPath = new Text[1];
     final Text[] txt_unofficialPath = new Text[1];
     final Text[] txt_ldrawUserName = new Text[1];
@@ -57,6 +63,8 @@ class StartupDesign extends Dialog {
     final Button[] btn_browseLdrawPath = new Button[1];
     final Button[] btn_browseUnofficialPath = new Button[1];
     final Button[] btn_browseAuthoringPath = new Button[1];
+
+    final HashMap<String, Locale> localeMap = new HashMap<String, Locale>();
 
     StartupDesign(Shell parentShell) {
         super(parentShell);
@@ -75,16 +83,44 @@ class StartupDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_welcome = new Label(cmp_container, SWT.NONE);
-        lbl_welcome.setText(I18n.STARTUP_WelcomeMessage);
+        lbl_welcome.setText("Welcome to LD Part Editor!"); //$NON-NLS-1$ NO_I18N!!
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_firstPrompt = new Label(cmp_container, SWT.NONE);
-        lbl_firstPrompt.setText(I18n.STARTUP_FirstPrompt);
+        lbl_firstPrompt.setText("Please answer the following questions on the first start of this program:"); //$NON-NLS-1$ NO_I18N!!
+
+        Label lbl_locale = new Label(cmp_container, SWT.NONE);
+        lbl_locale.setText("Choose your locale:"); //$NON-NLS-1$ NO_I18N!!
+
+        Combo cmb_locale = new Combo(cmp_container, SWT.READ_ONLY);
+        this.cmb_locale[0] = cmb_locale;
+
+        String[] locales = new String[DateFormat.getAvailableLocales().length];
+        Locale[] locs = DateFormat.getAvailableLocales();
+        Arrays.sort(locs, new Comparator<Locale>() {
+            @Override
+            public int compare(Locale o1, Locale o2) {
+                return Collator.getInstance(Locale.ENGLISH).compare(o1.getDisplayName(Locale.ENGLISH), o2.getDisplayName(Locale.ENGLISH));
+            }
+        });
+        localeMap.clear();
+        int englishIndex = 0;
+        for (int i = 0; i < locales.length; i++) {
+            locales[i] = locs[i].getDisplayName();
+            localeMap.put(locales[i], locs[i]);
+            if (locs[i].equals(Locale.US)) {
+                englishIndex = i;
+            }
+        }
+
+        cmb_locale.setItems(locales);
+        cmb_locale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmb_locale.select(englishIndex);
 
         Label lbl_ldrawFolderQuestion = new Label(cmp_container, SWT.NONE);
-        lbl_ldrawFolderQuestion.setText(I18n.STARTUP_LDrawFolderQuestion);
+        lbl_ldrawFolderQuestion.setText("Where is your LDraw folder located?"); //$NON-NLS-1$ NO_I18N!!
 
         Composite cmp_pathChooser1 = new Composite(cmp_container, SWT.NONE);
         cmp_pathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -101,24 +137,24 @@ class StartupDesign extends Dialog {
 
         Button btn_BrowseLdrawPath = new Button(cmp_pathChooser1, SWT.NONE);
         this.btn_browseLdrawPath[0] = btn_BrowseLdrawPath;
-        btn_BrowseLdrawPath.setText(I18n.DIALOG_Browse);
+        btn_BrowseLdrawPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
 
         Label lbl_ldrawUserQuestion = new Label(cmp_container, SWT.NONE);
-        lbl_ldrawUserQuestion.setText(I18n.STARTUP_LDrawUserQuestion);
+        lbl_ldrawUserQuestion.setText("What is your LDraw user name?"); //$NON-NLS-1$ NO_I18N!!
 
         Text txt_ldrawUserName = new Text(cmp_container, SWT.BORDER);
         this.txt_ldrawUserName[0] = txt_ldrawUserName;
         txt_ldrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_realNameQuestion = new Label(cmp_container, SWT.NONE);
-        lbl_realNameQuestion.setText(I18n.STARTUP_RealNameQuestion);
+        lbl_realNameQuestion.setText("What is your real name?"); //$NON-NLS-1$ NO_I18N!!
 
         Text txt_realName = new Text(cmp_container, SWT.BORDER);
         this.txt_realName[0] = txt_realName;
         txt_realName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_licenseQuestion = new Label(cmp_container, SWT.NONE);
-        lbl_licenseQuestion.setText(I18n.STARTUP_LicenseQuestion);
+        lbl_licenseQuestion.setText("Under which license do you want to publish your work?"); //$NON-NLS-1$ NO_I18N!!
 
         Combo cmb_license = new Combo(cmp_container, SWT.NONE);
         this.cmb_license[0] = cmb_license;
@@ -128,7 +164,7 @@ class StartupDesign extends Dialog {
         cmb_license.select(0);
 
         Label lbl_authoringFolderQuestion = new Label(cmp_container, SWT.NONE);
-        lbl_authoringFolderQuestion.setText(I18n.STARTUP_AuthoringFolderQuestion);
+        lbl_authoringFolderQuestion.setText("Define the Part Authoring Folder Path:"); //$NON-NLS-1$ NO_I18N!!
 
         Composite cmp_pathChooser2 = new Composite(cmp_container, SWT.NONE);
         cmp_pathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -140,10 +176,10 @@ class StartupDesign extends Dialog {
 
         Button btn_browseAuthoringPath = new Button(cmp_pathChooser2, SWT.NONE);
         this.btn_browseAuthoringPath[0] = btn_browseAuthoringPath;
-        btn_browseAuthoringPath.setText(I18n.DIALOG_Browse);
+        btn_browseAuthoringPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
 
         Label lbl_unofficialPathQuestion = new Label(cmp_container, SWT.NONE);
-        lbl_unofficialPathQuestion.setText(I18n.STARTUP_UnofficialPathQuestion);
+        lbl_unofficialPathQuestion.setText("Define the Folder Path for Unofficial Parts:"); //$NON-NLS-1$ NO_I18N!!
 
         Composite cmp_pathChooser3 = new Composite(cmp_container, SWT.NONE);
         cmp_pathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -159,7 +195,7 @@ class StartupDesign extends Dialog {
 
         Button btn_browseUnofficialPath = new Button(cmp_pathChooser3, SWT.NONE);
         this.btn_browseUnofficialPath[0] = btn_browseUnofficialPath;
-        btn_browseUnofficialPath.setText(I18n.DIALOG_Browse);
+        btn_browseUnofficialPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
 
         return cmp_container;
     }
