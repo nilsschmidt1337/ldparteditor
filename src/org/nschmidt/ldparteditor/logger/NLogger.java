@@ -63,8 +63,7 @@ public enum NLogger {
             StringBuilder sb = new StringBuilder();
             sb.append("[LDPartEditor "); //$NON-NLS-1$
             sb.append(DEBUG ? "DEBUG " : "RELEASE "); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.append(Version.getVersion());
-            sb.append("] on "); //$NON-NLS-1$
+            sb.append("Started on "); //$NON-NLS-1$
             sb.append(new java.util.Date());
             System.err.println(sb.toString());
         } catch (Exception e) {
