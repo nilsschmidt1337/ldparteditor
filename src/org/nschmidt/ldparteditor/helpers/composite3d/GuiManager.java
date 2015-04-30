@@ -45,6 +45,7 @@ public enum GuiManager {
      */
     public static void updateStatus(Composite3D c3d) {
         DecimalFormat df = View.NUMBER_FORMAT4F;
+        DecimalFormat df2 = View.NUMBER_FORMAT1F;
         final StringBuilder sb = new StringBuilder();
         if (c3d.isClassicPerspective()) {
             sb.append("["); //$NON-NLS-1$
@@ -70,7 +71,7 @@ public enum GuiManager {
         sb.append(", "); //$NON-NLS-1$
         sb.append(I18n.PERSPECTIVE_Zoom);
         sb.append(": "); //$NON-NLS-1$
-        sb.append(Math.round(c3d.getZoom() * 10000000) / 100f);
+        sb.append(df2.format(Math.round(c3d.getZoom() * 10000000) / 100f));
         sb.append("% ["); //$NON-NLS-1$
         BigDecimal[] cursor3D = c3d.getCursorSnapped3Dprecise();
         sb.append(df.format(cursor3D[0].multiply(View.unit_factor)));

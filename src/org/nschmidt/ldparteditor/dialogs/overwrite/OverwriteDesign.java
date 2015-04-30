@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
 /**
@@ -64,7 +64,7 @@ class OverwriteDesign extends Dialog {
 
         Object[] messageArguments = {whichFile};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-        formatter.setLocale(View.LOCALE);
+        formatter.setLocale(MyLanguage.LOCALE);
         formatter.applyPattern(I18n.DIALOG_Replace);
         lbl_overwrite.setText(formatter.format(messageArguments));
 

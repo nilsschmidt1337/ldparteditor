@@ -19,7 +19,6 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,8 +53,6 @@ import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 public enum View {
     INSTANCE;
 
-    public static final Locale LOCALE = Locale.getDefault();
-
     /** Resolution of the viewport at 100% zoom */
     public final static float PIXEL_PER_LDU = 1000.0f;
     /** i18n reference string for the current unit */
@@ -63,11 +60,13 @@ public enum View {
     /** The current unit factor */
     public static BigDecimal unit_factor = BigDecimal.ONE;
     /** The standard decimal format for floating point numbers (0 digits) */
-    public static final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##0;-###,##0", new DecimalFormatSymbols(LOCALE)); //$NON-NLS-1$
+    public static final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##0;-###,##0", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
+    /** The standard decimal format for floating point numbers (1 digit) */
+    public static final java.text.DecimalFormat NUMBER_FORMAT1F = new java.text.DecimalFormat(" ###,##0.00;-###,##0.00", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
     /** The standard decimal format for floating point numbers (2 digits) */
-    public static final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(" ###,##0.00;-###,##0.00", new DecimalFormatSymbols(LOCALE)); //$NON-NLS-1$
+    public static final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(" ###,##0.00;-###,##0.00", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
     /** The standard decimal format for floating point numbers (4 digits) */
-    public static final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat("###,##0.0000;-###,##0.0000", new DecimalFormatSymbols(LOCALE)); //$NON-NLS-1$
+    public static final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat("###,##0.0000;-###,##0.0000", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
 
     public static final float[] BFC_front_Colour_r = new float[] { 0f };
     public static final float[] BFC_front_Colour_g = new float[] { .9f };

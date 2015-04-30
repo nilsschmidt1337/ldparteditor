@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.dialogs.newproject.NewProjectDialog;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
@@ -90,7 +90,7 @@ public enum ProjectActions {
 
                     Object[] messageArguments = {df.getShortName()};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(View.LOCALE);
+                    formatter.setLocale(MyLanguage.LOCALE);
                     formatter.applyPattern(I18n.DIALOG_UnsavedChanges);
                     messageBox.setMessage(formatter.format(messageArguments));
 
@@ -218,7 +218,7 @@ public enum ProjectActions {
 
                         Object[] messageArguments = {I18n.DIALOG_TheOldProject};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(View.LOCALE);
+                        formatter.setLocale(MyLanguage.LOCALE);
                         formatter.applyPattern(I18n.DIALOG_UnsavedChanges);
                         messageBox.setMessage(formatter.format(messageArguments));
 

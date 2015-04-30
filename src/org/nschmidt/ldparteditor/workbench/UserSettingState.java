@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.workbench;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.nschmidt.ldparteditor.data.GColour;
@@ -88,6 +89,8 @@ public class UserSettingState implements Serializable {
     private float[] manipulatorSize = null;
 
     private ArrayList<String> recentItems = new ArrayList<String>();
+
+    private Locale locale = Locale.US;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -379,6 +382,14 @@ public class UserSettingState implements Serializable {
 
     public void setRecentItems(ArrayList<String> recentItems) {
         this.recentItems = recentItems;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
 }
