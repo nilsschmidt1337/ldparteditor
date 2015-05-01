@@ -182,7 +182,7 @@ public enum NLogger {
     }
 
     /**
-     * Logs a error to the flatfiles {@code "error_log1.txt"} and
+     * Logs a error to the flatfiles {@code "error_log.txt"} and
      * {@code "error_log2.txt"} Each file is limited to 100KB file size (~4000
      * lines)
      *
@@ -198,7 +198,7 @@ public enum NLogger {
             FileWriter fw = null;
             if (!writeInNewFile) {
                 // Check if "error_log1.txt" is greater than 100KB
-                File log1 = new File("error_log1.txt"); //$NON-NLS-1$
+                File log1 = new File("error_log.txt"); //$NON-NLS-1$
                 writeInNewFile = log1.length() > 100000;
             }
             if (writeInNewFile) {
@@ -228,8 +228,8 @@ public enum NLogger {
                     // Check if "error_log2.txt" is greater than 100KB
                     File log2 = new File("error_log2.txt"); //$NON-NLS-1$
                     if (log2.length() > 100000) {
-                        // if so, delete "error_log1.txt",
-                        File log1 = new File("error_log1.txt"); //$NON-NLS-1$
+                        // if so, delete "error_log.txt",
+                        File log1 = new File("error_log.txt"); //$NON-NLS-1$
                         log1.delete();
                         // rename "error_log2.txt" to "error_log1.txt"
                         log2.renameTo(log1);
@@ -240,7 +240,7 @@ public enum NLogger {
             } else {
                 // Write in the old "error_log1.txt" file
                 try {
-                    fw = new FileWriter("error_log1.txt", true); //$NON-NLS-1$
+                    fw = new FileWriter("error_log.txt", true); //$NON-NLS-1$
                     StringBuilder sb = new StringBuilder();
                     sb.append("[ERROR "); //$NON-NLS-1$
                     sb.append(Version.getVersion());
