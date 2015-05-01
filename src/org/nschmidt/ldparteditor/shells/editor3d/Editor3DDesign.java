@@ -212,6 +212,7 @@ class Editor3DDesign extends ApplicationWindow {
 
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
+    final MenuItem[] mntm_UploadLogs = new MenuItem[1];
     final MenuItem[] mntm_SyncWithTextEditor = new MenuItem[1];
     final MenuItem[] mntm_SyncLpeInline = new MenuItem[1];
 
@@ -1093,6 +1094,13 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator2 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
+                    {
+                        MenuItem mntm_UploadErrorLog = new MenuItem(mnu_Tools, SWT.PUSH);
+                        this.mntm_UploadLogs[0] = mntm_UploadErrorLog;
+                        mntm_UploadErrorLog.setText("Upload Error Logs"); //$NON-NLS-1$ I18N
+                    }
+                    @SuppressWarnings("unused")
+                    final MenuItem mntmSeparator3 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
                     {
                         MenuItem mntm_SyncWithTextEditor = new MenuItem(mnu_Tools, SWT.CHECK);
                         mntm_SyncWithTextEditor.setSelection(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());

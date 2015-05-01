@@ -15,13 +15,20 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editor3d;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -110,10 +117,10 @@ import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialogInt;
 import org.nschmidt.ldparteditor.enums.GLPrimitives;
-import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MouseButton;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.Perspective;
@@ -153,6 +160,7 @@ import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shells.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.References;
+import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.TextTriangulator;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
@@ -3633,6 +3641,107 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 }
 
+            }
+        });
+
+        mntm_UploadLogs[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+
+                UTF8BufferedReader b1 = null, b2 = null;
+
+                if (mntm_UploadLogs[0].getData() == null) {
+                    mntm_UploadLogs[0].setData(0);
+                } else {
+                    int uploadCount = (int) mntm_UploadLogs[0].getData();
+                    uploadCount++;
+                    if (uploadCount > 16) {
+                        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                        messageBox.setText("Warning:"); //$NON-NLS-1$ I18N
+                        messageBox.setMessage("The maximum upload limit for this session is reached.\nPlease restart LDPartEditor and try again."); //$NON-NLS-1$
+                        messageBox.open();
+                        return;
+                    }
+                    mntm_UploadLogs[0].setData(uploadCount);
+                }
+
+                try {
+                    Thread.sleep(2000);
+                    String url = "http://pastebin.com/api/api_post.php"; //$NON-NLS-1$
+                    String charset = StandardCharsets.UTF_8.name();  // Or in Java 7 and later, use the constant: java.nio.charset.StandardCharsets.UTF_8.name()
+                    String title = "[LDPartEditor " + I18n.VERSION_Version + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+                    String devKey = "79cf77977cd2d798dd02f07d93b01ddb"; //$NON-NLS-1$
+
+                    StringBuilder code = new StringBuilder();
+
+                    File l1 = new File("error_log.txt");//$NON-NLS-1$
+                    File l2 = new File("error_log2.txt");//$NON-NLS-1$
+
+                    if (l1.exists() || l2.exists()) {
+
+                        if (l1.exists()) {
+                            b1 = new UTF8BufferedReader("error_log.txt"); //$NON-NLS-1$
+                            String line;
+                            while ((line = b1.readLine()) != null) {
+                                code.append(line);
+                                code.append(StringHelper.getLineDelimiter());
+                            }
+                        }
+
+                        if (l2.exists()) {
+                            b2 = new UTF8BufferedReader("error_log2.txt"); //$NON-NLS-1$
+                            String line;
+                            while ((line = b2.readLine()) != null) {
+                                code.append(line);
+                                code.append(StringHelper.getLineDelimiter());
+                            }
+                        }
+
+                        String query = String.format("api_option=paste&api_user_key=%s&api_paste_private=%s&api_paste_name=%s&api_dev_key=%s&api_paste_code=%s",  //$NON-NLS-1$
+                                URLEncoder.encode("4cc892c8052bd17d805a1a2907ee8014", charset), //$NON-NLS-1$
+                                URLEncoder.encode("0", charset),//$NON-NLS-1$
+                                URLEncoder.encode(title, charset),
+                                URLEncoder.encode(devKey, charset),
+                                URLEncoder.encode(code.toString(), charset)
+                                );
+
+                        URLConnection connection = new URL(url).openConnection();
+                        connection.setDoOutput(true); // Triggers POST.
+                        connection.setRequestProperty("Accept-Charset", charset); //$NON-NLS-1$
+                        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset); //$NON-NLS-1$ //$NON-NLS-2$
+
+                        try (OutputStream output = connection.getOutputStream()) {
+                            output.write(query.getBytes(charset));
+                        }
+
+                        BufferedReader response =new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8")); //$NON-NLS-1$
+                        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                        messageBox.setText("Info:"); //$NON-NLS-1$ I18N
+                        messageBox.setMessage("The upload was successful.\nLDPartEditor collects no personal data.\nIf you want to see what was uploaded, take a look into the error_log.txt file.\n\nOr visit: " + response.readLine()); //$NON-NLS-1$
+                        messageBox.open();
+                    } else {
+                        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                        messageBox.setText("Info:"); //$NON-NLS-1$ I18N
+                        messageBox.setMessage("There are no log files at the moment."); //$NON-NLS-1$
+                        messageBox.open();
+                    }
+                } catch (Exception e1) {
+                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                    messageBox.setText("Info:"); //$NON-NLS-1$ I18N
+                    messageBox.setMessage("The upload failed.\nPlease check your internet connection.\nLDPartEditor collects no personal data.\nIf you want to see what was uploaded, take a look into the error_log.txt file."); //$NON-NLS-1$
+                    messageBox.open();
+                } finally {
+                    if (b1 != null) {
+                        try {
+                            b1.close();
+                        } catch (Exception consumend) {}
+                    }
+                    if (b2 != null) {
+                        try {
+                            b2.close();
+                        } catch (Exception consumend) {}
+                    }
+                }
             }
         });
 
