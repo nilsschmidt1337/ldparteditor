@@ -322,6 +322,7 @@ public class Editor3DWindow extends Editor3DDesign {
         // MARK All final listeners will be configured here..
         // First, create all menu actions.
         createActions();
+        NLogger.writeVersion();
         btn_Sync[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

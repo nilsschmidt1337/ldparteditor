@@ -160,7 +160,6 @@ public class SplashScreen extends ApplicationWindow {
 
                 // Initialize startup tasks
                 ProgressHelper.queueTask(I18n.SPLASH_CheckPlugIn);
-                ProgressHelper.queueTask(I18n.SPLASH_CheckView);
                 ProgressHelper.queueTask(I18n.SPLASH_LoadWorkbench);
 
                 // Check if there is the /plugin folder and create it if not

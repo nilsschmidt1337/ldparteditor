@@ -200,7 +200,6 @@ public final class I18n {
     public static final String PROJECT_SelectProjectLocation = PROJECT.getString(getProperty());
     public static final String PROJECT_UnofficialLibReadWrite = PROJECT.getString(getProperty());
     public static final String SPLASH_CheckPlugIn = SPLASH.getString(getProperty());
-    public static final String SPLASH_CheckView = SPLASH.getString(getProperty());
     public static final String SPLASH_Error = SPLASH.getString(getProperty());
     public static final String SPLASH_InvalidOpenGLVersion = SPLASH.getString(getProperty());
     public static final String SPLASH_LoadWorkbench = SPLASH.getString(getProperty());
