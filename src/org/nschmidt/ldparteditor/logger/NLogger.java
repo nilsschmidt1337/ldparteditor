@@ -63,7 +63,7 @@ public enum NLogger {
             StringBuilder sb = new StringBuilder();
             sb.append("[LDPartEditor "); //$NON-NLS-1$
             sb.append(DEBUG ? "DEBUG " : "RELEASE "); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.append("Started on "); //$NON-NLS-1$
+            sb.append("] Started on "); //$NON-NLS-1$
             sb.append(new java.util.Date());
             System.err.println(sb.toString());
         } catch (Exception e) {
@@ -178,6 +178,18 @@ public enum NLogger {
         sb.append(clazz.getName());
         sb.append("  "); //$NON-NLS-1$
         sb.append(message);
+        System.err.println(sb.toString());
+    }
+
+    /**
+     * Logs the version number to System.err
+     */
+    public static synchronized void writeVersion() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[LDPartEditor "); //$NON-NLS-1$
+        sb.append(DEBUG ? "DEBUG " : "RELEASE "); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append(Version.getVersion());
+        sb.append("]"); //$NON-NLS-1$
         System.err.println(sb.toString());
     }
 
