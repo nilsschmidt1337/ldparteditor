@@ -238,6 +238,7 @@ public class KeyStateManager {
                     final DatFile df = c3d.getLockableDatFileReference();
                     final Editor3DWindow win = Editor3DWindow.getWindow();
                     final VertexManager vm = df.getVertexManager();
+                    vm.addSnapshot();
                     switch (t) {
                     case DELETE:
                         vm.delete(win.isMovingAdjacentData(), true);

@@ -109,6 +109,7 @@ public class MouseActions {
         final DatFile datfile = c3d.getLockableDatFileReference();
         if (!datfile.isDrawSelection()) return;
         final VertexManager vm = datfile.getVertexManager();
+        vm.addSnapshot();
         vm.getResetTimer().set(true);
         datfile.setLastSelectedComposite(c3d);
         mouse_button_pressed = event.button;
@@ -646,6 +647,7 @@ public class MouseActions {
     public void mouseUp(Event event) {
         final DatFile datfile = c3d.getLockableDatFileReference();
         final VertexManager vm = datfile.getVertexManager();
+        vm.addSnapshot();
         if (!datfile.isDrawSelection()) return;
         mouse_button_pressed = 0;
         switch (event.button) {

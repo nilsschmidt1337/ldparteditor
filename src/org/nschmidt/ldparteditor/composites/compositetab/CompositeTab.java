@@ -569,6 +569,11 @@ public class CompositeTab extends CompositeTabDesign {
 
             @Override
             public void modifyText(final ExtendedModifyEvent event) {
+                final DatFile dat = state.getFileNameObj();
+                final VertexManager vm = dat.getVertexManager();
+
+                vm.addSnapshot();
+
                 ViewIdleManager.pause[0].compareAndSet(false, true);
 
                 final String text = compositeText[0].getText();
@@ -588,7 +593,6 @@ public class CompositeTab extends CompositeTabDesign {
                     // Text inserted
                 }
 
-                DatFile dat = state.getFileNameObj();
                 if (text.equals(dat.getOriginalText()) && dat.getOldName().equals(dat.getNewName())) {
                     if (!dat.isVirtual()) state.getTab().setText(state.filename);
                     // Do not remove virtual files from the unsaved file list
@@ -608,7 +612,6 @@ public class CompositeTab extends CompositeTabDesign {
                 final int off = event.start + event.length;
                 final String insertedText = event.length == 0 ? "" : compositeText[0].getText(event.start, off - 1); //$NON-NLS-1$
 
-                final VertexManager vm = dat.getVertexManager();
                 if (!state.isSync()) vm.clearSelection();
                 // Reset the caret position when a vertex was modified
                 if (vm.getVertexToReplace() != null) {
@@ -674,6 +677,11 @@ public class CompositeTab extends CompositeTabDesign {
             // MARK KeyDown (Quick Fix)
             public void handleEvent(Event event) {
 
+                final DatFile df = state.getFileNameObj();
+                final VertexManager vm = df.getVertexManager();
+
+                vm.addSnapshot();
+
                 // NLogger.debug(getClass(),
                 // KeyBoardHelper.getKeyString(event));
 
@@ -690,9 +698,6 @@ public class CompositeTab extends CompositeTabDesign {
 
                 if (task != null) {
                     ViewIdleManager.pause[0].compareAndSet(false, true);
-
-                    final DatFile df = state.getFileNameObj();
-                    final VertexManager vm = df.getVertexManager();
 
                     switch (task) {
                     case EDITORTEXT_REPLACE_VERTEX:
