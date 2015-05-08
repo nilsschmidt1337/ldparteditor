@@ -635,6 +635,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().undo();
                 }
             }
@@ -644,6 +645,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().redo();
                 }
             }
@@ -654,6 +656,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     if (Project.getFileToEdit() != null) {
+                        Project.getFileToEdit().getVertexManager().addSnapshot();
                         Project.getFileToEdit().addHistory();
                     }
                 }
@@ -816,6 +819,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
                     SubfileCompiler.compile(Project.getFileToEdit(), false, false);
                 }
             }

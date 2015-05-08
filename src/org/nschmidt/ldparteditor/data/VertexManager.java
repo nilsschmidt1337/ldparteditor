@@ -110,6 +110,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class VertexManager {
 
+    private final ArrayList<MemorySnapshot> snapshots = new ArrayList<MemorySnapshot>();
+
     // 1 Vertex kann an mehreren Stellen (GData2-5 + position) manifestiert sein
     /**
      * Subfile-Inhalte sind hierbei enthalten. Die Manifestierung gegen
@@ -19514,5 +19516,17 @@ public class VertexManager {
 
     public static List<GData> getClipboard() {
         return CLIPBOARD;
+    }
+
+    public ArrayList<MemorySnapshot> getSnapshots() {
+        return snapshots;
+    }
+
+    public void addSnapshot() {
+        if (NLogger.DEBUG) {
+            MemorySnapshot snapshot = new MemorySnapshot();
+            getSnapshots().add(snapshot);
+            NLogger.debug(getClass(), "CREATED SNAPSHOT ON " + snapshot.toString()); //$NON-NLS-1$
+        }
     }
 }

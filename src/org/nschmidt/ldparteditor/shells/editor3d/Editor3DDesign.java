@@ -1262,6 +1262,7 @@ class Editor3DDesign extends ApplicationWindow {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         if (Project.getFileToEdit() != null) {
+                            Project.getFileToEdit().getVertexManager().addSnapshot();
                             Project.getFileToEdit().getVertexManager().colourChangeSelection(16, .5f, .5f, .5f, 1f);
                         }
                     }
@@ -2271,6 +2272,7 @@ class Editor3DDesign extends ApplicationWindow {
                         num = -1;
                     }
                     if (Project.getFileToEdit() != null) {
+                        Project.getFileToEdit().getVertexManager().addSnapshot();
                         Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
                     }
                     Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
@@ -2305,6 +2307,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 } else {
                                     num = -1;
                                 }
+                                Project.getFileToEdit().getVertexManager().addSnapshot();
                                 Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
                             }
                         }
