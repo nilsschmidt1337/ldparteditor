@@ -457,7 +457,7 @@ public final class GData2 extends GData {
             GL20.glUniform1f(r.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);
             GL20.glUniform1f(r.getNoTextureSwitch(), 1f);
             GL20.glUniform1f(r.getNoLightSwitch(), 1f);
-            GL20.glUniform1f(r.getCubeMapSwitch(), 1f);
+            GL20.glUniform1f(r.getCubeMapSwitch(), 0f);
             if (!visible)
                 return;
             if (!c3d.isDrawingSolidMaterials())
