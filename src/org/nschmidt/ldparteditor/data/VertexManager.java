@@ -19524,9 +19524,29 @@ public class VertexManager {
 
     public void addSnapshot() {
         if (NLogger.DEBUG) {
-            MemorySnapshot snapshot = new MemorySnapshot();
+            MemorySnapshot snapshot = new MemorySnapshot(linkedDatFile);
             getSnapshots().add(snapshot);
             NLogger.debug(getClass(), "CREATED SNAPSHOT ON " + snapshot.toString()); //$NON-NLS-1$
+        }
+    }
+
+    public void loadSnapshot(MemorySnapshot s) {
+        if (NLogger.DEBUG) {
+            clear();
+            GData0 emptyLine = new GData0(""); //$NON-NLS-1$
+            linkedDatFile.getDrawPerLine_NOCLONE().clear();
+            linkedDatFile.getDrawChainStart().setNext(emptyLine);
+            linkedDatFile.getDrawPerLine_NOCLONE().put(1, emptyLine);
+            // FIXME Needs implementation!
+            setModified(true, false);
+            StringBuilder sb = new StringBuilder();
+            for (String line : s.getBackup()) {
+                sb.append("\n"); //$NON-NLS-1$
+                sb.append(line);
+            }
+            sb.deleteCharAt(0);
+            linkedDatFile.setText(sb.toString());
+            SubfileCompiler.compile(linkedDatFile, false, true);
         }
     }
 }

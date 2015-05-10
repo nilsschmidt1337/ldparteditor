@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CTabItem;
@@ -63,10 +64,12 @@ import org.nschmidt.ldparteditor.data.GData2;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GData5;
+import org.nschmidt.ldparteditor.data.MemorySnapshot;
 import org.nschmidt.ldparteditor.data.ParsingResult;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.dialogs.snapshot.SnapshotDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
 import org.nschmidt.ldparteditor.enums.Perspective;
@@ -495,6 +498,31 @@ public class Composite3D extends ScalableComposite {
         });
         mntmSelectionInTextEditor.setText("Show Selection in Text Editor"); //$NON-NLS-1$ I18N
         mntmSelectionInTextEditor.setSelection(false);
+
+        if (NLogger.DEBUG) {
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator = new MenuItem(menu, SWT.SEPARATOR);
+
+            final MenuItem mntmOpenSnapshot = new MenuItem(menu, SWT.NONE);
+            mntmOpenSnapshot.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    DatFile df = lockableDatFileReference;
+                    if (df.equals(View.DUMMY_DATFILE)) return;
+                    MemorySnapshot[] retVal = new MemorySnapshot[1];
+                    if (new SnapshotDialog(getShell(), df.getVertexManager().getSnapshots(), retVal).open() == IDialogConstants.OK_ID) {
+                        if (retVal[0] != null) {
+                            for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                w.closeTabWithDatfile(df);
+                            }
+                            df.getVertexManager().loadSnapshot(retVal[0]);
+                        }
+                    }
+                }
+            });
+            mntmOpenSnapshot.setText("Open Snapshot (DEBUG ONLY)"); //$NON-NLS-1$ I18N
+            mntmOpenSnapshot.setSelection(false);
+        }
 
         /* TODO I need another solution for clipping planes
         @SuppressWarnings("unused")
