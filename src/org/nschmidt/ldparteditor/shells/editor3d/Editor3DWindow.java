@@ -130,6 +130,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
+import org.nschmidt.ldparteditor.helpers.Sphere;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
@@ -827,79 +828,32 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_lineSize1[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                GLPrimitives.SPHERE = GLPrimitives.SPHERE1;
-                GLPrimitives.SPHERE_INV = GLPrimitives.SPHERE_INV1;
-                View.lineWidth1000[0] = 25f;
-                View.lineWidth[0] = .025f;
-                View.lineWidthGL[0] = .375f;
-                Set<DatFile> dfs = new HashSet<DatFile>();
-                for (OpenGLRenderer renderer : renders) {
-                    dfs.add(renderer.getC3D().getLockableDatFileReference());
-                }
-                for (DatFile df : dfs) {
-                    SubfileCompiler.compile(df, false, false);
-                }
-                clickSingleBtn(btn_lineSize1[0]);
+                setLineSize(GLPrimitives.SPHERE1, GLPrimitives.SPHERE_INV1, 25f, .025f, .375f, btn_lineSize1[0]);
             }
         });
         btn_lineSize2[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                GLPrimitives.SPHERE = GLPrimitives.SPHERE2;
-                GLPrimitives.SPHERE_INV = GLPrimitives.SPHERE_INV2;
-                View.lineWidth1000[0] = 50f;
-                View.lineWidth[0] = .050f;
-                View.lineWidthGL[0] = .75f;
-                Set<DatFile> dfs = new HashSet<DatFile>();
-                for (OpenGLRenderer renderer : renders) {
-                    dfs.add(renderer.getC3D().getLockableDatFileReference());
-                }
-                for (DatFile df : dfs) {
-                    SubfileCompiler.compile(df, false, false);
-                }
-                clickSingleBtn(btn_lineSize2[0]);
+                setLineSize(GLPrimitives.SPHERE2, GLPrimitives.SPHERE_INV2, 50f, .050f, .75f, btn_lineSize2[0]);
             }
         });
         btn_lineSize3[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                GLPrimitives.SPHERE = GLPrimitives.SPHERE3;
-                GLPrimitives.SPHERE_INV = GLPrimitives.SPHERE_INV3;
-                View.lineWidth1000[0] = 100f;
-                View.lineWidth[0] = .100f;
-                View.lineWidthGL[0] = 1.5f;
-                Set<DatFile> dfs = new HashSet<DatFile>();
-                for (OpenGLRenderer renderer : renders) {
-                    dfs.add(renderer.getC3D().getLockableDatFileReference());
-                }
-                for (DatFile df : dfs) {
-                    SubfileCompiler.compile(df, false, false);
-                }
-                clickSingleBtn(btn_lineSize3[0]);
+                setLineSize(GLPrimitives.SPHERE3, GLPrimitives.SPHERE_INV3, 100f, .100f, 1.5f, btn_lineSize3[0]);
             }
         });
         btn_lineSize4[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                GLPrimitives.SPHERE = GLPrimitives.SPHERE4;
-                GLPrimitives.SPHERE_INV = GLPrimitives.SPHERE_INV4;
-                View.lineWidth1000[0] = 200f;
-                View.lineWidth[0] = .200f;
-                View.lineWidthGL[0] = 3f;
-                Set<DatFile> dfs = new HashSet<DatFile>();
-                for (OpenGLRenderer renderer : renders) {
-                    dfs.add(renderer.getC3D().getLockableDatFileReference());
-                }
-                for (DatFile df : dfs) {
-                    SubfileCompiler.compile(df, false, false);
-                }
-                clickSingleBtn(btn_lineSize4[0]);
+                setLineSize(GLPrimitives.SPHERE4, GLPrimitives.SPHERE_INV4, 200f, .200f, 3f, btn_lineSize4[0]);
             }
         });
         btn_BFCswap[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().windingChangeSelection();
                 }
             }
@@ -912,6 +866,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
                         if (new RoundDialog(getShell()).open() == IDialogConstants.CANCEL_ID) return;
                     }
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager()
                     .roundSelection(WorkbenchManager.getUserSettingState().getCoordsPrecision(), WorkbenchManager.getUserSettingState().getTransMatrixPrecision(), isMovingAdjacentData(), true);
                 }
@@ -923,6 +878,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
                     VertexManager vm = Project.getFileToEdit().getVertexManager();
+                    vm.addSnapshot();
                     final GColour gColour2 = vm.getRandomSelectedColour(lastUsedColour);
                     setLastUsedColour(gColour2);
                     btn_LastUsedColour[0].removeListener(SWT.Paint, btn_LastUsedColour[0].getListeners(SWT.Paint)[0]);
@@ -954,6 +910,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 if (!View.hasLDConfigColour(num)) {
                                     num = -1;
                                 }
+                                Project.getFileToEdit().getVertexManager().addSnapshot();
                                 Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2.getR(), gColour2.getG(), gColour2.getB(), gColour2.getA());
                             }
                         }
@@ -989,6 +946,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (!View.hasLDConfigColour(num)) {
                             num = -1;
                         }
+                        Project.getFileToEdit().getVertexManager().addSnapshot();
                         Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
 
                         btn_LastUsedColour[0].removeListener(SWT.Paint, btn_LastUsedColour[0].getListeners(SWT.Paint)[0]);
@@ -1019,6 +977,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     if (!View.hasLDConfigColour(num)) {
                                         num = -1;
                                     }
+                                    Project.getFileToEdit().getVertexManager().addSnapshot();
                                     Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
                                 }
                             }
@@ -1089,6 +1048,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().splitQuads(true);
                 }
             }
@@ -1180,6 +1140,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 final DatFile df = Project.getFileToEdit();
                 if (df != null) {
                     final VertexManager vm = df.getVertexManager();
+                    vm.addSnapshot();
                     final int count = vm.getSelectedData().size();
                     if (count > 0) {
                         boolean breakIt = false;
@@ -1321,6 +1282,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 final DatFile df = Project.getFileToEdit();
                 if (df != null) {
                     final VertexManager vm = df.getVertexManager();
+                    vm.addSnapshot();
                     final int count = vm.getSelectedData().size();
                     if (count > 0) {
                         boolean breakIt = false;
@@ -1456,7 +1418,8 @@ public class Editor3DWindow extends Editor3DDesign {
         final ValueChangeAdapter va = new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
-                if (updatingSelectionTab) return;
+                if (updatingSelectionTab || Project.getFileToEdit() == null) return;
+                Project.getFileToEdit().getVertexManager().addSnapshot();
                 final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
                         spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
                         spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
@@ -1564,6 +1527,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 // Project.getParsedFiles().add(df); IS NECESSARY HERE
                                 Project.getParsedFiles().add(df);
                                 new EditorTextWindow().run(df);
+                                df.getVertexManager().addSnapshot();
                             } else {
                                 MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                                 messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
@@ -1589,6 +1553,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         df.parseForData(true);
                                         Project.setFileToEdit(df);
                                         cmp_Container.getComposite3D().setLockableDatFileReference(df);
+                                        df.getVertexManager().addSnapshot();
                                         Editor3DWindow.getSashForm().getParent().layout();
                                         Editor3DWindow.getSashForm().setWeights(mainSashWeights);
                                     }
@@ -1622,6 +1587,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             }
                                         }
 
+                                        df.getVertexManager().addSnapshot();
                                     }
                                 }
                             } else {
@@ -1639,6 +1605,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
                                 DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
                                 if (df.isReadOnly() || !Project.getUnsavedFiles().contains(df) || df.isVirtual() && df.getText().trim().isEmpty()) return;
+                                df.getVertexManager().addSnapshot();
 
                                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
                                 messageBox.setText(I18n.DIALOG_RevertTitle);
@@ -1759,6 +1726,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
                                 DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
                                 if (df.isReadOnly()) return;
+                                df.getVertexManager().addSnapshot();
 
                                 FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
 
@@ -1867,6 +1835,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives().getData());
                                             projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives48().getData());
                                             for (DatFile df : projectFiles) {
+                                                df.getVertexManager().addSnapshot();
                                                 boolean isUnsaved = Project.getUnsavedFiles().contains(df);
                                                 boolean isParsed = Project.getParsedFiles().contains(df);
                                                 Project.getParsedFiles().remove(df);
@@ -2224,13 +2193,19 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_Hide[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (Project.getFileToEdit() != null) Project.getFileToEdit().getVertexManager().hideSelection();
+                if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
+                    Project.getFileToEdit().getVertexManager().hideSelection();
+                }
             }
         });
         btn_ShowAll[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (Project.getFileToEdit() != null) Project.getFileToEdit().getVertexManager().showAll();
+                if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
+                    Project.getFileToEdit().getVertexManager().showAll();
+                }
             }
         });
         btn_NoTransparentSelection[0].addSelectionListener(new SelectionAdapter() {
@@ -2249,19 +2224,26 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_Delete[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (Project.getFileToEdit() != null) Project.getFileToEdit().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
+                if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
+                    Project.getFileToEdit().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
+                }
             }
         });
         btn_Copy[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (Project.getFileToEdit() != null) Project.getFileToEdit().getVertexManager().copy();
+                if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
+                    Project.getFileToEdit().getVertexManager().copy();
+                }
             }
         });
         btn_Cut[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().copy();
                     Project.getFileToEdit().getVertexManager().delete(false, true);
                 }
@@ -2271,6 +2253,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().paste();
                     setMovingAdjacentData(false);
                 }
@@ -2515,6 +2498,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         for (OpenGLRenderer renderer : renders) {
                             Composite3D c3d = renderer.getC3D();
                             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                                vm.addSnapshot();
                                 Manipulator ma = c3d.getManipulator();
                                 vm.transformSubfile(subfile, ma.getAccurateMatrix(), true, true);
                             }
@@ -2780,6 +2764,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         loadSelectorSettings();
                         vm.selectAll(sels, true);
                         vm.syncWithTextEditors(true);
@@ -2795,6 +2780,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         loadSelectorSettings();
                         vm.selectAll(sels, false);
                         vm.syncWithTextEditors(true);
@@ -2810,6 +2796,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         loadSelectorSettings();
                         vm.selectAllWithSameColours(sels, true);
                         vm.syncWithTextEditors(true);
@@ -2825,6 +2812,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         loadSelectorSettings();
                         vm.selectAllWithSameColours(sels, false);
                         vm.syncWithTextEditors(true);
@@ -2840,6 +2828,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         vm.clearSelection();
                         vm.syncWithTextEditors(true);
                         return;
@@ -2854,6 +2843,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         loadSelectorSettings();
                         vm.selectInverse(sels);
                         vm.syncWithTextEditors(true);
@@ -3071,6 +3061,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         sels.setScope(SelectorSettings.EVERYTHING);
                         loadSelectorSettings();
                         vm.selector(sels);
@@ -3087,6 +3078,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         sels.setScope(SelectorSettings.CONNECTED);
                         loadSelectorSettings();
                         vm.selector(sels);
@@ -3103,6 +3095,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         sels.setScope(SelectorSettings.TOUCHING);
                         loadSelectorSettings();
                         vm.selector(sels);
@@ -3122,6 +3115,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             Composite3D c3d = renderer.getC3D();
                             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                                 VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                                vm.addSnapshot();
                                 vm.selectIsolatedVertices();
                                 vm.syncWithTextEditors(true);
                             }
@@ -3139,8 +3133,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     public void run() {
                         for (OpenGLRenderer renderer : renders) {
                             Composite3D c3d = renderer.getC3D();
-                            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                                 VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                                vm.addSnapshot();
                                 vm.split(2);
                             }
                         }
@@ -3157,7 +3152,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     public void run() {
                         for (OpenGLRenderer renderer : renders) {
                             Composite3D c3d = renderer.getC3D();
-                            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
 
                                 final int[] frac = new int[]{2};
                                 if (new ValueDialogInt(getShell(), "Split edges:", "(Number of resulting fractions)") { //$NON-NLS-1$ //$NON-NLS-2$ I18N
@@ -3176,7 +3171,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 }.open() == OK) {
 
                                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-
+                                    vm.addSnapshot();
                                     vm.split(frac[0]);
                                 }
                             }
@@ -3191,8 +3186,9 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         vm.merge(MergeTo.AVERAGE, true);
                         return;
                     }
@@ -3204,8 +3200,9 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         vm.merge(MergeTo.LAST_SELECTED, true);
                         return;
                     }
@@ -3217,8 +3214,9 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         vm.merge(MergeTo.NEAREST_VERTEX, true);
                         return;
                     }
@@ -3230,8 +3228,9 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         vm.merge(MergeTo.NEAREST_EDGE, true);
                         return;
                     }
@@ -3243,8 +3242,9 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         vm.merge(MergeTo.NEAREST_FACE, true);
                         return;
                     }
@@ -3257,7 +3257,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         Vertex v = null;
                         final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         final Set<Vertex> sv = vm.getSelectedVertices();
@@ -3265,6 +3265,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             v = sv.iterator().next();
                         }
                         if (new CoordinatesDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
+                            vm.addSnapshot();
                             vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData(), true);
                         }
                         return;
@@ -3278,8 +3279,9 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         if (new TranslateDialog(getShell(), null).open() == IDialogConstants.OK_ID) {
+                            c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(TranslateDialog.getOffset(), null, TransformationMode.TRANSLATE, TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), isMovingAdjacentData(), true);
                         }
                         return;
@@ -3293,7 +3295,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         TreeSet<Vertex> clipboard = new TreeSet<Vertex>();
                         if (VertexManager.getClipboard().size() == 1) {
                             GData vertex = VertexManager.getClipboard().get(0);
@@ -3332,6 +3334,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         }
                         if (new RotateDialog(getShell(), null, clipboard).open() == IDialogConstants.OK_ID) {
+                            c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), TranslateDialog.isZ(), isMovingAdjacentData(), true);
                         }
                         return;
@@ -3345,7 +3348,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         TreeSet<Vertex> clipboard = new TreeSet<Vertex>();
                         if (VertexManager.getClipboard().size() == 1) {
                             GData vertex = VertexManager.getClipboard().get(0);
@@ -3384,6 +3387,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         }
                         if (new ScaleDialog(getShell(), null, clipboard).open() == IDialogConstants.OK_ID) {
+                            c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), TransformationMode.SCALE, ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), isMovingAdjacentData(), true);
                         }
                         return;
@@ -3399,10 +3403,12 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new EdgerDialog(getShell(), es).open() == IDialogConstants.OK_ID)
+                        if (new EdgerDialog(getShell(), es).open() == IDialogConstants.OK_ID) {
+                            vm.addSnapshot();
                             vm.addEdges(es);
+                        }
                         return;
 
                     }
@@ -3415,10 +3421,12 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new RectifierDialog(getShell(), rs).open() == IDialogConstants.OK_ID)
+                        if (new RectifierDialog(getShell(), rs).open() == IDialogConstants.OK_ID) {
+                            vm.addSnapshot();
                             vm.rectify(rs, true);
+                        }
                         return;
 
                     }
@@ -3431,10 +3439,12 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new IsecalcDialog(getShell(), is).open() == IDialogConstants.OK_ID)
+                        if (new IsecalcDialog(getShell(), is).open() == IDialogConstants.OK_ID) {
+                            vm.addSnapshot();
                             vm.isecalc(is);
+                        }
                         return;
 
                     }
@@ -3447,10 +3457,12 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new SlicerProDialog(getShell(), ss).open() == IDialogConstants.OK_ID)
+                        if (new SlicerProDialog(getShell(), ss).open() == IDialogConstants.OK_ID) {
+                            vm.addSnapshot();
                             vm.slicerpro(ss);
+                        }
                         return;
 
                     }
@@ -3463,10 +3475,12 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new IntersectorDialog(getShell(), ins).open() == IDialogConstants.OK_ID)
+                        if (new IntersectorDialog(getShell(), ins).open() == IDialogConstants.OK_ID) {
+                            vm.addSnapshot();
                             vm.intersector(ins, true);
+                        }
                         return;
 
                     }
@@ -3479,10 +3493,12 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new Lines2PatternDialog(getShell()).open() == IDialogConstants.OK_ID)
+                        if (new Lines2PatternDialog(getShell()).open() == IDialogConstants.OK_ID) {
+                            vm.addSnapshot();
                             vm.lines2pattern();
+                        }
                         return;
                     }
                 }
@@ -3494,10 +3510,12 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new PathTruderDialog(getShell(), ps).open() == IDialogConstants.OK_ID)
+                        if (new PathTruderDialog(getShell(), ps).open() == IDialogConstants.OK_ID) {
+                            vm.addSnapshot();
                             vm.pathTruder(ps);
+                        }
                         return;
                     }
                 }
@@ -3509,10 +3527,12 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new SymSplitterDialog(getShell(), sims).open() == IDialogConstants.OK_ID)
+                        if (new SymSplitterDialog(getShell(), sims).open() == IDialogConstants.OK_ID) {
+                            vm.addSnapshot();
                             vm.symSplitter(sims);
+                        }
                         return;
                     }
                 }
@@ -3524,10 +3544,12 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new UnificatorDialog(getShell(), us).open() == IDialogConstants.OK_ID)
+                        if (new UnificatorDialog(getShell(), us).open() == IDialogConstants.OK_ID) {
+                            vm.addSnapshot();
                             vm.unificator(us);
+                        }
                         return;
                     }
                 }
@@ -3539,8 +3561,9 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         if (new RingsAndConesDialog(getShell(), ris).open() == IDialogConstants.OK_ID) {
+                            c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             RingsAndCones.solve(Editor3DWindow.getWindow().getShell(), c3d.getLockableDatFileReference(), cmp_Primitives[0].getPrimitives(), ris, true);
                         }
                     }
@@ -3557,6 +3580,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         DatFile df = c3d.getLockableDatFileReference();
                         if (df.isReadOnly()) return;
                         VertexManager vm = df.getVertexManager();
+                        vm.addSnapshot();
                         if (new Txt2DatDialog(getShell(), ts).open() == IDialogConstants.OK_ID && !ts.getText().trim().isEmpty()) {
 
                             java.awt.Font myFont;
@@ -3642,6 +3666,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         dfs.add(renderer.getC3D().getLockableDatFileReference());
                     }
                     for (DatFile df : dfs) {
+                        df.getVertexManager().addSnapshot();
                         SubfileCompiler.compile(df, false, false);
                     }
                 }
@@ -3774,6 +3799,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         vm.flipSelection();
                         return;
                     }
@@ -3788,6 +3814,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         vm.subdivideCatmullClark();
                         return;
                     }
@@ -3802,6 +3829,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
                         vm.subdivideLoop();
                         return;
                     }
@@ -6262,5 +6290,22 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public ArrayList<String> getRecentItems() {
         return recentItems;
+    }
+
+    private void setLineSize(Sphere sp, Sphere sp_inv, float line_width1000, float line_width, float line_width_gl, Button btn) {
+        GLPrimitives.SPHERE = sp;
+        GLPrimitives.SPHERE_INV = sp_inv;
+        View.lineWidth1000[0] = line_width1000;
+        View.lineWidth[0] = line_width;
+        View.lineWidthGL[0] = line_width_gl;
+        Set<DatFile> dfs = new HashSet<DatFile>();
+        for (OpenGLRenderer renderer : renders) {
+            dfs.add(renderer.getC3D().getLockableDatFileReference());
+        }
+        for (DatFile df : dfs) {
+            df.getVertexManager().addSnapshot();
+            SubfileCompiler.compile(df, false, false);
+        }
+        clickSingleBtn(btn);
     }
 }

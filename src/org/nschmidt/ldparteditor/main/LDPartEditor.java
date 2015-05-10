@@ -34,6 +34,7 @@ public class LDPartEditor {
      *            startup arguments
      */
     public static void main(String[] args) {
+        NLogger.setDEBUG(args.length == 1 && "DEBUG".equals(args[0])); //$NON-NLS-1$
         NLogger.init();
         new SplashScreen().run();
         NLogger.flushErrorStream();
