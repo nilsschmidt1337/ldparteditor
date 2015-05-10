@@ -24,18 +24,33 @@ import java.util.Date;
  */
 public class MemorySnapshot {
 
-    public final Date creation;
+    private final String creation;
+    private final String[] backup;
 
-    public MemorySnapshot() {
-        creation = new Date();
+    public MemorySnapshot(DatFile df) {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a"); //$NON-NLS-1$
+        String formattedDate = sdf.format(date);
+        final int objCount = df.getDrawPerLine_NOCLONE().size();
+        creation =  formattedDate + " (" + objCount + " Objects)"; //$NON-NLS-1$ //$NON-NLS-2$
+        String[] backup = new String[objCount];
+        int count = 0;
+        GData data2draw = df.getDrawChainStart();
+        while (count < objCount) {
+            data2draw = data2draw.getNext();
+            backup[count] = data2draw.toString();
+            count++;
+        }
+        this.backup = backup;
     }
 
     @Override
     public String toString() {
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a"); //$NON-NLS-1$
-        String formattedDate = sdf.format(date);
-        return formattedDate;
+        return creation;
+    }
+
+    public String[] getBackup() {
+        return backup;
     }
 
 }
