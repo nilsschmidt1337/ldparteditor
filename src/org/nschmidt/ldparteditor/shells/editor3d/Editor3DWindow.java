@@ -1054,6 +1054,16 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        btn_CondlineToLine[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
+                    Project.getFileToEdit().getVertexManager().condlineToLine(true);
+                }
+            }
+        });
+
         spn_Move[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
