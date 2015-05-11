@@ -303,6 +303,7 @@ public class HistoryManager {
                                                         if (hasTextEditor) break;
                                                     }
                                                 } catch (Exception consumed) {
+                                                    NLogger.debug(getClass(), consumed);
                                                 }
 
 

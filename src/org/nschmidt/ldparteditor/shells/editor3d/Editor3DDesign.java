@@ -157,6 +157,7 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_MoveAdjacentData = new Button[1];
     final Button[] btn_CompileSubfile = new Button[1];
     final Button[] btn_SplitQuad = new Button[1];
+    final Button[] btn_CondlineToLine = new Button[1];
     final Button[] btn_RoundSelection = new Button[1];
     final Button[] btn_BFCswap = new Button[1];
     final Button[] btn_Vertices = new Button[1];
@@ -705,6 +706,13 @@ class Editor3DDesign extends ApplicationWindow {
                 this.btn_SplitQuad[0] = btn_SplitQuad;
                 btn_SplitQuad.setImage(ResourceManager.getImage("icon16_quadToTri.png")); //$NON-NLS-1$
                 btn_SplitQuad.setToolTipText("Split Quad into Triangles"); //$NON-NLS-1$ I18N Needs translation!
+            }
+            {
+                Button btn_CondlineToLine = new Button(toolItem_MiscClick, SWT.NONE);
+                this.btn_CondlineToLine[0] = btn_CondlineToLine;
+                // FIXME Needs icon!
+                btn_CondlineToLine.setText("C2L"); //$NON-NLS-1$
+                btn_CondlineToLine.setToolTipText("Conditional Line -> Line"); //$NON-NLS-1$ I18N Needs translation!
             }
             {
                 Button btn_RoundSelection = new Button(toolItem_MiscClick, SWT.NONE);
