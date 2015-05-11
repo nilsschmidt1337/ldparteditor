@@ -12689,6 +12689,51 @@ public class VertexManager {
 
     }
 
+    public void condlineToLine(boolean isModified) {
+
+        final Set<GData5> condlinesToDelete = new HashSet<GData5>();
+        final Set<GData2> newLines = new HashSet<GData2>();
+
+        final Set<GData5> condlinesToParse = new HashSet<GData5>();
+
+        condlinesToParse.addAll(selectedCondlines);
+
+        clearSelection();
+
+        for (Iterator<GData5> ig = condlinesToParse.iterator(); ig.hasNext();) {
+            GData5 g = ig.next();
+            if (!lineLinkedToVertices.containsKey(g)) {
+                ig.remove();
+            }
+        }
+        if (condlinesToParse.isEmpty()) {
+            return;
+        } else {
+            setModified_NoSync();
+        }
+        condlinesToDelete.addAll(condlinesToParse);
+
+        for (GData5 g5 : condlinesToParse) {
+            Vertex[] v = condlines.get(g5);
+            GData2 tri1 = new GData2(g5.colourNumber, g5.r, g5.g, g5.b, g5.a, v[0], v[1], View.DUMMY_REFERENCE, linkedDatFile);
+            newLines.add(tri1);
+            linkedDatFile.insertAfter(g5, tri1);
+        }
+
+        selectedCondlines.addAll(condlinesToDelete);
+        selectedData.addAll(condlinesToDelete);
+        delete(false, false);
+
+        selectedLines.addAll(newLines);
+        selectedData.addAll(newLines);
+
+        if (isModified && isModified()) {
+            syncWithTextEditors(true);
+        }
+        validateState();
+
+    }
+
     public void lines2pattern() {
 
         if (linkedDatFile.isReadOnly()) return;
@@ -19549,4 +19594,6 @@ public class VertexManager {
             SubfileCompiler.compile(linkedDatFile, false, true);
         }
     }
+
+
 }
