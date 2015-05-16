@@ -28,9 +28,6 @@ public enum StringHelper {
 
     INSTANCE;
 
-    public static final StringBuilder useAgain() { return new StringBuilder(); }
-    public static final StringBuilder useAgain2() { return new StringBuilder(); }
-
     public static int countOccurences(final String findStr, final String str) {
         int lastIndex = 0;
         int count = 0;

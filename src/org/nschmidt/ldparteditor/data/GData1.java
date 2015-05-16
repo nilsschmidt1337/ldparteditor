@@ -149,7 +149,7 @@ public final class GData1 extends GData {
                 GData.CACHE_parsedFilesSource.put(name, lines);
             }
 
-            StringBuilder keyBuilder = useAgain();
+            StringBuilder keyBuilder = new StringBuilder();
             keyBuilder.append(name);
             keyBuilder.append(r);
             keyBuilder.append(g);
@@ -162,7 +162,7 @@ public final class GData1 extends GData {
             for (String line : lines) {
                 if (isNotBlank(line)) {
 
-                    StringBuilder keyBuilder2 = useAgain2();
+                    StringBuilder keyBuilder2 = new StringBuilder();
                     keyBuilder2.append(key);
                     keyBuilder2.append(line);
                     keyBuilder2.append(colourNumber);
@@ -1280,7 +1280,7 @@ public final class GData1 extends GData {
     String getNiceString() {
         if (text != null)
             return text;
-        StringBuilder lineBuilder = useAgain();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(1);
         lineBuilder.append(" "); //$NON-NLS-1$
         if (colourNumber == -1) {
@@ -1332,7 +1332,7 @@ public final class GData1 extends GData {
 
         // Avoid scaling of flat files
         GData1 untransformedSubfile;
-        StringBuilder colourBuilder = useAgain();
+        StringBuilder colourBuilder = new StringBuilder();
         if (this.colourNumber == -1) {
             colourBuilder.append("0x2"); //$NON-NLS-1$
             colourBuilder.append(MathHelper.toHex((int) (255f * this.r)).toUpperCase());
@@ -1381,7 +1381,7 @@ public final class GData1 extends GData {
         }
 
         df.getVertexManager().remove(untransformedSubfile);
-        StringBuilder lineBuilder = useAgain2();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(1);
         lineBuilder.append(" "); //$NON-NLS-1$
         if (colourNumber == -1) {
@@ -1512,7 +1512,7 @@ public final class GData1 extends GData {
     }
 
     public String getColouredString(String colour) {
-        StringBuilder lineBuilder = useAgain();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(1);
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(colour);
@@ -1546,7 +1546,7 @@ public final class GData1 extends GData {
     }
 
     public String getRoundedString(int coordsDecimalPlaces, int matrixDecimalPlaces) {
-        StringBuilder lineBuilder = useAgain();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(1);
         lineBuilder.append(" "); //$NON-NLS-1$
         if (colourNumber == -1) {
@@ -1589,7 +1589,7 @@ public final class GData1 extends GData {
     @Override
     public String inlinedString(byte bfc, GColour colour) {
         boolean flipSurfaces = false;
-        StringBuilder sb = useAgain();
+        StringBuilder sb = new StringBuilder();
         float r = this.r;
         float g = this.g;
         float b = this.b;
@@ -1603,7 +1603,7 @@ public final class GData1 extends GData {
                 colourNumber = colour.getColourNumber();
             }
         } else {
-            sb = useAgain();
+            sb = new StringBuilder();
         }
 
         if (Inliner.withSubfileReference) {
@@ -1730,7 +1730,7 @@ public final class GData1 extends GData {
                 } else {
                     GData1 g1 = (GData1) gs;
                     Matrix newMatrix = g1.accurateProductMatrix;
-                    StringBuilder lineBuilder1 = useAgain2();
+                    StringBuilder lineBuilder1 = new StringBuilder();
                     lineBuilder1.append(1);
                     lineBuilder1.append(" "); //$NON-NLS-1$
                     if (g1.colourNumber == -1) {
@@ -1781,7 +1781,7 @@ public final class GData1 extends GData {
                 break;
             case 2: // Line
                 GData2 g2 = (GData2) gs;
-                StringBuilder lineBuilder2 = useAgain2();
+                StringBuilder lineBuilder2 = new StringBuilder();
                 lineBuilder2.append(2);
                 lineBuilder2.append(" "); //$NON-NLS-1$
                 if (g2.colourNumber == -1) {
@@ -1819,7 +1819,7 @@ public final class GData1 extends GData {
                 break;
             case 3: // Triangle
                 GData3 g3 = (GData3) gs;
-                StringBuilder lineBuilder3 = useAgain2();
+                StringBuilder lineBuilder3 = new StringBuilder();
                 lineBuilder3.append(3);
                 lineBuilder3.append(" "); //$NON-NLS-1$
                 if (g3.colourNumber == -1) {
@@ -1870,7 +1870,7 @@ public final class GData1 extends GData {
                 break;
             case 4: // Quad
                 GData4 g4 = (GData4) gs;
-                StringBuilder lineBuilder4 = useAgain2();
+                StringBuilder lineBuilder4 = new StringBuilder();
                 lineBuilder4.append(4);
                 lineBuilder4.append(" "); //$NON-NLS-1$
                 if (g4.colourNumber == -1) {
@@ -1927,7 +1927,7 @@ public final class GData1 extends GData {
                 break;
             case 5: // Condline
                 GData5 g5 = (GData5) gs;
-                StringBuilder lineBuilder5 = useAgain2();
+                StringBuilder lineBuilder5 = new StringBuilder();
                 lineBuilder5.append(5);
                 lineBuilder5.append(" "); //$NON-NLS-1$
                 if (g5.colourNumber == -1) {
@@ -1980,7 +1980,7 @@ public final class GData1 extends GData {
             case 8: // CSG Statement
                 GDataCSG g8 = (GDataCSG) gs;
                 byte csgType = g8.getCSGtype();
-                StringBuilder lineBuilder8 = useAgain2();
+                StringBuilder lineBuilder8 = new StringBuilder();
 
                 String line2 = ((GDataCSG) gs).text;
                 line2 = line2.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2066,10 +2066,10 @@ public final class GData1 extends GData {
         } else {
             localMatrix = Matrix.mul(matrix, accurateLocalMatrix);
         }
-        StringBuilder lineBuilder = useAgain();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(1);
         lineBuilder.append(" "); //$NON-NLS-1$
-        StringBuilder colourBuilder = useAgain2();
+        StringBuilder colourBuilder = new StringBuilder();
         if (colourNumber == -1) {
             colourBuilder.append("0x2"); //$NON-NLS-1$
             colourBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
@@ -2695,7 +2695,7 @@ public final class GData1 extends GData {
                 if (depth == 0) return null;
                 {
                     Matrix newMatrix = this.accurateProductMatrix;
-                    StringBuilder lineBuilder1 = useAgain2();
+                    StringBuilder lineBuilder1 = new StringBuilder();
                     lineBuilder1.append(1);
                     lineBuilder1.append(" "); //$NON-NLS-1$
                     if (this.colourNumber == -1) {
@@ -2753,7 +2753,7 @@ public final class GData1 extends GData {
     }
 
     public String colourReplace(String col) {
-        StringBuilder lineBuilder = useAgain();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(1);
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(col);
