@@ -370,11 +370,11 @@ public final class GDataCSG extends GData {
         switch (type) {
         case CSG.COMPILE:
             if (compiledCSG != null) {
-                StringBuilder sb = useAgain();
+                StringBuilder sb = new StringBuilder();
                 sb.append("0 // Inlined: " + getNiceString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
                 // TODO Needs T-Juntion Elimination!
                 for (GData3 g3 : compiledCSG.getResult()) {
-                    StringBuilder lineBuilder3 = useAgain2();
+                    StringBuilder lineBuilder3 = new StringBuilder();
                     lineBuilder3.append(3);
                     lineBuilder3.append(" "); //$NON-NLS-1$
                     if (g3.colourNumber == -1) {
@@ -465,7 +465,7 @@ public final class GDataCSG extends GData {
                 t = " CSG_CONE "; //$NON-NLS-1$
                 notChoosen = false;
             }
-            StringBuilder colourBuilder = useAgain2();
+            StringBuilder colourBuilder = new StringBuilder();
             if (colour == null) {
                 colourBuilder.append(16);
             } else if (colour.getColourNumber() == -1) {

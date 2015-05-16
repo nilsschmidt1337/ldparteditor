@@ -5267,7 +5267,7 @@ public class VertexManager {
         // 4. Subfile Based Change & Selection
         if (!selectedSubfiles.isEmpty()) {
 
-            StringBuilder colourBuilder = StringHelper.useAgain();
+            StringBuilder colourBuilder = new StringBuilder();
             if (index == -1) {
                 colourBuilder.append("0x2"); //$NON-NLS-1$
                 colourBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
@@ -7068,7 +7068,7 @@ public class VertexManager {
             }
 
             // 5. Create text data entry in the OS clipboard
-            final StringBuilder cbString = StringHelper.useAgain();
+            final StringBuilder cbString = new StringBuilder();
             for (GData data : CLIPBOARD) {
                 if (CLIPBOARD_InvNext.contains(data)) {
                     cbString.append("0 BFC INVERTNEXT"); //$NON-NLS-1$
@@ -9933,7 +9933,7 @@ public class VertexManager {
                                                     temp2.X.divide(TWO), temp2.Y.divide(TWO), temp2.Z.divide(TWO), BigDecimal.ZERO,
                                                     d1X, d1Y, d1Z, BigDecimal.ONE);
 
-                                            StringBuilder lineBuilder = GData.useAgain();
+                                            StringBuilder lineBuilder = new StringBuilder();
                                             lineBuilder.append(1);
                                             lineBuilder.append(" "); //$NON-NLS-1$
                                             int colourNumber = qa.colourNumber;

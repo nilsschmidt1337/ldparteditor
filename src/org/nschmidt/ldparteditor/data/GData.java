@@ -45,9 +45,6 @@ public abstract class GData implements IGData {
     protected boolean visible = true;
 
     protected String text = null;
-    protected static final StringBuilder useAgain() { return new StringBuilder(); }
-    protected static final StringBuilder useAgain2() { return new StringBuilder(); }
-
     static byte localWinding = BFC.NOCERTIFY;
     static int accumClip = 0;
     static boolean globalInvertNext = false;

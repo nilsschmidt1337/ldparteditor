@@ -105,8 +105,8 @@ public enum TexMapParser {
                     Matrix4f.transform(parent.getProductMatrix(), v2, v2);
                     Matrix4f.transform(parent.getProductMatrix(), v3, v3);
 
-                    StringBuilder tex = StringHelper.useAgain();
-                    StringBuilder gloss = StringHelper.useAgain2();
+                    StringBuilder tex = new StringBuilder();
+                    StringBuilder gloss = new StringBuilder();
                     final int len = line.length();
                     final int target;
                     boolean whitespace1 = false;

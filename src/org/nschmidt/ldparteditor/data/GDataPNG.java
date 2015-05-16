@@ -275,7 +275,7 @@ public final class GDataPNG extends GData {
     public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {}
 
     public String getString(Vertex offset, BigDecimal angleA, BigDecimal angleB, BigDecimal angleC, Vertex scale, String texturePath) {
-        StringBuilder lineBuilder = useAgain();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append("0 !LPE PNG "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(offset.X));
         lineBuilder.append(" "); //$NON-NLS-1$
