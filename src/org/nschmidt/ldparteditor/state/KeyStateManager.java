@@ -70,8 +70,6 @@ public class KeyStateManager {
     private static final HashMap<String, TextTask> textTaskMap = new HashMap<String, TextTask>();
     private static final HashMap<TextTask, String> textTaskKeyMap = new HashMap<TextTask, String>();
 
-    private StringBuilder sb = new StringBuilder();
-
     private int multi = 100;
     private int colourNumber = 0;
 
@@ -226,7 +224,7 @@ public class KeyStateManager {
                 final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
                 final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
                 final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
-                sb.setLength(0);
+                final StringBuilder sb = new StringBuilder();
                 sb.append(keyCode);
                 sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$

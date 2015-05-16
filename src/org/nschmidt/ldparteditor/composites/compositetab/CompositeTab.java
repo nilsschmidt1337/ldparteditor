@@ -87,7 +87,6 @@ public class CompositeTab extends CompositeTabDesign {
 
     final SyntaxFormatter syntaxFormatter = new SyntaxFormatter(compositeText[0]);
     final int caretHeight = compositeText[0].getCaret().getSize().y;
-    private final StringBuilder sb = new StringBuilder();
 
     /** The state of this tab */
     private CompositeTabState state = new CompositeTabState();
@@ -689,7 +688,7 @@ public class CompositeTab extends CompositeTabDesign {
                 final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
                 final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
                 final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
-                sb.setLength(0);
+                StringBuilder sb = new StringBuilder();
                 sb.append(keyCode);
                 sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
