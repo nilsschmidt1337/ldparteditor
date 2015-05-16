@@ -130,7 +130,7 @@ public final class GData0 extends GData {
                 }
                 if (!numberError) {
                     BigDecimal[] vert = matrix.transform(start.X, start.Y, start.Z);
-                    StringBuilder lineBuilder = useAgain();
+                    StringBuilder lineBuilder = new StringBuilder();
                     lineBuilder.append("0 !LPE VERTEX "); //$NON-NLS-1$
                     lineBuilder.append(bigDecimalToString(vert[0]));
                     lineBuilder.append(" "); //$NON-NLS-1$

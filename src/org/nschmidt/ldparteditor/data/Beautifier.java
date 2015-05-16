@@ -190,7 +190,7 @@ public enum Beautifier {
         int type = gd.type();
         String trimmedLine = line.trim();
         String[] data_segments = trimmedLine.split("\\s+"); //$NON-NLS-1$
-        StringBuilder normalized = GData.useAgain();
+        StringBuilder normalized = new StringBuilder();
         for (String string : data_segments) {
             normalized.append(string);
             normalized.append(" "); //$NON-NLS-1$

@@ -511,7 +511,7 @@ public final class GData2 extends GData {
     String getNiceString() {
         if (text != null)
             return text;
-        StringBuilder lineBuilder = useAgain();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(2);
         lineBuilder.append(" "); //$NON-NLS-1$
         if (colourNumber == -1) {
@@ -554,10 +554,10 @@ public final class GData2 extends GData {
             v1 = matrix.transform(X1, Y1, Z1);
             v2 = matrix.transform(X2, Y2, Z2);
         }
-        StringBuilder lineBuilder = useAgain();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(2);
         lineBuilder.append(" "); //$NON-NLS-1$
-        StringBuilder colourBuilder = useAgain2();
+        StringBuilder colourBuilder = new StringBuilder();
         if (colourNumber == -1) {
             colourBuilder.append("0x2"); //$NON-NLS-1$
             colourBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
@@ -644,7 +644,7 @@ public final class GData2 extends GData {
     public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {}
 
     public String colourReplace(String col) {
-        StringBuilder lineBuilder = useAgain();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(2);
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(col);

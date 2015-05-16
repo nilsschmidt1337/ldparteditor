@@ -1338,7 +1338,7 @@ public final class GData4 extends GData {
     String getNiceString() {
         if (text != null)
             return text;
-        StringBuilder lineBuilder = useAgain();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(4);
         lineBuilder.append(" "); //$NON-NLS-1$
         if (colourNumber == -1) {
@@ -1399,10 +1399,10 @@ public final class GData4 extends GData {
             v3 = matrix.transform(X3, Y3, Z3);
             v4 = matrix.transform(X4, Y4, Z4);
         }
-        StringBuilder lineBuilder = useAgain();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(4);
         lineBuilder.append(" "); //$NON-NLS-1$
-        StringBuilder colourBuilder = useAgain2();
+        StringBuilder colourBuilder = new StringBuilder();
         if (colourNumber == -1) {
             colourBuilder.append("0x2"); //$NON-NLS-1$
             colourBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
@@ -1621,7 +1621,7 @@ public final class GData4 extends GData {
     }
 
     public String colourReplace(String col) {
-        StringBuilder lineBuilder = useAgain();
+        StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(4);
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(col);

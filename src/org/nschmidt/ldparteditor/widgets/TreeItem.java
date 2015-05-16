@@ -222,7 +222,7 @@ public class TreeItem {
         parent.getMap().put(t, this);
         parent.getMapInv().put(this, t);
         t.setImage(image);
-        StringBuilder offset = StringHelper.useAgain();
+        StringBuilder offset = new StringBuilder();
         if (visible && items.size() > 0) {
             switch (step) {
             case 0:
