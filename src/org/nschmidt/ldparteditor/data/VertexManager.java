@@ -18808,7 +18808,7 @@ public class VertexManager {
             return;
         }
         Merger.mergeTo(new Vertex(newVertex), this, syncWithTextEditor);
-
+        clearSelection();
         validateState();
     }
 
@@ -19595,5 +19595,52 @@ public class VertexManager {
         }
     }
 
+    public void cleanupSelection() {
 
+        Set<GData1> subfiles2 = selectedSubfiles;
+        Set<GData2> lines2 = selectedLines;
+        Set<GData3> tris2 = selectedTriangles;
+        Set<GData4> quads2 = selectedQuads;
+        Set<GData5> clines2 = selectedCondlines;
+
+        for (Iterator<GData1> g1i = subfiles2.iterator(); g1i.hasNext();) {
+            GData1 g1 = g1i.next();
+            if (!vertexCountInSubfile.keySet().contains(g1)) {
+                g1i.remove();
+                selectedData.remove(g1i);
+            }
+        }
+
+        for (Iterator<GData2> g2i = lines2.iterator(); g2i.hasNext();) {
+            GData2 g2 = g2i.next();
+            if (!lines.keySet().contains(g2)) {
+                g2i.remove();
+                selectedData.remove(g2i);
+            }
+        }
+
+        for (Iterator<GData3> g3i = tris2.iterator(); g3i.hasNext();) {
+            GData3 g3 = g3i.next();
+            if (!triangles.keySet().contains(g3)) {
+                g3i.remove();
+                selectedData.remove(g3i);
+            }
+        }
+
+        for (Iterator<GData4> g4i = quads2.iterator(); g4i.hasNext();) {
+            GData4 g4 = g4i.next();
+            if (!quads.keySet().contains(g4)) {
+                g4i.remove();
+                selectedData.remove(g4i);
+            }
+        }
+
+        for (Iterator<GData5> g5i = clines2.iterator(); g5i.hasNext();) {
+            GData5 g5 = g5i.next();
+            if (!condlines.keySet().contains(g5)) {
+                g5i.remove();
+                selectedData.remove(g5i);
+            }
+        }
+    }
 }
