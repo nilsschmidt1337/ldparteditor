@@ -812,7 +812,6 @@ public class OpenGLRenderer {
                                                                     }
                                                                     case GLITTER:
                                                                     {
-                                                                        // FIXME @Needs implementation!
                                                                         float a = ze[15];
                                                                         GCGlitter type = (GCGlitter) ct;
                                                                         final int sSize = glitters.size();
