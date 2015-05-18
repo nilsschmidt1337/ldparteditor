@@ -682,6 +682,7 @@ public class VertexManager {
             selectedData.addAll(selectedQuads);
             selectedData.addAll(selectedCondlines);
         }
+        cleanupSelection();
         // Do not validate more stuff on release, since it costs a lot performance.
         if (!NLogger.DEBUG) return;
 
@@ -19597,49 +19598,61 @@ public class VertexManager {
 
     public void cleanupSelection() {
 
-        Set<GData1> subfiles2 = selectedSubfiles;
-        Set<GData2> lines2 = selectedLines;
-        Set<GData3> tris2 = selectedTriangles;
-        Set<GData4> quads2 = selectedQuads;
-        Set<GData5> clines2 = selectedCondlines;
+        selectedData.clear();
 
-        for (Iterator<GData1> g1i = subfiles2.iterator(); g1i.hasNext();) {
+        for (Iterator<Vertex> vi = selectedVertices.iterator(); vi.hasNext();) {
+            if (!vertexLinkedToPositionInFile.containsKey(vi.next())) {
+                vi.remove();
+            }
+        }
+
+        for (Iterator<GData1> g1i = selectedSubfiles.iterator(); g1i.hasNext();) {
             GData1 g1 = g1i.next();
-            if (!vertexCountInSubfile.keySet().contains(g1)) {
+            if (vertexCountInSubfile.keySet().contains(g1)) {
+                selectedData.add(g1);
+            } else {
                 g1i.remove();
-                selectedData.remove(g1i);
+                selectedData.remove(g1);
             }
         }
 
-        for (Iterator<GData2> g2i = lines2.iterator(); g2i.hasNext();) {
+        for (Iterator<GData2> g2i = selectedLines.iterator(); g2i.hasNext();) {
             GData2 g2 = g2i.next();
-            if (!lines.keySet().contains(g2)) {
+            if (lines.keySet().contains(g2)) {
+                selectedData.add(g2);
+            } else {
                 g2i.remove();
-                selectedData.remove(g2i);
+                selectedData.remove(g2);
             }
         }
 
-        for (Iterator<GData3> g3i = tris2.iterator(); g3i.hasNext();) {
+        for (Iterator<GData3> g3i = selectedTriangles.iterator(); g3i.hasNext();) {
             GData3 g3 = g3i.next();
-            if (!triangles.keySet().contains(g3)) {
+            if (triangles.keySet().contains(g3)) {
+                selectedData.add(g3);
+            } else {
                 g3i.remove();
-                selectedData.remove(g3i);
+                selectedData.remove(g3);
             }
         }
 
-        for (Iterator<GData4> g4i = quads2.iterator(); g4i.hasNext();) {
+        for (Iterator<GData4> g4i = selectedQuads.iterator(); g4i.hasNext();) {
             GData4 g4 = g4i.next();
-            if (!quads.keySet().contains(g4)) {
+            if (quads.keySet().contains(g4)) {
+                selectedData.add(g4);
+            } else {
                 g4i.remove();
-                selectedData.remove(g4i);
+                selectedData.remove(g4);
             }
         }
 
-        for (Iterator<GData5> g5i = clines2.iterator(); g5i.hasNext();) {
+        for (Iterator<GData5> g5i = selectedCondlines.iterator(); g5i.hasNext();) {
             GData5 g5 = g5i.next();
-            if (!condlines.keySet().contains(g5)) {
+            if (condlines.keySet().contains(g5)) {
+                selectedData.add(g5);
+            } else {
                 g5i.remove();
-                selectedData.remove(g5i);
+                selectedData.remove(g5);
             }
         }
     }
