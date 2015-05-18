@@ -19612,7 +19612,6 @@ public class VertexManager {
                 selectedData.add(g1);
             } else {
                 g1i.remove();
-                selectedData.remove(g1);
             }
         }
 
@@ -19622,7 +19621,6 @@ public class VertexManager {
                 selectedData.add(g2);
             } else {
                 g2i.remove();
-                selectedData.remove(g2);
             }
         }
 
@@ -19632,7 +19630,6 @@ public class VertexManager {
                 selectedData.add(g3);
             } else {
                 g3i.remove();
-                selectedData.remove(g3);
             }
         }
 
@@ -19642,7 +19639,6 @@ public class VertexManager {
                 selectedData.add(g4);
             } else {
                 g4i.remove();
-                selectedData.remove(g4);
             }
         }
 
@@ -19652,7 +19648,6 @@ public class VertexManager {
                 selectedData.add(g5);
             } else {
                 g5i.remove();
-                selectedData.remove(g5);
             }
         }
     }
