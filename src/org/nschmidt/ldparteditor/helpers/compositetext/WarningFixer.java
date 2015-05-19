@@ -104,7 +104,7 @@ final class WarningFixer {
 
         }
         break;
-        case 2: // Flat subfile scaled on X
+        case 2: // FIXME Flat subfile scaled on X
         {
             String[] data_segments = line.trim().split(" "); //$NON-NLS-1$
             StringBuilder sb = new StringBuilder();
@@ -132,7 +132,7 @@ final class WarningFixer {
             text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
         }
         break;
-        case 3: // Flat subfile scaled on Y
+        case 3: // FIXME Flat subfile scaled on Y
         {
             String[] data_segments = line.trim().split(" "); //$NON-NLS-1$
             StringBuilder sb = new StringBuilder();
@@ -160,7 +160,7 @@ final class WarningFixer {
             text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
         }
         break;
-        case 4: // Flat subfile scaled on Z
+        case 4: // FIXME Flat subfile scaled on Z
         {
             String[] data_segments = line.trim().split(" "); //$NON-NLS-1$
             StringBuilder sb = new StringBuilder();
