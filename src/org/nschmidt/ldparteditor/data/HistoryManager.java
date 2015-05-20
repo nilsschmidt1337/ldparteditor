@@ -380,16 +380,16 @@ public class HistoryManager {
                                                 vm.setModified_NoSync();
                                                 vm.setUpdated(true);
                                                 vm.setSkipSyncWithTextEditor(false);
-                                                //                                                vm.setSkipSyncWithTextEditor(false);
-                                                //                                                if (hasTextEditor) {
-                                                //                                                    vm.setModified_NoSync();
-                                                //                                                    vm.syncWithTextEditors(false);
-                                                //                                                } else {
-                                                //                                                    vm.setModified(true, false);
-                                                //                                                }
-                                                //                                                if (openTextEditor || hasTextEditor) {
-                                                //                                                    vm.setUpdated(true);
-                                                //                                                }
+                                                //  vm.setSkipSyncWithTextEditor(false);
+                                                //  if (hasTextEditor) {
+                                                //      vm.setModified_NoSync();
+                                                //      vm.syncWithTextEditors(false);
+                                                //  } else {
+                                                //      vm.setModified(true, false);
+                                                //  }
+                                                //  if (openTextEditor || hasTextEditor) {
+                                                //      vm.setUpdated(true);
+                                                //  }
                                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                                                 sq.offer(10);
                                             }
