@@ -9043,11 +9043,12 @@ public class VertexManager {
         return null;
     }
 
-    public boolean isNotInSubfileAndLinetype2to5(GData g) {
+    public boolean isNotInSubfileAndLinetype1to5(GData g) {
         if (!exist(g) || !lineLinkedToVertices.containsKey(g)) {
             return false;
         }
         switch (g.type()) {
+        case 1:
         case 2:
         case 3:
         case 4:
@@ -9300,7 +9301,8 @@ public class VertexManager {
             BigDecimal x1, BigDecimal y1, BigDecimal z1,
             BigDecimal x2, BigDecimal y2, BigDecimal z2,
             BigDecimal x3, BigDecimal y3, BigDecimal z3,
-            BigDecimal x4, BigDecimal y4, BigDecimal z4, boolean moveAdjacentData) {
+            BigDecimal x4, BigDecimal y4, BigDecimal z4,
+    	    BigDecimal x5, BigDecimal y5, BigDecimal z5, boolean moveAdjacentData) {
 
         if (selectedItemIndex != -1 && exist(selectedLine)) {
 
