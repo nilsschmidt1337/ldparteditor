@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
@@ -39,12 +40,12 @@ public class CompositeTabState {
     /** The DatFile object */
     private DatFile datFileObj;
     /** The filename of the file, which is displayed by this tab */
-    String filename = "(new file)"; //$NON-NLS-1$ I18N Needs translation?
+    String filename = I18n.EDITORTEXT_NewFile;
     /**
      * The filename of the file, which is displayed by this tab when the content
      * is modified
      */
-    private String filenameWithStar = "(new file)*"; //$NON-NLS-1$ I18N Needs translation?
+    private String filenameWithStar = I18n.EDITORTEXT_NewFile + "*"; //$NON-NLS-1$
     /** The line index of the caret [NOT PUBLIC YET] */
     int currentLineIndex = 0;
     /** The caret position (needed for vertex replacement and so on) */
@@ -69,8 +70,8 @@ public class CompositeTabState {
         filename = new File(fileNameObj.getNewName()).getName();
         setFilenameWithStar(filename + "*"); //$NON-NLS-1$
         if (fileNameObj.isReadOnly()) {
-            filename = filename + " (read-only)"; //$NON-NLS-1$ I18N Needs translation?
-            setFilenameWithStar(getFilenameWithStar() + " (read-only)"); //$NON-NLS-1$ I18N Needs translation?
+            filename = filename + " " + I18n.EDITORTEXT_ReadOnly; //$NON-NLS-1$
+            setFilenameWithStar(getFilenameWithStar() + " " + I18n.EDITORTEXT_ReadOnly); //$NON-NLS-1$
             getTab().getTextComposite().setEditable(false);
         }
         this.datFileObj = fileNameObj;
