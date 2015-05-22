@@ -120,6 +120,7 @@ public final class I18n {
     public static final String EDITOR3D_AddTriangle = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_AddVertex = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_CloseView = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Combined = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_DragHint = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Exit = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_FarClipping = EDITOR3D.getString(getProperty());
@@ -170,8 +171,10 @@ public final class I18n {
     public static final String EDITOR3D_ViewingAngles = EDITOR3D.getString(getProperty());
     public static final String EDITORTEXT_Error = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Errors = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_NewFile = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Other = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Others = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_ReadOnly = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_ShowHideErrorTab = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Warning = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Warnings = EDITORTEXT.getString(getProperty());

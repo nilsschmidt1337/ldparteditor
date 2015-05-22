@@ -524,7 +524,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Combined = new Button(toolItem_Transformations, SWT.TOGGLE);
                 this.btn_Combined[0] = btn_Combined;
-                KeyStateManager.addTooltipText(btn_Combined, "Combined Mode", Task.MODE_COMBINED); // I18N Needs translation! //$NON-NLS-1$
+                KeyStateManager.addTooltipText(btn_Combined, I18n.EDITOR3D_Combined, Task.MODE_COMBINED);
                 btn_Combined.setImage(ResourceManager.getImage("icon16_combined.png")); //$NON-NLS-1$
             }
         }
