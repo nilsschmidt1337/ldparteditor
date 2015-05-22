@@ -1166,11 +1166,15 @@ public class Editor3DWindow extends Editor3DDesign {
                             vm.setSelectedItemIndex(index);
                             final GData gdata = (GData) vm.getSelectedData().toArray()[index];
 
-                            if (vm.isNotInSubfileAndLinetype2to5(gdata)) {
+                            if (vm.isNotInSubfileAndLinetype1to5(gdata)) {
                                 vm.setSelectedLine(gdata);
                                 disableSelectionTab();
                                 updatingSelectionTab = true;
                                 switch (gdata.type()) {
+                                case 1:
+                                	spn_SelectionX5[0].setEnabled(true);
+                                    spn_SelectionY5[0].setEnabled(true);
+                                    spn_SelectionZ5[0].setEnabled(true);
                                 case 5:
                                 case 4:
                                     spn_SelectionX4[0].setEnabled(true);
@@ -1243,6 +1247,24 @@ public class Editor3DWindow extends Editor3DDesign {
                                         spn_SelectionY2[0].setValue(g2[4]);
                                         spn_SelectionZ2[0].setValue(g2[5]);
                                         break;
+                                    case 1:
+                                        GData1 g1 = (GData1) gdata;
+                                        spn_SelectionX1[0].setValue(g1.getAccurateProductMatrix().M03);
+                                        spn_SelectionY1[0].setValue();
+                                        spn_SelectionZ1[0].setValue();
+                                        spn_SelectionX2[0].setValue();
+                                        spn_SelectionY2[0].setValue();
+                                        spn_SelectionZ2[0].setValue();
+                                        spn_SelectionX3[0].setValue();
+                                        spn_SelectionY3[0].setValue();
+                                        spn_SelectionZ3[0].setValue();
+                                        spn_SelectionX4[0].setValue();
+                                        spn_SelectionY4[0].setValue();
+                                        spn_SelectionZ4[0].setValue();
+                                        spn_SelectionX5[0].setValue();
+                                        spn_SelectionY5[0].setValue();
+                                        spn_SelectionZ5[0].setValue();
+                                        break;
                                     default:
                                         disableSelectionTab();
                                         updatingSelectionTab = true;
@@ -1261,6 +1283,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     lbl_SelectionX4[0].setText(I18n.EDITOR3D_PositionX4 + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
                                     lbl_SelectionY4[0].setText(I18n.EDITOR3D_PositionY4 + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
                                     lbl_SelectionZ4[0].setText(I18n.EDITOR3D_PositionZ4 + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
+                                    lbl_SelectionX5[0].setText(" {" + spn_SelectionX5[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
+                                    lbl_SelectionY5[0].setText(" {" + spn_SelectionY5[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
+                                    lbl_SelectionZ5[0].setText(" {" + spn_SelectionZ5[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 
                                     lbl_SelectionX1[0].getParent().layout();
                                     updatingSelectionTab = false;
@@ -1308,7 +1333,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             vm.setSelectedItemIndex(index);
                             final GData gdata = (GData) vm.getSelectedData().toArray()[index];
 
-                            if (vm.isNotInSubfileAndLinetype2to5(gdata)) {
+                            if (vm.isNotInSubfileAndLinetype1to5(gdata)) {
                                 vm.setSelectedLine(gdata);
                                 disableSelectionTab();
                                 updatingSelectionTab = true;
@@ -1435,6 +1460,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
                         spn_SelectionX3[0].getValue(), spn_SelectionY3[0].getValue(), spn_SelectionZ3[0].getValue(),
                         spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
+                        spn_SelectionX5[0].getValue(), spn_SelectionY5[0].getValue(), spn_SelectionZ5[0].getValue(),
                         btn_MoveAdjacentData2[0].getSelection()
                         );
                 if (newLine == null) {
@@ -1457,6 +1483,9 @@ public class Editor3DWindow extends Editor3DDesign {
         spn_SelectionX4[0].addValueChangeListener(va);
         spn_SelectionY4[0].addValueChangeListener(va);
         spn_SelectionZ4[0].addValueChangeListener(va);
+        spn_SelectionX5[0].addValueChangeListener(va);
+        spn_SelectionY5[0].addValueChangeListener(va);
+        spn_SelectionZ5[0].addValueChangeListener(va);
 
         //        treeParts[0].addSelectionListener(new SelectionAdapter() {
         //            @Override
@@ -6152,6 +6181,9 @@ public class Editor3DWindow extends Editor3DDesign {
         spn_SelectionX4[0].setEnabled(false);
         spn_SelectionY4[0].setEnabled(false);
         spn_SelectionZ4[0].setEnabled(false);
+        spn_SelectionX5[0].setEnabled(false);
+        spn_SelectionY5[0].setEnabled(false);
+        spn_SelectionZ5[0].setEnabled(false);
         spn_SelectionX1[0].setValue(BigDecimal.ZERO);
         spn_SelectionY1[0].setValue(BigDecimal.ZERO);
         spn_SelectionZ1[0].setValue(BigDecimal.ZERO);
@@ -6164,6 +6196,9 @@ public class Editor3DWindow extends Editor3DDesign {
         spn_SelectionX4[0].setValue(BigDecimal.ZERO);
         spn_SelectionY4[0].setValue(BigDecimal.ZERO);
         spn_SelectionZ4[0].setValue(BigDecimal.ZERO);
+        spn_SelectionX5[0].setValue(BigDecimal.ZERO);
+        spn_SelectionY5[0].setValue(BigDecimal.ZERO);
+        spn_SelectionZ5[0].setValue(BigDecimal.ZERO);
         lbl_SelectionX1[0].setText(I18n.EDITOR3D_PositionX1);
         lbl_SelectionY1[0].setText(I18n.EDITOR3D_PositionY1);
         lbl_SelectionZ1[0].setText(I18n.EDITOR3D_PositionZ1);
