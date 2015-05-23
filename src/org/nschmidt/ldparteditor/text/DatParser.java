@@ -1016,7 +1016,7 @@ public enum DatParser {
                         GDataCSG.forceRecompile();
                     }
 
-                    // FIXME Avoid scaling of flat files
+                    // Avoid scaling of flat files
                     if (depth == 0) {
                         GData g1 = null;
                         if (result.size() == 1) {
@@ -1074,7 +1074,7 @@ public enum DatParser {
                                 .toString(), depth, det < 0, destMatrix, DESTMatrix, datFile, parent.firstRef, readOnly, errorCheckOnly, alreadyParsed, parent)));
                     }
 
-                    // FIXME Avoid scaling of flat files
+                    // Avoid scaling of flat files
                     if (depth == 0) {
                         GData g1 = null;
                         if (result.size() == 1) {
