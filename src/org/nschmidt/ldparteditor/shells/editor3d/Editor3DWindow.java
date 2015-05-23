@@ -1162,6 +1162,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 index = count - 1;
                                 if (!firstRun) breakIt = true;
                             }
+                            if (index > count - 1) index = count - 1;
                             firstRun = false;
                             vm.setSelectedItemIndex(index);
                             final GData gdata = (GData) vm.getSelectedData().toArray()[index];
@@ -1172,9 +1173,6 @@ public class Editor3DWindow extends Editor3DDesign {
                                 updatingSelectionTab = true;
                                 switch (gdata.type()) {
                                 case 1:
-                                	spn_SelectionX5[0].setEnabled(true);
-                                    spn_SelectionY5[0].setEnabled(true);
-                                    spn_SelectionZ5[0].setEnabled(true);
                                 case 5:
                                 case 4:
                                     spn_SelectionX4[0].setEnabled(true);
@@ -1194,7 +1192,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                     txt_Line[0].setText(gdata.toString());
                                     breakIt = true;
-
+                                    btn_MoveAdjacentData2[0].setEnabled(true);
                                     switch (gdata.type()) {
                                     case 5:
                                         BigDecimal[] g5 = vm.getPreciseCoordinates(gdata);
@@ -1248,22 +1246,21 @@ public class Editor3DWindow extends Editor3DDesign {
                                         spn_SelectionZ2[0].setValue(g2[5]);
                                         break;
                                     case 1:
+                                        vm.getSelectedVertices().clear();
+                                        btn_MoveAdjacentData2[0].setEnabled(false);
                                         GData1 g1 = (GData1) gdata;
-                                        spn_SelectionX1[0].setValue(g1.getAccurateProductMatrix().M03);
-                                        spn_SelectionY1[0].setValue();
-                                        spn_SelectionZ1[0].setValue();
-                                        spn_SelectionX2[0].setValue();
-                                        spn_SelectionY2[0].setValue();
-                                        spn_SelectionZ2[0].setValue();
-                                        spn_SelectionX3[0].setValue();
-                                        spn_SelectionY3[0].setValue();
-                                        spn_SelectionZ3[0].setValue();
-                                        spn_SelectionX4[0].setValue();
-                                        spn_SelectionY4[0].setValue();
-                                        spn_SelectionZ4[0].setValue();
-                                        spn_SelectionX5[0].setValue();
-                                        spn_SelectionY5[0].setValue();
-                                        spn_SelectionZ5[0].setValue();
+                                        spn_SelectionX1[0].setValue(g1.getAccurateProductMatrix().M30);
+                                        spn_SelectionY1[0].setValue(g1.getAccurateProductMatrix().M31);
+                                        spn_SelectionZ1[0].setValue(g1.getAccurateProductMatrix().M32);
+                                        spn_SelectionX2[0].setValue(g1.getAccurateProductMatrix().M00);
+                                        spn_SelectionY2[0].setValue(g1.getAccurateProductMatrix().M01);
+                                        spn_SelectionZ2[0].setValue(g1.getAccurateProductMatrix().M02);
+                                        spn_SelectionX3[0].setValue(g1.getAccurateProductMatrix().M10);
+                                        spn_SelectionY3[0].setValue(g1.getAccurateProductMatrix().M11);
+                                        spn_SelectionZ3[0].setValue(g1.getAccurateProductMatrix().M12);
+                                        spn_SelectionX4[0].setValue(g1.getAccurateProductMatrix().M20);
+                                        spn_SelectionY4[0].setValue(g1.getAccurateProductMatrix().M21);
+                                        spn_SelectionZ4[0].setValue(g1.getAccurateProductMatrix().M22);
                                         break;
                                     default:
                                         disableSelectionTab();
@@ -1271,21 +1268,18 @@ public class Editor3DWindow extends Editor3DDesign {
                                         break;
                                     }
 
-                                    lbl_SelectionX1[0].setText(I18n.EDITOR3D_PositionX1 + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionY1[0].setText(I18n.EDITOR3D_PositionY1 + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionZ1[0].setText(I18n.EDITOR3D_PositionZ1 + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionX2[0].setText(I18n.EDITOR3D_PositionX2 + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionY2[0].setText(I18n.EDITOR3D_PositionY2 + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionZ2[0].setText(I18n.EDITOR3D_PositionZ2 + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionX3[0].setText(I18n.EDITOR3D_PositionX3 + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionY3[0].setText(I18n.EDITOR3D_PositionY3 + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionZ3[0].setText(I18n.EDITOR3D_PositionZ3 + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionX4[0].setText(I18n.EDITOR3D_PositionX4 + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionY4[0].setText(I18n.EDITOR3D_PositionY4 + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionZ4[0].setText(I18n.EDITOR3D_PositionZ4 + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionX5[0].setText(" {" + spn_SelectionX5[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionY5[0].setText(" {" + spn_SelectionY5[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionZ5[0].setText(" {" + spn_SelectionZ5[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
+                                    lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX1 : "") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY1 : "") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ1 : "") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX2[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX2 : "") + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY2[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY2 : "") + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ2[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ2 : "") + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX3[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX3 : "") + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY3[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY3 : "") + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ3[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ3 : "") + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX4[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX4 : "") + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY4[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY4 : "") + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ4[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ4 : "") + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                                     lbl_SelectionX1[0].getParent().layout();
                                     updatingSelectionTab = false;
@@ -1338,6 +1332,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 disableSelectionTab();
                                 updatingSelectionTab = true;
                                 switch (gdata.type()) {
+                                case 1:
                                 case 5:
                                 case 4:
                                     spn_SelectionX4[0].setEnabled(true);
@@ -1357,7 +1352,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                     txt_Line[0].setText(gdata.toString());
                                     breakIt = true;
-
+                                    btn_MoveAdjacentData2[0].setEnabled(true);
                                     switch (gdata.type()) {
                                     case 5:
                                         BigDecimal[] g5 = vm.getPreciseCoordinates(gdata);
@@ -1410,24 +1405,41 @@ public class Editor3DWindow extends Editor3DDesign {
                                         spn_SelectionY2[0].setValue(g2[4]);
                                         spn_SelectionZ2[0].setValue(g2[5]);
                                         break;
+                                    case 1:
+                                        vm.getSelectedVertices().clear();
+                                        btn_MoveAdjacentData2[0].setEnabled(false);
+                                        GData1 g1 = (GData1) gdata;
+                                        spn_SelectionX1[0].setValue(g1.getAccurateProductMatrix().M30);
+                                        spn_SelectionY1[0].setValue(g1.getAccurateProductMatrix().M31);
+                                        spn_SelectionZ1[0].setValue(g1.getAccurateProductMatrix().M32);
+                                        spn_SelectionX2[0].setValue(g1.getAccurateProductMatrix().M00);
+                                        spn_SelectionY2[0].setValue(g1.getAccurateProductMatrix().M01);
+                                        spn_SelectionZ2[0].setValue(g1.getAccurateProductMatrix().M02);
+                                        spn_SelectionX3[0].setValue(g1.getAccurateProductMatrix().M10);
+                                        spn_SelectionY3[0].setValue(g1.getAccurateProductMatrix().M11);
+                                        spn_SelectionZ3[0].setValue(g1.getAccurateProductMatrix().M12);
+                                        spn_SelectionX4[0].setValue(g1.getAccurateProductMatrix().M20);
+                                        spn_SelectionY4[0].setValue(g1.getAccurateProductMatrix().M21);
+                                        spn_SelectionZ4[0].setValue(g1.getAccurateProductMatrix().M22);
+                                        break;
                                     default:
                                         disableSelectionTab();
                                         updatingSelectionTab = true;
                                         break;
                                     }
 
-                                    lbl_SelectionX1[0].setText(I18n.EDITOR3D_PositionX1 + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionY1[0].setText(I18n.EDITOR3D_PositionY1 + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionZ1[0].setText(I18n.EDITOR3D_PositionZ1 + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionX2[0].setText(I18n.EDITOR3D_PositionX2 + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionY2[0].setText(I18n.EDITOR3D_PositionY2 + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionZ2[0].setText(I18n.EDITOR3D_PositionZ2 + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionX3[0].setText(I18n.EDITOR3D_PositionX3 + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionY3[0].setText(I18n.EDITOR3D_PositionY3 + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionZ3[0].setText(I18n.EDITOR3D_PositionZ3 + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionX4[0].setText(I18n.EDITOR3D_PositionX4 + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionY4[0].setText(I18n.EDITOR3D_PositionY4 + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                                    lbl_SelectionZ4[0].setText(I18n.EDITOR3D_PositionZ4 + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$
+                                    lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX1 : "X  :") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY1 : "Y  :") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ1 : "Z  :") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX2[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX2 : "M00:") + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY2[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY2 : "M01:") + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ2[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ2 : "M02:") + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX3[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX3 : "M10:") + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY3[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY3 : "M11:") + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ3[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ3 : "M12:") + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX4[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX4 : "M20:") + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY4[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY4 : "M21:") + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ4[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ4 : "M22:") + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                                     lbl_SelectionX1[0].getParent().layout();
                                     break;
@@ -1460,7 +1472,6 @@ public class Editor3DWindow extends Editor3DDesign {
                         spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
                         spn_SelectionX3[0].getValue(), spn_SelectionY3[0].getValue(), spn_SelectionZ3[0].getValue(),
                         spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
-                        spn_SelectionX5[0].getValue(), spn_SelectionY5[0].getValue(), spn_SelectionZ5[0].getValue(),
                         btn_MoveAdjacentData2[0].getSelection()
                         );
                 if (newLine == null) {
@@ -1483,9 +1494,6 @@ public class Editor3DWindow extends Editor3DDesign {
         spn_SelectionX4[0].addValueChangeListener(va);
         spn_SelectionY4[0].addValueChangeListener(va);
         spn_SelectionZ4[0].addValueChangeListener(va);
-        spn_SelectionX5[0].addValueChangeListener(va);
-        spn_SelectionY5[0].addValueChangeListener(va);
-        spn_SelectionZ5[0].addValueChangeListener(va);
 
         //        treeParts[0].addSelectionListener(new SelectionAdapter() {
         //            @Override
@@ -6181,9 +6189,6 @@ public class Editor3DWindow extends Editor3DDesign {
         spn_SelectionX4[0].setEnabled(false);
         spn_SelectionY4[0].setEnabled(false);
         spn_SelectionZ4[0].setEnabled(false);
-        spn_SelectionX5[0].setEnabled(false);
-        spn_SelectionY5[0].setEnabled(false);
-        spn_SelectionZ5[0].setEnabled(false);
         spn_SelectionX1[0].setValue(BigDecimal.ZERO);
         spn_SelectionY1[0].setValue(BigDecimal.ZERO);
         spn_SelectionZ1[0].setValue(BigDecimal.ZERO);
@@ -6196,9 +6201,6 @@ public class Editor3DWindow extends Editor3DDesign {
         spn_SelectionX4[0].setValue(BigDecimal.ZERO);
         spn_SelectionY4[0].setValue(BigDecimal.ZERO);
         spn_SelectionZ4[0].setValue(BigDecimal.ZERO);
-        spn_SelectionX5[0].setValue(BigDecimal.ZERO);
-        spn_SelectionY5[0].setValue(BigDecimal.ZERO);
-        spn_SelectionZ5[0].setValue(BigDecimal.ZERO);
         lbl_SelectionX1[0].setText(I18n.EDITOR3D_PositionX1);
         lbl_SelectionY1[0].setText(I18n.EDITOR3D_PositionY1);
         lbl_SelectionZ1[0].setText(I18n.EDITOR3D_PositionZ1);

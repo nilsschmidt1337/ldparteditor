@@ -9301,10 +9301,85 @@ public class VertexManager {
             BigDecimal x1, BigDecimal y1, BigDecimal z1,
             BigDecimal x2, BigDecimal y2, BigDecimal z2,
             BigDecimal x3, BigDecimal y3, BigDecimal z3,
-            BigDecimal x4, BigDecimal y4, BigDecimal z4,
-    	    BigDecimal x5, BigDecimal y5, BigDecimal z5, boolean moveAdjacentData) {
+            BigDecimal x4, BigDecimal y4, BigDecimal z4, boolean moveAdjacentData) {
 
         if (selectedItemIndex != -1 && exist(selectedLine)) {
+
+
+            if (selectedLine.type() == 1) {
+                // [ERROR] Check singularity
+                Matrix4f tMatrix = new Matrix4f();
+                // Offset
+                tMatrix.m30 = x1.floatValue() * 1000f;
+                tMatrix.m31 = y1.floatValue() * 1000f;
+                tMatrix.m32 = z1.floatValue() * 1000f;
+                // First row
+                tMatrix.m00 = x2.floatValue();
+                tMatrix.m10 = y2.floatValue();
+                tMatrix.m20 = z2.floatValue();
+                // Second row
+                tMatrix.m01 = x3.floatValue();
+                tMatrix.m11 = y3.floatValue();
+                tMatrix.m21 = z3.floatValue();
+                // Third row
+                tMatrix.m02 = x4.floatValue();
+                tMatrix.m12 = y4.floatValue();
+                tMatrix.m22 = z4.floatValue();
+                tMatrix.m33 = 1f;
+                float det = tMatrix.determinant();
+                if (Math.abs(det) < Threshold.singularity_determinant) {
+                    return selectedLine;
+                }
+                Matrix TMatrix = new Matrix(x2, x3, x4, BigDecimal.ZERO, y2, y3, y4, BigDecimal.ZERO, z2, z3, z4, BigDecimal.ZERO, x1, y1, z1, BigDecimal.ONE);
+
+                final GData before = selectedLine.getBefore();
+                final GData next = selectedLine.getNext();
+                final HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+                GData newData = null;
+                GData1 g1 = (GData1) selectedLine;
+                selectedSubfiles.remove(g1);
+                selectedData.remove(g1);
+
+                StringBuilder transformationBuilder = new StringBuilder();
+                transformationBuilder.append("1 "); //$NON-NLS-1$
+                if (g1.colourNumber == -1) {
+                    transformationBuilder.append("0x2"); //$NON-NLS-1$
+                    transformationBuilder.append(MathHelper.toHex((int) (255f * g1.r)).toUpperCase());
+                    transformationBuilder.append(MathHelper.toHex((int) (255f * g1.g)).toUpperCase());
+                    transformationBuilder.append(MathHelper.toHex((int) (255f * g1.b)).toUpperCase());
+                } else {
+                    transformationBuilder.append(g1.colourNumber);
+                }
+                transformationBuilder.append(TMatrix.toLDrawString());
+                transformationBuilder.append(g1.shortName);
+
+                String transformedString = transformationBuilder.toString();
+
+                if (16 == g1.colourNumber) {
+                    newData = DatParser
+                            .parseLine(transformedString, drawPerLine.getKey(g1).intValue(), 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
+                                    new HashSet<String>(), false).get(0).getGraphicalData();
+                } else {
+                    newData = DatParser
+                            .parseLine(transformedString, drawPerLine.getKey(g1).intValue(), 0, g1.r, g1.g, g1.b, g1.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
+                                    new HashSet<String>(), false).get(0).getGraphicalData();
+                }
+                if (g1.equals(linkedDatFile.getDrawChainTail()))
+                    linkedDatFile.setDrawChainTail(newData);
+
+                before.setNext(newData);
+                newData.setNext(next);
+                drawPerLine.put(drawPerLine.getKey(selectedLine), newData);
+                if (remove(selectedLine)) {
+                    linkedDatFile.setDrawChainTail(newData);
+                }
+                selectSubfile(newData);
+                selectedLine = newData;
+                setModified(true, true);
+                updateUnsavedStatus();
+                return selectedLine;
+            }
+
 
             if (moveAdjacentData) {
 
@@ -9420,6 +9495,40 @@ public class VertexManager {
         }
         return null;
 
+    }
+
+    private void selectSubfile(GData data) {
+        if (data.type() == 1) {
+            GData1 g1 = (GData1) data;
+            if (View.DUMMY_REFERENCE.equals(g1.parent)) {
+                selectedSubfiles.add(g1);
+                selectedData.add(g1);
+                Set<VertexInfo> vis = lineLinkedToVertices.get(g1);
+                for (VertexInfo vertexInfo : vis) {
+                    GData g = vertexInfo.getLinkedData();
+                    switch (g.type()) {
+                    case 2:
+                        selectedData.add(g);
+                        selectedLines.add((GData2) g);
+                        break;
+                    case 3:
+                        selectedData.add(g);
+                        selectedTriangles.add((GData3) g);
+                        break;
+                    case 4:
+                        selectedData.add(g);
+                        selectedQuads.add((GData4) g);
+                        break;
+                    case 5:
+                        selectedData.add(g);
+                        selectedCondlines.add((GData5) g);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     public double[] calculateAreas(Set<GData> finalTriangleSet) {
