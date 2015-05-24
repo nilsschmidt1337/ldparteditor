@@ -62,6 +62,7 @@ public final class I18n {
     private static final ResourceBundle COMPOSITETAB = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CompositeTab", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle COORDINATESDIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CoordinatesDialog", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle DATFILE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.DatFile", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle DATPARSER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.DatParser", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -97,6 +98,9 @@ public final class I18n {
     public static final String DATFILE_MissingLicense = DATFILE.getString(getProperty());
     public static final String DATFILE_MissingPartType = DATFILE.getString(getProperty());
     public static final String DATFILE_MissingTitle = DATFILE.getString(getProperty());
+
+    public static final String DATPARSER_ = DATPARSER.getString(getProperty());
+
     public static final String DIALOG_AlreadyAllocatedName = DIALOG.getString(getProperty());
     public static final String DIALOG_AlreadyAllocatedNameTitle = DIALOG.getString(getProperty());
     public static final String DIALOG_Apply = DIALOG.getString(getProperty());
