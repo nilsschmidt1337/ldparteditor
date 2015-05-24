@@ -1229,7 +1229,7 @@ public enum DatParser {
                     double angle = Vector3d.angle(vertexA2, vertexB2);
                     parseError = parseError || angle < Threshold.collinear_angle_minimum;
                     if (parseError) {
-                        result.add(new ParsingResult("Collinear triangle", "[E01] Logic Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult("Collinear vertices", "[E01] Logic Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                     }
                     parseError = vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                     parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
