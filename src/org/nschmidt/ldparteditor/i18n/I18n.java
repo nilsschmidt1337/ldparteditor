@@ -98,9 +98,8 @@ public final class I18n {
     public static final String DATFILE_MissingLicense = DATFILE.getString(getProperty());
     public static final String DATFILE_MissingPartType = DATFILE.getString(getProperty());
     public static final String DATFILE_MissingTitle = DATFILE.getString(getProperty());
-
-    public static final String DATPARSER_ = DATPARSER.getString(getProperty());
-
+    public static final String DATPARSER_InvalidNumberFormat = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_SyntaxError = DATPARSER.getString(getProperty());
     public static final String DIALOG_AlreadyAllocatedName = DIALOG.getString(getProperty());
     public static final String DIALOG_AlreadyAllocatedNameTitle = DIALOG.getString(getProperty());
     public static final String DIALOG_Apply = DIALOG.getString(getProperty());
