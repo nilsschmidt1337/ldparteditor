@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 
 /**
@@ -75,7 +76,7 @@ class CoordinatesDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Set X/Y/Z:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText(I18n.COORDINATESDIALOG_SetXYZ);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -87,7 +88,7 @@ class CoordinatesDesign extends Dialog {
 
             Button cb_Xaxis = new Button(cmp_txt, SWT.CHECK);
             this.cb_Xaxis[0] = cb_Xaxis;
-            cb_Xaxis.setText("X"); //$NON-NLS-1$ I18N Needs translation!
+            cb_Xaxis.setText(I18n.COORDINATESDIALOG_X);
             cb_Xaxis.setSelection(true);
 
             BigDecimalSpinner spn_X = new BigDecimalSpinner(cmp_txt, SWT.NONE);
@@ -105,7 +106,7 @@ class CoordinatesDesign extends Dialog {
 
             Button cb_Yaxis = new Button(cmp_txt, SWT.CHECK);
             this.cb_Yaxis[0] = cb_Yaxis;
-            cb_Yaxis.setText("Y"); //$NON-NLS-1$ I18N Needs translation!
+            cb_Yaxis.setText(I18n.COORDINATESDIALOG_Y);
             cb_Yaxis.setSelection(true);
 
             BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE);
@@ -123,7 +124,7 @@ class CoordinatesDesign extends Dialog {
 
             Button cb_Zaxis = new Button(cmp_txt, SWT.CHECK);
             this.cb_Zaxis[0] = cb_Zaxis;
-            cb_Zaxis.setText("Z"); //$NON-NLS-1$ I18N Needs translation!
+            cb_Zaxis.setText(I18n.COORDINATESDIALOG_Z);
             cb_Zaxis.setSelection(true);
 
             BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE);
