@@ -888,24 +888,17 @@ public final class DatFile {
             h = HeaderState.state();
             results = new ArrayList<ParsingResult>();
             if (!h.hasTITLE())
-                results.add(new ParsingResult("The title is missing\nValid examples\n  " //$NON-NLS-1$
-                        + "\"0 Minifig Torso with Riding Jacket Pattern\"(Part) \n  " //$NON-NLS-1$
-                        + "\"0 ~Door  1 x  2 x  3 with Hole without Studs\"(Subpart) \n  " //$NON-NLS-1$
-                        + "\"0 ~Moved to 3842a\"(Moved to) \n  " //$NON-NLS-1$
-                        + "\"0 Technic Engine Cylinder Head\"(Alias) \n  " //$NON-NLS-1$
-                        + "\"0 _Rock  1 x  1 Crystal  5 Point Chrome Silver\"(Physical Colour)", "[H00] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                results.add(new ParsingResult(I18n.DATFILE_MissingTitle, "[H00] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
             if (!h.hasNAME())
-                results.add(new ParsingResult("The filename information is missing\nValid examples\n  \"0 Name: 30169.dat\"\n  \"0 Name: s\\30169s01.dat\"", "[H10] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                results.add(new ParsingResult(I18n.DATFILE_MissingFileName, "[H10] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
             if (!h.hasAUTHOR())
-                results.add(new ParsingResult("The author name is missing\nValid examples\n  \"0 Author: John Doe\"\n  \"0 Author: Jane Doe [jjdoe]\"", "[H20] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                results.add(new ParsingResult(I18n.DATFILE_MissingAuthor, "[H20] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
             if (!h.hasTYPE())
-                results.add(new ParsingResult("The part type information is missing\nValid example\n  \"0 !LDRAW_ORG Unofficial_Part\"\n", "[H30] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                results.add(new ParsingResult(I18n.DATFILE_MissingPartType, "[H30] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
             if (!h.hasLICENSE())
-                results.add(new ParsingResult(
-                        "The license information is missing\nAll valid examples\n  \"0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt\"\n  \"0 !LICENSE Not redistributable : see NonCAreadme.txt\"", "[H40] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                results.add(new ParsingResult(I18n.DATFILE_MissingLicense, "[H40] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
             if (!h.hasBFC())
-                results.add(new ParsingResult(
-                        "The Back Face Culling (BFC) information is missing\nAll valid examples\n  \"BFC CERTIFY CCW\"\n  \"BFC CERTIFY CW\"\n  \"BFC NOCERTIFY\"", "[H60] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                results.add(new ParsingResult(I18n.DATFILE_MissingBFC, "[H60] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
 
             int fakeLine = -1;
             for (ParsingResult result : results) {
