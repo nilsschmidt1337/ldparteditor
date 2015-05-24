@@ -58,6 +58,9 @@ public final class I18n {
     private static final ResourceBundle COPYNPASTE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CopyAndPaste", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle DIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Dialog", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle EDITOR3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.3DEditor", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle COLOURDIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.ColourDialog", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle COMPOSITETAB = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CompositeTab", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle COORDINATESDIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CoordinatesDialog", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -70,6 +73,18 @@ public final class I18n {
         notAdjusted = false;
     }
     // Constants (Need case sensitive sorting!)
+    public static final String COLOURDIALOG_Colour = COLOURDIALOG.getString(getProperty());
+    public static final String COLOURDIALOG_ColourTitle = COLOURDIALOG.getString(getProperty());
+    public static final String COLOURDIALOG_DirectColour = COLOURDIALOG.getString(getProperty());
+    public static final String COLOURDIALOG_ShowColourTable = COLOURDIALOG.getString(getProperty());
+    public static final String COLOURDIALOG_StandardColours = COLOURDIALOG.getString(getProperty());
+    public static final String COMPOSITETAB_FileEncodingError = COMPOSITETAB.getString(getProperty());
+    public static final String COMPOSITETAB_FileNotFound = COMPOSITETAB.getString(getProperty());
+    public static final String COMPOSITETAB_FileReadError = COMPOSITETAB.getString(getProperty());
+    public static final String COORDINATESDIALOG_SetXYZ = COORDINATESDIALOG.getString(getProperty());
+    public static final String COORDINATESDIALOG_X = COORDINATESDIALOG.getString(getProperty());
+    public static final String COORDINATESDIALOG_Y = COORDINATESDIALOG.getString(getProperty());
+    public static final String COORDINATESDIALOG_Z = COORDINATESDIALOG.getString(getProperty());
     public static final String COPYNPASTE_Copy = COPYNPASTE.getString(getProperty());
     public static final String COPYNPASTE_Cut = COPYNPASTE.getString(getProperty());
     public static final String COPYNPASTE_Delete = COPYNPASTE.getString(getProperty());
