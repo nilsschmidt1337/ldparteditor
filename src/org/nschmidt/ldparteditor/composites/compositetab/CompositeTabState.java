@@ -19,8 +19,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
@@ -108,19 +110,31 @@ public class CompositeTabState {
                 getTab().setText(filename);
                 datFileObj.setLastModified(new File(datFileObj.getOldName()).lastModified());
             } catch (FileNotFoundException e) {
-                getTab().getTextComposite().setText("The file was not found: " + fileNameObj.getOldName()); //$NON-NLS-1$ I18N Needs translation!
+                Object[] messageArguments = {fileNameObj.getOldName()};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.applyPattern(I18n.COMPOSITETAB_FileNotFound);
+                getTab().getTextComposite().setText(formatter.format(messageArguments));
                 datFileObj.setText(""); //$NON-NLS-1$
                 datFileObj.setOriginalText(""); //$NON-NLS-1$
                 getTab().setText(getFilenameWithStar());
                 getTab().getTextComposite().setEditable(false);
             } catch (LDParsingException e) {
-                getTab().getTextComposite().setText("The file cannot be read: " + fileNameObj.getOldName()); //$NON-NLS-1$ I18N Needs translation!
+                Object[] messageArguments = {fileNameObj.getOldName()};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.applyPattern(I18n.COMPOSITETAB_FileReadError);
+                getTab().getTextComposite().setText(formatter.format(messageArguments));
                 datFileObj.setText(""); //$NON-NLS-1$
                 datFileObj.setOriginalText(""); //$NON-NLS-1$
                 getTab().getTextComposite().setEditable(false);
                 e.printStackTrace();
             } catch (UnsupportedEncodingException e) {
-                getTab().getTextComposite().setText("The file has no UTF-8 encoding: " + fileNameObj.getOldName()); //$NON-NLS-1$ I18N Needs translation!
+                Object[] messageArguments = {fileNameObj.getOldName()};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.applyPattern(I18n.COMPOSITETAB_FileEncodingError);
+                getTab().getTextComposite().setText(formatter.format(messageArguments));
                 datFileObj.setText(""); //$NON-NLS-1$
                 datFileObj.setOriginalText(""); //$NON-NLS-1$
                 getTab().getTextComposite().setEditable(false);

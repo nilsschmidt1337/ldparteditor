@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.colour;
 
+import java.text.MessageFormat;
 import java.util.TreeSet;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -34,7 +35,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 
 /**
@@ -75,7 +78,7 @@ class ColourDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_welcome = new Label(cmp_container, SWT.NONE);
-        lbl_welcome.setText("Choose a Colour:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_welcome.setText(I18n.COLOURDIALOG_ColourTitle);
 
         {
             Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -84,7 +87,7 @@ class ColourDesign extends Dialog {
 
         Button btn_pickDirectColour = new Button(cmp_container, SWT.NONE);
         btn_colourChoose[0] = btn_pickDirectColour;
-        btn_pickDirectColour.setText("Direct Colour"); //$NON-NLS-1$ I18N Needs translation!
+        btn_pickDirectColour.setText(I18n.COLOURDIALOG_DirectColour);
 
         {
             Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -92,11 +95,11 @@ class ColourDesign extends Dialog {
         }
 
         Label lbl_stdColour = new Label(cmp_container, SWT.NONE);
-        lbl_stdColour.setText("Standard Colours"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_stdColour.setText(I18n.COLOURDIALOG_StandardColours);
 
         Button btn_showTable = new Button(cmp_container, SWT.NONE);
         btn_colourTable[0] = btn_showTable;
-        btn_showTable.setText("Show Colour Table"); //$NON-NLS-1$ I18N Needs translation!
+        btn_showTable.setText(I18n.COLOURDIALOG_ShowColourTable);
 
         Composite cmpStdColours = new Composite(cmp_container, SWT.BORDER);
         GridLayout gridLayout2 = new GridLayout(17, true);
@@ -119,8 +122,11 @@ class ColourDesign extends Dialog {
             gd.heightHint = btnSize;
             gd.widthHint = btnSize;
             btn_stdColour.setLayoutData(gd);
-            btn_stdColour.setToolTipText("Colour [" + index + "] : " + View.getLDConfigColourName(index)); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-
+            Object[] messageArguments = {index, View.getLDConfigColourName(index)};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.COLOURDIALOG_Colour);
+            btn_stdColour.setToolTipText(formatter.format(messageArguments));
             final GColour gColour2 = View.getLDConfigColour(index);
             btn_stdColour.setData(gColour2);
             final Color col = SWTResourceManager.getColor((int) (gColour2.getR() * 255f), (int) (gColour2.getG() * 255f), (int) (gColour2.getB() * 255f));
