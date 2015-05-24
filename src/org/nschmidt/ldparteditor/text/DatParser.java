@@ -49,6 +49,7 @@ import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -92,7 +93,7 @@ public enum DatParser {
 
         char c;
         if (data_segments.length < 1 || data_segments[0].length() > 1 || !Character.isDigit(c = data_segments[0].charAt(0))) {
-            result.add(new ParsingResult("Invalid line type", "[E0D] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            result.add(new ParsingResult("Invalid line type", "[E0D] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
             return result;
         }
         linetype = Character.getNumericValue(c);
@@ -118,7 +119,7 @@ public enum DatParser {
             break;
         default:
             // Mark unknown linetypes as error
-            result.add(new ParsingResult("Unknown line type number '" + linetype + "'", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ // I18N Needs translation!
+            result.add(new ParsingResult("Unknown line type number '" + linetype + "'", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ // I18N Needs translation!
         }
         return result;
     }
@@ -672,7 +673,7 @@ public enum DatParser {
                 if (newLPEmetaTag == null) {
                     newLPEmetaTag = new GData0(line);
                     result.add(new ParsingResult(newLPEmetaTag));
-                    result.add(new ParsingResult("Invalid TEXMAP format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult("Invalid TEXMAP format", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                 } else {
                     result.add(new ParsingResult(newLPEmetaTag));
                 }
@@ -681,7 +682,7 @@ public enum DatParser {
                 if (newLPEmetaTag == null) {
                     newLPEmetaTag = new GData0(line);
                     result.add(new ParsingResult(newLPEmetaTag));
-                    result.add(new ParsingResult("Invalid TEXMAP format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult("Invalid TEXMAP format", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                 } else {
                     result.add(new ParsingResult(newLPEmetaTag));
                 }
@@ -714,7 +715,7 @@ public enum DatParser {
                         numberError = true;
                     }
                     if (numberError) {
-                        result.add(new ParsingResult("Invalid number format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ // I18N Needs translation!
                     } else if (!errorCheckOnly) {
                         if (depth == 0) {
                             datFile.getVertexManager().addVertex(new Vertex(start.X, start.Y, start.Z), newLPEmetaTag);
@@ -850,12 +851,12 @@ public enum DatParser {
         boolean parseError = false;
         // [ERROR] Check less argument count
         if (data_segments.length < 15) {
-            result.add(new ParsingResult(data_segments.length + " of 15 arguments specified", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            result.add(new ParsingResult(data_segments.length + " of 15 arguments specified", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult("Invalid colour", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult("Invalid colour", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                 return result;
             }
             // [ERROR] Check singularity
@@ -911,7 +912,7 @@ public enum DatParser {
                     M00 = null; M01 = null; M02 = null; M10 = null;
                     M11 = null; M12 = null; M20 = null; M21 = null;
                     M22 = null; M30 = null; M31 = null; M32 = null;
-                    result.add(new ParsingResult("Invalid number format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ // I18N Needs translation!
                     break;
                 }
                 tMatrix.m33 = 1f;
@@ -1132,12 +1133,12 @@ public enum DatParser {
         boolean parseError = false;
         // [ERROR] Check argument count
         if (data_segments.length != 8) {
-            result.add(new ParsingResult(data_segments.length + " of 8 arguments specified", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            result.add(new ParsingResult(data_segments.length + " of 8 arguments specified", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult("Invalid colour", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult("Invalid colour", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                 return result;
             }
             // [ERROR] Check identical vertices
@@ -1152,7 +1153,7 @@ public enum DatParser {
                     end.setY(new BigDecimal(data_segments[6], Threshold.mc));
                     end.setZ(new BigDecimal(data_segments[7], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult("Invalid number format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ // I18N Needs translation!
                     break;
                 }
                 parseError = Vector3d.sub(start, end).length().compareTo(Threshold.identical_vertex_distance) < 0;
@@ -1190,12 +1191,12 @@ public enum DatParser {
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
         // [ERROR] Check argument count
         if (data_segments.length != 11) {
-            result.add(new ParsingResult(data_segments.length + " of 11 arguments specified", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            result.add(new ParsingResult(data_segments.length + " of 11 arguments specified", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult("Invalid colour", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult("Invalid colour", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                 return result;
             }
             // [ERROR] Check identical vertices
@@ -1214,7 +1215,7 @@ public enum DatParser {
                     vertexC.setY(new BigDecimal(data_segments[9], Threshold.mc));
                     vertexC.setZ(new BigDecimal(data_segments[10], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult("Invalid number format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
                 if (!errorCheckOnly) { // result.size() < 1 &&
@@ -1265,12 +1266,12 @@ public enum DatParser {
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
         // [ERROR] Check argument count
         if (data_segments.length != 14) {
-            result.add(new ParsingResult(data_segments.length + " of 14 arguments specified", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            result.add(new ParsingResult(data_segments.length + " of 14 arguments specified", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult("Invalid colour", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult("Invalid colour", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                 return result;
             }
             // [ERROR] Check hourglass, concave form, coplanarity & identical
@@ -1294,7 +1295,7 @@ public enum DatParser {
                     vertexD.setY(new BigDecimal(data_segments[12], Threshold.mc));
                     vertexD.setZ(new BigDecimal(data_segments[13], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult("Invalid number format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
 
@@ -1446,12 +1447,12 @@ public enum DatParser {
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
         // [ERROR] Check argument count
         if (data_segments.length != 14) {
-            result.add(new ParsingResult(data_segments.length + " of 14 arguments specified", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            result.add(new ParsingResult(data_segments.length + " of 14 arguments specified", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult("Invalid colour", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult("Invalid colour", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                 return result;
             }
             // [ERROR] Check identical vertices
@@ -1474,7 +1475,7 @@ public enum DatParser {
                     controlII.setY(new BigDecimal(data_segments[12], Threshold.mc));
                     controlII.setZ(new BigDecimal(data_segments[13], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult("Invalid number format", "[E99] Syntax Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
                 if (Vector3d.sub(start, end).length().compareTo(Threshold.identical_vertex_distance) < 0) {
