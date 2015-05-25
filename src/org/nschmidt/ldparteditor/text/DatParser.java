@@ -870,7 +870,7 @@ public enum DatParser {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult("Invalid colour", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
             }
             // [ERROR] Check singularity
@@ -1156,7 +1156,7 @@ public enum DatParser {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult("Invalid colour", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
             }
             // [ERROR] Check identical vertices
@@ -1218,7 +1218,7 @@ public enum DatParser {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult("Invalid colour", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
             }
             // [ERROR] Check identical vertices
@@ -1297,7 +1297,7 @@ public enum DatParser {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult("Invalid colour", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
             }
             // [ERROR] Check hourglass, concave form, coplanarity & identical
@@ -1482,7 +1482,7 @@ public enum DatParser {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult("Invalid colour", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
             }
             // [ERROR] Check identical vertices
