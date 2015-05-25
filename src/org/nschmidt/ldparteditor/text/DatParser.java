@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -45,6 +46,7 @@ import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.ParsingResult;
 import org.nschmidt.ldparteditor.data.ResultType;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -93,7 +95,7 @@ public enum DatParser {
 
         char c;
         if (data_segments.length < 1 || data_segments[0].length() > 1 || !Character.isDigit(c = data_segments[0].charAt(0))) {
-            result.add(new ParsingResult("Invalid line type", "[E0D] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            result.add(new ParsingResult(I18n.DATPARSER_InvalidType, "[E0D] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
             return result;
         }
         linetype = Character.getNumericValue(c);
@@ -119,7 +121,11 @@ public enum DatParser {
             break;
         default:
             // Mark unknown linetypes as error
-            result.add(new ParsingResult("Unknown line type number '" + linetype + "'", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ // I18N Needs translation!
+            Object[] messageArguments = {linetype};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.DATPARSER_UnknownLineType);
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
         }
         return result;
     }
@@ -249,11 +255,11 @@ public enum DatParser {
                     if (line.startsWith("0 Name: ") && line.length() > 12 && line.endsWith(".dat")) { //$NON-NLS-1$ //$NON-NLS-2$
                         // Its duplicated
                         if (h.hasNAME()) {
-                            result.add(new ParsingResult("The filename information is duplicated", "[H11] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_DuplicatedFilename, "[H11] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
                             if (headerState > HeaderState._01_NAME) { // Its
                                 // misplaced
-                                result.add(new ParsingResult("The filename information is misplaced", "[H12] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedFilename, "[H12] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setLineNAME(lineNumber);
                             h.setHasNAME(true);
@@ -294,11 +300,11 @@ public enum DatParser {
                         if (author.length() > 0 && author.indexOf("[]") == -1 && indexBrL && indexBrR && (liL == -1 || author.indexOf(" [") != -1) && liL <= liR && 0 < liL * liR) { //$NON-NLS-1$ //$NON-NLS-2$
                             // Its duplicated
                             if (h.hasAUTHOR()) {
-                                result.add(new ParsingResult("The author information is duplicated", "[H21] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                result.add(new ParsingResult(I18n.DATPARSER_DuplicatedAuthor, "[H21] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             } else {
                                 if (headerState > HeaderState._02_AUTHOR) { // Its
                                     // misplaced
-                                    result.add(new ParsingResult("The author information is misplaced", "[H22] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                    result.add(new ParsingResult(I18n.DATPARSER_MisplacedAuthor, "[H22] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                                 }
                                 h.setLineAUTHOR(lineNumber);
                                 h.setHasAUTHOR(true);
@@ -345,11 +351,11 @@ public enum DatParser {
                             || "0 !LDRAW_ORG Unofficial_Part Physical_Colour".equals(line)) { //$NON-NLS-1$
                         // Its duplicated
                         if (h.hasTYPE()) {
-                            result.add(new ParsingResult("The type information is duplicated", "[H31] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_DuplicatedType, "[H31] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
                             if (headerState > HeaderState._03_TYPE) { // Its
                                 // misplaced
-                                result.add(new ParsingResult("The type information is misplaced", "[H32] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedType, "[H32] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setLineTYPE(lineNumber);
                             h.setHasTYPE(true);
@@ -377,11 +383,11 @@ public enum DatParser {
                             || "0 !LICENSE Not redistributable : see NonCAreadme.txt".equals(line)) { //$NON-NLS-1$
                         // Its duplicated
                         if (h.hasLICENSE()) {
-                            result.add(new ParsingResult("The license information is duplicated", "[H41] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_DuplicatedLicense, "[H41] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
                             if (headerState > HeaderState._04_LICENSE) { // Its
                                 // misplaced
-                                result.add(new ParsingResult("The license information is misplaced", "[H42] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedLicense, "[H42] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setLineLICENSE(lineNumber);
                             h.setHasLICENSE(true);
@@ -411,11 +417,11 @@ public enum DatParser {
                     if (line.startsWith("0 !HELP")) { //$NON-NLS-1$
                         // Its duplicated
                         if (h.hasHELP()) {
-                            result.add(new ParsingResult("The help information is split apart", "[H51] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_SplitHelp, "[H51] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
                             if (headerState > HeaderState._05o_HELP) { // Its
                                 // misplaced
-                                result.add(new ParsingResult("The help information is misplaced", "[H52] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedHelp, "[H52] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setLineHELP_start(lineNumber);
                             h.setHasHELP(true);
@@ -445,11 +451,11 @@ public enum DatParser {
                             || "0 BFC NOCERTIFY".equals(line)) { //$NON-NLS-1$
                         // Its duplicated
                         if (h.hasBFC()) {
-                            result.add(new ParsingResult("The BFC information is duplicated", "[H61] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_DuplicatedBFC, "[H61] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
                             if (headerState > HeaderState._06_BFC) { // Its
                                 // misplaced
-                                result.add(new ParsingResult("The BFC information is misplaced", "[H62] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedBFC0, "[H62] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setLineBFC(lineNumber);
                             h.setHasBFC(true);
@@ -474,11 +480,11 @@ public enum DatParser {
                     if (line.startsWith("0 !CATEGORY ")) { //$NON-NLS-1$
                         // Its duplicated
                         if (h.hasCATEGORY()) {
-                            result.add(new ParsingResult("The category information is duplicated", "[H71] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_DuplicatedCategory, "[H71] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
                             if (headerState > HeaderState._07o_CATEGORY) { // Its
                                 // misplaced
-                                result.add(new ParsingResult("The category information is misplaced", "[H72] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedCategory, "[H72] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setHasCATEGORY(true);
                             headerState = HeaderState._08o_KEYWORDS;
@@ -502,11 +508,11 @@ public enum DatParser {
                     if (line.startsWith("0 !KEYWORDS ")) { //$NON-NLS-1$
                         // Its duplicated
                         if (h.hasKEYWORDS()) {
-                            result.add(new ParsingResult("The keyword information is split apart", "[H81] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_SplitKeyword, "[H81] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
                             if (headerState > HeaderState._08o_KEYWORDS) { // Its
                                 // misplaced
-                                result.add(new ParsingResult("The keyword information is misplaced", "[H82] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedKeyword, "[H82] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setHasKEYWORDS(true);
                             headerState = HeaderState._08o_KEYWORDS;
@@ -530,11 +536,11 @@ public enum DatParser {
                     if (line.startsWith("0 !CMDLINE ")) { //$NON-NLS-1$
                         // Its duplicated
                         if (h.hasCMDLINE()) {
-                            result.add(new ParsingResult("The command line information is duplicated", "[H91] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_DuplicatedCommandLine, "[H91] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
                             if (headerState > HeaderState._09o_CMDLINE) { // Its
                                 // misplaced
-                                result.add(new ParsingResult("The command line information is misplaced", "[H92] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedCommandLine, "[H92] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setHasCMDLINE(true);
                             headerState = HeaderState._10o_HISTORY;
@@ -550,7 +556,7 @@ public enum DatParser {
                         try {
                             if (h.hasHISTORY()) {
                                 if (line.substring(0, "0 !HISTORY YYYY-MM-DD".length()).compareTo(h.getLastHistoryEntry()) == -1) { //$NON-NLS-1$
-                                    result.add(new ParsingResult("The history information has no descending order", "[HA3] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                    result.add(new ParsingResult(I18n.DATPARSER_HistoryWrongOrder, "[HA3] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                                 }
                             } else {
                                 h.setLastHistoryEntry(line.substring(0, "0 !HISTORY YYYY-MM-DD".length())); //$NON-NLS-1$
@@ -569,11 +575,11 @@ public enum DatParser {
                     if (line.startsWith("0 !HISTORY ")) { //$NON-NLS-1$
                         // Its duplicated
                         if (h.hasHISTORY()) {
-                            result.add(new ParsingResult("The history information is split apart", "[HA1] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_SplitHistory, "[HA1] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
                             if (headerState > HeaderState._10o_HISTORY) { // Its
                                 // misplaced
-                                result.add(new ParsingResult("The history information is misplaced", "[HA2] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedHistory, "[HA2] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setHasHISTORY(true);
                             headerState = HeaderState._10o_HISTORY;
@@ -597,11 +603,11 @@ public enum DatParser {
                     if (line.startsWith("0 // ")) { //$NON-NLS-1$
                         // Its duplicated
                         if (h.hasCOMMENT()) {
-                            result.add(new ParsingResult("The user comment is split apart", "[HB1] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_SplitCommment, "[HB1] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
                             if (headerState > HeaderState._11o_COMMENT) { // Its
                                 // misplaced
-                                result.add(new ParsingResult("The user comment is misplaced", "[HB2] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedComment, "[HB2] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setHasCOMMENT(true);
                             headerState = HeaderState._11o_COMMENT;
@@ -637,11 +643,11 @@ public enum DatParser {
                             || line.equals("0 BFC INVERTNEXT"))) { //$NON-NLS-1$
                         // Its duplicated
                         if (h.hasBFC2()) {
-                            result.add(new ParsingResult("The additional BFC statement is split apart", "[HC1] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_SplitBFC, "[HC1] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
                             if (headerState > HeaderState._12o_BFC2) { // Its
                                 // misplaced
-                                result.add(new ParsingResult("The additional BFC statement is misplaced", "[HC2] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedBFC, "[HC2] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setHasBFC2(true);
                             headerState = HeaderState._12o_BFC2;
@@ -651,13 +657,13 @@ public enum DatParser {
                 }
 
                 if (h.hasTITLE()) {
-                    result.add(new ParsingResult("Invalid header line", "[H01] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidHeader, "[H01] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                     headerState = lastKnownGoodState;
                 } else {
                     h.setLineTITLE(lineNumber);
                     h.setHasTITLE(true);
                     if (headerState != HeaderState._00_TITLE) {
-                        result.add(new ParsingResult("The header title is misplaced or the line is invalid", "[H02] Header Hint", ResultType.HINT)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult(I18n.DATPARSER_MisplacedTitle, "[H02] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                     } else {
                         headerState = HeaderState._01_NAME;
                     }
@@ -666,14 +672,14 @@ public enum DatParser {
             }
         } else {
             if (depth == 0 && h.hasBFC() && lineNumber != h.getLineBFC() && line.startsWith("0 BFC CERTIFY ")) { //$NON-NLS-1$
-                result.add(new ParsingResult("Multiple occurrences of BFC CERTIFY", "[W01] Warning", ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult(I18n.DATPARSER_MultipleBFC, "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
                 result.add(new ParsingResult(new GData0(line)));
             } else if (line.startsWith("0 !: ")) { //$NON-NLS-1$
                 GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed);
                 if (newLPEmetaTag == null) {
                     newLPEmetaTag = new GData0(line);
                     result.add(new ParsingResult(newLPEmetaTag));
-                    result.add(new ParsingResult("Invalid TEXMAP format", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidTEXMAP, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                 } else {
                     result.add(new ParsingResult(newLPEmetaTag));
                 }
@@ -682,18 +688,22 @@ public enum DatParser {
                 if (newLPEmetaTag == null) {
                     newLPEmetaTag = new GData0(line);
                     result.add(new ParsingResult(newLPEmetaTag));
-                    result.add(new ParsingResult("Invalid TEXMAP format", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidTEXMAP, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                 } else {
                     result.add(new ParsingResult(newLPEmetaTag));
                 }
             } else if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
                 GData0 newLPEmetaTag = new GData0(line);
                 result.add(new ParsingResult(newLPEmetaTag));
-                result.add(new ParsingResult("Unofficial Meta Command", "[W0D] Warning", ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult(I18n.DATPARSER_UnofficialMetaCommand, "[W0D] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
                 if (line.startsWith("TODO ", 7)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(line.substring(12), "[WFF] TODO", ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(line.substring(12), "[WFF] " + I18n.DATPARSER_TODO, ResultType.WARN)); //$NON-NLS-1$
                 } else if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
-                    result.add(new ParsingResult("Vertex at " + line.substring(14), "[WFE] Vertex Declaration", ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+                    Object[] messageArguments = {line.substring(14)};
+                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.applyPattern(I18n.DATPARSER_VertexAt);
+                    result.add(new ParsingResult(formatter.format(messageArguments) , "[WFE] " + I18n.DATPARSER_VertexDeclaration, ResultType.WARN)); //$NON-NLS-1$
                     boolean numberError = false;
                     if (data_segments.length == 6) {
                         try {
@@ -1108,7 +1118,7 @@ public enum DatParser {
             alreadyParsed.remove(shortFilename);
             // [WARNING] Check spaces in dat file name
             if (data_segments.length > 15) {
-                result.add(new ParsingResult("Filename contains whitespace", "[W01] Warning", ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult("Filename contains whitespace", "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
             }
         }
         return result;
@@ -1158,7 +1168,7 @@ public enum DatParser {
                 }
                 parseError = Vector3d.sub(start, end).length().compareTo(Threshold.identical_vertex_distance) < 0;
                 if (parseError) {
-                    result.add(new ParsingResult("Identical vertices", "[E0D] Data Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult("Identical vertices", "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                 }
                 if (result.size() < 1 && !errorCheckOnly) {
                     GData2 data = new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile);
@@ -1236,7 +1246,7 @@ public enum DatParser {
                     parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                     parseError = parseError || Vector3d.sub(vertexA2, vertexB2).length().compareTo(Threshold.identical_vertex_distance) < 0;
                     if (parseError) {
-                        result.add(new ParsingResult("Identical vertices", "[E0D] Data Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult("Identical vertices", "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                     }
                 }
                 break;
@@ -1355,15 +1365,15 @@ public enum DatParser {
                         // Hourglass
                         switch (fcc) {
                         case 1:
-                            result.add(new ParsingResult("Hourglass quadrilateral", "[E41] Data Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult("Hourglass quadrilateral", "[E41] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                             break;
                         default: // 2
-                            result.add(new ParsingResult("Hourglass quadrilateral", "[E42] Data Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult("Hourglass quadrilateral", "[E42] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                             break;
                         }
                     } else if (cnc == 1 || cnc == 3) {
                         // Concave
-                        result.add(new ParsingResult("Concave quadrilateral", "[E04] Data Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult("Concave quadrilateral", "[E04] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                     }
                     double angle;
 
@@ -1382,7 +1392,7 @@ public enum DatParser {
                         parseError = parseError || angle < Threshold.collinear_angle_minimum;
 
                         if (parseError) {
-                            result.add(new ParsingResult("Collinear vertices", "[E34] Data Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult("Collinear vertices", "[E34] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                         }
                     }
 
@@ -1394,7 +1404,7 @@ public enum DatParser {
 
                         parseWarning = angle > Threshold.coplanarity_angle_warning;
                         if (angle > Threshold.coplanarity_angle_error) {
-                            result.add(new ParsingResult("Coplanar quadrilateral", "[E24] Data Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult("Coplanar quadrilateral", "[E24] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                             parseError = true;
                             parseWarning = false;
                         }
@@ -1414,10 +1424,10 @@ public enum DatParser {
                         } else {
                             result.clear();
                         }
-                        result.add(new ParsingResult("Identical vertices", "[E44] Data Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult("Identical vertices", "[E44] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
 
                     } else if (parseWarning) {
-                        result.add(new ParsingResult("Quadrilateral near coplanarity", "[W24] Warning", ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult("Quadrilateral near coplanarity", "[W24] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                     }
                 }
                 break;
@@ -1479,9 +1489,9 @@ public enum DatParser {
                     break;
                 }
                 if (Vector3d.sub(start, end).length().compareTo(Threshold.identical_vertex_distance) < 0) {
-                    result.add(new ParsingResult("Identical vertices", "[E0D] Data Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult("Identical vertices", "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                 } else if (depth < 1 && Vector3d.sub(controlI, controlII).length().compareTo(Threshold.identical_vertex_distance) < 0) {
-                    result.add(new ParsingResult("Identical control points", "[E05] Data Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult("Identical control points", "[E05] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
                 }
                 if (result.size() < 1 && !errorCheckOnly) {
                     GData5 data = new GData5(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, controlI.X,
