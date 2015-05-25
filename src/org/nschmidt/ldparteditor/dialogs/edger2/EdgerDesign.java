@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 
 /**
@@ -72,13 +73,13 @@ class EdgerDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Edger2 [Arbitrary Precision]"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText(I18n.EDGER_Title);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
-        lbl_coordsPrec.setText("Precision [LDU]:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_coordsPrec.setText(I18n.EDGER_Precision);
 
         BigDecimalSpinner spn_vequ = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_vequ[0] = spn_vequ;
@@ -88,17 +89,17 @@ class EdgerDesign extends Dialog {
         spn_vequ.setValue(es.getEqualDistance());
 
         Label lbl_use180deg = new Label(cmp_container, SWT.NONE);
-        lbl_use180deg.setText("Range:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_use180deg.setText(I18n.EDGER_Range);
 
         Combo cmb_b = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_b[0] = cmb_b;
-        cmb_b.setItems(new String[] { "0°-90°", "0°-180" }); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+        cmb_b.setItems(new String[] { I18n.EDGER_0to90, I18n.EDGER_0to180 });
         cmb_b.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_b.setText(es.isExtendedRange() ? cmb_b.getItem(1) : cmb_b.getItem(0));
         cmb_b.select(es.isExtendedRange() ? 1 : 0);
 
         Label lbl_af = new Label(cmp_container, SWT.NONE);
-        lbl_af.setText("Flat Surface Maximum Angle (af) [Degree]:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_af.setText(I18n.EDGER_FlatMaxAngle);
 
         BigDecimalSpinner spn_af = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_af[0] = spn_af;
@@ -108,7 +109,7 @@ class EdgerDesign extends Dialog {
         spn_af.setValue(es.getAf());
 
         Label lbl_ac = new Label(cmp_container, SWT.NONE);
-        lbl_ac.setText("Cond. Line Only Maximum Angle (ac) [Degree]:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_ac.setText(I18n.EDGER_CondlineMaxAngle);
 
         BigDecimalSpinner spn_ac = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_ac[0] = spn_ac;
@@ -118,7 +119,7 @@ class EdgerDesign extends Dialog {
         spn_ac.setValue(es.getAc());
 
         Label lbl_ae = new Label(cmp_container, SWT.NONE);
-        lbl_ae.setText("Edge Line Only Minimum Angle (ae) [Degree]:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_ae.setText(I18n.EDGER_EdgeMaxAngle);
 
         BigDecimalSpinner spn_ae = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_ae[0] = spn_ae;
@@ -129,26 +130,26 @@ class EdgerDesign extends Dialog {
 
         Combo cmb_u = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_u[0] = cmb_u;
-        cmb_u.setItems(new String[] { "Include Unmatched Edges", "Exclude Unmatched Edges", "Unmatched Edges Only"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
+        cmb_u.setItems(new String[] { I18n.EDGER_IncludeUnmatched, I18n.EDGER_ExcludeUnmatched, I18n.EDGER_UnmatchedOnly});
         cmb_u.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_u.setText(cmb_u.getItem(es.getUnmatchedMode()));
         cmb_u.select(es.getUnmatchedMode());
 
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {"Scope: File + Subfiles", "Scope: File", "Scope: Selection"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
+        cmb_scope.setItems(new String[] {I18n.EDGER_ScopeFileSubfiles, I18n.EDGER_ScopeFile, I18n.EDGER_ScopeSelection});
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_scope.setText(cmb_scope.getItem(es.getScope()));
         cmb_scope.select(es.getScope());
 
         Label lbl_1 = new Label(cmp_container, SWT.NONE);
-        lbl_1.setText("0\t<\ta\t≤\taf\t: No Line"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_1.setText(I18n.EDGER_Condition1);
         Label lbl_2 = new Label(cmp_container, SWT.NONE);
-        lbl_2.setText("af\t<\ta\t≤\tac\t: Cond. Line"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_2.setText(I18n.EDGER_Condition2);
         Label lbl_3 = new Label(cmp_container, SWT.NONE);
-        lbl_3.setText("ac\t<\ta\t≤\tae\t: Cond. Line + Edge Line"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_3.setText(I18n.EDGER_Condition3);
         Label lbl_4 = new Label(cmp_container, SWT.NONE);
-        lbl_4.setText("ae\t<\ta\t\t\t: Egde Line"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_4.setText(I18n.EDGER_Condition4);
 
         cmp_container.pack();
         return cmp_container;
