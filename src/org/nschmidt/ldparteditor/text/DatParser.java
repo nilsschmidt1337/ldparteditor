@@ -926,7 +926,7 @@ public enum DatParser {
                     M00 = null; M01 = null; M02 = null; M10 = null;
                     M11 = null; M12 = null; M20 = null; M21 = null;
                     M22 = null; M30 = null; M31 = null; M32 = null;
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
                 tMatrix.m33 = 1f;
@@ -951,7 +951,7 @@ public enum DatParser {
                 shortFilename = shortFilename.replace("s\\\\", "S" + File.separator).replace("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             if (alreadyParsed.contains(shortFilename)) {
-                result.add(new ParsingResult("Recursive File Reference", "[E01] Logic Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult(I18n.DATPARSER_Recursive, "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
                 if (!View.DUMMY_REFERENCE.equals(parent))
                     parent.firstRef.setRecursive(true);
             } else {
@@ -984,7 +984,7 @@ public enum DatParser {
 
             ArrayList<String> lines = null;
             if (parseError) {
-                result.add(new ParsingResult("Singular matrix", "[E02] Logic Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult(I18n.DATPARSER_SingularMatrix, "[E02] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
             }
 
             String absoluteFilename = null;
@@ -1049,7 +1049,7 @@ public enum DatParser {
                 }
 
             } else if (!fileExists) {
-                result.add(new ParsingResult("File not found", "[E01] Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult(I18n.DATPARSER_FileNotFound, "[E01] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
             } else {
                 absoluteFilename = fileToOpen.getAbsolutePath();
                 UTF8BufferedReader reader;
@@ -1112,17 +1112,17 @@ public enum DatParser {
                 GData1 g1 = (GData1) result.get(0).getGraphicalData();
                 if (g1 != null) {
                     if (g1.firstRef.isRecursive()) {
-                        result.add(new ParsingResult("Recursive File Reference", "[E01] Logic Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult(I18n.DATPARSER_Recursive, "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
                     }
                     if (g1.firstRef.isMovedTo()) {
-                        result.add(new ParsingResult("'~Moved to' Reference", "[E2A] Logic Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult(I18n.DATPARSER_MovedTo, "[E2A] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
                     }
                 }
             }
             alreadyParsed.remove(shortFilename);
             // [WARNING] Check spaces in dat file name
             if (data_segments.length > 15) {
-                result.add(new ParsingResult("Filename contains whitespace", "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                result.add(new ParsingResult(I18n.DATPARSER_FilenameWhitespace, "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
             }
         }
         return result;
@@ -1171,12 +1171,12 @@ public enum DatParser {
                     end.setY(new BigDecimal(data_segments[6], Threshold.mc));
                     end.setZ(new BigDecimal(data_segments[7], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
                 parseError = Vector3d.sub(start, end).length().compareTo(Threshold.identical_vertex_distance) < 0;
                 if (parseError) {
-                    result.add(new ParsingResult("Identical vertices", "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_IdenticalVertices, "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                 }
                 if (result.size() < 1 && !errorCheckOnly) {
                     GData2 data = new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile);
@@ -1252,13 +1252,13 @@ public enum DatParser {
                     double angle = Vector3d.angle(vertexA2, vertexB2);
                     parseError = parseError || angle < Threshold.collinear_angle_minimum;
                     if (parseError) {
-                        result.add(new ParsingResult("Collinear vertices", "[E01] Logic Error", ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult(I18n.DATPARSER_CollinearVertices, "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
                     }
                     parseError = vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                     parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                     parseError = parseError || Vector3d.sub(vertexA2, vertexB2).length().compareTo(Threshold.identical_vertex_distance) < 0;
                     if (parseError) {
-                        result.add(new ParsingResult("Identical vertices", "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult(I18n.DATPARSER_IdenticalVertices, "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                     }
                 }
                 break;
@@ -1381,15 +1381,15 @@ public enum DatParser {
                         // Hourglass
                         switch (fcc) {
                         case 1:
-                            result.add(new ParsingResult("Hourglass quadrilateral", "[E41] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_HourglassQuadrilateral, "[E41] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                             break;
                         default: // 2
-                            result.add(new ParsingResult("Hourglass quadrilateral", "[E42] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_HourglassQuadrilateral, "[E42] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                             break;
                         }
                     } else if (cnc == 1 || cnc == 3) {
                         // Concave
-                        result.add(new ParsingResult("Concave quadrilateral", "[E04] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult(I18n.DATPARSER_ConcaveQuadrilateral, "[E04] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                     }
                     double angle;
 
@@ -1408,7 +1408,7 @@ public enum DatParser {
                         parseError = parseError || angle < Threshold.collinear_angle_minimum;
 
                         if (parseError) {
-                            result.add(new ParsingResult("Collinear vertices", "[E34] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_CollinearVertices, "[E34] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                         }
                     }
 
@@ -1420,7 +1420,7 @@ public enum DatParser {
 
                         parseWarning = angle > Threshold.coplanarity_angle_warning;
                         if (angle > Threshold.coplanarity_angle_error) {
-                            result.add(new ParsingResult("Coplanar quadrilateral", "[E24] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                            result.add(new ParsingResult(I18n.DATPARSER_Coplanarity, "[E24] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                             parseError = true;
                             parseWarning = false;
                         }
@@ -1440,10 +1440,10 @@ public enum DatParser {
                         } else {
                             result.clear();
                         }
-                        result.add(new ParsingResult("Identical vertices", "[E44] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult(I18n.DATPARSER_IdenticalVertices, "[E44] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
 
                     } else if (parseWarning) {
-                        result.add(new ParsingResult("Quadrilateral near coplanarity", "[W24] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                        result.add(new ParsingResult(I18n.DATPARSER_NearCoplanarity, "[W24] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
                     }
                 }
                 break;
@@ -1509,9 +1509,9 @@ public enum DatParser {
                     break;
                 }
                 if (Vector3d.sub(start, end).length().compareTo(Threshold.identical_vertex_distance) < 0) {
-                    result.add(new ParsingResult("Identical vertices", "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_IdenticalVertices, "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                 } else if (depth < 1 && Vector3d.sub(controlI, controlII).length().compareTo(Threshold.identical_vertex_distance) < 0) {
-                    result.add(new ParsingResult("Identical control points", "[E05] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+                    result.add(new ParsingResult(I18n.DATPARSER_IdenticalControlPoints, "[E05] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                 }
                 if (result.size() < 1 && !errorCheckOnly) {
                     GData5 data = new GData5(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, controlI.X,

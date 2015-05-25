@@ -114,6 +114,7 @@ public final class I18n {
     public static final String DATPARSER_HeaderHint = DATPARSER.getString(getProperty());
     public static final String DATPARSER_HistoryWrongOrder = DATPARSER.getString(getProperty());
     public static final String DATPARSER_HourglassQuadrilateral = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_IdenticalControlPoints = DATPARSER.getString(getProperty());
     public static final String DATPARSER_IdenticalVertices = DATPARSER.getString(getProperty());
     public static final String DATPARSER_InvalidColour = DATPARSER.getString(getProperty());
     public static final String DATPARSER_InvalidHeader = DATPARSER.getString(getProperty());
