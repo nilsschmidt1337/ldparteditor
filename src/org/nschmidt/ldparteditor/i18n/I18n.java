@@ -63,6 +63,8 @@ public final class I18n {
     private static final ResourceBundle COORDINATESDIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CoordinatesDialog", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle DATFILE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.DatFile", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle DATPARSER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.DatParser", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle HINTFIXER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.HintFixer", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle EDGER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Edger", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -257,6 +259,7 @@ public final class I18n {
     public static final String EDITORTEXT_ShowHideErrorTab = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Warning = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Warnings = EDITORTEXT.getString(getProperty());
+    public static final String HINTFIXER_Title = HINTFIXER.getString(getProperty());
     public static final String PARTS_HiResPrimitives = PARTS.getString(getProperty());
     public static final String PARTS_LowResPrimitives = PARTS.getString(getProperty());
     public static final String PARTS_Parts = PARTS.getString(getProperty());

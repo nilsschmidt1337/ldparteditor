@@ -92,7 +92,7 @@ class EdgerDesign extends Dialog {
 
         Combo cmb_b = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_b[0] = cmb_b;
-        cmb_b.setItems(new String[] { "0°-90°", "0°-180" }); //$NON-NLS-1$ //$NON-NLS-2$
+        cmb_b.setItems(new String[] { "0°-90°", "0°-180" }); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
         cmb_b.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_b.setText(es.isExtendedRange() ? cmb_b.getItem(1) : cmb_b.getItem(0));
         cmb_b.select(es.isExtendedRange() ? 1 : 0);
