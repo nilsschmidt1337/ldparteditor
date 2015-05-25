@@ -24,7 +24,6 @@ import java.util.TreeSet;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Image;
-import org.nschmidt.ldparteditor.text.StringHelper;
 
 /**
  * @author nils
