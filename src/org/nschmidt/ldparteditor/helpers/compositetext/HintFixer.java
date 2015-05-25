@@ -19,6 +19,7 @@ import java.io.File;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.text.HeaderState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -34,7 +35,7 @@ final class HintFixer {
         int s = Integer.parseInt(sort, 16);
         switch (s) {
         case 0: // The title is missing
-            text = QuickFixer.insertBeforeLine(1, "0 Title", text); //$NON-NLS-1$ I18N Needs translation!
+            text = QuickFixer.insertBeforeLine(1, "0 " + I18n.HINTFIXER_Title, text); //$NON-NLS-1$
             break;
         case 1: // Invalid header line
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
@@ -75,15 +76,15 @@ final class HintFixer {
             if (h.hasAUTHOR())
                 l = h.getLineAUTHOR();
             if (type == DatType.SUBPART)
-                text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_Subpart<br>", text); //$NON-NLS-1$ I18N Needs translation!
+                text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_Subpart<br>", text); //$NON-NLS-1$
             else if (type == DatType.PRIMITIVE)
-                text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_Primitive<br>", text); //$NON-NLS-1$ I18N Needs translation!
+                text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_Primitive<br>", text); //$NON-NLS-1$
             else if (type == DatType.PRIMITIVE8)
-                text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_8_Primitive<br>", text); //$NON-NLS-1$ I18N Needs translation!
+                text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_8_Primitive<br>", text); //$NON-NLS-1$
             else if (type == DatType.PRIMITIVE48)
-                text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_48_Primitive<br>", text); //$NON-NLS-1$ I18N Needs translation!
+                text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_48_Primitive<br>", text); //$NON-NLS-1$
             else
-                text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_Part<br>", text); //$NON-NLS-1$ I18N Needs translation!
+                text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_Part<br>", text); //$NON-NLS-1$
             break;
         case 64: // The license information is missing
             l = 1;
