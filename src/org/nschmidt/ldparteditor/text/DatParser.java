@@ -725,7 +725,7 @@ public enum DatParser {
                         numberError = true;
                     }
                     if (numberError) {
-                        result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ // I18N Needs translation!
+                        result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                     } else if (!errorCheckOnly) {
                         if (depth == 0) {
                             datFile.getVertexManager().addVertex(new Vertex(start.X, start.Y, start.Z), newLPEmetaTag);
@@ -861,7 +861,11 @@ public enum DatParser {
         boolean parseError = false;
         // [ERROR] Check less argument count
         if (data_segments.length < 15) {
-            result.add(new ParsingResult(data_segments.length + " of 15 arguments specified", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            Object[] messageArguments = {data_segments.length, 15};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.DATPARSER_WrongArgumentCount);
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
@@ -1143,7 +1147,11 @@ public enum DatParser {
         boolean parseError = false;
         // [ERROR] Check argument count
         if (data_segments.length != 8) {
-            result.add(new ParsingResult(data_segments.length + " of 8 arguments specified", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            Object[] messageArguments = {data_segments.length, 8};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.DATPARSER_WrongArgumentCount);
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
@@ -1201,7 +1209,11 @@ public enum DatParser {
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
         // [ERROR] Check argument count
         if (data_segments.length != 11) {
-            result.add(new ParsingResult(data_segments.length + " of 11 arguments specified", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            Object[] messageArguments = {data_segments.length, 11};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.DATPARSER_WrongArgumentCount);
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
@@ -1276,7 +1288,11 @@ public enum DatParser {
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
         // [ERROR] Check argument count
         if (data_segments.length != 14) {
-            result.add(new ParsingResult(data_segments.length + " of 14 arguments specified", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            Object[] messageArguments = {data_segments.length, 14};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.DATPARSER_WrongArgumentCount);
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
@@ -1457,7 +1473,11 @@ public enum DatParser {
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
         // [ERROR] Check argument count
         if (data_segments.length != 14) {
-            result.add(new ParsingResult(data_segments.length + " of 14 arguments specified", "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            Object[] messageArguments = {data_segments.length, 14};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.DATPARSER_WrongArgumentCount);
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
