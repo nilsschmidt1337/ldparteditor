@@ -1733,27 +1733,16 @@ public class Editor3DWindow extends Editor3DDesign {
                                     return;
                                 }
 
-                                MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-                                messageBox.setText(I18n.DIALOG_DeleteTitle);
-
-                                Object[] messageArguments = {df.getShortName()};
-                                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                formatter.setLocale(MyLanguage.LOCALE);
-                                formatter.applyPattern(I18n.DIALOG_Delete);
-                                messageBox.setMessage(formatter.format(messageArguments));
-
-                                int result = messageBox.open();
-
-                                if (result == SWT.NO) {
-                                    return;
-                                }
-
                                 updateTree_removeEntry(df);
 
                                 try {
                                     File f = new File(df.getOldName());
                                     if (f.exists()) {
-                                        f.delete();
+                                        File bakFile = new File(df.getOldName() + ".bak"); //$NON-NLS-1$
+                                        if (bakFile.exists()) {
+                                            bakFile.delete();
+                                        }
+                                        f.renameTo(bakFile);
                                     }
                                 } catch (Exception ex) {}
 
