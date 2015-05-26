@@ -380,7 +380,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Sync = new Button(toolItem_Sync, SWT.NONE);
                 this.btn_Sync[0] = btn_Sync;
-                btn_Sync.setToolTipText("Synchronise Folders / Editor Content"); //$NON-NLS-1$ I18N Needs translation!
+                btn_Sync.setToolTipText(I18n.EDITOR3D_SyncFolders);
                 btn_Sync.setImage(ResourceManager.getImage("icon16_sync.png")); //$NON-NLS-1$
             }
             {
