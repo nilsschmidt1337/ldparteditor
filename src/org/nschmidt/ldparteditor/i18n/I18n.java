@@ -268,6 +268,7 @@ public final class I18n {
     public static final String EDITOR3D_Snapshot = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_SplitHorizontally = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_SplitVertically = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_SwapWinding = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_SyncFolders = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Undo = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Ungroup = EDITOR3D.getString(getProperty());
