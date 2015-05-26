@@ -227,6 +227,8 @@ public final class I18n {
     public static final String EDITOR3D_File = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Grid = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Group = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Hide = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LastOpened = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ModeLine = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ModeSubpart = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ModeSurface = EDITOR3D.getString(getProperty());
@@ -261,6 +263,7 @@ public final class I18n {
     public static final String EDITOR3D_SaveAll = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Scale = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Select = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_ShowAll = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Snapshot = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_SplitHorizontally = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_SplitVertically = EDITOR3D.getString(getProperty());
