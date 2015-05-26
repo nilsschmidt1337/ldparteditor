@@ -686,7 +686,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_BFCswap = new Button(toolItem_MiscClick, SWT.NONE);
                 this.btn_BFCswap[0] = btn_BFCswap;
-                btn_BFCswap.setToolTipText("Swap BFC Winding"); //$NON-NLS-1$ I18N
+                btn_BFCswap.setToolTipText(I18n.EDITOR3D_SwapWinding);
                 btn_BFCswap.setImage(ResourceManager.getImage("icon16_bfcSwap.png")); //$NON-NLS-1$
             }
             {
