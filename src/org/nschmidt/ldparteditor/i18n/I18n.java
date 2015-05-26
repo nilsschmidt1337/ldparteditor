@@ -227,7 +227,10 @@ public final class I18n {
     public static final String EDITOR3D_Combined = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_CompileSubfileData = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_CondlineToLine = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Connected = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_DragHint = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Everything = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_ExceptSubfile = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Exit = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_FarClipping = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_FarClippingHint = EDITOR3D.getString(getProperty());
@@ -281,10 +284,15 @@ public final class I18n {
     public static final String EDITOR3D_SplitVertically = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_SwapWinding = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_SyncFolders = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Touching = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Undo = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Ungroup = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ViewActions = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ViewingAngles = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_WhatIsHidden = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_WithAccuracy = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_WithSameColour = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_WithSameOrientation = EDITOR3D.getString(getProperty());
     public static final String EDITORTEXT_Error = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Errors = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_NewFile = EDITORTEXT.getString(getProperty());
