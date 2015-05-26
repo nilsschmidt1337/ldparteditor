@@ -766,44 +766,44 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_SelectEverything = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectEverything[0] = mntm_SelectEverything;
-                        mntm_SelectEverything.setText("…Everything…"); //$NON-NLS-1$ I18N
+                        mntm_SelectEverything.setText(I18n.EDITOR3D_Everything);
                         mntm_SelectEverything.setEnabled(false);
                     }
                     {
                         MenuItem mntm_SelectConnected = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectConnected[0] = mntm_SelectConnected;
-                        KeyStateManager.addKeyText(mntm_SelectConnected, "…Connected…", Task.SELECT_CONNECTED); //$NON-NLS-1$ I18N
+                        KeyStateManager.addKeyText(mntm_SelectConnected, I18n.EDITOR3D_Connected, Task.SELECT_CONNECTED);
                     }
                     {
                         MenuItem mntm_SelectTouching = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectTouching[0] = mntm_SelectTouching;
-                        KeyStateManager.addKeyText(mntm_SelectTouching, "…Touching…", Task.SELECT_TOUCHING); //$NON-NLS-1$ I18N
+                        KeyStateManager.addKeyText(mntm_SelectTouching, I18n.EDITOR3D_Touching, Task.SELECT_TOUCHING);
                     }
                     {
                         MenuItem mntm_WithSameColour = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_WithSameColour[0] = mntm_WithSameColour;
-                        KeyStateManager.addKeyText(mntm_WithSameColour, "…  with Same Colour.", Task.SELECT_OPTION_WITH_SAME_COLOURS); //$NON-NLS-1$ I18N
+                        KeyStateManager.addKeyText(mntm_WithSameColour, I18n.EDITOR3D_WithSameColour, Task.SELECT_OPTION_WITH_SAME_COLOURS);
                     }
                     {
                         MenuItem mntm_WithSameOrientation = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_WithSameOrientation[0] = mntm_WithSameOrientation;
-                        mntm_WithSameOrientation.setText("…  with Same Orientation¹."); //$NON-NLS-1$ I18N
+                        mntm_WithSameOrientation.setText(I18n.EDITOR3D_WithSameOrientation);
                     }
                     {
                         MenuItem mntm_WithAccuracy = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_WithAccuracy[0] = mntm_WithAccuracy;
-                        mntm_WithAccuracy.setText("…  with Specified Accuracy¹ ²."); //$NON-NLS-1$ I18N
+                        mntm_WithAccuracy.setText(I18n.EDITOR3D_WithAccuracy);
                     }
                     {
                         MenuItem mntm_WithHiddenData = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_WithHiddenData[0] = mntm_WithHiddenData;
-                        mntm_WithHiddenData.setText("…  what is Hidden."); //$NON-NLS-1$ I18N
+                        mntm_WithHiddenData.setText(I18n.EDITOR3D_WhatIsHidden);
                         mntm_WithHiddenData.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem mntm_ExceptSubfiles = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_ExceptSubfiles[0] = mntm_ExceptSubfiles;
-                        mntm_ExceptSubfiles.setText("…  except Subfile Content."); //$NON-NLS-1$ I18N
+                        mntm_ExceptSubfiles.setText(I18n.EDITOR3D_ExceptSubfile);
                     }
                     {
                         MenuItem mntm_WithWholeSubfiles = new MenuItem(mnu_Select, SWT.CHECK);
