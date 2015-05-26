@@ -452,7 +452,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_AdjacentMove = new Button(toolItem_MiscToggle, SWT.TOGGLE);
                 this.btn_MoveAdjacentData[0] = btn_AdjacentMove;
-                btn_AdjacentMove.setToolTipText("Move Adjacent Data"); //$NON-NLS-1$ I18N
+                btn_AdjacentMove.setToolTipText(I18n.EDITOR3D_MoveAdjacentData);
                 btn_AdjacentMove.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
                 btn_AdjacentMove.setSelection(false);
             }

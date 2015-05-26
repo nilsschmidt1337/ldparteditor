@@ -234,6 +234,7 @@ public final class I18n {
     public static final String EDITOR3D_ModeSurface = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ModeVertex = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Move = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_MoveAdjacentData = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_NearClipping = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_NearClippingHint = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_New = EDITOR3D.getString(getProperty());
