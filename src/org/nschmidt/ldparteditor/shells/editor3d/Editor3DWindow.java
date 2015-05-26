@@ -1734,7 +1734,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 }
 
                                 updateTree_removeEntry(df);
-                                if (df.getNewName().startsWith(Project.getProjectPath())) {
+                                if (df.getOldName().startsWith(Project.getProjectPath()) && df.getNewName().startsWith(Project.getProjectPath())) {
                                     try {
                                         File f = new File(df.getOldName());
                                         if (f.exists()) {
