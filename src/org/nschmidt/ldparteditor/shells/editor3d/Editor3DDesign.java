@@ -386,7 +386,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Snapshot = new Button(toolItem_Sync, SWT.NONE);
                 this.btn_LastOpen[0] = btn_Snapshot;
-                btn_Snapshot.setToolTipText("Last opened Files/Projects");//$NON-NLS-1$ I18N Needs translation!
+                btn_Snapshot.setToolTipText(I18n.EDITOR3D_LastOpened);
                 btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
             }
         }
@@ -437,13 +437,13 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Hide = new Button(toolItem_HideUnhide, SWT.NONE);
                 this.btn_Hide[0] = btn_Hide;
-                btn_Hide.setToolTipText("Hide"); // I18N Needs translation //$NON-NLS-1$
+                btn_Hide.setToolTipText(I18n.EDITOR3D_Hide);
                 btn_Hide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Unhide = new Button(toolItem_HideUnhide, SWT.NONE);
                 this.btn_ShowAll[0] = btn_Unhide;
-                btn_Unhide.setToolTipText("Show All"); // I18N Needs translation //$NON-NLS-1$
+                btn_Unhide.setToolTipText(I18n.EDITOR3D_ShowAll);
                 btn_Unhide.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
             }
         }
