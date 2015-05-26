@@ -1734,18 +1734,18 @@ public class Editor3DWindow extends Editor3DDesign {
                                 }
 
                                 updateTree_removeEntry(df);
-
-                                try {
-                                    File f = new File(df.getOldName());
-                                    if (f.exists()) {
-                                        File bakFile = new File(df.getOldName() + ".bak"); //$NON-NLS-1$
-                                        if (bakFile.exists()) {
-                                            bakFile.delete();
+                                if (df.getNewName().startsWith(Project.getProjectPath())) {
+                                    try {
+                                        File f = new File(df.getOldName());
+                                        if (f.exists()) {
+                                            File bakFile = new File(df.getOldName() + ".bak"); //$NON-NLS-1$
+                                            if (bakFile.exists()) {
+                                                bakFile.delete();
+                                            }
+                                            f.renameTo(bakFile);
                                         }
-                                        f.renameTo(bakFile);
-                                    }
-                                } catch (Exception ex) {}
-
+                                    } catch (Exception ex) {}
+                                }
                                 cleanupClosedData();
                             } else {
                                 MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
