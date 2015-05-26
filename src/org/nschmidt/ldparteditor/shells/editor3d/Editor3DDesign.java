@@ -692,33 +692,33 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_CompileSubfile = new Button(toolItem_MiscClick, SWT.NONE);
                 this.btn_CompileSubfile[0] = btn_CompileSubfile;
-                btn_CompileSubfile.setToolTipText("Compile Subfile Data"); //$NON-NLS-1$ I18N
+                btn_CompileSubfile.setToolTipText(I18n.EDITOR3D_CompileSubfileData);
                 btn_CompileSubfile.setImage(ResourceManager.getImage("icon16_subcompile.png")); //$NON-NLS-1$
             }
             {
                 Button btn_SplitQuad = new Button(toolItem_MiscClick, SWT.NONE);
                 this.btn_SplitQuad[0] = btn_SplitQuad;
                 btn_SplitQuad.setImage(ResourceManager.getImage("icon16_quadToTri.png")); //$NON-NLS-1$
-                btn_SplitQuad.setToolTipText("Split Quad into Triangles"); //$NON-NLS-1$ I18N Needs translation!
+                btn_SplitQuad.setToolTipText(I18n.EDITOR3D_SplitQuad);
             }
             {
                 Button btn_CondlineToLine = new Button(toolItem_MiscClick, SWT.NONE);
                 this.btn_CondlineToLine[0] = btn_CondlineToLine;
                 // FIXME Needs icon!
                 btn_CondlineToLine.setText("C2L"); //$NON-NLS-1$
-                btn_CondlineToLine.setToolTipText("Conditional Line -> Line"); //$NON-NLS-1$ I18N Needs translation!
+                btn_CondlineToLine.setToolTipText(I18n.EDITOR3D_CondlineToLine);
             }
             {
                 Button btn_RoundSelection = new Button(toolItem_MiscClick, SWT.NONE);
                 this.btn_RoundSelection[0] = btn_RoundSelection;
-                btn_RoundSelection.setToolTipText("Round"); //$NON-NLS-1$ I18N
+                btn_RoundSelection.setToolTipText(I18n.EDITOR3D_Round);
                 btn_RoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
             }
             {
                 final Button btn_Select = new Button(toolItem_MiscClick, SWT.PUSH);
                 this.btn_Select2[0] = btn_Select;
-                btn_Select.setToolTipText("Select…"); //$NON-NLS-1$ I18N
-                btn_Select.setText("Select…"); //$NON-NLS-1$ I18N
+                btn_Select.setToolTipText(I18n.EDITOR3D_AdvancedSelect);
+                btn_Select.setText(I18n.EDITOR3D_AdvancedSelect);
                 this.mnu_Select = new Menu(this.getShell(), SWT.POP_UP);
                 btn_Select.addSelectionListener(new SelectionAdapter() {
                     @Override
@@ -730,36 +730,36 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_SelectAll = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectAll[0] = mntm_SelectAll;
-                        KeyStateManager.addKeyText(mntm_SelectAll, "…All.", Task.SELECT_ALL); //$NON-NLS-1$ I18N
+                        KeyStateManager.addKeyText(mntm_SelectAll, I18n.EDITOR3D_All, Task.SELECT_ALL);
                     }
                     {
                         MenuItem mntm_SelectNone = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectNone[0] = mntm_SelectNone;
-                        KeyStateManager.addKeyText(mntm_SelectNone, "…None.", Task.SELECT_NONE); //$NON-NLS-1$ I18N
+                        KeyStateManager.addKeyText(mntm_SelectNone, I18n.EDITOR3D_None, Task.SELECT_NONE);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator0 = new MenuItem(mnu_Select, SWT.SEPARATOR);
                     {
                         MenuItem mntm_SelectInverse = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectInverse[0] = mntm_SelectInverse;
-                        mntm_SelectInverse.setText("…Inverse (Shown)."); //$NON-NLS-1$ I18N
+                        mntm_SelectInverse.setText(I18n.EDITOR3D_Inverse);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator1 = new MenuItem(mnu_Select, SWT.SEPARATOR);
                     {
                         MenuItem mntm_SelectAllVisible = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectAllVisible[0] = mntm_SelectAllVisible;
-                        mntm_SelectAllVisible.setText("…All Shown."); //$NON-NLS-1$ I18N
+                        mntm_SelectAllVisible.setText(I18n.EDITOR3D_AllShown);
                     }
                     {
                         MenuItem mntm_SelectAllWithColours = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectAllWithColours[0] = mntm_SelectAllWithColours;
-                        KeyStateManager.addKeyText(mntm_SelectAllWithColours, "…All with Same Colours.", Task.SELECT_ALL_WITH_SAME_COLOURS); //$NON-NLS-1$ I18N
+                        KeyStateManager.addKeyText(mntm_SelectAllWithColours, I18n.EDITOR3D_AllSameColours, Task.SELECT_ALL_WITH_SAME_COLOURS);
                     }
                     {
                         MenuItem mntm_SelectAllVisibleWithColours = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectAllVisibleWithColours[0] = mntm_SelectAllVisibleWithColours;
-                        mntm_SelectAllVisibleWithColours.setText("…All Shown with Same Colours."); //$NON-NLS-1$ I18N
+                        mntm_SelectAllVisibleWithColours.setText(I18n.EDITOR3D_AllSameColoursShown);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator2 = new MenuItem(mnu_Select, SWT.SEPARATOR);
