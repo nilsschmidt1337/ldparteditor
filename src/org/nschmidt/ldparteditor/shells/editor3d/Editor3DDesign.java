@@ -1371,18 +1371,17 @@ class Editor3DDesign extends ApplicationWindow {
                                 Button btnCoarse = new Button(cmp_dummy, SWT.NONE);
                                 this.btn_Coarse[0] = btnCoarse;
                                 btnCoarse.setImage(ResourceManager.getImage("icon8_coarse.png")); //$NON-NLS-1$
-                                btnCoarse.setToolTipText("Coarse"); //$NON-NLS-1$ I18N Needs translation!
-
+                                btnCoarse.setToolTipText(I18n.EDITOR3D_Coarse);
 
                                 Button btnMedium = new Button(cmp_dummy, SWT.NONE);
                                 this.btn_Medium[0] = btnMedium;
                                 btnMedium.setImage(ResourceManager.getImage("icon8_medium.png")); //$NON-NLS-1$
-                                btnMedium.setToolTipText("Medium"); //$NON-NLS-1$ I18N Needs translation!
+                                btnMedium.setToolTipText(I18n.EDITOR3D_Medium);
 
                                 Button btnFine = new Button(cmp_dummy, SWT.NONE);
                                 this.btn_Fine[0] = btnFine;
                                 btnFine.setImage(ResourceManager.getImage("icon8_fine.png")); //$NON-NLS-1$
-                                btnFine.setToolTipText("Fine"); //$NON-NLS-1$ I18N Needs translation!
+                                btnFine.setToolTipText(I18n.EDITOR3D_Fine);
 
                                 cmp_dummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 3, 1));
                             }
