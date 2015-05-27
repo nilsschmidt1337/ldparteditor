@@ -224,6 +224,7 @@ public final class I18n {
     public static final String EDITOR3D_AllSameColoursShown = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_AllShown = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_CloseView = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Coarse = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Combined = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_CompileSubfileData = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_CondlineToLine = EDITOR3D.getString(getProperty());
@@ -235,11 +236,13 @@ public final class I18n {
     public static final String EDITOR3D_FarClipping = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_FarClippingHint = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_File = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Fine = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Grid = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Group = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Hide = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Inverse = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LastOpened = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Medium = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ModeLine = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ModeSubpart = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ModeSurface = EDITOR3D.getString(getProperty());
