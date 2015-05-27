@@ -1244,7 +1244,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Palette = new Button(toolItem_Colours, SWT.NONE);
                 this.btn_Palette[0] = btn_Palette;
-                btn_Palette.setToolTipText("More…"); //$NON-NLS-1$ I18N Needs translation!
+                btn_Palette.setToolTipText(I18n.EDITOR3D_More);
                 btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
             }
         }
