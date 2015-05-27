@@ -158,6 +158,7 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_CompileSubfile = new Button[1];
     final Button[] btn_SplitQuad = new Button[1];
     final Button[] btn_CondlineToLine = new Button[1];
+    final Button[] btn_LineToCondline = new Button[1];
     final Button[] btn_RoundSelection = new Button[1];
     final Button[] btn_BFCswap = new Button[1];
     final Button[] btn_Vertices = new Button[1];
@@ -707,6 +708,13 @@ class Editor3DDesign extends ApplicationWindow {
                 // FIXME Needs icon!
                 btn_CondlineToLine.setText("C2L"); //$NON-NLS-1$
                 btn_CondlineToLine.setToolTipText(I18n.EDITOR3D_CondlineToLine);
+            }
+            {
+                Button btn_LineToCondline = new Button(toolItem_MiscClick, SWT.NONE);
+                this.btn_LineToCondline[0] = btn_LineToCondline;
+                // FIXME Needs icon!
+                btn_LineToCondline.setText("L2C"); //$NON-NLS-1$
+                btn_LineToCondline.setToolTipText("Line -> Conditional Line"); // I18N NEEDS TRANSLATION //$NON-NLS-1$
             }
             {
                 Button btn_RoundSelection = new Button(toolItem_MiscClick, SWT.NONE);
