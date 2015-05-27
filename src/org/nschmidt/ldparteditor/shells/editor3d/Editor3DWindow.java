@@ -1540,7 +1540,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     MenuItem mntmRevert = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_Revert[0] = mntmRevert;
                     mntmRevert.setEnabled(true);
-                    mntmRevert.setText("Revert All Changes"); //$NON-NLS-1$ I18N Needs translation!
+                    mntmRevert.setText("Revert All Changes / Reload"); //$NON-NLS-1$ I18N Needs translation!
 
                     MenuItem mntmDelete = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_Delete[0] = mntmDelete;
