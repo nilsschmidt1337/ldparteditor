@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.MergeTo;
+import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
@@ -153,6 +154,9 @@ public class KeyStateManager {
         addTask(Task.MERGE_TO_LAST, SWT.CTRL, 'e');
         addTask(Task.SPLIT, SWT.ALT, 'v');
 
+        addTask(Task.LMB, 'k');
+        addTask(Task.MMB, 'm');
+        addTask(Task.RMB, 'l');
 
         addTask(TextTask.EDITORTEXT_REPLACE_VERTEX, SWT.ALT | SWT.SHIFT, 'r');
         addTask(TextTask.EDITORTEXT_ESC, SWT.ESC);
@@ -359,6 +363,33 @@ public class KeyStateManager {
                     case OBJ_VERTEX:
                         win.setObjMode(0);
                         break;
+                    case LMB:
+                    {
+                        Event mouseEvent = new Event();
+                        mouseEvent.type = SWT.MouseDown;
+                        mouseEvent.button = MouseButton.LEFT;
+                        c3d.getCanvas().forceFocus();
+                        c3d.getCanvas().getDisplay().post(mouseEvent);
+                        break;
+                    }
+                    case RMB:
+                    {
+                        Event mouseEvent = new Event();
+                        mouseEvent.type = SWT.MouseDown;
+                        mouseEvent.button = MouseButton.RIGHT;
+                        c3d.getCanvas().forceFocus();
+                        c3d.getCanvas().getDisplay().post(mouseEvent);
+                        break;
+                    }
+                    case MMB:
+                    {
+                        Event mouseEvent = new Event();
+                        mouseEvent.type = SWT.MouseDown;
+                        mouseEvent.button = MouseButton.MIDDLE;
+                        c3d.getCanvas().forceFocus();
+                        c3d.getCanvas().getDisplay().post(mouseEvent);
+                        break;
+                    }
                     case REDO:
                         df.redo();
                         pressedKeyCodes.remove(keyCode);
@@ -441,6 +472,54 @@ public class KeyStateManager {
                 NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") up]"); //$NON-NLS-1$ //$NON-NLS-2$
                 pressedKeyCodes.remove(keyCode);
                 setKeyState(keyCode, false);
+                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
+                final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
+                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
+                final StringBuilder sb = new StringBuilder();
+                sb.append(keyCode);
+                sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                final String key = sb.toString();
+                final Task t = taskMap.get(key);
+                if (t != null) {
+                    final DatFile df = c3d.getLockableDatFileReference();
+                    final VertexManager vm = df.getVertexManager();
+                    switch (t) {
+                    case LMB:
+                        vm.addSnapshot();
+                        {
+                            Event mouseEvent = new Event();
+                            mouseEvent.type = SWT.MouseUp;
+                            mouseEvent.button = MouseButton.LEFT;
+                            c3d.getCanvas().forceFocus();
+                            c3d.getCanvas().getDisplay().post(mouseEvent);
+                            break;
+                        }
+                    case RMB:
+                        vm.addSnapshot();
+                        {
+                            Event mouseEvent = new Event();
+                            mouseEvent.type = SWT.MouseUp;
+                            mouseEvent.button = MouseButton.RIGHT;
+                            c3d.getCanvas().forceFocus();
+                            c3d.getCanvas().getDisplay().post(mouseEvent);
+                            break;
+                        }
+                    case MMB:
+                        vm.addSnapshot();
+                        {
+                            Event mouseEvent = new Event();
+                            mouseEvent.type = SWT.MouseUp;
+                            mouseEvent.button = MouseButton.MIDDLE;
+                            c3d.getCanvas().forceFocus();
+                            c3d.getCanvas().getDisplay().post(mouseEvent);
+                            break;
+                        }
+                    default:
+                        break;
+                    }
+                }
             }
 
             // Synchronise key state with other composites
