@@ -79,4 +79,10 @@ public enum Task {
     MERGE_TO_AVERAGE,
     MERGE_TO_LAST,
     SPLIT,
+
+    LMB,
+    MMB,
+    RMB,
+
+
 }
