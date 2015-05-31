@@ -12818,7 +12818,7 @@ public class VertexManager {
 
     }
 
-    public void condlineToLine(boolean isModified) {
+    public void condlineToLine() {
 
         final Set<GData5> condlinesToDelete = new HashSet<GData5>();
         final Set<GData2> newLines = new HashSet<GData2>();
@@ -12856,14 +12856,14 @@ public class VertexManager {
         selectedLines.addAll(newLines);
         selectedData.addAll(newLines);
 
-        if (isModified && isModified()) {
+        if (isModified()) {
             setModified(true, true);
         }
         validateState();
 
     }
 
-    public void lineToCondline(boolean isModified) {
+    public void lineToCondline() {
 
         final Set<GData2> linesToDelete = new HashSet<GData2>();
         final Set<GData5> newCondlines = new HashSet<GData5>();
@@ -12890,11 +12890,70 @@ public class VertexManager {
         for (GData2 g2 : linesToParse) {
             Vertex[] v = lines.get(g2);
 
-            // FIXME Needs implementation!
+            ArrayList<GData> faces = linkedCommonFaces(v[0], v[1]);
 
-            GData5 cLine = new GData5(g2.colourNumber, g2.r, g2.g, g2.b, g2.a, v[0], v[1], v[0], v[1], View.DUMMY_REFERENCE, linkedDatFile);
-            newCondlines.add(cLine);
-            linkedDatFile.insertAfter(g2, cLine);
+            if (faces.size() == 2) {
+
+                TreeSet<Vertex> fv1 = new TreeSet<Vertex>();
+                TreeSet<Vertex> fv2 = new TreeSet<Vertex>();
+
+                switch (faces.get(0).type()) {
+                case 3:
+                {
+                    GData3 g3 = (GData3) faces.get(0);
+                    Vertex[] v3 = triangles.get(g3);
+                    for (Vertex tv : v3) {
+                        fv1.add(tv);
+                    }
+                }
+                break;
+                case 4:
+                {
+                    GData4 g4 = (GData4) faces.get(0);
+                    Vertex[] v4 = quads.get(g4);
+                    for (Vertex tv : v4) {
+                        fv1.add(tv);
+                    }
+                }
+                break;
+                }
+                switch (faces.get(1).type()) {
+                case 3:
+                {
+                    GData3 g3 = (GData3) faces.get(1);
+                    Vertex[] v3 = triangles.get(g3);
+                    for (Vertex tv : v3) {
+                        fv2.add(tv);
+                    }
+                }
+                break;
+                case 4:
+                {
+                    GData4 g4 = (GData4) faces.get(1);
+                    Vertex[] v4 = quads.get(g4);
+                    for (Vertex tv : v4) {
+                        fv2.add(tv);
+                    }
+                }
+                break;
+                }
+
+                fv1.remove(v[0]);
+                fv1.remove(v[1]);
+
+                fv2.remove(v[0]);
+                fv2.remove(v[1]);
+
+                if (fv1.isEmpty() || fv2.isEmpty()) {
+                    linesToDelete.remove(g2);
+                } else {
+                    GData5 cLine = new GData5(g2.colourNumber, g2.r, g2.g, g2.b, g2.a, v[0], v[1], fv1.iterator().next(), fv2.iterator().next(), View.DUMMY_REFERENCE, linkedDatFile);
+                    newCondlines.add(cLine);
+                    linkedDatFile.insertAfter(g2, cLine);
+                }
+            } else {
+                linesToDelete.remove(g2);
+            }
         }
 
         selectedLines.addAll(linesToDelete);
@@ -12904,7 +12963,7 @@ public class VertexManager {
         selectedCondlines.addAll(newCondlines);
         selectedData.addAll(newCondlines);
 
-        if (isModified && isModified()) {
+        if (isModified()) {
             setModified(true, true);
         }
         validateState();

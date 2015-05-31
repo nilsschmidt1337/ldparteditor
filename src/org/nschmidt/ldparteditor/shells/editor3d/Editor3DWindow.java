@@ -1059,7 +1059,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().getVertexManager().condlineToLine(true);
+                    Project.getFileToEdit().getVertexManager().condlineToLine();
                 }
             }
         });
@@ -1069,7 +1069,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().getVertexManager().lineToCondline(true);
+                    Project.getFileToEdit().getVertexManager().lineToCondline();
                 }
             }
         });
