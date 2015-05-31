@@ -2051,7 +2051,7 @@ public class VertexManager {
                 backupSelection();
                 final int chunks = View.NUM_CORES;
                 final Thread[] threads = new Thread[chunks];
-                final IProgressMonitor[] monitor = new IProgressMonitor[1];
+                final AtomicBoolean dialogCanceled = new AtomicBoolean(false);
                 final Vertex[] verts = vertexLinkedToPositionInFile.keySet().toArray(new Vertex[0]);
                 final int iterations = verts.length;
                 int lastend = 0;
@@ -2077,7 +2077,7 @@ public class VertexManager {
                                     continue;
                                 MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), result);
                                 if (result.x * result.x + result.y * result.y + result.z * result.z < discr) {
-                                    if (monitor[0] != null && monitor[0].isCanceled()) return;
+                                    if (dialogCanceled.get()) return;
                                     selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                                 }
                             }
@@ -2109,7 +2109,6 @@ public class VertexManager {
                             @Override
                             public void run(final IProgressMonitor m) throws InvocationTargetException, InterruptedException
                             {
-                                monitor[0] = m;
                                 try
                                 {
                                     m.beginTask("Selecting...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
@@ -2121,8 +2120,12 @@ public class VertexManager {
                                         }
                                         isRunning = false;
                                         for (Thread thread : threads) {
-                                            if (thread.isAlive())
+                                            if (thread.isAlive()) {
                                                 isRunning = true;
+                                            }
+                                        }
+                                        if (m.isCanceled()) {
+                                            dialogCanceled.set(true);
                                         }
                                     }
                                 }
@@ -2186,7 +2189,7 @@ public class VertexManager {
                 backupSelection();
                 final int chunks = View.NUM_CORES;
                 final Thread[] threads = new Thread[chunks];
-                final IProgressMonitor[] monitor = new IProgressMonitor[1];
+                final AtomicBoolean dialogCanceled = new AtomicBoolean(false);
                 final Vertex[] verts = vertexLinkedToPositionInFile.keySet().toArray(new Vertex[0]);
                 final int iterations = verts.length;
                 int lastend = 0;
@@ -2228,7 +2231,7 @@ public class VertexManager {
                                 b[2] = vertex.z - selectionStart.z;
                                 b = MathHelper.gaussianElimination(A, b);
                                 if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
-                                    if (monitor[0] != null && monitor[0].isCanceled()) return;
+                                    if (dialogCanceled.get()) return;
                                     selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                                 }
                             }
@@ -2260,7 +2263,6 @@ public class VertexManager {
                             @Override
                             public void run(final IProgressMonitor m) throws InvocationTargetException, InterruptedException
                             {
-                                monitor[0] = m;
                                 try
                                 {
                                     m.beginTask("Selecting...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
@@ -2274,6 +2276,9 @@ public class VertexManager {
                                         for (Thread thread : threads) {
                                             if (thread.isAlive())
                                                 isRunning = true;
+                                        }
+                                        if (m.isCanceled()) {
+                                            dialogCanceled.set(true);
                                         }
                                     }
                                 }
@@ -2414,7 +2419,7 @@ public class VertexManager {
                 backupSelection();
                 final int chunks = View.NUM_CORES;
                 final Thread[] threads = new Thread[chunks];
-                final IProgressMonitor[] monitor = new IProgressMonitor[1];
+                final AtomicBoolean dialogCanceled = new AtomicBoolean(false);
                 final Vertex[] verts = vertexLinkedToPositionInFile.keySet().toArray(new Vertex[0]);
                 final int iterations = verts.length;
                 int lastend = 0;
@@ -2440,7 +2445,7 @@ public class VertexManager {
                                     continue;
                                 MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), result);
                                 if (result.x * result.x + result.y * result.y + result.z * result.z < discr) {
-                                    if (monitor[0] != null && monitor[0].isCanceled()) return;
+                                    if (dialogCanceled.get()) return;
                                     selectVertices2_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                                 }
                             }
@@ -2472,7 +2477,6 @@ public class VertexManager {
                             @Override
                             public void run(final IProgressMonitor m) throws InvocationTargetException, InterruptedException
                             {
-                                monitor[0] = m;
                                 try
                                 {
                                     m.beginTask("Selecting...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
@@ -2486,6 +2490,9 @@ public class VertexManager {
                                         for (Thread thread : threads) {
                                             if (thread.isAlive())
                                                 isRunning = true;
+                                        }
+                                        if (m.isCanceled()) {
+                                            dialogCanceled.set(true);
                                         }
                                     }
                                 }
@@ -2549,7 +2556,7 @@ public class VertexManager {
                 backupSelection();
                 final int chunks = View.NUM_CORES;
                 final Thread[] threads = new Thread[chunks];
-                final IProgressMonitor[] monitor = new IProgressMonitor[1];
+                final AtomicBoolean dialogCanceled = new AtomicBoolean(false);
                 final Vertex[] verts = vertexLinkedToPositionInFile.keySet().toArray(new Vertex[0]);
                 final int iterations = verts.length;
                 int lastend = 0;
@@ -2591,7 +2598,7 @@ public class VertexManager {
                                 b[2] = vertex.z - selectionStart.z;
                                 b = MathHelper.gaussianElimination(A, b);
                                 if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
-                                    if (monitor[0] != null && monitor[0].isCanceled()) return;
+                                    if (dialogCanceled.get()) return;
                                     selectVertices2_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                                 }
                             }
@@ -2623,7 +2630,6 @@ public class VertexManager {
                             @Override
                             public void run(final IProgressMonitor m) throws InvocationTargetException, InterruptedException
                             {
-                                monitor[0] = m;
                                 try
                                 {
                                     m.beginTask("Selecting...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
@@ -2637,6 +2643,9 @@ public class VertexManager {
                                         for (Thread thread : threads) {
                                             if (thread.isAlive())
                                                 isRunning = true;
+                                        }
+                                        if (m.isCanceled()) {
+                                            dialogCanceled.set(true);
                                         }
                                     }
                                 }
