@@ -12839,9 +12839,9 @@ public class VertexManager {
 
         for (GData5 g5 : condlinesToParse) {
             Vertex[] v = condlines.get(g5);
-            GData2 tri1 = new GData2(g5.colourNumber, g5.r, g5.g, g5.b, g5.a, v[0], v[1], View.DUMMY_REFERENCE, linkedDatFile);
-            newLines.add(tri1);
-            linkedDatFile.insertAfter(g5, tri1);
+            GData2 line = new GData2(g5.colourNumber, g5.r, g5.g, g5.b, g5.a, v[0], v[1], View.DUMMY_REFERENCE, linkedDatFile);
+            newLines.add(line);
+            linkedDatFile.insertAfter(g5, line);
         }
 
         selectedCondlines.addAll(condlinesToDelete);
@@ -12850,6 +12850,54 @@ public class VertexManager {
 
         selectedLines.addAll(newLines);
         selectedData.addAll(newLines);
+
+        if (isModified && isModified()) {
+            syncWithTextEditors(true);
+        }
+        validateState();
+
+    }
+
+    public void lineToCondline(boolean isModified) {
+
+        final Set<GData2> linesToDelete = new HashSet<GData2>();
+        final Set<GData5> newCondlines = new HashSet<GData5>();
+
+        final Set<GData2> linesToParse = new HashSet<GData2>();
+
+        linesToParse.addAll(selectedLines);
+
+        clearSelection();
+
+        for (Iterator<GData2> ig = linesToParse.iterator(); ig.hasNext();) {
+            GData2 g = ig.next();
+            if (!lineLinkedToVertices.containsKey(g)) {
+                ig.remove();
+            }
+        }
+        if (linesToParse.isEmpty()) {
+            return;
+        } else {
+            setModified_NoSync();
+        }
+        linesToDelete.addAll(linesToParse);
+
+        for (GData2 g2 : linesToParse) {
+            Vertex[] v = lines.get(g2);
+
+            // FIXME Needs implementation!
+
+            GData5 cLine = new GData5(g2.colourNumber, g2.r, g2.g, g2.b, g2.a, v[0], v[1], v[0], v[1], View.DUMMY_REFERENCE, linkedDatFile);
+            newCondlines.add(cLine);
+            linkedDatFile.insertAfter(g2, cLine);
+        }
+
+        selectedLines.addAll(linesToDelete);
+        selectedData.addAll(linesToDelete);
+        delete(false, false);
+
+        selectedCondlines.addAll(newCondlines);
+        selectedData.addAll(newCondlines);
 
         if (isModified && isModified()) {
             syncWithTextEditors(true);
