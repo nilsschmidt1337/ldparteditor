@@ -7996,6 +7996,8 @@ public class VertexManager {
 
         if (linkedDatFile.isReadOnly()) return;
 
+        boolean isModified = false;
+
         initBFCmap();
 
         final BigDecimal ed = es.getEqualDistance();
@@ -8455,7 +8457,7 @@ public class VertexManager {
                 Set<AccurateEdge> ee = edges.keySet();
                 for (AccurateEdge e : ee) {
                     if (edges.get(e) > 1) {
-                        addLineEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
+                        isModified = addLineEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es) || isModified;
                     }
                 }
             }
@@ -8465,7 +8467,7 @@ public class VertexManager {
                 Set<AccurateEdge> ee = edges.keySet();
                 for (AccurateEdge e : ee) {
                     if (edges.get(e) == 1) {
-                        addEdgeEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2));
+                        isModified = addEdgeEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2)) || isModified;
                     }
                 }
             }
@@ -8477,6 +8479,11 @@ public class VertexManager {
         }
 
         disposeBFCmap();
+
+        if (isModified && isModified()) {
+            syncWithTextEditors(true);
+        }
+        validateState();
 
     }
 
@@ -8526,18 +8533,21 @@ public class VertexManager {
         }
     }
 
-    private void addEdgeEdger2(TreeSet<Vertex> h1, TreeSet<Vertex> h2) {
+    private boolean addEdgeEdger2(TreeSet<Vertex> h1, TreeSet<Vertex> h2) {
+        boolean result = false;
         for (Vertex v1 : h1) {
             for (Vertex v2 : h2) {
                 // if v1 is connected with v2 draw a line from v1 to v2
                 if (isNeighbour(v1, v2)) {
                     addLine(v1, v2);
+                    result = true;
                 }
             }
         }
+        return result;
     }
 
-    private void addLineEdger2(TreeSet<Vertex> h1, TreeSet<Vertex> h2, Edger2Settings es) {
+    private boolean addLineEdger2(TreeSet<Vertex> h1, TreeSet<Vertex> h2, Edger2Settings es) {
 
         Vertex[] rv1 = new Vertex[1];
         Vertex[] rv2 = new Vertex[1];
@@ -8651,25 +8661,30 @@ public class VertexManager {
 
             if (angle <= es.getAf().doubleValue()) {
                 // No Line
+                return false;
             } else if (angle > es.getAf().doubleValue() && angle <= es.getAc().doubleValue()) {
                 // Condline
                 Editor3DWindow.getWindow().setLastUsedColour(View.getLDConfigColour(16));
                 addCondline(v1, v2, v3, v4);
+                return true;
             } else if (angle > es.getAc().doubleValue() && angle <= es.getAe().doubleValue()) {
                 // Condline + Edge Line
                 Editor3DWindow.getWindow().setLastUsedColour(View.getLDConfigColour(16));
                 addCondline(v1, v2, v3, v4);
                 Editor3DWindow.getWindow().setLastUsedColour(View.getLDConfigColour(2));
                 addLine(v1, v2);
+                return true;
             } else {
                 // Edge Line
                 Editor3DWindow.getWindow().setLastUsedColour(View.getLDConfigColour(16));
                 addLine(v1, v2);
+                return true;
             }
 
         } else {
             Editor3DWindow.getWindow().setLastUsedColour(View.getLDConfigColour(16));
             addLine(h1.iterator().next(), h2.iterator().next());
+            return true;
         }
     }
 
