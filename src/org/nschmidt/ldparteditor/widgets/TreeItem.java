@@ -127,33 +127,35 @@ public class TreeItem {
         ArrayList<TreeItem> nl = new ArrayList<TreeItem>(items.size() + 100);
 
         for (TreeItem t : items) {
-            int o = (Integer) t.getData();
-            int lstart = compositeText.getLineAtOffset(startOffset) + 1;
-            int litem = 0;
+            try {
+                int o = (Integer) t.getData();
+                int lstart = compositeText.getLineAtOffset(startOffset) + 1;
+                int litem = 0;
 
-            if (o > -1 && o < startOffset && (litem = compositeText.getLineAtOffset(o) + 1) != lstart) {
-                t.setText("line " + litem + "   [" + o + "]", 1); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
-                nl.add(t);
-            }
-
-            // else if (o == startOffset) {
-
-            // - > Parse it!
-
-            // }
-            else if (o >= endOffset || o > startOffset && o + length >= endOffset) {
-
-                int newOffset = o + length;
-                int lnew = compositeText.getLineAtOffset(Math.max(newOffset, 0)) + 1;
-
-                if (newOffset > endOffset && lstart != lnew) {
-                    t.setData(newOffset);
-                    t.setText("line " + lnew + "   [" + newOffset + "]", 1); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
+                if (o > -1 && o < startOffset && (litem = compositeText.getLineAtOffset(o) + 1) != lstart) {
+                    t.setText("line " + litem + "   [" + o + "]", 1); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
                     nl.add(t);
                 }
 
-            }
+                // else if (o == startOffset) {
 
+                // - > Parse it!
+
+                // }
+                else if (o >= endOffset || o > startOffset && o + length >= endOffset) {
+
+                    int newOffset = o + length;
+                    int lnew = compositeText.getLineAtOffset(Math.max(newOffset, 0)) + 1;
+
+                    if (newOffset > endOffset && lstart != lnew) {
+                        t.setData(newOffset);
+                        t.setText("line " + lnew + "   [" + newOffset + "]", 1); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
+                        nl.add(t);
+                    }
+                }
+            } catch (IllegalArgumentException iae) {
+                // Skip if the index was out bounds
+            }
         }
         items = nl;
     }
