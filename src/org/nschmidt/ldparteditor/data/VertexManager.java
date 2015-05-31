@@ -2037,7 +2037,7 @@ public class VertexManager {
 
         if (needRayTest) {
 
-            Vector4f zAxis4f = new Vector4f(0, 0, c3d.hasNegDeterminant() == 1 ? -1f : 1f, 1f);
+            Vector4f zAxis4f = new Vector4f(0, 0, c3d.hasNegDeterminant() ^ c3d.isWarpedSelection() ? -1f : 1f, 1f);
             Matrix4f ovr_inverse2 = Matrix4f.invert(c3d.getRotation(), null);
             Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
             selectionDepth = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
@@ -2158,10 +2158,8 @@ public class VertexManager {
             MathHelper.crossProduct(selectionHeight, selectionWidth, selectionDepth);
             selectionDepth.w = 0f;
             selectionDepth.normalise();
-            switch (c3d.hasNegDeterminant()) {
-            case 1:
+            if (c3d.hasNegDeterminant() ^ c3d.isWarpedSelection()) {
                 selectionDepth.negate();
-            default:
             }
             selectionDepth.w = 1f;
 
@@ -2405,7 +2403,7 @@ public class VertexManager {
 
         if (needRayTest) {
 
-            Vector4f zAxis4f = new Vector4f(0, 0, c3d.hasNegDeterminant() == 1 ? -1f : 1f, 1f);
+            Vector4f zAxis4f = new Vector4f(0, 0, c3d.hasNegDeterminant() ^ c3d.isWarpedSelection() ? -1f : 1f, 1f);
             Matrix4f ovr_inverse2 = Matrix4f.invert(c3d.getRotation(), null);
             Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
             selectionDepth = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
@@ -2525,10 +2523,8 @@ public class VertexManager {
             MathHelper.crossProduct(selectionHeight, selectionWidth, selectionDepth);
             selectionDepth.w = 0f;
             selectionDepth.normalise();
-            switch (c3d.hasNegDeterminant()) {
-            case 1:
+            if (c3d.hasNegDeterminant() ^ c3d.isWarpedSelection()) {
                 selectionDepth.negate();
-            default:
             }
             selectionDepth.w = 1f;
 
