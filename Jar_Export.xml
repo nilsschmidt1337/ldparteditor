@@ -46,11 +46,6 @@
             <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.jface.databinding_1.6.200.v20130515-1857.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/com.ibm.icu_50.1.1.v201304230130.jar"/>
         </jar>
-    	<!-- Create update file -->
-        <zip destfile="${ws}/LDPartEditor/Updater/${os}_${arc}/update.zip"
-    	       basedir="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}"
-    	       excludes="plugin/**, natives/**, LDPartEditor.jar, cmap.png, matte_metal.png, metal.png, categories.txt, gloss.frag, gloss.vert, primitive_rules.txt"
-        />
     	<!-- Create complete archive -->
     	<zip destfile="${ws}/LDPartEditor/binary/${os}_${arc}/LDPartEditor_${os}_${arc}.zip"
     	       basedir="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}"
