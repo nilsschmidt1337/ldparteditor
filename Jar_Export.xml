@@ -49,7 +49,7 @@
     	<!-- Create update file -->
         <zip destfile="${ws}/LDPartEditor/Updater/${os}_${arc}/update.zip"
     	       basedir="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}"
-    	       excludes="SearchForUpdates.jar, update.sh, plugin/**"
+    	       excludes="plugin/**, natives/**, LDPartEditor.jar, cmap.png, matte_metal.png, metal.png, categories.txt, gloss.frag, gloss.vert, primitive_rules.txt"
         />
     	<!-- Create complete archive -->
     	<zip destfile="${ws}/LDPartEditor/binary/${os}_${arc}/LDPartEditor_${os}_${arc}.zip"
