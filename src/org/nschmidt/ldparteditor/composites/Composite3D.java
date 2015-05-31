@@ -128,7 +128,8 @@ public class Composite3D extends ScalableComposite {
     private final Vector4f selectionHeight = new Vector4f(0.0001f, 0.0001f, 0.0001f, 1f);
 
     private boolean doingSelection;
-    private int negDeterminant;
+    private boolean warpedSelection = false;
+    private boolean negDeterminant;
 
     private Primitive draggedPrimitive = null;
 
@@ -1666,11 +1667,11 @@ public class Composite3D extends ScalableComposite {
         this.fillingSelectedFaces = fillSelectedFaces;
     }
 
-    public int hasNegDeterminant() {
+    public boolean hasNegDeterminant() {
         return negDeterminant;
     }
 
-    public void setNegDeterminant(int negDeterminant) {
+    public void setNegDeterminant(boolean negDeterminant) {
         this.negDeterminant = negDeterminant;
     }
 
@@ -1851,5 +1852,13 @@ public class Composite3D extends ScalableComposite {
 
     public MenuItem getMntmRealPreview() {
         return mntmRealPreview[0];
+    }
+
+    public boolean isWarpedSelection() {
+        return warpedSelection;
+    }
+
+    public void setWarpedSelection(boolean warpedSelection) {
+        this.warpedSelection = warpedSelection;
     }
 }

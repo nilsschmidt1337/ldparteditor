@@ -278,15 +278,12 @@ public class MouseActions {
             float ry = 0;
 
             if (keyboard.isCtrlPressed()) {
-                switch (c3d.hasNegDeterminant()) {
-                case 1:
+                if (c3d.hasNegDeterminant()) {
                     rx = (float) (Math.atan2(-cSize.y / 2f + old_mouse_position.y, -cSize.x / 2f + old_mouse_position.x)
                             - Math.atan2(-cSize.y / 2f + event.y, -cSize.x / 2f + event.x));
-                    break;
-                case 0:
+                } else {
                     rx = (float) (Math.atan2(cSize.y / 2f - old_mouse_position.y, cSize.x / 2f - old_mouse_position.x)
                             - Math.atan2(cSize.y / 2f - event.y, cSize.x / 2f - event.x));
-                    break;
                 }
                 Vector4f xAxis4f_rotation = new Vector4f(0f, 0f, 1.0f, 1.0f);
                 Matrix4f ovr_inverse = Matrix4f.invert(old_viewport_rotation, null);
@@ -294,15 +291,12 @@ public class MouseActions {
                 Vector3f xAxis3f_rotation = new Vector3f(xAxis4f_rotation.x, xAxis4f_rotation.y, xAxis4f_rotation.z);
                 Matrix4f.rotate(rx, xAxis3f_rotation, old_viewport_rotation, viewport_rotation);
             } else {
-                switch (c3d.hasNegDeterminant()) {
-                case 1:
+                if (c3d.hasNegDeterminant()) {
                     rx = (event.x - old_mouse_position.x) / cSize.x * (float) Math.PI;
                     ry = (event.y - old_mouse_position.y) / cSize.y * (float) Math.PI;
-                    break;
-                case 0:
+                } else {
                     rx = (old_mouse_position.x - event.x) / cSize.x * (float) Math.PI;
                     ry = (old_mouse_position.y - event.y) / cSize.y * (float) Math.PI;
-                    break;
                 }
                 Vector4f xAxis4f_rotation = new Vector4f(1.0f, 0f, 0f, 1.0f);
                 Vector4f yAxis4f_rotation = new Vector4f(0f, 1.0f, 0f, 1.0f);
@@ -649,6 +643,10 @@ public class MouseActions {
         final VertexManager vm = datfile.getVertexManager();
         vm.addSnapshot();
         if (!datfile.isDrawSelection()) return;
+
+        Vector2f oldPos = c3d.getOldMousePosition();
+        c3d.setWarpedSelection(oldPos.x - event.x < 0 ^ oldPos.y - event.y < 0);
+
         mouse_button_pressed = 0;
         switch (event.button) {
         case MouseButton.LEFT:

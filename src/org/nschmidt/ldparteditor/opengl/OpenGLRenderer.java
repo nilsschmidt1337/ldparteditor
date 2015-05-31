@@ -233,7 +233,7 @@ public class OpenGLRenderer {
      */
     public void drawScene() {
 
-        final int negDet = c3d.hasNegDeterminant();
+        final boolean negDet = c3d.hasNegDeterminant();
         final boolean raytraceMode = c3d.getRenderMode() == 5;
 
         final GLCanvas canvas = c3d.getCanvas();
@@ -366,13 +366,10 @@ public class OpenGLRenderer {
             }
 
             GL11.glEnable(GL11.GL_CULL_FACE);
-            switch (negDet) {
-            case 0:
-                GL11.glFrontFace(GL11.GL_CW);
-                break;
-            case 1:
+            if (negDet) {
                 GL11.glFrontFace(GL11.GL_CCW);
-                break;
+            } else {
+                GL11.glFrontFace(GL11.GL_CW);
             }
 
             GL11.glCullFace(GL11.GL_BACK);
