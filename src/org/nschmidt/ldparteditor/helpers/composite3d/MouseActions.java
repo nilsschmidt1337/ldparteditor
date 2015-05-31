@@ -694,10 +694,10 @@ public class MouseActions {
                             vm.setModified(true, true);
                         }
                     }
-                    if (vm.getSelectedVertices().size() > 2 && vl1 != null) {
+                    if (vm.getSelectedVertices().size() > 2) {
                         final Vertex vl2 = datfile.getObjVertex2();
-                        vm.getSelectedVertices().remove(vl1);
-                        vm.getSelectedVertices().remove(vl2);
+                        if (vl1 != null) vm.getSelectedVertices().remove(vl1);
+                        if (vl2 != null) vm.getSelectedVertices().remove(vl2);
                     }
                     if (vm.getSelectedVertices().size() == 2) {
                         final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();
@@ -787,10 +787,9 @@ public class MouseActions {
                                 return;
                             }
                         }
-                        if (vm.getSelectedVertices().size() > 3 && vt1 != null) {
-                            vm.getSelectedVertices().remove(vt1);
-                            vm.getSelectedVertices().remove(vt2);
-                            vm.getSelectedVertices().remove(vt3);
+                        if (vm.getSelectedVertices().size() > 3) {
+                            if (vt1 != null) vm.getSelectedVertices().remove(vt1);
+                            if (vt2 != null) vm.getSelectedVertices().remove(vt2);
                         }
                     } else {
                         if (vm.getSelectedVertices().size() == 0) {
@@ -951,11 +950,11 @@ public class MouseActions {
                             vm.getSelectedVertices().add(nv3);
                         }
                     }
-                    if (vm.getSelectedVertices().size() > 4 && vq1 != null) {
-                        vm.getSelectedVertices().remove(vq1);
-                        vm.getSelectedVertices().remove(vq2);
-                        vm.getSelectedVertices().remove(vq3);
-                        vm.getSelectedVertices().remove(vq4);
+                    if (vm.getSelectedVertices().size() > 4) {
+                        if (vq1 != null) vm.getSelectedVertices().remove(vq1);
+                        if (vq2 != null) vm.getSelectedVertices().remove(vq2);
+                        if (vq3 != null) vm.getSelectedVertices().remove(vq3);
+                        if (vq4 != null) vm.getSelectedVertices().remove(vq4);
                     }
                     if (vm.getSelectedVertices().size() == 4) {
                         final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();
@@ -1114,11 +1113,11 @@ public class MouseActions {
                             vm.getSelectedVertices().add(nv3);
                         }
                     }
-                    if (vm.getSelectedVertices().size() > 4 && vc1 != null) {
-                        vm.getSelectedVertices().remove(vc1);
-                        vm.getSelectedVertices().remove(vc2);
-                        vm.getSelectedVertices().remove(vc3);
-                        vm.getSelectedVertices().remove(vc4);
+                    if (vm.getSelectedVertices().size() > 4) {
+                        if (vc1 != null) vm.getSelectedVertices().remove(vc1);
+                        if (vc2 != null) vm.getSelectedVertices().remove(vc2);
+                        if (vc3 != null) vm.getSelectedVertices().remove(vc3);
+                        if (vc4 != null) vm.getSelectedVertices().remove(vc4);
                     }
                     if (vm.getSelectedVertices().size() == 4) {
                         final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();

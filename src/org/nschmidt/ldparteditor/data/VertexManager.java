@@ -201,6 +201,7 @@ public class VertexManager {
     }
 
     public synchronized GData0 addVertex(Vertex vertex) {
+        if (vertex == null) return new GData0("0 !LPE VERTEX 0 0 0"); //$NON-NLS-1$
         if (!vertexLinkedToPositionInFile.containsKey(vertex))
             vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<VertexManifestation, Boolean>()));
         GData0 vertexTag = new GData0("0 !LPE VERTEX " + bigDecimalToString(vertex.X) + " " + bigDecimalToString(vertex.Y) + " " + bigDecimalToString(vertex.Z)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
@@ -212,6 +213,7 @@ public class VertexManager {
     }
 
     public synchronized GData0 addVertex(Vertex vertex, GData0 vertexTag) {
+        if (vertex == null || vertexTag == null) return new GData0("0 !LPE VERTEX 0 0 0"); //$NON-NLS-1$
         if (!vertexLinkedToPositionInFile.containsKey(vertex))
             vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<VertexManifestation, Boolean>()));
         vertexLinkedToPositionInFile.get(vertex).add(new VertexManifestation(0, vertexTag));
@@ -7286,9 +7288,9 @@ public class VertexManager {
     }
 
     public void addTriangle(Vertex v1, Vertex v2, Vertex v3, Composite3D c3d) {
+        if (v1 == null || v2 == null || v3 == null) return;
         if (v1.equals(v2) || v1.equals(v3) || v2.equals(v3))
             return;
-        if (v1 == null || v2 == null || v3 == null) return;
         Set<VertexManifestation> refs1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> refs2 = vertexLinkedToPositionInFile.get(v2);
         Set<VertexManifestation> refs3 = vertexLinkedToPositionInFile.get(v3);
@@ -7353,6 +7355,7 @@ public class VertexManager {
     }
 
     public void addQuad(Vertex v1, Vertex v2, Vertex v3, Vertex v4, Composite3D c3d) {
+        if (v1 == null || v2 == null || v3 == null || v4 == null) return;
         {
             Set<Vertex> dupl = new TreeSet<Vertex>();
             dupl.add(v1);
@@ -7362,7 +7365,6 @@ public class VertexManager {
             if (dupl.size() != 4)
                 return;
         }
-        if (v1 == null || v2 == null || v3 == null || v4 == null) return;
         Set<VertexManifestation> refs1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> refs2 = vertexLinkedToPositionInFile.get(v2);
         Set<VertexManifestation> refs3 = vertexLinkedToPositionInFile.get(v3);
@@ -7571,6 +7573,7 @@ public class VertexManager {
     }
 
     public void addCondline(Vertex v1, Vertex v2, Vertex v3, Vertex v4) {
+        if (v1 == null || v2 == null || v3 == null || v4 == null) return;
         {
             Set<Vertex> dupl = new TreeSet<Vertex>();
             dupl.add(v1);
@@ -7580,7 +7583,6 @@ public class VertexManager {
             if (dupl.size() != 4)
                 return;
         }
-        if (v1 == null || v2 == null || v3 == null || v4 == null) return;
         Set<VertexManifestation> refs1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> refs2 = vertexLinkedToPositionInFile.get(v2);
         Set<GData> grefs1 = new HashSet<GData>();
