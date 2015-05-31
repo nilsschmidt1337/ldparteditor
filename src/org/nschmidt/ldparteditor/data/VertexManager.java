@@ -201,7 +201,9 @@ public class VertexManager {
     }
 
     public synchronized GData0 addVertex(Vertex vertex) {
-        if (vertex == null) return new GData0("0 !LPE VERTEX 0 0 0"); //$NON-NLS-1$
+        if (vertex == null) {
+            vertex = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+        }
         if (!vertexLinkedToPositionInFile.containsKey(vertex))
             vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<VertexManifestation, Boolean>()));
         GData0 vertexTag = new GData0("0 !LPE VERTEX " + bigDecimalToString(vertex.X) + " " + bigDecimalToString(vertex.Y) + " " + bigDecimalToString(vertex.Z)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
@@ -213,7 +215,10 @@ public class VertexManager {
     }
 
     public synchronized GData0 addVertex(Vertex vertex, GData0 vertexTag) {
-        if (vertex == null || vertexTag == null) return new GData0("0 !LPE VERTEX 0 0 0"); //$NON-NLS-1$
+        if (vertex == null || vertexTag == null) {
+            vertexTag = new GData0("0 !LPE VERTEX 0 0 0"); //$NON-NLS-1$
+            vertex = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+        }
         if (!vertexLinkedToPositionInFile.containsKey(vertex))
             vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<VertexManifestation, Boolean>()));
         vertexLinkedToPositionInFile.get(vertex).add(new VertexManifestation(0, vertexTag));
