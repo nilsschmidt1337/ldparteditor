@@ -320,6 +320,12 @@ public class Editor3DWindow extends Editor3DDesign {
                 sh.setMaximized(editor3DWindowState.getWindowState().isMaximized());
             }
         });
+        // Set the snapping
+        Manipulator.setSnap(
+                WorkbenchManager.getUserSettingState().getMedium_move_snap(),
+                WorkbenchManager.getUserSettingState().getMedium_rotate_snap(),
+                WorkbenchManager.getUserSettingState().getMedium_scale_snap()
+                );
         // MARK All final listeners will be configured here..
         // First, create all menu actions.
         createActions();
