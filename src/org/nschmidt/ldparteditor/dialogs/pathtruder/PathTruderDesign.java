@@ -81,7 +81,7 @@ class PathTruderDesign extends Dialog {
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_colourCodes = new Label(cmp_container, SWT.NONE);
-        lbl_colourCodes.setText("Colour codes:\n\n1\t= Path 1\n2\t= Path 2\n4\t= Shape 1 Direction Vector\n5\t= Shape 1\n13\t= Shape 2 Direction Vector [optional]\n14\t= Shape 2 [optional]\n7\t= Line Indicators [optional]\n0\t= Line Ending Normal Indicators [optional]\n"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_colourCodes.setText("Colour codes:\n\n1\t= Path 1\n2\t= Path 2\n4\t= Shape 1 Direction Vector\n5\t= Shape 1\n12\t= Shape 2 Direction Vector [optional]\n13\t= Shape 2 [optional]\n7\t= Line Indicators [optional]\n0\t= Line Ending Normal Indicators [optional]\n"); //$NON-NLS-1$ I18N Needs translation!
 
         Label lbl_use180deg = new Label(cmp_container, SWT.NONE);
         lbl_use180deg.setText("Define maximum path segment length. Longer segments are split (100000, default):"); //$NON-NLS-1$ I18N Needs translation!
