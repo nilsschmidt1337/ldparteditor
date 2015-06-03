@@ -724,32 +724,9 @@ public class LibraryManager {
                         // Do the search for DAT files
                         ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
                         File libFolder = new File(folderPath);
-                        UTF8BufferedReader reader = null;
-                        StringBuilder titleSb = new StringBuilder();
                         for (File f : libFolder.listFiles()) {
                             if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
-                                titleSb.setLength(0);
-                                try {
-                                    reader = new UTF8BufferedReader(f.getAbsolutePath());
-                                    String title = reader.readLine();
-                                    if (title != null) {
-                                        title = title.trim();
-                                        if (title.length() > 0) {
-                                            titleSb.append(" -"); //$NON-NLS-1$
-                                            titleSb.append(title.substring(1));
-                                        }
-                                    }
-                                } catch (LDParsingException e) {
-                                } catch (FileNotFoundException e) {
-                                } catch (UnsupportedEncodingException e) {
-                                } finally {
-                                    try {
-                                        if (reader != null)
-                                            reader.close();
-                                    } catch (LDParsingException e1) {
-                                    }
-                                }
-                                datFiles.add(new DatFileName(f.getName(), titleSb.toString(), isPrimitiveFolder));
+                                datFiles.add(new DatFileName(f.getName(), "", isPrimitiveFolder)); //$NON-NLS-1$
                             }
                         }
                         // Sort the file list
@@ -758,15 +735,16 @@ public class LibraryManager {
                         for (DatFileName dat : datFiles) {
                             TreeItem finding = new TreeItem(treeItem, SWT.NONE);
                             // Save the path
-                            DatFile path = new DatFile(folderPath + File.separator + dat.getName(), dat.getDescription(), isReadOnlyFolder, type);
+                            DatFile path = new DatFile(folderPath + File.separator + dat.getName(), "", isReadOnlyFolder, type); //$NON-NLS-1$
                             finding.setData(path);
                             // Set the filename
                             if (Project.getUnsavedFiles().contains(path)) {
                                 // Insert asterisk if the file was modified
-                                finding.setText("* " + dat.getName() + dat.getDescription()); //$NON-NLS-1$
+                                finding.setText("* " + dat.getName()); //$NON-NLS-1$
                             } else {
-                                finding.setText(dat.getName() + dat.getDescription());
+                                finding.setText(dat.getName());
                             }
+                            DescriptionManager.registerDescription(finding);
                         }
                     }
                     break;

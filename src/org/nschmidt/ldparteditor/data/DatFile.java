@@ -291,6 +291,10 @@ public final class DatFile {
         return description;
     }
 
+    public void setDescription(String d) {
+        description = d;
+    }
+
     /**
      * @return {@code true} if the file is read-only
      */
