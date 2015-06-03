@@ -20,7 +20,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.eclipse.swt.widgets.Display;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -43,9 +42,6 @@ public enum DescriptionManager {
                     while (Editor3DWindow.getAlive().get()) {
                         try {
                             final TreeItem newEntry = workQueue.poll();
-
-                            boolean needsRefresh = false;
-
                             if (newEntry != null) {
                                 DatFile df = (DatFile) newEntry.getData();
                                 NLogger.debug(getClass(), df.getOldName());
@@ -71,23 +67,10 @@ public enum DescriptionManager {
                                     } catch (LDParsingException e1) {
                                     }
                                 }
-                                newEntry.setText(newEntry.getText() + titleSb.toString());
-                                if (workQueue.isEmpty()) {
-
-                                }
-                                needsRefresh = true;
+                                String d = titleSb.toString();
+                                newEntry.setText(df.getShortName() + d);
+                                df.setDescription(d);
                             } else {
-                                if (needsRefresh) {
-                                    Display.getDefault().asyncExec(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Editor3DWindow.getWindow().getProjectParts().getParent().build();
-                                            Editor3DWindow.getWindow().getProjectParts().getParent().redraw();
-                                            Editor3DWindow.getWindow().getProjectParts().getParent().update();
-                                        }
-                                    });
-                                    needsRefresh = false;
-                                }
                                 Thread.sleep(100);
                             }
                         } catch (InterruptedException e) {
