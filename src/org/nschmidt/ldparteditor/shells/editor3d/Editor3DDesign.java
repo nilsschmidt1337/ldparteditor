@@ -2102,6 +2102,7 @@ class Editor3DDesign extends ApplicationWindow {
             final CompositeContainer cmp_Container = new CompositeContainer(sashForm, state.hasScales());
             c3d = cmp_Container.getComposite3D();
         } else {
+            state.setScales(false);
             c3d = c.getComposite3D();
         }
         final int renderMode = state.getRenderMode();
