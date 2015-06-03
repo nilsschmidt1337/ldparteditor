@@ -48,6 +48,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.LWJGLException;
@@ -92,6 +93,7 @@ import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.widgets.listeners.Win32MouseWheelFilter;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * This is the composite for a 3D OpenGL perspective. This object can be divided
@@ -1038,6 +1040,15 @@ public class Composite3D extends ScalableComposite {
             mntmBFCTextured.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
+
+                    if (!WorkbenchManager.getUserSettingState().isBfcCertificationRequiredForLDrawMode()) {
+                        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                        messageBox.setText("Information:"); //$NON-NLS-1$ I18N
+                        messageBox.setMessage("Please note that this mode requires a BFC CERTIFIED source, which contains a valid\n\n0 BFC CERTIFY CCW\n\nor\n\n0 BFC CERTIFY CW\n\nstatement.\nOtherwise this mode will not work properly."); //$NON-NLS-1$ I18N
+                        messageBox.open();
+                        WorkbenchManager.getUserSettingState().setBfcCertificationRequiredForLDrawMode(true);
+                    }
+
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
                     ((MenuItem) e.widget).setSelection(true);
                     c3d_modifier.setRenderMode(5);
