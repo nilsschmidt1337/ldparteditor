@@ -232,6 +232,7 @@ public class Composite3D extends ScalableComposite {
     final MenuItem[] mntmBFCReal = new MenuItem[1];
     final MenuItem[] mntmBFCTextured = new MenuItem[1];
     final MenuItem[] mntmCondlineMode = new MenuItem[1];
+    final MenuItem[] mntmWireframeMode = new MenuItem[1];
     final MenuItem[] mntmAnaglyph = new MenuItem[1];
     final MenuItem[] mntmAxis = new MenuItem[1];
     final MenuItem[] mntmAlwaysBlack = new MenuItem[1];
@@ -1073,6 +1074,20 @@ public class Composite3D extends ScalableComposite {
                 }
             });
             mntmCondlineMode.setText("Special Cond. Line Mode"); //$NON-NLS-1$ I18N Needs translation
+
+
+            final MenuItem mntmWireframeMode = new MenuItem(mnu_renderMode, SWT.CHECK);
+            this.mntmWireframeMode[0] = mntmWireframeMode;
+            mntmWireframeMode.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+                    ((MenuItem) e.widget).setSelection(true);
+                    c3d_modifier.setRenderMode(-1);
+                    getRenderer().disposeAllTextures();
+                }
+            });
+            mntmWireframeMode.setText("Wireframe"); //$NON-NLS-1$ I18N Needs translation
         }
 
         try {
@@ -1767,6 +1782,10 @@ public class Composite3D extends ScalableComposite {
 
     public MenuItem getMntmCondlineMode() {
         return mntmCondlineMode[0];
+    }
+
+    public MenuItem getMntmWireframeMode() {
+        return mntmWireframeMode[0];
     }
 
     public MenuItem getMntmAnaglyph() {

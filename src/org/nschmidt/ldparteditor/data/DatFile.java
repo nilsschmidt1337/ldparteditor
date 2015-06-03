@@ -152,6 +152,8 @@ public final class DatFile {
         if (Editor3DWindow.getWindow().isAddingCondlines())
             renderMode = 6;
         switch (renderMode) {
+        case -1: // Wireframe
+            break;
         case 0: // No BFC
             data2draw.draw(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
