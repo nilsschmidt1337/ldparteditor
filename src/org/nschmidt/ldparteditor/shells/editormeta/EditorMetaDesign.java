@@ -472,7 +472,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_bfc.setText("0 BFC "); //$NON-NLS-1$ I18N
 
                 Combo cmb_bfc = new Combo(cmp_bfc, SWT.NONE);
-                cmb_bfc.setItems(new String[] { "INVERTNEXT", "NOCLIP", "CLIP CW", "CLIP CCW"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                cmb_bfc.setItems(new String[] { "INVERTNEXT", "NOCLIP", "CW", "CCW", "CLIP", "CLIP CW", "CLIP CCW"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
                 cmb_bfc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmb_bfc.setText("INVERTNEXT"); //$NON-NLS-1$
                 cmb_bfc.select(0);
