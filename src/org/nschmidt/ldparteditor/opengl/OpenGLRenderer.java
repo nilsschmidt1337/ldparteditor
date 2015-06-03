@@ -164,7 +164,7 @@ public class OpenGLRenderer {
         GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-        GL11.glPointSize(4);
+        GL11.glPointSize(5);
         // GL11.glLineWidth(2);
 
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -177,21 +177,21 @@ public class OpenGLRenderer {
         GL11.glEnable(GL11.GL_LIGHT2);
         GL11.glEnable(GL11.GL_LIGHT3);
 
-        GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, BufferFactory.floatBuffer(new float[] { 0.09f, 0.09f, 0.09f, 1f }));
+        GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, BufferFactory.floatBuffer(new float[] { 0.1f, 0.1f, 0.1f, 1f }));
 
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.8f, 0.8f, 0.8f, 1f }));
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.85f, 0.85f, 0.85f, 1f }));
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 0.5f, 0.5f, 0.5f, 1f }));
         GL11.glLightf(GL11.GL_LIGHT0, GL11.GL_LINEAR_ATTENUATION, .001f);
 
-        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.25f, 0.25f, 0.25f, 1f }));
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.27f, 0.27f, 0.27f, 1f }));
         GL11.glLight(GL11.GL_LIGHT1, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 0.0f, 0.0f, 0.0f, 1f }));
         GL11.glLightf(GL11.GL_LIGHT1, GL11.GL_LINEAR_ATTENUATION, .001f);
 
-        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.25f, 0.25f, 0.25f, 1f }));
+        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.27f, 0.27f, 0.27f, 1f }));
         GL11.glLight(GL11.GL_LIGHT2, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 0.0f, 0.0f, 0.0f, 1f }));
         GL11.glLightf(GL11.GL_LIGHT2, GL11.GL_LINEAR_ATTENUATION, .001f);
 
-        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.25f, 0.25f, 0.25f, 1f }));
+        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.27f, 0.27f, 0.27f, 1f }));
         GL11.glLight(GL11.GL_LIGHT3, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 0.0f, 0.0f, 0.0f, 1f }));
         GL11.glLightf(GL11.GL_LIGHT3, GL11.GL_LINEAR_ATTENUATION, .001f);
 
