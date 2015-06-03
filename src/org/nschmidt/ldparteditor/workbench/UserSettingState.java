@@ -92,6 +92,9 @@ public class UserSettingState implements Serializable {
 
     private Locale locale = Locale.US;
 
+    /** {@code true} if the user has got the information that BFC certification is mandatory for the LDraw Standard Preview Mode  */
+    private boolean bfcCertificationRequiredForLDrawMode = false;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -390,6 +393,14 @@ public class UserSettingState implements Serializable {
 
     public void setLocale(Locale locale) {
         this.locale = locale;
+    }
+
+    public boolean isBfcCertificationRequiredForLDrawMode() {
+        return bfcCertificationRequiredForLDrawMode;
+    }
+
+    public void setBfcCertificationRequiredForLDrawMode(boolean bfcCertificationRequiredForLDrawMode) {
+        this.bfcCertificationRequiredForLDrawMode = bfcCertificationRequiredForLDrawMode;
     }
 
 }
