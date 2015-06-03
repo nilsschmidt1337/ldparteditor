@@ -80,9 +80,9 @@ public enum View {
     public static final float[] BFC_uncertified__Colour_g = new float[] { 0f };
     public static final float[] BFC_uncertified__Colour_b = new float[] { 1f };
 
-    public static final float[] vertex_Colour_r = new float[] { 0.75f };
-    public static final float[] vertex_Colour_g = new float[] { 0.75f };
-    public static final float[] vertex_Colour_b = new float[] { 0.05f };
+    public static final float[] vertex_Colour_r = new float[] { 0.9f };
+    public static final float[] vertex_Colour_g = new float[] { 0.9f };
+    public static final float[] vertex_Colour_b = new float[] { 0.04f };
 
     public static final float[] vertex_selected_Colour_r = new float[] { 0.75f };
     public static final float[] vertex_selected_Colour_g = new float[] { 0.05f };
