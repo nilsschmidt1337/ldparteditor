@@ -1123,7 +1123,8 @@ public class VertexManager {
         if (c3d.isLightOn())
             GL11.glEnable(GL11.GL_LIGHTING);
 
-        if (c3d.isMeshLines()) {
+        final boolean drawWireframe = c3d.getRenderMode() == -1;
+        if (c3d.isMeshLines() || drawWireframe) {
             Vector4f tr2 = new Vector4f(vm.m30, vm.m31, vm.m32 + 300f * c3d.getZoom(), 1f);
             Matrix4f.transform(ivm, tr2, tr2);
 
@@ -1131,7 +1132,7 @@ public class VertexManager {
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glColor3f(View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0]);
 
-            if (c3d.isSubMeshLines()) {
+            if (c3d.isSubMeshLines() || drawWireframe) {
                 Vertex[] quadverts = new Vertex[4];
                 for (GData3 gdata : triangles.keySet()) {
                     if (!gdata.visible) // if (hiddenData.contains(gdata))

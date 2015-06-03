@@ -2155,6 +2155,7 @@ class Editor3DDesign extends ApplicationWindow {
         c3d.getMntmBFCReal().setSelection(renderMode == 4);
         c3d.getMntmBFCTextured().setSelection(renderMode == 5);
         c3d.getMntmCondlineMode().setSelection(renderMode == 6);
+        c3d.getMntmWireframeMode().setSelection(renderMode == -1);
     }
 
     private void addColorButton(ToolItem toolItem_Colours, GColour gColour, final int index) {
