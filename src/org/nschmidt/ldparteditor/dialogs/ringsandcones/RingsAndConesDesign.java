@@ -82,7 +82,8 @@ class RingsAndConesDesign extends Dialog {
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("The search may only find an approximation.\n" //$NON-NLS-1$
+            lbl.setText("The search may only find an approximation or\n" //$NON-NLS-1$
+                    + "even no solution if radius 1 is close to radius 2 (e.g. r1=5; r2=5.05).\n" //$NON-NLS-1$
                     + "If you select a 4-4 disc in your model,\n" //$NON-NLS-1$
                     + "the tool will place the output at the disc's location."); //$NON-NLS-1$ I18N Needs translation!
         }
