@@ -252,9 +252,9 @@ public enum ProjectActions {
             String authorFolder = WorkbenchManager.getUserSettingState().getAuthoringFolderPath();
 
             // Set the initial filter path according
-            // to the authoring folder if the project path is "project", else choose
+            // to the authoring folder if the project path is the default project, else choose
             // the parent folder of the last opened project.
-            if (Project.getProjectPath().equals("project")) { //$NON-NLS-1$
+            if (Project.isDefaultProject()) {
                 dlg.setFilterPath(authorFolder);
             } else {
                 dlg.setFilterPath(new File(Project.getProjectPath()).getParent());
