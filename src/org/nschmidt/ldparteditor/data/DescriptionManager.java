@@ -15,20 +15,25 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.eclipse.swt.widgets.Display;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.text.LDParsingException;
+import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 
 public enum DescriptionManager {
     INSTANCE;
 
-    private Queue<TreeItem> workQueue = new ConcurrentLinkedQueue<TreeItem>();
-    private boolean hasNoThread = true;
+    private static Queue<TreeItem> workQueue = new ConcurrentLinkedQueue<TreeItem>();
+    private static boolean hasNoThread = true;
 
-    public synchronized void registerDescription(TreeItem ti) {
+    public static synchronized void registerDescription(TreeItem ti) {
 
         if (hasNoThread) {
             hasNoThread = false;
@@ -37,11 +42,53 @@ public enum DescriptionManager {
                 public void run() {
                     while (Editor3DWindow.getAlive().get()) {
                         try {
-                            TreeItem newEntry = workQueue.poll();
-                            if (newEntry != null) {
+                            final TreeItem newEntry = workQueue.poll();
 
+                            boolean needsRefresh = false;
+
+                            if (newEntry != null) {
+                                DatFile df = (DatFile) newEntry.getData();
+                                NLogger.debug(getClass(), df.getOldName());
+                                UTF8BufferedReader reader = null;
+                                final StringBuilder titleSb = new StringBuilder();
+                                try {
+                                    reader = new UTF8BufferedReader(df.getOldName());
+                                    String title = reader.readLine();
+                                    if (title != null) {
+                                        title = title.trim();
+                                        if (title.length() > 0) {
+                                            titleSb.append(" -"); //$NON-NLS-1$
+                                            titleSb.append(title.substring(1));
+                                        }
+                                    }
+                                } catch (LDParsingException e) {
+                                } catch (FileNotFoundException e) {
+                                } catch (UnsupportedEncodingException e) {
+                                } finally {
+                                    try {
+                                        if (reader != null)
+                                            reader.close();
+                                    } catch (LDParsingException e1) {
+                                    }
+                                }
+                                newEntry.setText(newEntry.getText() + titleSb.toString());
+                                if (workQueue.isEmpty()) {
+
+                                }
+                                needsRefresh = true;
                             } else {
-                                if (workQueue.isEmpty()) Thread.sleep(100);
+                                if (needsRefresh) {
+                                    Display.getDefault().asyncExec(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Editor3DWindow.getWindow().getProjectParts().getParent().build();
+                                            Editor3DWindow.getWindow().getProjectParts().getParent().redraw();
+                                            Editor3DWindow.getWindow().getProjectParts().getParent().update();
+                                        }
+                                    });
+                                    needsRefresh = false;
+                                }
+                                Thread.sleep(100);
                             }
                         } catch (InterruptedException e) {
                         } catch (Exception e) {
@@ -49,7 +96,7 @@ public enum DescriptionManager {
                         }
                     }
                 }
-            });
+            }).start();
         }
 
         while (!workQueue.offer(ti)) {
