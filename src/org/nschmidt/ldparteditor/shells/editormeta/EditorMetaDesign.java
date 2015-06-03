@@ -953,7 +953,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_vertex.setText("0 !LPE CSG_QUALITY"); //$NON-NLS-1$ I18N
                 {
                     Text txt_csgQuality = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_csgQuality.setMessage("(Integer from 1 to 48 [Default: 16])"); //$NON-NLS-1$ I18N
+                    txt_csgQuality.setMessage("(Integer from 3 to 48 [Default: 16])"); //$NON-NLS-1$ I18N
                     ev_csgQuality_txt[0] = txt_csgQuality;
                 }
             }
