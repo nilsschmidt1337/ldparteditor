@@ -3686,7 +3686,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
                 messageBox.setText("Warning:"); //$NON-NLS-1$ I18N
-                messageBox.setMessage("Are you sure to delete your configuration on the next start?"); //$NON-NLS-1$
+                messageBox.setMessage("Are you sure to delete your configuration on the next start?"); //$NON-NLS-1$ I18N
                 int result = messageBox.open();
                 if (result == SWT.CANCEL) {
                     return;
