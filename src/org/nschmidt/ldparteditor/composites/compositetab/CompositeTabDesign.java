@@ -189,6 +189,7 @@ class CompositeTabDesign extends CTabItem {
                 mntmQuickFixSame.setEnabled(true);
                 mntmQuickFixSame.setText("Quick Fix Similar Problems"); //$NON-NLS-1$ I18N Needs translation
 
+                tree.build();
             }
             composite.pack();
             sashForm.setWeights(new int[] { this.compositeText[0].getSize().y, this.compositeText[0].getSize().y / 2 });
