@@ -1398,7 +1398,7 @@ class Editor3DDesign extends ApplicationWindow {
                             spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
                             Label lblNewLabel2 = new Label(cmp_snappingArea, SWT.NONE);
-                            lblNewLabel2.setText("Rotate Snap [°]:"); //$NON-NLS-1$ I18N Needs translation!
+                            lblNewLabel2.setText(I18n.EDITOR3D_RotateSnap);
                             lblNewLabel2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
                             BigDecimalSpinner spinner2 = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE);
@@ -1409,7 +1409,7 @@ class Editor3DDesign extends ApplicationWindow {
                             spinner2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
                             Label lblNewLabel3 = new Label(cmp_snappingArea, SWT.NONE);
-                            lblNewLabel3.setText("Scale Snap [%]:"); //$NON-NLS-1$ I18N Needs translation!
+                            lblNewLabel3.setText(I18n.EDITOR3D_ScaleSnap);
                             lblNewLabel3.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
                             BigDecimalSpinner spinner3 = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE);
