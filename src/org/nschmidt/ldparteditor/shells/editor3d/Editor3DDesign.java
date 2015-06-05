@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.shells.editor3d;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -61,6 +62,7 @@ import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.View;
@@ -1386,9 +1388,17 @@ class Editor3DDesign extends ApplicationWindow {
                                 cmp_dummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 3, 1));
                             }
 
-                            Label lblNewLabel = new Label(cmp_snappingArea, SWT.NONE);
-                            lblNewLabel.setText("Move Snap [LDU]:"); //$NON-NLS-1$ I18N Needs translation!
-                            lblNewLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+                            {
+                                Object[] messageArguments = {I18n.UNIT_CurrentUnit()};
+                                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                formatter.setLocale(MyLanguage.LOCALE);
+                                formatter.applyPattern(I18n.EDITOR3D_MoveSnap);
+
+                                Label lblNewLabel = new Label(cmp_snappingArea, SWT.NONE);
+                                lblNewLabel.setText(formatter.format(messageArguments));
+                                lblNewLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+
+                            }
 
                             BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE);
                             this.spn_Move[0] = spinner;
