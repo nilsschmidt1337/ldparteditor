@@ -1294,26 +1294,26 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_lineSize1 = new Button(toolItem_LineThickness, SWT.TOGGLE);
                 this.btn_lineSize1[0] = btn_lineSize1;
-                btn_lineSize1.setToolTipText("Line Size 1"); //$NON-NLS-1$ I18N Needs translation!
+                btn_lineSize1.setToolTipText(I18n.EDITOR3D_LineSize1);
                 btn_lineSize1.setImage(ResourceManager.getImage("icon16_linesize1.png")); //$NON-NLS-1$
             }
             {
                 Button btn_lineSize2 = new Button(toolItem_LineThickness, SWT.TOGGLE);
                 this.btn_lineSize2[0] = btn_lineSize2;
-                btn_lineSize2.setToolTipText("Line Size 2"); //$NON-NLS-1$ I18N Needs translation!
+                btn_lineSize2.setToolTipText(I18n.EDITOR3D_LineSize2);
                 btn_lineSize2.setImage(ResourceManager.getImage("icon16_linesize2.png")); //$NON-NLS-1$
             }
             {
                 Button btn_lineSize3 = new Button(toolItem_LineThickness, SWT.TOGGLE);
                 btn_lineSize3.setSelection(true);
                 this.btn_lineSize3[0] = btn_lineSize3;
-                btn_lineSize3.setToolTipText("Line Size 3"); //$NON-NLS-1$ I18N Needs translation!
+                btn_lineSize3.setToolTipText(I18n.EDITOR3D_LineSize3);
                 btn_lineSize3.setImage(ResourceManager.getImage("icon16_linesize3.png")); //$NON-NLS-1$
             }
             {
                 Button btn_lineSize4 = new Button(toolItem_LineThickness, SWT.TOGGLE);
                 this.btn_lineSize4[0] = btn_lineSize4;
-                btn_lineSize4.setToolTipText("Line Size 4"); //$NON-NLS-1$ I18N Needs translation!
+                btn_lineSize4.setToolTipText(I18n.EDITOR3D_LineSize4);
                 btn_lineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
             }
         }

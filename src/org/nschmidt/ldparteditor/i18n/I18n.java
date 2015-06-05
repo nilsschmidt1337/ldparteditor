@@ -242,6 +242,10 @@ public final class I18n {
     public static final String EDITOR3D_Hide = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Inverse = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LastOpened = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LineSize1 = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LineSize2 = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LineSize3 = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LineSize4 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Medium = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ModeLine = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ModeSubpart = EDITOR3D.getString(getProperty());
