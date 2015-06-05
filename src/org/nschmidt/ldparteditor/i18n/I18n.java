@@ -279,11 +279,13 @@ public final class I18n {
     public static final String EDITOR3D_Redo = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Rotate = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_RotateClockwise = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_RotateSnap = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Round = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Ruler = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Save = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_SaveAll = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Scale = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_ScaleSnap = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Select = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ShowAll = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Snapshot = EDITOR3D.getString(getProperty());
