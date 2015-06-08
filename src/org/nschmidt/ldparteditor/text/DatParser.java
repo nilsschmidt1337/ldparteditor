@@ -52,6 +52,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -672,8 +673,13 @@ public enum DatParser {
             }
         } else {
             if (depth == 0 && h.hasBFC() && lineNumber != h.getLineBFC() && line.startsWith("0 BFC CERTIFY ")) { //$NON-NLS-1$
-                result.add(new ParsingResult(I18n.DATPARSER_MultipleBFC, "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-                result.add(new ParsingResult(new GData0(line)));
+                if (line.startsWith("INVERTNEXT", 14)) { //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_InvertNext, "[W0B] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT)));
+                } else {
+                    result.add(new ParsingResult(I18n.DATPARSER_MultipleBFC, "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(new GData0(line)));
+                }
             } else if (line.startsWith("0 !: ")) { //$NON-NLS-1$
                 GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed);
                 if (newLPEmetaTag == null) {
@@ -796,12 +802,17 @@ public enum DatParser {
             } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
                 if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
                     result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT)));
-                } else if (line.startsWith("CERTIFY CCW", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
-                } else if (line.startsWith("CERTIFY CW", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
                 } else if (line.startsWith("CERTIFY", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
+                    if (line.startsWith("CCW", 14)) { //$NON-NLS-1$
+                        result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
+                    } else if (line.startsWith("CW", 14)) { //$NON-NLS-1$
+                        result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
+                    } else if (line.startsWith("INVERTNEXT", 14)) { //$NON-NLS-1$
+                        result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT)));
+                        NLogger.debug(DatParser.class, line);
+                    } else {
+                        result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
+                    }
                 } else if (line.startsWith("NOCERTIFY", 6)) { //$NON-NLS-1$
                     result.add(new ParsingResult(new GDataBFC(BFC.NOCERTIFY)));
                 } else if (line.startsWith("CCW", 6)) { //$NON-NLS-1$

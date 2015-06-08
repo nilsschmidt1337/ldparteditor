@@ -1055,7 +1055,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.setRenderMode(5);
                 }
             });
-            mntmBFCTextured.setText("BFC + Texture / Materials (LDraw Standard)"); //$NON-NLS-1$ I18N Needs translation
+            mntmBFCTextured.setText("BFC + TEXMAP / Materials (LDraw Standard)"); //$NON-NLS-1$ I18N Needs translation
 
             {
                 @SuppressWarnings("unused")
