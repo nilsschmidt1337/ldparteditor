@@ -1690,7 +1690,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText("Image:"); //$NON-NLS-1$ I18N Needs translation!
+                                lbl_Label.setText(I18n.EDITOR3D_Image);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                             }
                             {
