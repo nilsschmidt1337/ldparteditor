@@ -32,6 +32,13 @@ final class WarningFixer {
         // TODO Needs implementation!
         int s = Integer.parseInt(sort, 16);
         switch (s) {
+        case 11: // 0 BFC CERTIFY INVERTNEXT
+        {
+            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            text = QuickFixer.setLine(lineNumber + 1,
+                    "0 " + data_segments[1] + " " +  data_segments[3], text);  //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        break;
         case 36: // Coplanar Quad
         {
             String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
@@ -105,7 +112,7 @@ final class WarningFixer {
 
         }
         break;
-        case 2: // FIXME Flat subfile scaled on X
+        case 2: // Flat subfile scaled on X
         {
             String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
             StringBuilder sb = new StringBuilder();
@@ -141,7 +148,7 @@ final class WarningFixer {
             text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
         }
         break;
-        case 3: // FIXME Flat subfile scaled on Y
+        case 3: // Flat subfile scaled on Y
         {
             String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
             StringBuilder sb = new StringBuilder();
@@ -177,7 +184,7 @@ final class WarningFixer {
             text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
         }
         break;
-        case 4: // FIXME Flat subfile scaled on Z
+        case 4: // Flat subfile scaled on Z
         {
             String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
             StringBuilder sb = new StringBuilder();

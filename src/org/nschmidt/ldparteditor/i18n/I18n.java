@@ -124,6 +124,7 @@ public final class I18n {
     public static final String DATPARSER_InvalidTEXMAP = DATPARSER.getString(getProperty());
     public static final String DATPARSER_InvalidType = DATPARSER.getString(getProperty());
     public static final String DATPARSER_LogicError = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_MLCAD_InvertNext = DATPARSER.getString(getProperty());
     public static final String DATPARSER_MisplacedAuthor = DATPARSER.getString(getProperty());
     public static final String DATPARSER_MisplacedBFC = DATPARSER.getString(getProperty());
     public static final String DATPARSER_MisplacedBFC0 = DATPARSER.getString(getProperty());
