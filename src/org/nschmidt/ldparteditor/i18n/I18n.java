@@ -238,6 +238,7 @@ public final class I18n {
     public static final String EDITOR3D_FarClippingHint = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_File = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Fine = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Focus = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Grid = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Group = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Hide = EDITOR3D.getString(getProperty());
@@ -260,6 +261,8 @@ public final class I18n {
     public static final String EDITOR3D_NearClippingHint = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_New = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_NewDat = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Next = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_NextItem = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_None = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Open = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_OpenDat = EDITOR3D.getString(getProperty());
@@ -277,6 +280,8 @@ public final class I18n {
     public static final String EDITOR3D_PositionZ2 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionZ3 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionZ4 = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Previous = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_PreviousItem = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ReadyStatus = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Redo = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Rotate = EDITOR3D.getString(getProperty());

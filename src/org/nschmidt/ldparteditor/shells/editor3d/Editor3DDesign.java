@@ -1455,12 +1455,12 @@ class Editor3DDesign extends ApplicationWindow {
                                 Button btn_PreviousSelection = new Button(cmp_Dummy, SWT.NONE);
                                 this.btn_PreviousSelection[0] = btn_PreviousSelection;
                                 btn_PreviousSelection.setImage(ResourceManager.getImage("icon8_previous.png")); //$NON-NLS-1$
-                                btn_PreviousSelection.setToolTipText("Previous Item"); //$NON-NLS-1$ I18N Needs translation!
+                                btn_PreviousSelection.setToolTipText(I18n.EDITOR3D_PreviousItem);
 
                                 Button btn_NextSelection = new Button(cmp_Dummy, SWT.NONE);
                                 this.btn_NextSelection[0] = btn_NextSelection;
                                 btn_NextSelection.setImage(ResourceManager.getImage("icon8_next.png")); //$NON-NLS-1$
-                                btn_NextSelection.setToolTipText("Next Item"); //$NON-NLS-1$ I18N Needs translation!
+                                btn_NextSelection.setToolTipText(I18n.EDITOR3D_NextItem);
 
                                 cmp_Dummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 3, 1));
                             }
@@ -1673,17 +1673,17 @@ class Editor3DDesign extends ApplicationWindow {
                                 Button btnPrevious = new Button(cmp_dummy, SWT.NONE);
                                 btn_PngPrevious[0] = btnPrevious;
                                 btnPrevious.setImage(ResourceManager.getImage("icon8_previous.png")); //$NON-NLS-1$
-                                btnPrevious.setToolTipText("Previous"); //$NON-NLS-1$ I18N Needs translation!
+                                btnPrevious.setToolTipText(I18n.EDITOR3D_Previous);
 
                                 Button btnFocusBG = new Button(cmp_dummy, SWT.NONE);
                                 btn_PngFocus[0] = btnFocusBG;
                                 btnFocusBG.setImage(ResourceManager.getImage("icon8_focus.png")); //$NON-NLS-1$
-                                btnFocusBG.setToolTipText("Focus"); //$NON-NLS-1$ I18N Needs translation!
+                                btnFocusBG.setToolTipText(I18n.EDITOR3D_Focus);
 
                                 Button btnNext = new Button(cmp_dummy, SWT.NONE);
                                 btn_PngNext[0] = btnNext;
                                 btnNext.setImage(ResourceManager.getImage("icon8_next.png")); //$NON-NLS-1$
-                                btnNext.setToolTipText("Next"); //$NON-NLS-1$ I18N Needs translation!
+                                btnNext.setToolTipText(I18n.EDITOR3D_Next);
 
                                 cmp_dummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 3, 1));
                             }
