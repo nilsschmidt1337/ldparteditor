@@ -228,6 +228,10 @@ public final class I18n {
     public static final String EDITOR3D_AllSameColours = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_AllSameColoursShown = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_AllShown = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_AngleX = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_AngleY = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_AngleZ = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_BackgroundImage = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_CloseView = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Coarse = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Combined = EDITOR3D.getString(getProperty());
@@ -276,14 +280,17 @@ public final class I18n {
     public static final String EDITOR3D_OpenDat = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Origin = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Pipette = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_PositionX = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionX1 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionX2 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionX3 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionX4 = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_PositionY = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionY1 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionY2 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionY3 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionY4 = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_PositionZ = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionZ1 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionZ2 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionZ3 = EDITOR3D.getString(getProperty());
@@ -302,6 +309,8 @@ public final class I18n {
     public static final String EDITOR3D_SaveAll = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Scale = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ScaleSnap = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_ScaleX = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_ScaleY = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Search = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_SearchPrimitives = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Select = EDITOR3D.getString(getProperty());
@@ -314,6 +323,8 @@ public final class I18n {
     public static final String EDITOR3D_SwapWinding = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_SyncFolders = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_TextLine = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_ToggleBFC = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_ToggleTransparent = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Touching = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Undo = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Ungroup = EDITOR3D.getString(getProperty());

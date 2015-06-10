@@ -462,13 +462,13 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_TransSelection = new Button(toolItem_MiscToggle, SWT.TOGGLE);
                 this.btn_NoTransparentSelection[0] = btn_TransSelection;
-                btn_TransSelection.setToolTipText("Toggle Selection through transparent Objects"); // I18N Needs translation //$NON-NLS-1$
+                btn_TransSelection.setToolTipText(I18n.EDITOR3D_ToggleTransparent);
                 btn_TransSelection.setImage(ResourceManager.getImage("icon16_notrans.png")); //$NON-NLS-1$
             }
             {
                 Button btn_BFCToggle = new Button(toolItem_MiscToggle, SWT.TOGGLE);
                 this.btn_BFCToggle[0] = btn_BFCToggle;
-                btn_BFCToggle.setToolTipText("Toggle BFC Winding (for new surfaces)"); // I18N Needs translation //$NON-NLS-1$
+                btn_BFCToggle.setToolTipText(I18n.EDITOR3D_ToggleBFC);
                 btn_BFCToggle.setImage(ResourceManager.getImage("icon16_bfc.png")); //$NON-NLS-1$
             }
         }
@@ -1651,7 +1651,7 @@ class Editor3DDesign extends ApplicationWindow {
                         }
 
                         CTabItem tItem3 = new CTabItem(tabFolder_Settings, SWT.NONE);
-                        tItem3.setText("Background Image:"); //$NON-NLS-1$
+                        tItem3.setText(I18n.EDITOR3D_BackgroundImage);
 
                         {
                             final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
@@ -1710,7 +1710,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText("Position X [LDU]:"); //$NON-NLS-1$ I18N Needs translation!
+                                lbl_Label.setText(I18n.EDITOR3D_PositionX);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngX[0] = spinner;
@@ -1721,7 +1721,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText("Position Y [LDU]:"); //$NON-NLS-1$ I18N Needs translation!
+                                lbl_Label.setText(I18n.EDITOR3D_PositionY);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngY[0] = spinner;
@@ -1732,7 +1732,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText("Position Z [LDU]:"); //$NON-NLS-1$ I18N Needs translation!
+                                lbl_Label.setText(I18n.EDITOR3D_PositionZ);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngZ[0] = spinner;
@@ -1743,7 +1743,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText("Angle Y [°]:"); //$NON-NLS-1$ I18N Needs translation!
+                                lbl_Label.setText(I18n.EDITOR3D_AngleY);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngA1[0] = spinner;
@@ -1754,7 +1754,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText("Angle X [°]:"); //$NON-NLS-1$ I18N Needs translation!
+                                lbl_Label.setText(I18n.EDITOR3D_AngleX);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngA2[0] = spinner;
@@ -1765,7 +1765,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText("Angle Z [°]:"); //$NON-NLS-1$ I18N Needs translation!
+                                lbl_Label.setText(I18n.EDITOR3D_AngleZ);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngA3[0] = spinner;
@@ -1776,7 +1776,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText("Scale X:"); //$NON-NLS-1$ I18N Needs translation!
+                                lbl_Label.setText(I18n.EDITOR3D_ScaleX);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngSX[0] = spinner;
@@ -1787,7 +1787,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText("Scale Y:"); //$NON-NLS-1$ I18N Needs translation!
+                                lbl_Label.setText(I18n.EDITOR3D_ScaleY);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngSY[0] = spinner;
