@@ -243,6 +243,7 @@ public final class I18n {
     public static final String EDITOR3D_File = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Fine = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Focus = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Global = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Grid = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Group = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Hide = EDITOR3D.getString(getProperty());

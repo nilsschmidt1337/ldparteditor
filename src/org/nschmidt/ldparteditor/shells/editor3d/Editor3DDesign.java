@@ -537,7 +537,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
                 this.btn_Global[0] = btn_Global;
-                btn_Global.setToolTipText("Global"); //$NON-NLS-1$ I18N
+                btn_Global.setToolTipText(I18n.EDITOR3D_Global);
                 btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
             }
             {
