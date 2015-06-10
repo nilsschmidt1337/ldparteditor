@@ -39,6 +39,13 @@ final class WarningFixer {
                     "0 " + data_segments[1] + " " +  data_segments[3], text);  //$NON-NLS-1$ //$NON-NLS-2$
         }
         break;
+        case 12: // 0 BFC CERTIFY CLIP CCW
+        {
+            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            text = QuickFixer.setLine(lineNumber + 1,
+                    "0 " + data_segments[1] + " " +  data_segments[3] + " " +  data_segments[4], text);  //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        break;
         case 36: // Coplanar Quad
         {
             String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
