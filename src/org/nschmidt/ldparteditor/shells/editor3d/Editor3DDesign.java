@@ -1965,7 +1965,7 @@ class Editor3DDesign extends ApplicationWindow {
                         gd2.horizontalAlignment = SWT.FILL;
                         lbl_selectedPrimitiveItem.setLayoutData(gd2);
                     }
-                    lbl_selectedPrimitiveItem.setText("(no primitive selected)");//$NON-NLS-1$ I18N Needs translation!
+                    lbl_selectedPrimitiveItem.setText(I18n.EDITOR3D_NoPrimitiveSelected);
 
                     {
                         Composite cmp_Search = new Composite(cmp_Container4, SWT.NONE);
@@ -1977,7 +1977,7 @@ class Editor3DDesign extends ApplicationWindow {
                         cmp_Search.setLayout(gridLayout2);
                         Text txt_Search = new Text(cmp_Search, SWT.BORDER);
                         this.txt_primitiveSearch[0] = txt_Search;
-                        txt_Search.setMessage("Search Primitives"); //$NON-NLS-1$ I18N Needs translation!
+                        txt_Search.setMessage(I18n.EDITOR3D_SearchPrimitives);
                         GridData gridData2 = new GridData();
                         gridData2.horizontalAlignment = SWT.FILL;
                         gridData2.grabExcessHorizontalSpace = true;

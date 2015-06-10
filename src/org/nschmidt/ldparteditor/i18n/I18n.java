@@ -270,6 +270,7 @@ public final class I18n {
     public static final String EDITOR3D_NewDat = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Next = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_NextItem = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_NoPrimitiveSelected = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_None = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Open = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_OpenDat = EDITOR3D.getString(getProperty());
@@ -302,6 +303,7 @@ public final class I18n {
     public static final String EDITOR3D_Scale = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ScaleSnap = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Search = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_SearchPrimitives = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Select = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Selection = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ShowAll = EDITOR3D.getString(getProperty());
