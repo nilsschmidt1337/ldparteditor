@@ -1433,7 +1433,7 @@ class Editor3DDesign extends ApplicationWindow {
                         }
 
                         CTabItem tItem2 = new CTabItem(tabFolder_Settings, SWT.NONE);
-                        tItem2.setText("Selection:"); //$NON-NLS-1$
+                        tItem2.setText(I18n.EDITOR3D_Selection);
 
                         {
                             final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);

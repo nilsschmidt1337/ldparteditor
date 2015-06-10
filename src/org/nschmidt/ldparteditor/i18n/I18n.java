@@ -301,6 +301,7 @@ public final class I18n {
     public static final String EDITOR3D_Scale = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ScaleSnap = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Select = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Selection = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ShowAll = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Snapshot = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_SplitHorizontally = EDITOR3D.getString(getProperty());
