@@ -1924,14 +1924,14 @@ class Editor3DDesign extends ApplicationWindow {
                         cmp_Search.setLayout(gridLayout2);
                         Text txt_Search = new Text(cmp_Search, SWT.BORDER);
                         this.txt_Search[0] = txt_Search;
-                        txt_Search.setMessage("Search"); //$NON-NLS-1$ I18N Needs translation!
+                        txt_Search.setMessage(I18n.EDITOR3D_Search);
                         GridData gridData2 = new GridData();
                         gridData2.horizontalAlignment = SWT.FILL;
                         gridData2.grabExcessHorizontalSpace = true;
                         txt_Search.setLayoutData(gridData2);
                         Button btn_ResetSearch = new Button(cmp_Search, SWT.NONE);
                         this.btn_ResetSearch[0] = btn_ResetSearch;
-                        btn_ResetSearch.setText("Reset"); //$NON-NLS-1$ I18N Needs translation!
+                        btn_ResetSearch.setText(I18n.EDITOR3D_Reset);
                     }
 
                     Composite cmp_Container4 = new Composite(sashForm2, SWT.BORDER);
@@ -1984,7 +1984,7 @@ class Editor3DDesign extends ApplicationWindow {
                         txt_Search.setLayoutData(gridData2);
                         Button btn_ResetSearch = new Button(cmp_Search, SWT.NONE);
                         this.btn_resetPrimitiveSearch[0] = btn_ResetSearch;
-                        btn_ResetSearch.setText("Reset"); //$NON-NLS-1$ I18N Needs translation!
+                        btn_ResetSearch.setText(I18n.EDITOR3D_Reset);
                     }
 
                     int[] weights = windowState.getLeftSashWeights();
