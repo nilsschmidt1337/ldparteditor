@@ -1467,7 +1467,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText("Line:"); //$NON-NLS-1$ I18N Needs translation!
+                                lbl_Label.setText(I18n.EDITOR3D_TextLine);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                             }
                             {
@@ -1483,7 +1483,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 Button btn_moveAdjacentData2 = new Button(cmp_LineSetup, SWT.TOGGLE);
                                 this.btn_MoveAdjacentData2[0] = btn_moveAdjacentData2;
                                 btn_moveAdjacentData2.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
-                                btn_moveAdjacentData2.setText("Move Adjacent Data"); //$NON-NLS-1$ I18N Needs translation!
+                                btn_moveAdjacentData2.setText(I18n.EDITOR3D_MoveAdjacentData);
 
                                 cmp_LineSetup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
