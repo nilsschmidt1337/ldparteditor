@@ -676,6 +676,18 @@ public enum DatParser {
                 if (line.startsWith("INVERTNEXT", 14)) { //$NON-NLS-1$
                     result.add(new ParsingResult(I18n.DATPARSER_MLCAD_InvertNext, "[W0B] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
                     result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT)));
+                } else if (line.startsWith("CLIP", 14)) { //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_Clip, "[W0B] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(new GDataBFC(BFC.CLIP)));
+                } else if (line.startsWith("NOCLIP", 14)) { //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_NoClip, "[W0B] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(new GDataBFC(BFC.NOCLIP)));
+                } else if (line.startsWith("CLIP CCW", 14) || line.startsWith("CCW CLIP", 14)) { //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_ClipCCW, "[W0C] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
+                } else if (line.startsWith("CLIP CW", 14) || line.startsWith("CW CLIP", 14)) { //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_ClipCW, "[W0C] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
                 } else {
                     result.add(new ParsingResult(I18n.DATPARSER_MultipleBFC, "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
                     result.add(new ParsingResult(new GData0(line)));
