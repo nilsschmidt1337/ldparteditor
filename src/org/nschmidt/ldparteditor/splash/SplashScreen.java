@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.splash;
 
 import java.io.File;
+import java.util.Locale;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.ApplicationWindow;
@@ -109,6 +110,13 @@ public class SplashScreen extends ApplicationWindow {
                 Display.getCurrent().dispose();
                 return;
             }
+        }
+
+        // Set the locale
+        try {
+            Locale.setDefault(WorkbenchManager.getUserSettingState().getLocale());
+        } catch (SecurityException se) {
+
         }
 
         this.setShellStyle(SWT.ON_TOP);
