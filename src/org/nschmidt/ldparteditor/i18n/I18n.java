@@ -238,6 +238,8 @@ public final class I18n {
     public static final String EDITOR3D_CompileSubfileData = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_CondlineToLine = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Connected = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_CopyToUnofficialLibrary = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_Delete = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_DragHint = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Everything = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ExceptSubfile = EDITOR3D.getString(getProperty());
@@ -278,6 +280,8 @@ public final class I18n {
     public static final String EDITOR3D_None = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Open = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_OpenDat = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_OpenIn3DEditor = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_OpenInTextEditor = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Origin = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Pipette = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionX = EDITOR3D.getString(getProperty());
@@ -299,7 +303,9 @@ public final class I18n {
     public static final String EDITOR3D_PreviousItem = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ReadyStatus = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Redo = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_RenameMove = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Reset = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_RevertAllChanges = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Rotate = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_RotateClockwise = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_RotateSnap = EDITOR3D.getString(getProperty());

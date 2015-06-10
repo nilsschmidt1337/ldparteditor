@@ -1539,12 +1539,12 @@ public class Editor3DWindow extends Editor3DDesign {
                     MenuItem mntmOpenIn3DEditor = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_OpenIn3DEditor[0] = mntmOpenIn3DEditor;
                     mntmOpenIn3DEditor.setEnabled(true);
-                    mntmOpenIn3DEditor.setText("Open In 3D Editor"); //$NON-NLS-1$ I18N Needs translation!
+                    mntmOpenIn3DEditor.setText(I18n.EDITOR3D_OpenIn3DEditor);
 
                     MenuItem mntmOpenInTextEditor = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_OpenInTextEditor[0] = mntmOpenInTextEditor;
                     mntmOpenInTextEditor.setEnabled(true);
-                    mntmOpenInTextEditor.setText("Open In Text Editor"); //$NON-NLS-1$ I18N Needs translation!
+                    mntmOpenInTextEditor.setText(I18n.EDITOR3D_OpenInTextEditor);
 
                     @SuppressWarnings("unused")
                     MenuItem mntm_Separator = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
@@ -1552,17 +1552,17 @@ public class Editor3DWindow extends Editor3DDesign {
                     MenuItem mntmRename = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_Rename[0] = mntmRename;
                     mntmRename.setEnabled(true);
-                    mntmRename.setText("Rename / Move"); //$NON-NLS-1$ I18N Needs translation!
+                    mntmRename.setText(I18n.EDITOR3D_RenameMove);
 
                     MenuItem mntmRevert = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_Revert[0] = mntmRevert;
                     mntmRevert.setEnabled(true);
-                    mntmRevert.setText("Revert All Changes / Reload"); //$NON-NLS-1$ I18N Needs translation!
+                    mntmRevert.setText(I18n.EDITOR3D_RevertAllChanges);
 
                     MenuItem mntmDelete = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_Delete[0] = mntmDelete;
                     mntmDelete.setEnabled(true);
-                    mntmDelete.setText("Delete"); //$NON-NLS-1$ I18N Needs translation!
+                    mntmDelete.setText(I18n.EDITOR3D_Delete);
 
                     @SuppressWarnings("unused")
                     MenuItem mntm_Separator2 = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
@@ -1570,7 +1570,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     MenuItem mntmCopyToUnofficial = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_CopyToUnofficial[0] = mntmCopyToUnofficial;
                     mntmCopyToUnofficial.setEnabled(true);
-                    mntmCopyToUnofficial.setText("Copy To Unofficial Library"); //$NON-NLS-1$ I18N Needs translation!
+                    mntmCopyToUnofficial.setText(I18n.EDITOR3D_CopyToUnofficialLibrary);
 
                     mntm_OpenInTextEditor[0].addSelectionListener(new SelectionAdapter() {
                         @Override
