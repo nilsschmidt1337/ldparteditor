@@ -530,7 +530,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
                 this.btn_Local[0] = btn_Local;
-                btn_Local.setToolTipText("Local"); //$NON-NLS-1$ I18N
+                btn_Local.setToolTipText(I18n.EDITOR3D_Local);
                 btn_Local.setSelection(true);
                 btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
             }
