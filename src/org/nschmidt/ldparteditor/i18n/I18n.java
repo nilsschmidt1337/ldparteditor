@@ -179,6 +179,7 @@ public final class I18n {
     public static final String DIALOG_KeepFilesOpenTitle = DIALOG.getString(getProperty());
     public static final String DIALOG_Modified = DIALOG.getString(getProperty());
     public static final String DIALOG_ModifiedTitle = DIALOG.getString(getProperty());
+    public static final String DIALOG_No = DIALOG.getString(getProperty());
     public static final String DIALOG_NoProjectLocation = DIALOG.getString(getProperty());
     public static final String DIALOG_NoProjectLocationTitle = DIALOG.getString(getProperty());
     public static final String DIALOG_NotFoundRequired = DIALOG.getString(getProperty());
@@ -198,6 +199,7 @@ public final class I18n {
     public static final String DIALOG_UnavailableTitle = DIALOG.getString(getProperty());
     public static final String DIALOG_UnsavedChanges = DIALOG.getString(getProperty());
     public static final String DIALOG_UnsavedChangesTitle = DIALOG.getString(getProperty());
+    public static final String DIALOG_Yes = DIALOG.getString(getProperty());
     public static final String EDGER_0to180 = EDGER.getString(getProperty());
     public static final String EDGER_0to90 = EDGER.getString(getProperty());
     public static final String EDGER_Condition1 = EDGER.getString(getProperty());

@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.helpers.composite3d.Txt2DatSettings;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 
 /**
@@ -142,8 +143,8 @@ class Txt2DatDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+        createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
     }
 
     /**

@@ -119,9 +119,9 @@ class NewProjectDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+        btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         btn_ok[0].setEnabled(false);
-        createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
     }
 
     /**
