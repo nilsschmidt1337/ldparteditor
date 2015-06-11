@@ -227,6 +227,7 @@ public final class I18n {
     public static final String EDITOR3D_AddVertex = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_AdvancedSelect = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_All = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_AllFiles = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_AllSameColours = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_AllSameColoursShown = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_AllShown = EDITOR3D.getString(getProperty());
@@ -257,6 +258,8 @@ public final class I18n {
     public static final String EDITOR3D_Hide = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Image = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Inverse = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LDrawConfigurationFile1 = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LDrawConfigurationFile2 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LastOpened = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LineSize1 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LineSize2 = EDITOR3D.getString(getProperty());
@@ -284,6 +287,7 @@ public final class I18n {
     public static final String EDITOR3D_OpenDat = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_OpenIn3DEditor = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_OpenInTextEditor = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_OpenLDConfig = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Origin = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Pipette = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionX = EDITOR3D.getString(getProperty());
