@@ -328,8 +328,6 @@ public class Editor3DWindow extends Editor3DDesign {
                 WorkbenchManager.getUserSettingState().getMedium_scale_snap()
                 );
         // MARK All final listeners will be configured here..
-        // First, create all menu actions.
-        createActions();
         NLogger.writeVersion();
         btn_Sync[0].addSelectionListener(new SelectionAdapter() {
             @Override
@@ -3686,7 +3684,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-                messageBox.setText("Warning:"); //$NON-NLS-1$ I18N
+                messageBox.setText(I18n.DIALOG_Warning);
                 messageBox.setMessage("Are you sure to delete your configuration on the next start?"); //$NON-NLS-1$ I18N
                 int result = messageBox.open();
                 if (result == SWT.CANCEL) {
@@ -3774,7 +3772,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 } catch (Exception consumend) {}
                             }
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                            messageBox.setText("Error:"); //$NON-NLS-1$ I18N
+                            messageBox.setText(I18n.DIALOG_Error);
                             messageBox.setMessage("An unexpected exception was thrown."); //$NON-NLS-1$ I18N
                             messageBox.open();
                             return;
@@ -3792,7 +3790,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                     } else {
                         MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                        messageBox.setText("Info:"); //$NON-NLS-1$ I18N
+                        messageBox.setText(I18n.DIALOG_Info);
                         messageBox.setMessage("There are no log files at the moment."); //$NON-NLS-1$ I18N
                         messageBox.open();
                         return;
@@ -3812,7 +3810,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         uploadCount++;
                         if (uploadCount > 16) {
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                            messageBox.setText("Warning:"); //$NON-NLS-1$ I18N
+                            messageBox.setText(I18n.DIALOG_Warning);
                             messageBox.setMessage("The maximum upload limit for this session is reached.\nPlease restart LDPartEditor and try again."); //$NON-NLS-1$ I18N
                             messageBox.open();
                             return;
@@ -3871,18 +3869,18 @@ public class Editor3DWindow extends Editor3DDesign {
 
                             BufferedReader response =new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8")); //$NON-NLS-1$
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                            messageBox.setText("Info:"); //$NON-NLS-1$ I18N
+                            messageBox.setText(I18n.DIALOG_Info);
                             messageBox.setMessage("The upload was successful.\nLDPartEditor collects no personal data.\nIf you want to see what was uploaded, take a look into the error_log.txt file.\n\nOr visit: " + response.readLine()); //$NON-NLS-1$ I18N
                             messageBox.open();
                         } else {
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                            messageBox.setText("Info:"); //$NON-NLS-1$ I18N
+                            messageBox.setText(I18n.DIALOG_Info);
                             messageBox.setMessage("There are no log files at the moment."); //$NON-NLS-1$ I18N
                             messageBox.open();
                         }
                     } catch (Exception e1) {
                         MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBox.setText("Info:"); //$NON-NLS-1$ I18N
+                        messageBox.setText(I18n.DIALOG_Info);
                         messageBox.setMessage("The upload failed.\nPlease check your internet connection.\nLDPartEditor collects no personal data.\nIf you want to see what was uploaded, take a look into the error_log.txt file."); //$NON-NLS-1$ I18N
                         messageBox.open();
                     } finally {
@@ -4714,41 +4712,6 @@ public class Editor3DWindow extends Editor3DDesign {
             clickSingleBtn(btn_Subfiles[0]);
             break;
         }
-    }
-
-    /**
-     * Create the actions.
-     */
-    private void createActions() {
-        // Create the actions
-        // {
-        // menuItem_Open = new Action(I18n.EDITOR3D_Open) {
-        // @Override
-        // public void run() {
-        //
-        // }
-        // };
-        // menuItem_Open.setAccelerator(SWT.CTRL | 'Z');
-        // }
-        // {
-        // menuItem_Exit = new Action(I18n.EDITOR3D_Exit) {
-        // @Override
-        // public void run() {
-        //
-        // }
-        // };
-        // }
-        // {
-        // toolItem_Save = new Action(I18n.EDITOR3D_Save) {
-        // };
-        //            toolItem_Save.setImageDescriptor(ImageDescriptor.createFromImage(ResourceManager.getImage("icon32_document-save.png"))); //$NON-NLS-1$
-        // toolItem_Save.setAccelerator(SWT.CTRL | 'S');
-        // }
-        // mnu_File[0].add(menuItem_Open);
-        // mnu_File[0].add(toolItem_Save);
-        // mnu_File[0].add(new Separator());
-        // mnu_File[0].add(menuItem_Exit);
-        // mnu_File[0].getParent().update(true);
     }
 
     /**
