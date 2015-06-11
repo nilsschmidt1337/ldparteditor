@@ -78,8 +78,8 @@ class OverwriteDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        createButton(parent, IDialogConstants.YES_ID, IDialogConstants.YES_LABEL, false);
-        createButton(parent, IDialogConstants.NO_ID, IDialogConstants.NO_LABEL, true);
+        createButton(parent, IDialogConstants.YES_ID, I18n.DIALOG_Yes, false);
+        createButton(parent, IDialogConstants.NO_ID, I18n.DIALOG_No, true);
         createButton(parent, IDialogConstants.SKIP_ID, I18n.DIALOG_SkipAll, false);
     }
 

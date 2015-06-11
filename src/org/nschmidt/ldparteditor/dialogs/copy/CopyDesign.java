@@ -113,7 +113,7 @@ class CopyDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, true);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, true);
     }
 
     /**

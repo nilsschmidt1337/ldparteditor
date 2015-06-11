@@ -112,7 +112,7 @@ public class SplashScreen extends ApplicationWindow {
             }
         }
 
-        // Set the locale
+        // Set the locale (never delete this!)
         try {
             Locale.setDefault(WorkbenchManager.getUserSettingState().getLocale());
         } catch (SecurityException se) {

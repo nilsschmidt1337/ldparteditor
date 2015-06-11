@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.i18n.I18n;
 
 /**
  * The rounding precision dialog
@@ -131,7 +132,7 @@ class OpenProjectDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true).setVisible(false);
+        createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true).setVisible(false);
         // createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
     }
 

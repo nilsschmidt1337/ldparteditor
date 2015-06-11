@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Text;
 
 public class SearchDesign extends ApplicationWindow {
 
-
     final Point loc = new Point(0, 0);
     final Button[] btn_find = new Button[1];
     final Button[] btn_replace = new Button[1];
