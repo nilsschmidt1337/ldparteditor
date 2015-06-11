@@ -141,8 +141,6 @@ public class EditorTextWindow extends EditorTextDesign {
         }
 
         // MARK All final listeners will be configured here..
-        // First, create all menu actions.
-        createActions();
         tabFolder[0].addSelectionListener(new SelectionListener() {
 
             @Override
@@ -731,13 +729,6 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
         this.open();
-    }
-
-    /**
-     * Create the actions.
-     */
-    private void createActions() {
-
     }
 
     /**
