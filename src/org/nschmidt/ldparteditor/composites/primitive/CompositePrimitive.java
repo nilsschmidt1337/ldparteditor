@@ -229,7 +229,7 @@ public class CompositePrimitive extends Composite {
                 switch (event.button) {
                 case MouseButton.LEFT:
                     setSelectedPrimitive(getFocusedPrimitive());
-                    getSelectedPrimitive().toggle();
+                    if (getSelectedPrimitive() != null) getSelectedPrimitive().toggle();
                     break;
                 case MouseButton.MIDDLE:
                     break;
