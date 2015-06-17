@@ -15,26 +15,17 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data.colour;
 
+import java.io.Serializable;
 
-public enum GCType {
-    CHROME, PEARL, METAL, RUBBER, MATTE_METALLIC, GLITTER, SPECKLE, DITHERED
+import org.nschmidt.ldparteditor.data.GColourType;
 
-    ;
-    public static boolean hasCubeMap(GCType t) {
-        switch (t) {
-        case RUBBER:
-        case CHROME:
-        case MATTE_METALLIC:
-        case METAL:
-            return true;
-        case PEARL:
-        case GLITTER:
-        case SPECKLE:
-        case DITHERED:
-            return false;
-        default:
-            break;
-        }
-        return false;
+public class GCDithered extends GColourType implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public GCType type() {
+        return GCType.DITHERED;
     }
+
 }
