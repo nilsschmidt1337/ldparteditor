@@ -19,7 +19,10 @@ import java.math.BigDecimal;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.enums.Threshold;
+import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 
 /**
@@ -32,6 +35,43 @@ final class WarningFixer {
         // TODO Needs implementation!
         int s = Integer.parseInt(sort, 16);
         switch (s) {
+        case 220: // Dithered Colour
+        {
+            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            StringBuilder colourBuilder = new StringBuilder();
+            try {
+
+                if (data_segments.length > 3) {
+                    int colourValue = Integer.parseInt(data_segments[1]);
+                    int A = colourValue - 256 >> 4;
+                    int B = colourValue - 256 & 0x0F;
+                    if (View.hasLDConfigColour(A) && View.hasLDConfigColour(B)) {
+                        GColour colourA = View.getLDConfigColour(A);
+                        GColour colourB = View.getLDConfigColour(B);
+                        colourBuilder.append("0x2"); //$NON-NLS-1$
+                        colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getR() + colourB.getR()) / 2f))).toUpperCase());
+                        colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getG() + colourB.getG()) / 2f))).toUpperCase());
+                        colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getB() + colourB.getB()) / 2f))).toUpperCase());
+                    } else {
+                        return text;
+                    }
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(data_segments[0]);
+                    sb.append(" ");  //$NON-NLS-1$
+                    sb.append(colourBuilder.toString());
+                    for (int i = 2; i < data_segments.length - 1; i++) {
+                        sb.append(" "); //$NON-NLS-1$
+                        sb.append(data_segments[i]);
+                    }
+                    sb.append(" "); //$NON-NLS-1$
+                    sb.append(data_segments[data_segments.length - 1]);
+                    text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
+                }
+            } catch (NumberFormatException nfe) {
+                return text;
+            }
+        }
+        break;
         case 11: // 0 BFC CERTIFY INVERTNEXT
         {
             String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$

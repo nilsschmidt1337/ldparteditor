@@ -43,6 +43,7 @@ import org.nschmidt.ldparteditor.data.GTexture;
 import org.nschmidt.ldparteditor.data.TexMeta;
 import org.nschmidt.ldparteditor.data.TexType;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.data.colour.GCDithered;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -340,6 +341,20 @@ public enum TexMapParser {
                     GColour colour = View.getLDConfigColour(colourValue);
                     cValue.set(colour);
                 } else {
+                    int A = colourValue - 256 >> 4;
+                    int B = colourValue - 256 & 0x0F;
+                    if (View.hasLDConfigColour(A) && View.hasLDConfigColour(B)) {
+                        GColour colourA = View.getLDConfigColour(A);
+                        GColour colourB = View.getLDConfigColour(B);
+                        GColour ditheredColour = new GColour(
+                                colourValue,
+                                (colourA.getR() + colourB.getR()) / 2f,
+                                (colourA.getG() + colourB.getG()) / 2f,
+                                (colourA.getB() + colourB.getB()) / 2f,
+                                1f, new GCDithered());
+                        cValue.set(ditheredColour);
+                        break;
+                    }
                     return null;
                 }
                 break;
@@ -355,6 +370,7 @@ public enum TexMapParser {
                     return null;
                 }
                 cValue.setColourNumber(-1);
+                cValue.setType(null);
             } else {
                 return null;
             }

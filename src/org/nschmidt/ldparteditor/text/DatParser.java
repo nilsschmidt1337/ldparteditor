@@ -46,6 +46,8 @@ import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.ParsingResult;
 import org.nschmidt.ldparteditor.data.ResultType;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.data.colour.GCDithered;
+import org.nschmidt.ldparteditor.data.colour.GCType;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -158,6 +160,20 @@ public enum DatParser {
                     GColour colour = View.getLDConfigColour(colourValue);
                     cValue.set(colour);
                 } else {
+                    int A = colourValue - 256 >> 4;
+                    int B = colourValue - 256 & 0x0F;
+                    if (View.hasLDConfigColour(A) && View.hasLDConfigColour(B)) {
+                        GColour colourA = View.getLDConfigColour(A);
+                        GColour colourB = View.getLDConfigColour(B);
+                        GColour ditheredColour = new GColour(
+                                colourValue,
+                                (colourA.getR() + colourB.getR()) / 2f,
+                                (colourA.getG() + colourB.getG()) / 2f,
+                                (colourA.getB() + colourB.getB()) / 2f,
+                                1f, new GCDithered());
+                        cValue.set(ditheredColour);
+                        break;
+                    }
                     return null;
                 }
                 break;
@@ -173,6 +189,7 @@ public enum DatParser {
                     return null;
                 }
                 cValue.setColourNumber(-1);
+                cValue.setType(null);
             } else {
                 return null;
             }
@@ -204,6 +221,20 @@ public enum DatParser {
                 GColour colour = View.getLDConfigColour(arg);
                 cValue.set(colour);
             } else {
+                int A = arg - 256 >> 4;
+                int B = arg - 256 & 0x0F;
+                if (View.hasLDConfigColour(A) && View.hasLDConfigColour(B)) {
+                    GColour colourA = View.getLDConfigColour(A);
+                    GColour colourB = View.getLDConfigColour(B);
+                    GColour ditheredColour = new GColour(
+                            arg,
+                            (colourA.getR() + colourB.getR()) / 2f,
+                            (colourA.getG() + colourB.getG()) / 2f,
+                            (colourA.getB() + colourB.getB()) / 2f,
+                            1f, new GCDithered());
+                    cValue.set(ditheredColour);
+                    break;
+                }
                 return null;
             }
             break;
@@ -882,6 +913,7 @@ public enum DatParser {
             DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed, boolean checkForFlatScaling, int lineNumber) {
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
         boolean parseError = false;
+        boolean hasDitheredColour = false;
         // [ERROR] Check less argument count
         if (data_segments.length < 15) {
             Object[] messageArguments = {data_segments.length, 15};
@@ -896,6 +928,7 @@ public enum DatParser {
                 result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
             }
+            hasDitheredColour = colour.getType() != null && GCType.DITHERED == colour.getType().type();
             // [ERROR] Check singularity
             Matrix4f tMatrix = new Matrix4f();
             BigDecimal M00;
@@ -1147,6 +1180,10 @@ public enum DatParser {
             if (data_segments.length > 15) {
                 result.add(new ParsingResult(I18n.DATPARSER_FilenameWhitespace, "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
             }
+            // [WARNING] Dithered colour
+            if (hasDitheredColour) {
+                result.add(new ParsingResult(I18n.DATPARSER_DitheredColour, "[WDC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+            }
         }
         return result;
     }
@@ -1204,6 +1241,10 @@ public enum DatParser {
                 if (result.size() < 1 && !errorCheckOnly) {
                     GData2 data = new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile);
                     result.add(new ParsingResult(data));
+                }
+                // [WARNING] Dithered colour
+                if (colour.getType() != null && GCType.DITHERED == colour.getType().type()) {
+                    result.add(new ParsingResult(I18n.DATPARSER_DitheredColour, "[WDC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
                 }
                 break;
             }
@@ -1282,6 +1323,10 @@ public enum DatParser {
                     parseError = parseError || Vector3d.sub(vertexA2, vertexB2).length().compareTo(Threshold.identical_vertex_distance) < 0;
                     if (parseError) {
                         result.add(new ParsingResult(I18n.DATPARSER_IdenticalVertices, "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
+                    }
+                    // [WARNING] Dithered colour
+                    if (colour.getType() != null && GCType.DITHERED == colour.getType().type()) {
+                        result.add(new ParsingResult(I18n.DATPARSER_DitheredColour, "[WDC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
                     }
                 }
                 break;
@@ -1468,6 +1513,10 @@ public enum DatParser {
                     } else if (parseWarning) {
                         result.add(new ParsingResult(I18n.DATPARSER_NearCoplanarity, "[W24] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
                     }
+                    // [WARNING] Dithered colour
+                    if (colour.getType() != null && GCType.DITHERED == colour.getType().type()) {
+                        result.add(new ParsingResult(I18n.DATPARSER_DitheredColour, "[WDC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    }
                 }
                 break;
             }
@@ -1540,6 +1589,9 @@ public enum DatParser {
                     GData5 data = new GData5(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, controlI.X,
                             controlI.Y, controlI.Z, controlII.X, controlII.Y, controlII.Z, parent, datFile);
                     result.add(new ParsingResult(data));
+                }
+                if (depth < 1 && colour.getType() != null && GCType.DITHERED == colour.getType().type()) {
+                    result.add(new ParsingResult(I18n.DATPARSER_DitheredColour, "[WDC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
                 }
                 break;
             }

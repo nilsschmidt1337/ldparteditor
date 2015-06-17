@@ -104,6 +104,7 @@ public final class I18n {
     public static final String DATPARSER_ConcaveQuadrilateral = DATPARSER.getString(getProperty());
     public static final String DATPARSER_Coplanarity = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DataError = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_DitheredColour = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DuplicatedAuthor = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DuplicatedBFC = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DuplicatedCategory = DATPARSER.getString(getProperty());

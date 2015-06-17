@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.io.Serializable;
 
 import org.nschmidt.ldparteditor.data.colour.GCChrome;
+import org.nschmidt.ldparteditor.data.colour.GCDithered;
 import org.nschmidt.ldparteditor.data.colour.GCGlitter;
 import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
 import org.nschmidt.ldparteditor.data.colour.GCMetal;
@@ -42,6 +43,8 @@ public abstract class GColourType implements Serializable {
             switch (type.type()) {
             case CHROME:
                 return new GCChrome();
+            case DITHERED:
+                return new GCDithered();
             case PEARL:
                 return new GCPearl();
             case MATTE_METALLIC:

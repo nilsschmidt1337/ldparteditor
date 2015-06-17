@@ -106,6 +106,7 @@ public class GColour implements Serializable {
         this.g = colour.g;
         this.b = colour.b;
         this.a = colour.a;
+        this.type = GColourType.clone(colour.type);
     }
 
     public void set(int colourNumber, float r, float g, float b, float a) {
