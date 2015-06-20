@@ -308,9 +308,7 @@ public class OpenGLRenderer {
                 float rx = 0;
                 double val = 0d;
                 if (zoom <= 1.0E-6)
-                    val = Math.PI / zoom / 2000000000f; // TODO 3D Constants
-                // need to be excluded /
-                // customisable
+                    val = Math.PI / zoom / 2000000000f; // TODO 3D Constants need to be excluded / customisable
                 else if (zoom > 1.0E-6 && zoom <= 5.0E-6)
                     val = Math.PI / zoom / 500000000f;
                 else if (zoom > 5.0E-6 && zoom <= 1.0E-5)
@@ -373,8 +371,6 @@ public class OpenGLRenderer {
             }
 
             GL11.glCullFace(GL11.GL_BACK);
-
-            // GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 
             if (c3d.isLightOn())
                 GL11.glEnable(GL11.GL_LIGHTING);
@@ -556,8 +552,14 @@ public class OpenGLRenderer {
                                                 (nv[2].y - nv[0].y) * (nv[1].z - nv[0].z) - (nv[2].z - nv[0].z) * (nv[1].y - nv[0].y),
                                                 (nv[2].z - nv[0].z) * (nv[1].x - nv[0].x) - (nv[2].x - nv[0].x) * (nv[1].z - nv[0].z),
                                                 (nv[2].x - nv[0].x) * (nv[1].y - nv[0].y) - (nv[2].y - nv[0].y) * (nv[1].x - nv[0].x));
-                                        normal.normalise();
-                                        normal.negate();
+                                        if (normal.lengthSquared() > 0f) {
+                                            normal.normalise();
+                                            normal.negate();
+                                        } else {
+                                            normal.setX(0f);
+                                            normal.setY(0f);
+                                            normal.setZ(1f);
+                                        }
                                         float[] nt = new float[]{
                                                 v[0].x, v[0].y, v[0].z,
                                                 v[1].x, v[1].y, v[1].z,
@@ -618,7 +620,13 @@ public class OpenGLRenderer {
                                         for (int i = 0; i < 4; i++) {
                                             Vector3f.add(normals[i], normal, normal);
                                         }
-                                        normal.normalise();
+                                        if (normal.lengthSquared() > 0f) {
+                                            normal.normalise();
+                                        } else {
+                                            normal.setX(0f);
+                                            normal.setY(0f);
+                                            normal.setZ(1f);
+                                        }
 
                                         int c = g.colourNumber;
                                         float rv = g.r;
