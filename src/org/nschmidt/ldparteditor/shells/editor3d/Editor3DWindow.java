@@ -3773,7 +3773,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
                             messageBox.setText(I18n.DIALOG_Error);
-                            messageBox.setMessage("An unexpected exception was thrown."); //$NON-NLS-1$ I18N
+                            messageBox.setMessage(I18n.EDITOR3D_LogUploadUnexpectedException);
                             messageBox.open();
                             return;
                         } finally {
@@ -3791,7 +3791,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     } else {
                         MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                         messageBox.setText(I18n.DIALOG_Info);
-                        messageBox.setMessage("There are no log files at the moment."); //$NON-NLS-1$ I18N
+                        messageBox.setMessage(I18n.EDITOR3D_LogUploadNoLogFiles);
                         messageBox.open();
                         return;
                     }
@@ -3811,7 +3811,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (uploadCount > 16) {
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                             messageBox.setText(I18n.DIALOG_Warning);
-                            messageBox.setMessage("The maximum upload limit for this session is reached.\nPlease restart LDPartEditor and try again."); //$NON-NLS-1$ I18N
+                            messageBox.setMessage(I18n.EDITOR3D_LogUploadLimit);
                             messageBox.open();
                             return;
                         }
@@ -3870,18 +3870,22 @@ public class Editor3DWindow extends Editor3DDesign {
                             BufferedReader response =new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8")); //$NON-NLS-1$
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                             messageBox.setText(I18n.DIALOG_Info);
-                            messageBox.setMessage("The upload was successful.\nLDPartEditor collects no personal data.\nIf you want to see what was uploaded, take a look into the error_log.txt file.\n\nOr visit: " + response.readLine()); //$NON-NLS-1$ I18N
+                            Object[] messageArguments = {response.readLine()};
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.LOCALE);
+                            formatter.applyPattern(I18n.EDITOR3D_LogUploadSuccess);
+                            messageBox.setMessage(formatter.format(messageArguments));
                             messageBox.open();
                         } else {
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                             messageBox.setText(I18n.DIALOG_Info);
-                            messageBox.setMessage("There are no log files at the moment."); //$NON-NLS-1$ I18N
+                            messageBox.setMessage(I18n.EDITOR3D_LogUploadNoLogFiles);
                             messageBox.open();
                         }
                     } catch (Exception e1) {
                         MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
                         messageBox.setText(I18n.DIALOG_Info);
-                        messageBox.setMessage("The upload failed.\nPlease check your internet connection.\nLDPartEditor collects no personal data.\nIf you want to see what was uploaded, take a look into the error_log.txt file."); //$NON-NLS-1$ I18N
+                        messageBox.setMessage(I18n.EDITOR3D_LogUploadUnexpectedException);
                         messageBox.open();
                     } finally {
                         if (b1 != null) {
@@ -4064,7 +4068,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
 
                         FileDialog fd = new FileDialog(getShell(), SWT.SAVE);
-                        fd.setText("Open PNG Image"); //$NON-NLS-1$ I18N Needs translation!
+                        fd.setText(I18n.EDITOR3D_OpenPngImage);
                         try {
                             File f = new File(png.texturePath);
                             fd.setFilterPath(f.getParent());
@@ -4075,7 +4079,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                         fd.setFilterExtensions(filterExt);
-                        String[] filterNames = { "Portable Network Graphics (*.png)", "All Files" }; //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+                        String[] filterNames = { I18n.EDITOR3D_PortableNetworkGraphics, I18n.EDITOR3D_AllFiles};
                         fd.setFilterNames(filterNames);
                         String texturePath = fd.open();
 
@@ -5863,7 +5867,7 @@ public class Editor3DWindow extends Editor3DDesign {
     public DatFile createNewDatFile(Shell sh, OpenInWhat where) {
 
         FileDialog fd = new FileDialog(sh, SWT.SAVE);
-        fd.setText("Create a new *.dat file"); //$NON-NLS-1$ I18N Needs translation!
+        fd.setText(I18n.EDITOR3D_CreateNewDat);
 
         if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
             try {
@@ -5880,7 +5884,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
         fd.setFilterExtensions(filterExt);
-        String[] filterNames = { "LDraw Source File (*.dat)", "All Files" }; //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+        String[] filterNames = { I18n.EDITOR3D_LDrawSourceFile, I18n.EDITOR3D_AllFiles };
         fd.setFilterNames(filterNames);
 
         while (true) {
@@ -5906,7 +5910,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 } else {
                     TreeItem ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
                     StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
-                    nameSb.append("(new file)"); //$NON-NLS-1$ I18N
+                    nameSb.append(I18n.EDITOR3D_NewFile);
                     ti.setText(nameSb.toString());
                     ti.setData(df);
 
@@ -5931,7 +5935,7 @@ public class Editor3DWindow extends Editor3DDesign {
     public DatFile openDatFile(Shell sh, OpenInWhat where, String filePath) {
 
         FileDialog fd = new FileDialog(sh, SWT.OPEN);
-        fd.setText("Open *.dat file"); //$NON-NLS-1$ I18N Needs translation!
+        fd.setText(I18n.EDITOR3D_OpenDatFile);
 
         if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
             try {
@@ -5948,7 +5952,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
         fd.setFilterExtensions(filterExt);
-        String[] filterNames = { "LDraw Source File (*.dat)", "All Files" }; //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+        String[] filterNames = {I18n.EDITOR3D_LDrawSourceFile, I18n.EDITOR3D_AllFiles};
         fd.setFilterNames(filterNames);
 
         String selected = filePath == null ? fd.open() : filePath;
@@ -6139,7 +6143,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
             StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
 
-            nameSb.append("(new file)"); //$NON-NLS-1$ I18N
+            nameSb.append(I18n.EDITOR3D_NewFile);
 
             ti.setText(nameSb.toString());
             ti.setData(df);
@@ -6358,7 +6362,7 @@ public class Editor3DWindow extends Editor3DDesign {
     public void updatePrimitiveLabel(Primitive p) {
         if (lbl_selectedPrimitiveItem[0] == null) return;
         if (p == null) {
-            lbl_selectedPrimitiveItem[0].setText("(no primitive selected)"); //$NON-NLS-1$ I18N Needs translation!
+            lbl_selectedPrimitiveItem[0].setText(I18n.EDITOR3D_NoPrimitiveSelected);
         } else {
             lbl_selectedPrimitiveItem[0].setText(p.toString());
         }

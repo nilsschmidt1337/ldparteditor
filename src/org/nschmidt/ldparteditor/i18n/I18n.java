@@ -65,6 +65,7 @@ public final class I18n {
     private static final ResourceBundle DATPARSER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.DatParser", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle HINTFIXER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.HintFixer", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle EDGER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Edger", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle META = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Meta", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -245,6 +246,7 @@ public final class I18n {
     public static final String EDITOR3D_CondlineToLine = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Connected = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_CopyToUnofficialLibrary = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_CreateNewDat = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Delete = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_DragHint = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Everything = EDITOR3D.getString(getProperty());
@@ -263,6 +265,7 @@ public final class I18n {
     public static final String EDITOR3D_Inverse = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LDrawConfigurationFile1 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LDrawConfigurationFile2 = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LDrawSourceFile = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LastOpened = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LineSize1 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LineSize2 = EDITOR3D.getString(getProperty());
@@ -271,6 +274,11 @@ public final class I18n {
     public static final String EDITOR3D_LoadingLibrary = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LoadingPrimitives = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Local = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LogUploadData = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LogUploadLimit = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LogUploadNoLogFiles = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LogUploadSuccess = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LogUploadUnexpectedException = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Medium = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ModeLine = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ModeSubpart = EDITOR3D.getString(getProperty());
@@ -284,17 +292,21 @@ public final class I18n {
     public static final String EDITOR3D_NearClippingHint = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_New = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_NewDat = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_NewFile = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Next = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_NextItem = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_NoPrimitiveSelected = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_None = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Open = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_OpenDat = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_OpenDatFile = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_OpenIn3DEditor = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_OpenInTextEditor = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_OpenLDConfig = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_OpenPngImage = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Origin = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Pipette = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_PortableNetworkGraphics = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionX = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionX1 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_PositionX2 = EDITOR3D.getString(getProperty());
@@ -361,6 +373,16 @@ public final class I18n {
     public static final String EDITORTEXT_Warning = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Warnings = EDITORTEXT.getString(getProperty());
     public static final String HINTFIXER_Title = HINTFIXER.getString(getProperty());
+    public static final String META_Author = META.getString(getProperty());
+    public static final String META_ChoosePng = META.getString(getProperty());
+    public static final String META_Description = META.getString(getProperty());
+    public static final String META_Filename = META.getString(getProperty());
+    public static final String META_Help = META.getString(getProperty());
+    public static final String META_Keywords1 = META.getString(getProperty());
+    public static final String META_Keywords2 = META.getString(getProperty());
+    public static final String META_LDrawHeader = META.getString(getProperty());
+    public static final String META_Username = META.getString(getProperty());
+    public static final String META_YearRelease = META.getString(getProperty());
     public static final String PARTS_HiResPrimitives = PARTS.getString(getProperty());
     public static final String PARTS_LowResPrimitives = PARTS.getString(getProperty());
     public static final String PARTS_Parts = PARTS.getString(getProperty());

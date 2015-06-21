@@ -192,7 +192,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
         {
             Group grp_meta = new Group(cmp_metaArea, SWT.NONE);
-            grp_meta.setText("LDraw Header"); //$NON-NLS-1$ I18N Needs translation!
+            grp_meta.setText(I18n.META_LDrawHeader);
             grp_meta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             grp_meta.setLayout(new GridLayout(1, false));
 
@@ -201,14 +201,14 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_description.setLayout(new GridLayout(3, false));
 
                 Label lbl_description = new Label(cmp_description, SWT.NONE);
-                lbl_description.setText("Description:"); //$NON-NLS-1$ I18N
+                lbl_description.setText("Description:"); //$NON-NLS-1$
 
                 Text txt_description = new Text(cmp_description, SWT.SEARCH);
-                txt_description.setMessage("(Insert a description text without leading zero)"); //$NON-NLS-1$ I18N
+                txt_description.setMessage(I18n.META_Description);
                 ev_description_txt[0] = txt_description;
 
                 Button btn_needsWork = new Button(cmp_description, SWT.TOGGLE);
-                btn_needsWork.setText("(Needs Work)"); //$NON-NLS-1$ I18N
+                btn_needsWork.setText("(Needs Work)"); //$NON-NLS-1$
                 ev_description_btn[0] = btn_needsWork;
             }
 
@@ -217,10 +217,10 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_name.setLayout(new GridLayout(2, false));
 
                 Label lbl_name = new Label(cmp_name, SWT.NONE);
-                lbl_name.setText("0 Name: "); //$NON-NLS-1$ I18N
+                lbl_name.setText("0 Name: "); //$NON-NLS-1$
 
                 Text txt_name = new Text(cmp_name, SWT.SEARCH);
-                txt_name.setMessage("(Insert the filename with ending and optional folder prefix (e.g. 48\\ or S\\))"); //$NON-NLS-1$ I18N
+                txt_name.setMessage(I18n.META_Filename);
                 ev_name_txt[0] = txt_name;
             }
 
@@ -229,21 +229,21 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_author.setLayout(new GridLayout(5, false));
 
                 Label lbl_author = new Label(cmp_author, SWT.NONE);
-                lbl_author.setText("0 Author: "); //$NON-NLS-1$ I18N
+                lbl_author.setText("0 Author: "); //$NON-NLS-1$
 
                 Text txt_realName = new Text(cmp_author, SWT.SEARCH);
-                txt_realName.setMessage("(Insert the authors real name)"); //$NON-NLS-1$ I18N
+                txt_realName.setMessage(I18n.META_Author);
                 ev_author_realName_txt[0] = txt_realName;
 
                 Label lbl_author2 = new Label(cmp_author, SWT.NONE);
-                lbl_author2.setText("["); //$NON-NLS-1$ I18N
+                lbl_author2.setText("["); //$NON-NLS-1$
 
                 Text txt_userName = new Text(cmp_author, SWT.SEARCH);
-                txt_userName.setMessage("(Insert the optional LDraw username)"); //$NON-NLS-1$ I18N
+                txt_userName.setMessage(I18n.META_Username);
                 ev_author_userName_txt[0] = txt_userName;
 
                 Label lbl_author3 = new Label(cmp_author, SWT.NONE);
-                lbl_author3.setText("]"); //$NON-NLS-1$ I18N
+                lbl_author3.setText("]"); //$NON-NLS-1$
             }
 
             {
@@ -251,10 +251,10 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_type.setLayout(new GridLayout(5, false));
 
                 Label lbl_type = new Label(cmp_type, SWT.NONE);
-                lbl_type.setText("0 !LDRAW_ORG "); //$NON-NLS-1$ I18N
+                lbl_type.setText("0 !LDRAW_ORG "); //$NON-NLS-1$
 
                 Button btn_unofficial = new Button(cmp_type, SWT.TOGGLE);
-                btn_unofficial.setText("Unofficial"); //$NON-NLS-1$ I18N
+                btn_unofficial.setText("Unofficial"); //$NON-NLS-1$
                 ev_type_unofficial_btn[0] = btn_unofficial;
 
                 Combo cmb_type = new Combo(cmp_type, SWT.NONE);
@@ -265,11 +265,11 @@ class EditorMetaDesign extends ApplicationWindow {
                 ev_type_type_cmb[0] = cmb_type;
 
                 Button btn_update = new Button(cmp_type, SWT.TOGGLE);
-                btn_update.setText("UPDATE"); //$NON-NLS-1$ I18N
+                btn_update.setText("UPDATE"); //$NON-NLS-1$
                 ev_type_update_btn[0] = btn_update;
 
                 Text txt_update = new Text(cmp_type, SWT.SEARCH);
-                txt_update.setMessage("YYYY-RR"); //$NON-NLS-1$ I18N
+                txt_update.setMessage(I18n.META_YearRelease);
                 txt_update.setEnabled(false);
                 ev_type_update_txt[0] = txt_update;
             }
@@ -279,7 +279,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_license.setLayout(new GridLayout(2, false));
 
                 Label lbl_license = new Label(cmp_license, SWT.NONE);
-                lbl_license.setText("0 !LICENSE "); //$NON-NLS-1$ I18N
+                lbl_license.setText("0 !LICENSE "); //$NON-NLS-1$
 
                 Combo cmb_license = new Combo(cmp_license, SWT.NONE);
                 cmb_license.setItems(new String[] { "Redistributable under CCAL version 2.0 : see CAreadme.txt", "Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
@@ -294,10 +294,10 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_help.setLayout(new GridLayout(2, false));
 
                 Label lbl_help = new Label(cmp_help, SWT.NONE);
-                lbl_help.setText("0 !HELP "); //$NON-NLS-1$ I18N
+                lbl_help.setText("0 !HELP "); //$NON-NLS-1$
 
                 Text txt_help = new Text(cmp_help, SWT.SEARCH);
-                txt_help.setMessage("(Insert an optional text which may provide helpful information for this file)"); //$NON-NLS-1$ I18N
+                txt_help.setMessage(I18n.META_Help);
                 ev_help_txt[0] = txt_help;
             }
 
@@ -306,7 +306,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_bfc.setLayout(new GridLayout(2, false));
 
                 Label lbl_bfc = new Label(cmp_bfc, SWT.NONE);
-                lbl_bfc.setText("0 BFC "); //$NON-NLS-1$ I18N
+                lbl_bfc.setText("0 BFC "); //$NON-NLS-1$
 
                 Combo cmb_bfc = new Combo(cmp_bfc, SWT.NONE);
                 cmb_bfc.setItems(new String[] { "NOCERTIFY", "CERTIFY CW", "CERTIFY CCW"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -321,7 +321,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_category.setLayout(new GridLayout(2, false));
 
                 Label lbl_category = new Label(cmp_category, SWT.NONE);
-                lbl_category.setText("0 !CATEGORY "); //$NON-NLS-1$ I18N
+                lbl_category.setText("0 !CATEGORY "); //$NON-NLS-1$
 
                 Combo cmb_category = new Combo(cmp_category, SWT.NONE);
                 ev_category_cmb[0] = cmb_category;
@@ -367,14 +367,14 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_keywords.setLayout(new GridLayout(3, false));
 
                 Label lbl_keywords = new Label(cmp_keywords, SWT.NONE);
-                lbl_keywords.setText("0 !KEYWORDS "); //$NON-NLS-1$ I18N
+                lbl_keywords.setText("0 !KEYWORDS "); //$NON-NLS-1$
 
                 Text txt_keywords = new Text(cmp_keywords, SWT.SEARCH);
-                txt_keywords.setMessage("(Insert optional keywords separated by a comma ',')"); //$NON-NLS-1$ I18N
+                txt_keywords.setMessage(I18n.META_Keywords1);
                 ev_keywords_txt[0] = txt_keywords;
 
                 Label lbl_keywords2 = new Label(cmp_keywords, SWT.NONE);
-                lbl_keywords2.setText("(Don't duplicate words and terms from the part name or number!)"); //$NON-NLS-1$ I18N
+                lbl_keywords2.setText(I18n.META_Keywords2);
             }
 
             {
@@ -382,7 +382,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_cmdline.setLayout(new GridLayout(3, false));
 
                 Label lbl_cmdline = new Label(cmp_cmdline, SWT.NONE);
-                lbl_cmdline.setText("0 !CMDLINE "); //$NON-NLS-1$ I18N
+                lbl_cmdline.setText("0 !CMDLINE "); //$NON-NLS-1$
 
                 Text txt_cmdline = new Text(cmp_cmdline, SWT.SEARCH);
                 txt_cmdline.setMessage("(Insert optional command line string)"); //$NON-NLS-1$ I18N
@@ -394,21 +394,21 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_history1.setLayout(new GridLayout(6, false));
 
                 Label lbl_history11 = new Label(cmp_history1, SWT.NONE);
-                lbl_history11.setText("0 !HISTORY "); //$NON-NLS-1$ I18N
+                lbl_history11.setText("0 !HISTORY "); //$NON-NLS-1$
 
                 Text txt_history11 = new Text(cmp_history1, SWT.SEARCH);
                 txt_history11.setMessage("YYYY-MM-DD"); //$NON-NLS-1$ I18N
                 ev_history11_txt[0] = txt_history11;
 
                 Label lbl_history12 = new Label(cmp_history1, SWT.NONE);
-                lbl_history12.setText(" ["); //$NON-NLS-1$ I18N
+                lbl_history12.setText(" ["); //$NON-NLS-1$
 
                 Text txt_history12 = new Text(cmp_history1, SWT.SEARCH);
                 txt_history12.setMessage("(Insert the LDraw username)"); //$NON-NLS-1$ I18N
                 ev_history12_txt[0] = txt_history12;
 
                 Label lbl_history13 = new Label(cmp_history1, SWT.NONE);
-                lbl_history13.setText("] "); //$NON-NLS-1$ I18N
+                lbl_history13.setText("] "); //$NON-NLS-1$
 
                 Text txt_history13 = new Text(cmp_history1, SWT.SEARCH);
                 txt_history13.setMessage("(Insert an optional text which describes what changes were made)"); //$NON-NLS-1$ I18N
@@ -420,21 +420,21 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_history2.setLayout(new GridLayout(6, false));
 
                 Label lbl_history21 = new Label(cmp_history2, SWT.NONE);
-                lbl_history21.setText("or 0 !HISTORY "); //$NON-NLS-1$ I18N
+                lbl_history21.setText("or 0 !HISTORY "); //$NON-NLS-1$
 
                 Text txt_history21 = new Text(cmp_history2, SWT.SEARCH);
                 txt_history21.setMessage("YYYY-MM-DD"); //$NON-NLS-1$ I18N
                 ev_history21_txt[0] = txt_history21;
 
                 Label lbl_history22 = new Label(cmp_history2, SWT.NONE);
-                lbl_history22.setText(" {"); //$NON-NLS-1$ I18N
+                lbl_history22.setText(" {"); //$NON-NLS-1$
 
                 Text txt_history22 = new Text(cmp_history2, SWT.SEARCH);
                 txt_history22.setMessage("(Insert the real name)"); //$NON-NLS-1$ I18N
                 ev_history22_txt[0] = txt_history22;
 
                 Label lbl_history23 = new Label(cmp_history2, SWT.NONE);
-                lbl_history23.setText("} "); //$NON-NLS-1$ I18N
+                lbl_history23.setText("} "); //$NON-NLS-1$
 
                 Text txt_history23 = new Text(cmp_history2, SWT.SEARCH);
                 txt_history23.setMessage("(Insert an optional text which describes what changes were made)"); //$NON-NLS-1$ I18N
@@ -469,7 +469,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_bfc.setLayout(new GridLayout(2, false));
 
                 Label lbl_bfc = new Label(cmp_bfc, SWT.NONE);
-                lbl_bfc.setText("0 BFC "); //$NON-NLS-1$ I18N
+                lbl_bfc.setText("0 BFC "); //$NON-NLS-1$
 
                 Combo cmb_bfc = new Combo(cmp_bfc, SWT.NONE);
                 cmb_bfc.setItems(new String[] { "INVERTNEXT", "NOCLIP", "CW", "CCW", "CLIP", "CLIP CW", "CLIP CCW"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
@@ -490,7 +490,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_texmap.setLayout(new GridLayout(14, false));
 
                 Label lbl_texmap = new Label(cmp_texmap, SWT.NONE);
-                lbl_texmap.setText("0 !TEXMAP "); //$NON-NLS-1$ I18N
+                lbl_texmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
                 Combo cmb_texmap = new Combo(cmp_texmap, SWT.NONE);
                 cmb_texmap.setItems(new String[] { "START", "NEXT" }); //$NON-NLS-1$ //$NON-NLS-2$
@@ -500,7 +500,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 ev_texmapPlanar_cmb[0] = cmb_texmap;
 
                 Label lbl_planar = new Label(cmp_texmap, SWT.NONE);
-                lbl_planar.setText(" PLANAR "); //$NON-NLS-1$ I18N
+                lbl_planar.setText(" PLANAR "); //$NON-NLS-1$
                 {
                     Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
                     txt_planar.setMessage("( X1 )"); //$NON-NLS-1$ I18N
@@ -562,7 +562,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_texmap.setLayout(new GridLayout(15, false));
 
                 Label lbl_texmap = new Label(cmp_texmap, SWT.NONE);
-                lbl_texmap.setText("0 !TEXMAP "); //$NON-NLS-1$ I18N
+                lbl_texmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
                 Combo cmb_texmap = new Combo(cmp_texmap, SWT.NONE);
                 cmb_texmap.setItems(new String[] { "START", "NEXT" }); //$NON-NLS-1$ //$NON-NLS-2$
@@ -572,7 +572,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 ev_texmapCyli_cmb[0] = cmb_texmap;
 
                 Label lbl_cylindrical = new Label(cmp_texmap, SWT.NONE);
-                lbl_cylindrical.setText(" CYLINDRICAL "); //$NON-NLS-1$ I18N
+                lbl_cylindrical.setText(" CYLINDRICAL "); //$NON-NLS-1$
                 {
                     Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
                     txt_cylindrical.setMessage("( X1 )"); //$NON-NLS-1$ I18N
@@ -648,7 +648,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_texmap.setLayout(new GridLayout(16, false));
 
                 Label lbl_texmap = new Label(cmp_texmap, SWT.NONE);
-                lbl_texmap.setText("0 !TEXMAP "); //$NON-NLS-1$ I18N
+                lbl_texmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
                 Combo cmb_texmap = new Combo(cmp_texmap, SWT.NONE);
                 cmb_texmap.setItems(new String[] { "START", "NEXT" }); //$NON-NLS-1$ //$NON-NLS-2$
@@ -658,7 +658,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 ev_texmapSphere_cmb[0] = cmb_texmap;
 
                 Label lbl_spherical = new Label(cmp_texmap, SWT.NONE);
-                lbl_spherical.setText(" SPHERICAL "); //$NON-NLS-1$ I18N
+                lbl_spherical.setText(" SPHERICAL "); //$NON-NLS-1$
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
                     txt_spherical.setMessage("( X1 )"); //$NON-NLS-1$ I18N
@@ -743,7 +743,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 Composite cmp_texmap = new Composite(grp_meta, SWT.NONE);
                 cmp_texmap.setLayout(new GridLayout(2, false));
                 Label lbl_texmap = new Label(cmp_texmap, SWT.NONE);
-                lbl_texmap.setText("0 !: "); //$NON-NLS-1$ I18N
+                lbl_texmap.setText("0 !: "); //$NON-NLS-1$
                 {
                     Text txt_meta = new Text(cmp_texmap, SWT.SEARCH);
                     txt_meta.setMessage("(Insert texture mapped geometry here. It will be ignored by renderers that do not support the !TEXMAP meta-statement.)"); //$NON-NLS-1$ I18N
@@ -768,7 +768,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
                 cmp_lpe.setLayout(new GridLayout(2, false));
                 Label lbl_todo = new Label(cmp_lpe, SWT.NONE);
-                lbl_todo.setText("0 !LPE TODO "); //$NON-NLS-1$ I18N
+                lbl_todo.setText("0 !LPE TODO "); //$NON-NLS-1$
                 {
                     Text txt_todo = new Text(cmp_lpe, SWT.SEARCH);
                     txt_todo.setMessage("(Insert a task description here)                        "); //$NON-NLS-1$ I18N
@@ -780,7 +780,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
                 cmp_lpe.setLayout(new GridLayout(4, false));
                 Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                lbl_vertex.setText("0 !LPE VERTEX "); //$NON-NLS-1$ I18N
+                lbl_vertex.setText("0 !LPE VERTEX "); //$NON-NLS-1$
                 {
                     Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
                     txt_x.setMessage("(X coordinate)"); //$NON-NLS-1$ I18N
@@ -805,7 +805,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
                 cmp_lpe.setLayout(new GridLayout(5, false));
                 Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                lbl_vertex.setText("0 !LPE CSG_"); //$NON-NLS-1$ I18N
+                lbl_vertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
                 {
                     Combo cmb_csg = new Combo(cmp_lpe, SWT.NONE);
                     cmb_csg.setItems(new String[] { "UNION ", "DIFFERENCE ", "INTERSECTION "}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -834,7 +834,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
                 cmp_lpe.setLayout(new GridLayout(16, false));
                 Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                lbl_vertex.setText("0 !LPE CSG_"); //$NON-NLS-1$ I18N
+                lbl_vertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
                 {
                     Combo cmb_csg = new Combo(cmp_lpe, SWT.NONE);
                     cmb_csg.setItems(new String[] { "CUBOID ", "ELLIPSOID ", "QUAD ", "CYLINDER ", "CONE ", "CIRCLE "}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
@@ -937,7 +937,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
                 cmp_lpe.setLayout(new GridLayout(2, false));
                 Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                lbl_vertex.setText("0 !LPE CSG_COMPILE"); //$NON-NLS-1$ I18N
+                lbl_vertex.setText("0 !LPE CSG_COMPILE"); //$NON-NLS-1$
                 {
                     Text txt_csgid1 = new Text(cmp_lpe, SWT.SEARCH);
                     txt_csgid1.setMessage("(Source CSG-ID to compile)"); //$NON-NLS-1$ I18N
@@ -950,7 +950,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
                 cmp_lpe.setLayout(new GridLayout(2, false));
                 Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                lbl_vertex.setText("0 !LPE CSG_QUALITY"); //$NON-NLS-1$ I18N
+                lbl_vertex.setText("0 !LPE CSG_QUALITY"); //$NON-NLS-1$
                 {
                     Text txt_csgQuality = new Text(cmp_lpe, SWT.SEARCH);
                     txt_csgQuality.setMessage("(Integer from 3 to 48 [Default: 16])"); //$NON-NLS-1$ I18N
@@ -962,7 +962,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
                 cmp_lpe.setLayout(new GridLayout(2, false));
                 Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                lbl_vertex.setText("0 !LPE CSG_EPSILON"); //$NON-NLS-1$ I18N
+                lbl_vertex.setText("0 !LPE CSG_EPSILON"); //$NON-NLS-1$
                 {
                     Text txt_csgEpsilon = new Text(cmp_lpe, SWT.SEARCH);
                     txt_csgEpsilon.setMessage("(Double value, greater zero [Default: 1E-6])"); //$NON-NLS-1$ I18N
@@ -975,7 +975,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
                 cmp_lpe.setLayout(new GridLayout(11, false));
                 Label lbl_png = new Label(cmp_lpe, SWT.NONE);
-                lbl_png.setText("0 !LPE PNG "); //$NON-NLS-1$ I18N
+                lbl_png.setText("0 !LPE PNG "); //$NON-NLS-1$
                 {
                     Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
                     txt_x.setMessage("(X coordinate)"); //$NON-NLS-1$ I18N
