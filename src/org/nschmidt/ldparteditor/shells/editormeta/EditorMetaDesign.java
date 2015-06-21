@@ -940,8 +940,8 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_vertex.setText("0 !LPE CSG_COMPILE"); //$NON-NLS-1$
                 {
                     Text txt_csgid1 = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_csgid1.setMessage("(Source CSG-ID to compile)"); //$NON-NLS-1$ I18N
-                    txt_csgid1.setToolTipText("Inlining this line will generate triangles for you."); //$NON-NLS-1$ I18N
+                    txt_csgid1.setMessage(I18n.META_CSGSource3);
+                    txt_csgid1.setToolTipText(I18n.META_CSGCompile);
                     ev_csgCompile_txt[0] = txt_csgid1;
                 }
             }
@@ -953,7 +953,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_vertex.setText("0 !LPE CSG_QUALITY"); //$NON-NLS-1$
                 {
                     Text txt_csgQuality = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_csgQuality.setMessage("(Integer from 3 to 48 [Default: 16])"); //$NON-NLS-1$ I18N
+                    txt_csgQuality.setMessage(I18n.META_Quality);
                     ev_csgQuality_txt[0] = txt_csgQuality;
                 }
             }
@@ -965,8 +965,8 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_vertex.setText("0 !LPE CSG_EPSILON"); //$NON-NLS-1$
                 {
                     Text txt_csgEpsilon = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_csgEpsilon.setMessage("(Double value, greater zero [Default: 1E-6])"); //$NON-NLS-1$ I18N
-                    txt_csgEpsilon.setToolTipText("Should be modified if the compiled CSG tree seems to be wrong."); //$NON-NLS-1$ I18N
+                    txt_csgEpsilon.setMessage(I18n.META_CSGEpsilon1);
+                    txt_csgEpsilon.setToolTipText(I18n.META_CSGEpsilon2);
                     ev_csgEpsilon_txt[0] = txt_csgEpsilon;
                 }
             }
@@ -978,19 +978,19 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_png.setText("0 !LPE PNG "); //$NON-NLS-1$
                 {
                     Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_x.setMessage("(X coordinate)"); //$NON-NLS-1$ I18N
+                    txt_x.setMessage(I18n.META_VertexX);
                     txt_x.setToolTipText(I18n.META_DecimalMark);
                     ev_png1_txt[0] = txt_x;
                 }
                 {
                     Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_y.setMessage("(Y coordinate)"); //$NON-NLS-1$ I18N
+                    txt_y.setMessage(I18n.META_VertexY);
                     txt_y.setToolTipText(I18n.META_DecimalMark);
                     ev_png2_txt[0] = txt_y;
                 }
                 {
                     Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_z.setMessage("(Z coordinate)"); //$NON-NLS-1$ I18N
+                    txt_z.setMessage(I18n.META_VertexZ);
                     txt_z.setToolTipText(I18n.META_DecimalMark);
                     ev_png3_txt[0] = txt_z;
                 }

@@ -375,8 +375,12 @@ public final class I18n {
     public static final String HINTFIXER_Title = HINTFIXER.getString(getProperty());
     public static final String META_Author = META.getString(getProperty());
     public static final String META_BackFaceCulling = META.getString(getProperty());
+    public static final String META_CSGCompile = META.getString(getProperty());
+    public static final String META_CSGEpsilon1 = META.getString(getProperty());
+    public static final String META_CSGEpsilon2 = META.getString(getProperty());
     public static final String META_CSGSource1 = META.getString(getProperty());
     public static final String META_CSGSource2 = META.getString(getProperty());
+    public static final String META_CSGSource3 = META.getString(getProperty());
     public static final String META_CSGTarget1 = META.getString(getProperty());
     public static final String META_CSGUnique = META.getString(getProperty());
     public static final String META_CSGUniqueHint = META.getString(getProperty());
@@ -408,6 +412,7 @@ public final class I18n {
     public static final String META_M20 = META.getString(getProperty());
     public static final String META_M21 = META.getString(getProperty());
     public static final String META_M22 = META.getString(getProperty());
+    public static final String META_Quality = META.getString(getProperty());
     public static final String META_TextureAngle1 = META.getString(getProperty());
     public static final String META_TextureAngle2 = META.getString(getProperty());
     public static final String META_TextureBottomCenter = META.getString(getProperty());
