@@ -816,17 +816,17 @@ class EditorMetaDesign extends ApplicationWindow {
                 }
                 {
                     Text txt_csgid1 = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_csgid1.setMessage("(Source CSG-ID 1)"); //$NON-NLS-1$ I18N
+                    txt_csgid1.setMessage(I18n.META_CSGSource1);
                     ev_csgAction1_txt[0] = txt_csgid1;
                 }
                 {
                     Text txt_csgid2 = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_csgid2.setMessage("(Source CSG-ID 2)"); //$NON-NLS-1$ I18N
+                    txt_csgid2.setMessage(I18n.META_CSGSource2);
                     ev_csgAction2_txt[0] = txt_csgid2;
                 }
                 {
                     Text txt_csgid3 = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_csgid3.setMessage("(Target CSG-ID)"); //$NON-NLS-1$ I18N
+                    txt_csgid3.setMessage(I18n.META_CSGTarget1);
                     ev_csgAction3_txt[0] = txt_csgid3;
                 }
             }
@@ -845,14 +845,14 @@ class EditorMetaDesign extends ApplicationWindow {
                 }
                 {
                     Text txt_csgid1 = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_csgid1.setMessage("(Unique CSG-ID)"); //$NON-NLS-1$ I18N
-                    txt_csgid1.setToolTipText("Please use no spaces for this ID.\nYou cannot access this identifier from parent files."); //$NON-NLS-1$ I18N
+                    txt_csgid1.setMessage(I18n.META_CSGUnique);
+                    txt_csgid1.setToolTipText(I18n.META_CSGUniqueHint);
                     ev_csgBody1_txt[0] = txt_csgid1;
                 }
                 {
                     Text txt_csgid2 = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_csgid2.setMessage("(Colour)"); //$NON-NLS-1$ I18N
-                    txt_csgid2.setToolTipText("A valid LDraw colour (decimal or hex [0x2RRGGBB])."); //$NON-NLS-1$ I18N
+                    txt_csgid2.setMessage(I18n.META_Colour);
+                    txt_csgid2.setToolTipText(I18n.META_ColourHint);
                     ev_csgBody2_txt[0] = txt_csgid2;
 
                 }
@@ -877,57 +877,57 @@ class EditorMetaDesign extends ApplicationWindow {
 
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_m.setMessage("(  M00  )"); //$NON-NLS-1$ I18N
+                    txt_m.setMessage(I18n.META_M00);
                     txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody6_txt[0] = txt_m;
                 }
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_m.setMessage("(  M01  )"); //$NON-NLS-1$ I18N
+                    txt_m.setMessage(I18n.META_M01);
                     txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody7_txt[0] = txt_m;
                 }
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_m.setMessage("(  M02  )"); //$NON-NLS-1$ I18N
+                    txt_m.setMessage(I18n.META_M02);
                     txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody8_txt[0] = txt_m;
                 }
 
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_m.setMessage("(  M10  )"); //$NON-NLS-1$ I18N
+                    txt_m.setMessage(I18n.META_M10);
                     txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody9_txt[0] = txt_m;
                 }
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_m.setMessage("(  M11  )"); //$NON-NLS-1$ I18N
+                    txt_m.setMessage(I18n.META_M11);
                     txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody10_txt[0] = txt_m;
                 }
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_m.setMessage("(  M12  )"); //$NON-NLS-1$ I18N
+                    txt_m.setMessage(I18n.META_M12);
                     txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody11_txt[0] = txt_m;
                 }
 
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_m.setMessage("(  M20  )"); //$NON-NLS-1$ I18N
+                    txt_m.setMessage(I18n.META_M20);
                     txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody12_txt[0] = txt_m;
                 }
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_m.setMessage("(  M21  )"); //$NON-NLS-1$ I18N
+                    txt_m.setMessage(I18n.META_M21);
                     txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody13_txt[0] = txt_m;
                 }
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_m.setMessage("(  M22  )"); //$NON-NLS-1$ I18N
+                    txt_m.setMessage(I18n.META_M22);
                     txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody14_txt[0] = txt_m;
                 }
