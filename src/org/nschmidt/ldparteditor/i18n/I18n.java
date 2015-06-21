@@ -412,6 +412,7 @@ public final class I18n {
     public static final String META_TextureZ2 = META.getString(getProperty());
     public static final String META_TextureZ3 = META.getString(getProperty());
     public static final String META_Todo = META.getString(getProperty());
+    public static final String META_TransMatrix = META.getString(getProperty());
     public static final String META_Username = META.getString(getProperty());
     public static final String META_VertexX = META.getString(getProperty());
     public static final String META_VertexY = META.getString(getProperty());

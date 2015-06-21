@@ -858,19 +858,19 @@ class EditorMetaDesign extends ApplicationWindow {
                 }
                 {
                     Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_x.setMessage("(X coordinate)"); //$NON-NLS-1$ I18N
+                    txt_x.setMessage(I18n.META_VertexX);
                     txt_x.setToolTipText(I18n.META_DecimalMark);
                     ev_csgBody3_txt[0] = txt_x;
                 }
                 {
                     Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_y.setMessage("(Y coordinate)"); //$NON-NLS-1$ I18N
+                    txt_y.setMessage(I18n.META_VertexY);
                     txt_y.setToolTipText(I18n.META_DecimalMark);
                     ev_csgBody4_txt[0] = txt_y;
                 }
                 {
                     Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_z.setMessage("(Z coordinate)"); //$NON-NLS-1$ I18N
+                    txt_z.setMessage(I18n.META_VertexZ);
                     txt_z.setToolTipText(I18n.META_DecimalMark);
                     ev_csgBody5_txt[0] = txt_z;
                 }
@@ -878,57 +878,57 @@ class EditorMetaDesign extends ApplicationWindow {
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
                     txt_m.setMessage("(  M00  )"); //$NON-NLS-1$ I18N
-                    txt_m.setToolTipText("The LDraw transformation matrix.\nUse '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody6_txt[0] = txt_m;
                 }
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
                     txt_m.setMessage("(  M01  )"); //$NON-NLS-1$ I18N
-                    txt_m.setToolTipText("The LDraw transformation matrix.\nUse '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody7_txt[0] = txt_m;
                 }
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
                     txt_m.setMessage("(  M02  )"); //$NON-NLS-1$ I18N
-                    txt_m.setToolTipText("The LDraw transformation matrix.\nUse '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody8_txt[0] = txt_m;
                 }
 
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
                     txt_m.setMessage("(  M10  )"); //$NON-NLS-1$ I18N
-                    txt_m.setToolTipText("The LDraw transformation matrix.\nUse '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody9_txt[0] = txt_m;
                 }
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
                     txt_m.setMessage("(  M11  )"); //$NON-NLS-1$ I18N
-                    txt_m.setToolTipText("The LDraw transformation matrix.\nUse '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody10_txt[0] = txt_m;
                 }
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
                     txt_m.setMessage("(  M12  )"); //$NON-NLS-1$ I18N
-                    txt_m.setToolTipText("The LDraw transformation matrix.\nUse '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody11_txt[0] = txt_m;
                 }
 
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
                     txt_m.setMessage("(  M20  )"); //$NON-NLS-1$ I18N
-                    txt_m.setToolTipText("The LDraw transformation matrix.\nUse '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody12_txt[0] = txt_m;
                 }
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
                     txt_m.setMessage("(  M21  )"); //$NON-NLS-1$ I18N
-                    txt_m.setToolTipText("The LDraw transformation matrix.\nUse '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody13_txt[0] = txt_m;
                 }
                 {
                     Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
                     txt_m.setMessage("(  M22  )"); //$NON-NLS-1$ I18N
-                    txt_m.setToolTipText("The LDraw transformation matrix.\nUse '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgBody14_txt[0] = txt_m;
                 }
             }
