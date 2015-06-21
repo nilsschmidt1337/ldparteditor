@@ -380,6 +380,7 @@ public final class I18n {
     public static final String META_Comment = META.getString(getProperty());
     public static final String META_CylinderBottomCenter = META.getString(getProperty());
     public static final String META_CylinderTopCenter = META.getString(getProperty());
+    public static final String META_DecimalMark = META.getString(getProperty());
     public static final String META_Description = META.getString(getProperty());
     public static final String META_Filename = META.getString(getProperty());
     public static final String META_Help = META.getString(getProperty());
@@ -410,7 +411,11 @@ public final class I18n {
     public static final String META_TextureZ1 = META.getString(getProperty());
     public static final String META_TextureZ2 = META.getString(getProperty());
     public static final String META_TextureZ3 = META.getString(getProperty());
+    public static final String META_Todo = META.getString(getProperty());
     public static final String META_Username = META.getString(getProperty());
+    public static final String META_VertexX = META.getString(getProperty());
+    public static final String META_VertexY = META.getString(getProperty());
+    public static final String META_VertexZ = META.getString(getProperty());
     public static final String META_YearRelease = META.getString(getProperty());
     public static final String PARTS_HiResPrimitives = PARTS.getString(getProperty());
     public static final String PARTS_LowResPrimitives = PARTS.getString(getProperty());
