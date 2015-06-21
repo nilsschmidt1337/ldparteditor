@@ -771,7 +771,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_todo.setText("0 !LPE TODO "); //$NON-NLS-1$
                 {
                     Text txt_todo = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_todo.setMessage("(Insert a task description here)                        "); //$NON-NLS-1$ I18N
+                    txt_todo.setMessage(I18n.META_Todo);
                     ev_todo_txt[0] = txt_todo;
                 }
             }
@@ -783,20 +783,20 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_vertex.setText("0 !LPE VERTEX "); //$NON-NLS-1$
                 {
                     Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_x.setMessage("(X coordinate)"); //$NON-NLS-1$ I18N
-                    txt_x.setToolTipText("Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_x.setMessage(I18n.META_VertexX);
+                    txt_x.setToolTipText(I18n.META_DecimalMark);
                     ev_vertex1_txt[0] = txt_x;
                 }
                 {
                     Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_y.setMessage("(Y coordinate)"); //$NON-NLS-1$ I18N
-                    txt_y.setToolTipText("Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_y.setMessage(I18n.META_VertexY);
+                    txt_y.setToolTipText(I18n.META_DecimalMark);
                     ev_vertex2_txt[0] = txt_y;
                 }
                 {
                     Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_z.setMessage("(Z coordinate)"); //$NON-NLS-1$ I18N
-                    txt_z.setToolTipText("Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_z.setMessage(I18n.META_VertexZ);
+                    txt_z.setToolTipText(I18n.META_DecimalMark);
                     ev_vertex3_txt[0] = txt_z;
                 }
             }
@@ -859,19 +859,19 @@ class EditorMetaDesign extends ApplicationWindow {
                 {
                     Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
                     txt_x.setMessage("(X coordinate)"); //$NON-NLS-1$ I18N
-                    txt_x.setToolTipText("Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_x.setToolTipText(I18n.META_DecimalMark);
                     ev_csgBody3_txt[0] = txt_x;
                 }
                 {
                     Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
                     txt_y.setMessage("(Y coordinate)"); //$NON-NLS-1$ I18N
-                    txt_y.setToolTipText("Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_y.setToolTipText(I18n.META_DecimalMark);
                     ev_csgBody4_txt[0] = txt_y;
                 }
                 {
                     Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
                     txt_z.setMessage("(Z coordinate)"); //$NON-NLS-1$ I18N
-                    txt_z.setToolTipText("Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_z.setToolTipText(I18n.META_DecimalMark);
                     ev_csgBody5_txt[0] = txt_z;
                 }
 
@@ -979,56 +979,56 @@ class EditorMetaDesign extends ApplicationWindow {
                 {
                     Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
                     txt_x.setMessage("(X coordinate)"); //$NON-NLS-1$ I18N
-                    txt_x.setToolTipText("Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_x.setToolTipText(I18n.META_DecimalMark);
                     ev_png1_txt[0] = txt_x;
                 }
                 {
                     Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
                     txt_y.setMessage("(Y coordinate)"); //$NON-NLS-1$ I18N
-                    txt_y.setToolTipText("Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_y.setToolTipText(I18n.META_DecimalMark);
                     ev_png2_txt[0] = txt_y;
                 }
                 {
                     Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
                     txt_z.setMessage("(Z coordinate)"); //$NON-NLS-1$ I18N
-                    txt_z.setToolTipText("Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_z.setToolTipText(I18n.META_DecimalMark);
                     ev_png3_txt[0] = txt_z;
                 }
 
                 {
                     Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
                     txt_x.setMessage("(X axis rotation)"); //$NON-NLS-1$ I18N
-                    txt_x.setToolTipText("In degree. Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_x.setToolTipText(I18n.META_DecimalMark);
                     ev_png4_txt[0] = txt_x;
                 }
                 {
                     Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
                     txt_y.setMessage("(Y axis rotation)"); //$NON-NLS-1$ I18N
-                    txt_y.setToolTipText("In degree. Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_y.setToolTipText(I18n.META_DecimalMark);
                     ev_png5_txt[0] = txt_y;
                 }
                 {
                     Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
                     txt_z.setMessage("(Z axis rotation)"); //$NON-NLS-1$ I18N
-                    txt_z.setToolTipText("In degree. Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_z.setToolTipText(I18n.META_DecimalMark);
                     ev_png6_txt[0] = txt_z;
                 }
 
                 {
                     Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
                     txt_x.setMessage("( scale factor X )"); //$NON-NLS-1$ I18N
-                    txt_x.setToolTipText("Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_x.setToolTipText(I18n.META_DecimalMark);
                     ev_png7_txt[0] = txt_x;
                 }
                 {
                     Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
                     txt_y.setMessage("( scale factor Y )"); //$NON-NLS-1$ I18N
-                    txt_y.setToolTipText("Use '.' as decimal mark"); //$NON-NLS-1$ I18N
+                    txt_y.setToolTipText(I18n.META_DecimalMark);
                     ev_png8_txt[0] = txt_y;
                 }
                 {
                     Text txt_png = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_png.setMessage("( path of the PNG file )"); //$NON-NLS-1$ I18N
+                    txt_png.setMessage(I18n.META_TexturePNG);
                     ev_png9_txt[0] = txt_png;
                 }
                 {
