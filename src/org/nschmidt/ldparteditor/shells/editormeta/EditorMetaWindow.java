@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.helpers.Version;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.main.LDPartEditor;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -394,7 +395,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 public void widgetSelected(SelectionEvent e) {
 
                     FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                    fd.setText("Choose *.png file"); //$NON-NLS-1$ I18N Needs translation!
+                    fd.setText(I18n.META_ChoosePng);
 
                     if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
                         try {
@@ -411,7 +412,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
                     String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                     fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { "Portable Network Graphics File (*.png)", "All Files" }; //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+                    String[] filterNames = { I18n.EDITOR3D_PortableNetworkGraphics, I18n.EDITOR3D_AllFiles };
                     fd.setFilterNames(filterNames);
                     String selected = fd.open();
                     if (selected != null) {
@@ -466,7 +467,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 public void widgetSelected(SelectionEvent e) {
 
                     FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                    fd.setText("Choose *.png file"); //$NON-NLS-1$ I18N Needs translation!
+                    fd.setText(I18n.META_ChoosePng);
 
                     if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
                         try {
@@ -483,7 +484,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
                     String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                     fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { "Portable Network Graphics File (*.png)", "All Files" }; //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+                    String[] filterNames = { I18n.EDITOR3D_PortableNetworkGraphics, I18n.EDITOR3D_AllFiles };
                     fd.setFilterNames(filterNames);
                     String selected = fd.open();
                     if (selected != null) {
@@ -540,7 +541,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 public void widgetSelected(SelectionEvent e) {
 
                     FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                    fd.setText("Choose *.png file"); //$NON-NLS-1$ I18N Needs translation!
+                    fd.setText(I18n.META_ChoosePng);
 
                     if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
                         try {
@@ -557,7 +558,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
                     String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                     fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { "Portable Network Graphics File (*.png)", "All Files" }; //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+                    String[] filterNames = { I18n.EDITOR3D_PortableNetworkGraphics, I18n.EDITOR3D_AllFiles };
                     fd.setFilterNames(filterNames);
                     String selected = fd.open();
                     if (selected != null) {
@@ -821,7 +822,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 public void widgetSelected(SelectionEvent e) {
 
                     FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                    fd.setText("Choose *.png file"); //$NON-NLS-1$ I18N Needs translation!
+                    fd.setText(I18n.META_ChoosePng);
 
                     if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
                         try {
@@ -838,7 +839,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
                     String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                     fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { "Portable Network Graphics File (*.png)", "All Files" }; //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+                    String[] filterNames = { I18n.EDITOR3D_PortableNetworkGraphics, I18n.EDITOR3D_AllFiles };
                     fd.setFilterNames(filterNames);
                     String selected = fd.open();
                     if (selected != null) {
