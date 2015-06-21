@@ -390,9 +390,17 @@ public final class I18n {
     public static final String META_Keywords1 = META.getString(getProperty());
     public static final String META_Keywords2 = META.getString(getProperty());
     public static final String META_LDrawHeader = META.getString(getProperty());
+    public static final String META_LPE = META.getString(getProperty());
+    public static final String META_TextureAngle1 = META.getString(getProperty());
+    public static final String META_TextureAngle2 = META.getString(getProperty());
     public static final String META_TextureBottomCenter = META.getString(getProperty());
+    public static final String META_TextureCenter = META.getString(getProperty());
+    public static final String META_TextureGeom1 = META.getString(getProperty());
+    public static final String META_TextureGeom2 = META.getString(getProperty());
     public static final String META_TextureMapping = META.getString(getProperty());
     public static final String META_TexturePNG = META.getString(getProperty());
+    public static final String META_TextureSphereCenter = META.getString(getProperty());
+    public static final String META_TextureTopCenter = META.getString(getProperty());
     public static final String META_TextureX1 = META.getString(getProperty());
     public static final String META_TextureX2 = META.getString(getProperty());
     public static final String META_TextureX3 = META.getString(getProperty());

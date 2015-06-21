@@ -629,12 +629,12 @@ class EditorMetaDesign extends ApplicationWindow {
                 }
                 {
                     Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_cylindrical.setMessage("( Angle, in Degrees [0-360] )"); //$NON-NLS-1$ I18N
+                    txt_cylindrical.setMessage(I18n.META_TextureAngle1);
                     ev_texmapCyli10_txt[0] = txt_cylindrical;
                 }
                 {
                     Text txt_png = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_png.setMessage("( path of the PNG file )"); //$NON-NLS-1$ I18N
+                    txt_png.setMessage(I18n.META_TexturePNG);
                     ev_texmapCyli11_txt[0] = txt_png;
                 }
                 {
@@ -662,70 +662,70 @@ class EditorMetaDesign extends ApplicationWindow {
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
                     txt_spherical.setMessage(I18n.META_TextureX1);
-                    txt_spherical.setToolTipText("Sphere Center"); //$NON-NLS-1$ I18N
+                    txt_spherical.setToolTipText(I18n.META_TextureSphereCenter);
                     ev_texmapSphere1_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
                     txt_spherical.setMessage(I18n.META_TextureY1);
-                    txt_spherical.setToolTipText("Sphere Center"); //$NON-NLS-1$ I18N
+                    txt_spherical.setToolTipText(I18n.META_TextureSphereCenter);
                     ev_texmapSphere2_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
                     txt_spherical.setMessage(I18n.META_TextureZ1);
-                    txt_spherical.setToolTipText("Sphere Center"); //$NON-NLS-1$ I18N
+                    txt_spherical.setToolTipText(I18n.META_TextureSphereCenter);
                     ev_texmapSphere3_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
                     txt_spherical.setMessage(I18n.META_TextureX2);
-                    txt_spherical.setToolTipText("Texture Center"); //$NON-NLS-1$ I18N
+                    txt_spherical.setToolTipText(I18n.META_TextureCenter);
                     ev_texmapSphere4_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
                     txt_spherical.setMessage(I18n.META_TextureY2);
-                    txt_spherical.setToolTipText("Texture Center"); //$NON-NLS-1$ I18N
+                    txt_spherical.setToolTipText(I18n.META_TextureCenter);
                     ev_texmapSphere5_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
                     txt_spherical.setMessage(I18n.META_TextureZ2);
-                    txt_spherical.setToolTipText("Texture Center"); //$NON-NLS-1$ I18N
+                    txt_spherical.setToolTipText(I18n.META_TextureCenter);
                     ev_texmapSphere6_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
                     txt_spherical.setMessage(I18n.META_TextureX3);
-                    txt_spherical.setToolTipText("Texture Top Center"); //$NON-NLS-1$ I18N
+                    txt_spherical.setToolTipText(I18n.META_TextureTopCenter);
                     ev_texmapSphere7_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
                     txt_spherical.setMessage(I18n.META_TextureY3);
-                    txt_spherical.setToolTipText("Texture Top Center"); //$NON-NLS-1$ I18N
+                    txt_spherical.setToolTipText(I18n.META_TextureTopCenter);
                     ev_texmapSphere8_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
                     txt_spherical.setMessage(I18n.META_TextureZ3);
-                    txt_spherical.setToolTipText("Texture Top Center"); //$NON-NLS-1$ I18N
+                    txt_spherical.setToolTipText(I18n.META_TextureTopCenter);
                     ev_texmapSphere9_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_spherical.setMessage("( Angle, in Degrees [0-360] )"); //$NON-NLS-1$ I18N
+                    txt_spherical.setMessage(I18n.META_TextureAngle1);
                     ev_texmapSphere10_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_spherical.setMessage("( Angle, in Degrees [0-180] )"); //$NON-NLS-1$ I18N
+                    txt_spherical.setMessage(I18n.META_TextureAngle2);
                     ev_texmapSphere11_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_png = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_png.setMessage("( path of the PNG file )"); //$NON-NLS-1$ I18N
+                    txt_png.setMessage(I18n.META_TexturePNG);
                     ev_texmapSphere12_txt[0] = txt_png;
                 }
                 {
@@ -746,8 +746,8 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_texmap.setText("0 !: "); //$NON-NLS-1$
                 {
                     Text txt_meta = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_meta.setMessage("(Insert texture mapped geometry here. It will be ignored by renderers that do not support the !TEXMAP meta-statement.)"); //$NON-NLS-1$ I18N
-                    txt_meta.setToolTipText("This is used to specify texture mapped geometry that will be ignored by renderers that do not support the !TEXMAP meta-statement. This command must not be nested inside itself."); //$NON-NLS-1$ I18N
+                    txt_meta.setMessage(I18n.META_TextureGeom1);
+                    txt_meta.setToolTipText(I18n.META_TextureGeom2);
                     ev_texmapMeta_txt[0] = txt_meta;
                 }
             }
@@ -760,7 +760,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
         {
             Group grp_meta = new Group(cmp_metaArea, SWT.NONE);
-            grp_meta.setText("LDraw Part Editor (LPE)"); //$NON-NLS-1$ I18N Needs translation!
+            grp_meta.setText(I18n.META_LPE);
             grp_meta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             grp_meta.setLayout(new GridLayout(1, false));
 
