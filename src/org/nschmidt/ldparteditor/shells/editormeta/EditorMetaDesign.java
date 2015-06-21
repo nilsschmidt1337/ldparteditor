@@ -385,7 +385,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_cmdline.setText("0 !CMDLINE "); //$NON-NLS-1$
 
                 Text txt_cmdline = new Text(cmp_cmdline, SWT.SEARCH);
-                txt_cmdline.setMessage("(Insert optional command line string)"); //$NON-NLS-1$ I18N
+                txt_cmdline.setMessage(I18n.META_CommandLine);
                 ev_cmdline_txt[0] = txt_cmdline;
             }
 
@@ -397,21 +397,21 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_history11.setText("0 !HISTORY "); //$NON-NLS-1$
 
                 Text txt_history11 = new Text(cmp_history1, SWT.SEARCH);
-                txt_history11.setMessage("YYYY-MM-DD"); //$NON-NLS-1$ I18N
+                txt_history11.setMessage(I18n.META_History1);
                 ev_history11_txt[0] = txt_history11;
 
                 Label lbl_history12 = new Label(cmp_history1, SWT.NONE);
                 lbl_history12.setText(" ["); //$NON-NLS-1$
 
                 Text txt_history12 = new Text(cmp_history1, SWT.SEARCH);
-                txt_history12.setMessage("(Insert the LDraw username)"); //$NON-NLS-1$ I18N
+                txt_history12.setMessage(I18n.META_History2);
                 ev_history12_txt[0] = txt_history12;
 
                 Label lbl_history13 = new Label(cmp_history1, SWT.NONE);
                 lbl_history13.setText("] "); //$NON-NLS-1$
 
                 Text txt_history13 = new Text(cmp_history1, SWT.SEARCH);
-                txt_history13.setMessage("(Insert an optional text which describes what changes were made)"); //$NON-NLS-1$ I18N
+                txt_history13.setMessage(I18n.META_History4);
                 ev_history13_txt[0] = txt_history13;
             }
 
@@ -423,21 +423,21 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_history21.setText("or 0 !HISTORY "); //$NON-NLS-1$
 
                 Text txt_history21 = new Text(cmp_history2, SWT.SEARCH);
-                txt_history21.setMessage("YYYY-MM-DD"); //$NON-NLS-1$ I18N
+                txt_history21.setMessage(I18n.META_History1);
                 ev_history21_txt[0] = txt_history21;
 
                 Label lbl_history22 = new Label(cmp_history2, SWT.NONE);
                 lbl_history22.setText(" {"); //$NON-NLS-1$
 
                 Text txt_history22 = new Text(cmp_history2, SWT.SEARCH);
-                txt_history22.setMessage("(Insert the real name)"); //$NON-NLS-1$ I18N
+                txt_history22.setMessage(I18n.META_History3);
                 ev_history22_txt[0] = txt_history22;
 
                 Label lbl_history23 = new Label(cmp_history2, SWT.NONE);
                 lbl_history23.setText("} "); //$NON-NLS-1$
 
                 Text txt_history23 = new Text(cmp_history2, SWT.SEARCH);
-                txt_history23.setMessage("(Insert an optional text which describes what changes were made)"); //$NON-NLS-1$ I18N
+                txt_history23.setMessage(I18n.META_History4);
                 ev_history23_txt[0] = txt_history23;
             }
 
@@ -453,14 +453,14 @@ class EditorMetaDesign extends ApplicationWindow {
                 ev_comment_btn[0] = btn_needsWork2;
 
                 Text txt_comment = new Text(cmp_comment, SWT.SEARCH);
-                txt_comment.setMessage("(Insert a comment)"); //$NON-NLS-1$ I18N
+                txt_comment.setMessage(I18n.META_Comment);
                 ev_comment_txt[0] = txt_comment;
             }
         }
 
         {
             Group grp_meta = new Group(cmp_metaArea, SWT.NONE);
-            grp_meta.setText("Backface Culling (BFC)"); //$NON-NLS-1$ I18N Needs translation!
+            grp_meta.setText(I18n.META_BackFaceCulling);
             grp_meta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             grp_meta.setLayout(new GridLayout(1, false));
 
@@ -482,7 +482,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
         {
             Group grp_meta = new Group(cmp_metaArea, SWT.NONE);
-            grp_meta.setText("Texture Mapping (TEXMAP)"); //$NON-NLS-1$ I18N Needs translation!
+            grp_meta.setText(I18n.META_TextureMapping);
             grp_meta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             grp_meta.setLayout(new GridLayout(1, false));
             {
@@ -503,52 +503,52 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_planar.setText(" PLANAR "); //$NON-NLS-1$
                 {
                     Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_planar.setMessage("( X1 )"); //$NON-NLS-1$ I18N
+                    txt_planar.setMessage(I18n.META_TextureX1);
                     ev_texmapPlanar1_txt[0] = txt_planar;
                 }
                 {
                     Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_planar.setMessage("( Y1 )"); //$NON-NLS-1$ I18N
+                    txt_planar.setMessage(I18n.META_TextureY1);
                     ev_texmapPlanar2_txt[0] = txt_planar;
                 }
                 {
                     Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_planar.setMessage("( Z1 )"); //$NON-NLS-1$ I18N
+                    txt_planar.setMessage(I18n.META_TextureZ1);
                     ev_texmapPlanar3_txt[0] = txt_planar;
                 }
                 {
                     Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_planar.setMessage("( X2 )"); //$NON-NLS-1$ I18N
+                    txt_planar.setMessage(I18n.META_TextureX2);
                     ev_texmapPlanar4_txt[0] = txt_planar;
                 }
                 {
                     Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_planar.setMessage("( Y2 )"); //$NON-NLS-1$ I18N
+                    txt_planar.setMessage(I18n.META_TextureY2);
                     ev_texmapPlanar5_txt[0] = txt_planar;
                 }
                 {
                     Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_planar.setMessage("( Z2 )"); //$NON-NLS-1$ I18N
+                    txt_planar.setMessage(I18n.META_TextureZ2);
                     ev_texmapPlanar6_txt[0] = txt_planar;
                 }
                 {
                     Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_planar.setMessage("( X3 )"); //$NON-NLS-1$ I18N
+                    txt_planar.setMessage(I18n.META_TextureX3);
                     ev_texmapPlanar7_txt[0] = txt_planar;
                 }
                 {
                     Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_planar.setMessage("( Y3 )"); //$NON-NLS-1$ I18N
+                    txt_planar.setMessage(I18n.META_TextureY3);
                     ev_texmapPlanar8_txt[0] = txt_planar;
                 }
                 {
                     Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_planar.setMessage("( Z3 )"); //$NON-NLS-1$ I18N
+                    txt_planar.setMessage(I18n.META_TextureZ3);
                     ev_texmapPlanar9_txt[0] = txt_planar;
                 }
                 {
                     Text txt_png = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_png.setMessage("( path of the PNG file )"); //$NON-NLS-1$ I18N
+                    txt_png.setMessage(I18n.META_TexturePNG);
                     ev_texmapPlanar10_txt[0] = txt_png;
                 }
                 {
@@ -575,56 +575,56 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_cylindrical.setText(" CYLINDRICAL "); //$NON-NLS-1$
                 {
                     Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_cylindrical.setMessage("( X1 )"); //$NON-NLS-1$ I18N
-                    txt_cylindrical.setToolTipText("Cylinder Bottom Center"); //$NON-NLS-1$ I18N
+                    txt_cylindrical.setMessage(I18n.META_TextureX1);
+                    txt_cylindrical.setToolTipText(I18n.META_CylinderBottomCenter);
                     ev_texmapCyli1_txt[0] = txt_cylindrical;
                 }
                 {
                     Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_cylindrical.setMessage("( Y1 )"); //$NON-NLS-1$ I18N
-                    txt_cylindrical.setToolTipText("Cylinder Bottom Center"); //$NON-NLS-1$ I18N
+                    txt_cylindrical.setMessage(I18n.META_TextureY1);
+                    txt_cylindrical.setToolTipText(I18n.META_CylinderBottomCenter);
                     ev_texmapCyli2_txt[0] = txt_cylindrical;
                 }
                 {
                     Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_cylindrical.setMessage("( Z1 )"); //$NON-NLS-1$ I18N
-                    txt_cylindrical.setToolTipText("Cylinder Bottom Center"); //$NON-NLS-1$ I18N
+                    txt_cylindrical.setMessage(I18n.META_TextureZ1);
+                    txt_cylindrical.setToolTipText(I18n.META_CylinderBottomCenter);
                     ev_texmapCyli3_txt[0] = txt_cylindrical;
                 }
                 {
                     Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_cylindrical.setMessage("( X2 )"); //$NON-NLS-1$ I18N
-                    txt_cylindrical.setToolTipText("Cylinder Top Center"); //$NON-NLS-1$ I18N
+                    txt_cylindrical.setMessage(I18n.META_TextureX2);
+                    txt_cylindrical.setToolTipText(I18n.META_CylinderTopCenter);
                     ev_texmapCyli4_txt[0] = txt_cylindrical;
                 }
                 {
                     Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_cylindrical.setMessage("( Y2 )"); //$NON-NLS-1$ I18N
-                    txt_cylindrical.setToolTipText("Cylinder Top Center"); //$NON-NLS-1$ I18N
+                    txt_cylindrical.setMessage(I18n.META_TextureY2);
+                    txt_cylindrical.setToolTipText(I18n.META_CylinderTopCenter);
                     ev_texmapCyli5_txt[0] = txt_cylindrical;
                 }
                 {
                     Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_cylindrical.setMessage("( Z2 )"); //$NON-NLS-1$ I18N
-                    txt_cylindrical.setToolTipText("Cylinder Top Center"); //$NON-NLS-1$ I18N
+                    txt_cylindrical.setMessage(I18n.META_TextureZ2);
+                    txt_cylindrical.setToolTipText(I18n.META_CylinderTopCenter);
                     ev_texmapCyli6_txt[0] = txt_cylindrical;
                 }
                 {
                     Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_cylindrical.setMessage("( X3 )"); //$NON-NLS-1$ I18N
-                    txt_cylindrical.setToolTipText("Texture Bottom Center"); //$NON-NLS-1$ I18N
+                    txt_cylindrical.setMessage(I18n.META_TextureX3);
+                    txt_cylindrical.setToolTipText(I18n.META_TextureBottomCenter);
                     ev_texmapCyli7_txt[0] = txt_cylindrical;
                 }
                 {
                     Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_cylindrical.setMessage("( Y3 )"); //$NON-NLS-1$ I18N
-                    txt_cylindrical.setToolTipText("Texture Bottom Center"); //$NON-NLS-1$ I18N
+                    txt_cylindrical.setMessage(I18n.META_TextureY3);
+                    txt_cylindrical.setToolTipText(I18n.META_TextureBottomCenter);
                     ev_texmapCyli8_txt[0] = txt_cylindrical;
                 }
                 {
                     Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_cylindrical.setMessage("( Z3 )"); //$NON-NLS-1$ I18N
-                    txt_cylindrical.setToolTipText("Texture Bottom Center"); //$NON-NLS-1$ I18N
+                    txt_cylindrical.setMessage(I18n.META_TextureZ3);
+                    txt_cylindrical.setToolTipText(I18n.META_TextureBottomCenter);
                     ev_texmapCyli9_txt[0] = txt_cylindrical;
                 }
                 {
@@ -661,55 +661,55 @@ class EditorMetaDesign extends ApplicationWindow {
                 lbl_spherical.setText(" SPHERICAL "); //$NON-NLS-1$
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_spherical.setMessage("( X1 )"); //$NON-NLS-1$ I18N
+                    txt_spherical.setMessage(I18n.META_TextureX1);
                     txt_spherical.setToolTipText("Sphere Center"); //$NON-NLS-1$ I18N
                     ev_texmapSphere1_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_spherical.setMessage("( Y1 )"); //$NON-NLS-1$ I18N
+                    txt_spherical.setMessage(I18n.META_TextureY1);
                     txt_spherical.setToolTipText("Sphere Center"); //$NON-NLS-1$ I18N
                     ev_texmapSphere2_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_spherical.setMessage("( Z1 )"); //$NON-NLS-1$ I18N
+                    txt_spherical.setMessage(I18n.META_TextureZ1);
                     txt_spherical.setToolTipText("Sphere Center"); //$NON-NLS-1$ I18N
                     ev_texmapSphere3_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_spherical.setMessage("( X2 )"); //$NON-NLS-1$ I18N
+                    txt_spherical.setMessage(I18n.META_TextureX2);
                     txt_spherical.setToolTipText("Texture Center"); //$NON-NLS-1$ I18N
                     ev_texmapSphere4_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_spherical.setMessage("( Y2 )"); //$NON-NLS-1$ I18N
+                    txt_spherical.setMessage(I18n.META_TextureY2);
                     txt_spherical.setToolTipText("Texture Center"); //$NON-NLS-1$ I18N
                     ev_texmapSphere5_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_spherical.setMessage("( Z2 )"); //$NON-NLS-1$ I18N
+                    txt_spherical.setMessage(I18n.META_TextureZ2);
                     txt_spherical.setToolTipText("Texture Center"); //$NON-NLS-1$ I18N
                     ev_texmapSphere6_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_spherical.setMessage("( X3 )"); //$NON-NLS-1$ I18N
+                    txt_spherical.setMessage(I18n.META_TextureX3);
                     txt_spherical.setToolTipText("Texture Top Center"); //$NON-NLS-1$ I18N
                     ev_texmapSphere7_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_spherical.setMessage("( Y3 )"); //$NON-NLS-1$ I18N
+                    txt_spherical.setMessage(I18n.META_TextureY3);
                     txt_spherical.setToolTipText("Texture Top Center"); //$NON-NLS-1$ I18N
                     ev_texmapSphere8_txt[0] = txt_spherical;
                 }
                 {
                     Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                    txt_spherical.setMessage("( Z3 )"); //$NON-NLS-1$ I18N
+                    txt_spherical.setMessage(I18n.META_TextureZ3);
                     txt_spherical.setToolTipText("Texture Top Center"); //$NON-NLS-1$ I18N
                     ev_texmapSphere9_txt[0] = txt_spherical;
                 }
