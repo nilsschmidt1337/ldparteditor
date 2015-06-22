@@ -58,13 +58,13 @@ class Lines2PatternDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Lines2Pattern [Arbitrary Precision]\nResults are rounded to 6 decimal places.\nThe scope is fixed to the selection and the minimum line segment length is 0.0001 LDU."); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText(I18n.LINES_Title);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
-        cmb_scope.setItems(new String[] {"Scope: Selection"}); //$NON-NLS-1$ I18N Needs translation!
+        cmb_scope.setItems(new String[] {I18n.LINES_ScopeSelection});
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_scope.setText(cmb_scope.getItem(0));
         cmb_scope.select(0);
@@ -72,7 +72,7 @@ class Lines2PatternDesign extends Dialog {
 
         Label lbl_info = new Label(cmp_container, SWT.NONE);
         lbl_info.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        lbl_info.setText("How to use this tool:\n\n1. Select lines only (type 2)\n2. Make sure that all lines are on the same plane\n3. Make sure that every line vertex is at least used twice (for colour 24 lines)\n4. Make sure that colour indicating lines with other colours are placed, too!\n\nYou'll find a detailed example in the manual of this program."); //$NON-NLS-1$
+        lbl_info.setText(I18n.LINES_Hint);
 
         cmp_container.pack();
         return cmp_container;
