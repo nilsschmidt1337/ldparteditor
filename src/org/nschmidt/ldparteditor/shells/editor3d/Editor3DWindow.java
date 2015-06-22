@@ -3617,6 +3617,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             RingsAndCones.solve(Editor3DWindow.getWindow().getShell(), c3d.getLockableDatFileReference(), cmp_Primitives[0].getPrimitives(), ris, true);
                         }
+                        return;
                     }
                 }
             }
