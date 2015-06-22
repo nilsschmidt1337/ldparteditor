@@ -88,8 +88,8 @@ public enum SubfileCompiler {
      * Compiles outlined subfiles (reverse inlining, clears the selection)
      *
      * @param datFile
-     * @param preserveSelection TODO
-     * @param forceParsing TODO
+     * @param preserveSelection
+     * @param forceParsing
      */
     public static void compile(final DatFile datFile, boolean preserveSelection, boolean forceParsing) {
         final VertexManager vm = datFile.getVertexManager();
