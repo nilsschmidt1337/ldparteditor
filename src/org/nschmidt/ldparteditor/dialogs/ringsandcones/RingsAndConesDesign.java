@@ -76,32 +76,29 @@ class RingsAndConesDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Rings And Cones [Arbitrary Precision]"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText(I18n.RCONES_Title);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("The search may only find an approximation or\n" //$NON-NLS-1$
-                    + "even no solution if radius 1 is close to radius 2 (e.g. r1=5; r2=5.05).\n" //$NON-NLS-1$
-                    + "If you select a 4-4 disc in your model,\n" //$NON-NLS-1$
-                    + "the tool will place the output at the disc's location."); //$NON-NLS-1$ I18N Needs translation!
+            lbl.setText(I18n.RCONES_Hint);
         }
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Shape:"); //$NON-NLS-1$ I18N Needs translation!
+            lbl.setText(I18n.RCONES_Shape);
         }
         {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_shape[0] = cmb;
-            cmb.setItems(new String[] {"Ring.", "Cone.", "Ring (Hi-Res).", "Cone (Hi-Res)."}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ I18N Needs translation!
+            cmb.setItems(new String[] {I18n.RCONES_Ring, I18n.RCONES_Cone, I18n.RCONES_Ring48, I18n.RCONES_Cone48});
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select((rs.isUsingCones() ? 1 : 0) + (rs.isUsingHiRes() ? 2 : 0));
         }
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Radius 1 (LDU):"); //$NON-NLS-1$ I18N Needs translation!
+            lbl.setText(I18n.RCONES_Radius1);
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
@@ -113,7 +110,7 @@ class RingsAndConesDesign extends Dialog {
         }
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Radius 2 (LDU):"); //$NON-NLS-1$ I18N Needs translation!
+            lbl.setText(I18n.RCONES_Radius2);
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
@@ -126,7 +123,7 @@ class RingsAndConesDesign extends Dialog {
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Height, for Cones (LDU):"); //$NON-NLS-1$ I18N Needs translation!
+            lbl.setText(I18n.RCONES_Height);
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
@@ -139,60 +136,60 @@ class RingsAndConesDesign extends Dialog {
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText("Angle:"); //$NON-NLS-1$ I18N Needs translation!
+            lbl.setText(I18n.RCONES_Angle);
         }
         {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_angle[0] = cmb;
             cmb.setItems(new String[] {
-                    "1-48  (  7.5°)", //$NON-NLS-1$
-                    "1-24  ( 15.0°)", //$NON-NLS-1$
-                    "1-16  ( 22.5°)", //$NON-NLS-1$
-                    "1-12  ( 30.0°)", //$NON-NLS-1$
-                    "5-48  ( 37.5°)", //$NON-NLS-1$
-                    "1-8   ( 45.0°)", //$NON-NLS-1$
-                    "7-48  ( 52.5°)", //$NON-NLS-1$
-                    "1-6   ( 60.0°)", //$NON-NLS-1$
-                    "3-16  ( 67.5°)", //$NON-NLS-1$
-                    "5-24  ( 75.0°)", //$NON-NLS-1$
-                    "11-48 ( 82.5°)", //$NON-NLS-1$
-                    "1-4   ( 90.0°)", //$NON-NLS-1$
-                    "13-48 ( 97.5°)", //$NON-NLS-1$
-                    "7-24  (105.0°)", //$NON-NLS-1$
-                    "5-16  (112.5°)", //$NON-NLS-1$
-                    "1-3   (120.0°)", //$NON-NLS-1$
-                    "17-48 (127.5°)", //$NON-NLS-1$
-                    "3-8   (135.0°)", //$NON-NLS-1$
-                    "19-48 (142.5°)", //$NON-NLS-1$
-                    "5-12  (150.0°)", //$NON-NLS-1$
-                    "7-16  (157.5°)", //$NON-NLS-1$
-                    "11-24 (165.0°)", //$NON-NLS-1$
-                    "23-48 (172.5°)", //$NON-NLS-1$
-                    "2-4   (180.0°)", //$NON-NLS-1$
-                    "25-48 (187.5°)", //$NON-NLS-1$
-                    "13-48 (195.0°)", //$NON-NLS-1$
-                    "9-16  (202.5°)", //$NON-NLS-1$
-                    "7-12  (210.0°)", //$NON-NLS-1$
-                    "29-48 (217.5°)", //$NON-NLS-1$
-                    "5-8   (225.0°)", //$NON-NLS-1$
-                    "31-48 (232.5°)", //$NON-NLS-1$
-                    "2-3   (240.0°)", //$NON-NLS-1$
-                    "11-16 (247.5°)", //$NON-NLS-1$
-                    "17-24 (255.0°)", //$NON-NLS-1$
-                    "35-48 (262.5°)", //$NON-NLS-1$
-                    "3-4   (270.0°)", //$NON-NLS-1$
-                    "37-48 (277.5°)", //$NON-NLS-1$
-                    "19-24 (285.0°)", //$NON-NLS-1$
-                    "13-16 (292.5°)", //$NON-NLS-1$
-                    "5-6   (300.0°)", //$NON-NLS-1$
-                    "41-48 (307.5°)", //$NON-NLS-1$
-                    "7-8   (315.0°)", //$NON-NLS-1$
-                    "43-48 (322.5°)", //$NON-NLS-1$
-                    "11-12 (330.0°)", //$NON-NLS-1$
-                    "15-16 (337.5°)", //$NON-NLS-1$
-                    "23-24 (345.0°)", //$NON-NLS-1$
-                    "47-48 (352.5°)", //$NON-NLS-1$
-                    "4-4   (360.0°)" //$NON-NLS-1$
+                    I18n.RCONES_Angle01,
+                    I18n.RCONES_Angle02,
+                    I18n.RCONES_Angle03,
+                    I18n.RCONES_Angle04,
+                    I18n.RCONES_Angle05,
+                    I18n.RCONES_Angle06,
+                    I18n.RCONES_Angle07,
+                    I18n.RCONES_Angle08,
+                    I18n.RCONES_Angle09,
+                    I18n.RCONES_Angle10,
+                    I18n.RCONES_Angle11,
+                    I18n.RCONES_Angle12,
+                    I18n.RCONES_Angle13,
+                    I18n.RCONES_Angle14,
+                    I18n.RCONES_Angle15,
+                    I18n.RCONES_Angle16,
+                    I18n.RCONES_Angle17,
+                    I18n.RCONES_Angle18,
+                    I18n.RCONES_Angle19,
+                    I18n.RCONES_Angle20,
+                    I18n.RCONES_Angle21,
+                    I18n.RCONES_Angle22,
+                    I18n.RCONES_Angle23,
+                    I18n.RCONES_Angle24,
+                    I18n.RCONES_Angle25,
+                    I18n.RCONES_Angle26,
+                    I18n.RCONES_Angle27,
+                    I18n.RCONES_Angle28,
+                    I18n.RCONES_Angle29,
+                    I18n.RCONES_Angle30,
+                    I18n.RCONES_Angle31,
+                    I18n.RCONES_Angle32,
+                    I18n.RCONES_Angle33,
+                    I18n.RCONES_Angle34,
+                    I18n.RCONES_Angle35,
+                    I18n.RCONES_Angle36,
+                    I18n.RCONES_Angle37,
+                    I18n.RCONES_Angle38,
+                    I18n.RCONES_Angle39,
+                    I18n.RCONES_Angle40,
+                    I18n.RCONES_Angle41,
+                    I18n.RCONES_Angle42,
+                    I18n.RCONES_Angle43,
+                    I18n.RCONES_Angle44,
+                    I18n.RCONES_Angle45,
+                    I18n.RCONES_Angle46,
+                    I18n.RCONES_Angle47,
+                    I18n.RCONES_Angle48
             });
             {
                 rs.getAngles().clear();
@@ -209,14 +206,14 @@ class RingsAndConesDesign extends Dialog {
         {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_existingOnly[0] = cmb;
-            cmb.setItems(new String[] {"Use only existing primitives.", "Use all possible primitives."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb.setItems(new String[] {I18n.RCONES_Prims1, I18n.RCONES_Prims2});
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select(rs.isUsingExistingPrimitives() ? 0 : 1);
         }
         {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_createWhat[0] = cmb;
-            cmb.setItems(new String[] {"Create nothing, if no solution was found.", "Create the shape for me."}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb.setItems(new String[] {I18n.RCONES_Create1, I18n.RCONES_Create2});
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select(rs.isCreatingNothingOnNoSolution() ? 0 : 1);
         }

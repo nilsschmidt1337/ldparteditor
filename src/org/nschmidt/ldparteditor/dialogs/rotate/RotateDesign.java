@@ -84,7 +84,7 @@ class RotateDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Rotate around X/Y/Z:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText(I18n.ROTATE_Title);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -96,7 +96,7 @@ class RotateDesign extends Dialog {
 
             Button cb_Xaxis = new Button(cmp_txt, SWT.RADIO);
             this.rb_Xaxis[0] = cb_Xaxis;
-            cb_Xaxis.setText("a(X) [°]"); //$NON-NLS-1$ I18N Needs translation!
+            cb_Xaxis.setText(I18n.ROTATE_X);
             cb_Xaxis.setSelection(true);
 
             BigDecimalSpinner spn_X = new BigDecimalSpinner(cmp_txt, SWT.NONE);
@@ -108,7 +108,7 @@ class RotateDesign extends Dialog {
 
             Button cb_Yaxis = new Button(cmp_txt, SWT.RADIO);
             this.rb_Yaxis[0] = cb_Yaxis;
-            cb_Yaxis.setText("a(Y) [°]"); //$NON-NLS-1$ I18N Needs translation!
+            cb_Yaxis.setText(I18n.ROTATE_Y);
 
             BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE);
             this.spn_Y[0] = spn_Y;
@@ -119,7 +119,7 @@ class RotateDesign extends Dialog {
 
             Button cb_Zaxis = new Button(cmp_txt, SWT.RADIO);
             this.rb_Zaxis[0] = cb_Zaxis;
-            cb_Zaxis.setText("a(Z) [°]"); //$NON-NLS-1$ I18N Needs translation!
+            cb_Zaxis.setText(I18n.ROTATE_Z);
 
             BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE);
             this.spn_Z[0] = spn_Z;
@@ -130,7 +130,7 @@ class RotateDesign extends Dialog {
         }
 
         Label lbl_Pivot = new Label(cmp_container, SWT.NONE);
-        lbl_Pivot.setText("Pivot Point:\n(Try to select one vertex, copy it to the clipboard\nre-open this dialog and see what will happen.)"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_Pivot.setText(I18n.ROTATE_Pivot);
 
         {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
