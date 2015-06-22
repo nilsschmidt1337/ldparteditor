@@ -412,7 +412,13 @@ public final class I18n {
     public static final String META_M20 = META.getString(getProperty());
     public static final String META_M21 = META.getString(getProperty());
     public static final String META_M22 = META.getString(getProperty());
+    public static final String META_NewLineNote = META.getString(getProperty());
     public static final String META_Quality = META.getString(getProperty());
+    public static final String META_RotationX = META.getString(getProperty());
+    public static final String META_RotationY = META.getString(getProperty());
+    public static final String META_RotationZ = META.getString(getProperty());
+    public static final String META_ScaleX = META.getString(getProperty());
+    public static final String META_ScaleY = META.getString(getProperty());
     public static final String META_TextureAngle1 = META.getString(getProperty());
     public static final String META_TextureAngle2 = META.getString(getProperty());
     public static final String META_TextureBottomCenter = META.getString(getProperty());

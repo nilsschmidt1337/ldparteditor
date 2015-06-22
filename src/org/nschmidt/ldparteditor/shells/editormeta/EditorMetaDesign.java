@@ -997,32 +997,32 @@ class EditorMetaDesign extends ApplicationWindow {
 
                 {
                     Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_x.setMessage("(X axis rotation)"); //$NON-NLS-1$ I18N
+                    txt_x.setMessage(I18n.META_RotationX);
                     txt_x.setToolTipText(I18n.META_DecimalMark);
                     ev_png4_txt[0] = txt_x;
                 }
                 {
                     Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_y.setMessage("(Y axis rotation)"); //$NON-NLS-1$ I18N
+                    txt_y.setMessage(I18n.META_RotationY);
                     txt_y.setToolTipText(I18n.META_DecimalMark);
                     ev_png5_txt[0] = txt_y;
                 }
                 {
                     Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_z.setMessage("(Z axis rotation)"); //$NON-NLS-1$ I18N
+                    txt_z.setMessage(I18n.META_RotationZ);
                     txt_z.setToolTipText(I18n.META_DecimalMark);
                     ev_png6_txt[0] = txt_z;
                 }
 
                 {
                     Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_x.setMessage("( scale factor X )"); //$NON-NLS-1$ I18N
+                    txt_x.setMessage(I18n.META_ScaleX);
                     txt_x.setToolTipText(I18n.META_DecimalMark);
                     ev_png7_txt[0] = txt_x;
                 }
                 {
                     Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
-                    txt_y.setMessage("( scale factor Y )"); //$NON-NLS-1$ I18N
+                    txt_y.setMessage(I18n.META_ScaleY);
                     txt_y.setToolTipText(I18n.META_DecimalMark);
                     ev_png8_txt[0] = txt_y;
                 }
@@ -1041,7 +1041,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
 
         Label lbl_OnlyFor3D = new Label(container, SWT.NONE);
-        lbl_OnlyFor3D.setText("The new line will be appended to the file which was last focused in the 3D editor."); //$NON-NLS-1$ I18N
+        lbl_OnlyFor3D.setText(I18n.META_NewLineNote);
 
         Label lbl_Preview = new Label(container, SWT.BORDER);
         lbl_Preview.setText("0 BFC CERTIFY CCW"); //$NON-NLS-1$
