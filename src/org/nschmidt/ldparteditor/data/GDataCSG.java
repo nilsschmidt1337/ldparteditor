@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeMap;
@@ -30,7 +31,9 @@ import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 /**
@@ -371,8 +374,15 @@ public final class GDataCSG extends GData {
         case CSG.COMPILE:
             if (compiledCSG != null) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("0 // Inlined: " + getNiceString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
-                // TODO Needs T-Juntion Elimination!
+
+                Object[] messageArguments = {getNiceString()};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.applyPattern(I18n.DATFILE_Inlined);
+
+                sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
+
+                // TODO Needs T-Junction Elimination!
                 for (GData3 g3 : compiledCSG.getResult()) {
                     StringBuilder lineBuilder3 = new StringBuilder();
                     lineBuilder3.append(3);
