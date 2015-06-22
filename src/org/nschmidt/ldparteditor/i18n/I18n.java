@@ -69,6 +69,8 @@ public final class I18n {
     private static final ResourceBundle INTERSECTOR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Intersector", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle ISECALC = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Isecalc", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle LINES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.LinesPattern", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle PATHTRUDER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PathTruder", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle RECTIFIER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Rectifier", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -479,6 +481,20 @@ public final class I18n {
     public static final String PARTS_Parts = PARTS.getString(getProperty());
     public static final String PARTS_Primitives = PARTS.getString(getProperty());
     public static final String PARTS_Subparts = PARTS.getString(getProperty());
+    public static final String PATHTRUDER_ColourCodes = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_ControlCurve = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_ControlCurveCenter = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_InvertShape = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_InvertShape1 = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_InvertShape2 = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_LineThresh = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_MaxPathLength = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_NumTransitions = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_RotAngle = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_ShapeComp = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_ShapeComp1 = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_ShapeComp2 = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_Title = PATHTRUDER.getString(getProperty());
     public static final String PERSPECTIVE_BACK = PERSPECTIVE.getString(getProperty());
     public static final String PERSPECTIVE_BOTTOM = PERSPECTIVE.getString(getProperty());
     public static final String PERSPECTIVE_FRONT = PERSPECTIVE.getString(getProperty());

@@ -76,16 +76,16 @@ class PathTruderDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("PathTruder [Double Precision, IEEE-754]\nResults are rounded to 6 decimal places."); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText(I18n.PATHTRUDER_Title);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_colourCodes = new Label(cmp_container, SWT.NONE);
-        lbl_colourCodes.setText("Colour codes:\n\n1\t= Path 1\n2\t= Path 2\n4\t= Shape 1 Direction Vector\n5\t= Shape 1\n12\t= Shape 2 Direction Vector [optional]\n13\t= Shape 2 [optional]\n7\t= Line Indicators [optional]\n0\t= Line Ending Normal Indicators [optional]\n"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_colourCodes.setText(I18n.PATHTRUDER_ColourCodes);
 
         Label lbl_use180deg = new Label(cmp_container, SWT.NONE);
-        lbl_use180deg.setText("Define maximum path segment length. Longer segments are split (100000, default):"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_use180deg.setText(I18n.PATHTRUDER_MaxPathLength);
 
         BigDecimalSpinner spn_maxPathSegmentLength = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_maxPathSegmentLength[0] = spn_maxPathSegmentLength;
@@ -95,7 +95,7 @@ class PathTruderDesign extends Dialog {
         spn_maxPathSegmentLength.setValue(ps.getMaxPathSegmentLength());
 
         Label lbl_transitions = new Label(cmp_container, SWT.NONE);
-        lbl_transitions.setText("Sets the number of transitions from shape1 to shape2 and vice versa (1, default):"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_transitions.setText(I18n.PATHTRUDER_NumTransitions);
 
         IntegerSpinner spn_transitions = new IntegerSpinner(cmp_container, SWT.NONE);
         this.spn_transitions[0] = spn_transitions;
@@ -105,7 +105,7 @@ class PathTruderDesign extends Dialog {
         spn_transitions.setValue(ps.getTransitionCount());
 
         Label lbl_transCurve = new Label(cmp_container, SWT.NONE);
-        lbl_transCurve.setText("Control transition curve, from 1 (linear) to 10 (s-shape, default) to 100 (step):"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_transCurve.setText(I18n.PATHTRUDER_ControlCurve);
 
         BigDecimalSpinner spn_transCurve = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_transCurve[0] = spn_transCurve;
@@ -115,7 +115,7 @@ class PathTruderDesign extends Dialog {
         spn_transCurve.setValue(ps.getTransitionCurveControl());
 
         Label lbl_centerCurve = new Label(cmp_container, SWT.NONE);
-        lbl_centerCurve.setText("Control transition curve centering. 0 <= position <= 1. Default is 0.5, centered:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_centerCurve.setText(I18n.PATHTRUDER_ControlCurveCenter);
 
         BigDecimalSpinner spn_centerCurve = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_centerCurve[0] = spn_centerCurve;
@@ -125,7 +125,7 @@ class PathTruderDesign extends Dialog {
         spn_centerCurve.setValue(ps.getTransitionCurveCenter());
 
         Label lbl_lineThreshold = new Label(cmp_container, SWT.NONE);
-        lbl_lineThreshold.setText("If path has a sharper angle, a line is created at the junction. Default is 180° (no line).\nUse a negative value to force line creation:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_lineThreshold.setText(I18n.PATHTRUDER_LineThresh);
 
         BigDecimalSpinner spn_lineThreshold = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_lineThreshold[0] = spn_lineThreshold;
@@ -135,7 +135,7 @@ class PathTruderDesign extends Dialog {
         spn_lineThreshold.setValue(ps.getPathAngleForLine());
 
         Label lbl_rotationAngle = new Label(cmp_container, SWT.NONE);
-        lbl_rotationAngle.setText("Specify rotation of shape direction vector around path1 as it sweeps along the path. Default is 0°:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_rotationAngle.setText(I18n.PATHTRUDER_RotAngle);
 
         BigDecimalSpinner spn_rotationAngle = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_rotationAngle[0] = spn_rotationAngle;
@@ -145,21 +145,21 @@ class PathTruderDesign extends Dialog {
         spn_rotationAngle.setValue(ps.getRotation());
 
         Label lbl_af = new Label(cmp_container, SWT.NONE);
-        lbl_af.setText("Compensation at sharp path angles:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_af.setText(I18n.PATHTRUDER_ShapeComp);
 
         Combo cmb_shapeCompensation = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_shapeCompensation[0] = cmb_shapeCompensation;
-        cmb_shapeCompensation.setItems(new String[] {"No compensation (default).", "The shape is elongated to compensate for flattening at sharp path angles." }); //$NON-NLS-1$ //$NON-NLS-2$
+        cmb_shapeCompensation.setItems(new String[] {I18n.PATHTRUDER_ShapeComp1, I18n.PATHTRUDER_ShapeComp2});
         cmb_shapeCompensation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_shapeCompensation.setText(ps.isCompensation() ? cmb_shapeCompensation.getItem(1) : cmb_shapeCompensation.getItem(0));
         cmb_shapeCompensation.select(ps.isCompensation() ? 1 : 0);
 
         Label lbl_bfcinvert = new Label(cmp_container, SWT.NONE);
-        lbl_bfcinvert.setText("Invert shape winding:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_bfcinvert.setText(I18n.PATHTRUDER_InvertShape);
 
         Combo cmb_bfcInvert = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_bfcInvert[0] = cmb_bfcInvert;
-        cmb_bfcInvert.setItems(new String[] {"Use original winding (default).", "Invert winding." }); //$NON-NLS-1$ //$NON-NLS-2$
+        cmb_bfcInvert.setItems(new String[] {I18n.PATHTRUDER_InvertShape1, I18n.PATHTRUDER_InvertShape2});
         cmb_bfcInvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_bfcInvert.setText(ps.isInverted() ? cmb_bfcInvert.getItem(1) : cmb_bfcInvert.getItem(0));
         cmb_bfcInvert.select(ps.isInverted() ? 1 : 0);
