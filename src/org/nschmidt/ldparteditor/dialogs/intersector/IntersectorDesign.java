@@ -64,14 +64,14 @@ class IntersectorDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Intersector [Arbitrary Precision]\nResults are rounded to 6 decimal places.\nThe scope is fixed to the selection and the minimum line segment length is 0.0001 LDU."); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText(I18n.INTERSECTOR_Title);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {"Scope: File", "Scope: Selection"}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+        cmb_scope.setItems(new String[] {I18n.INTERSECTOR_ScopeFile, I18n.INTERSECTOR_ScopeSelection});
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_scope.setText(cmb_scope.getItem(ins.getScope()));
         cmb_scope.select(ins.getScope());
@@ -80,7 +80,7 @@ class IntersectorDesign extends Dialog {
         {
             Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {"No colour modifications.", "Inside faces & lines (colour 11 & 1), outside faces & lines (14 & 28), unknown (7 & 0)"}); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            cmb_colourise.setItems(new String[] {I18n.INTERSECTOR_NoMods, I18n.INTERSECTOR_ColourMods});
             cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_colourise.setText(cmb_colourise.getItem(ins.isColourise() ? 1 : 0));
             cmb_colourise.select(ins.isColourise() ? 1 : 0);

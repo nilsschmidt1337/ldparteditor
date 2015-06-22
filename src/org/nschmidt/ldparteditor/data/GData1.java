@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.FloatBuffer;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,6 +32,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
@@ -38,6 +40,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.TexMapParser;
@@ -1609,7 +1612,15 @@ public final class GData1 extends GData {
         if (Inliner.withSubfileReference) {
             sb.append("0 !LPE INLINE " + getNiceString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
         } else {
-            if (!(Inliner.recursively && !this.equals(this.firstRef)) && !Inliner.noComment) sb.append("0 // Inlined: " + getNiceString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$ I18N Needs translation!
+            if (!(Inliner.recursively && !this.equals(this.firstRef)) && !Inliner.noComment) {
+
+                Object[] messageArguments = {getNiceString()};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.applyPattern(I18n.DATFILE_Inlined);
+
+                sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
+            }
             if (negativeDeterminant) {
                 if (bfc == BFC.CCW_CLIP) bfc = BFC.CW_CLIP;
                 else if (bfc == BFC.CW_CLIP) bfc = BFC.CCW_CLIP;
