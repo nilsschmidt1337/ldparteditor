@@ -67,6 +67,8 @@ public final class I18n {
     private static final ResourceBundle EDGER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Edger", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle META = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Meta", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle INTERSECTOR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Intersector", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle ISECALC = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Isecalc", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle LINES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.LinesPattern", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -394,6 +396,12 @@ public final class I18n {
     public static final String INTERSECTOR_ScopeFile = INTERSECTOR.getString(getProperty());
     public static final String INTERSECTOR_ScopeSelection = INTERSECTOR.getString(getProperty());
     public static final String INTERSECTOR_Title = INTERSECTOR.getString(getProperty());
+    public static final String ISECALC_ScopeFile = ISECALC.getString(getProperty());
+    public static final String ISECALC_ScopeSelection = ISECALC.getString(getProperty());
+    public static final String ISECALC_Title = ISECALC.getString(getProperty());
+    public static final String LINES_Hint = LINES.getString(getProperty());
+    public static final String LINES_ScopeSelection = LINES.getString(getProperty());
+    public static final String LINES_Title = LINES.getString(getProperty());
     public static final String META_Author = META.getString(getProperty());
     public static final String META_BackFaceCulling = META.getString(getProperty());
     public static final String META_CSGCompile = META.getString(getProperty());
