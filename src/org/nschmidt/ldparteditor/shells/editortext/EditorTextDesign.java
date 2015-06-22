@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editortext;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.jface.action.MenuManager;
@@ -43,6 +44,7 @@ import org.nschmidt.ldparteditor.data.ColourChanger;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
@@ -201,74 +203,74 @@ class EditorTextDesign extends ApplicationWindow {
             Button btn_FindAndReplace = new Button(toolItem_Debug, SWT.NONE);
             this.btn_FindAndReplace[0] = btn_FindAndReplace;
             btn_FindAndReplace.setImage(ResourceManager.getImage("icon16_findReplace.png")); //$NON-NLS-1$
-            btn_FindAndReplace.setToolTipText("Find/Replace"); //$NON-NLS-1$ I18N Needs translation!
+            btn_FindAndReplace.setToolTipText(I18n.EDITORTEXT_FindReplace);
         }
         {
             Button btn_Sort = new Button(toolItem_Debug, SWT.NONE);
             this.btn_Sort[0] = btn_Sort;
             btn_Sort.setImage(ResourceManager.getImage("icon16_sort.png")); //$NON-NLS-1$
-            btn_Sort.setToolTipText("Sort"); //$NON-NLS-1$ I18N Needs translation!
+            btn_Sort.setToolTipText(I18n.EDITORTEXT_Sort);
         }
         {
             Button btn_SplitQuad = new Button(toolItem_Debug, SWT.NONE);
             this.btn_SplitQuad[0] = btn_SplitQuad;
             btn_SplitQuad.setImage(ResourceManager.getImage("icon16_quadToTri.png")); //$NON-NLS-1$
-            btn_SplitQuad.setToolTipText("Split Quad into Triangles"); //$NON-NLS-1$ I18N Needs translation!
+            btn_SplitQuad.setToolTipText(I18n.EDITORTEXT_SplitQuad);
         }
         {
             Button btn_Unrectify = new Button(toolItem_Debug, SWT.NONE);
             this.btn_Unrectify[0] = btn_Unrectify;
             btn_Unrectify.setImage(ResourceManager.getImage("icon16_unrectify.png")); //$NON-NLS-1$
-            btn_Unrectify.setToolTipText("'Unrectifier': Split all Quads and rect*.dat-Primitives into Triangles"); //$NON-NLS-1$ I18N Needs translation!
+            btn_Unrectify.setToolTipText(I18n.EDITORTEXT_Unrectify);
         }
         {
             Button btn_Beautify = new Button(toolItem_Debug, SWT.NONE);
             this.btn_Beautify[0] = btn_Beautify;
             btn_Beautify.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
-            btn_Beautify.setToolTipText("Remove Duplicates + Invisible TYPE 5 Lines"); //$NON-NLS-1$ I18N Needs translation!
+            btn_Beautify.setToolTipText(I18n.EDITORTEXT_RemoveDuplicates);
         }
         {
             Button btn_Inline = new Button(toolItem_Debug, SWT.NONE);
             this.btn_Inline[0] = btn_Inline;
             btn_Inline.setImage(ResourceManager.getImage("icon16_inline.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btn_Inline, "Inline selection (partial BFC conformity)", TextTask.EDITORTEXT_INLINE); //$NON-NLS-1$ I18N Needs translation!
+            KeyStateManager.addTooltipText(btn_Inline, I18n.EDITORTEXT_Inline1, TextTask.EDITORTEXT_INLINE);
         }
         {
             Button btn_InlineDeep = new Button(toolItem_Debug, SWT.NONE);
             this.btn_InlineDeep[0] = btn_InlineDeep;
             btn_InlineDeep.setImage(ResourceManager.getImage("icon16_inlinedeep.png")); //$NON-NLS-1$
-            btn_InlineDeep.setToolTipText("Inline selection recursively (partial BFC conformity,\nno comments,\nno whitespace.)"); //$NON-NLS-1$ I18N Needs translation!
+            btn_InlineDeep.setToolTipText(I18n.EDITORTEXT_Inline2);
         }
         {
             Button btn_InlineLinked = new Button(toolItem_Debug, SWT.NONE);
             this.btn_InlineLinked[0] = btn_InlineLinked;
             btn_InlineLinked.setImage(ResourceManager.getImage("icon16_inlinelinked.png")); //$NON-NLS-1$
-            btn_InlineLinked.setToolTipText("Inline selection (Linked, no BFC conformity)"); //$NON-NLS-1$ I18N Needs translation!
+            btn_InlineLinked.setToolTipText(I18n.EDITORTEXT_Inline3);
         }
         {
             Button btn_CompileSubfile = new Button(toolItem_Debug, SWT.NONE);
             this.btn_CompileSubfile[0] = btn_CompileSubfile;
-            btn_CompileSubfile.setToolTipText("Compile linked Subfile Data"); //$NON-NLS-1$ I18N
+            btn_CompileSubfile.setToolTipText(I18n.EDITORTEXT_Compile);
             btn_CompileSubfile.setImage(ResourceManager.getImage("icon16_subcompile.png")); //$NON-NLS-1$
         }
         {
             Button btn_RoundSelection = new Button(toolItem_Debug, SWT.NONE);
             this.btn_RoundSelection[0] = btn_RoundSelection;
-            KeyStateManager.addTooltipText(btn_RoundSelection, "Round", TextTask.EDITORTEXT_ROUND); //$NON-NLS-1$ I18N
+            KeyStateManager.addTooltipText(btn_RoundSelection, I18n.EDITORTEXT_Round, TextTask.EDITORTEXT_ROUND);
             btn_RoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
         }
 
         {
             Button btn_Texmap = new Button(toolItem_Debug, SWT.NONE);
             this.btn_Texmap[0] = btn_Texmap;
-            btn_Texmap.setToolTipText("Toggle TEXMAP"); //$NON-NLS-1$ I18N
+            btn_Texmap.setToolTipText(I18n.EDITORTEXT_Texmap);
             btn_Texmap.setImage(ResourceManager.getImage("icon16_texmap.png")); //$NON-NLS-1$
         }
 
         {
             Button btn_Annotate = new Button(toolItem_Debug, SWT.NONE);
             this.btn_Annotate[0] = btn_Annotate;
-            btn_Annotate.setToolTipText("Toggle Comment"); //$NON-NLS-1$ I18N
+            btn_Annotate.setToolTipText(I18n.EDITORTEXT_Comment);
             btn_Annotate.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
         }
 
@@ -295,7 +297,7 @@ class EditorTextDesign extends ApplicationWindow {
             {
                 Button btn_Palette = new Button(toolItem_Colours, SWT.NONE);
                 this.btn_Palette[0] = btn_Palette;
-                btn_Palette.setToolTipText("More…"); //$NON-NLS-1$ I18N Needs translation!
+                btn_Palette.setToolTipText(I18n.EDITOR3D_More);
                 btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
             }
         }
@@ -415,14 +417,27 @@ class EditorTextDesign extends ApplicationWindow {
             num = -1;
         }
         if (num != -1) {
-            btn_Col.setToolTipText("Colour [" + num + "]: " + View.getLDConfigColourName(num)); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+            Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+
+            btn_Col.setToolTipText(formatter.format(messageArguments));
         } else {
+
             StringBuilder colourBuilder = new StringBuilder();
             colourBuilder.append("0x2"); //$NON-NLS-1$
             colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
             colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
             colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-            btn_Col.setToolTipText("Colour [" + colourBuilder.toString() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+            Object[] messageArguments = {colourBuilder.toString()};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+
+            btn_Col.setToolTipText(formatter.format(messageArguments));
         }
 
         btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
@@ -442,14 +457,26 @@ class EditorTextDesign extends ApplicationWindow {
                         num = -1;
                     }
                     if (num != -1) {
-                        btn_Col.setToolTipText("Colour [" + num + "]: " + View.getLDConfigColourName(num)); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+                        Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+
+                        btn_Col.setToolTipText(formatter.format(messageArguments));
                     } else {
                         StringBuilder colourBuilder = new StringBuilder();
                         colourBuilder.append("0x2"); //$NON-NLS-1$
                         colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
                         colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
                         colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-                        btn_Col.setToolTipText("Colour [" + colourBuilder.toString() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+                        Object[] messageArguments = {colourBuilder.toString()};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+
+                        btn_Col.setToolTipText(formatter.format(messageArguments));
+
                     }
                 } else {
                     int num = gColour2[0].getColourNumber();
