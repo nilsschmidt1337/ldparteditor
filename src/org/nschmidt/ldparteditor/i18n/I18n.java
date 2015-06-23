@@ -73,6 +73,7 @@ public final class I18n {
     private static final ResourceBundle RECTIFIER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Rectifier", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle RCONES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.RingsAndCones", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle ROTATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Rotate", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle ROUND = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Round", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -596,6 +597,10 @@ public final class I18n {
     public static final String ROTATE_X = ROTATE.getString(getProperty());
     public static final String ROTATE_Y = ROTATE.getString(getProperty());
     public static final String ROTATE_Z = ROTATE.getString(getProperty());
+    public static final String ROUND_CoordPrecision = ROUND.getString(getProperty());
+    public static final String ROUND_InDecPlaces = ROUND.getString(getProperty());
+    public static final String ROUND_MatrixPrecision = ROUND.getString(getProperty());
+    public static final String ROUND_Title = ROUND.getString(getProperty());
     public static final String SPLASH_CheckPlugIn = SPLASH.getString(getProperty());
     public static final String SPLASH_Error = SPLASH.getString(getProperty());
     public static final String SPLASH_InvalidOpenGLVersion = SPLASH.getString(getProperty());

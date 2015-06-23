@@ -63,13 +63,13 @@ class RoundDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Specify the Rounding Precision"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText(I18n.ROUND_Title);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
-        lbl_coordsPrec.setText("Coordinate Precision"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_coordsPrec.setText(I18n.ROUND_CoordPrecision);
 
         IntegerSpinner spn_coords = new IntegerSpinner(cmp_container, SWT.NONE);
         this.spn_coords[0] = spn_coords;
@@ -79,7 +79,7 @@ class RoundDesign extends Dialog {
         spn_coords.setValue(WorkbenchManager.getUserSettingState().getCoordsPrecision());
 
         Label lbl_matrixPrec = new Label(cmp_container, SWT.NONE);
-        lbl_matrixPrec.setText("Transformation Matrix Precision"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_matrixPrec.setText(I18n.ROUND_MatrixPrecision);
 
         IntegerSpinner spn_matrix = new IntegerSpinner(cmp_container, SWT.NONE);
         this.spn_matrix[0] = spn_matrix;
@@ -89,7 +89,7 @@ class RoundDesign extends Dialog {
         spn_matrix.setValue(WorkbenchManager.getUserSettingState().getTransMatrixPrecision());
 
         Label lbl_unit = new Label(cmp_container, SWT.NONE);
-        lbl_unit.setText("(in Decimal Places)"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_unit.setText(I18n.ROUND_InDecPlaces);
 
         cmp_container.pack();
         return cmp_container;
