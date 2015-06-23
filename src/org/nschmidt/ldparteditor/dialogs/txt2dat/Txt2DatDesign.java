@@ -72,21 +72,21 @@ class Txt2DatDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Txt2Dat [Normal Precision, max. 4000 Triangles per Letter]"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText(I18n.TXT2DAT_Title);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
-        lbl_coordsPrec.setText("Font:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_coordsPrec.setText(I18n.TXT2DAT_Font);
 
         Button spn_vequ = new Button(cmp_container, SWT.NONE);
         this.btn_chooseFont[0] = spn_vequ;
         spn_vequ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_vequ.setText("Select"); //$NON-NLS-1$ I18N
+        spn_vequ.setText(I18n.TXT2DAT_Select);
 
         Label lbl_text = new Label(cmp_container, SWT.NONE);
-        lbl_text.setText("Text:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_text.setText(I18n.TXT2DAT_Text);
 
         Text txt_text = new Text(cmp_container, SWT.NONE);
         this.txt_text[0] = txt_text;
@@ -94,7 +94,7 @@ class Txt2DatDesign extends Dialog {
         txt_text.setText(ts.getText());
 
         Label lbl_use180deg = new Label(cmp_container, SWT.NONE);
-        lbl_use180deg.setText("Flatness\n(the maximum distance that the line segments used to\napproximate the curved segments are allowed to deviate\nfrom any point on the original curve):"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_use180deg.setText(I18n.TXT2DAT_Flatness);
 
         BigDecimalSpinner spn_flatness = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_flatness[0] = spn_flatness;
@@ -104,7 +104,7 @@ class Txt2DatDesign extends Dialog {
         spn_flatness.setValue(ts.getFlatness());
 
         Label lbl_af = new Label(cmp_container, SWT.NONE);
-        lbl_af.setText("Interpolate Flatness:\n(the maximum distance that is used for interpolation)"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_af.setText(I18n.TXT2DAT_InterpolateFlatness);
 
         BigDecimalSpinner spn_interpolateFlatness = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_interpolateFlatness[0] = spn_interpolateFlatness;
@@ -114,17 +114,17 @@ class Txt2DatDesign extends Dialog {
         spn_interpolateFlatness.setValue(ts.getInterpolateFlatness());
 
         Label lbl_ac = new Label(cmp_container, SWT.NONE);
-        lbl_ac.setText("Font Height [LDU]:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_ac.setText(I18n.TXT2DAT_FontHeight);
 
         BigDecimalSpinner spn_fontHeight = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_fontHeight[0] = spn_fontHeight;
         spn_fontHeight.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spn_fontHeight.setMaximum(new BigDecimal(10000));
-        spn_fontHeight.setMinimum(new BigDecimal("0.0001"));//$NON-NLS-1$
+        spn_fontHeight.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
         spn_fontHeight.setValue(ts.getFontHeight());
 
         Label lbl_ae = new Label(cmp_container, SWT.NONE);
-        lbl_ae.setText("Min. Angle Between Line Segments [°]:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_ae.setText(I18n.TXT2DAT_Angle);
         BigDecimalSpinner spn_deltaAngle = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_deltaAngle[0] = spn_deltaAngle;
         spn_deltaAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
