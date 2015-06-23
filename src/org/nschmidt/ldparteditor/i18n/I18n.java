@@ -80,6 +80,7 @@ public final class I18n {
     private static final ResourceBundle SORT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Sort", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SYMSPLITTER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Symsplitter", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle TRANSLATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Translate", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle TREEITEM = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TreeItem", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -673,6 +674,7 @@ public final class I18n {
     public static final String TRANSLATE_X = TRANSLATE.getString(getProperty());
     public static final String TRANSLATE_Y = TRANSLATE.getString(getProperty());
     public static final String TRANSLATE_Z = TRANSLATE.getString(getProperty());
+    public static final String TREEITEM_Line = TREEITEM.getString(getProperty());
     public static final String UNITS_Factor_primary = UNITS.getString(getProperty());
     public static final String UNITS_Factor_secondary = UNITS.getString(getProperty());
     public static final String UNITS_LDU = UNITS.getString(getProperty());
