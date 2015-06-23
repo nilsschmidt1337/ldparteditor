@@ -73,7 +73,7 @@ class CompositeTabDesign extends CTabItem {
     }
 
     private final void createContents(CTabFolder tabFolder) {
-        this.setText("(new file)"); //$NON-NLS-1$ I18N Needs translation
+        this.setText(I18n.COMPOSITETAB_NewFile);
         {
             Composite cmp_textArea = new Composite(tabFolder, SWT.NONE);
             cmp_textArea.setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -131,7 +131,7 @@ class CompositeTabDesign extends CTabItem {
 
                 CTabItem tbtm_partProblems = new CTabItem(tabFolder_partInformation, SWT.CLOSE);
                 tbtm_partProblems.setImage(null);
-                tbtm_partProblems.setText("Problems"); //$NON-NLS-1$ I18N Needs translation
+                tbtm_partProblems.setText(I18n.COMPOSITETAB_Problems);
                 tabFolder_partInformation.setSelection(tbtm_partProblems);
                 Composite cmp_partProblems = new Composite(tabFolder_partInformation, SWT.NONE);
                 tbtm_partProblems.setControl(cmp_partProblems);
@@ -151,30 +151,30 @@ class CompositeTabDesign extends CTabItem {
 
                 TreeColumn trclmn_Description = new TreeColumn(tree, SWT.NONE);
                 trclmn_Description.setWidth(598);
-                trclmn_Description.setText("Description"); //$NON-NLS-1$ I18N Needs translation
+                trclmn_Description.setText(I18n.COMPOSITETAB_Description);
 
                 TreeColumn trclmn_Location = new TreeColumn(tree, SWT.NONE);
                 trclmn_Location.setWidth(100);
-                trclmn_Location.setText("Location"); //$NON-NLS-1$ I18N Needs translation
+                trclmn_Location.setText(I18n.COMPOSITETAB_Location);
 
                 TreeColumn trclmn_Type = new TreeColumn(tree, SWT.NONE);
                 trclmn_Type.setWidth(100);
-                trclmn_Type.setText("Type"); //$NON-NLS-1$ I18N Needs translation
+                trclmn_Type.setText(I18n.COMPOSITETAB_Type);
 
                 TreeItem trtm_Hints = new TreeItem(tree, SWT.NONE);
                 treeItem_Hints[0] = trtm_Hints;
                 trtm_Hints.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
-                trtm_Hints.setText(new String[] { "Hints", "", "" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation
+                trtm_Hints.setText(new String[] { I18n.COMPOSITETAB_Hints, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
                 TreeItem trtm_Warnings = new TreeItem(tree, SWT.NONE);
                 treeItem_Warnings[0] = trtm_Warnings;
                 trtm_Warnings.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
-                trtm_Warnings.setText(new String[] { "Warnings", "", "" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation
+                trtm_Warnings.setText(new String[] { I18n.COMPOSITETAB_Warnings, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
                 TreeItem trtm_Errors = new TreeItem(tree, SWT.NONE);
                 treeItem_Errors[0] = trtm_Errors;
                 trtm_Errors.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
-                trtm_Errors.setText(new String[] { "Errors", "", "" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation
+                trtm_Errors.setText(new String[] { I18n.COMPOSITETAB_Errors, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
                 Menu menu = new Menu(tabFolder);
                 tree.setMenu(menu);
@@ -182,12 +182,12 @@ class CompositeTabDesign extends CTabItem {
                 MenuItem mntmQuickFix = new MenuItem(menu, I18n.I18N_NON_BIDIRECT());
                 mntm_QuickFix[0] = mntmQuickFix;
                 mntmQuickFix.setEnabled(true);
-                mntmQuickFix.setText("Quick Fix"); //$NON-NLS-1$ I18N Needs translation
+                mntmQuickFix.setText(I18n.COMPOSITETAB_QuickFix);
 
                 MenuItem mntmQuickFixSame = new MenuItem(menu, I18n.I18N_NON_BIDIRECT());
                 mntm_QuickFixSame[0] = mntmQuickFixSame;
                 mntmQuickFixSame.setEnabled(true);
-                mntmQuickFixSame.setText("Quick Fix Similar Problems"); //$NON-NLS-1$ I18N Needs translation
+                mntmQuickFixSame.setText(I18n.COMPOSITETAB_QuickFixSimilar);
 
                 tree.build();
             }
