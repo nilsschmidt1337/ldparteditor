@@ -716,7 +716,7 @@ class Editor3DDesign extends ApplicationWindow {
                 this.btn_LineToCondline[0] = btn_LineToCondline;
                 // FIXME Needs icon!
                 btn_LineToCondline.setText("L2C"); //$NON-NLS-1$
-                btn_LineToCondline.setToolTipText("Line -> Conditional Line"); // I18N NEEDS TRANSLATION //$NON-NLS-1$
+                btn_LineToCondline.setToolTipText(I18n.EDITOR3D_LineToCondline);
             }
             {
                 Button btn_RoundSelection = new Button(toolItem_MiscClick, SWT.NONE);

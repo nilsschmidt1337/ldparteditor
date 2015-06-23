@@ -88,6 +88,7 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dh;
 import org.nschmidt.ldparteditor.helpers.math.Vector3r;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
@@ -9286,15 +9287,14 @@ public class VertexManager {
         final BigDecimal epsilon = new BigDecimal("0.000001"); //$NON-NLS-1$
 
         if (plainOnX && epsilon.compareTo(lengthX) < 0) {
-            result.add(new ParsingResult("The flat subfile is scaled in X direction.", "[W02] Warning", ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            result.add(new ParsingResult(I18n.VM_FlatScaledX, "[W02] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
         }
         if (plainOnY && epsilon.compareTo(lengthY) < 0) {
-            result.add(new ParsingResult("The flat subfile is scaled in Y direction.", "[W03] Warning", ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            result.add(new ParsingResult(I18n.VM_FlatScaledY, "[W03] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
         }
         if (plainOnZ && epsilon.compareTo(lengthZ) < 0) {
-            result.add(new ParsingResult("The flat subfile is scaled in Z direction.", "[W04] Warning", ResultType.WARN)); //$NON-NLS-1$ //$NON-NLS-2$ // I18N Needs translation!
+            result.add(new ParsingResult(I18n.VM_FlatScaledZ, "[W04] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
         }
-
 
         return result;
     }

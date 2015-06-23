@@ -83,6 +83,8 @@ public final class I18n {
     private static final ResourceBundle TREEITEM = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TreeItem", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle TXT2DAT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Txt2Dat", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle UNIFICATOR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Unificator", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle VM = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.VertexManager", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle C3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Composite3D", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -95,6 +97,7 @@ public final class I18n {
         notAdjusted = false;
     }
     // Constants (Need case sensitive sorting!)
+    public static final String C3D_RenderMode = C3D.getString(getProperty());
     public static final String COLOURDIALOG_Colour = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_ColourTitle = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_DirectColour = COLOURDIALOG.getString(getProperty());
@@ -289,6 +292,7 @@ public final class I18n {
     public static final String EDITOR3D_LineSize2 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LineSize3 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LineSize4 = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LineToCondline = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LoadingLibrary = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LoadingPrimitives = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Local = EDITOR3D.getString(getProperty());
@@ -685,12 +689,15 @@ public final class I18n {
     public static final String TXT2DAT_Select = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_Text = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_Title = TXT2DAT.getString(getProperty());
-    public static final String UNIFICATOR_ = UNIFICATOR.getString(getProperty());
-    public static final String UNIFICATOR_ = UNIFICATOR.getString(getProperty());
-    public static final String UNIFICATOR_ = UNIFICATOR.getString(getProperty());
-    public static final String UNIFICATOR_ = UNIFICATOR.getString(getProperty());
-    public static final String UNIFICATOR_ = UNIFICATOR.getString(getProperty());
-    public static final String UNIFICATOR_ = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_ScopeFile = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_ScopeSelection = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_SnapOn = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_SubpartVertices = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_Title = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_VertexSnap = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_VertexUnifiation = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_Vertices = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_VerticesSubpartVertices = UNIFICATOR.getString(getProperty());
     public static final String UNITS_Factor_primary = UNITS.getString(getProperty());
     public static final String UNITS_Factor_secondary = UNITS.getString(getProperty());
     public static final String UNITS_LDU = UNITS.getString(getProperty());
@@ -704,6 +711,9 @@ public final class I18n {
     public static final String VERSION_Stage = VERSION.getString(getProperty());
     public static final String VERSION_Testers = VERSION.getString(getProperty());
     public static final String VERSION_Version = VERSION.getString(getProperty());
+    public static final String VM_FlatScaledX = VM.getString(getProperty());
+    public static final String VM_FlatScaledY = VM.getString(getProperty());
+    public static final String VM_FlatScaledZ = VM.getString(getProperty());
 
     // Custom Methods
     public static String UNIT_CurrentUnit() {

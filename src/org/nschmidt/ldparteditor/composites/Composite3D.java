@@ -340,7 +340,7 @@ public class Composite3D extends ScalableComposite {
         mntmViewActions.setText(I18n.EDITOR3D_ViewActions);
 
         MenuItem mntmRenderModes = new MenuItem(menu, SWT.CASCADE);
-        mntmRenderModes.setText("Render Mode"); //$NON-NLS-1$ I18N Needs translation
+        mntmRenderModes.setText(I18n.C3D_RenderMode);
 
         @SuppressWarnings("unused")
         final MenuItem mntmSeparator3 = new MenuItem(menu, SWT.SEPARATOR);
