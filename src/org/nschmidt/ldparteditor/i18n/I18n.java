@@ -79,6 +79,7 @@ public final class I18n {
     private static final ResourceBundle SLICERPRO = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Slicerpro", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SORT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Sort", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SYMSPLITTER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Symsplitter", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle TRANSLATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Translate", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -645,7 +646,33 @@ public final class I18n {
     public static final String SPLASH_NoRead = SPLASH.getString(getProperty());
     public static final String SPLASH_NoWrite = SPLASH.getString(getProperty());
     public static final String SPLASH_Title = SPLASH.getString(getProperty());
-    public static final String SYMSPLITTER_ = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_Colourise = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_Cut = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_DoNotCut = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_Hint = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_NoValidation = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_NotColourise = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_ScopeFile = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_ScopeSelection = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_SelectWhat = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_ShowAll = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_ShowBehind = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_ShowFront = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_ShowMiddle = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_SplittingPlane = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_Title = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_Validation = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_VertexThreshold = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_Xm = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_Xp = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_Ym = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_Yp = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_Zm = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_Zp = SYMSPLITTER.getString(getProperty());
+    public static final String TRANSLATE_Title = TRANSLATE.getString(getProperty());
+    public static final String TRANSLATE_X = TRANSLATE.getString(getProperty());
+    public static final String TRANSLATE_Y = TRANSLATE.getString(getProperty());
+    public static final String TRANSLATE_Z = TRANSLATE.getString(getProperty());
     public static final String UNITS_Factor_primary = UNITS.getString(getProperty());
     public static final String UNITS_Factor_secondary = UNITS.getString(getProperty());
     public static final String UNITS_LDU = UNITS.getString(getProperty());
