@@ -74,6 +74,8 @@ public final class I18n {
     private static final ResourceBundle RCONES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.RingsAndCones", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle ROTATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Rotate", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle ROUND = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Round", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle SCALE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Scale", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle SEARCH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Search", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -601,6 +603,27 @@ public final class I18n {
     public static final String ROUND_InDecPlaces = ROUND.getString(getProperty());
     public static final String ROUND_MatrixPrecision = ROUND.getString(getProperty());
     public static final String ROUND_Title = ROUND.getString(getProperty());
+    public static final String SCALE_Pivot = SCALE.getString(getProperty());
+    public static final String SCALE_Title = SCALE.getString(getProperty());
+    public static final String SCALE_X = SCALE.getString(getProperty());
+    public static final String SCALE_Y = SCALE.getString(getProperty());
+    public static final String SCALE_Z = SCALE.getString(getProperty());
+    public static final String SEARCH_All = SEARCH.getString(getProperty());
+    public static final String SEARCH_Backward = SEARCH.getString(getProperty());
+    public static final String SEARCH_CaseSensitive = SEARCH.getString(getProperty());
+    public static final String SEARCH_Close = SEARCH.getString(getProperty());
+    public static final String SEARCH_Direction = SEARCH.getString(getProperty());
+    public static final String SEARCH_Find = SEARCH.getString(getProperty());
+    public static final String SEARCH_Find2 = SEARCH.getString(getProperty());
+    public static final String SEARCH_Forward = SEARCH.getString(getProperty());
+    public static final String SEARCH_Incremental = SEARCH.getString(getProperty());
+    public static final String SEARCH_Options = SEARCH.getString(getProperty());
+    public static final String SEARCH_Replace = SEARCH.getString(getProperty());
+    public static final String SEARCH_ReplaceAll = SEARCH.getString(getProperty());
+    public static final String SEARCH_ReplaceFind = SEARCH.getString(getProperty());
+    public static final String SEARCH_ReplaceWith = SEARCH.getString(getProperty());
+    public static final String SEARCH_Scope = SEARCH.getString(getProperty());
+    public static final String SEARCH_SelectedLines = SEARCH.getString(getProperty());
     public static final String SPLASH_CheckPlugIn = SPLASH.getString(getProperty());
     public static final String SPLASH_Error = SPLASH.getString(getProperty());
     public static final String SPLASH_InvalidOpenGLVersion = SPLASH.getString(getProperty());

@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.nschmidt.ldparteditor.i18n.I18n;
 
 public class SearchDesign extends ApplicationWindow {
 
@@ -68,7 +69,7 @@ public class SearchDesign extends ApplicationWindow {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_find = new Label(cmp_container, SWT.NONE);
-        lbl_find.setText("Find:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_find.setText(I18n.SEARCH_Find);
 
         Text txt_find = new Text(cmp_container, SWT.NONE);
         this.txt_find[0] = txt_find;
@@ -76,57 +77,57 @@ public class SearchDesign extends ApplicationWindow {
 
 
         Label lbl_replace = new Label(cmp_container, SWT.NONE);
-        lbl_replace.setText("Replace with:"); //$NON-NLS-1$ I18N Needs translation!
+        lbl_replace.setText(I18n.SEARCH_ReplaceWith);
 
         Text txt_replace = new Text(cmp_container, SWT.NONE);
         this.txt_replace[0] = txt_replace;
         txt_replace.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
         Group grp_dir = new Group(cmp_container, SWT.NONE);
-        grp_dir.setText("Direction:"); //$NON-NLS-1$ I18N Needs translation!
+        grp_dir.setText(I18n.SEARCH_Direction);
         grp_dir.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         grp_dir.setLayout(new GridLayout(3, false));
 
         Button rb_part = new Button(grp_dir, SWT.RADIO);
         this.rb_forward[0] = rb_part;
-        rb_part.setText("Forward"); //$NON-NLS-1$ I18N Needs translation!
+        rb_part.setText(I18n.SEARCH_Forward);
         rb_part.setSelection(true);
 
         Button rb_subpart = new Button(grp_dir, SWT.RADIO);
         this.rb_backward[0] = rb_subpart;
-        rb_subpart.setText("Backward"); //$NON-NLS-1$ I18N Needs translation!
+        rb_subpart.setText(I18n.SEARCH_Backward);
 
         grp_dir.layout();
 
 
         Group grp_scope = new Group(cmp_container, SWT.NONE);
-        grp_scope.setText("Scope:"); //$NON-NLS-1$ I18N Needs translation!
+        grp_scope.setText(I18n.SEARCH_Scope);
         grp_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         grp_scope.setLayout(new GridLayout(3, false));
 
         Button rb_all = new Button(grp_scope, SWT.RADIO);
         this.rb_all[0] = rb_all;
-        rb_all.setText("All"); //$NON-NLS-1$ I18N Needs translation!
+        rb_all.setText(I18n.SEARCH_All);
         rb_all.setSelection(true);
 
         Button rb_selectedLines = new Button(grp_scope, SWT.RADIO);
         this.rb_selectedLines[0] = rb_selectedLines;
-        rb_selectedLines.setText("Selected lines"); //$NON-NLS-1$ I18N Needs translation!
+        rb_selectedLines.setText(I18n.SEARCH_SelectedLines);
 
         grp_scope.layout();
 
         Group grp_location = new Group(cmp_container, SWT.NONE);
-        grp_location.setText("Options:"); //$NON-NLS-1$ I18N Needs translation!
+        grp_location.setText(I18n.SEARCH_Options);
         grp_location.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         grp_location.setLayout(new GridLayout());
 
         Button rb_currentProject = new Button(grp_location, SWT.CHECK);
         this.cb_caseSensitive[0] = rb_currentProject;
-        rb_currentProject.setText("Case sensitive"); //$NON-NLS-1$ I18N Needs translation!
+        rb_currentProject.setText(I18n.SEARCH_CaseSensitive);
 
         Button rb_unofficialLib = new Button(grp_location, SWT.CHECK);
         this.cb_incremental[0] = rb_unofficialLib;
-        rb_unofficialLib.setText("Incremental"); //$NON-NLS-1$ I18N Needs translation!
+        rb_unofficialLib.setText(I18n.SEARCH_Incremental);
 
         grp_location.layout();
 
@@ -138,33 +139,33 @@ public class SearchDesign extends ApplicationWindow {
             this.btn_findAndReplace[0] = btn_tmp;
             btn_tmp.setEnabled(false);
             btn_tmp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_tmp.setText("Replace/Find"); //$NON-NLS-1$ I18N Needs translation!
+            btn_tmp.setText(I18n.SEARCH_ReplaceFind);
         }
         {
             Button btn_tmp = new Button(cmp_btnGrid, SWT.NONE);
             this.btn_find[0] = btn_tmp;
             btn_tmp.setEnabled(false);
             btn_tmp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_tmp.setText("Find"); //$NON-NLS-1$ I18N Needs translation!
+            btn_tmp.setText(I18n.SEARCH_Find2);
         }
         {
             Button btn_tmp = new Button(cmp_btnGrid, SWT.NONE);
             this.btn_replaceAll[0] = btn_tmp;
             btn_tmp.setEnabled(false);
             btn_tmp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_tmp.setText("Replace All"); //$NON-NLS-1$ I18N Needs translation!
+            btn_tmp.setText(I18n.SEARCH_ReplaceAll);
         }
         {
             Button btn_tmp = new Button(cmp_btnGrid, SWT.NONE);
             this.btn_replace[0] = btn_tmp;
             btn_tmp.setEnabled(false);
             btn_tmp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_tmp.setText("Replace"); //$NON-NLS-1$ I18N Needs translation!
+            btn_tmp.setText(I18n.SEARCH_Replace);
         }
         {
             Button btn_close = new Button(cmp_btnGrid, SWT.NONE);
             btn_close.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_close.setText("Close"); //$NON-NLS-1$ I18N Needs translation!
+            btn_close.setText(I18n.SEARCH_Close);
 
             btn_close.addSelectionListener(new SelectionAdapter() {
                 @Override
