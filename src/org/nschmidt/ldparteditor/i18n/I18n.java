@@ -97,7 +97,33 @@ public final class I18n {
         notAdjusted = false;
     }
     // Constants (Need case sensitive sorting!)
+    public static final String C3D_Anaglyph3D = C3D.getString(getProperty());
+    public static final String C3D_CondLineMode = C3D.getString(getProperty());
+    public static final String C3D_GreenRed = C3D.getString(getProperty());
+    public static final String C3D_GridSize = C3D.getString(getProperty());
+    public static final String C3D_HiddenVertices = C3D.getString(getProperty());
+    public static final String C3D_HideAll = C3D.getString(getProperty());
+    public static final String C3D_LDrawLines = C3D.getString(getProperty());
+    public static final String C3D_LDrawStandard = C3D.getString(getProperty());
+    public static final String C3D_Lights = C3D.getString(getProperty());
+    public static final String C3D_MeshLines = C3D.getString(getProperty());
+    public static final String C3D_NoBackfaceCulling = C3D.getString(getProperty());
+    public static final String C3D_PerspectiveLabel = C3D.getString(getProperty());
+    public static final String C3D_PreviewNote = C3D.getString(getProperty());
+    public static final String C3D_RandomColours = C3D.getString(getProperty());
+    public static final String C3D_RealBackfaceCulling = C3D.getString(getProperty());
+    public static final String C3D_RealPreview = C3D.getString(getProperty());
+    public static final String C3D_RedBackfaces = C3D.getString(getProperty());
     public static final String C3D_RenderMode = C3D.getString(getProperty());
+    public static final String C3D_SetGridSize = C3D.getString(getProperty());
+    public static final String C3D_ShowAll = C3D.getString(getProperty());
+    public static final String C3D_ShowEdges = C3D.getString(getProperty());
+    public static final String C3D_StudLogo = C3D.getString(getProperty());
+    public static final String C3D_SubfileMeshLines = C3D.getString(getProperty());
+    public static final String C3D_UseAlwaysBlackLines = C3D.getString(getProperty());
+    public static final String C3D_Vertices = C3D.getString(getProperty());
+    public static final String C3D_Wireframe = C3D.getString(getProperty());
+    public static final String C3D_XYZAxis = C3D.getString(getProperty());
     public static final String COLOURDIALOG_Colour = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_ColourTitle = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_DirectColour = COLOURDIALOG.getString(getProperty());

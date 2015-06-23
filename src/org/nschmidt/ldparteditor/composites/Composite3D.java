@@ -584,7 +584,7 @@ public class Composite3D extends ScalableComposite {
         mntmGridSize.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                new ValueDialog(getShell(), "Set the Grid Size", I18n.UNIT_CurrentUnit()) { //$NON-NLS-1$ I18N Needs translation
+                new ValueDialog(getShell(), I18n.C3D_SetGridSize, I18n.UNIT_CurrentUnit()) {
                     @Override
                     public void initializeSpinner() {
                         this.spn_Value[0].setMinimum(new BigDecimal("0")); //$NON-NLS-1$
@@ -602,7 +602,7 @@ public class Composite3D extends ScalableComposite {
                 }.open();
             }
         });
-        mntmGridSize.setText("Grid Size"); //$NON-NLS-1$ I18N Needs translation
+        mntmGridSize.setText(I18n.C3D_GridSize);
 
         {
             // MARK CMenu Viewing Angles
@@ -728,7 +728,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.switchLigths(mntmSwitchLights.getSelection());
                 }
             });
-            mntmSwitchLights.setText("Lights"); //$NON-NLS-1$ I18N Needs translation
+            mntmSwitchLights.setText(I18n.C3D_Lights);
             mntmSwitchLights.setSelection(true);
 
             final MenuItem mntmMeshLines = new MenuItem(mnu_viewActions, SWT.CHECK);
@@ -739,7 +739,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.switchMeshLines(mntmMeshLines.getSelection());
                 }
             });
-            mntmMeshLines.setText("Mesh Lines"); //$NON-NLS-1$ I18N Needs translation
+            mntmMeshLines.setText(I18n.C3D_MeshLines);
             mntmMeshLines.setSelection(true);
 
             final MenuItem mntmSubMeshLines = new MenuItem(mnu_viewActions, SWT.CHECK);
@@ -750,7 +750,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.switchSubMeshLines(mntmSubMeshLines.getSelection());
                 }
             });
-            mntmSubMeshLines.setText("Subfile Mesh Lines"); //$NON-NLS-1$ I18N Needs translation
+            mntmSubMeshLines.setText(I18n.C3D_SubfileMeshLines);
             mntmSubMeshLines.setSelection(false);
 
             final MenuItem mntmVertices = new MenuItem(mnu_viewActions, SWT.CHECK);
@@ -761,7 +761,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.switchVertices(mntmVertices.getSelection());
                 }
             });
-            mntmVertices.setText("Vertices"); //$NON-NLS-1$ I18N Needs translation
+            mntmVertices.setText(I18n.C3D_Vertices);
             mntmVertices.setSelection(true);
 
             final MenuItem mntmHiddenVertices = new MenuItem(mnu_viewActions, SWT.CHECK);
@@ -772,7 +772,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.switchHiddenVertices(mntmHiddenVertices.getSelection());
                 }
             });
-            mntmHiddenVertices.setText("Hidden Vertices"); //$NON-NLS-1$ I18N Needs translation
+            mntmHiddenVertices.setText(I18n.C3D_HiddenVertices);
             mntmHiddenVertices.setSelection(false);
 
             final MenuItem mntmStudLogo = new MenuItem(mnu_viewActions, SWT.CHECK);
@@ -783,11 +783,11 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.switchShowingLogo(mntmStudLogo.getSelection());
                 }
             });
-            mntmStudLogo.setText("Stud Logo"); //$NON-NLS-1$ I18N Needs translation
+            mntmStudLogo.setText(I18n.C3D_StudLogo);
             mntmStudLogo.setSelection(false);
 
             final MenuItem mntmLDrawLines = new MenuItem(mnu_viewActions, SWT.CASCADE);
-            mntmLDrawLines.setText("LDraw-Lines"); //$NON-NLS-1$ I18N Needs translation
+            mntmLDrawLines.setText(I18n.C3D_LDrawLines);
 
             final MenuItem mntmShowGrid = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmShowGrid[0] = mntmShowGrid;
@@ -819,7 +819,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.switchAxis(mntmAxis.getSelection());
                 }
             });
-            mntmAxis.setText("XYZ-Axis"); //$NON-NLS-1$ I18N Needs translation
+            mntmAxis.setText(I18n.C3D_XYZAxis);
             mntmAxis.setSelection(true);
 
             final MenuItem mntmLabel = new MenuItem(mnu_viewActions, SWT.CHECK);
@@ -830,7 +830,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.switchLabel(mntmLabel.getSelection());
                 }
             });
-            mntmLabel.setText("Perspective Label"); //$NON-NLS-1$ I18N Needs translation
+            mntmLabel.setText(I18n.C3D_PerspectiveLabel);
             mntmLabel.setSelection(true);
 
             final MenuItem mntmAnaglyph = new MenuItem(mnu_viewActions, SWT.CHECK);
@@ -841,7 +841,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.switchAnaglyph3D(mntmAnaglyph.getSelection());
                 }
             });
-            mntmAnaglyph.setText("Anaglyph 3D"); //$NON-NLS-1$ I18N Needs translation
+            mntmAnaglyph.setText(I18n.C3D_Anaglyph3D);
             mntmAnaglyph.setSelection(false);
 
             @SuppressWarnings("unused")
@@ -906,7 +906,7 @@ public class Composite3D extends ScalableComposite {
                         c3d_modifier.setLineMode(0);
                     }
                 });
-                mntmRealPreview.setText("Real Preview"); //$NON-NLS-1$ I18N Needs translation
+                mntmRealPreview.setText(I18n.C3D_RealPreview);
                 mntmRealPreview.setSelection(true);
 
                 final MenuItem mntmShowAll = new MenuItem(mnu_lineMode, SWT.CHECK);
@@ -920,7 +920,7 @@ public class Composite3D extends ScalableComposite {
                         c3d_modifier.setLineMode(1);
                     }
                 });
-                mntmShowAll.setText("Show All"); //$NON-NLS-1$ I18N Needs translation
+                mntmShowAll.setText(I18n.C3D_ShowAll);
 
                 final MenuItem mntmStdLines = new MenuItem(mnu_lineMode, SWT.CHECK);
                 this.mntmStdLines[0] = mntmStdLines;
@@ -933,7 +933,7 @@ public class Composite3D extends ScalableComposite {
                         c3d_modifier.setLineMode(2);
                     }
                 });
-                mntmStdLines.setText("Show Lines [Type 2]"); //$NON-NLS-1$ I18N Needs translation
+                mntmStdLines.setText(I18n.C3D_ShowEdges);
 
                 final MenuItem mntmHideAll = new MenuItem(mnu_lineMode, SWT.CHECK);
                 this.mntmHideAll[0] = mntmHideAll;
@@ -946,7 +946,7 @@ public class Composite3D extends ScalableComposite {
                         c3d_modifier.setLineMode(4);
                     }
                 });
-                mntmHideAll.setText("Hide All"); //$NON-NLS-1$ I18N Needs translation
+                mntmHideAll.setText(I18n.C3D_HideAll);
 
 
                 @SuppressWarnings("unused")
@@ -959,7 +959,7 @@ public class Composite3D extends ScalableComposite {
                         setBlackEdges(mntmAlwaysBlack[0].getSelection());
                     }
                 });
-                mntmAlwaysBlack[0].setText("Use Always Black Lines"); //$NON-NLS-1$ I18N Needs translation
+                mntmAlwaysBlack[0].setText(I18n.C3D_UseAlwaysBlackLines);
                 this.mntmAlwaysBlack[0] = mntmAlwaysBlack[0];
             }
 
@@ -981,7 +981,7 @@ public class Composite3D extends ScalableComposite {
                     getRenderer().disposeAllTextures();
                 }
             });
-            mntmNoBFC.setText("No Backface Culling"); //$NON-NLS-1$ I18N Needs translation
+            mntmNoBFC.setText(I18n.C3D_NoBackfaceCulling);
             mntmNoBFC.setSelection(true);
 
             final MenuItem mntmRandomColours = new MenuItem(mnu_renderMode, SWT.CHECK);
@@ -995,7 +995,7 @@ public class Composite3D extends ScalableComposite {
                     getRenderer().disposeAllTextures();
                 }
             });
-            mntmRandomColours.setText("Random Colours"); //$NON-NLS-1$ I18N Needs translation
+            mntmRandomColours.setText(I18n.C3D_RandomColours);
 
             final MenuItem mntmBFCFrontBack = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmBFCFrontBack[0] = mntmBFCFrontBack;
@@ -1008,7 +1008,7 @@ public class Composite3D extends ScalableComposite {
                     getRenderer().disposeAllTextures();
                 }
             });
-            mntmBFCFrontBack.setText("Green Frontfaces / Red Backfaces"); //$NON-NLS-1$ I18N Needs translation
+            mntmBFCFrontBack.setText(I18n.C3D_GreenRed);
 
             final MenuItem mntmBFCBack = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmBFCBack[0] = mntmBFCBack;
@@ -1021,7 +1021,7 @@ public class Composite3D extends ScalableComposite {
                     getRenderer().disposeAllTextures();
                 }
             });
-            mntmBFCBack.setText("Red Backfaces"); //$NON-NLS-1$ I18N Needs translation
+            mntmBFCBack.setText(I18n.C3D_RedBackfaces);
 
             final MenuItem mntmBFCReal = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmBFCReal[0] = mntmBFCReal;
@@ -1034,7 +1034,7 @@ public class Composite3D extends ScalableComposite {
                     getRenderer().disposeAllTextures();
                 }
             });
-            mntmBFCReal.setText("Real Backface Culling"); //$NON-NLS-1$ I18N Needs translation
+            mntmBFCReal.setText(I18n.C3D_RealBackfaceCulling);
 
             final MenuItem mntmBFCTextured = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmBFCTextured[0] = mntmBFCTextured;
@@ -1044,8 +1044,8 @@ public class Composite3D extends ScalableComposite {
 
                     if (!WorkbenchManager.getUserSettingState().isBfcCertificationRequiredForLDrawMode()) {
                         MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                        messageBox.setText("Information:"); //$NON-NLS-1$ I18N
-                        messageBox.setMessage("Please note that this mode requires a BFC CERTIFIED source, which contains a valid\n\n0 BFC CERTIFY CCW\n\nor\n\n0 BFC CERTIFY CW\n\nstatement.\nOtherwise this mode will not work properly."); //$NON-NLS-1$ I18N
+                        messageBox.setText(I18n.DIALOG_Info);
+                        messageBox.setMessage(I18n.C3D_PreviewNote);
                         messageBox.open();
                         WorkbenchManager.getUserSettingState().setBfcCertificationRequiredForLDrawMode(true);
                     }
@@ -1055,7 +1055,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.setRenderMode(5);
                 }
             });
-            mntmBFCTextured.setText("BFC + TEXMAP / Materials (LDraw Standard)"); //$NON-NLS-1$ I18N Needs translation
+            mntmBFCTextured.setText(I18n.C3D_LDrawStandard);
 
             {
                 @SuppressWarnings("unused")
@@ -1073,7 +1073,7 @@ public class Composite3D extends ScalableComposite {
                     getRenderer().disposeAllTextures();
                 }
             });
-            mntmCondlineMode.setText("Special Cond. Line Mode"); //$NON-NLS-1$ I18N Needs translation
+            mntmCondlineMode.setText(I18n.C3D_CondLineMode);
 
 
             final MenuItem mntmWireframeMode = new MenuItem(mnu_renderMode, SWT.CHECK);
@@ -1087,7 +1087,7 @@ public class Composite3D extends ScalableComposite {
                     getRenderer().disposeAllTextures();
                 }
             });
-            mntmWireframeMode.setText("Wireframe"); //$NON-NLS-1$ I18N Needs translation
+            mntmWireframeMode.setText(I18n.C3D_Wireframe);
         }
 
         try {
