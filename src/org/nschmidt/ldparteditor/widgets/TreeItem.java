@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.widgets;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,6 +25,8 @@ import java.util.TreeSet;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Image;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.i18n.I18n;
 
 /**
  * @author nils
@@ -133,23 +136,30 @@ public class TreeItem {
                 int litem = 0;
 
                 if (o > -1 && o < startOffset && (litem = compositeText.getLineAtOffset(o) + 1) != lstart) {
-                    t.setText("line " + litem + "   [" + o + "]", 1); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
+
+                    Object[] messageArguments = {litem, o};
+                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.applyPattern(I18n.TREEITEM_Line);
+
+                    t.setText(formatter.format(messageArguments), 1);
                     nl.add(t);
-                }
 
-                // else if (o == startOffset) {
-
-                // - > Parse it!
-
-                // }
-                else if (o >= endOffset || o > startOffset && o + length >= endOffset) {
+                } else if (o >= endOffset || o > startOffset && o + length >= endOffset) {
 
                     int newOffset = o + length;
                     int lnew = compositeText.getLineAtOffset(Math.max(newOffset, 0)) + 1;
 
                     if (newOffset > endOffset && lstart != lnew) {
+
                         t.setData(newOffset);
-                        t.setText("line " + lnew + "   [" + newOffset + "]", 1); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
+
+                        Object[] messageArguments = {lnew, newOffset};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.TREEITEM_Line);
+
+                        t.setText(formatter.format(messageArguments), 1);
                         nl.add(t);
                     }
                 }
