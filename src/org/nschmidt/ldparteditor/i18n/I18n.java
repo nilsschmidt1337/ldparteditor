@@ -81,6 +81,8 @@ public final class I18n {
     private static final ResourceBundle SYMSPLITTER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Symsplitter", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle TRANSLATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Translate", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle TREEITEM = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TreeItem", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle TXT2DAT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Txt2Dat", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle UNIFICATOR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Unificator", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -675,6 +677,20 @@ public final class I18n {
     public static final String TRANSLATE_Y = TRANSLATE.getString(getProperty());
     public static final String TRANSLATE_Z = TRANSLATE.getString(getProperty());
     public static final String TREEITEM_Line = TREEITEM.getString(getProperty());
+    public static final String TXT2DAT_Angle = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_Flatness = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_Font = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_FontHeight = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_InterpolateFlatness = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_Select = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_Text = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_Title = TXT2DAT.getString(getProperty());
+    public static final String UNIFICATOR_ = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_ = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_ = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_ = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_ = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_ = UNIFICATOR.getString(getProperty());
     public static final String UNITS_Factor_primary = UNITS.getString(getProperty());
     public static final String UNITS_Factor_secondary = UNITS.getString(getProperty());
     public static final String UNITS_LDU = UNITS.getString(getProperty());
