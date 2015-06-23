@@ -76,6 +76,9 @@ public final class I18n {
     private static final ResourceBundle ROUND = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Round", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SCALE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Scale", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SEARCH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Search", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle SLICERPRO = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Slicerpro", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle SORT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Sort", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle SYMSPLITTER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Symsplitter", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -624,6 +627,16 @@ public final class I18n {
     public static final String SEARCH_ReplaceWith = SEARCH.getString(getProperty());
     public static final String SEARCH_Scope = SEARCH.getString(getProperty());
     public static final String SEARCH_SelectedLines = SEARCH.getString(getProperty());
+    public static final String SLICERPRO_Title = SLICERPRO.getString(getProperty());
+    public static final String SORT_ByColourAsc = SORT.getString(getProperty());
+    public static final String SORT_ByColourDesc = SORT.getString(getProperty());
+    public static final String SORT_ByTypeAsc = SORT.getString(getProperty());
+    public static final String SORT_ByTypeColourAsc = SORT.getString(getProperty());
+    public static final String SORT_ByTypeColourDesc = SORT.getString(getProperty());
+    public static final String SORT_ByTypeDesc = SORT.getString(getProperty());
+    public static final String SORT_ScopeFile = SORT.getString(getProperty());
+    public static final String SORT_ScopeSelection = SORT.getString(getProperty());
+    public static final String SORT_Title = SORT.getString(getProperty());
     public static final String SPLASH_CheckPlugIn = SPLASH.getString(getProperty());
     public static final String SPLASH_Error = SPLASH.getString(getProperty());
     public static final String SPLASH_InvalidOpenGLVersion = SPLASH.getString(getProperty());
@@ -632,6 +645,7 @@ public final class I18n {
     public static final String SPLASH_NoRead = SPLASH.getString(getProperty());
     public static final String SPLASH_NoWrite = SPLASH.getString(getProperty());
     public static final String SPLASH_Title = SPLASH.getString(getProperty());
+    public static final String SYMSPLITTER_ = SYMSPLITTER.getString(getProperty());
     public static final String UNITS_Factor_primary = UNITS.getString(getProperty());
     public static final String UNITS_Factor_secondary = UNITS.getString(getProperty());
     public static final String UNITS_LDU = UNITS.getString(getProperty());

@@ -60,7 +60,7 @@ class SlicerProDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("SlicerPro2 [Arbitrary Precision]\nResults are rounded to 6 decimal places."); //$NON-NLS-1$ I18N Needs translation!
+        lbl_specify.setText(I18n.SLICERPRO_Title);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
