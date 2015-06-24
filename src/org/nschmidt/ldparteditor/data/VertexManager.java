@@ -19835,7 +19835,6 @@ public class VertexManager {
             linkedDatFile.getDrawPerLine_NOCLONE().clear();
             linkedDatFile.getDrawChainStart().setNext(emptyLine);
             linkedDatFile.getDrawPerLine_NOCLONE().put(1, emptyLine);
-            // FIXME Needs implementation!
             setModified(true, false);
             StringBuilder sb = new StringBuilder();
             for (String line : s.getBackup()) {
