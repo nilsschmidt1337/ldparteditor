@@ -598,19 +598,19 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_SwitchXY[0] = btn_Mani;
-                        btn_Mani.setText("Swap the Manipulator X/Y Axes"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_SwapXY);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_SwitchXZ[0] = btn_Mani;
-                        btn_Mani.setText("Swap the Manipulator X/Z Axes"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_SwapXZ);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_SwitchYZ[0] = btn_Mani;
-                        btn_Mani.setText("Swap the Manipulator Y/Z Axes"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_SwapYZ);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
                     }
                     @SuppressWarnings("unused")
@@ -618,13 +618,13 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_1_cameraToPos[0] = btn_Mani;
-                        btn_Mani.setText("Move the Camera to the Manipulator Position"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_CamToManipulator);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_cameratomanipulator.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_2_toAverage[0] = btn_Mani;
-                        btn_Mani.setText("Move the Manipulator to the Average Point of the Selection"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ManipulatorToAvg);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
                     }
                     @SuppressWarnings("unused")
@@ -632,13 +632,13 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_3_toSubfile[0] = btn_Mani;
-                        btn_Mani.setText("Move the Manipulator to the Origin from a selected Subfile"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ManipulatorToSubfile);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_32_subfileTo[0] = btn_Mani;
-                        btn_Mani.setText("Move a selected Subfile to the Manipulator"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_SubfileToManipulator);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
                     }
                     @SuppressWarnings("unused")
@@ -646,19 +646,19 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_4_toVertex[0] = btn_Mani;
-                        btn_Mani.setText("Move the Manipulator to the Nearest Vertex"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ManipulatorToVertex);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertex.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_5_toEdge[0] = btn_Mani;
-                        btn_Mani.setText("Move the Manipulator to the Nearest Edge"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ManipulatorToEdge);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedge.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_6_toSurface[0] = btn_Mani;
-                        btn_Mani.setText("Move the Manipulator to the Nearest Face"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ManipulatorToFace);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
                     }
                     @SuppressWarnings("unused")

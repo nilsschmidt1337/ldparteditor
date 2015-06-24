@@ -287,6 +287,7 @@ public final class I18n {
     public static final String E3D_AngleY = E3D.getString(getProperty());
     public static final String E3D_AngleZ = E3D.getString(getProperty());
     public static final String E3D_BackgroundImage = E3D.getString(getProperty());
+    public static final String E3D_CamToManipulator = E3D.getString(getProperty());
     public static final String E3D_CloseView = E3D.getString(getProperty());
     public static final String E3D_Coarse = E3D.getString(getProperty());
     public static final String E3D_Combined = E3D.getString(getProperty());
@@ -334,7 +335,12 @@ public final class I18n {
     public static final String E3D_LogUploadNoLogFiles = E3D.getString(getProperty());
     public static final String E3D_LogUploadSuccess = E3D.getString(getProperty());
     public static final String E3D_LogUploadUnexpectedException = E3D.getString(getProperty());
+    public static final String E3D_ManipulatorToAvg = E3D.getString(getProperty());
+    public static final String E3D_ManipulatorToEdge = E3D.getString(getProperty());
+    public static final String E3D_ManipulatorToFace = E3D.getString(getProperty());
     public static final String E3D_ManipulatorToOrigin = E3D.getString(getProperty());
+    public static final String E3D_ManipulatorToSubfile = E3D.getString(getProperty());
+    public static final String E3D_ManipulatorToVertex = E3D.getString(getProperty());
     public static final String E3D_ManipulatorToWorld = E3D.getString(getProperty());
     public static final String E3D_Medium = E3D.getString(getProperty());
     public static final String E3D_ModeLine = E3D.getString(getProperty());
@@ -414,7 +420,11 @@ public final class I18n {
     public static final String E3D_SplitHorizontally = E3D.getString(getProperty());
     public static final String E3D_SplitQuad = E3D.getString(getProperty());
     public static final String E3D_SplitVertically = E3D.getString(getProperty());
+    public static final String E3D_SubfileToManipulator = E3D.getString(getProperty());
     public static final String E3D_SwapWinding = E3D.getString(getProperty());
+    public static final String E3D_SwapXY = E3D.getString(getProperty());
+    public static final String E3D_SwapXZ = E3D.getString(getProperty());
+    public static final String E3D_SwapYZ = E3D.getString(getProperty());
     public static final String E3D_SyncFolders = E3D.getString(getProperty());
     public static final String E3D_TextLine = E3D.getString(getProperty());
     public static final String E3D_ThreshInDeg = E3D.getString(getProperty());
