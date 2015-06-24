@@ -47,6 +47,7 @@ import org.nschmidt.ldparteditor.data.GData0;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.PGData3;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -112,7 +113,7 @@ public class TextTriangulator {
                 {
                     try
                     {
-                        monitor.beginTask("Triangulating text...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                        monitor.beginTask(I18n.TXT2DAT_Triangulate, IProgressMonitor.UNKNOWN);
                         for (int j = 0; j < vector.getNumGlyphs(); j++) {
                             final int[] i = new int[1];
                             i[0] = j;

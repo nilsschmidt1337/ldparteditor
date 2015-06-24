@@ -2120,7 +2120,7 @@ public class VertexManager {
                             {
                                 try
                                 {
-                                    m.beginTask("Selecting...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                                    m.beginTask(I18n.VM_Selecting, IProgressMonitor.UNKNOWN);
                                     boolean isRunning = true;
                                     while (isRunning) {
                                         try {
@@ -2272,7 +2272,7 @@ public class VertexManager {
                             {
                                 try
                                 {
-                                    m.beginTask("Selecting...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                                    m.beginTask(I18n.VM_Selecting, IProgressMonitor.UNKNOWN);
                                     boolean isRunning = true;
                                     while (isRunning) {
                                         try {
@@ -2486,7 +2486,7 @@ public class VertexManager {
                             {
                                 try
                                 {
-                                    m.beginTask("Selecting...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                                    m.beginTask(I18n.VM_Selecting, IProgressMonitor.UNKNOWN);
                                     boolean isRunning = true;
                                     while (isRunning) {
                                         try {
@@ -2637,7 +2637,7 @@ public class VertexManager {
                             {
                                 try
                                 {
-                                    m.beginTask("Selecting...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                                    m.beginTask(I18n.VM_Selecting, IProgressMonitor.UNKNOWN);
                                     boolean isRunning = true;
                                     while (isRunning) {
                                         try {
@@ -9660,7 +9660,7 @@ public class VertexManager {
                 {
                     try
                     {
-                        monitor.beginTask("Rectify...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                        monitor.beginTask(I18n.VM_Rectify, IProgressMonitor.UNKNOWN);
                         for (GData g : surfsToParse) {
                             /* Check if the monitor has been canceled */
                             if (monitor.isCanceled()) break;
@@ -10196,7 +10196,7 @@ public class VertexManager {
                 {
                     try
                     {
-                        monitor.beginTask("Searching for intersections...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                        monitor.beginTask(I18n.VM_SearchIntersection, IProgressMonitor.UNKNOWN);
                         for(int i = 0; i < surfsSize; i++) {
                             /* Check if the monitor has been canceled */
                             if (monitor.isCanceled()) break;
@@ -10812,7 +10812,7 @@ public class VertexManager {
                     {
                         try
                         {
-                            monitor.beginTask("Running SlicerPro2 (this may take some time)", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                            monitor.beginTask(I18n.VM_Slicerpro, IProgressMonitor.UNKNOWN);
 
                             {
 
@@ -11903,7 +11903,7 @@ public class VertexManager {
                     {
                         try
                         {
-                            monitor.beginTask("Running Intersector (this may take some time)", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                            monitor.beginTask(I18n.VM_Intersector, IProgressMonitor.UNKNOWN);
 
                             {
 
@@ -13009,7 +13009,7 @@ public class VertexManager {
                 {
                     try
                     {
-                        monitor.beginTask("Running Lines2Pattern (this may take some time)", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                        monitor.beginTask(I18n.VM_Lines2Pattern, IProgressMonitor.UNKNOWN);
 
                         for (GData3 g3 : selectedTriangles) {
                             TreeSet<Vertex> vs = new TreeSet<Vertex>();
@@ -13367,7 +13367,7 @@ public class VertexManager {
                     {
                         try
                         {
-                            monitor.beginTask("Running Lines2Pattern (this may take some time)", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                            monitor.beginTask(I18n.VM_Lines2Pattern, IProgressMonitor.UNKNOWN);
 
                             final Thread[] threads = new Thread[1];
 

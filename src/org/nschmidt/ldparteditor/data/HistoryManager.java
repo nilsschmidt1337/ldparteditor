@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Display;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -470,7 +471,7 @@ public class HistoryManager {
                         public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
                         {
                             m[0] = mon;
-                            monitor.beginTask("Loading Data...", 100); //$NON-NLS-1$ I18N
+                            monitor.beginTask(I18n.EDITOR3D_LoadingData, 100);
                             while (action.get() > 0) {
                                 Integer inc = sq.poll(1000, TimeUnit.MILLISECONDS);
                                 if (inc != null) {
