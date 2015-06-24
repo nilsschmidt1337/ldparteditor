@@ -38,6 +38,8 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.data.GColourIndex;
 
 /**
  * An axis-aligned solid cuboid defined by {@code center} and {@code dimensions}
@@ -45,7 +47,7 @@ import org.lwjgl.util.vector.Vector3f;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class CSGCube implements Primitive {
+public class CSGCube extends CSGPrimitive implements Primitive {
 
     /**
      * Center of this cube.
@@ -57,8 +59,6 @@ public class CSGCube implements Primitive {
     private Vector3d dimensions;
 
     private boolean centered = true;
-
-    private final PropertyStorage properties = new PropertyStorage();
 
     /**
      * Constructor. Creates a new cube with center {@code [0,0,0]} and
@@ -111,7 +111,7 @@ public class CSGCube implements Primitive {
     }
 
     @Override
-    public List<Polygon> toPolygons() {
+    public List<Polygon> toPolygons(GColour colour) {
 
         int[][][] a = {
                 // position // normal
@@ -125,6 +125,8 @@ public class CSGCube implements Primitive {
                         * (1 * Math.min(1, i & 4) - 0.5));
                 vertices.add(new Vertex(pos, new Vector3d(info[1][0], info[1][1], info[1][2])));
             }
+            PropertyStorage properties = new PropertyStorage();
+            properties.set("colour", new GColourIndex(colour, id_counter.getAndIncrement())); //$NON-NLS-1$
             polygons.add(new Polygon(vertices, properties));
         }
 
@@ -171,19 +173,14 @@ public class CSGCube implements Primitive {
         this.dimensions = dimensions;
     }
 
-    @Override
-    public PropertyStorage getProperties() {
-        return properties;
-    }
-
     public CSGCube noCenter() {
         centered = false;
         return this;
     }
 
     @Override
-    public CSG toCSG() {
-        return CSG.fromPolygons(toPolygons());
+    public CSG toCSG(GColour colour) {
+        return CSG.fromPolygons(toPolygons(colour));
     }
 
 }

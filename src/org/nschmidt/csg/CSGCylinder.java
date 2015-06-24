@@ -37,6 +37,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.data.GColourIndex;
+
 /**
  * A solid cylinder.
  *
@@ -44,14 +47,12 @@ import java.util.List;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class CSGCylinder implements Primitive {
+public class CSGCylinder extends CSGPrimitive implements Primitive {
 
     private Vector3d start;
     private Vector3d end;
     private double radius;
     private int numSlices;
-
-    private final PropertyStorage properties = new PropertyStorage();
 
     /**
      * Constructor. Creates a new cylinder with center {@code [0,0,0]} and
@@ -100,7 +101,7 @@ public class CSGCylinder implements Primitive {
     }
 
     @Override
-    public List<Polygon> toPolygons() {
+    public List<Polygon> toPolygons(GColour colour) {
         final Vector3d s = getStart();
         Vector3d e = getEnd();
         final Vector3d ray = e.minus(s);
@@ -114,10 +115,23 @@ public class CSGCylinder implements Primitive {
 
         for (int i = 0; i < numSlices; i++) {
             double t0 = i / (double) numSlices, t1 = (i + 1) / (double) numSlices;
-            polygons.add(new Polygon(Arrays.asList(startV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, -1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, -1)), properties));
-            polygons.add(new Polygon(Arrays.asList(cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, 0),
-                    cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0)), properties));
-            polygons.add(new Polygon(Arrays.asList(endV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)), properties));
+            {
+                PropertyStorage properties = new PropertyStorage();
+                properties.set("colour", new GColourIndex(colour, id_counter.getAndIncrement())); //$NON-NLS-1$
+                polygons.add(new Polygon(Arrays.asList(startV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, -1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, -1)), properties));
+            }
+            {
+                PropertyStorage properties = new PropertyStorage();
+                properties.set("colour", new GColourIndex(colour, id_counter.getAndIncrement())); //$NON-NLS-1$
+                polygons.add(new Polygon(Arrays.asList(cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, 0),
+                        cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0)), properties));
+            }
+            {
+                PropertyStorage properties = new PropertyStorage();
+                properties.set("colour", new GColourIndex(colour, id_counter.getAndIncrement())); //$NON-NLS-1$
+                polygons.add(new Polygon(Arrays.asList(endV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1),
+                        cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)), properties));
+            }
         }
 
         return polygons;
@@ -192,13 +206,7 @@ public class CSGCylinder implements Primitive {
     }
 
     @Override
-    public PropertyStorage getProperties() {
-        return properties;
+    public CSG toCSG(GColour colour) {
+        return CSG.fromPolygons(toPolygons(colour));
     }
-
-    @Override
-    public CSG toCSG() {
-        return CSG.fromPolygons(toPolygons());
-    }
-
 }

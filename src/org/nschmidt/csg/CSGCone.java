@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.data.GColourIndex;
+
 /**
  * A solid cone.
  *
@@ -26,14 +29,12 @@ import java.util.List;
  *
  * @author nils;
  */
-public class CSGCone implements Primitive {
+public class CSGCone extends CSGPrimitive implements Primitive {
 
     private Vector3d start;
     private Vector3d end;
     private double radius;
     private int numSlices;
-
-    private final PropertyStorage properties = new PropertyStorage();
 
     /**
      * Constructor. Creates a new cone with center {@code [0,0,0]} and
@@ -82,7 +83,7 @@ public class CSGCone implements Primitive {
     }
 
     @Override
-    public List<Polygon> toPolygons() {
+    public List<Polygon> toPolygons(GColour colour) {
         final Vector3d s = getStart();
         Vector3d e = getEnd();
         final Vector3d ray = e.minus(s);
@@ -95,9 +96,17 @@ public class CSGCone implements Primitive {
 
         for (int i = 0; i < numSlices; i++) {
             double t0 = i / (double) numSlices, t1 = (i + 1) / (double) numSlices;
-            polygons.add(new Polygon(Arrays.asList(cylPoint(axisX, axisY, axisZ, ray, s, 0, 0, t0, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 0),
-                    cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0)), properties));
-            polygons.add(new Polygon(Arrays.asList(endV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)), properties));
+            {
+                PropertyStorage properties = new PropertyStorage();
+                properties.set("colour", new GColourIndex(colour, id_counter.getAndIncrement())); //$NON-NLS-1$
+                polygons.add(new Polygon(Arrays.asList(cylPoint(axisX, axisY, axisZ, ray, s, 0, 0, t0, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 0),
+                        cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0)), properties));
+            }
+            {
+                PropertyStorage properties = new PropertyStorage();
+                properties.set("colour", new GColourIndex(colour, id_counter.getAndIncrement())); //$NON-NLS-1$
+                polygons.add(new Polygon(Arrays.asList(endV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)), properties));
+            }
         }
 
         return polygons;
@@ -172,13 +181,8 @@ public class CSGCone implements Primitive {
     }
 
     @Override
-    public PropertyStorage getProperties() {
-        return properties;
-    }
-
-    @Override
-    public CSG toCSG() {
-        return CSG.fromPolygons(toPolygons());
+    public CSG toCSG(GColour colour) {
+        return CSG.fromPolygons(toPolygons(colour));
     }
 
 }

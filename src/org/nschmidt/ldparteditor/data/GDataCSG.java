@@ -220,44 +220,32 @@ public final class GDataCSG extends GData {
                             switch (type) {
                             case CSG.QUAD:
                                 CSGQuad quad = new CSGQuad();
-                                if (colour != null)
-                                    quad.getProperties().set(ref1, colour);
-                                CSG csgQuad = quad.toCSG().transformed(matrix);
+                                CSG csgQuad = quad.toCSG(colour).transformed(matrix);
                                 linkedCSG.put(ref1, csgQuad);
                                 break;
                             case CSG.CIRCLE:
                                 CSGCircle circle = new CSGCircle(quality);
-                                if (colour != null)
-                                    circle.getProperties().set(ref1, colour);
-                                CSG csgCircle = circle.toCSG().transformed(matrix);
+                                CSG csgCircle = circle.toCSG(colour).transformed(matrix);
                                 linkedCSG.put(ref1, csgCircle);
                                 break;
                             case CSG.ELLIPSOID:
                                 CSGSphere sphere = new CSGSphere(quality, quality / 2);
-                                if (colour != null)
-                                    sphere.getProperties().set(ref1, colour);
-                                CSG csgSphere = sphere.toCSG().transformed(matrix);
+                                CSG csgSphere = sphere.toCSG(colour).transformed(matrix);
                                 linkedCSG.put(ref1, csgSphere);
                                 break;
                             case CSG.CUBOID:
                                 CSGCube cube = new CSGCube();
-                                if (colour != null)
-                                    cube.getProperties().set(ref1, colour);
-                                CSG csgCube = cube.toCSG().transformed(matrix);
+                                CSG csgCube = cube.toCSG(colour).transformed(matrix);
                                 linkedCSG.put(ref1, csgCube);
                                 break;
                             case CSG.CYLINDER:
                                 CSGCylinder cylinder = new CSGCylinder(quality);
-                                if (colour != null)
-                                    cylinder.getProperties().set(ref1, colour);
-                                CSG csgCylinder = cylinder.toCSG().transformed(matrix);
+                                CSG csgCylinder = cylinder.toCSG(colour).transformed(matrix);
                                 linkedCSG.put(ref1, csgCylinder);
                                 break;
                             case CSG.CONE:
                                 CSGCone cone = new CSGCone(quality);
-                                if (colour != null)
-                                    cone.getProperties().set(ref1, colour);
-                                CSG csgCone = cone.toCSG().transformed(matrix);
+                                CSG csgCone = cone.toCSG(colour).transformed(matrix);
                                 linkedCSG.put(ref1, csgCone);
                                 break;
                             default:
@@ -388,7 +376,7 @@ public final class GDataCSG extends GData {
 
 
 
-                for (GData3 g3 : compiledCSG.getResult()) {
+                for (GData3 g3 : compiledCSG.getResult().keySet()) {
                     StringBuilder lineBuilder3 = new StringBuilder();
                     lineBuilder3.append(3);
                     lineBuilder3.append(" "); //$NON-NLS-1$

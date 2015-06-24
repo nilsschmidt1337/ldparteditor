@@ -36,17 +36,19 @@ package org.nschmidt.csg;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.data.GColourIndex;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.enums.View;
 
 /**
  * Represents a convex polygon.
- * 
+ *
  * Each convex polygon has a {@code shared} property, which is shared between
  * all polygons that are clones of each other or where split from the same
  * polygon. This can be used to define per-polygon properties (such as surface
@@ -69,7 +71,7 @@ public final class Polygon {
 
     /**
      * Plane defined by this polygon.
-     * 
+     *
      * <b>Note:</b> uses first three vertices to define the plane.
      */
     public final Plane plane;
@@ -77,10 +79,10 @@ public final class Polygon {
     /**
      * Constructor. Creates a new polygon that consists of the specified
      * vertices.
-     * 
+     *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
-     * 
+     *
      * @param vertices
      *            polygon vertices
      * @param shared
@@ -95,10 +97,10 @@ public final class Polygon {
     /**
      * Constructor. Creates a new polygon that consists of the specified
      * vertices.
-     * 
+     *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
-     * 
+     *
      * @param vertices
      *            polygon vertices
      */
@@ -111,13 +113,13 @@ public final class Polygon {
     /**
      * Constructor. Creates a new polygon that consists of the specified
      * vertices.
-     * 
+     *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
-     * 
+     *
      * @param vertices
      *            polygon vertices
-     * 
+     *
      */
     public Polygon(Vertex... vertices) {
         this(Arrays.asList(vertices));
@@ -135,7 +137,7 @@ public final class Polygon {
 
     /**
      * Flips this polygon.
-     * 
+     *
      * @return this polygon
      */
     public Polygon flip() {
@@ -152,9 +154,9 @@ public final class Polygon {
 
     /**
      * Returns a flipped copy of this polygon.
-     * 
+     *
      * <b>Note:</b> this polygon is not modified.
-     * 
+     *
      * @return a flipped copy of this polygon
      */
     public Polygon flipped() {
@@ -163,7 +165,7 @@ public final class Polygon {
 
     /**
      * Returns this polygon in STL string format.
-     * 
+     *
      * @return this polygon in STL string format
      */
     public String toStlString() {
@@ -172,10 +174,10 @@ public final class Polygon {
 
     /**
      * Returns this polygon in STL string format.
-     * 
+     *
      * @param sb
      *            string builder
-     * 
+     *
      * @return the specified string builder
      */
     public StringBuilder toStlString(StringBuilder sb) {
@@ -195,38 +197,38 @@ public final class Polygon {
                         append("      ").append(firstVertexStl).append("\n"). //$NON-NLS-1$ //$NON-NLS-2$
                         append("      "); //$NON-NLS-1$
                 this.vertices.get(i + 1).toStlString(sb).append("\n"). //$NON-NLS-1$
-                        append("      "); //$NON-NLS-1$
+                append("      "); //$NON-NLS-1$
                 this.vertices.get(i + 2).toStlString(sb).append("\n"). //$NON-NLS-1$
-                        append("    endloop\n"). //$NON-NLS-1$
-                        append("  endfacet\n"); //$NON-NLS-1$
+                append("    endloop\n"). //$NON-NLS-1$
+                append("  endfacet\n"); //$NON-NLS-1$
             }
         }
 
         return sb;
     }
 
-    public ArrayList<GData3> toLDrawTriangles(GData1 parent) {
-        ArrayList<GData3> result = new ArrayList<GData3>();
+    public HashMap<GData3, Integer> toLDrawTriangles(GData1 parent) {
+        HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
         if (this.vertices.size() >= 3) {
+            int dID = CSGPrimitive.id_counter.getAndIncrement();
             final GColour c16 = View.getLDConfigColour(16);
             for (int i = 0; i < this.vertices.size() - 2; i++) {
-                // this.plane.normal;
                 org.nschmidt.ldparteditor.data.Vertex v1 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(0).pos.x, (float) this.vertices.get(0).pos.y,
                         (float) this.vertices.get(0).pos.z);
                 org.nschmidt.ldparteditor.data.Vertex v2 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 1).pos.x, (float) this.vertices.get(i + 1).pos.y,
                         (float) this.vertices.get(i + 1).pos.z);
                 org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 2).pos.x, (float) this.vertices.get(i + 2).pos.y,
                         (float) this.vertices.get(i + 2).pos.z);
-                GColour colour = null;
+                GColourIndex colour = null;
                 try {
-                    colour = (GColour) this.shared.getFirstValue();
+                    colour = (GColourIndex) this.shared.getFirstValue();
                 } catch (NoSuchElementException nse) {
                     colour = null;
                 }
                 if (colour == null) {
-                    result.add(new GData3(v1, v2, v3, parent, c16));
+                    result.put(new GData3(v1, v2, v3, parent, c16), dID);
                 } else {
-                    result.add(new GData3(v1, v2, v3, parent, colour));
+                    result.put(new GData3(v1, v2, v3, parent, colour.getColour()), colour.getIndex());
                 }
             }
         }
@@ -235,7 +237,7 @@ public final class Polygon {
 
     /**
      * Translates this polygon.
-     * 
+     *
      * @param v
      *            the vector that defines the translation
      * @return this polygon
@@ -250,12 +252,12 @@ public final class Polygon {
 
     /**
      * Returns a translated copy of this polygon.
-     * 
+     *
      * <b>Note:</b> this polygon is not modified
-     * 
+     *
      * @param v
      *            the vector that defines the translation
-     * 
+     *
      * @return a translated copy of this polygon
      */
     public Polygon translated(Vector3d v) {
@@ -264,13 +266,13 @@ public final class Polygon {
 
     /**
      * Applies the specified transformation to this polygon.
-     * 
+     *
      * <b>Note:</b> if the applied transformation performs a mirror operation
      * the vertex order of this polygon is reversed.
-     * 
+     *
      * @param transform
      *            the transformation to apply
-     * 
+     *
      * @return this polygon
      */
     public Polygon transform(Transform transform) {
@@ -289,12 +291,12 @@ public final class Polygon {
 
     /**
      * Returns a transformed copy of this polygon.
-     * 
+     *
      * <b>Note:</b> if the applied transformation performs a mirror operation
      * the vertex order of this polygon is reversed.
-     * 
+     *
      * <b>Note:</b> this polygon is not modified
-     * 
+     *
      * @param transform
      *            the transformation to apply
      * @return a transformed copy of this polygon
@@ -305,7 +307,7 @@ public final class Polygon {
 
     /**
      * Creates a polygon from the specified point list.
-     * 
+     *
      * @param points
      *            the points that define the polygon
      * @param shared
@@ -318,7 +320,7 @@ public final class Polygon {
 
     /**
      * Creates a polygon from the specified point list.
-     * 
+     *
      * @param points
      *            the points that define the polygon
      * @return a polygon defined by the specified point list
@@ -329,7 +331,7 @@ public final class Polygon {
 
     /**
      * Creates a polygon from the specified points.
-     * 
+     *
      * @param points
      *            the points that define the polygon
      * @return a polygon defined by the specified point list
@@ -340,7 +342,7 @@ public final class Polygon {
 
     /**
      * Creates a polygon from the specified point list.
-     * 
+     *
      * @param points
      *            the points that define the polygon
      * @param shared
@@ -365,7 +367,7 @@ public final class Polygon {
 
     /**
      * Returns the bounds of this polygon.
-     * 
+     *
      * @return bouds of this polygon
      */
     public Bounds getBounds() {

@@ -32,34 +32,30 @@ package org.nschmidt.csg;
 
 import java.util.List;
 
+import org.nschmidt.ldparteditor.data.GColour;
+
 /**
  * A primitive geometry.
- * 
+ *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 public interface Primitive {
 
     /**
      * Returns the polygons that define this primitive.
-     * 
+     *
      * <b>Note:</b> this method computes the polygons each time this method is
      * called. The polygons can be cached inside a {@link CSG} object.
-     * 
+     *
      * @return al list of polygons that define this primitive
      */
-    public List<Polygon> toPolygons();
+    public List<Polygon> toPolygons(GColour colour);
 
     /**
      * Returns this primitive as {@link CSG}.
-     * 
+     *
      * @return this primitive as {@link CSG}
      */
-    public CSG toCSG();
+    public CSG toCSG(GColour colour);
 
-    /**
-     * Returns the property storage of this primitive.
-     * 
-     * @return the property storage of this primitive
-     */
-    public PropertyStorage getProperties();
 }
