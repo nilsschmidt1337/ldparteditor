@@ -87,7 +87,7 @@ public enum GuiManager {
     }
 
     public static void updateStatus() {
-        Editor3DWindow.getStatusLabel().setText(I18n.EDITOR3D_NoFileSelected);
+        Editor3DWindow.getStatusLabel().setText(I18n.E3D_NoFileSelected);
         Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
         Editor3DWindow.getStatusLabel().update();
     }

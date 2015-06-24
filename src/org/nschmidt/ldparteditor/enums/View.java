@@ -118,7 +118,7 @@ public enum View {
 
     public static final Matrix4f ID = Matrix4f.setIdentity(new Matrix4f());
     public static final GData1 DUMMY_REFERENCE = new GData1();
-    public static final DatFile DUMMY_DATFILE = new DatFile(File.separator + File.separator + I18n.EDITOR3D_NoFileSelected, "DUMMY FILE", true, DatType.PART); //$NON-NLS-1$
+    public static final DatFile DUMMY_DATFILE = new DatFile(File.separator + File.separator + I18n.E3D_NoFileSelected, "DUMMY FILE", true, DatType.PART); //$NON-NLS-1$
 
     public static final Matrix ACCURATE_ID = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
             BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);

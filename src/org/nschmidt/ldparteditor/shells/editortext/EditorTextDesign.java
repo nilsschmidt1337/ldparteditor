@@ -121,7 +121,7 @@ class EditorTextDesign extends ApplicationWindow {
      */
     @Override
     protected Control createContents(Composite parent) {
-        setStatus(I18n.EDITOR3D_ReadyStatus);
+        setStatus(I18n.E3D_ReadyStatus);
         Composite container = new Composite(parent, SWT.NONE);
         container.setLayout(new BorderLayout(0, 0));
         toolBar = new Composite(container, SWT.NONE);
@@ -133,19 +133,19 @@ class EditorTextDesign extends ApplicationWindow {
         {
             Button btn_New = new Button(toolItem_NewOpenSave, SWT.NONE);
             this.btn_New[0] = btn_New;
-            btn_New.setToolTipText(I18n.EDITOR3D_NewDat);
+            btn_New.setToolTipText(I18n.E3D_NewDat);
             btn_New.setImage(ResourceManager.getImage("icon16_document-newdat.png")); //$NON-NLS-1$
         }
         {
             Button btn_Open = new Button(toolItem_NewOpenSave, SWT.NONE);
             this.btn_Open[0] = btn_Open;
-            btn_Open.setToolTipText(I18n.EDITOR3D_OpenDat);
+            btn_Open.setToolTipText(I18n.E3D_OpenDat);
             btn_Open.setImage(ResourceManager.getImage("icon16_document-opendat.png")); //$NON-NLS-1$
         }
         {
             Button btn_Save = new Button(toolItem_NewOpenSave, SWT.NONE);
             this.btn_Save[0] = btn_Save;
-            KeyStateManager.addTooltipText(btn_Save, I18n.EDITOR3D_Save, Task.SAVE);
+            KeyStateManager.addTooltipText(btn_Save, I18n.E3D_Save, Task.SAVE);
             btn_Save.setImage(ResourceManager.getImage("icon16_document-save.png")); //$NON-NLS-1$
         }
         ToolItem toolItem_UndoRedo = new ToolItem(toolBar, SWT.NONE);
@@ -153,19 +153,19 @@ class EditorTextDesign extends ApplicationWindow {
             Button btn_Undo = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_Undo[0] = btn_Undo;
             btn_Undo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btn_Undo, I18n.EDITOR3D_Undo, TextTask.EDITORTEXT_UNDO);
+            KeyStateManager.addTooltipText(btn_Undo, I18n.E3D_Undo, TextTask.EDITORTEXT_UNDO);
         }
         if (NLogger.DEBUG) {
             Button btn_Snapshot = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_AddHistory[0] = btn_Snapshot;
             btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
-            btn_Snapshot.setToolTipText(I18n.EDITOR3D_Snapshot);
+            btn_Snapshot.setToolTipText(I18n.E3D_Snapshot);
         }
         {
             Button btn_Redo = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_Redo[0] = btn_Redo;
             btn_Redo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btn_Redo, I18n.EDITOR3D_Redo, TextTask.EDITORTEXT_REDO);
+            KeyStateManager.addTooltipText(btn_Redo, I18n.E3D_Redo, TextTask.EDITORTEXT_REDO);
         }
         ToolItem toolItem_CCPD = new ToolItem(toolBar, SWT.NONE);
         {
@@ -297,7 +297,7 @@ class EditorTextDesign extends ApplicationWindow {
             {
                 Button btn_Palette = new Button(toolItem_Colours, SWT.NONE);
                 this.btn_Palette[0] = btn_Palette;
-                btn_Palette.setToolTipText(I18n.EDITOR3D_More);
+                btn_Palette.setToolTipText(I18n.E3D_More);
                 btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
             }
         }
@@ -327,7 +327,7 @@ class EditorTextDesign extends ApplicationWindow {
         MenuManager menuManager = new MenuManager("menu"); //$NON-NLS-1$
         menuManager.setVisible(true);
         {
-            MenuManager mnu_File = new MenuManager(I18n.EDITOR3D_File);
+            MenuManager mnu_File = new MenuManager(I18n.E3D_File);
             mnu_File.setVisible(true);
             menuManager.add(mnu_File);
             this.mnu_File[0] = mnu_File;

@@ -334,10 +334,10 @@ public class Composite3D extends ScalableComposite {
         this.menu = new Menu(this);
 
         MenuItem mntmViewAngles = new MenuItem(menu, SWT.CASCADE);
-        mntmViewAngles.setText(I18n.EDITOR3D_ViewingAngles);
+        mntmViewAngles.setText(I18n.E3D_ViewingAngles);
 
         MenuItem mntmViewActions = new MenuItem(menu, SWT.CASCADE);
-        mntmViewActions.setText(I18n.EDITOR3D_ViewActions);
+        mntmViewActions.setText(I18n.E3D_ViewActions);
 
         MenuItem mntmRenderModes = new MenuItem(menu, SWT.CASCADE);
         mntmRenderModes.setText(I18n.C3D_RenderMode);
@@ -717,7 +717,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.showOrigin(mntmShowOrigin.getSelection());
                 }
             });
-            mntmShowOrigin.setText(I18n.EDITOR3D_Origin);
+            mntmShowOrigin.setText(I18n.E3D_Origin);
             mntmShowOrigin.setSelection(true);
 
             final MenuItem mntmSwitchLights = new MenuItem(mnu_viewActions, SWT.CHECK);
@@ -797,7 +797,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.showGrid(mntmShowGrid.getSelection());
                 }
             });
-            KeyStateManager.addKeyText(mntmShowGrid, I18n.EDITOR3D_Grid, Task.SHOW_GRID);
+            KeyStateManager.addKeyText(mntmShowGrid, I18n.E3D_Grid, Task.SHOW_GRID);
             mntmShowGrid.setSelection(true);
 
             final MenuItem mntmShowScale = new MenuItem(mnu_viewActions, SWT.CHECK);
@@ -809,7 +809,7 @@ public class Composite3D extends ScalableComposite {
                     getCanvas().forceFocus();
                 }
             });
-            KeyStateManager.addKeyText(mntmShowScale, I18n.EDITOR3D_Ruler, Task.SHOW_RULER);
+            KeyStateManager.addKeyText(mntmShowScale, I18n.E3D_Ruler, Task.SHOW_RULER);
 
             final MenuItem mntmAxis = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmAxis[0] = mntmAxis;
@@ -854,7 +854,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.splitViewHorizontally();
                 }
             });
-            mntmSplitHorizontally.setText(I18n.EDITOR3D_SplitHorizontally);
+            mntmSplitHorizontally.setText(I18n.E3D_SplitHorizontally);
 
             MenuItem mntmSplitVertically = new MenuItem(mnu_viewActions, SWT.NONE);
             mntmSplitVertically.addSelectionListener(new SelectionAdapter() {
@@ -863,7 +863,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.splitViewVertically();
                 }
             });
-            mntmSplitVertically.setText(I18n.EDITOR3D_SplitVertically);
+            mntmSplitVertically.setText(I18n.E3D_SplitVertically);
 
             @SuppressWarnings("unused")
             final MenuItem mntmViewSeparator2 = new MenuItem(mnu_viewActions, SWT.SEPARATOR);
@@ -875,7 +875,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.spinView();
                 }
             });
-            mntmRotateView.setText(I18n.EDITOR3D_RotateClockwise);
+            mntmRotateView.setText(I18n.E3D_RotateClockwise);
 
             @SuppressWarnings("unused")
             final MenuItem mntmViewSeparator3 = new MenuItem(mnu_viewActions, SWT.SEPARATOR);
@@ -887,7 +887,7 @@ public class Composite3D extends ScalableComposite {
                     c3d_modifier.closeView();
                 }
             });
-            mntmClose.setText(I18n.EDITOR3D_CloseView);
+            mntmClose.setText(I18n.E3D_CloseView);
 
             {
                 // MARK CMenu LineMode

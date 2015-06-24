@@ -412,7 +412,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
                     String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                     fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { I18n.EDITOR3D_PortableNetworkGraphics, I18n.EDITOR3D_AllFiles };
+                    String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
                     fd.setFilterNames(filterNames);
                     String selected = fd.open();
                     if (selected != null) {
@@ -484,7 +484,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
                     String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                     fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { I18n.EDITOR3D_PortableNetworkGraphics, I18n.EDITOR3D_AllFiles };
+                    String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
                     fd.setFilterNames(filterNames);
                     String selected = fd.open();
                     if (selected != null) {
@@ -558,7 +558,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
                     String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                     fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { I18n.EDITOR3D_PortableNetworkGraphics, I18n.EDITOR3D_AllFiles };
+                    String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
                     fd.setFilterNames(filterNames);
                     String selected = fd.open();
                     if (selected != null) {
@@ -839,7 +839,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
                     String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                     fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { I18n.EDITOR3D_PortableNetworkGraphics, I18n.EDITOR3D_AllFiles };
+                    String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
                     fd.setFilterNames(filterNames);
                     String selected = fd.open();
                     if (selected != null) {
