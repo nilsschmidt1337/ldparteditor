@@ -666,19 +666,19 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_7_toVertexNormal[0] = btn_Mani;
-                        btn_Mani.setText("Adjust the Manipulator to the Nearest Vertex Normal"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ManipulatorToVertexN);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_8_toEdgeNormal[0] = btn_Mani;
-                        btn_Mani.setText("Adjust the Manipulator to the Nearest Edge Normal"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ManipulatorToEdgeN);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_9_toSurfaceNormal[0] = btn_Mani;
-                        btn_Mani.setText("Adjust the Manipulator to the Nearest Face Normal"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ManipulatorToFaceN);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
                     }
                 }
@@ -818,70 +818,70 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_WithWholeSubfiles = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_WithWholeSubfiles[0] = mntm_WithWholeSubfiles;
-                        mntm_WithWholeSubfiles.setText("…  with Whole Subfile Selection."); //$NON-NLS-1$ I18N
+                        mntm_WithWholeSubfiles.setText(I18n.E3D_WithWholeSubfileSelection);
                     }
                     {
                         MenuItem mntm_StopAtEdges = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_StopAtEdges[0] = mntm_StopAtEdges;
-                        mntm_StopAtEdges.setText("…  and Stop Selection at Edges²."); //$NON-NLS-1$ I18N
+                        mntm_StopAtEdges.setText(I18n.E3D_StopSelectionAtEdges);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator3 = new MenuItem(mnu_Select, SWT.SEPARATOR);
                     {
                         MenuItem mntm_SelectIsolatedVertices = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectIsolatedVertices[0] = mntm_SelectIsolatedVertices;
-                        mntm_SelectIsolatedVertices.setText("…Isolated Vertices."); //$NON-NLS-1$ I18N
+                        mntm_SelectIsolatedVertices.setText(I18n.E3D_IsolatedVertices);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator4 = new MenuItem(mnu_Select, SWT.SEPARATOR);
                     {
                         MenuItem mntm_SVertices = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_SVertices[0] = mntm_SVertices;
-                        mntm_SVertices.setText("Vertices."); //$NON-NLS-1$ I18N
+                        mntm_SVertices.setText(I18n.E3D_Vertices);
                         mntm_SVertices.setSelection(true);
                     }
                     {
                         MenuItem mntm_SLines = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_SLines[0] = mntm_SLines;
-                        mntm_SLines.setText("Lines."); //$NON-NLS-1$ I18N
+                        mntm_SLines.setText(I18n.E3D_Lines);
                         mntm_SLines.setSelection(true);
                     }
                     {
                         MenuItem mntm_STriangles = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_STriangles[0] = mntm_STriangles;
-                        mntm_STriangles.setText("Triangles."); //$NON-NLS-1$ I18N
+                        mntm_STriangles.setText(I18n.E3D_Triangles);
                         mntm_STriangles.setSelection(true);
                     }
                     {
                         MenuItem mntm_SQuads = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_SQuads[0] = mntm_SQuads;
-                        mntm_SQuads.setText("Quads."); //$NON-NLS-1$ I18N
+                        mntm_SQuads.setText(I18n.E3D_Quads);
                         mntm_SQuads.setSelection(true);
                     }
                     {
                         MenuItem mntm_SCLines = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_SCLines[0] = mntm_SCLines;
-                        mntm_SCLines.setText("Conditional Lines."); //$NON-NLS-1$ I18N
+                        mntm_SCLines.setText(I18n.E3D_Condlines);
                         mntm_SCLines.setSelection(true);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator5 = new MenuItem(mnu_Select, SWT.SEPARATOR);
                     {
                         MenuItem mntm_needsThreshold = new MenuItem(mnu_Select, SWT.PUSH);
-                        mntm_needsThreshold.setText("¹ needs a threshold."); //$NON-NLS-1$ I18N
+                        mntm_needsThreshold.setText(I18n.E3D_NeedsAThreshold);
                         mntm_needsThreshold.setEnabled(false);
                     }
                     {
                         MenuItem mntm_noEffect = new MenuItem(mnu_Select, SWT.PUSH);
-                        mntm_noEffect.setText("² has no effect on 'Select Everything'."); //$NON-NLS-1$ I18N
+                        mntm_noEffect.setText(I18n.E3D_NoEffectSelectEverything);
                         mntm_noEffect.setEnabled(false);
                     }
                 }
             }
             {
                 final Button btn_MergeNSplit = new Button(toolItem_MiscClick, SWT.PUSH);
-                btn_MergeNSplit.setToolTipText("Merge/Split…"); //$NON-NLS-1$ I18N
-                btn_MergeNSplit.setText("Merge/Split…"); //$NON-NLS-1$ I18N
+                btn_MergeNSplit.setToolTipText(I18n.E3D_MergeSplit);
+                btn_MergeNSplit.setText(I18n.E3D_MergeSplit);
                 this.mnu_Merge = new Menu(this.getShell(), SWT.POP_UP);
                 btn_MergeNSplit.addSelectionListener(new SelectionAdapter() {
                     @Override
@@ -896,85 +896,85 @@ class Editor3DDesign extends ApplicationWindow {
                 {
                     MenuItem mntm_Flip = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_Flip[0] = mntm_Flip;
-                    mntm_Flip.setText("Flip / Rotate Vertices"); //$NON-NLS-1$ I18N
+                    mntm_Flip.setText(I18n.E3D_FlipRotate);
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator2 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
                 {
                     MenuItem mntm_Split = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_Split[0] = mntm_Split;
-                    KeyStateManager.addKeyText(mntm_Split, "Split", Task.SPLIT); //$NON-NLS-1$ I18N
+                    KeyStateManager.addKeyText(mntm_Split, I18n.E3D_Split, Task.SPLIT);
                 }
                 {
                     MenuItem mntm_SplitNTimes = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_SplitNTimes[0] = mntm_SplitNTimes;
-                    mntm_SplitNTimes.setText("Split N-Times"); //$NON-NLS-1$ I18N
+                    mntm_SplitNTimes.setText(I18n.E3D_SplitNTimes);
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator3 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
                 {
                     MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_MergeToAverage[0] = mntm_mergeTo;
-                    KeyStateManager.addKeyText(mntm_mergeTo, "Merge To Average", Task.MERGE_TO_AVERAGE); //$NON-NLS-1$ I18N
+                    KeyStateManager.addKeyText(mntm_mergeTo, I18n.E3D_MergeToAvg, Task.MERGE_TO_AVERAGE);
                 }
                 {
                     MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_MergeToLastSelected[0] = mntm_mergeTo;
-                    KeyStateManager.addKeyText(mntm_mergeTo, "Merge To Last Selected Vertex", Task.MERGE_TO_LAST); //$NON-NLS-1$ I18N
+                    KeyStateManager.addKeyText(mntm_mergeTo, I18n.E3D_MergeToLastSelected, Task.MERGE_TO_LAST);
                 }
                 {
                     MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_MergeToNearestVertex[0] = mntm_mergeTo;
-                    mntm_mergeTo.setText("Merge To Nearest Vertex"); //$NON-NLS-1$ I18N
+                    mntm_mergeTo.setText(I18n.E3D_MergeToNearestVertex);
                 }
                 {
                     MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_MergeToNearestEdge[0] = mntm_mergeTo;
-                    mntm_mergeTo.setText("Merge To Nearest Edge"); //$NON-NLS-1$ I18N
+                    mntm_mergeTo.setText(I18n.E3D_MergeToNearestEdge);
                 }
                 {
                     MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_MergeToNearestFace[0] = mntm_mergeTo;
-                    mntm_mergeTo.setText("Merge To Nearest Face"); //$NON-NLS-1$ I18N
+                    mntm_mergeTo.setText(I18n.E3D_MergeToNearestFace);
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator4 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
                 {
                     MenuItem mntm_setXYZ = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_setXYZ[0] = mntm_setXYZ;
-                    mntm_setXYZ.setText("Set X/Y/Z (for Selection)"); //$NON-NLS-1$ I18N
+                    mntm_setXYZ.setText(I18n.E3D_SetXYZ);
                 }
                 {
                     MenuItem mntm_Translate = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_Translate[0] = mntm_Translate;
-                    mntm_Translate.setText("Translate Selection"); //$NON-NLS-1$ I18N
+                    mntm_Translate.setText(I18n.E3D_TranslateSelection);
                 }
                 {
                     MenuItem mntm_Rotate = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_Rotate[0] = mntm_Rotate;
-                    mntm_Rotate.setText("Rotate Selection"); //$NON-NLS-1$ I18N
+                    mntm_Rotate.setText(I18n.E3D_RotateSelection);
                 }
                 {
                     MenuItem mntm_Scale = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_Scale[0] = mntm_Scale;
-                    mntm_Scale.setText("Scale Selection"); //$NON-NLS-1$ I18N
+                    mntm_Scale.setText(I18n.E3D_ScaleSelection);
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator1 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
                 {
                     MenuItem mntm_SubdivideCatmullClark = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_SubdivideCatmullClark[0] = mntm_SubdivideCatmullClark;
-                    mntm_SubdivideCatmullClark.setText("Subdivide (Catmull-Clark)"); //$NON-NLS-1$ I18N
+                    mntm_SubdivideCatmullClark.setText(I18n.E3D_SubdivideCatmullClark);
                 }
                 {
                     MenuItem mntm_SubdivideLoop = new MenuItem(mnu_Merge, SWT.PUSH);
                     this.mntm_SubdivideLoop[0] = mntm_SubdivideLoop;
-                    mntm_SubdivideLoop.setText("Subdivide (Loop)"); //$NON-NLS-1$ I18N
+                    mntm_SubdivideLoop.setText(I18n.E3D_SubdivideLoop);
                 }
             }
             {
                 final Button btn_ToolsActions = new Button(toolItem_MiscClick, SWT.ARROW | SWT.DOWN);
-                btn_ToolsActions.setToolTipText("Tools and Options"); //$NON-NLS-1$ I18N
+                btn_ToolsActions.setToolTipText(I18n.E3D_ToolsOptions);
                 this.mnu_Tools = new Menu(this.getShell(), SWT.POP_UP);
                 btn_ToolsActions.addSelectionListener(new SelectionAdapter() {
                     @Override
@@ -990,117 +990,117 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Edger2[0] = mntm_Edger2;
-                        mntm_Edger2.setText("Edger2"); //$NON-NLS-1$ I18N
+                        mntm_Edger2.setText(I18n.E3D_Edger2);
                     }
                     {
                         MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Txt2Dat[0] = mntm_Edger2;
-                        mntm_Edger2.setText("Txt2Dat"); //$NON-NLS-1$ I18N
+                        mntm_Edger2.setText(I18n.E3D_Txt2Dat);
                     }
                     {
                         MenuItem mntm_Rectifier = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Rectifier[0] = mntm_Rectifier;
-                        mntm_Rectifier.setText("Rectifier"); //$NON-NLS-1$ I18N
+                        mntm_Rectifier.setText(I18n.E3D_Rectifier);
                     }
                     {
                         MenuItem mntm_Isecalc = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Isecalc[0] = mntm_Isecalc;
-                        mntm_Isecalc.setText("Isecalc"); //$NON-NLS-1$ I18N
+                        mntm_Isecalc.setText(I18n.E3D_Isecalc);
                     }
                     {
                         MenuItem mntm_SlicerPro = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_SlicerPro[0] = mntm_SlicerPro;
-                        mntm_SlicerPro.setText("SlicerPro"); //$NON-NLS-1$ I18N
+                        mntm_SlicerPro.setText(I18n.E3D_SlicerPro);
                     }
                     {
                         MenuItem mntm_Intersector = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Intersector[0] = mntm_Intersector;
-                        mntm_Intersector.setText("Intersector"); //$NON-NLS-1$ I18N
+                        mntm_Intersector.setText(I18n.E3D_Intersector);
                     }
                     {
                         MenuItem mntm_Lines2Pattern = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Lines2Pattern[0] = mntm_Lines2Pattern;
-                        mntm_Lines2Pattern.setText("Lines2Pattern"); //$NON-NLS-1$ I18N
+                        mntm_Lines2Pattern.setText(I18n.E3D_Lines2Pattern);
                     }
                     {
                         MenuItem mntm_PathTruder = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_PathTruder[0] = mntm_PathTruder;
-                        mntm_PathTruder.setText("PathTruder"); //$NON-NLS-1$ I18N
+                        mntm_PathTruder.setText(I18n.E3D_PathTruder);
                     }
                     {
                         MenuItem mntm_SymSplitter = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_SymSplitter[0] = mntm_SymSplitter;
-                        mntm_SymSplitter.setText("SymSplitter"); //$NON-NLS-1$ I18N
+                        mntm_SymSplitter.setText(I18n.E3D_SymSplitter);
                     }
                     {
                         MenuItem mntm_Unificator = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_Unificator[0] = mntm_Unificator;
-                        mntm_Unificator.setText("Unificator"); //$NON-NLS-1$ I18N
+                        mntm_Unificator.setText(I18n.E3D_Unificator);
                     }
                     {
                         MenuItem mntm_RingsAndCones = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_RingsAndCones[0] = mntm_RingsAndCones;
-                        mntm_RingsAndCones.setText("Rings and Cones"); //$NON-NLS-1$ I18N
+                        mntm_RingsAndCones.setText(I18n.E3D_RingsAndCones);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator1 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
                     {
                         MenuItem mntm_ResetSettingsOnRestart = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_ResetSettingsOnRestart[0] = mntm_ResetSettingsOnRestart;
-                        mntm_ResetSettingsOnRestart.setText("Reset All Settings On Restart"); //$NON-NLS-1$ I18N
+                        mntm_ResetSettingsOnRestart.setText(I18n.E3D_ResetAll);
                     }
                     {
                         MenuItem mntm_SelectAnotherLDConfig = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_SelectAnotherLDConfig[0] = mntm_SelectAnotherLDConfig;
-                        mntm_SelectAnotherLDConfig.setText("Select LDConfig.ldr"); //$NON-NLS-1$ I18N
+                        mntm_SelectAnotherLDConfig.setText(I18n.E3D_SelectLDConfig);
                     }
                     {
                         final MenuItem mntm_SetIconSize = new MenuItem(mnu_Tools, SWT.CASCADE);
-                        mntm_SetIconSize.setText("Set Icon Size"); //$NON-NLS-1$ I18N
+                        mntm_SetIconSize.setText(I18n.E3D_SetIconSize);
                         final Menu mnu_IconSize = new Menu(mntm_SetIconSize);
                         mntm_SetIconSize.setMenu(mnu_IconSize);
                         final int iconSize = Editor3DWindow.getIconsize();
                         {
                             MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                             this.mntm_IconSize1[0] = mntm_IconSize;
-                            mntm_IconSize.setText("Icon Size 1"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setText(I18n.E3D_IconSize1);
                             mntm_IconSize.setSelection(iconSize == 0);
                         }
                         {
                             MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                             this.mntm_IconSize2[0] = mntm_IconSize;
-                            mntm_IconSize.setText("Icon Size 2"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setText(I18n.E3D_IconSize2);
                             mntm_IconSize.setSelection(iconSize == 1);
                         }
                         {
                             MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                             this.mntm_IconSize3[0] = mntm_IconSize;
-                            mntm_IconSize.setText("Icon Size 3"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setText(I18n.E3D_IconSize3);
                             mntm_IconSize.setSelection(iconSize == 2);
                         }
                         {
                             MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                             this.mntm_IconSize4[0] = mntm_IconSize;
-                            mntm_IconSize.setText("Icon Size 4"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setText(I18n.E3D_IconSize4);
                             mntm_IconSize.setSelection(iconSize == 3);
                         }
                         {
                             MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                             this.mntm_IconSize5[0] = mntm_IconSize;
-                            mntm_IconSize.setText("Icon Size 5"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setText(I18n.E3D_IconSize5);
                             mntm_IconSize.setSelection(iconSize == 4);
                         }
                         {
                             MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                             this.mntm_IconSize6[0] = mntm_IconSize;
-                            mntm_IconSize.setText("Icon Size 6"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setText(I18n.E3D_IconSize6);
                             mntm_IconSize.setSelection(iconSize == 5);
                         }
                         @SuppressWarnings("unused")
                         final MenuItem mntmSeparator2 = new MenuItem(mnu_IconSize, SWT.SEPARATOR);
                         {
                             MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.PUSH);
-                            mntm_IconSize.setText("(Requires restart)"); //$NON-NLS-1$ I18N
+                            mntm_IconSize.setText(I18n.E3D_RequiresRestart);
                             mntm_IconSize.setEnabled(false);
                         }
                     }
@@ -1109,7 +1109,7 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_UploadErrorLog = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_UploadLogs[0] = mntm_UploadErrorLog;
-                        mntm_UploadErrorLog.setText("Upload Error Logs"); //$NON-NLS-1$ I18N
+                        mntm_UploadErrorLog.setText(I18n.E3D_UploadErrorLogs);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator3 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
@@ -1117,14 +1117,14 @@ class Editor3DDesign extends ApplicationWindow {
                         MenuItem mntm_SyncWithTextEditor = new MenuItem(mnu_Tools, SWT.CHECK);
                         mntm_SyncWithTextEditor.setSelection(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
                         this.mntm_SyncWithTextEditor[0] = mntm_SyncWithTextEditor;
-                        mntm_SyncWithTextEditor.setText("Sync. 3D Editor with Text Editor"); //$NON-NLS-1$ I18N
+                        mntm_SyncWithTextEditor.setText(I18n.E3D_Sync3DEditor);
                     }
                     {
                         MenuItem mntm_SyncLpeInline = new MenuItem(mnu_Tools, SWT.CHECK);
                         mntm_SyncLpeInline.setSelection(WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get());
                         mntm_SyncLpeInline.setEnabled(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
                         this.mntm_SyncLpeInline[0] = mntm_SyncLpeInline;
-                        mntm_SyncLpeInline.setText("+ Automatic !LPE INLINE Parsing (slow!!)"); //$NON-NLS-1$ I18N
+                        mntm_SyncLpeInline.setText(I18n.E3D_ParseInline);
                     }
                 }
             }
@@ -1255,7 +1255,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_LastUsedColour = new Button(toolItem_ColourFunctions, SWT.NONE);
                 this.btn_LastUsedColour[0] = btn_LastUsedColour;
-                btn_LastUsedColour.setToolTipText("Colour [16]"); //$NON-NLS-1$ I18N
+                btn_LastUsedColour.setToolTipText(I18n.E3D_Colour16);
                 btn_LastUsedColour.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
                 final Color col = SWTResourceManager.getColor(128, 128, 128);
                 final Point size = btn_LastUsedColour.computeSize(SWT.DEFAULT, SWT.DEFAULT);
@@ -1851,7 +1851,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                         TreeItem treeItemUnsaved = new TreeItem(treeAllParts, SWT.NONE);
                         this.treeItem_Unsaved[0] = treeItemUnsaved;
-                        treeItemUnsaved.setText("Unsaved Files"); //$NON-NLS-1$ I18N
+                        treeItemUnsaved.setText(I18n.E3D_UnsavedFiles);
                         treeItemUnsaved.setVisible(false);
                         TreeItem treeItemNewPart2 = new TreeItem(treeItem_Unsaved[0], SWT.NONE);
                         treeItemNewPart2.setData(Project.getFileToEdit());
@@ -2210,14 +2210,26 @@ class Editor3DDesign extends ApplicationWindow {
             num = -1;
         }
         if (num != -1) {
-            btn_Col.setToolTipText("Colour [" + num + "]: " + View.getLDConfigColourName(num)); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+            Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+
+            btn_Col.setToolTipText(formatter.format(messageArguments));
         } else {
             StringBuilder colourBuilder = new StringBuilder();
             colourBuilder.append("0x2"); //$NON-NLS-1$
             colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
             colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
             colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-            btn_Col.setToolTipText("Colour [" + colourBuilder.toString() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+            Object[] messageArguments = {colourBuilder.toString()};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+
+            btn_Col.setToolTipText(formatter.format(messageArguments));
         }
 
         btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
@@ -2237,14 +2249,26 @@ class Editor3DDesign extends ApplicationWindow {
                         num = -1;
                     }
                     if (num != -1) {
-                        btn_Col.setToolTipText("Colour [" + num + "]: " + View.getLDConfigColourName(num)); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+                        Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+
+                        btn_Col.setToolTipText(formatter.format(messageArguments));
                     } else {
                         StringBuilder colourBuilder = new StringBuilder();
                         colourBuilder.append("0x2"); //$NON-NLS-1$
                         colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
                         colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
                         colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-                        btn_Col.setToolTipText("Colour [" + colourBuilder.toString() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+                        Object[] messageArguments = {colourBuilder.toString()};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+
+                        btn_Col.setToolTipText(formatter.format(messageArguments));
                     }
                 } else {
                     int num = gColour2[0].getColourNumber();
@@ -2299,14 +2323,25 @@ class Editor3DDesign extends ApplicationWindow {
                         }
                     });
                     if (num != -1) {
-                        btn_LastUsedColour[0].setToolTipText("Colour [" + num + "]: " + View.getLDConfigColourName(num)); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+                        Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+
+                        btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
                     } else {
                         StringBuilder colourBuilder = new StringBuilder();
                         colourBuilder.append("0x2"); //$NON-NLS-1$
                         colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
                         colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
                         colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-                        btn_LastUsedColour[0].setToolTipText("Colour [" + colourBuilder.toString() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+                        Object[] messageArguments = {colourBuilder.toString()};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+
+                        btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
                     }
                     btn_LastUsedColour[0].redraw();
                 }
