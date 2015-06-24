@@ -382,7 +382,12 @@ public final class GDataCSG extends GData {
 
                 sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
 
-                // TODO Needs T-Junction Elimination!
+                // FIXME Needs T-Junction Elimination!
+
+
+
+
+
                 for (GData3 g3 : compiledCSG.getResult()) {
                     StringBuilder lineBuilder3 = new StringBuilder();
                     lineBuilder3.append(3);
