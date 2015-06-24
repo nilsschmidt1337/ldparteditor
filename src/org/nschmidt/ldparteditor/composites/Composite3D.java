@@ -355,7 +355,7 @@ public class Composite3D extends ScalableComposite {
                 }
             }
         });
-        mntmLockedDat.setText("Lock File on Display"); //$NON-NLS-1$ I18N
+        mntmLockedDat.setText(I18n.C3D_LockFile);
         mntmLockedDat.setSelection(false);
 
         final MenuItem mntmOpenInTextEditor = new MenuItem(menu, SWT.NONE);
@@ -379,7 +379,7 @@ public class Composite3D extends ScalableComposite {
                 new EditorTextWindow().run(df);
             }
         });
-        mntmOpenInTextEditor.setText("Open in Text Editor"); //$NON-NLS-1$ I18N
+        mntmOpenInTextEditor.setText(I18n.C3D_OpenInText);
         mntmOpenInTextEditor.setSelection(false);
 
         final MenuItem mntmSelectionInTextEditor = new MenuItem(menu, SWT.NONE);
@@ -500,7 +500,7 @@ public class Composite3D extends ScalableComposite {
                 }
             }
         });
-        mntmSelectionInTextEditor.setText("Show Selection in Text Editor"); //$NON-NLS-1$ I18N
+        mntmSelectionInTextEditor.setText(I18n.C3D_ShowInText);
         mntmSelectionInTextEditor.setSelection(false);
 
         if (NLogger.DEBUG) {
@@ -524,7 +524,7 @@ public class Composite3D extends ScalableComposite {
                     }
                 }
             });
-            mntmOpenSnapshot.setText("Open Snapshot (DEBUG ONLY)"); //$NON-NLS-1$ I18N
+            mntmOpenSnapshot.setText("Open Snapshot (DEBUG ONLY)"); //$NON-NLS-1$
             mntmOpenSnapshot.setSelection(false);
         }
 

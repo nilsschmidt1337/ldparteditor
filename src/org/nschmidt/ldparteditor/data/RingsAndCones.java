@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.DatParser;
 
@@ -103,9 +104,7 @@ public enum RingsAndCones {
                     @Override
                     public void run(final IProgressMonitor m) throws InvocationTargetException, InterruptedException
                     {
-                        m.beginTask("Solving (you have to press cancel to stop)...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
-
-
+                        m.beginTask(I18n.RCONES_Task, IProgressMonitor.UNKNOWN);
 
                         // We need two different solvers here.
 
@@ -378,8 +377,8 @@ public enum RingsAndCones {
                 } else {
 
                     MessageBox messageBoxError = new MessageBox(sh, SWT.ICON_INFORMATION | SWT.OK);
-                    messageBoxError.setText("Information:"); //$NON-NLS-1$ I18N
-                    messageBoxError.setMessage("Found no solution."); //$NON-NLS-1$ I18N
+                    messageBoxError.setText(I18n.DIALOG_Info);
+                    messageBoxError.setMessage(I18n.RCONES_NoSolution);
                     messageBoxError.open();
 
                     return;
@@ -518,8 +517,8 @@ public enum RingsAndCones {
                     df.addToTail(new GData0(line));
                 } else {
                     MessageBox messageBoxError = new MessageBox(sh, SWT.ICON_INFORMATION | SWT.OK);
-                    messageBoxError.setText("Information:"); //$NON-NLS-1$ I18N
-                    messageBoxError.setMessage("Found no solution."); //$NON-NLS-1$ I18N
+                    messageBoxError.setText(I18n.DIALOG_Info);
+                    messageBoxError.setMessage(I18n.RCONES_NoSolution);
                     messageBoxError.open();
                     return;
                 }

@@ -57,7 +57,7 @@ public final class I18n {
     private static final ResourceBundle PROJECT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Project", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle COPYNPASTE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CopyAndPaste", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle DIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Dialog", MyLanguage.LOCALE); //$NON-NLS-1$
-    private static final ResourceBundle EDITOR3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.3DEditor", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle EDITOR3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Editor3D", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle COLOURDIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.ColourDialog", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle COMPOSITETAB = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CompositeTab", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle COORDINATESDIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CoordinatesDialog", MyLanguage.LOCALE); //$NON-NLS-1$
@@ -108,8 +108,10 @@ public final class I18n {
     public static final String C3D_LDrawLines = C3D.getString(getProperty());
     public static final String C3D_LDrawStandard = C3D.getString(getProperty());
     public static final String C3D_Lights = C3D.getString(getProperty());
+    public static final String C3D_LockFile = C3D.getString(getProperty());
     public static final String C3D_MeshLines = C3D.getString(getProperty());
     public static final String C3D_NoBackfaceCulling = C3D.getString(getProperty());
+    public static final String C3D_OpenInText = C3D.getString(getProperty());
     public static final String C3D_PerspectiveLabel = C3D.getString(getProperty());
     public static final String C3D_PreviewNote = C3D.getString(getProperty());
     public static final String C3D_RandomColours = C3D.getString(getProperty());
@@ -120,6 +122,7 @@ public final class I18n {
     public static final String C3D_SetGridSize = C3D.getString(getProperty());
     public static final String C3D_ShowAll = C3D.getString(getProperty());
     public static final String C3D_ShowEdges = C3D.getString(getProperty());
+    public static final String C3D_ShowInText = C3D.getString(getProperty());
     public static final String C3D_StudLogo = C3D.getString(getProperty());
     public static final String C3D_SubfileMeshLines = C3D.getString(getProperty());
     public static final String C3D_UseAlwaysBlackLines = C3D.getString(getProperty());
@@ -323,6 +326,9 @@ public final class I18n {
     public static final String EDITOR3D_Group = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Hide = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Image = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_InvalidColour = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_InvalidFilename = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_InvalidMatrix = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Inverse = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LDrawConfigurationFile1 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LDrawConfigurationFile2 = EDITOR3D.getString(getProperty());
@@ -333,6 +339,7 @@ public final class I18n {
     public static final String EDITOR3D_LineSize3 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LineSize4 = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LineToCondline = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_LoadingData = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LoadingLibrary = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_LoadingPrimitives = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Local = EDITOR3D.getString(getProperty());
@@ -357,6 +364,7 @@ public final class I18n {
     public static final String EDITOR3D_NewFile = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Next = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_NextItem = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_NoFileSelected = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_NoPrimitiveSelected = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_None = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_Open = EDITOR3D.getString(getProperty());
@@ -421,6 +429,7 @@ public final class I18n {
     public static final String EDITOR3D_Ungroup = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ViewActions = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_ViewingAngles = EDITOR3D.getString(getProperty());
+    public static final String EDITOR3D_WaitForUpdate = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_WhatIsHidden = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_WithAccuracy = EDITOR3D.getString(getProperty());
     public static final String EDITOR3D_WithSameColour = EDITOR3D.getString(getProperty());
@@ -631,6 +640,7 @@ public final class I18n {
     public static final String RCONES_Create2 = RCONES.getString(getProperty());
     public static final String RCONES_Height = RCONES.getString(getProperty());
     public static final String RCONES_Hint = RCONES.getString(getProperty());
+    public static final String RCONES_NoSolution = RCONES.getString(getProperty());
     public static final String RCONES_Prims1 = RCONES.getString(getProperty());
     public static final String RCONES_Prims2 = RCONES.getString(getProperty());
     public static final String RCONES_Radius1 = RCONES.getString(getProperty());
@@ -638,6 +648,7 @@ public final class I18n {
     public static final String RCONES_Ring = RCONES.getString(getProperty());
     public static final String RCONES_Ring48 = RCONES.getString(getProperty());
     public static final String RCONES_Shape = RCONES.getString(getProperty());
+    public static final String RCONES_Task = RCONES.getString(getProperty());
     public static final String RCONES_Title = RCONES.getString(getProperty());
     public static final String RECTIFIER_Colour1 = RECTIFIER.getString(getProperty());
     public static final String RECTIFIER_Colour2 = RECTIFIER.getString(getProperty());
@@ -735,6 +746,7 @@ public final class I18n {
     public static final String TXT2DAT_Select = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_Text = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_Title = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_Triangulate = TXT2DAT.getString(getProperty());
     public static final String UNIFICATOR_ScopeFile = UNIFICATOR.getString(getProperty());
     public static final String UNIFICATOR_ScopeSelection = UNIFICATOR.getString(getProperty());
     public static final String UNIFICATOR_SnapOn = UNIFICATOR.getString(getProperty());
@@ -760,6 +772,12 @@ public final class I18n {
     public static final String VM_FlatScaledX = VM.getString(getProperty());
     public static final String VM_FlatScaledY = VM.getString(getProperty());
     public static final String VM_FlatScaledZ = VM.getString(getProperty());
+    public static final String VM_Intersector = VM.getString(getProperty());
+    public static final String VM_Lines2Pattern = VM.getString(getProperty());
+    public static final String VM_Rectify = VM.getString(getProperty());
+    public static final String VM_SearchIntersection = VM.getString(getProperty());
+    public static final String VM_Selecting = VM.getString(getProperty());
+    public static final String VM_Slicerpro = VM.getString(getProperty());
 
     // Custom Methods
     public static String UNIT_CurrentUnit() {

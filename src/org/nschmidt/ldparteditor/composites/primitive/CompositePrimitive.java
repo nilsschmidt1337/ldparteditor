@@ -545,7 +545,7 @@ public class CompositePrimitive extends Composite {
             new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                    monitor.beginTask("Loading Primitives...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                    monitor.beginTask(I18n.EDITOR3D_LoadingPrimitives, IProgressMonitor.UNKNOWN);
                     load(true);
                 }
             });

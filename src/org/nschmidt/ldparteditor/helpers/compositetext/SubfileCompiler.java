@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.helpers.compositetext;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +48,7 @@ import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -103,7 +105,7 @@ public enum SubfileCompiler {
                         @Override
                         public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
                         {
-                            monitor.beginTask("Waiting for update...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                            monitor.beginTask(I18n.EDITOR3D_WaitForUpdate, IProgressMonitor.UNKNOWN);
                             while (!vm.isUpdated()) {
                                 if (monitor.isCanceled()) break;
                                 try {
@@ -306,21 +308,33 @@ public enum SubfileCompiler {
 
                             skipCompile = false;
                         } else {
+                            Object[] messageArguments = {lineNumber, line};
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.LOCALE);
+                            formatter.applyPattern(I18n.EDITOR3D_InvalidFilename);
                             MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_ERROR);
                             messageBox.setText(I18n.DIALOG_Error);
-                            messageBox.setMessage("Invalid filename in line " + lineNumber + "\n" + line); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+                            messageBox.setMessage(formatter.format(messageArguments));
                             messageBox.open();
                         }
                     } else {
+                        Object[] messageArguments = {lineNumber, line};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.EDITOR3D_InvalidMatrix);
                         MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_ERROR);
                         messageBox.setText(I18n.DIALOG_Error);
-                        messageBox.setMessage("Invalid matrix in line " + lineNumber + "\n" + line); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+                        messageBox.setMessage(formatter.format(messageArguments));
                         messageBox.open();
                     }
                 } else {
+                    Object[] messageArguments = {lineNumber, line};
+                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.applyPattern(I18n.EDITOR3D_InvalidColour);
                     MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_ERROR);
                     messageBox.setText(I18n.DIALOG_Error);
-                    messageBox.setMessage("Invalid colour in line " + lineNumber + "\n" + line); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+                    messageBox.setMessage(formatter.format(messageArguments));
                     messageBox.open();
                 }
             } else if ( // Check for INLINE_END
