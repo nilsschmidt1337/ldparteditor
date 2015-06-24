@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.FloatBuffer;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,6 +58,7 @@ import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
 import org.nschmidt.ldparteditor.data.tools.Merger;
 import org.nschmidt.ldparteditor.enums.MergeTo;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.enums.RotationSnap;
 import org.nschmidt.ldparteditor.enums.Threshold;
@@ -13423,7 +13425,12 @@ public class VertexManager {
 
                                     for (int i = 0; i < vc; i++) {
 
-                                        monitor.subTask("Detecting new edges (" + i + vertCount); //$NON-NLS-1$ I18N
+                                        Object[] messageArguments = {i, vertCount};
+                                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                        formatter.setLocale(MyLanguage.LOCALE);
+                                        formatter.applyPattern(I18n.VM_DetectNewEdges);
+
+                                        monitor.subTask(formatter.format(messageArguments));
 
                                         if (monitor.isCanceled()) {
                                             break;
@@ -13639,7 +13646,7 @@ public class VertexManager {
                     {
                         try
                         {
-                            monitor.beginTask("Running Lines2Pattern (this may take some time)", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                            monitor.beginTask(I18n.VM_Lines2Pattern, IProgressMonitor.UNKNOWN);
 
                             final int lc = linesToParseHashed.size();
 
@@ -13661,7 +13668,13 @@ public class VertexManager {
                                         for (int i = 0; i < lc; i++) {
                                             if (counter == 0) {
                                                 counter = chunks;
-                                                monitor.subTask("Triangulate (" + counter2.toString() + vertCount); //$NON-NLS-1$ I18N
+
+                                                Object[] messageArguments = {counter2.toString(), vertCount};
+                                                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                                formatter.setLocale(MyLanguage.LOCALE);
+                                                formatter.applyPattern(I18n.VM_Triangulate);
+
+                                                monitor.subTask(formatter.format(messageArguments));
                                                 counter2.incrementAndGet();
                                                 if (monitor.isCanceled()) {
                                                     return;
@@ -14025,7 +14038,7 @@ public class VertexManager {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                     try {
-                        monitor.beginTask("Running PathTruder...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                        monitor.beginTask(I18n.VM_PathTruder, IProgressMonitor.UNKNOWN);
 
                         final Thread[] threads = new Thread[1];
                         threads[0] = new Thread(new Runnable() {
@@ -15535,15 +15548,15 @@ public class VertexManager {
             if (!headerS.endsWith(StringHelper.getLineDelimiter())) {
                 headerS = headerS + StringHelper.getLineDelimiter();
             }
-            headerS = headerS + "0 !LPE TODO SymSplitter: Section in front of the plane." + StringHelper.getLineDelimiter(); //$NON-NLS-1$ I18N
+            headerS = headerS + I18n.VM_SymsplitterFront + StringHelper.getLineDelimiter();
             if (!beforeS.endsWith(StringHelper.getLineDelimiter())) {
                 beforeS = beforeS + StringHelper.getLineDelimiter();
             }
-            beforeS = beforeS + "0 !LPE TODO SymSplitter: Section between the plane." + StringHelper.getLineDelimiter(); //$NON-NLS-1$ I18N
+            beforeS = beforeS + I18n.VM_SymsplitterBetween + StringHelper.getLineDelimiter();
             if (!betweenS.endsWith(StringHelper.getLineDelimiter())) {
                 betweenS = betweenS + StringHelper.getLineDelimiter();
             }
-            betweenS = betweenS + "0 !LPE TODO SymSplitter: Section behind the plane." + StringHelper.getLineDelimiter(); //$NON-NLS-1$ I18N
+            betweenS = betweenS + I18n.VM_SymsplitterBehind + StringHelper.getLineDelimiter();
 
             String symSplitterOutput = headerS + beforeS + betweenS + behindS;
 
@@ -15826,9 +15839,9 @@ public class VertexManager {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
                 {
-                    monitor.beginTask("Running Unificator (this may take some time)", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                    monitor.beginTask(I18n.VM_Unificator, IProgressMonitor.UNKNOWN);
 
-                    monitor.subTask("Sorting out vertices..."); //$NON-NLS-1$ I18N
+                    monitor.subTask(I18n.VM_SortOut);
 
                     TreeSet<Vertex> subfileVertices = new TreeSet<Vertex>();
                     TreeSet<Vertex> fileVertices = new TreeSet<Vertex>();
@@ -15872,7 +15885,7 @@ public class VertexManager {
 
 
                     if (us.getSnapOn() == 0 || us.getSnapOn() == 2) {
-                        monitor.subTask("Unify vertices..."); //$NON-NLS-1$ I18N
+                        monitor.subTask(I18n.VM_Unify);
                         int i = 0;
                         int j = 0;
 
@@ -15937,7 +15950,7 @@ public class VertexManager {
                     }
 
                     if (us.getSnapOn() == 1 || us.getSnapOn() == 2) {
-                        monitor.subTask("Snap vertices to subfiles..."); //$NON-NLS-1$ I18N
+                        monitor.subTask(I18n.VM_Snap);
 
                         int i = 0;
                         int j = 0;
@@ -16389,7 +16402,7 @@ public class VertexManager {
                 @Override
                 public void run(final IProgressMonitor m) throws InvocationTargetException, InterruptedException
                 {
-                    m.beginTask("Selecting...", IProgressMonitor.UNKNOWN); //$NON-NLS-1$ I18N
+                    m.beginTask(I18n.VM_Selecting, IProgressMonitor.UNKNOWN);
 
                     final Set<GColour> allColours = new HashSet<GColour>();
                     final Set<Vector3d> allNormals = new HashSet<Vector3d>();
