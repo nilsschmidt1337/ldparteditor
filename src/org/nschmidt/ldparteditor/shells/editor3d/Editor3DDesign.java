@@ -370,7 +370,7 @@ class Editor3DDesign extends ApplicationWindow {
     @Override
     protected Control createContents(Composite parent) {
         final Editor3DWindowState windowState = WorkbenchManager.getEditor3DWindowState();
-        setStatus(I18n.EDITOR3D_ReadyStatus);
+        setStatus(I18n.E3D_ReadyStatus);
         Composite container = new Composite(parent, SWT.NONE);
         container.setLayout(new BorderLayout(0, 0));
         toolBar = new Composite(container, SWT.NONE);
@@ -383,13 +383,13 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Sync = new Button(toolItem_Sync, SWT.NONE);
                 this.btn_Sync[0] = btn_Sync;
-                btn_Sync.setToolTipText(I18n.EDITOR3D_SyncFolders);
+                btn_Sync.setToolTipText(I18n.E3D_SyncFolders);
                 btn_Sync.setImage(ResourceManager.getImage("icon16_sync.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Snapshot = new Button(toolItem_Sync, SWT.NONE);
                 this.btn_LastOpen[0] = btn_Snapshot;
-                btn_Snapshot.setToolTipText(I18n.EDITOR3D_LastOpened);
+                btn_Snapshot.setToolTipText(I18n.E3D_LastOpened);
                 btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
             }
         }
@@ -398,25 +398,25 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_New = new Button(toolItem_NewOpenSave, SWT.NONE);
                 this.btn_New[0] = btn_New;
-                btn_New.setToolTipText(I18n.EDITOR3D_New);
+                btn_New.setToolTipText(I18n.E3D_New);
                 btn_New.setImage(ResourceManager.getImage("icon16_document-new.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Open = new Button(toolItem_NewOpenSave, SWT.NONE);
                 this.btn_Open[0] = btn_Open;
-                btn_Open.setToolTipText(I18n.EDITOR3D_Open);
+                btn_Open.setToolTipText(I18n.E3D_Open);
                 btn_Open.setImage(ResourceManager.getImage("icon16_document-open.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Save = new Button(toolItem_NewOpenSave, SWT.NONE);
                 this.btn_Save[0] = btn_Save;
-                KeyStateManager.addTooltipText(btn_Save, I18n.EDITOR3D_Save, Task.SAVE);
+                KeyStateManager.addTooltipText(btn_Save, I18n.E3D_Save, Task.SAVE);
                 btn_Save.setImage(ResourceManager.getImage("icon16_document-save.png")); //$NON-NLS-1$
             }
             {
                 Button btn_SaveAll = new Button(toolItem_NewOpenSave, SWT.NONE);
                 this.btn_SaveAll[0] = btn_SaveAll;
-                btn_SaveAll.setToolTipText(I18n.EDITOR3D_SaveAll);
+                btn_SaveAll.setToolTipText(I18n.E3D_SaveAll);
                 btn_SaveAll.setImage(ResourceManager.getImage("icon16_document-saveall.png")); //$NON-NLS-1$
             }
         }
@@ -425,13 +425,13 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_NewDat = new Button(toolItem_NewOpenDAT, SWT.NONE);
                 this.btn_NewDat[0] = btn_NewDat;
-                btn_NewDat.setToolTipText(I18n.EDITOR3D_NewDat);
+                btn_NewDat.setToolTipText(I18n.E3D_NewDat);
                 btn_NewDat.setImage(ResourceManager.getImage("icon16_document-newdat.png")); //$NON-NLS-1$
             }
             {
                 Button btn_OpenDAT = new Button(toolItem_NewOpenDAT, SWT.NONE);
                 this.btn_OpenDat[0] = btn_OpenDAT;
-                btn_OpenDAT.setToolTipText(I18n.EDITOR3D_OpenDat);
+                btn_OpenDAT.setToolTipText(I18n.E3D_OpenDat);
                 btn_OpenDAT.setImage(ResourceManager.getImage("icon16_document-opendat.png")); //$NON-NLS-1$
             }
         }
@@ -440,13 +440,13 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Hide = new Button(toolItem_HideUnhide, SWT.NONE);
                 this.btn_Hide[0] = btn_Hide;
-                btn_Hide.setToolTipText(I18n.EDITOR3D_Hide);
+                btn_Hide.setToolTipText(I18n.E3D_Hide);
                 btn_Hide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Unhide = new Button(toolItem_HideUnhide, SWT.NONE);
                 this.btn_ShowAll[0] = btn_Unhide;
-                btn_Unhide.setToolTipText(I18n.EDITOR3D_ShowAll);
+                btn_Unhide.setToolTipText(I18n.E3D_ShowAll);
                 btn_Unhide.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
             }
         }
@@ -455,20 +455,20 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_AdjacentMove = new Button(toolItem_MiscToggle, SWT.TOGGLE);
                 this.btn_MoveAdjacentData[0] = btn_AdjacentMove;
-                btn_AdjacentMove.setToolTipText(I18n.EDITOR3D_MoveAdjacentData);
+                btn_AdjacentMove.setToolTipText(I18n.E3D_MoveAdjacentData);
                 btn_AdjacentMove.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
                 btn_AdjacentMove.setSelection(false);
             }
             {
                 Button btn_TransSelection = new Button(toolItem_MiscToggle, SWT.TOGGLE);
                 this.btn_NoTransparentSelection[0] = btn_TransSelection;
-                btn_TransSelection.setToolTipText(I18n.EDITOR3D_ToggleTransparent);
+                btn_TransSelection.setToolTipText(I18n.E3D_ToggleTransparent);
                 btn_TransSelection.setImage(ResourceManager.getImage("icon16_notrans.png")); //$NON-NLS-1$
             }
             {
                 Button btn_BFCToggle = new Button(toolItem_MiscToggle, SWT.TOGGLE);
                 this.btn_BFCToggle[0] = btn_BFCToggle;
-                btn_BFCToggle.setToolTipText(I18n.EDITOR3D_ToggleBFC);
+                btn_BFCToggle.setToolTipText(I18n.E3D_ToggleBFC);
                 btn_BFCToggle.setImage(ResourceManager.getImage("icon16_bfc.png")); //$NON-NLS-1$
             }
         }
@@ -477,51 +477,51 @@ class Editor3DDesign extends ApplicationWindow {
             Button btn_Undo = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_Undo[0] = btn_Undo;
             btn_Undo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btn_Undo, I18n.EDITOR3D_Undo, Task.UNDO);
+            KeyStateManager.addTooltipText(btn_Undo, I18n.E3D_Undo, Task.UNDO);
         }
         if (NLogger.DEBUG) {
             Button btn_Snapshot = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_AddHistory[0] = btn_Snapshot;
             btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
-            btn_Snapshot.setToolTipText(I18n.EDITOR3D_Snapshot);
+            btn_Snapshot.setToolTipText(I18n.E3D_Snapshot);
         }
         {
             Button btn_Redo = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_Redo[0] = btn_Redo;
             btn_Redo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btn_Redo, I18n.EDITOR3D_Redo, Task.REDO);
+            KeyStateManager.addTooltipText(btn_Redo, I18n.E3D_Redo, Task.REDO);
         }
         {
             ToolItem toolItem_Transformations = new ToolItem(toolBar, SWT.NONE);
             {
                 Button btn_Select = new Button(toolItem_Transformations, SWT.TOGGLE);
                 this.btn_Select[0] = btn_Select;
-                KeyStateManager.addTooltipText(btn_Select, I18n.EDITOR3D_Select, Task.MODE_SELECT);
+                KeyStateManager.addTooltipText(btn_Select, I18n.E3D_Select, Task.MODE_SELECT);
                 btn_Select.setSelection(true);
                 btn_Select.setImage(ResourceManager.getImage("icon16_select.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Move = new Button(toolItem_Transformations, SWT.TOGGLE);
                 this.btn_Move[0] = btn_Move;
-                KeyStateManager.addTooltipText(btn_Move, I18n.EDITOR3D_Move, Task.MODE_MOVE);
+                KeyStateManager.addTooltipText(btn_Move, I18n.E3D_Move, Task.MODE_MOVE);
                 btn_Move.setImage(ResourceManager.getImage("icon16_move.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Rotate = new Button(toolItem_Transformations, SWT.TOGGLE);
                 this.btn_Rotate[0] = btn_Rotate;
-                KeyStateManager.addTooltipText(btn_Rotate, I18n.EDITOR3D_Rotate, Task.MODE_ROTATE);
+                KeyStateManager.addTooltipText(btn_Rotate, I18n.E3D_Rotate, Task.MODE_ROTATE);
                 btn_Rotate.setImage(ResourceManager.getImage("icon16_rotate.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Scale = new Button(toolItem_Transformations, SWT.TOGGLE);
                 this.btn_Scale[0] = btn_Scale;
-                KeyStateManager.addTooltipText(btn_Scale, I18n.EDITOR3D_Scale, Task.MODE_SCALE);
+                KeyStateManager.addTooltipText(btn_Scale, I18n.E3D_Scale, Task.MODE_SCALE);
                 btn_Scale.setImage(ResourceManager.getImage("icon16_scale.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Combined = new Button(toolItem_Transformations, SWT.TOGGLE);
                 this.btn_Combined[0] = btn_Combined;
-                KeyStateManager.addTooltipText(btn_Combined, I18n.EDITOR3D_Combined, Task.MODE_COMBINED);
+                KeyStateManager.addTooltipText(btn_Combined, I18n.E3D_Combined, Task.MODE_COMBINED);
                 btn_Combined.setImage(ResourceManager.getImage("icon16_combined.png")); //$NON-NLS-1$
             }
         }
@@ -530,19 +530,19 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
                 this.btn_Local[0] = btn_Local;
-                btn_Local.setToolTipText(I18n.EDITOR3D_Local);
+                btn_Local.setToolTipText(I18n.E3D_Local);
                 btn_Local.setSelection(true);
                 btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
                 this.btn_Global[0] = btn_Global;
-                btn_Global.setToolTipText(I18n.EDITOR3D_Global);
+                btn_Global.setToolTipText(I18n.E3D_Global);
                 btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
             }
             {
                 final Button btn_ManipulatorActions = new Button(toolItem_TransformationModes, SWT.ARROW | SWT.DOWN);
-                btn_ManipulatorActions.setToolTipText("Modify the Manipulator"); //$NON-NLS-1$ I18N
+                btn_ManipulatorActions.setToolTipText(I18n.E3D_ModifyManipulator);
                 this.mnu_Manipulator = new Menu(this.getShell(), SWT.POP_UP);
                 btn_ManipulatorActions.addSelectionListener(new SelectionAdapter() {
                     @Override
@@ -558,7 +558,7 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_0_toOrigin[0] = btn_Mani;
-                        btn_Mani.setText("Move the Manipulator to Origin"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ManipulatorToOrigin);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_toOrigin.png")); //$NON-NLS-1$
                     }
                     {
@@ -689,46 +689,46 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_BFCswap = new Button(toolItem_MiscClick, SWT.NONE);
                 this.btn_BFCswap[0] = btn_BFCswap;
-                btn_BFCswap.setToolTipText(I18n.EDITOR3D_SwapWinding);
+                btn_BFCswap.setToolTipText(I18n.E3D_SwapWinding);
                 btn_BFCswap.setImage(ResourceManager.getImage("icon16_bfcSwap.png")); //$NON-NLS-1$
             }
             {
                 Button btn_CompileSubfile = new Button(toolItem_MiscClick, SWT.NONE);
                 this.btn_CompileSubfile[0] = btn_CompileSubfile;
-                btn_CompileSubfile.setToolTipText(I18n.EDITOR3D_CompileSubfileData);
+                btn_CompileSubfile.setToolTipText(I18n.E3D_CompileSubfileData);
                 btn_CompileSubfile.setImage(ResourceManager.getImage("icon16_subcompile.png")); //$NON-NLS-1$
             }
             {
                 Button btn_SplitQuad = new Button(toolItem_MiscClick, SWT.NONE);
                 this.btn_SplitQuad[0] = btn_SplitQuad;
                 btn_SplitQuad.setImage(ResourceManager.getImage("icon16_quadToTri.png")); //$NON-NLS-1$
-                btn_SplitQuad.setToolTipText(I18n.EDITOR3D_SplitQuad);
+                btn_SplitQuad.setToolTipText(I18n.E3D_SplitQuad);
             }
             {
                 Button btn_CondlineToLine = new Button(toolItem_MiscClick, SWT.NONE);
                 this.btn_CondlineToLine[0] = btn_CondlineToLine;
                 // FIXME Needs icon!
                 btn_CondlineToLine.setText("C2L"); //$NON-NLS-1$
-                btn_CondlineToLine.setToolTipText(I18n.EDITOR3D_CondlineToLine);
+                btn_CondlineToLine.setToolTipText(I18n.E3D_CondlineToLine);
             }
             {
                 Button btn_LineToCondline = new Button(toolItem_MiscClick, SWT.NONE);
                 this.btn_LineToCondline[0] = btn_LineToCondline;
                 // FIXME Needs icon!
                 btn_LineToCondline.setText("L2C"); //$NON-NLS-1$
-                btn_LineToCondline.setToolTipText(I18n.EDITOR3D_LineToCondline);
+                btn_LineToCondline.setToolTipText(I18n.E3D_LineToCondline);
             }
             {
                 Button btn_RoundSelection = new Button(toolItem_MiscClick, SWT.NONE);
                 this.btn_RoundSelection[0] = btn_RoundSelection;
-                btn_RoundSelection.setToolTipText(I18n.EDITOR3D_Round);
+                btn_RoundSelection.setToolTipText(I18n.E3D_Round);
                 btn_RoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
             }
             {
                 final Button btn_Select = new Button(toolItem_MiscClick, SWT.PUSH);
                 this.btn_Select2[0] = btn_Select;
-                btn_Select.setToolTipText(I18n.EDITOR3D_AdvancedSelect);
-                btn_Select.setText(I18n.EDITOR3D_AdvancedSelect);
+                btn_Select.setToolTipText(I18n.E3D_AdvancedSelect);
+                btn_Select.setText(I18n.E3D_AdvancedSelect);
                 this.mnu_Select = new Menu(this.getShell(), SWT.POP_UP);
                 btn_Select.addSelectionListener(new SelectionAdapter() {
                     @Override
@@ -740,80 +740,80 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem mntm_SelectAll = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectAll[0] = mntm_SelectAll;
-                        KeyStateManager.addKeyText(mntm_SelectAll, I18n.EDITOR3D_All, Task.SELECT_ALL);
+                        KeyStateManager.addKeyText(mntm_SelectAll, I18n.E3D_All, Task.SELECT_ALL);
                     }
                     {
                         MenuItem mntm_SelectNone = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectNone[0] = mntm_SelectNone;
-                        KeyStateManager.addKeyText(mntm_SelectNone, I18n.EDITOR3D_None, Task.SELECT_NONE);
+                        KeyStateManager.addKeyText(mntm_SelectNone, I18n.E3D_None, Task.SELECT_NONE);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator0 = new MenuItem(mnu_Select, SWT.SEPARATOR);
                     {
                         MenuItem mntm_SelectInverse = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectInverse[0] = mntm_SelectInverse;
-                        mntm_SelectInverse.setText(I18n.EDITOR3D_Inverse);
+                        mntm_SelectInverse.setText(I18n.E3D_Inverse);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator1 = new MenuItem(mnu_Select, SWT.SEPARATOR);
                     {
                         MenuItem mntm_SelectAllVisible = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectAllVisible[0] = mntm_SelectAllVisible;
-                        mntm_SelectAllVisible.setText(I18n.EDITOR3D_AllShown);
+                        mntm_SelectAllVisible.setText(I18n.E3D_AllShown);
                     }
                     {
                         MenuItem mntm_SelectAllWithColours = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectAllWithColours[0] = mntm_SelectAllWithColours;
-                        KeyStateManager.addKeyText(mntm_SelectAllWithColours, I18n.EDITOR3D_AllSameColours, Task.SELECT_ALL_WITH_SAME_COLOURS);
+                        KeyStateManager.addKeyText(mntm_SelectAllWithColours, I18n.E3D_AllSameColours, Task.SELECT_ALL_WITH_SAME_COLOURS);
                     }
                     {
                         MenuItem mntm_SelectAllVisibleWithColours = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectAllVisibleWithColours[0] = mntm_SelectAllVisibleWithColours;
-                        mntm_SelectAllVisibleWithColours.setText(I18n.EDITOR3D_AllSameColoursShown);
+                        mntm_SelectAllVisibleWithColours.setText(I18n.E3D_AllSameColoursShown);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator2 = new MenuItem(mnu_Select, SWT.SEPARATOR);
                     {
                         MenuItem mntm_SelectEverything = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectEverything[0] = mntm_SelectEverything;
-                        mntm_SelectEverything.setText(I18n.EDITOR3D_Everything);
+                        mntm_SelectEverything.setText(I18n.E3D_Everything);
                         mntm_SelectEverything.setEnabled(false);
                     }
                     {
                         MenuItem mntm_SelectConnected = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectConnected[0] = mntm_SelectConnected;
-                        KeyStateManager.addKeyText(mntm_SelectConnected, I18n.EDITOR3D_Connected, Task.SELECT_CONNECTED);
+                        KeyStateManager.addKeyText(mntm_SelectConnected, I18n.E3D_Connected, Task.SELECT_CONNECTED);
                     }
                     {
                         MenuItem mntm_SelectTouching = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectTouching[0] = mntm_SelectTouching;
-                        KeyStateManager.addKeyText(mntm_SelectTouching, I18n.EDITOR3D_Touching, Task.SELECT_TOUCHING);
+                        KeyStateManager.addKeyText(mntm_SelectTouching, I18n.E3D_Touching, Task.SELECT_TOUCHING);
                     }
                     {
                         MenuItem mntm_WithSameColour = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_WithSameColour[0] = mntm_WithSameColour;
-                        KeyStateManager.addKeyText(mntm_WithSameColour, I18n.EDITOR3D_WithSameColour, Task.SELECT_OPTION_WITH_SAME_COLOURS);
+                        KeyStateManager.addKeyText(mntm_WithSameColour, I18n.E3D_WithSameColour, Task.SELECT_OPTION_WITH_SAME_COLOURS);
                     }
                     {
                         MenuItem mntm_WithSameOrientation = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_WithSameOrientation[0] = mntm_WithSameOrientation;
-                        mntm_WithSameOrientation.setText(I18n.EDITOR3D_WithSameOrientation);
+                        mntm_WithSameOrientation.setText(I18n.E3D_WithSameOrientation);
                     }
                     {
                         MenuItem mntm_WithAccuracy = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_WithAccuracy[0] = mntm_WithAccuracy;
-                        mntm_WithAccuracy.setText(I18n.EDITOR3D_WithAccuracy);
+                        mntm_WithAccuracy.setText(I18n.E3D_WithAccuracy);
                     }
                     {
                         MenuItem mntm_WithHiddenData = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_WithHiddenData[0] = mntm_WithHiddenData;
-                        mntm_WithHiddenData.setText(I18n.EDITOR3D_WhatIsHidden);
+                        mntm_WithHiddenData.setText(I18n.E3D_WhatIsHidden);
                         mntm_WithHiddenData.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem mntm_ExceptSubfiles = new MenuItem(mnu_Select, SWT.CHECK);
                         this.mntm_ExceptSubfiles[0] = mntm_ExceptSubfiles;
-                        mntm_ExceptSubfiles.setText(I18n.EDITOR3D_ExceptSubfile);
+                        mntm_ExceptSubfiles.setText(I18n.E3D_ExceptSubfile);
                     }
                     {
                         MenuItem mntm_WithWholeSubfiles = new MenuItem(mnu_Select, SWT.CHECK);
@@ -1162,26 +1162,26 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Vertices = new Button(toolItem_Mode, SWT.TOGGLE);
                 this.btn_Vertices[0] = btn_Vertices;
-                KeyStateManager.addTooltipText(btn_Vertices, I18n.EDITOR3D_ModeVertex, Task.OBJ_VERTEX);
+                KeyStateManager.addTooltipText(btn_Vertices, I18n.E3D_ModeVertex, Task.OBJ_VERTEX);
                 btn_Vertices.setSelection(true);
                 btn_Vertices.setImage(ResourceManager.getImage("icon16_vertices.png")); //$NON-NLS-1$
             }
             {
                 Button btn_TrisNQuads = new Button(toolItem_Mode, SWT.TOGGLE);
                 this.btn_TrisNQuads[0] = btn_TrisNQuads;
-                KeyStateManager.addTooltipText(btn_TrisNQuads, I18n.EDITOR3D_ModeSurface, Task.OBJ_FACE);
+                KeyStateManager.addTooltipText(btn_TrisNQuads, I18n.E3D_ModeSurface, Task.OBJ_FACE);
                 btn_TrisNQuads.setImage(ResourceManager.getImage("icon16_trisNquads.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Lines = new Button(toolItem_Mode, SWT.TOGGLE);
                 this.btn_Lines[0] = btn_Lines;
-                KeyStateManager.addTooltipText(btn_Lines, I18n.EDITOR3D_ModeLine, Task.OBJ_LINE);
+                KeyStateManager.addTooltipText(btn_Lines, I18n.E3D_ModeLine, Task.OBJ_LINE);
                 btn_Lines.setImage(ResourceManager.getImage("icon16_lines.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Subfiles = new Button(toolItem_Mode, SWT.TOGGLE);
                 this.btn_Subfiles[0] = btn_Subfiles;
-                KeyStateManager.addTooltipText(btn_Subfiles, I18n.EDITOR3D_ModeSubpart, Task.OBJ_PRIMITIVE);
+                KeyStateManager.addTooltipText(btn_Subfiles, I18n.E3D_ModeSubpart, Task.OBJ_PRIMITIVE);
                 btn_Subfiles.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
             }
         }
@@ -1190,37 +1190,37 @@ class Editor3DDesign extends ApplicationWindow {
 
             Button btn_AddComment = new Button(toolItem_Add, SWT.NONE);
             this.btn_AddComment[0] = btn_AddComment;
-            KeyStateManager.addTooltipText(btn_AddComment, I18n.EDITOR3D_AddComment, Task.ADD_COMMENTS);
+            KeyStateManager.addTooltipText(btn_AddComment, I18n.E3D_AddComment, Task.ADD_COMMENTS);
             btn_AddComment.setImage(ResourceManager.getImage("icon16_addcomment.png")); //$NON-NLS-1$
 
             Button btn_AddVertex = new Button(toolItem_Add, SWT.TOGGLE);
             this.btn_AddVertex[0] = btn_AddVertex;
-            KeyStateManager.addTooltipText(btn_AddVertex, I18n.EDITOR3D_AddVertex, Task.ADD_VERTEX);
+            KeyStateManager.addTooltipText(btn_AddVertex, I18n.E3D_AddVertex, Task.ADD_VERTEX);
             btn_AddVertex.setImage(ResourceManager.getImage("icon16_addvertex.png")); //$NON-NLS-1$
 
             Button btn_AddPrimitive = new Button(toolItem_Add, SWT.TOGGLE);
             this.btn_AddPrimitive[0] = btn_AddPrimitive;
-            btn_AddPrimitive.setToolTipText(I18n.EDITOR3D_AddSubpart);
+            btn_AddPrimitive.setToolTipText(I18n.E3D_AddSubpart);
             btn_AddPrimitive.setImage(ResourceManager.getImage("icon16_addprimitive.png")); //$NON-NLS-1$
 
             Button btn_AddLine = new Button(toolItem_Add, SWT.TOGGLE);
             this.btn_AddLine[0] = btn_AddLine;
-            KeyStateManager.addTooltipText(btn_AddLine, I18n.EDITOR3D_AddLine, Task.ADD_LINE);
+            KeyStateManager.addTooltipText(btn_AddLine, I18n.E3D_AddLine, Task.ADD_LINE);
             btn_AddLine.setImage(ResourceManager.getImage("icon16_addline.png")); //$NON-NLS-1$
 
             Button btn_AddTriangle = new Button(toolItem_Add, SWT.TOGGLE);
             this.btn_AddTriangle[0] = btn_AddTriangle;
-            KeyStateManager.addTooltipText(btn_AddTriangle, I18n.EDITOR3D_AddTriangle, Task.ADD_TRIANGLE);
+            KeyStateManager.addTooltipText(btn_AddTriangle, I18n.E3D_AddTriangle, Task.ADD_TRIANGLE);
             btn_AddTriangle.setImage(ResourceManager.getImage("icon16_addtriangle.png")); //$NON-NLS-1$
 
             Button btn_AddQuad = new Button(toolItem_Add, SWT.TOGGLE);
             this.btn_AddQuad[0] = btn_AddQuad;
-            KeyStateManager.addTooltipText(btn_AddQuad, I18n.EDITOR3D_AddQuad, Task.ADD_QUAD);
+            KeyStateManager.addTooltipText(btn_AddQuad, I18n.E3D_AddQuad, Task.ADD_QUAD);
             btn_AddQuad.setImage(ResourceManager.getImage("icon16_addquad.png")); //$NON-NLS-1$
 
             Button btn_AddCondline = new Button(toolItem_Add, SWT.TOGGLE);
             this.btn_AddCondline[0] = btn_AddCondline;
-            KeyStateManager.addTooltipText(btn_AddCondline, I18n.EDITOR3D_AddCondline, Task.ADD_CONDLINE);
+            KeyStateManager.addTooltipText(btn_AddCondline, I18n.E3D_AddCondline, Task.ADD_CONDLINE);
             btn_AddCondline.setImage(ResourceManager.getImage("icon16_addcondline.png")); //$NON-NLS-1$
         }
         {
@@ -1246,7 +1246,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Palette = new Button(toolItem_Colours, SWT.NONE);
                 this.btn_Palette[0] = btn_Palette;
-                btn_Palette.setToolTipText(I18n.EDITOR3D_More);
+                btn_Palette.setToolTipText(I18n.E3D_More);
                 btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
             }
         }
@@ -1287,7 +1287,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_Pipette = new Button(toolItem_ColourFunctions, SWT.NONE);
                 this.btn_Pipette[0] = btn_Pipette;
-                btn_Pipette.setToolTipText(I18n.EDITOR3D_Pipette);
+                btn_Pipette.setToolTipText(I18n.E3D_Pipette);
                 btn_Pipette.setImage(ResourceManager.getImage("icon16_pipette.png")); //$NON-NLS-1$
             }
         }
@@ -1296,26 +1296,26 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 Button btn_lineSize1 = new Button(toolItem_LineThickness, SWT.TOGGLE);
                 this.btn_lineSize1[0] = btn_lineSize1;
-                btn_lineSize1.setToolTipText(I18n.EDITOR3D_LineSize1);
+                btn_lineSize1.setToolTipText(I18n.E3D_LineSize1);
                 btn_lineSize1.setImage(ResourceManager.getImage("icon16_linesize1.png")); //$NON-NLS-1$
             }
             {
                 Button btn_lineSize2 = new Button(toolItem_LineThickness, SWT.TOGGLE);
                 this.btn_lineSize2[0] = btn_lineSize2;
-                btn_lineSize2.setToolTipText(I18n.EDITOR3D_LineSize2);
+                btn_lineSize2.setToolTipText(I18n.E3D_LineSize2);
                 btn_lineSize2.setImage(ResourceManager.getImage("icon16_linesize2.png")); //$NON-NLS-1$
             }
             {
                 Button btn_lineSize3 = new Button(toolItem_LineThickness, SWT.TOGGLE);
                 btn_lineSize3.setSelection(true);
                 this.btn_lineSize3[0] = btn_lineSize3;
-                btn_lineSize3.setToolTipText(I18n.EDITOR3D_LineSize3);
+                btn_lineSize3.setToolTipText(I18n.E3D_LineSize3);
                 btn_lineSize3.setImage(ResourceManager.getImage("icon16_linesize3.png")); //$NON-NLS-1$
             }
             {
                 Button btn_lineSize4 = new Button(toolItem_LineThickness, SWT.TOGGLE);
                 this.btn_lineSize4[0] = btn_lineSize4;
-                btn_lineSize4.setToolTipText(I18n.EDITOR3D_LineSize4);
+                btn_lineSize4.setToolTipText(I18n.E3D_LineSize4);
                 btn_lineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
             }
         }
@@ -1327,7 +1327,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 SashForm sashForm = new SashForm(cmp_main_editor, SWT.NONE);
                 Editor3DDesign.setSashForm(sashForm);
-                sashForm.setToolTipText(I18n.EDITOR3D_DragHint);
+                sashForm.setToolTipText(I18n.E3D_DragHint);
                 {
                     SashForm sashForm2 = new SashForm(sashForm, SWT.VERTICAL);
                     Composite cmp_Container1 = new Composite(sashForm2, SWT.BORDER);
@@ -1373,17 +1373,17 @@ class Editor3DDesign extends ApplicationWindow {
                                 Button btnCoarse = new Button(cmp_dummy, SWT.NONE);
                                 this.btn_Coarse[0] = btnCoarse;
                                 btnCoarse.setImage(ResourceManager.getImage("icon8_coarse.png")); //$NON-NLS-1$
-                                btnCoarse.setToolTipText(I18n.EDITOR3D_Coarse);
+                                btnCoarse.setToolTipText(I18n.E3D_Coarse);
 
                                 Button btnMedium = new Button(cmp_dummy, SWT.NONE);
                                 this.btn_Medium[0] = btnMedium;
                                 btnMedium.setImage(ResourceManager.getImage("icon8_medium.png")); //$NON-NLS-1$
-                                btnMedium.setToolTipText(I18n.EDITOR3D_Medium);
+                                btnMedium.setToolTipText(I18n.E3D_Medium);
 
                                 Button btnFine = new Button(cmp_dummy, SWT.NONE);
                                 this.btn_Fine[0] = btnFine;
                                 btnFine.setImage(ResourceManager.getImage("icon8_fine.png")); //$NON-NLS-1$
-                                btnFine.setToolTipText(I18n.EDITOR3D_Fine);
+                                btnFine.setToolTipText(I18n.E3D_Fine);
 
                                 cmp_dummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 3, 1));
                             }
@@ -1392,7 +1392,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 Object[] messageArguments = {I18n.UNIT_CurrentUnit()};
                                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                                 formatter.setLocale(MyLanguage.LOCALE);
-                                formatter.applyPattern(I18n.EDITOR3D_MoveSnap);
+                                formatter.applyPattern(I18n.E3D_MoveSnap);
 
                                 Label lblNewLabel = new Label(cmp_snappingArea, SWT.NONE);
                                 lblNewLabel.setText(formatter.format(messageArguments));
@@ -1408,7 +1408,7 @@ class Editor3DDesign extends ApplicationWindow {
                             spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
                             Label lblNewLabel2 = new Label(cmp_snappingArea, SWT.NONE);
-                            lblNewLabel2.setText(I18n.EDITOR3D_RotateSnap);
+                            lblNewLabel2.setText(I18n.E3D_RotateSnap);
                             lblNewLabel2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
                             BigDecimalSpinner spinner2 = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE);
@@ -1419,7 +1419,7 @@ class Editor3DDesign extends ApplicationWindow {
                             spinner2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
                             Label lblNewLabel3 = new Label(cmp_snappingArea, SWT.NONE);
-                            lblNewLabel3.setText(I18n.EDITOR3D_ScaleSnap);
+                            lblNewLabel3.setText(I18n.E3D_ScaleSnap);
                             lblNewLabel3.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
                             BigDecimalSpinner spinner3 = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE);
@@ -1433,7 +1433,7 @@ class Editor3DDesign extends ApplicationWindow {
                         }
 
                         CTabItem tItem2 = new CTabItem(tabFolder_Settings, SWT.NONE);
-                        tItem2.setText(I18n.EDITOR3D_Selection);
+                        tItem2.setText(I18n.E3D_Selection);
 
                         {
                             final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
@@ -1455,19 +1455,19 @@ class Editor3DDesign extends ApplicationWindow {
                                 Button btn_PreviousSelection = new Button(cmp_Dummy, SWT.NONE);
                                 this.btn_PreviousSelection[0] = btn_PreviousSelection;
                                 btn_PreviousSelection.setImage(ResourceManager.getImage("icon8_previous.png")); //$NON-NLS-1$
-                                btn_PreviousSelection.setToolTipText(I18n.EDITOR3D_PreviousItem);
+                                btn_PreviousSelection.setToolTipText(I18n.E3D_PreviousItem);
 
                                 Button btn_NextSelection = new Button(cmp_Dummy, SWT.NONE);
                                 this.btn_NextSelection[0] = btn_NextSelection;
                                 btn_NextSelection.setImage(ResourceManager.getImage("icon8_next.png")); //$NON-NLS-1$
-                                btn_NextSelection.setToolTipText(I18n.EDITOR3D_NextItem);
+                                btn_NextSelection.setToolTipText(I18n.E3D_NextItem);
 
                                 cmp_Dummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 3, 1));
                             }
 
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText(I18n.EDITOR3D_TextLine);
+                                lbl_Label.setText(I18n.E3D_TextLine);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                             }
                             {
@@ -1483,7 +1483,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 Button btn_moveAdjacentData2 = new Button(cmp_LineSetup, SWT.TOGGLE);
                                 this.btn_MoveAdjacentData2[0] = btn_moveAdjacentData2;
                                 btn_moveAdjacentData2.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
-                                btn_moveAdjacentData2.setText(I18n.EDITOR3D_MoveAdjacentData);
+                                btn_moveAdjacentData2.setText(I18n.E3D_MoveAdjacentData);
 
                                 cmp_LineSetup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
@@ -1494,7 +1494,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
                                 this.lbl_SelectionX1[0] = lbl_Label;
-                                lbl_Label.setText(I18n.EDITOR3D_PositionX1);
+                                lbl_Label.setText(I18n.E3D_PositionX1);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionX1[0] = spinner;
@@ -1507,7 +1507,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
                                 this.lbl_SelectionY1[0] = lbl_Label;
-                                lbl_Label.setText(I18n.EDITOR3D_PositionY1);
+                                lbl_Label.setText(I18n.E3D_PositionY1);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionY1[0] = spinner;
@@ -1520,7 +1520,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
                                 this.lbl_SelectionZ1[0] = lbl_Label;
-                                lbl_Label.setText(I18n.EDITOR3D_PositionZ1);
+                                lbl_Label.setText(I18n.E3D_PositionZ1);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionZ1[0] = spinner;
@@ -1533,7 +1533,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
                                 this.lbl_SelectionX2[0] = lbl_Label;
-                                lbl_Label.setText(I18n.EDITOR3D_PositionX2);
+                                lbl_Label.setText(I18n.E3D_PositionX2);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionX2[0] = spinner;
@@ -1546,7 +1546,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
                                 this.lbl_SelectionY2[0] = lbl_Label;
-                                lbl_Label.setText(I18n.EDITOR3D_PositionY2);
+                                lbl_Label.setText(I18n.E3D_PositionY2);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionY2[0] = spinner;
@@ -1559,7 +1559,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
                                 this.lbl_SelectionZ2[0] = lbl_Label;
-                                lbl_Label.setText(I18n.EDITOR3D_PositionZ2);
+                                lbl_Label.setText(I18n.E3D_PositionZ2);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionZ2[0] = spinner;
@@ -1572,7 +1572,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
                                 this.lbl_SelectionX3[0] = lbl_Label;
-                                lbl_Label.setText(I18n.EDITOR3D_PositionX3);
+                                lbl_Label.setText(I18n.E3D_PositionX3);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionX3[0] = spinner;
@@ -1585,7 +1585,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
                                 this.lbl_SelectionY3[0] = lbl_Label;
-                                lbl_Label.setText(I18n.EDITOR3D_PositionY3);
+                                lbl_Label.setText(I18n.E3D_PositionY3);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionY3[0] = spinner;
@@ -1598,7 +1598,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
                                 this.lbl_SelectionZ3[0] = lbl_Label;
-                                lbl_Label.setText(I18n.EDITOR3D_PositionZ3);
+                                lbl_Label.setText(I18n.E3D_PositionZ3);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionZ3[0] = spinner;
@@ -1611,7 +1611,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
                                 this.lbl_SelectionX4[0] = lbl_Label;
-                                lbl_Label.setText(I18n.EDITOR3D_PositionX4);
+                                lbl_Label.setText(I18n.E3D_PositionX4);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionX4[0] = spinner;
@@ -1624,7 +1624,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
                                 this.lbl_SelectionY4[0] = lbl_Label;
-                                lbl_Label.setText(I18n.EDITOR3D_PositionY4);
+                                lbl_Label.setText(I18n.E3D_PositionY4);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionY4[0] = spinner;
@@ -1637,7 +1637,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
                                 this.lbl_SelectionZ4[0] = lbl_Label;
-                                lbl_Label.setText(I18n.EDITOR3D_PositionZ4);
+                                lbl_Label.setText(I18n.E3D_PositionZ4);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionZ4[0] = spinner;
@@ -1651,7 +1651,7 @@ class Editor3DDesign extends ApplicationWindow {
                         }
 
                         CTabItem tItem3 = new CTabItem(tabFolder_Settings, SWT.NONE);
-                        tItem3.setText(I18n.EDITOR3D_BackgroundImage);
+                        tItem3.setText(I18n.E3D_BackgroundImage);
 
                         {
                             final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
@@ -1673,24 +1673,24 @@ class Editor3DDesign extends ApplicationWindow {
                                 Button btnPrevious = new Button(cmp_dummy, SWT.NONE);
                                 btn_PngPrevious[0] = btnPrevious;
                                 btnPrevious.setImage(ResourceManager.getImage("icon8_previous.png")); //$NON-NLS-1$
-                                btnPrevious.setToolTipText(I18n.EDITOR3D_Previous);
+                                btnPrevious.setToolTipText(I18n.E3D_Previous);
 
                                 Button btnFocusBG = new Button(cmp_dummy, SWT.NONE);
                                 btn_PngFocus[0] = btnFocusBG;
                                 btnFocusBG.setImage(ResourceManager.getImage("icon8_focus.png")); //$NON-NLS-1$
-                                btnFocusBG.setToolTipText(I18n.EDITOR3D_Focus);
+                                btnFocusBG.setToolTipText(I18n.E3D_Focus);
 
                                 Button btnNext = new Button(cmp_dummy, SWT.NONE);
                                 btn_PngNext[0] = btnNext;
                                 btnNext.setImage(ResourceManager.getImage("icon8_next.png")); //$NON-NLS-1$
-                                btnNext.setToolTipText(I18n.EDITOR3D_Next);
+                                btnNext.setToolTipText(I18n.E3D_Next);
 
                                 cmp_dummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 3, 1));
                             }
 
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText(I18n.EDITOR3D_Image);
+                                lbl_Label.setText(I18n.E3D_Image);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                             }
                             {
@@ -1710,7 +1710,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText(I18n.EDITOR3D_PositionX);
+                                lbl_Label.setText(I18n.E3D_PositionX);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngX[0] = spinner;
@@ -1721,7 +1721,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText(I18n.EDITOR3D_PositionY);
+                                lbl_Label.setText(I18n.E3D_PositionY);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngY[0] = spinner;
@@ -1732,7 +1732,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText(I18n.EDITOR3D_PositionZ);
+                                lbl_Label.setText(I18n.E3D_PositionZ);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngZ[0] = spinner;
@@ -1743,7 +1743,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText(I18n.EDITOR3D_AngleY);
+                                lbl_Label.setText(I18n.E3D_AngleY);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngA1[0] = spinner;
@@ -1754,7 +1754,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText(I18n.EDITOR3D_AngleX);
+                                lbl_Label.setText(I18n.E3D_AngleX);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngA2[0] = spinner;
@@ -1765,7 +1765,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText(I18n.EDITOR3D_AngleZ);
+                                lbl_Label.setText(I18n.E3D_AngleZ);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngA3[0] = spinner;
@@ -1776,7 +1776,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText(I18n.EDITOR3D_ScaleX);
+                                lbl_Label.setText(I18n.E3D_ScaleX);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngSX[0] = spinner;
@@ -1787,7 +1787,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                             {
                                 Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText(I18n.EDITOR3D_ScaleY);
+                                lbl_Label.setText(I18n.E3D_ScaleY);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 spn_PngSY[0] = spinner;
@@ -1924,14 +1924,14 @@ class Editor3DDesign extends ApplicationWindow {
                         cmp_Search.setLayout(gridLayout2);
                         Text txt_Search = new Text(cmp_Search, SWT.BORDER);
                         this.txt_Search[0] = txt_Search;
-                        txt_Search.setMessage(I18n.EDITOR3D_Search);
+                        txt_Search.setMessage(I18n.E3D_Search);
                         GridData gridData2 = new GridData();
                         gridData2.horizontalAlignment = SWT.FILL;
                         gridData2.grabExcessHorizontalSpace = true;
                         txt_Search.setLayoutData(gridData2);
                         Button btn_ResetSearch = new Button(cmp_Search, SWT.NONE);
                         this.btn_ResetSearch[0] = btn_ResetSearch;
-                        btn_ResetSearch.setText(I18n.EDITOR3D_Reset);
+                        btn_ResetSearch.setText(I18n.E3D_Reset);
                     }
 
                     Composite cmp_Container4 = new Composite(sashForm2, SWT.BORDER);
@@ -1965,7 +1965,7 @@ class Editor3DDesign extends ApplicationWindow {
                         gd2.horizontalAlignment = SWT.FILL;
                         lbl_selectedPrimitiveItem.setLayoutData(gd2);
                     }
-                    lbl_selectedPrimitiveItem.setText(I18n.EDITOR3D_NoPrimitiveSelected);
+                    lbl_selectedPrimitiveItem.setText(I18n.E3D_NoPrimitiveSelected);
 
                     {
                         Composite cmp_Search = new Composite(cmp_Container4, SWT.NONE);
@@ -1977,14 +1977,14 @@ class Editor3DDesign extends ApplicationWindow {
                         cmp_Search.setLayout(gridLayout2);
                         Text txt_Search = new Text(cmp_Search, SWT.BORDER);
                         this.txt_primitiveSearch[0] = txt_Search;
-                        txt_Search.setMessage(I18n.EDITOR3D_SearchPrimitives);
+                        txt_Search.setMessage(I18n.E3D_SearchPrimitives);
                         GridData gridData2 = new GridData();
                         gridData2.horizontalAlignment = SWT.FILL;
                         gridData2.grabExcessHorizontalSpace = true;
                         txt_Search.setLayoutData(gridData2);
                         Button btn_ResetSearch = new Button(cmp_Search, SWT.NONE);
                         this.btn_resetPrimitiveSearch[0] = btn_ResetSearch;
-                        btn_ResetSearch.setText(I18n.EDITOR3D_Reset);
+                        btn_ResetSearch.setText(I18n.E3D_Reset);
                     }
 
                     int[] weights = windowState.getLeftSashWeights();

@@ -471,7 +471,7 @@ public class HistoryManager {
                         public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
                         {
                             m[0] = mon;
-                            monitor.beginTask(I18n.EDITOR3D_LoadingData, 100);
+                            monitor.beginTask(I18n.E3D_LoadingData, 100);
                             while (action.get() > 0) {
                                 Integer inc = sq.poll(1000, TimeUnit.MILLISECONDS);
                                 if (inc != null) {

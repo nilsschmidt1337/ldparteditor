@@ -105,7 +105,7 @@ public enum SubfileCompiler {
                         @Override
                         public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
                         {
-                            monitor.beginTask(I18n.EDITOR3D_WaitForUpdate, IProgressMonitor.UNKNOWN);
+                            monitor.beginTask(I18n.E3D_WaitForUpdate, IProgressMonitor.UNKNOWN);
                             while (!vm.isUpdated()) {
                                 if (monitor.isCanceled()) break;
                                 try {
@@ -311,7 +311,7 @@ public enum SubfileCompiler {
                             Object[] messageArguments = {lineNumber, line};
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                             formatter.setLocale(MyLanguage.LOCALE);
-                            formatter.applyPattern(I18n.EDITOR3D_InvalidFilename);
+                            formatter.applyPattern(I18n.E3D_InvalidFilename);
                             MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_ERROR);
                             messageBox.setText(I18n.DIALOG_Error);
                             messageBox.setMessage(formatter.format(messageArguments));
@@ -321,7 +321,7 @@ public enum SubfileCompiler {
                         Object[] messageArguments = {lineNumber, line};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITOR3D_InvalidMatrix);
+                        formatter.applyPattern(I18n.E3D_InvalidMatrix);
                         MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_ERROR);
                         messageBox.setText(I18n.DIALOG_Error);
                         messageBox.setMessage(formatter.format(messageArguments));
@@ -331,7 +331,7 @@ public enum SubfileCompiler {
                     Object[] messageArguments = {lineNumber, line};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                     formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.EDITOR3D_InvalidColour);
+                    formatter.applyPattern(I18n.E3D_InvalidColour);
                     MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_ERROR);
                     messageBox.setText(I18n.DIALOG_Error);
                     messageBox.setMessage(formatter.format(messageArguments));

@@ -392,7 +392,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
                         @Override
                         public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                            monitor.beginTask(I18n.EDITOR3D_LoadingPrimitives, IProgressMonitor.UNKNOWN);
+                            monitor.beginTask(I18n.E3D_LoadingPrimitives, IProgressMonitor.UNKNOWN);
                             Thread.sleep(1500);
                         }
                     });
@@ -441,7 +441,13 @@ public class Editor3DWindow extends Editor3DDesign {
                         } else if (f.isDirectory()) {
                             MenuItem mntmItem = new MenuItem(lastOpenedMenu, I18n.I18N_NON_BIDIRECT());
                             mntmItem.setEnabled(true);
-                            mntmItem.setText("Project: " + path); //$NON-NLS-1$ I18N
+
+                            Object[] messageArguments = {path};
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.LOCALE);
+                            formatter.applyPattern(I18n.E3D_LastProject);
+
+                            mntmItem.setText(formatter.format(messageArguments));
                             mntmItem.addSelectionListener(new SelectionAdapter() {
                                 @Override
                                 public void widgetSelected(SelectionEvent e) {
@@ -925,14 +931,26 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                     });
                     if (num != -1) {
-                        btn_LastUsedColour[0].setToolTipText("Colour [" + num + "]: " + View.getLDConfigColourName(num)); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+                        Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+
+                        btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
                     } else {
                         StringBuilder colourBuilder = new StringBuilder();
                         colourBuilder.append("0x2"); //$NON-NLS-1$
                         colourBuilder.append(MathHelper.toHex((int) (255f * gColour2.getR())).toUpperCase());
                         colourBuilder.append(MathHelper.toHex((int) (255f * gColour2.getG())).toUpperCase());
                         colourBuilder.append(MathHelper.toHex((int) (255f * gColour2.getB())).toUpperCase());
-                        btn_LastUsedColour[0].setToolTipText("Colour [" + colourBuilder.toString() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+                        Object[] messageArguments = {colourBuilder.toString()};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+
+                        btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
                     }
                     btn_LastUsedColour[0].redraw();
                 }
@@ -992,14 +1010,26 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         });
                         if (num != -1) {
-                            btn_LastUsedColour[0].setToolTipText("Colour [" + num + "]: " + View.getLDConfigColourName(num)); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+                            Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.LOCALE);
+                            formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+
+                            btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
                         } else {
                             StringBuilder colourBuilder = new StringBuilder();
                             colourBuilder.append("0x2"); //$NON-NLS-1$
                             colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
                             colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
                             colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-                            btn_LastUsedColour[0].setToolTipText("Colour [" + colourBuilder.toString() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+                            Object[] messageArguments = {colourBuilder.toString()};
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.LOCALE);
+                            formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+
+                            btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
                         }
                         btn_LastUsedColour[0].redraw();
                     }
@@ -1283,18 +1313,18 @@ public class Editor3DWindow extends Editor3DDesign {
                                         break;
                                     }
 
-                                    lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX1 : "") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY1 : "") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ1 : "") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionX2[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX2 : "") + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionY2[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY2 : "") + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionZ2[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ2 : "") + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionX3[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX3 : "") + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionY3[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY3 : "") + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionZ3[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ3 : "") + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionX4[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX4 : "") + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionY4[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY4 : "") + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionZ4[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ4 : "") + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX1 : "") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY1 : "") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ1 : "") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX2[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX2 : "") + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY2[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY2 : "") + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ2[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ2 : "") + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX3[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX3 : "") + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY3[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY3 : "") + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ3[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ3 : "") + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX4[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX4 : "") + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY4[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY4 : "") + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ4[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ4 : "") + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                                     lbl_SelectionX1[0].getParent().layout();
                                     updatingSelectionTab = false;
@@ -1443,18 +1473,18 @@ public class Editor3DWindow extends Editor3DDesign {
                                         break;
                                     }
 
-                                    lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX1 : "X  :") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY1 : "Y  :") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ1 : "Z  :") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionX2[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX2 : "M00:") + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionY2[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY2 : "M01:") + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionZ2[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ2 : "M02:") + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionX3[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX3 : "M10:") + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionY3[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY3 : "M11:") + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionZ3[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ3 : "M12:") + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionX4[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionX4 : "M20:") + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionY4[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionY4 : "M21:") + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    lbl_SelectionZ4[0].setText((gdata.type() != 1 ? I18n.EDITOR3D_PositionZ4 : "M22:") + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX1 : "X  :") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY1 : "Y  :") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ1 : "Z  :") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX2[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX2 : "M00:") + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY2[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY2 : "M01:") + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ2[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ2 : "M02:") + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX3[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX3 : "M10:") + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY3[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY3 : "M11:") + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ3[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ3 : "M12:") + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionX4[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX4 : "M20:") + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionY4[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY4 : "M21:") + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionZ4[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ4 : "M22:") + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                                     lbl_SelectionX1[0].getParent().layout();
                                     break;
@@ -1537,12 +1567,12 @@ public class Editor3DWindow extends Editor3DDesign {
                     MenuItem mntmOpenIn3DEditor = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_OpenIn3DEditor[0] = mntmOpenIn3DEditor;
                     mntmOpenIn3DEditor.setEnabled(true);
-                    mntmOpenIn3DEditor.setText(I18n.EDITOR3D_OpenIn3DEditor);
+                    mntmOpenIn3DEditor.setText(I18n.E3D_OpenIn3DEditor);
 
                     MenuItem mntmOpenInTextEditor = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_OpenInTextEditor[0] = mntmOpenInTextEditor;
                     mntmOpenInTextEditor.setEnabled(true);
-                    mntmOpenInTextEditor.setText(I18n.EDITOR3D_OpenInTextEditor);
+                    mntmOpenInTextEditor.setText(I18n.E3D_OpenInTextEditor);
 
                     @SuppressWarnings("unused")
                     MenuItem mntm_Separator = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
@@ -1550,17 +1580,17 @@ public class Editor3DWindow extends Editor3DDesign {
                     MenuItem mntmRename = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_Rename[0] = mntmRename;
                     mntmRename.setEnabled(true);
-                    mntmRename.setText(I18n.EDITOR3D_RenameMove);
+                    mntmRename.setText(I18n.E3D_RenameMove);
 
                     MenuItem mntmRevert = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_Revert[0] = mntmRevert;
                     mntmRevert.setEnabled(true);
-                    mntmRevert.setText(I18n.EDITOR3D_RevertAllChanges);
+                    mntmRevert.setText(I18n.E3D_RevertAllChanges);
 
                     MenuItem mntmDelete = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_Delete[0] = mntmDelete;
                     mntmDelete.setEnabled(true);
-                    mntmDelete.setText(I18n.EDITOR3D_Delete);
+                    mntmDelete.setText(I18n.E3D_Delete);
 
                     @SuppressWarnings("unused")
                     MenuItem mntm_Separator2 = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
@@ -1568,7 +1598,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     MenuItem mntmCopyToUnofficial = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_CopyToUnofficial[0] = mntmCopyToUnofficial;
                     mntmCopyToUnofficial.setEnabled(true);
-                    mntmCopyToUnofficial.setText(I18n.EDITOR3D_CopyToUnofficialLibrary);
+                    mntmCopyToUnofficial.setText(I18n.E3D_CopyToUnofficialLibrary);
 
                     mntm_OpenInTextEditor[0].addSelectionListener(new SelectionAdapter() {
                         @Override
@@ -2937,7 +2967,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (mntm_WithSameOrientation[0].getSelection()) {
 
 
-                            new ValueDialog(getShell(), "Set angular surface normal difference:", "Threshold in degree [°], range from -90 to 180.\nNegative values do not care about the surface winding,\nwhile positive do.") { //$NON-NLS-1$ //$NON-NLS-2$ I18N
+                            new ValueDialog(getShell(), I18n.E3D_AngleDiff, I18n.E3D_ThreshInDeg) {
 
                                 @Override
                                 public void initializeSpinner() {
@@ -2972,7 +3002,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 );
                         if (mntm_WithAccuracy[0].getSelection()) {
 
-                            new ValueDialog(getShell(), "Set accuracy:", "Threshold in LDU, range from 0 to 1000.\nControls the maximum distance between two points that the process will consider matching") { //$NON-NLS-1$ //$NON-NLS-2$ I18N
+                            new ValueDialog(getShell(), I18n.E3D_SetAccuracy, I18n.E3D_ThreshInLdu) {
 
                                 @Override
                                 public void initializeSpinner() {
@@ -3206,7 +3236,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
 
                                 final int[] frac = new int[]{2};
-                                if (new ValueDialogInt(getShell(), "Split edges:", "(Number of resulting fractions)") { //$NON-NLS-1$ //$NON-NLS-2$ I18N
+                                if (new ValueDialogInt(getShell(), I18n.E3D_SplitEdges, I18n.E3D_NumberOfFractions) {
 
                                     @Override
                                     public void initializeSpinner() {
@@ -3686,7 +3716,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
                 messageBox.setText(I18n.DIALOG_Warning);
-                messageBox.setMessage("Are you sure to delete your configuration on the next start?"); //$NON-NLS-1$ I18N
+                messageBox.setMessage(I18n.E3D_DeleteConfig);
                 int result = messageBox.open();
                 if (result == SWT.CANCEL) {
                     return;
@@ -3699,12 +3729,12 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                fd.setText(I18n.EDITOR3D_OpenLDConfig);
+                fd.setText(I18n.E3D_OpenLDConfig);
                 fd.setFilterPath(WorkbenchManager.getUserSettingState().getLdrawFolderPath());
 
                 String[] filterExt = { "*.ldr", "LDConfig.ldr", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 fd.setFilterExtensions(filterExt);
-                String[] filterNames = { I18n.EDITOR3D_LDrawConfigurationFile1, I18n.EDITOR3D_LDrawConfigurationFile2, I18n.EDITOR3D_AllFiles };
+                String[] filterNames = { I18n.E3D_LDrawConfigurationFile1, I18n.E3D_LDrawConfigurationFile2, I18n.E3D_AllFiles };
                 fd.setFilterNames(filterNames);
 
                 String selected = fd.open();
@@ -3774,7 +3804,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
                             messageBox.setText(I18n.DIALOG_Error);
-                            messageBox.setMessage(I18n.EDITOR3D_LogUploadUnexpectedException);
+                            messageBox.setMessage(I18n.E3D_LogUploadUnexpectedException);
                             messageBox.open();
                             return;
                         } finally {
@@ -3792,7 +3822,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     } else {
                         MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                         messageBox.setText(I18n.DIALOG_Info);
-                        messageBox.setMessage(I18n.EDITOR3D_LogUploadNoLogFiles);
+                        messageBox.setMessage(I18n.E3D_LogUploadNoLogFiles);
                         messageBox.open();
                         return;
                     }
@@ -3812,7 +3842,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (uploadCount > 16) {
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                             messageBox.setText(I18n.DIALOG_Warning);
-                            messageBox.setMessage(I18n.EDITOR3D_LogUploadLimit);
+                            messageBox.setMessage(I18n.E3D_LogUploadLimit);
                             messageBox.open();
                             return;
                         }
@@ -3874,19 +3904,19 @@ public class Editor3DWindow extends Editor3DDesign {
                             Object[] messageArguments = {response.readLine()};
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                             formatter.setLocale(MyLanguage.LOCALE);
-                            formatter.applyPattern(I18n.EDITOR3D_LogUploadSuccess);
+                            formatter.applyPattern(I18n.E3D_LogUploadSuccess);
                             messageBox.setMessage(formatter.format(messageArguments));
                             messageBox.open();
                         } else {
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                             messageBox.setText(I18n.DIALOG_Info);
-                            messageBox.setMessage(I18n.EDITOR3D_LogUploadNoLogFiles);
+                            messageBox.setMessage(I18n.E3D_LogUploadNoLogFiles);
                             messageBox.open();
                         }
                     } catch (Exception e1) {
                         MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
                         messageBox.setText(I18n.DIALOG_Info);
-                        messageBox.setMessage(I18n.EDITOR3D_LogUploadUnexpectedException);
+                        messageBox.setMessage(I18n.E3D_LogUploadUnexpectedException);
                         messageBox.open();
                     } finally {
                         if (b1 != null) {
@@ -4069,7 +4099,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
 
                         FileDialog fd = new FileDialog(getShell(), SWT.SAVE);
-                        fd.setText(I18n.EDITOR3D_OpenPngImage);
+                        fd.setText(I18n.E3D_OpenPngImage);
                         try {
                             File f = new File(png.texturePath);
                             fd.setFilterPath(f.getParent());
@@ -4080,7 +4110,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                         fd.setFilterExtensions(filterExt);
-                        String[] filterNames = { I18n.EDITOR3D_PortableNetworkGraphics, I18n.EDITOR3D_AllFiles};
+                        String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles};
                         fd.setFilterNames(filterNames);
                         String texturePath = fd.open();
 
@@ -4559,7 +4589,7 @@ public class Editor3DWindow extends Editor3DDesign {
             new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                    monitor.beginTask(I18n.EDITOR3D_LoadingLibrary, IProgressMonitor.UNKNOWN);
+                    monitor.beginTask(I18n.E3D_LoadingLibrary, IProgressMonitor.UNKNOWN);
                     Display.getDefault().asyncExec(new Runnable() {
                         @Override
                         public void run() {
@@ -5612,14 +5642,26 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
         if (num != -1) {
-            btn_LastUsedColour[0].setToolTipText("Colour [" + num + "]: " + View.getLDConfigColourName(num)); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+            Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+
+            btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
         } else {
             StringBuilder colourBuilder = new StringBuilder();
             colourBuilder.append("0x2"); //$NON-NLS-1$
             colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
             colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
             colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-            btn_LastUsedColour[0].setToolTipText("Colour [" + colourBuilder.toString() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ I18N
+
+            Object[] messageArguments = {colourBuilder.toString()};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+
+            btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
         }
         btn_LastUsedColour[0].redraw();
     }
@@ -5868,7 +5910,7 @@ public class Editor3DWindow extends Editor3DDesign {
     public DatFile createNewDatFile(Shell sh, OpenInWhat where) {
 
         FileDialog fd = new FileDialog(sh, SWT.SAVE);
-        fd.setText(I18n.EDITOR3D_CreateNewDat);
+        fd.setText(I18n.E3D_CreateNewDat);
 
         if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
             try {
@@ -5885,7 +5927,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
         fd.setFilterExtensions(filterExt);
-        String[] filterNames = { I18n.EDITOR3D_LDrawSourceFile, I18n.EDITOR3D_AllFiles };
+        String[] filterNames = { I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles };
         fd.setFilterNames(filterNames);
 
         while (true) {
@@ -5911,7 +5953,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 } else {
                     TreeItem ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
                     StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
-                    nameSb.append(I18n.EDITOR3D_NewFile);
+                    nameSb.append(I18n.E3D_NewFile);
                     ti.setText(nameSb.toString());
                     ti.setData(df);
 
@@ -5936,7 +5978,7 @@ public class Editor3DWindow extends Editor3DDesign {
     public DatFile openDatFile(Shell sh, OpenInWhat where, String filePath) {
 
         FileDialog fd = new FileDialog(sh, SWT.OPEN);
-        fd.setText(I18n.EDITOR3D_OpenDatFile);
+        fd.setText(I18n.E3D_OpenDatFile);
 
         if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
             try {
@@ -5953,7 +5995,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
         fd.setFilterExtensions(filterExt);
-        String[] filterNames = {I18n.EDITOR3D_LDrawSourceFile, I18n.EDITOR3D_AllFiles};
+        String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
         fd.setFilterNames(filterNames);
 
         String selected = filePath == null ? fd.open() : filePath;
@@ -6144,7 +6186,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
             StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
 
-            nameSb.append(I18n.EDITOR3D_NewFile);
+            nameSb.append(I18n.E3D_NewFile);
 
             ti.setText(nameSb.toString());
             ti.setData(df);
@@ -6248,18 +6290,18 @@ public class Editor3DWindow extends Editor3DDesign {
         spn_SelectionX4[0].setValue(BigDecimal.ZERO);
         spn_SelectionY4[0].setValue(BigDecimal.ZERO);
         spn_SelectionZ4[0].setValue(BigDecimal.ZERO);
-        lbl_SelectionX1[0].setText(I18n.EDITOR3D_PositionX1);
-        lbl_SelectionY1[0].setText(I18n.EDITOR3D_PositionY1);
-        lbl_SelectionZ1[0].setText(I18n.EDITOR3D_PositionZ1);
-        lbl_SelectionX2[0].setText(I18n.EDITOR3D_PositionX2);
-        lbl_SelectionY2[0].setText(I18n.EDITOR3D_PositionY2);
-        lbl_SelectionZ2[0].setText(I18n.EDITOR3D_PositionZ2);
-        lbl_SelectionX3[0].setText(I18n.EDITOR3D_PositionX3);
-        lbl_SelectionY3[0].setText(I18n.EDITOR3D_PositionY3);
-        lbl_SelectionZ3[0].setText(I18n.EDITOR3D_PositionZ3);
-        lbl_SelectionX4[0].setText(I18n.EDITOR3D_PositionX4);
-        lbl_SelectionY4[0].setText(I18n.EDITOR3D_PositionY4);
-        lbl_SelectionZ4[0].setText(I18n.EDITOR3D_PositionZ4);
+        lbl_SelectionX1[0].setText(I18n.E3D_PositionX1);
+        lbl_SelectionY1[0].setText(I18n.E3D_PositionY1);
+        lbl_SelectionZ1[0].setText(I18n.E3D_PositionZ1);
+        lbl_SelectionX2[0].setText(I18n.E3D_PositionX2);
+        lbl_SelectionY2[0].setText(I18n.E3D_PositionY2);
+        lbl_SelectionZ2[0].setText(I18n.E3D_PositionZ2);
+        lbl_SelectionX3[0].setText(I18n.E3D_PositionX3);
+        lbl_SelectionY3[0].setText(I18n.E3D_PositionY3);
+        lbl_SelectionZ3[0].setText(I18n.E3D_PositionZ3);
+        lbl_SelectionX4[0].setText(I18n.E3D_PositionX4);
+        lbl_SelectionY4[0].setText(I18n.E3D_PositionY4);
+        lbl_SelectionZ4[0].setText(I18n.E3D_PositionZ4);
         updatingSelectionTab = false;
     }
 
@@ -6363,7 +6405,7 @@ public class Editor3DWindow extends Editor3DDesign {
     public void updatePrimitiveLabel(Primitive p) {
         if (lbl_selectedPrimitiveItem[0] == null) return;
         if (p == null) {
-            lbl_selectedPrimitiveItem[0].setText(I18n.EDITOR3D_NoPrimitiveSelected);
+            lbl_selectedPrimitiveItem[0].setText(I18n.E3D_NoPrimitiveSelected);
         } else {
             lbl_selectedPrimitiveItem[0].setText(p.toString());
         }
