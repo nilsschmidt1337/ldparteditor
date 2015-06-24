@@ -275,6 +275,7 @@ public final class I18n {
     public static final String E3D_AddSubpart = E3D.getString(getProperty());
     public static final String E3D_AddTriangle = E3D.getString(getProperty());
     public static final String E3D_AddVertex = E3D.getString(getProperty());
+    public static final String E3D_AdjustRotationCenter = E3D.getString(getProperty());
     public static final String E3D_AdvancedSelect = E3D.getString(getProperty());
     public static final String E3D_All = E3D.getString(getProperty());
     public static final String E3D_AllFiles = E3D.getString(getProperty());
@@ -334,6 +335,7 @@ public final class I18n {
     public static final String E3D_LogUploadSuccess = E3D.getString(getProperty());
     public static final String E3D_LogUploadUnexpectedException = E3D.getString(getProperty());
     public static final String E3D_ManipulatorToOrigin = E3D.getString(getProperty());
+    public static final String E3D_ManipulatorToWorld = E3D.getString(getProperty());
     public static final String E3D_Medium = E3D.getString(getProperty());
     public static final String E3D_ModeLine = E3D.getString(getProperty());
     public static final String E3D_ModeSubpart = E3D.getString(getProperty());
@@ -386,6 +388,9 @@ public final class I18n {
     public static final String E3D_Redo = E3D.getString(getProperty());
     public static final String E3D_RenameMove = E3D.getString(getProperty());
     public static final String E3D_Reset = E3D.getString(getProperty());
+    public static final String E3D_ReverseX = E3D.getString(getProperty());
+    public static final String E3D_ReverseY = E3D.getString(getProperty());
+    public static final String E3D_ReverseZ = E3D.getString(getProperty());
     public static final String E3D_RevertAllChanges = E3D.getString(getProperty());
     public static final String E3D_Rotate = E3D.getString(getProperty());
     public static final String E3D_RotateClockwise = E3D.getString(getProperty());
