@@ -207,8 +207,8 @@ public final class Polygon {
         return sb;
     }
 
-    public HashMap<GData3, Integer> toLDrawTriangles(GData1 parent) {
-        HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
+    public HashMap<GData3, Integer[]> toLDrawTriangles(GData1 parent) {
+        HashMap<GData3, Integer[]> result = new HashMap<GData3, Integer[]>();
         if (this.vertices.size() >= 3) {
             int dID = CSGPrimitive.id_counter.getAndIncrement();
             final GColour c16 = View.getLDConfigColour(16);
@@ -226,9 +226,9 @@ public final class Polygon {
                     colour = null;
                 }
                 if (colour == null) {
-                    result.put(new GData3(v1, v2, v3, parent, c16), dID);
+                    result.put(new GData3(v1, v2, v3, parent, c16), new Integer[]{dID, dID});
                 } else {
-                    result.put(new GData3(v1, v2, v3, parent, colour.getColour()), colour.getIndex());
+                    result.put(new GData3(v1, v2, v3, parent, colour.getColour()), new Integer[]{dID, colour.getIndex()});
                 }
             }
         }

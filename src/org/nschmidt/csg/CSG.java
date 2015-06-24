@@ -100,7 +100,7 @@ import org.nschmidt.ldparteditor.enums.View;
  */
 public class CSG {
 
-    HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
+    HashMap<GData3, Integer[]> result = new HashMap<GData3, Integer[]>();
 
     private List<Polygon> polygons;
     private OptType optType = OptType.POLYGON_BOUND;
@@ -432,8 +432,8 @@ public class CSG {
      *
      * @return this csg as list of LDraw triangles
      */
-    public HashMap<GData3, Integer> toLDrawTriangles(GData1 parent) {
-        HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
+    public HashMap<GData3, Integer[]> toLDrawTriangles(GData1 parent) {
+        HashMap<GData3, Integer[]> result = new HashMap<GData3, Integer[]>();
         for (Polygon p : this.polygons) {
             result.putAll(p.toLDrawTriangles(parent));
         }
@@ -461,7 +461,7 @@ public class CSG {
         }
     }
 
-    public HashMap<GData3, Integer> getResult() {
+    public HashMap<GData3, Integer[]> getResult() {
         return result;
     }
 
