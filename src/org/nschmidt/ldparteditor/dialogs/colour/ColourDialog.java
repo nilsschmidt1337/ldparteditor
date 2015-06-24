@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.i18n.I18n;
 
 /**
  *
@@ -55,7 +56,7 @@ public class ColourDialog extends ColourDesign {
             public void handleEvent(Event event) {
                 ColorDialog dlg = new ColorDialog(getShell());
                 // Change the title bar text
-                dlg.setText("Choose a Direct Colour:"); // I18N //$NON-NLS-1$
+                dlg.setText(I18n.COLOURDIALOG_ChooseDirectColour);
                 // Open the dialog and retrieve the selected color
                 RGB rgb = dlg.open();
                 if (rgb != null) {
