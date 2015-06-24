@@ -33,6 +33,9 @@ package org.nschmidt.csg;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.data.GColourIndex;
+
 /**
  * A solid sphere.
  *
@@ -41,14 +44,12 @@ import java.util.List;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class CSGSphere implements Primitive {
+public class CSGSphere extends CSGPrimitive implements Primitive {
 
     private Vector3d center;
     private double radius;
     private int numSlices;
     private int numStacks;
-
-    private final PropertyStorage properties = new PropertyStorage();
 
     /**
      * Constructor. Creates a sphere with radius 1, 16 slices and 8 stacks and
@@ -102,7 +103,7 @@ public class CSGSphere implements Primitive {
     }
 
     @Override
-    public List<Polygon> toPolygons() {
+    public List<Polygon> toPolygons(GColour colour) {
         List<Polygon> polygons = new ArrayList<Polygon>();
 
         for (int i = 0; i < numSlices; i++) {
@@ -117,6 +118,8 @@ public class CSGSphere implements Primitive {
                     vertices.add(sphereVertex(center, radius, (i + 1) / (double) numSlices, (j + 1) / (double) numStacks));
                 }
                 vertices.add(sphereVertex(center, radius, i / (double) numSlices, (j + 1) / (double) numStacks));
+                PropertyStorage properties = new PropertyStorage();
+                properties.set("colour", new GColourIndex(colour, id_counter.getAndIncrement())); //$NON-NLS-1$
                 polygons.add(new Polygon(vertices, properties));
             }
         }
@@ -184,13 +187,7 @@ public class CSGSphere implements Primitive {
     }
 
     @Override
-    public PropertyStorage getProperties() {
-        return properties;
+    public CSG toCSG(GColour colour) {
+        return CSG.fromPolygons(toPolygons(colour));
     }
-
-    @Override
-    public CSG toCSG() {
-        return CSG.fromPolygons(toPolygons());
-    }
-
 }

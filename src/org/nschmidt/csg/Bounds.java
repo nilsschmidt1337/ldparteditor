@@ -33,6 +33,8 @@
  */
 package org.nschmidt.csg;
 
+import org.nschmidt.ldparteditor.enums.View;
+
 /**
  * Bounding box for CSGs.
  *
@@ -64,7 +66,7 @@ public class Bounds {
         this.max = max.clone();
 
         cube = new CSGCube(center, bounds);
-        csg = cube.toCSG();
+        csg = cube.toCSG(View.getLDConfigColour(16));
     }
 
     @Override

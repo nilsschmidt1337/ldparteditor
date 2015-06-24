@@ -20,13 +20,15 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.data.GColourIndex;
 
 /**
  * An axis-aligned solid quad defined by {@code center} and {@code dimensions}.
  *
  * @author nils
  */
-public class CSGQuad implements Primitive {
+public class CSGQuad extends CSGPrimitive implements Primitive {
 
     /**
      * Center of this quad.
@@ -38,8 +40,6 @@ public class CSGQuad implements Primitive {
     private Vector3d dimensions;
 
     private boolean centered = true;
-
-    private final PropertyStorage properties = new PropertyStorage();
 
     /**
      * Constructor. Creates a new quad with center {@code [0,0,0]} and
@@ -63,7 +63,7 @@ public class CSGQuad implements Primitive {
     }
 
     @Override
-    public List<Polygon> toPolygons() {
+    public List<Polygon> toPolygons(GColour colour) {
 
         int[][][] a = {
                 // position // normal
@@ -77,6 +77,8 @@ public class CSGQuad implements Primitive {
                         * (1 * Math.min(1, i & 4) - 0.5));
                 vertices.add(new Vertex(pos, new Vector3d(info[1][0], info[1][1], info[1][2])));
             }
+            PropertyStorage properties = new PropertyStorage();
+            properties.set("colour", new GColourIndex(colour, id_counter.getAndIncrement())); //$NON-NLS-1$
             polygons.add(new Polygon(vertices, properties));
         }
 
@@ -123,19 +125,14 @@ public class CSGQuad implements Primitive {
         this.dimensions = dimensions;
     }
 
-    @Override
-    public PropertyStorage getProperties() {
-        return properties;
-    }
-
     public CSGQuad noCenter() {
         centered = false;
         return this;
     }
 
     @Override
-    public CSG toCSG() {
-        return CSG.fromPolygons(toPolygons());
+    public CSG toCSG(GColour colour) {
+        return CSG.fromPolygons(toPolygons(colour));
     }
 
 }
