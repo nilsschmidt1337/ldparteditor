@@ -20,6 +20,7 @@ import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.bindings.keys.SWTKeySupport;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
+import org.nschmidt.ldparteditor.i18n.I18n;
 
 /**
  * Provides useful keyboard functions
@@ -43,7 +44,7 @@ public enum KeyBoardHelper {
         int accelerator = SWTKeySupport.convertEventToUnmodifiedAccelerator(event);
         KeyStroke keyStroke = SWTKeySupport.convertAcceleratorToKeyStroke(accelerator);
         KeySequence sequence = KeySequence.getInstance(keyStroke);
-        return sequence.toString().replace("CTRL", "Ctrl").replace("SHIFT", "Shift").replace("ALT", "Alt").replace("DEL", "Del"); // I18N //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+        return sequence.toString().replace("CTRL", I18n.KEYBOARD_Ctrl).replace("SHIFT", I18n.KEYBOARD_Shift).replace("ALT", I18n.KEYBOARD_Alt).replace("DEL", I18n.KEYBOARD_Del); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
 }

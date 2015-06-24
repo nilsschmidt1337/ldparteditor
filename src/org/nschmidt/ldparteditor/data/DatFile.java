@@ -567,19 +567,31 @@ public final class DatFile {
                     switch (result.getTypeNumber()) {
                     case ResultType.WARN: // Warning
                     {
+
+                        Object[] messageArguments = {lineNumber, position};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.DATFILE_Line);
+
                         TreeItem trtmNewTreeitem = new TreeItem(warnings, SWT.NONE);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
-                        trtmNewTreeitem.setText(new String[] { result.getMessage(), "line " + lineNumber + "   [" + position + "]", result.getType() }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$  I18N Needs translation
+                        trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
                         trtmNewTreeitem.setData(position);
                     }
                     break;
                     case ResultType.ERROR: // Error
                     {
+
+                        Object[] messageArguments = {lineNumber, position};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.DATFILE_Line);
+
                         TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
-                        trtmNewTreeitem.setText(new String[] { result.getMessage(), "line " + lineNumber + "   [" + position + "]", result.getType() }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation
+                        trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
                         trtmNewTreeitem.setData(position);
                     }
                     break;
@@ -678,19 +690,31 @@ public final class DatFile {
                     switch (result.getTypeNumber()) {
                     case ResultType.WARN: // Warning
                     {
+
+                        Object[] messageArguments = {lineNumber, position};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.DATFILE_Line);
+
                         TreeItem trtmNewTreeitem = new TreeItem(warnings, SWT.NONE);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
-                        trtmNewTreeitem.setText(new String[] { result.getMessage(), "line " + lineNumber + "   [" + position + "]", result.getType() }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$  I18N Needs translation
+                        trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
                         trtmNewTreeitem.setData(position);
                     }
                     break;
                     case ResultType.ERROR: // Error
                     {
+
+                        Object[] messageArguments = {lineNumber, position};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.DATFILE_Line);
+
                         TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
-                        trtmNewTreeitem.setText(new String[] { result.getMessage(), "line " + lineNumber + "   [" + position + "]", result.getType() }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation
+                        trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
                         trtmNewTreeitem.setData(position);
                     }
                     break;
@@ -880,10 +904,16 @@ public final class DatFile {
                 results = DatParser.parseLine(line, lineNumber, 0, 0f, 0f, 0f, 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, true, alreadyParsed, false);
                 for (ParsingResult result : results) {
                     if (result.getTypeNumber() == ResultType.HINT) {
+
+                        Object[] messageArguments = {lineNumber, position};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.DATFILE_Line);
+
                         TreeItem trtmNewTreeitem = new TreeItem(hints, SWT.NONE);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
-                        trtmNewTreeitem.setText(new String[] { result.getMessage(), "line " + lineNumber + "   [" + position + "]", result.getType() }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$  I18N Needs translation
+                        trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
                         trtmNewTreeitem.setData(position);
                     }
                 }

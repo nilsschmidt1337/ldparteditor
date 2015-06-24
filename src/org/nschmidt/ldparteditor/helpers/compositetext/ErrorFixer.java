@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helpers.compositetext;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -24,8 +25,10 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
@@ -438,8 +441,14 @@ final class ErrorFixer {
             String newReference = g1.getSolvedMoveTo();
             if (newReference == null) {
                 MessageBox messageBox = new MessageBox(tWinShell, SWT.ICON_INFORMATION);
-                messageBox.setText("~Moved to ..."); //$NON-NLS-1$
-                messageBox.setMessage("Please take a look into\n\nLine [" + (lineNumber + 1) + "]  " + g1.toString() + "\n\n and check the subfile for '~Moved to' references located inside.\n\nLDPartEditor can only fix direct references pointing to the '~Moved to' file."); // I18N //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                messageBox.setText(I18n.ERRORFIXER_MovedTo);
+
+                Object[] messageArguments = {lineNumber + 1, g1.toString()};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.applyPattern(I18n.ERRORFIXER_MovedToHint);
+
+                messageBox.setMessage(formatter.format(messageArguments));
                 messageBox.open();
             } else {
                 text = QuickFixer.setLine(lineNumber + 1, newReference, text);

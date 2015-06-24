@@ -85,6 +85,8 @@ public final class I18n {
     private static final ResourceBundle UNIFICATOR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Unificator", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle VM = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.VertexManager", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle C3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Composite3D", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle KEYBOARD = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Keyboard", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle ERRORFIXER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.ErrorFixer", MyLanguage.LOCALE); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -124,6 +126,7 @@ public final class I18n {
     public static final String C3D_Vertices = C3D.getString(getProperty());
     public static final String C3D_Wireframe = C3D.getString(getProperty());
     public static final String C3D_XYZAxis = C3D.getString(getProperty());
+    public static final String COLOURDIALOG_ChooseDirectColour = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_Colour = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_ColourTitle = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_DirectColour = COLOURDIALOG.getString(getProperty());
@@ -152,6 +155,7 @@ public final class I18n {
     public static final String COPYNPASTE_Paste = COPYNPASTE.getString(getProperty());
     public static final String DATFILE_HeaderHint = DATFILE.getString(getProperty());
     public static final String DATFILE_Inlined = DATFILE.getString(getProperty());
+    public static final String DATFILE_Line = DATFILE.getString(getProperty());
     public static final String DATFILE_MissingAuthor = DATFILE.getString(getProperty());
     public static final String DATFILE_MissingBFC = DATFILE.getString(getProperty());
     public static final String DATFILE_MissingFileName = DATFILE.getString(getProperty());
@@ -444,6 +448,8 @@ public final class I18n {
     public static final String EDITORTEXT_Unrectify = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Warning = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Warnings = EDITORTEXT.getString(getProperty());
+    public static final String ERRORFIXER_MovedTo = ERRORFIXER.getString(getProperty());
+    public static final String ERRORFIXER_MovedToHint = ERRORFIXER.getString(getProperty());
     public static final String HINTFIXER_Title = HINTFIXER.getString(getProperty());
     public static final String INTERSECTOR_ColourMods = INTERSECTOR.getString(getProperty());
     public static final String INTERSECTOR_NoMods = INTERSECTOR.getString(getProperty());
@@ -453,6 +459,10 @@ public final class I18n {
     public static final String ISECALC_ScopeFile = ISECALC.getString(getProperty());
     public static final String ISECALC_ScopeSelection = ISECALC.getString(getProperty());
     public static final String ISECALC_Title = ISECALC.getString(getProperty());
+    public static final String KEYBOARD_Alt = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_Ctrl = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_Del = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_Shift = KEYBOARD.getString(getProperty());
     public static final String LINES_Hint = LINES.getString(getProperty());
     public static final String LINES_ScopeSelection = LINES.getString(getProperty());
     public static final String LINES_Title = LINES.getString(getProperty());
