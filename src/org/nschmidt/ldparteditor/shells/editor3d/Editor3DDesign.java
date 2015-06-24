@@ -564,13 +564,13 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_XIII_toWorld[0] = btn_Mani;
-                        btn_Mani.setText("Orientate the Manipulator to World"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ManipulatorToWorld);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_toWorld.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_XIV_adjustRotationCenter[0] = btn_Mani;
-                        btn_Mani.setText("Adjust the Rotation Center"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_AdjustRotationCenter);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
                     }
                     @SuppressWarnings("unused")
@@ -578,19 +578,19 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_X_XReverse[0] = btn_Mani;
-                        btn_Mani.setText("Reverse the Manipulator X Axis"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ReverseX);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_XI_YReverse[0] = btn_Mani;
-                        btn_Mani.setText("Reverse the Manipulator Y Axis"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ReverseY);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
                     }
                     {
                         MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                         this.btn_Manipulator_XII_ZReverse[0] = btn_Mani;
-                        btn_Mani.setText("Reverse the Manipulator Z Axis"); //$NON-NLS-1$ I18N
+                        btn_Mani.setText(I18n.E3D_ReverseZ);
                         btn_Mani.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
                     }
                     @SuppressWarnings("unused")
