@@ -769,15 +769,25 @@ public final class I18n {
     public static final String VERSION_Stage = VERSION.getString(getProperty());
     public static final String VERSION_Testers = VERSION.getString(getProperty());
     public static final String VERSION_Version = VERSION.getString(getProperty());
+    public static final String VM_DetectNewEdges = VM.getString(getProperty());
     public static final String VM_FlatScaledX = VM.getString(getProperty());
     public static final String VM_FlatScaledY = VM.getString(getProperty());
     public static final String VM_FlatScaledZ = VM.getString(getProperty());
     public static final String VM_Intersector = VM.getString(getProperty());
     public static final String VM_Lines2Pattern = VM.getString(getProperty());
+    public static final String VM_PathTruder = VM.getString(getProperty());
     public static final String VM_Rectify = VM.getString(getProperty());
     public static final String VM_SearchIntersection = VM.getString(getProperty());
     public static final String VM_Selecting = VM.getString(getProperty());
     public static final String VM_Slicerpro = VM.getString(getProperty());
+    public static final String VM_Snap = VM.getString(getProperty());
+    public static final String VM_SortOut = VM.getString(getProperty());
+    public static final String VM_SymsplitterBehind = VM.getString(getProperty());
+    public static final String VM_SymsplitterBetween = VM.getString(getProperty());
+    public static final String VM_SymsplitterFront = VM.getString(getProperty());
+    public static final String VM_Triangulate = VM.getString(getProperty());
+    public static final String VM_Unificator = VM.getString(getProperty());
+    public static final String VM_Unify = VM.getString(getProperty());
 
     // Custom Methods
     public static String UNIT_CurrentUnit() {
