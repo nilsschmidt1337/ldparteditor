@@ -16,9 +16,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
@@ -33,6 +35,8 @@ import org.nschmidt.csg.Plane;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.text.DatParser;
 
@@ -372,11 +376,32 @@ public final class GDataCSG extends GData {
 
                 // FIXME Needs T-Junction Elimination!
 
+                HashMap<Integer, ArrayList<GData3>> surfaces = new HashMap<Integer, ArrayList<GData3>>();
+                TreeSet<Vector3dd> verts = new TreeSet<Vector3dd>();
+                HashMap<GData3, Integer[]> result = compiledCSG.getResult();
+                ArrayList<Vector3dd[]> edges = new ArrayList<Vector3dd[]>();
+
+                // 1. Create surfaces, vertices and edges
+                for (GData3 g3 : result.keySet()) {
+                    Integer key = result.get(g3)[0];
+                    if (!surfaces.containsKey(key)) {
+                        surfaces.put(key, new ArrayList<GData3>());
+                    }
+                    ArrayList<GData3> elements = surfaces.get(key);
+                    elements.add(g3);
+                    Vector3dd a = new Vector3dd(new Vector3d(g3.X1, g3.Y1, g3.Z1));
+                    Vector3dd b = new Vector3dd(new Vector3d(g3.X2, g3.Y2, g3.Z2));
+                    Vector3dd c = new Vector3dd(new Vector3d(g3.X3, g3.Y3, g3.Z3));
+                    verts.add(a);
+                    verts.add(b);
+                    verts.add(c);
+                    edges.add(new Vector3dd[]{a, b});
+                    edges.add(new Vector3dd[]{b, c});
+                    edges.add(new Vector3dd[]{c, a});
+                }
 
 
-
-
-                for (GData3 g3 : compiledCSG.getResult().keySet()) {
+                for (GData3 g3 : result.keySet()) {
                     StringBuilder lineBuilder3 = new StringBuilder();
                     lineBuilder3.append(3);
                     lineBuilder3.append(" "); //$NON-NLS-1$
