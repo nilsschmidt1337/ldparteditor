@@ -13454,11 +13454,6 @@ public class VertexManager {
                                                         intersect = true;
                                                         break;
                                                     }
-                                                    // if (Vector3dd.manhattan(v1, v3).compareTo(MIN_DIST) < 0 && Vector3dd.manhattan(v2, v4).compareTo(MIN_DIST) < 0 ||
-                                                    //  Vector3dd.manhattan(v2, v3).compareTo(MIN_DIST) < 0 && Vector3dd.manhattan(v1, v4).compareTo(MIN_DIST) < 0) {
-                                                    //  intersect = true;
-                                                    //  break;
-                                                    // }
                                                 }
                                             }
                                             if (!intersect) {

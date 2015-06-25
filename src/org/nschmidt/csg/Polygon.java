@@ -228,7 +228,8 @@ public final class Polygon {
                 if (colour == null) {
                     result.put(new GData3(v1, v2, v3, parent, c16), new Integer[]{dID, dID});
                 } else {
-                    result.put(new GData3(v1, v2, v3, parent, colour.getColour()), new Integer[]{dID, colour.getIndex()});
+                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16)), new Integer[]{dID, colour.getIndex()});
+                    // result.put(new GData3(v1, v2, v3, parent, colour.getColour()), new Integer[]{dID, colour.getIndex()});
                 }
             }
         }
