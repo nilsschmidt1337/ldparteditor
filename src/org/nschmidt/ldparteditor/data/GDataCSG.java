@@ -15,10 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -38,6 +40,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 /**
@@ -379,15 +382,18 @@ public final class GDataCSG extends GData {
                 HashMap<Integer, ArrayList<GData3>> surfaces = new HashMap<Integer, ArrayList<GData3>>();
                 TreeSet<Vector3dd> verts = new TreeSet<Vector3dd>();
                 HashMap<GData3, Integer[]> result = compiledCSG.getResult();
-                ArrayList<Vector3dd[]> edges = new ArrayList<Vector3dd[]>();
+                HashMap<Integer, ArrayList<Vector3dd[]>> edges = new HashMap<Integer, ArrayList<Vector3dd[]>>();
 
                 // 1. Create surfaces, vertices and edges
+                NLogger.debug(getClass(), "1. Create surfaces, vertices and edges"); //$NON-NLS-1$
                 for (GData3 g3 : result.keySet()) {
                     Integer key = result.get(g3)[0];
                     if (!surfaces.containsKey(key)) {
                         surfaces.put(key, new ArrayList<GData3>());
+                        edges.put(key, new ArrayList<Vector3dd[]>());
                     }
                     ArrayList<GData3> elements = surfaces.get(key);
+                    ArrayList<Vector3dd[]> edges2 = edges.get(key);
                     elements.add(g3);
                     Vector3dd a = new Vector3dd(new Vector3d(g3.X1, g3.Y1, g3.Z1));
                     Vector3dd b = new Vector3dd(new Vector3d(g3.X2, g3.Y2, g3.Z2));
@@ -395,11 +401,136 @@ public final class GDataCSG extends GData {
                     verts.add(a);
                     verts.add(b);
                     verts.add(c);
-                    edges.add(new Vector3dd[]{a, b});
-                    edges.add(new Vector3dd[]{b, c});
-                    edges.add(new Vector3dd[]{c, a});
+                    edges2.add(new Vector3dd[]{a, b});
+                    edges2.add(new Vector3dd[]{b, c});
+                    edges2.add(new Vector3dd[]{c, a});
                 }
 
+                // 1.5 Unify near vertices (Threshold 0.001)
+
+                // 2. Detect outer edges
+                NLogger.debug(getClass(), "2. Detect outer edges"); //$NON-NLS-1$
+                {
+                    TreeSet<Integer> keys = new TreeSet<Integer>();
+                    for (GData3 g3 : result.keySet()) {
+                        Integer key = result.get(g3)[0];
+                        keys.add(key);
+                    }
+                    for (Integer key : keys) {
+                        ArrayList<Vector3dd[]> outerEdges = new ArrayList<Vector3dd[]>();
+                        ArrayList<Vector3dd[]> edges2 = edges.get(key);
+                        for (Vector3dd[] e1 : edges2) {
+                            boolean isOuter = true;
+                            for (Vector3dd[] e2 : edges2) {
+                                if (e1 != e2) {
+                                    if (
+                                            e1[0].equals(e2[0]) && e1[1].equals(e2[1])
+                                            || e1[1].equals(e2[0]) && e1[0].equals(e2[1])) {
+                                        isOuter = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (isOuter) {
+                                outerEdges.add(new Vector3dd[]{e1[0], e1[1]});
+                            }
+                        }
+                        edges2.clear();
+                        edges2.addAll(outerEdges);
+                    }
+
+
+                    // 3. Remove collinear points
+                    NLogger.debug(getClass(), "3. Remove collinear points"); //$NON-NLS-1$
+                    {
+                        final BigDecimal fourMinusEpsilon = new BigDecimal("3.9"); //$NON-NLS-1$
+                        for (Integer key : keys) {
+                            boolean foundCollinearity = true;
+                            while (foundCollinearity) {
+                                foundCollinearity = false;
+                                ArrayList<Vector3dd[]> edges2 = edges.get(key);
+                                Vector3dd[] match = new Vector3dd[2];
+                                for (Vector3dd[] e1 : edges2) {
+                                    if (foundCollinearity) {
+                                        break;
+                                    }
+                                    for (Vector3dd[] e2 : edges2) {
+                                        if (e1 != e2) {
+
+                                            int[] index = new int[]{0,0,0,0};
+                                            if (e1[0].equals(e2[0])) {
+                                                index[0] = 0;
+                                                index[1] = 1;
+                                                index[2] = 0;
+                                                index[3] = 1;
+                                            } else if (e1[1].equals(e2[1])) {
+                                                index[0] = 1;
+                                                index[1] = 0;
+                                                index[2] = 1;
+                                                index[3] = 0;
+                                            } else if (e1[1].equals(e2[0])) {
+                                                index[0] = 1;
+                                                index[1] = 0;
+                                                index[2] = 0;
+                                                index[3] = 1;
+                                            } else if (e1[0].equals(e2[1])) {
+                                                index[0] = 0;
+                                                index[1] = 1;
+                                                index[2] = 1;
+                                                index[3] = 0;
+                                            }
+
+                                            // Check "angle"
+                                            Vector3d v1 = Vector3d.sub(e1[index[1]], e1[index[0]]);
+                                            if (v1.length().compareTo(BigDecimal.ZERO) == 0) {
+                                                continue;
+                                            }
+                                            Vector3d v2 = Vector3d.sub(e2[index[1]], e2[index[0]]);
+                                            if (v2.length().compareTo(BigDecimal.ZERO) == 0) {
+                                                continue;
+                                            }
+                                            v1.normalise(v1);
+                                            v2.normalise(v2);
+                                            BigDecimal d = Vector3d.distSquare(v1, v2);
+                                            if (d.compareTo(fourMinusEpsilon) > 0) {
+                                                NLogger.debug(getClass(), "3. Found collinear points"); //$NON-NLS-1$
+                                                foundCollinearity = true;
+                                                match[0] = e1[index[0]];
+                                                match[1] = e1[index[1]];
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (foundCollinearity) {
+                                    for (Iterator<Vector3dd[]> it = edges2.iterator(); it.hasNext();) {
+                                        Vector3dd[] v = it.next();
+                                        if (v[0].equals(match[0]) && v[1].equals(match[1])) {
+                                            it.remove();
+                                        } else if (v[0].equals(match[1]) && v[1].equals(match[0])) {
+                                            it.remove();
+                                        } else if (v[0].equals(match[0])) {
+                                            v[0] = match[1];
+                                        } else if (v[1].equals(match[0])) {
+                                            v[1] = match[1];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // 4. Re-Triangulate
+                    NLogger.debug(getClass(), "4. Re-Triangulate"); //$NON-NLS-1$
+                    {
+                        for (Integer key : keys) {
+                            ArrayList<Vector3dd[]> edges2 = edges.get(key);
+                            for (Vector3dd[] e1 : edges2) {
+
+                            }
+                        }
+                    }
+                }
 
                 for (GData3 g3 : result.keySet()) {
                     StringBuilder lineBuilder3 = new StringBuilder();
