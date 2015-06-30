@@ -36,6 +36,7 @@ import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
@@ -368,6 +369,7 @@ public final class GDataCSG extends GData {
         switch (type) {
         case CSG.COMPILE:
             if (compiledCSG != null) {
+                final BigDecimal MIN_DIST = new BigDecimal(".0001"); //$NON-NLS-1$
                 StringBuilder sb = new StringBuilder();
 
                 Object[] messageArguments = {getNiceString()};
@@ -524,9 +526,127 @@ public final class GDataCSG extends GData {
                     NLogger.debug(getClass(), "4. Re-Triangulate"); //$NON-NLS-1$
                     {
                         for (Integer key : keys) {
+                            NLogger.debug(getClass(), "Key " + key); //$NON-NLS-1$
+                            ArrayList<Vector3dd> fixedVertices2 = new ArrayList<Vector3dd>();
+                            {
+                                TreeSet<Vector3dd> fixedVertices = new TreeSet<Vector3dd>();
+                                ArrayList<Vector3dd[]> edges2 = edges.get(key);
+                                for (Vector3dd[] e1 : edges2) {
+                                    fixedVertices.add(e1[0]);
+                                    fixedVertices.add(e1[1]);
+                                }
+                                fixedVertices2.addAll(fixedVertices);
+                            }
                             ArrayList<Vector3dd[]> edges2 = edges.get(key);
-                            for (Vector3dd[] e1 : edges2) {
+                            int vc = fixedVertices2.size();
+                            TreeMap<BigDecimal, Vector3dd[]> bestEdge = new TreeMap<BigDecimal, Vector3dd[]>();
+                            bestEdge.put(BigDecimal.ZERO, null);
+                            int iter = 0;
 
+                            Vector3d[][] spArr = new Vector3d[vc][vc];
+                            Vector3d[][] dirArr = new Vector3d[vc][vc];
+                            BigDecimal[][] lenArr = new BigDecimal[vc][vc];
+                            for (int i = 0; i < vc; i++) {
+                                Vector3dd v1 = fixedVertices2.get(i);
+                                for (int j = i + 1; j < vc; j++) {
+                                    Vector3dd v2 = fixedVertices2.get(j);
+                                    Vector3d sp = Vector3dd.sub(v2, v1);
+                                    Vector3d dir = new Vector3d();
+                                    BigDecimal len = sp.normalise(dir);
+                                    spArr[i][j] = sp;
+                                    dirArr[i][j] = dir;
+                                    lenArr[i][j] = len;
+                                }
+                            }
+
+                            while (!bestEdge.isEmpty()) {
+                                bestEdge.clear();
+                                iter++;
+                                NLogger.debug(getClass(), "Iteration " + iter); //$NON-NLS-1$
+                                for (int i = 0; i < vc; i++) {
+                                    Vector3dd v1 = fixedVertices2.get(i);
+                                    for (int j = i + 1; j < vc; j++) {
+                                        boolean intersect = false;
+                                        boolean edgeWasSet = false;
+                                        Vector3dd v2 = fixedVertices2.get(j);
+                                        Vector3d sp = spArr[i][j];
+                                        Vector3d dir = dirArr[i][j];
+                                        BigDecimal len = lenArr[i][j];
+                                        Iterator<Vector3dd[]> li = edges2.iterator();
+                                        while (li.hasNext()) {
+                                            Vector3dd[] l = li.next();
+                                            Vector3dd v3 = l[0];
+                                            Vector3dd v4 = l[1];
+                                            boolean b1 = v1.equals(v3);
+                                            boolean b2 = v1.equals(v4);
+                                            boolean b3 = v2.equals(v3);
+                                            boolean b4 = v2.equals(v4);
+                                            if (!b1 && !b2 && !b3 && !b4) {
+                                                if (intersectLineLineSegmentUnidirectionalFast(v1, v2, sp, dir, len,  v3, v4)) {
+                                                    intersect = true;
+                                                    break;
+                                                }
+                                            } else if (b1 && b4 || b2 && b3) {
+                                                edgeWasSet = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!edgeWasSet && !intersect) {
+                                            BigDecimal dist = Vector3dd.manhattan(v1, v2);
+                                            if (dist.compareTo(MIN_DIST) > 0) {
+                                                Vector3dd[] e2 = new Vector3dd[]{v1, v2};
+                                                BigDecimal count = BigDecimal.ZERO;
+                                                BigDecimal sum = BigDecimal.ZERO;
+                                                for (Vector3dd[] e1 : edges2) {
+                                                    int[] index = new int[]{0,0,0,0};
+                                                    if (e1[0].equals(e2[0])) {
+                                                        index[0] = 0;
+                                                        index[1] = 1;
+                                                        index[2] = 0;
+                                                        index[3] = 1;
+                                                    } else if (e1[1].equals(e2[1])) {
+                                                        index[0] = 1;
+                                                        index[1] = 0;
+                                                        index[2] = 1;
+                                                        index[3] = 0;
+                                                    } else if (e1[1].equals(e2[0])) {
+                                                        index[0] = 1;
+                                                        index[1] = 0;
+                                                        index[2] = 0;
+                                                        index[3] = 1;
+                                                    } else if (e1[0].equals(e2[1])) {
+                                                        index[0] = 0;
+                                                        index[1] = 1;
+                                                        index[2] = 1;
+                                                        index[3] = 0;
+                                                    } else {
+                                                        continue;
+                                                    }
+                                                    // Check "angle"
+                                                    Vector3d ve1 = Vector3d.sub(e1[index[1]], e1[index[0]]);
+                                                    if (ve1.norm2().compareTo(BigDecimal.ZERO) == 0) {
+                                                        continue;
+                                                    }
+                                                    Vector3d ve2 = Vector3d.sub(e2[index[1]], e2[index[0]]);
+                                                    if (ve2.norm2().compareTo(BigDecimal.ZERO) == 0) {
+                                                        continue;
+                                                    }
+                                                    ve1.normalise(ve1);
+                                                    ve2.normalise(ve2);
+                                                    count = count.add(BigDecimal.ONE);
+                                                    sum = sum.add(Vector3d.dotP(ve1, ve2).abs());
+                                                }
+                                                if (count.compareTo(BigDecimal.ZERO) > 0) {
+                                                    sum = sum.divide(count, Threshold.mc);
+                                                    bestEdge.put(sum, e2);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                if (!bestEdge.isEmpty()) {
+                                    edges2.add(bestEdge.get(bestEdge.firstKey()));
+                                }
                             }
                         }
                     }
@@ -668,4 +788,42 @@ public final class GDataCSG extends GData {
     @Override
     public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {}
 
+    private final BigDecimal TOLERANCE = BigDecimal.ZERO; // new BigDecimal("0.00001"); //.00001
+    private final BigDecimal ZEROT = BigDecimal.ZERO; //  = new BigDecimal("-0.00001");
+    private final BigDecimal ONET = BigDecimal.ONE; //  = new BigDecimal("1.00001");
+    private boolean intersectLineTriangleSuperFast(Vector3dd q, Vector3dd q2, Vector3d d, Vector3dd p2, Vector3d c, Vector3d dir, BigDecimal len) {
+        BigDecimal diskr = BigDecimal.ZERO;
+        BigDecimal inv_diskr = BigDecimal.ZERO;
+        Vector3d vert0 = d;
+        Vector3d vert1 = p2;
+        Vector3d vert2 = c;
+        Vector3d corner1 = Vector3d.sub(vert1, vert0);
+        Vector3d corner2 = Vector3d.sub(vert2, vert0);
+        Vector3d orig = q;
+        Vector3d pvec = Vector3d.cross(dir, corner2);
+        diskr = Vector3d.dotP(corner1, pvec);
+        if (diskr.abs().compareTo(TOLERANCE) <= 0)
+            return false;
+        inv_diskr = BigDecimal.ONE.divide(diskr, Threshold.mc);
+        Vector3d tvec = Vector3d.sub(orig, vert0);
+        BigDecimal u = Vector3d.dotP(tvec, pvec).multiply(inv_diskr);
+        if (u.compareTo(ZEROT) < 0 || u.compareTo(ONET) > 0)
+            return false;
+        Vector3d qvec = Vector3d.cross(tvec, corner1);
+        BigDecimal v = Vector3d.dotP(dir, qvec).multiply(inv_diskr);
+        if (v.compareTo(ZEROT) < 0 || u.add(v).compareTo(ONET) > 0)
+            return false;
+        BigDecimal t = Vector3d.dotP(corner2, qvec).multiply(inv_diskr);
+        if (t.compareTo(ZEROT) < 0 || t.compareTo(len.add(TOLERANCE)) > 0)
+            return false;
+        return true;
+    }
+
+    private boolean intersectLineLineSegmentUnidirectionalFast(Vector3dd p, Vector3dd p2, Vector3d sp, Vector3d dir, BigDecimal len, Vector3dd q, Vector3dd q2) {
+        Vector3d sq = Vector3d.sub(q2, q);
+        Vector3d cross = Vector3d.cross(sq, sp);
+        Vector3d c = Vector3d.add(cross, q);
+        Vector3d d = Vector3d.sub(q, cross);
+        return intersectLineTriangleSuperFast(p, q2, d, q2, c, dir, len);
+    }
 }
