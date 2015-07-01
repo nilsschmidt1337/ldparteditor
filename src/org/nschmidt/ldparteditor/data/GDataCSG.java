@@ -37,6 +37,7 @@ import org.nschmidt.csg.Plane;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
@@ -484,11 +485,11 @@ public final class GDataCSG extends GData {
 
                                             // Check "angle"
                                             Vector3d v1 = Vector3d.sub(e1[index[1]], e1[index[0]]);
-                                            if (v1.length().compareTo(BigDecimal.ZERO) == 0) {
+                                            if (v1.norm2().compareTo(BigDecimal.ZERO) == 0) {
                                                 continue;
                                             }
                                             Vector3d v2 = Vector3d.sub(e2[index[1]], e2[index[0]]);
-                                            if (v2.length().compareTo(BigDecimal.ZERO) == 0) {
+                                            if (v2.norm2().compareTo(BigDecimal.ZERO) == 0) {
                                                 continue;
                                             }
                                             v1.normalise(v1);
@@ -523,8 +524,9 @@ public final class GDataCSG extends GData {
                     }
 
                     // 4. Re-Triangulate
-                    NLogger.debug(getClass(), "4. Re-Triangulate"); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "4. Re-Triangulate Edges"); //$NON-NLS-1$
                     {
+                        final BigDecimal HALF = new BigDecimal("0.5"); //$NON-NLS-1$
                         for (Integer key : keys) {
                             NLogger.debug(getClass(), "Key " + key); //$NON-NLS-1$
                             ArrayList<Vector3dd> fixedVertices2 = new ArrayList<Vector3dd>();
@@ -634,7 +636,7 @@ public final class GDataCSG extends GData {
                                                     ve1.normalise(ve1);
                                                     ve2.normalise(ve2);
                                                     count = count.add(BigDecimal.ONE);
-                                                    sum = sum.add(Vector3d.dotP(ve1, ve2).abs());
+                                                    sum = sum.add(Vector3d.dotP(ve1, ve2).abs().subtract(HALF).abs());
                                                 }
                                                 if (count.compareTo(BigDecimal.ZERO) > 0) {
                                                     sum = sum.divide(count, Threshold.mc);
@@ -646,6 +648,49 @@ public final class GDataCSG extends GData {
                                 }
                                 if (!bestEdge.isEmpty()) {
                                     edges2.add(bestEdge.get(bestEdge.firstKey()));
+                                }
+                            }
+
+                            NLogger.debug(getClass(), "5. Reset Triangulation of key " + key); //$NON-NLS-1$
+                            int cn = 0;
+                            for (Iterator<GData3> it = result.keySet().iterator(); it.hasNext();) {
+                                GData3 tri = it.next();
+                                if(result.get(tri) != null && key.equals(result.get(tri)[0])) {
+                                    it.remove();
+                                    cn = tri.colourNumber;
+                                }
+                            }
+
+                            NLogger.debug(getClass(), "6. Create Triangles of key " + key); //$NON-NLS-1$
+                            GColour col = View.getLDConfigColour(cn);
+                            for (Vector3dd[] e1 : edges2) {
+                                for (Vector3dd[] e2 : edges2) {
+                                    for (Vector3dd[] e3 : edges2) {
+                                        if (e1 != e2 && e2 != e3 && e1 != e3) {
+                                            TreeSet<Vector3dd> tree = new TreeSet<Vector3dd>();
+                                            tree.add(e1[0]);
+                                            tree.add(e1[1]);
+                                            tree.add(e2[0]);
+                                            tree.add(e2[1]);
+                                            tree.add(e3[0]);
+                                            tree.add(e3[1]);
+                                            if (tree.size() == 3) {
+                                                Vertex[] vert = new Vertex[3];
+                                                int i = 0;
+                                                for (Vector3dd v : tree) {
+                                                    vert[i] = new Vertex(v);
+                                                    i++;
+                                                }
+                                                result.put(new GData3(
+                                                        vert[0],
+                                                        vert[1],
+                                                        vert[2],
+                                                        View.DUMMY_REFERENCE,
+                                                        col
+                                                        ), null);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -704,8 +749,8 @@ public final class GDataCSG extends GData {
             result = String.format("%s", flt); //$NON-NLS-1$
             if (result.equals("0.0"))result = "0"; //$NON-NLS-1$ //$NON-NLS-2$
         }
-        if (result.startsWith("-0."))return "-" + result.substring(2); //$NON-NLS-1$ //$NON-NLS-2$
-        if (result.startsWith("0."))return result.substring(1); //$NON-NLS-1$
+        if (result.startsWith("-0.")) return "-" + result.substring(2); //$NON-NLS-1$ //$NON-NLS-2$
+        if (result.startsWith("0.")) return result.substring(1); //$NON-NLS-1$
         return result;
     }
 
