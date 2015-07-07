@@ -20,7 +20,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.TreeMap;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -40,7 +39,6 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 /**
@@ -378,347 +376,84 @@ public final class GDataCSG extends GData {
 
                 sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
 
+                ArrayList<GData3> result = compiledCSG.getResult();
+
                 // FIXME Needs T-Junction Elimination!
 
-                HashMap<Integer, ArrayList<GData3>> surfaces = new HashMap<Integer, ArrayList<GData3>>();
-                HashMap<GData3, Integer[]> result = compiledCSG.getResult();
-                HashMap<Integer, ArrayList<Vector3dd[]>> edges = new HashMap<Integer, ArrayList<Vector3dd[]>>();
 
-                /*
-                // 1. Create surfaces, vertices and edges
-                NLogger.debug(getClass(), "1. Create surfaces, vertices and edges"); //$NON-NLS-1$
-                for (GData3 g3 : result.keySet()) {
-                    Integer key = result.get(g3)[0];
-                    if (!surfaces.containsKey(key)) {
-                        surfaces.put(key, new ArrayList<GData3>());
-                        edges.put(key, new ArrayList<Vector3dd[]>());
-                    }
-                    ArrayList<GData3> elements = surfaces.get(key);
-                    ArrayList<Vector3dd[]> edges2 = edges.get(key);
-                    elements.add(g3);
-                    Vector3dd a = new Vector3dd(new Vector3d(g3.X1, g3.Y1, g3.Z1));
-                    Vector3dd b = new Vector3dd(new Vector3d(g3.X2, g3.Y2, g3.Z2));
-                    Vector3dd c = new Vector3dd(new Vector3d(g3.X3, g3.Y3, g3.Z3));
-                    edges2.add(new Vector3dd[]{a, b});
-                    edges2.add(new Vector3dd[]{b, c});
-                    edges2.add(new Vector3dd[]{c, a});
+                // Create data array
+
+                int vertexIDcounter = 0;
+                int triangleIDcounter = 0;
+                int triangleCount = result.size();
+                int vertexCount = triangleCount * 3;
+                int mergeCount = 0;
+
+                float[][] vertices = new float[vertexCount][3];
+
+                int[][] vertexMerges = new int[vertexCount][2];
+
+                float[][] triangles = new float[triangleCount][8];
+
+                for (GData3 g3 : result) {
+
+                    triangles[triangleIDcounter][3] = g3.colourNumber;
+                    triangles[triangleIDcounter][4] = g3.r;
+                    triangles[triangleIDcounter][5] = g3.g;
+                    triangles[triangleIDcounter][6] = g3.b;
+                    triangles[triangleIDcounter][7] = g3.a;
+
+                    triangles[triangleIDcounter][0] = vertexIDcounter;
+                    vertices[vertexIDcounter][0] = g3.x1;
+                    vertices[vertexIDcounter][1] = g3.y1;
+                    vertices[vertexIDcounter][2] = g3.z1;
+                    vertexIDcounter++;
+                    triangles[triangleIDcounter][1] = vertexIDcounter;
+                    vertices[vertexIDcounter][0] = g3.x2;
+                    vertices[vertexIDcounter][1] = g3.y2;
+                    vertices[vertexIDcounter][2] = g3.z2;
+                    vertexIDcounter++;
+                    triangles[triangleIDcounter][2] = vertexIDcounter;
+                    vertices[vertexIDcounter][0] = g3.x3;
+                    vertices[vertexIDcounter][1] = g3.y3;
+                    vertices[vertexIDcounter][2] = g3.z3;
+                    vertexIDcounter++;
+                    triangleIDcounter++;
                 }
 
-                // 1.5 Unify near vertices (Threshold 0.001)
+                // Remove near vertices
 
-                // 2. Detect outer edges
-                NLogger.debug(getClass(), "2. Detect outer edges"); //$NON-NLS-1$
-                {
-                    TreeSet<Integer> keys = new TreeSet<Integer>();
-                    for (GData3 g3 : result.keySet()) {
-                        Integer key = result.get(g3)[0];
-                        keys.add(key);
-                    }
-                    for (Integer key : keys) {
-                        ArrayList<Vector3dd[]> outerEdges = new ArrayList<Vector3dd[]>();
-                        ArrayList<Vector3dd[]> edges2 = edges.get(key);
-                        for (Vector3dd[] e1 : edges2) {
-                            boolean isOuter = true;
-                            for (Vector3dd[] e2 : edges2) {
-                                if (e1 != e2) {
-                                    if (
-                                            e1[0].equals(e2[0]) && e1[1].equals(e2[1])
-                                            || e1[1].equals(e2[0]) && e1[0].equals(e2[1])) {
-                                        isOuter = false;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (isOuter) {
-                                outerEdges.add(new Vector3dd[]{e1[0], e1[1]});
-                            }
-                        }
-                        edges2.clear();
-                        edges2.addAll(outerEdges);
-                    }
-
-
-                    // 3. Remove collinear points
-                    NLogger.debug(getClass(), "3. Remove collinear points"); //$NON-NLS-1$
-                    {
-                        final BigDecimal fourMinusEpsilon = new BigDecimal("3.9"); //$NON-NLS-1$
-                        for (Integer key : keys) {
-                            boolean foundCollinearity = true;
-                            while (foundCollinearity) {
-                                foundCollinearity = false;
-                                ArrayList<Vector3dd[]> edges2 = edges.get(key);
-                                Vector3dd[] match = new Vector3dd[4];
-                                for (Vector3dd[] e1 : edges2) {
-                                    if (foundCollinearity) {
-                                        break;
-                                    }
-                                    for (Vector3dd[] e2 : edges2) {
-                                        if (e1 != e2) {
-
-                                            int[] index = new int[]{0,0,0,0};
-                                            if (e1[0].equals(e2[0])) {
-                                                index[0] = 0;
-                                                index[1] = 1;
-                                                index[2] = 0;
-                                                index[3] = 1;
-                                            } else if (e1[1].equals(e2[1])) {
-                                                index[0] = 1;
-                                                index[1] = 0;
-                                                index[2] = 1;
-                                                index[3] = 0;
-                                            } else if (e1[1].equals(e2[0])) {
-                                                index[0] = 1;
-                                                index[1] = 0;
-                                                index[2] = 0;
-                                                index[3] = 1;
-                                            } else if (e1[0].equals(e2[1])) {
-                                                index[0] = 0;
-                                                index[1] = 1;
-                                                index[2] = 1;
-                                                index[3] = 0;
-                                            }
-
-                                            // Check "angle"
-                                            Vector3d v1 = Vector3d.sub(e1[index[1]], e1[index[0]]);
-                                            if (v1.norm2().compareTo(BigDecimal.ZERO) == 0) {
-                                                continue;
-                                            }
-                                            Vector3d v2 = Vector3d.sub(e2[index[3]], e2[index[2]]);
-                                            if (v2.norm2().compareTo(BigDecimal.ZERO) == 0) {
-                                                continue;
-                                            }
-                                            v1.normalise(v1);
-                                            v2.normalise(v2);
-                                            BigDecimal d = Vector3d.distSquare(v1, v2);
-                                            if (d.compareTo(fourMinusEpsilon) > 0) {
-                                                NLogger.debug(getClass(), "3. Found collinear points"); //$NON-NLS-1$
-                                                foundCollinearity = true;
-                                                match[0] = e1[index[0]];
-                                                match[1] = e1[index[1]];
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                                if (foundCollinearity) {
-                                    for (Iterator<Vector3dd[]> it = edges2.iterator(); it.hasNext();) {
-                                        Vector3dd[] v = it.next();
-                                        if (v[0].equals(match[0]) && v[1].equals(match[1])) {
-                                            it.remove();
-                                        } else if (v[0].equals(match[1]) && v[1].equals(match[0])) {
-                                            it.remove();
-                                        } else if (v[0].equals(match[0])) {
-                                            v[0].setX(match[1].X);
-                                            v[0].setY(match[1].Y);
-                                            v[0].setZ(match[1].Z);
-                                        } else if (v[1].equals(match[0])) {
-                                            v[1].setX(match[1].X);
-                                            v[1].setY(match[1].Y);
-                                            v[1].setZ(match[1].Z);
-                                        }
-                                    }
-                                }
-                            }
+                for (int i = 0; i < vertexCount; i++) {
+                    for (int j = i + 1; j < vertexCount; j++) {
+                        if (0.000001f >
+                        Math.pow(vertices[i][0] - vertices[j][0], 2) +
+                        Math.pow(vertices[i][1] - vertices[j][1], 2) +
+                        Math.pow(vertices[i][2] - vertices[j][2], 2)) {
+                            vertexCount--;
+                            vertices[j][0] = vertices[vertexCount][0];
+                            vertices[j][1] = vertices[vertexCount][1];
+                            vertices[j][2] = vertices[vertexCount][2];
+                            vertexMerges[mergeCount][0] = i;
+                            vertexMerges[mergeCount][1] = j;
+                            mergeCount++;
+                            j--;
                         }
                     }
+                }
 
-                    // 4. Re-Triangulate
-                    NLogger.debug(getClass(), "4. Re-Triangulate Edges"); //$NON-NLS-1$
-                    {
-                        final BigDecimal HALF = new BigDecimal("0.5"); //$NON-NLS-1$
-                        for (Integer key : keys) {
-                            NLogger.debug(getClass(), "Key " + key); //$NON-NLS-1$
-                            ArrayList<Vector3dd> fixedVertices2 = new ArrayList<Vector3dd>();
-                            {
-                                TreeSet<Vector3dd> fixedVertices = new TreeSet<Vector3dd>();
-                                ArrayList<Vector3dd[]> edges2 = edges.get(key);
-                                for (Vector3dd[] e1 : edges2) {
-                                    fixedVertices.add(e1[0]);
-                                    fixedVertices.add(e1[1]);
-                                }
-                                fixedVertices2.addAll(fixedVertices);
-                            }
-                            ArrayList<Vector3dd[]> edges2 = edges.get(key);
-                            int vc = fixedVertices2.size();
-                            TreeMap<BigDecimal, Vector3dd[]> bestEdge = new TreeMap<BigDecimal, Vector3dd[]>();
-                            bestEdge.put(BigDecimal.ZERO, null);
-                            int iter = 0;
-
-                            Vector3d[][] spArr = new Vector3d[vc][vc];
-                            Vector3d[][] dirArr = new Vector3d[vc][vc];
-                            BigDecimal[][] lenArr = new BigDecimal[vc][vc];
-                            for (int i = 0; i < vc; i++) {
-                                Vector3dd v1 = fixedVertices2.get(i);
-                                for (int j = i + 1; j < vc; j++) {
-                                    Vector3dd v2 = fixedVertices2.get(j);
-                                    Vector3d sp = Vector3dd.sub(v2, v1);
-                                    Vector3d dir = new Vector3d();
-                                    BigDecimal len = sp.normalise(dir);
-                                    spArr[i][j] = sp;
-                                    dirArr[i][j] = dir;
-                                    lenArr[i][j] = len;
-                                }
-                            }
-
-                            while (!bestEdge.isEmpty()) {
-                                bestEdge.clear();
-                                iter++;
-                                NLogger.debug(getClass(), "Iteration " + iter); //$NON-NLS-1$
-                                for (int i = 0; i < vc; i++) {
-                                    Vector3dd v1 = fixedVertices2.get(i);
-                                    for (int j = i + 1; j < vc; j++) {
-                                        boolean intersect = false;
-                                        boolean edgeWasSet = false;
-                                        Vector3dd v2 = fixedVertices2.get(j);
-                                        Vector3d sp = spArr[i][j];
-                                        Vector3d dir = dirArr[i][j];
-                                        BigDecimal len = lenArr[i][j];
-                                        Iterator<Vector3dd[]> li = edges2.iterator();
-                                        while (li.hasNext()) {
-                                            Vector3dd[] l = li.next();
-                                            Vector3dd v3 = l[0];
-                                            Vector3dd v4 = l[1];
-                                            boolean b1 = v1.equals(v3);
-                                            boolean b2 = v1.equals(v4);
-                                            boolean b3 = v2.equals(v3);
-                                            boolean b4 = v2.equals(v4);
-                                            if (!b1 && !b2 && !b3 && !b4) {
-                                                if (intersectLineLineSegmentUnidirectionalFast(v1, v2, sp, dir, len,  v3, v4)) {
-                                                    intersect = true;
-                                                    break;
-                                                }
-                                            } else if (b1 && b4 || b2 && b3) {
-                                                edgeWasSet = true;
-                                                break;
-                                            }
-                                        }
-                                        if (!edgeWasSet && !intersect) {
-                                            BigDecimal dist = Vector3dd.manhattan(v1, v2);
-                                            if (dist.compareTo(MIN_DIST) > 0) {
-                                                Vector3dd[] e2 = new Vector3dd[]{v1, v2};
-                                                BigDecimal count = BigDecimal.ZERO;
-                                                BigDecimal sum = BigDecimal.ZERO;
-                                                for (Vector3dd[] e1 : edges2) {
-                                                    int[] index = new int[]{0,0,0,0};
-                                                    if (e1[0].equals(e2[0])) {
-                                                        index[0] = 0;
-                                                        index[1] = 1;
-                                                        index[2] = 0;
-                                                        index[3] = 1;
-                                                    } else if (e1[1].equals(e2[1])) {
-                                                        index[0] = 1;
-                                                        index[1] = 0;
-                                                        index[2] = 1;
-                                                        index[3] = 0;
-                                                    } else if (e1[1].equals(e2[0])) {
-                                                        index[0] = 1;
-                                                        index[1] = 0;
-                                                        index[2] = 0;
-                                                        index[3] = 1;
-                                                    } else if (e1[0].equals(e2[1])) {
-                                                        index[0] = 0;
-                                                        index[1] = 1;
-                                                        index[2] = 1;
-                                                        index[3] = 0;
-                                                    } else {
-                                                        continue;
-                                                    }
-                                                    // Check "angle"
-                                                    Vector3d ve1 = Vector3d.sub(e1[index[1]], e1[index[0]]);
-                                                    if (ve1.norm2().compareTo(BigDecimal.ZERO) == 0) {
-                                                        continue;
-                                                    }
-                                                    Vector3d ve2 = Vector3d.sub(e2[index[1]], e2[index[0]]);
-                                                    if (ve2.norm2().compareTo(BigDecimal.ZERO) == 0) {
-                                                        continue;
-                                                    }
-                                                    ve1.normalise(ve1);
-                                                    ve2.normalise(ve2);
-                                                    count = count.add(BigDecimal.ONE);
-                                                    sum = sum.add(Vector3d.dotP(ve1, ve2).abs().subtract(HALF).abs());
-                                                }
-                                                if (count.compareTo(BigDecimal.ZERO) > 0) {
-                                                    sum = sum.divide(count, Threshold.mc);
-                                                    bestEdge.put(sum, e2);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                if (!bestEdge.isEmpty()) {
-                                    edges2.add(bestEdge.get(bestEdge.firstKey()));
-                                }
-                            }
-
-                            NLogger.debug(getClass(), "5. Reset Triangulation of key " + key); //$NON-NLS-1$
-                            int cn = 16;
-                            for (Iterator<GData3> it = result.keySet().iterator(); it.hasNext();) {
-                                GData3 tri = it.next();
-                                if(result.get(tri) != null && key.equals(result.get(tri)[0])) {
-                                    it.remove();
-                                    cn = tri.colourNumber;
-                                }
-                            }
-
-                            NLogger.debug(getClass(), "6. Create Triangles of key " + key); //$NON-NLS-1$
-                            GColour col = View.getLDConfigColour(cn);
-                            final int ec = edges2.size();
-                            for (int c1 = 0; c1 < ec; c1++) {
-                                Vector3dd[] e1 = edges2.get(c1);
-                                for (int c2 = c1 + 1; c2 < ec; c2++) {
-                                    Vector3dd[] e2 = edges2.get(c2);
-                                    for (int c3 = c2 + 1; c3 < ec; c3++) {
-                                        Vector3dd[] e3 = edges2.get(c3);
-                                        TreeSet<Vector3dd> tree = new TreeSet<Vector3dd>();
-                                        tree.add(e1[0]);
-                                        tree.add(e1[1]);
-                                        tree.add(e2[0]);
-                                        tree.add(e2[1]);
-                                        tree.add(e3[0]);
-                                        tree.add(e3[1]);
-                                        if (tree.size() == 3) {
-                                            Vertex[] vert = new Vertex[3];
-                                            int i = 0;
-                                            for (Vector3dd v : tree) {
-                                                vert[i] = new Vertex(v);
-                                                i++;
-                                            }
-                                            result.put(new GData3(
-                                                    vert[0],
-                                                    vert[1],
-                                                    vert[2],
-                                                    View.DUMMY_REFERENCE,
-                                                    col
-                                                    ), null);
-                                        }
-                                    }
-                                }
+                // Apply merges to triangles
+                for (int i = 0; i < triangleCount; i++) {
+                    for (int j = 0; j < mergeCount; j++) {
+                        for (int k = 0; k < 3; k++) {
+                            if (triangles[i][k] == vertexMerges[j][1]) {
+                                triangles[i][k] = vertexMerges[j][0];
                             }
                         }
                     }
                 }
-                 */
-
-                // Analyse Mesh Quality
-                ArrayList<GData3> resultTris = new ArrayList<GData3>();
-                resultTris.addAll(result.keySet());
-                for (int i = 0; i < 100; i++) {
-                    NLogger.debug(getClass(), "Iteration " + i); //$NON-NLS-1$
-
-                    for (GData3 g3 : resultTris) {
-
-                    }
-
-                    ArrayList<GData3> newTris = new ArrayList<GData3>();
-                    for (Iterator<GData3> it = resultTris.iterator(); it.hasNext();) {
-                        GData3 tri = it.next();
-                    }
-                    resultTris.addAll(newTris);
-                }
 
 
-
-                for (GData3 g3 : resultTris) {
+                for (GData3 g3 : result) {
                     StringBuilder lineBuilder3 = new StringBuilder();
                     lineBuilder3.append(3);
                     lineBuilder3.append(" "); //$NON-NLS-1$

@@ -35,7 +35,6 @@ package org.nschmidt.csg;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -100,7 +99,7 @@ import org.nschmidt.ldparteditor.enums.View;
  */
 public class CSG {
 
-    HashMap<GData3, Integer[]> result = new HashMap<GData3, Integer[]>();
+    ArrayList<GData3> result = new ArrayList<GData3>();
 
     private List<Polygon> polygons;
     private OptType optType = OptType.POLYGON_BOUND;
@@ -432,10 +431,10 @@ public class CSG {
      *
      * @return this csg as list of LDraw triangles
      */
-    public HashMap<GData3, Integer[]> toLDrawTriangles(GData1 parent) {
-        HashMap<GData3, Integer[]> result = new HashMap<GData3, Integer[]>();
+    public ArrayList<GData3> toLDrawTriangles(GData1 parent) {
+        ArrayList<GData3> result = new ArrayList<GData3>();
         for (Polygon p : this.polygons) {
-            result.putAll(p.toLDrawTriangles(parent));
+            result.addAll(p.toLDrawTriangles(parent));
         }
         return result;
     }
@@ -450,18 +449,18 @@ public class CSG {
     }
 
     public void draw(Composite3D c3d) {
-        for (GData3 tri : result.keySet()) {
+        for (GData3 tri : result) {
             tri.draw(c3d);
         }
     }
 
     public void draw_textured(Composite3D c3d) {
-        for (GData3 tri : result.keySet()) {
+        for (GData3 tri : result) {
             tri.drawBFC_Textured(c3d);
         }
     }
 
-    public HashMap<GData3, Integer[]> getResult() {
+    public ArrayList<GData3> getResult() {
         return result;
     }
 
