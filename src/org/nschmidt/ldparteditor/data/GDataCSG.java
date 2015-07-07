@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
@@ -37,7 +36,6 @@ import org.nschmidt.csg.Plane;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
-import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
@@ -383,10 +381,10 @@ public final class GDataCSG extends GData {
                 // FIXME Needs T-Junction Elimination!
 
                 HashMap<Integer, ArrayList<GData3>> surfaces = new HashMap<Integer, ArrayList<GData3>>();
-                TreeSet<Vector3dd> verts = new TreeSet<Vector3dd>();
                 HashMap<GData3, Integer[]> result = compiledCSG.getResult();
                 HashMap<Integer, ArrayList<Vector3dd[]>> edges = new HashMap<Integer, ArrayList<Vector3dd[]>>();
 
+                /*
                 // 1. Create surfaces, vertices and edges
                 NLogger.debug(getClass(), "1. Create surfaces, vertices and edges"); //$NON-NLS-1$
                 for (GData3 g3 : result.keySet()) {
@@ -401,9 +399,6 @@ public final class GDataCSG extends GData {
                     Vector3dd a = new Vector3dd(new Vector3d(g3.X1, g3.Y1, g3.Z1));
                     Vector3dd b = new Vector3dd(new Vector3d(g3.X2, g3.Y2, g3.Z2));
                     Vector3dd c = new Vector3dd(new Vector3d(g3.X3, g3.Y3, g3.Z3));
-                    verts.add(a);
-                    verts.add(b);
-                    verts.add(c);
                     edges2.add(new Vector3dd[]{a, b});
                     edges2.add(new Vector3dd[]{b, c});
                     edges2.add(new Vector3dd[]{c, a});
@@ -452,7 +447,7 @@ public final class GDataCSG extends GData {
                             while (foundCollinearity) {
                                 foundCollinearity = false;
                                 ArrayList<Vector3dd[]> edges2 = edges.get(key);
-                                Vector3dd[] match = new Vector3dd[2];
+                                Vector3dd[] match = new Vector3dd[4];
                                 for (Vector3dd[] e1 : edges2) {
                                     if (foundCollinearity) {
                                         break;
@@ -488,7 +483,7 @@ public final class GDataCSG extends GData {
                                             if (v1.norm2().compareTo(BigDecimal.ZERO) == 0) {
                                                 continue;
                                             }
-                                            Vector3d v2 = Vector3d.sub(e2[index[1]], e2[index[0]]);
+                                            Vector3d v2 = Vector3d.sub(e2[index[3]], e2[index[2]]);
                                             if (v2.norm2().compareTo(BigDecimal.ZERO) == 0) {
                                                 continue;
                                             }
@@ -513,9 +508,13 @@ public final class GDataCSG extends GData {
                                         } else if (v[0].equals(match[1]) && v[1].equals(match[0])) {
                                             it.remove();
                                         } else if (v[0].equals(match[0])) {
-                                            v[0] = match[1];
+                                            v[0].setX(match[1].X);
+                                            v[0].setY(match[1].Y);
+                                            v[0].setZ(match[1].Z);
                                         } else if (v[1].equals(match[0])) {
-                                            v[1] = match[1];
+                                            v[1].setX(match[1].X);
+                                            v[1].setY(match[1].Y);
+                                            v[1].setZ(match[1].Z);
                                         }
                                     }
                                 }
@@ -652,7 +651,7 @@ public final class GDataCSG extends GData {
                             }
 
                             NLogger.debug(getClass(), "5. Reset Triangulation of key " + key); //$NON-NLS-1$
-                            int cn = 0;
+                            int cn = 16;
                             for (Iterator<GData3> it = result.keySet().iterator(); it.hasNext();) {
                                 GData3 tri = it.next();
                                 if(result.get(tri) != null && key.equals(result.get(tri)[0])) {
@@ -663,32 +662,34 @@ public final class GDataCSG extends GData {
 
                             NLogger.debug(getClass(), "6. Create Triangles of key " + key); //$NON-NLS-1$
                             GColour col = View.getLDConfigColour(cn);
-                            for (Vector3dd[] e1 : edges2) {
-                                for (Vector3dd[] e2 : edges2) {
-                                    for (Vector3dd[] e3 : edges2) {
-                                        if (e1 != e2 && e2 != e3 && e1 != e3) {
-                                            TreeSet<Vector3dd> tree = new TreeSet<Vector3dd>();
-                                            tree.add(e1[0]);
-                                            tree.add(e1[1]);
-                                            tree.add(e2[0]);
-                                            tree.add(e2[1]);
-                                            tree.add(e3[0]);
-                                            tree.add(e3[1]);
-                                            if (tree.size() == 3) {
-                                                Vertex[] vert = new Vertex[3];
-                                                int i = 0;
-                                                for (Vector3dd v : tree) {
-                                                    vert[i] = new Vertex(v);
-                                                    i++;
-                                                }
-                                                result.put(new GData3(
-                                                        vert[0],
-                                                        vert[1],
-                                                        vert[2],
-                                                        View.DUMMY_REFERENCE,
-                                                        col
-                                                        ), null);
+                            final int ec = edges2.size();
+                            for (int c1 = 0; c1 < ec; c1++) {
+                                Vector3dd[] e1 = edges2.get(c1);
+                                for (int c2 = c1 + 1; c2 < ec; c2++) {
+                                    Vector3dd[] e2 = edges2.get(c2);
+                                    for (int c3 = c2 + 1; c3 < ec; c3++) {
+                                        Vector3dd[] e3 = edges2.get(c3);
+                                        TreeSet<Vector3dd> tree = new TreeSet<Vector3dd>();
+                                        tree.add(e1[0]);
+                                        tree.add(e1[1]);
+                                        tree.add(e2[0]);
+                                        tree.add(e2[1]);
+                                        tree.add(e3[0]);
+                                        tree.add(e3[1]);
+                                        if (tree.size() == 3) {
+                                            Vertex[] vert = new Vertex[3];
+                                            int i = 0;
+                                            for (Vector3dd v : tree) {
+                                                vert[i] = new Vertex(v);
+                                                i++;
                                             }
+                                            result.put(new GData3(
+                                                    vert[0],
+                                                    vert[1],
+                                                    vert[2],
+                                                    View.DUMMY_REFERENCE,
+                                                    col
+                                                    ), null);
                                         }
                                     }
                                 }
@@ -696,8 +697,28 @@ public final class GDataCSG extends GData {
                         }
                     }
                 }
+                 */
 
-                for (GData3 g3 : result.keySet()) {
+                // Analyse Mesh Quality
+                ArrayList<GData3> resultTris = new ArrayList<GData3>();
+                resultTris.addAll(result.keySet());
+                for (int i = 0; i < 100; i++) {
+                    NLogger.debug(getClass(), "Iteration " + i); //$NON-NLS-1$
+
+                    for (GData3 g3 : resultTris) {
+
+                    }
+
+                    ArrayList<GData3> newTris = new ArrayList<GData3>();
+                    for (Iterator<GData3> it = resultTris.iterator(); it.hasNext();) {
+                        GData3 tri = it.next();
+                    }
+                    resultTris.addAll(newTris);
+                }
+
+
+
+                for (GData3 g3 : resultTris) {
                     StringBuilder lineBuilder3 = new StringBuilder();
                     lineBuilder3.append(3);
                     lineBuilder3.append(" "); //$NON-NLS-1$
