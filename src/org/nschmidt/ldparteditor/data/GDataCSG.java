@@ -386,6 +386,7 @@ public final class GDataCSG extends GData {
                 int vertexIDcounter = 0;
                 int triangleIDcounter = 0;
                 int triangleCount = result.size();
+                int reserveCount = triangleCount * 2;
                 int vertexCount = triangleCount * 3;
                 int mergeCount = 0;
 
@@ -393,7 +394,7 @@ public final class GDataCSG extends GData {
 
                 int[][] vertexMerges = new int[vertexCount][2];
 
-                float[][] triangles = new float[triangleCount][8];
+                float[][] triangles = new float[reserveCount][8];
 
                 for (GData3 g3 : result) {
 
@@ -442,6 +443,7 @@ public final class GDataCSG extends GData {
                 }
 
                 // Apply merges to triangles
+
                 for (int i = 0; i < triangleCount; i++) {
                     for (int j = 0; j < mergeCount; j++) {
                         for (int k = 0; k < 3; k++) {
@@ -450,6 +452,111 @@ public final class GDataCSG extends GData {
                             }
                         }
                     }
+                }
+
+                // Detect T-Junction Cases
+
+
+                for (int a = 0; a < vertexCount; a++) {
+                    Vector4f vp = new Vector4f(vertices[a][0], vertices[a][1], vertices[a][2], 0f);
+                    for (int t = 0; t < triangleCount; t++) {
+
+                        if (triangles[t][0] != a && triangles[t][1] != a && triangles[t][2] != a) {
+
+                            int junctionMode = 0;
+
+                            Vector4f v1 = MathHelper.getNearestPointToLineSegment(
+                                    vertices[(int) triangles[t][0]][0],
+                                    vertices[(int) triangles[t][0]][1],
+                                    vertices[(int) triangles[t][0]][2],
+                                    vertices[(int) triangles[t][1]][0],
+                                    vertices[(int) triangles[t][1]][1],
+                                    vertices[(int) triangles[t][1]][2],
+                                    vertices[a][0],
+                                    vertices[a][1],
+                                    vertices[a][2]);
+                            float d1 = Vector4f.sub(v1, vp, null).lengthSquared();
+
+                            if (d1 < 0.000001f) {
+                                junctionMode = 1;
+                            } else {
+
+                                Vector4f v2 = MathHelper.getNearestPointToLineSegment(
+                                        vertices[(int) triangles[t][1]][0],
+                                        vertices[(int) triangles[t][1]][1],
+                                        vertices[(int) triangles[t][1]][2],
+                                        vertices[(int) triangles[t][2]][0],
+                                        vertices[(int) triangles[t][2]][1],
+                                        vertices[(int) triangles[t][2]][2],
+                                        vertices[a][0],
+                                        vertices[a][1],
+                                        vertices[a][2]);
+                                float d2 = Vector4f.sub(v2, vp, null).lengthSquared();
+
+                                if (d2 < 0.000001f) {
+                                    junctionMode = 2;
+                                    v1 = v2;
+                                } else {
+
+                                    Vector4f v3 = MathHelper.getNearestPointToLineSegment(
+                                            vertices[(int) triangles[t][2]][0],
+                                            vertices[(int) triangles[t][2]][1],
+                                            vertices[(int) triangles[t][2]][2],
+                                            vertices[(int) triangles[t][0]][0],
+                                            vertices[(int) triangles[t][0]][1],
+                                            vertices[(int) triangles[t][0]][2],
+                                            vertices[a][0],
+                                            vertices[a][1],
+                                            vertices[a][2]);
+                                    float d3 = Vector4f.sub(v3, vp, null).lengthSquared();
+
+                                    if (d3 < 0.000001f) {
+                                        junctionMode = 3;
+                                        v1 = v3;
+                                    }
+                                }
+                            }
+
+                            if (junctionMode > 0) {
+                                if (triangleCount + 2 > reserveCount) {
+
+                                    reserveCount = reserveCount * 2;
+
+                                    float[][] triangles2 = new float[reserveCount][8];
+
+                                    for (int i = 0; i < triangles.length; i++) {
+                                        for (int j = 0; j < 8; j++) {
+                                            triangles2[i][j] = triangles[i][j];
+                                        }
+                                    }
+
+                                    triangles = triangles2;
+
+                                }
+
+                                for (int j = 0; j < 8; j++) {
+                                    triangles[triangleCount][j] = triangles[triangleCount][j];
+                                }
+
+                                switch (junctionMode) {
+                                case 1:
+
+                                    break;
+                                case 2:
+
+                                    break;
+                                case 3:
+
+                                    break;
+                                }
+                                triangleCount += 2;
+                                t--;
+                            }
+
+                        }
+
+                    }
+
                 }
 
 
