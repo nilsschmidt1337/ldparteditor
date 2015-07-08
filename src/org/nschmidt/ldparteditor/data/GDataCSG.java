@@ -40,6 +40,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 /**
@@ -379,7 +380,7 @@ public final class GDataCSG extends GData {
 
                 ArrayList<GData3> result = compiledCSG.getResult();
 
-                // FIXME Needs T-Junction Elimination!
+                // FIXME Needs T-Junction Elimination / Mesh Reduction!
 
 
                 // Create data array
@@ -424,6 +425,8 @@ public final class GDataCSG extends GData {
                     vertexIDcounter++;
                     triangleIDcounter++;
                 }
+
+                result.clear();
 
                 // Remove near vertices
 
@@ -601,7 +604,101 @@ public final class GDataCSG extends GData {
 
                 }
 
-                result.clear();
+
+
+                // Iterative Simplyfication
+
+                {
+
+                    for (int t = 0; t < triangleCount; t++) {
+                        NLogger.debug(getClass(), t + " of " + triangleCount); //$NON-NLS-1$
+                        for (int e0 = 0; e0 < 6; e0++) {
+                            int e2 = e0 < 3 ? (e0 + 1) % 3 : (e0 + 2) % 3;
+                            int e1 = e0 > 2 ? e0 - 3 : e0;
+
+                            float[][] trianglesBackup = new float[triangleCount][8];
+
+                            double area1 = 0.0;
+                            double area2 = 0.0;
+
+                            for (int i = 0; i < triangleCount; i++) {
+
+                                {
+                                    float x1 = vertices[(int) triangles[i][1]][0] - vertices[(int) triangles[i][0]][0];
+                                    float x2 = vertices[(int) triangles[i][1]][1] - vertices[(int) triangles[i][0]][1];
+                                    float x3 = vertices[(int) triangles[i][1]][2] - vertices[(int) triangles[i][0]][2];
+
+                                    float y1 = vertices[(int) triangles[i][2]][0] - vertices[(int) triangles[i][0]][0];
+                                    float y2 = vertices[(int) triangles[i][2]][1] - vertices[(int) triangles[i][0]][1];
+                                    float y3 = vertices[(int) triangles[i][2]][2] - vertices[(int) triangles[i][0]][2];
+
+                                    area1 = area1 + Math.sqrt(
+                                            Math.pow(x2 * y3 - x3 * y2, 2)
+                                            + Math.pow(x3 * y1 - x1 * y3, 2)
+                                            + Math.pow(x1 * y2 - x2 * y1, 2)) / 2.0
+                                            ;
+                                }
+
+                                for (int j = 0; j < 3; j++) {
+                                    trianglesBackup[i][j] = triangles[i][j];
+
+                                    if (triangles[i][j] == triangles[t][e2]) {
+                                        triangles[i][j] = triangles[t][e1];
+                                    }
+
+                                }
+
+                                {
+                                    float x1 = vertices[(int) triangles[i][1]][0] - vertices[(int) triangles[i][0]][0];
+                                    float x2 = vertices[(int) triangles[i][1]][1] - vertices[(int) triangles[i][0]][1];
+                                    float x3 = vertices[(int) triangles[i][1]][2] - vertices[(int) triangles[i][0]][2];
+
+                                    float y1 = vertices[(int) triangles[i][2]][0] - vertices[(int) triangles[i][0]][0];
+                                    float y2 = vertices[(int) triangles[i][2]][1] - vertices[(int) triangles[i][0]][1];
+                                    float y3 = vertices[(int) triangles[i][2]][2] - vertices[(int) triangles[i][0]][2];
+
+                                    area2 = area2 + Math.sqrt(
+                                            Math.pow(x2 * y3 - x3 * y2, 2)
+                                            + Math.pow(x3 * y1 - x1 * y3, 2)
+                                            + Math.pow(x1 * y2 - x2 * y1, 2)) / 2.0
+                                            ;
+                                }
+
+                                for (int j = 3; j < 8; j++) {
+                                    trianglesBackup[i][j] = triangles[i][j];
+                                }
+
+
+                            }
+
+                            if (Math.abs(area1 - area2) < 100.0) {
+                                NLogger.debug(getClass(), "Area1 " + area1); //$NON-NLS-1$
+                                NLogger.debug(getClass(), "Area2 " + area2); //$NON-NLS-1$
+                                for (int k = 0; k < triangleCount; k++) {
+                                    if (
+                                            triangles[k][0] == triangles[k][1] ||
+                                            triangles[k][0] == triangles[k][2] ||
+                                            triangles[k][1] == triangles[k][2]) {
+                                        triangleCount--;
+                                        if (triangleCount > 0) {
+                                            for (int j = 0; j < 8; j++) {
+                                                triangles[k][j] = triangles[triangleCount][j];
+                                            }
+                                        }
+                                        k--;
+                                    }
+
+                                }
+                            } else
+
+                            {
+                                triangles = trianglesBackup;
+                            }
+                        }
+
+                    }
+
+                }
 
                 Matrix4f id = new Matrix4f();
                 Matrix4f.setIdentity(id);
@@ -609,6 +706,9 @@ public final class GDataCSG extends GData {
                         new HashSet<String>(), View.DUMMY_REFERENCE);
 
                 for (int t = 0; t < triangleCount; t++) {
+
+                    if (triangles[t][0] == -1f) continue;
+
                     GColour col = new GColour((int) triangles[t][3], triangles[t][4], triangles[t][5], triangles[t][6], triangles[t][7]);
                     Vertex v1 = new Vertex(
                             vertices[(int) triangles[t][0]][0],
