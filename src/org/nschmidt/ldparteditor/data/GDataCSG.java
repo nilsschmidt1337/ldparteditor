@@ -34,11 +34,8 @@ import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
-import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
-import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -396,6 +393,8 @@ public final class GDataCSG extends GData {
 
                 int[][] vertexMerges = new int[vertexCount][2];
 
+                HashMap<String, Integer> edgeCount = new HashMap<String, Integer>();
+
                 float[][] triangles = new float[reserveCount][8];
 
                 HashSet<Integer> skip = new HashSet<Integer>();
@@ -434,7 +433,7 @@ public final class GDataCSG extends GData {
                     if (skip.contains(i)) continue;
                     for (int j = i + 1; j < vertexCount; j++) {
                         if (skip.contains(j)) continue;
-                        if (0.0001f >
+                        if (0.1f >
                         Math.pow(vertices[i][0] - vertices[j][0], 2) +
                         Math.pow(vertices[i][1] - vertices[j][1], 2) +
                         Math.pow(vertices[i][2] - vertices[j][2], 2)) {
@@ -480,7 +479,7 @@ public final class GDataCSG extends GData {
                                     vertices[v][2]);
                             float d1 = Vector4f.sub(v1, vp, null).lengthSquared();
 
-                            if (d1 < 0.000001f) {
+                            if (d1 < 0.00001f) {
                                 junctionMode = 1;
                             } else {
 
@@ -496,7 +495,7 @@ public final class GDataCSG extends GData {
                                         vertices[v][2]);
                                 float d2 = Vector4f.sub(v2, vp, null).lengthSquared();
 
-                                if (d2 < 0.000001f) {
+                                if (d2 < 0.00001f) {
                                     junctionMode = 2;
                                 } else {
 
@@ -512,7 +511,7 @@ public final class GDataCSG extends GData {
                                             vertices[v][2]);
                                     float d3 = Vector4f.sub(v3, vp, null).lengthSquared();
 
-                                    if (d3 < 0.000001f) {
+                                    if (d3 < 0.00001f) {
                                         junctionMode = 3;
                                     }
                                 }
@@ -604,64 +603,159 @@ public final class GDataCSG extends GData {
 
                 }
 
-
+                boolean[] skip2 = new boolean[triangleCount];
+                boolean[] skipVertex = new boolean[vertexCount];
+                BigDecimal[][] verticesD = new BigDecimal[vertexCount][3];
 
                 // Iterative Simplyfication
+                boolean foundSolution = true;
 
-                {
+                // Use exact number format?
+                for (int v = 0; v < vertexCount; v++) {
+                    if (skip.contains(v)) continue;
+                    verticesD[v][0] = new BigDecimal(vertices[v][0]);
+                    verticesD[v][1] = new BigDecimal(vertices[v][1]);
+                    verticesD[v][2] = new BigDecimal(vertices[v][2]);
+                }
 
+                // Calculate Area
+
+                BigDecimal area1 = BigDecimal.ZERO;
+                BigDecimal[] area = new BigDecimal[triangleCount];
+                for (int i = 0; i < triangleCount; i++) {
+                    BigDecimal x1 = verticesD[(int) triangles[i][1]][0].subtract(verticesD[(int) triangles[i][0]][0]);
+                    BigDecimal x2 = verticesD[(int) triangles[i][1]][1].subtract(verticesD[(int) triangles[i][0]][1]);
+                    BigDecimal x3 = verticesD[(int) triangles[i][1]][2].subtract(verticesD[(int) triangles[i][0]][2]);
+
+                    BigDecimal y1 = verticesD[(int) triangles[i][2]][0].subtract(verticesD[(int) triangles[i][0]][0]);
+                    BigDecimal y2 = verticesD[(int) triangles[i][2]][1].subtract(verticesD[(int) triangles[i][0]][1]);
+                    BigDecimal y3 = verticesD[(int) triangles[i][2]][2].subtract(verticesD[(int) triangles[i][0]][2]);
+
+                    BigDecimal z1 = x2.multiply(y3).subtract(x3.multiply(y2));
+                    BigDecimal z2 = x3.multiply(y1).subtract(x1.multiply(y3));
+                    BigDecimal z3 = x1.multiply(y2).subtract(x2.multiply(y1));
+
+                    BigDecimal delta = z1.multiply(z1).add(z2.multiply(z2).add(z3.multiply(z3)));
+                    area1 = area1.add(delta);
+
+                    area[i] = delta;
+                }
+
+                // Lock Vertices
+
+
+
+
+                while (foundSolution) {
+                    foundSolution = false;
                     for (int t = 0; t < triangleCount; t++) {
+                        if (skip2[t]) continue;
                         NLogger.debug(getClass(), t + " of " + triangleCount); //$NON-NLS-1$
+
                         for (int e0 = 0; e0 < 6; e0++) {
                             int e2 = e0 < 3 ? (e0 + 1) % 3 : (e0 + 2) % 3;
                             int e1 = e0 > 2 ? e0 - 3 : e0;
 
-                            float[][] trianglesBackup = new float[triangleCount][8];
+                            if (skipVertex[(int) triangles[t][e2]]) continue;
 
-                            double area1 = 0.0;
-                            double area2 = 0.0;
+                            float[][] trianglesBackup = new float[triangleCount][8];
+                            BigDecimal[] areaBackup = new BigDecimal[triangleCount];
+
+                            BigDecimal area2 = BigDecimal.ZERO;
+                            BigDecimal delta = BigDecimal.ZERO;
+
+                            boolean invalid = false;
+
+                            edgeCount.clear();
 
                             for (int i = 0; i < triangleCount; i++) {
+                                if (skip2[i]) continue;
+                                areaBackup[i] = area[i];
+                                boolean changed = false;
 
-                                {
-                                    float x1 = vertices[(int) triangles[i][1]][0] - vertices[(int) triangles[i][0]][0];
-                                    float x2 = vertices[(int) triangles[i][1]][1] - vertices[(int) triangles[i][0]][1];
-                                    float x3 = vertices[(int) triangles[i][1]][2] - vertices[(int) triangles[i][0]][2];
-
-                                    float y1 = vertices[(int) triangles[i][2]][0] - vertices[(int) triangles[i][0]][0];
-                                    float y2 = vertices[(int) triangles[i][2]][1] - vertices[(int) triangles[i][0]][1];
-                                    float y3 = vertices[(int) triangles[i][2]][2] - vertices[(int) triangles[i][0]][2];
-
-                                    area1 = area1 + Math.sqrt(
-                                            Math.pow(x2 * y3 - x3 * y2, 2)
-                                            + Math.pow(x3 * y1 - x1 * y3, 2)
-                                            + Math.pow(x1 * y2 - x2 * y1, 2)) / 2.0
-                                            ;
-                                }
+                                double xn1 = (vertices[(int) triangles[i][2]][1] - vertices[(int) triangles[i][0]][1]) * (vertices[(int) triangles[i][1]][2] - vertices[(int) triangles[i][0]][2]) - (vertices[(int) triangles[i][2]][2] - vertices[(int) triangles[i][0]][2]) * (vertices[(int) triangles[i][1]][1] - vertices[(int) triangles[i][0]][1]);
+                                double yn1 = (vertices[(int) triangles[i][2]][2] - vertices[(int) triangles[i][0]][2]) * (vertices[(int) triangles[i][1]][0] - vertices[(int) triangles[i][0]][0]) - (vertices[(int) triangles[i][2]][0] - vertices[(int) triangles[i][0]][0]) * (vertices[(int) triangles[i][1]][2] - vertices[(int) triangles[i][0]][2]);
+                                double zn1 = (vertices[(int) triangles[i][2]][0] - vertices[(int) triangles[i][0]][0]) * (vertices[(int) triangles[i][1]][1] - vertices[(int) triangles[i][0]][1]) - (vertices[(int) triangles[i][2]][1] - vertices[(int) triangles[i][0]][1]) * (vertices[(int) triangles[i][1]][0] - vertices[(int) triangles[i][0]][0]);
+                                double l1 = Math.sqrt(xn1 * xn1 + yn1 * yn1 + zn1 * zn1);
+                                xn1 = xn1 / l1;
+                                yn1 = yn1 / l1;
+                                zn1 = zn1 / l1;
 
                                 for (int j = 0; j < 3; j++) {
                                     trianglesBackup[i][j] = triangles[i][j];
 
                                     if (triangles[i][j] == triangles[t][e2]) {
                                         triangles[i][j] = triangles[t][e1];
+                                        changed = true;
                                     }
 
                                 }
 
-                                {
-                                    float x1 = vertices[(int) triangles[i][1]][0] - vertices[(int) triangles[i][0]][0];
-                                    float x2 = vertices[(int) triangles[i][1]][1] - vertices[(int) triangles[i][0]][1];
-                                    float x3 = vertices[(int) triangles[i][1]][2] - vertices[(int) triangles[i][0]][2];
+                                String[] ek = new String[6];
+                                ek[0] = triangles[i][0] + "|" + triangles[i][1]; //$NON-NLS-1$
+                                ek[1] = triangles[i][1] + "|" + triangles[i][0]; //$NON-NLS-1$
+                                ek[2] = triangles[i][1] + "|" + triangles[i][2]; //$NON-NLS-1$
+                                ek[3] = triangles[i][2] + "|" + triangles[i][1]; //$NON-NLS-1$
+                                ek[4] = triangles[i][2] + "|" + triangles[i][0]; //$NON-NLS-1$
+                                ek[5] = triangles[i][0] + "|" + triangles[i][2]; //$NON-NLS-1$
 
-                                    float y1 = vertices[(int) triangles[i][2]][0] - vertices[(int) triangles[i][0]][0];
-                                    float y2 = vertices[(int) triangles[i][2]][1] - vertices[(int) triangles[i][0]][1];
-                                    float y3 = vertices[(int) triangles[i][2]][2] - vertices[(int) triangles[i][0]][2];
+                                for (String k : ek) {
+                                    if (edgeCount.containsKey(k)) {
+                                        edgeCount.put(k, edgeCount.get(k) + 1);
+                                    } else {
+                                        edgeCount.put(k, 1);
+                                    }
+                                }
 
-                                    area2 = area2 + Math.sqrt(
-                                            Math.pow(x2 * y3 - x3 * y2, 2)
-                                            + Math.pow(x3 * y1 - x1 * y3, 2)
-                                            + Math.pow(x1 * y2 - x2 * y1, 2)) / 2.0
-                                            ;
+
+                                if (changed) {
+
+
+                                    BigDecimal x1 = verticesD[(int) triangles[i][1]][0].subtract(verticesD[(int) triangles[i][0]][0]);
+                                    BigDecimal x2 = verticesD[(int) triangles[i][1]][1].subtract(verticesD[(int) triangles[i][0]][1]);
+                                    BigDecimal x3 = verticesD[(int) triangles[i][1]][2].subtract(verticesD[(int) triangles[i][0]][2]);
+
+                                    BigDecimal y1 = verticesD[(int) triangles[i][2]][0].subtract(verticesD[(int) triangles[i][0]][0]);
+                                    BigDecimal y2 = verticesD[(int) triangles[i][2]][1].subtract(verticesD[(int) triangles[i][0]][1]);
+                                    BigDecimal y3 = verticesD[(int) triangles[i][2]][2].subtract(verticesD[(int) triangles[i][0]][2]);
+
+                                    if (
+                                            triangles[i][0] == triangles[i][1] ||
+                                            triangles[i][0] == triangles[i][2] ||
+                                            triangles[i][1] == triangles[i][2]) {
+                                        delta = BigDecimal.ZERO;
+                                        area[i] = delta;
+                                    } else {
+                                        BigDecimal z1 = x2.multiply(y3).subtract(x3.multiply(y2));
+                                        BigDecimal z2 = x3.multiply(y1).subtract(x1.multiply(y3));
+                                        BigDecimal z3 = x1.multiply(y2).subtract(x2.multiply(y1));
+
+                                        delta = z1.multiply(z1).add(z2.multiply(z2).add(z3.multiply(z3)));
+
+                                        area[i] = delta;
+
+                                        // FIXME Better check for collinearity!
+                                        if (delta.compareTo(new BigDecimal(".01")) < 0) { //$NON-NLS-1$
+                                            invalid = true;
+                                        } else {
+
+                                            double xn2 = (vertices[(int) triangles[i][2]][1] - vertices[(int) triangles[i][0]][1]) * (vertices[(int) triangles[i][1]][2] - vertices[(int) triangles[i][0]][2]) - (vertices[(int) triangles[i][2]][2] - vertices[(int) triangles[i][0]][2]) * (vertices[(int) triangles[i][1]][1] - vertices[(int) triangles[i][0]][1]);
+                                            double yn2 = (vertices[(int) triangles[i][2]][2] - vertices[(int) triangles[i][0]][2]) * (vertices[(int) triangles[i][1]][0] - vertices[(int) triangles[i][0]][0]) - (vertices[(int) triangles[i][2]][0] - vertices[(int) triangles[i][0]][0]) * (vertices[(int) triangles[i][1]][2] - vertices[(int) triangles[i][0]][2]);
+                                            double zn2 = (vertices[(int) triangles[i][2]][0] - vertices[(int) triangles[i][0]][0]) * (vertices[(int) triangles[i][1]][1] - vertices[(int) triangles[i][0]][1]) - (vertices[(int) triangles[i][2]][1] - vertices[(int) triangles[i][0]][1]) * (vertices[(int) triangles[i][1]][0] - vertices[(int) triangles[i][0]][0]);
+                                            double l2 = Math.sqrt(xn2 * xn2 + yn2 * yn2 + zn2 * zn2);
+                                            xn2 = xn2 / l2;
+                                            yn2 = yn2 / l2;
+                                            zn2 = zn2 / l2;
+                                            if (Math.sqrt(Math.pow(xn2 - xn1, 2) + Math.pow(yn2 - yn1, 2) + Math.pow(zn2 - zn1, 2)) > .00001) {
+                                                invalid = true;
+                                            }
+                                        }
+                                    }
+                                    area2 = area2.add(delta);
+
+                                } else {
+
+                                    area2 = area2.add(area[i]);
                                 }
 
                                 for (int j = 3; j < 8; j++) {
@@ -671,28 +765,32 @@ public final class GDataCSG extends GData {
 
                             }
 
-                            if (Math.abs(area1 - area2) < 100.0) {
-                                NLogger.debug(getClass(), "Area1 " + area1); //$NON-NLS-1$
-                                NLogger.debug(getClass(), "Area2 " + area2); //$NON-NLS-1$
+                            for (String k : edgeCount.keySet()) {
+                                if (edgeCount.get(k) < 2) {
+                                    invalid = true;
+                                    break;
+                                }
+                            }
+
+                            NLogger.debug(getClass(), "Area Diff. " + area1.subtract(area2).abs().toString()); //$NON-NLS-1$
+
+                            if (!invalid && area1.subtract(area2).abs().compareTo(new BigDecimal("1000000000")) < 0) { //$NON-NLS-1$
+
                                 for (int k = 0; k < triangleCount; k++) {
+                                    if (skip2[k]) continue;
                                     if (
                                             triangles[k][0] == triangles[k][1] ||
                                             triangles[k][0] == triangles[k][2] ||
                                             triangles[k][1] == triangles[k][2]) {
-                                        triangleCount--;
-                                        if (triangleCount > 0) {
-                                            for (int j = 0; j < 8; j++) {
-                                                triangles[k][j] = triangles[triangleCount][j];
-                                            }
-                                        }
-                                        k--;
+                                        skip2[k] = true;
                                     }
 
                                 }
-                            } else
-
-                            {
+                                foundSolution = true;
+                                break;
+                            } else {
                                 triangles = trianglesBackup;
+                                area = areaBackup;
                             }
                         }
 
@@ -707,7 +805,7 @@ public final class GDataCSG extends GData {
 
                 for (int t = 0; t < triangleCount; t++) {
 
-                    if (triangles[t][0] == -1f) continue;
+                    if (skip2[t]) continue;
 
                     GColour col = new GColour((int) triangles[t][3], triangles[t][4], triangles[t][5], triangles[t][6], triangles[t][7]);
                     Vertex v1 = new Vertex(
@@ -862,42 +960,4 @@ public final class GDataCSG extends GData {
     @Override
     public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {}
 
-    private final BigDecimal TOLERANCE = BigDecimal.ZERO; // new BigDecimal("0.00001"); //.00001
-    private final BigDecimal ZEROT = BigDecimal.ZERO; //  = new BigDecimal("-0.00001");
-    private final BigDecimal ONET = BigDecimal.ONE; //  = new BigDecimal("1.00001");
-    private boolean intersectLineTriangleSuperFast(Vector3dd q, Vector3dd q2, Vector3d d, Vector3dd p2, Vector3d c, Vector3d dir, BigDecimal len) {
-        BigDecimal diskr = BigDecimal.ZERO;
-        BigDecimal inv_diskr = BigDecimal.ZERO;
-        Vector3d vert0 = d;
-        Vector3d vert1 = p2;
-        Vector3d vert2 = c;
-        Vector3d corner1 = Vector3d.sub(vert1, vert0);
-        Vector3d corner2 = Vector3d.sub(vert2, vert0);
-        Vector3d orig = q;
-        Vector3d pvec = Vector3d.cross(dir, corner2);
-        diskr = Vector3d.dotP(corner1, pvec);
-        if (diskr.abs().compareTo(TOLERANCE) <= 0)
-            return false;
-        inv_diskr = BigDecimal.ONE.divide(diskr, Threshold.mc);
-        Vector3d tvec = Vector3d.sub(orig, vert0);
-        BigDecimal u = Vector3d.dotP(tvec, pvec).multiply(inv_diskr);
-        if (u.compareTo(ZEROT) < 0 || u.compareTo(ONET) > 0)
-            return false;
-        Vector3d qvec = Vector3d.cross(tvec, corner1);
-        BigDecimal v = Vector3d.dotP(dir, qvec).multiply(inv_diskr);
-        if (v.compareTo(ZEROT) < 0 || u.add(v).compareTo(ONET) > 0)
-            return false;
-        BigDecimal t = Vector3d.dotP(corner2, qvec).multiply(inv_diskr);
-        if (t.compareTo(ZEROT) < 0 || t.compareTo(len.add(TOLERANCE)) > 0)
-            return false;
-        return true;
-    }
-
-    private boolean intersectLineLineSegmentUnidirectionalFast(Vector3dd p, Vector3dd p2, Vector3d sp, Vector3d dir, BigDecimal len, Vector3dd q, Vector3dd q2) {
-        Vector3d sq = Vector3d.sub(q2, q);
-        Vector3d cross = Vector3d.cross(sq, sp);
-        Vector3d c = Vector3d.add(cross, q);
-        Vector3d d = Vector3d.sub(q, cross);
-        return intersectLineTriangleSuperFast(p, q2, d, q2, c, dir, len);
-    }
 }
