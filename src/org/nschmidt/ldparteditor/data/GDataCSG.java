@@ -397,6 +397,8 @@ public final class GDataCSG extends GData {
 
                 float[][] triangles = new float[reserveCount][8];
 
+                HashSet<Integer> skip = new HashSet<Integer>();
+
                 for (GData3 g3 : result) {
 
                     triangles[triangleIDcounter][3] = g3.colourNumber;
@@ -425,36 +427,20 @@ public final class GDataCSG extends GData {
 
                 // Remove near vertices
 
-                {
-                    HashSet<Integer> skip = new HashSet<Integer>();
-                    for (int i = 0; i < vertexCount; i++) {
-                        if (skip.contains(i)) continue;
-                        for (int j = i + 1; j < vertexCount; j++) {
-                            if (skip.contains(j)) continue;
-                            if (0.0001f >
-                            Math.pow(vertices[i][0] - vertices[j][0], 2) +
-                            Math.pow(vertices[i][1] - vertices[j][1], 2) +
-                            Math.pow(vertices[i][2] - vertices[j][2], 2)) {
-                                vertexMerges[mergeCount][0] = i;
-                                vertexMerges[mergeCount][1] = j;
-                                skip.add(j);
-                                mergeCount++;
-                            }
+                for (int i = 0; i < vertexCount; i++) {
+                    if (skip.contains(i)) continue;
+                    for (int j = i + 1; j < vertexCount; j++) {
+                        if (skip.contains(j)) continue;
+                        if (0.0001f >
+                        Math.pow(vertices[i][0] - vertices[j][0], 2) +
+                        Math.pow(vertices[i][1] - vertices[j][1], 2) +
+                        Math.pow(vertices[i][2] - vertices[j][2], 2)) {
+                            vertexMerges[mergeCount][0] = i;
+                            vertexMerges[mergeCount][1] = j;
+                            skip.add(j);
+                            mergeCount++;
                         }
                     }
-
-                    float[][] vertices2 = new float[vertexCount - skip.size()][3];
-                    int counter = 0;
-                    for (int i = 0; i < vertexCount; i++) {
-                        if (!skip.contains(i)) {
-                            vertices2[counter][0] = vertices[i][0];
-                            vertices2[counter][1] = vertices[i][1];
-                            vertices2[counter][2] = vertices[i][2];
-                            counter++;
-                        }
-                    }
-                    vertices = vertices2;
-                    vertexCount = vertexCount - skip.size();
                 }
 
                 // Apply merges to triangles
@@ -472,6 +458,7 @@ public final class GDataCSG extends GData {
                 // Detect T-Junction Cases
 
                 for (int v = 0; v < vertexCount; v++) {
+                    if (skip.contains(v)) continue;
                     Vector4f vp = new Vector4f(vertices[v][0], vertices[v][1], vertices[v][2], 1f);
                     for (int t = 0; t < triangleCount; t++) {
                         if (triangles[t][0] != v && triangles[t][1] != v && triangles[t][2] != v) {
