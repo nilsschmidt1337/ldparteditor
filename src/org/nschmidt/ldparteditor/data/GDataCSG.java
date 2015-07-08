@@ -35,6 +35,7 @@ import org.nschmidt.csg.Plane;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
@@ -424,22 +425,36 @@ public final class GDataCSG extends GData {
 
                 // Remove near vertices
 
-                for (int i = 0; i < vertexCount; i++) {
-                    for (int j = i + 1; j < vertexCount; j++) {
-                        if (0.000001f >
-                        Math.pow(vertices[i][0] - vertices[j][0], 2) +
-                        Math.pow(vertices[i][1] - vertices[j][1], 2) +
-                        Math.pow(vertices[i][2] - vertices[j][2], 2)) {
-                            vertexCount--;
-                            vertices[j][0] = vertices[vertexCount][0];
-                            vertices[j][1] = vertices[vertexCount][1];
-                            vertices[j][2] = vertices[vertexCount][2];
-                            vertexMerges[mergeCount][0] = i;
-                            vertexMerges[mergeCount][1] = j;
-                            mergeCount++;
-                            j--;
+                {
+                    HashSet<Integer> skip = new HashSet<Integer>();
+                    for (int i = 0; i < vertexCount; i++) {
+                        if (skip.contains(i)) continue;
+                        for (int j = i + 1; j < vertexCount; j++) {
+                            if (skip.contains(j)) continue;
+                            if (0.0001f >
+                            Math.pow(vertices[i][0] - vertices[j][0], 2) +
+                            Math.pow(vertices[i][1] - vertices[j][1], 2) +
+                            Math.pow(vertices[i][2] - vertices[j][2], 2)) {
+                                vertexMerges[mergeCount][0] = i;
+                                vertexMerges[mergeCount][1] = j;
+                                skip.add(j);
+                                mergeCount++;
+                            }
                         }
                     }
+
+                    float[][] vertices2 = new float[vertexCount - skip.size()][3];
+                    int counter = 0;
+                    for (int i = 0; i < vertexCount; i++) {
+                        if (!skip.contains(i)) {
+                            vertices2[counter][0] = vertices[i][0];
+                            vertices2[counter][1] = vertices[i][1];
+                            vertices2[counter][2] = vertices[i][2];
+                            counter++;
+                        }
+                    }
+                    vertices = vertices2;
+                    vertexCount = vertexCount - skip.size();
                 }
 
                 // Apply merges to triangles
@@ -456,75 +471,71 @@ public final class GDataCSG extends GData {
 
                 // Detect T-Junction Cases
 
-
-                for (int a = 0; a < vertexCount; a++) {
-                    Vector4f vp = new Vector4f(vertices[a][0], vertices[a][1], vertices[a][2], 0f);
+                for (int v = 0; v < vertexCount; v++) {
+                    Vector4f vp = new Vector4f(vertices[v][0], vertices[v][1], vertices[v][2], 1f);
                     for (int t = 0; t < triangleCount; t++) {
-
-                        if (triangles[t][0] != a && triangles[t][1] != a && triangles[t][2] != a) {
+                        if (triangles[t][0] != v && triangles[t][1] != v && triangles[t][2] != v) {
 
                             int junctionMode = 0;
 
-                            Vector4f v1 = MathHelper.getNearestPointToLineSegment(
+                            Vector4f v1 = MathHelper.getNearestPointToLineSegment2(
                                     vertices[(int) triangles[t][0]][0],
                                     vertices[(int) triangles[t][0]][1],
                                     vertices[(int) triangles[t][0]][2],
                                     vertices[(int) triangles[t][1]][0],
                                     vertices[(int) triangles[t][1]][1],
                                     vertices[(int) triangles[t][1]][2],
-                                    vertices[a][0],
-                                    vertices[a][1],
-                                    vertices[a][2]);
+                                    vertices[v][0],
+                                    vertices[v][1],
+                                    vertices[v][2]);
                             float d1 = Vector4f.sub(v1, vp, null).lengthSquared();
 
                             if (d1 < 0.000001f) {
                                 junctionMode = 1;
                             } else {
 
-                                Vector4f v2 = MathHelper.getNearestPointToLineSegment(
+                                Vector4f v2 = MathHelper.getNearestPointToLineSegment2(
                                         vertices[(int) triangles[t][1]][0],
                                         vertices[(int) triangles[t][1]][1],
                                         vertices[(int) triangles[t][1]][2],
                                         vertices[(int) triangles[t][2]][0],
                                         vertices[(int) triangles[t][2]][1],
                                         vertices[(int) triangles[t][2]][2],
-                                        vertices[a][0],
-                                        vertices[a][1],
-                                        vertices[a][2]);
+                                        vertices[v][0],
+                                        vertices[v][1],
+                                        vertices[v][2]);
                                 float d2 = Vector4f.sub(v2, vp, null).lengthSquared();
 
                                 if (d2 < 0.000001f) {
                                     junctionMode = 2;
-                                    v1 = v2;
                                 } else {
 
-                                    Vector4f v3 = MathHelper.getNearestPointToLineSegment(
+                                    Vector4f v3 = MathHelper.getNearestPointToLineSegment2(
                                             vertices[(int) triangles[t][2]][0],
                                             vertices[(int) triangles[t][2]][1],
                                             vertices[(int) triangles[t][2]][2],
                                             vertices[(int) triangles[t][0]][0],
                                             vertices[(int) triangles[t][0]][1],
                                             vertices[(int) triangles[t][0]][2],
-                                            vertices[a][0],
-                                            vertices[a][1],
-                                            vertices[a][2]);
+                                            vertices[v][0],
+                                            vertices[v][1],
+                                            vertices[v][2]);
                                     float d3 = Vector4f.sub(v3, vp, null).lengthSquared();
 
                                     if (d3 < 0.000001f) {
                                         junctionMode = 3;
-                                        v1 = v3;
                                     }
                                 }
                             }
 
                             if (junctionMode > 0) {
-                                if (triangleCount + 2 > reserveCount) {
+                                if (triangleCount + 1 > reserveCount) {
 
                                     reserveCount = reserveCount * 2;
 
                                     float[][] triangles2 = new float[reserveCount][8];
 
-                                    for (int i = 0; i < triangles.length; i++) {
+                                    for (int i = 0; i < triangleCount; i++) {
                                         for (int j = 0; j < 8; j++) {
                                             triangles2[i][j] = triangles[i][j];
                                         }
@@ -535,28 +546,96 @@ public final class GDataCSG extends GData {
                                 }
 
                                 for (int j = 0; j < 8; j++) {
-                                    triangles[triangleCount][j] = triangles[triangleCount][j];
+                                    triangles[triangleCount][j] = triangles[t][j];
                                 }
 
                                 switch (junctionMode) {
                                 case 1:
-
+                                    //  triangles[triangleCount][3] = -1f;
+                                    //  triangles[triangleCount][4] = 1f;
+                                    //  triangles[triangleCount][5] = 0f;
+                                    //  triangles[triangleCount][6] = 0f;
+                                    //  triangles[triangleCount][7] = 1f;
+                                    //  triangles[t][3] = -1f;
+                                    //  triangles[t][4] = .5f;
+                                    //  triangles[t][5] = 0f;
+                                    //  triangles[t][6] = 0f;
+                                    //  triangles[t][7] = 1f;
+                                    triangles[triangleCount][0] = triangles[t][0];
+                                    triangles[triangleCount][1] = v;
+                                    triangles[triangleCount][2] = triangles[t][2];
+                                    triangles[t][0] = v;
+                                    triangles[t][1] = triangles[t][1];
+                                    triangles[t][2] = triangles[t][2];
                                     break;
                                 case 2:
-
+                                    //  triangles[triangleCount][3] = -1f;
+                                    //  triangles[triangleCount][4] = 0f;
+                                    //  triangles[triangleCount][5] = 1f;
+                                    //  triangles[triangleCount][6] = 0f;
+                                    //  triangles[triangleCount][7] = 1f;
+                                    //  triangles[t][3] = -1f;
+                                    //  triangles[t][4] = 0f;
+                                    //  triangles[t][5] = .5f;
+                                    //  triangles[t][6] = 0f;
+                                    //  triangles[t][7] = 1f;
+                                    triangles[triangleCount][0] = triangles[t][1];
+                                    triangles[triangleCount][1] = v;
+                                    triangles[triangleCount][2] = triangles[t][0];
+                                    triangles[t][1] = triangles[t][2];
+                                    triangles[t][2] = triangles[t][0];
+                                    triangles[t][0] = v;
                                     break;
                                 case 3:
-
+                                    //  triangles[triangleCount][3] = -1f;
+                                    //  triangles[triangleCount][4] = 0f;
+                                    //  triangles[triangleCount][5] = 0f;
+                                    //  triangles[triangleCount][6] = 1f;
+                                    //  triangles[triangleCount][7] = 1f;
+                                    //  triangles[t][3] = -1f;
+                                    //  triangles[t][4] = 0f;
+                                    //  triangles[t][5] = 0f;
+                                    //  triangles[t][6] = .5f;
+                                    //  triangles[t][7] = 1f;
+                                    triangles[triangleCount][0] = triangles[t][2];
+                                    triangles[triangleCount][1] = v;
+                                    triangles[triangleCount][2] = triangles[t][1];
+                                    triangles[t][2] = triangles[t][1];
+                                    triangles[t][1] = triangles[t][0];
+                                    triangles[t][0] = v;
                                     break;
                                 }
-                                triangleCount += 2;
-                                t--;
+                                triangleCount++;
                             }
 
                         }
 
                     }
 
+                }
+
+                result.clear();
+
+                Matrix4f id = new Matrix4f();
+                Matrix4f.setIdentity(id);
+                GData1 parent = new GData1(-1, .5f, .5f, .5f, 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
+                        new HashSet<String>(), View.DUMMY_REFERENCE);
+
+                for (int t = 0; t < triangleCount; t++) {
+                    GColour col = new GColour((int) triangles[t][3], triangles[t][4], triangles[t][5], triangles[t][6], triangles[t][7]);
+                    Vertex v1 = new Vertex(
+                            vertices[(int) triangles[t][0]][0],
+                            vertices[(int) triangles[t][0]][1],
+                            vertices[(int) triangles[t][0]][2]);
+                    Vertex v2 = new Vertex(
+                            vertices[(int) triangles[t][1]][0],
+                            vertices[(int) triangles[t][1]][1],
+                            vertices[(int) triangles[t][1]][2]);
+                    Vertex v3 = new Vertex(
+                            vertices[(int) triangles[t][2]][0],
+                            vertices[(int) triangles[t][2]][1],
+                            vertices[(int) triangles[t][2]][2]);
+                    result.add(new GData3(v1, v2, v3, parent, col));
                 }
 
 

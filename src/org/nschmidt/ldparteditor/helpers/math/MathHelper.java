@@ -477,6 +477,64 @@ public enum MathHelper {
         return new Vector4f(ax, ay, az, 1f);
     }
 
+    public static Vector4f getNearestPointToLineSegment2(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
+
+        // Fastest iterative approach without objects
+
+        // 0th Iteration
+        float ax = (lx1 + lx2) / 2f;
+        float ay = (ly1 + ly2) / 2f;
+        float az = (lz1 + lz2) / 2f;
+
+        // 1st to n-th Iteration
+        float ux = lx1;
+        float uy = ly1;
+        float uz = lz1;
+        float vx = lx2;
+        float vy = ly2;
+        float vz = lz2;
+
+        float dup = 0f;
+        float dvp = 1f;
+
+        float dap = 0f;
+        float odap = 1f;
+
+        while (Math.abs(dap - odap) > .0000001f) {
+            float dxup = ux - px;
+            float dyup = uy - py;
+            float dzup = uz - pz;
+            dup = dxup * dxup + dyup * dyup + dzup * dzup;
+            float dxvp = vx - px;
+            float dyvp = vy - py;
+            float dzvp = vz - pz;
+            dvp = dxvp * dxvp + dyvp * dyvp + dzvp * dzvp;
+
+            if (dup < dvp) {
+                vx = ax;
+                vy = ay;
+                vz = az;
+                ax = (ax + ux) / 2f;
+                ay = (ay + uy) / 2f;
+                az = (az + uz) / 2f;
+            } else {
+                ux = ax;
+                uy = ay;
+                uz = az;
+                ax = (ax + vx) / 2f;
+                ay = (ay + vy) / 2f;
+                az = (az + vz) / 2f;
+            }
+            odap = dap;
+            float dxap = ax - px;
+            float dyap = ay - py;
+            float dzap = az - pz;
+            dap = dxap * dxap + dyap * dyap + dzap * dzap;
+
+        }
+        return new Vector4f(ax, ay, az, 1f);
+    }
+
     public static Vector4f getNearestPointToLinePoints(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
         final float dxup = lx1 - px;
         final float dyup = ly1 - py;
