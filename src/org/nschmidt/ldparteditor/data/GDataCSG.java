@@ -635,7 +635,7 @@ public final class GDataCSG extends GData {
                     BigDecimal z2 = x3.multiply(y1).subtract(x1.multiply(y3));
                     BigDecimal z3 = x1.multiply(y2).subtract(x2.multiply(y1));
 
-                    BigDecimal delta = z1.multiply(z1).add(z2.multiply(z2).add(z3.multiply(z3)));
+                    BigDecimal delta = MathHelper.sqrt(z1.multiply(z1).add(z2.multiply(z2)).add(z3.multiply(z3)));
                     area1 = area1.add(delta);
 
                     area[i] = delta;
@@ -656,7 +656,7 @@ public final class GDataCSG extends GData {
                             int e2 = e0 < 3 ? (e0 + 1) % 3 : (e0 + 2) % 3;
                             int e1 = e0 > 2 ? e0 - 3 : e0;
 
-                            if (skipVertex[(int) triangles[t][e2]]) continue;
+                            // if (skipVertex[(int) triangles[t][e2]]) continue;
 
                             float[][] trianglesBackup = new float[triangleCount][8];
                             BigDecimal[] areaBackup = new BigDecimal[triangleCount];
@@ -691,33 +691,7 @@ public final class GDataCSG extends GData {
 
                                 }
 
-                                String[] ek = new String[6];
-                                ek[0] = triangles[i][0] + "|" + triangles[i][1]; //$NON-NLS-1$
-                                ek[1] = triangles[i][1] + "|" + triangles[i][0]; //$NON-NLS-1$
-                                ek[2] = triangles[i][1] + "|" + triangles[i][2]; //$NON-NLS-1$
-                                ek[3] = triangles[i][2] + "|" + triangles[i][1]; //$NON-NLS-1$
-                                ek[4] = triangles[i][2] + "|" + triangles[i][0]; //$NON-NLS-1$
-                                ek[5] = triangles[i][0] + "|" + triangles[i][2]; //$NON-NLS-1$
-
-                                for (String k : ek) {
-                                    if (edgeCount.containsKey(k)) {
-                                        edgeCount.put(k, edgeCount.get(k) + 1);
-                                    } else {
-                                        edgeCount.put(k, 1);
-                                    }
-                                }
-
-
-                                if (changed) {
-
-
-                                    BigDecimal x1 = verticesD[(int) triangles[i][1]][0].subtract(verticesD[(int) triangles[i][0]][0]);
-                                    BigDecimal x2 = verticesD[(int) triangles[i][1]][1].subtract(verticesD[(int) triangles[i][0]][1]);
-                                    BigDecimal x3 = verticesD[(int) triangles[i][1]][2].subtract(verticesD[(int) triangles[i][0]][2]);
-
-                                    BigDecimal y1 = verticesD[(int) triangles[i][2]][0].subtract(verticesD[(int) triangles[i][0]][0]);
-                                    BigDecimal y2 = verticesD[(int) triangles[i][2]][1].subtract(verticesD[(int) triangles[i][0]][1]);
-                                    BigDecimal y3 = verticesD[(int) triangles[i][2]][2].subtract(verticesD[(int) triangles[i][0]][2]);
+                                if (changed && !invalid) {
 
                                     if (
                                             triangles[i][0] == triangles[i][1] ||
@@ -726,16 +700,42 @@ public final class GDataCSG extends GData {
                                         delta = BigDecimal.ZERO;
                                         area[i] = delta;
                                     } else {
+
+                                        String[] ek = new String[6];
+                                        ek[0] = triangles[i][0] + "|" + triangles[i][1]; //$NON-NLS-1$
+                                        ek[1] = triangles[i][1] + "|" + triangles[i][0]; //$NON-NLS-1$
+                                        ek[2] = triangles[i][1] + "|" + triangles[i][2]; //$NON-NLS-1$
+                                        ek[3] = triangles[i][2] + "|" + triangles[i][1]; //$NON-NLS-1$
+                                        ek[4] = triangles[i][2] + "|" + triangles[i][0]; //$NON-NLS-1$
+                                        ek[5] = triangles[i][0] + "|" + triangles[i][2]; //$NON-NLS-1$
+
+                                        for (String k : ek) {
+                                            if (edgeCount.containsKey(k)) {
+                                                edgeCount.put(k, edgeCount.get(k) + 1);
+                                            } else {
+                                                edgeCount.put(k, 1);
+                                            }
+                                        }
+
+
+                                        BigDecimal x1 = verticesD[(int) triangles[i][1]][0].subtract(verticesD[(int) triangles[i][0]][0]);
+                                        BigDecimal x2 = verticesD[(int) triangles[i][1]][1].subtract(verticesD[(int) triangles[i][0]][1]);
+                                        BigDecimal x3 = verticesD[(int) triangles[i][1]][2].subtract(verticesD[(int) triangles[i][0]][2]);
+
+                                        BigDecimal y1 = verticesD[(int) triangles[i][2]][0].subtract(verticesD[(int) triangles[i][0]][0]);
+                                        BigDecimal y2 = verticesD[(int) triangles[i][2]][1].subtract(verticesD[(int) triangles[i][0]][1]);
+                                        BigDecimal y3 = verticesD[(int) triangles[i][2]][2].subtract(verticesD[(int) triangles[i][0]][2]);
+
                                         BigDecimal z1 = x2.multiply(y3).subtract(x3.multiply(y2));
                                         BigDecimal z2 = x3.multiply(y1).subtract(x1.multiply(y3));
                                         BigDecimal z3 = x1.multiply(y2).subtract(x2.multiply(y1));
 
-                                        delta = z1.multiply(z1).add(z2.multiply(z2).add(z3.multiply(z3)));
+                                        delta = MathHelper.sqrt(z1.multiply(z1).add(z2.multiply(z2)).add(z3.multiply(z3)));
 
                                         area[i] = delta;
 
                                         // FIXME Better check for collinearity!
-                                        if (delta.compareTo(new BigDecimal(".01")) < 0) { //$NON-NLS-1$
+                                        if (delta.compareTo(new BigDecimal(".00001")) < 0) { //$NON-NLS-1$
                                             invalid = true;
                                         } else {
 
@@ -746,7 +746,7 @@ public final class GDataCSG extends GData {
                                             xn2 = xn2 / l2;
                                             yn2 = yn2 / l2;
                                             zn2 = zn2 / l2;
-                                            if (Math.sqrt(Math.pow(xn2 - xn1, 2) + Math.pow(yn2 - yn1, 2) + Math.pow(zn2 - zn1, 2)) > .00001) {
+                                            if (Math.sqrt(Math.pow(xn2 - xn1, 2) + Math.pow(yn2 - yn1, 2) + Math.pow(zn2 - zn1, 2)) > .01) {
                                                 invalid = true;
                                             }
                                         }
@@ -754,6 +754,23 @@ public final class GDataCSG extends GData {
                                     area2 = area2.add(delta);
 
                                 } else {
+
+                                    String[] ek = new String[6];
+                                    ek[0] = triangles[i][0] + "|" + triangles[i][1]; //$NON-NLS-1$
+                                    ek[1] = triangles[i][1] + "|" + triangles[i][0]; //$NON-NLS-1$
+                                    ek[2] = triangles[i][1] + "|" + triangles[i][2]; //$NON-NLS-1$
+                                    ek[3] = triangles[i][2] + "|" + triangles[i][1]; //$NON-NLS-1$
+                                    ek[4] = triangles[i][2] + "|" + triangles[i][0]; //$NON-NLS-1$
+                                    ek[5] = triangles[i][0] + "|" + triangles[i][2]; //$NON-NLS-1$
+
+                                    for (String k : ek) {
+                                        if (edgeCount.containsKey(k)) {
+                                            edgeCount.put(k, edgeCount.get(k) + 1);
+                                        } else {
+                                            edgeCount.put(k, 1);
+                                        }
+                                    }
+
 
                                     area2 = area2.add(area[i]);
                                 }
@@ -765,16 +782,20 @@ public final class GDataCSG extends GData {
 
                             }
 
-                            for (String k : edgeCount.keySet()) {
-                                if (edgeCount.get(k) < 2) {
-                                    invalid = true;
-                                    break;
+                            if (!invalid) {
+                                for (String k : edgeCount.keySet()) {
+                                    if (edgeCount.get(k) < 2) {
+                                        invalid = true;
+                                        break;
+                                    }
                                 }
                             }
 
-                            NLogger.debug(getClass(), "Area Diff. " + area1.subtract(area2).abs().toString()); //$NON-NLS-1$
+                            if (!invalid && area1.subtract(area2).abs().compareTo(new BigDecimal("10")) < 0) { //$NON-NLS-1$
 
-                            if (!invalid && area1.subtract(area2).abs().compareTo(new BigDecimal("1000000000")) < 0) { //$NON-NLS-1$
+                                NLogger.debug(getClass(), "Area1 " + area1.toString()); //$NON-NLS-1$
+                                NLogger.debug(getClass(), "Area2 " + area2.toString()); //$NON-NLS-1$
+
 
                                 for (int k = 0; k < triangleCount; k++) {
                                     if (skip2[k]) continue;
