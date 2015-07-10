@@ -518,6 +518,7 @@ public final class I18n {
     public static final String EDITORTEXT_Colour2 = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Comment = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Compile = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_CompileCSG = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Error = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Errors = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_FindReplace = EDITORTEXT.getString(getProperty());

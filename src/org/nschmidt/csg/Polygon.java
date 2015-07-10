@@ -226,8 +226,8 @@ public final class Polygon {
                 if (colour == null) {
                     result.add(new GData3(v1, v2, v3, parent, c16));
                 } else {
-                    result.add(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16)));
-                    // FIXME Uncomment: result.add(new GData3(v1, v2, v3, parent, colour.getColour()));
+                    // result.add(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16)));
+                    result.add(new GData3(v1, v2, v3, parent, colour.getColour()));
                 }
             }
         }
