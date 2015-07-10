@@ -673,7 +673,7 @@ public final class GDataCSG extends GData {
                                     for (int t = 0; t < triangleCount; t++) {
                                         if (m.isCanceled()) break;
                                         if (skip2[t]) continue;
-                                        NLogger.debug(getClass(), t + " of " + triangleCount); //$NON-NLS-1$
+                                        // NLogger.debug(getClass(), t + " of " + triangleCount); //$NON-NLS-1$
 
                                         for (int e0 = 0; e0 < 6; e0++) {
                                             int e2 = e0 < 3 ? (e0 + 1) % 3 : (e0 + 2) % 3;
