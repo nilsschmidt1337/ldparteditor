@@ -393,7 +393,7 @@ public final class GDataCSG extends GData {
 
                                 sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
 
-                                ArrayList<GData3> result = compiledCSG.getResult();
+                                HashMap<GData3, Integer> result = compiledCSG.getResult();
 
                                 // FIXME Needs T-Junction Elimination / Mesh Reduction!
 
@@ -417,7 +417,7 @@ public final class GDataCSG extends GData {
 
                                 HashSet<Integer> skip = new HashSet<Integer>();
 
-                                for (GData3 g3 : result) {
+                                for (GData3 g3 : result.keySet()) {
 
                                     triangles[triangleIDcounter][3] = g3.colourNumber;
                                     triangles[triangleIDcounter][4] = g3.r;
@@ -870,10 +870,10 @@ public final class GDataCSG extends GData {
                                             vertices[(int) triangles[t][2]][0],
                                             vertices[(int) triangles[t][2]][1],
                                             vertices[(int) triangles[t][2]][2]);
-                                    result.add(new GData3(v1, v2, v3, parent, col));
+                                    result.put(new GData3(v1, v2, v3, parent, col), 0);
                                 }
 
-                                for (GData3 g3 : result) {
+                                for (GData3 g3 : result.keySet()) {
                                     StringBuilder lineBuilder3 = new StringBuilder();
                                     lineBuilder3.append("3 "); //$NON-NLS-1$
                                     if (g3.colourNumber == -1) {
