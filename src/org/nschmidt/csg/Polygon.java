@@ -36,6 +36,7 @@ package org.nschmidt.csg;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -206,9 +207,10 @@ public final class Polygon {
         return sb;
     }
 
-    public ArrayList<GData3> toLDrawTriangles(GData1 parent) {
-        ArrayList<GData3> result = new ArrayList<GData3>();
+    public HashMap<GData3, Integer> toLDrawTriangles(GData1 parent) {
+        HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
         if (this.vertices.size() >= 3) {
+            int dID = CSGPrimitive.id_counter.getAndIncrement();
             final GColour c16 = View.getLDConfigColour(16);
             for (int i = 0; i < this.vertices.size() - 2; i++) {
                 org.nschmidt.ldparteditor.data.Vertex v1 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(0).pos.x, (float) this.vertices.get(0).pos.y,
@@ -224,10 +226,10 @@ public final class Polygon {
                     colour = null;
                 }
                 if (colour == null) {
-                    result.add(new GData3(v1, v2, v3, parent, c16));
+                    result.put(new GData3(v1, v2, v3, parent, c16), dID);
                 } else {
-                    // result.add(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16)));
-                    result.add(new GData3(v1, v2, v3, parent, colour.getColour()));
+                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16)), colour.getIndex());
+                    // result.put(new GData3(v1, v2, v3, parent, colour.getColour()), colour.getIndex());
                 }
             }
         }
