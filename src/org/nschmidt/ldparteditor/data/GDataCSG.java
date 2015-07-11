@@ -19,6 +19,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.TreeMap;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -641,8 +642,10 @@ public final class GDataCSG extends GData {
 
                             // if (skipVertex[(int) triangles[t][e1]]) continue;
 
+                            final int centerVertexID = (int) triangles[t][e1];
+
                             planeCount.clear();
-                            for (Integer tri : adjacentTriangles.get((int) triangles[t][e1])) {
+                            for (Integer tri : adjacentTriangles.get(centerVertexID)) {
                                 planeCount.add((int) triangles[tri][8]);
                             }
 
@@ -657,7 +660,7 @@ public final class GDataCSG extends GData {
                                 {
                                     HashMap<Integer, Integer> allVertices = new HashMap<Integer, Integer>();
 
-                                    for (Integer tri : adjacentTriangles.get((int) triangles[t][e1])) {
+                                    for (Integer tri : adjacentTriangles.get(centerVertexID)) {
                                         verticesAround.add((int) triangles[tri][0]);
                                         verticesAround.add((int) triangles[tri][1]);
                                         verticesAround.add((int) triangles[tri][2]);
@@ -692,7 +695,7 @@ public final class GDataCSG extends GData {
                                         }
                                     }
 
-                                    verticesAround.remove(triangles[t][e1]);
+                                    verticesAround.remove(centerVertexID);
 
 
                                 }
@@ -700,7 +703,7 @@ public final class GDataCSG extends GData {
                                 if (hasJunction) {
 
                                     NLogger.debug(getClass(), "Possible T-junction!"); //$NON-NLS-1$
-                                    skipVertex[(int) triangles[t][e1]] = true;
+                                    skipVertex[centerVertexID] = true;
 
                                 } else {
 
@@ -709,7 +712,7 @@ public final class GDataCSG extends GData {
                                     if (adjacentCount > 15) {
 
                                         NLogger.debug(getClass(), "Too much adjacent points (polar vertex)!"); //$NON-NLS-1$
-                                        skipVertex[(int) triangles[t][e1]] = true;
+                                        skipVertex[centerVertexID] = true;
 
                                     } else {
 
@@ -719,47 +722,136 @@ public final class GDataCSG extends GData {
 
                                         HashSet<Integer> commonTriangles = new HashSet<>();
 
-                                        HashSet<Integer> connectedTriangles = adjacentTriangles.get((int) triangles[t][e1]);
+                                        HashSet<Integer> connectedTriangles = adjacentTriangles.get(centerVertexID);
 
                                         commonTriangles.addAll(connectedTriangles);
                                         commonTriangles.retainAll(adjacentTriangles.get((int) triangles[t][e2]));
 
-                                        // FIXME Create Fingerprint
+                                        if (commonTriangles.size() == 2) {
 
-                                        // 1. adjacentCount
+                                            // FIXME Create Fingerprint
 
-                                        // 2. angles
+                                            // 1. adjacentCount
 
-                                        // 3. length
+                                            // 2. angles
+
+                                            // 3. length
 
 
+                                            Iterator<Integer> cit = commonTriangles.iterator();
+
+                                            final int first = cit.next();
+
+                                            final int last = cit.next();
+
+                                            {
+                                                orderedVertices[0] = (int) triangles[t][e2];
+
+                                                HashSet<Integer> ind = new HashSet<Integer>();
+                                                ind.add((int) triangles[first][0]);
+                                                ind.add((int) triangles[first][1]);
+                                                ind.add((int) triangles[first][2]);
+
+                                                ind.remove(centerVertexID);
+                                                ind.remove((int) triangles[t][e2]);
+
+                                                if (ind.size() == 1) {
+                                                    orderedVertices[1] = ind.iterator().next();
+
+                                                    int i = 1;
+
+                                                    ind.clear();
+                                                    ind.addAll(connectedTriangles);
+                                                    ind.remove(first);
+                                                    ind.remove(last);
+                                                    while (!ind.isEmpty()) {
+                                                        int removeCandidate = -1;
+                                                        for (Integer tri : ind) {
+
+                                                            HashSet<Integer> ind2 = new HashSet<Integer>();
+                                                            ind2.add((int) triangles[tri][0]);
+                                                            ind2.add((int) triangles[tri][1]);
+                                                            ind2.add((int) triangles[tri][2]);
+
+                                                            ind2.remove(orderedVertices[i]);
+
+                                                            if (ind2.size() == 2) {
+                                                                ind2.remove(orderedVertices[i - 1]);
+                                                                if (ind2.size() == 2) {
+                                                                    ind2.remove(centerVertexID);
+                                                                    if (ind2.size() == 1) {
+                                                                        i++;
+                                                                        orderedVertices[i] = ind2.iterator().next();
+                                                                        removeCandidate = tri;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
+                                                        if (removeCandidate > -1) {
+                                                            ind.remove(removeCandidate);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
 
 
-                                        //                                        if (planes == 2) {
-                                        //
-                                        //                                        } else {
-                                        //
-                                        //                                            // Remove merged triangles from adjacency list
-                                        //
-                                        //                                            for (Integer v : verticesAround) {
-                                        //                                                adjacentTriangles.get(v).removeAll(commonTriangles);
-                                        //                                            }
-                                        //                                            connectedTriangles.removeAll(commonTriangles);
-                                        //                                            adjacentTriangles.get((int) triangles[t][e2]).addAll(connectedTriangles);
-                                        //
-                                        //                                            for (Integer t2 : commonTriangles) {
-                                        //                                                skipTriangle[t2] = true;
-                                        //                                            }
-                                        //
-                                        //                                            for (Integer t2 : connectedTriangles) {
-                                        //                                                if (triangles[t2][0] == triangles[t][e1]) triangles[t2][0] = triangles[t][e2];
-                                        //                                                if (triangles[t2][1] == triangles[t][e1]) triangles[t2][1] = triangles[t][e2];
-                                        //                                                if (triangles[t2][2] == triangles[t][e1]) triangles[t2][2] = triangles[t][e2];
-                                        //                                            }
-                                        //
-                                        //                                            foundSolution = true;
-                                        //
-                                        //                                        }
+                                                    double[] length = new double[adjacentCount];
+                                                    double max = -1.0;
+                                                    i = 0;
+                                                    for (Integer v : orderedVertices) {
+                                                        double dist = Math.sqrt(
+                                                                Math.pow(vertices[v][0] - vertices[centerVertexID][0], 2.0) +
+                                                                Math.pow(vertices[v][1] - vertices[centerVertexID][1], 2.0) +
+                                                                Math.pow(vertices[v][2] - vertices[centerVertexID][2], 2.0));
+                                                        if (dist > max) max = dist;
+                                                        length[i] = dist;
+                                                        i++;
+                                                    }
+
+                                                    for (i = 0; i < adjacentCount; i++) {
+                                                        length[i] = Math.abs(length[i] / max);
+                                                    }
+
+                                                    System.out.print(adjacentCount + "=> "); //$NON-NLS-1$
+                                                    for (i = 0; i < adjacentCount; i++) {
+                                                        System.out.print(length[i] + " ");//$NON-NLS-1$
+                                                    }
+
+                                                    System.out.println();
+
+                                                }
+                                            }
+
+
+                                            //                                        if (planes == 2) {
+                                            //
+                                            //                                        } else {
+                                            //
+                                            //                                            // Remove merged triangles from adjacency list
+                                            //
+                                            //                                            for (Integer v : verticesAround) {
+                                            //                                                adjacentTriangles.get(v).removeAll(commonTriangles);
+                                            //                                            }
+                                            //                                            connectedTriangles.removeAll(commonTriangles);
+                                            //                                            adjacentTriangles.get((int) triangles[t][e2]).addAll(connectedTriangles);
+                                            //
+                                            //                                            for (Integer t2 : commonTriangles) {
+                                            //                                                skipTriangle[t2] = true;
+                                            //                                            }
+                                            //
+                                            //                                            for (Integer t2 : connectedTriangles) {
+                                            //                                                if (triangles[t2][0] == triangles[t][e1]) triangles[t2][0] = triangles[t][e2];
+                                            //                                                if (triangles[t2][1] == triangles[t][e1]) triangles[t2][1] = triangles[t][e2];
+                                            //                                                if (triangles[t2][2] == triangles[t][e1]) triangles[t2][2] = triangles[t][e2];
+                                            //                                            }
+                                            //
+                                            //                                            foundSolution = true;
+                                            //
+                                            //                                        }
+
+                                        }
                                     }
                                 }
 
