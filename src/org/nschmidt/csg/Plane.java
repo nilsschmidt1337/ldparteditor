@@ -39,7 +39,7 @@ import java.util.List;
 
 /**
  * Represents a plane in 3D space.
- * 
+ *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 public class Plane {
@@ -51,6 +51,12 @@ public class Plane {
      * to decide if a point is on the plane.
      */
     public static double EPSILON = 1e-3;
+
+    /**
+     * EPSILON_T_JUNCTION is the tolerance used by
+     * the T-Junction detection algorithm
+     */
+    public static float EPSILON_T_JUNCTION = 0.001f;
 
     /**
      * XY plane.
@@ -77,7 +83,7 @@ public class Plane {
     /**
      * Constructor. Creates a new plane defined by its normal vector and the
      * distance to the origin.
-     * 
+     *
      * @param normal
      *            plane normal
      * @param dist
@@ -90,7 +96,7 @@ public class Plane {
 
     /**
      * Creates a nedist plane defined by the the specified points.
-     * 
+     *
      * @param a
      *            first point
      * @param b
@@ -124,7 +130,7 @@ public class Plane {
      * {@code coplanarBack} depending on their orientation with respect to this
      * plane. Polygons in front or back of this plane go into either
      * {@code front} or {@code back}.
-     * 
+     *
      * @param polygon
      *            polygon to split
      * @param coplanarFront

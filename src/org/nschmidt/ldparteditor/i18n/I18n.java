@@ -561,6 +561,8 @@ public final class I18n {
     public static final String META_CSGCompile = META.getString(getProperty());
     public static final String META_CSGEpsilon1 = META.getString(getProperty());
     public static final String META_CSGEpsilon2 = META.getString(getProperty());
+    public static final String META_CSGEpsilon3 = META.getString(getProperty());
+    public static final String META_CSGEpsilon4 = META.getString(getProperty());
     public static final String META_CSGSource1 = META.getString(getProperty());
     public static final String META_CSGSource2 = META.getString(getProperty());
     public static final String META_CSGSource3 = META.getString(getProperty());

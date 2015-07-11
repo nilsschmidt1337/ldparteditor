@@ -94,6 +94,8 @@ public class CSGCone extends CSGPrimitive implements Primitive {
         Vertex endV = new Vertex(e, axisZ.unit());
         List<Polygon> polygons = new ArrayList<Polygon>();
 
+        final int bottom = id_counter.getAndIncrement();
+
         for (int i = 0; i < numSlices; i++) {
             double t0 = i / (double) numSlices, t1 = (i + 1) / (double) numSlices;
             {
@@ -104,7 +106,7 @@ public class CSGCone extends CSGPrimitive implements Primitive {
             }
             {
                 PropertyStorage properties = new PropertyStorage();
-                properties.set("colour", new GColourIndex(colour, id_counter.getAndIncrement())); //$NON-NLS-1$
+                properties.set("colour", new GColourIndex(colour, bottom)); //$NON-NLS-1$
                 polygons.add(new Polygon(Arrays.asList(endV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)), properties));
             }
         }
