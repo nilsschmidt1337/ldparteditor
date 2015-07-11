@@ -156,6 +156,7 @@ public final class I18n {
     public static final String COPYNPASTE_Cut = COPYNPASTE.getString(getProperty());
     public static final String COPYNPASTE_Delete = COPYNPASTE.getString(getProperty());
     public static final String COPYNPASTE_Paste = COPYNPASTE.getString(getProperty());
+    public static final String DATFILE_FoundTJunction = DATFILE.getString(getProperty());
     public static final String DATFILE_HeaderHint = DATFILE.getString(getProperty());
     public static final String DATFILE_Inlined = DATFILE.getString(getProperty());
     public static final String DATFILE_Line = DATFILE.getString(getProperty());
