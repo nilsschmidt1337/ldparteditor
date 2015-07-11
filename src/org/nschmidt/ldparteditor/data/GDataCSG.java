@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,8 +37,8 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 /**
@@ -634,7 +635,7 @@ public final class GDataCSG extends GData {
                     foundSolution = false;
                     for (int t = 0; t < triangleCount; t++) {
                         if (skipTriangle[t]) continue;
-                        NLogger.debug(getClass(), t + " / " + triangleCount); //$NON-NLS-1$
+                        // NLogger.debug(getClass(), t + " / " + triangleCount); //$NON-NLS-1$
 
                         for (int e0 = 0; e0 < 6; e0++) {
                             int e2 = e0 < 3 ? (e0 + 1) % 3 : (e0 + 2) % 3;
@@ -652,7 +653,7 @@ public final class GDataCSG extends GData {
                             final int planes = planeCount.size();
 
                             if (planes > 0 && planes < 3) {
-                                NLogger.debug(getClass(), "Found possible match. Planes: " + planeCount.size()); //$NON-NLS-1$
+                                // NLogger.debug(getClass(), "Found possible match. Planes: " + planeCount.size()); //$NON-NLS-1$
                                 verticesAround.clear();
 
                                 boolean hasJunction = false;
@@ -702,7 +703,7 @@ public final class GDataCSG extends GData {
 
                                 if (hasJunction) {
 
-                                    NLogger.debug(getClass(), "Possible T-junction!"); //$NON-NLS-1$
+                                    // NLogger.debug(getClass(), "Possible T-junction!"); //$NON-NLS-1$
                                     skipVertex[centerVertexID] = true;
 
                                 } else {
@@ -711,14 +712,14 @@ public final class GDataCSG extends GData {
 
                                     if (adjacentCount > 15) {
 
-                                        NLogger.debug(getClass(), "Too much adjacent points (polar vertex)!"); //$NON-NLS-1$
+                                        // NLogger.debug(getClass(), "Too much adjacent points (polar vertex)!"); //$NON-NLS-1$
                                         skipVertex[centerVertexID] = true;
 
                                     } else {
 
                                         int[] orderedVertices = new int[adjacentCount];
 
-                                        NLogger.debug(getClass(), adjacentCount  + " adjacent vertices."); //$NON-NLS-1$
+                                        // NLogger.debug(getClass(), adjacentCount  + " adjacent vertices."); //$NON-NLS-1$
 
                                         HashSet<Integer> commonTriangles = new HashSet<>();
 
@@ -796,8 +797,10 @@ public final class GDataCSG extends GData {
                                                         }
                                                     }
 
-
                                                     double[] length = new double[adjacentCount];
+
+                                                    double[] angles = new double[adjacentCount];
+
                                                     double max = -1.0;
                                                     i = 0;
                                                     for (Integer v : orderedVertices) {
@@ -811,12 +814,31 @@ public final class GDataCSG extends GData {
                                                     }
 
                                                     for (i = 0; i < adjacentCount; i++) {
-                                                        length[i] = Math.abs(length[i] / max);
+                                                        float x1 = vertices[orderedVertices[i]][0] - vertices[centerVertexID][0];
+                                                        float y1 = vertices[orderedVertices[i]][1] - vertices[centerVertexID][1];
+                                                        float z1 = vertices[orderedVertices[i]][2] - vertices[centerVertexID][2];
+                                                        int next = (i + 1) % adjacentCount;
+                                                        float x2 = vertices[orderedVertices[next]][0] - vertices[centerVertexID][0];
+                                                        float y2 = vertices[orderedVertices[next]][1] - vertices[centerVertexID][1];
+                                                        float z2 = vertices[orderedVertices[next]][2] - vertices[centerVertexID][2];
+
+                                                        angles[i] = Math.ceil(Vector3d.angle(
+                                                                new Vector3d(new BigDecimal(x1), new BigDecimal(y1), new BigDecimal(z1)),
+                                                                new Vector3d(new BigDecimal(x2), new BigDecimal(y2), new BigDecimal(z2))));
+
                                                     }
 
-                                                    System.out.print(adjacentCount + "=> "); //$NON-NLS-1$
+                                                    for (i = 0; i < adjacentCount; i++) {
+                                                        length[i] = Math.ceil(Math.abs(length[i] / max) * 100);
+                                                    }
+
+                                                    System.out.print(adjacentCount + " =>   "); //$NON-NLS-1$
                                                     for (i = 0; i < adjacentCount; i++) {
                                                         System.out.print(length[i] + " ");//$NON-NLS-1$
+                                                    }
+                                                    System.out.print(" ANGLE: "); //$NON-NLS-1$
+                                                    for (i = 0; i < adjacentCount; i++) {
+                                                        System.out.print(angles[i] + " ");//$NON-NLS-1$
                                                     }
 
                                                     System.out.println();
