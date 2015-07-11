@@ -116,6 +116,7 @@ public enum StringHelper {
 
         int[] result2 = new int[result.size()];
         for (int i = 0; i < result2.length; i++) {
+            // FIXME NullPointerException ??
             int j = result.get(i);
             result2[i] = j;
         }

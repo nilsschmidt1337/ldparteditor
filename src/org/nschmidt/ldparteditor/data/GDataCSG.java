@@ -565,7 +565,7 @@ public final class GDataCSG extends GData {
 
                                 }
 
-                                for (int j = 0; j < 8; j++) {
+                                for (int j = 0; j < 9; j++) {
                                     triangles[triangleCount][j] = triangles[t][j];
                                 }
 
@@ -620,43 +620,156 @@ public final class GDataCSG extends GData {
 
 
                 // Iterative Simplyfication
+                boolean foundTJunction = false;
+
                 boolean foundSolution = true;
                 HashSet<Integer> planeCount = new HashSet<Integer>();
                 HashSet<Integer> verticesAround = new HashSet<Integer>();
+
+                boolean[] skipTriangle = new boolean[triangleCount];
+                boolean[] skipVertex = new boolean[vertexCount];
+
                 while (foundSolution) {
                     foundSolution = false;
                     for (int t = 0; t < triangleCount; t++) {
-                        // NLogger.debug(getClass(), t + " of " + triangleCount); //$NON-NLS-1$
+                        if (skipTriangle[t]) continue;
+                        NLogger.debug(getClass(), t + " / " + triangleCount); //$NON-NLS-1$
 
                         for (int e0 = 0; e0 < 6; e0++) {
                             int e2 = e0 < 3 ? (e0 + 1) % 3 : (e0 + 2) % 3;
                             int e1 = e0 > 2 ? e0 - 3 : e0;
 
+                            // if (skipVertex[(int) triangles[t][e1]]) continue;
+
                             planeCount.clear();
-                            for (Integer tri : adjacentTriangles.get(e1)) {
+                            for (Integer tri : adjacentTriangles.get((int) triangles[t][e1])) {
                                 planeCount.add((int) triangles[tri][8]);
                             }
 
-                            if (planeCount.size() < 3) {
+                            final int planes = planeCount.size();
+
+                            if (planes > 0 && planes < 3) {
                                 NLogger.debug(getClass(), "Found possible match. Planes: " + planeCount.size()); //$NON-NLS-1$
                                 verticesAround.clear();
-                                for (Integer tri : adjacentTriangles.get(e1)) {
-                                    verticesAround.add((int) triangles[tri][0]);
-                                    verticesAround.add((int) triangles[tri][1]);
-                                    verticesAround.add((int) triangles[tri][2]);
+
+                                boolean hasJunction = false;
+
+                                {
+                                    HashMap<Integer, Integer> allVertices = new HashMap<Integer, Integer>();
+
+                                    for (Integer tri : adjacentTriangles.get((int) triangles[t][e1])) {
+                                        verticesAround.add((int) triangles[tri][0]);
+                                        verticesAround.add((int) triangles[tri][1]);
+                                        verticesAround.add((int) triangles[tri][2]);
+
+                                        int key1 = (int) triangles[tri][0];
+                                        if (allVertices.containsKey(key1)) {
+                                            allVertices.put(key1, 2);
+                                        } else {
+                                            allVertices.put(key1, 1);
+                                        }
+
+                                        int key2 = (int) triangles[tri][1];
+                                        if (allVertices.containsKey(key2)) {
+                                            allVertices.put(key2, 2);
+                                        } else {
+                                            allVertices.put(key2, 1);
+                                        }
+
+                                        int key3 = (int) triangles[tri][2];
+                                        if (allVertices.containsKey(key3)) {
+                                            allVertices.put(key3, 2);
+                                        } else {
+                                            allVertices.put(key3, 1);
+                                        }
+                                    }
+
+                                    for (Integer key : allVertices.keySet()) {
+                                        if (allVertices.get(key) < 2) {
+                                            // hasJunction = true;
+                                            foundTJunction = true;
+                                            break;
+                                        }
+                                    }
+
+                                    verticesAround.remove(triangles[t][e1]);
+
+
                                 }
-                                verticesAround.remove(e1);
 
-                                int[] orderedVertices = new int[verticesAround.size()];
+                                if (hasJunction) {
 
-                                NLogger.debug(getClass(), orderedVertices.length + " adjacent vertices."); //$NON-NLS-1$
+                                    NLogger.debug(getClass(), "Possible T-junction!"); //$NON-NLS-1$
+                                    skipVertex[(int) triangles[t][e1]] = true;
+
+                                } else {
+
+                                    final int adjacentCount = verticesAround.size();
+
+                                    if (adjacentCount > 15) {
+
+                                        NLogger.debug(getClass(), "Too much adjacent points (polar vertex)!"); //$NON-NLS-1$
+                                        skipVertex[(int) triangles[t][e1]] = true;
+
+                                    } else {
+
+                                        int[] orderedVertices = new int[adjacentCount];
+
+                                        NLogger.debug(getClass(), adjacentCount  + " adjacent vertices."); //$NON-NLS-1$
+
+                                        HashSet<Integer> commonTriangles = new HashSet<>();
+
+                                        HashSet<Integer> connectedTriangles = adjacentTriangles.get((int) triangles[t][e1]);
+
+                                        commonTriangles.addAll(connectedTriangles);
+                                        commonTriangles.retainAll(adjacentTriangles.get((int) triangles[t][e2]));
+
+                                        // FIXME Create Fingerprint
+
+                                        // 1. adjacentCount
+
+                                        // 2. angles
+
+                                        // 3. length
 
 
+
+
+                                        //                                        if (planes == 2) {
+                                        //
+                                        //                                        } else {
+                                        //
+                                        //                                            // Remove merged triangles from adjacency list
+                                        //
+                                        //                                            for (Integer v : verticesAround) {
+                                        //                                                adjacentTriangles.get(v).removeAll(commonTriangles);
+                                        //                                            }
+                                        //                                            connectedTriangles.removeAll(commonTriangles);
+                                        //                                            adjacentTriangles.get((int) triangles[t][e2]).addAll(connectedTriangles);
+                                        //
+                                        //                                            for (Integer t2 : commonTriangles) {
+                                        //                                                skipTriangle[t2] = true;
+                                        //                                            }
+                                        //
+                                        //                                            for (Integer t2 : connectedTriangles) {
+                                        //                                                if (triangles[t2][0] == triangles[t][e1]) triangles[t2][0] = triangles[t][e2];
+                                        //                                                if (triangles[t2][1] == triangles[t][e1]) triangles[t2][1] = triangles[t][e2];
+                                        //                                                if (triangles[t2][2] == triangles[t][e1]) triangles[t2][2] = triangles[t][e2];
+                                        //                                            }
+                                        //
+                                        //                                            foundSolution = true;
+                                        //
+                                        //                                        }
+                                    }
+                                }
+
+                            } else {
+                                skipVertex[(int) triangles[t][e1]] = true;
                             }
 
                         }
-                    }
 
+                    }
                 }
 
                 Matrix4f id = new Matrix4f();
@@ -665,7 +778,7 @@ public final class GDataCSG extends GData {
                         new HashSet<String>(), View.DUMMY_REFERENCE);
 
                 for (int t = 0; t < triangleCount; t++) {
-
+                    if (skipTriangle[t]) continue;
                     GColour col = new GColour((int) triangles[t][3], triangles[t][4], triangles[t][5], triangles[t][6], triangles[t][7]);
                     Vertex v1 = new Vertex(
                             vertices[(int) triangles[t][0]][0],
@@ -679,7 +792,12 @@ public final class GDataCSG extends GData {
                             vertices[(int) triangles[t][2]][0],
                             vertices[(int) triangles[t][2]][1],
                             vertices[(int) triangles[t][2]][2]);
+
                     result.put(new GData3(v1, v2, v3, parent, col), 0);
+                }
+
+                if (foundTJunction) {
+                    sb.append(I18n.DATFILE_FoundTJunction + "<br>"); //$NON-NLS-1$
                 }
 
                 for (GData3 g3 : result.keySet()) {
