@@ -84,9 +84,6 @@ public enum DatKeyword {
 
         keywords.add("PNG"); //$NON-NLS-1$
 
-        keywords.add("NURBS_2D"); //$NON-NLS-1$
-        keywords.add("NURBS_3D"); //$NON-NLS-1$
-
         keywords.add("INLINE"); //$NON-NLS-1$
         keywords.add("INLINE_END"); //$NON-NLS-1$
 
@@ -104,6 +101,8 @@ public enum DatKeyword {
 
         keywords.add("CSG_QUALITY"); //$NON-NLS-1$
         keywords.add("CSG_EPSILON"); //$NON-NLS-1$
+        keywords.add("CSG_EPSILON_T_JUNCTION"); //$NON-NLS-1$
+
     }
 
     /**

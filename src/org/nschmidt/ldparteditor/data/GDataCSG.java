@@ -36,6 +36,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 /**
@@ -55,6 +56,7 @@ public final class GDataCSG extends GData {
     private static int quality = 16;
     private int global_quality = 16;
     private double global_epsilon = 1e-6;
+    private float global_epsilon_t_junction = 0.001f;
 
     private final String ref1;
     private final String ref2;
@@ -193,6 +195,26 @@ public final class GDataCSG extends GData {
             colour = null;
             matrix = null;
             break;
+        case CSG.EPSILON_T_JUNCTION:
+            if (data_segments.length == 4) {
+                try {
+                    float q = Float.parseFloat(data_segments[3]);
+                    if (q > 0f) {
+                        global_epsilon_t_junction = q;
+                    } else {
+                        throw new Exception();
+                    }
+                } catch (Exception e) {
+                }
+                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+            } else {
+                ref1 = null;
+            }
+            ref2 = null;
+            ref3 = null;
+            colour = null;
+            matrix = null;
+            break;
         default:
             ref1 = null;
             ref2 = null;
@@ -283,6 +305,9 @@ public final class GDataCSG extends GData {
                         break;
                     case CSG.EPSILON:
                         Plane.EPSILON = global_epsilon;
+                        break;
+                    case CSG.EPSILON_T_JUNCTION:
+                        Plane.EPSILON_T_JUNCTION = global_epsilon_t_junction;
                         break;
                     default:
                         break;
@@ -392,6 +417,8 @@ public final class GDataCSG extends GData {
 
                 HashSet<Integer> skip = new HashSet<Integer>();
 
+                HashMap<Integer, HashSet<Integer>> adjacentTriangles = new HashMap<Integer, HashSet<Integer>>();
+
                 for (GData3 g3 : result.keySet()) {
 
                     triangles[triangleIDcounter][3] = g3.colourNumber;
@@ -461,8 +488,10 @@ public final class GDataCSG extends GData {
                 // Detect T-Junction Cases
 
                 for (int v = 0; v < vertexCount; v++) {
-                    System.out.println(v + " / " + vertexCount); //$NON-NLS-1$
                     if (skip.contains(v)) continue;
+
+                    System.out.println(v + " / " + vertexCount); //$NON-NLS-1$
+
                     Vector4f vp = new Vector4f(vertices[v][0], vertices[v][1], vertices[v][2], 1f);
                     for (int t = 0; t < triangleCount; t++) {
                         if (triangles[t][0] != v && triangles[t][1] != v && triangles[t][2] != v) {
@@ -481,7 +510,7 @@ public final class GDataCSG extends GData {
                                     vertices[v][2]);
                             float d1 = Vector4f.sub(v1, vp, null).lengthSquared();
 
-                            if (d1 < 0.00001f) {
+                            if (d1 < Plane.EPSILON_T_JUNCTION) {
                                 junctionMode = 1;
                             } else {
 
@@ -497,7 +526,7 @@ public final class GDataCSG extends GData {
                                         vertices[v][2]);
                                 float d2 = Vector4f.sub(v2, vp, null).lengthSquared();
 
-                                if (d2 < 0.00001f) {
+                                if (d2 < Plane.EPSILON_T_JUNCTION) {
                                     junctionMode = 2;
                                 } else {
 
@@ -513,7 +542,7 @@ public final class GDataCSG extends GData {
                                             vertices[v][2]);
                                     float d3 = Vector4f.sub(v3, vp, null).lengthSquared();
 
-                                    if (d3 < 0.00001f) {
+                                    if (d3 < Plane.EPSILON_T_JUNCTION) {
                                         junctionMode = 3;
                                     }
                                 }
@@ -542,16 +571,6 @@ public final class GDataCSG extends GData {
 
                                 switch (junctionMode) {
                                 case 1:
-                                    //  triangles[triangleCount][3] = -1f;
-                                    //  triangles[triangleCount][4] = 1f;
-                                    //  triangles[triangleCount][5] = 0f;
-                                    //  triangles[triangleCount][6] = 0f;
-                                    //  triangles[triangleCount][7] = 1f;
-                                    //  triangles[t][3] = -1f;
-                                    //  triangles[t][4] = .5f;
-                                    //  triangles[t][5] = 0f;
-                                    //  triangles[t][6] = 0f;
-                                    //  triangles[t][7] = 1f;
                                     triangles[triangleCount][0] = triangles[t][0];
                                     triangles[triangleCount][1] = v;
                                     triangles[triangleCount][2] = triangles[t][2];
@@ -560,16 +579,6 @@ public final class GDataCSG extends GData {
                                     triangles[t][2] = triangles[t][2];
                                     break;
                                 case 2:
-                                    //  triangles[triangleCount][3] = -1f;
-                                    //  triangles[triangleCount][4] = 0f;
-                                    //  triangles[triangleCount][5] = 1f;
-                                    //  triangles[triangleCount][6] = 0f;
-                                    //  triangles[triangleCount][7] = 1f;
-                                    //  triangles[t][3] = -1f;
-                                    //  triangles[t][4] = 0f;
-                                    //  triangles[t][5] = .5f;
-                                    //  triangles[t][6] = 0f;
-                                    //  triangles[t][7] = 1f;
                                     triangles[triangleCount][0] = triangles[t][1];
                                     triangles[triangleCount][1] = v;
                                     triangles[triangleCount][2] = triangles[t][0];
@@ -578,16 +587,6 @@ public final class GDataCSG extends GData {
                                     triangles[t][0] = v;
                                     break;
                                 case 3:
-                                    //  triangles[triangleCount][3] = -1f;
-                                    //  triangles[triangleCount][4] = 0f;
-                                    //  triangles[triangleCount][5] = 0f;
-                                    //  triangles[triangleCount][6] = 1f;
-                                    //  triangles[triangleCount][7] = 1f;
-                                    //  triangles[t][3] = -1f;
-                                    //  triangles[t][4] = 0f;
-                                    //  triangles[t][5] = 0f;
-                                    //  triangles[t][6] = .5f;
-                                    //  triangles[t][7] = 1f;
                                     triangles[triangleCount][0] = triangles[t][2];
                                     triangles[triangleCount][1] = v;
                                     triangles[triangleCount][2] = triangles[t][1];
@@ -605,9 +604,25 @@ public final class GDataCSG extends GData {
 
                 }
 
+                // Create adjacency map
+
+                for (int v = 0; v < vertexCount; v++) {
+                    if (skip.contains(v)) continue;
+                    System.out.println(v + " / " + vertexCount); //$NON-NLS-1$
+                    HashSet<Integer> adjSet = new HashSet<Integer>();
+                    adjacentTriangles.put(v, adjSet);
+                    for (int t = 0; t < triangleCount; t++) {
+                        if (triangles[t][0] == v || triangles[t][1] == v || triangles[t][2] == v) {
+                            adjSet.add(t);
+                        }
+                    }
+                }
+
+
                 // Iterative Simplyfication
                 boolean foundSolution = true;
-
+                HashSet<Integer> planeCount = new HashSet<Integer>();
+                HashSet<Integer> verticesAround = new HashSet<Integer>();
                 while (foundSolution) {
                     foundSolution = false;
                     for (int t = 0; t < triangleCount; t++) {
@@ -616,6 +631,28 @@ public final class GDataCSG extends GData {
                         for (int e0 = 0; e0 < 6; e0++) {
                             int e2 = e0 < 3 ? (e0 + 1) % 3 : (e0 + 2) % 3;
                             int e1 = e0 > 2 ? e0 - 3 : e0;
+
+                            planeCount.clear();
+                            for (Integer tri : adjacentTriangles.get(e1)) {
+                                planeCount.add((int) triangles[tri][8]);
+                            }
+
+                            if (planeCount.size() < 3) {
+                                NLogger.debug(getClass(), "Found possible match. Planes: " + planeCount.size()); //$NON-NLS-1$
+                                verticesAround.clear();
+                                for (Integer tri : adjacentTriangles.get(e1)) {
+                                    verticesAround.add((int) triangles[tri][0]);
+                                    verticesAround.add((int) triangles[tri][1]);
+                                    verticesAround.add((int) triangles[tri][2]);
+                                }
+                                verticesAround.remove(e1);
+
+                                int[] orderedVertices = new int[verticesAround.size()];
+
+                                NLogger.debug(getClass(), orderedVertices.length + " adjacent vertices."); //$NON-NLS-1$
+
+
+                            }
 
                         }
                     }

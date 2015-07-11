@@ -143,6 +143,7 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] ev_csgCompile_txt  = new Text[1];
     final Text[] ev_csgQuality_txt  = new Text[1];
     final Text[] ev_csgEpsilon_txt  = new Text[1];
+    final Text[] ev_csgEpsilonT_txt  = new Text[1];
     final Text[] ev_png1_txt  = new Text[1];
     final Text[] ev_png2_txt  = new Text[1];
     final Text[] ev_png3_txt  = new Text[1];
@@ -968,6 +969,19 @@ class EditorMetaDesign extends ApplicationWindow {
                     txt_csgEpsilon.setMessage(I18n.META_CSGEpsilon1);
                     txt_csgEpsilon.setToolTipText(I18n.META_CSGEpsilon2);
                     ev_csgEpsilon_txt[0] = txt_csgEpsilon;
+                }
+            }
+
+            {
+                Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
+                cmp_lpe.setLayout(new GridLayout(2, false));
+                Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
+                lbl_vertex.setText("0 !LPE CSG_EPSILON_T_JUNCTION"); //$NON-NLS-1$
+                {
+                    Text txt_csgEpsilon = new Text(cmp_lpe, SWT.SEARCH);
+                    txt_csgEpsilon.setMessage(I18n.META_CSGEpsilon3);
+                    txt_csgEpsilon.setToolTipText(I18n.META_CSGEpsilon4);
+                    ev_csgEpsilonT_txt[0] = txt_csgEpsilon;
                 }
             }
 
