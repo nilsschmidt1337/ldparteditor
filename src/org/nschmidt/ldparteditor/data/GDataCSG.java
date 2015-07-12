@@ -920,6 +920,9 @@ public final class GDataCSG extends GData {
                                                             merges2.add(new int[]{(int) triangles[t][e1], orderedVertices[t2]});
                                                         }
                                                         for (int t2 = 0; t2 < triangleCount; t2++) {
+
+                                                            if (t2 == t) continue;
+
                                                             if (triangles[t2][0] == triangles[t][e1]) {
                                                                 triangles[t2][0] = triangles[t][e2];
                                                             }
@@ -971,7 +974,6 @@ public final class GDataCSG extends GData {
                             }
 
                         }
-
                     }
                 }
 
