@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormatSymbols;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ import org.nschmidt.csg.CSGCylinder;
 import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.Plane;
+import org.nschmidt.csg.ReduceRule;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
@@ -459,12 +461,14 @@ public final class GDataCSG extends GData {
 
                     for (int i = 0; i < vertexCount; i++) {
                         if (skip.contains(i)) continue;
+                        System.out.println(i + " / " + vertexCount); //$NON-NLS-1$
                         for (int j = i + 1; j < vertexCount; j++) {
                             if (skip.contains(j)) continue;
-                            if (0.1f >
-                            Math.pow(vertices[i][0] - vertices[j][0], 2) +
-                            Math.pow(vertices[i][1] - vertices[j][1], 2) +
-                            Math.pow(vertices[i][2] - vertices[j][2], 2)) {
+                            if (10f >
+                            Math.sqrt(
+                                    Math.pow(vertices[i][0] - vertices[j][0], 2) +
+                                    Math.pow(vertices[i][1] - vertices[j][1], 2) +
+                                    Math.pow(vertices[i][2] - vertices[j][2], 2))) {
                                 vertexMerges[mergeCount][0] = i;
                                 vertexMerges[mergeCount][1] = j;
                                 skip.add(j);
@@ -487,10 +491,63 @@ public final class GDataCSG extends GData {
 
                 }
 
+                // Create adjacency map
+
+                for (int v = 0; v < vertexCount; v++) {
+                    if (skip.contains(v)) continue;
+                    System.out.println(v + " / " + vertexCount); //$NON-NLS-1$
+                    HashSet<Integer> adjSet = new HashSet<Integer>();
+                    adjacentTriangles.put(v, adjSet);
+                    for (int t = 0; t < triangleCount; t++) {
+                        if (triangles[t][0] == v || triangles[t][1] == v || triangles[t][2] == v) {
+                            adjSet.add(t);
+                        }
+                    }
+                }
+
                 // Detect T-Junction Cases
 
                 for (int v = 0; v < vertexCount; v++) {
                     if (skip.contains(v)) continue;
+                    {
+                        boolean hasJunction = false;
+
+                        HashMap<Integer, Integer> allVertices = new HashMap<Integer, Integer>();
+
+                        for (Integer tri : adjacentTriangles.get(v)) {
+
+                            int key1 = (int) triangles[tri][0];
+                            if (allVertices.containsKey(key1)) {
+                                allVertices.put(key1, 2);
+                            } else {
+                                allVertices.put(key1, 1);
+                            }
+
+                            int key2 = (int) triangles[tri][1];
+                            if (allVertices.containsKey(key2)) {
+                                allVertices.put(key2, 2);
+                            } else {
+                                allVertices.put(key2, 1);
+                            }
+
+                            int key3 = (int) triangles[tri][2];
+                            if (allVertices.containsKey(key3)) {
+                                allVertices.put(key3, 2);
+                            } else {
+                                allVertices.put(key3, 1);
+                            }
+                        }
+
+                        for (Integer key : allVertices.keySet()) {
+                            if (allVertices.get(key) < 2) {
+                                hasJunction = true;
+                                break;
+                            }
+                        }
+
+                        if (!hasJunction) continue;
+
+                    }
 
                     System.out.println(v + " / " + vertexCount); //$NON-NLS-1$
 
@@ -555,7 +612,7 @@ public final class GDataCSG extends GData {
 
                                     reserveCount = reserveCount * 2;
 
-                                    float[][] triangles2 = new float[reserveCount][8];
+                                    float[][] triangles2 = new float[reserveCount][9];
 
                                     for (int i = 0; i < triangleCount; i++) {
                                         for (int j = 0; j < 9; j++) {
@@ -607,7 +664,7 @@ public final class GDataCSG extends GData {
                 }
 
                 // Create adjacency map
-
+                adjacentTriangles.clear();
                 for (int v = 0; v < vertexCount; v++) {
                     if (skip.contains(v)) continue;
                     System.out.println(v + " / " + vertexCount); //$NON-NLS-1$
@@ -631,6 +688,10 @@ public final class GDataCSG extends GData {
                 boolean[] skipTriangle = new boolean[triangleCount];
                 boolean[] skipVertex = new boolean[vertexCount];
 
+                final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##000;-###,##000", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
+
+                ArrayList<int[]> merges = new ArrayList<int[]>();
+
                 while (foundSolution) {
                     foundSolution = false;
                     for (int t = 0; t < triangleCount; t++) {
@@ -641,9 +702,9 @@ public final class GDataCSG extends GData {
                             int e2 = e0 < 3 ? (e0 + 1) % 3 : (e0 + 2) % 3;
                             int e1 = e0 > 2 ? e0 - 3 : e0;
 
-                            // if (skipVertex[(int) triangles[t][e1]]) continue;
-
                             final int centerVertexID = (int) triangles[t][e1];
+
+                            if (skipVertex[centerVertexID]) continue;
 
                             planeCount.clear();
                             for (Integer tri : adjacentTriangles.get(centerVertexID)) {
@@ -653,8 +714,29 @@ public final class GDataCSG extends GData {
                             final int planes = planeCount.size();
 
                             if (planes > 0 && planes < 3) {
-                                // NLogger.debug(getClass(), "Found possible match. Planes: " + planeCount.size()); //$NON-NLS-1$
+
+                                // NLogger.debug(getClass(), "Found possible match. Planes: " + planes); //$NON-NLS-1$
                                 verticesAround.clear();
+
+                                if (planes == 2) {
+
+                                    HashSet<Integer> targetPlanes = new HashSet<Integer>();
+                                    for (Integer tri : adjacentTriangles.get((int) triangles[t][e2])) {
+                                        targetPlanes.add((int) triangles[tri][8]);
+                                    }
+
+
+                                    int before = targetPlanes.size();
+
+                                    targetPlanes.removeAll(planeCount);
+                                    int after = targetPlanes.size();
+
+                                    if (before - after != 2) {
+                                        // NLogger.debug(getClass(), "Invalid plane constellation."); //$NON-NLS-1$
+                                        continue;
+                                    }
+
+                                }
 
                                 boolean hasJunction = false;
 
@@ -690,7 +772,7 @@ public final class GDataCSG extends GData {
 
                                     for (Integer key : allVertices.keySet()) {
                                         if (allVertices.get(key) < 2) {
-                                            // hasJunction = true;
+                                            hasJunction = true;
                                             foundTJunction = true;
                                             break;
                                         }
@@ -780,7 +862,7 @@ public final class GDataCSG extends GData {
                                                                 ind2.remove(orderedVertices[i - 1]);
                                                                 if (ind2.size() == 2) {
                                                                     ind2.remove(centerVertexID);
-                                                                    if (ind2.size() == 1) {
+                                                                    if (ind2.size() == 1 && i < adjacentCount - 1) {
                                                                         i++;
                                                                         orderedVertices[i] = ind2.iterator().next();
                                                                         removeCandidate = tri;
@@ -799,8 +881,8 @@ public final class GDataCSG extends GData {
 
                                                     double[] length = new double[adjacentCount];
 
-                                                    double[] angles = new double[adjacentCount];
-
+                                                    int[] angles = new int[adjacentCount];
+                                                    int[] lengths = new int[adjacentCount];
                                                     double max = -1.0;
                                                     i = 0;
                                                     for (Integer v : orderedVertices) {
@@ -814,6 +896,10 @@ public final class GDataCSG extends GData {
                                                     }
 
                                                     for (i = 0; i < adjacentCount; i++) {
+                                                        lengths[i] = (int) Math.ceil(Math.abs(length[i] / max) * 100);
+                                                    }
+
+                                                    for (i = 0; i < adjacentCount; i++) {
                                                         float x1 = vertices[orderedVertices[i]][0] - vertices[centerVertexID][0];
                                                         float y1 = vertices[orderedVertices[i]][1] - vertices[centerVertexID][1];
                                                         float z1 = vertices[orderedVertices[i]][2] - vertices[centerVertexID][2];
@@ -822,57 +908,60 @@ public final class GDataCSG extends GData {
                                                         float y2 = vertices[orderedVertices[next]][1] - vertices[centerVertexID][1];
                                                         float z2 = vertices[orderedVertices[next]][2] - vertices[centerVertexID][2];
 
-                                                        angles[i] = Math.ceil(Vector3d.angle(
+                                                        angles[i] = (int) Math.ceil(Vector3d.angle(
                                                                 new Vector3d(new BigDecimal(x1), new BigDecimal(y1), new BigDecimal(z1)),
                                                                 new Vector3d(new BigDecimal(x2), new BigDecimal(y2), new BigDecimal(z2))));
 
                                                     }
 
-                                                    for (i = 0; i < adjacentCount; i++) {
-                                                        length[i] = Math.ceil(Math.abs(length[i] / max) * 100);
-                                                    }
+                                                    ReduceRule rule = new ReduceRule(planes, adjacentCount, lengths, angles);
 
-                                                    System.out.print(adjacentCount + " =>   "); //$NON-NLS-1$
-                                                    for (i = 0; i < adjacentCount; i++) {
-                                                        System.out.print(length[i] + " ");//$NON-NLS-1$
-                                                    }
-                                                    System.out.print(" ANGLE: "); //$NON-NLS-1$
-                                                    for (i = 0; i < adjacentCount; i++) {
-                                                        System.out.print(angles[i] + " ");//$NON-NLS-1$
-                                                    }
+                                                    if (CSG.REDUCE_RULES.contains(rule)) {
 
-                                                    System.out.println();
+                                                        merges.add(new int[]{(int) triangles[t][e1], (int) triangles[t][e2]});
 
+                                                        for (Integer t2 : connectedTriangles) {
+                                                            if (triangles[t2][0] == triangles[t][e1]) triangles[t2][0] = triangles[t][e2];
+                                                            if (triangles[t2][1] == triangles[t][e1]) triangles[t2][1] = triangles[t][e2];
+                                                            if (triangles[t2][2] == triangles[t][e1]) triangles[t2][2] = triangles[t][e2];
+                                                        }
+
+                                                        // Remove merged triangles from adjacency list
+
+                                                        for (Integer v : verticesAround) {
+                                                            adjacentTriangles.get(v).removeAll(commonTriangles);
+                                                        }
+                                                        connectedTriangles.removeAll(commonTriangles);
+                                                        adjacentTriangles.get((int) triangles[t][e2]).addAll(connectedTriangles);
+
+                                                        for (Integer t2 : commonTriangles) {
+                                                            skipTriangle[t2] = true;
+                                                        }
+
+                                                        foundSolution = true;
+
+                                                        System.err.print(adjacentCount + "|" + planes +  "|"); //$NON-NLS-1$ //$NON-NLS-2$
+                                                        for (i = 0; i < adjacentCount; i++) {
+                                                            System.err.print(NUMBER_FORMAT0F.format(lengths[i]) + "|");//$NON-NLS-1$
+                                                        }
+                                                        for (i = 0; i < adjacentCount; i++) {
+                                                            System.err.print(NUMBER_FORMAT0F.format(angles[i]) + "|");//$NON-NLS-1$
+                                                        }
+
+                                                        System.err.println();
+                                                    } else {
+                                                        System.out.print(adjacentCount + "|" + planes +  "|"); //$NON-NLS-1$ //$NON-NLS-2$
+                                                        for (i = 0; i < adjacentCount; i++) {
+                                                            System.out.print(NUMBER_FORMAT0F.format(lengths[i]) + "|");//$NON-NLS-1$
+                                                        }
+                                                        for (i = 0; i < adjacentCount; i++) {
+                                                            System.out.print(NUMBER_FORMAT0F.format(angles[i]) + "|");//$NON-NLS-1$
+                                                        }
+
+                                                        System.out.println();
+                                                    }
                                                 }
                                             }
-
-
-                                            //                                        if (planes == 2) {
-                                            //
-                                            //                                        } else {
-                                            //
-                                            //                                            // Remove merged triangles from adjacency list
-                                            //
-                                            //                                            for (Integer v : verticesAround) {
-                                            //                                                adjacentTriangles.get(v).removeAll(commonTriangles);
-                                            //                                            }
-                                            //                                            connectedTriangles.removeAll(commonTriangles);
-                                            //                                            adjacentTriangles.get((int) triangles[t][e2]).addAll(connectedTriangles);
-                                            //
-                                            //                                            for (Integer t2 : commonTriangles) {
-                                            //                                                skipTriangle[t2] = true;
-                                            //                                            }
-                                            //
-                                            //                                            for (Integer t2 : connectedTriangles) {
-                                            //                                                if (triangles[t2][0] == triangles[t][e1]) triangles[t2][0] = triangles[t][e2];
-                                            //                                                if (triangles[t2][1] == triangles[t][e1]) triangles[t2][1] = triangles[t][e2];
-                                            //                                                if (triangles[t2][2] == triangles[t][e1]) triangles[t2][2] = triangles[t][e2];
-                                            //                                            }
-                                            //
-                                            //                                            foundSolution = true;
-                                            //
-                                            //                                        }
-
                                         }
                                     }
                                 }
@@ -911,7 +1000,24 @@ public final class GDataCSG extends GData {
                 }
 
                 if (foundTJunction) {
-                    sb.append(I18n.DATFILE_FoundTJunction + "<br>"); //$NON-NLS-1$
+                    sb.append(I18n.DATFILE_FoundTJunction + " " + Plane.EPSILON_T_JUNCTION + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+
+                for (int[] l : merges) {
+                    StringBuilder lineBuilder3 = new StringBuilder();
+                    lineBuilder3.append("2 1 "); //$NON-NLS-1$
+                    lineBuilder3.append(floatToString(vertices[l[0]][0] / 1000f));
+                    lineBuilder3.append(" "); //$NON-NLS-1$
+                    lineBuilder3.append(floatToString(vertices[l[0]][1] / 1000f));
+                    lineBuilder3.append(" "); //$NON-NLS-1$
+                    lineBuilder3.append(floatToString(vertices[l[0]][2] / 1000f));
+                    lineBuilder3.append(" "); //$NON-NLS-1$
+                    lineBuilder3.append(floatToString(vertices[l[1]][0] / 1000f));
+                    lineBuilder3.append(" "); //$NON-NLS-1$
+                    lineBuilder3.append(floatToString(vertices[l[1]][1] / 1000f));
+                    lineBuilder3.append(" "); //$NON-NLS-1$
+                    lineBuilder3.append(floatToString(vertices[l[1]][2] / 1000f));
+                    sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
                 }
 
                 for (GData3 g3 : result.keySet()) {

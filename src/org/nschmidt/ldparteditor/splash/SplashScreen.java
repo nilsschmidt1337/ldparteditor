@@ -16,6 +16,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.splash;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -37,6 +39,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
+import org.nschmidt.csg.CSG;
+import org.nschmidt.csg.ReduceRule;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.dialogs.startup.StartupDialog;
 import org.nschmidt.ldparteditor.enums.View;
@@ -49,6 +53,8 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.text.LDParsingException;
+import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -83,6 +89,39 @@ public class SplashScreen extends ApplicationWindow {
      * Brings a new instance of this Splash Screen to run
      */
     public void run() {
+
+        final File meshReduce = new File("mesh_reduce.txt"); //$NON-NLS-1$
+        // Load the mesh reducer data
+        if (meshReduce.exists()) {
+            try {
+                UTF8BufferedReader reader = new UTF8BufferedReader("mesh_reduce.txt"); //$NON-NLS-1$
+                while (true) {
+                    String line2 = reader.readLine();
+                    if (line2 == null) {
+                        break;
+                    }
+
+                    String[] segs = line2.split("\\|"); //$NON-NLS-1$
+
+                    final int adjacency = Integer.parseInt(segs[0]);
+                    final int planes = Integer.parseInt(segs[1]);
+                    final int offset = 2 + adjacency;
+                    final int[] length = new int[adjacency];
+                    final int[] angle = new int[adjacency];
+                    for (int i = 0; i < adjacency; i++) {
+                        final int li = 2 + i;
+                        final int ai = offset + i;
+                        length[i] = Integer.parseInt(segs[li]);
+                        angle[i] = Integer.parseInt(segs[ai]);
+                    }
+                    CSG.REDUCE_RULES.add(new ReduceRule(planes, adjacency, length, angle));
+                }
+                reader.close();
+            } catch (FileNotFoundException e) {
+            } catch (LDParsingException e) {
+            } catch (UnsupportedEncodingException e) {
+            } catch (Exception e) {}
+        }
 
         final File configGzFile = new File("config.gz"); //$NON-NLS-1$
 

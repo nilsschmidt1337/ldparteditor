@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -99,6 +100,8 @@ import org.nschmidt.ldparteditor.enums.View;
  * ~(~A | ~B)} where {@code ~} is the complement operator.
  */
 public class CSG {
+
+    public static final TreeSet<ReduceRule> REDUCE_RULES = new TreeSet<ReduceRule>();
 
     HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
 
