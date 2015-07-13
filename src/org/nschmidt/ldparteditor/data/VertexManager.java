@@ -18957,6 +18957,12 @@ public class VertexManager {
         case LAST_SELECTED:
             if (lastSelectedVertex == null || !vertexLinkedToPositionInFile.containsKey(lastSelectedVertex)) return;
             newVertex = new Vector3d(lastSelectedVertex);
+
+            // FIXME Needs learn function for mesh reducer!
+            if (NLogger.DEBUG) {
+
+            }
+
             lastSelectedVertex = null;
             break;
         case NEAREST_EDGE:
