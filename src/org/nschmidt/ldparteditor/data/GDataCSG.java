@@ -663,6 +663,21 @@ public final class GDataCSG extends GData {
 
                 }
 
+                // Create adjacency map
+                adjacentTriangles.clear();
+                for (int v = 0; v < vertexCount; v++) {
+                    if (skip.contains(v)) continue;
+                    System.out.println(v + " / " + vertexCount); //$NON-NLS-1$
+                    HashSet<Integer> adjSet = new HashSet<Integer>();
+                    adjacentTriangles.put(v, adjSet);
+                    for (int t = 0; t < triangleCount; t++) {
+                        // if (skipTriangle[t]) continue;
+                        if (triangles[t][0] == v || triangles[t][1] == v || triangles[t][2] == v) {
+                            adjSet.add(t);
+                        }
+                    }
+                }
+
                 // Iterative Simplyfication
                 boolean foundTJunction = false;
 
@@ -679,21 +694,6 @@ public final class GDataCSG extends GData {
 
                 while (foundSolution) {
 
-                    // Create adjacency map
-                    adjacentTriangles.clear();
-                    for (int v = 0; v < vertexCount; v++) {
-                        if (skip.contains(v)) continue;
-                        System.out.println(v + " / " + vertexCount); //$NON-NLS-1$
-                        HashSet<Integer> adjSet = new HashSet<Integer>();
-                        adjacentTriangles.put(v, adjSet);
-                        for (int t = 0; t < triangleCount; t++) {
-                            if (skipTriangle[t]) continue;
-                            if (triangles[t][0] == v || triangles[t][1] == v || triangles[t][2] == v) {
-                                adjSet.add(t);
-                            }
-                        }
-                    }
-
                     foundSolution = false;
                     for (int t = 0; t < triangleCount; t++) {
                         if (skipTriangle[t]) continue;
@@ -704,6 +704,7 @@ public final class GDataCSG extends GData {
                             int e1 = e0 > 2 ? e0 - 3 : e0;
 
                             final int centerVertexID = (int) triangles[t][e1];
+                            final int targetVertexID = (int) triangles[t][e2];
 
                             planeCount.clear();
                             for (Integer tri : adjacentTriangles.get(centerVertexID)) {
@@ -915,22 +916,24 @@ public final class GDataCSG extends GData {
 
                                                     if (CSG.REDUCE_RULES.contains(rule)) {
 
-                                                        merges.add(new int[]{(int) triangles[t][e1], (int) triangles[t][e2]});
+                                                        merges.add(new int[]{centerVertexID, targetVertexID});
                                                         for (int t2 = 1; t2 < adjacentCount; t2++) {
-                                                            merges2.add(new int[]{(int) triangles[t][e1], orderedVertices[t2]});
+                                                            merges2.add(new int[]{centerVertexID, orderedVertices[t2]});
                                                         }
-                                                        for (int t2 = 0; t2 < triangleCount; t2++) {
 
-                                                            if (t2 == t) continue;
 
-                                                            if (triangles[t2][0] == triangles[t][e1]) {
-                                                                triangles[t2][0] = triangles[t][e2];
+                                                        HashSet<Integer> deletedTriangles = new HashSet<Integer>();
+
+                                                        for (int t2 : connectedTriangles) {
+
+                                                            if (triangles[t2][0] == centerVertexID) {
+                                                                triangles[t2][0] = targetVertexID;
                                                             }
-                                                            if (triangles[t2][1] == triangles[t][e1]) {
-                                                                triangles[t2][1] = triangles[t][e2];
+                                                            if (triangles[t2][1] == centerVertexID) {
+                                                                triangles[t2][1] = targetVertexID;
                                                             }
-                                                            if (triangles[t2][2] == triangles[t][e1]) {
-                                                                triangles[t2][2] = triangles[t][e2];
+                                                            if (triangles[t2][2] == centerVertexID) {
+                                                                triangles[t2][2] = targetVertexID;
                                                             }
 
                                                             if (
@@ -938,7 +941,15 @@ public final class GDataCSG extends GData {
                                                                     triangles[t2][1] == triangles[t2][2] ||
                                                                     triangles[t2][2] == triangles[t2][0]) {
                                                                 skipTriangle[t2] = true;
+                                                                deletedTriangles.add(t2);
                                                             }
+                                                        }
+
+                                                        adjacentTriangles.get(centerVertexID).removeAll(deletedTriangles);
+                                                        adjacentTriangles.get(targetVertexID).removeAll(deletedTriangles);
+
+                                                        for (int t2 = 0; t2 < adjacentCount; t2++) {
+                                                            adjacentTriangles.get(orderedVertices[t2]).removeAll(deletedTriangles);
                                                         }
 
                                                         foundSolution = true;
@@ -983,7 +994,9 @@ public final class GDataCSG extends GData {
                         new HashSet<String>(), View.DUMMY_REFERENCE);
 
                 for (int t = 0; t < triangleCount; t++) {
+
                     if (skipTriangle[t]) continue;
+
                     GColour col = new GColour((int) triangles[t][3], triangles[t][4], triangles[t][5], triangles[t][6], triangles[t][7]);
                     Vertex v1 = new Vertex(
                             vertices[(int) triangles[t][0]][0],

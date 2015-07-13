@@ -45,19 +45,43 @@ public class ReduceRule implements Comparable<ReduceRule> {
             return Integer.compare(this.adjacency, o.adjacency);
         }
 
+        boolean tryReverse = false;
+
         for (int i=0; i< adjacency; i++) {
             int delta = Math.abs(angles[i] - o.angles[i]);
             int delta2 = Math.abs(delta);
             if (delta2 > 2) {
-                return Integer.compare(delta, 0);
+                tryReverse = true;
+                break;
             }
         }
 
-        for (int i=0; i< adjacency; i++) {
-            int delta = Math.abs(lengths[i] - o.lengths[i]);
-            int delta2 = Math.abs(delta);
-            if (delta2 > 5) {
-                return Integer.compare(delta, 0);
+        if (!tryReverse) {
+            for (int i=0; i< adjacency; i++) {
+                int delta = Math.abs(lengths[i] - o.lengths[i]);
+                int delta2 = Math.abs(delta);
+                if (delta2 > 5) {
+                    tryReverse = true;
+                    break;
+                }
+            }
+        }
+
+        if (tryReverse) {
+            for (int i=0; i < adjacency; i++) {
+                int delta = Math.abs(angles[adjacency - i - 1] - o.angles[i]);
+                int delta2 = Math.abs(delta);
+                if (delta2 > 2) {
+                    return Integer.compare(delta, 0);
+                }
+            }
+
+            for (int i=0; i < adjacency; i++) {
+                int delta = Math.abs(lengths[adjacency - i - 1] - o.lengths[i]);
+                int delta2 = Math.abs(delta);
+                if (delta2 > 5) {
+                    return Integer.compare(delta, 0);
+                }
             }
         }
 
