@@ -89,6 +89,7 @@ public enum StringHelper {
     public static int[] compress(String uncompressed) {
         // Build the dictionary.
         int dictSize = 256;
+        // FIXME Needs customisable dictonary.txt file!
         Map<String,Integer> dictionary = new HashMap<String,Integer>();
         for (int i = 0; i < 256; i++)
             dictionary.put("" + (char)i, i); //$NON-NLS-1$
