@@ -38,9 +38,9 @@ public class ReduceRule implements Comparable<ReduceRule> {
     @Override
     public int compareTo(ReduceRule o) {
         // TODO Auto-generated method stub
-        if (this.planes != o.planes) {
-            return Integer.compare(this.planes, o.planes);
-        }
+        //        if (this.planes != o.planes) {
+        //            return Integer.compare(this.planes, o.planes);
+        //        }
         if (this.adjacency != o.adjacency) {
             return Integer.compare(this.adjacency, o.adjacency);
         }
