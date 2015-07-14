@@ -15,10 +15,16 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.FloatBuffer;
+import java.text.DecimalFormatSymbols;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,6 +58,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.csg.CSG;
+import org.nschmidt.csg.ReduceRule;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.ScalableComposite;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
@@ -18959,8 +18967,279 @@ public class VertexManager {
             newVertex = new Vector3d(lastSelectedVertex);
 
             // FIXME Needs learn function for mesh reducer!
-            if (NLogger.DEBUG) {
+            if (NLogger.DEBUG && selectedVertices.size() == 2) {
 
+                Vertex target = null;
+                {
+                    Set<Vertex> targetSet = new TreeSet<Vertex>();
+                    targetSet.addAll(selectedVertices);
+                    targetSet.remove(lastSelectedVertex);
+                    target = targetSet.iterator().next();
+                }
+
+                NLogger.debug(getClass(), "Learning reduce rule..."); //$NON-NLS-1$
+
+                int triangleCount = 0;
+                int vertexCount = 0;
+
+                for (VertexManifestation mani : vertexLinkedToPositionInFile.get(target)) {
+                    GData gd = mani.getGdata();
+                    switch (gd.type()) {
+                    case 3:
+                        triangleCount++;
+                        // selectedTriangles.add((GData3) gd);
+                        break;
+                    case 4:
+                        triangleCount++;
+                        // selectedQuads.add((GData4) gd);
+                        break;
+                    default:
+                        continue;
+                    }
+                }
+
+                float[][] vertices = null;
+                int[][] triangles2 = new int[triangleCount][3];
+                final int adjacentCount = triangleCount;
+                HashMap<Integer, HashSet<Integer>> adjacentTriangles = new HashMap<Integer, HashSet<Integer>>();
+
+                int centerVertexID = 0;
+                int targetVertexID = 0;
+
+                triangleCount = 0;
+
+                {
+                    TreeMap<Vertex, Integer> allVerts = new TreeMap<Vertex, Integer>();
+                    for (VertexManifestation mani : vertexLinkedToPositionInFile.get(target)) {
+                        GData gd = mani.getGdata();
+                        ArrayList<Vertex> tv = new ArrayList<Vertex>();
+
+                        switch (gd.type()) {
+                        case 3:
+                            // selectedTriangles.add((GData3) gd);
+                        {
+                            GData3 g3 = (GData3) gd;
+                            tv.add(new Vertex(g3.X1, g3.Y1, g3.Z1));
+                            tv.add(new Vertex(g3.X2, g3.Y2, g3.Z2));
+                            tv.add(new Vertex(g3.X3, g3.Y3, g3.Z3));
+                        }
+                        break;
+                        case 4:
+                            // selectedQuads.add((GData4) gd);
+
+                        {
+                            GData4 g4 = (GData4) gd;
+                            if (target.equals(new Vertex(g4.X1, g4.Y1, g4.Z1))) {
+                                tv.add(new Vertex(g4.X4, g4.Y4, g4.Z4));
+                                tv.add(new Vertex(g4.X1, g4.Y1, g4.Z1));
+                                tv.add(new Vertex(g4.X2, g4.Y2, g4.Z2));
+                            } else if (target.equals(new Vertex(g4.X2, g4.Y2, g4.Z2))) {
+                                tv.add(new Vertex(g4.X1, g4.Y1, g4.Z1));
+                                tv.add(new Vertex(g4.X2, g4.Y2, g4.Z2));
+                                tv.add(new Vertex(g4.X3, g4.Y3, g4.Z3));
+                            } else if (target.equals(new Vertex(g4.X3, g4.Y3, g4.Z3))) {
+                                tv.add(new Vertex(g4.X2, g4.Y2, g4.Z2));
+                                tv.add(new Vertex(g4.X3, g4.Y3, g4.Z3));
+                                tv.add(new Vertex(g4.X4, g4.Y4, g4.Z4));
+                            } else if (target.equals(new Vertex(g4.X4, g4.Y4, g4.Z4))) {
+                                tv.add(new Vertex(g4.X3, g4.Y3, g4.Z3));
+                                tv.add(new Vertex(g4.X4, g4.Y4, g4.Z4));
+                                tv.add(new Vertex(g4.X1, g4.Y1, g4.Z1));
+                            }
+
+                        }
+                        break;
+                        default:
+                            continue;
+                        }
+
+                        for (Vertex v : tv) {
+                            if (!allVerts.containsKey(v)) {
+                                allVerts.put(v, vertexCount);
+                                vertexCount++;
+                            }
+                        }
+
+                        triangles2[triangleCount][0] = allVerts.get(tv.get(0));
+                        triangles2[triangleCount][1] = allVerts.get(tv.get(1));
+                        triangles2[triangleCount][2] = allVerts.get(tv.get(2));
+                        triangleCount++;
+
+
+
+                    }
+
+                    centerVertexID = allVerts.get(target);
+                    targetVertexID = allVerts.get(lastSelectedVertex);
+
+                    vertices = new float[vertexCount][3];
+
+                    for (Vertex v : allVerts.keySet()) {
+                        vertices[allVerts.get(v)][0] = v.x;
+                        vertices[allVerts.get(v)][1] = v.y;
+                        vertices[allVerts.get(v)][2] = v.z;
+                    }
+
+                    // Create adjacency map
+                    for (int v = 0; v < vertexCount; v++) {
+                        System.out.println(v + " / " + vertexCount); //$NON-NLS-1$
+                        HashSet<Integer> adjSet = new HashSet<Integer>();
+                        adjacentTriangles.put(v, adjSet);
+                        for (int t = 0; t < triangleCount; t++) {
+                            // if (skipTriangle[t]) continue;
+                            if (triangles2[t][0] == v || triangles2[t][1] == v || triangles2[t][2] == v) {
+                                adjSet.add(t);
+                            }
+                        }
+                    }
+
+                }
+
+
+                int[] orderedVertices = new int[adjacentCount];
+
+                // NLogger.debug(getClass(), adjacentCount  + " adjacent vertices."); //$NON-NLS-1$
+
+                HashSet<Integer> commonTriangles = new HashSet<>();
+
+                HashSet<Integer> connectedTriangles = adjacentTriangles.get(centerVertexID);
+
+                commonTriangles.addAll(connectedTriangles);
+                commonTriangles.retainAll(adjacentTriangles.get(targetVertexID));
+
+
+                Iterator<Integer> cit = commonTriangles.iterator();
+
+                final int first = cit.next();
+
+                final int last = cit.next();
+
+                {
+                    orderedVertices[0] = targetVertexID;
+
+                    HashSet<Integer> ind = new HashSet<Integer>();
+                    ind.add(triangles2[first][0]);
+                    ind.add(triangles2[first][1]);
+                    ind.add(triangles2[first][2]);
+
+                    ind.remove(centerVertexID);
+                    ind.remove(targetVertexID);
+
+                    if (ind.size() == 1) {
+                        orderedVertices[1] = ind.iterator().next();
+
+                        int i = 1;
+
+                        ind.clear();
+                        ind.addAll(connectedTriangles);
+                        ind.remove(first);
+                        ind.remove(last);
+                        while (!ind.isEmpty()) {
+                            int removeCandidate = -1;
+                            for (Integer tri : ind) {
+
+                                HashSet<Integer> ind2 = new HashSet<Integer>();
+                                ind2.add(triangles2[tri][0]);
+                                ind2.add(triangles2[tri][1]);
+                                ind2.add(triangles2[tri][2]);
+
+                                ind2.remove(orderedVertices[i]);
+
+                                if (ind2.size() == 2) {
+                                    ind2.remove(orderedVertices[i - 1]);
+                                    if (ind2.size() == 2) {
+                                        ind2.remove(centerVertexID);
+                                        if (ind2.size() == 1 && i < adjacentCount - 1) {
+                                            i++;
+                                            orderedVertices[i] = ind2.iterator().next();
+                                            removeCandidate = tri;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (removeCandidate > -1) {
+                                ind.remove(removeCandidate);
+                            } else {
+                                break;
+                            }
+                        }
+
+                        double[] length = new double[adjacentCount];
+
+                        int[] angles = new int[adjacentCount];
+                        int[] lengths = new int[adjacentCount];
+                        double max = -1.0;
+                        i = 0;
+                        for (Integer v : orderedVertices) {
+                            double dist = Math.sqrt(
+                                    Math.pow(vertices[v][0] - vertices[centerVertexID][0], 2.0) +
+                                    Math.pow(vertices[v][1] - vertices[centerVertexID][1], 2.0) +
+                                    Math.pow(vertices[v][2] - vertices[centerVertexID][2], 2.0));
+                            if (dist > max) max = dist;
+                            length[i] = dist;
+                            i++;
+                        }
+
+                        for (i = 0; i < adjacentCount; i++) {
+                            lengths[i] = (int) Math.ceil(Math.abs(length[i] / max) * 100);
+                        }
+
+                        for (i = 0; i < adjacentCount; i++) {
+                            float x1 = vertices[orderedVertices[i]][0] - vertices[centerVertexID][0];
+                            float y1 = vertices[orderedVertices[i]][1] - vertices[centerVertexID][1];
+                            float z1 = vertices[orderedVertices[i]][2] - vertices[centerVertexID][2];
+                            int next = (i + 1) % adjacentCount;
+                            float x2 = vertices[orderedVertices[next]][0] - vertices[centerVertexID][0];
+                            float y2 = vertices[orderedVertices[next]][1] - vertices[centerVertexID][1];
+                            float z2 = vertices[orderedVertices[next]][2] - vertices[centerVertexID][2];
+
+                            angles[i] = (int) Math.ceil(Vector3d.angle(
+                                    new Vector3d(new BigDecimal(x1), new BigDecimal(y1), new BigDecimal(z1)),
+                                    new Vector3d(new BigDecimal(x2), new BigDecimal(y2), new BigDecimal(z2))));
+
+                        }
+
+                        int planes = Editor3DWindow.getWindow().getLastUsedColour().getColourNumber() == 16 ? 1 : 2;
+
+                        ReduceRule rule = new ReduceRule(planes, adjacentCount, lengths, angles);
+
+                        CSG.REDUCE_RULES.add(rule);
+
+                        final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##000;-###,##000", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
+
+                        StringBuilder rb = new StringBuilder();
+                        rb.append(adjacentCount + "|" + planes +  "|"); //$NON-NLS-1$ //$NON-NLS-2$
+                        for (i = 0; i < adjacentCount; i++) {
+                            rb.append(NUMBER_FORMAT0F.format(lengths[i]) + "|");//$NON-NLS-1$
+                        }
+                        for (i = 0; i < adjacentCount; i++) {
+                            rb.append(NUMBER_FORMAT0F.format(angles[i]) + "|");//$NON-NLS-1$
+                        }
+
+                        BufferedWriter writer = null;
+                        try {
+                            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("mesh_reduce.txt", true), "UTF-8")); //$NON-NLS-1$ //$NON-NLS-2$
+                            writer.write(rb.toString());
+                            writer.write("\r\n"); //$NON-NLS-1$ Its very important to use the windows line termination here (see documentation!)
+                            writer.close();
+                        } catch (FileNotFoundException e) {
+                        } catch (UnsupportedEncodingException e) {
+                        } catch (Exception e) {
+                        } finally {
+                            try {
+                                if (writer != null) {
+                                    writer.close();
+                                }
+                            } catch (Exception ex) {
+
+                            }
+                        }
+
+                        System.err.println(rb.toString());
+                    }
+                }
             }
 
             lastSelectedVertex = null;
