@@ -100,21 +100,24 @@ public class SplashScreen extends ApplicationWindow {
                     if (line2 == null) {
                         break;
                     }
+                    try {
+                        String[] segs = line2.split("\\|"); //$NON-NLS-1$
 
-                    String[] segs = line2.split("\\|"); //$NON-NLS-1$
-
-                    final int adjacency = Integer.parseInt(segs[0]);
-                    final int planes = Integer.parseInt(segs[1]);
-                    final int offset = 2 + adjacency;
-                    final int[] length = new int[adjacency];
-                    final int[] angle = new int[adjacency];
-                    for (int i = 0; i < adjacency; i++) {
-                        final int li = 2 + i;
-                        final int ai = offset + i;
-                        length[i] = Integer.parseInt(segs[li]);
-                        angle[i] = Integer.parseInt(segs[ai]);
+                        final int adjacency = Integer.parseInt(segs[0]);
+                        final int planes = Integer.parseInt(segs[1]);
+                        final int offset = 2 + adjacency;
+                        final int[] length = new int[adjacency];
+                        final int[] angle = new int[adjacency];
+                        for (int i = 0; i < adjacency; i++) {
+                            final int li = 2 + i;
+                            final int ai = offset + i;
+                            length[i] = Integer.parseInt(segs[li]);
+                            angle[i] = Integer.parseInt(segs[ai]);
+                        }
+                        CSG.REDUCE_RULES.add(new ReduceRule(planes, adjacency, length, angle));
+                    } catch (Exception e) {
+                        NLogger.error(getClass(), e);
                     }
-                    CSG.REDUCE_RULES.add(new ReduceRule(planes, adjacency, length, angle));
                 }
                 reader.close();
             } catch (FileNotFoundException e) {
