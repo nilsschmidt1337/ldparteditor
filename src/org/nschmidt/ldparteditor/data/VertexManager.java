@@ -19082,7 +19082,7 @@ public class VertexManager {
 
                     // Create adjacency map
                     for (int v = 0; v < vertexCount; v++) {
-                        System.out.println(v + " / " + vertexCount); //$NON-NLS-1$
+                        // System.out.println(v + " / " + vertexCount); //$NON-NLS-1$
                         HashSet<Integer> adjSet = new HashSet<Integer>();
                         adjacentTriangles.put(v, adjSet);
                         for (int t = 0; t < triangleCount; t++) {
@@ -19205,39 +19205,42 @@ public class VertexManager {
 
                         ReduceRule rule = new ReduceRule(planes, adjacentCount, lengths, angles);
 
-                        CSG.REDUCE_RULES.add(rule);
+                        if (!CSG.REDUCE_RULES.contains(rule)) {
 
-                        final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##000;-###,##000", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
+                            CSG.REDUCE_RULES.add(rule);
 
-                        StringBuilder rb = new StringBuilder();
-                        rb.append(adjacentCount + "|" + planes +  "|"); //$NON-NLS-1$ //$NON-NLS-2$
-                        for (i = 0; i < adjacentCount; i++) {
-                            rb.append(NUMBER_FORMAT0F.format(lengths[i]) + "|");//$NON-NLS-1$
-                        }
-                        for (i = 0; i < adjacentCount; i++) {
-                            rb.append(NUMBER_FORMAT0F.format(angles[i]) + "|");//$NON-NLS-1$
-                        }
+                            final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##000;-###,##000", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
 
-                        BufferedWriter writer = null;
-                        try {
-                            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("mesh_reduce.txt", true), "UTF-8")); //$NON-NLS-1$ //$NON-NLS-2$
-                            writer.write(rb.toString());
-                            writer.write("\r\n"); //$NON-NLS-1$ Its very important to use the windows line termination here (see documentation!)
-                            writer.close();
-                        } catch (FileNotFoundException e) {
-                        } catch (UnsupportedEncodingException e) {
-                        } catch (Exception e) {
-                        } finally {
-                            try {
-                                if (writer != null) {
-                                    writer.close();
-                                }
-                            } catch (Exception ex) {
-
+                            StringBuilder rb = new StringBuilder();
+                            rb.append(adjacentCount + "|" + planes +  "|"); //$NON-NLS-1$ //$NON-NLS-2$
+                            for (i = 0; i < adjacentCount; i++) {
+                                rb.append(NUMBER_FORMAT0F.format(lengths[i]) + "|");//$NON-NLS-1$
                             }
-                        }
+                            for (i = 0; i < adjacentCount; i++) {
+                                rb.append(NUMBER_FORMAT0F.format(angles[i]) + "|");//$NON-NLS-1$
+                            }
 
-                        System.err.println(rb.toString());
+                            BufferedWriter writer = null;
+                            try {
+                                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("mesh_reduce.txt", true), "UTF-8")); //$NON-NLS-1$ //$NON-NLS-2$
+                                writer.write(rb.toString());
+                                writer.write("\r\n"); //$NON-NLS-1$ Its very important to use the windows line termination here (see documentation!)
+                                writer.close();
+                            } catch (FileNotFoundException e) {
+                            } catch (UnsupportedEncodingException e) {
+                            } catch (Exception e) {
+                            } finally {
+                                try {
+                                    if (writer != null) {
+                                        writer.close();
+                                    }
+                                } catch (Exception ex) {
+
+                                }
+                            }
+
+                            System.err.println(rb.toString());
+                        }
                     }
                 }
             }
