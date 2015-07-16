@@ -19201,18 +19201,16 @@ public class VertexManager {
 
                         }
 
-                        int planes = Editor3DWindow.getWindow().getLastUsedColour().getColourNumber() == 16 ? 1 : 2;
+                        ReduceRule rule = new ReduceRule(adjacentCount, lengths, angles);
 
-                        ReduceRule rule = new ReduceRule(planes, adjacentCount, lengths, angles);
-
-                        if (!CSG.REDUCE_RULES.contains(rule)) {
+                        if (!CSG.REDUCE_RULES.contains(rule) && adjacentCount > 3) {
 
                             CSG.REDUCE_RULES.add(rule);
 
                             final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##000;-###,##000", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
 
                             StringBuilder rb = new StringBuilder();
-                            rb.append(adjacentCount + "|" + planes +  "|"); //$NON-NLS-1$ //$NON-NLS-2$
+                            rb.append(adjacentCount + "|"); //$NON-NLS-1$
                             for (i = 0; i < adjacentCount; i++) {
                                 rb.append(NUMBER_FORMAT0F.format(lengths[i]) + "|");//$NON-NLS-1$
                             }

@@ -893,8 +893,10 @@ public final class GDataCSG extends GData {
                                                         i++;
                                                     }
 
+                                                    int min = Integer.MAX_VALUE;
                                                     for (i = 0; i < adjacentCount; i++) {
                                                         lengths[i] = (int) Math.ceil(Math.abs(length[i] / max) * 100);
+                                                        if (lengths[i] < min) min = lengths[i];
                                                     }
 
                                                     for (i = 0; i < adjacentCount; i++) {
@@ -912,15 +914,14 @@ public final class GDataCSG extends GData {
 
                                                     }
 
-                                                    ReduceRule rule = new ReduceRule(planes, adjacentCount, lengths, angles);
+                                                    ReduceRule rule = new ReduceRule(adjacentCount, lengths, angles);
 
-                                                    if (CSG.REDUCE_RULES.contains(rule)) {
+                                                    if (adjacentCount == 3 || CSG.REDUCE_RULES.contains(rule) || lengths[0] == min && planes == 1 && angles[0] >= 90 && angles[adjacentCount - 1] >= 90) {
 
                                                         merges.add(new int[]{centerVertexID, targetVertexID});
                                                         for (int t2 = 1; t2 < adjacentCount; t2++) {
                                                             merges2.add(new int[]{centerVertexID, orderedVertices[t2]});
                                                         }
-
 
                                                         HashSet<Integer> deletedTriangles = new HashSet<Integer>();
 
@@ -954,7 +955,7 @@ public final class GDataCSG extends GData {
 
                                                         foundSolution = true;
 
-                                                        System.err.print(adjacentCount + "|" + planes +  "|"); //$NON-NLS-1$ //$NON-NLS-2$
+                                                        System.err.print(adjacentCount + "|"); //$NON-NLS-1$
                                                         for (i = 0; i < adjacentCount; i++) {
                                                             System.err.print(NUMBER_FORMAT0F.format(lengths[i]) + "|");//$NON-NLS-1$
                                                         }
@@ -966,7 +967,7 @@ public final class GDataCSG extends GData {
 
                                                         break;
                                                     } else {
-                                                        System.out.print(adjacentCount + "|" + planes +  "|"); //$NON-NLS-1$ //$NON-NLS-2$
+                                                        System.out.print(adjacentCount + "|"); //$NON-NLS-1$
                                                         for (i = 0; i < adjacentCount; i++) {
                                                             System.out.print(NUMBER_FORMAT0F.format(lengths[i]) + "|");//$NON-NLS-1$
                                                         }
@@ -1018,38 +1019,38 @@ public final class GDataCSG extends GData {
                     sb.append(I18n.DATFILE_FoundTJunction + " " + Plane.EPSILON_T_JUNCTION + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
-                for (int[] l : merges) {
-                    StringBuilder lineBuilder3 = new StringBuilder();
-                    lineBuilder3.append("2 1 "); //$NON-NLS-1$
-                    lineBuilder3.append(floatToString(vertices[l[0]][0] / 1000f));
-                    lineBuilder3.append(" "); //$NON-NLS-1$
-                    lineBuilder3.append(floatToString(vertices[l[0]][1] / 1000f));
-                    lineBuilder3.append(" "); //$NON-NLS-1$
-                    lineBuilder3.append(floatToString(vertices[l[0]][2] / 1000f));
-                    lineBuilder3.append(" "); //$NON-NLS-1$
-                    lineBuilder3.append(floatToString(vertices[l[1]][0] / 1000f));
-                    lineBuilder3.append(" "); //$NON-NLS-1$
-                    lineBuilder3.append(floatToString(vertices[l[1]][1] / 1000f));
-                    lineBuilder3.append(" "); //$NON-NLS-1$
-                    lineBuilder3.append(floatToString(vertices[l[1]][2] / 1000f));
-                    sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
-                }
-                for (int[] l : merges2) {
-                    StringBuilder lineBuilder3 = new StringBuilder();
-                    lineBuilder3.append("2 4 "); //$NON-NLS-1$
-                    lineBuilder3.append(floatToString(vertices[l[0]][0] / 1000f));
-                    lineBuilder3.append(" "); //$NON-NLS-1$
-                    lineBuilder3.append(floatToString(vertices[l[0]][1] / 1000f));
-                    lineBuilder3.append(" "); //$NON-NLS-1$
-                    lineBuilder3.append(floatToString(vertices[l[0]][2] / 1000f));
-                    lineBuilder3.append(" "); //$NON-NLS-1$
-                    lineBuilder3.append(floatToString(vertices[l[1]][0] / 1000f));
-                    lineBuilder3.append(" "); //$NON-NLS-1$
-                    lineBuilder3.append(floatToString(vertices[l[1]][1] / 1000f));
-                    lineBuilder3.append(" "); //$NON-NLS-1$
-                    lineBuilder3.append(floatToString(vertices[l[1]][2] / 1000f));
-                    sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
-                }
+                //                for (int[] l : merges) {
+                //                    StringBuilder lineBuilder3 = new StringBuilder();
+                //                    lineBuilder3.append("2 1 "); //$NON-NLS-1$
+                //                    lineBuilder3.append(floatToString(vertices[l[0]][0] / 1000f));
+                //                    lineBuilder3.append(" "); //$NON-NLS-1$
+                //                    lineBuilder3.append(floatToString(vertices[l[0]][1] / 1000f));
+                //                    lineBuilder3.append(" "); //$NON-NLS-1$
+                //                    lineBuilder3.append(floatToString(vertices[l[0]][2] / 1000f));
+                //                    lineBuilder3.append(" "); //$NON-NLS-1$
+                //                    lineBuilder3.append(floatToString(vertices[l[1]][0] / 1000f));
+                //                    lineBuilder3.append(" "); //$NON-NLS-1$
+                //                    lineBuilder3.append(floatToString(vertices[l[1]][1] / 1000f));
+                //                    lineBuilder3.append(" "); //$NON-NLS-1$
+                //                    lineBuilder3.append(floatToString(vertices[l[1]][2] / 1000f));
+                //                    sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
+                //                }
+                //                for (int[] l : merges2) {
+                //                    StringBuilder lineBuilder3 = new StringBuilder();
+                //                    lineBuilder3.append("2 4 "); //$NON-NLS-1$
+                //                    lineBuilder3.append(floatToString(vertices[l[0]][0] / 1000f));
+                //                    lineBuilder3.append(" "); //$NON-NLS-1$
+                //                    lineBuilder3.append(floatToString(vertices[l[0]][1] / 1000f));
+                //                    lineBuilder3.append(" "); //$NON-NLS-1$
+                //                    lineBuilder3.append(floatToString(vertices[l[0]][2] / 1000f));
+                //                    lineBuilder3.append(" "); //$NON-NLS-1$
+                //                    lineBuilder3.append(floatToString(vertices[l[1]][0] / 1000f));
+                //                    lineBuilder3.append(" "); //$NON-NLS-1$
+                //                    lineBuilder3.append(floatToString(vertices[l[1]][1] / 1000f));
+                //                    lineBuilder3.append(" "); //$NON-NLS-1$
+                //                    lineBuilder3.append(floatToString(vertices[l[1]][2] / 1000f));
+                //                    sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
+                //                }
 
                 for (GData3 g3 : result.keySet()) {
                     StringBuilder lineBuilder3 = new StringBuilder();

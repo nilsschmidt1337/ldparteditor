@@ -23,13 +23,11 @@ import java.util.Arrays;
  */
 public class ReduceRule implements Comparable<ReduceRule> {
 
-    final int planes;
     final int adjacency;
     final int[] lengths;
     final int[] angles;
 
-    public ReduceRule(int planes, int adjacency, int[] lengths, int[] angles) {
-        this.planes = planes;
+    public ReduceRule(int adjacency, int[] lengths, int[] angles) {
         this.adjacency = adjacency;
         this.lengths = lengths;
         this.angles = angles;
@@ -37,10 +35,6 @@ public class ReduceRule implements Comparable<ReduceRule> {
 
     @Override
     public int compareTo(ReduceRule o) {
-        // TODO Auto-generated method stub
-        //        if (this.planes != o.planes) {
-        //            return Integer.compare(this.planes, o.planes);
-        //        }
         if (this.adjacency != o.adjacency) {
             return Integer.compare(this.adjacency, o.adjacency);
         }
@@ -49,8 +43,7 @@ public class ReduceRule implements Comparable<ReduceRule> {
 
         for (int i=0; i< adjacency; i++) {
             int delta = Math.abs(angles[i] - o.angles[i]);
-            int delta2 = Math.abs(delta);
-            if (delta2 > 2) {
+            if (delta > 2) {
                 tryReverse = true;
                 break;
             }
@@ -59,8 +52,7 @@ public class ReduceRule implements Comparable<ReduceRule> {
         if (!tryReverse) {
             for (int i=0; i< adjacency; i++) {
                 int delta = Math.abs(lengths[i] - o.lengths[i]);
-                int delta2 = Math.abs(delta);
-                if (delta2 > 5) {
+                if (delta > 5) {
                     tryReverse = true;
                     break;
                 }
@@ -70,7 +62,7 @@ public class ReduceRule implements Comparable<ReduceRule> {
         if (tryReverse) {
 
             for (int i=0; i < adjacency; i++) {
-                int delta = Math.abs(angles[adjacency - i - 1] - o.angles[i]);
+                int delta = angles[adjacency - i - 1] - o.angles[i];
                 int delta2 = Math.abs(delta);
                 if (delta2 > 2) {
                     return Integer.compare(delta, 0);
@@ -78,14 +70,14 @@ public class ReduceRule implements Comparable<ReduceRule> {
             }
 
             {
-                int delta = Math.abs(lengths[0] - o.lengths[0]);
+                int delta = lengths[0] - o.lengths[0];
                 int delta2 = Math.abs(delta);
                 if (delta2 > 5) {
                     return Integer.compare(delta, 0);
                 }
             }
             for (int i=1; i < adjacency; i++) {
-                int delta = Math.abs(lengths[adjacency - i] - o.lengths[i]);
+                int delta = lengths[adjacency - i] - o.lengths[i];
                 int delta2 = Math.abs(delta);
                 if (delta2 > 5) {
                     return Integer.compare(delta, 0);
@@ -111,7 +103,7 @@ public class ReduceRule implements Comparable<ReduceRule> {
         if (getClass() != obj.getClass())
             return false;
         ReduceRule other = (ReduceRule) obj;
-        if (adjacency != other.adjacency || planes != other.planes)
+        if (adjacency != other.adjacency)
             return false;
 
         if (!Arrays.equals(angles, other.angles))
