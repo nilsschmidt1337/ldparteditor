@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,9 @@ import java.util.Map;
 public enum StringHelper {
 
     INSTANCE;
+
+    private static HashSet<Character> dictSet = new HashSet<Character>();
+    private static ArrayList<Character> dictList = new ArrayList<Character>();
 
     public static int countOccurences(final String findStr, final String str) {
         int lastIndex = 0;
@@ -88,11 +92,17 @@ public enum StringHelper {
      */
     public static int[] compress(String uncompressed) {
         // Build the dictionary.
-        int dictSize = 256;
-        // FIXME Needs customisable dictonary.txt file!
+        for (char c : uncompressed.toCharArray()) {
+            if (!dictSet.contains(c)) {
+                dictSet.add(c);
+                dictList.add(c);
+            }
+        }
         Map<String,Integer> dictionary = new HashMap<String,Integer>();
-        for (int i = 0; i < 256; i++)
-            dictionary.put("" + (char)i, i); //$NON-NLS-1$
+        int dictSize = dictList.size();
+        for (int i = 0; i < dictSize; i++) {
+            dictionary.put("" + dictList.get(i), i); //$NON-NLS-1$
+        }
         String w = ""; //$NON-NLS-1$
         List<Integer> result = new ArrayList<Integer>();
         for (char c : uncompressed.toCharArray()) {
@@ -117,7 +127,6 @@ public enum StringHelper {
 
         int[] result2 = new int[result.size()];
         for (int i = 0; i < result2.length; i++) {
-            // FIXME NullPointerException ??
             int j = result.get(i);
             result2[i] = j;
         }
@@ -127,11 +136,11 @@ public enum StringHelper {
     /** Decompress a list of output ks to a string. */
     public static String decompress(int[] compressed) {
         // Build the dictionary.
-        int dictSize = 256;
+        int dictSize = dictList.size();
         Map<Integer,String> dictionary = new HashMap<Integer,String>();
-        for (int i = 0; i < 256; i++)
-            dictionary.put(i, "" + (char)i); //$NON-NLS-1$
-
+        for (int i = 0; i < dictSize; i++) {
+            dictionary.put(i, "" + dictList.get(i)); //$NON-NLS-1$
+        }
         String w = "" + (char) compressed[0]; //$NON-NLS-1$
         StringBuffer result = new StringBuffer(w);
         final int size = compressed.length;
