@@ -916,41 +916,108 @@ public final class GDataCSG extends GData {
 
                                                     ReduceRule rule = new ReduceRule(adjacentCount, lengths, angles);
 
-                                                    if (adjacentCount == 3 || CSG.REDUCE_RULES.contains(rule) || lengths[0] == min && planes == 1 && angles[0] >= 90 && angles[adjacentCount - 1] >= 90) {
+                                                    final boolean hasRule = CSG.REDUCE_RULES.contains(rule);
 
-                                                        merges.add(new int[]{centerVertexID, targetVertexID});
-                                                        for (int t2 = 1; t2 < adjacentCount; t2++) {
-                                                            merges2.add(new int[]{centerVertexID, orderedVertices[t2]});
+                                                    HashSet<Integer> deletedTriangles = new HashSet<Integer>();
+
+                                                    ArrayList<Integer> backupNoSkip = new ArrayList<Integer>();
+                                                    ArrayList<Integer[]> backupConnection = new ArrayList<Integer[]>();
+
+                                                    double area1 = 0;
+                                                    double area2 = 0;
+
+                                                    {
+
+                                                        if (!hasRule) {
+                                                            for (int t2 : connectedTriangles) {
+                                                                if (skipTriangle[t2]) continue;
+                                                                double x1 = vertices[(int) triangles[t2][1]][0] - vertices[(int) triangles[t2][0]][0];
+                                                                double x2 = vertices[(int) triangles[t2][1]][1] - vertices[(int) triangles[t2][0]][1];
+                                                                double x3 = vertices[(int) triangles[t2][1]][2] - vertices[(int) triangles[t2][0]][2];
+
+                                                                double y1 = vertices[(int) triangles[t2][2]][0] - vertices[(int) triangles[t2][0]][0];
+                                                                double y2 = vertices[(int) triangles[t2][2]][1] - vertices[(int) triangles[t2][0]][1];
+                                                                double y3 = vertices[(int) triangles[t2][2]][2] - vertices[(int) triangles[t2][0]][2];
+
+                                                                double z1 = x2 * y3 - x3 * y2;
+                                                                double z2 = x3 * y1 - x1 * y3;
+                                                                double z3 = x1 * y2 - x2 * y1;
+
+                                                                area1 = area1 + Math.sqrt(z1*z1 + z2 * z2 + z3 * z3);
+                                                            }
                                                         }
 
-                                                        HashSet<Integer> deletedTriangles = new HashSet<Integer>();
-
                                                         for (int t2 : connectedTriangles) {
-
                                                             if (triangles[t2][0] == centerVertexID) {
                                                                 triangles[t2][0] = targetVertexID;
+                                                                backupConnection.add(new Integer[]{t2, 0, centerVertexID});
                                                             }
                                                             if (triangles[t2][1] == centerVertexID) {
                                                                 triangles[t2][1] = targetVertexID;
+                                                                backupConnection.add(new Integer[]{t2, 1, centerVertexID});
                                                             }
                                                             if (triangles[t2][2] == centerVertexID) {
                                                                 triangles[t2][2] = targetVertexID;
+                                                                backupConnection.add(new Integer[]{t2, 2, centerVertexID});
                                                             }
 
                                                             if (
                                                                     triangles[t2][0] == triangles[t2][1] ||
                                                                     triangles[t2][1] == triangles[t2][2] ||
                                                                     triangles[t2][2] == triangles[t2][0]) {
+                                                                if (!skipTriangle[t2]) backupNoSkip.add(t2);
                                                                 skipTriangle[t2] = true;
                                                                 deletedTriangles.add(t2);
                                                             }
                                                         }
+
+                                                        if (!hasRule) {
+                                                            for (int t2 : connectedTriangles) {
+                                                                if (skipTriangle[t2]) continue;
+                                                                double x1 = vertices[(int) triangles[t2][1]][0] - vertices[(int) triangles[t2][0]][0];
+                                                                double x2 = vertices[(int) triangles[t2][1]][1] - vertices[(int) triangles[t2][0]][1];
+                                                                double x3 = vertices[(int) triangles[t2][1]][2] - vertices[(int) triangles[t2][0]][2];
+
+                                                                double y1 = vertices[(int) triangles[t2][2]][0] - vertices[(int) triangles[t2][0]][0];
+                                                                double y2 = vertices[(int) triangles[t2][2]][1] - vertices[(int) triangles[t2][0]][1];
+                                                                double y3 = vertices[(int) triangles[t2][2]][2] - vertices[(int) triangles[t2][0]][2];
+
+                                                                double z1 = x2 * y3 - x3 * y2;
+                                                                double z2 = x3 * y1 - x1 * y3;
+                                                                double z3 = x1 * y2 - x2 * y1;
+
+                                                                area2 = area2 + Math.sqrt(z1 * z1 + z2 * z2 + z3 * z3);
+                                                            }
+                                                        }
+
+                                                        if (!hasRule) {
+                                                            if (Math.abs(area1 - area2) > 1e5) {
+                                                                for (Integer[] bck : backupConnection) {
+                                                                    triangles[bck[0]][bck[1]] = bck[2];
+                                                                }
+                                                                for (Integer bck : backupNoSkip) {
+                                                                    skipTriangle[bck] = false;
+                                                                }
+                                                                continue;
+                                                            }
+
+                                                            CSG.REDUCE_RULES.add(rule);
+                                                        }
+
+                                                    }
+
+                                                    if (adjacentCount == 3 || hasRule || lengths[0] == min && planes == 1 && angles[0] >= 90 && angles[adjacentCount - 1] >= 90) {
 
                                                         adjacentTriangles.get(centerVertexID).removeAll(deletedTriangles);
                                                         adjacentTriangles.get(targetVertexID).removeAll(deletedTriangles);
 
                                                         for (int t2 = 0; t2 < adjacentCount; t2++) {
                                                             adjacentTriangles.get(orderedVertices[t2]).removeAll(deletedTriangles);
+                                                        }
+
+                                                        merges.add(new int[]{centerVertexID, targetVertexID});
+                                                        for (int t2 = 1; t2 < adjacentCount; t2++) {
+                                                            merges2.add(new int[]{centerVertexID, orderedVertices[t2]});
                                                         }
 
                                                         foundSolution = true;
@@ -967,6 +1034,14 @@ public final class GDataCSG extends GData {
 
                                                         break;
                                                     } else {
+
+                                                        for (Integer[] bck : backupConnection) {
+                                                            triangles[bck[0]][bck[1]] = bck[2];
+                                                        }
+                                                        for (Integer bck : backupNoSkip) {
+                                                            skipTriangle[bck] = false;
+                                                        }
+
                                                         System.out.print(adjacentCount + "|"); //$NON-NLS-1$
                                                         for (i = 0; i < adjacentCount; i++) {
                                                             System.out.print(NUMBER_FORMAT0F.format(lengths[i]) + "|");//$NON-NLS-1$
