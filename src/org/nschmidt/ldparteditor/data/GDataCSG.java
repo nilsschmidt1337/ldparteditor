@@ -826,13 +826,42 @@ public final class GDataCSG extends GData {
 
                                             final int last = cit.next();
 
-                                            /* if (planes == 1) {
+                                            if (planes == 1) {
 
-                                                Need adjacency minimisation!
+                                                // Need adjacency minimisation!
+
+                                                int[][] vertex4 = new int[4][2];
+                                                int i = 0;
+                                                HashSet<Integer> verts = new HashSet<Integer>();
+
+                                                for (Integer tri : commonTriangles) {
+                                                    verts.add((int) triangles[tri][0]);
+                                                    verts.add((int) triangles[tri][1]);
+                                                    verts.add((int) triangles[tri][2]);
+                                                }
+
+                                                vertex4[0][0] = centerVertexID;
+                                                vertex4[2][0] = targetVertexID;
+
+                                                for (Integer v : verts) {
+                                                    if (v != centerVertexID && v != targetVertexID) {
+                                                        vertex4[1][0] = v;
+                                                        break;
+                                                    }
+                                                }
+                                                for (Integer v : verts) {
+                                                    if (v != centerVertexID && v != targetVertexID && v != vertex4[1][0]) {
+                                                        vertex4[3][0] = v;
+                                                        break;
+                                                    }
+                                                }
+
+
+
 
                                                 foundSolution = true;
                                                 break;
-                                            } */
+                                            }
 
                                             {
                                                 orderedVertices[0] = (int) triangles[t][e2];
