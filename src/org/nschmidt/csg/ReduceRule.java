@@ -15,13 +15,18 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.csg;
 
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * @author nils
  *
  */
 public class ReduceRule implements Comparable<ReduceRule> {
+
+    private static final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##000;-###,##000", new DecimalFormatSymbols(Locale.getDefault())); //$NON-NLS-1$
+
 
     final int adjacency;
     final int[] lengths;
@@ -113,6 +118,22 @@ public class ReduceRule implements Comparable<ReduceRule> {
 
 
         return true;
+    }
+
+    @Override
+    public String toString() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(adjacency + "|"); //$NON-NLS-1$
+        for (int i = 0; i < adjacency; i++) {
+            sb.append(NUMBER_FORMAT0F.format(lengths[i]) + "|");//$NON-NLS-1$
+        }
+        for (int i = 0; i < adjacency; i++) {
+            sb.append(NUMBER_FORMAT0F.format(angles[i]) + "|");//$NON-NLS-1$
+        }
+
+        return sb.toString();
     }
 
 }
