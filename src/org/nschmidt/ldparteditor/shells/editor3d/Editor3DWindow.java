@@ -76,6 +76,8 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.csg.CSG;
+import org.nschmidt.csg.ReduceRule;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.composites.CompositeScale;
@@ -165,6 +167,7 @@ import org.nschmidt.ldparteditor.text.References;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.TextTriangulator;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
+import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
@@ -4934,6 +4937,16 @@ public class Editor3DWindow extends Editor3DDesign {
         WorkbenchManager.getUserSettingState().setRecentItems(getRecentItems());
         // Save the workbench
         WorkbenchManager.saveWorkbench();
+        // Write reduce rules
+        try {
+            UTF8PrintWriter writer = new UTF8PrintWriter("mesh_reduce.txt"); //$NON-NLS-1$
+            for (ReduceRule rule : CSG.REDUCE_RULES) {
+                writer.println(rule.toString());
+            }
+            writer.close();
+        } catch (FileNotFoundException e) {
+        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {}
         setReturnCode(CANCEL);
         close();
     }

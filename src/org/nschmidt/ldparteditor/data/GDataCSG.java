@@ -37,6 +37,7 @@ import org.nschmidt.csg.Plane;
 import org.nschmidt.csg.ReduceRule;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
@@ -795,7 +796,7 @@ public final class GDataCSG extends GData {
 
                                         // NLogger.debug(getClass(), "Too much adjacent points (polar vertex)!"); //$NON-NLS-1$
 
-                                    } else {
+                                    } else if (adjacentCount > 2) {
 
                                         int[] orderedVertices = new int[adjacentCount];
 
@@ -824,6 +825,14 @@ public final class GDataCSG extends GData {
                                             final int first = cit.next();
 
                                             final int last = cit.next();
+
+                                            /* if (planes == 1) {
+
+                                                Need adjacency minimisation!
+
+                                                foundSolution = true;
+                                                break;
+                                            } */
 
                                             {
                                                 orderedVertices[0] = (int) triangles[t][e2];
@@ -972,6 +981,9 @@ public final class GDataCSG extends GData {
                                                         }
 
                                                         if (!hasRule) {
+
+                                                            boolean isCollinear = false;
+
                                                             for (int t2 : connectedTriangles) {
                                                                 if (skipTriangle[t2]) continue;
                                                                 double x1 = vertices[(int) triangles[t2][1]][0] - vertices[(int) triangles[t2][0]][0];
@@ -987,11 +999,25 @@ public final class GDataCSG extends GData {
                                                                 double z3 = x1 * y2 - x2 * y1;
 
                                                                 area2 = area2 + Math.sqrt(z1 * z1 + z2 * z2 + z3 * z3);
-                                                            }
-                                                        }
 
-                                                        if (!hasRule) {
-                                                            if (Math.abs(area1 - area2) > 1e5) {
+                                                                // FIXME Needs collinearity check!
+
+                                                                Vector3d vertexA = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][0]][0]), new BigDecimal(vertices[(int) triangles[t2][0]][1]), new BigDecimal(vertices[(int) triangles[t2][0]][2]));
+                                                                Vector3d vertexB = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][1]][0]), new BigDecimal(vertices[(int) triangles[t2][1]][1]), new BigDecimal(vertices[(int) triangles[t2][1]][2]));
+                                                                Vector3d vertexC = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][2]][0]), new BigDecimal(vertices[(int) triangles[t2][2]][1]), new BigDecimal(vertices[(int) triangles[t2][2]][2]));
+
+                                                                Vector3d vertexA2 = new Vector3d();
+                                                                Vector3d vertexB2 = new Vector3d();
+
+                                                                Vector3d.sub(vertexA, vertexC, vertexA2);
+                                                                Vector3d.sub(vertexB, vertexC, vertexB2);
+                                                                if (Vector3d.angle(vertexA2, vertexB2) < Threshold.collinear_angle_minimum) {
+                                                                    isCollinear = true;
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                            if (isCollinear || Math.abs(area1 - area2) > 1e5) {
                                                                 for (Integer[] bck : backupConnection) {
                                                                     triangles[bck[0]][bck[1]] = bck[2];
                                                                 }
@@ -1001,7 +1027,7 @@ public final class GDataCSG extends GData {
                                                                 continue;
                                                             }
 
-                                                            CSG.REDUCE_RULES.add(rule);
+                                                            if (adjacentCount > 3) CSG.REDUCE_RULES.add(rule);
                                                         }
 
                                                     }
