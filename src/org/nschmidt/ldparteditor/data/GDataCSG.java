@@ -840,27 +840,109 @@ public final class GDataCSG extends GData {
                                                     verts.add((int) triangles[tri][2]);
                                                 }
 
-                                                vertex4[0][0] = centerVertexID;
-                                                vertex4[2][0] = targetVertexID;
+                                                if (verts.size() == 4) {
 
-                                                for (Integer v : verts) {
-                                                    if (v != centerVertexID && v != targetVertexID) {
-                                                        vertex4[1][0] = v;
-                                                        break;
+                                                    vertex4[0][0] = centerVertexID;
+                                                    vertex4[2][0] = targetVertexID;
+
+                                                    for (Integer v : verts) {
+                                                        if (v != centerVertexID && v != targetVertexID) {
+                                                            vertex4[1][0] = v;
+                                                            break;
+                                                        }
+                                                    }
+                                                    for (Integer v : verts) {
+                                                        if (v != centerVertexID && v != targetVertexID && v != vertex4[1][0]) {
+                                                            vertex4[3][0] = v;
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    // FIXME Needs check for non-convex shapes!!!
+                                                    Vector3d vertexA = new Vector3d(new BigDecimal(vertices[vertex4[0][0]][0]), new BigDecimal(vertices[vertex4[0][0]][1]), new BigDecimal(vertices[vertex4[0][0]][2]));
+                                                    Vector3d vertexB = new Vector3d(new BigDecimal(vertices[vertex4[1][0]][0]), new BigDecimal(vertices[vertex4[1][0]][1]), new BigDecimal(vertices[vertex4[1][0]][2]));
+                                                    Vector3d vertexC = new Vector3d(new BigDecimal(vertices[vertex4[2][0]][0]), new BigDecimal(vertices[vertex4[2][0]][1]), new BigDecimal(vertices[vertex4[2][0]][2]));
+                                                    Vector3d vertexD = new Vector3d(new BigDecimal(vertices[vertex4[3][0]][0]), new BigDecimal(vertices[vertex4[3][0]][1]), new BigDecimal(vertices[vertex4[3][0]][2]));
+
+                                                    Vector3d[] normals = new Vector3d[4];
+                                                    float[] normalDirections = new float[4];
+                                                    Vector3d[] lineVectors = new Vector3d[4];
+                                                    int cnc = 0;
+                                                    lineVectors[0] = Vector3d.sub(vertexB, vertexA);
+                                                    lineVectors[1] = Vector3d.sub(vertexC, vertexB);
+                                                    lineVectors[2] = Vector3d.sub(vertexD, vertexC);
+                                                    lineVectors[3] = Vector3d.sub(vertexA, vertexD);
+                                                    normals[0] = Vector3d.cross(lineVectors[0], lineVectors[1]);
+                                                    normals[1] = Vector3d.cross(lineVectors[1], lineVectors[2]);
+                                                    normals[2] = Vector3d.cross(lineVectors[2], lineVectors[3]);
+                                                    normals[3] = Vector3d.cross(lineVectors[3], lineVectors[0]);
+
+                                                    Vector3d normal = new Vector3d();
+
+                                                    for (i = 0; i < 4; i++) {
+                                                        normalDirections[i] = MathHelper.directionOfVectors(normals[0], normals[i]);
+                                                        if (normalDirections[i] < 0) {
+                                                            cnc++;
+                                                        }
+                                                        normal = Vector3d.add(normals[i], normal);
+                                                    }
+
+
+                                                    if (!(cnc == 1 || cnc == 3)) {
+
+                                                        // Not Concave
+
+                                                        final int count1 = adjacentTriangles.get(vertex4[0][0]).size() + adjacentTriangles.get(vertex4[2][0]).size();
+                                                        final int count2 = adjacentTriangles.get(vertex4[1][0]).size() + adjacentTriangles.get(vertex4[3][0]).size() + 1;
+
+                                                        if (count2 < count1) {
+
+                                                            for (Integer v : verts) {
+                                                                for (Integer tri : commonTriangles) {
+                                                                    adjacentTriangles.get(v).remove(tri);
+                                                                }
+                                                            }
+
+                                                            vertex4[0][1] =  vertex4[1][0];
+                                                            vertex4[1][1] =  vertex4[2][0];
+                                                            vertex4[2][1] =  vertex4[3][0];
+                                                            vertex4[3][1] =  vertex4[0][0];
+
+                                                            HashMap<Integer, Integer> vmap = new HashMap<Integer, Integer>();
+
+                                                            vmap.put(vertex4[0][0], -1);
+                                                            vmap.put(vertex4[1][0], -2);
+                                                            vmap.put(vertex4[2][0], -3);
+                                                            vmap.put(vertex4[3][0], -4);
+
+                                                            for (Integer tri : commonTriangles) {
+                                                                for (i = 0; i < 3; i++) {
+                                                                    if (vmap.containsKey((int) triangles[tri][i])) {
+                                                                        triangles[tri][i] = vmap.get((int) triangles[tri][i]);
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            for (Integer tri : commonTriangles) {
+                                                                for (i = 0; i < 3; i++) {
+                                                                    if ((int) triangles[tri][i] < 0) {
+                                                                        triangles[tri][i] = vertex4[(int) -triangles[tri][i] - 1][1];
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            for (Integer tri : commonTriangles) {
+                                                                for (i = 0; i < 3; i++) {
+                                                                    adjacentTriangles.get((int) triangles[tri][i]).add(tri);
+                                                                }
+                                                            }
+
+                                                            if (Math.random() < .75) foundSolution = true;
+                                                            break;
+
+                                                        }
                                                     }
                                                 }
-                                                for (Integer v : verts) {
-                                                    if (v != centerVertexID && v != targetVertexID && v != vertex4[1][0]) {
-                                                        vertex4[3][0] = v;
-                                                        break;
-                                                    }
-                                                }
-
-
-
-
-                                                foundSolution = true;
-                                                break;
                                             }
 
                                             {
