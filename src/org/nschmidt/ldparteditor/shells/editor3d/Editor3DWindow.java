@@ -167,7 +167,7 @@ import org.nschmidt.ldparteditor.text.References;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.TextTriangulator;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
-import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
+import org.nschmidt.ldparteditor.text.ZipWriter;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
@@ -4939,10 +4939,11 @@ public class Editor3DWindow extends Editor3DDesign {
         WorkbenchManager.saveWorkbench();
         // Write reduce rules
         try {
-            UTF8PrintWriter writer = new UTF8PrintWriter("mesh_reduce.txt"); //$NON-NLS-1$
+            ZipWriter writer = new ZipWriter("mesh_reduce.txt"); //$NON-NLS-1$
             for (ReduceRule rule : CSG.REDUCE_RULES) {
                 writer.println(rule.toString());
             }
+            writer.flush();
             writer.close();
         } catch (FileNotFoundException e) {
         } catch (UnsupportedEncodingException e) {
