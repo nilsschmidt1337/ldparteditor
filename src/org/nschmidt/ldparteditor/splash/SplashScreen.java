@@ -54,7 +54,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
-import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
+import org.nschmidt.ldparteditor.text.ZipReader;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -94,7 +94,7 @@ public class SplashScreen extends ApplicationWindow {
         // Load the mesh reducer data
         if (meshReduce.exists()) {
             try {
-                UTF8BufferedReader reader = new UTF8BufferedReader("mesh_reduce.txt"); //$NON-NLS-1$
+                ZipReader reader = new ZipReader("mesh_reduce.txt"); //$NON-NLS-1$
                 while (true) {
                     String line2 = reader.readLine();
                     if (line2 == null) {
