@@ -508,6 +508,8 @@ public final class GDataCSG extends GData {
 
                 // Detect T-Junction Cases
 
+                final int triangleCount3 = triangleCount * 3;
+
                 for (int v = 0; v < vertexCount; v++) {
                     if (skip.contains(v)) continue;
                     {
@@ -553,7 +555,7 @@ public final class GDataCSG extends GData {
                     System.out.println("Detect T-Junction Cases " + v + " / " + vertexCount); //$NON-NLS-1$ //$NON-NLS-2$
 
                     Vector4f vp = new Vector4f(vertices[v][0], vertices[v][1], vertices[v][2], 1f);
-                    for (int t = 0; t < triangleCount; t++) {
+                    for (int t = 0; t < triangleCount && t < triangleCount3; t++) {
                         if (triangles[t][0] != v && triangles[t][1] != v && triangles[t][2] != v) {
 
                             int junctionMode = 0;

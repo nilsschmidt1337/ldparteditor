@@ -29,12 +29,13 @@ public class ReduceRule implements Comparable<ReduceRule> {
 
 
     final int adjacency;
-    final int[] lengths;
+    final byte[] lengths;
     final int[] angles;
 
     public ReduceRule(int adjacency, int[] lengths, int[] angles) {
         this.adjacency = adjacency;
-        this.lengths = lengths;
+        byte[] lengths2 = new byte[lengths.length];
+        this.lengths = lengths2;
         this.angles = angles;
     }
 
