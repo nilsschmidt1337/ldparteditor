@@ -103,13 +103,12 @@ public class SplashScreen extends ApplicationWindow {
                     try {
                         String[] segs = line2.split("\\|"); //$NON-NLS-1$
 
-                        final int adjacency = Integer.parseInt(segs[0]);
-                        final int offset = 1 + adjacency;
+                        final int adjacency = segs.length / 2;
                         final int[] length = new int[adjacency];
                         final int[] angle = new int[adjacency];
                         for (int i = 0; i < adjacency; i++) {
-                            final int li = 1 + i;
-                            final int ai = offset + i;
+                            final int li = i;
+                            final int ai = adjacency + i;
                             length[i] = Integer.parseInt(segs[li]);
                             angle[i] = Integer.parseInt(segs[ai]);
                         }

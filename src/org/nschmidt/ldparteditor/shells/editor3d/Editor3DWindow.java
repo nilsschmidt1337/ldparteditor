@@ -4941,7 +4941,7 @@ public class Editor3DWindow extends Editor3DDesign {
         try {
             ZipWriter writer = new ZipWriter("mesh_reduce.txt"); //$NON-NLS-1$
             for (ReduceRule rule : CSG.REDUCE_RULES) {
-                writer.println(rule.toString());
+                writer.println(rule.toStringShort());
             }
             writer.flush();
             writer.close();

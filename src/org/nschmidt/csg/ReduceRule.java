@@ -136,4 +136,19 @@ public class ReduceRule implements Comparable<ReduceRule> {
         return sb.toString();
     }
 
+    public String toStringShort() {
+        final StringBuilder sb = new StringBuilder();
+        final int lastIndex = adjacency - 1;
+        for (int i = 0; i < adjacency; i++) {
+            sb.append(lengths[i]);
+            sb.append("|");//$NON-NLS-1$
+
+        }
+        for (int i = 0; i < adjacency; i++) {
+            sb.append(angles[i]);
+            if (i < lastIndex) sb.append("|");//$NON-NLS-1$
+        }
+        return sb.toString();
+    }
+
 }

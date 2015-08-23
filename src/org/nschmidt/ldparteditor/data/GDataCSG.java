@@ -1077,7 +1077,7 @@ public final class GDataCSG extends GData {
                                                                     double z2 = x3 * y1 - x1 * y3;
                                                                     double z3 = x1 * y2 - x2 * y1;
 
-                                                                    area1 = area1 + Math.sqrt(z1*z1 + z2 * z2 + z3 * z3);
+                                                                    area1 = area1 + Math.sqrt(z1 * z1 + z2 * z2 + z3 * z3);
                                                                 }
                                                             }
 
