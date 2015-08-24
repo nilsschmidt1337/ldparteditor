@@ -4939,7 +4939,7 @@ public class Editor3DWindow extends Editor3DDesign {
         WorkbenchManager.saveWorkbench();
         // Write reduce rules
         try {
-            ZipWriter writer = new ZipWriter("mesh_reduce.txt"); //$NON-NLS-1$
+            ZipWriter writer = new ZipWriter("mesh_reduce.gz"); //$NON-NLS-1$
             for (ReduceRule rule : CSG.REDUCE_RULES) {
                 writer.println(rule.toStringShort());
             }

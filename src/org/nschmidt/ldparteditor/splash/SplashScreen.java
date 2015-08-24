@@ -90,11 +90,11 @@ public class SplashScreen extends ApplicationWindow {
      */
     public void run() {
 
-        final File meshReduce = new File("mesh_reduce.txt"); //$NON-NLS-1$
+        final File meshReduce = new File("mesh_reduce.gz"); //$NON-NLS-1$
         // Load the mesh reducer data
         if (meshReduce.exists()) {
             try {
-                ZipReader reader = new ZipReader("mesh_reduce.txt"); //$NON-NLS-1$
+                ZipReader reader = new ZipReader("mesh_reduce.gz"); //$NON-NLS-1$
                 while (true) {
                     String line2 = reader.readLine();
                     if (line2 == null) {
