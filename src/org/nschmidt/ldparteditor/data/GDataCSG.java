@@ -406,7 +406,6 @@ public final class GDataCSG extends GData {
 
                         @Override
                         public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                            // TODO Auto-generated method stub
 
                             Object[] messageArguments = {getNiceString()};
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
@@ -416,9 +415,6 @@ public final class GDataCSG extends GData {
                             sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
 
                             HashMap<GData3, Integer> result = compiledCSG.getResult();
-
-                            // FIXME Needs T-Junction Elimination / Mesh Reduction!
-
 
                             // Create data array
 
@@ -500,7 +496,6 @@ public final class GDataCSG extends GData {
                                         }
                                     }
                                 }
-
                             }
 
                             // Create adjacency map
@@ -563,7 +558,7 @@ public final class GDataCSG extends GData {
 
                                 }
 
-                                System.out.println("Detect T-Junction Cases " + v + " / " + vertexCount); //$NON-NLS-1$ //$NON-NLS-2$
+                                System.out.println("Detect T-Junction Cases " + v + " / " + vertexCount + " (" + triangleCount + "|" + triangleCount4 + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
                                 Vector4f vp = new Vector4f(vertices[v][0], vertices[v][1], vertices[v][2], 1f);
                                 for (int t = 0; t < triangleCount && t < triangleCount4; t++) {
@@ -635,7 +630,6 @@ public final class GDataCSG extends GData {
                                                 }
 
                                                 triangles = triangles2;
-
                                             }
 
                                             for (int j = 0; j < 9; j++) {
@@ -670,11 +664,8 @@ public final class GDataCSG extends GData {
                                             }
                                             triangleCount++;
                                         }
-
                                     }
-
                                 }
-
                             }
 
 
@@ -711,8 +702,6 @@ public final class GDataCSG extends GData {
                                 HashSet<Integer> planeCount = new HashSet<Integer>();
                                 HashSet<Integer> verticesAround = new HashSet<Integer>();
 
-
-
                                 final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##000;-###,##000", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
 
                                 ArrayList<int[]> merges = new ArrayList<int[]>();
@@ -723,7 +712,6 @@ public final class GDataCSG extends GData {
                                     foundSolution = false;
                                     for (int t = 0; t < triangleCount; t++) {
                                         if (skipTriangle[t]) continue;
-                                        // NLogger.debug(getClass(), t + " / " + triangleCount); //$NON-NLS-1$
 
                                         for (int e0 = 0; e0 < 6; e0++) {
                                             int e2 = e0 < 3 ? (e0 + 1) % 3 : (e0 + 2) % 3;
@@ -741,7 +729,6 @@ public final class GDataCSG extends GData {
 
                                             if (planes > 0 && planes < 3) {
 
-                                                // NLogger.debug(getClass(), "Found possible match. Planes: " + planes); //$NON-NLS-1$
                                                 verticesAround.clear();
 
                                                 if (planes == 2) {
@@ -750,7 +737,6 @@ public final class GDataCSG extends GData {
                                                     for (Integer tri : adjacentTriangles.get((int) triangles[t][e2])) {
                                                         targetPlanes.add((int) triangles[tri][8]);
                                                     }
-
 
                                                     int before = targetPlanes.size();
 
@@ -761,7 +747,6 @@ public final class GDataCSG extends GData {
                                                         // NLogger.debug(getClass(), "Invalid plane constellation."); //$NON-NLS-1$
                                                         continue;
                                                     }
-
                                                 }
 
                                                 boolean hasJunction = false;
@@ -806,7 +791,6 @@ public final class GDataCSG extends GData {
 
                                                     verticesAround.remove(centerVertexID);
 
-
                                                 }
 
                                                 if (hasJunction) {
@@ -835,15 +819,6 @@ public final class GDataCSG extends GData {
                                                         commonTriangles.retainAll(adjacentTriangles.get((int) triangles[t][e2]));
 
                                                         if (commonTriangles.size() == 2) {
-
-                                                            // FIXME Create Fingerprint
-
-                                                            // 1. adjacentCount
-
-                                                            // 2. angles
-
-                                                            // 3. length
-
 
                                                             Iterator<Integer> cit = commonTriangles.iterator();
 
@@ -883,7 +858,7 @@ public final class GDataCSG extends GData {
                                                                         }
                                                                     }
 
-                                                                    // FIXME Needs check for non-convex shapes!!!
+                                                                    // Check for non-convex shapes
                                                                     Vector3d vertexA = new Vector3d(new BigDecimal(vertices[vertex4[0][0]][0]), new BigDecimal(vertices[vertex4[0][0]][1]), new BigDecimal(vertices[vertex4[0][0]][2]));
                                                                     Vector3d vertexB = new Vector3d(new BigDecimal(vertices[vertex4[1][0]][0]), new BigDecimal(vertices[vertex4[1][0]][1]), new BigDecimal(vertices[vertex4[1][0]][2]));
                                                                     Vector3d vertexC = new Vector3d(new BigDecimal(vertices[vertex4[2][0]][0]), new BigDecimal(vertices[vertex4[2][0]][1]), new BigDecimal(vertices[vertex4[2][0]][2]));
@@ -1138,8 +1113,6 @@ public final class GDataCSG extends GData {
 
                                                                                 area2 = area2 + Math.sqrt(z1 * z1 + z2 * z2 + z3 * z3);
 
-                                                                                // FIXME Needs collinearity check!
-
                                                                                 Vector3d vertexA = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][0]][0]), new BigDecimal(vertices[(int) triangles[t2][0]][1]), new BigDecimal(vertices[(int) triangles[t2][0]][2]));
                                                                                 Vector3d vertexB = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][1]][0]), new BigDecimal(vertices[(int) triangles[t2][1]][1]), new BigDecimal(vertices[(int) triangles[t2][1]][2]));
                                                                                 Vector3d vertexC = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][2]][0]), new BigDecimal(vertices[(int) triangles[t2][2]][1]), new BigDecimal(vertices[(int) triangles[t2][2]][2]));
@@ -1167,7 +1140,6 @@ public final class GDataCSG extends GData {
 
                                                                             if (adjacentCount > 3) CSG.REDUCE_RULES.add(rule);
                                                                         }
-
                                                                     }
 
                                                                     foundSolution = true;
@@ -1209,14 +1181,11 @@ public final class GDataCSG extends GData {
 
                                                                         System.out.println();
                                                                     }
-
-
                                                                 }
                                                             }
                                                         }
                                                     }
                                                 }
-
                                             }
                                         }
                                     }
@@ -1253,39 +1222,6 @@ public final class GDataCSG extends GData {
                                 sb.append(I18n.DATFILE_FoundTJunction + " " + Plane.EPSILON_T_JUNCTION + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
                             }
 
-                            //                for (int[] l : merges) {
-                            //                    StringBuilder lineBuilder3 = new StringBuilder();
-                            //                    lineBuilder3.append("2 1 "); //$NON-NLS-1$
-                            //                    lineBuilder3.append(floatToString(vertices[l[0]][0] / 1000f));
-                            //                    lineBuilder3.append(" "); //$NON-NLS-1$
-                            //                    lineBuilder3.append(floatToString(vertices[l[0]][1] / 1000f));
-                            //                    lineBuilder3.append(" "); //$NON-NLS-1$
-                            //                    lineBuilder3.append(floatToString(vertices[l[0]][2] / 1000f));
-                            //                    lineBuilder3.append(" "); //$NON-NLS-1$
-                            //                    lineBuilder3.append(floatToString(vertices[l[1]][0] / 1000f));
-                            //                    lineBuilder3.append(" "); //$NON-NLS-1$
-                            //                    lineBuilder3.append(floatToString(vertices[l[1]][1] / 1000f));
-                            //                    lineBuilder3.append(" "); //$NON-NLS-1$
-                            //                    lineBuilder3.append(floatToString(vertices[l[1]][2] / 1000f));
-                            //                    sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
-                            //                }
-                            //                for (int[] l : merges2) {
-                            //                    StringBuilder lineBuilder3 = new StringBuilder();
-                            //                    lineBuilder3.append("2 4 "); //$NON-NLS-1$
-                            //                    lineBuilder3.append(floatToString(vertices[l[0]][0] / 1000f));
-                            //                    lineBuilder3.append(" "); //$NON-NLS-1$
-                            //                    lineBuilder3.append(floatToString(vertices[l[0]][1] / 1000f));
-                            //                    lineBuilder3.append(" "); //$NON-NLS-1$
-                            //                    lineBuilder3.append(floatToString(vertices[l[0]][2] / 1000f));
-                            //                    lineBuilder3.append(" "); //$NON-NLS-1$
-                            //                    lineBuilder3.append(floatToString(vertices[l[1]][0] / 1000f));
-                            //                    lineBuilder3.append(" "); //$NON-NLS-1$
-                            //                    lineBuilder3.append(floatToString(vertices[l[1]][1] / 1000f));
-                            //                    lineBuilder3.append(" "); //$NON-NLS-1$
-                            //                    lineBuilder3.append(floatToString(vertices[l[1]][2] / 1000f));
-                            //                    sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
-                            //                }
-
                             for (GData3 g3 : result.keySet()) {
                                 StringBuilder lineBuilder3 = new StringBuilder();
                                 lineBuilder3.append("3 "); //$NON-NLS-1$
@@ -1320,13 +1256,11 @@ public final class GDataCSG extends GData {
                                 lineBuilder3.append(floatToString(g3_v3.z / 1000f));
                                 sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
                             }
-
                         }
                     });
                 } catch (InvocationTargetException consumed) {
                 } catch (InterruptedException consumed) {
                 }
-
                 return sb.toString();
             } else {
                 return getNiceString();
@@ -1427,5 +1361,4 @@ public final class GDataCSG extends GData {
     public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {}
     @Override
     public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {}
-
 }
