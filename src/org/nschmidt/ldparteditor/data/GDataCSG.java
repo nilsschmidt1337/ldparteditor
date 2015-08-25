@@ -402,11 +402,11 @@ public final class GDataCSG extends GData {
                 final StringBuilder sb = new StringBuilder();
 
                 try {
-                    new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
+                    new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(false, false, new IRunnableWithProgress() {
 
                         @Override
                         public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-
+                            Editor3DWindow.getWindow().getShell().getDisplay().readAndDispatch();
                             Object[] messageArguments = {getNiceString()};
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                             formatter.setLocale(MyLanguage.LOCALE);
