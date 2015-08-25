@@ -16,10 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.text;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author nils
@@ -90,80 +87,25 @@ public enum StringHelper {
      * @param uncompressed
      * @return
      */
+    // FIXME IMPORTANT: Needs a complete rewrite, due to algrithm errors!!!
     public static int[] compress(String uncompressed) {
-        // Build the dictionary.
+        int[] result2 = new int[uncompressed.length()];
+        int i = 0;
         for (char c : uncompressed.toCharArray()) {
-            if (!dictSet.contains(c)) {
-                dictSet.add(c);
-                dictList.add(c);
-            }
-        }
-        Map<String,Integer> dictionary = new HashMap<String,Integer>();
-        int dictSize = dictList.size();
-        for (int i = 0; i < dictSize; i++) {
-            dictionary.put("" + dictList.get(i), i); //$NON-NLS-1$
-        }
-        String w = ""; //$NON-NLS-1$
-        List<Integer> result = new ArrayList<Integer>();
-        for (char c : uncompressed.toCharArray()) {
-            String wc = w + c;
-            if (dictionary.containsKey(wc))
-                w = wc;
-            else {
-                Integer di = dictionary.get(w);
-                if (di == null) {
-                    dictionary.put(w, dictSize++);
-                }
-                result.add(di);
-                // Add wc to the dictionary.
-                dictionary.put(wc, dictSize++);
-                w = "" + c; //$NON-NLS-1$
-            }
-        }
-
-        // Output the code for w.
-        if (!w.equals("")) //$NON-NLS-1$
-            result.add(dictionary.get(w));
-
-        int[] result2 = new int[result.size()];
-        for (int i = 0; i < result2.length; i++) {
-            int j = result.get(i);
-            result2[i] = j;
+            result2[i] = c;
+            i++;
         }
         return result2;
     }
 
     /** Decompress a list of output ks to a string. */
+    // FIXME IMPORTANT: Needs a complete rewrite, due to algrithm errors!!!
     public static String decompress(int[] compressed) {
-        // Build the dictionary.
-        int dictSize = dictList.size();
-        Map<Integer,String> dictionary = new HashMap<Integer,String>();
-        for (int i = 0; i < dictSize; i++) {
-            dictionary.put(i, "" + dictList.get(i)); //$NON-NLS-1$
-        }
-        String w = "" + (char) compressed[0]; //$NON-NLS-1$
-        StringBuffer result = new StringBuffer(w);
-        final int size = compressed.length;
-        for (int i = 1; i < size; i++) {
-            int k = compressed[i];
-            String entry;
-            if (dictionary.containsKey(k))
-                entry = dictionary.get(k);
-            else if (k == dictSize)
-                entry = w + w.charAt(0);
-            else {
-                dictionary.put(dictSize++, w);
-                result.append(w);
-                continue;
+        StringBuilder result = new StringBuilder();
+        for (int c : compressed) {
+            for (char ch : Character.toChars(c)) {
+                result.append(ch);
             }
-
-
-            result.append(entry);
-
-            // Add w+entry[0] to the dictionary.
-            dictionary.put(dictSize++, w + entry.charAt(0));
-
-            w = entry;
         }
         return result.toString();
     }
