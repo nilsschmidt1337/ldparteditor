@@ -15,8 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.text;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * @author nils
@@ -25,9 +23,6 @@ import java.util.HashSet;
 public enum StringHelper {
 
     INSTANCE;
-
-    private static HashSet<Character> dictSet = new HashSet<Character>();
-    private static ArrayList<Character> dictList = new ArrayList<Character>();
 
     public static int countOccurences(final String findStr, final String str) {
         int lastIndex = 0;
