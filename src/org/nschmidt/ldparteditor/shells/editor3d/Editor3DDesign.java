@@ -214,6 +214,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Unificator = new MenuItem[1];
     final MenuItem[] mntm_RingsAndCones = new MenuItem[1];
 
+    final MenuItem[] mntm_CustomiseKeys = new MenuItem[1];
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
     final MenuItem[] mntm_UploadLogs = new MenuItem[1];
@@ -1044,6 +1045,11 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator1 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
+                    {
+                        MenuItem mntm_CustomiseKeys = new MenuItem(mnu_Tools, SWT.PUSH);
+                        this.mntm_CustomiseKeys[0] = mntm_CustomiseKeys;
+                        mntm_CustomiseKeys.setText(I18n.KEYBOARD_CustomiseShortkeys);
+                    }
                     {
                         MenuItem mntm_ResetSettingsOnRestart = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_ResetSettingsOnRestart[0] = mntm_ResetSettingsOnRestart;

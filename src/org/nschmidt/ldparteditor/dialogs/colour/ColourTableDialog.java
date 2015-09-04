@@ -30,7 +30,6 @@ class ColourTableDialog extends ColourTableDesign {
 
     protected ColourTableDialog(Shell parentShell, final GColour[] refCol) {
         super(parentShell, refCol);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
