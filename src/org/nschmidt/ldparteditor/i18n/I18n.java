@@ -552,6 +552,7 @@ public final class I18n {
     public static final String ISECALC_Title = ISECALC.getString(getProperty());
     public static final String KEYBOARD_Alt = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Ctrl = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_CustomiseShortkeys = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Del = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Shift = KEYBOARD.getString(getProperty());
     public static final String LINES_Hint = LINES.getString(getProperty());
