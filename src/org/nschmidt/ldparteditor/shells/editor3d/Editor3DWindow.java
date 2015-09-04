@@ -102,6 +102,7 @@ import org.nschmidt.ldparteditor.dialogs.copy.CopyDialog;
 import org.nschmidt.ldparteditor.dialogs.edger2.EdgerDialog;
 import org.nschmidt.ldparteditor.dialogs.intersector.IntersectorDialog;
 import org.nschmidt.ldparteditor.dialogs.isecalc.IsecalcDialog;
+import org.nschmidt.ldparteditor.dialogs.keys.KeyTableDialog;
 import org.nschmidt.ldparteditor.dialogs.lines2pattern.Lines2PatternDialog;
 import org.nschmidt.ldparteditor.dialogs.logupload.LogUploadDialog;
 import org.nschmidt.ldparteditor.dialogs.newproject.NewProjectDialog;
@@ -3725,6 +3726,16 @@ public class Editor3DWindow extends Editor3DDesign {
                     return;
                 }
                 WorkbenchManager.getUserSettingState().setResetOnStart(true);
+            }
+        });
+
+        mntm_CustomiseKeys[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                KeyTableDialog dialog = new KeyTableDialog(getShell());
+                if (dialog.open() == IDialogConstants.OK_ID) {
+
+                }
             }
         });
 
