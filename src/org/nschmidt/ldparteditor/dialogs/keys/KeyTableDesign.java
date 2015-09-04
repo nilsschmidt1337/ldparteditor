@@ -42,6 +42,7 @@ class KeyTableDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(final Composite parent) {
+        this.getShell().setText(I18n.KEYBOARD_CustomiseShortkeys);
         Composite cmp_container = parent;
         cmp_container.setLayout(new GridLayout());
 

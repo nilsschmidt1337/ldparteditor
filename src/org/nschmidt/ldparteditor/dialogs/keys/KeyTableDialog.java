@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 public class KeyTableDialog extends KeyTableDesign {
 
 
-    protected KeyTableDialog(Shell parentShell) {
+    public KeyTableDialog(Shell parentShell) {
         super(parentShell);
     }
 
