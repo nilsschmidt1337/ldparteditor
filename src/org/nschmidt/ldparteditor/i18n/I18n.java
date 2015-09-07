@@ -554,7 +554,11 @@ public final class I18n {
     public static final String KEYBOARD_Ctrl = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_CustomiseShortkeys = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Del = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_Description = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_Editor3D = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_EditorText = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Shift = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_Shortkey = KEYBOARD.getString(getProperty());
     public static final String LINES_Hint = LINES.getString(getProperty());
     public static final String LINES_ScopeSelection = LINES.getString(getProperty());
     public static final String LINES_Title = LINES.getString(getProperty());

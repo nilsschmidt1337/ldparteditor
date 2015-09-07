@@ -3774,7 +3774,6 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
-
                 String source = ""; //$NON-NLS-1$
                 {
                     UTF8BufferedReader b1 = null, b2 = null;
