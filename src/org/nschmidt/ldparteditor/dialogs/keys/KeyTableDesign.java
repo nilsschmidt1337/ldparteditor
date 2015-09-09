@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.keys;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -25,11 +26,13 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
+import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeColumn;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
@@ -72,6 +75,9 @@ class KeyTableDesign extends Dialog {
         Composite cmp_container = parent;
         cmp_container.setLayout(new GridLayout());
 
+        Label lbl_DoubleClick = new Label(cmp_container, I18n.I18N_RTL());
+        lbl_DoubleClick.setText(I18n.KEYBOARD_DoubleClick);
+
         Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI, Task.values().length + TextTask.values().length - 8);
 
         // tree_Problems[0] = tree;
@@ -99,56 +105,56 @@ class KeyTableDesign extends Dialog {
         trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
         trtm_EditorText.setVisible(true);
 
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.ADD_COMMENTS); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.ADD_CONDLINE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.ADD_LINE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.ADD_QUAD); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.ADD_TRIANGLE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.ADD_VERTEX); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.COPY); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.CUT); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.DELETE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.ESC); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.LMB); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.MERGE_TO_AVERAGE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.MERGE_TO_LAST); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.MMB); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.MODE_COMBINED); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.MODE_MOVE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.MODE_ROTATE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.MODE_SCALE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.MODE_SELECT); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.OBJ_FACE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.OBJ_LINE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.OBJ_PRIMITIVE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.OBJ_VERTEX); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.PASTE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.REDO); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.RESET_VIEW); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.RMB); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.SAVE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.SELECT_ALL); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.SELECT_ALL_WITH_SAME_COLOURS); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.SELECT_CONNECTED); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.SELECT_NONE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.SELECT_OPTION_WITH_SAME_COLOURS); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.SELECT_TOUCHING); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.SHOW_GRID); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.SHOW_RULER); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.SPLIT); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.UNDO); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.ZOOM_IN); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_Editor3D, "Test", Task.ZOOM_OUT); //$NON-NLS-1$
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddComment, Task.ADD_COMMENTS);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddVertex, Task.ADD_VERTEX);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddLine, Task.ADD_LINE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddTriangle, Task.ADD_TRIANGLE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddQuad, Task.ADD_QUAD);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddCondline, Task.ADD_CONDLINE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Cut, Task.CUT);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Copy, Task.COPY);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Paste, Task.PASTE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Delete, Task.DELETE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Esc1, Task.ESC);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_LMB, Task.LMB);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_MergeToAvg, Task.MERGE_TO_AVERAGE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_MergeToLast, Task.MERGE_TO_LAST);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_MMB, Task.MMB);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeCombined, Task.MODE_COMBINED);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeMove, Task.MODE_MOVE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeRotate, Task.MODE_ROTATE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeScale, Task.MODE_SCALE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeSelect, Task.MODE_SELECT);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ObjFace, Task.OBJ_FACE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ObjLine, Task.OBJ_LINE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ObjPrimitive, Task.OBJ_PRIMITIVE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ObjVertex, Task.OBJ_VERTEX);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ResetView, Task.RESET_VIEW);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_RMB, Task.RMB);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Save, Task.SAVE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectAll, Task.SELECT_ALL);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectAllWithSameColours, Task.SELECT_ALL_WITH_SAME_COLOURS);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectConnected, Task.SELECT_CONNECTED);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectNone, Task.SELECT_NONE);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectOptionWithSameColours, Task.SELECT_OPTION_WITH_SAME_COLOURS);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectTouching, Task.SELECT_TOUCHING);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ShowGrid, Task.SHOW_GRID);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ShowRuler, Task.SHOW_RULER);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Split, Task.SPLIT);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Undo, Task.UNDO);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Redo, Task.REDO);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ZoomIn, Task.ZOOM_IN);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ZoomOut, Task.ZOOM_OUT);
 
-        registerDoubleClickEvent(trtm_EditorText, "Test", TextTask.EDITORTEXT_ESC); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_EditorText, "Test", TextTask.EDITORTEXT_INLINE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_EditorText, "Test", TextTask.EDITORTEXT_QUICKFIX); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_EditorText, "Test", TextTask.EDITORTEXT_REDO); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_EditorText, "Test", TextTask.EDITORTEXT_REPLACE_VERTEX); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_EditorText, "Test", TextTask.EDITORTEXT_ROUND); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_EditorText, "Test", TextTask.EDITORTEXT_SAVE); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_EditorText, "Test", TextTask.EDITORTEXT_SELECTALL); //$NON-NLS-1$
-        registerDoubleClickEvent(trtm_EditorText, "Test2", TextTask.EDITORTEXT_UNDO); //$NON-NLS-1$
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Esc2, TextTask.EDITORTEXT_ESC);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Inline, TextTask.EDITORTEXT_INLINE);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_QuickFix, TextTask.EDITORTEXT_QUICKFIX);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Redo, TextTask.EDITORTEXT_REDO);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_ReplaceVertex, TextTask.EDITORTEXT_REPLACE_VERTEX);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Round, TextTask.EDITORTEXT_ROUND);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Save, TextTask.EDITORTEXT_SAVE);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_SelectAll, TextTask.EDITORTEXT_SELECTALL);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Undo, TextTask.EDITORTEXT_UNDO);
 
         if (s1.size() != Task.values().length || s2.size() != TextTask.values().length) {
             throw new AssertionError("Not all shortkey items are covered by this dialog! Please fix it"); //$NON-NLS-1$
@@ -169,8 +175,19 @@ class KeyTableDesign extends Dialog {
     }
 
     private void registerDoubleClickEvent(TreeItem parent, String description, Task t1, TextTask t2) {
+
+        String keyCombination = ""; //$NON-NLS-1$
+
+        if (t1 != null) {
+            HashMap<Task, String> m = KeyStateManager.getTaskKeymap();
+            keyCombination = m.get(t1);
+        } else if (t2 != null) {
+            HashMap<TextTask, String> m = KeyStateManager.getTextTaskKeymap();
+            keyCombination = m.get(t2);
+        }
+
         TreeItem trtm_newKey = new TreeItem(parent, SWT.PUSH);
-        trtm_newKey.setText(new String[] { description, "" }); //$NON-NLS-1$
+        trtm_newKey.setText(new String[] { description, keyCombination });
         trtm_newKey.setVisible(true);
     }
 
