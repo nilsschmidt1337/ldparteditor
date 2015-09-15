@@ -27,13 +27,22 @@ public class ReduceRule implements Comparable<ReduceRule> {
 
     private static final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##000;-###,##000", new DecimalFormatSymbols(Locale.getDefault())); //$NON-NLS-1$
 
-
     final int adjacency;
+    int quality;
     final byte[] lengths;
     final int[] angles;
 
     public ReduceRule(int adjacency, int[] lengths, int[] angles) {
         this.adjacency = adjacency;
+        this.quality = 0;
+        byte[] lengths2 = new byte[lengths.length];
+        this.lengths = lengths2;
+        this.angles = angles;
+    }
+
+    public ReduceRule(int adjacency, int quality, int[] lengths, int[] angles) {
+        this.adjacency = adjacency;
+        this.quality = quality;
         byte[] lengths2 = new byte[lengths.length];
         this.lengths = lengths2;
         this.angles = angles;
@@ -139,6 +148,10 @@ public class ReduceRule implements Comparable<ReduceRule> {
 
     public String toStringShort() {
         final StringBuilder sb = new StringBuilder();
+
+        sb.append(quality);
+        sb.append("|");//$NON-NLS-1$
+
         final int lastIndex = adjacency - 1;
         for (int i = 0; i < adjacency; i++) {
             sb.append(lengths[i]);
@@ -150,6 +163,18 @@ public class ReduceRule implements Comparable<ReduceRule> {
             if (i < lastIndex) sb.append("|");//$NON-NLS-1$
         }
         return sb.toString();
+    }
+
+    public boolean hasGoodQuality() {
+        return quality > -20;
+    }
+
+    public void increaseQuality() {
+        if (quality < 20) quality += 1;
+    }
+
+    public void decreaseQuality() {
+        if (quality > -20) quality -= 1;
     }
 
 }

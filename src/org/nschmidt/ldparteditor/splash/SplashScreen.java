@@ -103,16 +103,22 @@ public class SplashScreen extends ApplicationWindow {
                     try {
                         String[] segs = line2.split("\\|"); //$NON-NLS-1$
 
-                        final int adjacency = segs.length / 2;
+                        boolean hasQuality = segs.length % 2 == 1;
+
+                        final int start = hasQuality ? 1 : 0;
+
+                        final int quality = hasQuality ? Integer.parseInt(segs[0]) : 0;
+
+                        final int adjacency = hasQuality ? (segs.length - 1) / 2 : segs.length / 2;
                         final int[] length = new int[adjacency];
                         final int[] angle = new int[adjacency];
-                        for (int i = 0; i < adjacency; i++) {
+                        for (int i = start; i < adjacency; i++) {
                             final int li = i;
                             final int ai = adjacency + i;
                             length[i] = Integer.parseInt(segs[li]);
                             angle[i] = Integer.parseInt(segs[ai]);
                         }
-                        CSG.REDUCE_RULES.add(new ReduceRule(adjacency, length, angle));
+                        CSG.REDUCE_RULES.add(new ReduceRule(adjacency, quality, length, angle));
                     } catch (Exception e) {
                         NLogger.error(getClass(), e);
                     }

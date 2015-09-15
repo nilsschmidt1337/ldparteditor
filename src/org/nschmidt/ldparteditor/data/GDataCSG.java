@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.lwjgl.util.vector.Matrix4f;
@@ -40,6 +41,7 @@ import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.csg.ReduceRule;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.dialogs.quality.QualityDialog;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -399,6 +401,14 @@ public final class GDataCSG extends GData {
         case CSG.COMPILE:
             if (compiledCSG != null) {
 
+                final int optChoice;
+
+                if (CSG.LAST_REDUCE_RULES.isEmpty()) {
+                    optChoice = IDialogConstants.CANCEL_ID;
+                } else {
+                    optChoice = new QualityDialog(Editor3DWindow.getWindow().getShell()).open();
+                }
+
                 final StringBuilder sb = new StringBuilder();
 
                 try {
@@ -668,6 +678,17 @@ public final class GDataCSG extends GData {
                                 }
                             }
 
+                            if (optChoice == IDialogConstants.YES_ID) {
+                                for (ReduceRule r : CSG.LAST_REDUCE_RULES) {
+                                    r.increaseQuality();
+                                }
+                            } else if (optChoice == IDialogConstants.NO_ID) {
+                                for (ReduceRule r : CSG.LAST_REDUCE_RULES) {
+                                    r.decreaseQuality();
+                                }
+                            }
+
+                            CSG.LAST_REDUCE_RULES.clear();
 
                             boolean[] skipTriangle = new boolean[triangleCount];
                             boolean foundTJunction = false;
@@ -1145,7 +1166,19 @@ public final class GDataCSG extends GData {
                                                                     foundSolution = true;
                                                                     newIteration = true;
 
-                                                                    if (adjacentCount == 3 || hasRule || lengths[0] == min && planes == 1 && angles[0] >= 90 && angles[adjacentCount - 1] >= 90) {
+                                                                    final boolean addRuleToList = hasRule && rule.hasGoodQuality();
+
+                                                                    if (addRuleToList) {
+                                                                        ReduceRule rule2;
+                                                                        if (rule.compareTo(CSG.REDUCE_RULES.first()) == 0) {
+                                                                            rule2 = CSG.REDUCE_RULES.first();
+                                                                        } else {
+                                                                            rule2 = CSG.REDUCE_RULES.lower(CSG.REDUCE_RULES.higher(rule));
+                                                                        }
+                                                                        CSG.LAST_REDUCE_RULES.add(rule2);
+                                                                    }
+
+                                                                    if (adjacentCount == 3 || addRuleToList || lengths[0] == min && planes == 1 && angles[0] >= 90 && angles[adjacentCount - 1] >= 90) {
 
                                                                         adjacentTriangles.get(centerVertexID).removeAll(deletedTriangles);
                                                                         adjacentTriangles.get(targetVertexID).removeAll(deletedTriangles);
