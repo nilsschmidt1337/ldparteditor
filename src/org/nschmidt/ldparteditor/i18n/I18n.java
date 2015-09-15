@@ -242,6 +242,7 @@ public final class I18n {
     public static final String DIALOG_DeleteTitle = DIALOG.getString(getProperty());
     public static final String DIALOG_DirectorySelect = DIALOG.getString(getProperty());
     public static final String DIALOG_Error = DIALOG.getString(getProperty());
+    public static final String DIALOG_IdontKnow = DIALOG.getString(getProperty());
     public static final String DIALOG_Info = DIALOG.getString(getProperty());
     public static final String DIALOG_KeepFilesOpen = DIALOG.getString(getProperty());
     public static final String DIALOG_KeepFilesOpenTitle = DIALOG.getString(getProperty());
@@ -420,6 +421,8 @@ public final class I18n {
     public static final String E3D_Previous = E3D.getString(getProperty());
     public static final String E3D_PreviousItem = E3D.getString(getProperty());
     public static final String E3D_Quads = E3D.getString(getProperty());
+    public static final String E3D_Quality1 = E3D.getString(getProperty());
+    public static final String E3D_Quality2 = E3D.getString(getProperty());
     public static final String E3D_ReadyStatus = E3D.getString(getProperty());
     public static final String E3D_Rectifier = E3D.getString(getProperty());
     public static final String E3D_Redo = E3D.getString(getProperty());
