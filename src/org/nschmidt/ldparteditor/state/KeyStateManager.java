@@ -77,6 +77,7 @@ public class KeyStateManager {
     public static int tmp_stateMask = 0;
     public static int tmp_keyCode = 0;
     public static String tmp_keyString = ""; //$NON-NLS-1$
+    public static String tmp_mapKey = ""; //$NON-NLS-1$
 
     static {
 
@@ -695,5 +696,35 @@ public class KeyStateManager {
 
     public static void addTooltipText(Button btn, final String text) {
         btn.setToolTipText(text);
+    }
+
+    public static String getMapKey(Task t1) {
+        for (String k : taskMap.keySet()) {
+            if (taskMap.get(k) == t1) {
+                return k;
+            }
+        }
+        return null;
+    }
+
+    public static String getMapKey(TextTask t2) {
+        for (String k : textTaskMap.keySet()) {
+            if (textTaskMap.get(k) == t2) {
+                return k;
+            }
+        }
+        return null;
+    }
+
+    public static void changeKey(String oldKey, String newKey, String keyString, Task t) {
+        taskMap.remove(oldKey);
+        taskMap.put(newKey, t);
+        taskKeyMap.put(t, keyString);
+    }
+
+    public static void changeKey(String oldKey, String newKey, String keyString, TextTask t) {
+        textTaskMap.remove(oldKey);
+        textTaskMap.put(newKey, t);
+        textTaskKeyMap.put(t, keyString);
     }
 }

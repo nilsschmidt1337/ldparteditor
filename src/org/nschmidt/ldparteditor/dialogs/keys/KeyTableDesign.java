@@ -167,11 +167,13 @@ class KeyTableDesign extends Dialog {
         tree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDoubleClick(MouseEvent e) {
-                System.out.println("Double Click!"); //$NON-NLS-1$
                 final TreeItem selection;
                 if (tree.getSelectionCount() == 1 && (selection = tree.getSelection()[0]).getData() != null) {
                     if (new KeyDialog(getShell()).open() == IDialogConstants.OK_ID) {
                         selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
+                        Object[] data = (Object[]) selection.getData();
+                        if (data[0] == null) KeyStateManager.changeKey((String) data[2], KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (TextTask) data[1]);
+                        if (data[1] == null) KeyStateManager.changeKey((String) data[2], KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (Task) data[0]);
                         tree.build();
                         tree.update();
                     }
@@ -195,18 +197,22 @@ class KeyTableDesign extends Dialog {
 
         String keyCombination = ""; //$NON-NLS-1$
 
+        String key = null;
+
         if (t1 != null) {
             HashMap<Task, String> m = KeyStateManager.getTaskKeymap();
             keyCombination = m.get(t1);
+            key = KeyStateManager.getMapKey(t1);
         } else if (t2 != null) {
             HashMap<TextTask, String> m = KeyStateManager.getTextTaskKeymap();
             keyCombination = m.get(t2);
+            key = KeyStateManager.getMapKey(t2);
         }
 
         TreeItem trtm_newKey = new TreeItem(parent, SWT.PUSH);
         trtm_newKey.setText(new String[] { description, keyCombination });
         trtm_newKey.setVisible(true);
-        trtm_newKey.setData(new Object[]{t1, t2});
+        trtm_newKey.setData(new Object[]{t1, t2, key});
 
     }
 
