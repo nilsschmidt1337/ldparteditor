@@ -587,6 +587,7 @@ public final class I18n {
     public static final String KEYBOARD_ObjPrimitive = KEYBOARD.getString(getProperty());;
     public static final String KEYBOARD_ObjVertex = KEYBOARD.getString(getProperty());;
     public static final String KEYBOARD_Paste = KEYBOARD.getString(getProperty());;
+    public static final String KEYBOARD_PressAKey = KEYBOARD.getString(getProperty());;
     public static final String KEYBOARD_QuickFix = KEYBOARD.getString(getProperty());;
     public static final String KEYBOARD_RMB = KEYBOARD.getString(getProperty());;
     public static final String KEYBOARD_Redo = KEYBOARD.getString(getProperty());;
