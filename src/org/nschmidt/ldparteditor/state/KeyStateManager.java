@@ -76,6 +76,7 @@ public class KeyStateManager {
 
     public static int tmp_stateMask = 0;
     public static int tmp_keyCode = 0;
+    public static String tmp_keyString = ""; //$NON-NLS-1$
 
     static {
 

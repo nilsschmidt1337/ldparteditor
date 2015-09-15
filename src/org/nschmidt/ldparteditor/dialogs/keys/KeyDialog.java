@@ -42,7 +42,7 @@ public class KeyDialog extends KeyDesign {
             public void keyPressed(KeyEvent e) {
                 final int stateMask = e.stateMask;
                 final int keyCode = e.keyCode;
-                final boolean ctrlPressed = (stateMask  & SWT.CTRL) != 0;
+                final boolean ctrlPressed = (stateMask & SWT.CTRL) != 0;
                 final boolean altPressed = (stateMask & SWT.ALT) != 0;
                 final boolean shiftPressed = (stateMask & SWT.SHIFT) != 0;
                 final Event event = new Event();
@@ -54,6 +54,7 @@ public class KeyDialog extends KeyDesign {
                 lbl_PressKey[0].update();
                 KeyStateManager.tmp_keyCode = keyCode;
                 KeyStateManager.tmp_stateMask = stateMask;
+                KeyStateManager.tmp_keyString = lbl_PressKey[0].getText();
             }
         });
 
