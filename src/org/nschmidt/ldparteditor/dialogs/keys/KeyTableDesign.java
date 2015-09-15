@@ -21,6 +21,8 @@ import java.util.HashSet;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -161,6 +163,14 @@ class KeyTableDesign extends Dialog {
         }
 
         tree.build();
+
+        tree.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {
+                System.out.println("Double Click!"); //$NON-NLS-1$
+                new KeyDialog(getShell()).open();
+            }
+        });
         return cmp_container;
     }
 
@@ -189,6 +199,7 @@ class KeyTableDesign extends Dialog {
         TreeItem trtm_newKey = new TreeItem(parent, SWT.PUSH);
         trtm_newKey.setText(new String[] { description, keyCombination });
         trtm_newKey.setVisible(true);
+
     }
 
 

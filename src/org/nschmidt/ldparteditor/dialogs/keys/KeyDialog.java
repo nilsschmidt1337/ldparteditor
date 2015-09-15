@@ -15,6 +15,18 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.keys;
 
-public class KeyDialog {
+import org.eclipse.swt.widgets.Shell;
 
+public class KeyDialog extends KeyDesign {
+
+    public KeyDialog(Shell parentShell) {
+        super(parentShell);
+    }
+
+    @Override
+    public int open() {
+        super.create();
+        // TODO Add listeners here
+        return super.open();
+    }
 }
