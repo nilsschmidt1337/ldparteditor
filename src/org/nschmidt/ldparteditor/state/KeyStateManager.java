@@ -74,6 +74,9 @@ public class KeyStateManager {
     private int multi = 100;
     private int colourNumber = 0;
 
+    public static int tmp_stateMask = 0;
+    public static int tmp_keyCode = 0;
+
     static {
 
         reservedKeyCodes.add(SWT.KEYPAD_0 + ""); //$NON-NLS-1$
