@@ -80,7 +80,7 @@ class KeyTableDesign extends Dialog {
         Label lbl_DoubleClick = new Label(cmp_container, I18n.I18N_RTL());
         lbl_DoubleClick.setText(I18n.KEYBOARD_DoubleClick);
 
-        Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI, Task.values().length + TextTask.values().length - 8);
+        final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI, Task.values().length + TextTask.values().length - 8);
 
         // tree_Problems[0] = tree;
         tree.setLinesVisible(true);
@@ -168,7 +168,14 @@ class KeyTableDesign extends Dialog {
             @Override
             public void mouseDoubleClick(MouseEvent e) {
                 System.out.println("Double Click!"); //$NON-NLS-1$
-                new KeyDialog(getShell()).open();
+                final TreeItem selection;
+                if (tree.getSelectionCount() == 1 && (selection = tree.getSelection()[0]).getData() != null) {
+                    if (new KeyDialog(getShell()).open() == IDialogConstants.OK_ID) {
+                        selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
+                        tree.build();
+                        tree.update();
+                    }
+                }
             }
         });
         return cmp_container;
@@ -199,6 +206,7 @@ class KeyTableDesign extends Dialog {
         TreeItem trtm_newKey = new TreeItem(parent, SWT.PUSH);
         trtm_newKey.setText(new String[] { description, keyCombination });
         trtm_newKey.setVisible(true);
+        trtm_newKey.setData(new Object[]{t1, t2});
 
     }
 
