@@ -169,11 +169,17 @@ class KeyTableDesign extends Dialog {
             public void mouseDoubleClick(MouseEvent e) {
                 final TreeItem selection;
                 if (tree.getSelectionCount() == 1 && (selection = tree.getSelection()[0]).getData() != null) {
-                    if (new KeyDialog(getShell()).open() == IDialogConstants.OK_ID) {
-                        selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
+                    KeyStateManager.tmp_keyString = null;
+                    if (new KeyDialog(getShell()).open() == IDialogConstants.OK_ID && KeyStateManager.tmp_keyString != null) {
                         Object[] data = (Object[]) selection.getData();
-                        if (data[0] == null) KeyStateManager.changeKey((String) data[2], KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (TextTask) data[1]);
-                        if (data[1] == null) KeyStateManager.changeKey((String) data[2], KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (Task) data[0]);
+                        if (data[0] == null && !KeyStateManager.hasTextTaskKey(KeyStateManager.tmp_mapKey)) {
+                            KeyStateManager.changeKey((String) data[2], KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (TextTask) data[1]);
+                            selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
+                        }
+                        if (data[1] == null && !KeyStateManager.hasTaskKey(KeyStateManager.tmp_mapKey)) {
+                            KeyStateManager.changeKey((String) data[2], KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (Task) data[0]);
+                            selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
+                        }
                         tree.build();
                         tree.update();
                     }
@@ -225,7 +231,6 @@ class KeyTableDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
     }
 
     /**

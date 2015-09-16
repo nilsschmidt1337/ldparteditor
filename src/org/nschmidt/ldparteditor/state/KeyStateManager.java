@@ -727,4 +727,22 @@ public class KeyStateManager {
         textTaskMap.put(newKey, t);
         textTaskKeyMap.put(t, keyString);
     }
+
+    public static boolean hasTextTaskKey(String key) {
+        if (key != null) {
+            for (String k : textTaskMap.keySet()) {
+                if (key.equals(k)) return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean hasTaskKey(String key) {
+        if (key != null) {
+            for (String k : taskMap.keySet()) {
+                if (key.equals(k)) return true;
+            }
+        }
+        return false;
+    }
 }

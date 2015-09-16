@@ -18,10 +18,14 @@ package org.nschmidt.ldparteditor.workbench;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.enums.Task;
+import org.nschmidt.ldparteditor.enums.TextTask;
+import org.nschmidt.ldparteditor.state.KeyStateManager;
 
 /**
  * This class represents the permanent state of the application setting with
@@ -94,6 +98,14 @@ public class UserSettingState implements Serializable {
 
     /** {@code true} if the user has got the information that BFC certification is mandatory for the LDraw Standard Preview Mode  */
     private boolean bfcCertificationRequiredForLDrawMode = false;
+
+    private String[] key3DStrings = null;
+    private String[] key3DKeys = null;
+    private Task[] key3DTasks = null;
+
+    private String[] keyTextStrings = null;
+    private String[] keyTextKeys = null;
+    private TextTask[] keyTextTasks = null;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -401,6 +413,70 @@ public class UserSettingState implements Serializable {
 
     public void setBfcCertificationRequiredForLDrawMode(boolean bfcCertificationRequiredForLDrawMode) {
         this.bfcCertificationRequiredForLDrawMode = bfcCertificationRequiredForLDrawMode;
+    }
+
+    public void loadShortkeys() {
+        if (key3DStrings != null && key3DKeys != null && key3DTasks != null) {
+            final int size = key3DStrings.length;
+            for (int i = 0; i < size; i++) {
+                final String oldKey = KeyStateManager.getMapKey(key3DTasks[i]);
+                if (oldKey != null) {
+                    KeyStateManager.changeKey(oldKey, key3DKeys[i], key3DStrings[i], key3DTasks[i]);
+                }
+            }
+        }
+
+        if (keyTextStrings != null && keyTextKeys != null && keyTextTasks != null) {
+            final int size = keyTextStrings.length;
+            for (int i = 0; i < size; i++) {
+                final String oldKey = KeyStateManager.getMapKey(keyTextTasks[i]);
+                if (oldKey != null) {
+                    KeyStateManager.changeKey(oldKey, keyTextKeys[i], keyTextStrings[i], keyTextTasks[i]);
+                }
+            }
+        }
+    }
+
+    public void saveShortkeys() {
+        HashMap<String, Task> m1 = KeyStateManager.getTaskmap();
+        HashMap<Task, String> m2 = KeyStateManager.getTaskKeymap();
+        HashMap<String, TextTask> m3 = KeyStateManager.getTextTaskmap();
+        HashMap<TextTask, String> m4 = KeyStateManager.getTextTaskKeymap();
+
+        int size1 = m1.size();
+        int size2 = m3.size();
+
+        key3DStrings = new String[size1];
+        key3DKeys = new String[size1];
+        key3DTasks = new Task[size1];
+
+        keyTextStrings = new String[size2];
+        keyTextKeys = new String[size2];
+        keyTextTasks = new TextTask[size2];
+
+        {
+            int i = 0;
+            for (String k : m1.keySet()) {
+                Task t = m1.get(k);
+                String keyString = m2.get(t);
+                key3DStrings[i] = keyString;
+                key3DKeys[i] = k;
+                key3DTasks[i] = t;
+                i++;
+            }
+        }
+
+        {
+            int i = 0;
+            for (String k : m3.keySet()) {
+                TextTask t = m3.get(k);
+                String keyString = m4.get(t);
+                keyTextStrings[i] = keyString;
+                keyTextKeys[i] = k;
+                keyTextTasks[i] = t;
+                i++;
+            }
+        }
     }
 
 }
