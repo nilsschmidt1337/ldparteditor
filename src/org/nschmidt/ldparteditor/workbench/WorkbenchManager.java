@@ -83,6 +83,7 @@ public enum WorkbenchManager {
                 WorkbenchManager.editor3DWindowState = (Editor3DWindowState) configFileStream.readObject();
                 WorkbenchManager.editorTextWindowState = (EditorTextWindowState) configFileStream.readObject();
                 WorkbenchManager.userSettingState = (UserSettingState) configFileStream.readObject();
+                WorkbenchManager.userSettingState.loadShortkeys();
                 configFileStream.close();
                 Manipulator.setSnap(WorkbenchManager.userSettingState.getMedium_move_snap(), WorkbenchManager.userSettingState.getMedium_rotate_snap(),
                         WorkbenchManager.userSettingState.getMedium_scale_snap());
@@ -125,6 +126,7 @@ public enum WorkbenchManager {
                 configFileStream.writeObject(state3D);
             }
             configFileStream.writeObject(WorkbenchManager.editorTextWindowState);
+            if (WorkbenchManager.userSettingState != null) WorkbenchManager.userSettingState.saveShortkeys();
             configFileStream.writeObject(WorkbenchManager.userSettingState);
             configFileStream.close();
         } catch (SecurityException se) {
