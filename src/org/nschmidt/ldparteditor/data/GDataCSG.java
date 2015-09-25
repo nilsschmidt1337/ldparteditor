@@ -1172,10 +1172,14 @@ public final class GDataCSG extends GData {
                                                                         ReduceRule rule2;
                                                                         if (rule.compareTo(CSG.REDUCE_RULES.first()) == 0) {
                                                                             rule2 = CSG.REDUCE_RULES.first();
+                                                                            CSG.LAST_REDUCE_RULES.add(rule2);
                                                                         } else {
-                                                                            rule2 = CSG.REDUCE_RULES.lower(CSG.REDUCE_RULES.higher(rule));
+                                                                            try {
+                                                                                rule2 = CSG.REDUCE_RULES.lower(CSG.REDUCE_RULES.higher(rule));
+                                                                                CSG.LAST_REDUCE_RULES.add(rule2);
+                                                                            } catch (NullPointerException npe) {
+                                                                            }
                                                                         }
-                                                                        CSG.LAST_REDUCE_RULES.add(rule2);
                                                                     }
 
                                                                     if (adjacentCount == 3 || addRuleToList || lengths[0] == min && planes == 1 && angles[0] >= 90 && angles[adjacentCount - 1] >= 90) {
@@ -1292,7 +1296,9 @@ public final class GDataCSG extends GData {
                         }
                     });
                 } catch (InvocationTargetException consumed) {
+                    consumed.printStackTrace();
                 } catch (InterruptedException consumed) {
+                    consumed.printStackTrace();
                 }
                 return sb.toString();
             } else {
