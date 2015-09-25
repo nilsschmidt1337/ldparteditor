@@ -9286,7 +9286,8 @@ public class VertexManager {
         final BigDecimal lengthX =  plainOnX ? MathHelper.sqrt(TMatrix2.M00.multiply(TMatrix2.M00).add(TMatrix2.M01.multiply(TMatrix2.M01)).add(TMatrix2.M02.multiply(TMatrix2.M02))).subtract(BigDecimal.ONE).abs() : null;
         final BigDecimal lengthY =  plainOnY ? MathHelper.sqrt(TMatrix2.M10.multiply(TMatrix2.M10).add(TMatrix2.M11.multiply(TMatrix2.M11)).add(TMatrix2.M12.multiply(TMatrix2.M12))).subtract(BigDecimal.ONE).abs() : null;
         final BigDecimal lengthZ =  plainOnZ ? MathHelper.sqrt(TMatrix2.M20.multiply(TMatrix2.M20).add(TMatrix2.M21.multiply(TMatrix2.M21)).add(TMatrix2.M22.multiply(TMatrix2.M22))).subtract(BigDecimal.ONE).abs() : null;
-        final BigDecimal epsilon = new BigDecimal("0.000001"); //$NON-NLS-1$
+        // Epsilon was 0.000001 (still used in DEBUG mode (for 6 digit precision)) / Set to DATHeader default value
+        final BigDecimal epsilon = NLogger.DEBUG ? new BigDecimal("0.000001") : new BigDecimal("0.0005"); //$NON-NLS-1$ //$NON-NLS-2$
 
         if (plainOnX && epsilon.compareTo(lengthX) < 0) {
             result.add(new ParsingResult(I18n.VM_FlatScaledX, "[W02] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
