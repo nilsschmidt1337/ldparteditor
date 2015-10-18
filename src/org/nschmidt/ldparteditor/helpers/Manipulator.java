@@ -938,7 +938,7 @@ public class Manipulator {
         Matrix4f.setIdentity(scale);
     }
 
-    public void applyTranslation2(Composite3D c3d) {
+    public void applyTranslationAtSelect(Composite3D c3d) {
         if (modified) {
             c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, Editor3DWindow.getWindow().isMovingAdjacentData());
             modified = false;
@@ -1608,7 +1608,7 @@ public class Manipulator {
         return temp;
     }
 
-    public Vector4f transform2(Vector2f old_mouse_position, int new_x, int new_y, Composite3D c3d) {
+    public Vector4f transformAtSelect(Vector2f old_mouse_position, int new_x, int new_y, Composite3D c3d) {
 
         Vector4f temp = new Vector4f(this.position);
         boolean isGlobal = Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL;
