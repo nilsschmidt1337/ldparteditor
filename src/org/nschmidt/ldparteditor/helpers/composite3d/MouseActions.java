@@ -256,7 +256,7 @@ public class MouseActions {
             Vector4f temp;
             if (! Editor3DWindow.getWindow().isAddingSomething()) {
                 if (translateAtSelect) {
-                    temp = c3d.getManipulator().transform2(old_mouse_position, event.x, event.y, c3d);
+                    temp = c3d.getManipulator().transformAtSelect(old_mouse_position, event.x, event.y, c3d);
                 } else {
                     temp = c3d.getManipulator().transform(old_mouse_position, event.x, event.y, c3d);
                 }
@@ -1134,7 +1134,7 @@ public class MouseActions {
                 }
             } else if (translateAtSelect && !window.isAddingSomething()) {
                 Manipulator M = c3d.getManipulator();
-                M.applyTranslation2(c3d);
+                M.applyTranslationAtSelect(c3d);
                 translateAtSelect = false;
                 M.getXaxis().set(mX);
                 M.getYaxis().set(mY);
