@@ -255,6 +255,8 @@ public class Manipulator {
     private Vector4f position = new Vector4f(0f, 0f, 0f, 1f);
     private BigDecimal[] accuratePosition = new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO };
 
+    private static long timstampModified = System.nanoTime();
+
     public Manipulator() {
         Matrix4f.setIdentity(result);
         Matrix4f.setIdentity(scale);
@@ -272,7 +274,12 @@ public class Manipulator {
     }
 
     public boolean isModified() {
-        return modified;
+        if (modified) {
+            timstampModified = System.nanoTime();
+            return true;
+        } else {
+            return (System.nanoTime() - timstampModified) < 1.5E9;
+        }
     }
 
     public Vector4f getXaxis() {

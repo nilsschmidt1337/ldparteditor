@@ -798,6 +798,7 @@ public class VertexManager {
 
         Manipulator manipulator = c3d.getManipulator();
         FloatBuffer matrix = manipulator.getTempTransformation();
+        final boolean modifiedManipulator = manipulator.isModified();
 
         if (c3d.isShowingVertices()) {
             Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * c3d.getZoom(), 1f);
@@ -824,14 +825,14 @@ public class VertexManager {
             }
             GL11.glEnd();
         }
-        if (!manipulator.isModified())
+        if (!modifiedManipulator)
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 
         GL11.glPushMatrix();
         // Matrix4f.transform(ivm, tr, tr);
         GL11.glMultMatrix(matrix);
 
-        if (manipulator.isModified()) {
+        if (modifiedManipulator) {
             Set<GData> alreadyMoved = new HashSet<GData>();
 
             Set<Vertex> allVertices = new TreeSet<Vertex>(selectedVertices);
@@ -1217,7 +1218,7 @@ public class VertexManager {
             GL11.glTranslatef(tr.x, tr.y, tr.z);
             GL11.glMultMatrix(matrix);
 
-            if (!manipulator.isModified())
+            if (!modifiedManipulator)
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
