@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector3f;
@@ -1464,12 +1465,12 @@ public final class DatFile {
         NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public void undo() {
-        history.undo();
+    public void undo(final Shell sh) {
+        history.undo(sh);
     }
 
-    public void redo() {
-        history.redo();
+    public void redo(final Shell sh) {
+        history.redo(sh);
     }
 
     public static Composite3D getLastHoveredComposite() {
