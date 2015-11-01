@@ -782,10 +782,10 @@ public class CompositeTab extends CompositeTabDesign {
                         break;
                     }
                     case EDITORTEXT_REDO:
-                        if (vm.isUpdated()) df.redo();
+                        if (vm.isUpdated()) df.redo(getWindow().getShell());
                         break;
                     case EDITORTEXT_UNDO:
-                        if (vm.isUpdated()) df.undo();
+                        if (vm.isUpdated()) df.undo(getWindow().getShell());
                         break;
                     case EDITORTEXT_SAVE:
                         if (!df.isReadOnly()) {
