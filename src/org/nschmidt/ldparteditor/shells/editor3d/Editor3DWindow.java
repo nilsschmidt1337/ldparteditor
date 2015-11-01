@@ -652,7 +652,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().undo();
+                    Project.getFileToEdit().undo(null);
                 }
             }
         });
@@ -662,7 +662,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().redo();
+                    Project.getFileToEdit().redo(null);
                 }
             }
         });

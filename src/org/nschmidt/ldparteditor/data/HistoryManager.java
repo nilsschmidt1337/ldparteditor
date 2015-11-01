@@ -36,6 +36,7 @@ import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
@@ -71,6 +72,8 @@ public class HistoryManager {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+
+                    boolean restoreWasScuccessful = false;
 
                     int pointer = 0;
                     int pointerMax = 0;
@@ -202,6 +205,8 @@ public class HistoryManager {
                                 final int action2 = action.get();
                                 int delta = 0;
                                 if (action2 > 0) {
+                                    restoreWasScuccessful = false;
+
                                     boolean doRestore = false;
                                     switch (action2) {
                                     case 1:
@@ -255,21 +260,34 @@ public class HistoryManager {
                                             action.set(0);
                                             return;
                                         }
-                                        sq.offer(10);
+                                        NLogger.debug(getClass(), "Waiting for monitor..."); //$NON-NLS-1$
+                                        sq.put(10);
+                                        if (m[0] == null || m[0].getShell() == null) {
+                                            NLogger.debug(getClass(), "Monitor creation failed!"); //$NON-NLS-1$
+                                            action.set(0);
+                                            return;
+                                        }
+                                        NLogger.debug(getClass(), "Accepted monitor."); //$NON-NLS-1$
                                         final String decompressed = StringHelper.decompress(text);
                                         Display.getDefault().syncExec(new Runnable() {
                                             @Override
                                             public void run() {
+                                                try {
+                                                    sq.put(20);
+                                                } catch (InterruptedException e) {
+                                                }
                                                 GDataCSG.resetCSG();
                                                 GDataCSG.forceRecompile();
                                                 Project.getUnsavedFiles().add(df);
                                                 df.setText(decompressed);
-                                                sq.offer(20);
                                                 m[0].getShell().redraw();
                                                 m[0].getShell().update();
                                                 m[0].getShell().getDisplay().readAndDispatch();
                                                 df.parseForData(false);
-                                                sq.offer(60);
+                                                try {
+                                                    sq.put(60);
+                                                } catch (InterruptedException e) {
+                                                }
                                                 m[0].getShell().redraw();
                                                 m[0].getShell().update();
                                                 m[0].getShell().getDisplay().readAndDispatch();
@@ -392,20 +410,33 @@ public class HistoryManager {
                                                 //      vm.setUpdated(true);
                                                 //  }
                                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
-                                                sq.offer(10);
+                                                try {
+                                                    sq.put(10);
+                                                } catch (InterruptedException e) {
+                                                }
                                             }
                                         });
                                     }
                                     action.set(0);
-                                    sq.offer(0);
+                                    sq.put(0);
+                                    restoreWasScuccessful = true;
                                 } else {
+                                    restoreWasScuccessful = true;
                                     if (workQueue.isEmpty()) Thread.sleep(100);
                                 }
                             }
                         } catch (InterruptedException e) {
+                            NLogger.debug(getClass(), e);
                         } catch (Exception e) {
                             NLogger.debug(getClass(), e);
                         }
+
+                        if (!restoreWasScuccessful) {
+                            action.set(0);
+                            sq.offer(0);
+                        }
+                        restoreWasScuccessful = false;
+
                     }
                     // TODO Cleanup the data here
                 }
@@ -424,10 +455,10 @@ public class HistoryManager {
         isRunning.set(false);
     }
 
-    public void undo() {
+    public void undo(final Shell sh) {
         if (lock.tryLock()) {
             try {
-                action(1);
+                action(1, sh);
             } finally {
                 lock.unlock();
             }
@@ -436,10 +467,10 @@ public class HistoryManager {
         }
     }
 
-    public void redo() {
+    public void redo(final Shell sh) {
         if (lock.tryLock()) {
             try {
-                action(2);
+                action(2, sh);
             } finally {
                 lock.unlock();
             }
@@ -448,35 +479,36 @@ public class HistoryManager {
         }
     }
 
-    private void action(final int mode) {
+    private void action(final int mode, final Shell sh) {
         if (df.isReadOnly() || !df.getVertexManager().isUpdated() && WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) return;
-        if (action.get() == 0) {
-            BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
-                @Override
-                public void run() {
-                    action.set(mode);
-                    Display.getCurrent().readAndDispatch();
-                }
-            });
-        }
         BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
             @Override
             public void run() {
                 try
                 {
-                    final ProgressMonitorDialog mon = new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell());
+                    final ProgressMonitorDialog mon = new ProgressMonitorDialog(sh == null ? Editor3DWindow.getWindow().getShell() : sh);
                     mon.run(true, false, new IRunnableWithProgress()
                     {
                         @Override
                         public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
                         {
-                            m[0] = mon;
-                            monitor.beginTask(I18n.E3D_LoadingData, 100);
-                            while (action.get() > 0) {
-                                Integer inc = sq.poll(1000, TimeUnit.MILLISECONDS);
-                                if (inc != null) {
-                                    monitor.worked(inc);
+                            try
+                            {
+                                if (action.get() == 0) {
+                                    action.set(mode);
                                 }
+                                m[0] = mon;
+                                NLogger.debug(getClass(), "Provided Monitor..."); //$NON-NLS-1$
+                                monitor.beginTask(I18n.E3D_LoadingData, 100);
+                                while (action.get() > 0) {
+                                    Integer inc = sq.poll(1000, TimeUnit.MILLISECONDS);
+                                    if (inc != null) {
+                                        monitor.worked(inc);
+                                    }
+                                }
+                                sq.poll(1000, TimeUnit.MILLISECONDS);
+                            } catch (Exception ex) {
+                                NLogger.debug(getClass(), ex);
                             }
                         }
                     });
