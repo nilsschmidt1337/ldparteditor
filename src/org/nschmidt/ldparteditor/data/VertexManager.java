@@ -18809,6 +18809,7 @@ public class VertexManager {
                     openThreads.decrementAndGet();
                     if (tid2.get() != tid.get() || isSkipSyncWithTextEditor() || !isSyncWithTextEditor()) return;
                     boolean notFound = true;
+                    boolean tryToUnlockLock2 = false;
                     Lock lock2 = null;
                     try {
                         lock2 = linkedDatFile.getHistory().getLock();
@@ -18817,6 +18818,7 @@ public class VertexManager {
                         // Any attempt to broke the data structure with an old synchronisation state will be
                         // prevented with this lock.
                         if (lock2.tryLock()) {
+                            tryToUnlockLock2 = true;
                             try {
                                 // A lot of stuff can throw an exception here, since the thread waits two seconds and
                                 // the state of the program may not allow a synchronisation anymore
@@ -18878,7 +18880,7 @@ public class VertexManager {
                             NLogger.debug(getClass(), "Synchronisation was skipped due to undo/redo."); //$NON-NLS-1$
                         }
                     } finally {
-                        if (lock2 != null) lock2.unlock();
+                        if (lock2 != null && tryToUnlockLock2) lock2.unlock();
                         lock.unlock();
                     }
                 }
