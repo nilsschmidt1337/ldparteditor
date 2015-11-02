@@ -399,16 +399,7 @@ public class HistoryManager {
                                                 vm.setModified_NoSync();
                                                 vm.setUpdated(true);
                                                 vm.setSkipSyncWithTextEditor(false);
-                                                //  vm.setSkipSyncWithTextEditor(false);
-                                                //  if (hasTextEditor) {
-                                                //      vm.setModified_NoSync();
-                                                //      vm.syncWithTextEditors(false);
-                                                //  } else {
-                                                //      vm.setModified(true, false);
-                                                //  }
-                                                //  if (openTextEditor || hasTextEditor) {
-                                                //      vm.setUpdated(true);
-                                                //  }
+
                                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                                                 try {
                                                     sq.put(10);
@@ -504,6 +495,9 @@ public class HistoryManager {
                                     Integer inc = sq.poll(1000, TimeUnit.MILLISECONDS);
                                     if (inc != null) {
                                         monitor.worked(inc);
+                                        NLogger.debug(getClass(), "Polled progress info. (" + inc + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+                                    } else {
+                                        NLogger.debug(getClass(), "Progress info has timed out."); //$NON-NLS-1$
                                     }
                                 }
                                 sq.poll(1000, TimeUnit.MILLISECONDS);
