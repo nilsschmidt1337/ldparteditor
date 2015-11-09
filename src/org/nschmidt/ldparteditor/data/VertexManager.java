@@ -2716,6 +2716,7 @@ public class VertexManager {
                 selectedVertices.remove(vertex);
             } else {
                 selectedVertices.add(vertex);
+                if (Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) lastSelectedVertex = vertex;
             }
         } else {
             final Vector4f point = vertex.toVector4f();
