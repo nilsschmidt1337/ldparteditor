@@ -545,6 +545,7 @@ public class SyntaxFormatter {
             }
             sb.append(data_segments[data_segments.length - 1]);
             String shortFilename = sb.toString();
+            boolean isLowercase = shortFilename.equals(shortFilename.toLowerCase(Locale.ENGLISH));
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
             try {
                 shortFilename = shortFilename.replaceAll("s\\\\", "S" + File.separator).replaceAll("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -592,7 +593,7 @@ public class SyntaxFormatter {
                 }
             }
             // [WARNING] Check spaces in dat file name
-            if (!fileExists || data_segments.length > 15) {
+            if (!fileExists || data_segments.length > 15 || !isLowercase) {
                 for (int s = 15; s < styles.size(); s++) {
                     setWarningStyle(styles.get(s));
                 }

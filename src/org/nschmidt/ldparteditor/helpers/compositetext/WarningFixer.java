@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helpers.compositetext;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -35,6 +36,23 @@ final class WarningFixer {
         // TODO Needs implementation!
         int s = Integer.parseInt(sort, 16);
         switch (s) {
+        case 204: // Upper- & Mixed-Case File Name
+        {
+            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            if (data_segments.length > 11) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < 11; i++) {
+                    sb.append(" "); //$NON-NLS-1$
+                    sb.append(data_segments[i]);
+                }
+                for (int i = 11; i < data_segments.length; i++) {
+                    sb.append(" "); //$NON-NLS-1$
+                    sb.append(data_segments[i].toLowerCase(Locale.ENGLISH));
+                }
+                text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
+            }
+        }
+        break;
         case 220: // Dithered Colour
         {
             String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
