@@ -1002,6 +1002,7 @@ public enum DatParser {
             }
             sb.append(data_segments[data_segments.length - 1]);
             String shortFilename = sb.toString();
+            boolean isLowercase = shortFilename.equals(shortFilename.toLowerCase(Locale.ENGLISH));
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
             try {
                 shortFilename = shortFilename.replaceAll("s\\\\", "S" + File.separator).replaceAll("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -1186,6 +1187,10 @@ public enum DatParser {
             // [WARNING] Dithered colour
             if (hasDitheredColour) {
                 result.add(new ParsingResult(I18n.DATPARSER_DitheredColour, "[WDC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+            }
+            // [WARNING] Upper- & Mixed-Case file name
+            if (!isLowercase) {
+                result.add(new ParsingResult(I18n.DATPARSER_InvalidCase, "[WCC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
             }
         }
         return result;
