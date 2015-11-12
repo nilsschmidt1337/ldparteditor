@@ -3346,12 +3346,47 @@ public class Editor3DWindow extends Editor3DDesign {
                         Vertex v = null;
                         final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         final Set<Vertex> sv = vm.getSelectedVertices();
-                        if (sv.size() == 1) {
+                        if (VertexManager.getClipboard().size() == 1) {
+                            GData vertex = VertexManager.getClipboard().get(0);
+                            if (vertex.type() == 0) {
+                                String line = vertex.toString();
+                                line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                String[] data_segments = line.split("\\s+"); //$NON-NLS-1$
+                                if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
+                                    if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
+                                        Vector3d start = new Vector3d();
+                                        boolean numberError = false;
+                                        if (data_segments.length == 6) {
+                                            try {
+                                                start.setX(new BigDecimal(data_segments[3], Threshold.mc));
+                                            } catch (NumberFormatException nfe) {
+                                                numberError = true;
+                                            }
+                                            try {
+                                                start.setY(new BigDecimal(data_segments[4], Threshold.mc));
+                                            } catch (NumberFormatException nfe) {
+                                                numberError = true;
+                                            }
+                                            try {
+                                                start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
+                                            } catch (NumberFormatException nfe) {
+                                                numberError = true;
+                                            }
+                                        } else {
+                                            numberError = true;
+                                        }
+                                        if (!numberError) {
+                                            v = new Vertex(start);
+                                        }
+                                    }
+                                }
+                            }
+                        } else if (sv.size() == 1) {
                             v = sv.iterator().next();
                         }
                         if (new CoordinatesDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
                             vm.addSnapshot();
-                            vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData(), true);
+                            vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), true, true);
                         }
                         return;
                     }
