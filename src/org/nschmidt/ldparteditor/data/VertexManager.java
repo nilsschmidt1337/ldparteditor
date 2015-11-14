@@ -18859,6 +18859,12 @@ public class VertexManager {
                                     }
                                 }
                             } catch (Exception consumed) {
+
+                                // We want to know what can go wrong here
+                                // because it SHOULD be avoided!!
+                                NLogger.error(getClass(), "Synchronisation with the text editor failed."); //$NON-NLS-1$
+                                NLogger.error(getClass(), consumed);
+
                                 setUpdated(true);
                             } finally {
                                 if (notFound) setUpdated(true);

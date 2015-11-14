@@ -485,13 +485,9 @@ public class GTexture {
             accessTime = System.currentTimeMillis();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID);
-            GL20.glUniform1f(renderer.getAlphaSwitchLoc(), drawSolidMaterials ? 1f : 0f); // Draw
-            // transparent
-            GL20.glUniform1f(renderer.getNormalSwitchLoc(), normalSwitch ? 1f : 0f); // Draw
-            // transparent
-            GL20.glUniform1i(renderer.getBaseImageLoc(), 0); // Texture unit 0
-            // is for base
-            // images.
+            GL20.glUniform1f(renderer.getAlphaSwitchLoc(), drawSolidMaterials ? 1f : 0f); // Draw transparent
+            GL20.glUniform1f(renderer.getNormalSwitchLoc(), normalSwitch ? 1f : 0f); // Draw transparent
+            GL20.glUniform1i(renderer.getBaseImageLoc(), 0); // Texture unit 0 is for base images.
             GL20.glUniform1f(renderer.getNoTextureSwitch(), 0f);
             GL20.glUniform1f(renderer.getNoLightSwitch(), lightOn ? 0f : 1f);
             GL20.glUniform1f(renderer.getCubeMapSwitch(), useCubeMap);

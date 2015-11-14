@@ -26,7 +26,7 @@ import java.util.HashSet;
 public enum DatKeyword {
     INSTANCE;
 
-    private static HashSet<String> keywords = new HashSet<String>();
+    private static final HashSet<String> keywords = new HashSet<String>();
 
     static {
         keywords.add("!:"); //$NON-NLS-1$
@@ -102,22 +102,12 @@ public enum DatKeyword {
         keywords.add("CSG_QUALITY"); //$NON-NLS-1$
         keywords.add("CSG_EPSILON"); //$NON-NLS-1$
         keywords.add("CSG_EPSILON_T_JUNCTION"); //$NON-NLS-1$
-
     }
 
     /**
-     * @return the dat keywords
+     * @return all valid LDraw/LPC/TEXMAP Keywords
      */
     public static HashSet<String> getKeywords() {
         return keywords;
     }
-
-    /**
-     * @param keywords
-     *            the dat keywords to set
-     */
-    public static void setKeywords(HashSet<String> keywords) {
-        DatKeyword.keywords = keywords;
-    }
-
 }
