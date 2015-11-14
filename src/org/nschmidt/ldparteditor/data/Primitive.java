@@ -425,7 +425,7 @@ public class Primitive implements Comparable<Primitive> {
             case 3:
                 PGData3 gd3 = (PGData3) gd;
                 maxX = Math.max(maxX, Math.abs(gd3.x1));
-                maxX = Math.max(maxX, Math.abs( gd3.x2));
+                maxX = Math.max(maxX, Math.abs(gd3.x2));
                 maxX = Math.max(maxX, Math.abs(gd3.x3));
                 maxY = Math.max(maxY, Math.abs(gd3.y1));
                 maxY = Math.max(maxY, Math.abs(gd3.y2));
