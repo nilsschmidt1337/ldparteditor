@@ -22,7 +22,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.text.FontMetrics;
 
 /**
- * This class contains constant fonts
+ * This class contains constant fonts and font information
  *
  * @author nils
  *
