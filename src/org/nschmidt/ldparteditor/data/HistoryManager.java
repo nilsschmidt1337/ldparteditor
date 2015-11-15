@@ -396,7 +396,8 @@ public class HistoryManager {
                                                 }
                                                 vm.updateUnsavedStatus();
 
-                                                vm.setModified_NoSync();
+                                                // vm.setModified_NoSync();
+                                                vm.setModified(false, false);
                                                 vm.setUpdated(true);
                                                 vm.setSkipSyncWithTextEditor(false);
 
