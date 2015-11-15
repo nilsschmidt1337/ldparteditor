@@ -801,6 +801,11 @@ public class CompositeTab extends CompositeTabDesign {
                             }
                         }
                         break;
+                    case EDITORTEXT_FIND:
+                        // FIXME Needs implementation!
+                        break;
+                    default:
+                        break;
                     }
                 }
             }
