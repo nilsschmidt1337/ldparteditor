@@ -76,8 +76,6 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.csg.CSG;
-import org.nschmidt.csg.ReduceRule;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.composites.CompositeScale;
@@ -168,7 +166,6 @@ import org.nschmidt.ldparteditor.text.References;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.TextTriangulator;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
-import org.nschmidt.ldparteditor.text.ZipWriter;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
@@ -4983,6 +4980,8 @@ public class Editor3DWindow extends Editor3DDesign {
         // Save the workbench
         WorkbenchManager.saveWorkbench();
         // Write reduce rules
+        // FIXME No caching for mesh reduce rules!! There must be a better solution!
+        /*
         try {
             ZipWriter writer = new ZipWriter("mesh_reduce.gz"); //$NON-NLS-1$
             for (ReduceRule rule : CSG.REDUCE_RULES) {
@@ -4993,6 +4992,7 @@ public class Editor3DWindow extends Editor3DDesign {
         } catch (FileNotFoundException e) {
         } catch (UnsupportedEncodingException e) {
         } catch (Exception e) {}
+         */
         setReturnCode(CANCEL);
         close();
     }

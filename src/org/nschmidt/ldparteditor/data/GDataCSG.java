@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.TreeMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.lwjgl.util.vector.Matrix4f;
@@ -39,9 +38,7 @@ import org.nschmidt.csg.CSGCylinder;
 import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.Plane;
-import org.nschmidt.csg.ReduceRule;
 import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.dialogs.quality.QualityDialog;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -401,14 +398,6 @@ public final class GDataCSG extends GData {
         case CSG.COMPILE:
             if (compiledCSG != null) {
 
-                final int optChoice;
-
-                if (CSG.LAST_REDUCE_RULES.isEmpty()) {
-                    optChoice = IDialogConstants.CANCEL_ID;
-                } else {
-                    optChoice = new QualityDialog(Editor3DWindow.getWindow().getShell()).open();
-                }
-
                 final StringBuilder sb = new StringBuilder();
 
                 try {
@@ -678,17 +667,7 @@ public final class GDataCSG extends GData {
                                 }
                             }
 
-                            if (optChoice == IDialogConstants.YES_ID) {
-                                for (ReduceRule r : CSG.LAST_REDUCE_RULES) {
-                                    r.increaseQuality();
-                                }
-                            } else if (optChoice == IDialogConstants.NO_ID) {
-                                for (ReduceRule r : CSG.LAST_REDUCE_RULES) {
-                                    r.decreaseQuality();
-                                }
-                            }
-
-                            CSG.LAST_REDUCE_RULES.clear();
+                            double maxDelta = 0;
 
                             boolean[] skipTriangle = new boolean[triangleCount];
                             boolean foundTJunction = false;
@@ -1057,9 +1036,7 @@ public final class GDataCSG extends GData {
 
                                                                     }
 
-                                                                    ReduceRule rule = new ReduceRule(adjacentCount, lengths, angles);
-
-                                                                    final boolean hasRule = CSG.REDUCE_RULES.contains(rule);
+                                                                    final boolean hasRule = false;
 
                                                                     HashSet<Integer> deletedTriangles = new HashSet<Integer>();
 
@@ -1149,7 +1126,7 @@ public final class GDataCSG extends GData {
                                                                                 }
                                                                             }
 
-                                                                            if (isCollinear || Math.abs(area1 - area2) > 1e4) {
+                                                                            if (isCollinear || Math.abs(area1 / area2 - 1.0) > 1e-1) {
                                                                                 for (Integer[] bck : backupConnection) {
                                                                                     triangles[bck[0]][bck[1]] = bck[2];
                                                                                 }
@@ -1159,7 +1136,14 @@ public final class GDataCSG extends GData {
                                                                                 continue;
                                                                             }
 
-                                                                            if (adjacentCount > 3) CSG.REDUCE_RULES.add(rule);
+                                                                            if (adjacentCount > 3) {
+                                                                                double delta = Math.abs(area1 / area2 - 1.0);
+                                                                                if (maxDelta < delta) {
+                                                                                    maxDelta = delta;
+                                                                                }
+                                                                                System.out.println(delta);
+                                                                                CSG.REDUCE_RULES.add(rule);
+                                                                            }
                                                                         }
                                                                     }
 
@@ -1182,7 +1166,7 @@ public final class GDataCSG extends GData {
                                                                         }
                                                                     }
 
-                                                                    if (adjacentCount == 3 || addRuleToList || lengths[0] == min && planes == 1 && angles[0] >= 90 && angles[adjacentCount - 1] >= 90) {
+                                                                    if (true || adjacentCount == 3 || lengths[0] == min && planes == 1 && angles[0] >= 90 && angles[adjacentCount - 1] >= 90) {
 
                                                                         adjacentTriangles.get(centerVertexID).removeAll(deletedTriangles);
                                                                         adjacentTriangles.get(targetVertexID).removeAll(deletedTriangles);
@@ -1196,7 +1180,7 @@ public final class GDataCSG extends GData {
                                                                             merges2.add(new int[]{centerVertexID, orderedVertices[t2]});
                                                                         }
 
-                                                                        System.out.println("Cache hit."); //$NON-NLS-1$
+                                                                        System.out.println("Symplified."); //$NON-NLS-1$
 
                                                                         break;
                                                                     } else {
@@ -1228,6 +1212,8 @@ public final class GDataCSG extends GData {
                                     }
                                 }
                             }
+
+                            System.out.println("Max. DELTA " + maxDelta); //$NON-NLS-1$
 
                             Matrix4f id = new Matrix4f();
                             Matrix4f.setIdentity(id);

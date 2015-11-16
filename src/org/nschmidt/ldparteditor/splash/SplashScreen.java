@@ -16,8 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.splash;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -39,8 +37,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
-import org.nschmidt.csg.CSG;
-import org.nschmidt.csg.ReduceRule;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.dialogs.startup.StartupDialog;
 import org.nschmidt.ldparteditor.enums.View;
@@ -53,8 +49,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.text.LDParsingException;
-import org.nschmidt.ldparteditor.text.ZipReader;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -90,6 +84,8 @@ public class SplashScreen extends ApplicationWindow {
      */
     public void run() {
 
+        // FIXME No caching for mesh reduce rules!! There must be a better solution!
+        /*
         final File meshReduce = new File("mesh_reduce.gz"); //$NON-NLS-1$
         // Load the mesh reducer data
         if (meshReduce.exists()) {
@@ -129,6 +125,7 @@ public class SplashScreen extends ApplicationWindow {
             } catch (UnsupportedEncodingException e) {
             } catch (Exception e) {}
         }
+         */
 
         final File configGzFile = new File("config.gz"); //$NON-NLS-1$
 
