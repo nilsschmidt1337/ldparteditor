@@ -38,7 +38,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
