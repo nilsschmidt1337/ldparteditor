@@ -4979,20 +4979,6 @@ public class Editor3DWindow extends Editor3DDesign {
         WorkbenchManager.getUserSettingState().setRecentItems(getRecentItems());
         // Save the workbench
         WorkbenchManager.saveWorkbench();
-        // Write reduce rules
-        // FIXME No caching for mesh reduce rules!! There must be a better solution!
-        /*
-        try {
-            ZipWriter writer = new ZipWriter("mesh_reduce.gz"); //$NON-NLS-1$
-            for (ReduceRule rule : CSG.REDUCE_RULES) {
-                writer.println(rule.toStringShort());
-            }
-            writer.flush();
-            writer.close();
-        } catch (FileNotFoundException e) {
-        } catch (UnsupportedEncodingException e) {
-        } catch (Exception e) {}
-         */
         setReturnCode(CANCEL);
         close();
     }

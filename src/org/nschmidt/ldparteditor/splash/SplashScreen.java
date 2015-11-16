@@ -84,49 +84,6 @@ public class SplashScreen extends ApplicationWindow {
      */
     public void run() {
 
-        // FIXME No caching for mesh reduce rules!! There must be a better solution!
-        /*
-        final File meshReduce = new File("mesh_reduce.gz"); //$NON-NLS-1$
-        // Load the mesh reducer data
-        if (meshReduce.exists()) {
-            try {
-                ZipReader reader = new ZipReader("mesh_reduce.gz"); //$NON-NLS-1$
-                while (true) {
-                    String line2 = reader.readLine();
-                    if (line2 == null) {
-                        break;
-                    }
-                    try {
-                        String[] segs = line2.split("\\|"); //$NON-NLS-1$
-
-                        boolean hasQuality = segs.length % 2 == 1;
-
-                        final int start = hasQuality ? 1 : 0;
-
-                        final int quality = hasQuality ? Integer.parseInt(segs[0]) : 0;
-
-                        final int adjacency = hasQuality ? (segs.length - 1) / 2 : segs.length / 2;
-                        final int[] length = new int[adjacency];
-                        final int[] angle = new int[adjacency];
-                        for (int i = start; i < adjacency; i++) {
-                            final int li = i;
-                            final int ai = adjacency + i;
-                            length[i] = Integer.parseInt(segs[li]);
-                            angle[i] = Integer.parseInt(segs[ai]);
-                        }
-                        CSG.REDUCE_RULES.add(new ReduceRule(adjacency, quality, length, angle));
-                    } catch (Exception e) {
-                        NLogger.error(getClass(), e);
-                    }
-                }
-                reader.close();
-            } catch (FileNotFoundException e) {
-            } catch (LDParsingException e) {
-            } catch (UnsupportedEncodingException e) {
-            } catch (Exception e) {}
-        }
-         */
-
         final File configGzFile = new File("config.gz"); //$NON-NLS-1$
 
         // Load the workbench here if config.gz exists

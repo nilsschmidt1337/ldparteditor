@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.text.DecimalFormatSymbols;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -702,8 +701,6 @@ public final class GDataCSG extends GData {
                                 HashSet<Integer> planeCount = new HashSet<Integer>();
                                 HashSet<Integer> verticesAround = new HashSet<Integer>();
 
-                                final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##000;-###,##000", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
-
                                 ArrayList<int[]> merges = new ArrayList<int[]>();
                                 ArrayList<int[]> merges2 = new ArrayList<int[]>();
 
@@ -1036,8 +1033,6 @@ public final class GDataCSG extends GData {
 
                                                                     }
 
-                                                                    final boolean hasRule = false;
-
                                                                     HashSet<Integer> deletedTriangles = new HashSet<Integer>();
 
                                                                     ArrayList<Integer> backupNoSkip = new ArrayList<Integer>();
@@ -1048,23 +1043,21 @@ public final class GDataCSG extends GData {
 
                                                                     {
 
-                                                                        if (!hasRule) {
-                                                                            for (int t2 : connectedTriangles) {
-                                                                                if (skipTriangle[t2]) continue;
-                                                                                double x1 = vertices[(int) triangles[t2][1]][0] - vertices[(int) triangles[t2][0]][0];
-                                                                                double x2 = vertices[(int) triangles[t2][1]][1] - vertices[(int) triangles[t2][0]][1];
-                                                                                double x3 = vertices[(int) triangles[t2][1]][2] - vertices[(int) triangles[t2][0]][2];
+                                                                        for (int t2 : connectedTriangles) {
+                                                                            if (skipTriangle[t2]) continue;
+                                                                            double x1 = vertices[(int) triangles[t2][1]][0] - vertices[(int) triangles[t2][0]][0];
+                                                                            double x2 = vertices[(int) triangles[t2][1]][1] - vertices[(int) triangles[t2][0]][1];
+                                                                            double x3 = vertices[(int) triangles[t2][1]][2] - vertices[(int) triangles[t2][0]][2];
 
-                                                                                double y1 = vertices[(int) triangles[t2][2]][0] - vertices[(int) triangles[t2][0]][0];
-                                                                                double y2 = vertices[(int) triangles[t2][2]][1] - vertices[(int) triangles[t2][0]][1];
-                                                                                double y3 = vertices[(int) triangles[t2][2]][2] - vertices[(int) triangles[t2][0]][2];
+                                                                            double y1 = vertices[(int) triangles[t2][2]][0] - vertices[(int) triangles[t2][0]][0];
+                                                                            double y2 = vertices[(int) triangles[t2][2]][1] - vertices[(int) triangles[t2][0]][1];
+                                                                            double y3 = vertices[(int) triangles[t2][2]][2] - vertices[(int) triangles[t2][0]][2];
 
-                                                                                double z1 = x2 * y3 - x3 * y2;
-                                                                                double z2 = x3 * y1 - x1 * y3;
-                                                                                double z3 = x1 * y2 - x2 * y1;
+                                                                            double z1 = x2 * y3 - x3 * y2;
+                                                                            double z2 = x3 * y1 - x1 * y3;
+                                                                            double z3 = x1 * y2 - x2 * y1;
 
-                                                                                area1 = area1 + Math.sqrt(z1 * z1 + z2 * z2 + z3 * z3);
-                                                                            }
+                                                                            area1 = area1 + Math.sqrt(z1 * z1 + z2 * z2 + z3 * z3);
                                                                         }
 
                                                                         for (int t2 : connectedTriangles) {
@@ -1091,80 +1084,58 @@ public final class GDataCSG extends GData {
                                                                             }
                                                                         }
 
-                                                                        if (!hasRule) {
+                                                                        boolean isCollinear = false;
 
-                                                                            boolean isCollinear = false;
+                                                                        for (int t2 : connectedTriangles) {
+                                                                            if (skipTriangle[t2]) continue;
+                                                                            double x1 = vertices[(int) triangles[t2][1]][0] - vertices[(int) triangles[t2][0]][0];
+                                                                            double x2 = vertices[(int) triangles[t2][1]][1] - vertices[(int) triangles[t2][0]][1];
+                                                                            double x3 = vertices[(int) triangles[t2][1]][2] - vertices[(int) triangles[t2][0]][2];
 
-                                                                            for (int t2 : connectedTriangles) {
-                                                                                if (skipTriangle[t2]) continue;
-                                                                                double x1 = vertices[(int) triangles[t2][1]][0] - vertices[(int) triangles[t2][0]][0];
-                                                                                double x2 = vertices[(int) triangles[t2][1]][1] - vertices[(int) triangles[t2][0]][1];
-                                                                                double x3 = vertices[(int) triangles[t2][1]][2] - vertices[(int) triangles[t2][0]][2];
+                                                                            double y1 = vertices[(int) triangles[t2][2]][0] - vertices[(int) triangles[t2][0]][0];
+                                                                            double y2 = vertices[(int) triangles[t2][2]][1] - vertices[(int) triangles[t2][0]][1];
+                                                                            double y3 = vertices[(int) triangles[t2][2]][2] - vertices[(int) triangles[t2][0]][2];
 
-                                                                                double y1 = vertices[(int) triangles[t2][2]][0] - vertices[(int) triangles[t2][0]][0];
-                                                                                double y2 = vertices[(int) triangles[t2][2]][1] - vertices[(int) triangles[t2][0]][1];
-                                                                                double y3 = vertices[(int) triangles[t2][2]][2] - vertices[(int) triangles[t2][0]][2];
+                                                                            double z1 = x2 * y3 - x3 * y2;
+                                                                            double z2 = x3 * y1 - x1 * y3;
+                                                                            double z3 = x1 * y2 - x2 * y1;
 
-                                                                                double z1 = x2 * y3 - x3 * y2;
-                                                                                double z2 = x3 * y1 - x1 * y3;
-                                                                                double z3 = x1 * y2 - x2 * y1;
+                                                                            area2 = area2 + Math.sqrt(z1 * z1 + z2 * z2 + z3 * z3);
 
-                                                                                area2 = area2 + Math.sqrt(z1 * z1 + z2 * z2 + z3 * z3);
+                                                                            Vector3d vertexA = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][0]][0]), new BigDecimal(vertices[(int) triangles[t2][0]][1]), new BigDecimal(vertices[(int) triangles[t2][0]][2]));
+                                                                            Vector3d vertexB = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][1]][0]), new BigDecimal(vertices[(int) triangles[t2][1]][1]), new BigDecimal(vertices[(int) triangles[t2][1]][2]));
+                                                                            Vector3d vertexC = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][2]][0]), new BigDecimal(vertices[(int) triangles[t2][2]][1]), new BigDecimal(vertices[(int) triangles[t2][2]][2]));
 
-                                                                                Vector3d vertexA = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][0]][0]), new BigDecimal(vertices[(int) triangles[t2][0]][1]), new BigDecimal(vertices[(int) triangles[t2][0]][2]));
-                                                                                Vector3d vertexB = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][1]][0]), new BigDecimal(vertices[(int) triangles[t2][1]][1]), new BigDecimal(vertices[(int) triangles[t2][1]][2]));
-                                                                                Vector3d vertexC = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][2]][0]), new BigDecimal(vertices[(int) triangles[t2][2]][1]), new BigDecimal(vertices[(int) triangles[t2][2]][2]));
+                                                                            Vector3d vertexA2 = new Vector3d();
+                                                                            Vector3d vertexB2 = new Vector3d();
 
-                                                                                Vector3d vertexA2 = new Vector3d();
-                                                                                Vector3d vertexB2 = new Vector3d();
-
-                                                                                Vector3d.sub(vertexA, vertexC, vertexA2);
-                                                                                Vector3d.sub(vertexB, vertexC, vertexB2);
-                                                                                if (Vector3d.angle(vertexA2, vertexB2) < Threshold.collinear_angle_minimum) {
-                                                                                    isCollinear = true;
-                                                                                    break;
-                                                                                }
-                                                                            }
-
-                                                                            if (isCollinear || Math.abs(area1 / area2 - 1.0) > 1e-1) {
-                                                                                for (Integer[] bck : backupConnection) {
-                                                                                    triangles[bck[0]][bck[1]] = bck[2];
-                                                                                }
-                                                                                for (Integer bck : backupNoSkip) {
-                                                                                    skipTriangle[bck] = false;
-                                                                                }
-                                                                                continue;
-                                                                            }
-
-                                                                            if (adjacentCount > 3) {
-                                                                                double delta = Math.abs(area1 / area2 - 1.0);
-                                                                                if (maxDelta < delta) {
-                                                                                    maxDelta = delta;
-                                                                                }
-                                                                                System.out.println(delta);
-                                                                                CSG.REDUCE_RULES.add(rule);
+                                                                            Vector3d.sub(vertexA, vertexC, vertexA2);
+                                                                            Vector3d.sub(vertexB, vertexC, vertexB2);
+                                                                            if (Vector3d.angle(vertexA2, vertexB2) < Threshold.collinear_angle_minimum) {
+                                                                                isCollinear = true;
+                                                                                break;
                                                                             }
                                                                         }
+
+                                                                        if (isCollinear || Math.abs(area1 / area2 - 1.0) > 1e-1) {
+                                                                            for (Integer[] bck : backupConnection) {
+                                                                                triangles[bck[0]][bck[1]] = bck[2];
+                                                                            }
+                                                                            for (Integer bck : backupNoSkip) {
+                                                                                skipTriangle[bck] = false;
+                                                                            }
+                                                                            continue;
+                                                                        }
+
+                                                                        double delta = Math.abs(area1 / area2 - 1.0);
+                                                                        if (maxDelta < delta) {
+                                                                            maxDelta = delta;
+                                                                        }
+                                                                        System.out.println(delta);
                                                                     }
 
                                                                     foundSolution = true;
                                                                     newIteration = true;
-
-                                                                    final boolean addRuleToList = hasRule && rule.hasGoodQuality();
-
-                                                                    if (addRuleToList) {
-                                                                        ReduceRule rule2;
-                                                                        if (rule.compareTo(CSG.REDUCE_RULES.first()) == 0) {
-                                                                            rule2 = CSG.REDUCE_RULES.first();
-                                                                            CSG.LAST_REDUCE_RULES.add(rule2);
-                                                                        } else {
-                                                                            try {
-                                                                                rule2 = CSG.REDUCE_RULES.lower(CSG.REDUCE_RULES.higher(rule));
-                                                                                CSG.LAST_REDUCE_RULES.add(rule2);
-                                                                            } catch (NullPointerException npe) {
-                                                                            }
-                                                                        }
-                                                                    }
 
                                                                     if (true || adjacentCount == 3 || lengths[0] == min && planes == 1 && angles[0] >= 90 && angles[adjacentCount - 1] >= 90) {
 
@@ -1183,7 +1154,7 @@ public final class GDataCSG extends GData {
                                                                         System.out.println("Symplified."); //$NON-NLS-1$
 
                                                                         break;
-                                                                    } else {
+                                                                    } /*else {
 
                                                                         for (Integer[] bck : backupConnection) {
                                                                             triangles[bck[0]][bck[1]] = bck[2];
@@ -1201,7 +1172,7 @@ public final class GDataCSG extends GData {
                                                                         }
 
                                                                         System.out.println();
-                                                                    }
+                                                                    } */
                                                                 }
                                                             }
                                                         }
