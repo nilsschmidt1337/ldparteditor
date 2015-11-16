@@ -66,7 +66,7 @@ public abstract class PGData implements IPGData {
     }
 
     /**
-     * EVERY GDataP object is unique!
+     * EVERY PGData object is unique!
      */
     @Override
     public boolean equals(Object obj) {
