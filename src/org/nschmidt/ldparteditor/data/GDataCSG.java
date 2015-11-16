@@ -700,6 +700,7 @@ public final class GDataCSG extends GData {
                                 boolean foundSolution = true;
                                 HashSet<Integer> planeCount = new HashSet<Integer>();
                                 HashSet<Integer> verticesAround = new HashSet<Integer>();
+                                HashSet<Integer> verticesAround2 = new HashSet<Integer>();
 
                                 ArrayList<int[]> merges = new ArrayList<int[]>();
                                 ArrayList<int[]> merges2 = new ArrayList<int[]>();
@@ -727,6 +728,7 @@ public final class GDataCSG extends GData {
                                             if (planes > 0 && planes < 3) {
 
                                                 verticesAround.clear();
+                                                verticesAround2.clear();
 
                                                 if (planes == 2) {
 
@@ -750,6 +752,13 @@ public final class GDataCSG extends GData {
 
                                                 {
                                                     HashMap<Integer, Integer> allVertices = new HashMap<Integer, Integer>();
+
+
+                                                    for (Integer tri : adjacentTriangles.get(targetVertexID)) {
+                                                        verticesAround2.add((int) triangles[tri][0]);
+                                                        verticesAround2.add((int) triangles[tri][1]);
+                                                        verticesAround2.add((int) triangles[tri][2]);
+                                                    }
 
                                                     for (Integer tri : adjacentTriangles.get(centerVertexID)) {
                                                         verticesAround.add((int) triangles[tri][0]);
@@ -787,7 +796,12 @@ public final class GDataCSG extends GData {
                                                     }
 
                                                     verticesAround.remove(centerVertexID);
+                                                    verticesAround2.remove(targetVertexID);
 
+                                                    verticesAround2.retainAll(verticesAround);
+                                                    if (verticesAround2.size() != 2) {
+                                                        hasJunction = true;
+                                                    }
                                                 }
 
                                                 if (hasJunction) {
@@ -1137,24 +1151,26 @@ public final class GDataCSG extends GData {
                                                                     foundSolution = true;
                                                                     newIteration = true;
 
-                                                                    if (true || adjacentCount == 3 || lengths[0] == min && planes == 1 && angles[0] >= 90 && angles[adjacentCount - 1] >= 90) {
+                                                                    // if (true || adjacentCount == 3 || lengths[0] == min && planes == 1 && angles[0] >= 90 && angles[adjacentCount - 1] >= 90) {
 
-                                                                        adjacentTriangles.get(centerVertexID).removeAll(deletedTriangles);
-                                                                        adjacentTriangles.get(targetVertexID).removeAll(deletedTriangles);
+                                                                    adjacentTriangles.get(centerVertexID).removeAll(deletedTriangles);
+                                                                    adjacentTriangles.get(targetVertexID).removeAll(deletedTriangles);
 
-                                                                        for (int t2 = 0; t2 < adjacentCount; t2++) {
-                                                                            adjacentTriangles.get(orderedVertices[t2]).removeAll(deletedTriangles);
-                                                                        }
+                                                                    for (int t2 = 0; t2 < adjacentCount; t2++) {
+                                                                        adjacentTriangles.get(orderedVertices[t2]).removeAll(deletedTriangles);
+                                                                    }
 
-                                                                        merges.add(new int[]{centerVertexID, targetVertexID});
-                                                                        for (int t2 = 1; t2 < adjacentCount; t2++) {
-                                                                            merges2.add(new int[]{centerVertexID, orderedVertices[t2]});
-                                                                        }
+                                                                    merges.add(new int[]{centerVertexID, targetVertexID});
+                                                                    for (int t2 = 1; t2 < adjacentCount; t2++) {
+                                                                        merges2.add(new int[]{centerVertexID, orderedVertices[t2]});
+                                                                    }
 
-                                                                        System.out.println("Symplified."); //$NON-NLS-1$
+                                                                    System.out.println("Symplified."); //$NON-NLS-1$
 
-                                                                        break;
-                                                                    } /*else {
+                                                                    break;
+
+                                                                    // }
+                                                                    /*else {
 
                                                                         for (Integer[] bck : backupConnection) {
                                                                             triangles[bck[0]][bck[1]] = bck[2];
