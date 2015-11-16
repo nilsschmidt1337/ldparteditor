@@ -101,9 +101,6 @@ import org.nschmidt.ldparteditor.enums.View;
  */
 public class CSG {
 
-    public static final TreeSet<ReduceRule> REDUCE_RULES = new TreeSet<ReduceRule>();
-    public static final TreeSet<ReduceRule> LAST_REDUCE_RULES = new TreeSet<ReduceRule>();
-
     HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
 
     private List<Polygon> polygons;
