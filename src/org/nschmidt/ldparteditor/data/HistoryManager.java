@@ -229,7 +229,8 @@ public class HistoryManager {
                                         }
                                         break;
                                     default:
-                                        break;
+                                        action.set(0);
+                                        return;
                                     }
                                     if (doRestore) {
                                         df.getVertexManager().setSkipSyncWithTextEditor(true);
@@ -321,8 +322,24 @@ public class HistoryManager {
                                                         }
                                                         if (hasTextEditor) break;
                                                     }
-                                                } catch (Exception consumed) {
-                                                    NLogger.debug(getClass(), consumed);
+                                                } catch (Exception undoRedoException) {
+
+                                                    // We want to know what can go wrong here
+                                                    // because it SHOULD be avoided!!
+
+                                                    switch (action2) {
+                                                    case 1:
+                                                        NLogger.error(getClass(), "Undo failed."); //$NON-NLS-1$
+                                                        break;
+                                                    case 2:
+                                                        NLogger.error(getClass(), "Redo failed."); //$NON-NLS-1$
+                                                        break;
+                                                    default:
+                                                        // Can't happen
+                                                        break;
+                                                    }
+
+                                                    NLogger.error(getClass(), undoRedoException);
                                                 }
 
 
@@ -396,7 +413,7 @@ public class HistoryManager {
                                                 }
                                                 vm.updateUnsavedStatus();
 
-                                                // vm.setModified_NoSync();
+                                                // Never ever call "vm.setModified_NoSync();" here. NEVER delete the following lines.
                                                 vm.setModified(false, false);
                                                 vm.setUpdated(true);
                                                 vm.setSkipSyncWithTextEditor(false);
@@ -418,9 +435,14 @@ public class HistoryManager {
                                 }
                             }
                         } catch (InterruptedException e) {
-                            NLogger.debug(getClass(), e);
+                            // We want to know what can go wrong here
+                            // because it SHOULD be avoided!!
+
+                            NLogger.error(getClass(), "The HistoryManager cycle was interruped [InterruptedException]! :("); //$NON-NLS-1$
+                            NLogger.error(getClass(), e);
                         } catch (Exception e) {
-                            NLogger.debug(getClass(), e);
+                            NLogger.error(getClass(), "The HistoryManager cycle was throwing an exception :("); //$NON-NLS-1$
+                            NLogger.error(getClass(), e);
                         }
 
                         if (!restoreWasScuccessful) {
@@ -430,7 +452,6 @@ public class HistoryManager {
                         restoreWasScuccessful = false;
 
                     }
-                    // TODO Cleanup the data here
                 }
             }).start();
         }
@@ -503,12 +524,44 @@ public class HistoryManager {
                                 }
                                 sq.poll(1000, TimeUnit.MILLISECONDS);
                             } catch (Exception ex) {
-                                NLogger.debug(getClass(), ex);
+
+                                // We want to know what can go wrong here
+                                // because it SHOULD be avoided!!
+
+                                switch (mode) {
+                                case 1:
+                                    NLogger.error(getClass(), "Undo failed within the ProgressMonitor.run() call."); //$NON-NLS-1$
+                                    break;
+                                case 2:
+                                    NLogger.error(getClass(), "Redo failed within the ProgressMonitor.run() call."); //$NON-NLS-1$
+                                    break;
+                                default:
+                                    // Can't happen
+                                    break;
+                                }
+
+                                NLogger.error(getClass(), ex);
                             }
                         }
                     });
-                } catch (Exception ex) {
-                    NLogger.debug(getClass(), ex);
+                } catch (Exception undoRedoException) {
+
+                    // We want to know what can go wrong here
+                    // because it SHOULD be avoided!!
+
+                    switch (mode) {
+                    case 1:
+                        NLogger.error(getClass(), "Undo failed while the ProgressMonitor was shown."); //$NON-NLS-1$
+                        break;
+                    case 2:
+                        NLogger.error(getClass(), "Redo failed while the ProgressMonitor was shown."); //$NON-NLS-1$
+                        break;
+                    default:
+                        // Can't happen
+                        break;
+                    }
+
+                    NLogger.error(getClass(), undoRedoException);
                 }
             }
         });
