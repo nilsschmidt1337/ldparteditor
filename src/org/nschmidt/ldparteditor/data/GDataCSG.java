@@ -1057,6 +1057,8 @@ public final class GDataCSG extends GData {
 
                                                                     {
 
+                                                                        HashMap<Integer, Vector3d> oldNormals = new HashMap<Integer, Vector3d>();
+
                                                                         for (int t2 : connectedTriangles) {
                                                                             if (skipTriangle[t2]) continue;
                                                                             double x1 = vertices[(int) triangles[t2][1]][0] - vertices[(int) triangles[t2][0]][0];
@@ -1071,7 +1073,12 @@ public final class GDataCSG extends GData {
                                                                             double z2 = x3 * y1 - x1 * y3;
                                                                             double z3 = x1 * y2 - x2 * y1;
 
-                                                                            area1 = area1 + Math.sqrt(z1 * z1 + z2 * z2 + z3 * z3);
+                                                                            double lenght = Math.sqrt(z1 * z1 + z2 * z2 + z3 * z3);
+
+                                                                            if (lenght > 0) {
+                                                                                area1 = area1 + lenght;
+                                                                                oldNormals.put(t2, new Vector3d(new BigDecimal(z1 / lenght), new BigDecimal(z2 / lenght), new BigDecimal(z3 / lenght)));
+                                                                            }
                                                                         }
 
                                                                         for (int t2 : connectedTriangles) {
@@ -1114,7 +1121,19 @@ public final class GDataCSG extends GData {
                                                                             double z2 = x3 * y1 - x1 * y3;
                                                                             double z3 = x1 * y2 - x2 * y1;
 
-                                                                            area2 = area2 + Math.sqrt(z1 * z1 + z2 * z2 + z3 * z3);
+                                                                            double lenght = Math.sqrt(z1 * z1 + z2 * z2 + z3 * z3);
+
+                                                                            if (lenght > 0) {
+                                                                                area2 = area2 + lenght;
+                                                                                if (oldNormals.containsKey(t2)) {
+                                                                                    Vector3d ref = new Vector3d(new BigDecimal(z1 / lenght), new BigDecimal(z2 / lenght), new BigDecimal(z3 / lenght));
+                                                                                    double angle = Vector3d.angle(ref, oldNormals.get(t2));
+                                                                                    if (angle > 10) {
+                                                                                        isCollinear = true;
+                                                                                        break;
+                                                                                    }
+                                                                                }
+                                                                            }
 
                                                                             Vector3d vertexA = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][0]][0]), new BigDecimal(vertices[(int) triangles[t2][0]][1]), new BigDecimal(vertices[(int) triangles[t2][0]][2]));
                                                                             Vector3d vertexB = new Vector3d(new BigDecimal(vertices[(int) triangles[t2][1]][0]), new BigDecimal(vertices[(int) triangles[t2][1]][1]), new BigDecimal(vertices[(int) triangles[t2][1]][2]));
