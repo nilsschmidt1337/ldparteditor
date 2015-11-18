@@ -2043,7 +2043,6 @@ public final class GData1 extends GData {
                     break;
                 case CSG.QUALITY:
                 case CSG.EPSILON:
-                case CSG.EPSILON_T_JUNCTION:
                     lineBuilder8.append(g8.getNiceString());
                     break;
                 case CSG.COMPILE:

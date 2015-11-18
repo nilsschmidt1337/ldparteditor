@@ -53,12 +53,6 @@ public class Plane {
     public static double EPSILON = 1e-3;
 
     /**
-     * EPSILON_T_JUNCTION is the tolerance used by
-     * the T-Junction detection algorithm
-     */
-    public static float EPSILON_T_JUNCTION = 0.001f;
-
-    /**
      * XY plane.
      */
     public static final Plane XY_PLANE = new Plane(Vector3d.Z_ONE, 1);

@@ -818,9 +818,6 @@ public enum DatParser {
                     } else if (line.startsWith("QUALITY", 11)) { //$NON-NLS-1$
                         result.remove(0);
                         result.add(0, new ParsingResult(new GDataCSG(CSG.QUALITY, line, parent)));
-                    } else if (line.startsWith("EPSILON_T_JUNCTION", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(CSG.EPSILON_T_JUNCTION, line, parent)));
                     } else if (line.startsWith("EPSILON", 11)) { //$NON-NLS-1$
                         result.remove(0);
                         result.add(0, new ParsingResult(new GDataCSG(CSG.EPSILON, line, parent)));
