@@ -80,7 +80,7 @@ public enum Merger {
             }
             if (modified) {
 
-                IdenticalVertexRemover.removeIdenticalVertices(vm, false);
+                IdenticalVertexRemover.removeIdenticalVertices(vm, false, true);
 
                 if (syncWithTextEditor) {
                     vm.setModified(true, true);

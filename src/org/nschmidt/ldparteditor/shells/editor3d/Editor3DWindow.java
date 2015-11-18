@@ -3542,7 +3542,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         if (new RectifierDialog(getShell(), rs).open() == IDialogConstants.OK_ID) {
                             vm.addSnapshot();
-                            vm.rectify(rs, true);
+                            vm.rectify(rs, true, true);
                         }
                         return;
 
@@ -3683,6 +3683,24 @@ public class Editor3DWindow extends Editor3DDesign {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             RingsAndCones.solve(Editor3DWindow.getWindow().getShell(), c3d.getLockableDatFileReference(), cmp_Primitives[0].getPrimitives(), ris, true);
                         }
+                        return;
+                    }
+                }
+            }
+        });
+
+        mntm_TJunctionFinder[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    DatFile df = c3d.getLockableDatFileReference();
+                    if (df.equals(Project.getFileToEdit()) && !df.isReadOnly()) {
+                        VertexManager vm = df.getVertexManager();
+                        vm.addSnapshot();
+
+                        vm.fixTjunctions();
+
                         return;
                     }
                 }

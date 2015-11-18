@@ -39,7 +39,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 public enum IdenticalVertexRemover {
     INSTANCE;
 
-    public static void removeIdenticalVertices(VertexManager vm, boolean syncWithTextEditor) {
+    public static void removeIdenticalVertices(VertexManager vm, boolean syncWithTextEditor, boolean convertQuadsToTriangles) {
 
         vm.backupSelection();
         vm.clearSelection2();
@@ -85,7 +85,12 @@ public enum IdenticalVertexRemover {
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
-                if (verts2.size() < 4 || g4.isCollinear()) {
+                if (convertQuadsToTriangles && verts2.size() == 3) {
+
+                    // FIXME Need quad to triangle conversion!
+
+                    quadsToDelete2.add(g4);
+                } else if (verts2.size() < 4 || g4.isCollinear()) {
                     quadsToDelete2.add(g4);
                 }
             }
