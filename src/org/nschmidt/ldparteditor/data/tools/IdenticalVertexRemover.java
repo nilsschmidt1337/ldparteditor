@@ -88,7 +88,7 @@ public enum IdenticalVertexRemover {
                 }
                 if (convertQuadsToTriangles && verts2.size() == 3) {
 
-                    // FIXME Need quad to triangle conversion!
+                    // Quad to triangle conversion!
 
                     Vertex v1 = null;
                     Vertex v2 = null;
