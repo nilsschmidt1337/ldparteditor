@@ -480,6 +480,8 @@ public final class I18n {
     public static final String E3D_TextLine = E3D.getString(getProperty());
     public static final String E3D_ThreshInDeg = E3D.getString(getProperty());
     public static final String E3D_ThreshInLdu = E3D.getString(getProperty());
+    public static final String E3D_Tjunction = E3D.getString(getProperty());
+    public static final String E3D_TjunctionCount = E3D.getString(getProperty());
     public static final String E3D_ToggleBFC = E3D.getString(getProperty());
     public static final String E3D_ToggleTransparent = E3D.getString(getProperty());
     public static final String E3D_ToolsOptions = E3D.getString(getProperty());

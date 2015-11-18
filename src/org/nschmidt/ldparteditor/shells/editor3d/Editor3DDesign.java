@@ -213,6 +213,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_SymSplitter = new MenuItem[1];
     final MenuItem[] mntm_Unificator = new MenuItem[1];
     final MenuItem[] mntm_RingsAndCones = new MenuItem[1];
+    final MenuItem[] mntm_TJunctionFinder = new MenuItem[1];
 
     final MenuItem[] mntm_CustomiseKeys = new MenuItem[1];
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
@@ -1042,6 +1043,11 @@ class Editor3DDesign extends ApplicationWindow {
                         MenuItem mntm_RingsAndCones = new MenuItem(mnu_Tools, SWT.PUSH);
                         this.mntm_RingsAndCones[0] = mntm_RingsAndCones;
                         mntm_RingsAndCones.setText(I18n.E3D_RingsAndCones);
+                    }
+                    {
+                        MenuItem mntm_TJunctionFinder = new MenuItem(mnu_Tools, SWT.PUSH);
+                        this.mntm_TJunctionFinder[0] = mntm_TJunctionFinder;
+                        mntm_TJunctionFinder.setText(I18n.E3D_Tjunction);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator1 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
