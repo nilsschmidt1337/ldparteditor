@@ -97,18 +97,21 @@ public enum IdenticalVertexRemover {
                         if (verts2.contains(v)) {
                             v1 = v;
                             verts2.remove(v);
+                            break;
                         }
                     }
                     for (Vertex v : verts) {
                         if (verts2.contains(v)) {
                             v2 = v;
                             verts2.remove(v);
+                            break;
                         }
                     }
                     for (Vertex v : verts) {
                         if (verts2.contains(v)) {
                             v3 = v;
                             verts2.remove(v);
+                            break;
                         }
                     }
 
