@@ -20457,6 +20457,8 @@ public class VertexManager {
     public void fixTjunctions() {
         // FIXME Auto-generated method stub
 
+        linkedDatFile.setDrawSelection(false);
+
         final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
         final Set<Vertex> verticesToSelect = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
@@ -20468,7 +20470,6 @@ public class VertexManager {
         }
 
         clearSelection();
-
 
         final int[] TjunctionCount = new int[1];
         try
@@ -20534,6 +20535,7 @@ public class VertexManager {
         setModified(true, true);
 
         selectedVertices.addAll(verticesToSelect);
+        linkedDatFile.setDrawSelection(true);
 
     }
 
