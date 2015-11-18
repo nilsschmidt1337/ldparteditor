@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData2;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
@@ -35,7 +36,7 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 public enum Merger {
     INSTANCE;
 
-    public static void mergeTo(Vertex newVertex, VertexManager vm, boolean syncWithTextEditor) {
+    public static void mergeTo(Vertex newVertex, VertexManager vm, DatFile df, boolean syncWithTextEditor) {
 
         Set<GData2> lines = vm.getSelectedLines();
         Set<GData3> tris = vm.getSelectedTriangles();
@@ -80,7 +81,7 @@ public enum Merger {
             }
             if (modified) {
 
-                IdenticalVertexRemover.removeIdenticalVertices(vm, false, true);
+                IdenticalVertexRemover.removeIdenticalVertices(vm, df, false, true);
 
                 if (syncWithTextEditor) {
                     vm.setModified(true, true);
