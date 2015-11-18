@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData2;
 import org.nschmidt.ldparteditor.data.GData3;
@@ -39,7 +40,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 public enum IdenticalVertexRemover {
     INSTANCE;
 
-    public static void removeIdenticalVertices(VertexManager vm, boolean syncWithTextEditor, boolean convertQuadsToTriangles) {
+    public static void removeIdenticalVertices(VertexManager vm, DatFile df, boolean syncWithTextEditor, boolean convertQuadsToTriangles) {
 
         vm.backupSelection();
         vm.clearSelection2();
@@ -89,6 +90,29 @@ public enum IdenticalVertexRemover {
 
                     // FIXME Need quad to triangle conversion!
 
+                    Vertex v1 = null;
+                    Vertex v2 = null;
+                    Vertex v3 = null;
+                    for (Vertex v : verts) {
+                        if (verts2.contains(v)) {
+                            v1 = v;
+                            verts2.remove(v);
+                        }
+                    }
+                    for (Vertex v : verts) {
+                        if (verts2.contains(v)) {
+                            v2 = v;
+                            verts2.remove(v);
+                        }
+                    }
+                    for (Vertex v : verts) {
+                        if (verts2.contains(v)) {
+                            v3 = v;
+                            verts2.remove(v);
+                        }
+                    }
+
+                    df.insertAfter(g4, new GData3(g4.colourNumber, g4.r, g4.g, g4.b, g4.a, v1, v2, v3, g4.parent, df));
                     quadsToDelete2.add(g4);
                 } else if (verts2.size() < 4 || g4.isCollinear()) {
                     quadsToDelete2.add(g4);

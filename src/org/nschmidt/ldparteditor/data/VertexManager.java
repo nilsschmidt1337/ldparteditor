@@ -19567,7 +19567,7 @@ public class VertexManager {
                     clearSelection();
 
                     if (modified) {
-                        IdenticalVertexRemover.removeIdenticalVertices(this, false, true);
+                        IdenticalVertexRemover.removeIdenticalVertices(this, linkedDatFile, false, true);
                         clearSelection();
                         setModified_NoSync();
                     }
@@ -19599,7 +19599,7 @@ public class VertexManager {
                         }
                     }
                     newVertex = new Vector3d(minVertex);
-                    Merger.mergeTo(new Vertex(newVertex), this, false);
+                    Merger.mergeTo(new Vertex(newVertex), this, linkedDatFile, false);
                 }
                 clearSelection();
                 setModified_NoSync();
@@ -19611,7 +19611,7 @@ public class VertexManager {
         default:
             return;
         }
-        Merger.mergeTo(new Vertex(newVertex), this, syncWithTextEditor);
+        Merger.mergeTo(new Vertex(newVertex), this, linkedDatFile, syncWithTextEditor);
         clearSelection();
         validateState();
     }
@@ -20354,7 +20354,7 @@ public class VertexManager {
                 selectedData.addAll(selectedCondlines);
                 selectedData.addAll(selectedSubfiles);
 
-                IdenticalVertexRemover.removeIdenticalVertices(this, false, true);
+                IdenticalVertexRemover.removeIdenticalVertices(this, linkedDatFile, false, true);
 
                 if (syncWithTextEditors) syncWithTextEditors(true);
                 updateUnsavedStatus();
@@ -20536,4 +20536,5 @@ public class VertexManager {
         selectedVertices.addAll(verticesToSelect);
 
     }
+
 }
