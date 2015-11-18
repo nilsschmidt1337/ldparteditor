@@ -120,7 +120,6 @@ public class CSG {
     public static final byte QUALITY = 9;
     public static final byte EPSILON = 10;
     public static final byte CONE = 11;
-    public static final byte EPSILON_T_JUNCTION = 12;
 
     /**
      * Constructs a CSG from a list of {@link Polygon} instances.
