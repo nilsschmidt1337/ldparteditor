@@ -186,6 +186,8 @@ public class KeyStateManager {
         addTask(TextTask.EDITORTEXT_REDO, SWT.CTRL, 'y');
 
         addTask(TextTask.EDITORTEXT_SAVE, SWT.CTRL, 's');
+
+        addTask(TextTask.EDITORTEXT_FIND, SWT.CTRL, 'f');
     }
 
     /** Indicates that SHIFT is pressed */
