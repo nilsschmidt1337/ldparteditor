@@ -671,6 +671,7 @@ public class CompositeTab extends CompositeTabDesign {
                 lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
             }
         });
+        final CompositeTab me = this;
         compositeText[0].addListener(SWT.KeyDown, new Listener() {
             @Override
             // MARK KeyDown (Quick Fix)
@@ -802,8 +803,19 @@ public class CompositeTab extends CompositeTabDesign {
                         }
                         break;
                     case EDITORTEXT_FIND:
-                        // FIXME Needs implementation!
+                    {
+                        if (!vm.isUpdated()) return;
+                        NLogger.debug(getClass(), "Find and Replace.."); //$NON-NLS-1$
+                        SearchWindow win = Editor3DWindow.getWindow().getSearchWindow();
+                        if (win != null) {
+                            win.close();
+                        }
+                        Editor3DWindow.getWindow().setSearchWindow(new SearchWindow(getWindow().getShell()));
+                        Editor3DWindow.getWindow().getSearchWindow().run();
+                        Editor3DWindow.getWindow().getSearchWindow().setTextComposite(me);
+                        Editor3DWindow.getWindow().getSearchWindow().setScopeToAll();
                         break;
+                    }
                     default:
                         break;
                     }

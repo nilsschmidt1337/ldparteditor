@@ -203,7 +203,7 @@ class EditorTextDesign extends ApplicationWindow {
             Button btn_FindAndReplace = new Button(toolItem_Debug, SWT.NONE);
             this.btn_FindAndReplace[0] = btn_FindAndReplace;
             btn_FindAndReplace.setImage(ResourceManager.getImage("icon16_findReplace.png")); //$NON-NLS-1$
-            btn_FindAndReplace.setToolTipText(I18n.EDITORTEXT_FindReplace);
+            KeyStateManager.addTooltipText(btn_FindAndReplace, I18n.EDITORTEXT_FindReplace, TextTask.EDITORTEXT_FIND);
         }
         {
             Button btn_Sort = new Button(toolItem_Debug, SWT.NONE);

@@ -76,11 +76,12 @@ class KeyTableDesign extends Dialog {
         this.getShell().setText(I18n.KEYBOARD_CustomiseShortkeys);
         Composite cmp_container = parent;
         cmp_container.setLayout(new GridLayout());
+        cmp_container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
         Label lbl_DoubleClick = new Label(cmp_container, I18n.I18N_RTL());
         lbl_DoubleClick.setText(I18n.KEYBOARD_DoubleClick);
 
-        final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI, Task.values().length + TextTask.values().length - 8);
+        final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, Task.values().length + TextTask.values().length - 7);
 
         // tree_Problems[0] = tree;
         tree.setLinesVisible(true);
@@ -157,7 +158,11 @@ class KeyTableDesign extends Dialog {
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Save, TextTask.EDITORTEXT_SAVE);
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_SelectAll, TextTask.EDITORTEXT_SELECTALL);
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Undo, TextTask.EDITORTEXT_UNDO);
-        registerDoubleClickEvent(trtm_EditorText, I18n.EDITORTEXT_FindReplace, TextTask.EDITORTEXT_FIND);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_FindReplace, TextTask.EDITORTEXT_FIND);
+
+        TreeItem trtm_Temp = new TreeItem(tree, SWT.NONE);
+        trtm_Temp.setText(new String[] { "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
+        trtm_Temp.setVisible(true);
 
         if (s1.size() != Task.values().length || s2.size() != TextTask.values().length) {
             throw new AssertionError("Not all shortkey items are covered by this dialog! Please fix it"); //$NON-NLS-1$
