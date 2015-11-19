@@ -13122,6 +13122,9 @@ public class VertexManager {
         HashSet<GData> surfs = getLinkedSurfaces(v);
 
         int surfCount = surfs.size();
+        if (surfCount == 0) {
+            return false;
+        }
 
         TreeSet<Vertex> verts = new TreeSet<Vertex>();
         TreeSet<Vertex> verts2 = new TreeSet<Vertex>();
