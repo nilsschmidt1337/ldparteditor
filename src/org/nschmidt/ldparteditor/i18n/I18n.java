@@ -539,6 +539,7 @@ public final class I18n {
     public static final String EDITORTEXT_RemoveDuplicates = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Round = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_ShowHideErrorTab = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_ShowSelectionIn3D = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Sort = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_SplitQuad = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Texmap = EDITORTEXT.getString(getProperty());
