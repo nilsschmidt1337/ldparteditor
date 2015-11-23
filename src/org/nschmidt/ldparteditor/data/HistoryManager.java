@@ -150,6 +150,7 @@ public class HistoryManager {
                                 historyText.add(result);
 
                                 // 1. Cleanup duplicated text entries
+                                /*
                                 if (pointer > 0) {
                                     int pStart = historySelectionStart.get(pointer - 1);
                                     int[] previous = historyText.get(pointer - 1);
@@ -189,6 +190,7 @@ public class HistoryManager {
                                         }
                                     }
                                 }
+                                */
                                 // FIXME 2. There is still more cleanup work to do
 
                                 pointerMax++;
@@ -207,7 +209,7 @@ public class HistoryManager {
                                         // Undo
                                         if (pointer > 0) {
                                             if (pointerMax == pointer && pointer > 1) pointer--;
-                                            NLogger.debug(getClass(), "Requested undo. " + (pointer - 1)); //$NON-NLS-1$
+                                            NLogger.debug(getClass(), "Requested undo. " + (pointer - 1) + ' ' + pointerMax); //$NON-NLS-1$
                                             pointer--;
                                             delta = -1;
                                             doRestore = true;
