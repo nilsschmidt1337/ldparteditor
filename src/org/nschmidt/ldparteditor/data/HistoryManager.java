@@ -73,6 +73,8 @@ public class HistoryManager {
                 @Override
                 public void run() {
 
+                    final int MAX_ITEM_COUNT = 3; // default is 100
+
                     boolean restoreWasScuccessful = false;
 
                     int pointer = 0;
@@ -110,6 +112,10 @@ public class HistoryManager {
                                     // throw new AssertionError("There must be data to backup!"); //$NON-NLS-1$
                                     continue;
                                 }
+
+                                NLogger.debug(getClass(), "Pointer   : " + pointer); //$NON-NLS-1$
+                                NLogger.debug(getClass(), "PointerMax: " + pointerMax); //$NON-NLS-1$
+
                                 if (pointer != pointerMax) {
                                     // Delete old entries
                                     removeFromListAboveOrEqualIndex(historySelectionStart, pointer);
@@ -120,9 +126,9 @@ public class HistoryManager {
                                     removeFromListAboveOrEqualIndex(historyTopIndex, pointer);
                                     pointerMax = pointer;
                                 }
-                                // Dont store more than hundred undo/redo entries
-                                if (pointerMax > 100) {
-                                    int delta = pointerMax - 100;
+                                // Dont store more than MAX_ITEM_COUNT undo/redo entries
+                                if (pointerMax > MAX_ITEM_COUNT) {
+                                    int delta = pointerMax - MAX_ITEM_COUNT;
                                     removeFromListLessIndex(historySelectionStart, delta);
                                     removeFromListLessIndex(historySelectionEnd, delta);
                                     removeFromListLessIndex(historySelectedData, delta);
@@ -130,7 +136,7 @@ public class HistoryManager {
                                     removeFromListLessIndex(historyText, delta);
                                     removeFromListLessIndex(historyTopIndex, delta);
                                     pointerMax = pointerMax - delta;
-                                    if (pointer > 100) {
+                                    if (pointer > MAX_ITEM_COUNT) {
                                         pointer = pointer - delta;
                                     }
                                 }
@@ -330,7 +336,6 @@ public class HistoryManager {
                                                     NLogger.error(getClass(), undoRedoException);
                                                 }
 
-
                                                 final VertexManager vm = df.getVertexManager();
 
                                                 vm.clearSelection2();
@@ -415,7 +420,6 @@ public class HistoryManager {
                                         });
                                     }
                                     action.set(0);
-                                    sq.put(0);
                                     restoreWasScuccessful = true;
                                 } else {
                                     restoreWasScuccessful = true;
@@ -435,10 +439,8 @@ public class HistoryManager {
 
                         if (!restoreWasScuccessful) {
                             action.set(0);
-                            sq.offer(0);
                         }
                         restoreWasScuccessful = false;
-
                     }
                 }
             }).start();
@@ -510,7 +512,6 @@ public class HistoryManager {
                                         NLogger.debug(getClass(), "Progress info has timed out."); //$NON-NLS-1$
                                     }
                                 }
-                                sq.poll(1000, TimeUnit.MILLISECONDS);
                             } catch (Exception ex) {
 
                                 // We want to know what can go wrong here
