@@ -204,7 +204,7 @@ public class HistoryManager {
                             } else {
                                 final int action2 = action.get();
                                 int delta = 0;
-                                if (action2 > 0) {
+                                if (action2 > 0 && action2 < 3) {
                                     restoreWasScuccessful = false;
 
                                     boolean doRestore = false;
@@ -228,9 +228,6 @@ public class HistoryManager {
                                             doRestore = true;
                                         }
                                         break;
-                                    default:
-                                        action.set(0);
-                                        return;
                                     }
                                     if (doRestore) {
                                         df.getVertexManager().setSkipSyncWithTextEditor(true);
@@ -258,14 +255,16 @@ public class HistoryManager {
                                             if (pointer2 == k) break;
                                         }
                                         if (text == null) {
+                                            // FIXME This case should not happen! Class needs better documentation!
                                             action.set(0);
                                             return;
                                         }
                                         NLogger.debug(getClass(), "Waiting for monitor..."); //$NON-NLS-1$
                                         sq.put(10);
                                         if (m[0] == null || m[0].getShell() == null) {
-                                            NLogger.debug(getClass(), "Monitor creation failed!"); //$NON-NLS-1$
+                                            NLogger.error(getClass(), "Monitor creation failed!"); //$NON-NLS-1$
                                             action.set(0);
+                                            hasNoThread = true;
                                             return;
                                         }
                                         NLogger.debug(getClass(), "Accepted monitor."); //$NON-NLS-1$
