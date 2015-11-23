@@ -890,9 +890,13 @@ public class CompositePrimitive extends Composite {
                                 } else if ((gd = parseLine(line, 0, View.ID, new HashSet<String>())) != null) {
                                     data.add(gd);
                                 }
+                                final HashSet<String> set = new HashSet<String>();
                                 while ((line = reader.readLine()) != null) {
-                                    gd = parseLine(line, 0, View.ID, new HashSet<String>());
-                                    if (gd != null && gd.type() != 0) data.add(gd);
+                                    gd = parseLine(line, 0, View.ID, set);
+                                    if (gd != null && gd.type() != 0) {
+                                        data.add(gd);
+                                        set.clear();
+                                    }
                                 }
                                 newPrimitive.setGraphicalData(data);
                                 primitiveMap.put(path, newPrimitive);
