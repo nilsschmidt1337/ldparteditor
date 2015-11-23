@@ -119,13 +119,13 @@ public class HistoryManager {
 
                                 if (pointer != pointerMax) {
                                     // Delete old entries
-                                    removeFromListAboveOrEqualIndex(historySelectionStart, pointer);
-                                    removeFromListAboveOrEqualIndex(historySelectionEnd, pointer);
-                                    removeFromListAboveOrEqualIndex(historySelectedData, pointer);
-                                    removeFromListAboveOrEqualIndex(historySelectedVertices, pointer);
-                                    removeFromListAboveOrEqualIndex(historyText, pointer);
-                                    removeFromListAboveOrEqualIndex(historyTopIndex, pointer);
-                                    pointerMax = pointer;
+                                    removeFromListAboveOrEqualIndex(historySelectionStart, pointer + 1);
+                                    removeFromListAboveOrEqualIndex(historySelectionEnd, pointer + 1);
+                                    removeFromListAboveOrEqualIndex(historySelectedData, pointer + 1);
+                                    removeFromListAboveOrEqualIndex(historySelectedVertices, pointer + 1);
+                                    removeFromListAboveOrEqualIndex(historyText, pointer + 1);
+                                    removeFromListAboveOrEqualIndex(historyTopIndex, pointer + 1);
+                                    pointerMax = pointer + 1;
                                 }
                                 // Dont store more than MAX_ITEM_COUNT undo/redo entries
                                 if (false && pointerMax > MAX_ITEM_COUNT) {
@@ -238,16 +238,11 @@ public class HistoryManager {
                                             }
                                             if (hasTextEditor) break;
                                         }
-                                        while (!hasTextEditor && historySelectionStart.get(pointer) != -1 && pointer > 0 && pointer < pointerMax - 1) {
+                                        while (!hasTextEditor && (pointer + delta) > -1 && (pointer + delta) < historySelectionStart.size() && historySelectionStart.get(pointer) != -1 && pointer > 0 && pointer < pointerMax - 1) {
                                             pointer += delta;
                                         }
                                         int[] text = historyText.get(pointer);
                                         final int pointer2 = pointer;
-                                        if (text == null) {
-                                            // FIXME This case should not happen! Class needs better documentation!
-                                            action.set(0);
-                                            return;
-                                        }
                                         NLogger.debug(getClass(), "Waiting for monitor..."); //$NON-NLS-1$
                                         sq.put(10);
                                         if (m[0] == null || m[0].getShell() == null) {

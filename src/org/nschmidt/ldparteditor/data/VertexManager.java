@@ -5369,7 +5369,6 @@ public class VertexManager {
             syncWithTextEditors(true);
             updateUnsavedStatus();
         }
-
     }
 
     public void updateUnsavedStatus() {
