@@ -180,13 +180,7 @@ public class HistoryManager {
                                                         historySelectedData.remove(pointer - 1);
                                                         historySelectedVertices.remove(pointer - 1);
                                                         historyTopIndex.remove(pointer - 1);
-                                                        if (historyText.get(pointer - 1) == null) {
-                                                            historyText.remove(pointer - 1);
-                                                            historyText.remove(pointer);
-                                                            historyText.add(null);
-                                                        } else {
-                                                            historyText.remove(pointer - 1);
-                                                        }
+                                                        historyText.remove(pointer - 1);
                                                     }
                                                     pointerMax--;
                                                     pointer--;
