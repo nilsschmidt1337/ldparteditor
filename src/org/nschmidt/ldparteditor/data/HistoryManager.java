@@ -217,7 +217,7 @@ public class HistoryManager {
                                         break;
                                     case 2:
                                         // Redo
-                                        if (pointer < pointerMax - 1) {
+                                        if (pointer < pointerMax - 1 && pointer + 1 < historySelectionStart.size()) {
                                             NLogger.debug(getClass(), "Requested redo. " + (pointer + 1) + ' ' + pointerMax); //$NON-NLS-1$
                                             pointer++;
                                             delta = 1;
