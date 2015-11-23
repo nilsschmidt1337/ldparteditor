@@ -241,13 +241,8 @@ public class HistoryManager {
                                         while (!hasTextEditor && historySelectionStart.get(pointer) != -1 && pointer > 0 && pointer < pointerMax - 1) {
                                             pointer += delta;
                                         }
+                                        int[] text = historyText.get(pointer);
                                         final int pointer2 = pointer;
-                                        int[] text = null;
-                                        int k = 0;
-                                        while ((text = historyText.get(pointer2 - k)) == null) {
-                                            k++;
-                                            if (pointer2 == k) break;
-                                        }
                                         if (text == null) {
                                             // FIXME This case should not happen! Class needs better documentation!
                                             action.set(0);
