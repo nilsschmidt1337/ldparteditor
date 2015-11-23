@@ -68,6 +68,7 @@ import org.nschmidt.ldparteditor.helpers.compositetext.Annotator;
 import org.nschmidt.ldparteditor.helpers.compositetext.AnnotatorTexmap;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
+import org.nschmidt.ldparteditor.helpers.compositetext.Text2SelectionConverter;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
@@ -405,6 +406,31 @@ public class EditorTextWindow extends EditorTextDesign {
                     NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
                     NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
                     AnnotatorTexmap.annotate(st, fromLine, toLine, selection.getState().getFileNameObj());
+                    st.forceFocus();
+                }
+            }
+        });
+
+
+        btn_ShowSelectionIn3D[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                if (selection != null) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
+                    NLogger.debug(getClass(), "Selecting.."); //$NON-NLS-1$
+                    final StyledText st = selection.getTextComposite();
+                    int s1 = st.getSelectionRange().x;
+                    int s2 = s1 + st.getSelectionRange().y;
+                    int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                    int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                    fromLine++;
+                    toLine++;
+                    NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                    Text2SelectionConverter.convert(fromLine, toLine, selection.getState().getFileNameObj());
                     st.forceFocus();
                 }
             }

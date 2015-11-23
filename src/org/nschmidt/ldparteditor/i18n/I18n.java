@@ -453,6 +453,7 @@ public final class I18n {
     public static final String E3D_SearchPrimitives = E3D.getString(getProperty());
     public static final String E3D_Select = E3D.getString(getProperty());
     public static final String E3D_SelectLDConfig = E3D.getString(getProperty());
+    public static final String E3D_SelectVertex = E3D.getString(getProperty());
     public static final String E3D_Selection = E3D.getString(getProperty());
     public static final String E3D_SetAccuracy = E3D.getString(getProperty());
     public static final String E3D_SetIconSize = E3D.getString(getProperty());

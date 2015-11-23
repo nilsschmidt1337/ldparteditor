@@ -201,6 +201,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_ExceptSubfiles = new MenuItem[1];
     final MenuItem[] mntm_StopAtEdges = new MenuItem[1];
     final MenuItem[] mntm_SelectIsolatedVertices = new MenuItem[1];
+    final MenuItem[] mntm_SelectSingleVertex = new MenuItem[1];
 
     final MenuItem[] mntm_Edger2 = new MenuItem[1];
     final MenuItem[] mntm_Txt2Dat = new MenuItem[1];
@@ -829,6 +830,11 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator3 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                    {
+                        MenuItem mntm_SelectSingleVertex = new MenuItem(mnu_Select, SWT.PUSH);
+                        this.mntm_SelectSingleVertex[0] = mntm_SelectSingleVertex;
+                        mntm_SelectSingleVertex.setText(I18n.E3D_SelectVertex);
+                    }
                     {
                         MenuItem mntm_SelectIsolatedVertices = new MenuItem(mnu_Select, SWT.PUSH);
                         this.mntm_SelectIsolatedVertices[0] = mntm_SelectIsolatedVertices;

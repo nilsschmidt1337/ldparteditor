@@ -104,7 +104,7 @@ public enum AnnotatorTexmap {
         }
         for (Integer l : lineNumbers) {
             String line = getLine(l, text2);
-            text2 = AnnotatorTexmap.annotate(l, line, text2, datFile);
+            text2 = AnnotatorTexmap.annotate(l, line, text2);
         }
         cText.setText(restoreLineTermination(text2));
         int tl = cText.getText().length();
@@ -151,7 +151,7 @@ public enum AnnotatorTexmap {
         return text.replaceAll("<br>", StringHelper.getLineDelimiter()); //$NON-NLS-1$
     }
 
-    private static String annotate(Integer lineNumber, String line, String source, DatFile datFile) {
+    private static String annotate(Integer lineNumber, String line, String source) {
 
         String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
 
