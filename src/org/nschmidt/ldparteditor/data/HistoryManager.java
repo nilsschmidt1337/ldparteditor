@@ -127,7 +127,7 @@ public class HistoryManager {
                                     removeFromListAboveOrEqualIndex(historyTopIndex, pointer + 1);
                                     pointerMax = pointer + 1;
                                 }
-                                // Dont store more than MAX_ITEM_COUNT undo/redo entries
+                                // FIXME Dont store more than MAX_ITEM_COUNT undo/redo entries
                                 if (false && pointerMax > MAX_ITEM_COUNT) {
                                     int delta = pointerMax - MAX_ITEM_COUNT;
                                     removeFromListLessIndex(historySelectionStart, delta);
@@ -150,7 +150,7 @@ public class HistoryManager {
                                 historyText.add(result);
 
                                 // 1. Cleanup duplicated text entries
-                                /*
+
                                 if (pointer > 0) {
                                     int pStart = historySelectionStart.get(pointer - 1);
                                     int[] previous = historyText.get(pointer - 1);
@@ -190,7 +190,7 @@ public class HistoryManager {
                                         }
                                     }
                                 }
-                                */
+
                                 // FIXME 2. There is still more cleanup work to do
 
                                 pointerMax++;
