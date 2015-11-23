@@ -73,7 +73,7 @@ public class HistoryManager {
                 @Override
                 public void run() {
 
-                    final int MAX_ITEM_COUNT = 3; // default is 100
+                    final int MAX_ITEM_COUNT = 100; // default is 100
 
                     boolean restoreWasScuccessful = false;
 
@@ -127,18 +127,21 @@ public class HistoryManager {
                                     removeFromListAboveOrEqualIndex(historyTopIndex, pointer + 1);
                                     pointerMax = pointer + 1;
                                 }
-                                // FIXME Dont store more than MAX_ITEM_COUNT undo/redo entries
-                                if (false && pointerMax > MAX_ITEM_COUNT) {
-                                    int delta = pointerMax - MAX_ITEM_COUNT;
-                                    removeFromListLessIndex(historySelectionStart, delta);
-                                    removeFromListLessIndex(historySelectionEnd, delta);
-                                    removeFromListLessIndex(historySelectedData, delta);
-                                    removeFromListLessIndex(historySelectedVertices, delta);
-                                    removeFromListLessIndex(historyText, delta);
-                                    removeFromListLessIndex(historyTopIndex, delta);
-                                    pointerMax = pointerMax - delta;
-                                    if (pointer > MAX_ITEM_COUNT) {
-                                        pointer = pointer - delta;
+                                // Dont store more than MAX_ITEM_COUNT undo/redo entries
+                                {
+                                    final int item_count = historyText.size();
+                                    if (item_count > MAX_ITEM_COUNT) {
+                                        int delta = item_count - MAX_ITEM_COUNT;
+                                        removeFromListLessIndex(historySelectionStart, delta + 1);
+                                        removeFromListLessIndex(historySelectionEnd, delta + 1);
+                                        removeFromListLessIndex(historySelectedData, delta + 1);
+                                        removeFromListLessIndex(historySelectedVertices, delta + 1);
+                                        removeFromListLessIndex(historyText, delta + 1);
+                                        removeFromListLessIndex(historyTopIndex, delta + 1);
+                                        pointerMax = pointerMax - delta;
+                                        if (pointer > MAX_ITEM_COUNT) {
+                                            pointer = pointer - delta;
+                                        }
                                     }
                                 }
 
