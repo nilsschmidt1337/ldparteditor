@@ -333,7 +333,7 @@ public final class DatFile {
                 description = " - " + descr; //$NON-NLS-1$
             }
         } else {
-            parseForData(true);
+            parseForData(false);
         }
         return text;
     }
