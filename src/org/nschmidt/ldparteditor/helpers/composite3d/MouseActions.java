@@ -386,7 +386,7 @@ public class MouseActions {
                     if (v2 != null) {
                         if (v3 != null) {
                             if (keyboard.isShiftPressed()) {
-                                Object[] nv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToLines(new Vertex(c3d.getCursor3D()));
+                                Object[] nv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToLines(new Vertex(c3d.getCursor3D()), true);
                                 c3d.getLockableDatFileReference().setObjVertex1((Vertex) nv[0]);
                                 c3d.getLockableDatFileReference().setObjVertex2((Vertex) nv[1]);
                                 c3d.getLockableDatFileReference().setObjVertex3(null);
@@ -406,7 +406,7 @@ public class MouseActions {
                             }
                         } else {
                             if (keyboard.isShiftPressed()) {
-                                Object[] nv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToLines(new Vertex(c3d.getCursor3D()));
+                                Object[] nv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToLines(new Vertex(c3d.getCursor3D()), true);
                                 c3d.getLockableDatFileReference().setObjVertex1((Vertex) nv[0]);
                                 c3d.getLockableDatFileReference().setObjVertex2((Vertex) nv[1]);
                                 c3d.getLockableDatFileReference().setObjVertex3(null);
@@ -441,7 +441,7 @@ public class MouseActions {
                     if (v2 != null) {
                         if (v3 != null && v4 != null) {
                             if (keyboard.isShiftPressed()) {
-                                Object[] nv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToLines(new Vertex(c3d.getCursor3D()));
+                                Object[] nv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToLines(new Vertex(c3d.getCursor3D()), true);
                                 c3d.getLockableDatFileReference().setObjVertex1((Vertex) nv[0]);
                                 c3d.getLockableDatFileReference().setObjVertex2((Vertex) nv[1]);
                                 c3d.getLockableDatFileReference().setObjVertex3(null);
@@ -473,7 +473,7 @@ public class MouseActions {
                             }
                         } else {
                             if (keyboard.isShiftPressed()) {
-                                Object[] nv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToLines(new Vertex(c3d.getCursor3D()));
+                                Object[] nv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToLines(new Vertex(c3d.getCursor3D()), true);
                                 c3d.getLockableDatFileReference().setObjVertex1((Vertex) nv[0]);
                                 c3d.getLockableDatFileReference().setObjVertex2((Vertex) nv[1]);
                                 c3d.getLockableDatFileReference().setObjVertex3(null);
