@@ -5676,28 +5676,41 @@ public class VertexManager {
         return targetVertex;
     }
 
-    public Object[] getMinimalDistanceVerticesToLines(Vertex vertex) {
+    public Object[] getMinimalDistanceVerticesToLines(Vertex vertex, boolean autoCompleteSelection) {
         double minDist = Double.MAX_VALUE;
         Vector4f vp = vertex.toVector4f();
         Object[] result = new Object[4];
         Vector4f result2 = new Vector4f();
         Set<GData3> ts;
         Set<GData4> qs;
-
         Set<GData2> ls;
         Set<GData5> cs;
+
         if (selectedTriangles.isEmpty()) {
             if (selectedQuads.isEmpty()) {
-                ts = triangles.keySet();
-                qs = quads.keySet();
+                if (autoCompleteSelection) {
+                    ts = triangles.keySet();
+                    qs = quads.keySet();
+                } else {
+                    ts = new HashSet<GData3>();
+                    qs = new HashSet<GData4>();
+                }
             } else {
-                ts = triangles.keySet();
+                if (autoCompleteSelection) {
+                    ts = triangles.keySet();
+                } else {
+                    ts = new HashSet<GData3>();
+                }
                 qs = selectedQuads;
             }
         } else {
             if (selectedQuads.isEmpty()) {
                 ts = selectedTriangles;
-                qs = quads.keySet();
+                if (autoCompleteSelection) {
+                    qs = quads.keySet();
+                } else {
+                    qs = new HashSet<GData4>();
+                }
             } else {
                 ts = selectedTriangles;
                 qs = selectedQuads;
@@ -5706,16 +5719,29 @@ public class VertexManager {
 
         if (selectedLines.isEmpty()) {
             if (selectedCondlines.isEmpty()) {
-                ls = lines.keySet();
-                cs = condlines.keySet();
+                if (autoCompleteSelection) {
+                    ls = lines.keySet();
+                    cs = condlines.keySet();
+                } else {
+                    ls = new HashSet<GData2>();
+                    cs = new HashSet<GData5>();
+                }
             } else {
-                ls = lines.keySet();
+                if (autoCompleteSelection) {
+                    ls = lines.keySet();
+                } else {
+                    ls = new HashSet<GData2>();
+                }
                 cs = selectedCondlines;
             }
         } else {
             if (selectedCondlines.isEmpty()) {
                 ls = selectedLines;
-                cs = condlines.keySet();
+                if (autoCompleteSelection) {
+                    cs = condlines.keySet();
+                } else {
+                    cs = new HashSet<GData5>();
+                }
             } else {
                 ls = selectedLines;
                 cs = selectedCondlines;
@@ -13190,7 +13216,7 @@ public class VertexManager {
 
             selectInverse(new SelectorSettings());
 
-            double result = (double) getMinimalDistanceVerticesToLines(v)[3];
+            double result = (double) getMinimalDistanceVerticesToLines(v, false)[3];
             System.out.println(result);
             return result < 1.0;
         } else {
@@ -19556,7 +19582,7 @@ public class VertexManager {
                     boolean modified = false;
                     if (mode == MergeTo.NEAREST_EDGE) {
                         for (Vertex vertex : originVerts) {
-                            final Object[] target = getMinimalDistanceVerticesToLines(vertex);
+                            final Object[] target = getMinimalDistanceVerticesToLines(vertex, false);
                             modified = changeVertexDirectFast(vertex, (Vertex) target[2], true) || modified;
                             // And split at target position!
                             modified = split((Vertex) target[0], (Vertex) target[1], (Vertex) target[2]) || modified;
