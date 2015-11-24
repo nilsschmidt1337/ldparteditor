@@ -6347,7 +6347,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void disableSelectionTab() {
-        try {
+        if (Thread.currentThread() == Display.getDefault().getThread()) {
             updatingSelectionTab = true;
             txt_Line[0].setText(""); //$NON-NLS-1$
             spn_SelectionX1[0].setEnabled(false);
@@ -6387,8 +6387,8 @@ public class Editor3DWindow extends Editor3DDesign {
             lbl_SelectionY4[0].setText(I18n.E3D_PositionY4);
             lbl_SelectionZ4[0].setText(I18n.E3D_PositionZ4);
             updatingSelectionTab = false;
-        } catch (SWTException swt) {
-            NLogger.error(getClass(), swt);
+        } else {
+            NLogger.error(getClass(), new SWTException(SWT.ERROR_THREAD_INVALID_ACCESS, "A wrong thread tries to access the GUI!")); //$NON-NLS-1$
             Display.getDefault().asyncExec(new Runnable() {
                 @Override
                 public void run() {
