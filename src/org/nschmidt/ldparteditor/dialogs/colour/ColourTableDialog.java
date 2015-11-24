@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.colour;
 
+import java.util.regex.PatternSyntaxException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -45,7 +47,7 @@ class ColourTableDialog extends ColourTableDesign {
                     criteria.matches(criteria);
                     criteria2.matches(criteria2);
                     criteria3.matches(criteria3);
-                } catch (Exception ex) {
+                } catch (PatternSyntaxException ex) {
                     criteria = ".*"; //$NON-NLS-1$
                     criteria2 = ".*"; //$NON-NLS-1$
                 }
