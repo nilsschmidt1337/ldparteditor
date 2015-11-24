@@ -140,7 +140,13 @@ public class SyntaxFormatter {
             for (StyleRange sr : styles) {
                 if (sr.background == null) {
                     sr.background = Colour.line_highlight_selected_background;
+                } else if (replaceVertex) {
+                    sr.fontStyle = SWT.BOLD;
                 }
+            }
+        } else if (replaceVertex) {
+            for (StyleRange sr : styles) {
+                sr.fontStyle = SWT.BOLD;
             }
         }
         e.styles = styles.toArray(new StyleRange[0]);
