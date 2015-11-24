@@ -10,6 +10,13 @@
 0 BFC CERTIFY CCW
 
 0 // Image file courtesy of the LEGO MINDSTORMS Team
+
+0 // Nils Schmidt [BlackBrick89]:
+0 // The image file 13710k.png needs to be placed in the "textures" folder within the
+0 // official or unofficial library or within the current project folder.
+0 // e.g "C:\LDRAW\TEXTURES", "*path to project*\TEXTURES", "*unofficial library path*\TEXTURES"
+
+
 0 // Needs Work: Missing more detailed fallback pattern
 
 1 15 0 0 0 -1 0 0 0 1 0 0 0 1 s\61071s03.dat
