@@ -35,7 +35,7 @@ import java.util.Map;
 
 /**
  * A simple property storage.
- * 
+ *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 public class PropertyStorage {
@@ -54,7 +54,7 @@ public class PropertyStorage {
 
     /**
      * Sets a property. Existing properties are overwritten.
-     * 
+     *
      * @param key
      *            key
      * @param property
@@ -66,7 +66,7 @@ public class PropertyStorage {
 
     /**
      * Returns a property.
-     * 
+     *
      * @param <T>
      *            property type
      * @param key
@@ -81,12 +81,15 @@ public class PropertyStorage {
     }
 
     public <T> Object getFirstValue() {
-        return map.get(map.keySet().iterator().next());
+        if (!map.keySet().isEmpty()) {
+            return map.get(map.keySet().iterator().next());
+        }
+        return null;
     }
 
     /**
      * Deletes the requested property if present. Does nothing otherwise.
-     * 
+     *
      * @param key
      *            key
      */
@@ -96,7 +99,7 @@ public class PropertyStorage {
 
     /**
      * Indicates whether this storage contains the requested property.
-     * 
+     *
      * @param key
      *            key
      * @return {@code true} if this storage contains the requested property;
