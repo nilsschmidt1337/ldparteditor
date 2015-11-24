@@ -704,6 +704,9 @@ public class CompositeTab extends CompositeTabDesign {
                         if (compositeText[0].getEditable()) {
                             if (!vm.isUpdated()) return;
                             VertexMarker.markTheVertex(state, compositeText[0], df);
+                            if (state.isReplacingVertex()) {
+                                state.window[0].setStatus(I18n.EDITORTEXT_SyncEdit);
+                            }
                         }
                         break;
                     case EDITORTEXT_ESC:
@@ -712,6 +715,7 @@ public class CompositeTab extends CompositeTabDesign {
                             state.setReplacingVertex(false);
                             vm.setVertexToReplace(null);
                             compositeText[0].redraw(0, 0, compositeText[0].getBounds().width, compositeText[0].getBounds().height, true);
+                            state.window[0].setStatus(I18n.EDITORTEXT_SyncEditDeactivated);
                         }
                         break;
                     case EDITORTEXT_QUICKFIX:
@@ -867,7 +871,11 @@ public class CompositeTab extends CompositeTabDesign {
                 if (compositeText[0].getSelectionCount() == 0) {
                     compositeText[0].setLineBackground(state.currentLineIndex, 1, Colour.line_highlight_background);
                 }
-                state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
+                if (state.isReplacingVertex()) {
+                    state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SyncEdit); //$NON-NLS-1$ //$NON-NLS-2$
+                } else {
+                    state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
+                }
                 canvas_lineNumberArea[0].redraw();
             }
         });

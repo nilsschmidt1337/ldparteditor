@@ -543,6 +543,8 @@ public final class I18n {
     public static final String EDITORTEXT_ShowSelectionIn3D = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Sort = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_SplitQuad = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_SyncEdit = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_SyncEditDeactivated = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Texmap = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Unrectify = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Warning = EDITORTEXT.getString(getProperty());

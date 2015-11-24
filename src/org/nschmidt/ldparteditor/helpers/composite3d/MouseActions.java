@@ -60,6 +60,7 @@ import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * Implementations of the actions which will be performed on
@@ -1207,31 +1208,33 @@ public class MouseActions {
     }
 
     private void checkSyncEditMode(VertexManager vm, DatFile datfile) {
-        if (vm.getSelectedVertices().size() == 1) {
-            Vertex v = vm.getSelectedVertices().iterator().next();
-            for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                for (CTabItem t : w.getTabFolder().getItems()) {
-                    if (datfile.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                        CompositeTabState state = ((CompositeTab) t).getState();
-                        state.setReplacingVertex(!datfile.isReadOnly());
-                        vm.setVertexToReplace(v);
-                        state.setToReplaceX(v.X);
-                        state.setToReplaceY(v.Y);
-                        state.setToReplaceZ(v.Z);
+        if (WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) {
+            if (vm.getSelectedVertices().size() == 1) {
+                Vertex v = vm.getSelectedVertices().iterator().next();
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    for (CTabItem t : w.getTabFolder().getItems()) {
+                        if (datfile.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                            CompositeTabState state = ((CompositeTab) t).getState();
+                            state.setReplacingVertex(!datfile.isReadOnly());
+                            vm.setVertexToReplace(v);
+                            state.setToReplaceX(v.X);
+                            state.setToReplaceY(v.Y);
+                            state.setToReplaceZ(v.Z);
+                        }
                     }
                 }
-            }
-        } else {
-            for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                for (CTabItem t : w.getTabFolder().getItems()) {
-                    if (datfile.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                        CompositeTabState state = ((CompositeTab) t).getState();
-                        if (state.isReplacingVertex()) {
-                            state.setReplacingVertex(false);
-                            vm.setVertexToReplace(null);
-                            state.setToReplaceX(BigDecimal.ZERO);
-                            state.setToReplaceY(BigDecimal.ZERO);
-                            state.setToReplaceZ(BigDecimal.ZERO);
+            } else {
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    for (CTabItem t : w.getTabFolder().getItems()) {
+                        if (datfile.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                            CompositeTabState state = ((CompositeTab) t).getState();
+                            if (state.isReplacingVertex()) {
+                                state.setReplacingVertex(false);
+                                vm.setVertexToReplace(null);
+                                state.setToReplaceX(BigDecimal.ZERO);
+                                state.setToReplaceY(BigDecimal.ZERO);
+                                state.setToReplaceZ(BigDecimal.ZERO);
+                            }
                         }
                     }
                 }
