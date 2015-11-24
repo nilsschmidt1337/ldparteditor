@@ -64,7 +64,7 @@ public enum Rounder {
         // Check here if single vertex replacing (ALT+SHIFT+R) is active
         // If so, round only this vertex!
 
-        if (st.isReplacingVertex()) {
+        if (st.isReplacingVertex() && datFile.getVertexManager().getVertices().contains(datFile.getVertexManager().getVertexToReplace())) {
             Vertex vOld = new Vertex(st.getToReplaceX(), st.getToReplaceY(), st.getToReplaceZ());
             int coordsDecimalPlaces = WorkbenchManager.getUserSettingState().getCoordsPrecision();
             Vertex vNew = new Vertex(vOld.X.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP), vOld.Y.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP), vOld.Z.setScale(coordsDecimalPlaces,
