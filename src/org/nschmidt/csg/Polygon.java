@@ -38,7 +38,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GColourIndex;
@@ -220,12 +219,7 @@ public final class Polygon {
                 org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 2).pos.x, (float) this.vertices.get(i + 2).pos.y,
                         (float) this.vertices.get(i + 2).pos.z);
                 GColourIndex colour = null;
-                try {
-                    colour = (GColourIndex) this.shared.getFirstValue();
-                } catch (NoSuchElementException nse) {
-                    colour = null;
-                }
-                if (colour == null) {
+                if ((colour = (GColourIndex) this.shared.getFirstValue()) == null) {
                     result.put(new GData3(v1, v2, v3, parent, c16), dID);
                 } else {
                     // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16)), colour.getIndex());
