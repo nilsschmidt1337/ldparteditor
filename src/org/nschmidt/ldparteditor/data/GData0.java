@@ -109,18 +109,9 @@ public final class GData0 extends GData {
                 final Vector3d start = new Vector3d();
                 String[] data_segments = text.trim().split("\\s+"); //$NON-NLS-1$
                 if (data_segments.length == 6) {
-
                     try {
                         start.setX(new BigDecimal(data_segments[3], Threshold.mc));
-                    } catch (NumberFormatException nfe) {
-                        numberError = true;
-                    }
-                    try {
                         start.setY(new BigDecimal(data_segments[4], Threshold.mc));
-                    } catch (NumberFormatException nfe) {
-                        numberError = true;
-                    }
-                    try {
                         start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
                     } catch (NumberFormatException nfe) {
                         numberError = true;
