@@ -1144,26 +1144,12 @@ public class MouseActions {
                 M.getYaxis().set(mY);
                 M.setAccurateXaxis(aXx, aXy, aXz);
                 M.setAccurateYaxis(aYx, aYy, aYz);
+                checkSyncEditMode(vm, datfile);
             } else if (window.getWorkingAction() == WorkingMode.SELECT) {
                 switch (window.getWorkingType()) {
                 case VERTICES:
                     vm.selectVertices(c3d, false);
                     vm.reSelectSubFiles();
-                    if (vm.getSelectedVertices().size() == 1) {
-                        Vertex v = vm.getSelectedVertices().iterator().next();
-                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                            for (CTabItem t : w.getTabFolder().getItems()) {
-                                if (datfile.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                    CompositeTabState state = ((CompositeTab) t).getState();
-                                    state.setReplacingVertex(true);
-                                    vm.setVertexToReplace(v);
-                                    state.setToReplaceX(v.X);
-                                    state.setToReplaceY(v.Y);
-                                    state.setToReplaceZ(v.Z);
-                                }
-                            }
-                        }
-                    }
                     break;
                 case LINES:
                     vm.selectLines(c3d);
@@ -1177,9 +1163,11 @@ public class MouseActions {
                     vm.selectSubfiles(c3d, event, true);
                     break;
                 }
+                checkSyncEditMode(vm, datfile);
                 vm.syncWithTextEditors(true);
             } else if (!window.isAddingSomething()) {
                 c3d.getManipulator().applyTranslation(c3d);
+                checkSyncEditMode(vm, datfile);
             }
             break;
         case MouseButton.RIGHT:
@@ -1215,6 +1203,39 @@ public class MouseActions {
                 menu.setVisible(true);
             }
             break;
+        }
+    }
+
+    private void checkSyncEditMode(VertexManager vm, DatFile datfile) {
+        if (vm.getSelectedVertices().size() == 1) {
+            Vertex v = vm.getSelectedVertices().iterator().next();
+            for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                for (CTabItem t : w.getTabFolder().getItems()) {
+                    if (datfile.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                        CompositeTabState state = ((CompositeTab) t).getState();
+                        state.setReplacingVertex(!datfile.isReadOnly());
+                        vm.setVertexToReplace(v);
+                        state.setToReplaceX(v.X);
+                        state.setToReplaceY(v.Y);
+                        state.setToReplaceZ(v.Z);
+                    }
+                }
+            }
+        } else {
+            for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                for (CTabItem t : w.getTabFolder().getItems()) {
+                    if (datfile.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                        CompositeTabState state = ((CompositeTab) t).getState();
+                        if (state.isReplacingVertex()) {
+                            state.setReplacingVertex(false);
+                            vm.setVertexToReplace(null);
+                            state.setToReplaceX(BigDecimal.ZERO);
+                            state.setToReplaceY(BigDecimal.ZERO);
+                            state.setToReplaceZ(BigDecimal.ZERO);
+                        }
+                    }
+                }
+            }
         }
     }
 
