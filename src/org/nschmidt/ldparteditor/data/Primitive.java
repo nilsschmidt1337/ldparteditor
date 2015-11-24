@@ -343,7 +343,7 @@ public class Primitive implements Comparable<Primitive> {
                         } catch (Exception ex) {
                             number_this = "0"; //$NON-NLS-1$
                         }
-                        try{
+                        try {
                             boolean readDigit = false;
                             for (int i = chars_other.length - 1; i > 0 ; i--) {
                                 char c = chars_other[i];

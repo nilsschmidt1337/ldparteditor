@@ -162,10 +162,8 @@ public final class GDataCSG extends GData {
                     int q = Integer.parseInt(data_segments[3]);
                     if (q > 0 && q < 49) {
                         global_quality = q;
-                    } else {
-                        throw new Exception();
                     }
-                } catch (Exception e) {
+                } catch (NumberFormatException e) {
                 }
                 ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
@@ -182,10 +180,8 @@ public final class GDataCSG extends GData {
                     double q = Double.parseDouble(data_segments[3]);
                     if (q > 0d) {
                         global_epsilon = q;
-                    } else {
-                        throw new Exception();
                     }
-                } catch (Exception e) {
+                } catch (NumberFormatException e) {
                 }
                 ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {

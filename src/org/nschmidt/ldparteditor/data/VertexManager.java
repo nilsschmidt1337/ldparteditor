@@ -19360,26 +19360,13 @@ public class VertexManager {
                     openThreads.incrementAndGet();
                     do {
                         resetTimer.set(false);
-                        try {
-                            Thread.sleep(450);
-                        } catch (InterruptedException e) {
+                        for(int i = 0; i < 4; i++) {
+                            try {
+                                Thread.sleep(450);
+                            } catch (InterruptedException e) {
+                            }
+                            if (tid2.get() != tid.get()) break;
                         }
-                        if (tid2.get() != tid.get()) break;
-                        try {
-                            Thread.sleep(450);
-                        } catch (InterruptedException e) {
-                        }
-                        if (tid2.get() != tid.get()) break;
-                        try {
-                            Thread.sleep(450);
-                        } catch (InterruptedException e) {
-                        }
-                        if (tid2.get() != tid.get()) break;
-                        try {
-                            Thread.sleep(450);
-                        } catch (InterruptedException e) {
-                        }
-                        if (tid2.get() != tid.get()) break;
                     } while (resetTimer.get());
                     openThreads.decrementAndGet();
                     if (tid2.get() != tid.get() || isSkipSyncWithTextEditor() || !isSyncWithTextEditor()) return;
