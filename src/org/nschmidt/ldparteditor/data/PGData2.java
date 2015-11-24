@@ -51,4 +51,7 @@ public final class PGData2 extends PGData {
     public int type() {
         return 2;
     }
+    public static PGData2 clone(PGData2 o) {
+        return new PGData2(o.x1, o.y1, o.z1, o.x2, o.y2, o.z2);
+    }
 }

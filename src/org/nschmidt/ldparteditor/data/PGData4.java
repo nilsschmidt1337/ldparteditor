@@ -211,4 +211,7 @@ public final class PGData4 extends PGData {
             break;
         }
     }
+    public static PGData4 clone(PGData4 o) {
+        return new PGData4(o.x1, o.y1, o.z1, o.x2, o.y2, o.z2, o.x3, o.y3, o.z3, o.x4, o.y4, o.z4);
+    }
 }

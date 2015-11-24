@@ -128,6 +128,7 @@ public class CompositePrimitive extends Composite {
     private boolean doingDND;
 
     private ArrayList<Primitive> searchResults = new ArrayList<Primitive>();
+    private static HashMap<String, PGData> cache = new HashMap<String, PGData>();
 
     public CompositePrimitive(Composite parent) {
         super(parent, I18n.I18N_NON_BIDIRECT() | SWT.BORDER);
@@ -895,8 +896,8 @@ public class CompositePrimitive extends Composite {
                                     gd = parseLine(line, 0, View.ID, set);
                                     if (gd != null && gd.type() != 0) {
                                         data.add(gd);
-                                        set.clear();
                                     }
+                                    set.clear();
                                 }
                                 newPrimitive.setGraphicalData(data);
                                 primitiveMap.put(path, newPrimitive);
@@ -1039,6 +1040,8 @@ public class CompositePrimitive extends Composite {
         searchResults.clear();
         Collections.sort(primitives);
         stopDraw.set(false);
+        // Clear the cache
+        cache.clear();
     }
 
     // What follows now is a very minimalistic DAT file parser (<500LOC)
@@ -1052,30 +1055,64 @@ public class CompositePrimitive extends Composite {
     private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
 
     public static PGData parseLine(String line, int depth, Matrix4f productMatrix, Set<String> alreadyParsed) {
+
+        PGData result = null;
+
+        // Cache Access
+        if ((result = cache.get(line)) != null) {
+            switch (result.type()) {
+            case 2:
+                return PGData2.clone((PGData2) result);
+            case 3:
+                return PGData3.clone((PGData3) result);
+            case 4:
+                return PGData4.clone((PGData4) result);
+            case 5:
+                return PGData5.clone((PGData5) result);
+            case 6:
+                PGDataBFC bfc = (PGDataBFC) result;
+                if (bfc.getType() != BFC.PLACEHOLDER) {
+                    return PGDataBFC.clone(bfc);
+                } else {
+                    return null;
+                }
+            }
+        }
+
         final String[] data_segments = WHITESPACE.split(line.trim());
         // Get the linetype
         int linetype = 0;
         char c;
         if (!(data_segments.length > 0 && data_segments[0].length() == 1 && Character.isDigit(c = data_segments[0].charAt(0)))) {
-            return null;
+            return result;
         }
         linetype = Character.getNumericValue(c);
         // Parse the line according to its type
+
         switch (linetype) {
         case 0:
-            return parse_Comment(line);
+            result = parse_Comment(line);
+            break;
         case 1:
             return parse_Reference(data_segments, depth, productMatrix, alreadyParsed);
         case 2:
-            return parse_Line(data_segments);
+            result = parse_Line(data_segments);
+            break;
         case 3:
-            return parse_Triangle(data_segments);
+            result = parse_Triangle(data_segments);
+            break;
         case 4:
-            return parse_Quad(data_segments);
+            result = parse_Quad(data_segments);
+            break;
         case 5:
-            return parse_Condline(data_segments);
+            result = parse_Condline(data_segments);
+            break;
         }
-        return null;
+        if (result == null) {
+            result = new PGDataBFC(BFC.PLACEHOLDER);
+        }
+        cache.put(line, result);
+        return result;
     }
 
     private static PGData parse_Comment(String line) {
