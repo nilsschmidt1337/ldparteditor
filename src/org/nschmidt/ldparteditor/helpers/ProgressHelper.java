@@ -58,7 +58,7 @@ public enum ProgressHelper {
         label.setText(taskList.get(0));
         taskList.remove(0);
         try {
-            Thread.sleep(100);
+            Thread.sleep(50);
         } catch (InterruptedException e) {
         }
     }
