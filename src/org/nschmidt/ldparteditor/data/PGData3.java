@@ -184,4 +184,7 @@ public final class PGData3 extends PGData {
         GL11.glVertex3f(-x2 + x, y2 + y, z2 + z);
         GL11.glEnd();
     }
+    public static PGData3 clone(PGData3 o) {
+        return new PGData3(o.x1, o.y1, o.z1, o.x2, o.y2, o.z2, o.x3, o.y3, o.z3);
+    }
 }

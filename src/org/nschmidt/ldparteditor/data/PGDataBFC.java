@@ -66,4 +66,7 @@ public final class PGDataBFC extends PGData {
             break;
         }
     }
+    public static PGDataBFC clone(PGDataBFC o) {
+        return new PGDataBFC(o.type);
+    }
 }
