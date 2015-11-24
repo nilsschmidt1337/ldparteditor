@@ -6386,8 +6386,57 @@ public class Editor3DWindow extends Editor3DDesign {
             lbl_SelectionX4[0].setText(I18n.E3D_PositionX4);
             lbl_SelectionY4[0].setText(I18n.E3D_PositionY4);
             lbl_SelectionZ4[0].setText(I18n.E3D_PositionZ4);
+            updatingSelectionTab = false;
         } catch (SWTException swt) {
             NLogger.error(getClass(), swt);
+            Display.getDefault().asyncExec(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        updatingSelectionTab = true;
+                        txt_Line[0].setText(""); //$NON-NLS-1$
+                        spn_SelectionX1[0].setEnabled(false);
+                        spn_SelectionY1[0].setEnabled(false);
+                        spn_SelectionZ1[0].setEnabled(false);
+                        spn_SelectionX2[0].setEnabled(false);
+                        spn_SelectionY2[0].setEnabled(false);
+                        spn_SelectionZ2[0].setEnabled(false);
+                        spn_SelectionX3[0].setEnabled(false);
+                        spn_SelectionY3[0].setEnabled(false);
+                        spn_SelectionZ3[0].setEnabled(false);
+                        spn_SelectionX4[0].setEnabled(false);
+                        spn_SelectionY4[0].setEnabled(false);
+                        spn_SelectionZ4[0].setEnabled(false);
+                        spn_SelectionX1[0].setValue(BigDecimal.ZERO);
+                        spn_SelectionY1[0].setValue(BigDecimal.ZERO);
+                        spn_SelectionZ1[0].setValue(BigDecimal.ZERO);
+                        spn_SelectionX2[0].setValue(BigDecimal.ZERO);
+                        spn_SelectionY2[0].setValue(BigDecimal.ZERO);
+                        spn_SelectionZ2[0].setValue(BigDecimal.ZERO);
+                        spn_SelectionX3[0].setValue(BigDecimal.ZERO);
+                        spn_SelectionY3[0].setValue(BigDecimal.ZERO);
+                        spn_SelectionZ3[0].setValue(BigDecimal.ZERO);
+                        spn_SelectionX4[0].setValue(BigDecimal.ZERO);
+                        spn_SelectionY4[0].setValue(BigDecimal.ZERO);
+                        spn_SelectionZ4[0].setValue(BigDecimal.ZERO);
+                        lbl_SelectionX1[0].setText(I18n.E3D_PositionX1);
+                        lbl_SelectionY1[0].setText(I18n.E3D_PositionY1);
+                        lbl_SelectionZ1[0].setText(I18n.E3D_PositionZ1);
+                        lbl_SelectionX2[0].setText(I18n.E3D_PositionX2);
+                        lbl_SelectionY2[0].setText(I18n.E3D_PositionY2);
+                        lbl_SelectionZ2[0].setText(I18n.E3D_PositionZ2);
+                        lbl_SelectionX3[0].setText(I18n.E3D_PositionX3);
+                        lbl_SelectionY3[0].setText(I18n.E3D_PositionY3);
+                        lbl_SelectionZ3[0].setText(I18n.E3D_PositionZ3);
+                        lbl_SelectionX4[0].setText(I18n.E3D_PositionX4);
+                        lbl_SelectionY4[0].setText(I18n.E3D_PositionY4);
+                        lbl_SelectionZ4[0].setText(I18n.E3D_PositionZ4);
+                        updatingSelectionTab = false;
+                    } catch (Exception ex) {
+                        NLogger.error(getClass(), ex);
+                    }
+                }
+            });
         }
     }
 
