@@ -20262,12 +20262,10 @@ public class VertexManager {
     }
 
     public void fixTjunctions() {
-        // FIXME Auto-generated method stub
 
         linkedDatFile.setDrawSelection(false);
 
         final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
-
         final Set<Vertex> verticesToSelect = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
         if (selectedVertices.isEmpty()) {
@@ -20295,7 +20293,6 @@ public class VertexManager {
                         for (final Vertex v : verticesToProcess) {
                             if (monitor.isCanceled()) break;
                             if (!vertexLinkedToPositionInFile.containsKey(v)) continue;
-                            // TODO Check if vertex is not fully connected
                             Display.getDefault().asyncExec(new Runnable() {
                                 @Override
                                 public void run() {
@@ -20373,5 +20370,4 @@ public class VertexManager {
             }
         }
     }
-
 }
