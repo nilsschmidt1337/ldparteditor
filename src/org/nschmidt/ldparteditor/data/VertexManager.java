@@ -8974,26 +8974,6 @@ public class VertexManager {
         }
     }
 
-    public BigDecimal[] getPreciseCoordinates(GData g) {
-        switch (g.type()) {
-        case 2:
-            GData2 g2 = (GData2) g;
-            return new BigDecimal[]{g2.X1, g2.Y1, g2.Z1, g2.X2, g2.Y2, g2.Z2};
-        case 3:
-            GData3 g3 = (GData3) g;
-            return new BigDecimal[]{g3.X1, g3.Y1, g3.Z1, g3.X2, g3.Y2, g3.Z2, g3.X3, g3.Y3, g3.Z3};
-        case 4:
-            GData4 g4 = (GData4) g;
-            return new BigDecimal[]{g4.X1, g4.Y1, g4.Z1, g4.X2, g4.Y2, g4.Z2, g4.X3, g4.Y3, g4.Z3, g4.X4, g4.Y4, g4.Z4};
-        case 5:
-            GData5 g5 = (GData5) g;
-            return new BigDecimal[]{g5.X1, g5.Y1, g5.Z1, g5.X2, g5.Y2, g5.Z2, g5.X3, g5.Y3, g5.Z3, g5.X4, g5.Y4, g5.Z4};
-        default:
-            return null;
-        }
-    }
-
-
     public void initBFCmap() {
         linkedDatFile.getBFCorientationMap(bfcMap);
     }
