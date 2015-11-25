@@ -5055,8 +5055,6 @@ public class VertexManager {
             }
         }
 
-
-
         // 2. Object Based Selection
 
         for (GData2 line : selectedLines) {
