@@ -1947,7 +1947,7 @@ public class OpenGLRenderer {
         // Dispose all textures
         for (Iterator<GTexture> it = textureSet.iterator() ; it.hasNext();) {
             GTexture tex = it.next();
-            NLogger.debug(getClass(), "Dispose texture: " + tex); //$NON-NLS-1$
+            NLogger.debug(getClass(), "Dispose texture: {0}", tex); //$NON-NLS-1$
             tex.dispose(this);
             it.remove();
         }
@@ -1968,7 +1968,7 @@ public class OpenGLRenderer {
         }
         for (Iterator<GTexture> it = textureSet.iterator() ; it.hasNext();) {
             GTexture tex = it.next();
-            NLogger.debug(getClass(), "Dispose texture: " + tex); //$NON-NLS-1$
+            NLogger.debug(getClass(), "Dispose texture: {0}", tex); //$NON-NLS-1$
             tex.dispose(this);
             it.remove();
         }
@@ -1990,7 +1990,7 @@ public class OpenGLRenderer {
         Iterator<GTexture> ti = textureSet.iterator();
         for (GTexture tex = null; ti.hasNext() && (tex = ti.next()) != null;) {
             if (tex.isTooOld()) {
-                NLogger.debug(getClass(), "Dispose old texture: " + tex); //$NON-NLS-1$
+                NLogger.debug(getClass(), "Dispose old texture: {0}", tex); //$NON-NLS-1$
                 tex.dispose(this);
                 ti.remove();
             }

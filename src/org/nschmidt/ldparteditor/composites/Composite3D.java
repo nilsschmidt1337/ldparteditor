@@ -38,7 +38,6 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.opengl.GLData;
@@ -1230,12 +1229,12 @@ public class Composite3D extends ScalableComposite {
 
             @Override
             public void drop(DropTargetEvent event) {
-                NLogger.debug(getClass(), "Primitive dropped at: " + new Point(event.x, event.y).toString()); //$NON-NLS-1$
+                NLogger.debug(getClass(), "Primitive dropped at: {0} | {1}", event.x, event.y); //$NON-NLS-1$
                 final Editor3DWindow window = Editor3DWindow.getWindow();
                 final org.nschmidt.ldparteditor.data.Primitive p = window.getCompositePrimitive().getSelectedPrimitive();
                 final DatFile datfile = getLockableDatFileReference();
                 if (p == null || p.isCategory() || datfile.isReadOnly()) return;
-                NLogger.debug(getClass(), "Primitive: " + p); //$NON-NLS-1$
+                NLogger.debug(getClass(), "Primitive: {0}", p); //$NON-NLS-1$
                 String ref = p.getName();
                 final BigDecimal[] cur = getCursorSnapped3Dprecise();
                 Set<String> alreadyParsed = new HashSet<String>();

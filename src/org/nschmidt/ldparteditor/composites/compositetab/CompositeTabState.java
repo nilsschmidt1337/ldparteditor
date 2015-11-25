@@ -24,7 +24,6 @@ import java.text.MessageFormat;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -78,7 +77,6 @@ public class CompositeTabState {
         }
         this.datFileObj = fileNameObj;
         if (Project.getUnsavedFiles().contains(fileNameObj) || !fileNameObj.getOldName().equals(fileNameObj.getNewName())) {
-            NLogger.debug(getClass(), getFilenameWithStar());
             this.datFileObj.getVertexManager().setModified_NoSync();
             getTab().getTextComposite().setText(this.datFileObj.getText());
             getTab().setText(getFilenameWithStar());

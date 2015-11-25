@@ -241,7 +241,7 @@ public class KeyStateManager {
         if (cp == null) {
             // Logic for Composite3D
             if (keyEventType == SWT.KeyDown && !pressedKeyCodes.contains(keyCode)) {
-                NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") down]"); //$NON-NLS-1$ //$NON-NLS-2$
+                NLogger.debug(KeyStateManager.class, "[Key ({0}) down]", keyCode); //$NON-NLS-1$
                 setKeyState(keyCode, true);
                 pressedKeyCodes.add(keyCode);
                 final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
@@ -488,7 +488,7 @@ public class KeyStateManager {
                     }
                 }
             } else if (keyEventType == SWT.KeyUp) {
-                NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") up]"); //$NON-NLS-1$ //$NON-NLS-2$
+                NLogger.debug(KeyStateManager.class, "[Key ({0}) up]", keyCode); //$NON-NLS-1$
                 pressedKeyCodes.remove(keyCode);
                 setKeyState(keyCode, false);
                 final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
@@ -549,7 +549,7 @@ public class KeyStateManager {
         } else {
             // Logic for CompositePrimitive
             if (keyEventType == SWT.KeyDown && !pressedKeyCodes.contains(keyCode)) {
-                NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") down]"); //$NON-NLS-1$ //$NON-NLS-2$
+                NLogger.debug(KeyStateManager.class, "[Key ({0}) down]", keyCode); //$NON-NLS-1$
                 if (keyCode == SWT.PAGE_UP || keyCode == SWT.UP) {
                     cp.scroll(false);
                 } else if (keyCode == SWT.PAGE_DOWN || keyCode == SWT.DOWN) {
@@ -559,7 +559,7 @@ public class KeyStateManager {
                 }
                 setKeyState(keyCode, true);
             } else if (keyEventType == SWT.KeyUp) {
-                NLogger.debug(KeyStateManager.class, "[Key (" + keyCode + ") up]"); //$NON-NLS-1$ //$NON-NLS-2$
+                NLogger.debug(KeyStateManager.class, "[Key ({0}) up]", keyCode); //$NON-NLS-1$
                 pressedKeyCodes.remove(keyCode);
                 setKeyState(keyCode, false);
             }

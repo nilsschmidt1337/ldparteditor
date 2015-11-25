@@ -505,8 +505,8 @@ class EditorTextDesign extends ApplicationWindow {
                             int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
                             fromLine++;
                             toLine++;
-                            NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                            NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                            NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                            NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                             ColourChanger.changeColour(st, fromLine, toLine, df, num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB());
                             st.forceFocus();
                         }

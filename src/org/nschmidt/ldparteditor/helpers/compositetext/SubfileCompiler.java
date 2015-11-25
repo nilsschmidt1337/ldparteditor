@@ -179,7 +179,7 @@ public enum SubfileCompiler {
         datFile.parseForData(false);
 
         // Link last line
-        NLogger.debug(SubfileCompiler.class, "" + datFile.getDrawPerLine_NOCLONE().getValue(lineNumbers.size())); //$NON-NLS-1$
+        NLogger.debug(SubfileCompiler.class, "Last line is {0}", datFile.getDrawPerLine_NOCLONE().getValue(lineNumbers.size())); //$NON-NLS-1$
 
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {

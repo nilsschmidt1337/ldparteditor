@@ -46,7 +46,6 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.colour.GCDithered;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -268,9 +267,6 @@ public enum TexMapParser {
 
                     texture = tex.toString();
                     glossmap = gloss.toString();
-
-                    NLogger.debug(TexMapParser.class, texture);
-                    NLogger.debug(TexMapParser.class, glossmap);
 
                     if (glossmap.isEmpty())
                         glossmap = null;

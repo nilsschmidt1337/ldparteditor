@@ -121,13 +121,13 @@ public class TextTriangulator {
                                 @Override
                                 public void run() {
                                     Shape characterShape = vector.getGlyphOutline(i[0]);
-                                    NLogger.debug(TextTriangulator.class, "Triangulating " + text.charAt(i[0])); //$NON-NLS-1$
+                                    NLogger.debug(TextTriangulator.class, "Triangulating {0}", text.charAt(i[0])); //$NON-NLS-1$
                                     Set<GData> characterTriangleSet = triangulateShape(monitor, characterShape, flatness, interpolateFlatness, parent, datFile, scale, deltaAngle, counter, lock, lock2);
                                     if (characterTriangleSet.isEmpty()) {
                                         counter.decrementAndGet();
                                     }
 
-                                    NLogger.debug(TextTriangulator.class, "Triangulating [Done]" + text.charAt(i[0])); //$NON-NLS-1$
+                                    NLogger.debug(TextTriangulator.class, "Triangulating [Done] {0}", text.charAt(i[0])); //$NON-NLS-1$
 
                                     synchronized (finalTriangleSet) {
                                         finalTriangleSet.addAll(characterTriangleSet);

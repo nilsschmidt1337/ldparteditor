@@ -133,7 +133,7 @@ public enum VertexMarker {
                 } catch (NumberFormatException nfe) {
 
                 }
-                NLogger.debug(VertexMarker.class, compositeText.getLine(startLine));
+                NLogger.debug(VertexMarker.class, "Mark vertex at {0}", compositeText.getLine(startLine)); //$NON-NLS-1$
             }
         }
         compositeText.redraw(0, 0, compositeText.getBounds().width, compositeText.getBounds().height, true);
