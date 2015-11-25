@@ -88,6 +88,7 @@ import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GDataPNG;
+import org.nschmidt.ldparteditor.data.GraphicalDataTools;
 import org.nschmidt.ldparteditor.data.LibraryManager;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Primitive;
@@ -1241,7 +1242,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     btn_MoveAdjacentData2[0].setEnabled(true);
                                     switch (gdata.type()) {
                                     case 5:
-                                        BigDecimal[] g5 = vm.getPreciseCoordinates(gdata);
+                                        BigDecimal[] g5 = GraphicalDataTools.getPreciseCoordinates(gdata);
                                         spn_SelectionX1[0].setValue(g5[0]);
                                         spn_SelectionY1[0].setValue(g5[1]);
                                         spn_SelectionZ1[0].setValue(g5[2]);
@@ -1256,7 +1257,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         spn_SelectionZ4[0].setValue(g5[11]);
                                         break;
                                     case 4:
-                                        BigDecimal[] g4 = vm.getPreciseCoordinates(gdata);
+                                        BigDecimal[] g4 = GraphicalDataTools.getPreciseCoordinates(gdata);
                                         spn_SelectionX1[0].setValue(g4[0]);
                                         spn_SelectionY1[0].setValue(g4[1]);
                                         spn_SelectionZ1[0].setValue(g4[2]);
@@ -1271,7 +1272,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         spn_SelectionZ4[0].setValue(g4[11]);
                                         break;
                                     case 3:
-                                        BigDecimal[] g3 = vm.getPreciseCoordinates(gdata);
+                                        BigDecimal[] g3 = GraphicalDataTools.getPreciseCoordinates(gdata);
                                         spn_SelectionX1[0].setValue(g3[0]);
                                         spn_SelectionY1[0].setValue(g3[1]);
                                         spn_SelectionZ1[0].setValue(g3[2]);
@@ -1283,7 +1284,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         spn_SelectionZ3[0].setValue(g3[8]);
                                         break;
                                     case 2:
-                                        BigDecimal[] g2 = vm.getPreciseCoordinates(gdata);
+                                        BigDecimal[] g2 = GraphicalDataTools.getPreciseCoordinates(gdata);
                                         spn_SelectionX1[0].setValue(g2[0]);
                                         spn_SelectionY1[0].setValue(g2[1]);
                                         spn_SelectionZ1[0].setValue(g2[2]);
@@ -1401,7 +1402,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     btn_MoveAdjacentData2[0].setEnabled(true);
                                     switch (gdata.type()) {
                                     case 5:
-                                        BigDecimal[] g5 = vm.getPreciseCoordinates(gdata);
+                                        BigDecimal[] g5 = GraphicalDataTools.getPreciseCoordinates(gdata);
                                         spn_SelectionX1[0].setValue(g5[0]);
                                         spn_SelectionY1[0].setValue(g5[1]);
                                         spn_SelectionZ1[0].setValue(g5[2]);
@@ -1416,7 +1417,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         spn_SelectionZ4[0].setValue(g5[11]);
                                         break;
                                     case 4:
-                                        BigDecimal[] g4 = vm.getPreciseCoordinates(gdata);
+                                        BigDecimal[] g4 = GraphicalDataTools.getPreciseCoordinates(gdata);
                                         spn_SelectionX1[0].setValue(g4[0]);
                                         spn_SelectionY1[0].setValue(g4[1]);
                                         spn_SelectionZ1[0].setValue(g4[2]);
@@ -1431,7 +1432,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         spn_SelectionZ4[0].setValue(g4[11]);
                                         break;
                                     case 3:
-                                        BigDecimal[] g3 = vm.getPreciseCoordinates(gdata);
+                                        BigDecimal[] g3 = GraphicalDataTools.getPreciseCoordinates(gdata);
                                         spn_SelectionX1[0].setValue(g3[0]);
                                         spn_SelectionY1[0].setValue(g3[1]);
                                         spn_SelectionZ1[0].setValue(g3[2]);
@@ -1443,7 +1444,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         spn_SelectionZ3[0].setValue(g3[8]);
                                         break;
                                     case 2:
-                                        BigDecimal[] g2 = vm.getPreciseCoordinates(gdata);
+                                        BigDecimal[] g2 = GraphicalDataTools.getPreciseCoordinates(gdata);
                                         spn_SelectionX1[0].setValue(g2[0]);
                                         spn_SelectionY1[0].setValue(g2[1]);
                                         spn_SelectionZ1[0].setValue(g2[2]);
