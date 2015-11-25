@@ -54,7 +54,6 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -852,7 +851,6 @@ public enum DatParser {
                         result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
                     } else if (line.startsWith("INVERTNEXT", 14)) { //$NON-NLS-1$
                         result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT)));
-                        NLogger.debug(DatParser.class, line);
                     } else {
                         result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
                     }

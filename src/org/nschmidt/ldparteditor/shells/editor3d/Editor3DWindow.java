@@ -568,8 +568,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             iterateOverItems(treeItem_UnofficialPrimitives48[0]);
                             iterateOverItems(treeItem_UnofficialPrimitives8[0]);
                         }
-                        NLogger.debug(getClass(), "Saving all files from this group to"); //$NON-NLS-1$
-                        NLogger.debug(getClass(), (String) treeParts[0].getSelection()[0].getData());
+                        NLogger.debug(getClass(), "Saving all files from this group to {0}", treeParts[0].getSelection()[0].getData()); //$NON-NLS-1$
                     }
                 } else {
                     NLogger.debug(getClass(), "Save the project..."); //$NON-NLS-1$
@@ -5026,7 +5025,7 @@ public class Editor3DWindow extends Editor3DDesign {
         st.setParentPath(parentPath);
         st.setPath(path);
         if (c instanceof CompositeContainer) {
-            NLogger.debug(getClass(), path + "C"); //$NON-NLS-1$
+            NLogger.debug(getClass(), "{0}C", path); //$NON-NLS-1$
             final Composite3D c3d = ((CompositeContainer) c).getComposite3D();
             st.setSash(false);
             st.setScales(c3d.getParent() instanceof CompositeScale);

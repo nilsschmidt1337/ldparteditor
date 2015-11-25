@@ -525,7 +525,7 @@ public final class DatFile {
             }
 
         }
-        NLogger.debug(getClass(), "Time after OpenGL data change: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+        NLogger.debug(getClass(), "Time after OpenGL data change: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
 
         warnings.removeWithinPosition(compositeText, startOffset, endOffset, length - rlength);
         errors.removeWithinPosition(compositeText, startOffset, endOffset, length - rlength);
@@ -623,9 +623,9 @@ public final class DatFile {
             Editor3DWindow.getWindow().updateBgPictureTab();
             DatParser.setUpatePngImages(false);
         }
-        NLogger.debug(getClass(), "Total time to parse: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+        NLogger.debug(getClass(), "Total time to parse: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
         vertices.validateState();
-        NLogger.debug(getClass(), "Total time to parse + validate: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+        NLogger.debug(getClass(), "Total time to parse + validate: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
     }
 
     /**
@@ -736,9 +736,9 @@ public final class DatFile {
         warnings.sortItems();
         errors.sortItems();
         hints.getParent().build();
-        NLogger.debug(getClass(), "Total time to parse (error check only): " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+        NLogger.debug(getClass(), "Total time to parse (error check only): {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
         vertices.validateState();
-        NLogger.debug(getClass(), "Total time to parse + validate: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+        NLogger.debug(getClass(), "Total time to parse + validate: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
     }
 
     private boolean isNotBlank(String str) {
@@ -949,7 +949,7 @@ public final class DatFile {
         }
         hints.sortItems();
         HeaderState.state().setState(HeaderState._99_DONE);
-        NLogger.debug(getClass(), "Total time to parse header: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+        NLogger.debug(getClass(), "Total time to parse header: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
 
     }
 
@@ -1423,7 +1423,7 @@ public final class DatFile {
     }
 
     public void addHistory() {
-        NLogger.debug(getClass(), "Added history entry for " + getShortName()); //$NON-NLS-1$
+        NLogger.debug(getClass(), "Added history entry for {0}", getShortName()); //$NON-NLS-1$
         final long start = System.currentTimeMillis();
         final int objCount = drawPerLine.size();
         GData[] backup = new GData[objCount];
@@ -1447,12 +1447,12 @@ public final class DatFile {
                 backupSelectedVertices,
                 -1
                 );
-        NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+        NLogger.debug(getClass(), "Total time to backup history: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
     }
 
     public void addHistory(String text, int selectionStart, int selectionEnd, int topIndex) {
         final long start = System.currentTimeMillis();
-        NLogger.debug(getClass(), "Added history entry for " + getShortName()); //$NON-NLS-1$
+        NLogger.debug(getClass(), "Added history entry for {0}", getShortName()); //$NON-NLS-1$
         history.pushHistory(
                 text,
                 selectionStart,
@@ -1462,7 +1462,7 @@ public final class DatFile {
                 null,
                 topIndex
                 );
-        NLogger.debug(getClass(), "Total time to backup history: " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+        NLogger.debug(getClass(), "Total time to backup history: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
     }
 
     public void undo(final Shell sh) {

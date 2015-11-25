@@ -158,7 +158,7 @@ public enum ReferenceParser {
                         }
                     }
 
-                    NLogger.debug(ReferenceParser.class, ref.getShortName());
+                    NLogger.debug(ReferenceParser.class, "Checking references in {0}", ref.getShortName()); //$NON-NLS-1$
 
                     recursiveParseREQUIRED(win, ref, result, alreadyParsed, alreadyParsed2);
                     if (cancelled) return result;
@@ -329,7 +329,7 @@ public enum ReferenceParser {
                     }
                 }
 
-                NLogger.debug(ReferenceParser.class, ref.getShortName());
+                NLogger.debug(ReferenceParser.class, "Checking references in {0}", ref.getShortName()); //$NON-NLS-1$
 
                 recursiveParseREQUIRED(win, ref, result, alreadyParsed, alreadyParsed2);
                 if (cancelled) return;

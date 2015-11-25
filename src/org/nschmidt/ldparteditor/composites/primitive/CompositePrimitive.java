@@ -630,7 +630,7 @@ public class CompositePrimitive extends Composite {
                     reader = new UTF8BufferedReader(rulesFile.getAbsolutePath());
                     String line ;
                     while ((line = reader.readLine()) != null) {
-                        NLogger.debug(getClass(), line);
+                        NLogger.debug(getClass(), "Primitive Rule__{0}", line); //$NON-NLS-1$
                         line = line.trim();
                         if (line.startsWith("%")) continue; //$NON-NLS-1$
                         String[] data_segments = line.trim().split(Pattern.quote(";")); //$NON-NLS-1$
@@ -647,7 +647,7 @@ public class CompositePrimitive extends Composite {
                                 depth++;
                                 String before = catID;
                                 catID = catID + "|" + s; //$NON-NLS-1$
-                                NLogger.debug(getClass(), catID);
+                                NLogger.debug(getClass(), "Category       __{0}", catID); //$NON-NLS-1$
                                 if (maxDepth < 2) {
                                     // MARK Parse rules I
                                     ArrayList<PrimitiveRule> rules = new ArrayList<PrimitiveRule>();

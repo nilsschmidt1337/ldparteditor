@@ -148,7 +148,7 @@ public class EditorTextWindow extends EditorTextDesign {
             public void widgetSelected(SelectionEvent e) {
                 // TODO Implement loader here for the file data itself
                 if (e.item != null)
-                    NLogger.debug(EditorTextWindow.class, ((CompositeTab) e.item).getState().getFileNameObj().getOldName());
+                    NLogger.debug(EditorTextWindow.class, "Old DatFile name {0}", ((CompositeTab) e.item).getState().getFileNameObj().getOldName()); //$NON-NLS-1$
             }
 
             @Override
@@ -328,8 +328,8 @@ public class EditorTextWindow extends EditorTextDesign {
                     Inliner.withSubfileReference = false;
                     Inliner.recursively = false;
                     Inliner.noComment = false;
-                    NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                    NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                     Inliner.inline(st, fromLine, toLine, selection.getState().getFileNameObj());
                     st.forceFocus();
                 }
@@ -355,8 +355,8 @@ public class EditorTextWindow extends EditorTextDesign {
                     Inliner.withSubfileReference = false;
                     Inliner.recursively = true;
                     Inliner.noComment = false;
-                    NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                    NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                     Inliner.inline(st, fromLine, toLine, selection.getState().getFileNameObj());
                     st.forceFocus();
                 }
@@ -379,8 +379,8 @@ public class EditorTextWindow extends EditorTextDesign {
                     int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
                     fromLine++;
                     toLine++;
-                    NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                    NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                     Annotator.annotate(st, fromLine, toLine, selection.getState().getFileNameObj());
                     st.forceFocus();
                 }
@@ -403,8 +403,8 @@ public class EditorTextWindow extends EditorTextDesign {
                     int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
                     fromLine++;
                     toLine++;
-                    NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                    NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                     AnnotatorTexmap.annotate(st, fromLine, toLine, selection.getState().getFileNameObj());
                     st.forceFocus();
                 }
@@ -428,8 +428,8 @@ public class EditorTextWindow extends EditorTextDesign {
                     int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
                     fromLine++;
                     toLine++;
-                    NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                    NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                     Text2SelectionConverter.convert(fromLine, toLine, selection.getState().getFileNameObj());
                     st.forceFocus();
                 }
@@ -485,8 +485,8 @@ public class EditorTextWindow extends EditorTextDesign {
                     int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
                     fromLine++;
                     toLine++;
-                    NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                    NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                     final SortDialog sd = new SortDialog(getShell(), st, fromLine, toLine, selection.getState().getFileNameObj());
                     sd.open();
                     st.forceFocus();
@@ -510,8 +510,8 @@ public class EditorTextWindow extends EditorTextDesign {
                     int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
                     fromLine++;
                     toLine++;
-                    NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                    NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                     QuadSplitter.splitQuadsIntoTriangles(st, fromLine, toLine, selection.getState().getFileNameObj());
                     st.forceFocus();
                 }
@@ -557,8 +557,8 @@ public class EditorTextWindow extends EditorTextDesign {
                             int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
                             fromLine++;
                             toLine++;
-                            NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                            NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                            NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                            NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                             ColourChanger.changeColour(st, fromLine, toLine, df, num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB());
                             st.forceFocus();
                         }
@@ -586,8 +586,8 @@ public class EditorTextWindow extends EditorTextDesign {
                     Inliner.withSubfileReference = true;
                     Inliner.recursively = false;
                     Inliner.noComment = false;
-                    NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                    NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                     Inliner.inline(st, fromLine, toLine, selection.getState().getFileNameObj());
                     st.forceFocus();
                 }
@@ -626,8 +626,8 @@ public class EditorTextWindow extends EditorTextDesign {
                     int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
                     fromLine++;
                     toLine++;
-                    NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                    NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                     Rounder.round(selection.getState(), st, fromLine, toLine, selection.getState().getFileNameObj());
                     st.forceFocus();
                 }

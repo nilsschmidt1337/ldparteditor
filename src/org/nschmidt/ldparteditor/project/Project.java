@@ -142,8 +142,7 @@ public enum Project {
             //if directory not exists, create it
             if(!dest.exists()){
                 dest.mkdir();
-                NLogger.debug(Project.class, "Directory copied from "  //$NON-NLS-1$
-                        + src + "  to " + dest); //$NON-NLS-1$
+                NLogger.debug(Project.class, "Directory copied from {0} to {1}", src, dest); //$NON-NLS-1$
             }
 
             //list all the directory contents
@@ -173,7 +172,7 @@ public enum Project {
 
             in.close();
             out.close();
-            NLogger.debug(Project.class, "File copied from " + src + " to " + dest); //$NON-NLS-1$ //$NON-NLS-2$
+            NLogger.debug(Project.class, "File copied from {0} to {1}", src, dest); //$NON-NLS-1$
         }
     }
 
@@ -185,9 +184,9 @@ public enum Project {
                 deleteFolder(file);
             }
             src.delete();
-            NLogger.debug(Project.class, "Directory deleted " + src); //$NON-NLS-1$
+            NLogger.debug(Project.class, "Directory deleted {0}", src); //$NON-NLS-1$
         }else{
-            NLogger.debug(Project.class, "File deleted " + src); //$NON-NLS-1$
+            NLogger.debug(Project.class, "File deleted {0}", src); //$NON-NLS-1$
             src.delete();
         }
     }

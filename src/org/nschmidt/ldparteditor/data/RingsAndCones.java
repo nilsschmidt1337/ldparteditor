@@ -565,7 +565,7 @@ public enum RingsAndCones {
             for (Primitive p : p2.getAllPrimitives()) {
                 if (!p.isCategory()) {
                     String name = p.getName();
-                    NLogger.debug(RingsAndCones.class, name);
+                    NLogger.debug(RingsAndCones.class, "Checking content of {0}", name); //$NON-NLS-1$
                     if (name.startsWith("48\\")) {//$NON-NLS-1$
                         if (!hiRes) continue;
                         name = name.substring(3);

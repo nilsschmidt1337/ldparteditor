@@ -186,14 +186,14 @@ public class CompositeTab extends CompositeTabDesign {
 
                         String oldLine = compositeText[0].getLine(state.currentCaretPositionLine);
                         String newLine = oldLine;
-                        NLogger.debug(getClass(), "Old Line " + oldLine); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "Key Char " + event.character); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "State Mask " + event.stateMask); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "Key Code " + event.keyCode); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "Key Location " + event.keyLocation); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "Text [null]" + event.text); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "Start " + event.start); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "End " + event.end); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "Old Line {0}", oldLine); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "Key Char {0}", event.character); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "State Mask {0}", event.stateMask); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "Key Code {0}", event.keyCode); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "Key Location {0}", event.keyLocation); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "Text [null]{0}", event.text); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "Start {0}", event.start); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "End {0}", event.end); //$NON-NLS-1$
 
                         if (event.text.indexOf(StringHelper.getLineDelimiter()) != -1) {
                             NLogger.debug(getClass(), "Return, because new text contains a line delimiter."); //$NON-NLS-1$
@@ -334,7 +334,7 @@ public class CompositeTab extends CompositeTabDesign {
 
                         if (vm.getVertexToReplace() != null && vertexToReplace != null && vm.getVertexToReplace().equals(vertexToReplace)) {
 
-                            NLogger.debug(getClass(), event.text);
+                            NLogger.debug(getClass(), "VerifyEvent.Text {0}", event.text); //$NON-NLS-1$
                             if (doReplace) {
                                 int off = compositeText[0].getOffsetAtLine(state.currentCaretPositionLine);
                                 newLine = oldLine.substring(0, event.start - off) + event.text + oldLine.substring(event.end - off);
@@ -351,7 +351,7 @@ public class CompositeTab extends CompositeTabDesign {
                                 state.currentCaretPositionChar += event.text.length();
                             }
 
-                            NLogger.debug(getClass(), "New Line " + newLine); //$NON-NLS-1$
+                            NLogger.debug(getClass(), "New Line {0}", newLine); //$NON-NLS-1$
 
                             String[] new_data_segments = newLine.trim().split("\\s+"); //$NON-NLS-1$
 
@@ -725,19 +725,19 @@ public class CompositeTab extends CompositeTabDesign {
                             int offset = compositeText[0].getOffsetAtLine(state.currentLineIndex);
                             for (TreeItem t : treeItem_Hints[0].getItems()) {
                                 if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
-                                    NLogger.debug(getClass(), "Found hint at " + t.getText(1)); //$NON-NLS-1$
+                                    NLogger.debug(getClass(), "Found hint at {0}", t.getText(1)); //$NON-NLS-1$
                                     items.add(t);
                                 }
                             }
                             for (TreeItem t : treeItem_Warnings[0].getItems()) {
                                 if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
-                                    NLogger.debug(getClass(), "Found warning at " + t.getText(1)); //$NON-NLS-1$
+                                    NLogger.debug(getClass(), "Found warning at {0}", t.getText(1)); //$NON-NLS-1$
                                     items.add(t);
                                 }
                             }
                             for (TreeItem t : treeItem_Errors[0].getItems()) {
                                 if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
-                                    NLogger.debug(getClass(), "Found error at " + t.getText(1)); //$NON-NLS-1$
+                                    NLogger.debug(getClass(), "Found error at {0}", t.getText(1)); //$NON-NLS-1$
                                     items.add(t);
                                 }
                             }
@@ -762,8 +762,8 @@ public class CompositeTab extends CompositeTabDesign {
                         Inliner.withSubfileReference = false;
                         Inliner.recursively = false;
                         Inliner.noComment = false;
-                        NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                         Inliner.inline(st, fromLine, toLine, df);
                         st.forceFocus();
                         break;
@@ -780,8 +780,8 @@ public class CompositeTab extends CompositeTabDesign {
                         int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
                         fromLine++;
                         toLine++;
-                        NLogger.debug(getClass(), "From line " + fromLine); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "To   line " + toLine); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                         Rounder.round(state, st, fromLine, toLine, df);
                         st.forceFocus();
                         break;
@@ -939,7 +939,7 @@ public class CompositeTab extends CompositeTabDesign {
 
                     for (TreeItem issue : items) {
                         if (issue.getData() != null) {
-                            NLogger.debug(getClass(), "+Fix " + issue.getText(1)); //$NON-NLS-1$
+                            NLogger.debug(getClass(), "+Fix {0}", issue.getText(1)); //$NON-NLS-1$
                         }
                     }
 
@@ -1010,7 +1010,7 @@ public class CompositeTab extends CompositeTabDesign {
 
                     for (TreeItem issue : items) {
                         if (issue.getData() != null) {
-                            NLogger.debug(getClass(), "+Fix " + issue.getText(1)); //$NON-NLS-1$
+                            NLogger.debug(getClass(), "+Fix {0}", issue.getText(1)); //$NON-NLS-1$
                         }
                     }
 

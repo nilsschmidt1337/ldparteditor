@@ -2320,7 +2320,7 @@ public class VertexManager {
             BigDecimal EPSILON;
             EPSILON = new BigDecimal(".0005"); //$NON-NLS-1$
             EPSILON = EPSILON.multiply(EPSILON, Threshold.mc).multiply(EPSILON, Threshold.mc).multiply(new BigDecimal(3)).divide(new BigDecimal(zoom), Threshold.mc);
-            NLogger.debug(getClass(), EPSILON.toString());
+            NLogger.debug(getClass(), "EPSILON around selection is {0}", EPSILON); //$NON-NLS-1$
             for (Vertex v : selectedVertices) {
                 Vector3d v1 = new Vector3d(v);
                 boolean isNear = false;
@@ -4062,8 +4062,10 @@ public class VertexManager {
         for (int i = 1; i < 3; i++) {
             vertex[i][0] = tvs[i].x - center.x;
             vertex[i][1] = tvs[i].y - center.y;
-            NLogger.debug(VertexManager.class, "vertex[" + i + "].x =" + Math.round(vertex[i][0])); //$NON-NLS-1$ //$NON-NLS-2$
-            NLogger.debug(VertexManager.class, "vertex[" + i + "].y =" + Math.round(vertex[i][1])); //$NON-NLS-1$ //$NON-NLS-2$
+            if (NLogger.DEBUG) {
+                NLogger.debug(VertexManager.class, "vertex[{0}].x ={1}", i, Math.round(vertex[i][0])); //$NON-NLS-1$
+                NLogger.debug(VertexManager.class, "vertex[{0}].y ={1}", i, Math.round(vertex[i][1])); //$NON-NLS-1$
+            }
         }
 
         final double lenght_b = Math.sqrt(Math.pow(vertex[1][0], 2) + Math.pow(vertex[1][1], 2));
@@ -4080,7 +4082,7 @@ public class VertexManager {
         if (vertex[1][1] > 0f) {
             result[0] = 360.0 - result[0];
         }
-        NLogger.debug(VertexManager.class, "1st angle: " + result[0]); //$NON-NLS-1$
+        NLogger.debug(VertexManager.class, "1st angle: {0}", result[0]); //$NON-NLS-1$
 
         result[1] = Math.acos(vertex[2][0] / lenght_c) * 180d / Math.PI;
         if (Double.isNaN(result[1])) {
@@ -4093,7 +4095,7 @@ public class VertexManager {
         if (vertex[2][1] > 0f) {
             result[1] = 360.0 - result[1];
         }
-        NLogger.debug(VertexManager.class, "2nd angle: " + result[1]); //$NON-NLS-1$
+        NLogger.debug(VertexManager.class, "2nd angle: {0}", result[1]); //$NON-NLS-1$
 
         double temp;
         temp = result[1] - result[0];
@@ -10697,7 +10699,7 @@ public class VertexManager {
                         for(int i = 0; i < surfsSize; i++) {
                             /* Check if the monitor has been canceled */
                             if (monitor.isCanceled()) break;
-                            NLogger.debug(getClass(), "Checked " + (i + 1) + " of " + surfsSize + " surfaces."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            NLogger.debug(getClass(), "Checked {0}  of {1} surfaces.", i + 1, surfsSize); //$NON-NLS-1$
                             for(int j = i + 1; j < surfsSize; j++) {
                                 GData s1 = surfsToParse.get(i);
                                 GData s2 = surfsToParse.get(j);
@@ -20390,7 +20392,7 @@ public class VertexManager {
         if (NLogger.DEBUG) {
             MemorySnapshot snapshot = new MemorySnapshot(linkedDatFile);
             getSnapshots().add(snapshot);
-            NLogger.debug(getClass(), "CREATED SNAPSHOT ON " + snapshot.toString()); //$NON-NLS-1$
+            NLogger.debug(getClass(), "CREATED SNAPSHOT ON {0} ", snapshot.toString()); //$NON-NLS-1$
         }
     }
 

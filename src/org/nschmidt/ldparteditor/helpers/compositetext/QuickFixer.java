@@ -110,7 +110,7 @@ public enum QuickFixer {
         for (Integer l : lineNumbers) {
 
             for (TreeItem t : issuesInLine.get(l)) {
-                NLogger.debug(QuickFixer.class, "Fixing: " + t.getText(2).substring(0, 2) + Integer.parseInt(t.getText(2).substring(2, 4), 16) + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+                NLogger.debug(QuickFixer.class, "Fixing: {0}{1}]", t.getText(2).substring(0, 2), Integer.parseInt(t.getText(2).substring(2, 4), 16)); //$NON-NLS-1$
 
                 String type = t.getText(2).substring(1, 2);
                 String sort = t.getText(2).substring(2, 4);

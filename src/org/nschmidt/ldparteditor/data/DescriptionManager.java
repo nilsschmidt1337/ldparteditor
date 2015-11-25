@@ -44,7 +44,7 @@ public enum DescriptionManager {
                             final TreeItem newEntry = workQueue.poll();
                             if (newEntry != null) {
                                 DatFile df = (DatFile) newEntry.getData();
-                                NLogger.debug(getClass(), df.getOldName());
+                                NLogger.debug(getClass(), "Register description for {0}", df.getOldName()); //$NON-NLS-1$
                                 UTF8BufferedReader reader = null;
                                 final StringBuilder titleSb = new StringBuilder();
                                 try {

@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.MessageFormat;
+import java.util.Locale;
 
 import org.nschmidt.ldparteditor.helpers.Version;
 
@@ -46,6 +48,8 @@ public enum NLogger {
     private static boolean writeInNewFile;
     /** The print stream for errors */
     private static PrintStream errorStream = null;
+    /** The formatter for debug messages */
+    private static MessageFormat formatter = new MessageFormat("", Locale.ENGLISH); //$NON-NLS-1$
 
     /**
      * Initializes the logger.
@@ -103,6 +107,24 @@ public enum NLogger {
         }
     }
 
+    /**
+     * Logs a message within the debug mode. The message will not be displayed,
+     * if LOG_DEBUG is false. The message has parameters "args" separated with
+     * a comma
+     *
+     * @param clazz
+     *            The class which triggers this method
+     * @param message
+     *            The message format string to display (e.g. "Step {0} of {1}")
+     * @param args
+     *            Parameters separated with a comma
+     */
+    public static void debug(Class<?> clazz, String message, Object... args) {
+        if (DEBUG) {
+            debug_sync(clazz, message, args);
+        }
+    }
+
     public static void debug(Class<?> clazz, float value) {
         if (DEBUG) {
             debug_sync(clazz, Float.toString(value));
@@ -146,6 +168,28 @@ public enum NLogger {
         sb.append(clazz.getName());
         System.out.println(sb.toString());
         t.printStackTrace(System.out);
+    }
+
+    /**
+     * Synchronized debug method call to write the message
+     *
+     * @param clazz
+     *            The class which triggers this method
+     * @param message
+     *            The message to display
+     * @param args
+     *            Parameters separated with a comma
+     */
+    private static synchronized void debug_sync(Class<?> clazz, String message, Object... args) {
+        formatter.applyPattern(message);
+        StringBuilder sb = new StringBuilder();
+        sb.append("[DEBUG "); //$NON-NLS-1$
+        sb.append(Version.getVersion());
+        sb.append("] @"); //$NON-NLS-1$
+        sb.append(clazz.getName());
+        sb.append("  "); //$NON-NLS-1$
+        sb.append(formatter.format(args));
+        System.out.println(sb.toString());
     }
 
     /**

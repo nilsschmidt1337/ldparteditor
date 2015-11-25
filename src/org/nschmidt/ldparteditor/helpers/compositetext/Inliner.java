@@ -176,7 +176,7 @@ public enum Inliner {
         }
         for (Integer l : lineNumbers) {
             String line = getLine(l, text2);
-            NLogger.debug(Inliner.class, "Inlining: " + line); //$NON-NLS-1$
+            NLogger.debug(Inliner.class, "Inlining: {0}", line); //$NON-NLS-1$
             text2 = Inliner.inline(l, line, text2, datFile);
         }
         cText.setText(restoreLineTermination(text2));
@@ -296,7 +296,7 @@ public enum Inliner {
         for (Integer l : lineNumbers) {
             bfcStatusTarget = bfcStatusToLine.get(l);
             String line = getLine(l, text2);
-            NLogger.debug(Inliner.class, "Inlining: " + line); //$NON-NLS-1$
+            NLogger.debug(Inliner.class, "Inlining: {0}", line); //$NON-NLS-1$
             text2 = Inliner.inline(l, line, text2, datFile);
         }
         cText.setText(restoreLineTermination(text2));

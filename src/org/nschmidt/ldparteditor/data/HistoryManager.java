@@ -113,9 +113,9 @@ public class HistoryManager {
                                     continue;
                                 }
 
-                                NLogger.debug(getClass(), "Pointer   : " + pointer); //$NON-NLS-1$
-                                NLogger.debug(getClass(), "PointerMax: " + pointerMax); //$NON-NLS-1$
-                                NLogger.debug(getClass(), "Item Count: " + historyText.size()); //$NON-NLS-1$
+                                NLogger.debug(getClass(), "Pointer   : {0}", pointer); //$NON-NLS-1$
+                                NLogger.debug(getClass(), "PointerMax: {0}", pointerMax); //$NON-NLS-1$
+                                NLogger.debug(getClass(), "Item Count: {0}", historyText.size()); //$NON-NLS-1$
 
                                 if (pointer != pointerMax) {
                                     // Delete old entries
@@ -212,7 +212,7 @@ public class HistoryManager {
                                         // Undo
                                         if (pointer > 0) {
                                             if (pointerMax == pointer && pointer > 1) pointer--;
-                                            NLogger.debug(getClass(), "Requested undo. " + (pointer - 1) + ' ' + pointerMax); //$NON-NLS-1$
+                                            NLogger.debug(getClass(), "Requested undo."); //$NON-NLS-1$
                                             pointer--;
                                             delta = -1;
                                             doRestore = true;
@@ -221,7 +221,7 @@ public class HistoryManager {
                                     case 2:
                                         // Redo
                                         if (pointer < pointerMax - 1 && pointer + 1 < historySelectionStart.size()) {
-                                            NLogger.debug(getClass(), "Requested redo. " + (pointer + 1) + ' ' + pointerMax); //$NON-NLS-1$
+                                            NLogger.debug(getClass(), "Requested redo."); //$NON-NLS-1$
                                             pointer++;
                                             delta = 1;
                                             doRestore = true;
@@ -243,7 +243,7 @@ public class HistoryManager {
                                             }
                                             if (hasTextEditor) break;
                                         }
-                                        while (!hasTextEditor && (pointer + delta) > -1 && (pointer + delta) < historySelectionStart.size() && historySelectionStart.get(pointer) != -1 && pointer > 0 && pointer < pointerMax - 1) {
+                                        while (!hasTextEditor && pointer + delta > -1 && pointer + delta < historySelectionStart.size() && historySelectionStart.get(pointer) != -1 && pointer > 0 && pointer < pointerMax - 1) {
                                             pointer += delta;
                                         }
                                         int[] text = historyText.get(pointer);
@@ -501,7 +501,7 @@ public class HistoryManager {
                                     Integer inc = sq.poll(1000, TimeUnit.MILLISECONDS);
                                     if (inc != null) {
                                         monitor.worked(inc);
-                                        NLogger.debug(getClass(), "Polled progress info. (" + inc + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+                                        NLogger.debug(getClass(), "Polled progress info. ({0})", inc); //$NON-NLS-1$
                                     } else {
                                         NLogger.debug(getClass(), "Progress info has timed out."); //$NON-NLS-1$
                                     }
