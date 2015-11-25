@@ -4996,42 +4996,22 @@ public class VertexManager {
         }
 
     }
-
-    public synchronized GData changeWinding(GData dataToModify) {
-        HashSet<GData> newSet = new HashSet<GData>();
-        newSet.add(dataToModify);
-        changeWinding(newSet);
-        if (newSet.iterator().hasNext()) {
-            return newSet.iterator().next();
+    /** Changes the winding of triangles and quads (GData3 / GData4 ONLY) */
+    public synchronized GData changeWinding(GData gData) {
+        GData result = null;
+        if (gData.type() < 4) {
+            GData3 gd3 = (GData3) gData;
+            GData3 newGdata3 = new GData3(gd3.colourNumber, gd3.r, gd3.g, gd3.b, gd3.a, gd3.X2, gd3.Y2, gd3.Z2, gd3.X1, gd3.Y1, gd3.Z1, gd3.X3, gd3.Y3, gd3.Z3, gd3.x2, gd3.y2, gd3.z2, gd3.x1, gd3.y1, gd3.z1, gd3.x3,
+                    gd3.y3, gd3.z3, -gd3.xn, -gd3.yn, -gd3.zn, gd3.parent, linkedDatFile);
+            result = newGdata3;
         } else {
-            return null;
+            GData4 gd4 = (GData4) gData;
+            GData4 newGdata4 = new GData4(gd4.colourNumber, gd4.r, gd4.g, gd4.b, gd4.a, gd4.X3, gd4.Y3, gd4.Z3, gd4.X2, gd4.Y2, gd4.Z2, gd4.X1, gd4.Y1, gd4.Z1, gd4.X4, gd4.Y4, gd4.Z4, gd4.x3, gd4.y3, gd4.z3, gd4.x2,
+                    gd4.y2, gd4.z2, gd4.x1, gd4.y1, gd4.z1, gd4.x4, gd4.y4, gd4.z4, -gd4.xn, -gd4.yn, -gd4.zn, gd4.parent, linkedDatFile);
+            result = newGdata4;
         }
-    }
-
-    public synchronized void changeWinding(Set<GData> dataToModify) {
-        HashSet<GData> newData = new HashSet<GData>();
-        for (GData gData : dataToModify) {
-            GData newGData = null;
-            switch (gData.type()) {
-            case 3:
-                GData3 gd3 = (GData3) gData;
-                GData3 newGdata3 = new GData3(gd3.colourNumber, gd3.r, gd3.g, gd3.b, gd3.a, gd3.X2, gd3.Y2, gd3.Z2, gd3.X1, gd3.Y1, gd3.Z1, gd3.X3, gd3.Y3, gd3.Z3, gd3.x2, gd3.y2, gd3.z2, gd3.x1, gd3.y1, gd3.z1, gd3.x3,
-                        gd3.y3, gd3.z3, -gd3.xn, -gd3.yn, -gd3.zn, gd3.parent, linkedDatFile);
-                newData.add(newGdata3);
-                newGData = newGdata3;
-                break;
-            case 4:
-                GData4 gd4 = (GData4) gData;
-                GData4 newGdata4 = new GData4(gd4.colourNumber, gd4.r, gd4.g, gd4.b, gd4.a, gd4.X3, gd4.Y3, gd4.Z3, gd4.X2, gd4.Y2, gd4.Z2, gd4.X1, gd4.Y1, gd4.Z1, gd4.X4, gd4.Y4, gd4.Z4, gd4.x3, gd4.y3, gd4.z3, gd4.x2,
-                        gd4.y2, gd4.z2, gd4.x1, gd4.y1, gd4.z1, gd4.x4, gd4.y4, gd4.z4, -gd4.xn, -gd4.yn, -gd4.zn, gd4.parent, linkedDatFile);
-                newData.add(newGdata4);
-                newGData = newGdata4;
-                break;
-            }
-            linker(gData, newGData);
-        }
-        dataToModify.clear();
-        dataToModify.addAll(newData);
+        linker(gData, result);
+        return result;
     }
 
     public synchronized void colourChangeSelection(int index, float r, float g, float b, float a) {
