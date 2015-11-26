@@ -653,6 +653,7 @@ public class LibraryManager {
                                 break;
                             }
                         }
+                        if (type == null) type = DatType.PART;
                         // Change treeItem according to type
                         switch (type) {
                         case PART:
@@ -1142,6 +1143,9 @@ public class LibraryManager {
                                 break;
                             }
                         }
+
+                        if (type == null) type = DatType.PART;
+
                         // Change treeItem according to type
                         switch (type) {
                         case PART:
