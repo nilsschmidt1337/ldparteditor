@@ -2388,10 +2388,6 @@ public class VertexManager {
                 }
             }
         }
-        // MARK For Debug only!
-        // if (selectedVertices.size() == 1) {
-        //
-        // }
     }
 
     private synchronized void selectVertices2(final Composite3D c3d, boolean addSomething) {
@@ -2677,10 +2673,6 @@ public class VertexManager {
                 }
             }
         }
-        // MARK For Debug only!
-        // if (selectedVertices.size() == 1) {
-        //
-        // }
     }
 
     public void reSelectSubFiles() {
@@ -12721,12 +12713,6 @@ public class VertexManager {
                                 nl.add(v1);
                                 nl.add(v2);
                                 allLines.add(nl);
-
-                                //     // MARK DEBUG ONLY!
-                                //     resultVertices.add(v1);
-                                //     resultVertices.add(v2);
-                                //     resultColours.add(new GColour(-1, 1f, 0f, 1f, 1f));
-                                //     resultIsLine.add(1);
                             }
                         }
                     }
