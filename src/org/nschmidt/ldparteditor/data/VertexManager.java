@@ -19579,52 +19579,9 @@ public class VertexManager {
 
     private List<GData3> splitQuad(Vertex v1, Vertex v2, Vertex v3, Vertex v4, Vertex target, GData4 g) {
         ArrayList<GData3> result = new ArrayList<GData3>();
-        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
-
-                v4.X,
-                v4.Y,
-                v4.Z,
-
-                v1.X,
-                v1.Y,
-                v1.Z,
-
-                target.X,
-                target.Y,
-                target.Z,
-
-                View.DUMMY_REFERENCE, linkedDatFile));
-
-        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
-
-                target.X,
-                target.Y,
-                target.Z,
-
-                v2.X,
-                v2.Y,
-                v2.Z,
-
-                v4.X,
-                v4.Y,
-                v4.Z,
-
-                View.DUMMY_REFERENCE, linkedDatFile));
-
-        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
-                v2.X,
-                v2.Y,
-                v2.Z,
-
-                v3.X,
-                v3.Y,
-                v3.Z,
-
-                v4.X,
-                v4.Y,
-                v4.Z,
-
-                View.DUMMY_REFERENCE, linkedDatFile));
+        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a, v4.X, v4.Y, v4.Z, v1.X, v1.Y, v1.Z, target.X, target.Y, target.Z, View.DUMMY_REFERENCE, linkedDatFile));
+        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a, target.X, target.Y, target.Z, v2.X, v2.Y, v2.Z, v4.X, v4.Y, v4.Z, View.DUMMY_REFERENCE, linkedDatFile));
+        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a, v2.X, v2.Y, v2.Z, v3.X, v3.Y, v3.Z, v4.X, v4.Y, v4.Z, View.DUMMY_REFERENCE, linkedDatFile));
         return result;
     }
 
@@ -19645,37 +19602,8 @@ public class VertexManager {
 
     private List<GData3> splitTri(Vertex v1, Vertex v2, Vertex v3, Vertex target, GData3 g) {
         ArrayList<GData3> result = new ArrayList<GData3>();
-        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
-
-                v3.X,
-                v3.Y,
-                v3.Z,
-
-                v1.X,
-                v1.Y,
-                v1.Z,
-
-                target.X,
-                target.Y,
-                target.Z,
-
-                View.DUMMY_REFERENCE, linkedDatFile));
-
-        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
-
-                target.X,
-                target.Y,
-                target.Z,
-
-                v2.X,
-                v2.Y,
-                v2.Z,
-
-                v3.X,
-                v3.Y,
-                v3.Z,
-
-                View.DUMMY_REFERENCE, linkedDatFile));
+        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a, v3.X, v3.Y, v3.Z, v1.X, v1.Y, v1.Z, target.X, target.Y, target.Z, View.DUMMY_REFERENCE, linkedDatFile));
+        result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a, target.X, target.Y, target.Z, v2.X, v2.Y, v2.Z, v3.X, v3.Y, v3.Z, View.DUMMY_REFERENCE, linkedDatFile));
         return result;
     }
 
@@ -19685,30 +19613,8 @@ public class VertexManager {
         if (!start.equals(end)) {
             Vertex[] verts = lines.get(g);
             if ((verts[0].equals(start) || verts[0].equals(end)) && (verts[1].equals(start) || verts[1].equals(end))) {
-                result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a,
-
-                        start.X,
-                        start.Y,
-                        start.Z,
-
-                        target.X,
-                        target.Y,
-                        target.Z,
-
-                        View.DUMMY_REFERENCE, linkedDatFile));
-
-
-                result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a,
-
-                        target.X,
-                        target.Y,
-                        target.Z,
-
-                        end.X,
-                        end.Y,
-                        end.Z,
-
-                        View.DUMMY_REFERENCE, linkedDatFile));
+                result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a, start.X, start.Y, start.Z, target.X, target.Y, target.Z, View.DUMMY_REFERENCE, linkedDatFile));
+                result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a, target.X, target.Y, target.Z, end.X, end.Y, end.Z, View.DUMMY_REFERENCE, linkedDatFile));
             }
         }
         return result;
