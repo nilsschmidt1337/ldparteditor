@@ -10915,6 +10915,31 @@ public class VertexManager {
                     points.add(p);
                 }
             }
+
+            {
+                Vector3d p = new Vector3d();
+                if (intersectLineTriangle(v2[0], v2[1], v1[0], v1[1], v1[2], p)) {
+                    points.add(p);
+                }
+            }
+            {
+                Vector3d p = new Vector3d();
+                if (intersectLineTriangle(v2[1], v2[2], v1[0], v1[1], v1[2], p)) {
+                    points.add(p);
+                }
+            }
+            {
+                Vector3d p = new Vector3d();
+                if (intersectLineTriangle(v2[2], v2[3], v1[0], v1[1], v1[2], p)) {
+                    points.add(p);
+                }
+            }
+            {
+                Vector3d p = new Vector3d();
+                if (intersectLineTriangle(v2[3], v2[0], v1[0], v1[1], v1[2], p)) {
+                    points.add(p);
+                }
+            }
         }
 
         final BigDecimal EPSILON = new BigDecimal(".0001"); //$NON-NLS-1$
