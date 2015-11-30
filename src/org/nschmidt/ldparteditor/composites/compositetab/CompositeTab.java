@@ -627,8 +627,9 @@ public class CompositeTab extends CompositeTabDesign {
                                 } catch (IllegalArgumentException iae2) {
                                     trys++;
                                     diff++;
-                                    if (trys == 10) {
+                                    if (trys > 10) {
                                         compositeText[0].setCaretOffset(0);
+                                        break;
                                     }
                                 }
                             }
