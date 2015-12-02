@@ -328,7 +328,7 @@ public class Composite3D extends ScalableComposite {
         Editor3DWindow.renders.add(openGL);
         Editor3DWindow.canvasList.add(canvas);
 
-        // this.setBackgroundMode(SWT.INHERIT_FORCE);
+        this.setBackgroundMode(SWT.INHERIT_FORCE);
 
         this.menu = new Menu(this);
 
