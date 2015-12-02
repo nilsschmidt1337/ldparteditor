@@ -53,13 +53,13 @@ public class HistoryManager {
     private DatFile df;
 
     private boolean hasNoThread = true;
-    private final AtomicBoolean isRunning = new AtomicBoolean(true);
-    private final AtomicInteger action = new AtomicInteger(0);
-    private final ProgressMonitorDialog[] m = new ProgressMonitorDialog[1];
-    private final SynchronousQueue<Integer> sq = new SynchronousQueue<Integer>();
+    private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
+    private volatile AtomicInteger action = new AtomicInteger(0);
+    private volatile ProgressMonitorDialog[] m = new ProgressMonitorDialog[1];
+    private volatile SynchronousQueue<Integer> sq = new SynchronousQueue<Integer>();
     private final Lock lock = new ReentrantLock();
 
-    private Queue<Object[]> workQueue = new ConcurrentLinkedQueue<Object[]>();
+    private volatile Queue<Object[]> workQueue = new ConcurrentLinkedQueue<Object[]>();
 
     public HistoryManager(DatFile df) {
         this.df = df;
