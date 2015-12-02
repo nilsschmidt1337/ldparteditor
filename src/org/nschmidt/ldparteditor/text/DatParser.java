@@ -586,7 +586,8 @@ public enum DatParser {
                     if (line.startsWith("0 !HISTORY ")) { //$NON-NLS-1$
                         try {
                             if (h.hasHISTORY()) {
-                                if (line.substring(0, "0 !HISTORY YYYY-MM-DD".length()).compareTo(h.getLastHistoryEntry()) == -1) { //$NON-NLS-1$
+                                final String lh = h.getLastHistoryEntry();
+                                if (lh != null && line.substring(0, "0 !HISTORY YYYY-MM-DD".length()).compareTo(lh) == -1) { //$NON-NLS-1$
                                     result.add(new ParsingResult(I18n.DATPARSER_HistoryWrongOrder, "[HA3] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                                 }
                             } else {
