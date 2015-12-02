@@ -269,7 +269,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         canvas = canvasList.get(i[0]);
                         if (!canvas.isDisposed()) {
                             boolean stdMode = ViewIdleManager.renderLDrawStandard[0].get();
-                            if (renders.get(i[0]).getC3D().getRenderMode() != 5 || cs == 1 || stdMode) {
+                            // FIXME Needs workaround since SWT upgrade to 4.5!
+                            if (cs == 1 || stdMode) { // renders.get(i[0]).getC3D().getRenderMode() != 5 ||
                                 renders.get(i[0]).drawScene();
                                 if (stdMode) {
                                     j[0]++;
