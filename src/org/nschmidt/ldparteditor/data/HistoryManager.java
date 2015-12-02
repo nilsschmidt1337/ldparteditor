@@ -496,6 +496,12 @@ public class HistoryManager {
                                 }
                                 m[0] = mon;
                                 NLogger.debug(getClass(), "Provided Monitor..."); //$NON-NLS-1$
+                                if (!isRunning.get()) {
+                                    hasNoThread = true;
+                                    isRunning.set(true);
+                                    pushHistory(null, -1, -1, null, null, null, -1);
+                                    NLogger.debug(getClass(), "Forked history thread..."); //$NON-NLS-1$
+                                }
                                 monitor.beginTask(I18n.E3D_LoadingData, 100);
                                 while (action.get() > 0) {
                                     Integer inc = sq.poll(1000, TimeUnit.MILLISECONDS);
