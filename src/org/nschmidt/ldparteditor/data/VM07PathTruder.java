@@ -34,6 +34,10 @@ import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM07PathTruder extends VM06Edger2 {
 
+    /* Null vector */
+    private final double[] nullv = new double[]{0.0,0.0,0.0};
+    private final double EPSILON = 0.000001;
+
     protected VM07PathTruder(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
