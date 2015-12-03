@@ -132,15 +132,15 @@ class VM00Base {
     protected boolean modified = false;
     protected boolean updated = true;
 
-    protected AtomicBoolean skipSyncWithTextEditor = new AtomicBoolean(false);
+    protected final AtomicBoolean skipSyncWithTextEditor = new AtomicBoolean(false);
 
     protected int selectedItemIndex = -1;
     protected GData selectedLine = null;
 
     protected Vertex lastSelectedVertex = null;
 
-    protected TreeSet<Vertex> hiddenVertices = new TreeSet<Vertex>();
-    protected HashSet<GData> hiddenData = new HashSet<GData>();
+    protected final TreeSet<Vertex> hiddenVertices = new TreeSet<Vertex>();
+    protected final HashSet<GData> hiddenData = new HashSet<GData>();
 
     protected final HashMap<GData, Byte> bfcMap = new HashMap<GData, Byte>();
 

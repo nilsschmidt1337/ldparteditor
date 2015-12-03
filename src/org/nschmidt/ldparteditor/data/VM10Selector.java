@@ -38,7 +38,7 @@ class VM10Selector extends VM09WindingChange {
         super(linkedDatFile);
     }
 
-    public void selector(final SelectorSettings ss) {
+    public final void selector(final SelectorSettings ss) {
 
         linkedDatFile.setDrawSelection(false);
         try
