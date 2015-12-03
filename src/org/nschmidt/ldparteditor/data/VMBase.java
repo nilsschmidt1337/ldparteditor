@@ -15,13 +15,19 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
@@ -118,6 +124,28 @@ class VMBase {
     protected GData selectedLine = null;
 
     protected Vertex lastSelectedVertex = null;
+
+    protected TreeSet<Vertex> hiddenVertices = new TreeSet<Vertex>();
+    protected HashSet<GData> hiddenData = new HashSet<GData>();
+
+    protected HashMap<GData, Byte> bfcMap = new HashMap<GData, Byte>();
+
+    protected final double EPSILON = 0.000001;
+    /* Null vector */
+    protected double[] nullv = new double[]{0.0,0.0,0.0};
+
+    protected final AtomicBoolean resetTimer = new AtomicBoolean(false);
+    protected final AtomicInteger tid = new AtomicInteger(0);
+    protected final AtomicInteger openThreads = new AtomicInteger(0);
+    protected final Lock lock = new ReentrantLock();
+
+    protected final BigDecimal TOLERANCE = BigDecimal.ZERO; // new BigDecimal("0.00001"); //.00001
+    protected final BigDecimal ZEROT = BigDecimal.ZERO; //  = new BigDecimal("-0.00001");
+    protected final BigDecimal ONET = BigDecimal.ONE; //  = new BigDecimal("1.00001");
+
+    protected final BigDecimal TOLERANCER = new BigDecimal("0.00001"); //$NON-NLS-1$ .00001
+    protected final BigDecimal ZEROTR = new BigDecimal("-0.00001"); //$NON-NLS-1$
+    protected final BigDecimal ONETR = new BigDecimal("1.00001"); //$NON-NLS-1$
 
     public VMBase(DatFile linkedDatFile) {
         this.linkedDatFile = linkedDatFile;

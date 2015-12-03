@@ -4016,11 +4016,6 @@ public class VertexManager extends VMBase {
         return result;
     }
 
-    TreeSet<Vertex> hiddenVertices = new TreeSet<Vertex>();
-    HashSet<GData> hiddenData = new HashSet<GData>();
-
-    private HashMap<GData, Byte> bfcMap = new HashMap<GData, Byte>();
-
     public void hideSelection() {
         for (GData1 data : selectedSubfiles) {
             hide(data);
@@ -10601,9 +10596,6 @@ public class VertexManager extends VMBase {
         return true;
     }
 
-    private final BigDecimal TOLERANCE = BigDecimal.ZERO; // new BigDecimal("0.00001"); //.00001
-    private final BigDecimal ZEROT = BigDecimal.ZERO; //  = new BigDecimal("-0.00001");
-    private final BigDecimal ONET = BigDecimal.ONE; //  = new BigDecimal("1.00001");
     private boolean intersectLineTriangleSuperFast(Vector3dd q, Vector3dd q2, Vector3d d, Vector3dd p2, Vector3d c, Vector3d dir, BigDecimal len) {
         BigDecimal diskr = BigDecimal.ZERO;
         BigDecimal inv_diskr = BigDecimal.ZERO;
@@ -12813,9 +12805,6 @@ public class VertexManager extends VMBase {
 
     }
 
-    private final BigDecimal TOLERANCER = new BigDecimal("0.00001"); //$NON-NLS-1$ .00001
-    private final BigDecimal ZEROTR = new BigDecimal("-0.00001"); //$NON-NLS-1$
-    private final BigDecimal ONETR = new BigDecimal("1.00001"); //$NON-NLS-1$
     private boolean intersectRayTriangle(Vector3dd orig, Vector3d dir, Vector3dd vert0, Vector3dd vert1, Vector3dd vert2) {
         BigDecimal diskr = BigDecimal.ZERO;
         BigDecimal inv_diskr = BigDecimal.ZERO;
@@ -15002,10 +14991,6 @@ public class VertexManager extends VMBase {
         y = (y - s0) / (s1 - s0);
         return y;
     }
-
-    private final double EPSILON = 0.000001;
-    /* Null vector */
-    private double[] nullv = new double[]{0.0,0.0,0.0};
 
     private void CROSS(double[] dest, double[] left, double[] right) {
         dest[0]=left[1]*right[2]-left[2]*right[1];
@@ -19028,10 +19013,6 @@ public class VertexManager extends VMBase {
         return result;
     }
 
-    private final AtomicBoolean resetTimer = new AtomicBoolean(false);
-    private final AtomicInteger tid = new AtomicInteger(0);
-    private final AtomicInteger openThreads = new AtomicInteger(0);
-    private final Lock lock = new ReentrantLock();
     public void syncWithTextEditors(boolean addHistory) {
 
         if (addHistory) linkedDatFile.addHistory();
