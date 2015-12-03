@@ -536,4 +536,78 @@ public class VM01Select extends VM00Base {
             }
         }
     }
+
+    public void selectInverse(SelectorSettings sels) {
+
+        final Set<Vertex> lastSelectedVertices = new TreeSet<Vertex>();
+        final Set<GData1> lastSelectedSubfiles = new HashSet<GData1>();
+        final Set<GData2> lastSelectedLines = new HashSet<GData2>();
+        final Set<GData3> lastSelectedTriangles = new HashSet<GData3>();
+        final Set<GData4> lastSelectedQuads = new HashSet<GData4>();
+        final Set<GData5> lastSelectedCondlines = new HashSet<GData5>();
+
+        lastSelectedVertices.addAll(selectedVertices);
+        lastSelectedSubfiles.addAll(selectedSubfiles);
+        lastSelectedLines.addAll(selectedLines);
+        lastSelectedTriangles.addAll(selectedTriangles);
+        lastSelectedQuads.addAll(selectedQuads);
+        lastSelectedCondlines.addAll(selectedCondlines);
+
+        clearSelection();
+
+        if (sels.isVertices()) {
+            for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
+                if (!hiddenVertices.contains(v) && !lastSelectedVertices.contains(v)) selectedVertices.add(v);
+            }
+        }
+        if (sels.isVertices() && sels.isLines() && sels.isTriangles() && sels.isQuads() && sels.isCondlines()) {
+            for (GData1 g : vertexCountInSubfile.keySet()) {
+                if (!hiddenData.contains(g) && !lastSelectedSubfiles.contains(g)) selectedSubfiles.add(g);
+            }
+        }
+        if (sels.isLines()) {
+            for (GData2 g : lines.keySet()) {
+                if (!hiddenData.contains(g) && !lastSelectedLines.contains(g)) selectedLines.add(g);
+            }
+        }
+        if (sels.isTriangles()) {
+            for (GData3 g : triangles.keySet()) {
+                if (!hiddenData.contains(g) && !lastSelectedTriangles.contains(g)) selectedTriangles.add(g);
+            }
+        }
+        if (sels.isQuads()) {
+            for (GData4 g : quads.keySet()) {
+                if (!hiddenData.contains(g) && !lastSelectedQuads.contains(g)) selectedQuads.add(g);
+            }
+        }
+        if (sels.isCondlines()) {
+            for (GData5 g : condlines.keySet()) {
+                if (!hiddenData.contains(g) && !lastSelectedCondlines.contains(g)) selectedCondlines.add(g);
+            }
+        }
+
+        selectedData.addAll(selectedLines);
+        selectedData.addAll(selectedTriangles);
+        selectedData.addAll(selectedQuads);
+        selectedData.addAll(selectedCondlines);
+        selectedData.addAll(selectedSubfiles);
+
+    }
+
+    public void selectIsolatedVertices() {
+        clearSelection();
+        for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
+            int vd = 0;
+            for (VertexManifestation vm : vertexLinkedToPositionInFile.get(v)) {
+                if (vm.getGdata().type() == 0) {
+                    vd++;
+                } else {
+                    break;
+                }
+            }
+            if (vd == vertexLinkedToPositionInFile.get(v).size()) {
+                selectedVertices.add(v);
+            }
+        }
+    }
 }
