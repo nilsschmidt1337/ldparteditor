@@ -31,7 +31,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
-public class VM06Edger2 extends VM05Distance {
+class VM06Edger2 extends VM05Distance {
 
     public VM06Edger2(DatFile linkedDatFile) {
         super(linkedDatFile);
