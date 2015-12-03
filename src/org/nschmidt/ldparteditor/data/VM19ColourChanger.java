@@ -30,84 +30,6 @@ class VM19ColourChanger extends VM18LineConverter {
         super(linkedDatFile);
     }
 
-    public final synchronized GData changeColour(int index, float r, float g, float b, float a, GData dataToModify) {
-        HashSet<GData> newSet = new HashSet<GData>();
-        newSet.add(dataToModify);
-        changeColour(index, r, g, b, a, newSet);
-        if (newSet.iterator().hasNext()) {
-            return newSet.iterator().next();
-        } else {
-            return null;
-        }
-    }
-
-    public final synchronized void changeColour(int index, float r, float g, float b, float a, Set<GData> dataToModify) {
-        HashSet<GData> newData = new HashSet<GData>();
-        GColour colour = View.getLDConfigColour(index);
-        final float cr = colour.getR();
-        final float cg = colour.getG();
-        final float cb = colour.getB();
-        final float ca = colour.getA();
-        for (GData gData : dataToModify) {
-            if (index > -1) {
-                switch (gData.type()) {
-                case 2:
-                case 5:
-                    if (index == 24) {
-                        r = View.line_Colour_r[0];
-                        g = View.line_Colour_g[0];
-                        b = View.line_Colour_b[0];
-                        a = 1f;
-                    } else {
-                        r = cr;
-                        g = cg;
-                        b = cb;
-                        a = ca;
-                    }
-                    break;
-                default:
-                    r = cr;
-                    g = cg;
-                    b = cb;
-                    a = ca;
-                }
-            }
-            GData newGData = null;
-            switch (gData.type()) {
-            case 2:
-                GData2 gd2 = (GData2) gData;
-                GData2 newGdata2 = new GData2(gd2.parent, index, r, g, b, a, gd2.X1, gd2.Y1, gd2.Z1, gd2.X2, gd2.Y2, gd2.Z2, gd2.x1, gd2.y1, gd2.z1, gd2.x2, gd2.y2, gd2.z2, linkedDatFile);
-                newData.add(newGdata2);
-                newGData = newGdata2;
-                break;
-            case 3:
-                GData3 gd3 = (GData3) gData;
-                GData3 newGdata3 = new GData3(index, r, g, b, a, gd3.X1, gd3.Y1, gd3.Z1, gd3.X2, gd3.Y2, gd3.Z2, gd3.X3, gd3.Y3, gd3.Z3, gd3.x1, gd3.y1, gd3.z1, gd3.x2, gd3.y2, gd3.z2, gd3.x3,
-                        gd3.y3, gd3.z3, gd3.xn, gd3.yn, gd3.zn, gd3.parent, linkedDatFile);
-                newData.add(newGdata3);
-                newGData = newGdata3;
-                break;
-            case 4:
-                GData4 gd4 = (GData4) gData;
-                GData4 newGdata4 = new GData4(index, r, g, b, a, gd4.X1, gd4.Y1, gd4.Z1, gd4.X2, gd4.Y2, gd4.Z2, gd4.X3, gd4.Y3, gd4.Z3, gd4.X4, gd4.Y4, gd4.Z4, gd4.x1, gd4.y1, gd4.z1, gd4.x2,
-                        gd4.y2, gd4.z2, gd4.x3, gd4.y3, gd4.z3, gd4.x4, gd4.y4, gd4.z4, gd4.xn, gd4.yn, gd4.zn, gd4.parent, linkedDatFile);
-                newData.add(newGdata4);
-                newGData = newGdata4;
-                break;
-            case 5:
-                GData5 gd5 = (GData5) gData;
-                GData5 newGdata5 = new GData5(true, index, r, g, b, a, gd5.X1, gd5.Y1, gd5.Z1, gd5.X2, gd5.Y2, gd5.Z2, gd5.X3, gd5.Y3, gd5.Z3, gd5.X4, gd5.Y4, gd5.Z4, gd5.x1, gd5.y1, gd5.z1, gd5.x2,
-                        gd5.y2, gd5.z2, gd5.x3, gd5.y3, gd5.z3, gd5.x4, gd5.y4, gd5.z4, gd5.parent, linkedDatFile);
-                newData.add(newGdata5);
-                newGData = newGdata5;
-                break;
-            }
-            linker(gData, newGData);
-        }
-        dataToModify.clear();
-        dataToModify.addAll(newData);
-    }
-
     public final synchronized void colourChangeSelection(int index, float r, float g, float b, float a) {
         if (linkedDatFile.isReadOnly())
             return;
@@ -304,5 +226,83 @@ class VM19ColourChanger extends VM18LineConverter {
             syncWithTextEditors(true);
             updateUnsavedStatus();
         }
+    }
+
+    private final synchronized GData changeColour(int index, float r, float g, float b, float a, GData dataToModify) {
+        HashSet<GData> newSet = new HashSet<GData>();
+        newSet.add(dataToModify);
+        changeColour(index, r, g, b, a, newSet);
+        if (newSet.iterator().hasNext()) {
+            return newSet.iterator().next();
+        } else {
+            return null;
+        }
+    }
+
+    private final synchronized void changeColour(int index, float r, float g, float b, float a, Set<GData> dataToModify) {
+        HashSet<GData> newData = new HashSet<GData>();
+        GColour colour = View.getLDConfigColour(index);
+        final float cr = colour.getR();
+        final float cg = colour.getG();
+        final float cb = colour.getB();
+        final float ca = colour.getA();
+        for (GData gData : dataToModify) {
+            if (index > -1) {
+                switch (gData.type()) {
+                case 2:
+                case 5:
+                    if (index == 24) {
+                        r = View.line_Colour_r[0];
+                        g = View.line_Colour_g[0];
+                        b = View.line_Colour_b[0];
+                        a = 1f;
+                    } else {
+                        r = cr;
+                        g = cg;
+                        b = cb;
+                        a = ca;
+                    }
+                    break;
+                default:
+                    r = cr;
+                    g = cg;
+                    b = cb;
+                    a = ca;
+                }
+            }
+            GData newGData = null;
+            switch (gData.type()) {
+            case 2:
+                GData2 gd2 = (GData2) gData;
+                GData2 newGdata2 = new GData2(gd2.parent, index, r, g, b, a, gd2.X1, gd2.Y1, gd2.Z1, gd2.X2, gd2.Y2, gd2.Z2, gd2.x1, gd2.y1, gd2.z1, gd2.x2, gd2.y2, gd2.z2, linkedDatFile);
+                newData.add(newGdata2);
+                newGData = newGdata2;
+                break;
+            case 3:
+                GData3 gd3 = (GData3) gData;
+                GData3 newGdata3 = new GData3(index, r, g, b, a, gd3.X1, gd3.Y1, gd3.Z1, gd3.X2, gd3.Y2, gd3.Z2, gd3.X3, gd3.Y3, gd3.Z3, gd3.x1, gd3.y1, gd3.z1, gd3.x2, gd3.y2, gd3.z2, gd3.x3,
+                        gd3.y3, gd3.z3, gd3.xn, gd3.yn, gd3.zn, gd3.parent, linkedDatFile);
+                newData.add(newGdata3);
+                newGData = newGdata3;
+                break;
+            case 4:
+                GData4 gd4 = (GData4) gData;
+                GData4 newGdata4 = new GData4(index, r, g, b, a, gd4.X1, gd4.Y1, gd4.Z1, gd4.X2, gd4.Y2, gd4.Z2, gd4.X3, gd4.Y3, gd4.Z3, gd4.X4, gd4.Y4, gd4.Z4, gd4.x1, gd4.y1, gd4.z1, gd4.x2,
+                        gd4.y2, gd4.z2, gd4.x3, gd4.y3, gd4.z3, gd4.x4, gd4.y4, gd4.z4, gd4.xn, gd4.yn, gd4.zn, gd4.parent, linkedDatFile);
+                newData.add(newGdata4);
+                newGData = newGdata4;
+                break;
+            case 5:
+                GData5 gd5 = (GData5) gData;
+                GData5 newGdata5 = new GData5(true, index, r, g, b, a, gd5.X1, gd5.Y1, gd5.Z1, gd5.X2, gd5.Y2, gd5.Z2, gd5.X3, gd5.Y3, gd5.Z3, gd5.X4, gd5.Y4, gd5.Z4, gd5.x1, gd5.y1, gd5.z1, gd5.x2,
+                        gd5.y2, gd5.z2, gd5.x3, gd5.y3, gd5.z3, gd5.x4, gd5.y4, gd5.z4, gd5.parent, linkedDatFile);
+                newData.add(newGdata5);
+                newGData = newGdata5;
+                break;
+            }
+            linker(gData, newGData);
+        }
+        dataToModify.clear();
+        dataToModify.addAll(newData);
     }
 }
