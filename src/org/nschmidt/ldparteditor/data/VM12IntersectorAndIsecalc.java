@@ -51,6 +51,14 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 public class VM12IntersectorAndIsecalc extends VM11HideShow {
 
+    private final BigDecimal TOLERANCE = BigDecimal.ZERO; // new BigDecimal("0.00001"); //.00001
+    private final BigDecimal ZEROT = BigDecimal.ZERO; //  = new BigDecimal("-0.00001");
+    private final BigDecimal ONET = BigDecimal.ONE; //  = new BigDecimal("1.00001");
+
+    private final BigDecimal TOLERANCER = new BigDecimal("0.00001"); //$NON-NLS-1$ .00001
+    private final BigDecimal ZEROTR = new BigDecimal("-0.00001"); //$NON-NLS-1$
+    private final BigDecimal ONETR = new BigDecimal("1.00001"); //$NON-NLS-1$
+
     protected VM12IntersectorAndIsecalc(DatFile linkedDatFile) {
         super(linkedDatFile);
     }

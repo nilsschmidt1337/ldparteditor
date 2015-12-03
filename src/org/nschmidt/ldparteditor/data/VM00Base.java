@@ -149,14 +149,6 @@ class VM00Base {
     protected final AtomicInteger openThreads = new AtomicInteger(0);
     protected final Lock lock = new ReentrantLock();
 
-    protected final BigDecimal TOLERANCE = BigDecimal.ZERO; // new BigDecimal("0.00001"); //.00001
-    protected final BigDecimal ZEROT = BigDecimal.ZERO; //  = new BigDecimal("-0.00001");
-    protected final BigDecimal ONET = BigDecimal.ONE; //  = new BigDecimal("1.00001");
-
-    protected final BigDecimal TOLERANCER = new BigDecimal("0.00001"); //$NON-NLS-1$ .00001
-    protected final BigDecimal ZEROTR = new BigDecimal("-0.00001"); //$NON-NLS-1$
-    protected final BigDecimal ONETR = new BigDecimal("1.00001"); //$NON-NLS-1$
-
     protected VM00Base(DatFile linkedDatFile) {
         this.linkedDatFile = linkedDatFile;
     }
