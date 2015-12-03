@@ -69,7 +69,6 @@ import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.UnificatorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
-import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
@@ -2432,29 +2431,6 @@ public class VertexManager extends VM99Clipboard {
 
     }
 
-    public synchronized void clear() {
-        final Editor3DWindow win = Editor3DWindow.getWindow();
-        vertexCountInSubfile.clear();
-        vertexLinkedToPositionInFile.clear();
-        vertexLinkedToSubfile.clear();
-        lineLinkedToVertices.clear();
-        declaredVertices.clear();
-        lines.clear();
-        triangles.clear();
-        quads.clear();
-        condlines.clear();
-        selectedItemIndex = -1;
-        win.disableSelectionTab();
-        selectedData.clear();
-        selectedVertices.clear();
-        selectedSubfiles.clear();
-        selectedLines.clear();
-        selectedTriangles.clear();
-        selectedQuads.clear();
-        selectedCondlines.clear();
-        lastSelectedVertex = null;
-    }
-
     public synchronized void adjustRotationCenter(Composite3D c3d, Event event) {
         Point cSize = c3d.getSize();
         PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
@@ -2653,42 +2629,6 @@ public class VertexManager extends VM99Clipboard {
             GuiManager.updateStatus(c3d);
             ((ScalableComposite) c3d.getParent()).redrawScales(event.x, event.y);
         }
-    }
-
-    public synchronized HashMap<GData0, Vertex[]> getDeclaredVertices() {
-        return new HashMap<GData0, Vertex[]>(declaredVertices);
-    }
-
-    public synchronized HashMap<GData2, Vertex[]> getLines() {
-        return new HashMap<GData2, Vertex[]>(lines);
-    }
-
-    public synchronized HashMap<GData3, Vertex[]> getTriangles() {
-        return new HashMap<GData3, Vertex[]>(triangles);
-    }
-
-    public synchronized ThreadsafeHashMap<GData3, Vertex[]> getTriangles_NOCLONE() {
-        return triangles;
-    }
-
-    public synchronized ThreadsafeHashMap<GData4, Vertex[]> getQuads_NOCLONE() {
-        return quads;
-    }
-
-    public synchronized HashMap<GData4, Vertex[]> getQuads() {
-        return new HashMap<GData4, Vertex[]>(quads);
-    }
-
-    public synchronized HashMap<GData5, Vertex[]> getCondlines() {
-        return new HashMap<GData5, Vertex[]>(condlines);
-    }
-
-    public Vertex getVertexToReplace() {
-        return vertexToReplace;
-    }
-
-    public void setVertexToReplace(Vertex vertexToReplace) {
-        this.vertexToReplace = vertexToReplace;
     }
 
     public void hideSelection() {
@@ -3774,10 +3714,6 @@ public class VertexManager extends VM99Clipboard {
         }
     }
 
-    public Set<Vertex> getVertices() {
-        return vertexLinkedToPositionInFile.keySet();
-    }
-
     public Vector4f getSelectionCenter() {
 
         final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
@@ -4054,20 +3990,6 @@ public class VertexManager extends VM99Clipboard {
         }
 
         return result;
-    }
-
-    public void selectTriangles(Set<GData> finalTriangleSet) {
-        selectedData.addAll(finalTriangleSet);
-        for (GData gData : finalTriangleSet) {
-            selectedTriangles.add((GData3) gData);
-        }
-    }
-
-    public void restoreTriangles(Set<GData> finalTriangleSet) {
-        finalTriangleSet.clear();
-        for (GData3 gData : selectedTriangles) {
-            finalTriangleSet.add(gData);
-        }
     }
 
     public void isecalc(IsecalcSettings is) {
@@ -10417,10 +10339,6 @@ public class VertexManager extends VM99Clipboard {
         return result;
     }
 
-    public AtomicBoolean getResetTimer() {
-        return resetTimer;
-    }
-
     public void merge(MergeTo mode, boolean syncWithTextEditor) {
 
         if (linkedDatFile.isReadOnly()) return;
@@ -11219,37 +11137,6 @@ public class VertexManager extends VM99Clipboard {
                 updateUnsavedStatus();
             }
             selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
-        }
-    }
-
-    public ArrayList<MemorySnapshot> getSnapshots() {
-        return snapshots;
-    }
-
-    public void addSnapshot() {
-        if (NLogger.DEBUG) {
-            MemorySnapshot snapshot = new MemorySnapshot(linkedDatFile);
-            getSnapshots().add(snapshot);
-            NLogger.debug(getClass(), "CREATED SNAPSHOT ON {0} ", snapshot.toString()); //$NON-NLS-1$
-        }
-    }
-
-    public void loadSnapshot(MemorySnapshot s) {
-        if (NLogger.DEBUG) {
-            clear();
-            GData0 emptyLine = new GData0(""); //$NON-NLS-1$
-            linkedDatFile.getDrawPerLine_NOCLONE().clear();
-            linkedDatFile.getDrawChainStart().setNext(emptyLine);
-            linkedDatFile.getDrawPerLine_NOCLONE().put(1, emptyLine);
-            setModified(true, false);
-            StringBuilder sb = new StringBuilder();
-            for (String line : s.getBackup()) {
-                sb.append("\n"); //$NON-NLS-1$
-                sb.append(line);
-            }
-            sb.deleteCharAt(0);
-            linkedDatFile.setText(sb.toString());
-            SubfileCompiler.compile(linkedDatFile, false, true);
         }
     }
 
