@@ -113,96 +113,10 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * @author nils
  *
  */
-public class VertexManager {
-
-    private final ArrayList<MemorySnapshot> snapshots = new ArrayList<MemorySnapshot>();
-
-    // 1 Vertex kann an mehreren Stellen (GData2-5 + position) manifestiert sein
-    /**
-     * Subfile-Inhalte sind hierbei enthalten. Die Manifestierung gegen
-     * {@code lineLinkedToVertices} checken, wenn ausgeschlossen werden soll,
-     * dass es sich um Subfile Daten handelt
-     */
-    private final ThreadsafeTreeMap<Vertex, Set<VertexManifestation>> vertexLinkedToPositionInFile = new ThreadsafeTreeMap<Vertex, Set<VertexManifestation>>();
-
-    // 1 Vertex kann keinem oder mehreren Subfiles angehören
-    private final ThreadsafeTreeMap<Vertex, Set<GData1>> vertexLinkedToSubfile = new ThreadsafeTreeMap<Vertex, Set<GData1>>();
-
-    // Auf Dateiebene: 1 Vertex kann an mehreren Stellen (GData1-5 + position)
-    // manifestiert sein, ist er auch im Subfile, so gibt VertexInfo dies an
-    /** Subfile-Inhalte sind hier nicht als Key refenziert!! */
-    private final ThreadsafeHashMap<GData, Set<VertexInfo>> lineLinkedToVertices = new ThreadsafeHashMap<GData, Set<VertexInfo>>();
-
-    public ThreadsafeHashMap<GData, Set<VertexInfo>> getLineLinkedToVertices() {
-        return lineLinkedToVertices;
-    }
-
-    private final TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE = new TreeMap<Vertex, float[]>();
-    private final HashMap<GData, float[]> dataLinkedToNormalCACHE = new HashMap<GData, float[]>();
-
-    private final ThreadsafeHashMap<GData1, Integer> vertexCountInSubfile = new ThreadsafeHashMap<GData1, Integer>();
-
-    private final ThreadsafeHashMap<GData0, Vertex[]> declaredVertices = new ThreadsafeHashMap<GData0, Vertex[]>();
-    private final ThreadsafeHashMap<GData2, Vertex[]> lines = new ThreadsafeHashMap<GData2, Vertex[]>();
-    private final ThreadsafeHashMap<GData3, Vertex[]> triangles = new ThreadsafeHashMap<GData3, Vertex[]>();
-    private final ThreadsafeHashMap<GData4, Vertex[]> quads = new ThreadsafeHashMap<GData4, Vertex[]>();
-    private final ThreadsafeHashMap<GData5, Vertex[]> condlines = new ThreadsafeHashMap<GData5, Vertex[]>();
-
-    private final Vertex[] vArray = new Vertex[4];
-    private final VertexManifestation[] vdArray = new VertexManifestation[4];
-
-    private final Set<Vertex> selectedVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
-
-    private final Set<GData> selectedData = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
-    private final Set<GData1> selectedSubfiles = Collections.newSetFromMap(new ThreadsafeHashMap<GData1, Boolean>());
-    private final Set<GData2> selectedLines = Collections.newSetFromMap(new ThreadsafeHashMap<GData2, Boolean>());
-    private final Set<GData3> selectedTriangles = Collections.newSetFromMap(new ThreadsafeHashMap<GData3, Boolean>());
-    private final Set<GData4> selectedQuads = Collections.newSetFromMap(new ThreadsafeHashMap<GData4, Boolean>());
-    private final Set<GData5> selectedCondlines = Collections.newSetFromMap(new ThreadsafeHashMap<GData5, Boolean>());
-
-    private final Set<Vertex> backupSelectedVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
-
-    private final Set<GData> backupSelectedData = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
-    private final Set<GData1> backupSelectedSubfiles = Collections.newSetFromMap(new ThreadsafeHashMap<GData1, Boolean>());
-    private final Set<GData2> backupSelectedLines = Collections.newSetFromMap(new ThreadsafeHashMap<GData2, Boolean>());
-    private final Set<GData3> backupSelectedTriangles = Collections.newSetFromMap(new ThreadsafeHashMap<GData3, Boolean>());
-    private final Set<GData4> backupSelectedQuads = Collections.newSetFromMap(new ThreadsafeHashMap<GData4, Boolean>());
-    private final Set<GData5> backupSelectedCondlines = Collections.newSetFromMap(new ThreadsafeHashMap<GData5, Boolean>());
-
-    private final Set<GData> newSelectedData = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
-
-    private GDataPNG selectedBgPicture = null;
-    private int selectedBgPictureIndex = -1;
-
-    private final Set<Vertex> selectedVerticesForSubfile = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
-    private final Set<GData2> selectedLinesForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<GData2, Boolean>());
-    private final Set<GData3> selectedTrianglesForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<GData3, Boolean>());
-    private final Set<GData4> selectedQuadsForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<GData4, Boolean>());
-    private final Set<GData5> selectedCondlinesForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<GData5, Boolean>());
-
-    private static final List<GData> CLIPBOARD = new ArrayList<GData>();
-    private static final Set<GData> CLIPBOARD_InvNext = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
-
-    private final Set<GData> dataToHide = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
-
-    private final PowerRay powerRay = new PowerRay();
-
-    private final DatFile linkedDatFile;
-
-    private Vertex vertexToReplace = null;
-
-    private boolean modified = false;
-    private boolean updated = true;
-
-    private AtomicBoolean skipSyncWithTextEditor = new AtomicBoolean(false);
-
-    private int selectedItemIndex = -1;
-    private GData selectedLine = null;
-
-    private Vertex lastSelectedVertex = null;
+public class VertexManager extends VMBase {
 
     public VertexManager(DatFile linkedDatFile) {
-        this.linkedDatFile = linkedDatFile;
+        super(linkedDatFile);
     }
 
     public synchronized GData0 addVertex(Vertex vertex) {
