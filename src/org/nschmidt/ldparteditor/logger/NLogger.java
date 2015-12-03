@@ -25,6 +25,7 @@ import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.Locale;
 
+import org.eclipse.swt.SWT;
 import org.nschmidt.ldparteditor.helpers.Version;
 
 /**
@@ -233,6 +234,10 @@ public enum NLogger {
         sb.append("[LDPartEditor "); //$NON-NLS-1$
         sb.append(DEBUG ? "DEBUG " : "RELEASE "); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append(Version.getVersion());
+        sb.append(" @ SWT v"); //$NON-NLS-1$
+        sb.append(SWT.getVersion());
+        sb.append(" OS "); //$NON-NLS-1$
+        sb.append(SWT.getPlatform());
         sb.append("]"); //$NON-NLS-1$
         System.err.println(sb.toString());
     }
