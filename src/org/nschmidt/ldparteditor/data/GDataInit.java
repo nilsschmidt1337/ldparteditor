@@ -118,7 +118,7 @@ public final class GDataInit extends GData {
         getBFCorientationMap(map);
     }
     @Override
-    public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {
+    public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         GData.localWinding = BFC.NOCERTIFY;
         GData.accumClip = 0;
         GData.globalInvertNext = false;
@@ -131,12 +131,12 @@ public final class GDataInit extends GData {
         GData.globalTextureStack.clear();
     }
     @Override
-    public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {
-        getVertexNormalMap(vertexLinkedToNormalCACHE, null, null);
+    public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        getVertexNormalMap(vertexLinkedToNormalCACHE, null, vm);
     }
     @Override
-    public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {
-        getVertexNormalMap(vertexLinkedToNormalCACHE, null, null);
+    public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        getVertexNormalMap(vertexLinkedToNormalCACHE, null, vm);
     }
 
     public GData1 getParent() {

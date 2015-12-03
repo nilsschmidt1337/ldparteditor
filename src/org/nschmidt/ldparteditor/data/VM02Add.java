@@ -40,7 +40,7 @@ import org.nschmidt.ldparteditor.text.DatParser;
  * @author nils
  *
  */
-class VM02Add extends VM01Select {
+class VM02Add extends VM01SelectHelper {
 
     public VM02Add(DatFile linkedDatFile) {
         super(linkedDatFile);
