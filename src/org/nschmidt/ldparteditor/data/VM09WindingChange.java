@@ -28,7 +28,7 @@ import org.nschmidt.ldparteditor.text.DatParser;
 
 public class VM09WindingChange extends VM08SlicerPro {
 
-    public VM09WindingChange(DatFile linkedDatFile) {
+    protected VM09WindingChange(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 

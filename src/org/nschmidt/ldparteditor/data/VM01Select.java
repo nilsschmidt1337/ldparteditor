@@ -31,7 +31,7 @@ import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM01Select extends VM00Snapshot {
 
-    public VM01Select(DatFile linkedDatFile) {
+    protected VM01Select(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 

@@ -45,7 +45,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 public class VM01SelectHelper extends VM01Select {
 
-    public VM01SelectHelper(DatFile linkedDatFile) {
+    protected VM01SelectHelper(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 

@@ -32,9 +32,9 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
-public class VM10Selector extends VM09WindingChange {
+class VM10Selector extends VM09WindingChange {
 
-    public VM10Selector(DatFile linkedDatFile) {
+    protected VM10Selector(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 
