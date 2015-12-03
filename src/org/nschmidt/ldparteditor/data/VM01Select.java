@@ -638,4 +638,32 @@ public class VM01Select extends VM00Base {
     public synchronized Set<GData5> getSelectedCondlines() {
         return selectedCondlines;
     }
+
+    public synchronized void addTextLineToSelection(int line) {
+        final GData gd;
+        if ((gd = linkedDatFile.getDrawPerLine_NOCLONE().getValue(line)) != null) {
+            if (gd.type() > 0 && gd.type() < 6) {
+                selectedData.add(gd);
+            }
+            switch (gd.type()) {
+            case 1:
+                selectSubfile(gd);
+                break;
+            case 2:
+                selectedLines.add((GData2) gd);
+                break;
+            case 3:
+                selectedTriangles.add((GData3) gd);
+                break;
+            case 4:
+                selectedQuads.add((GData4) gd);
+                break;
+            case 5:
+                selectedCondlines.add((GData5) gd);
+                break;
+            default:
+                break;
+            }
+        }
+    }
 }

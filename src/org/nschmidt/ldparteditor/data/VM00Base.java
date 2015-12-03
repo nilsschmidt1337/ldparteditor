@@ -1252,4 +1252,9 @@ class VM00Base {
         declaredVertices.put(vertexTag, new Vertex[] { vertex });
         return vertexTag;
     }
+
+    public void clearVertexNormalCache() {
+        vertexLinkedToNormalCACHE.clear();
+        dataLinkedToNormalCACHE.clear();
+    }
 }

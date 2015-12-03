@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -37,6 +38,10 @@ public class VM99Clipboard extends VM02Add {
 
     public VM99Clipboard(DatFile linkedDatFile) {
         super(linkedDatFile);
+    }
+
+    public static List<GData> getClipboard() {
+        return CLIPBOARD;
     }
 
     public void copy() {
