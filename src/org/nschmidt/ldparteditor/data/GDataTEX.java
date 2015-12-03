@@ -212,7 +212,7 @@ public final class GDataTEX extends GData {
     public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map) {}
 
     @Override
-    public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {
+    public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         boolean foundLocalTEXMAP = GData.globalFoundTEXMAPStack.peek();
         if (GData.globalFoundTEXMAPNEXT) {
             GData.globalFoundTEXMAPStack.pop();
@@ -246,7 +246,7 @@ public final class GDataTEX extends GData {
     }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {
+    public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         boolean foundLocalTEXMAP = GData.globalFoundTEXMAPStack.peek();
         if (GData.globalFoundTEXMAPNEXT) {
             GData.globalFoundTEXMAPStack.pop();
@@ -280,7 +280,7 @@ public final class GDataTEX extends GData {
     }
 
     @Override
-    public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {
+    public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         boolean foundLocalTEXMAP = GData.globalFoundTEXMAPStack.peek();
         if (GData.globalFoundTEXMAPNEXT) {
             GData.globalFoundTEXMAPStack.pop();

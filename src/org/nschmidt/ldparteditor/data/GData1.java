@@ -2580,7 +2580,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {
+    public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         if (matrix != null) {
             boolean tNext = GData.globalFoundTEXMAPNEXT;
             GData.globalFoundTEXMAPNEXT = false;
@@ -2639,7 +2639,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {
+    public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
         GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
         GData data2draw = myGData;
@@ -2658,7 +2658,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VertexManager vm) {
+    public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
         GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
         GData data2draw = myGData;

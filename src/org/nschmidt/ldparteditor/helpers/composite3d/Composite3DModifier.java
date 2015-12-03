@@ -17,15 +17,19 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.GLContext;
+import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.composites.CompositeScale;
 import org.nschmidt.ldparteditor.composites.ScalableComposite;
+import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
@@ -398,5 +402,37 @@ public class Composite3DModifier {
 
     public void switchLabel(boolean selection) {
         c3d.setShowingLabels(selection);
+    }
+
+    public void zoomToFit() {
+        final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
+        float max_x = 0f;
+        float max_y = 0f;
+        for (Vertex v : c3d.getLockableDatFileReference().getVertexManager().getVertices()) {
+            float ax = Math.abs(v.x);
+            float ay = Math.abs(v.y);
+            if (ax > max_x) max_x = ax;
+            if (ay > max_y) max_y = ay;
+        }
+        Matrix4f id = new Matrix4f();
+        Matrix4f.setIdentity(id);
+        c3d.getTranslation().load(id);
+        Rectangle b = c3d.getBounds();
+        if (max_x > max_y) {
+            c3d.setZoom(b.width / (max_x * 4f * View.PIXEL_PER_LDU));
+        } else {
+            c3d.setZoom(b.height / (max_y * 4f * View.PIXEL_PER_LDU));
+        }
+        pc.setZoom_exponent((float) (Math.log10(c3d.getZoom()) + 3f) * 10f);
+
+        if (Float.isInfinite(c3d.getZoom()) || Float.isInfinite(pc.getZoom_exponent()) || Float.isNaN(c3d.getZoom()) || Float.isNaN(pc.getZoom_exponent())) {
+            pc.setZoom_exponent(-20f);
+            c3d.setZoom((float) Math.pow(10.0d, -20f / 10 - 3));
+        }
+
+        c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
+        GuiManager.updateStatus(c3d);
+        ((ScalableComposite) c3d.getParent()).redrawScales();
+        pc.initializeViewportPerspective();
     }
 }

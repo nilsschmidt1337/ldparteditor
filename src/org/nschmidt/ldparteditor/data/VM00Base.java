@@ -1258,6 +1258,12 @@ class VM00Base {
         dataLinkedToNormalCACHE.clear();
     }
 
+    public void fillVertexNormalCache(GData data2draw) {
+        while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+            data2draw.getVertexNormalMap(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, this);
+        }
+    }
+
     public void delete(boolean moveAdjacentData, boolean setModified) {
         if (linkedDatFile.isReadOnly())
             return;

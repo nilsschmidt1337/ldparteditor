@@ -1678,7 +1678,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             Composite3D c3d = renderer.getC3D();
                                             if (!c3d.isDatFileLockedOnDisplay()) {
                                                 c3d.setLockableDatFileReference(df);
-                                                vm.zoomToFit(c3d);
+                                                c3d.getModifier().zoomToFit();
                                             }
                                         }
 
@@ -6292,10 +6292,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
                     cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
                     df.parseForData(true);
-                    final VertexManager vm = df.getVertexManager();
                     Project.setFileToEdit(df);
                     cmp_Container.getComposite3D().setLockableDatFileReference(df);
-                    vm.zoomToFit(cmp_Container.getComposite3D());
+                    cmp_Container.getComposite3D().getModifier().zoomToFit();
                     Editor3DWindow.getSashForm().getParent().layout();
                     Editor3DWindow.getSashForm().setWeights(mainSashWeights);
                 }
@@ -6319,7 +6318,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         Composite3D c3d = renderer.getC3D();
                         if (!c3d.isDatFileLockedOnDisplay()) {
                             c3d.setLockableDatFileReference(df);
-                            vm.zoomToFit(c3d);
+                            c3d.getModifier().zoomToFit();
                         }
                     }
                 }
