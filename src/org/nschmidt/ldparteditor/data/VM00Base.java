@@ -71,7 +71,7 @@ class VM00Base {
     /** Subfile-Inhalte sind hier nicht als Key refenziert!! */
     protected final ThreadsafeHashMap<GData, Set<VertexInfo>> lineLinkedToVertices = new ThreadsafeHashMap<GData, Set<VertexInfo>>();
 
-    public ThreadsafeHashMap<GData, Set<VertexInfo>> getLineLinkedToVertices() {
+    public final ThreadsafeHashMap<GData, Set<VertexInfo>> getLineLinkedToVertices() {
         return lineLinkedToVertices;
     }
 
@@ -142,11 +142,7 @@ class VM00Base {
     protected TreeSet<Vertex> hiddenVertices = new TreeSet<Vertex>();
     protected HashSet<GData> hiddenData = new HashSet<GData>();
 
-    protected HashMap<GData, Byte> bfcMap = new HashMap<GData, Byte>();
-
-    protected final double EPSILON = 0.000001;
-    /* Null vector */
-    protected double[] nullv = new double[]{0.0,0.0,0.0};
+    protected final HashMap<GData, Byte> bfcMap = new HashMap<GData, Byte>();
 
     protected final AtomicBoolean resetTimer = new AtomicBoolean(false);
     protected final AtomicInteger tid = new AtomicInteger(0);
@@ -165,23 +161,23 @@ class VM00Base {
         this.linkedDatFile = linkedDatFile;
     }
 
-    public synchronized void setUpdated(boolean updated) {
+    public final synchronized void setUpdated(boolean updated) {
         this.updated = updated;
         if (updated) {
             ViewIdleManager.renderLDrawStandard[0].set(true);
         }
     }
 
-    public synchronized void setModified_NoSync() {
+    public final synchronized void setModified_NoSync() {
         this.modified = true;
         setUpdated(false);
     }
 
-    public boolean isModified() {
+    public final boolean isModified() {
         return modified;
     }
 
-    public synchronized void setModified(boolean modified, boolean addHistory) {
+    public final synchronized void setModified(boolean modified, boolean addHistory) {
         if (modified) {
             setUpdated(false);
             syncWithTextEditors(addHistory);
@@ -189,11 +185,11 @@ class VM00Base {
         this.modified = modified;
     }
 
-    public boolean isUpdated() {
+    public final boolean isUpdated() {
         return updated;
     }
 
-    protected String bigDecimalToString(BigDecimal bd) {
+    protected final String bigDecimalToString(BigDecimal bd) {
         String result;
         if (bd.compareTo(BigDecimal.ZERO) == 0)
             return "0"; //$NON-NLS-1$
@@ -204,7 +200,7 @@ class VM00Base {
         return result;
     }
 
-    public void syncWithTextEditors(boolean addHistory) {
+    public final void syncWithTextEditors(boolean addHistory) {
 
         if (addHistory) linkedDatFile.addHistory();
 
@@ -326,27 +322,27 @@ class VM00Base {
         }
     }
 
-    public boolean isSyncWithLpeInline() {
+    public final boolean isSyncWithLpeInline() {
         return WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get();
     }
 
-    public boolean isSyncWithTextEditor() {
+    public final boolean isSyncWithTextEditor() {
         return WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get();
     }
 
-    public void setSyncWithTextEditor(boolean syncWithTextEditor) {
+    public final void setSyncWithTextEditor(boolean syncWithTextEditor) {
         WorkbenchManager.getUserSettingState().getSyncWithTextEditor().set(syncWithTextEditor);
     }
 
-    public boolean isSkipSyncWithTextEditor() {
+    public final boolean isSkipSyncWithTextEditor() {
         return skipSyncWithTextEditor.get();
     }
 
-    public void setSkipSyncWithTextEditor(boolean syncWithTextEditor) {
+    public final void setSkipSyncWithTextEditor(boolean syncWithTextEditor) {
         this.skipSyncWithTextEditor.set(syncWithTextEditor);
     }
 
-    public void updateUnsavedStatus() {
+    public final void updateUnsavedStatus() {
         String newText = linkedDatFile.getText();
         linkedDatFile.setText(newText);
         if (newText.equals(linkedDatFile.getOriginalText()) && linkedDatFile.getOldName().equals(linkedDatFile.getNewName())) {
@@ -367,7 +363,7 @@ class VM00Base {
      * inconsistencies. All calls to this method will be "suppressed" in the release version.
      * Except the correction of 'trivial' selection inconsistancies
      */
-    public synchronized void validateState() {
+    public final synchronized void validateState() {
         // Validate and auto-correct selection inconsistancies
         if (selectedData.size() != selectedSubfiles.size() + selectedLines.size() + selectedTriangles.size() + selectedQuads.size() + selectedCondlines.size()) {
             // throw new AssertionError("The selected data is not equal to the content of single selection classes, e.g. 'selectedTriangles'."); //$NON-NLS-1$
@@ -507,7 +503,7 @@ class VM00Base {
         }
     }
 
-    public void cleanupSelection() {
+    public final void cleanupSelection() {
 
         selectedData.clear();
 
@@ -563,7 +559,7 @@ class VM00Base {
         }
     }
 
-    protected boolean exist(GData g) {
+    protected final boolean exist(GData g) {
         return lines.containsKey(g) || triangles.containsKey(g) || quads.containsKey(g) || condlines.containsKey(g) || lineLinkedToVertices.containsKey(g);
     }
 
@@ -572,7 +568,7 @@ class VM00Base {
      * @param gdata
      * @return {@code true} if the tail was removed
      */
-    public synchronized boolean remove(final GData gdata) {
+    public final synchronized boolean remove(final GData gdata) {
         if (gdata == null)
             return false;
         final Set<VertexInfo> lv = lineLinkedToVertices.get(gdata);
@@ -743,7 +739,7 @@ class VM00Base {
      * @param modifyVertexMetaCommands
      * @return
      */
-    public synchronized boolean changeVertexDirect(Vertex oldVertex, Vertex newVertex, boolean modifyVertexMetaCommands) {// ,
+    public final synchronized boolean changeVertexDirect(Vertex oldVertex, Vertex newVertex, boolean modifyVertexMetaCommands) {// ,
         // Set<GData>
         // modifiedData)
         // {
@@ -931,7 +927,7 @@ class VM00Base {
         return true;
     }
 
-    public synchronized boolean changeVertexDirectFast(Vertex oldVertex, Vertex newVertex, boolean moveAdjacentData) {
+    public final synchronized boolean changeVertexDirectFast(Vertex oldVertex, Vertex newVertex, boolean moveAdjacentData) {
 
         GData tail = linkedDatFile.getDrawChainTail();
 
@@ -1084,7 +1080,7 @@ class VM00Base {
     }
 
 
-    public synchronized GData changeVertexDirectFast(Vertex oldVertex, Vertex newVertex, boolean moveAdjacentData, GData og) {
+    public final synchronized GData changeVertexDirectFast(Vertex oldVertex, Vertex newVertex, boolean moveAdjacentData, GData og) {
 
         GData tail = linkedDatFile.getDrawChainTail();
 
@@ -1239,7 +1235,7 @@ class VM00Base {
         return og;
     }
 
-    public synchronized GData0 addVertex(Vertex vertex) {
+    public final synchronized GData0 addVertex(Vertex vertex) {
         if (vertex == null) {
             vertex = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
         }
@@ -1253,18 +1249,18 @@ class VM00Base {
         return vertexTag;
     }
 
-    public void clearVertexNormalCache() {
+    public final void clearVertexNormalCache() {
         vertexLinkedToNormalCACHE.clear();
         dataLinkedToNormalCACHE.clear();
     }
 
-    public void fillVertexNormalCache(GData data2draw) {
+    public final void fillVertexNormalCache(GData data2draw) {
         while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
             data2draw.getVertexNormalMap(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, this);
         }
     }
 
-    public void delete(boolean moveAdjacentData, boolean setModified) {
+    public final void delete(boolean moveAdjacentData, boolean setModified) {
         if (linkedDatFile.isReadOnly())
             return;
 
@@ -1553,7 +1549,7 @@ class VM00Base {
         }
     }
 
-    protected void linker(GData oldData, GData newData) {
+    protected final void linker(GData oldData, GData newData) {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
         if (oldData.equals(linkedDatFile.getDrawChainTail()))
             linkedDatFile.setDrawChainTail(newData);
@@ -1571,47 +1567,47 @@ class VM00Base {
         return new HashMap<GData0, Vertex[]>(declaredVertices);
     }
 
-    public synchronized HashMap<GData2, Vertex[]> getLines() {
+    public final synchronized HashMap<GData2, Vertex[]> getLines() {
         return new HashMap<GData2, Vertex[]>(lines);
     }
 
-    public synchronized HashMap<GData3, Vertex[]> getTriangles() {
+    public final synchronized HashMap<GData3, Vertex[]> getTriangles() {
         return new HashMap<GData3, Vertex[]>(triangles);
     }
 
-    public synchronized ThreadsafeHashMap<GData3, Vertex[]> getTriangles_NOCLONE() {
+    public final synchronized ThreadsafeHashMap<GData3, Vertex[]> getTriangles_NOCLONE() {
         return triangles;
     }
 
-    public synchronized ThreadsafeHashMap<GData4, Vertex[]> getQuads_NOCLONE() {
+    public final synchronized ThreadsafeHashMap<GData4, Vertex[]> getQuads_NOCLONE() {
         return quads;
     }
 
-    public synchronized HashMap<GData4, Vertex[]> getQuads() {
+    public final synchronized HashMap<GData4, Vertex[]> getQuads() {
         return new HashMap<GData4, Vertex[]>(quads);
     }
 
-    public synchronized HashMap<GData5, Vertex[]> getCondlines() {
+    public final synchronized HashMap<GData5, Vertex[]> getCondlines() {
         return new HashMap<GData5, Vertex[]>(condlines);
     }
 
-    public Vertex getVertexToReplace() {
+    public final Vertex getVertexToReplace() {
         return vertexToReplace;
     }
 
-    public void setVertexToReplace(Vertex vertexToReplace) {
+    public final void setVertexToReplace(Vertex vertexToReplace) {
         this.vertexToReplace = vertexToReplace;
     }
 
-    public AtomicBoolean getResetTimer() {
+    public final AtomicBoolean getResetTimer() {
         return resetTimer;
     }
 
-    public Set<Vertex> getVertices() {
+    public final Set<Vertex> getVertices() {
         return vertexLinkedToPositionInFile.keySet();
     }
 
-    public synchronized void clear() {
+    public final synchronized void clear() {
         final Editor3DWindow win = Editor3DWindow.getWindow();
         vertexCountInSubfile.clear();
         vertexLinkedToPositionInFile.clear();
