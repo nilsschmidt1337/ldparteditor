@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -35,8 +34,6 @@ import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
-import org.nschmidt.ldparteditor.helpers.math.MathHelper;
-import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -49,13 +46,13 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
  * @author nils
  *
  */
-public class VertexManager extends VM99Clipboard {
+public final class VertexManager extends VM99Clipboard {
 
     public VertexManager(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 
-    public synchronized void draw(Composite3D c3d) {
+    public final synchronized void draw(Composite3D c3d) {
         if (!linkedDatFile.isDrawSelection()) return;
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewport_Inverse();
@@ -835,132 +832,5 @@ public class VertexManager extends VM99Clipboard {
             GuiManager.updateStatus(c3d);
             ((ScalableComposite) c3d.getParent()).redrawScales(event.x, event.y);
         }
-    }
-
-    public Vector4f getVertexNormal(Vertex min) {
-        Vector4f result = new Vector4f(0f, 0f, 0f, 0f);
-        Set<VertexManifestation> linked = vertexLinkedToPositionInFile.get(min);
-
-        for (VertexManifestation m : linked) {
-            GData g = m.getGdata();
-            Vector3f n;
-            switch (g.type()) {
-            case 3:
-                GData3 g3 = (GData3) g;
-                n = new Vector3f(g3.xn, g3.yn, g3.zn);
-                if (n.lengthSquared() != 0) {
-                    n.normalise();
-                    result.set(n.x + result.x, n.y + result.y, n.z + result.z);
-                }
-                break;
-            case 4:
-                GData4 g4 = (GData4) g;
-                n = new Vector3f(g4.xn, g4.yn, g4.zn);
-                if (n.lengthSquared() != 0) {
-                    n.normalise();
-                    result.set(n.x + result.x, n.y + result.y, n.z + result.z);
-                }
-                break;
-            }
-        }
-        if (result.lengthSquared() == 0)
-            return new Vector4f(0f, 0f, 1f, 1f);
-        result.normalise();
-        result.setW(1f);
-        return result;
-    }
-
-    public void setVertexAndNormal(float x, float y, float z, boolean negate, GData gd, int useCubeMapCache) {
-        boolean useCache = useCubeMapCache > 0;
-        // TODO Needs better caching since the connectivity information of TEXMAP data is unknown and the orientation of the normals can vary.
-        Vector4f v;
-        switch (gd.type()) {
-        case 3:
-            v = new Vector4f(x, y, z, 1f);
-            Matrix4f.transform(((GData3) gd).parent.productMatrix, v, v);
-            break;
-        case 4:
-            v = new Vector4f(x, y, z, 1f);
-            Matrix4f.transform(((GData4) gd).parent.productMatrix, v, v);
-            break;
-        default:
-            throw new AssertionError();
-        }
-        if (useCache) {
-            float[] n;
-            if ((n = vertexLinkedToNormalCACHE.get(new Vertex(v.x, v.y, v.z, false))) != null) {
-                GL11.glNormal3f(-n[0], -n[1], -n[2]);
-            } else {
-                n = dataLinkedToNormalCACHE.get(gd);
-                if (n != null) {
-                    if (negate) {
-                        GL11.glNormal3f(-n[0], -n[1], -n[2]);
-                    } else {
-                        GL11.glNormal3f(n[0], n[1], n[2]);
-                    }
-                }
-            }
-        } else {
-            float[] n = dataLinkedToNormalCACHE.get(gd);
-            if (n != null) {
-                if (negate) {
-                    GL11.glNormal3f(-n[0], -n[1], -n[2]);
-                } else {
-                    GL11.glNormal3f(n[0], n[1], n[2]);
-                }
-            }
-        }
-        GL11.glVertex3f(v.x, v.y, v.z);
-    }
-
-    public ArrayList<ParsingResult> checkForFlatScaling(GData1 ref) {
-        ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
-
-        Matrix4f tMatrix = (Matrix4f) ref.accurateLocalMatrix.getMatrix4f().invert();
-
-        boolean plainOnX = true;
-        boolean plainOnY = true;
-        boolean plainOnZ = true;
-
-        Set<VertexInfo> verts = lineLinkedToVertices.get(ref);
-        if (verts == null) return result;
-        for (VertexInfo vi : verts) {
-            Vector4f vert = vi.vertex.toVector4f();
-            vert.setX(vert.x / 1000f);
-            vert.setY(vert.y / 1000f);
-            vert.setZ(vert.z / 1000f);
-            Vector4f vert2 = Matrix4f.transform(tMatrix, vert, null);
-
-            if (plainOnX && Math.abs(vert2.x) > 0.001f) {
-                plainOnX = false;
-            }
-            if (plainOnY && Math.abs(vert2.y) > 0.001f) {
-                plainOnY = false;
-            }
-            if (plainOnZ && Math.abs(vert2.z) > 0.001f) {
-                plainOnZ = false;
-            }
-            if (!plainOnX && !plainOnY && !plainOnZ) {
-                return result;
-            }
-        }
-
-        Matrix TMatrix2 = ref.accurateLocalMatrix;
-        final BigDecimal lengthX =  plainOnX ? MathHelper.sqrt(TMatrix2.M00.multiply(TMatrix2.M00).add(TMatrix2.M01.multiply(TMatrix2.M01)).add(TMatrix2.M02.multiply(TMatrix2.M02))).subtract(BigDecimal.ONE).abs() : null;
-        final BigDecimal lengthY =  plainOnY ? MathHelper.sqrt(TMatrix2.M10.multiply(TMatrix2.M10).add(TMatrix2.M11.multiply(TMatrix2.M11)).add(TMatrix2.M12.multiply(TMatrix2.M12))).subtract(BigDecimal.ONE).abs() : null;
-        final BigDecimal lengthZ =  plainOnZ ? MathHelper.sqrt(TMatrix2.M20.multiply(TMatrix2.M20).add(TMatrix2.M21.multiply(TMatrix2.M21)).add(TMatrix2.M22.multiply(TMatrix2.M22))).subtract(BigDecimal.ONE).abs() : null;
-        // Epsilon is 0.000001 / DATHeader default value is 0.0005
-        final BigDecimal epsilon = new BigDecimal("0.000001"); //$NON-NLS-1$
-        if (plainOnX && epsilon.compareTo(lengthX) < 0) {
-            result.add(new ParsingResult(I18n.VM_FlatScaledX, "[W02] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-        }
-        if (plainOnY && epsilon.compareTo(lengthY) < 0) {
-            result.add(new ParsingResult(I18n.VM_FlatScaledY, "[W03] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-        }
-        if (plainOnZ && epsilon.compareTo(lengthZ) < 0) {
-            result.add(new ParsingResult(I18n.VM_FlatScaledZ, "[W04] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-        }
-
-        return result;
     }
 }

@@ -32,6 +32,10 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
@@ -1254,6 +1258,79 @@ class VM00Base {
         while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
             data2draw.getVertexNormalMap(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, this);
         }
+    }
+
+    public Vector4f getVertexNormal(Vertex min) {
+        Vector4f result = new Vector4f(0f, 0f, 0f, 0f);
+        Set<VertexManifestation> linked = vertexLinkedToPositionInFile.get(min);
+        for (VertexManifestation m : linked) {
+            GData g = m.getGdata();
+            Vector3f n = null;
+            switch (g.type()) {
+            case 3:
+                GData3 g3 = (GData3) g;
+                n = new Vector3f(g3.xn, g3.yn, g3.zn);
+                break;
+            case 4:
+                GData4 g4 = (GData4) g;
+                n = new Vector3f(g4.xn, g4.yn, g4.zn);
+                break;
+            }
+            if (n != null) {
+                if (n.lengthSquared() != 0) {
+                    n.normalise();
+                    result.set(n.x + result.x, n.y + result.y, n.z + result.z);
+                }
+            }
+        }
+        if (result.lengthSquared() == 0)
+            return new Vector4f(0f, 0f, 1f, 1f);
+        result.normalise();
+        result.setW(1f);
+        return result;
+    }
+
+    public void setVertexAndNormal(float x, float y, float z, boolean negate, GData gd, int useCubeMapCache) {
+        boolean useCache = useCubeMapCache > 0;
+        // TODO Needs better caching since the connectivity information of TEXMAP data is unknown and the orientation of the normals can vary.
+        Vector4f v;
+        switch (gd.type()) {
+        case 3:
+            v = new Vector4f(x, y, z, 1f);
+            Matrix4f.transform(((GData3) gd).parent.productMatrix, v, v);
+            break;
+        case 4:
+            v = new Vector4f(x, y, z, 1f);
+            Matrix4f.transform(((GData4) gd).parent.productMatrix, v, v);
+            break;
+        default:
+            throw new AssertionError();
+        }
+        if (useCache) {
+            float[] n;
+            if ((n = vertexLinkedToNormalCACHE.get(new Vertex(v.x, v.y, v.z, false))) != null) {
+                GL11.glNormal3f(-n[0], -n[1], -n[2]);
+            } else {
+                n = dataLinkedToNormalCACHE.get(gd);
+                if (n != null) {
+                    if (negate) {
+                        GL11.glNormal3f(-n[0], -n[1], -n[2]);
+                    } else {
+                        GL11.glNormal3f(n[0], n[1], n[2]);
+                    }
+                }
+            }
+        } else {
+            float[] n = dataLinkedToNormalCACHE.get(gd);
+            if (n != null) {
+                if (negate) {
+                    GL11.glNormal3f(-n[0], -n[1], -n[2]);
+                } else {
+                    GL11.glNormal3f(n[0], n[1], n[2]);
+                }
+            }
+        }
+        GL11.glVertex3f(v.x, v.y, v.z);
     }
 
     public final void delete(boolean moveAdjacentData, boolean setModified) {
