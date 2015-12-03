@@ -610,4 +610,32 @@ public class VM01Select extends VM00Base {
             }
         }
     }
+
+    public synchronized Set<Vertex> getSelectedVertices() {
+        return selectedVertices;
+    }
+
+    public synchronized Set<GData> getSelectedData() {
+        return selectedData;
+    }
+
+    public synchronized Set<GData1> getSelectedSubfiles() {
+        return selectedSubfiles;
+    }
+
+    public synchronized Set<GData2> getSelectedLines() {
+        return selectedLines;
+    }
+
+    public synchronized Set<GData3> getSelectedTriangles() {
+        return selectedTriangles;
+    }
+
+    public synchronized Set<GData4> getSelectedQuads() {
+        return selectedQuads;
+    }
+
+    public synchronized Set<GData5> getSelectedCondlines() {
+        return selectedCondlines;
+    }
 }
