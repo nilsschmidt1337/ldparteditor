@@ -33,7 +33,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 class VM06Edger2 extends VM05Distance {
 
-    public VM06Edger2(DatFile linkedDatFile) {
+    protected VM06Edger2(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 

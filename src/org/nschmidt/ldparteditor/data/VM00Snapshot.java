@@ -22,7 +22,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 
 public class VM00Snapshot extends VM00Base {
 
-    public VM00Snapshot(DatFile linkedDatFile) {
+    protected VM00Snapshot(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 

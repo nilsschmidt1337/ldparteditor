@@ -26,7 +26,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 
 class VM05Distance extends VM04Rectifier {
 
-    public VM05Distance(DatFile linkedDatFile) {
+    protected VM05Distance(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 

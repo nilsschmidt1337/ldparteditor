@@ -32,7 +32,7 @@ import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM03Adjacency extends VM02Add {
 
-    public VM03Adjacency(DatFile linkedDatFile) {
+    protected VM03Adjacency(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 

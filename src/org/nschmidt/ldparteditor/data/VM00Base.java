@@ -161,7 +161,7 @@ class VM00Base {
     protected final BigDecimal ZEROTR = new BigDecimal("-0.00001"); //$NON-NLS-1$
     protected final BigDecimal ONETR = new BigDecimal("1.00001"); //$NON-NLS-1$
 
-    public VM00Base(DatFile linkedDatFile) {
+    protected VM00Base(DatFile linkedDatFile) {
         this.linkedDatFile = linkedDatFile;
     }
 

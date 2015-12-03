@@ -34,7 +34,7 @@ import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM07PathTruder extends VM06Edger2 {
 
-    public VM07PathTruder(DatFile linkedDatFile) {
+    protected VM07PathTruder(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 

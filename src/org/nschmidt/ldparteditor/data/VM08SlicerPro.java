@@ -48,7 +48,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 public class VM08SlicerPro extends VM07PathTruder {
 
-    public VM08SlicerPro(DatFile linkedDatFile) {
+    protected VM08SlicerPro(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 

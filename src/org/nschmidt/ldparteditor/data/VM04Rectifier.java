@@ -37,7 +37,7 @@ import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM04Rectifier extends VM03Adjacency {
 
-    public VM04Rectifier(DatFile linkedDatFile) {
+    protected VM04Rectifier(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 
