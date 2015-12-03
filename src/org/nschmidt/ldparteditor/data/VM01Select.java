@@ -736,4 +736,20 @@ class VM01Select extends VM00Snapshot {
             finalTriangleSet.add(gData);
         }
     }
+
+    public boolean isNotInSubfileAndLinetype1to5(GData g) {
+        if (!exist(g) || !lineLinkedToVertices.containsKey(g)) {
+            return false;
+        }
+        switch (g.type()) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            return true;
+        default:
+            return false;
+        }
+    }
 }
