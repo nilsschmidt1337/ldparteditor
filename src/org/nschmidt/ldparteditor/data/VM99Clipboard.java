@@ -30,11 +30,15 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
-class VM99Clipboard extends VM14Splitter {
+class VM99Clipboard extends VM17Unificator {
+
+    private static final List<GData> CLIPBOARD = new ArrayList<GData>();
+    private static final Set<GData> CLIPBOARD_InvNext = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
 
     protected VM99Clipboard(DatFile linkedDatFile) {
         super(linkedDatFile);
