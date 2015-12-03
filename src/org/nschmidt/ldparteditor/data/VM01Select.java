@@ -29,7 +29,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 
-public class VM01Select extends VM00Base {
+class VM01Select extends VM00Base {
 
     public VM01Select(DatFile linkedDatFile) {
         super(linkedDatFile);
