@@ -666,4 +666,31 @@ public class VM01Select extends VM00Base {
             }
         }
     }
+
+    public void reSelectSubFiles() {
+        // Restore selected subfiles
+        for (GData1 subf : selectedSubfiles) {
+            Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+            for (VertexInfo vertexInfo : vis) {
+                selectedVertices.add(vertexInfo.getVertex());
+                GData g = vertexInfo.getLinkedData();
+                switch (g.type()) {
+                case 2:
+                    selectedLines.add((GData2) g);
+                    break;
+                case 3:
+                    selectedTriangles.add((GData3) g);
+                    break;
+                case 4:
+                    selectedQuads.add((GData4) g);
+                    break;
+                case 5:
+                    selectedCondlines.add((GData5) g);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
 }
