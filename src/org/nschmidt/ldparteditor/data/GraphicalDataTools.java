@@ -17,6 +17,10 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector4f;
+
 /**
  * @author nils
  *
@@ -40,6 +44,36 @@ public enum GraphicalDataTools {
             return new BigDecimal[]{g5.X1, g5.Y1, g5.Z1, g5.X2, g5.Y2, g5.Z2, g5.X3, g5.Y3, g5.Z3, g5.X4, g5.Y4, g5.Z4};
         default:
             return null;
+        }
+    }
+
+    public static void setVertex(float x, float y, float z, GData gd, boolean useCache) {
+        // TODO Needs better caching since the connectivity information of TEXMAP data is unknown and the orientation of the normals can vary.
+        if (useCache) {
+            Vector4f v;
+            switch (gd.type()) {
+            case 2:
+                v = new Vector4f(x, y, z, 1f);
+                Matrix4f.transform(((GData2) gd).parent.productMatrix, v, v);
+                break;
+            case 3:
+                v = new Vector4f(x, y, z, 1f);
+                Matrix4f.transform(((GData3) gd).parent.productMatrix, v, v);
+                break;
+            case 4:
+                v = new Vector4f(x, y, z, 1f);
+                Matrix4f.transform(((GData4) gd).parent.productMatrix, v, v);
+                break;
+            case 5:
+                v = new Vector4f(x, y, z, 1f);
+                Matrix4f.transform(((GData5) gd).parent.productMatrix, v, v);
+                break;
+            default:
+                throw new AssertionError();
+            }
+            GL11.glVertex3f(v.x, v.y, v.z);
+        } else {
+            GL11.glVertex3f(x, y, z);
         }
     }
 }

@@ -26,9 +26,9 @@ import org.nschmidt.ldparteditor.data.GData2;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GData5;
+import org.nschmidt.ldparteditor.data.VM20Manipulator;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexInfo;
-import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 
 /**
@@ -40,7 +40,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 public enum IdenticalVertexRemover {
     INSTANCE;
 
-    public static void removeIdenticalVertices(VertexManager vm, DatFile df, boolean syncWithTextEditor, boolean convertQuadsToTriangles) {
+    public static void removeIdenticalVertices(VM20Manipulator vm, DatFile df, boolean syncWithTextEditor, boolean convertQuadsToTriangles) {
 
         vm.backupSelection();
         vm.clearSelection2();

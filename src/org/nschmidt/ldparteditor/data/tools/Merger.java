@@ -24,8 +24,8 @@ import org.nschmidt.ldparteditor.data.GData2;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GData5;
+import org.nschmidt.ldparteditor.data.VM21Merger;
 import org.nschmidt.ldparteditor.data.Vertex;
-import org.nschmidt.ldparteditor.data.VertexManager;
 
 /**
  * Merges selected vertices to a target position
@@ -36,7 +36,7 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 public enum Merger {
     INSTANCE;
 
-    public static void mergeTo(Vertex newVertex, VertexManager vm, DatFile df, boolean syncWithTextEditor) {
+    public static void mergeTo(Vertex newVertex, VM21Merger vm, DatFile df, boolean syncWithTextEditor) {
 
         Set<GData2> lines = vm.getSelectedLines();
         Set<GData3> tris = vm.getSelectedTriangles();

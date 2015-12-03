@@ -831,10 +831,9 @@ public final class GData5 extends GData {
                 GL11.glLineWidth(View.lineWidthGL[0]);
                 GL11.glColor4f(r2, g2, b2, 1f);
                 GL11.glBegin(GL11.GL_LINES);
-                c3d.getVertexManager().setVertex(x1, y1, z1, this, true);
-                c3d.getVertexManager().setVertex(x2, y2, z2, this, true);
+                GraphicalDataTools.setVertex(x1, y1, z1, this, true);
+                GraphicalDataTools.setVertex(x2, y2, z2, this, true);
                 GL11.glEnd();
-
             }
         }
         if (GData.globalFoundTEXMAPNEXT) {

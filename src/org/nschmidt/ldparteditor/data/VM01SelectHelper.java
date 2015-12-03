@@ -1706,6 +1706,71 @@ public class VM01SelectHelper extends VM01Select {
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
         selectedData.addAll(selectedSubfiles);
+    }
 
+    public Vector4f getSelectionCenter() {
+
+        final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+        objectVertices.addAll(selectedVertices);
+
+        // 1. Object Based Selection
+
+        for (GData2 line : selectedLines) {
+            Vertex[] verts = lines.get(line);
+            if (verts == null)
+                continue;
+            for (Vertex vertex : verts) {
+                objectVertices.add(vertex);
+            }
+        }
+        for (GData3 triangle : selectedTriangles) {
+            Vertex[] verts = triangles.get(triangle);
+            if (verts == null)
+                continue;
+            for (Vertex vertex : verts) {
+                objectVertices.add(vertex);
+            }
+        }
+        for (GData4 quad : selectedQuads) {
+            Vertex[] verts = quads.get(quad);
+            if (verts == null)
+                continue;
+            for (Vertex vertex : verts) {
+                objectVertices.add(vertex);
+            }
+        }
+        for (GData5 condline : selectedCondlines) {
+            Vertex[] verts = condlines.get(condline);
+            if (verts == null)
+                continue;
+            for (Vertex vertex : verts) {
+                objectVertices.add(vertex);
+            }
+        }
+
+        // 2. Subfile Based Selection
+        if (!selectedSubfiles.isEmpty()) {
+
+            for (GData1 subf : selectedSubfiles) {
+                Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+                for (VertexInfo vertexInfo : vis) {
+                    objectVertices.add(vertexInfo.getVertex());
+                }
+            }
+        }
+        if (!objectVertices.isEmpty()) {
+            float x = 0f;
+            float y = 0f;
+            float z = 0f;
+            for (Vertex vertex : objectVertices) {
+                x = x + vertex.x;
+                y = y + vertex.y;
+                z = z + vertex.z;
+            }
+            float count = objectVertices.size();
+            return new Vector4f(x / count, y / count, z / count, 1f);
+        } else {
+            return new Vector4f(0f, 0f, 0f, 1f);
+        }
     }
 }
