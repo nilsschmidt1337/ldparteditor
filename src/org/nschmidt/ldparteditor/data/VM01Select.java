@@ -693,4 +693,33 @@ public class VM01Select extends VM00Base {
             }
         }
     }
+
+    public GColour getRandomSelectedColour(GColour lastUsedColour) {
+        if (!selectedSubfiles.isEmpty()) {
+            GData1 g1 = selectedSubfiles.iterator().next();
+            lastUsedColour = new GColour(g1.colourNumber, g1.r, g1.g, g1.b, g1.a);
+            if (Math.random() > .5) return lastUsedColour;
+        }
+        if (!selectedLines.isEmpty()) {
+            GData2 g2 = selectedLines.iterator().next();
+            lastUsedColour = new GColour(g2.colourNumber, g2.r, g2.g, g2.b, g2.a);
+            if (Math.random() > .5) return lastUsedColour;
+        }
+        if (!selectedTriangles.isEmpty()) {
+            GData3 g3 = selectedTriangles.iterator().next();
+            lastUsedColour = new GColour(g3.colourNumber, g3.r, g3.g, g3.b, g3.a);
+            if (Math.random() > .5) return lastUsedColour;
+        }
+        if (!selectedQuads.isEmpty()) {
+            GData4 g4 = selectedQuads.iterator().next();
+            lastUsedColour = new GColour(g4.colourNumber, g4.r, g4.g, g4.b, g4.a);
+            if (Math.random() > .5) return lastUsedColour;
+        }
+        if (!selectedCondlines.isEmpty()) {
+            GData5 g5 = selectedCondlines.iterator().next();
+            lastUsedColour = new GColour(g5.colourNumber, g5.r, g5.g, g5.b, g5.a);
+            if (Math.random() > .5) return lastUsedColour;
+        }
+        return lastUsedColour;
+    }
 }

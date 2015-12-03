@@ -1546,4 +1546,18 @@ class VM00Base {
             }
         }
     }
+
+    protected void linker(GData oldData, GData newData) {
+        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+        if (oldData.equals(linkedDatFile.getDrawChainTail()))
+            linkedDatFile.setDrawChainTail(newData);
+        GData oldNext = oldData.getNext();
+        GData oldBefore = oldData.getBefore();
+        oldBefore.setNext(newData);
+        newData.setNext(oldNext);
+        Integer oldNumber = drawPerLine.getKey(oldData);
+        if (oldNumber != null)
+            drawPerLine.put(oldNumber, newData);
+        remove(oldData);
+    }
 }

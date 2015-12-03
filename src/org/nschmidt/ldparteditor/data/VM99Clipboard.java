@@ -34,7 +34,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
-public class VM99Clipboard extends VM04Rectifier {
+public class VM99Clipboard extends VM06Edger2 {
 
     public VM99Clipboard(DatFile linkedDatFile) {
         super(linkedDatFile);
