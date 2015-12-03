@@ -1257,4 +1257,293 @@ class VM00Base {
         vertexLinkedToNormalCACHE.clear();
         dataLinkedToNormalCACHE.clear();
     }
+
+    public void delete(boolean moveAdjacentData, boolean setModified) {
+        if (linkedDatFile.isReadOnly())
+            return;
+
+        if (selectedBgPicture != null && linkedDatFile.getDrawPerLine_NOCLONE().containsValue(selectedBgPicture)) {
+            GData before = selectedBgPicture.getBefore();
+            GData next = selectedBgPicture.getNext();
+            linkedDatFile.getDrawPerLine_NOCLONE().removeByValue(selectedBgPicture);
+            before.setNext(next);
+            remove(selectedBgPicture);
+            selectedBgPicture = null;
+            setModified_NoSync();
+        }
+
+        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+
+        final HashSet<GData0> effSelectedVertices = new HashSet<GData0>();
+        final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
+        final HashSet<GData3> effSelectedTriangles = new HashSet<GData3>();
+        final HashSet<GData4> effSelectedQuads = new HashSet<GData4>();
+        final HashSet<GData5> effSelectedCondlines = new HashSet<GData5>();
+
+        selectedData.clear();
+
+        // 0. Deselect selected subfile data (for whole selected subfiles)
+        for (GData1 subf : selectedSubfiles) {
+            Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+            for (VertexInfo vertexInfo : vis) {
+                if (!moveAdjacentData)
+                    selectedVertices.remove(vertexInfo.getVertex());
+                GData g = vertexInfo.getLinkedData();
+                switch (g.type()) {
+                case 2:
+                    selectedLines.remove(g);
+                    break;
+                case 3:
+                    selectedTriangles.remove(g);
+                    break;
+                case 4:
+                    selectedQuads.remove(g);
+                    break;
+                case 5:
+                    selectedCondlines.remove(g);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+
+        // 1. Vertex Based Selection
+        {
+            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+            {
+                HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
+                for (Vertex vertex : selectedVertices) {
+                    Set<VertexManifestation> occurences = vertexLinkedToPositionInFile.get(vertex);
+                    if (occurences == null)
+                        continue;
+                    boolean isPureSubfileVertex = true;
+                    for (VertexManifestation vm : occurences) {
+                        GData g = vm.getGdata();
+                        int val = 1;
+                        if (occurMap.containsKey(g)) {
+                            val = occurMap.get(g);
+                            val++;
+                        }
+                        occurMap.put(g, val);
+                        switch (g.type()) {
+                        case 0:
+                            GData0 meta = (GData0) g;
+                            boolean idCheck = !lineLinkedToVertices.containsKey(meta);
+                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
+                            if (moveAdjacentData || val == 1) {
+                                if (!idCheck) {
+                                    effSelectedVertices.add(meta);
+                                }
+                            }
+                            break;
+                        case 2:
+                            GData2 line = (GData2) g;
+                            idCheck = !line.parent.equals(View.DUMMY_REFERENCE);
+                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
+                            if (moveAdjacentData || val == 2) {
+                                if (!idCheck) {
+                                    selectedLines.add(line);
+                                }
+                            }
+                            break;
+                        case 3:
+                            GData3 triangle = (GData3) g;
+                            idCheck = !triangle.parent.equals(View.DUMMY_REFERENCE);
+                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
+                            if (moveAdjacentData || val == 3) {
+                                if (!idCheck) {
+                                    selectedTriangles.add(triangle);
+                                }
+                            }
+                            break;
+                        case 4:
+                            GData4 quad = (GData4) g;
+                            idCheck = !quad.parent.equals(View.DUMMY_REFERENCE);
+                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
+                            if (moveAdjacentData || val == 4) {
+                                if (!idCheck) {
+                                    selectedQuads.add(quad);
+                                }
+                            }
+                            break;
+                        case 5:
+                            GData5 condline = (GData5) g;
+                            idCheck = !condline.parent.equals(View.DUMMY_REFERENCE);
+                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
+                            if (moveAdjacentData || val == 4) {
+                                if (!idCheck) {
+                                    selectedCondlines.add(condline);
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    if (isPureSubfileVertex)
+                        objectVertices.add(vertex);
+                }
+            }
+
+            // 2. Object Based Selection
+
+            for (GData2 line : selectedLines) {
+                if (line.parent.equals(View.DUMMY_REFERENCE))
+                    effSelectedLines.add(line);
+                Vertex[] verts = lines.get(line);
+                if (verts == null)
+                    continue;
+                for (Vertex vertex : verts) {
+                    objectVertices.add(vertex);
+                }
+            }
+            for (GData3 triangle : selectedTriangles) {
+                if (triangle.parent.equals(View.DUMMY_REFERENCE))
+                    effSelectedTriangles.add(triangle);
+                Vertex[] verts = triangles.get(triangle);
+                if (verts == null)
+                    continue;
+                for (Vertex vertex : verts) {
+                    objectVertices.add(vertex);
+                }
+            }
+            for (GData4 quad : selectedQuads) {
+                if (quad.parent.equals(View.DUMMY_REFERENCE))
+                    effSelectedQuads.add(quad);
+                Vertex[] verts = quads.get(quad);
+                if (verts == null)
+                    continue;
+                for (Vertex vertex : verts) {
+                    objectVertices.add(vertex);
+                }
+            }
+            for (GData5 condline : selectedCondlines) {
+                if (condline.parent.equals(View.DUMMY_REFERENCE))
+                    effSelectedCondlines.add(condline);
+                Vertex[] verts = condlines.get(condline);
+                if (verts == null)
+                    continue;
+                for (Vertex vertex : verts) {
+                    objectVertices.add(vertex);
+                }
+            }
+
+            if (moveAdjacentData) {
+                singleVertices.addAll(selectedVertices);
+                singleVertices.removeAll(objectVertices);
+            }
+
+            // 3. Deletion of the selected data (no whole subfiles!!)
+
+            if (!effSelectedLines.isEmpty())
+                setModified_NoSync();
+            if (!effSelectedTriangles.isEmpty())
+                setModified_NoSync();
+            if (!effSelectedQuads.isEmpty())
+                setModified_NoSync();
+            if (!effSelectedCondlines.isEmpty())
+                setModified_NoSync();
+            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+            for (GData2 gd : effSelectedLines) {
+                dpl.removeByValue(gd);
+                gd.getBefore().setNext(gd.getNext());
+                remove(gd);
+            }
+            for (GData3 gd : effSelectedTriangles) {
+                dpl.removeByValue(gd);
+                gd.getBefore().setNext(gd.getNext());
+                remove(gd);
+            }
+            for (GData4 gd : effSelectedQuads) {
+                dpl.removeByValue(gd);
+                gd.getBefore().setNext(gd.getNext());
+                remove(gd);
+            }
+            for (GData5 gd : effSelectedCondlines) {
+                dpl.removeByValue(gd);
+                gd.getBefore().setNext(gd.getNext());
+                remove(gd);
+            }
+            for (Vertex v : singleVertices) {
+                if (vertexLinkedToPositionInFile.containsKey(v)) {
+                    Set<VertexManifestation> tmp = vertexLinkedToPositionInFile.get(v);
+                    if (tmp == null)
+                        continue;
+                    Set<VertexManifestation> occurences = new HashSet<VertexManifestation>(tmp);
+                    for (VertexManifestation vm : occurences) {
+                        GData g = vm.getGdata();
+                        if (lineLinkedToVertices.containsKey(g)) {
+                            dpl.removeByValue(g);
+                            g.getBefore().setNext(g.getNext());
+                            remove(g);
+                            setModified_NoSync();
+                        }
+                    }
+                }
+            }
+
+            selectedVertices.clear();
+            selectedLines.clear();
+            selectedTriangles.clear();
+            selectedQuads.clear();
+            selectedCondlines.clear();
+
+            // 4. Subfile Based Deletion
+            if (!selectedSubfiles.isEmpty()) {
+                for (GData1 gd : selectedSubfiles) {
+
+                    // Remove a BFC INVERTNEXT if it is present
+                    boolean hasInvertnext = false;
+                    GData invertNextData = gd.getBefore();
+                    while (invertNextData != null && invertNextData.type() != 1 && (invertNextData.type() != 6 || ((GDataBFC) invertNextData).type != BFC.INVERTNEXT)) {
+                        invertNextData = invertNextData.getBefore();
+                    }
+                    if (invertNextData != null && invertNextData.type() == 6) {
+                        hasInvertnext = true;
+                    }
+                    if (hasInvertnext) {
+                        // Remove Invert Next
+                        GDataBFC gbfc = (GDataBFC) invertNextData;
+                        dpl.removeByValue(gbfc);
+                        gbfc.getBefore().setNext(gbfc.getNext());
+                        remove(gbfc);
+                    }
+
+                    dpl.removeByValue(gd);
+                    gd.getBefore().setNext(gd.getNext());
+                    remove(gd);
+                }
+                selectedSubfiles.clear();
+                setModified_NoSync();
+            }
+
+            if (isModified()) {
+
+                // Update Draw per line
+
+                TreeSet<Integer> ts = new TreeSet<Integer>();
+                ts.addAll(dpl.keySet());
+
+                int counter = 1;
+                GData tail = null;
+                for (Integer k : ts) {
+                    GData gdata = dpl.getValue(k);
+                    dpl.removeByKey(k);
+                    dpl.put(counter, gdata);
+                    counter++;
+                    tail = gdata;
+                }
+                if (tail != null) {
+                    linkedDatFile.setDrawChainTail(tail);
+                } else {
+                    GData0 blankLine = new GData0(""); //$NON-NLS-1$
+                    linkedDatFile.getDrawChainStart().setNext(blankLine);
+                    dpl.put(1, blankLine);
+                    linkedDatFile.setDrawChainTail(blankLine);
+                }
+
+                if (setModified) syncWithTextEditors(true);
+                updateUnsavedStatus();
+            }
+        }
+    }
 }
