@@ -29,7 +29,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 
-class VM01Select extends VM00Base {
+class VM01Select extends VM00Snapshot {
 
     public VM01Select(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -721,5 +721,19 @@ class VM01Select extends VM00Base {
             if (Math.random() > .5) return lastUsedColour;
         }
         return lastUsedColour;
+    }
+
+    public void selectTriangles(Set<GData> finalTriangleSet) {
+        selectedData.addAll(finalTriangleSet);
+        for (GData gData : finalTriangleSet) {
+            selectedTriangles.add((GData3) gData);
+        }
+    }
+
+    public void restoreTriangles(Set<GData> finalTriangleSet) {
+        finalTriangleSet.clear();
+        for (GData3 gData : selectedTriangles) {
+            finalTriangleSet.add(gData);
+        }
     }
 }

@@ -1560,4 +1560,71 @@ class VM00Base {
             drawPerLine.put(oldNumber, newData);
         remove(oldData);
     }
+
+    public synchronized HashMap<GData0, Vertex[]> getDeclaredVertices() {
+        return new HashMap<GData0, Vertex[]>(declaredVertices);
+    }
+
+    public synchronized HashMap<GData2, Vertex[]> getLines() {
+        return new HashMap<GData2, Vertex[]>(lines);
+    }
+
+    public synchronized HashMap<GData3, Vertex[]> getTriangles() {
+        return new HashMap<GData3, Vertex[]>(triangles);
+    }
+
+    public synchronized ThreadsafeHashMap<GData3, Vertex[]> getTriangles_NOCLONE() {
+        return triangles;
+    }
+
+    public synchronized ThreadsafeHashMap<GData4, Vertex[]> getQuads_NOCLONE() {
+        return quads;
+    }
+
+    public synchronized HashMap<GData4, Vertex[]> getQuads() {
+        return new HashMap<GData4, Vertex[]>(quads);
+    }
+
+    public synchronized HashMap<GData5, Vertex[]> getCondlines() {
+        return new HashMap<GData5, Vertex[]>(condlines);
+    }
+
+    public Vertex getVertexToReplace() {
+        return vertexToReplace;
+    }
+
+    public void setVertexToReplace(Vertex vertexToReplace) {
+        this.vertexToReplace = vertexToReplace;
+    }
+
+    public AtomicBoolean getResetTimer() {
+        return resetTimer;
+    }
+
+    public Set<Vertex> getVertices() {
+        return vertexLinkedToPositionInFile.keySet();
+    }
+
+    public synchronized void clear() {
+        final Editor3DWindow win = Editor3DWindow.getWindow();
+        vertexCountInSubfile.clear();
+        vertexLinkedToPositionInFile.clear();
+        vertexLinkedToSubfile.clear();
+        lineLinkedToVertices.clear();
+        declaredVertices.clear();
+        lines.clear();
+        triangles.clear();
+        quads.clear();
+        condlines.clear();
+        selectedItemIndex = -1;
+        win.disableSelectionTab();
+        selectedData.clear();
+        selectedVertices.clear();
+        selectedSubfiles.clear();
+        selectedLines.clear();
+        selectedTriangles.clear();
+        selectedQuads.clear();
+        selectedCondlines.clear();
+        lastSelectedVertex = null;
+    }
 }
