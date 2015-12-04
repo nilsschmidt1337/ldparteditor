@@ -102,7 +102,7 @@ class VM03Adjacency extends VM02Add {
         if (vm != null) {
             for (VertexManifestation m : vm) {
                 int type = m.getGdata().type();
-                if (type > 2 || type < 5)
+                if (type < 5 && type > 2)
                     rval.add(m.getGdata());
             }
         }
