@@ -35,7 +35,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
-class VM99Clipboard extends VM23FlatSubfileTester {
+class VM99Clipboard extends VM24MeshReducer {
 
     private static final List<GData> CLIPBOARD = new ArrayList<GData>();
     private static final Set<GData> CLIPBOARD_InvNext = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());

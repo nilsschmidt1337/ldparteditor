@@ -370,6 +370,7 @@ public final class I18n {
     public static final String E3D_MergeToNearestEdge = E3D.getString(getProperty());
     public static final String E3D_MergeToNearestFace = E3D.getString(getProperty());
     public static final String E3D_MergeToNearestVertex = E3D.getString(getProperty());
+    public static final String E3D_MeshReduce = E3D.getString(getProperty());
     public static final String E3D_ModeLine = E3D.getString(getProperty());
     public static final String E3D_ModeSubpart = E3D.getString(getProperty());
     public static final String E3D_ModeSurface = E3D.getString(getProperty());
@@ -427,6 +428,7 @@ public final class I18n {
     public static final String E3D_ReadyStatus = E3D.getString(getProperty());
     public static final String E3D_Rectifier = E3D.getString(getProperty());
     public static final String E3D_Redo = E3D.getString(getProperty());
+    public static final String E3D_ReduceCount = E3D.getString(getProperty());
     public static final String E3D_RenameMove = E3D.getString(getProperty());
     public static final String E3D_RequiresRestart = E3D.getString(getProperty());
     public static final String E3D_Reset = E3D.getString(getProperty());
