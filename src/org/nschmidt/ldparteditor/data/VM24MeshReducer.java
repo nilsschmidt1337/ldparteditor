@@ -30,6 +30,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
+import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
@@ -89,21 +90,26 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                         // 2. Ermittle alle angrenzenden Punkte
                                         final TreeSet<Vertex> verts = new TreeSet<Vertex>();
 
-                                        for (final GData gData : surfs) {
-                                            if (gData.type() == 3) {
-                                                for (Vertex tv : triangles.get(gData)) {
-                                                    verts.add(tv);
-                                                }
-                                            } else {
-                                                for (Vertex tv : quads.get(gData)) {
-                                                    verts.add(tv);
+                                        {
+                                            int delta = 1;
+
+                                            for (final GData gData : surfs) {
+                                                if (gData.type() == 3) {
+                                                    for (Vertex tv : triangles.get(gData)) {
+                                                        verts.add(tv);
+                                                    }
+                                                } else {
+                                                    for (Vertex tv : quads.get(gData)) {
+                                                        verts.add(tv);
+                                                    }
+                                                    delta += 1;
                                                 }
                                             }
-                                        }
 
-                                        // 3. Ist das Polygon geschlossen? Wenn nein, breche ab.
-                                        if (verts.size() - 1 != surfs.size()) {
-                                            break;
+                                            // 3. Ist das Polygon geschlossen? Wenn nein, breche ab.
+                                            if (verts.size() - delta != surfs.size()) {
+                                                break;
+                                            }
                                         }
 
                                         if (!onAPlane(verts)) {
@@ -164,14 +170,14 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
 
                                             // Als letzten Schritt => Kante zusammenfallen lassen
 
-                                            /*clearSelection2();
+                                            clearSelection2();
 
                                             selectedVertices.add(v);
                                             selectedVertices.add(t);
 
                                             lastSelectedVertex = t;
 
-                                            merge(MergeTo.LAST_SELECTED, false);*/
+                                            merge(MergeTo.LAST_SELECTED, false);
 
                                             addLine(v, t);
                                             reduceCount[0]++;
@@ -254,10 +260,14 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
         Vector3d pOrigin = new Vector3d(p1);
         Vector3d n = Vector3d.cross(Vector3d.sub(a, c), Vector3d.sub(b, c));
         n.normalise(n);
-        BigDecimal EPSILON = new BigDecimal("0.001"); //$NON-NLS-1$
+        BigDecimal EPSILON = new BigDecimal("0.01"); //$NON-NLS-1$
         for (Vertex vertex : m2) {
             Vector3d vp = new Vector3d(vertex);
-            if (Vector3d.dotP(Vector3d.sub(pOrigin, vp), n).abs().compareTo(EPSILON) > 0) return false;
+            final BigDecimal d = Vector3d.dotP(Vector3d.sub(pOrigin, vp), n).abs();
+            if (d.compareTo(EPSILON) > 0) {
+                NLogger.debug(getClass(), d.toString());
+                return false;
+            }
         }
 
         return true;
