@@ -30,7 +30,6 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
-import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
@@ -165,14 +164,16 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
 
                                             // Als letzten Schritt => Kante zusammenfallen lassen
 
-                                            clearSelection2();
+                                            /*clearSelection2();
 
                                             selectedVertices.add(v);
                                             selectedVertices.add(t);
 
                                             lastSelectedVertex = t;
 
-                                            merge(MergeTo.LAST_SELECTED, false);
+                                            merge(MergeTo.LAST_SELECTED, false);*/
+
+                                            addLine(v, t);
                                             reduceCount[0]++;
 
                                             break;
@@ -220,7 +221,6 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
     }
 
     private boolean onAPlane(TreeSet<Vertex> m2) {
-        final Vector3d originalNormal = new Vector3d(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
         BigDecimal seed = new BigDecimal("1.23456789"); //$NON-NLS-1$
         BigDecimal seed2 = new BigDecimal("-1.832647382"); //$NON-NLS-1$
         BigDecimal seed3 = new BigDecimal("1.427637292"); //$NON-NLS-1$
@@ -254,9 +254,6 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
         Vector3d pOrigin = new Vector3d(p1);
         Vector3d n = Vector3d.cross(Vector3d.sub(a, c), Vector3d.sub(b, c));
         n.normalise(n);
-        originalNormal.setX(n.X);
-        originalNormal.setY(n.Y);
-        originalNormal.setZ(n.Z);
         BigDecimal EPSILON = new BigDecimal("0.001"); //$NON-NLS-1$
         for (Vertex vertex : m2) {
             Vector3d vp = new Vector3d(vertex);
