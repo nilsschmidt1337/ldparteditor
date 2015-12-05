@@ -79,6 +79,7 @@ public final class I18n {
     private static final ResourceBundle SLICERPRO = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Slicerpro", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SORT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Sort", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SYMSPLITTER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Symsplitter", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle TJUNCTION = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TJunctionFinder", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle TRANSLATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Translate", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle TREEITEM = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TreeItem", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle TXT2DAT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Txt2Dat", MyLanguage.LOCALE); //$NON-NLS-1$
@@ -882,6 +883,10 @@ public final class I18n {
     public static final String SYMSPLITTER_Yp = SYMSPLITTER.getString(getProperty());
     public static final String SYMSPLITTER_Zm = SYMSPLITTER.getString(getProperty());
     public static final String SYMSPLITTER_Zp = SYMSPLITTER.getString(getProperty());
+    public static final String TJUNCTION_Aggressive = TJUNCTION.getString(getProperty());
+    public static final String TJUNCTION_Mode = TJUNCTION.getString(getProperty());
+    public static final String TJUNCTION_Normal = TJUNCTION.getString(getProperty());
+    public static final String TJUNCTION_Title = TJUNCTION.getString(getProperty());
     public static final String TRANSLATE_Title = TRANSLATE.getString(getProperty());
     public static final String TRANSLATE_X = TRANSLATE.getString(getProperty());
     public static final String TRANSLATE_Y = TRANSLATE.getString(getProperty());
