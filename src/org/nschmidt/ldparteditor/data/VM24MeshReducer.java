@@ -199,8 +199,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                                     if (!ignoreSet.contains(s)) {
                                                         newNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
                                                         double angle = Vector3d.angle(oldNormals[s], newNormals[s]);
-                                                        if (angle > 5.0) {
-                                                            NLogger.debug(getClass(), angle);
+                                                        if (angle > 3.0) {
                                                             cont = true;
                                                             break;
                                                         }
@@ -210,7 +209,6 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                                     continue;
                                                 }
                                             }
-
                                             // Als letzten Schritt => Kante zusammenfallen lassen
 
                                             clearSelection2();
