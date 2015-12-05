@@ -115,6 +115,7 @@ import org.nschmidt.ldparteditor.dialogs.selectvertex.VertexDialog;
 import org.nschmidt.ldparteditor.dialogs.setcoordinates.CoordinatesDialog;
 import org.nschmidt.ldparteditor.dialogs.slicerpro.SlicerProDialog;
 import org.nschmidt.ldparteditor.dialogs.symsplitter.SymSplitterDialog;
+import org.nschmidt.ldparteditor.dialogs.tjunction.TJunctionDialog;
 import org.nschmidt.ldparteditor.dialogs.translate.TranslateDialog;
 import org.nschmidt.ldparteditor.dialogs.txt2dat.Txt2DatDialog;
 import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
@@ -146,6 +147,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.TJunctionSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.TreeData;
 import org.nschmidt.ldparteditor.helpers.composite3d.Txt2DatSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.UnificatorSettings;
@@ -229,6 +231,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private UnificatorSettings us = new UnificatorSettings();
     private RingsAndConesSettings ris = new RingsAndConesSettings();
     private SelectorSettings sels = new SelectorSettings();
+    private TJunctionSettings tjs = new TJunctionSettings();
 
     private boolean updatingPngPictureTab;
     private int pngPictureUpdateCounter = 0;
@@ -3719,9 +3722,11 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     DatFile df = c3d.getLockableDatFileReference();
                     if (df.equals(Project.getFileToEdit()) && !df.isReadOnly()) {
-                        VertexManager vm = df.getVertexManager();
-                        vm.addSnapshot();
-                        vm.fixTjunctions();
+                        if (new TJunctionDialog(getShell(), tjs).open() == IDialogConstants.OK_ID) {
+                            VertexManager vm = df.getVertexManager();
+                            vm.addSnapshot();
+                            vm.fixTjunctions(tjs.getMode() == 0);
+                        }
                         return;
                     }
                 }

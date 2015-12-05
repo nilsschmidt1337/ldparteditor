@@ -43,7 +43,7 @@ class VM22TJunctionFixer extends VM21Merger {
         super(linkedDatFile);
     }
 
-    public void fixTjunctions() {
+    public void fixTjunctions(final boolean calculateDistance) {
 
         linkedDatFile.setDrawSelection(false);
 
@@ -79,7 +79,7 @@ class VM22TJunctionFixer extends VM21Merger {
                                 @Override
                                 public void run() {
                                     clearSelection2();
-                                    if (isTjunctionCandidate(v)) {
+                                    if (isTjunctionCandidate(v, calculateDistance)) {
                                         clearSelection2();
                                         selectedVertices.add(v);
                                         verticesToSelect.add(v);
@@ -125,7 +125,7 @@ class VM22TJunctionFixer extends VM21Merger {
 
     }
 
-    private boolean isTjunctionCandidate(Vertex v) {
+    private boolean isTjunctionCandidate(Vertex v, final boolean calculateDistance) {
 
         HashSet<GData> surfs = getLinkedSurfaces(v);
 
@@ -173,6 +173,11 @@ class VM22TJunctionFixer extends VM21Merger {
         int vertCount = verts.size();
 
         if (surfCount + 1 != vertCount) {
+
+            if (!calculateDistance) {
+                return true;
+            }
+
             for (VertexManifestation mani : vertexLinkedToPositionInFile.get(v)) {
                 GData gd = mani.getGdata();
                 switch (gd.type()) {
