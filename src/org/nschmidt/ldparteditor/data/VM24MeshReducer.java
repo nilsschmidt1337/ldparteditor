@@ -16,7 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashSet;
@@ -32,6 +31,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -46,19 +46,16 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
 
     public void meshReduce() {
 
-        final BigDecimal TOLERANCER = new BigDecimal("0.00001"); //$NON-NLS-1$ .00001
-
         linkedDatFile.setDrawSelection(false);
 
         final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         final Set<Vertex> verticesToSelect = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
-        if (selectedVertices.isEmpty()) {
-            verticesToProcess.addAll(vertexLinkedToPositionInFile.keySet());
-        } else {
-            verticesToProcess.addAll(selectedVertices);
-        }
+        verticesToProcess.addAll(vertexLinkedToPositionInFile.keySet());
 
+        clearSelection();
+        selectAll(new SelectorSettings(), true);
+        splitQuads(false);
         clearSelection();
 
         final int[] reduceCount = new int[1];
@@ -112,51 +109,11 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                             }
                                         }
 
-                                        if (!onAPlane(verts)) {
-                                            break;
-                                        }
-
                                         // 4. Entferne den Ursprungspunkt aus der Menge
                                         verts.remove(v);
 
-                                        // 5. Finde zwei Kandidaten
-                                        final Vertex[] targets = new Vertex[2];
-                                        boolean foundCandidates = false;
-
-                                        for (final Vertex v1 : verts) {
-                                            if (foundCandidates) {
-                                                break;
-                                            }
-                                            for (final Vertex v2 : verts) {
-                                                if (foundCandidates) {
-                                                    break;
-                                                }
-                                                if (v1 != v2) {
-                                                    final Vector3d vd0 = new Vector3d(v);
-                                                    final Vector3d vd1 = new Vector3d(v1);
-                                                    final Vector3d vd2 = new Vector3d(v2);
-                                                    Vector3d.sub(vd1, vd0, vd1);
-                                                    Vector3d.sub(vd2, vd0, vd2);
-                                                    vd1.normalise(vd1);
-                                                    vd2.normalise(vd2);
-                                                    final BigDecimal dot = Vector3d.dotP(vd1, vd2).abs();
-                                                    if (BigDecimal.ONE.subtract(dot).compareTo(TOLERANCER) < 0) {
-                                                        targets[0] = v1;
-                                                        targets[1] = v1;
-                                                        foundCandidates = true;
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        // 6. Vertex eignet sich nicht?
-                                        if (!foundCandidates) {
-                                            break;
-                                        }
-
                                         // 7. Prüfe die Kandidaten
-                                        for (final Vertex t : targets) {
+                                        for (final Vertex t : verts) {
                                             final HashSet<GData> tsurfs = getLinkedSurfaces(t);
                                             final int oldcount = tsurfs.size();
                                             tsurfs.removeAll(surfs);
@@ -166,7 +123,93 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                                 continue;
                                             }
 
-                                            // 7.2
+                                            // 7.2 t darf nur zwei angrenzende Punkte mit v teilen
+                                            {
+                                                final TreeSet<Vertex> verts2 = new TreeSet<Vertex>();
+                                                for (final GData gData : tsurfs) {
+                                                    if (gData.type() == 3) {
+                                                        for (Vertex tv : triangles.get(gData)) {
+                                                            verts2.add(tv);
+                                                        }
+                                                    } else {
+                                                        for (Vertex tv : quads.get(gData)) {
+                                                            verts2.add(tv);
+                                                        }
+                                                    }
+                                                }
+                                                verts2.remove(t);
+                                                int oldcount2 = verts2.size();
+                                                verts2.removeAll(verts);
+                                                if (oldcount2 - verts2.size() != 2) {
+                                                    continue;
+                                                }
+                                            }
+
+                                            // 7.3 die Normalen dürfen nicht kippen!
+                                            {
+                                                boolean cont = false;
+                                                final int surfcount = surfs.size();
+                                                Vertex[][] surfsv = new Vertex[surfcount][4];
+                                                Vector3d[] oldNormals = new Vector3d[surfcount];
+                                                Vector3d[] newNormals = new Vector3d[surfcount];
+                                                int s = 0;
+                                                for (final GData gData : surfs) {
+                                                    int i = 0;
+                                                    if (gData.type() == 3) {
+                                                        for (Vertex tv : triangles.get(gData)) {
+                                                            surfsv[s][i] = tv;
+                                                            i++;
+                                                        }
+                                                    } else {
+                                                        for (Vertex tv : quads.get(gData)) {
+                                                            surfsv[s][i] = tv;
+                                                            i++;
+                                                        }
+                                                        if (surfsv[s][1].equals(v)) {
+                                                            surfsv[s][0] = surfsv[s][1];
+                                                            surfsv[s][1] = surfsv[s][2];
+                                                            surfsv[s][2] = surfsv[s][3];
+                                                        } else if (surfsv[s][2].equals(v)) {
+                                                            Vertex tmp = surfsv[s][0];
+                                                            surfsv[s][0] = surfsv[s][2];
+                                                            surfsv[s][1] = surfsv[s][3];
+                                                            surfsv[s][2] = tmp;
+                                                        } else if (surfsv[s][3].equals(v)) {
+                                                            Vertex tmp = surfsv[s][0];
+                                                            Vertex tmp2 = surfsv[s][1];
+                                                            surfsv[s][0] = surfsv[s][3];
+                                                            surfsv[s][1] = tmp;
+                                                            surfsv[s][2] = tmp2;
+                                                        }
+                                                        surfsv[s][3] = null;
+                                                    }
+                                                    oldNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
+                                                    s++;
+                                                }
+                                                HashSet<Integer> ignoreSet = new HashSet<Integer>();
+                                                for (s = 0; s < surfcount; s++) {
+                                                    for (int i = 0; i < 3; i++) {
+                                                        if (surfsv[s][i].equals(t)) {
+                                                            ignoreSet.add(s);
+                                                        }
+                                                        if (surfsv[s][i].equals(v)) {
+                                                            surfsv[s][i] = t;
+                                                        }
+                                                    }
+                                                    if (!ignoreSet.contains(s)) {
+                                                        newNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
+                                                        double angle = Vector3d.angle(oldNormals[s], newNormals[s]);
+                                                        if (angle > 5.0) {
+                                                            NLogger.debug(getClass(), angle);
+                                                            cont = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                if (cont) {
+                                                    continue;
+                                                }
+                                            }
 
                                             // Als letzten Schritt => Kante zusammenfallen lassen
 
@@ -179,7 +222,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
 
                                             merge(MergeTo.LAST_SELECTED, false);
 
-                                            addLine(v, t);
+                                            // addLine(v, t);
                                             reduceCount[0]++;
 
                                             break;
@@ -224,52 +267,5 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
         selectedVertices.addAll(verticesToSelect);
         linkedDatFile.setDrawSelection(true);
 
-    }
-
-    private boolean onAPlane(TreeSet<Vertex> m2) {
-        BigDecimal seed = new BigDecimal("1.23456789"); //$NON-NLS-1$
-        BigDecimal seed2 = new BigDecimal("-1.832647382"); //$NON-NLS-1$
-        BigDecimal seed3 = new BigDecimal("1.427637292"); //$NON-NLS-1$
-        Vertex s = new Vertex(seed, seed2, seed3);
-        Vertex p1 = null;
-        Vertex p2 = null;
-        Vertex p3 = null;
-        for (Vertex vertex : m2) {
-            p1 = vertex;
-            break;
-        }
-        if (p1 == null) return false;
-        for (Vertex vertex : m2) {
-            if (!vertex.equals(p1)) {
-                p2 = vertex;
-                break;
-            }
-        }
-        if (p2 == null) return false;
-        for (Vertex vertex : m2) {
-            if (!vertex.equals(p1) && !vertex.equals(p2)) {
-                p3 = vertex;
-                break;
-            }
-        }
-        if (p3 == null) return false;
-        Vector3d a = new Vector3d(p1.X.add(s.X), p1.Y.add(s.Y),p1.Z.add(s.Z));
-        Vector3d b = new Vector3d(p2.X.add(s.X), p2.Y.add(s.Y),p2.Z.add(s.Z));
-        Vector3d c = new Vector3d(p3.X.add(s.X), p3.Y.add(s.Y),p3.Z.add(s.Z));
-
-        Vector3d pOrigin = new Vector3d(p1);
-        Vector3d n = Vector3d.cross(Vector3d.sub(a, c), Vector3d.sub(b, c));
-        n.normalise(n);
-        BigDecimal EPSILON = new BigDecimal("0.01"); //$NON-NLS-1$
-        for (Vertex vertex : m2) {
-            Vector3d vp = new Vector3d(vertex);
-            final BigDecimal d = Vector3d.dotP(Vector3d.sub(pOrigin, vp), n).abs();
-            if (d.compareTo(EPSILON) > 0) {
-                NLogger.debug(getClass(), d.toString());
-                return false;
-            }
-        }
-
-        return true;
     }
 }
