@@ -1396,7 +1396,6 @@ public final class GData3 extends GData {
     @Override
     public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         if (GData.globalDrawObjects) {
-            float[] result = new float[3];
             Vertex[] verts = vm.getTriangles_NOCLONE().get(this);
             if (verts == null) {
                 verts = new Vertex[3];
@@ -1415,7 +1414,15 @@ public final class GData3 extends GData {
             float yn = (verts[2].z - verts[0].z) * (verts[1].x - verts[0].x) - (verts[2].x - verts[0].x) * (verts[1].z - verts[0].z);
             float zn = (verts[2].x - verts[0].x) * (verts[1].y - verts[0].y) - (verts[2].y - verts[0].y) * (verts[1].x - verts[0].x);
 
+            final float length = (float) Math.sqrt(xn * xn + yn * yn + zn *zn);
+            if (length > 0) {
+                xn = xn / length;
+                yn = yn / length;
+                zn = zn / length;
+            }
+
             for (Vertex vertex : verts) {
+                float[] result = new float[3];
                 switch (GData.localWinding) {
                 case BFC.NOCLIP:
                     result[0] = xn;
