@@ -1494,7 +1494,6 @@ public final class GData4 extends GData {
     @Override
     public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         if (GData.globalDrawObjects) {
-            float[] result = new float[3];
             Vertex[] verts = vm.getQuads_NOCLONE().get(this);
             if (verts == null) {
                 verts = new Vertex[4];
@@ -1532,7 +1531,15 @@ public final class GData4 extends GData {
             float yn = normal.y;
             float zn = normal.z;
 
+            final float length = (float) Math.sqrt(xn * xn + yn * yn + zn *zn);
+            if (length > 0) {
+                xn = xn / length;
+                yn = yn / length;
+                zn = zn / length;
+            }
+
             for (Vertex vertex : verts) {
+                float[] result = new float[3];
                 switch (GData.localWinding) {
                 case BFC.NOCLIP:
                     result[0] = xn;

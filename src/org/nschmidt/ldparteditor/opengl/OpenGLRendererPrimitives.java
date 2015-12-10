@@ -73,7 +73,7 @@ public class OpenGLRendererPrimitives {
         // GL11.glLineWidth(2);
 
         GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glShadeModel(GL11.GL_FLAT);
+        GL11.glShadeModel(GL11.GL_SMOOTH);
 
         GL11.glEnable(GL11.GL_NORMALIZE);
 
