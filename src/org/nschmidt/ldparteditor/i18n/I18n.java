@@ -380,6 +380,7 @@ public final class I18n {
     public static final String E3D_More = E3D.getString(getProperty());
     public static final String E3D_Move = E3D.getString(getProperty());
     public static final String E3D_MoveAdjacentData = E3D.getString(getProperty());
+    public static final String E3D_MoveOnLine = E3D.getString(getProperty());
     public static final String E3D_MoveSnap = E3D.getString(getProperty());
     public static final String E3D_NearClipping = E3D.getString(getProperty());
     public static final String E3D_NearClippingHint = E3D.getString(getProperty());

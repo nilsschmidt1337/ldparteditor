@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -1111,6 +1112,23 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().lineToCondline();
+                }
+            }
+        });
+
+        btn_MoveOnLine[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
+                    Set<Vertex> verts = Project.getFileToEdit().getVertexManager().getSelectedVertices();
+                    CoordinatesDialog.setStart(null);
+                    CoordinatesDialog.setEnd(null);
+                    if (verts.size() == 2) {
+                        Iterator<Vertex> it = verts.iterator();
+                        CoordinatesDialog.setStart(new Vector3d(it.next()));
+                        CoordinatesDialog.setEnd(new Vector3d(it.next()));
+                    }
                 }
             }
         });
@@ -3409,7 +3427,36 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                         if (new CoordinatesDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
                             vm.addSnapshot();
+                            int coordCount = 0;
+                            coordCount += CoordinatesDialog.isX() ? 1 : 0;
+                            coordCount += CoordinatesDialog.isY() ? 1 : 0;
+                            coordCount += CoordinatesDialog.isZ() ? 1 : 0;
+                            if (coordCount == 1 && CoordinatesDialog.getStart() != null) {
+                                Vector3d delta = Vector3d.sub(CoordinatesDialog.getEnd(), CoordinatesDialog.getStart());
+                                boolean doMoveOnLine = false;
+                                BigDecimal s = BigDecimal.ZERO;
+                                Vector3d v1 = CoordinatesDialog.getStart();
+                                Vertex v2 = CoordinatesDialog.getVertex();
+                                if (CoordinatesDialog.isX() && delta.X.compareTo(BigDecimal.ZERO) != 0) {
+                                    doMoveOnLine = true;
+                                    s = v2.X.subtract(CoordinatesDialog.getStart().X).divide(delta.X, Threshold.mc);
+                                } else if (CoordinatesDialog.isY() && delta.Y.compareTo(BigDecimal.ZERO) != 0) {
+                                    doMoveOnLine = true;
+                                    s = v2.Y.subtract(CoordinatesDialog.getStart().Y).divide(delta.Y, Threshold.mc);
+                                } else if (CoordinatesDialog.isZ() && delta.Z.compareTo(BigDecimal.ZERO) != 0) {
+                                    doMoveOnLine = true;
+                                    s = v2.Z.subtract(CoordinatesDialog.getStart().Z).divide(delta.Z, Threshold.mc);
+                                }
+                                if (doMoveOnLine) {
+                                    CoordinatesDialog.setVertex(new Vertex(v1.X.add(delta.X.multiply(s)), v1.Y.add(delta.Y.multiply(s)), v1.Z.add(delta.Z.multiply(s))));
+                                    CoordinatesDialog.setX(true);
+                                    CoordinatesDialog.setY(true);
+                                    CoordinatesDialog.setZ(true);
+                                }
+                            }
                             vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), true, true);
+                            CoordinatesDialog.setStart(null);
+                            CoordinatesDialog.setEnd(null);
                         }
                         return;
                     }
