@@ -19,6 +19,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
@@ -33,6 +34,9 @@ import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
  *
  */
 public class CoordinatesDialog extends CoordinatesDesign {
+
+    private static Vector3d start = null;
+    private static Vector3d end = null;
 
     private static Vertex vertex = new Vertex(0f, 0f, 0f);
     private static boolean x = true;
@@ -131,4 +135,19 @@ public class CoordinatesDialog extends CoordinatesDesign {
         CoordinatesDialog.vertex = vertex;
     }
 
+    public static Vector3d getStart() {
+        return start;
+    }
+
+    public static void setStart(Vector3d start) {
+        CoordinatesDialog.start = start;
+    }
+
+    public static Vector3d getEnd() {
+        return end;
+    }
+
+    public static void setEnd(Vector3d end) {
+        CoordinatesDialog.end = end;
+    }
 }
