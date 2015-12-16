@@ -80,6 +80,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData2 g2 : ls) {
             Vertex[] verts = lines.get(g2);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -93,6 +94,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData3 g3 : ts) {
             Vertex[] verts = triangles.get(g3);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -124,6 +126,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData4 g4 : qs) {
             Vertex[] verts = quads.get(g4);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -164,6 +167,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData5 g5 : cs) {
             Vertex[] verts = condlines.get(g5);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -243,6 +247,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData3 g3 : ts) {
             Vertex[] verts = triangles.get(g3);
+            if (verts == null) continue;
             Vector4f v1 = MathHelper
                     .getNearestPointToTriangle(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, verts[2].x, verts[2].y, verts[2].z, vertex.x, vertex.y, vertex.z);
             if (v1 == null)
@@ -256,6 +261,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData4 g4 : qs) {
             Vertex[] verts = quads.get(g4);
+            if (verts == null) continue;
             Vector4f v1 = MathHelper
                     .getNearestPointToTriangle(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, verts[2].x, verts[2].y, verts[2].z, vertex.x, vertex.y, vertex.z);
             if (v1 == null)
@@ -358,6 +364,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData2 g2 : ls) {
             Vertex[] verts = lines.get(g2);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -372,6 +379,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData3 g3 : ts) {
             Vertex[] verts = triangles.get(g3);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -406,6 +414,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData4 g4 : qs) {
             Vertex[] verts = quads.get(g4);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -450,6 +459,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData5 g5 : cs) {
             Vertex[] verts = condlines.get(g5);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -632,6 +642,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData2 g2 : ls) {
             Vertex[] verts = lines.get(g2);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLinePoints(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -644,6 +655,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData3 g3 : ts) {
             Vertex[] verts = triangles.get(g3);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLinePoints(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -672,6 +684,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData4 g4 : qs) {
             Vertex[] verts = quads.get(g4);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLinePoints(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -708,6 +721,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData5 g5 : cs) {
             Vertex[] verts = condlines.get(g5);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLinePoints(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -786,6 +800,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData2 g2 : ls) {
             Vertex[] verts = lines.get(g2);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -798,6 +813,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData3 g3 : ts) {
             Vertex[] verts = triangles.get(g3);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -826,6 +842,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData4 g4 : qs) {
             Vertex[] verts = quads.get(g4);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -862,6 +879,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData5 g5 : cs) {
             Vertex[] verts = condlines.get(g5);
+            if (verts == null) continue;
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -919,6 +937,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData3 g3 : ts) {
             Vertex[] verts = triangles.get(g3);
+            if (verts == null) continue;
             Vector4f v1 = MathHelper
                     .getNearestPointToTriangle(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, verts[2].x, verts[2].y, verts[2].z, vertex.x, vertex.y, vertex.z);
             if (v1 == null)
@@ -932,6 +951,7 @@ class VM05Distance extends VM04Rectifier {
 
         for (GData4 g4 : qs) {
             Vertex[] verts = quads.get(g4);
+            if (verts == null) continue;
             Vector4f v1 = MathHelper
                     .getNearestPointToTriangle(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z, verts[2].x, verts[2].y, verts[2].z, vertex.x, vertex.y, vertex.z);
             if (v1 == null)
