@@ -2606,6 +2606,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 vm.addSnapshot();
                                 Manipulator ma = c3d.getManipulator();
                                 vm.transformSubfile(subfile, ma.getAccurateMatrix(), true, true);
+                                break;
                             }
                         }
                     }
