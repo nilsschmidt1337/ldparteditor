@@ -584,20 +584,16 @@ public enum DatParser {
                 if (headerState == HeaderState._10o_HISTORY) {
                     // I expect that this line is a valid History Entry
                     if (line.startsWith("0 !HISTORY ")) { //$NON-NLS-1$
-                        try {
-                            if (h.hasHISTORY()) {
-                                final String lh = h.getLastHistoryEntry();
-                                if (lh != null && line.substring(0, "0 !HISTORY YYYY-MM-DD".length()).compareTo(lh) == -1) { //$NON-NLS-1$
-                                    result.add(new ParsingResult(I18n.DATPARSER_HistoryWrongOrder, "[HA3] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                                }
-                            } else {
-                                h.setLastHistoryEntry(line.substring(0, "0 !HISTORY YYYY-MM-DD".length())); //$NON-NLS-1$
+                        if (h.hasHISTORY()) {
+                            final String lh = h.getLastHistoryEntry();
+                            if (lh != null && line.substring(0, "0 !HISTORY YYYY-MM-DD".length()).compareTo(lh) == -1) { //$NON-NLS-1$
+                                result.add(new ParsingResult(I18n.DATPARSER_HistoryWrongOrder, "[HA3] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
-                            h.setHasHISTORY(true);
-                            headerState = HeaderState._10o_HISTORY;
-                        } catch (NullPointerException npe) {
-
+                        } else {
+                            h.setLastHistoryEntry(line.substring(0, "0 !HISTORY YYYY-MM-DD".length())); //$NON-NLS-1$
                         }
+                        h.setHasHISTORY(true);
+                        headerState = HeaderState._10o_HISTORY;
                         break;
                     } else { // Its something else..
                         headerState = HeaderState._11o_COMMENT;
