@@ -288,8 +288,7 @@ public enum DatParser {
                         if (h.hasNAME()) {
                             result.add(new ParsingResult(I18n.DATPARSER_DuplicatedFilename, "[H11] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
-                            if (headerState > HeaderState._01_NAME) { // Its
-                                // misplaced
+                            if (headerState > HeaderState._01_NAME) { // Its misplaced
                                 result.add(new ParsingResult(I18n.DATPARSER_MisplacedFilename, "[H12] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setLineNAME(lineNumber);
@@ -333,8 +332,7 @@ public enum DatParser {
                             if (h.hasAUTHOR()) {
                                 result.add(new ParsingResult(I18n.DATPARSER_DuplicatedAuthor, "[H21] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             } else {
-                                if (headerState > HeaderState._02_AUTHOR) { // Its
-                                    // misplaced
+                                if (headerState > HeaderState._02_AUTHOR) { // Its misplaced
                                     result.add(new ParsingResult(I18n.DATPARSER_MisplacedAuthor, "[H22] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                                 }
                                 h.setLineAUTHOR(lineNumber);
@@ -384,8 +382,7 @@ public enum DatParser {
                         if (h.hasTYPE()) {
                             result.add(new ParsingResult(I18n.DATPARSER_DuplicatedType, "[H31] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
-                            if (headerState > HeaderState._03_TYPE) { // Its
-                                // misplaced
+                            if (headerState > HeaderState._03_TYPE) { // Its misplaced
                                 result.add(new ParsingResult(I18n.DATPARSER_MisplacedType, "[H32] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setLineTYPE(lineNumber);
@@ -416,8 +413,7 @@ public enum DatParser {
                         if (h.hasLICENSE()) {
                             result.add(new ParsingResult(I18n.DATPARSER_DuplicatedLicense, "[H41] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
-                            if (headerState > HeaderState._04_LICENSE) { // Its
-                                // misplaced
+                            if (headerState > HeaderState._04_LICENSE) { // Its misplaced
                                 result.add(new ParsingResult(I18n.DATPARSER_MisplacedLicense, "[H42] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setLineLICENSE(lineNumber);
@@ -450,8 +446,7 @@ public enum DatParser {
                         if (h.hasHELP()) {
                             result.add(new ParsingResult(I18n.DATPARSER_SplitHelp, "[H51] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
-                            if (headerState > HeaderState._05o_HELP) { // Its
-                                // misplaced
+                            if (headerState > HeaderState._05o_HELP) { // Its misplaced
                                 result.add(new ParsingResult(I18n.DATPARSER_MisplacedHelp, "[H52] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setLineHELP_start(lineNumber);
@@ -484,8 +479,7 @@ public enum DatParser {
                         if (h.hasBFC()) {
                             result.add(new ParsingResult(I18n.DATPARSER_DuplicatedBFC, "[H61] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
-                            if (headerState > HeaderState._06_BFC) { // Its
-                                // misplaced
+                            if (headerState > HeaderState._06_BFC) { // Its misplaced
                                 result.add(new ParsingResult(I18n.DATPARSER_MisplacedBFC0, "[H62] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setLineBFC(lineNumber);
@@ -513,8 +507,7 @@ public enum DatParser {
                         if (h.hasCATEGORY()) {
                             result.add(new ParsingResult(I18n.DATPARSER_DuplicatedCategory, "[H71] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
-                            if (headerState > HeaderState._07o_CATEGORY) { // Its
-                                // misplaced
+                            if (headerState > HeaderState._07o_CATEGORY) { // Its misplaced
                                 result.add(new ParsingResult(I18n.DATPARSER_MisplacedCategory, "[H72] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setHasCATEGORY(true);
@@ -541,8 +534,7 @@ public enum DatParser {
                         if (h.hasKEYWORDS()) {
                             result.add(new ParsingResult(I18n.DATPARSER_SplitKeyword, "[H81] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
-                            if (headerState > HeaderState._08o_KEYWORDS) { // Its
-                                // misplaced
+                            if (headerState > HeaderState._08o_KEYWORDS) { // Its misplaced
                                 result.add(new ParsingResult(I18n.DATPARSER_MisplacedKeyword, "[H82] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setHasKEYWORDS(true);
@@ -569,8 +561,7 @@ public enum DatParser {
                         if (h.hasCMDLINE()) {
                             result.add(new ParsingResult(I18n.DATPARSER_DuplicatedCommandLine, "[H91] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
-                            if (headerState > HeaderState._09o_CMDLINE) { // Its
-                                // misplaced
+                            if (headerState > HeaderState._09o_CMDLINE) { // Its misplaced
                                 result.add(new ParsingResult(I18n.DATPARSER_MisplacedCommandLine, "[H92] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setHasCMDLINE(true);
@@ -605,8 +596,7 @@ public enum DatParser {
                         if (h.hasHISTORY()) {
                             result.add(new ParsingResult(I18n.DATPARSER_SplitHistory, "[HA1] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
-                            if (headerState > HeaderState._10o_HISTORY) { // Its
-                                // misplaced
+                            if (headerState > HeaderState._10o_HISTORY) { // Its misplaced
                                 result.add(new ParsingResult(I18n.DATPARSER_MisplacedHistory, "[HA2] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setHasHISTORY(true);
@@ -633,8 +623,7 @@ public enum DatParser {
                         if (h.hasCOMMENT()) {
                             result.add(new ParsingResult(I18n.DATPARSER_SplitCommment, "[HB1] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
-                            if (headerState > HeaderState._11o_COMMENT) { // Its
-                                // misplaced
+                            if (headerState > HeaderState._11o_COMMENT) { // Its misplaced
                                 result.add(new ParsingResult(I18n.DATPARSER_MisplacedComment, "[HB2] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setHasCOMMENT(true);
@@ -673,8 +662,7 @@ public enum DatParser {
                         if (h.hasBFC2()) {
                             result.add(new ParsingResult(I18n.DATPARSER_SplitBFC, "[HC1] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                         } else {
-                            if (headerState > HeaderState._12o_BFC2) { // Its
-                                // misplaced
+                            if (headerState > HeaderState._12o_BFC2) { // Its misplaced
                                 result.add(new ParsingResult(I18n.DATPARSER_MisplacedBFC, "[HC2] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
                             }
                             h.setHasBFC2(true);
