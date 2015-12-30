@@ -76,13 +76,13 @@ public final class DatFile {
     private final HashMap<Integer, GData> copy_drawPerLine = new HashMap<Integer, GData>();
 
     private static final GTexture CUBEMAP_TEXTURE = new GTexture(TexType.PLANAR, "cmap.png", null, 1, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
-    private static final GDataTEX CUBEMAP = new  GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_TEXTURE); //$NON-NLS-1$
+    private static final GDataTEX CUBEMAP = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_TEXTURE); //$NON-NLS-1$
 
     private static final GTexture CUBEMAP_MATTE_TEXTURE = new GTexture(TexType.PLANAR, "matte_metal.png", null, 2, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
-    private static final GDataTEX CUBEMAP_MATTE = new  GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_MATTE_TEXTURE); //$NON-NLS-1$
+    private static final GDataTEX CUBEMAP_MATTE = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_MATTE_TEXTURE); //$NON-NLS-1$
 
     private static final GTexture CUBEMAP_METAL_TEXTURE = new GTexture(TexType.PLANAR, "metal.png", null, 2, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
-    private static final GDataTEX CUBEMAP_METAL = new  GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_METAL_TEXTURE); //$NON-NLS-1$
+    private static final GDataTEX CUBEMAP_METAL = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_METAL_TEXTURE); //$NON-NLS-1$
 
 
     private final VertexManager vertices = new VertexManager(this);
@@ -531,11 +531,9 @@ public final class DatFile {
         errors.removeWithinPosition(compositeText, startOffset, endOffset, length - rlength);
 
         int offset = compositeText.getLineDelimiter().length();
-        int position = 0;
+        int position = startOffset;
 
         ArrayList<ParsingResult> results;
-
-        position = startOffset;
 
         // Clear the cache..
         GData.parsedLines.clear();
@@ -663,11 +661,9 @@ public final class DatFile {
         errors.removeWithinPosition(compositeText, startOffset, endOffset, length - rlength);
 
         int offset = StringHelper.getLineDelimiter().length();
-        int position = 0;
+        int position = startOffset;
 
         ArrayList<ParsingResult> results;
-
-        position = startOffset;
 
         // Clear the cache..
         GData.parsedLines.clear();
@@ -814,11 +810,11 @@ public final class DatFile {
             for (String line : lines) {
                 if (isNotBlank(line)) {
 
-                    if (!line.startsWith("0")) { //$NON-NLS-1$
+                    if (!line.trim().startsWith("0")) { //$NON-NLS-1$
                         break;
                     }
 
-                    results = DatParser.parseLine(line, lineNumber, 0, 0f, 0f, 0f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, true, alreadyParsed, false);
+                    DatParser.parseLine(line, lineNumber, 0, 0f, 0f, 0f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, true, alreadyParsed, false);
                 }
                 lineNumber++;
             }
@@ -897,7 +893,7 @@ public final class DatFile {
             String line = compositeText.getLine(lineNumber - 1);
             if (isNotBlank(line)) {
 
-                if (!line.startsWith("0")) { //$NON-NLS-1$
+                if (!line.trim().startsWith("0")) { //$NON-NLS-1$
                     HeaderState.state().setState(HeaderState._99_DONE);
                     break;
                 }
