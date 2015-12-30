@@ -1172,6 +1172,11 @@ public final class DatFile {
 
     public boolean save() {
 
+        if (readOnly) {
+            // Don't save read only files!
+            return true;
+        }
+
         boolean deleteFirst = oldName.equals(newName);
 
         try {
