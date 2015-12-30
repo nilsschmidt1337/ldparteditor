@@ -1217,7 +1217,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 updatingSelectionTab = true;
                 NLogger.debug(getClass(), "Previous Selection..."); //$NON-NLS-1$
                 final DatFile df = Project.getFileToEdit();
-                if (df != null) {
+                if (df != null && !df.isReadOnly()) {
                     final VertexManager vm = df.getVertexManager();
                     vm.addSnapshot();
                     final int count = vm.getSelectedData().size();
@@ -1378,7 +1378,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 updatingSelectionTab = true;
                 NLogger.debug(getClass(), "Next Selection..."); //$NON-NLS-1$
                 final DatFile df = Project.getFileToEdit();
-                if (df != null) {
+                if (df != null && !df.isReadOnly()) {
                     final VertexManager vm = df.getVertexManager();
                     vm.addSnapshot();
                     final int count = vm.getSelectedData().size();
