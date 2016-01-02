@@ -733,6 +733,7 @@ class VM05Distance extends VM04Rectifier {
                     minDist = d1;
                 }
             }
+            /*
             {
                 Vector4f v1 = MathHelper.getNearestPointToLinePoints(verts[0].x, verts[0].y, verts[0].z, verts[2].x, verts[2].y, verts[2].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -749,6 +750,8 @@ class VM05Distance extends VM04Rectifier {
                     minDist = d1;
                 }
             }
+            /*
+             */
         }
 
         if (minDist == Double.MAX_VALUE)
@@ -891,6 +894,7 @@ class VM05Distance extends VM04Rectifier {
                     minDist = d1;
                 }
             }
+            /*
             {
                 Vector4f v1 = MathHelper.getNearestPointToLineSegment(verts[0].x, verts[0].y, verts[0].z, verts[2].x, verts[2].y, verts[2].z, vertex.x, vertex.y, vertex.z);
                 float d1 = Vector4f.sub(v1, vp, null).length();
@@ -907,6 +911,8 @@ class VM05Distance extends VM04Rectifier {
                     minDist = d1;
                 }
             }
+            /*
+             */
         }
 
         if (minDist == Double.MAX_VALUE)
