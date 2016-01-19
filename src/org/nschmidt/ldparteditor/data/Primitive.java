@@ -27,7 +27,6 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.enums.Rule;
-import org.nschmidt.ldparteditor.logger.NLogger;
 
 public class Primitive implements Comparable<Primitive> {
 
@@ -210,6 +209,7 @@ public class Primitive implements Comparable<Primitive> {
                     public int compare(Primitive o1, Primitive o2) {
                         if (o1 == me) return 1;
                         if (o2 == me) return -1;
+                        if (o1 == o2) return 0;
                         return o1.compareTo(o2);
                     }
                 });
@@ -220,6 +220,7 @@ public class Primitive implements Comparable<Primitive> {
                     public int compare(Primitive o1, Primitive o2) {
                         if (o1 == me) return 1;
                         if (o2 == me) return -1;
+                        if (o1 == o2) return 0;
                         String name_o1 = o1.name;
                         String name_o2 = o2.name;
                         return numberAndMinus.matcher(name_o1).replaceAll("").compareToIgnoreCase(numberAndMinus.matcher(name_o2).replaceAll("")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -232,26 +233,19 @@ public class Primitive implements Comparable<Primitive> {
                     public int compare(Primitive o1, Primitive o2) {
                         if (o1 == me) return 1;
                         if (o2 == me) return -1;
+                        if (o1 == o2) return 0;
+
+                        float fraction_this = 0f;
+                        float fraction_other = 0f;
+                        String suffix_this = ""; //$NON-NLS-1$
+                        String suffix_other = ""; //$NON-NLS-1$
+
                         try {
                             String name_o1 = o1.name;
-                            String name_o2 = o2.name;
                             if (name_o1.startsWith("48\\")) name_o1 = name_o1.substring(3); //$NON-NLS-1$
-                            if (name_o2.startsWith("48\\")) name_o2 = name_o2.substring(3); //$NON-NLS-1$
-                            // Special cases: unknown parts numbers "u[Number]" and unknown
-                            // stickers "s[Number]"
-                            if (name_o1.charAt(0) == 'u' && name_o2.charAt(0) == 'u' || name_o1.charAt(0) == 's' && name_o2.charAt(0) == 's') {
-                                name_o1 = name_o1.substring(1, name_o1.length());
-                                name_o2 = name_o2.substring(1, name_o2.length());
-                            }
-
-                            if ((name_o1.charAt(1) == '-' || name_o1.charAt(2) == '-')
-                                    && (name_o2.charAt(1) == '-' || name_o2.charAt(2) == '-')) {
-                                String upper_this = ""; //$NON-NLS-1$
-                                String upper_other = ""; //$NON-NLS-1$
-                                String lower_this = ""; //$NON-NLS-1$
-                                String lower_other = ""; //$NON-NLS-1$
-                                String suffix_this = ""; //$NON-NLS-1$
-                                String suffix_other = ""; //$NON-NLS-1$
+                            String upper_this = ""; //$NON-NLS-1$
+                            String lower_this = ""; //$NON-NLS-1$
+                            if (name_o1.charAt(1) == '-' || name_o1.charAt(2) == '-') {
                                 boolean readUpper = true;
                                 int charCount = 0;
                                 char[] chars_this = name_o1.toCharArray();
@@ -272,8 +266,22 @@ public class Primitive implements Comparable<Primitive> {
                                     }
                                     charCount++;
                                 }
-                                readUpper = true;
-                                charCount = 0;
+                                fraction_this = Float.parseFloat(upper_this) / Float.parseFloat(lower_this);
+                            } else {
+                                return 1;
+                            }
+                        } catch (Exception ex) {
+                            return 1;
+                        }
+
+                        try {
+                            String name_o2 = o2.name;
+                            if (name_o2.startsWith("48\\")) name_o2 = name_o2.substring(3); //$NON-NLS-1$
+                            String upper_other = ""; //$NON-NLS-1$
+                            String lower_other = ""; //$NON-NLS-1$
+                            if (name_o2.charAt(1) == '-' || name_o2.charAt(2) == '-') {
+                                boolean readUpper = true;
+                                int charCount = 0;
                                 char[] chars_other = name_o2.toCharArray();
                                 for (char c : chars_other) {
                                     if (Character.isDigit(c)) {
@@ -292,25 +300,24 @@ public class Primitive implements Comparable<Primitive> {
                                     }
                                     charCount++;
                                 }
-                                float fraction_this = Float.parseFloat(upper_this) / Float.parseFloat(lower_this);
-                                float fraction_other = Float.parseFloat(upper_other) / Float.parseFloat(lower_other);
-
-                                if (!suffix_this.equals(suffix_other)) {
-                                    return suffix_this.compareTo(suffix_other);
-                                } else {
-                                    if (fraction_this < fraction_other) {
-                                        return 1;
-                                    } else if (fraction_this > fraction_other) {
-                                        return -1;
-                                    }
-                                }
+                                fraction_other = Float.parseFloat(upper_other) / Float.parseFloat(lower_other);
+                            } else {
+                                return -1;
                             }
-                            return 0; // name_o1.compareTo(name_o2);
                         } catch (Exception ex) {
-                            NLogger.error(getClass(), "Can't compare primitives (ORDER_BY_FRACTION)!"); //$NON-NLS-1$
-                            NLogger.error(getClass(), ex);
-                            return 0; // o1.name.compareTo(o2.name);
+                            return -1;
                         }
+
+                        if (!suffix_this.equals(suffix_other)) {
+                            return suffix_this.compareTo(suffix_other);
+                        } else {
+                            if (fraction_this < fraction_other) {
+                                return 1;
+                            } else if (fraction_this > fraction_other) {
+                                return -1;
+                            }
+                        }
+                        return 0;
                     }
                 });
                 break;
@@ -320,6 +327,7 @@ public class Primitive implements Comparable<Primitive> {
                     public int compare(Primitive o1, Primitive o2) {
                         if (o1 == me) return 1;
                         if (o2 == me) return -1;
+                        if (o1 == o2) return 0;
                         String name_o1 = o1.name;
                         String name_o2 = o2.name;
                         char[] chars_this = name_o1.toCharArray();
