@@ -176,8 +176,8 @@ class VM14Splitter extends VM13SymSplitter {
             return result;
         case 1:
 
-            Vector3d A = new Vector3d(lines.get(g)[0]);
-            Vector3d B = new Vector3d(lines.get(g)[1]);
+            Vector3d A = new Vector3d(condlines.get(g)[0]);
+            Vector3d B = new Vector3d(condlines.get(g)[1]);
 
             BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
             BigDecimal cur = BigDecimal.ZERO;
