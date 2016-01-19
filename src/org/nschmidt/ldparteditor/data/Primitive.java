@@ -27,6 +27,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.enums.Rule;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 public class Primitive implements Comparable<Primitive> {
 
@@ -208,6 +209,7 @@ public class Primitive implements Comparable<Primitive> {
                     @Override
                     public int compare(Primitive o1, Primitive o2) {
                         if (o1 == me) return 1;
+                        if (o2 == me) return -1;
                         return o1.compareTo(o2);
                     }
                 });
@@ -217,6 +219,7 @@ public class Primitive implements Comparable<Primitive> {
                     @Override
                     public int compare(Primitive o1, Primitive o2) {
                         if (o1 == me) return 1;
+                        if (o2 == me) return -1;
                         String name_o1 = o1.name;
                         String name_o2 = o2.name;
                         return numberAndMinus.matcher(name_o1).replaceAll("").compareToIgnoreCase(numberAndMinus.matcher(name_o2).replaceAll("")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -228,6 +231,7 @@ public class Primitive implements Comparable<Primitive> {
                     @Override
                     public int compare(Primitive o1, Primitive o2) {
                         if (o1 == me) return 1;
+                        if (o2 == me) return -1;
                         try {
                             String name_o1 = o1.name;
                             String name_o2 = o2.name;
@@ -296,13 +300,15 @@ public class Primitive implements Comparable<Primitive> {
                                 } else {
                                     if (fraction_this < fraction_other) {
                                         return 1;
-                                    } else {
+                                    } else if (fraction_this > fraction_other) {
                                         return -1;
                                     }
                                 }
                             }
                             return 0; // name_o1.compareTo(name_o2);
                         } catch (Exception ex) {
+                            NLogger.error(getClass(), "Can't compare primitives (ORDER_BY_FRACTION)!"); //$NON-NLS-1$
+                            NLogger.error(getClass(), ex);
                             return 0; // o1.name.compareTo(o2.name);
                         }
                     }
@@ -313,6 +319,7 @@ public class Primitive implements Comparable<Primitive> {
                     @Override
                     public int compare(Primitive o1, Primitive o2) {
                         if (o1 == me) return 1;
+                        if (o2 == me) return -1;
                         String name_o1 = o1.name;
                         String name_o2 = o2.name;
                         char[] chars_this = name_o1.toCharArray();
