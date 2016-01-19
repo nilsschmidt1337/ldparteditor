@@ -210,10 +210,13 @@ public class CompositeTab extends CompositeTabDesign {
                         case 0:
                             if (data_segments.length == 6 && "0".equals(data_segments[0]) && "!LPE".equals(data_segments[1]) && "VERTEX".equals(data_segments[2])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                 if (state.currentCaretPositionChar > oldLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$
-                                    vertexToReplace = vm.getDeclaredVertices().get(dataInLine)[0];
-                                    foundVertexMetacommand = true;
-                                    foundValidVertex = true;
-                                    NLogger.debug(getClass(), "Vertex I"); //$NON-NLS-1$
+                                    Vertex[] verts = vm.getDeclaredVertices().get(dataInLine);
+                                    if (verts != null) {
+                                        vertexToReplace = verts[0];
+                                        foundVertexMetacommand = true;
+                                        foundValidVertex = true;
+                                        NLogger.debug(getClass(), "Vertex I"); //$NON-NLS-1$
+                                    }
                                 }
                             }
                             break;
@@ -409,7 +412,7 @@ public class CompositeTab extends CompositeTabDesign {
                             } catch (Exception nfe) {
                                 return;
                             }
-                            if (foundValidVertex) {
+                            if (foundValidVertex && x != null && y != null && z != null) {
                                 // Do this only, if the replacement can be done!
                                 Vertex newVertex = new Vertex(x, y, z);
                                 if (vm.changeVertexDirect(vertexToReplace, newVertex, !foundVertexMetacommand)) {
@@ -473,7 +476,7 @@ public class CompositeTab extends CompositeTabDesign {
                                     } catch (Exception nfe) {
                                         return;
                                     }
-                                    if (foundValidVertex) {
+                                    if (foundValidVertex && x != null && y != null && z != null) {
                                         // Do this only, if the replacement can
                                         // be done!
                                         newVertex = new Vertex(x, y, z);
@@ -537,7 +540,7 @@ public class CompositeTab extends CompositeTabDesign {
                                             } catch (Exception nfe) {
                                                 return;
                                             }
-                                            if (foundValidVertex) {
+                                            if (foundValidVertex && x != null && y != null && z != null) {
                                                 // Do this only, if the
                                                 // replacement can be done!
                                                 newVertex = new Vertex(x, y, z);
