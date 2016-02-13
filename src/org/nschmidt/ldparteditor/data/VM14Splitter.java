@@ -154,7 +154,10 @@ class VM14Splitter extends VM13SymSplitter {
 
         selectedTriangles.addAll(newTriangles);
         selectedData.addAll(selectedTriangles);
-        rectify(new RectifierSettings(), false, false);
+        RectifierSettings rs = new RectifierSettings();
+        rs.setScope(1);
+        rs.setNoBorderedQuadToRectConversation(true);
+        rectify(rs, false, false);
 
         clearSelection();
         if (isModified()) {
@@ -1246,7 +1249,11 @@ class VM14Splitter extends VM13SymSplitter {
 
         selectedTriangles.addAll(newTriangles);
         selectedData.addAll(selectedTriangles);
-        rectify(new RectifierSettings(), false, false);
+
+        RectifierSettings rs = new RectifierSettings();
+        rs.setScope(1);
+        rs.setNoBorderedQuadToRectConversation(true);
+        rectify(rs, false, false);
 
         clearSelection();
         restoreSelection();
