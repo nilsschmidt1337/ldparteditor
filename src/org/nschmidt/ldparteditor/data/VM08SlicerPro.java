@@ -377,6 +377,7 @@ public class VM08SlicerPro extends VM07PathTruder {
             NLogger.debug(getClass(), "Rectify."); //$NON-NLS-1$
             RectifierSettings rs = new RectifierSettings();
             rs.setScope(1);
+            rs.setNoBorderedQuadToRectConversation(true);
             rectify(rs, false, false);
 
             clearSelection();
