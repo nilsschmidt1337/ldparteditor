@@ -27,15 +27,10 @@ public enum StringHelper {
     public static int countOccurences(final String findStr, final String str) {
         int lastIndex = 0;
         int count = 0;
-
+        lastIndex = str.indexOf(findStr, lastIndex);
         while (lastIndex != -1) {
-
-            lastIndex = str.indexOf(findStr, lastIndex);
-
-            if (lastIndex != -1) {
-                count++;
-                lastIndex += findStr.length();
-            }
+            count++;
+            lastIndex = str.indexOf(findStr, lastIndex + findStr.length());
         }
         return count;
     }
@@ -48,11 +43,9 @@ public enum StringHelper {
             char c = str.charAt(i);
             if (Character.isWhitespace(c)) {
                 hit = false;
-            } else {
-                if (!hit) {
-                    hit = true;
-                    count++;
-                }
+            } else if (!hit) {
+                hit = true;
+                count++;
             }
         }
         return count;
@@ -78,7 +71,7 @@ public enum StringHelper {
     }
 
     /**
-     * Lempel–Ziv–Welch (LZW) Compression for UNICODE Strings
+     * Compression for UNICODE Strings
      * @param uncompressed
      * @return
      */
@@ -104,8 +97,4 @@ public enum StringHelper {
         }
         return result.toString();
     }
-
-
-
-
 }
