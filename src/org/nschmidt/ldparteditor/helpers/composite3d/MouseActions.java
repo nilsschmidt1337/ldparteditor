@@ -376,10 +376,10 @@ public class MouseActions {
                         c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().clear();
                         if (Vector3f.sub(v13, v3d, null).lengthSquared() < Vector3f.sub(v23, v3d, null).lengthSquared()) {
                             c3d.getLockableDatFileReference().setNearestObjVertex1(v1);
-                            c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
+                            if (v1 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
                         } else {
                             c3d.getLockableDatFileReference().setNearestObjVertex1(v2);
-                            c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v2);
+                            if (v2 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v2);
                         }
                     }
                 }
@@ -398,16 +398,16 @@ public class MouseActions {
                                 c3d.getLockableDatFileReference().setNearestObjVertex1((Vertex) nv[0]);
                                 c3d.getLockableDatFileReference().setNearestObjVertex2((Vertex) nv[1]);
                                 c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().clear();
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[0]);
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[1]);
+                                if (nv[0] != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[0]);
+                                if (nv[1] != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[1]);
                             } else if (!keyboard.isCtrlPressed()) {
                                 Vertex v3d = new Vertex(c3d.getCursorSnapped3Dprecise());
                                 c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().clear();
                                 Vertex[] v = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToTriangleEdges(v3d, v1, v2, v3, c3d);
                                 c3d.getLockableDatFileReference().setNearestObjVertex1(v[0]);
                                 c3d.getLockableDatFileReference().setNearestObjVertex2(v[1]);
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v[0]);
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v[1]);
+                                if (v[0] != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v[0]);
+                                if (v[1] != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v[1]);
                             }
                         } else {
                             if (keyboard.isShiftPressed()) {
@@ -418,12 +418,12 @@ public class MouseActions {
                                 c3d.getLockableDatFileReference().setNearestObjVertex1((Vertex) nv[0]);
                                 c3d.getLockableDatFileReference().setNearestObjVertex2((Vertex) nv[1]);
                                 c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().clear();
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[0]);
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[1]);
+                                if (nv[0] != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[0]);
+                                if (nv[1] != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[1]);
                             } else if (!keyboard.isCtrlPressed()) {
                                 c3d.getLockableDatFileReference().setNearestObjVertex2(v2);
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v2);
+                                if (v1 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
+                                if (v2 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v2);
                             }
                         }
                     } else {
@@ -433,7 +433,7 @@ public class MouseActions {
                             c3d.getCursorSnapped3D().set(nv.x, nv.y, nv.z, 1f);
                         } else {
                             c3d.getLockableDatFileReference().setNearestObjVertex1(v1);
-                            c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
+                            if (v1 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
                         }
                     }
                 }
@@ -454,8 +454,8 @@ public class MouseActions {
                                 c3d.getLockableDatFileReference().setNearestObjVertex1((Vertex) nv[0]);
                                 c3d.getLockableDatFileReference().setNearestObjVertex2((Vertex) nv[1]);
                                 c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().clear();
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[0]);
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[1]);
+                                if (nv[0] != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[0]);
+                                if (nv[1] != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[1]);
                             } else if (!keyboard.isCtrlPressed()) {
                                 Vertex v3d = new Vertex(c3d.getCursorSnapped3Dprecise());
                                 c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().clear();
@@ -472,8 +472,8 @@ public class MouseActions {
                                     c3d.getLockableDatFileReference().setNearestObjVertex1(nv[0]);
                                     c3d.getLockableDatFileReference().setNearestObjVertex2(nv[1]);
                                     c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().clear();
-                                    c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(nv[0]);
-                                    c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(nv[1]);
+                                    if (nv[0] != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(nv[0]);
+                                    if (nv[1] != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(nv[1]);
                                 }
                             }
                         } else {
@@ -486,8 +486,8 @@ public class MouseActions {
                                 c3d.getLockableDatFileReference().setNearestObjVertex1((Vertex) nv[0]);
                                 c3d.getLockableDatFileReference().setNearestObjVertex2((Vertex) nv[1]);
                                 c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().clear();
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[0]);
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[1]);
+                                if (nv[0] != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[0]);
+                                if (nv[1] != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add((Vertex) nv[1]);
                             } else if (!keyboard.isCtrlPressed() && v3 == null) {
                                 Vector3f v13 = new Vector3f(v1.x, v1.y, v1.z);
                                 Vector3f v23 = new Vector3f(v2.x, v2.y, v2.z);
@@ -501,8 +501,8 @@ public class MouseActions {
                                     c3d.getLockableDatFileReference().setNearestObjVertex1(v2);
                                     c3d.getLockableDatFileReference().setNearestObjVertex2(v1);
                                 }
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v2);
+                                if (v1 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
+                                if (v2 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v2);
                             } else if (v3 != null) {
                                 // Resolving Hourglass (no Coplanarity and
                                 // Collinearity)
@@ -563,7 +563,7 @@ public class MouseActions {
                             c3d.getCursorSnapped3D().set(nv.x, nv.y, nv.z, 1f);
                         } else {
                             c3d.getLockableDatFileReference().setNearestObjVertex1(v1);
-                            c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
+                            if (v1 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
                         }
                     }
                 }
@@ -590,10 +590,10 @@ public class MouseActions {
                                 c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().clear();
                                 if (Vector3f.sub(v13, v3d, null).lengthSquared() < Vector3f.sub(v23, v3d, null).lengthSquared()) {
                                     c3d.getLockableDatFileReference().setNearestObjVertex1(v1);
-                                    c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
+                                    if (v1 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
                                 } else {
                                     c3d.getLockableDatFileReference().setNearestObjVertex1(v2);
-                                    c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v2);
+                                    if (v2 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v2);
                                 }
                             }
                         } else {
@@ -617,8 +617,8 @@ public class MouseActions {
                                     c3d.getLockableDatFileReference().setNearestObjVertex1(v2);
                                     c3d.getLockableDatFileReference().setNearestObjVertex2(v1);
                                 }
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
-                                c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v2);
+                                if (v1 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
+                                if (v2 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v2);
                             }
                         }
                     } else {
@@ -628,7 +628,7 @@ public class MouseActions {
                             c3d.getCursorSnapped3D().set(nv.x, nv.y, nv.z, 1f);
                         } else {
                             c3d.getLockableDatFileReference().setNearestObjVertex1(v1);
-                            c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
+                            if (v1 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
                         }
                     }
                 }
@@ -676,7 +676,7 @@ public class MouseActions {
                             Vertex v1 = vi.next();
                             datfile.setObjVertex1(v1);
                             datfile.setObjVertex2(v1);
-                            vm.getSelectedVertices().add(v1);
+                            if (v1 != null) vm.getSelectedVertices().add(v1);
                         }
                         return;
                     }
@@ -686,7 +686,7 @@ public class MouseActions {
                             final Vertex nv = new Vertex(cu3d);
                             datfile.setObjVertex1(nv);
                             datfile.setObjVertex2(nv);
-                            vm.getSelectedVertices().add(nv);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                             final Vertex nv = new Vertex(cu3d);
@@ -734,8 +734,8 @@ public class MouseActions {
                                 datfile.setObjVertex1(v1);
                                 datfile.setObjVertex2(v2);
                                 datfile.setObjVertex3(null);
-                                vm.getSelectedVertices().add(v1);
-                                vm.getSelectedVertices().add(v2);
+                                if (v1 != null) vm.getSelectedVertices().add(v1);
+                                if (v2 != null) vm.getSelectedVertices().add(v2);
                                 datfile.setNearestObjVertex1(v1);
                                 datfile.setNearestObjVertex2(v2);
                             }
@@ -755,14 +755,14 @@ public class MouseActions {
                                 Vertex v1 = vi.next();
                                 datfile.setObjVertex2(v1);
                                 datfile.setObjVertex3(null);
-                                vm.getSelectedVertices().add(v1);
+                                if (v1 != null) vm.getSelectedVertices().add(v1);
                             } else {
                                 final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();
                                 Vertex v1 = vi.next();
                                 datfile.setObjVertex1(v1);
                                 datfile.setObjVertex2(null);
                                 datfile.setObjVertex3(null);
-                                vm.getSelectedVertices().add(v1);
+                                if (v1 != null) vm.getSelectedVertices().add(v1);
                             }
                             return;
                         }
@@ -773,14 +773,14 @@ public class MouseActions {
                                 datfile.setObjVertex1(nv);
                                 datfile.setObjVertex2(null);
                                 datfile.setObjVertex3(null);
-                                vm.getSelectedVertices().add(nv);
+                                if (nv != null) vm.getSelectedVertices().add(nv);
                             } else if (vt2 == null) {
                                 final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                                 final Vertex nv = new Vertex(cu3d);
                                 datfile.setObjVertex2(nv);
                                 datfile.setObjVertex3(null);
-                                vm.getSelectedVertices().add(vt1);
-                                vm.getSelectedVertices().add(nv);
+                                if (vt1 != null) vm.getSelectedVertices().add(vt1);
+                                if (nv != null) vm.getSelectedVertices().add(nv);
                             } else {
                                 final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                                 final Vertex nv = new Vertex(cu3d);
@@ -845,15 +845,15 @@ public class MouseActions {
                             datfile.setObjVertex2(null);
                             datfile.setObjVertex3(null);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(nv);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else if (vq2 == null) {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                             final Vertex nv = new Vertex(cu3d);
                             datfile.setObjVertex2(nv);
                             datfile.setObjVertex3(null);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(vq1);
-                            vm.getSelectedVertices().add(nv);
+                            if (vq1 != null) vm.getSelectedVertices().add(vq1);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else if (vq3 == null || vq4 != null) {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                             final Vertex nv = new Vertex(cu3d);
@@ -861,9 +861,9 @@ public class MouseActions {
                             datfile.setObjVertex4(null);
                             datfile.setObjVertex1(vn1);
                             datfile.setObjVertex2(vn2);
-                            vm.getSelectedVertices().add(vn1);
-                            vm.getSelectedVertices().add(vn2);
-                            vm.getSelectedVertices().add(nv);
+                            if (vn1 != null) vm.getSelectedVertices().add(vn1);
+                            if (vn2 != null) vm.getSelectedVertices().add(vn2);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else if (vq4 == null) {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                             final Vertex nv = new Vertex(cu3d);
@@ -880,21 +880,21 @@ public class MouseActions {
                             datfile.setObjVertex2(null);
                             datfile.setObjVertex3(null);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(nv);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else if (vq2 == null) {
                             datfile.setObjVertex2(nv);
                             datfile.setObjVertex3(null);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(vq1);
-                            vm.getSelectedVertices().add(nv);
+                            if (vq1 != null) vm.getSelectedVertices().add(vq1);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else if (vq3 == null || vq4 != null) {
                             datfile.setObjVertex3(nv);
                             datfile.setObjVertex4(null);
                             datfile.setObjVertex1(vn1);
                             datfile.setObjVertex2(vn2);
-                            vm.getSelectedVertices().add(vn1);
-                            vm.getSelectedVertices().add(vn2);
-                            vm.getSelectedVertices().add(nv);
+                            if (vn1 != null) vm.getSelectedVertices().add(vn1);
+                            if (vn2 != null) vm.getSelectedVertices().add(vn2);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else if (vq4 == null) {
                             datfile.setObjVertex4(nv);
                             vm.addQuad(vq1, vq2, vq3, nv, c3d);
@@ -910,8 +910,8 @@ public class MouseActions {
                             datfile.setObjVertex2(nv2);
                             datfile.setObjVertex3(null);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(nv);
-                            vm.getSelectedVertices().add(nv2);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
+                            if (nv2 != null) vm.getSelectedVertices().add(nv2);
                         } else if (vq3 == null && vq4 == null) {
                             datfile.setObjVertex3(nv);
                             datfile.setObjVertex4(nv2);
@@ -948,9 +948,9 @@ public class MouseActions {
                             datfile.setObjVertex2(nv2);
                             datfile.setObjVertex3(nv3);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(nv);
-                            vm.getSelectedVertices().add(nv2);
-                            vm.getSelectedVertices().add(nv3);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
+                            if (nv2 != null) vm.getSelectedVertices().add(nv2);
+                            if (nv3 != null) vm.getSelectedVertices().add(nv3);
                         }
                     }
                     if (vm.getSelectedVertices().size() > 4) {
@@ -987,15 +987,15 @@ public class MouseActions {
                             datfile.setObjVertex2(null);
                             datfile.setObjVertex3(null);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(nv);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else if (vc2 == null) {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                             final Vertex nv = new Vertex(cu3d);
                             datfile.setObjVertex2(nv);
                             datfile.setObjVertex3(null);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(vc1);
-                            vm.getSelectedVertices().add(nv);
+                            if (vc1 != null) vm.getSelectedVertices().add(vc1);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else if (vc3 == null) {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                             final Vertex nv = new Vertex(cu3d);
@@ -1003,9 +1003,9 @@ public class MouseActions {
                             datfile.setObjVertex4(null);
                             datfile.setObjVertex1(vn1);
                             datfile.setObjVertex2(vn2);
-                            vm.getSelectedVertices().add(vn1);
-                            vm.getSelectedVertices().add(vn2);
-                            vm.getSelectedVertices().add(nv);
+                            if (vn1 != null) vm.getSelectedVertices().add(vn1);
+                            if (vn2 != null) vm.getSelectedVertices().add(vn2);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else if (vc4 == null) {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                             final Vertex nv = new Vertex(cu3d);
@@ -1021,8 +1021,8 @@ public class MouseActions {
                             datfile.setObjVertex2(nv);
                             datfile.setObjVertex3(null);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(vn1);
-                            vm.getSelectedVertices().add(nv);
+                            if (vn1 != null) vm.getSelectedVertices().add(vn1);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         }
                     } else if (vm.getSelectedVertices().size() == 1) {
                         final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();
@@ -1032,21 +1032,21 @@ public class MouseActions {
                             datfile.setObjVertex2(null);
                             datfile.setObjVertex3(null);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(nv);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else if (vc2 == null) {
                             datfile.setObjVertex2(nv);
                             datfile.setObjVertex3(null);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(vc1);
-                            vm.getSelectedVertices().add(nv);
+                            if (vc1 != null) vm.getSelectedVertices().add(vc1);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else if (vc3 == null) {
                             datfile.setObjVertex3(nv);
                             datfile.setObjVertex4(null);
                             datfile.setObjVertex1(vn1);
                             datfile.setObjVertex2(vn2);
-                            vm.getSelectedVertices().add(vn1);
-                            vm.getSelectedVertices().add(vn2);
-                            vm.getSelectedVertices().add(nv);
+                            if (vn1 != null) vm.getSelectedVertices().add(vn1);
+                            if (vn2 != null) vm.getSelectedVertices().add(vn2);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         } else if (vc4 == null) {
                             datfile.setObjVertex4(nv);
                             vm.addCondline(vc1, vc2, vc3, nv);
@@ -1058,8 +1058,8 @@ public class MouseActions {
                             datfile.setObjVertex2(nv);
                             datfile.setObjVertex3(null);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(vn1);
-                            vm.getSelectedVertices().add(nv);
+                            if (vn1 != null) vm.getSelectedVertices().add(vn1);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
                         }
                     } else if (vm.getSelectedVertices().size() == 2) {
                         final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();
@@ -1070,8 +1070,8 @@ public class MouseActions {
                             datfile.setObjVertex2(nv2);
                             datfile.setObjVertex3(null);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(nv);
-                            vm.getSelectedVertices().add(nv2);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
+                            if (nv2 != null) vm.getSelectedVertices().add(nv2);
                         } else if (vc3 == null && vc4 == null) {
                             datfile.setObjVertex3(nv);
                             datfile.setObjVertex4(nv2);
@@ -1111,9 +1111,9 @@ public class MouseActions {
                             datfile.setObjVertex2(nv2);
                             datfile.setObjVertex3(nv3);
                             datfile.setObjVertex4(null);
-                            vm.getSelectedVertices().add(nv);
-                            vm.getSelectedVertices().add(nv2);
-                            vm.getSelectedVertices().add(nv3);
+                            if (nv != null) vm.getSelectedVertices().add(nv);
+                            if (nv2 != null) vm.getSelectedVertices().add(nv2);
+                            if (nv3 != null) vm.getSelectedVertices().add(nv3);
                         }
                     }
                     if (vm.getSelectedVertices().size() > 4) {
