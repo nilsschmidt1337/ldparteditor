@@ -574,7 +574,7 @@ public enum DatParser {
                 // HeaderState._10o_HISTORY TODO Needs better validation
                 if (headerState == HeaderState._10o_HISTORY) {
                     // I expect that this line is a valid History Entry
-                    if (line.startsWith("0 !HISTORY ")) { //$NON-NLS-1$
+                    if (line.startsWith("0 !HISTORY ") && line.length() > 20) { //$NON-NLS-1$
                         if (h.hasHISTORY()) {
                             final String lh = h.getLastHistoryEntry();
                             if (lh != null && line.substring(0, "0 !HISTORY YYYY-MM-DD".length()).compareTo(lh) == -1) { //$NON-NLS-1$
