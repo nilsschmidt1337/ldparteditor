@@ -146,19 +146,22 @@ public class EditorTextWindow extends EditorTextDesign {
         }
 
         // MARK All final listeners will be configured here..
-        tabFolder[0].addSelectionListener(new SelectionListener() {
-
+        tabFolder[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // TODO Implement loader here for the file data itself
-                if (e.item != null)
-                    NLogger.debug(EditorTextWindow.class, "Old DatFile name {0}", ((CompositeTab) e.item).getState().getFileNameObj().getOldName()); //$NON-NLS-1$
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent consumed) {
+                CompositeTab ct = ((CompositeTab) e.item);
+                if (NLogger.DEBUG && ct != null) {
+                    CompositeTabState state = ct.getState();
+                    if (state != null) {
+                        DatFile df = state.getFileNameObj();
+                        if (df != null) {
+                            NLogger.debug(EditorTextWindow.class, "Old DatFile name {0}", ((CompositeTab) e.item).getState().getFileNameObj().getOldName()); //$NON-NLS-1$
+                        }
+                    }
+                }
             }
         });
+
         btn_New[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
