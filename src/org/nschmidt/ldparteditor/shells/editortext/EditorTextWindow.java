@@ -69,6 +69,7 @@ import org.nschmidt.ldparteditor.helpers.compositetext.AnnotatorTexmap;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helpers.compositetext.Text2SelectionConverter;
+import org.nschmidt.ldparteditor.helpers.compositetext.VertexMarker;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
@@ -308,6 +309,31 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             });
         }
+
+        btn_SyncEdit[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
+                    final StyledText st = selection.getTextComposite();
+                    final CompositeTabState state = selection.getState();
+                    final DatFile df = state.getFileNameObj();
+                    if (!state.isReplacingVertex()) {
+                        VertexMarker.markTheVertex(state, st, df);
+                        setStatus(I18n.EDITORTEXT_SyncEdit);
+                    } else {
+                        state.setReplacingVertex(false);
+                        df.getVertexManager().setVertexToReplace(null);
+                        st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+                        setStatus(I18n.EDITORTEXT_SyncEditDeactivated);
+                    }
+                    st.forceFocus();
+                }
+            }
+        });
 
         btn_Inline[0].addSelectionListener(new SelectionAdapter() {
             @Override

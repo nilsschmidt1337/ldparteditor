@@ -92,6 +92,7 @@ class EditorTextDesign extends ApplicationWindow {
     final Button[] btn_Unrectify = new Button[1];
     final Button[] btn_Beautify = new Button[1];
     final Button[] btn_ShowSelectionIn3D = new Button[1];
+    final Button[] btn_SyncEdit = new Button[1];
     final Button[] btn_Inline = new Button[1];
     final Button[] btn_InlineDeep = new Button[1];
     final Button[] btn_InlineLinked = new Button[1];
@@ -235,6 +236,12 @@ class EditorTextDesign extends ApplicationWindow {
             this.btn_Beautify[0] = btn_Beautify;
             btn_Beautify.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
             btn_Beautify.setToolTipText(I18n.EDITORTEXT_RemoveDuplicates);
+        }
+        {
+            Button btn_SyncEdit = new Button(toolItem_Debug, SWT.NONE);
+            this.btn_SyncEdit[0] = btn_SyncEdit;
+            btn_SyncEdit.setImage(ResourceManager.getImage("icon16_syncedit.png")); //$NON-NLS-1$
+            KeyStateManager.addTooltipText(btn_SyncEdit, I18n.EDITORTEXT_SyncEditButton, TextTask.EDITORTEXT_REPLACE_VERTEX);
         }
         {
             Button btn_Inline = new Button(toolItem_Debug, SWT.NONE);
