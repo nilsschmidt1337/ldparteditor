@@ -1115,8 +1115,10 @@ public class CompositeTab extends CompositeTabDesign {
         compositeText[0].getVerticalBar().addSelectionListener(new SelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                canvas_lineNumberArea[0].redraw();
-                getDisplay().update();
+                if (!isDisposed()) {
+                    canvas_lineNumberArea[0].redraw();
+                    getDisplay().update();
+                }
             }
 
             @Override
