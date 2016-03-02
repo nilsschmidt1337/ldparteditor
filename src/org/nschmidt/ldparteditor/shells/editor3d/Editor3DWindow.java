@@ -6538,7 +6538,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return sels;
     }
 
-    private boolean isFileNameAllocated(String dir, DatFile df, boolean createNew) {
+    public boolean isFileNameAllocated(String dir, DatFile df, boolean createNew) {
 
         TreeItem[] folders = new TreeItem[15];
         folders[0] = treeItem_OfficialParts[0];

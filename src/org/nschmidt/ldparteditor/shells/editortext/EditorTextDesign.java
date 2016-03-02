@@ -552,6 +552,4 @@ class EditorTextDesign extends ApplicationWindow {
             }
         });
     }
-
-
 }

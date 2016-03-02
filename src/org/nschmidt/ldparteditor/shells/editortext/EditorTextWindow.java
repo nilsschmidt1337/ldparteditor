@@ -245,31 +245,53 @@ public class EditorTextWindow extends EditorTextDesign {
                     String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
                     fd.setFilterNames(filterNames);
 
-                    String selected = fd.open();
-                    if (selected != null) {
-                        final CompositeTab ct = ((CompositeTab) tabFolder[0].getSelection());
+                    while (true) {
+                        try {
+                            String selected = fd.open();
+                            if (selected != null) {
 
-                        SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
-                        if (sw != null) {
-                            sw.setTextComposite(null);
-                            sw.setScopeToAll();
-                        }
+                                if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
+                                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
+                                    messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
+                                    messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
 
-                        CompositeTabState state = ct.getState();
-                        state.getFileNameObj().saveAs(selected);
+                                    int result = messageBox.open();
 
-                        DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, selected);
-                        if (df != null) {
-                            Editor3DWindow.getWindow().addRecentFile(df);
-                            if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
-                                {
-                                    CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
-                                    tbtmnewItem.setWindow(editorTextWindow);
-                                    tbtmnewItem.getState().setFileNameObj(df);
-                                    tabFolder[0].setSelection(tbtmnewItem);
+                                    if (result == SWT.CANCEL) {
+                                        break;
+                                    } else if (result == SWT.RETRY) {
+                                        continue;
+                                    }
+                                }
+
+                                final CompositeTab ct = ((CompositeTab) tabFolder[0].getSelection());
+
+                                SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
+                                if (sw != null) {
+                                    sw.setTextComposite(null);
+                                    sw.setScopeToAll();
+                                }
+
+                                CompositeTabState state = ct.getState();
+                                state.getFileNameObj().saveAs(selected);
+
+                                DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, selected);
+                                if (df != null) {
+                                    Editor3DWindow.getWindow().addRecentFile(df);
+                                    if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
+                                        {
+                                            CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
+                                            tbtmnewItem.setWindow(editorTextWindow);
+                                            tbtmnewItem.getState().setFileNameObj(df);
+                                            tabFolder[0].setSelection(tbtmnewItem);
+                                        }
+                                    }
                                 }
                             }
+                        } catch (Exception ex) {
+                            NLogger.error(getClass(), ex);
                         }
+                        break;
                     }
                 }
             }
