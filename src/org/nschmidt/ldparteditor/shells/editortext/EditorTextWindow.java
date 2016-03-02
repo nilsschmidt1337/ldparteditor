@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editortext;
 
+import java.net.URLDecoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,6 +42,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -72,6 +74,7 @@ import org.nschmidt.ldparteditor.helpers.compositetext.Text2SelectionConverter;
 import org.nschmidt.ldparteditor.helpers.compositetext.VertexMarker;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.main.LDPartEditor;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -203,6 +206,66 @@ public class EditorTextWindow extends EditorTextDesign {
                             MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
                             messageBoxError.setText(I18n.DIALOG_Error);
                             messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+        });
+        btn_SaveAs[0].addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (tabFolder[0].getSelection() != null) {
+
+
+                    FileDialog fd = new FileDialog(sh, SWT.SAVE);
+                    fd.setText(I18n.E3D_SaveDatFileAs);
+
+                    if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
+                        try {
+                            String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+                            String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
+                            decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
+                            fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
+                        } catch (Exception consumed) {
+                            fd.setFilterPath(Project.getProjectPath());
+                        }
+                    } else {
+                        fd.setFilterPath(Project.getProjectPath());
+                    }
+
+                    String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+                    fd.setFilterExtensions(filterExt);
+                    String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
+                    fd.setFilterNames(filterNames);
+
+                    String selected = fd.open();
+                    if (selected != null) {
+                        final CompositeTab ct = ((CompositeTab) tabFolder[0].getSelection());
+
+                        SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
+                        if (sw != null) {
+                            sw.setTextComposite(null);
+                            sw.setScopeToAll();
+                        }
+
+                        CompositeTabState state = ct.getState();
+                        state.getFileNameObj().saveAs(selected);
+
+                        DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, selected);
+                        if (df != null) {
+                            Editor3DWindow.getWindow().addRecentFile(df);
+                            if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
+                                {
+                                    CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
+                                    tbtmnewItem.setWindow(editorTextWindow);
+                                    tbtmnewItem.getState().setFileNameObj(df);
+                                    tabFolder[0].setSelection(tbtmnewItem);
+                                }
+                            }
                         }
                     }
                 }

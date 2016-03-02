@@ -73,6 +73,7 @@ class EditorTextDesign extends ApplicationWindow {
     final Button[] btn_New = new Button[1];
     final Button[] btn_Open = new Button[1];
     final Button[] btn_Save = new Button[1];
+    final Button[] btn_SaveAs = new Button[1];
 
     final Button[] btn_Palette = new Button[1];
 
@@ -149,6 +150,13 @@ class EditorTextDesign extends ApplicationWindow {
             this.btn_Save[0] = btn_Save;
             KeyStateManager.addTooltipText(btn_Save, I18n.E3D_Save, Task.SAVE);
             btn_Save.setImage(ResourceManager.getImage("icon16_document-save.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_SaveAs = new Button(toolItem_NewOpenSave, SWT.NONE);
+            this.btn_SaveAs[0] = btn_SaveAs;
+            btn_SaveAs.setToolTipText(I18n.E3D_SaveAs);
+            btn_SaveAs.setImage(ResourceManager.getImage("icon16_document-save.png")); //$NON-NLS-1$
+            btn_SaveAs.setText("..."); //$NON-NLS-1$
         }
         ToolItem toolItem_UndoRedo = new ToolItem(toolBar, SWT.NONE);
         {

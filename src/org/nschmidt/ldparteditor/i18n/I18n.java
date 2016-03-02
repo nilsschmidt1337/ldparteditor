@@ -448,6 +448,8 @@ public final class I18n {
     public static final String E3D_Ruler = E3D.getString(getProperty());
     public static final String E3D_Save = E3D.getString(getProperty());
     public static final String E3D_SaveAll = E3D.getString(getProperty());
+    public static final String E3D_SaveAs = E3D.getString(getProperty());
+    public static final String E3D_SaveDatFileAs = E3D.getString(getProperty());
     public static final String E3D_Scale = E3D.getString(getProperty());
     public static final String E3D_ScaleSelection = E3D.getString(getProperty());
     public static final String E3D_ScaleSnap = E3D.getString(getProperty());

@@ -1266,6 +1266,29 @@ public final class DatFile {
         }
     }
 
+    public boolean saveAs(String newName) {
+        try {
+            File newFile = new File(newName);
+            if (newFile.exists()) {
+                newFile.delete();
+            }
+            UTF8PrintWriter r = new UTF8PrintWriter(newName);
+            ArrayList<String> lines = new ArrayList<String>();
+            lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
+            if (lines.isEmpty())
+                lines.add(""); //$NON-NLS-1$
+
+            for (String line : lines) {
+                r.println(line);
+            }
+            r.flush();
+            r.close();
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
     private boolean checkFileCollision(File theFile) {
         if (theFile.lastModified() > lastModified) {
             MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
