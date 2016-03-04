@@ -846,6 +846,7 @@ public final class I18n {
     public static final String SEARCH_ReplaceWith = SEARCH.getString(getProperty());
     public static final String SEARCH_Scope = SEARCH.getString(getProperty());
     public static final String SEARCH_SelectedLines = SEARCH.getString(getProperty());
+    public static final String SLICERPRO_Hint = SLICERPRO.getString(getProperty());
     public static final String SLICERPRO_Title = SLICERPRO.getString(getProperty());
     public static final String SORT_ByColourAsc = SORT.getString(getProperty());
     public static final String SORT_ByColourDesc = SORT.getString(getProperty());

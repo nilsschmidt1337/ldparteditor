@@ -65,6 +65,8 @@ class SlicerProDesign extends Dialog {
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
+        Label lbl_howto = new Label(cmp_container, SWT.NONE);
+        lbl_howto.setText(I18n.SLICERPRO_Hint);
 
         cmp_container.pack();
         return cmp_container;
