@@ -26,6 +26,7 @@ import java.util.TreeSet;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
@@ -493,6 +494,8 @@ class VM04Rectifier extends VM03Adjacency {
                                                         temp3.X.divide(TWO), temp3.Y.divide(TWO), temp3.Z.divide(TWO), BigDecimal.ZERO,
                                                         temp2.X.divide(TWO), temp2.Y.divide(TWO), temp2.Z.divide(TWO), BigDecimal.ZERO,
                                                         d1X, d1Y, d1Z, BigDecimal.ONE);
+
+                                                accurateLocalMatrix = repair(accurateLocalMatrix);
 
                                                 StringBuilder lineBuilder = new StringBuilder();
                                                 lineBuilder.append(1);
@@ -969,6 +972,8 @@ class VM04Rectifier extends VM03Adjacency {
                                         temp2.X.divide(TWO), temp2.Y.divide(TWO), temp2.Z.divide(TWO), BigDecimal.ZERO,
                                         d1X, d1Y, d1Z, BigDecimal.ONE);
 
+                                accurateLocalMatrix = repair(accurateLocalMatrix);
+
                                 StringBuilder lineBuilder = new StringBuilder();
                                 lineBuilder.append(1);
                                 lineBuilder.append(" "); //$NON-NLS-1$
@@ -1051,5 +1056,111 @@ class VM04Rectifier extends VM03Adjacency {
         result[2] = vq[3];
         result[3] = vq[0];
         return result;
+    }
+
+    private Matrix repair(Matrix m) {
+        final BigDecimal lengthY =  MathHelper.sqrt(m.M10.multiply(m.M10).add(m.M11.multiply(m.M11)).add(m.M12.multiply(m.M12))).subtract(BigDecimal.ONE).abs();
+        final BigDecimal epsilon = new BigDecimal("0.000001"); //$NON-NLS-1$
+        if (epsilon.compareTo(lengthY) < 0) {
+            String line = "1 16 " + m.toLDrawString() + "1.dat"; //$NON-NLS-1$ //$NON-NLS-2$
+            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            StringBuilder sb = new StringBuilder();
+            for (int k = 0; k < 3; k++) {
+                sb.setLength(0);
+                int i = 0;
+                String sign;
+                for (String seg : data_segments) {
+                    if (!seg.trim().equals("")) {  //$NON-NLS-1$
+                        i++;
+                        switch (i) {
+                        case 7:
+                            sign = seg.startsWith("-") ? "-" : ""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            sb.append(k == 1 ? sign + "1" : "0"); //$NON-NLS-1$ //$NON-NLS-2$
+                            break;
+                        case 10:
+                            sign = seg.startsWith("-") ? "-" : ""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            sb.append(k == 0 ? sign + "1" : "0"); //$NON-NLS-1$ //$NON-NLS-2$
+                            break;
+                        case 13:
+                            sign = seg.startsWith("-") ? "-" : ""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            sb.append(k == 2 ? sign + "1" : "0"); //$NON-NLS-1$ //$NON-NLS-2$
+                            break;
+                        default:
+                            sb.append(seg);
+                            break;
+                        }
+                    }
+                    sb.append(" "); //$NON-NLS-1$
+                }
+                if (hasGoodDeterminant(sb.toString())) break;
+            }
+            line = sb.toString();
+            data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            // [ERROR] Check singularity
+            try {
+                // Offset
+                BigDecimal M30 = new BigDecimal(data_segments[2]);
+                BigDecimal M31 = new BigDecimal(data_segments[3]);
+                BigDecimal M32 = new BigDecimal(data_segments[4]);
+                // First row
+                BigDecimal M00 = new BigDecimal(data_segments[5]);
+                BigDecimal M10 = new BigDecimal(data_segments[6]);
+                BigDecimal M20 = new BigDecimal(data_segments[7]);
+                // Second row
+                BigDecimal M01 = new BigDecimal(data_segments[8]);
+                BigDecimal M11 = new BigDecimal(data_segments[9]);
+                BigDecimal M21 = new BigDecimal(data_segments[10]);
+                // Third row
+                BigDecimal M02 = new BigDecimal(data_segments[11]);
+                BigDecimal M12 = new BigDecimal(data_segments[12]);
+                BigDecimal M22 = new BigDecimal(data_segments[13]);
+                return new Matrix(M00, M01, M02, M02, M10, M11, M12, M12, M20, M21, M22, M22, M30, M31, M32, M32);
+            } catch (NumberFormatException nfe) {
+            }
+        }
+        return m;
+    }
+
+    private boolean hasGoodDeterminant(String line) {
+        String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+        // [ERROR] Check singularity
+        Matrix4f tMatrix = new Matrix4f();
+        float det = 0;
+        try {
+            // Offset
+            BigDecimal M30 = new BigDecimal(data_segments[2]);
+            tMatrix.m30 = M30.floatValue() * 1000f;
+            BigDecimal M31 = new BigDecimal(data_segments[3]);
+            tMatrix.m31 = M31.floatValue() * 1000f;
+            BigDecimal M32 = new BigDecimal(data_segments[4]);
+            tMatrix.m32 = M32.floatValue() * 1000f;
+            // First row
+            BigDecimal M00 = new BigDecimal(data_segments[5]);
+            tMatrix.m00 = M00.floatValue();
+            BigDecimal M10 = new BigDecimal(data_segments[6]);
+            tMatrix.m10 = M10.floatValue();
+            BigDecimal M20 = new BigDecimal(data_segments[7]);
+            tMatrix.m20 = M20.floatValue();
+            // Second row
+            BigDecimal M01 = new BigDecimal(data_segments[8]);
+            tMatrix.m01 = M01.floatValue();
+            BigDecimal M11 = new BigDecimal(data_segments[9]);
+            tMatrix.m11 = M11.floatValue();
+            BigDecimal M21 = new BigDecimal(data_segments[10]);
+            tMatrix.m21 = M21.floatValue();
+            // Third row
+            BigDecimal M02 = new BigDecimal(data_segments[11]);
+            tMatrix.m02 = M02.floatValue();
+            BigDecimal M12 = new BigDecimal(data_segments[12]);
+            tMatrix.m12 = M12.floatValue();
+            BigDecimal M22 = new BigDecimal(data_segments[13]);
+            tMatrix.m22 = M22.floatValue();
+        } catch (NumberFormatException nfe) {
+            // Can't happen
+            return false;
+        }
+        tMatrix.m33 = 1f;
+        det = tMatrix.determinant();
+        return Math.abs(det) >= Threshold.singularity_determinant;
     }
 }

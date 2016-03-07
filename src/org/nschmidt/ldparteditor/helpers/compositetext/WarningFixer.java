@@ -62,28 +62,28 @@ final class WarningFixer {
                 if (data_segments.length > 3) {
                     int colourValue = Integer.parseInt(data_segments[1]);
                     int A = colourValue - 256 >> 4;
-                    int B = colourValue - 256 & 0x0F;
-                    if (View.hasLDConfigColour(A) && View.hasLDConfigColour(B)) {
-                        GColour colourA = View.getLDConfigColour(A);
-                        GColour colourB = View.getLDConfigColour(B);
-                        colourBuilder.append("0x2"); //$NON-NLS-1$
-                        colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getR() + colourB.getR()) / 2f))).toUpperCase());
-                        colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getG() + colourB.getG()) / 2f))).toUpperCase());
-                        colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getB() + colourB.getB()) / 2f))).toUpperCase());
-                    } else {
-                        return text;
-                    }
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(data_segments[0]);
-                    sb.append(" ");  //$NON-NLS-1$
-                    sb.append(colourBuilder.toString());
-                    for (int i = 2; i < data_segments.length - 1; i++) {
-                        sb.append(" "); //$NON-NLS-1$
-                        sb.append(data_segments[i]);
-                    }
+                int B = colourValue - 256 & 0x0F;
+                if (View.hasLDConfigColour(A) && View.hasLDConfigColour(B)) {
+                    GColour colourA = View.getLDConfigColour(A);
+                    GColour colourB = View.getLDConfigColour(B);
+                    colourBuilder.append("0x2"); //$NON-NLS-1$
+                    colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getR() + colourB.getR()) / 2f))).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getG() + colourB.getG()) / 2f))).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getB() + colourB.getB()) / 2f))).toUpperCase());
+                } else {
+                    return text;
+                }
+                StringBuilder sb = new StringBuilder();
+                sb.append(data_segments[0]);
+                sb.append(" ");  //$NON-NLS-1$
+                sb.append(colourBuilder.toString());
+                for (int i = 2; i < data_segments.length - 1; i++) {
                     sb.append(" "); //$NON-NLS-1$
-                    sb.append(data_segments[data_segments.length - 1]);
-                    text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
+                    sb.append(data_segments[i]);
+                }
+                sb.append(" "); //$NON-NLS-1$
+                sb.append(data_segments[data_segments.length - 1]);
+                text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
                 }
             } catch (NumberFormatException nfe) {
                 return text;
@@ -300,47 +300,35 @@ final class WarningFixer {
         String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
         // [ERROR] Check singularity
         Matrix4f tMatrix = new Matrix4f();
-        BigDecimal M00;
-        BigDecimal M01;
-        BigDecimal M02;
-        BigDecimal M10;
-        BigDecimal M11;
-        BigDecimal M12;
-        BigDecimal M20;
-        BigDecimal M21;
-        BigDecimal M22;
-        BigDecimal M30;
-        BigDecimal M31;
-        BigDecimal M32;
         float det = 0;
         try {
             // Offset
-            M30 = new BigDecimal(data_segments[2]);
+            BigDecimal M30 = new BigDecimal(data_segments[2]);
             tMatrix.m30 = M30.floatValue() * 1000f;
-            M31 = new BigDecimal(data_segments[3]);
+            BigDecimal M31 = new BigDecimal(data_segments[3]);
             tMatrix.m31 = M31.floatValue() * 1000f;
-            M32 = new BigDecimal(data_segments[4]);
+            BigDecimal M32 = new BigDecimal(data_segments[4]);
             tMatrix.m32 = M32.floatValue() * 1000f;
             // First row
-            M00 = new BigDecimal(data_segments[5]);
+            BigDecimal M00 = new BigDecimal(data_segments[5]);
             tMatrix.m00 = M00.floatValue();
-            M10 = new BigDecimal(data_segments[6]);
+            BigDecimal M10 = new BigDecimal(data_segments[6]);
             tMatrix.m10 = M10.floatValue();
-            M20 = new BigDecimal(data_segments[7]);
+            BigDecimal M20 = new BigDecimal(data_segments[7]);
             tMatrix.m20 = M20.floatValue();
             // Second row
-            M01 = new BigDecimal(data_segments[8]);
+            BigDecimal M01 = new BigDecimal(data_segments[8]);
             tMatrix.m01 = M01.floatValue();
-            M11 = new BigDecimal(data_segments[9]);
+            BigDecimal M11 = new BigDecimal(data_segments[9]);
             tMatrix.m11 = M11.floatValue();
-            M21 = new BigDecimal(data_segments[10]);
+            BigDecimal M21 = new BigDecimal(data_segments[10]);
             tMatrix.m21 = M21.floatValue();
             // Third row
-            M02 = new BigDecimal(data_segments[11]);
+            BigDecimal M02 = new BigDecimal(data_segments[11]);
             tMatrix.m02 = M02.floatValue();
-            M12 = new BigDecimal(data_segments[12]);
+            BigDecimal M12 = new BigDecimal(data_segments[12]);
             tMatrix.m12 = M12.floatValue();
-            M22 = new BigDecimal(data_segments[13]);
+            BigDecimal M22 = new BigDecimal(data_segments[13]);
             tMatrix.m22 = M22.floatValue();
         } catch (NumberFormatException nfe) {
             // Can't happen
