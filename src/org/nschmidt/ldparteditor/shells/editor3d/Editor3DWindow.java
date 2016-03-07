@@ -1086,6 +1086,150 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        btn_Coarse[0].addListener(SWT.MouseDown, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                if (event.button == MouseButton.RIGHT) {
+
+                    try {
+                        if (btn_Coarse[0].getMenu() != null) {
+                            btn_Coarse[0].getMenu().dispose();
+                        }
+                    } catch (Exception ex) {}
+
+                    Menu gridMenu = new Menu(btn_Coarse[0]);
+                    btn_Coarse[0].setMenu(gridMenu);
+                    mnu_coarseMenu[0] = gridMenu;
+
+                    MenuItem mntmGridCoarseDefault = new MenuItem(gridMenu, I18n.I18N_NON_BIDIRECT());
+                    mntm_gridCoarseDefault[0] = mntmGridCoarseDefault;
+                    mntmGridCoarseDefault.setEnabled(true);
+                    mntmGridCoarseDefault.setText(I18n.E3D_GridCoarseDefault);
+
+                    mntm_gridCoarseDefault[0].addSelectionListener(new SelectionAdapter() {
+                        @Override
+                        public void widgetSelected(SelectionEvent e) {
+                            WorkbenchManager.getUserSettingState().setCoarse_move_snap(new BigDecimal("1")); //$NON-NLS-1$
+                            WorkbenchManager.getUserSettingState().setCoarse_rotate_snap(new BigDecimal("90")); //$NON-NLS-1$
+                            WorkbenchManager.getUserSettingState().setCoarse_scale_snap(new BigDecimal("2")); //$NON-NLS-1$
+                            BigDecimal m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
+                            BigDecimal r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
+                            BigDecimal s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
+                            snapSize = 2;
+                            spn_Move[0].setValue(m);
+                            spn_Rotate[0].setValue(r);
+                            spn_Scale[0].setValue(s);
+                            Manipulator.setSnap(m, r, s);
+                        }
+                    });
+
+                    java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
+                    final int x = (int) b.getX();
+                    final int y = (int) b.getY();
+
+                    Menu menu = mnu_coarseMenu[0];
+                    menu.setLocation(x, y);
+                    menu.setVisible(true);
+                }
+            }
+        });
+
+        btn_Medium[0].addListener(SWT.MouseDown, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                if (event.button == MouseButton.RIGHT) {
+
+                    try {
+                        if (btn_Medium[0].getMenu() != null) {
+                            btn_Medium[0].getMenu().dispose();
+                        }
+                    } catch (Exception ex) {}
+
+                    Menu gridMenu = new Menu(btn_Medium[0]);
+                    btn_Medium[0].setMenu(gridMenu);
+                    mnu_mediumMenu[0] = gridMenu;
+
+                    MenuItem mntmGridMediumDefault = new MenuItem(gridMenu, I18n.I18N_NON_BIDIRECT());
+                    mntm_gridMediumDefault[0] = mntmGridMediumDefault;
+                    mntmGridMediumDefault.setEnabled(true);
+                    mntmGridMediumDefault.setText(I18n.E3D_GridMediumDefault);
+
+                    mntm_gridMediumDefault[0].addSelectionListener(new SelectionAdapter() {
+                        @Override
+                        public void widgetSelected(SelectionEvent e) {
+                            WorkbenchManager.getUserSettingState().setMedium_move_snap(new BigDecimal("0.01")); //$NON-NLS-1$
+                            WorkbenchManager.getUserSettingState().setMedium_rotate_snap(new BigDecimal("11.25")); //$NON-NLS-1$
+                            WorkbenchManager.getUserSettingState().setMedium_scale_snap(new BigDecimal("1.1")); //$NON-NLS-1$
+                            BigDecimal m = WorkbenchManager.getUserSettingState().getMedium_move_snap();
+                            BigDecimal r = WorkbenchManager.getUserSettingState().getMedium_rotate_snap();
+                            BigDecimal s = WorkbenchManager.getUserSettingState().getMedium_scale_snap();
+                            snapSize = 1;
+                            spn_Move[0].setValue(m);
+                            spn_Rotate[0].setValue(r);
+                            spn_Scale[0].setValue(s);
+                            Manipulator.setSnap(m, r, s);
+                        }
+                    });
+
+                    java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
+                    final int x = (int) b.getX();
+                    final int y = (int) b.getY();
+
+                    Menu menu = mnu_mediumMenu[0];
+                    menu.setLocation(x, y);
+                    menu.setVisible(true);
+                }
+            }
+        });
+
+        btn_Fine[0].addListener(SWT.MouseDown, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                if (event.button == MouseButton.RIGHT) {
+
+                    try {
+                        if (btn_Fine[0].getMenu() != null) {
+                            btn_Fine[0].getMenu().dispose();
+                        }
+                    } catch (Exception ex) {}
+
+                    Menu gridMenu = new Menu(btn_Fine[0]);
+                    btn_Fine[0].setMenu(gridMenu);
+                    mnu_fineMenu[0] = gridMenu;
+
+                    MenuItem mntmGridFineDefault = new MenuItem(gridMenu, I18n.I18N_NON_BIDIRECT());
+                    mntm_gridFineDefault[0] = mntmGridFineDefault;
+                    mntmGridFineDefault.setEnabled(true);
+                    mntmGridFineDefault.setText(I18n.E3D_GridFineDefault);
+
+                    mntm_gridFineDefault[0].addSelectionListener(new SelectionAdapter() {
+                        @Override
+                        public void widgetSelected(SelectionEvent e) {
+                            WorkbenchManager.getUserSettingState().setFine_move_snap(new BigDecimal("0.0001")); //$NON-NLS-1$
+                            WorkbenchManager.getUserSettingState().setFine_rotate_snap(BigDecimal.ONE);
+                            WorkbenchManager.getUserSettingState().setFine_scale_snap(new BigDecimal("1.001")); //$NON-NLS-1$
+                            BigDecimal m = WorkbenchManager.getUserSettingState().getFine_move_snap();
+                            BigDecimal r = WorkbenchManager.getUserSettingState().getFine_rotate_snap();
+                            BigDecimal s = WorkbenchManager.getUserSettingState().getFine_scale_snap();
+                            snapSize = 0;
+                            spn_Move[0].setValue(m);
+                            spn_Rotate[0].setValue(r);
+                            spn_Scale[0].setValue(s);
+                            Manipulator.setSnap(m, r, s);
+                        }
+                    });
+
+                    java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
+                    final int x = (int) b.getX();
+                    final int y = (int) b.getY();
+
+                    Menu menu = mnu_fineMenu[0];
+                    menu.setLocation(x, y);
+                    menu.setVisible(true);
+                }
+            }
+        });
+
         btn_SplitQuad[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

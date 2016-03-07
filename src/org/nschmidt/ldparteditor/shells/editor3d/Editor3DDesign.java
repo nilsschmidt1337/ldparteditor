@@ -106,6 +106,10 @@ class Editor3DDesign extends ApplicationWindow {
 
     final Menu[] mnu_treeMenu = new Menu[1];
 
+    final Menu[] mnu_coarseMenu = new Menu[1];
+    final Menu[] mnu_mediumMenu = new Menu[1];
+    final Menu[] mnu_fineMenu = new Menu[1];
+
     Action menuItem_Open = ShellHelper.DUMMY_ACTION;
     Action menuItem_Exit = ShellHelper.DUMMY_ACTION;
     Action toolItem_Save = ShellHelper.DUMMY_ACTION;
@@ -175,6 +179,10 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_AddTriangle = new Button[1];
     final Button[] btn_AddQuad = new Button[1];
     final Button[] btn_AddCondline = new Button[1];
+
+    final MenuItem[] mntm_gridCoarseDefault = new MenuItem[1];
+    final MenuItem[] mntm_gridMediumDefault = new MenuItem[1];
+    final MenuItem[] mntm_gridFineDefault = new MenuItem[1];
 
     final MenuItem[] mntm_OpenIn3DEditor = new MenuItem[1];
     final MenuItem[] mntm_OpenInTextEditor = new MenuItem[1];
