@@ -317,6 +317,9 @@ public final class I18n {
     public static final String E3D_Focus = E3D.getString(getProperty());
     public static final String E3D_Global = E3D.getString(getProperty());
     public static final String E3D_Grid = E3D.getString(getProperty());
+    public static final String E3D_GridCoarseDefault = E3D.getString(getProperty());
+    public static final String E3D_GridFineDefault = E3D.getString(getProperty());
+    public static final String E3D_GridMediumDefault = E3D.getString(getProperty());
     public static final String E3D_Group = E3D.getString(getProperty());
     public static final String E3D_Hide = E3D.getString(getProperty());
     public static final String E3D_IconSize1 = E3D.getString(getProperty());
