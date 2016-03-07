@@ -74,7 +74,7 @@ class RoundDesign extends Dialog {
         IntegerSpinner spn_coords = new IntegerSpinner(cmp_container, SWT.NONE);
         this.spn_coords[0] = spn_coords;
         spn_coords.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_coords.setMaximum(4);
+        spn_coords.setMaximum(9);
         spn_coords.setMinimum(0);
         spn_coords.setValue(WorkbenchManager.getUserSettingState().getCoordsPrecision());
 
@@ -84,7 +84,7 @@ class RoundDesign extends Dialog {
         IntegerSpinner spn_matrix = new IntegerSpinner(cmp_container, SWT.NONE);
         this.spn_matrix[0] = spn_matrix;
         spn_matrix.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_matrix.setMaximum(5);
+        spn_matrix.setMaximum(9);
         spn_matrix.setMinimum(0);
         spn_matrix.setValue(WorkbenchManager.getUserSettingState().getTransMatrixPrecision());
 
