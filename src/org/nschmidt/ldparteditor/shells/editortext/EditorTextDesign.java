@@ -93,6 +93,7 @@ class EditorTextDesign extends ApplicationWindow {
     final Button[] btn_Unrectify = new Button[1];
     final Button[] btn_Beautify = new Button[1];
     final Button[] btn_ShowSelectionIn3D = new Button[1];
+    final Button[] btn_OpenIn3D = new Button[1];
     final Button[] btn_SyncEdit = new Button[1];
     final Button[] btn_Inline = new Button[1];
     final Button[] btn_InlineDeep = new Button[1];
@@ -232,6 +233,12 @@ class EditorTextDesign extends ApplicationWindow {
             this.btn_ShowSelectionIn3D[0] = btn_ShowSelectionIn3D;
             btn_ShowSelectionIn3D.setImage(ResourceManager.getImage("icon16_text2selection.png")); //$NON-NLS-1$
             btn_ShowSelectionIn3D.setToolTipText(I18n.EDITORTEXT_ShowSelectionIn3D);
+        }
+        {
+            Button btn_OpenIn3D = new Button(toolItem_Debug, SWT.NONE);
+            this.btn_OpenIn3D[0] = btn_OpenIn3D;
+            btn_OpenIn3D.setImage(ResourceManager.getImage("icon16_openIn3D.png")); //$NON-NLS-1$
+            btn_OpenIn3D.setToolTipText(I18n.E3D_OpenIn3DEditor);
         }
         {
             Button btn_Unrectify = new Button(toolItem_Debug, SWT.NONE);

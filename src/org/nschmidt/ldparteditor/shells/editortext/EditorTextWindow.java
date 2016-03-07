@@ -46,6 +46,8 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabFolder;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabState;
@@ -56,6 +58,7 @@ import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.QuadSplitter;
 import org.nschmidt.ldparteditor.data.Rounder;
 import org.nschmidt.ldparteditor.data.Unrectifier;
+import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.dialogs.sort.SortDialog;
@@ -75,6 +78,7 @@ import org.nschmidt.ldparteditor.helpers.compositetext.VertexMarker;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.main.LDPartEditor;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -149,7 +153,7 @@ public class EditorTextWindow extends EditorTextDesign {
         tabFolder[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                CompositeTab ct = ((CompositeTab) e.item);
+                CompositeTab ct = (CompositeTab) e.item;
                 if (NLogger.DEBUG && ct != null) {
                     CompositeTabState state = ct.getState();
                     if (state != null) {
@@ -264,7 +268,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                     }
                                 }
 
-                                final CompositeTab ct = ((CompositeTab) tabFolder[0].getSelection());
+                                final CompositeTab ct = (CompositeTab) tabFolder[0].getSelection();
 
                                 SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
                                 if (sw != null) {
@@ -546,6 +550,66 @@ public class EditorTextWindow extends EditorTextDesign {
                     NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                     Text2SelectionConverter.convert(fromLine, toLine, selection.getState().getFileNameObj());
                     st.forceFocus();
+                }
+            }
+        });
+        btn_OpenIn3D[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                if (selection != null) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
+                    DatFile df = selection.getState().getFileNameObj();
+                    ArrayList<OpenGLRenderer> renders = Editor3DWindow.getRenders();
+
+                    if (renders.isEmpty()) {
+
+                        if ("%EMPTY%".equals(Editor3DWindow.getSashForm().getChildren()[1].getData())) { //$NON-NLS-1$
+                            int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
+                            Editor3DWindow.getSashForm().getChildren()[1].dispose();
+                            CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
+                            cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
+                            df.parseForData(true);
+                            Project.setFileToEdit(df);
+                            cmp_Container.getComposite3D().setLockableDatFileReference(df);
+                            df.getVertexManager().addSnapshot();
+                            Editor3DWindow.getSashForm().getParent().layout();
+                            Editor3DWindow.getSashForm().setWeights(mainSashWeights);
+                        }
+
+                    } else {
+
+                        boolean canUpdate = false;
+
+                        for (OpenGLRenderer renderer : renders) {
+                            Composite3D c3d = renderer.getC3D();
+                            if (!c3d.isDatFileLockedOnDisplay()) {
+                                canUpdate = true;
+                                break;
+                            }
+                        }
+
+                        if (canUpdate) {
+                            final VertexManager vm = df.getVertexManager();
+                            if (vm.isModified()) {
+                                df.setText(df.getText());
+                            }
+                            df.parseForData(true);
+
+                            Project.setFileToEdit(df);
+                            for (OpenGLRenderer renderer : renders) {
+                                Composite3D c3d = renderer.getC3D();
+                                if (!c3d.isDatFileLockedOnDisplay()) {
+                                    c3d.setLockableDatFileReference(df);
+                                    c3d.getModifier().zoomToFit();
+                                }
+                            }
+
+                            df.getVertexManager().addSnapshot();
+                        }
+                    }
                 }
             }
         });
