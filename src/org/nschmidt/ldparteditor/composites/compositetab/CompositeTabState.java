@@ -24,6 +24,7 @@ import java.text.MessageFormat;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -126,7 +127,7 @@ public class CompositeTabState {
                 datFileObj.setText(""); //$NON-NLS-1$
                 datFileObj.setOriginalText(""); //$NON-NLS-1$
                 getTab().getTextComposite().setEditable(false);
-                e.printStackTrace();
+                NLogger.error(getClass(), e);
             } catch (UnsupportedEncodingException e) {
                 Object[] messageArguments = {fileNameObj.getOldName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
