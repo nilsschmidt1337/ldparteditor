@@ -297,7 +297,7 @@ final class WarningFixer {
     }
 
     private static boolean hasGoodDeterminant(String line) {
-        String[] data_segments = line.trim().split(" "); //$NON-NLS-1$
+        String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
         // [ERROR] Check singularity
         Matrix4f tMatrix = new Matrix4f();
         BigDecimal M00;
