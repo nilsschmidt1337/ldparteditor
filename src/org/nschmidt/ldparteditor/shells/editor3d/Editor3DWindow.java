@@ -2439,6 +2439,20 @@ public class Editor3DWindow extends Editor3DDesign {
                 txt_primitiveSearch[0].setText(""); //$NON-NLS-1$
             }
         });
+        btn_zoomInPrimitives[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                getCompositePrimitive().zoomIn();
+                getCompositePrimitive().getOpenGL().drawScene(-1, -1);
+            }
+        });
+        btn_zoomOutPrimitives[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                getCompositePrimitive().zoomOut();
+                getCompositePrimitive().getOpenGL().drawScene(-1, -1);
+            }
+        });
         btn_Hide[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

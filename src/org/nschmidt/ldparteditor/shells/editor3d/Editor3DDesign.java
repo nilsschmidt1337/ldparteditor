@@ -350,6 +350,9 @@ class Editor3DDesign extends ApplicationWindow {
     final Text[] txt_primitiveSearch = new Text[1];
     final Button[] btn_resetPrimitiveSearch = new Button[1];
 
+    final Button[] btn_zoomOutPrimitives = new Button[1];
+    final Button[] btn_zoomInPrimitives = new Button[1];
+
     final MenuItem[] mntm_STriangles = new MenuItem[1];
     final MenuItem[] mntm_SQuads = new MenuItem[1];
     final MenuItem[] mntm_SCLines = new MenuItem[1];
@@ -2013,7 +2016,7 @@ class Editor3DDesign extends ApplicationWindow {
                         gridData.horizontalAlignment = SWT.FILL;
                         gridData.grabExcessHorizontalSpace = true;
                         cmp_Search.setLayoutData(gridData);
-                        GridLayout gridLayout2 = new GridLayout(2, false);
+                        GridLayout gridLayout2 = new GridLayout(4, false);
                         cmp_Search.setLayout(gridLayout2);
                         Text txt_Search = new Text(cmp_Search, SWT.BORDER);
                         this.txt_primitiveSearch[0] = txt_Search;
@@ -2025,6 +2028,12 @@ class Editor3DDesign extends ApplicationWindow {
                         Button btn_ResetSearch = new Button(cmp_Search, SWT.NONE);
                         this.btn_resetPrimitiveSearch[0] = btn_ResetSearch;
                         btn_ResetSearch.setText(I18n.E3D_Reset);
+                        Button btn_ZoomOutPrimitives = new Button(cmp_Search, SWT.NONE);
+                        this.btn_zoomOutPrimitives[0] = btn_ZoomOutPrimitives;
+                        btn_ZoomOutPrimitives.setText("-"); //$NON-NLS-1$
+                        Button btn_ZoomInPrimitives = new Button(cmp_Search, SWT.NONE);
+                        this.btn_zoomInPrimitives[0] = btn_ZoomInPrimitives;
+                        btn_ZoomInPrimitives.setText("+"); //$NON-NLS-1$
                     }
 
                     int[] weights = windowState.getLeftSashWeights();
