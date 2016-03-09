@@ -3316,6 +3316,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         loadSelectorSettings();
                         vm.selector(sels);
                         vm.syncWithTextEditors(true);
+                        return;
                     }
                 }
             }
@@ -3333,6 +3334,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         loadSelectorSettings();
                         vm.selector(sels);
                         vm.syncWithTextEditors(true);
+                        return;
                     }
                 }
             }
@@ -3350,6 +3352,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         loadSelectorSettings();
                         vm.selector(sels);
                         vm.syncWithTextEditors(true);
+                        return;
                     }
                 }
             }
