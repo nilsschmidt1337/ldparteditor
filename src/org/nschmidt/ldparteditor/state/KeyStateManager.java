@@ -123,18 +123,6 @@ public class KeyStateManager {
         addTask(Task.OBJ_LINE, SWT.F4);
         addTask(Task.OBJ_PRIMITIVE, SWT.F5);
 
-        addTask(Task.MODE_SELECT, SWT.SHIFT, '&');
-        addTask(Task.MODE_MOVE, SWT.SHIFT, 'é');
-        addTask(Task.MODE_ROTATE, SWT.SHIFT, '"');
-        addTask(Task.MODE_SCALE, SWT.SHIFT, '\'');
-
-        addTask(Task.ADD_VERTEX, SWT.SHIFT, '(');
-        addTask(Task.ADD_TRIANGLE, SWT.SHIFT, '-');
-        addTask(Task.ADD_QUAD, SWT.SHIFT, 'è');
-        addTask(Task.ADD_LINE, SWT.SHIFT, '_');
-        addTask(Task.ADD_CONDLINE, SWT.SHIFT, 'ç');
-        addTask(Task.ADD_COMMENTS, SWT.SHIFT, 'à');
-
         addTask(Task.MODE_SELECT, '1');
         addTask(Task.MODE_MOVE, '2');
         addTask(Task.MODE_ROTATE,'3');
