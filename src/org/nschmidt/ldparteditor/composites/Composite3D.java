@@ -577,6 +577,42 @@ public class Composite3D extends ScalableComposite {
          */
 
         @SuppressWarnings("unused")
+        final MenuItem mntmSeparatorCP = new MenuItem(menu, SWT.SEPARATOR);
+
+        MenuItem mntmCut = new MenuItem(menu, I18n.I18N_RTL());
+        mntmCut.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                // FIXME Issue #133 needs implementation!
+            }
+        });
+        mntmCut.setText(I18n.COPYNPASTE_Cut);
+        MenuItem mntmCopy = new MenuItem(menu, I18n.I18N_RTL());
+        mntmCopy.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                // FIXME Issue #133 needs implementation!
+            }
+        });
+        mntmCopy.setText(I18n.COPYNPASTE_Copy);
+        MenuItem mntmPaste = new MenuItem(menu, I18n.I18N_RTL());
+        mntmPaste.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                // FIXME Issue #133 needs implementation!
+            }
+        });
+        mntmPaste.setText(I18n.COPYNPASTE_Paste);
+        MenuItem mntmDelete = new MenuItem(menu, I18n.I18N_RTL());
+        mntmDelete.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                // FIXME Issue #133 needs implementation!
+            }
+        });
+        mntmDelete.setText(I18n.COPYNPASTE_Delete);
+
+        @SuppressWarnings("unused")
         final MenuItem mntmSeparator2 = new MenuItem(menu, SWT.SEPARATOR);
 
         MenuItem mntmGridSize = new MenuItem(menu, I18n.I18N_RTL());
