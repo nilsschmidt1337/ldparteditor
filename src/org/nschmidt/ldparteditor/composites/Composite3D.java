@@ -583,7 +583,10 @@ public class Composite3D extends ScalableComposite {
         mntmCut.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // FIXME Issue #133 needs implementation!
+                if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
+                lockableDatFileReference.getVertexManager().addSnapshot();
+                lockableDatFileReference.getVertexManager().copy();
+                lockableDatFileReference.getVertexManager().delete(false, true);
             }
         });
         mntmCut.setText(I18n.COPYNPASTE_Cut);
@@ -591,7 +594,9 @@ public class Composite3D extends ScalableComposite {
         mntmCopy.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // FIXME Issue #133 needs implementation!
+                if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
+                lockableDatFileReference.getVertexManager().addSnapshot();
+                lockableDatFileReference.getVertexManager().copy();
             }
         });
         mntmCopy.setText(I18n.COPYNPASTE_Copy);
@@ -599,7 +604,10 @@ public class Composite3D extends ScalableComposite {
         mntmPaste.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // FIXME Issue #133 needs implementation!
+                if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
+                lockableDatFileReference.getVertexManager().addSnapshot();
+                lockableDatFileReference.getVertexManager().paste();
+                Editor3DWindow.getWindow().setMovingAdjacentData(false);
             }
         });
         mntmPaste.setText(I18n.COPYNPASTE_Paste);
@@ -607,7 +615,9 @@ public class Composite3D extends ScalableComposite {
         mntmDelete.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // FIXME Issue #133 needs implementation!
+                if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
+                lockableDatFileReference.getVertexManager().addSnapshot();
+                lockableDatFileReference.getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
             }
         });
         mntmDelete.setText(I18n.COPYNPASTE_Delete);
