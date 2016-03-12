@@ -304,60 +304,28 @@ public class EditorTextWindow extends EditorTextDesign {
             public void widgetDefaultSelected(SelectionEvent e) {
             }
         });
-        btn_Cut[0].addSelectionListener(new SelectionListener() {
+        btn_Cut[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
-                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
-                        selection.getTextComposite().copy();
-                        return;
-                    }
-                    selection.getTextComposite().cut();
-                    selection.getTextComposite().forceFocus();
-                }
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
+                cut();
             }
         });
         btn_Copy[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null) {
-                    selection.getTextComposite().copy();
-                    selection.getTextComposite().forceFocus();
-                }
+                copy();
             }
         });
         btn_Paste[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
-                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
-                        return;
-                    }
-                    selection.getTextComposite().paste();
-                    selection.getTextComposite().forceFocus();
-                }
+                paste();
             }
         });
         btn_Delete[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
-                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
-                        return;
-                    }
-                    int x = selection.getTextComposite().getSelection().x;
-                    selection.getTextComposite().insert(""); //$NON-NLS-1$
-                    selection.getTextComposite().setSelection(new Point(x, x));
-                    selection.getTextComposite().forceFocus();
-                }
+                delete();
             }
         });
 
@@ -1135,6 +1103,50 @@ public class EditorTextWindow extends EditorTextDesign {
             if (state.getFileNameObj().equals(e)) {
                 state.setFileNameObj(e);
             }
+        }
+    }
+
+    public void cut() {
+        CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+        if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+            if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                selection.getTextComposite().copy();
+                return;
+            }
+            selection.getTextComposite().cut();
+            selection.getTextComposite().forceFocus();
+        }
+    }
+
+    public void copy() {
+        CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+        if (selection != null) {
+            selection.getTextComposite().copy();
+            selection.getTextComposite().forceFocus();
+        }
+    }
+
+    public void paste() {
+        CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+        if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+            if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                return;
+            }
+            selection.getTextComposite().paste();
+            selection.getTextComposite().forceFocus();
+        }
+    }
+
+    public void delete() {
+        CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+        if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+            if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                return;
+            }
+            int x = selection.getTextComposite().getSelection().x;
+            selection.getTextComposite().insert(""); //$NON-NLS-1$
+            selection.getTextComposite().setSelection(new Point(x, x));
+            selection.getTextComposite().forceFocus();
         }
     }
 }

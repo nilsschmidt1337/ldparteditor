@@ -1125,25 +1125,25 @@ public class CompositeTab extends CompositeTabDesign {
         mntm_Delete[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // FIXME Needs implementation for issue #133!
+                state.window[0].delete();
             }
         });
         mntm_Copy[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // FIXME Needs implementation for issue #133!
+                state.window[0].copy();
             }
         });
         mntm_Cut[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // FIXME Needs implementation for issue #133!
+                state.window[0].cut();
             }
         });
         mntm_Paste[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // FIXME Needs implementation for issue #133!
+                state.window[0].paste();
             }
         });
     }
