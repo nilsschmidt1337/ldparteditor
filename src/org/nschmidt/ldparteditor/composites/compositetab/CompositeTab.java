@@ -38,6 +38,7 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
@@ -1112,7 +1113,7 @@ public class CompositeTab extends CompositeTabDesign {
 
             }
         });
-        compositeText[0].getVerticalBar().addSelectionListener(new SelectionListener() {
+        compositeText[0].getVerticalBar().addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (!isDisposed()) {
@@ -1120,9 +1121,29 @@ public class CompositeTab extends CompositeTabDesign {
                     getDisplay().update();
                 }
             }
-
+        });
+        mntm_Delete[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
+            public void widgetSelected(SelectionEvent e) {
+                // FIXME Needs implementation for issue #133!
+            }
+        });
+        mntm_Copy[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                // FIXME Needs implementation for issue #133!
+            }
+        });
+        mntm_Cut[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                // FIXME Needs implementation for issue #133!
+            }
+        });
+        mntm_Paste[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                // FIXME Needs implementation for issue #133!
             }
         });
     }

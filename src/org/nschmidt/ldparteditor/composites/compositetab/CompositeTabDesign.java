@@ -48,6 +48,14 @@ import org.nschmidt.ldparteditor.widgets.TreeItem;
  */
 class CompositeTabDesign extends CTabItem {
 
+    /** The menu of this composite */
+    final Menu[] menu = new Menu[1];
+
+    final MenuItem[] mntm_Copy = new MenuItem[1];
+    final MenuItem[] mntm_Cut = new MenuItem[1];
+    final MenuItem[] mntm_Delete = new MenuItem[1];
+    final MenuItem[] mntm_Paste = new MenuItem[1];
+
     final MenuItem[] mntm_QuickFix = new MenuItem[1];
     final MenuItem[] mntm_QuickFixSame = new MenuItem[1];
     final Canvas[] canvas_lineNumberArea = new Canvas[1];
@@ -193,6 +201,22 @@ class CompositeTabDesign extends CTabItem {
             }
             composite.pack();
             sashForm.setWeights(new int[] { this.compositeText[0].getSize().y, this.compositeText[0].getSize().y / 2 });
+
+            this.menu[0] = new Menu(compositeText);
+            compositeText.setMenu(this.menu[0]);
+
+            MenuItem mntmCut = new MenuItem(menu[0], I18n.I18N_RTL());
+            mntmCut.setText(I18n.COPYNPASTE_Cut);
+            mntm_Cut[0] = mntmCut;
+            MenuItem mntmCopy = new MenuItem(menu[0], I18n.I18N_RTL());
+            mntmCopy.setText(I18n.COPYNPASTE_Copy);
+            mntm_Copy[0] = mntmCopy;
+            MenuItem mntmPaste = new MenuItem(menu[0], I18n.I18N_RTL());
+            mntmPaste.setText(I18n.COPYNPASTE_Paste);
+            mntm_Paste[0] = mntmPaste;
+            MenuItem mntmDelete = new MenuItem(menu[0], I18n.I18N_RTL());
+            mntmDelete.setText(I18n.COPYNPASTE_Delete);
+            mntm_Delete[0] = mntmDelete;
         }
     }
 }
