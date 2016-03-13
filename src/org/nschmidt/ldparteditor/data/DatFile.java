@@ -1039,8 +1039,17 @@ public final class DatFile {
         this.virtual = virtual;
     }
 
+    public void addToTailOrInsertAfterCursor(GData gdata) {
+        if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
+            insertAfterCursor(gdata);
+        } else {
+            addToTail(gdata);
+        }
+    }
+
     public void insertAfterCursor(GData gdata) {
         // FIXME Needs implementation for issue #31
+        addToTail(gdata);
     }
 
     public void addToTail(GData gdata) {

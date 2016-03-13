@@ -351,11 +351,11 @@ public class VM08SlicerPro extends VM07PathTruder {
 
             // Append the triangles
             for (GData3 tri : newTriangles) {
-                linkedDatFile.addToTail(tri);
+                linkedDatFile.addToTailOrInsertAfterCursor(tri);
             }
 
             for (GData2 lin : debugLines) {
-                linkedDatFile.addToTail(lin);
+                linkedDatFile.addToTailOrInsertAfterCursor(lin);
             }
 
             NLogger.debug(getClass(), "Delete new, but invalid faces."); //$NON-NLS-1$

@@ -173,10 +173,10 @@ class VM16Subdivide extends VM15Flipper {
         }
 
         for (GData g : newLines) {
-            linkedDatFile.addToTail(g);
+            linkedDatFile.addToTailOrInsertAfterCursor(g);
         }
         for (GData g : newQuads) {
-            linkedDatFile.addToTail(g);
+            linkedDatFile.addToTailOrInsertAfterCursor(g);
         }
 
         selectedLines.addAll(linesToDelete2);
@@ -266,10 +266,10 @@ class VM16Subdivide extends VM15Flipper {
         }
 
         for (GData g : newLines) {
-            linkedDatFile.addToTail(g);
+            linkedDatFile.addToTailOrInsertAfterCursor(g);
         }
         for (GData g : newTris) {
-            linkedDatFile.addToTail(g);
+            linkedDatFile.addToTailOrInsertAfterCursor(g);
         }
 
         selectedLines.addAll(linesToDelete2);

@@ -348,7 +348,7 @@ public enum RingsAndCones {
                                 new HashSet<String>(), false).get(0).getGraphicalData();
                         vm.getSelectedData().add(quad);
                         vm.getSelectedQuads().add((GData4) quad);
-                        df.addToTail(quad);
+                        df.addToTailOrInsertAfterCursor(quad);
 
                         if (rs.isUsingCones() && ignoreLastCondline && i < numFaces - 1) {
                             BigDecimal nx = new BigDecimal(Math.cos(a + deltaA));
@@ -364,7 +364,7 @@ public enum RingsAndCones {
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                             vm.getSelectedData().add(condline);
                             vm.getSelectedCondlines().add((GData5) condline);
-                            df.addToTail(condline);
+                            df.addToTailOrInsertAfterCursor(condline);
                         }
 
                         px1 = x1;
@@ -435,7 +435,7 @@ public enum RingsAndCones {
                         vm.getSelectedData().add(gd);
                         vm.getSelectedSubfiles().add((GData1) gd);
                     }
-                    df.addToTail(gd);
+                    df.addToTailOrInsertAfterCursor(gd);
                 }
             }
         } else {
@@ -488,7 +488,7 @@ public enum RingsAndCones {
                                 new HashSet<String>(), false).get(0).getGraphicalData();
                         vm.getSelectedData().add(tri);
                         vm.getSelectedTriangles().add((GData3) tri);
-                        df.addToTail(tri);
+                        df.addToTailOrInsertAfterCursor(tri);
 
                         if (rs.isUsingCones() && ignoreLastCondline && i < numFaces - 1) {
                             BigDecimal nx = new BigDecimal(Math.cos(a + deltaA));
@@ -504,7 +504,7 @@ public enum RingsAndCones {
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                             vm.getSelectedData().add(condline);
                             vm.getSelectedCondlines().add((GData5) condline);
-                            df.addToTail(condline);
+                            df.addToTailOrInsertAfterCursor(condline);
                         }
 
                         px = x;
@@ -514,7 +514,7 @@ public enum RingsAndCones {
 
 
                 } else if (!rs.isUsingExistingPrimitives()) {
-                    df.addToTail(new GData0(line));
+                    df.addToTailOrInsertAfterCursor(new GData0(line));
                 } else {
                     MessageBox messageBoxError = new MessageBox(sh, SWT.ICON_INFORMATION | SWT.OK);
                     messageBoxError.setText(I18n.DIALOG_Info);
@@ -525,7 +525,7 @@ public enum RingsAndCones {
             } else {
                 vm.getSelectedData().add(gd);
                 vm.getSelectedSubfiles().add((GData1) gd);
-                df.addToTail(gd);
+                df.addToTailOrInsertAfterCursor(gd);
             }
         }
 
