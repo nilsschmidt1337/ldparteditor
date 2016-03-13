@@ -212,6 +212,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private boolean movingAdjacentData = false;
     private boolean noTransparentSelection = false;
     private boolean bfcToggle = false;
+    private boolean insertingAtCursorPosition = false;
     private ObjectMode workingType = ObjectMode.VERTICES;
     private WorkingMode workingAction = WorkingMode.SELECT;
 
@@ -2481,6 +2482,12 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setBfcToggle(btn_BFCToggle[0].getSelection());
+            }
+        });
+        btn_InsertAtCursorPosition[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                setInsertingAtCursorPosition(btn_InsertAtCursorPosition[0].getSelection());
             }
         });
 
@@ -5038,6 +5045,12 @@ public class Editor3DWindow extends Editor3DDesign {
         }
     }
 
+    public void toggleInsertAtCursor() {
+        setInsertingAtCursorPosition(!isInsertingAtCursorPosition());
+        btn_InsertAtCursorPosition[0].setSelection(isInsertingAtCursorPosition());
+        clickSingleBtn(btn_InsertAtCursorPosition[0]);
+    }
+
     public void setObjMode(int type) {
         switch (type) {
         case 0:
@@ -5875,6 +5888,14 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public void setBfcToggle(boolean bfcToggle) {
         this.bfcToggle = bfcToggle;
+    }
+
+    public boolean isInsertingAtCursorPosition() {
+        return insertingAtCursorPosition;
+    }
+
+    public void setInsertingAtCursorPosition(boolean insertAtCursor) {
+        this.insertingAtCursorPosition = insertAtCursor;
     }
 
     public GColour getLastUsedColour() {

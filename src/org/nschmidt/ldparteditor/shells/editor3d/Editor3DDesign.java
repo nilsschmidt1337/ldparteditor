@@ -172,6 +172,7 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_TrisNQuads = new Button[1];
     final Button[] btn_Lines = new Button[1];
     final Button[] btn_Subfiles = new Button[1];
+    final Button[] btn_InsertAtCursorPosition = new Button[1];
     final Button[] btn_AddComment = new Button[1];
     final Button[] btn_AddVertex = new Button[1];
     final Button[] btn_AddPrimitive = new Button[1];
@@ -1227,6 +1228,14 @@ class Editor3DDesign extends ApplicationWindow {
                 KeyStateManager.addTooltipText(btn_Subfiles, I18n.E3D_ModeSubpart, Task.OBJ_PRIMITIVE);
                 btn_Subfiles.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
             }
+        }
+        {
+            ToolItem toolItem_InsertAtCursorPosition = new ToolItem(toolBar, SWT.NONE);
+
+            Button btn_InsertAtCursorPosition = new Button(toolItem_InsertAtCursorPosition, SWT.TOGGLE);
+            this.btn_InsertAtCursorPosition[0] = btn_InsertAtCursorPosition;
+            KeyStateManager.addTooltipText(btn_InsertAtCursorPosition, I18n.E3D_InsertAtCursorPosition, Task.INSERT_AT_CURSOR);
+            btn_InsertAtCursorPosition.setImage(ResourceManager.getImage("icon16_insertAtCursor.png")); //$NON-NLS-1$
         }
         {
             ToolItem toolItem_Add = new ToolItem(toolBar, SWT.NONE);

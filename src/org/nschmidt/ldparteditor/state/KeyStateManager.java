@@ -163,6 +163,8 @@ public class KeyStateManager {
         addTask(Task.MMB, 'm');
         addTask(Task.RMB, 'l');
 
+        addTask(Task.INSERT_AT_CURSOR, 'i');
+
         addTask(TextTask.EDITORTEXT_REPLACE_VERTEX, SWT.ALT | SWT.SHIFT, 'r');
         addTask(TextTask.EDITORTEXT_ESC, SWT.ESC);
         addTask(TextTask.EDITORTEXT_QUICKFIX, SWT.ALT, 'f');
@@ -251,6 +253,9 @@ public class KeyStateManager {
                     switch (t) {
                     case DELETE:
                         vm.delete(win.isMovingAdjacentData(), true);
+                        break;
+                    case INSERT_AT_CURSOR:
+                        win.toggleInsertAtCursor();
                         break;
                     case ESC:
                         multi = 100;

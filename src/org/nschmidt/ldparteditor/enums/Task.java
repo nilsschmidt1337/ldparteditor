@@ -84,5 +84,5 @@ public enum Task {
     MMB,
     RMB,
 
-
+    INSERT_AT_CURSOR,
 }

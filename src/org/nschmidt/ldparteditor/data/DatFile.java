@@ -1039,6 +1039,10 @@ public final class DatFile {
         this.virtual = virtual;
     }
 
+    public void insertAfterCursor(GData gdata) {
+        // FIXME Needs implementation for issue #31
+    }
+
     public void addToTail(GData gdata) {
         Integer lineNumber = drawPerLine.keySet().size() + 1;
         drawPerLine.put(lineNumber, gdata);
