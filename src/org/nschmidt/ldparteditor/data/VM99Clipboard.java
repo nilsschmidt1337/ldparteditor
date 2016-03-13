@@ -509,6 +509,9 @@ class VM99Clipboard extends VM24MeshReducer {
     }
 
     public void paste() {
+
+        // FIXME Needs Implementation for Issue #31
+
         if (linkedDatFile.isReadOnly())
             return;
         if (!CLIPBOARD.isEmpty()) {
