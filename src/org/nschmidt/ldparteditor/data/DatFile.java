@@ -1080,7 +1080,7 @@ public final class DatFile {
                             target = lastInsertedObject;
                             lastInsertedObject = gdata;
                         }
-                        if (target != null) {
+                        if (target != null && drawPerLine.containsValue(target)) {
                             insertAfter(target, gdata);
                             return;
                         }

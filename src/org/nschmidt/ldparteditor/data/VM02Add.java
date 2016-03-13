@@ -702,6 +702,7 @@ class VM02Add extends VM01SelectHelper {
             GData pasted = result.get(0).getGraphicalData();
             if (pasted == null)
                 pasted = new GData0(lineToParse);
+            linkedDatFile.resetInsertState();
             linkedDatFile.insertAfterCursor(pasted);
         } else {
             final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
