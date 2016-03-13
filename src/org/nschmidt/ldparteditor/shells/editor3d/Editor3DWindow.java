@@ -6577,17 +6577,32 @@ public class Editor3DWindow extends Editor3DDesign {
         }
 
         if (where == OpenInWhat.EDITOR_TEXT || where == OpenInWhat.EDITOR_TEXT_AND_3D) {
+
             for (EditorTextWindow w : Project.getOpenTextWindows()) {
 
                 for (CTabItem t : w.getTabFolder().getItems()) {
                     if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                        w.getTabFolder().setSelection(t);
-                        ((CompositeTab) t).getControl().getShell().forceActive();
+                        if (Project.getUnsavedFiles().contains(df)) {
+                            w.getTabFolder().setSelection(t);
+                            ((CompositeTab) t).getControl().getShell().forceActive();
+                        } else {
+                            CompositeTab tbtmnewItem = new CompositeTab(w.getTabFolder(), SWT.CLOSE);
+                            tbtmnewItem.setWindow(w);
+                            tbtmnewItem.getState().setFileNameObj(View.DUMMY_DATFILE);
+                            w.closeTabWithDatfile(df);
+                            tbtmnewItem.getState().setFileNameObj(df);
+                            w.getTabFolder().setSelection(tbtmnewItem);
+                            tbtmnewItem.getControl().getShell().forceActive();
+                            w.open();
+                            Project.getParsedFiles().add(df);
+                            return true;
+                        }
                         w.open();
                         return w == tWin;
                     }
                 }
             }
+
             if (tWin == null) {
                 // Project.getParsedFiles().add(df); IS NECESSARY HERE
                 Project.getParsedFiles().add(df);

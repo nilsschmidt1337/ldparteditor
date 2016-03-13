@@ -23,6 +23,7 @@ import java.text.MessageFormat;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
@@ -81,6 +82,9 @@ public class CompositeTabState {
             this.datFileObj.getVertexManager().setModified_NoSync();
             getTab().getTextComposite().setText(this.datFileObj.getText());
             getTab().setText(getFilenameWithStar());
+        } else if (View.DUMMY_DATFILE.equals(fileNameObj)) {
+            getTab().getTextComposite().setText(""); //$NON-NLS-1$
+            getTab().setText(filename);
         } else {
 
             try {
