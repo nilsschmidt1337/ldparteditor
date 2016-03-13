@@ -65,7 +65,7 @@ public class HistoryManager {
         this.df = df;
     }
 
-    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, boolean[] selectedData, Vertex[] selectedVertices, int topIndex) {
+    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, boolean[] selectedData, boolean[] hiddenData, Vertex[] selectedVertices, Vertex[] hiddenVertices, int topIndex) {
         if (df.isReadOnly()) return;
         if (hasNoThread) {
             hasNoThread = false;
@@ -85,7 +85,9 @@ public class HistoryManager {
                     final ArrayList<Integer> historyTopIndex = new ArrayList<Integer>();
                     final ArrayList<int[]> historyText = new ArrayList<int[]>();
                     final ArrayList<boolean[]> historySelectedData = new ArrayList<boolean[]>();
+                    final ArrayList<boolean[]> historyHiddenData = new ArrayList<boolean[]>();
                     final ArrayList<Vertex[]> historySelectedVertices = new ArrayList<Vertex[]>();
+                    final ArrayList<Vertex[]> historyHiddenVertices = new ArrayList<Vertex[]>();
 
                     while (isRunning.get() && Editor3DWindow.getAlive().get()) {
                         try {
@@ -122,7 +124,9 @@ public class HistoryManager {
                                     removeFromListAboveOrEqualIndex(historySelectionStart, pointer + 1);
                                     removeFromListAboveOrEqualIndex(historySelectionEnd, pointer + 1);
                                     removeFromListAboveOrEqualIndex(historySelectedData, pointer + 1);
+                                    removeFromListAboveOrEqualIndex(historyHiddenData, pointer + 1);
                                     removeFromListAboveOrEqualIndex(historySelectedVertices, pointer + 1);
+                                    removeFromListAboveOrEqualIndex(historyHiddenVertices, pointer + 1);
                                     removeFromListAboveOrEqualIndex(historyText, pointer + 1);
                                     removeFromListAboveOrEqualIndex(historyTopIndex, pointer + 1);
                                     pointerMax = pointer + 1;
@@ -135,7 +139,9 @@ public class HistoryManager {
                                         removeFromListLessIndex(historySelectionStart, delta + 1);
                                         removeFromListLessIndex(historySelectionEnd, delta + 1);
                                         removeFromListLessIndex(historySelectedData, delta + 1);
+                                        removeFromListLessIndex(historyHiddenData, delta + 1);
                                         removeFromListLessIndex(historySelectedVertices, delta + 1);
+                                        removeFromListLessIndex(historyHiddenVertices, delta + 1);
                                         removeFromListLessIndex(historyText, delta + 1);
                                         removeFromListLessIndex(historyTopIndex, delta + 1);
                                         pointerMax = pointerMax - delta;
@@ -150,6 +156,8 @@ public class HistoryManager {
                                 historySelectedData.add((boolean[]) newEntry[4]);
                                 historySelectedVertices.add((Vertex[]) newEntry[5]);
                                 historyTopIndex.add((Integer) newEntry[6]);
+                                historyHiddenData.add((boolean[]) newEntry[7]);
+                                historyHiddenVertices.add((Vertex[]) newEntry[8]);
                                 historyText.add(result);
 
                                 // 1. Cleanup duplicated text entries
@@ -175,7 +183,9 @@ public class HistoryManager {
                                                     removeFromListAboveOrEqualIndex(historySelectionStart, pointer);
                                                     removeFromListAboveOrEqualIndex(historySelectionEnd, pointer);
                                                     removeFromListAboveOrEqualIndex(historySelectedData, pointer);
+                                                    removeFromListAboveOrEqualIndex(historyHiddenData, pointer);
                                                     removeFromListAboveOrEqualIndex(historySelectedVertices, pointer);
+                                                    removeFromListAboveOrEqualIndex(historyHiddenVertices, pointer);
                                                     removeFromListAboveOrEqualIndex(historyText, pointer);
                                                     removeFromListAboveOrEqualIndex(historyTopIndex, pointer);
                                                 } else {
@@ -183,7 +193,9 @@ public class HistoryManager {
                                                     historySelectionStart.remove(pointer - 1);
                                                     historySelectionEnd.remove(pointer - 1);
                                                     historySelectedData.remove(pointer - 1);
+                                                    historyHiddenData.remove(pointer - 1);
                                                     historySelectedVertices.remove(pointer - 1);
+                                                    historyHiddenVertices.remove(pointer - 1);
                                                     historyTopIndex.remove(pointer - 1);
                                                     historyText.remove(pointer - 1);
                                                 }
@@ -339,6 +351,30 @@ public class HistoryManager {
                                                         vm.getSelectedVertices().add(vertex);
                                                     }
                                                 }
+
+                                                final Vertex[] verts2 = historyHiddenVertices.get(pointer2);
+                                                if (verts2 != null) {
+                                                    vm.getHiddenVertices().clear();
+                                                    for (Vertex vertex : verts2) {
+                                                        vm.getHiddenVertices().add(vertex);
+                                                    }
+                                                }
+
+                                                boolean[] hiddenSelection = historyHiddenData.get(pointer2);
+                                                if (hiddenSelection != null) {
+                                                    int i = 0;
+                                                    final HashBiMap<Integer, GData> map = df.getDrawPerLine_NOCLONE();
+                                                    TreeSet<Integer> ts = new TreeSet<Integer>(map.keySet());
+                                                    vm.hiddenData.clear();
+                                                    for (Integer key : ts) {
+                                                        if (!hiddenSelection[i]) {
+                                                            GData gd = map.getValue(key);
+                                                            gd.visible = false;
+                                                            vm.hiddenData.add(gd);
+                                                        }
+                                                        i++;
+                                                    }
+                                                }
                                                 boolean[] selection = historySelectedData.get(pointer2);
                                                 if (selection != null) {
                                                     int i = 0;
@@ -440,7 +476,7 @@ public class HistoryManager {
             }).start();
         }
 
-        while (!workQueue.offer(new Object[]{text, selectionStart, selectionEnd, data, selectedData, selectedVertices, topIndex})) {
+        while (!workQueue.offer(new Object[]{text, selectionStart, selectionEnd, data, selectedData, selectedVertices, topIndex, hiddenData, hiddenVertices})) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {}
@@ -499,7 +535,7 @@ public class HistoryManager {
                                 if (!isRunning.get()) {
                                     hasNoThread = true;
                                     isRunning.set(true);
-                                    pushHistory(null, -1, -1, null, null, null, -1);
+                                    pushHistory(null, -1, -1, null, null, null, null, null, -1);
                                     NLogger.debug(getClass(), "Forked history thread..."); //$NON-NLS-1$
                                 }
                                 monitor.beginTask(I18n.E3D_LoadingData, 100);

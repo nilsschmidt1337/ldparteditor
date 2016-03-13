@@ -615,6 +615,10 @@ class VM01Select extends VM00Snapshot {
         return selectedVertices;
     }
 
+    public synchronized Set<Vertex> getHiddenVertices() {
+        return hiddenVertices;
+    }
+
     public synchronized Set<GData> getSelectedData() {
         return selectedData;
     }

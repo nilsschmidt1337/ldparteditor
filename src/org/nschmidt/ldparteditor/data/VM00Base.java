@@ -139,8 +139,8 @@ class VM00Base {
 
     protected Vertex lastSelectedVertex = null;
 
-    protected final TreeSet<Vertex> hiddenVertices = new TreeSet<Vertex>();
-    protected final HashSet<GData> hiddenData = new HashSet<GData>();
+    protected final Set<Vertex> hiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+    protected final Set<GData> hiddenData = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
 
     protected final HashMap<GData, Byte> bfcMap = new HashMap<GData, Byte>();
 

@@ -1509,23 +1509,40 @@ public final class DatFile {
         final int objCount = drawPerLine.size();
         GData[] backup = new GData[objCount];
         boolean[] backupSelection = new boolean[objCount];
+        boolean[] backupHideShowState = null;
         int count = 0;
         GData data2draw = drawChainAnchor;
         Set<GData> sd = vertices.getSelectedData();
-        while (count < objCount) {
-            data2draw = data2draw.getNext();
-            backup[count] = data2draw;
-            backupSelection[count] = sd.contains(data2draw);
-            count++;
+
+        if (vertices.hiddenData.size() > 0) {
+            backupHideShowState = new boolean[objCount];
+            while (count < objCount) {
+                data2draw = data2draw.getNext();
+                backup[count] = data2draw;
+                backupHideShowState[count] = data2draw.visible;
+                backupSelection[count] = sd.contains(data2draw);
+                count++;
+            }
+        } else {
+            while (count < objCount) {
+                data2draw = data2draw.getNext();
+                backup[count] = data2draw;
+                backupSelection[count] = sd.contains(data2draw);
+                count++;
+            }
         }
+
         Vertex[] backupSelectedVertices = vertices.getSelectedVertices().toArray(new Vertex[vertices.getSelectedVertices().size()]);
+        Vertex[] backupHiddenVertices = vertices.getHiddenVertices().toArray(new Vertex[vertices.getHiddenVertices().size()]);
         history.pushHistory(
                 null,
                 -1,
                 -1,
                 backup,
                 backupSelection,
+                backupHideShowState,
                 backupSelectedVertices,
+                backupHiddenVertices,
                 -1
                 );
         NLogger.debug(getClass(), "Total time to backup history: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
@@ -1538,6 +1555,8 @@ public final class DatFile {
                 text,
                 selectionStart,
                 selectionEnd,
+                null,
+                null,
                 null,
                 null,
                 null,

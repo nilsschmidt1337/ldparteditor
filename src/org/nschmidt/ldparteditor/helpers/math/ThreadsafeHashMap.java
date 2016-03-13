@@ -77,7 +77,6 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
     public boolean containsKey(Object key) {
         rl.lock();
         final boolean value = map.containsKey(key);
-        ;
         rl.unlock();
         return value;
     }
