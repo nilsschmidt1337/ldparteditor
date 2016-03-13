@@ -848,6 +848,7 @@ class VM07PathTruder extends VM06Edger2 {
         }
 
         // Append the new data
+        linkedDatFile.resetInsertState();
         for (GData2 line : newLines) {
             linkedDatFile.addToTailOrInsertAfterCursor(line);
         }

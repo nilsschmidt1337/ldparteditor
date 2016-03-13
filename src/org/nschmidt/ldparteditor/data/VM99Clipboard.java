@@ -32,6 +32,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
@@ -509,96 +510,164 @@ class VM99Clipboard extends VM24MeshReducer {
     }
 
     public void paste() {
-
-        // FIXME Needs Implementation for Issue #31
-
         if (linkedDatFile.isReadOnly())
             return;
         if (!CLIPBOARD.isEmpty()) {
+            linkedDatFile.resetInsertState();
             clearSelection();
-            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
-
-            int linecount = dpl.size();
-
-            GData before = linkedDatFile.getDrawChainTail();
-            GData tailData = null;
-            for (GData g : CLIPBOARD) {
-                Set<String> alreadyParsed = new HashSet<String>();
-                alreadyParsed.add(linkedDatFile.getShortName());
-                if (CLIPBOARD_InvNext.contains(g)) {
-                    GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT);
-                    before.setNext(invNext);
-                    before = invNext;
-                    linecount++;
-                    dpl.put(linecount, invNext);
-                }
-                ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
-                GData pasted = result.get(0).getGraphicalData();
-                if (pasted == null)
-                    pasted = new GData0(g.toString());
-                linecount++;
-                dpl.put(linecount, pasted);
-                selectedData.add(pasted);
-                switch (pasted.type()) {
-                case 0:
-                    selectedData.remove(pasted);
-                    Vertex vertex = ((GData0) pasted).getVertex();
-                    if (vertex != null) {
-                        selectedVertices.add(vertex);
+            if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
+                for (GData g : CLIPBOARD) {
+                    Set<String> alreadyParsed = new HashSet<String>();
+                    alreadyParsed.add(linkedDatFile.getShortName());
+                    if (CLIPBOARD_InvNext.contains(g)) {
+                        GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT);
+                        linkedDatFile.insertAfterCursor(invNext);
                     }
-                    break;
-                case 1:
-                    selectedSubfiles.add((GData1) pasted);
-                    Set<VertexInfo> vis = lineLinkedToVertices.get(pasted);
-                    for (VertexInfo vertexInfo : vis) {
-                        selectedVertices.add(vertexInfo.getVertex());
-                        GData gs = vertexInfo.getLinkedData();
-                        selectedData.add(gs);
-                        switch (gs.type()) {
-                        case 0:
-                            selectedData.remove(gs);
-                            Vertex vertex2 = ((GData0) gs).getVertex();
-                            if (vertex2 != null) {
-                                selectedVertices.add(vertex2);
-                            }
-                            break;
-                        case 2:
-                            selectedLines.add((GData2) gs);
-                            break;
-                        case 3:
-                            selectedTriangles.add((GData3) gs);
-                            break;
-                        case 4:
-                            selectedQuads.add((GData4) gs);
-                            break;
-                        case 5:
-                            selectedCondlines.add((GData5) gs);
-                            break;
-                        default:
-                            break;
+                    ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                    GData pasted = result.get(0).getGraphicalData();
+                    if (pasted == null)
+                        pasted = new GData0(g.toString());
+                    linkedDatFile.insertAfterCursor(pasted);
+                    selectedData.add(pasted);
+                    switch (pasted.type()) {
+                    case 0:
+                        selectedData.remove(pasted);
+                        Vertex vertex = ((GData0) pasted).getVertex();
+                        if (vertex != null) {
+                            selectedVertices.add(vertex);
                         }
+                        break;
+                    case 1:
+                        selectedSubfiles.add((GData1) pasted);
+                        Set<VertexInfo> vis = lineLinkedToVertices.get(pasted);
+                        for (VertexInfo vertexInfo : vis) {
+                            selectedVertices.add(vertexInfo.getVertex());
+                            GData gs = vertexInfo.getLinkedData();
+                            selectedData.add(gs);
+                            switch (gs.type()) {
+                            case 0:
+                                selectedData.remove(gs);
+                                Vertex vertex2 = ((GData0) gs).getVertex();
+                                if (vertex2 != null) {
+                                    selectedVertices.add(vertex2);
+                                }
+                                break;
+                            case 2:
+                                selectedLines.add((GData2) gs);
+                                break;
+                            case 3:
+                                selectedTriangles.add((GData3) gs);
+                                break;
+                            case 4:
+                                selectedQuads.add((GData4) gs);
+                                break;
+                            case 5:
+                                selectedCondlines.add((GData5) gs);
+                                break;
+                            default:
+                                break;
+                            }
+                        }
+                        break;
+                    case 2:
+                        selectedLines.add((GData2) pasted);
+                        break;
+                    case 3:
+                        selectedTriangles.add((GData3) pasted);
+                        break;
+                    case 4:
+                        selectedQuads.add((GData4) pasted);
+                        break;
+                    case 5:
+                        selectedCondlines.add((GData5) pasted);
+                        break;
+                    default:
+                        break;
                     }
-                    break;
-                case 2:
-                    selectedLines.add((GData2) pasted);
-                    break;
-                case 3:
-                    selectedTriangles.add((GData3) pasted);
-                    break;
-                case 4:
-                    selectedQuads.add((GData4) pasted);
-                    break;
-                case 5:
-                    selectedCondlines.add((GData5) pasted);
-                    break;
-                default:
-                    break;
                 }
-                before.setNext(pasted);
-                before = pasted;
-                tailData = pasted;
+            } else {
+                final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+                int linecount = dpl.size();
+                GData before = linkedDatFile.getDrawChainTail();
+                GData tailData = null;
+                for (GData g : CLIPBOARD) {
+                    Set<String> alreadyParsed = new HashSet<String>();
+                    alreadyParsed.add(linkedDatFile.getShortName());
+                    if (CLIPBOARD_InvNext.contains(g)) {
+                        GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT);
+                        before.setNext(invNext);
+                        before = invNext;
+                        linecount++;
+                        dpl.put(linecount, invNext);
+                    }
+                    ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                    GData pasted = result.get(0).getGraphicalData();
+                    if (pasted == null)
+                        pasted = new GData0(g.toString());
+                    linecount++;
+                    dpl.put(linecount, pasted);
+                    selectedData.add(pasted);
+                    switch (pasted.type()) {
+                    case 0:
+                        selectedData.remove(pasted);
+                        Vertex vertex = ((GData0) pasted).getVertex();
+                        if (vertex != null) {
+                            selectedVertices.add(vertex);
+                        }
+                        break;
+                    case 1:
+                        selectedSubfiles.add((GData1) pasted);
+                        Set<VertexInfo> vis = lineLinkedToVertices.get(pasted);
+                        for (VertexInfo vertexInfo : vis) {
+                            selectedVertices.add(vertexInfo.getVertex());
+                            GData gs = vertexInfo.getLinkedData();
+                            selectedData.add(gs);
+                            switch (gs.type()) {
+                            case 0:
+                                selectedData.remove(gs);
+                                Vertex vertex2 = ((GData0) gs).getVertex();
+                                if (vertex2 != null) {
+                                    selectedVertices.add(vertex2);
+                                }
+                                break;
+                            case 2:
+                                selectedLines.add((GData2) gs);
+                                break;
+                            case 3:
+                                selectedTriangles.add((GData3) gs);
+                                break;
+                            case 4:
+                                selectedQuads.add((GData4) gs);
+                                break;
+                            case 5:
+                                selectedCondlines.add((GData5) gs);
+                                break;
+                            default:
+                                break;
+                            }
+                        }
+                        break;
+                    case 2:
+                        selectedLines.add((GData2) pasted);
+                        break;
+                    case 3:
+                        selectedTriangles.add((GData3) pasted);
+                        break;
+                    case 4:
+                        selectedQuads.add((GData4) pasted);
+                        break;
+                    case 5:
+                        selectedCondlines.add((GData5) pasted);
+                        break;
+                    default:
+                        break;
+                    }
+                    before.setNext(pasted);
+                    before = pasted;
+                    tailData = pasted;
+                }
+                linkedDatFile.setDrawChainTail(tailData);
             }
-            linkedDatFile.setDrawChainTail(tailData);
             setModified(true, true);
             updateUnsavedStatus();
         }

@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -36,6 +37,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.colour.GCChrome;
 import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
 import org.nschmidt.ldparteditor.data.colour.GCMetal;
@@ -109,6 +111,7 @@ public final class DatFile {
     private Date lastSavedOpened = new Date();
 
     private GData drawChainTail = null;
+    private GData lastInsertedObject = null;
 
     private Composite3D lastSelectedComposite = null;
     private static Composite3D lastHoveredComposite = null;
@@ -1047,9 +1050,49 @@ public final class DatFile {
         }
     }
 
+    public void addToTailOrInsertAfterCursorReset(GData gdata) {
+        if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
+            resetInsertState();
+            insertAfterCursor(gdata);
+        } else {
+            addToTail(gdata);
+        }
+    }
+
     public void insertAfterCursor(GData gdata) {
-        // FIXME Needs implementation for issue #31
+        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+            for (CTabItem t : w.getTabFolder().getItems()) {
+                if (this.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                    StyledText st = ((CompositeTab) t).getTextComposite();
+                    int s1 = st.getSelectionRange().x;
+                    if (s1 > -1) {
+                        int line = st.getLineAtOffset(s1) + 1;
+                        GData target = null;
+                        if (lastInsertedObject == null) {
+                            try {
+                                target = drawPerLine.getValue(line);
+                                int offset = st.getOffsetAtLine(line);
+                                st.setSelection(offset, offset);
+                            } catch (IllegalArgumentException iae) {
+                                lastInsertedObject = gdata;
+                            }
+                        } else {
+                            target = lastInsertedObject;
+                            lastInsertedObject = gdata;
+                        }
+                        if (target != null) {
+                            insertAfter(target, gdata);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
         addToTail(gdata);
+    }
+
+    public void resetInsertState() {
+        lastInsertedObject = null;
     }
 
     public void addToTail(GData gdata) {
