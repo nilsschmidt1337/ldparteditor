@@ -315,7 +315,7 @@ class VM02Add extends VM01SelectHelper {
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
         }
         GDataPNG pic = new GDataPNG(new GDataPNG(text, offset, angleA, angleB, angleC, scale, texturePath).getString(offset, angleA, angleB, angleC, scale, texturePath), offset, angleA, angleB, angleC, scale, texturePath);
-        linkedDatFile.addToTailOrInsertAfterCursor(pic);
+        linkedDatFile.addToTailOrInsertAfterCursorReset(pic);
         setSelectedBgPicture(pic);
         setModified_NoSync();
     }
@@ -351,12 +351,7 @@ class VM02Add extends VM01SelectHelper {
             // Will never return a 'null' colour!
             col = DatParser.validateColour(24, 0f, 0f, .0f, 0f);
         }
-        if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
-
-        } else {
-
-        }
-        linkedDatFile.addToTailOrInsertAfterCursor(new GData2(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
+        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData2(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
         linkedDatFile.setObjVertex1(v1);
         linkedDatFile.setObjVertex2(v2);
     }
@@ -424,7 +419,7 @@ class VM02Add extends VM01SelectHelper {
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
-        linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
         setModified(true, true);
     }
 
@@ -535,7 +530,7 @@ class VM02Add extends VM01SelectHelper {
                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
             }
             GColour col = Editor3DWindow.getWindow().getLastUsedColour();
-            linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
+            linkedDatFile.addToTailOrInsertAfterCursorReset(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
             linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v4, v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
             setModified(true, true);
             return;
@@ -642,7 +637,7 @@ class VM02Add extends VM01SelectHelper {
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
-        linkedDatFile.addToTailOrInsertAfterCursor(new GData4(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
+        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData4(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
         setModified(true, true);
     }
 
@@ -693,12 +688,7 @@ class VM02Add extends VM01SelectHelper {
             col = DatParser.validateColour(24, 0f, 0f, 0f, 0f);
         }
 
-        if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
-
-        } else {
-
-        }
-        linkedDatFile.addToTailOrInsertAfterCursor(new GData5(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
+        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData5(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
     }
 
     public void addParsedLine(String lineToParse) {

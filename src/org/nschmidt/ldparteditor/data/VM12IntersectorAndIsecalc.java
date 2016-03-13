@@ -255,6 +255,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
             }
 
             // Append the lines
+            linkedDatFile.resetInsertState();
             for (GData2 line : newLines) {
                 linkedDatFile.addToTailOrInsertAfterCursor(line);
             }
@@ -602,6 +603,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
             }
 
             // Append the new data
+            linkedDatFile.resetInsertState();
             for (GData3 tri : newTriangles) {
                 linkedDatFile.addToTailOrInsertAfterCursor(tri);
             }
@@ -2409,6 +2411,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
             }
 
             // Append the new data
+            linkedDatFile.resetInsertState();
             for (GData3 tri : newTriangles) {
                 linkedDatFile.addToTailOrInsertAfterCursor(tri);
             }
