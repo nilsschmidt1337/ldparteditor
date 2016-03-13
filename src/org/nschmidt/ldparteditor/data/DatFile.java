@@ -1278,6 +1278,50 @@ public final class DatFile {
             if (lines.isEmpty())
                 lines.add(""); //$NON-NLS-1$
 
+            // Write the new "0 Name: "
+            if (lines.size() > 1) {
+                final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
+                final int maxDetectionLines = Math.min(10, lines.size());
+
+                // 1. Detect the file type
+                String folderPrefix = ""; //$NON-NLS-1$
+                for (int i = 0; i < maxDetectionLines; i++) {
+                    String tLine = WHITESPACE.matcher(lines.get(i)).replaceAll(" ").trim(); //$NON-NLS-1$
+                    if (tLine.startsWith("0 !LDRAW_ORG")) { //$NON-NLS-1$
+                        String typeSuffix = ""; //$NON-NLS-1$
+                        String path = newFile.getParent();
+
+                        if (path.endsWith(File.separator + "S") || path.endsWith(File.separator + "s")) { //$NON-NLS-1$ //$NON-NLS-2$
+                            typeSuffix = "Unofficial_Subpart"; //$NON-NLS-1$
+                            folderPrefix = "S\\"; //$NON-NLS-1$
+                        } else if (path.endsWith(File.separator + "P" + File.separator + "48") || path.endsWith(File.separator + "p" + File.separator + "48")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                            typeSuffix = "Unofficial_48_Primitive"; //$NON-NLS-1$
+                            folderPrefix = "P\\"; //$NON-NLS-1$
+                        } else if (path.endsWith(File.separator + "P" + File.separator + "8") || path.endsWith(File.separator + "p" + File.separator + "8")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                            typeSuffix = "Unofficial_8_Primitive"; //$NON-NLS-1$
+                            folderPrefix = "P\\"; //$NON-NLS-1$
+                        } else if (path.endsWith(File.separator + "P") || path.endsWith(File.separator + "p")) { //$NON-NLS-1$ //$NON-NLS-2$
+                            typeSuffix = "Unofficial_Primitive"; //$NON-NLS-1$
+                            folderPrefix = "P\\"; //$NON-NLS-1$
+                        }
+
+                        if (!"".equals(typeSuffix)) { //$NON-NLS-1$
+                            lines.set(i, "0 !LDRAW_ORG " + typeSuffix); //$NON-NLS-1$
+                        }
+                        break;
+                    }
+                }
+
+                // 2. Set the new name
+                for (int i = 0; i < maxDetectionLines; i++) {
+                    String tLine = WHITESPACE.matcher(lines.get(i)).replaceAll(" ").trim(); //$NON-NLS-1$
+                    if (tLine.startsWith("0 Name:")) { //$NON-NLS-1$
+                        lines.set(i, "0 Name: " + folderPrefix + newFile.getName()); //$NON-NLS-1$
+                        break;
+                    }
+                }
+            }
+
             for (String line : lines) {
                 r.println(line);
             }
