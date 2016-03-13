@@ -849,13 +849,13 @@ class VM07PathTruder extends VM06Edger2 {
 
         // Append the new data
         for (GData2 line : newLines) {
-            linkedDatFile.addToTail(line);
+            linkedDatFile.addToTailOrInsertAfterCursor(line);
         }
         for (GData3 tri : newTriangles) {
-            linkedDatFile.addToTail(tri);
+            linkedDatFile.addToTailOrInsertAfterCursor(tri);
         }
         for (GData4 quad : newQuads) {
-            linkedDatFile.addToTail(quad);
+            linkedDatFile.addToTailOrInsertAfterCursor(quad);
         }
 
         NLogger.debug(getClass(), "Delete new, but invalid objects."); //$NON-NLS-1$

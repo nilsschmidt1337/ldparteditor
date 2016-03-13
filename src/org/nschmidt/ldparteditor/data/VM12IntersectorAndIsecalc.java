@@ -256,7 +256,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
 
             // Append the lines
             for (GData2 line : newLines) {
-                linkedDatFile.addToTail(line);
+                linkedDatFile.addToTailOrInsertAfterCursor(line);
             }
 
             // Round to 6 decimal places
@@ -603,15 +603,15 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
 
             // Append the new data
             for (GData3 tri : newTriangles) {
-                linkedDatFile.addToTail(tri);
+                linkedDatFile.addToTailOrInsertAfterCursor(tri);
             }
 
             for (GData2 lin : newLines) {
-                linkedDatFile.addToTail(lin);
+                linkedDatFile.addToTailOrInsertAfterCursor(lin);
             }
 
             for (GData5 clin : newCondlines) {
-                linkedDatFile.addToTail(clin);
+                linkedDatFile.addToTailOrInsertAfterCursor(clin);
             }
 
             NLogger.debug(getClass(), "Delete new, but invalid objects."); //$NON-NLS-1$
@@ -2410,7 +2410,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
 
             // Append the new data
             for (GData3 tri : newTriangles) {
-                linkedDatFile.addToTail(tri);
+                linkedDatFile.addToTailOrInsertAfterCursor(tri);
             }
 
             NLogger.debug(getClass(), "Delete new, but invalid objects."); //$NON-NLS-1$
