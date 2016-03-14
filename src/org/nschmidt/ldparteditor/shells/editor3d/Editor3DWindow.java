@@ -50,6 +50,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -338,6 +340,20 @@ public class Editor3DWindow extends Editor3DDesign {
                 );
         // MARK All final listeners will be configured here..
         NLogger.writeVersion();
+        sh.addFocusListener(new FocusListener() {
+            @Override
+            public void focusLost(FocusEvent consumed) {}
+            @Override
+            public void focusGained(FocusEvent e) {
+                regainFocus();
+            }
+        });
+        tabFolder_Settings[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                regainFocus();
+            }
+        });
         btn_Sync[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -421,6 +437,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 messageBox.setMessage(formatter.format(messageArguments));
 
                 messageBox.open();
+                regainFocus();
             }
         });
 
@@ -476,6 +493,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         txt_Search[0].setText(""); //$NON-NLS-1$
                                         updateTree_unsavedEntries();
                                     }
+                                    regainFocus();
                                 }
                             });
                         }
@@ -488,6 +506,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 lastOpenedMenu.setLocation(x, y);
                 lastOpenedMenu.setVisible(true);
+                regainFocus();
             }
         });
         btn_New[0].addSelectionListener(new SelectionAdapter() {
@@ -495,6 +514,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 ProjectActions.createNewProject(Editor3DWindow.getWindow(), false);
                 addRecentFile(Project.getProjectPath());
+                regainFocus();
             }
         });
         btn_Open[0].addSelectionListener(new SelectionAdapter() {
@@ -516,6 +536,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     txt_Search[0].setText(""); //$NON-NLS-1$
                     updateTree_unsavedEntries();
                 }
+                regainFocus();
             }
         });
         btn_Save[0].addSelectionListener(new SelectionAdapter() {
@@ -583,6 +604,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         ProjectActions.createNewProject(Editor3DWindow.getWindow(), true);
                     }
                 }
+                regainFocus();
             }
 
             private void iterateOverItems(TreeItem ti) {
@@ -628,6 +650,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     ProjectActions.createNewProject(getWindow(), true);
                 }
                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                regainFocus();
             }
         });
 
@@ -638,6 +661,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (dat != null) {
                     addRecentFile(dat);
                 }
+                regainFocus();
             }
         });
 
@@ -648,6 +672,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (dat != null) {
                     addRecentFile(dat);
                 }
+                regainFocus();
             }
         });
 
@@ -658,6 +683,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().undo(null);
                 }
+                regainFocus();
             }
         });
 
@@ -668,6 +694,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().redo(null);
                 }
+                regainFocus();
             }
         });
 
@@ -688,6 +715,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Select[0]);
                 workingAction = WorkingMode.SELECT;
+                regainFocus();
             }
         });
         btn_Move[0].addSelectionListener(new SelectionAdapter() {
@@ -695,6 +723,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Move[0]);
                 workingAction = WorkingMode.MOVE;
+                regainFocus();
             }
         });
         btn_Rotate[0].addSelectionListener(new SelectionAdapter() {
@@ -702,6 +731,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Rotate[0]);
                 workingAction = WorkingMode.ROTATE;
+                regainFocus();
             }
         });
         btn_Scale[0].addSelectionListener(new SelectionAdapter() {
@@ -709,6 +739,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Scale[0]);
                 workingAction = WorkingMode.SCALE;
+                regainFocus();
             }
         });
         btn_Combined[0].addSelectionListener(new SelectionAdapter() {
@@ -716,6 +747,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Combined[0]);
                 workingAction = WorkingMode.COMBINED;
+                regainFocus();
             }
         });
 
@@ -724,6 +756,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Local[0]);
                 transformationMode = ManipulatorScope.LOCAL;
+                regainFocus();
             }
         });
         btn_Global[0].addSelectionListener(new SelectionAdapter() {
@@ -731,6 +764,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Global[0]);
                 transformationMode = ManipulatorScope.GLOBAL;
+                regainFocus();
             }
         });
 
@@ -739,6 +773,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Vertices[0]);
                 setWorkingType(ObjectMode.VERTICES);
+                regainFocus();
             }
         });
         btn_TrisNQuads[0].addSelectionListener(new SelectionAdapter() {
@@ -746,6 +781,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_TrisNQuads[0]);
                 setWorkingType(ObjectMode.FACES);
+                regainFocus();
             }
         });
         btn_Lines[0].addSelectionListener(new SelectionAdapter() {
@@ -753,6 +789,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Lines[0]);
                 setWorkingType(ObjectMode.LINES);
+                regainFocus();
             }
         });
         btn_Subfiles[0].addSelectionListener(new SelectionAdapter() {
@@ -761,6 +798,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (Project.getFileToEdit() != null) {
                     clickBtnTest(btn_Subfiles[0]);
                     setWorkingType(ObjectMode.SUBFILES);
+                    regainFocus();
                 }
             }
         });
@@ -781,6 +819,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 clickSingleBtn(btn_AddVertex[0]);
                 setAddingVertices(btn_AddVertex[0].getSelection());
                 setAddingSomething(isAddingVertices());
+                regainFocus();
             }
         });
         btn_AddPrimitive[0].addSelectionListener(new SelectionAdapter() {
@@ -790,6 +829,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 setAddingSubfiles(btn_AddPrimitive[0].getSelection());
                 setAddingSomething(isAddingSubfiles());
                 clickSingleBtn(btn_AddPrimitive[0]);
+                regainFocus();
             }
         });
         btn_AddLine[0].addSelectionListener(new SelectionAdapter() {
@@ -799,6 +839,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 setAddingLines(btn_AddLine[0].getSelection());
                 setAddingSomething(isAddingLines());
                 clickSingleBtn(btn_AddLine[0]);
+                regainFocus();
             }
         });
         btn_AddTriangle[0].addSelectionListener(new SelectionAdapter() {
@@ -808,6 +849,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 setAddingTriangles(btn_AddTriangle[0].getSelection());
                 setAddingSomething(isAddingTriangles());
                 clickSingleBtn(btn_AddTriangle[0]);
+                regainFocus();
             }
         });
         btn_AddQuad[0].addSelectionListener(new SelectionAdapter() {
@@ -817,6 +859,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 setAddingQuads(btn_AddQuad[0].getSelection());
                 setAddingSomething(isAddingQuads());
                 clickSingleBtn(btn_AddQuad[0]);
+                regainFocus();
             }
         });
         btn_AddCondline[0].addSelectionListener(new SelectionAdapter() {
@@ -826,6 +869,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 setAddingCondlines(btn_AddCondline[0].getSelection());
                 setAddingSomething(isAddingCondlines());
                 clickSingleBtn(btn_AddCondline[0]);
+                regainFocus();
             }
         });
         btn_MoveAdjacentData[0].addSelectionListener(new SelectionAdapter() {
@@ -833,6 +877,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickSingleBtn(btn_MoveAdjacentData[0]);
                 setMovingAdjacentData(btn_MoveAdjacentData[0].getSelection());
+                regainFocus();
             }
         });
         btn_CompileSubfile[0].addSelectionListener(new SelectionAdapter() {
@@ -842,30 +887,35 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     SubfileCompiler.compile(Project.getFileToEdit(), false, false);
                 }
+                regainFocus();
             }
         });
         btn_lineSize1[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setLineSize(GLPrimitives.SPHERE1, GLPrimitives.SPHERE_INV1, 25f, .025f, .375f, btn_lineSize1[0]);
+                regainFocus();
             }
         });
         btn_lineSize2[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setLineSize(GLPrimitives.SPHERE2, GLPrimitives.SPHERE_INV2, 50f, .050f, .75f, btn_lineSize2[0]);
+                regainFocus();
             }
         });
         btn_lineSize3[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setLineSize(GLPrimitives.SPHERE3, GLPrimitives.SPHERE_INV3, 100f, .100f, 1.5f, btn_lineSize3[0]);
+                regainFocus();
             }
         });
         btn_lineSize4[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setLineSize(GLPrimitives.SPHERE4, GLPrimitives.SPHERE_INV4, 200f, .200f, 3f, btn_lineSize4[0]);
+                regainFocus();
             }
         });
         btn_BFCswap[0].addSelectionListener(new SelectionAdapter() {
@@ -875,6 +925,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().windingChangeSelection();
                 }
+                regainFocus();
             }
         });
 
@@ -889,6 +940,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager()
                     .roundSelection(WorkbenchManager.getUserSettingState().getCoordsPrecision(), WorkbenchManager.getUserSettingState().getTransMatrixPrecision(), isMovingAdjacentData(), true);
                 }
+                regainFocus();
             }
         });
 
@@ -932,6 +984,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 Project.getFileToEdit().getVertexManager().addSnapshot();
                                 Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2.getR(), gColour2.getG(), gColour2.getB(), gColour2.getA());
                             }
+                            regainFocus();
                         }
 
                         @Override
@@ -962,6 +1015,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                     btn_LastUsedColour[0].redraw();
                 }
+                regainFocus();
             }
         });
 
@@ -1011,6 +1065,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     Project.getFileToEdit().getVertexManager().addSnapshot();
                                     Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
                                 }
+                                regainFocus();
                             }
 
                             @Override
@@ -1042,6 +1097,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         btn_LastUsedColour[0].redraw();
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -1056,6 +1112,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 spn_Rotate[0].setValue(r);
                 spn_Scale[0].setValue(s);
                 Manipulator.setSnap(m, r, s);
+                regainFocus();
             }
         });
 
@@ -1070,6 +1127,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 spn_Rotate[0].setValue(r);
                 spn_Scale[0].setValue(s);
                 Manipulator.setSnap(m, r, s);
+                regainFocus();
             }
         });
 
@@ -1084,6 +1142,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 spn_Rotate[0].setValue(r);
                 spn_Scale[0].setValue(s);
                 Manipulator.setSnap(m, r, s);
+                regainFocus();
             }
         });
 
@@ -1121,6 +1180,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             spn_Rotate[0].setValue(r);
                             spn_Scale[0].setValue(s);
                             Manipulator.setSnap(m, r, s);
+                            regainFocus();
                         }
                     });
 
@@ -1131,6 +1191,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Menu menu = mnu_coarseMenu[0];
                     menu.setLocation(x, y);
                     menu.setVisible(true);
+                    regainFocus();
                 }
             }
         });
@@ -1169,6 +1230,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             spn_Rotate[0].setValue(r);
                             spn_Scale[0].setValue(s);
                             Manipulator.setSnap(m, r, s);
+                            regainFocus();
                         }
                     });
 
@@ -1179,6 +1241,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Menu menu = mnu_mediumMenu[0];
                     menu.setLocation(x, y);
                     menu.setVisible(true);
+                    regainFocus();
                 }
             }
         });
@@ -1217,6 +1280,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             spn_Rotate[0].setValue(r);
                             spn_Scale[0].setValue(s);
                             Manipulator.setSnap(m, r, s);
+                            regainFocus();
                         }
                     });
 
@@ -1227,6 +1291,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Menu menu = mnu_fineMenu[0];
                     menu.setLocation(x, y);
                     menu.setVisible(true);
+                    regainFocus();
                 }
             }
         });
@@ -1238,6 +1303,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().splitQuads(true);
                 }
+                regainFocus();
             }
         });
 
@@ -1248,6 +1314,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().condlineToLine();
                 }
+                regainFocus();
             }
         });
 
@@ -1258,6 +1325,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().lineToCondline();
                 }
+                regainFocus();
             }
         });
 
@@ -1275,6 +1343,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         CoordinatesDialog.setEnd(new Vector3d(it.next()));
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -1515,6 +1584,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     disableSelectionTab();
                 }
                 updatingSelectionTab = false;
+                regainFocus();
             }
         });
         btn_NextSelection[0].addSelectionListener(new SelectionAdapter() {
@@ -1673,6 +1743,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     disableSelectionTab();
                 }
                 updatingSelectionTab = false;
+                regainFocus();
             }
         });
 
@@ -1708,6 +1779,13 @@ public class Editor3DWindow extends Editor3DDesign {
         spn_SelectionX4[0].addValueChangeListener(va);
         spn_SelectionY4[0].addValueChangeListener(va);
         spn_SelectionZ4[0].addValueChangeListener(va);
+
+        btn_MoveAdjacentData2[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                regainFocus();
+            }
+        });
 
         //        treeParts[0].addSelectionListener(new SelectionAdapter() {
         //            @Override
@@ -1858,6 +1936,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 messageBoxError.open();
                             }
                             cleanupClosedData();
+                            regainFocus();
                         }
                     });
                     mntm_Revert[0].addSelectionListener(new SelectionAdapter() {
@@ -1865,7 +1944,10 @@ public class Editor3DWindow extends Editor3DDesign {
                         public void widgetSelected(SelectionEvent e) {
                             if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
                                 DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                if (df.isReadOnly() || !Project.getUnsavedFiles().contains(df) || df.isVirtual() && df.getText().trim().isEmpty()) return;
+                                if (df.isReadOnly() || !Project.getUnsavedFiles().contains(df) || df.isVirtual() && df.getText().trim().isEmpty()) {
+                                    regainFocus();
+                                    return;
+                                }
                                 df.getVertexManager().addSnapshot();
 
                                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
@@ -1880,6 +1962,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 int result = messageBox.open();
 
                                 if (result == SWT.NO) {
+                                    regainFocus();
                                     return;
                                 }
 
@@ -1932,6 +2015,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 messageBoxError.setMessage(I18n.DIALOG_Unavailable);
                                 messageBoxError.open();
                             }
+                            regainFocus();
                         }
                     });
                     mntm_Delete[0].addSelectionListener(new SelectionAdapter() {
@@ -1944,6 +2028,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         updateTree_removeEntry(df);
                                         cleanupClosedData();
                                     }
+                                    regainFocus();
                                     return;
                                 }
 
@@ -1967,6 +2052,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 messageBoxError.setMessage(I18n.DIALOG_Unavailable);
                                 messageBoxError.open();
                             }
+                            regainFocus();
                         }
                     });
                     mntm_Rename[0].addSelectionListener(new SelectionAdapter() {
@@ -1975,7 +2061,10 @@ public class Editor3DWindow extends Editor3DDesign {
                         public void widgetSelected(SelectionEvent e) {
                             if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
                                 DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                if (df.isReadOnly()) return;
+                                if (df.isReadOnly()) {
+                                    regainFocus();
+                                    return;
+                                }
                                 df.getVertexManager().addSnapshot();
 
                                 FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
@@ -2003,10 +2092,14 @@ public class Editor3DWindow extends Editor3DDesign {
                                         int result = messageBox.open();
 
                                         if (result == SWT.CANCEL) {
+                                            regainFocus();
                                             return;
                                         }
                                         newPath = dlg.open();
-                                        if (newPath == null) return;
+                                        if (newPath == null) {
+                                            regainFocus();
+                                            return;
+                                        }
                                     }
 
 
@@ -2024,6 +2117,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         int result = messageBox.open();
 
                                         if (result == SWT.NO) {
+                                            regainFocus();
                                             return;
                                         }
                                     }
@@ -2063,12 +2157,14 @@ public class Editor3DWindow extends Editor3DDesign {
                                                 messageBoxError.setMessage(I18n.PROJECT_ProjectOverwrite);
                                                 int result2 = messageBoxError.open();
                                                 if (result2 == SWT.CANCEL) {
+                                                    regainFocus();
                                                     return;
                                                 } else if (result2 == SWT.YES) {
                                                     break;
                                                 } else {
                                                     result = new NewProjectDialog(true).open();
                                                     if (result == IDialogConstants.CANCEL_ID) {
+                                                        regainFocus();
                                                         return;
                                                     }
                                                 }
@@ -2121,6 +2217,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 messageBoxError.setMessage(I18n.DIALOG_Unavailable);
                                 messageBoxError.open();
                             }
+                            regainFocus();
                         }
                     });
                     mntm_CopyToUnofficial[0] .addSelectionListener(new SelectionAdapter() {
@@ -2186,6 +2283,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
                                     messageBoxError.setMessage(I18n.DIALOG_Unavailable);
                                     messageBoxError.open();
+                                    regainFocus();
                                     return;
                                 }
 
@@ -2231,6 +2329,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     int result = messageBox.open();
 
                                     if (result == SWT.CANCEL) {
+                                        regainFocus();
                                         return;
                                     }
                                 }
@@ -2264,6 +2363,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             }
                                             break;
                                         default:
+                                            regainFocus();
                                             return;
                                         }
                                         DatFile newDatFile = new DatFile(new File(targetPathDir_l).exists() ? targetPath_l : targetPath_u);
@@ -2280,6 +2380,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
                                         messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
                                         messageBox.open();
+                                        regainFocus();
                                         return;
                                     } else {
 
@@ -2305,6 +2406,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             }
                                             break;
                                         default:
+                                            regainFocus();
                                             return;
                                         }
 
@@ -2356,6 +2458,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 messageBoxError.setMessage(I18n.DIALOG_Unavailable);
                                 messageBoxError.open();
                             }
+                            regainFocus();
                         }
                     });
 
@@ -2367,6 +2470,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     menu.setLocation(x, y);
                     menu.setVisible(true);
                 }
+                regainFocus();
             }
         });
 
@@ -2386,6 +2490,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     treeParts[0].update();
                     treeParts[0].getTree().select(treeParts[0].getMapInv().get(sel));
                 }
+                regainFocus();
             }
         });
         txt_Search[0].addModifyListener(new ModifyListener() {
@@ -2398,6 +2503,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 txt_Search[0].setText(""); //$NON-NLS-1$
+                txt_Search[0].setFocus();
             }
         });
         txt_primitiveSearch[0].addModifyListener(new ModifyListener() {
@@ -2438,6 +2544,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 txt_primitiveSearch[0].setText(""); //$NON-NLS-1$
+                txt_primitiveSearch[0].setFocus();
             }
         });
         btn_zoomInPrimitives[0].addSelectionListener(new SelectionAdapter() {
@@ -2461,6 +2568,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().hideSelection();
                 }
+                regainFocus();
             }
         });
         btn_ShowAll[0].addSelectionListener(new SelectionAdapter() {
@@ -2470,24 +2578,28 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().showAll();
                 }
+                regainFocus();
             }
         });
         btn_NoTransparentSelection[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setNoTransparentSelection(btn_NoTransparentSelection[0].getSelection());
+                regainFocus();
             }
         });
         btn_BFCToggle[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setBfcToggle(btn_BFCToggle[0].getSelection());
+                regainFocus();
             }
         });
         btn_InsertAtCursorPosition[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setInsertingAtCursorPosition(btn_InsertAtCursorPosition[0].getSelection());
+                regainFocus();
             }
         });
 
@@ -2498,6 +2610,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
                 }
+                regainFocus();
             }
         });
         btn_Copy[0].addSelectionListener(new SelectionAdapter() {
@@ -2507,6 +2620,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().copy();
                 }
+                regainFocus();
             }
         });
         btn_Cut[0].addSelectionListener(new SelectionAdapter() {
@@ -2517,6 +2631,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().copy();
                     Project.getFileToEdit().getVertexManager().delete(false, true);
                 }
+                regainFocus();
             }
         });
         btn_Paste[0].addSelectionListener(new SelectionAdapter() {
@@ -2527,6 +2642,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().paste();
                     setMovingAdjacentData(false);
                 }
+                regainFocus();
             }
         });
 
@@ -2541,6 +2657,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2560,6 +2677,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2574,6 +2692,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         c3d.getManipulator().setAccurateXaxis(a[0].negate(), a[1].negate(), a[2].negate());
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2588,6 +2707,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         c3d.getManipulator().setAccurateYaxis(a[0].negate(), a[1].negate(), a[2].negate());
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2602,6 +2722,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         c3d.getManipulator().setAccurateZaxis(a[0].negate(), a[1].negate(), a[2].negate());
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2620,6 +2741,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         c3d.getManipulator().setAccurateYaxis(a[0], a[1], a[2]);
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2638,6 +2760,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         c3d.getManipulator().setAccurateZaxis(a[0], a[1], a[2]);
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2656,6 +2779,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         c3d.getManipulator().setAccurateZaxis(a[0], a[1], a[2]);
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2690,6 +2814,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         c3d.getPerspectiveCalculator().calculateOriginData();
                     }
                 }
+                regainFocus();
             }
         });
         btn_Manipulator_2_toAverage[0].addSelectionListener(new SelectionAdapter() {
@@ -2705,6 +2830,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2745,6 +2871,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2776,6 +2903,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2809,6 +2937,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         c3d.getManipulator().setAccuratePosition(minVertex.X, minVertex.Y, minVertex.Z);
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2825,6 +2954,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         c3d.getManipulator().setAccuratePosition(new BigDecimal(min.x / 1000f), new BigDecimal(min.y / 1000f), new BigDecimal(min.z / 1000f));
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2841,6 +2971,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         c3d.getManipulator().setAccuratePosition(new BigDecimal(min.x / 1000f), new BigDecimal(min.y / 1000f), new BigDecimal(min.z / 1000f));
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2891,6 +3022,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             tx = 0f;
                             tz = 0f;
                         } else {
+                            regainFocus();
                             return;
                         }
 
@@ -2910,6 +3042,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 new BigDecimal(c3d.getManipulator().getZaxis().z));
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2942,6 +3075,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             tx = 0f;
                             tz = 0f;
                         } else {
+                            regainFocus();
                             return;
                         }
 
@@ -2961,6 +3095,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 new BigDecimal(c3d.getManipulator().getZaxis().z));
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -2993,6 +3128,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             tx = 0f;
                             tz = 0f;
                         } else {
+                            regainFocus();
                             return;
                         }
 
@@ -3012,6 +3148,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 new BigDecimal(c3d.getManipulator().getZaxis().z));
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3025,6 +3162,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         vm.adjustRotationCenter(c3d, null);
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3039,9 +3177,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         loadSelectorSettings();
                         vm.selectAll(sels, true);
                         vm.syncWithTextEditors(true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
         mntm_SelectAllVisible[0].addSelectionListener(new SelectionAdapter() {
@@ -3055,9 +3195,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         loadSelectorSettings();
                         vm.selectAll(sels, false);
                         vm.syncWithTextEditors(true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
         mntm_SelectAllWithColours[0].addSelectionListener(new SelectionAdapter() {
@@ -3071,9 +3213,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         loadSelectorSettings();
                         vm.selectAllWithSameColours(sels, true);
                         vm.syncWithTextEditors(true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
         mntm_SelectAllVisibleWithColours[0].addSelectionListener(new SelectionAdapter() {
@@ -3087,9 +3231,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         loadSelectorSettings();
                         vm.selectAllWithSameColours(sels, false);
                         vm.syncWithTextEditors(true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
         mntm_SelectNone[0].addSelectionListener(new SelectionAdapter() {
@@ -3102,9 +3248,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         vm.addSnapshot();
                         vm.clearSelection();
                         vm.syncWithTextEditors(true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
         mntm_SelectInverse[0].addSelectionListener(new SelectionAdapter() {
@@ -3118,9 +3266,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         loadSelectorSettings();
                         vm.selectInverse(sels);
                         vm.syncWithTextEditors(true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3139,6 +3289,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+                regainFocus();
             }
         });
 
@@ -3175,6 +3326,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+                regainFocus();
             }
         });
 
@@ -3210,6 +3362,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+                regainFocus();
             }
         });
         mntm_WithHiddenData[0].addSelectionListener(new SelectionAdapter() {
@@ -3227,6 +3380,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+                regainFocus();
             }
         });
         mntm_WithWholeSubfiles[0].addSelectionListener(new SelectionAdapter() {
@@ -3238,6 +3392,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+                regainFocus();
             }
         });
         mntm_ExceptSubfiles[0].addSelectionListener(new SelectionAdapter() {
@@ -3256,6 +3411,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+                regainFocus();
             }
         });
         mntm_StopAtEdges[0].addSelectionListener(new SelectionAdapter() {
@@ -3267,6 +3423,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+                regainFocus();
             }
         });
         mntm_STriangles[0].addSelectionListener(new SelectionAdapter() {
@@ -3278,6 +3435,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+                regainFocus();
             }
         });
         mntm_SQuads[0].addSelectionListener(new SelectionAdapter() {
@@ -3289,6 +3447,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+                regainFocus();
             }
         });
         mntm_SCLines[0].addSelectionListener(new SelectionAdapter() {
@@ -3300,6 +3459,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+                regainFocus();
             }
         });
         mntm_SVertices[0].addSelectionListener(new SelectionAdapter() {
@@ -3311,6 +3471,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+                regainFocus();
             }
         });
         mntm_SLines[0].addSelectionListener(new SelectionAdapter() {
@@ -3322,6 +3483,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         showSelectMenu();
                     }
                 });
+                regainFocus();
             }
         });
 
@@ -3337,9 +3499,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         loadSelectorSettings();
                         vm.selector(sels);
                         vm.syncWithTextEditors(true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3355,9 +3519,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         loadSelectorSettings();
                         vm.selector(sels);
                         vm.syncWithTextEditors(true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3373,9 +3539,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         loadSelectorSettings();
                         vm.selector(sels);
                         vm.syncWithTextEditors(true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3392,10 +3560,13 @@ public class Editor3DWindow extends Editor3DDesign {
                                 vm.addSnapshot();
                                 vm.selectIsolatedVertices();
                                 vm.syncWithTextEditors(true);
+                                regainFocus();
+                                return;
                             }
                         }
                     }
                 });
+                regainFocus();
             }
         });
 
@@ -3411,10 +3582,13 @@ public class Editor3DWindow extends Editor3DDesign {
                                 VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                                 vm.addSnapshot();
                                 vm.split(2);
+                                regainFocus();
+                                return;
                             }
                         }
                     }
                 });
+                regainFocus();
             }
         });
 
@@ -3447,11 +3621,14 @@ public class Editor3DWindow extends Editor3DDesign {
                                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                                     vm.addSnapshot();
                                     vm.split(frac[0]);
+                                    regainFocus();
+                                    return;
                                 }
                             }
                         }
                     }
                 });
+                regainFocus();
             }
         });
 
@@ -3464,9 +3641,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
                         vm.merge(MergeTo.AVERAGE, true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
         mntm_MergeToLastSelected[0].addSelectionListener(new SelectionAdapter() {
@@ -3478,9 +3657,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
                         vm.merge(MergeTo.LAST_SELECTED, true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
         mntm_MergeToNearestVertex[0].addSelectionListener(new SelectionAdapter() {
@@ -3492,9 +3673,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
                         vm.merge(MergeTo.NEAREST_VERTEX, true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
         mntm_MergeToNearestEdge[0].addSelectionListener(new SelectionAdapter() {
@@ -3506,9 +3689,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
                         vm.merge(MergeTo.NEAREST_EDGE, true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
         mntm_MergeToNearestFace[0].addSelectionListener(new SelectionAdapter() {
@@ -3520,9 +3705,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
                         vm.merge(MergeTo.NEAREST_FACE, true);
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3541,9 +3728,11 @@ public class Editor3DWindow extends Editor3DDesign {
                                 vm.syncWithTextEditors(true);
                             }
                         }
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3627,9 +3816,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             CoordinatesDialog.setStart(null);
                             CoordinatesDialog.setEnd(null);
                         }
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3643,9 +3834,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(TranslateDialog.getOffset(), null, TransformationMode.TRANSLATE, TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), isMovingAdjacentData(), true);
                         }
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3696,9 +3889,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), RotateDialog.isZ(), isMovingAdjacentData(), true);
                         }
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3749,9 +3944,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), TransformationMode.SCALE, ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), isMovingAdjacentData(), true);
                         }
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3768,10 +3965,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             vm.addSnapshot();
                             vm.addEdges(es);
                         }
+                        regainFocus();
                         return;
-
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3786,10 +3984,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             vm.addSnapshot();
                             vm.rectify(rs, true, true);
                         }
+                        regainFocus();
                         return;
-
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3804,10 +4003,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             vm.addSnapshot();
                             vm.isecalc(is);
                         }
+                        regainFocus();
                         return;
-
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3822,10 +4022,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             vm.addSnapshot();
                             vm.slicerpro(ss);
                         }
+                        regainFocus();
                         return;
-
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3840,10 +4041,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             vm.addSnapshot();
                             vm.intersector(ins, true);
                         }
+                        regainFocus();
                         return;
-
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3858,9 +4060,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             vm.addSnapshot();
                             vm.lines2pattern();
                         }
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3875,9 +4079,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             vm.addSnapshot();
                             vm.pathTruder(ps);
                         }
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3892,9 +4098,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             vm.addSnapshot();
                             vm.symSplitter(sims);
                         }
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3909,9 +4117,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             vm.addSnapshot();
                             vm.unificator(us);
                         }
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3925,9 +4135,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             RingsAndCones.solve(Editor3DWindow.getWindow().getShell(), c3d.getLockableDatFileReference(), cmp_Primitives[0].getPrimitives(), ris, true);
                         }
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3943,9 +4155,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             vm.addSnapshot();
                             vm.fixTjunctions(tjs.getMode() == 0);
                         }
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3959,9 +4173,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = df.getVertexManager();
                         vm.addSnapshot();
                         vm.meshReduce();
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -3972,7 +4188,10 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         DatFile df = c3d.getLockableDatFileReference();
-                        if (df.isReadOnly()) return;
+                        if (df.isReadOnly()) {
+                            regainFocus();
+                            return;
+                        }
                         VertexManager vm = df.getVertexManager();
                         vm.addSnapshot();
                         if (new Txt2DatDialog(getShell(), ts).open() == IDialogConstants.OK_ID && !ts.getText().trim().isEmpty()) {
@@ -4014,10 +4233,12 @@ public class Editor3DWindow extends Editor3DDesign {
                             anchorData.setNext(null);
                             df.setDrawChainTail(anchorData);
                             vm.setModified(true, true);
+                            regainFocus();
                             return;
                         }
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -4031,9 +4252,11 @@ public class Editor3DWindow extends Editor3DDesign {
                 messageBox.setMessage(I18n.E3D_DeleteConfig);
                 int result = messageBox.open();
                 if (result == SWT.CANCEL) {
+                    regainFocus();
                     return;
                 }
                 WorkbenchManager.getUserSettingState().setResetOnStart(true);
+                regainFocus();
             }
         });
 
@@ -4044,6 +4267,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (dialog.open() == IDialogConstants.OK_ID) {
 
                 }
+                regainFocus();
             }
         });
 
@@ -4074,7 +4298,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         SubfileCompiler.compile(df, false, false);
                     }
                 }
-
+                regainFocus();
             }
         });
 
@@ -4127,6 +4351,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             messageBox.setText(I18n.DIALOG_Error);
                             messageBox.setMessage(I18n.E3D_LogUploadUnexpectedException);
                             messageBox.open();
+                            regainFocus();
                             return;
                         } finally {
                             if (b1 != null) {
@@ -4145,6 +4370,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         messageBox.setText(I18n.DIALOG_Info);
                         messageBox.setMessage(I18n.E3D_LogUploadNoLogFiles);
                         messageBox.open();
+                        regainFocus();
                         return;
                     }
                 }
@@ -4165,6 +4391,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             messageBox.setText(I18n.DIALOG_Warning);
                             messageBox.setMessage(I18n.E3D_LogUploadLimit);
                             messageBox.open();
+                            regainFocus();
                             return;
                         }
                         mntm_UploadLogs[0].setData(uploadCount);
@@ -4252,6 +4479,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -4260,6 +4488,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().getSyncWithTextEditor().set(mntm_SyncWithTextEditor[0].getSelection());
                 mntm_SyncLpeInline[0].setEnabled(mntm_SyncWithTextEditor[0].getSelection());
+                regainFocus();
             }
         });
 
@@ -4267,6 +4496,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().getSyncWithLpeInline().set(mntm_SyncLpeInline[0].getSelection());
+                regainFocus();
             }
         });
 
@@ -4281,9 +4511,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
                         vm.flipSelection();
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -4296,9 +4528,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
                         vm.subdivideCatmullClark();
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -4311,9 +4545,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
                         vm.subdivideLoop();
+                        regainFocus();
                         return;
                     }
                 }
+                regainFocus();
             }
         });
 
@@ -4333,7 +4569,10 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 }
 
-                if (c3d == null) return;
+                if (c3d == null) {
+                    regainFocus();
+                    return;
+                }
 
                 c3d.setClassicPerspective(false);
                 WidgetSelectionHelper.unselectAllChildButtons(c3d.getViewAnglesMenu());
@@ -4394,7 +4633,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 c3d.getPerspectiveCalculator().calculateOriginData();
 
                 vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
-                return;
+                regainFocus();
             }
         });
         btn_PngImage[0].addSelectionListener(new SelectionAdapter() {
@@ -4491,6 +4730,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         updateBgPictureTab();
                     }
                 }
+                regainFocus();
             }
         });
         btn_PngPrevious[0].addSelectionListener(new SelectionAdapter() {
@@ -4525,6 +4765,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         updateBgPictureTab();
                     }
                 }
+                regainFocus();
             }
         });
         spn_PngA1[0].addValueChangeListener(new ValueChangeAdapter() {
@@ -4868,36 +5109,42 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setIconSize(0);
+                regainFocus();
             }
         });
         mntm_IconSize2[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setIconSize(1);
+                regainFocus();
             }
         });
         mntm_IconSize3[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setIconSize(2);
+                regainFocus();
             }
         });
         mntm_IconSize4[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setIconSize(3);
+                regainFocus();
             }
         });
         mntm_IconSize5[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setIconSize(4);
+                regainFocus();
             }
         });
         mntm_IconSize6[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setIconSize(5);
+                regainFocus();
             }
         });
 
@@ -6844,5 +7091,14 @@ public class Editor3DWindow extends Editor3DDesign {
             SubfileCompiler.compile(df, false, false);
         }
         clickSingleBtn(btn);
+    }
+
+    public void regainFocus() {
+        for (OpenGLRenderer r : renders) {
+            if (r.getC3D().getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                r.getC3D().getCanvas().setFocus();
+                return;
+            }
+        }
     }
 }

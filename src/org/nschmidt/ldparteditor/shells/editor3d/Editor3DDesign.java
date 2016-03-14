@@ -37,7 +37,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -253,7 +252,7 @@ class Editor3DDesign extends ApplicationWindow {
 
     final Text[] txt_Search = new Text[1];
     final Button[] btn_ResetSearch = new Button[1];
-    final Composite[] tabFolder_Settings = new Composite[1];
+    final CTabFolder[] tabFolder_Settings = new CTabFolder[1];
 
     final Button[] btn_Hide = new Button[1];
     final Button[] btn_ShowAll = new Button[1];
@@ -569,6 +568,7 @@ class Editor3DDesign extends ApplicationWindow {
                         Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
                         mnu_Manipulator.setLocation(getShell().getDisplay().map(btn_ManipulatorActions.getParent(), null, mLoc));
                         mnu_Manipulator.setVisible(true);
+                        Editor3DWindow.getWindow().regainFocus();
                     }
                 });
                 {
@@ -758,6 +758,7 @@ class Editor3DDesign extends ApplicationWindow {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         showSelectMenu();
+                        Editor3DWindow.getWindow().regainFocus();
                     }
                 });
                 {
@@ -920,6 +921,7 @@ class Editor3DDesign extends ApplicationWindow {
                         Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
                         mnu_Merge.setLocation(getShell().getDisplay().map(btn_MergeNSplit.getParent(), null, mLoc));
                         mnu_Merge.setVisible(true);
+                        Editor3DWindow.getWindow().regainFocus();
                     }
                 });
                 {
@@ -1013,6 +1015,7 @@ class Editor3DDesign extends ApplicationWindow {
                         Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
                         mnu_Tools.setLocation(getShell().getDisplay().map(btn_ToolsActions.getParent(), null, mLoc));
                         mnu_Tools.setVisible(true);
+                        Editor3DWindow.getWindow().regainFocus();
                     }
                 });
                 {
@@ -1322,17 +1325,14 @@ class Editor3DDesign extends ApplicationWindow {
                         e.gc.fillRectangle(x, y, w, h);
                     }
                 });
-                btn_LastUsedColour.addSelectionListener(new SelectionListener() {
+                btn_LastUsedColour.addSelectionListener(new SelectionAdapter() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         if (Project.getFileToEdit() != null) {
                             Project.getFileToEdit().getVertexManager().addSnapshot();
                             Project.getFileToEdit().getVertexManager().colourChangeSelection(16, .5f, .5f, .5f, 1f);
                         }
-                    }
-
-                    @Override
-                    public void widgetDefaultSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().regainFocus();
                     }
                 });
             }
@@ -2292,7 +2292,7 @@ class Editor3DDesign extends ApplicationWindow {
 
         btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
 
-        btn_Col.addSelectionListener(new SelectionListener() {
+        btn_Col.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
@@ -2360,7 +2360,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                         }
                     });
-                    btn_LastUsedColour[0].addSelectionListener(new SelectionListener() {
+                    btn_LastUsedColour[0].addSelectionListener(new SelectionAdapter() {
                         @Override
                         public void widgetSelected(SelectionEvent e) {
                             if (Project.getFileToEdit() != null) {
@@ -2374,10 +2374,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 Project.getFileToEdit().getVertexManager().addSnapshot();
                                 Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
                             }
-                        }
-
-                        @Override
-                        public void widgetDefaultSelected(SelectionEvent e) {
+                            Editor3DWindow.getWindow().regainFocus();
                         }
                     });
                     if (num != -1) {
@@ -2403,10 +2400,7 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                     btn_LastUsedColour[0].redraw();
                 }
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
+                Editor3DWindow.getWindow().regainFocus();
             }
         });
         final Point size = btn_Col.computeSize(SWT.DEFAULT, SWT.DEFAULT);
