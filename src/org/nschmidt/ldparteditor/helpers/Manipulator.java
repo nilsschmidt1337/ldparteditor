@@ -278,7 +278,7 @@ public class Manipulator {
             timstampModified = System.nanoTime();
             return true;
         } else {
-            return (System.nanoTime() - timstampModified) < 1.5E9;
+            return System.nanoTime() - timstampModified < 1.5E9;
         }
     }
 
@@ -936,7 +936,7 @@ public class Manipulator {
 
     public void applyTranslation(Composite3D c3d) {
         if (modified) {
-            c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, Editor3DWindow.getWindow().isMovingAdjacentData());
+            c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, Editor3DWindow.getWindow().isMovingAdjacentData());
             modified = false;
         }
         accurateResult = View.ACCURATE_ID;
@@ -947,7 +947,7 @@ public class Manipulator {
 
     public void applyTranslationAtSelect(Composite3D c3d) {
         if (modified) {
-            c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, Editor3DWindow.getWindow().isMovingAdjacentData());
+            c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, Editor3DWindow.getWindow().isMovingAdjacentData());
             modified = false;
         }
         accurateResult = View.ACCURATE_ID;

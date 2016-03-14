@@ -31,6 +31,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.HeaderState;
 
@@ -45,9 +46,10 @@ public class VM20Manipulator extends VM19ColourChanger {
      * @param allData
      * @param allVertices
      * @param transformation
+     * @param newVertex
      * @param moveAdjacentData
      */
-    private void transform(Set<GData> allData, Set<Vertex> allVertices, Matrix transformation, boolean updateSelection, boolean moveAdjacentData) {
+    private void transform(Set<GData> allData, Set<Vertex> allVertices, Matrix transformation, Vector3d newVertex, boolean updateSelection, boolean moveAdjacentData) {
         HashSet<GData> allData2 = new HashSet<GData>(allData);
         TreeSet<Vertex> verticesToTransform = new TreeSet<Vertex>();
         verticesToTransform.addAll(allVertices);
@@ -61,9 +63,19 @@ public class VM20Manipulator extends VM19ColourChanger {
         }
         TreeMap<Vertex, Vertex> oldToNewVertex = new TreeMap<Vertex, Vertex>();
         // Calculate the new vertex position
-        for (Vertex v : allVertices) {
-            BigDecimal[] temp = transformation.transform(v.X, v.Y, v.Z);
-            oldToNewVertex.put(v, new Vertex(temp[0], temp[1], temp[2]));
+        if (newVertex == null) {
+            for (Vertex v : allVertices) {
+                BigDecimal[] temp = transformation.transform(v.X, v.Y, v.Z);
+                oldToNewVertex.put(v, new Vertex(temp[0], temp[1], temp[2]));
+            }
+        } else {
+            for (Vertex v : allVertices) {
+                oldToNewVertex.put(v, new Vertex(
+                        newVertex.X == null ? v.X : newVertex.X,
+                                newVertex.Y == null ? v.Y : newVertex.Y,
+                                        newVertex.Z == null ? v.Z : newVertex.Z
+                        ));
+            }
         }
         // Evaluate the adjacency
         HashMap<GData, Integer> verticesCountPerGData = new HashMap<GData, Integer>();
@@ -302,7 +314,7 @@ public class VM20Manipulator extends VM19ColourChanger {
      *            {@code true} if all data should be transformed which is
      *            adjacent to the current selection
      */
-    public final synchronized void transformSelection(Matrix transformation, boolean moveAdjacentData) {
+    public final synchronized void transformSelection(Matrix transformation, Vector3d newVertex, boolean moveAdjacentData) {
         if (linkedDatFile.isReadOnly())
             return;
 
@@ -505,7 +517,7 @@ public class VM20Manipulator extends VM19ColourChanger {
             allData.addAll(selectedCondlines);
             HashSet<Vertex> allVertices = new HashSet<Vertex>();
             allVertices.addAll(selectedVertices);
-            transform(allData, allVertices, transformation, true, moveAdjacentData);
+            transform(allData, allVertices, transformation, newVertex, true, moveAdjacentData);
 
             // 4. Subfile Based Transformation & Selection
             if (!selectedSubfiles.isEmpty()) {
@@ -687,7 +699,10 @@ public class VM20Manipulator extends VM19ColourChanger {
         }
 
         if (tm == TransformationMode.SET) {
+
             // FIXME Needs implementation for issue #148
+            transformSelection(View.ACCURATE_ID, new Vector3d(x ? target.X : null,  y ? target.Y : null, z ? target.Z : null), moveAdjacentData);
+
         } else {
             final Matrix forward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X.negate(), pivot.Y.negate(), pivot.Z.negate() }), View.ACCURATE_ID);
             final Matrix backward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X, pivot.Y, pivot.Z }), View.ACCURATE_ID);
@@ -695,14 +710,16 @@ public class VM20Manipulator extends VM19ColourChanger {
             transformation = Matrix.mul(backward, transformation);
             transformation = Matrix.mul(transformation, forward);
 
-            transformSelection(transformation, moveAdjacentData);
+            transformSelection(transformation, null, moveAdjacentData);
 
-            IdenticalVertexRemover.removeIdenticalVertices(this, linkedDatFile, false, true);
-
-            if (syncWithTextEditors) syncWithTextEditors(true);
-            updateUnsavedStatus();
-            selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
         }
+
+        IdenticalVertexRemover.removeIdenticalVertices(this, linkedDatFile, false, true);
+
+        if (syncWithTextEditors) syncWithTextEditors(true);
+        updateUnsavedStatus();
+        selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
+
     }
 
     public void transformSubfile(GData1 g, Matrix M, boolean clearSelection, boolean syncWithTextEditor) {
