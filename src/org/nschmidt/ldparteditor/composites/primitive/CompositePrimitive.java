@@ -218,6 +218,7 @@ public class CompositePrimitive extends Composite {
                 default:
                 }
                 openGL.drawScene(event.x, event.y);
+                Editor3DWindow.getWindow().regainFocus();
             }
         });
 
@@ -240,6 +241,7 @@ public class CompositePrimitive extends Composite {
                 default:
                 }
                 openGL.drawScene(event.x, event.y);
+                Editor3DWindow.getWindow().regainFocus();
             }
         });
 
