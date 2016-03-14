@@ -296,677 +296,688 @@ public class VM20Manipulator extends VM19ColourChanger {
     }
 
     /**
-    *
-    * @param transformation
-    *            the transformation matrix
-    * @param moveAdjacentData
-    *            {@code true} if all data should be transformed which is
-    *            adjacent to the current selection
-    */
-   public final synchronized void transformSelection(Matrix transformation, boolean moveAdjacentData) {
-       if (linkedDatFile.isReadOnly())
-           return;
+     *
+     * @param transformation
+     *            the transformation matrix
+     * @param moveAdjacentData
+     *            {@code true} if all data should be transformed which is
+     *            adjacent to the current selection
+     */
+    public final synchronized void transformSelection(Matrix transformation, boolean moveAdjacentData) {
+        if (linkedDatFile.isReadOnly())
+            return;
 
-       final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
-       final HashSet<GData0> effSelectedVertices = new HashSet<GData0>();
-       final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
-       final HashSet<GData3> effSelectedTriangles = new HashSet<GData3>();
-       final HashSet<GData4> effSelectedQuads = new HashSet<GData4>();
-       final HashSet<GData5> effSelectedCondlines = new HashSet<GData5>();
+        final HashSet<GData0> effSelectedVertices = new HashSet<GData0>();
+        final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
+        final HashSet<GData3> effSelectedTriangles = new HashSet<GData3>();
+        final HashSet<GData4> effSelectedQuads = new HashSet<GData4>();
+        final HashSet<GData5> effSelectedCondlines = new HashSet<GData5>();
 
-       selectedData.clear();
+        selectedData.clear();
 
-       // 0. Deselect selected subfile data (for whole selected subfiles)
-       for (GData1 subf : selectedSubfiles) {
-           Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
-           for (VertexInfo vertexInfo : vis) {
-               if (!moveAdjacentData)
-                   selectedVertices.remove(vertexInfo.getVertex());
-               GData g = vertexInfo.getLinkedData();
-               if (lineLinkedToVertices.containsKey(g)) continue;
-               switch (g.type()) {
-               case 2:
-                   selectedLines.remove(g);
-                   break;
-               case 3:
-                   selectedTriangles.remove(g);
-                   break;
-               case 4:
-                   selectedQuads.remove(g);
-                   break;
-               case 5:
-                   selectedCondlines.remove(g);
-                   break;
-               default:
-                   break;
-               }
-           }
-       }
+        // 0. Deselect selected subfile data (for whole selected subfiles)
+        for (GData1 subf : selectedSubfiles) {
+            Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+            for (VertexInfo vertexInfo : vis) {
+                if (!moveAdjacentData)
+                    selectedVertices.remove(vertexInfo.getVertex());
+                GData g = vertexInfo.getLinkedData();
+                if (lineLinkedToVertices.containsKey(g)) continue;
+                switch (g.type()) {
+                case 2:
+                    selectedLines.remove(g);
+                    break;
+                case 3:
+                    selectedTriangles.remove(g);
+                    break;
+                case 4:
+                    selectedQuads.remove(g);
+                    break;
+                case 5:
+                    selectedCondlines.remove(g);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
 
-       // 1. Vertex Based Selection
-       {
-           final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
-           if (moveAdjacentData) {
-               HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
-               for (Vertex vertex : selectedVertices) {
-                   Set<VertexManifestation> occurences = vertexLinkedToPositionInFile.get(vertex);
-                   if (occurences == null)
-                       continue;
-                   boolean isPureSubfileVertex = true;
-                   for (VertexManifestation vm : occurences) {
-                       GData g = vm.getGdata();
-                       int val = 1;
-                       if (occurMap.containsKey(g)) {
-                           val = occurMap.get(g);
-                           val++;
-                       }
-                       occurMap.put(g, val);
-                       switch (g.type()) {
-                       case 0:
-                           GData0 meta = (GData0) g;
-                           boolean idCheck = !lineLinkedToVertices.containsKey(meta);
-                           isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                           if (val == 1) {
-                               if (!idCheck) {
-                                   effSelectedVertices.add(meta);
-                                   newSelectedData.add(meta);
-                               }
-                           }
-                           break;
-                       case 2:
-                           GData2 line = (GData2) g;
-                           idCheck = !line.parent.equals(View.DUMMY_REFERENCE);
-                           isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                           if (val == 2) {
-                               if (!idCheck) {
-                                   effSelectedLines.add(line);
-                                   newSelectedData.add(line);
-                               }
-                           }
-                           break;
-                       case 3:
-                           GData3 triangle = (GData3) g;
-                           idCheck = !triangle.parent.equals(View.DUMMY_REFERENCE);
-                           isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                           if (val == 3) {
-                               if (!idCheck) {
-                                   effSelectedTriangles.add(triangle);
-                                   newSelectedData.add(triangle);
-                               }
-                           }
-                           break;
-                       case 4:
-                           GData4 quad = (GData4) g;
-                           idCheck = !quad.parent.equals(View.DUMMY_REFERENCE);
-                           isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                           if (val == 4) {
-                               if (!idCheck) {
-                                   effSelectedQuads.add(quad);
-                                   newSelectedData.add(quad);
-                               }
-                           }
-                           break;
-                       case 5:
-                           GData5 condline = (GData5) g;
-                           idCheck = !condline.parent.equals(View.DUMMY_REFERENCE);
-                           isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                           if (val == 4) {
-                               if (!idCheck) {
-                                   effSelectedCondlines.add(condline);
-                                   newSelectedData.add(condline);
-                               }
-                           }
-                           break;
-                       }
-                   }
-                   if (isPureSubfileVertex)
-                       objectVertices.add(vertex);
-               }
-           }
+        // 1. Vertex Based Selection
+        {
+            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+            if (moveAdjacentData) {
+                HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
+                for (Vertex vertex : selectedVertices) {
+                    Set<VertexManifestation> occurences = vertexLinkedToPositionInFile.get(vertex);
+                    if (occurences == null)
+                        continue;
+                    boolean isPureSubfileVertex = true;
+                    for (VertexManifestation vm : occurences) {
+                        GData g = vm.getGdata();
+                        int val = 1;
+                        if (occurMap.containsKey(g)) {
+                            val = occurMap.get(g);
+                            val++;
+                        }
+                        occurMap.put(g, val);
+                        switch (g.type()) {
+                        case 0:
+                            GData0 meta = (GData0) g;
+                            boolean idCheck = !lineLinkedToVertices.containsKey(meta);
+                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
+                            if (val == 1) {
+                                if (!idCheck) {
+                                    effSelectedVertices.add(meta);
+                                    newSelectedData.add(meta);
+                                }
+                            }
+                            break;
+                        case 2:
+                            GData2 line = (GData2) g;
+                            idCheck = !line.parent.equals(View.DUMMY_REFERENCE);
+                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
+                            if (val == 2) {
+                                if (!idCheck) {
+                                    effSelectedLines.add(line);
+                                    newSelectedData.add(line);
+                                }
+                            }
+                            break;
+                        case 3:
+                            GData3 triangle = (GData3) g;
+                            idCheck = !triangle.parent.equals(View.DUMMY_REFERENCE);
+                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
+                            if (val == 3) {
+                                if (!idCheck) {
+                                    effSelectedTriangles.add(triangle);
+                                    newSelectedData.add(triangle);
+                                }
+                            }
+                            break;
+                        case 4:
+                            GData4 quad = (GData4) g;
+                            idCheck = !quad.parent.equals(View.DUMMY_REFERENCE);
+                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
+                            if (val == 4) {
+                                if (!idCheck) {
+                                    effSelectedQuads.add(quad);
+                                    newSelectedData.add(quad);
+                                }
+                            }
+                            break;
+                        case 5:
+                            GData5 condline = (GData5) g;
+                            idCheck = !condline.parent.equals(View.DUMMY_REFERENCE);
+                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
+                            if (val == 4) {
+                                if (!idCheck) {
+                                    effSelectedCondlines.add(condline);
+                                    newSelectedData.add(condline);
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    if (isPureSubfileVertex)
+                        objectVertices.add(vertex);
+                }
+            }
 
-           // 2. Object Based Selection
+            // 2. Object Based Selection
 
-           for (GData2 line : selectedLines) {
-               if (line.parent.equals(View.DUMMY_REFERENCE))
-                   effSelectedLines.add(line);
-               Vertex[] verts = lines.get(line);
-               if (verts == null)
-                   continue;
-               for (Vertex vertex : verts) {
-                   objectVertices.add(vertex);
-               }
-           }
-           for (GData3 triangle : selectedTriangles) {
-               if (triangle.parent.equals(View.DUMMY_REFERENCE))
-                   effSelectedTriangles.add(triangle);
-               Vertex[] verts = triangles.get(triangle);
-               if (verts == null)
-                   continue;
-               for (Vertex vertex : verts) {
-                   objectVertices.add(vertex);
-               }
-           }
-           for (GData4 quad : selectedQuads) {
-               if (quad.parent.equals(View.DUMMY_REFERENCE))
-                   effSelectedQuads.add(quad);
-               Vertex[] verts = quads.get(quad);
-               if (verts == null)
-                   continue;
-               for (Vertex vertex : verts) {
-                   objectVertices.add(vertex);
-               }
-           }
-           for (GData5 condline : selectedCondlines) {
-               if (condline.parent.equals(View.DUMMY_REFERENCE))
-                   effSelectedCondlines.add(condline);
-               Vertex[] verts = condlines.get(condline);
-               if (verts == null)
-                   continue;
-               for (Vertex vertex : verts) {
-                   objectVertices.add(vertex);
-               }
-           }
+            for (GData2 line : selectedLines) {
+                if (line.parent.equals(View.DUMMY_REFERENCE))
+                    effSelectedLines.add(line);
+                Vertex[] verts = lines.get(line);
+                if (verts == null)
+                    continue;
+                for (Vertex vertex : verts) {
+                    objectVertices.add(vertex);
+                }
+            }
+            for (GData3 triangle : selectedTriangles) {
+                if (triangle.parent.equals(View.DUMMY_REFERENCE))
+                    effSelectedTriangles.add(triangle);
+                Vertex[] verts = triangles.get(triangle);
+                if (verts == null)
+                    continue;
+                for (Vertex vertex : verts) {
+                    objectVertices.add(vertex);
+                }
+            }
+            for (GData4 quad : selectedQuads) {
+                if (quad.parent.equals(View.DUMMY_REFERENCE))
+                    effSelectedQuads.add(quad);
+                Vertex[] verts = quads.get(quad);
+                if (verts == null)
+                    continue;
+                for (Vertex vertex : verts) {
+                    objectVertices.add(vertex);
+                }
+            }
+            for (GData5 condline : selectedCondlines) {
+                if (condline.parent.equals(View.DUMMY_REFERENCE))
+                    effSelectedCondlines.add(condline);
+                Vertex[] verts = condlines.get(condline);
+                if (verts == null)
+                    continue;
+                for (Vertex vertex : verts) {
+                    objectVertices.add(vertex);
+                }
+            }
 
-           Set<GData0> vs = new HashSet<GData0>(effSelectedVertices);
-           for (GData0 effvert : vs) {
-               Vertex v = effvert.getVertex();
-               if (v != null && objectVertices.contains(v)) {
-                   effSelectedVertices.remove(effvert);
-               }
-           }
+            Set<GData0> vs = new HashSet<GData0>(effSelectedVertices);
+            for (GData0 effvert : vs) {
+                Vertex v = effvert.getVertex();
+                if (v != null && objectVertices.contains(v)) {
+                    effSelectedVertices.remove(effvert);
+                }
+            }
 
-           singleVertices.addAll(selectedVertices);
-           singleVertices.removeAll(objectVertices);
+            singleVertices.addAll(selectedVertices);
+            singleVertices.removeAll(objectVertices);
 
-           // Reduce the amount of superflous selected data
-           selectedVertices.clear();
-           selectedVertices.addAll(singleVertices);
+            // Reduce the amount of superflous selected data
+            selectedVertices.clear();
+            selectedVertices.addAll(singleVertices);
 
-           selectedLines.clear();
-           selectedLines.addAll(effSelectedLines);
+            selectedLines.clear();
+            selectedLines.addAll(effSelectedLines);
 
-           selectedTriangles.clear();
-           selectedTriangles.addAll(effSelectedTriangles);
+            selectedTriangles.clear();
+            selectedTriangles.addAll(effSelectedTriangles);
 
-           selectedQuads.clear();
-           selectedQuads.addAll(effSelectedQuads);
+            selectedQuads.clear();
+            selectedQuads.addAll(effSelectedQuads);
 
-           selectedCondlines.clear();
-           selectedCondlines.addAll(effSelectedCondlines);
+            selectedCondlines.clear();
+            selectedCondlines.addAll(effSelectedCondlines);
 
-           // 3. Transformation of the selected data (no whole subfiles!!)
-           // + selectedData update!
+            // 3. Transformation of the selected data (no whole subfiles!!)
+            // + selectedData update!
 
 
-           HashSet<GData> allData = new HashSet<GData>();
-           allData.addAll(selectedLines);
-           allData.addAll(selectedTriangles);
-           allData.addAll(selectedQuads);
-           allData.addAll(selectedCondlines);
-           HashSet<Vertex> allVertices = new HashSet<Vertex>();
-           allVertices.addAll(selectedVertices);
-           transform(allData, allVertices, transformation, true, moveAdjacentData);
+            HashSet<GData> allData = new HashSet<GData>();
+            allData.addAll(selectedLines);
+            allData.addAll(selectedTriangles);
+            allData.addAll(selectedQuads);
+            allData.addAll(selectedCondlines);
+            HashSet<Vertex> allVertices = new HashSet<Vertex>();
+            allVertices.addAll(selectedVertices);
+            transform(allData, allVertices, transformation, true, moveAdjacentData);
 
-           // 4. Subfile Based Transformation & Selection
-           if (!selectedSubfiles.isEmpty()) {
-               HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
-               HashSet<GData1> newSubfiles = new HashSet<GData1>();
-               for (GData1 subf : selectedSubfiles) {
-                   String transformedString = subf.getTransformedString(transformation, linkedDatFile, true);
-                   GData transformedSubfile = DatParser
-                           .parseLine(transformedString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile,
-                                   false, new HashSet<String>(), false).get(0).getGraphicalData();
-                   if (subf.equals(linkedDatFile.getDrawChainTail()))
-                       linkedDatFile.setDrawChainTail(transformedSubfile);
-                   GData oldNext = subf.getNext();
-                   GData oldBefore = subf.getBefore();
-                   oldBefore.setNext(transformedSubfile);
-                   transformedSubfile.setNext(oldNext);
-                   Integer oldNumber = drawPerLine.getKey(subf);
-                   if (oldNumber != null)
-                       drawPerLine.put(oldNumber, transformedSubfile);
-                   remove(subf);
-                   newSubfiles.add((GData1) transformedSubfile);
-               }
-               selectedSubfiles.clear();
-               selectedSubfiles.addAll(newSubfiles);
+            // 4. Subfile Based Transformation & Selection
+            if (!selectedSubfiles.isEmpty()) {
+                HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+                HashSet<GData1> newSubfiles = new HashSet<GData1>();
+                for (GData1 subf : selectedSubfiles) {
+                    String transformedString = subf.getTransformedString(transformation, linkedDatFile, true);
+                    GData transformedSubfile = DatParser
+                            .parseLine(transformedString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile,
+                                    false, new HashSet<String>(), false).get(0).getGraphicalData();
+                    if (subf.equals(linkedDatFile.getDrawChainTail()))
+                        linkedDatFile.setDrawChainTail(transformedSubfile);
+                    GData oldNext = subf.getNext();
+                    GData oldBefore = subf.getBefore();
+                    oldBefore.setNext(transformedSubfile);
+                    transformedSubfile.setNext(oldNext);
+                    Integer oldNumber = drawPerLine.getKey(subf);
+                    if (oldNumber != null)
+                        drawPerLine.put(oldNumber, transformedSubfile);
+                    remove(subf);
+                    newSubfiles.add((GData1) transformedSubfile);
+                }
+                selectedSubfiles.clear();
+                selectedSubfiles.addAll(newSubfiles);
 
-               for (GData1 subf : selectedSubfiles) {
-                   Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
-                   for (VertexInfo vertexInfo : vis) {
-                       selectedVertices.add(vertexInfo.getVertex());
-                       GData g = vertexInfo.getLinkedData();
-                       switch (g.type()) {
-                       case 2:
-                           selectedLines.add((GData2) g);
-                           break;
-                       case 3:
-                           selectedTriangles.add((GData3) g);
-                           break;
-                       case 4:
-                           selectedQuads.add((GData4) g);
-                           break;
-                       case 5:
-                           selectedCondlines.add((GData5) g);
-                           break;
-                       default:
-                           break;
-                       }
-                   }
-               }
-               setModified_NoSync();
-           }
+                for (GData1 subf : selectedSubfiles) {
+                    Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+                    for (VertexInfo vertexInfo : vis) {
+                        selectedVertices.add(vertexInfo.getVertex());
+                        GData g = vertexInfo.getLinkedData();
+                        switch (g.type()) {
+                        case 2:
+                            selectedLines.add((GData2) g);
+                            break;
+                        case 3:
+                            selectedTriangles.add((GData3) g);
+                            break;
+                        case 4:
+                            selectedQuads.add((GData4) g);
+                            break;
+                        case 5:
+                            selectedCondlines.add((GData5) g);
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }
+                setModified_NoSync();
+            }
 
-           if (isModified()) {
-               selectedData.addAll(selectedLines);
-               selectedData.addAll(selectedTriangles);
-               selectedData.addAll(selectedQuads);
-               selectedData.addAll(selectedCondlines);
-               selectedData.addAll(selectedSubfiles);
+            if (isModified()) {
+                selectedData.addAll(selectedLines);
+                selectedData.addAll(selectedTriangles);
+                selectedData.addAll(selectedQuads);
+                selectedData.addAll(selectedCondlines);
+                selectedData.addAll(selectedSubfiles);
 
-               syncWithTextEditors(true);
-               updateUnsavedStatus();
+                syncWithTextEditors(true);
+                updateUnsavedStatus();
 
-           }
-           newSelectedData.clear();
-           selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
-       }
-   }
+            }
+            newSelectedData.clear();
+            selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
+        }
+    }
 
-   public final void setXyzOrTranslateOrTransform(Vertex target, Vertex pivot, TransformationMode tm, boolean x, boolean y, boolean z, boolean moveAdjacentData, boolean syncWithTextEditors) {
-       if (linkedDatFile.isReadOnly())
-           return;
+    public final void setXyzOrTranslateOrTransform(Vertex target, Vertex pivot, TransformationMode tm, boolean x, boolean y, boolean z, boolean moveAdjacentData, boolean syncWithTextEditors) {
+        if (linkedDatFile.isReadOnly())
+            return;
 
-       Matrix transformation = null;
-       Vertex offset = null;
-       if (tm == TransformationMode.TRANSLATE) offset = new Vertex(target.X, target.Y, target.Z);
+        Matrix transformation = null;
+        Vertex offset = null;
+        if (tm == TransformationMode.TRANSLATE) offset = new Vertex(target.X, target.Y, target.Z);
 
-       if (pivot == null) pivot = new Vertex(0f, 0f, 0f);
+        if (pivot == null) pivot = new Vertex(0f, 0f, 0f);
 
-       switch (tm) {
-       case ROTATE:
-           RotationSnap flag;
-           if (x) {
-               try {
-                   target.X.intValueExact();
-                   switch (Math.abs(target.X.intValue())) {
-                   case 90:
-                       flag = RotationSnap.DEG90;
-                       break;
-                   case 180:
-                       flag = RotationSnap.DEG180;
-                       break;
-                   case 270:
-                       flag = RotationSnap.DEG270;
-                       break;
-                   case 360:
-                       flag = RotationSnap.DEG360;
-                       break;
-                   default:
-                       flag = RotationSnap.COMPLEX;
-                       break;
-                   }
-               } catch (ArithmeticException ae) {
-                   flag = RotationSnap.COMPLEX;
-               }
-               transformation = View.ACCURATE_ID.rotate(target.X.divide(new BigDecimal(180), Threshold.mc).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO });
-           } else if (y) {
-               try {
-                   target.Y.intValueExact();
-                   switch (Math.abs(target.Y.intValue())) {
-                   case 90:
-                       flag = RotationSnap.DEG90;
-                       break;
-                   case 180:
-                       flag = RotationSnap.DEG180;
-                       break;
-                   case 270:
-                       flag = RotationSnap.DEG270;
-                       break;
-                   case 360:
-                       flag = RotationSnap.DEG360;
-                       break;
-                   default:
-                       flag = RotationSnap.COMPLEX;
-                       break;
-                   }
-               } catch (ArithmeticException ae) {
-                   flag = RotationSnap.COMPLEX;
-               }
-               transformation = View.ACCURATE_ID.rotate(target.Y.divide(new BigDecimal(180), Threshold.mc).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO });
-           } else {
-               try {
-                   target.Z.intValueExact();
-                   switch (Math.abs(target.Z.intValue())) {
-                   case 90:
-                       flag = RotationSnap.DEG90;
-                       break;
-                   case 180:
-                       flag = RotationSnap.DEG180;
-                       break;
-                   case 270:
-                       flag = RotationSnap.DEG270;
-                       break;
-                   case 360:
-                       flag = RotationSnap.DEG360;
-                       break;
-                   default:
-                       flag = RotationSnap.COMPLEX;
-                       break;
-                   }
-               } catch (ArithmeticException ae) {
-                   flag = RotationSnap.COMPLEX;
-               }
-               transformation = View.ACCURATE_ID.rotate(target.Z.divide(new BigDecimal(180), Threshold.mc).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE });
-           }
-           break;
-       case SCALE:
-           BigDecimal sx = target.X;
-           BigDecimal sy = target.Y;
-           BigDecimal sz = target.Z;
-           if (sx.compareTo(BigDecimal.ZERO) == 0) sx = new BigDecimal("0.000000001"); //$NON-NLS-1$
-           if (sy.compareTo(BigDecimal.ZERO) == 0) sy = new BigDecimal("0.000000001"); //$NON-NLS-1$
-           if (sz.compareTo(BigDecimal.ZERO) == 0) sz = new BigDecimal("0.000000001"); //$NON-NLS-1$
-           transformation = new Matrix(
-                   x ? sx : BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-                           BigDecimal.ZERO, y ? sy : BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                                   BigDecimal.ZERO, BigDecimal.ZERO, z ? sz : BigDecimal.ONE, BigDecimal.ZERO,
-                                           BigDecimal.ZERO,  BigDecimal.ZERO,  BigDecimal.ZERO, BigDecimal.ONE);
-           break;
-       case SET:
-           break;
-       case TRANSLATE:
-           transformation = new Matrix(
-                   BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-                   BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                   BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO,
-                   offset.X, offset.Y, offset.Z, BigDecimal.ONE);
-           break;
-       default:
-           break;
-       }
+        switch (tm) {
+        case ROTATE:
+            RotationSnap flag;
+            if (x) {
+                try {
+                    target.X.intValueExact();
+                    switch (Math.abs(target.X.intValue())) {
+                    case 90:
+                        flag = RotationSnap.DEG90;
+                        break;
+                    case 180:
+                        flag = RotationSnap.DEG180;
+                        break;
+                    case 270:
+                        flag = RotationSnap.DEG270;
+                        break;
+                    case 360:
+                        flag = RotationSnap.DEG360;
+                        break;
+                    default:
+                        flag = RotationSnap.COMPLEX;
+                        break;
+                    }
+                } catch (ArithmeticException ae) {
+                    flag = RotationSnap.COMPLEX;
+                }
+                transformation = View.ACCURATE_ID.rotate(target.X.divide(new BigDecimal(180), Threshold.mc).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO });
+            } else if (y) {
+                try {
+                    target.Y.intValueExact();
+                    switch (Math.abs(target.Y.intValue())) {
+                    case 90:
+                        flag = RotationSnap.DEG90;
+                        break;
+                    case 180:
+                        flag = RotationSnap.DEG180;
+                        break;
+                    case 270:
+                        flag = RotationSnap.DEG270;
+                        break;
+                    case 360:
+                        flag = RotationSnap.DEG360;
+                        break;
+                    default:
+                        flag = RotationSnap.COMPLEX;
+                        break;
+                    }
+                } catch (ArithmeticException ae) {
+                    flag = RotationSnap.COMPLEX;
+                }
+                transformation = View.ACCURATE_ID.rotate(target.Y.divide(new BigDecimal(180), Threshold.mc).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO });
+            } else {
+                try {
+                    target.Z.intValueExact();
+                    switch (Math.abs(target.Z.intValue())) {
+                    case 90:
+                        flag = RotationSnap.DEG90;
+                        break;
+                    case 180:
+                        flag = RotationSnap.DEG180;
+                        break;
+                    case 270:
+                        flag = RotationSnap.DEG270;
+                        break;
+                    case 360:
+                        flag = RotationSnap.DEG360;
+                        break;
+                    default:
+                        flag = RotationSnap.COMPLEX;
+                        break;
+                    }
+                } catch (ArithmeticException ae) {
+                    flag = RotationSnap.COMPLEX;
+                }
+                transformation = View.ACCURATE_ID.rotate(target.Z.divide(new BigDecimal(180), Threshold.mc).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE });
+            }
+            break;
+        case SCALE:
+            BigDecimal sx = target.X;
+            BigDecimal sy = target.Y;
+            BigDecimal sz = target.Z;
+            if (sx.compareTo(BigDecimal.ZERO) == 0) sx = new BigDecimal("0.000000001"); //$NON-NLS-1$
+            if (sy.compareTo(BigDecimal.ZERO) == 0) sy = new BigDecimal("0.000000001"); //$NON-NLS-1$
+            if (sz.compareTo(BigDecimal.ZERO) == 0) sz = new BigDecimal("0.000000001"); //$NON-NLS-1$
+            transformation = new Matrix(
+                    x ? sx : BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                            BigDecimal.ZERO, y ? sy : BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
+                                    BigDecimal.ZERO, BigDecimal.ZERO, z ? sz : BigDecimal.ONE, BigDecimal.ZERO,
+                                            BigDecimal.ZERO,  BigDecimal.ZERO,  BigDecimal.ZERO, BigDecimal.ONE);
+            break;
+        case SET:
+            break;
+        case TRANSLATE:
+            transformation = new Matrix(
+                    BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO,
+                    offset.X, offset.Y, offset.Z, BigDecimal.ONE);
+            break;
+        default:
+            break;
+        }
 
-       final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
-       final HashSet<GData0> effSelectedVertices = new HashSet<GData0>();
-       final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
-       final HashSet<GData3> effSelectedTriangles = new HashSet<GData3>();
-       final HashSet<GData4> effSelectedQuads = new HashSet<GData4>();
-       final HashSet<GData5> effSelectedCondlines = new HashSet<GData5>();
+        final HashSet<GData0> effSelectedVertices = new HashSet<GData0>();
+        final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
+        final HashSet<GData3> effSelectedTriangles = new HashSet<GData3>();
+        final HashSet<GData4> effSelectedQuads = new HashSet<GData4>();
+        final HashSet<GData5> effSelectedCondlines = new HashSet<GData5>();
 
-       selectedData.clear();
+        selectedData.clear();
 
-       // 0. Deselect selected subfile data (for whole selected subfiles)
-       for (GData1 subf : selectedSubfiles) {
-           Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
-           for (VertexInfo vertexInfo : vis) {
-               GData g = vertexInfo.getLinkedData();
-               switch (g.type()) {
-               case 2:
-                   selectedLines.remove(g);
-                   break;
-               case 3:
-                   selectedTriangles.remove(g);
-                   break;
-               case 4:
-                   selectedQuads.remove(g);
-                   break;
-               case 5:
-                   selectedCondlines.remove(g);
-                   break;
-               default:
-                   break;
-               }
-           }
-       }
+        // 0. Deselect selected subfile data (for whole selected subfiles)
+        for (GData1 subf : selectedSubfiles) {
+            Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+            for (VertexInfo vertexInfo : vis) {
+                GData g = vertexInfo.getLinkedData();
+                switch (g.type()) {
+                case 2:
+                    selectedLines.remove(g);
+                    break;
+                case 3:
+                    selectedTriangles.remove(g);
+                    break;
+                case 4:
+                    selectedQuads.remove(g);
+                    break;
+                case 5:
+                    selectedCondlines.remove(g);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
 
-       // 1. Vertex Based Selection
-       {
-           final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
-           {
-               HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
-               for (Vertex vertex : selectedVertices) {
-                   Set<VertexManifestation> occurences = vertexLinkedToPositionInFile.get(vertex);
-                   if (occurences == null)
-                       continue;
-                   boolean isPureSubfileVertex = true;
-                   for (VertexManifestation vm : occurences) {
-                       GData g = vm.getGdata();
-                       int val = 1;
-                       if (occurMap.containsKey(g)) {
-                           val = occurMap.get(g);
-                           val++;
-                       }
-                       occurMap.put(g, val);
-                       switch (g.type()) {
-                       case 0:
-                           GData0 meta = (GData0) g;
-                           boolean idCheck = !lineLinkedToVertices.containsKey(meta);
-                           isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                           if (val == 1 && !idCheck) {
-                               effSelectedVertices.add(meta);
-                           }
-                           break;
-                       case 2:
-                           GData2 line = (GData2) g;
-                           isPureSubfileVertex = isPureSubfileVertex && !line.parent.equals(View.DUMMY_REFERENCE);
-                           break;
-                       case 3:
-                           GData3 triangle = (GData3) g;
-                           isPureSubfileVertex = isPureSubfileVertex && !triangle.parent.equals(View.DUMMY_REFERENCE);
-                           break;
-                       case 4:
-                           GData4 quad = (GData4) g;
-                           isPureSubfileVertex = isPureSubfileVertex && !quad.parent.equals(View.DUMMY_REFERENCE);
-                           break;
-                       case 5:
-                           GData5 condline = (GData5) g;
-                           isPureSubfileVertex = isPureSubfileVertex && !condline.parent.equals(View.DUMMY_REFERENCE);
-                           break;
-                       }
-                   }
-                   if (isPureSubfileVertex)
-                       objectVertices.add(vertex);
-               }
-           }
+        // 1. Vertex Based Selection
+        {
+            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+            {
+                HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
+                for (Vertex vertex : selectedVertices) {
+                    Set<VertexManifestation> occurences = vertexLinkedToPositionInFile.get(vertex);
+                    if (occurences == null)
+                        continue;
+                    boolean isPureSubfileVertex = true;
+                    for (VertexManifestation vm : occurences) {
+                        GData g = vm.getGdata();
+                        int val = 1;
+                        if (occurMap.containsKey(g)) {
+                            val = occurMap.get(g);
+                            val++;
+                        }
+                        occurMap.put(g, val);
+                        switch (g.type()) {
+                        case 0:
+                            GData0 meta = (GData0) g;
+                            boolean idCheck = !lineLinkedToVertices.containsKey(meta);
+                            isPureSubfileVertex = isPureSubfileVertex && idCheck;
+                            if (val == 1 && !idCheck) {
+                                effSelectedVertices.add(meta);
+                            }
+                            break;
+                        case 2:
+                            GData2 line = (GData2) g;
+                            isPureSubfileVertex = isPureSubfileVertex && !line.parent.equals(View.DUMMY_REFERENCE);
+                            break;
+                        case 3:
+                            GData3 triangle = (GData3) g;
+                            isPureSubfileVertex = isPureSubfileVertex && !triangle.parent.equals(View.DUMMY_REFERENCE);
+                            break;
+                        case 4:
+                            GData4 quad = (GData4) g;
+                            isPureSubfileVertex = isPureSubfileVertex && !quad.parent.equals(View.DUMMY_REFERENCE);
+                            break;
+                        case 5:
+                            GData5 condline = (GData5) g;
+                            isPureSubfileVertex = isPureSubfileVertex && !condline.parent.equals(View.DUMMY_REFERENCE);
+                            break;
+                        }
+                    }
+                    if (isPureSubfileVertex)
+                        objectVertices.add(vertex);
+                }
+            }
 
-           // 2. Object Based Selection
+            // 2. Object Based Selection
 
-           for (GData2 line : selectedLines) {
-               if (line.parent.equals(View.DUMMY_REFERENCE))
-                   effSelectedLines.add(line);
-               Vertex[] verts = lines.get(line);
-               if (verts == null)
-                   continue;
-               for (Vertex vertex : verts) {
-                   objectVertices.add(vertex);
-               }
-           }
-           for (GData3 triangle : selectedTriangles) {
-               if (triangle.parent.equals(View.DUMMY_REFERENCE))
-                   effSelectedTriangles.add(triangle);
-               Vertex[] verts = triangles.get(triangle);
-               if (verts == null)
-                   continue;
-               for (Vertex vertex : verts) {
-                   objectVertices.add(vertex);
-               }
-           }
-           for (GData4 quad : selectedQuads) {
-               if (quad.parent.equals(View.DUMMY_REFERENCE))
-                   effSelectedQuads.add(quad);
-               Vertex[] verts = quads.get(quad);
-               if (verts == null)
-                   continue;
-               for (Vertex vertex : verts) {
-                   objectVertices.add(vertex);
-               }
-           }
-           for (GData5 condline : selectedCondlines) {
-               if (condline.parent.equals(View.DUMMY_REFERENCE))
-                   effSelectedCondlines.add(condline);
-               Vertex[] verts = condlines.get(condline);
-               if (verts == null)
-                   continue;
-               for (Vertex vertex : verts) {
-                   objectVertices.add(vertex);
-               }
-           }
+            for (GData2 line : selectedLines) {
+                if (line.parent.equals(View.DUMMY_REFERENCE))
+                    effSelectedLines.add(line);
+                Vertex[] verts = lines.get(line);
+                if (verts == null)
+                    continue;
+                for (Vertex vertex : verts) {
+                    objectVertices.add(vertex);
+                }
+            }
+            for (GData3 triangle : selectedTriangles) {
+                if (triangle.parent.equals(View.DUMMY_REFERENCE))
+                    effSelectedTriangles.add(triangle);
+                Vertex[] verts = triangles.get(triangle);
+                if (verts == null)
+                    continue;
+                for (Vertex vertex : verts) {
+                    objectVertices.add(vertex);
+                }
+            }
+            for (GData4 quad : selectedQuads) {
+                if (quad.parent.equals(View.DUMMY_REFERENCE))
+                    effSelectedQuads.add(quad);
+                Vertex[] verts = quads.get(quad);
+                if (verts == null)
+                    continue;
+                for (Vertex vertex : verts) {
+                    objectVertices.add(vertex);
+                }
+            }
+            for (GData5 condline : selectedCondlines) {
+                if (condline.parent.equals(View.DUMMY_REFERENCE))
+                    effSelectedCondlines.add(condline);
+                Vertex[] verts = condlines.get(condline);
+                if (verts == null)
+                    continue;
+                for (Vertex vertex : verts) {
+                    objectVertices.add(vertex);
+                }
+            }
 
-           Set<GData0> vs = new HashSet<GData0>(effSelectedVertices);
-           for (GData0 effvert : vs) {
-               Vertex v = effvert.getVertex();
-               if (v != null && objectVertices.contains(v)) {
-                   singleVertices.add(v);
-               }
-           }
+            Set<GData0> vs = new HashSet<GData0>(effSelectedVertices);
+            for (GData0 effvert : vs) {
+                Vertex v = effvert.getVertex();
+                if (v != null && objectVertices.contains(v)) {
+                    singleVertices.add(v);
+                }
+            }
 
-           singleVertices.addAll(objectVertices);
-           singleVertices.addAll(selectedVertices);
+            singleVertices.addAll(objectVertices);
+            singleVertices.addAll(selectedVertices);
 
-           // 3. Set XYZ of the selected data
-           if (!singleVertices.isEmpty()) {
-               setModified_NoSync();
-           }
-           final Matrix forward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X.negate(), pivot.Y.negate(), pivot.Z.negate() }), View.ACCURATE_ID);
-           final Matrix backward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X, pivot.Y, pivot.Z }), View.ACCURATE_ID);
+            // 3. Set XYZ of the selected data
+            if (!singleVertices.isEmpty()) {
+                setModified_NoSync();
+            }
+            final Matrix forward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X.negate(), pivot.Y.negate(), pivot.Z.negate() }), View.ACCURATE_ID);
+            final Matrix backward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X, pivot.Y, pivot.Z }), View.ACCURATE_ID);
 
-           if (tm == TransformationMode.ROTATE || tm == TransformationMode.SCALE) {
-               selectedVertices.addAll(singleVertices);
-               transform(new HashSet<GData>(), selectedVertices, forward, true, true);
-               transform(new HashSet<GData>(), selectedVertices, transformation, true, true);
-               transform(new HashSet<GData>(), selectedVertices, backward, true, true);
-           }
-           selectedData.clear();
 
-           for (Vertex vOld : singleVertices) {
-               switch (tm) {
-               case ROTATE:
-               case SCALE:
-                   continue;
-               case SET:
-                   break;
-               case TRANSLATE:
-                   target = new Vertex(vOld.X.add(offset.X), vOld.Y.add(offset.Y), vOld.Z.add(offset.Z));
-                   break;
-               }
-               Vertex vNew;
-               if (x) {
-                   if (y) {
-                       if (z) {
-                           vNew = new Vertex(target.X, target.Y, target.Z);
-                       } else {
-                           vNew = new Vertex(target.X, target.Y, vOld.Z);
-                       }
-                   } else {
-                       if (z) {
-                           vNew = new Vertex(target.X, vOld.Y, target.Z);
-                       } else {
-                           vNew = new Vertex(target.X, vOld.Y, vOld.Z);
-                       }
-                   }
-               } else {
-                   if (y) {
-                       if (z) {
-                           vNew = new Vertex(vOld.X, target.Y, target.Z);
-                       } else {
-                           vNew = new Vertex(vOld.X, target.Y, vOld.Z);
-                       }
-                   } else {
-                       if (z) {
-                           vNew = new Vertex(vOld.X, vOld.Y, target.Z);
-                       } else {
-                           vNew = new Vertex(vOld.X, vOld.Y, vOld.Z);
-                       }
-                   }
-               }
-               changeVertexDirectFast(vOld, vNew, moveAdjacentData);
-               selectedVertices.add(vNew);
-           }
+            if (tm == TransformationMode.ROTATE) {
+                x = true;
+                y = true;
+                z = true;
+            }
+            /*
+            if (tm == TransformationMode.ROTATE || tm == TransformationMode.SCALE) {
+                selectedVertices.addAll(singleVertices);
+                transform(new HashSet<GData>(), selectedVertices, forward, true, true);
+                transform(new HashSet<GData>(), selectedVertices, transformation, true, true);
+                transform(new HashSet<GData>(), selectedVertices, backward, true, true);
+            }
+             */
+            selectedData.clear();
 
-           if ((tm == TransformationMode.TRANSLATE || tm == TransformationMode.SCALE || tm == TransformationMode.ROTATE) && !selectedSubfiles.isEmpty()) {
-               setModified_NoSync();
-               for (GData1 s : new HashSet<GData1>(selectedSubfiles)) {
-                   Matrix M = Matrix.mul(forward, s.accurateLocalMatrix);
-                   M = Matrix.mul(transformation, M);
-                   M = Matrix.mul(backward, M);
-                   transformSubfile(s, M, false, false);
-               }
-           } else {
-               selectedSubfiles.clear();
-           }
+            for (Vertex vOld : singleVertices) {
+                switch (tm) {
+                case ROTATE:
+                case SCALE:
+                    target = new Vertex(forward.transform(vOld.X, vOld.Y, vOld.Z));
+                    target = new Vertex(transformation.transform(target.X, target.Y, target.Z));
+                    target = new Vertex(backward.transform(target.X, target.Y, target.Z));
+                    break;
+                case SET:
+                    break;
+                case TRANSLATE:
+                    target = new Vertex(vOld.X.add(offset.X), vOld.Y.add(offset.Y), vOld.Z.add(offset.Z));
+                    break;
+                }
+                Vertex vNew;
+                if (x) {
+                    if (y) {
+                        if (z) {
+                            vNew = new Vertex(target.X, target.Y, target.Z);
+                        } else {
+                            vNew = new Vertex(target.X, target.Y, vOld.Z);
+                        }
+                    } else {
+                        if (z) {
+                            vNew = new Vertex(target.X, vOld.Y, target.Z);
+                        } else {
+                            vNew = new Vertex(target.X, vOld.Y, vOld.Z);
+                        }
+                    }
+                } else {
+                    if (y) {
+                        if (z) {
+                            vNew = new Vertex(vOld.X, target.Y, target.Z);
+                        } else {
+                            vNew = new Vertex(vOld.X, target.Y, vOld.Z);
+                        }
+                    } else {
+                        if (z) {
+                            vNew = new Vertex(vOld.X, vOld.Y, target.Z);
+                        } else {
+                            vNew = new Vertex(vOld.X, vOld.Y, vOld.Z);
+                        }
+                    }
+                }
+                changeVertexDirectFast(vOld, vNew, moveAdjacentData);
+                selectedVertices.add(vNew);
+            }
 
-           if (isModified()) {
-               for(Iterator<GData2> it = selectedLines.iterator();it.hasNext();){
-                   if (!exist(it.next())) it.remove();
-               }
-               for(Iterator<GData3> it = selectedTriangles.iterator();it.hasNext();){
-                   if (!exist(it.next())) it.remove();
-               }
-               for(Iterator<GData4> it = selectedQuads.iterator();it.hasNext();){
-                   if (!exist(it.next())) it.remove();
-               }
-               for(Iterator<GData5> it = selectedCondlines.iterator();it.hasNext();){
-                   if (!exist(it.next())) it.remove();
-               }
-               selectedData.addAll(selectedLines);
-               selectedData.addAll(selectedTriangles);
-               selectedData.addAll(selectedQuads);
-               selectedData.addAll(selectedCondlines);
-               selectedData.addAll(selectedSubfiles);
+            if ((tm == TransformationMode.TRANSLATE || tm == TransformationMode.SCALE || tm == TransformationMode.ROTATE) && !selectedSubfiles.isEmpty()) {
+                setModified_NoSync();
+                for (GData1 s : new HashSet<GData1>(selectedSubfiles)) {
+                    Matrix M = Matrix.mul(forward, s.accurateLocalMatrix);
+                    M = Matrix.mul(transformation, M);
+                    M = Matrix.mul(backward, M);
+                    transformSubfile(s, M, false, false);
+                }
+            } else {
+                selectedSubfiles.clear();
+            }
 
-               IdenticalVertexRemover.removeIdenticalVertices(this, linkedDatFile, false, true);
+            if (isModified()) {
+                for(Iterator<GData2> it = selectedLines.iterator();it.hasNext();){
+                    if (!exist(it.next())) it.remove();
+                }
+                for(Iterator<GData3> it = selectedTriangles.iterator();it.hasNext();){
+                    if (!exist(it.next())) it.remove();
+                }
+                for(Iterator<GData4> it = selectedQuads.iterator();it.hasNext();){
+                    if (!exist(it.next())) it.remove();
+                }
+                for(Iterator<GData5> it = selectedCondlines.iterator();it.hasNext();){
+                    if (!exist(it.next())) it.remove();
+                }
+                selectedData.addAll(selectedLines);
+                selectedData.addAll(selectedTriangles);
+                selectedData.addAll(selectedQuads);
+                selectedData.addAll(selectedCondlines);
+                selectedData.addAll(selectedSubfiles);
 
-               if (syncWithTextEditors) syncWithTextEditors(true);
-               updateUnsavedStatus();
-           }
-           selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
-       }
-   }
+                IdenticalVertexRemover.removeIdenticalVertices(this, linkedDatFile, false, true);
 
-   public void transformSubfile(GData1 g, Matrix M, boolean clearSelection, boolean syncWithTextEditor) {
-       HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
-       HeaderState.state().setState(HeaderState._99_DONE);
-       StringBuilder colourBuilder = new StringBuilder();
-       if (g.colourNumber == -1) {
-           colourBuilder.append("0x2"); //$NON-NLS-1$
-           colourBuilder.append(MathHelper.toHex((int) (255f * g.r)).toUpperCase());
-           colourBuilder.append(MathHelper.toHex((int) (255f * g.g)).toUpperCase());
-           colourBuilder.append(MathHelper.toHex((int) (255f * g.b)).toUpperCase());
-       } else {
-           colourBuilder.append(g.colourNumber);
-       }
-       // Clear the cache..
-       GData.parsedLines.clear();
-       GData.CACHE_parsedFilesSource.clear();
-       GData1 reloadedSubfile = (GData1) DatParser
-               .parseLine("1 " + colourBuilder.toString() + M.toLDrawString() + g.shortName , 0, 0, 0.5f, 0.5f, 0.5f, 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, //$NON-NLS-1$
-                       new HashSet<String>(), false).get(0).getGraphicalData();
-       // Clear the cache..
-       GData.parsedLines.clear();
-       GData.CACHE_parsedFilesSource.clear();
-       GData oldNext = g.getNext();
-       GData oldBefore = g.getBefore();
-       oldBefore.setNext(reloadedSubfile);
-       reloadedSubfile.setNext(oldNext);
-       Integer oldNumber = drawPerLine.getKey(g);
-       if (oldNumber != null)
-           drawPerLine.put(oldNumber, reloadedSubfile);
-       remove(g);
-       if (clearSelection) {
-           clearSelection();
-       } else {
-           selectedData.remove(g);
-           selectedSubfiles.remove(g);
-       }
-       selectedData.add(reloadedSubfile);
-       selectedSubfiles.add(reloadedSubfile);
-       selectSubfiles(null, null, false);
-       if (syncWithTextEditor) {
-           setModified(true, true);
-       } else {
-           setModified_NoSync();
-       }
-   }
+                if (syncWithTextEditors) syncWithTextEditors(true);
+                updateUnsavedStatus();
+            }
+            selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
+        }
+    }
+
+    public void transformSubfile(GData1 g, Matrix M, boolean clearSelection, boolean syncWithTextEditor) {
+        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+        HeaderState.state().setState(HeaderState._99_DONE);
+        StringBuilder colourBuilder = new StringBuilder();
+        if (g.colourNumber == -1) {
+            colourBuilder.append("0x2"); //$NON-NLS-1$
+            colourBuilder.append(MathHelper.toHex((int) (255f * g.r)).toUpperCase());
+            colourBuilder.append(MathHelper.toHex((int) (255f * g.g)).toUpperCase());
+            colourBuilder.append(MathHelper.toHex((int) (255f * g.b)).toUpperCase());
+        } else {
+            colourBuilder.append(g.colourNumber);
+        }
+        // Clear the cache..
+        GData.parsedLines.clear();
+        GData.CACHE_parsedFilesSource.clear();
+        GData1 reloadedSubfile = (GData1) DatParser
+                .parseLine("1 " + colourBuilder.toString() + M.toLDrawString() + g.shortName , 0, 0, 0.5f, 0.5f, 0.5f, 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, //$NON-NLS-1$
+                        new HashSet<String>(), false).get(0).getGraphicalData();
+        // Clear the cache..
+        GData.parsedLines.clear();
+        GData.CACHE_parsedFilesSource.clear();
+        GData oldNext = g.getNext();
+        GData oldBefore = g.getBefore();
+        oldBefore.setNext(reloadedSubfile);
+        reloadedSubfile.setNext(oldNext);
+        Integer oldNumber = drawPerLine.getKey(g);
+        if (oldNumber != null)
+            drawPerLine.put(oldNumber, reloadedSubfile);
+        remove(g);
+        if (clearSelection) {
+            clearSelection();
+        } else {
+            selectedData.remove(g);
+            selectedSubfiles.remove(g);
+        }
+        selectedData.add(reloadedSubfile);
+        selectedSubfiles.add(reloadedSubfile);
+        selectSubfiles(null, null, false);
+        if (syncWithTextEditor) {
+            setModified(true, true);
+        } else {
+            setModified_NoSync();
+        }
+    }
 }
