@@ -3623,7 +3623,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     CoordinatesDialog.setZ(true);
                                 }
                             }
-                            vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), true, true);
+                            vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedVertices().size() == 1, true);
                             CoordinatesDialog.setStart(null);
                             CoordinatesDialog.setEnd(null);
                         }
