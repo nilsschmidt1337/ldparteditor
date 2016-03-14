@@ -731,10 +731,7 @@ class VM00Base {
      * @param modifyVertexMetaCommands
      * @return
      */
-    public final synchronized boolean changeVertexDirect(Vertex oldVertex, Vertex newVertex, boolean modifyVertexMetaCommands) {// ,
-        // Set<GData>
-        // modifiedData)
-        // {
+    public final synchronized boolean changeVertexDirect(Vertex oldVertex, Vertex newVertex, boolean modifyVertexMetaCommands) {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
         TreeSet<Integer> keys = new TreeSet<Integer>(drawPerLine.keySet());
         HashSet<GData> dataToRemove = new HashSet<GData>();
