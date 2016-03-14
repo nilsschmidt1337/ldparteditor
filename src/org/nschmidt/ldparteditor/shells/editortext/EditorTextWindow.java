@@ -71,6 +71,7 @@ import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.helpers.compositetext.Annotator;
 import org.nschmidt.ldparteditor.helpers.compositetext.AnnotatorTexmap;
+import org.nschmidt.ldparteditor.helpers.compositetext.BFCswapper;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helpers.compositetext.Text2SelectionConverter;
@@ -735,6 +736,33 @@ public class EditorTextWindow extends EditorTextDesign {
                     NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                     NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                     Inliner.inline(st, fromLine, toLine, selection.getState().getFileNameObj());
+                    st.forceFocus();
+                }
+            }
+        });
+        btn_BFCswap[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+
+                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                if (selection != null) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
+                    NLogger.debug(getClass(), "Inlining.."); //$NON-NLS-1$
+                    final StyledText st = selection.getTextComposite();
+                    int s1 = st.getSelectionRange().x;
+                    int s2 = s1 + st.getSelectionRange().y;
+                    int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                    int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                    fromLine++;
+                    toLine++;
+                    Inliner.withSubfileReference = true;
+                    Inliner.recursively = false;
+                    Inliner.noComment = false;
+                    NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
+                    BFCswapper.swap(fromLine, toLine, selection.getState().getFileNameObj());
                     st.forceFocus();
                 }
             }

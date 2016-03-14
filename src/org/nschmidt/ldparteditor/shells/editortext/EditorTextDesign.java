@@ -98,6 +98,7 @@ class EditorTextDesign extends ApplicationWindow {
     final Button[] btn_Inline = new Button[1];
     final Button[] btn_InlineDeep = new Button[1];
     final Button[] btn_InlineLinked = new Button[1];
+    final Button[] btn_BFCswap = new Button[1];
     final Button[] btn_CompileSubfile = new Button[1];
     final Button[] btn_RoundSelection = new Button[1];
     final Button[] btn_Texmap = new Button[1];
@@ -275,6 +276,12 @@ class EditorTextDesign extends ApplicationWindow {
             this.btn_InlineLinked[0] = btn_InlineLinked;
             btn_InlineLinked.setImage(ResourceManager.getImage("icon16_inlinelinked.png")); //$NON-NLS-1$
             btn_InlineLinked.setToolTipText(I18n.EDITORTEXT_Inline3);
+        }
+        {
+            Button btn_BFCswap = new Button(toolItem_Debug, SWT.NONE);
+            this.btn_BFCswap[0] = btn_BFCswap;
+            btn_BFCswap.setToolTipText(I18n.E3D_SwapWinding);
+            btn_BFCswap.setImage(ResourceManager.getImage("icon16_bfcSwap.png")); //$NON-NLS-1$
         }
         {
             Button btn_CompileSubfile = new Button(toolItem_Debug, SWT.NONE);
