@@ -84,15 +84,18 @@ import org.nschmidt.ldparteditor.composites.CompositeScale;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
+import org.nschmidt.ldparteditor.data.BFC;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
+import org.nschmidt.ldparteditor.data.GDataBFC;
 import org.nschmidt.ldparteditor.data.GDataPNG;
 import org.nschmidt.ldparteditor.data.GraphicalDataTools;
 import org.nschmidt.ldparteditor.data.LibraryManager;
 import org.nschmidt.ldparteditor.data.Matrix;
+import org.nschmidt.ldparteditor.data.ParsingResult;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.ReferenceParser;
 import org.nschmidt.ldparteditor.data.RingsAndCones;
@@ -166,11 +169,13 @@ import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editormeta.EditorMetaWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shells.searchnreplace.SearchWindow;
+import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.References;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.TextTriangulator;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
+import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
@@ -865,10 +870,236 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_AddPrimitive[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
+
                 resetAddState();
                 setAddingSubfiles(btn_AddPrimitive[0].getSelection());
-                setAddingSomething(isAddingSubfiles());
+
                 clickSingleBtn(btn_AddPrimitive[0]);
+
+                if (Project.getFileToEdit() != null) {
+                    final boolean readOnly = Project.getFileToEdit().isReadOnly();
+                    final VertexManager vm = Project.getFileToEdit().getVertexManager();
+
+                    if (vm.getSelectedData().size() > 0 || vm.getSelectedVertices().size() > 0) {
+
+                        final boolean insertSubfileFromSelection;
+                        final boolean cutTheSelection;
+
+                        {
+                            MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+                            messageBox.setText(I18n.E3D_SubfileFromSelection);
+                            messageBox.setMessage(I18n.E3D_SubfileFromSelectionQuestion);
+                            int result = messageBox.open();
+                            insertSubfileFromSelection = result == SWT.YES;
+                            if (result != SWT.NO && result != SWT.YES) {
+                                resetAddState();
+                                btn_AddPrimitive[0].setSelection(false);
+                                setAddingSubfiles(false);
+                                addingSomething = false;
+                                regainFocus();
+                                return;
+                            }
+                        }
+
+                        if (insertSubfileFromSelection) {
+                            if (!readOnly) {
+                                MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+                                messageBox.setText(I18n.E3D_SubfileFromSelection);
+                                messageBox.setMessage(I18n.E3D_SubfileFromSelectionQuestionCut);
+                                int result = messageBox.open();
+                                cutTheSelection = result == SWT.YES;
+                                if (result != SWT.NO && result != SWT.YES) {
+                                    resetAddState();
+                                    btn_AddPrimitive[0].setSelection(false);
+                                    setAddingSubfiles(false);
+                                    addingSomething = false;
+                                    regainFocus();
+                                    return;
+                                }
+                            } else {
+                                cutTheSelection = false;
+                            }
+
+                            vm.addSnapshot();
+                            vm.copy();
+
+                            FileDialog fd = new FileDialog(sh, SWT.SAVE);
+                            fd.setText(I18n.E3D_SaveDatFileAs);
+
+                            {
+                                File f = new File(Project.getFileToEdit().getNewName()).getParentFile();
+                                if (f.exists()) {
+                                    fd.setFilterPath(f.getAbsolutePath());
+                                } else {
+                                    fd.setFilterPath(Project.getLastVisitedPath());
+                                }
+                            }
+
+                            String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+                            fd.setFilterExtensions(filterExt);
+                            String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
+                            fd.setFilterNames(filterNames);
+
+                            while (true) {
+                                try {
+                                    String selected = fd.open();
+                                    if (selected != null) {
+
+                                        if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
+                                            MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
+                                            messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
+                                            messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
+
+                                            int result = messageBox.open();
+
+                                            if (result == SWT.CANCEL) {
+                                                break;
+                                            } else if (result == SWT.RETRY) {
+                                                continue;
+                                            }
+                                        }
+
+                                        SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
+                                        if (sw != null) {
+                                            sw.setTextComposite(null);
+                                            sw.setScopeToAll();
+                                        }
+
+
+                                        boolean hasIOerror = false;
+
+                                        try {
+
+                                            String typeSuffix = ""; //$NON-NLS-1$
+                                            String folderPrefix = ""; //$NON-NLS-1$
+                                            String path = new File(selected).getParent();
+
+                                            if (path.endsWith(File.separator + "S") || path.endsWith(File.separator + "s")) { //$NON-NLS-1$ //$NON-NLS-2$
+                                                typeSuffix = "Unofficial_Subpart"; //$NON-NLS-1$
+                                                folderPrefix = "S\\"; //$NON-NLS-1$
+                                            } else if (path.endsWith(File.separator + "P" + File.separator + "48") || path.endsWith(File.separator + "p" + File.separator + "48")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                                                typeSuffix = "Unofficial_48_Primitive"; //$NON-NLS-1$
+                                                folderPrefix = "P\\"; //$NON-NLS-1$
+                                            } else if (path.endsWith(File.separator + "P" + File.separator + "8") || path.endsWith(File.separator + "p" + File.separator + "8")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                                                typeSuffix = "Unofficial_8_Primitive"; //$NON-NLS-1$
+                                                folderPrefix = "P\\"; //$NON-NLS-1$
+                                            } else if (path.endsWith(File.separator + "P") || path.endsWith(File.separator + "p")) { //$NON-NLS-1$ //$NON-NLS-2$
+                                                typeSuffix = "Unofficial_Primitive"; //$NON-NLS-1$
+                                                folderPrefix = "P\\"; //$NON-NLS-1$
+                                            }
+
+                                            UTF8PrintWriter r = new UTF8PrintWriter(selected);
+                                            r.println("0 "); //$NON-NLS-1$
+                                            r.println("0 Name: " + folderPrefix + new File(selected).getName()); //$NON-NLS-1$
+                                            String ldrawName = WorkbenchManager.getUserSettingState().getLdrawUserName();
+                                            if (ldrawName == null || ldrawName.isEmpty()) {
+                                                r.println("0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName()); //$NON-NLS-1$
+                                            } else {
+                                                r.println("0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName() + " [" + WorkbenchManager.getUserSettingState().getLdrawUserName() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                            }
+                                            r.println("0 !LDRAW_ORG " + typeSuffix); //$NON-NLS-1$
+                                            String license = WorkbenchManager.getUserSettingState().getLicense();
+                                            if (license == null || license.isEmpty()) {
+                                                r.println("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
+                                            } else {
+                                                r.println(license);
+                                            }
+                                            r.println(""); //$NON-NLS-1$
+
+                                            {
+                                                byte bfc_type = BFC.NOCERTIFY;
+                                                GData g = Project.getFileToEdit().getDrawChainStart();
+                                                while ((g = g.getNext()) != null) {
+                                                    if (g.type() == 6) {
+                                                        byte bfc = ((GDataBFC) g).getType();
+                                                        switch (bfc) {
+                                                        case BFC.CCW_CLIP:
+                                                            bfc_type = bfc;
+                                                            r.println("0 BFC CERTIFY CCW"); //$NON-NLS-1$
+                                                            break;
+                                                        case BFC.CW_CLIP:
+                                                            bfc_type = bfc;
+                                                            r.println("0 BFC CERTIFY CW"); //$NON-NLS-1$
+                                                            break;
+                                                        }
+                                                        if (bfc_type != BFC.NOCERTIFY) break;
+                                                    }
+                                                }
+                                                if (bfc_type == BFC.NOCERTIFY) {
+                                                    r.println("0 BFC NOCERTIFY"); //$NON-NLS-1$
+                                                }
+                                            }
+                                            r.println(""); //$NON-NLS-1$
+                                            r.println(vm.getClipboardText());
+                                            r.flush();
+                                            r.close();
+                                        } catch (Exception ex) {
+                                            hasIOerror = true;
+                                        }
+
+                                        if (hasIOerror) {
+                                            MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                                            messageBoxError.setText(I18n.DIALOG_Error);
+                                            messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                                            messageBoxError.open();
+                                        } else {
+
+                                            if (cutTheSelection) {
+                                                // Insert a reference to the subfile in the old file
+                                                Set<String> alreadyParsed = new HashSet<String>();
+                                                alreadyParsed.add(Project.getFileToEdit().getShortName());
+                                                ArrayList<ParsingResult> subfileLine = DatParser
+                                                        .parseLine(
+                                                                "1 16 0 0 0 1 0 0 0 1 0 0 0 1 s\\" + new File(selected).getName(), -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, Project.getFileToEdit(), false, alreadyParsed, false); //$NON-NLS-1$
+                                                GData1 gd1 = (GData1) subfileLine.get(0).getGraphicalData();
+                                                if (gd1 != null) {
+                                                    if (isInsertingAtCursorPosition()) {
+                                                        Project.getFileToEdit().insertAfterCursor(gd1);
+                                                    } else {
+                                                        Set<GData> sd = vm.getSelectedData();
+                                                        GData g = Project.getFileToEdit().getDrawChainStart();
+                                                        GData whereToInsert = null;
+                                                        while ((g = g.getNext()) != null) {
+                                                            if (sd.contains(g)) {
+                                                                whereToInsert = g.getBefore();
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (whereToInsert == null) {
+                                                            whereToInsert = Project.getFileToEdit().getDrawChainTail();
+                                                        }
+                                                        Project.getFileToEdit().insertAfter(whereToInsert, gd1);
+                                                    }
+                                                }
+                                                vm.delete(false, true);
+                                            }
+
+                                            DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, selected);
+                                            if (df != null) {
+                                                addRecentFile(df);
+                                                final File f = new File(df.getNewName());
+                                                if (f.getParentFile() != null) {
+                                                    Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                                                }
+                                            }
+                                        }
+                                        updateTree_unsavedEntries();
+                                    }
+                                } catch (Exception ex) {
+                                    NLogger.error(getClass(), ex);
+                                }
+                                break;
+                            }
+                            resetAddState();
+                            btn_AddPrimitive[0].setSelection(false);
+                            setAddingSubfiles(false);
+                            addingSomething = false;
+                            regainFocus();
+                            return;
+                        }
+                    }
+                }
+                setAddingSomething(isAddingSubfiles());
                 regainFocus();
             }
         });
