@@ -113,7 +113,9 @@ class Editor3DDesign extends ApplicationWindow {
     Action menuItem_Exit = ShellHelper.DUMMY_ACTION;
     Action toolItem_Save = ShellHelper.DUMMY_ACTION;
     final MenuManager[] mnu_File = new MenuManager[1];
-    private Composite toolBar;
+    private Composite cmpNorth;
+    private Composite cmpEast;
+    private Composite cmpWest;
     private static Composite status;
     private static final int iconSize = WorkbenchManager.getUserSettingState().getIconSize();
     final Button[] btn_Sync = new Button[1];
@@ -389,13 +391,29 @@ class Editor3DDesign extends ApplicationWindow {
         setStatus(I18n.E3D_ReadyStatus);
         Composite container = new Composite(parent, SWT.NONE);
         container.setLayout(new BorderLayout(0, 0));
-        toolBar = new Composite(container, SWT.NONE);
-        toolBar.setLayoutData(BorderLayout.NORTH);
-        RowLayout rl_toolBar = new RowLayout(SWT.HORIZONTAL);
-        rl_toolBar.center = true;
-        toolBar.setLayout(rl_toolBar);
         {
-            ToolItem toolItem_Sync = new ToolItem(toolBar, SWT.NONE, true);
+            cmpNorth = new Composite(container, SWT.NONE);
+            cmpNorth.setLayoutData(BorderLayout.NORTH);
+            RowLayout rl_toolBar = new RowLayout(SWT.HORIZONTAL);
+            rl_toolBar.center = true;
+            cmpNorth.setLayout(rl_toolBar);
+        }
+        {
+            cmpEast = new Composite(container, SWT.NONE);
+            cmpEast.setLayoutData(BorderLayout.EAST);
+            RowLayout rl_toolBar = new RowLayout(SWT.VERTICAL);
+            rl_toolBar.center = true;
+            cmpEast.setLayout(rl_toolBar);
+        }
+        {
+            cmpWest = new Composite(container, SWT.NONE);
+            cmpWest.setLayoutData(BorderLayout.WEST);
+            RowLayout rl_toolBar = new RowLayout(SWT.VERTICAL);
+            rl_toolBar.center = true;
+            cmpWest.setLayout(rl_toolBar);
+        }
+        {
+            ToolItem toolItem_Sync = new ToolItem(cmpNorth, SWT.NONE, true);
             {
                 Button btn_Sync = new Button(toolItem_Sync, SWT.NONE);
                 this.btn_Sync[0] = btn_Sync;
@@ -410,7 +428,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            ToolItem toolItem_NewOpenSave = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_NewOpenSave = new ToolItem(cmpNorth, SWT.NONE, true);
             {
                 Button btn_New = new Button(toolItem_NewOpenSave, SWT.NONE);
                 this.btn_New[0] = btn_New;
@@ -437,7 +455,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            ToolItem toolItem_NewOpenDAT = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_NewOpenDAT = new ToolItem(cmpNorth, SWT.NONE, true);
             {
                 Button btn_NewDat = new Button(toolItem_NewOpenDAT, SWT.NONE);
                 this.btn_NewDat[0] = btn_NewDat;
@@ -452,7 +470,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            ToolItem toolItem_HideUnhide = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_HideUnhide = new ToolItem(cmpNorth, SWT.NONE, true);
             {
                 Button btn_Hide = new Button(toolItem_HideUnhide, SWT.NONE);
                 this.btn_Hide[0] = btn_Hide;
@@ -467,7 +485,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            ToolItem toolItem_MiscToggle = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_MiscToggle = new ToolItem(cmpNorth, SWT.NONE, true);
             {
                 Button btn_AdjacentMove = new Button(toolItem_MiscToggle, SWT.TOGGLE);
                 this.btn_MoveAdjacentData[0] = btn_AdjacentMove;
@@ -488,7 +506,7 @@ class Editor3DDesign extends ApplicationWindow {
                 btn_BFCToggle.setImage(ResourceManager.getImage("icon16_bfc.png")); //$NON-NLS-1$
             }
         }
-        ToolItem toolItem_UndoRedo = new ToolItem(toolBar, SWT.NONE, true);
+        ToolItem toolItem_UndoRedo = new ToolItem(cmpNorth, SWT.NONE, true);
         {
             Button btn_Undo = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_Undo[0] = btn_Undo;
@@ -508,7 +526,7 @@ class Editor3DDesign extends ApplicationWindow {
             KeyStateManager.addTooltipText(btn_Redo, I18n.E3D_Redo, Task.REDO);
         }
         {
-            ToolItem toolItem_Transformations = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_Transformations = new ToolItem(cmpNorth, SWT.NONE, true);
             {
                 Button btn_Select = new Button(toolItem_Transformations, SWT.TOGGLE);
                 this.btn_Select[0] = btn_Select;
@@ -542,7 +560,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            ToolItem toolItem_TransformationModes = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_TransformationModes = new ToolItem(cmpNorth, SWT.NONE, true);
             {
                 Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
                 this.btn_Local[0] = btn_Local;
@@ -702,7 +720,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            ToolItem toolItem_MiscClick = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_MiscClick = new ToolItem(cmpNorth, SWT.NONE, true);
             {
                 Button btn_BFCswap = new Button(toolItem_MiscClick, SWT.NONE);
                 this.btn_BFCswap[0] = btn_BFCswap;
@@ -1178,7 +1196,7 @@ class Editor3DDesign extends ApplicationWindow {
 
         }
         {
-            ToolItem toolItem_CCPD = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_CCPD = new ToolItem(cmpNorth, SWT.NONE, true);
             {
                 Button btn_Cut = new Button(toolItem_CCPD, SWT.NONE);
                 this.btn_Cut[0] = btn_Cut;
@@ -1205,7 +1223,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            ToolItem toolItem_Mode = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_Mode = new ToolItem(cmpNorth, SWT.NONE, true);
             {
                 Button btn_Vertices = new Button(toolItem_Mode, SWT.TOGGLE);
                 this.btn_Vertices[0] = btn_Vertices;
@@ -1233,7 +1251,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            ToolItem toolItem_InsertAtCursorPosition = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_InsertAtCursorPosition = new ToolItem(cmpNorth, SWT.NONE, true);
 
             Button btn_InsertAtCursorPosition = new Button(toolItem_InsertAtCursorPosition, SWT.TOGGLE);
             this.btn_InsertAtCursorPosition[0] = btn_InsertAtCursorPosition;
@@ -1241,7 +1259,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_InsertAtCursorPosition.setImage(ResourceManager.getImage("icon16_insertAtCursor.png")); //$NON-NLS-1$
         }
         {
-            ToolItem toolItem_Add = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_Add = new ToolItem(cmpNorth, SWT.NONE, true);
 
             Button btn_AddComment = new Button(toolItem_Add, SWT.NONE);
             this.btn_AddComment[0] = btn_AddComment;
@@ -1279,7 +1297,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_AddCondline.setImage(ResourceManager.getImage("icon16_addcondline.png")); //$NON-NLS-1$
         }
         {
-            ToolItem toolItem_Colours = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_Colours = new ToolItem(cmpNorth, SWT.NONE, true);
             List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
             addColorButton(toolItem_Colours, colours.get(0), 0);
             addColorButton(toolItem_Colours, colours.get(1), 1);
@@ -1306,7 +1324,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            ToolItem toolItem_ColourFunctions = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_ColourFunctions = new ToolItem(cmpNorth, SWT.NONE, true);
             {
                 Button btn_LastUsedColour = new Button(toolItem_ColourFunctions, SWT.NONE);
                 this.btn_LastUsedColour[0] = btn_LastUsedColour;
@@ -1344,7 +1362,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            ToolItem toolItem_LineThickness = new ToolItem(toolBar, SWT.NONE, true);
+            ToolItem toolItem_LineThickness = new ToolItem(cmpNorth, SWT.NONE, true);
             {
                 Button btn_lineSize1 = new Button(toolItem_LineThickness, SWT.TOGGLE);
                 this.btn_lineSize1[0] = btn_lineSize1;
