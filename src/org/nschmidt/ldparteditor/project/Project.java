@@ -43,6 +43,7 @@ public enum Project {
     private static String projectPath = new File("project").getAbsolutePath(); //$NON-NLS-1$
     private static String tempProjectName = "default"; //$NON-NLS-1$
     private static String tempProjectPath = new File("project").getAbsolutePath(); //$NON-NLS-1$
+    private static String lastVisitedPath = new File("project").getAbsolutePath(); //$NON-NLS-1$
     private static boolean defaultProject = true;
 
     /** A set of all open EditorTextWindow instances */
@@ -313,17 +314,10 @@ public enum Project {
         return parsedFiles;
     }
 
-    /**
-     * @return the fileToEdit
-     */
     public static DatFile getFileToEdit() {
         return fileToEdit;
     }
 
-    /**
-     * @param fileToEdit
-     *            the fileToEdit to set
-     */
     public static void setFileToEdit(DatFile fileToEdit) {
         Project.fileToEdit = fileToEdit;
     }
@@ -342,6 +336,14 @@ public enum Project {
 
     public static void setTempProjectPath(String tempProjectPath) {
         Project.tempProjectPath = tempProjectPath;
+    }
+
+    public static String getLastVisitedPath() {
+        return lastVisitedPath;
+    }
+
+    public static void setLastVisitedPath(String lastVisitedPath) {
+        Project.lastVisitedPath = lastVisitedPath;
     }
 
 }
