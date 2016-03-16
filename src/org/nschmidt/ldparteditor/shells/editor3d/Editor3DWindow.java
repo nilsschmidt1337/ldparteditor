@@ -310,6 +310,32 @@ public class Editor3DWindow extends Editor3DDesign {
         // Load recent files
         recentItems = WorkbenchManager.getUserSettingState().getRecentItems();
         if (recentItems == null) recentItems = new ArrayList<String>();
+        // Adjust the last visited path according to what was last opened (and exists on the harddrive)
+        {
+            final int rc = recentItems.size() - 1;
+            boolean foundPath = false;
+            for (int i = rc; i > -1; i--) {
+                final String path = recentItems.get(i);
+                final File f = new File(path);
+                if (f.exists()) {
+                    if (f.isFile() && f.getParentFile() != null) {
+                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                        foundPath = true;
+                        break;
+                    } else if (f.isDirectory()) {
+                        Project.setLastVisitedPath(path);
+                        foundPath = true;
+                        break;
+                    }
+                }
+            }
+            if (!foundPath) {
+                final File f = new File(WorkbenchManager.getUserSettingState().getAuthoringFolderPath());
+                if (f.exists() && f.isDirectory()) {
+                    Project.setLastVisitedPath(WorkbenchManager.getUserSettingState().getAuthoringFolderPath());
+                }
+            }
+        }
         // Load the window state data
         editor3DWindowState = WorkbenchManager.getEditor3DWindowState();
         WorkbenchManager.setEditor3DWindow(this);
