@@ -697,6 +697,10 @@ public class Editor3DWindow extends Editor3DDesign {
                 DatFile dat = openDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, null);
                 if (dat != null) {
                     addRecentFile(dat);
+                    final File f = new File(dat.getNewName());
+                    if (f.getParentFile() != null) {
+                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                    }
                 }
                 regainFocus();
             }
@@ -7043,6 +7047,9 @@ public class Editor3DWindow extends Editor3DDesign {
         return false;
     }
 
+    /**
+     * @return null if the file is not allocated
+     */
     private DatFile isFileNameAllocated2(String dir, DatFile df) {
 
         TreeItem[] folders = new TreeItem[15];
