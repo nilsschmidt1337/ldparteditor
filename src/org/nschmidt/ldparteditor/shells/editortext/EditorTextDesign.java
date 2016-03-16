@@ -134,7 +134,7 @@ class EditorTextDesign extends ApplicationWindow {
         RowLayout rl_toolBar = new RowLayout(SWT.HORIZONTAL);
         rl_toolBar.center = true;
         toolBar.setLayout(rl_toolBar);
-        ToolItem toolItem_NewOpenSave = new ToolItem(toolBar, SWT.NONE);
+        ToolItem toolItem_NewOpenSave = new ToolItem(toolBar, SWT.NONE, true);
         {
             Button btn_New = new Button(toolItem_NewOpenSave, SWT.NONE);
             this.btn_New[0] = btn_New;
@@ -160,7 +160,7 @@ class EditorTextDesign extends ApplicationWindow {
             btn_SaveAs.setImage(ResourceManager.getImage("icon16_document-save.png")); //$NON-NLS-1$
             btn_SaveAs.setText("..."); //$NON-NLS-1$
         }
-        ToolItem toolItem_UndoRedo = new ToolItem(toolBar, SWT.NONE);
+        ToolItem toolItem_UndoRedo = new ToolItem(toolBar, SWT.NONE, true);
         {
             Button btn_Undo = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_Undo[0] = btn_Undo;
@@ -179,7 +179,7 @@ class EditorTextDesign extends ApplicationWindow {
             btn_Redo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btn_Redo, I18n.E3D_Redo, TextTask.EDITORTEXT_REDO);
         }
-        ToolItem toolItem_CCPD = new ToolItem(toolBar, SWT.NONE);
+        ToolItem toolItem_CCPD = new ToolItem(toolBar, SWT.NONE, true);
         {
             Button btn_Cut = new Button(toolItem_CCPD, SWT.NONE);
             this.btn_Cut[0] = btn_Cut;
@@ -204,7 +204,7 @@ class EditorTextDesign extends ApplicationWindow {
             btn_Delete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btn_Delete, I18n.COPYNPASTE_Delete, Task.DELETE);
         }
-        ToolItem toolItem_Debug = new ToolItem(toolBar, SWT.NONE);
+        ToolItem toolItem_Debug = new ToolItem(toolBar, SWT.NONE, true);
         {
             Button btn_ShowErrors = new Button(toolItem_Debug, SWT.NONE);
             this.btn_ShowErrors[0] = btn_ShowErrors;
@@ -311,7 +311,7 @@ class EditorTextDesign extends ApplicationWindow {
         }
 
         {
-            ToolItem toolItem_Colours = new ToolItem(toolBar, SWT.NONE);
+            ToolItem toolItem_Colours = new ToolItem(toolBar, SWT.NONE, true);
             List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
             addColorButton(toolItem_Colours, colours.get(0), 0);
             addColorButton(toolItem_Colours, colours.get(1), 1);
