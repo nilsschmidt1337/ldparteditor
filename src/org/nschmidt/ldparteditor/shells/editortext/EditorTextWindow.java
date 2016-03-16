@@ -16,7 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.shells.editortext;
 
 import java.io.File;
-import java.net.URLDecoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -79,7 +78,6 @@ import org.nschmidt.ldparteditor.helpers.compositetext.Text2SelectionConverter;
 import org.nschmidt.ldparteditor.helpers.compositetext.VertexMarker;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.main.LDPartEditor;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -245,6 +243,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     FileDialog fd = new FileDialog(sh, SWT.SAVE);
                     fd.setText(I18n.E3D_SaveDatFileAs);
 
+                    /*
                     if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
                         try {
                             String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -256,6 +255,16 @@ public class EditorTextWindow extends EditorTextDesign {
                         }
                     } else {
                         fd.setFilterPath(Project.getProjectPath());
+                    }
+                     */
+
+                    {
+                        File f = new File(((CompositeTab) tabFolder[0].getSelection()).getState().getFileNameObj().getNewName()).getParentFile();
+                        if (f.exists()) {
+                            fd.setFilterPath(f.getAbsolutePath());
+                        } else {
+                            fd.setFilterPath(Project.getLastVisitedPath());
+                        }
                     }
 
                     String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
