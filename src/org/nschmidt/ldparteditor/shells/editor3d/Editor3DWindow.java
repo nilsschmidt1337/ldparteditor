@@ -686,6 +686,10 @@ public class Editor3DWindow extends Editor3DDesign {
                 DatFile dat = createNewDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D);
                 if (dat != null) {
                     addRecentFile(dat);
+                    final File f = new File(dat.getNewName());
+                    if (f.getParentFile() != null) {
+                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                    }
                 }
                 regainFocus();
             }
