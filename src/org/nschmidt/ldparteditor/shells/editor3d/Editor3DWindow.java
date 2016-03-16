@@ -538,8 +538,9 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_New[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                ProjectActions.createNewProject(Editor3DWindow.getWindow(), false);
-                addRecentFile(Project.getProjectPath());
+                if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), false)) {
+                    addRecentFile(Project.getProjectPath());
+                }
                 regainFocus();
             }
         });
@@ -548,6 +549,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (ProjectActions.openProject(null)) {
                     addRecentFile(Project.getProjectPath());
+                    Project.setLastVisitedPath(Project.getProjectPath());
                     Project.create(false);
                     treeItem_Project[0].setData(Project.getProjectPath());
                     resetSearch();
@@ -608,7 +610,9 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (treeParts[0].getSelection()[0].equals(treeItem_Project[0])) {
                             NLogger.debug(getClass(), "Save the project..."); //$NON-NLS-1$
                             if (Project.isDefaultProject()) {
-                                ProjectActions.createNewProject(Editor3DWindow.getWindow(), true);
+                                if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
+                                    Project.setLastVisitedPath(Project.getProjectPath());
+                                }
                             }
                             iterateOverItems(treeItem_ProjectParts[0]);
                             iterateOverItems(treeItem_ProjectSubparts[0]);
@@ -627,7 +631,9 @@ public class Editor3DWindow extends Editor3DDesign {
                 } else {
                     NLogger.debug(getClass(), "Save the project..."); //$NON-NLS-1$
                     if (Project.isDefaultProject()) {
-                        ProjectActions.createNewProject(Editor3DWindow.getWindow(), true);
+                        if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
+                            Project.setLastVisitedPath(Project.getProjectPath());
+                        }
                     }
                 }
                 regainFocus();
@@ -673,7 +679,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 }
                 if (Project.isDefaultProject()) {
-                    ProjectActions.createNewProject(getWindow(), true);
+                    if (ProjectActions.createNewProject(getWindow(), true)) {
+                        addRecentFile(Project.getProjectPath());
+                    }
                 }
                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                 regainFocus();
@@ -2178,7 +2186,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                 }
                             } else if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].equals(treeItem_Project[0])) {
                                 if (Project.isDefaultProject()) {
-                                    ProjectActions.createNewProject(Editor3DWindow.getWindow(), true);
+                                    if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
+                                        Project.setLastVisitedPath(Project.getProjectPath());
+                                    }
                                 } else {
                                     int result = new NewProjectDialog(true).open();
                                     if (result == IDialogConstants.OK_ID && !Project.getTempProjectPath().equals(Project.getProjectPath())) {
@@ -2237,13 +2247,13 @@ public class Editor3DWindow extends Editor3DDesign {
                                             updateTree_unsavedEntries();
                                             Project.updateEditor();
                                             Editor3DWindow.getWindow().getShell().update();
+                                            Project.setLastVisitedPath(Project.getProjectPath());
                                         } catch (IOException e1) {
                                             // TODO Auto-generated catch block
                                             e1.printStackTrace();
                                         }
                                     }
                                 }
-                                Project.setLastVisitedPath(Project.getProjectPath());
                             } else {
                                 MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                                 messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
