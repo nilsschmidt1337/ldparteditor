@@ -182,6 +182,8 @@ public class EditorTextWindow extends EditorTextDesign {
                         tbtmnewItem.setWindow(editorTextWindow);
                         tbtmnewItem.getState().setFileNameObj(df);
                         tabFolder[0].setSelection(tbtmnewItem);
+                        tbtmnewItem.parseForErrorAndHints();
+                        tbtmnewItem.getTextComposite().redraw();
                     }
                 }
             }
@@ -202,6 +204,8 @@ public class EditorTextWindow extends EditorTextDesign {
                             tbtmnewItem.setWindow(editorTextWindow);
                             tbtmnewItem.getState().setFileNameObj(df);
                             tabFolder[0].setSelection(tbtmnewItem);
+                            tbtmnewItem.parseForErrorAndHints();
+                            tbtmnewItem.getTextComposite().redraw();
                         }
                     }
                 }

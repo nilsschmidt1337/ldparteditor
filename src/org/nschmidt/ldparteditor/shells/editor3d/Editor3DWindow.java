@@ -6890,6 +6890,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             tbtmnewItem.getControl().getShell().forceActive();
                             w.open();
                             Project.getParsedFiles().add(df);
+                            tbtmnewItem.parseForErrorAndHints();
+                            tbtmnewItem.getTextComposite().redraw();
                             return true;
                         }
                         w.open();
