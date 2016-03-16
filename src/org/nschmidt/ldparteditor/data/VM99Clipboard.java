@@ -672,4 +672,13 @@ class VM99Clipboard extends VM24MeshReducer {
             updateUnsavedStatus();
         }
     }
+
+    public String getClipboardText() {
+        final String result;
+        Display display = Display.getCurrent();
+        Clipboard clipboard = new Clipboard(display);
+        result = (String) clipboard.getContents(TextTransfer.getInstance());
+        clipboard.dispose();
+        return result == null ? "" : result; //$NON-NLS-1$
+    }
 }
