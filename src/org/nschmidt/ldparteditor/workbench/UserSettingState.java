@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
+import org.nschmidt.ldparteditor.shells.editor3d.ToolItemDrawMode;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 
 /**
@@ -106,6 +107,8 @@ public class UserSettingState implements Serializable {
     private String[] keyTextStrings = null;
     private String[] keyTextKeys = null;
     private TextTask[] keyTextTasks = null;
+
+    private ArrayList<ToolItemDrawMode> toolItemConfig3D = new ArrayList<ToolItemDrawMode>();
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -415,6 +418,14 @@ public class UserSettingState implements Serializable {
         this.bfcCertificationRequiredForLDrawMode = bfcCertificationRequiredForLDrawMode;
     }
 
+    public ArrayList<ToolItemDrawMode> getToolItemConfig3D() {
+        return toolItemConfig3D;
+    }
+
+    public void setToolItemConfig3D(ArrayList<ToolItemDrawMode> toolItemConfig3D) {
+        this.toolItemConfig3D = toolItemConfig3D;
+    }
+
     public void loadShortkeys() {
         if (key3DStrings != null && key3DKeys != null && key3DTasks != null) {
             final int size = key3DStrings.length;
@@ -478,5 +489,4 @@ public class UserSettingState implements Serializable {
             }
         }
     }
-
 }
