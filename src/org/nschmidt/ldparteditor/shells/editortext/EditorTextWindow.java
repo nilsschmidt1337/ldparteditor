@@ -173,6 +173,10 @@ public class EditorTextWindow extends EditorTextDesign {
             public void widgetSelected(SelectionEvent e) {
                 DatFile df = Editor3DWindow.getWindow().createNewDatFile(getShell(), OpenInWhat.EDITOR_3D);
                 if (df != null && !Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
+                    final File f = new File(df.getNewName());
+                    if (f.getParentFile() != null) {
+                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                    }
                     {
                         CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
                         tbtmnewItem.setWindow(editorTextWindow);
@@ -188,6 +192,10 @@ public class EditorTextWindow extends EditorTextDesign {
                 DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, null);
                 if (df != null) {
                     Editor3DWindow.getWindow().addRecentFile(df);
+                    final File f = new File(df.getNewName());
+                    if (f.getParentFile() != null) {
+                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                    }
                     if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
                         {
                             CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
