@@ -419,8 +419,8 @@ class Editor3DDesign extends ApplicationWindow {
         createToolItemHideUnhide();
         createToolItemMiscToggle();
         createToolItemUndoRedo();
-        createToolItemTransformations();
-        createToolItemTransformationModes();
+        createToolItemTransformationMode();
+        createToolItemManipulatorMode();
         createToolItemMiscClick();
         createToolItemCCPD();
         createToolItemMode();
@@ -1895,7 +1895,7 @@ class Editor3DDesign extends ApplicationWindow {
         }
     }
 
-    private void createToolItemTransformationModes() {
+    private void createToolItemManipulatorMode() {
         ToolItem toolItem_TransformationModes = new ToolItem(cmpNorth, SWT.NONE, true);
         {
             Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
@@ -2056,35 +2056,35 @@ class Editor3DDesign extends ApplicationWindow {
         }
     }
 
-    private void createToolItemTransformations() {
-        ToolItem toolItem_Transformations = new ToolItem(cmpNorth, SWT.NONE, true);
+    private void createToolItemTransformationMode() {
+        ToolItem toolItem_TransformationMode = new ToolItem(cmpNorth, SWT.NONE, true);
         {
-            Button btn_Select = new Button(toolItem_Transformations, SWT.TOGGLE);
+            Button btn_Select = new Button(toolItem_TransformationMode, SWT.TOGGLE);
             this.btn_Select[0] = btn_Select;
             KeyStateManager.addTooltipText(btn_Select, I18n.E3D_Select, Task.MODE_SELECT);
             btn_Select.setSelection(true);
             btn_Select.setImage(ResourceManager.getImage("icon16_select.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Move = new Button(toolItem_Transformations, SWT.TOGGLE);
+            Button btn_Move = new Button(toolItem_TransformationMode, SWT.TOGGLE);
             this.btn_Move[0] = btn_Move;
             KeyStateManager.addTooltipText(btn_Move, I18n.E3D_Move, Task.MODE_MOVE);
             btn_Move.setImage(ResourceManager.getImage("icon16_move.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Rotate = new Button(toolItem_Transformations, SWT.TOGGLE);
+            Button btn_Rotate = new Button(toolItem_TransformationMode, SWT.TOGGLE);
             this.btn_Rotate[0] = btn_Rotate;
             KeyStateManager.addTooltipText(btn_Rotate, I18n.E3D_Rotate, Task.MODE_ROTATE);
             btn_Rotate.setImage(ResourceManager.getImage("icon16_rotate.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Scale = new Button(toolItem_Transformations, SWT.TOGGLE);
+            Button btn_Scale = new Button(toolItem_TransformationMode, SWT.TOGGLE);
             this.btn_Scale[0] = btn_Scale;
             KeyStateManager.addTooltipText(btn_Scale, I18n.E3D_Scale, Task.MODE_SCALE);
             btn_Scale.setImage(ResourceManager.getImage("icon16_scale.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Combined = new Button(toolItem_Transformations, SWT.TOGGLE);
+            Button btn_Combined = new Button(toolItem_TransformationMode, SWT.TOGGLE);
             this.btn_Combined[0] = btn_Combined;
             KeyStateManager.addTooltipText(btn_Combined, I18n.E3D_Combined, Task.MODE_COMBINED);
             btn_Combined.setImage(ResourceManager.getImage("icon16_combined.png")); //$NON-NLS-1$
