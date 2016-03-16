@@ -57,6 +57,7 @@ public enum Colour {
         line_warning_underline.dispose();
         line_hint_underline.dispose();
         line_highlight_background.dispose();
+        line_highlight_selected_background.dispose();
         line_comment_font.dispose();
         line_primary_font.dispose();
         line_secondary_font.dispose();
