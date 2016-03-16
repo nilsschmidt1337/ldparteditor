@@ -26,7 +26,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
@@ -161,7 +160,6 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.main.LDPartEditor;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -6537,6 +6535,7 @@ public class Editor3DWindow extends Editor3DDesign {
         FileDialog fd = new FileDialog(sh, SWT.SAVE);
         fd.setText(I18n.E3D_CreateNewDat);
 
+        /*
         if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
             try {
                 String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -6549,6 +6548,9 @@ public class Editor3DWindow extends Editor3DDesign {
         } else {
             fd.setFilterPath(Project.getProjectPath());
         }
+         */
+
+        fd.setFilterPath(Project.getLastVisitedPath());
 
         String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
         fd.setFilterExtensions(filterExt);
@@ -6605,6 +6607,7 @@ public class Editor3DWindow extends Editor3DDesign {
         FileDialog fd = new FileDialog(sh, SWT.OPEN);
         fd.setText(I18n.E3D_OpenDatFile);
 
+        /*
         if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
             try {
                 String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -6617,6 +6620,8 @@ public class Editor3DWindow extends Editor3DDesign {
         } else {
             fd.setFilterPath(Project.getProjectPath());
         }
+         */
+        fd.setFilterPath(Project.getLastVisitedPath());
 
         String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
         fd.setFilterExtensions(filterExt);
