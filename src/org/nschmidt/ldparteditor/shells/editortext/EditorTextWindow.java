@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editortext;
 
+import java.io.File;
 import java.net.URLDecoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -283,6 +284,10 @@ public class EditorTextWindow extends EditorTextDesign {
                                 DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, selected);
                                 if (df != null) {
                                     Editor3DWindow.getWindow().addRecentFile(df);
+                                    final File f = new File(df.getNewName());
+                                    if (f.getParentFile() != null) {
+                                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                                    }
                                     if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
                                         {
                                             CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
