@@ -412,983 +412,22 @@ class Editor3DDesign extends ApplicationWindow {
             rl_toolBar.center = true;
             cmpWest.setLayout(rl_toolBar);
         }
-        {
-            ToolItem toolItem_Sync = new ToolItem(cmpNorth, SWT.NONE, true);
-            {
-                Button btn_Sync = new Button(toolItem_Sync, SWT.NONE);
-                this.btn_Sync[0] = btn_Sync;
-                btn_Sync.setToolTipText(I18n.E3D_SyncFolders);
-                btn_Sync.setImage(ResourceManager.getImage("icon16_sync.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_Snapshot = new Button(toolItem_Sync, SWT.NONE);
-                this.btn_LastOpen[0] = btn_Snapshot;
-                btn_Snapshot.setToolTipText(I18n.E3D_LastOpened);
-                btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
-            }
-        }
-        {
-            ToolItem toolItem_NewOpenSave = new ToolItem(cmpNorth, SWT.NONE, true);
-            {
-                Button btn_New = new Button(toolItem_NewOpenSave, SWT.NONE);
-                this.btn_New[0] = btn_New;
-                btn_New.setToolTipText(I18n.E3D_New);
-                btn_New.setImage(ResourceManager.getImage("icon16_document-new.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_Open = new Button(toolItem_NewOpenSave, SWT.NONE);
-                this.btn_Open[0] = btn_Open;
-                btn_Open.setToolTipText(I18n.E3D_Open);
-                btn_Open.setImage(ResourceManager.getImage("icon16_document-open.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_Save = new Button(toolItem_NewOpenSave, SWT.NONE);
-                this.btn_Save[0] = btn_Save;
-                KeyStateManager.addTooltipText(btn_Save, I18n.E3D_Save, Task.SAVE);
-                btn_Save.setImage(ResourceManager.getImage("icon16_document-save.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_SaveAll = new Button(toolItem_NewOpenSave, SWT.NONE);
-                this.btn_SaveAll[0] = btn_SaveAll;
-                btn_SaveAll.setToolTipText(I18n.E3D_SaveAll);
-                btn_SaveAll.setImage(ResourceManager.getImage("icon16_document-saveall.png")); //$NON-NLS-1$
-            }
-        }
-        {
-            ToolItem toolItem_NewOpenDAT = new ToolItem(cmpNorth, SWT.NONE, true);
-            {
-                Button btn_NewDat = new Button(toolItem_NewOpenDAT, SWT.NONE);
-                this.btn_NewDat[0] = btn_NewDat;
-                btn_NewDat.setToolTipText(I18n.E3D_NewDat);
-                btn_NewDat.setImage(ResourceManager.getImage("icon16_document-newdat.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_OpenDAT = new Button(toolItem_NewOpenDAT, SWT.NONE);
-                this.btn_OpenDat[0] = btn_OpenDAT;
-                btn_OpenDAT.setToolTipText(I18n.E3D_OpenDat);
-                btn_OpenDAT.setImage(ResourceManager.getImage("icon16_document-opendat.png")); //$NON-NLS-1$
-            }
-        }
-        {
-            ToolItem toolItem_HideUnhide = new ToolItem(cmpNorth, SWT.NONE, true);
-            {
-                Button btn_Hide = new Button(toolItem_HideUnhide, SWT.NONE);
-                this.btn_Hide[0] = btn_Hide;
-                btn_Hide.setToolTipText(I18n.E3D_Hide);
-                btn_Hide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_Unhide = new Button(toolItem_HideUnhide, SWT.NONE);
-                this.btn_ShowAll[0] = btn_Unhide;
-                btn_Unhide.setToolTipText(I18n.E3D_ShowAll);
-                btn_Unhide.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
-            }
-        }
-        {
-            ToolItem toolItem_MiscToggle = new ToolItem(cmpNorth, SWT.NONE, true);
-            {
-                Button btn_AdjacentMove = new Button(toolItem_MiscToggle, SWT.TOGGLE);
-                this.btn_MoveAdjacentData[0] = btn_AdjacentMove;
-                btn_AdjacentMove.setToolTipText(I18n.E3D_MoveAdjacentData);
-                btn_AdjacentMove.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
-                btn_AdjacentMove.setSelection(false);
-            }
-            {
-                Button btn_TransSelection = new Button(toolItem_MiscToggle, SWT.TOGGLE);
-                this.btn_NoTransparentSelection[0] = btn_TransSelection;
-                btn_TransSelection.setToolTipText(I18n.E3D_ToggleTransparent);
-                btn_TransSelection.setImage(ResourceManager.getImage("icon16_notrans.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_BFCToggle = new Button(toolItem_MiscToggle, SWT.TOGGLE);
-                this.btn_BFCToggle[0] = btn_BFCToggle;
-                btn_BFCToggle.setToolTipText(I18n.E3D_ToggleBFC);
-                btn_BFCToggle.setImage(ResourceManager.getImage("icon16_bfc.png")); //$NON-NLS-1$
-            }
-        }
-        ToolItem toolItem_UndoRedo = new ToolItem(cmpNorth, SWT.NONE, true);
-        {
-            Button btn_Undo = new Button(toolItem_UndoRedo, SWT.NONE);
-            this.btn_Undo[0] = btn_Undo;
-            btn_Undo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btn_Undo, I18n.E3D_Undo, Task.UNDO);
-        }
-        if (NLogger.DEBUG) {
-            Button btn_Snapshot = new Button(toolItem_UndoRedo, SWT.NONE);
-            this.btn_AddHistory[0] = btn_Snapshot;
-            btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
-            btn_Snapshot.setToolTipText(I18n.E3D_Snapshot);
-        }
-        {
-            Button btn_Redo = new Button(toolItem_UndoRedo, SWT.NONE);
-            this.btn_Redo[0] = btn_Redo;
-            btn_Redo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btn_Redo, I18n.E3D_Redo, Task.REDO);
-        }
-        {
-            ToolItem toolItem_Transformations = new ToolItem(cmpNorth, SWT.NONE, true);
-            {
-                Button btn_Select = new Button(toolItem_Transformations, SWT.TOGGLE);
-                this.btn_Select[0] = btn_Select;
-                KeyStateManager.addTooltipText(btn_Select, I18n.E3D_Select, Task.MODE_SELECT);
-                btn_Select.setSelection(true);
-                btn_Select.setImage(ResourceManager.getImage("icon16_select.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_Move = new Button(toolItem_Transformations, SWT.TOGGLE);
-                this.btn_Move[0] = btn_Move;
-                KeyStateManager.addTooltipText(btn_Move, I18n.E3D_Move, Task.MODE_MOVE);
-                btn_Move.setImage(ResourceManager.getImage("icon16_move.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_Rotate = new Button(toolItem_Transformations, SWT.TOGGLE);
-                this.btn_Rotate[0] = btn_Rotate;
-                KeyStateManager.addTooltipText(btn_Rotate, I18n.E3D_Rotate, Task.MODE_ROTATE);
-                btn_Rotate.setImage(ResourceManager.getImage("icon16_rotate.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_Scale = new Button(toolItem_Transformations, SWT.TOGGLE);
-                this.btn_Scale[0] = btn_Scale;
-                KeyStateManager.addTooltipText(btn_Scale, I18n.E3D_Scale, Task.MODE_SCALE);
-                btn_Scale.setImage(ResourceManager.getImage("icon16_scale.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_Combined = new Button(toolItem_Transformations, SWT.TOGGLE);
-                this.btn_Combined[0] = btn_Combined;
-                KeyStateManager.addTooltipText(btn_Combined, I18n.E3D_Combined, Task.MODE_COMBINED);
-                btn_Combined.setImage(ResourceManager.getImage("icon16_combined.png")); //$NON-NLS-1$
-            }
-        }
-        {
-            ToolItem toolItem_TransformationModes = new ToolItem(cmpNorth, SWT.NONE, true);
-            {
-                Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
-                this.btn_Local[0] = btn_Local;
-                btn_Local.setToolTipText(I18n.E3D_Local);
-                btn_Local.setSelection(true);
-                btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
-                this.btn_Global[0] = btn_Global;
-                btn_Global.setToolTipText(I18n.E3D_Global);
-                btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
-            }
-            {
-                final Button btn_ManipulatorActions = new Button(toolItem_TransformationModes, SWT.ARROW | SWT.DOWN);
-                btn_ManipulatorActions.setToolTipText(I18n.E3D_ModifyManipulator);
-                this.mnu_Manipulator = new Menu(this.getShell(), SWT.POP_UP);
-                btn_ManipulatorActions.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        Point loc = btn_ManipulatorActions.getLocation();
-                        Rectangle rect = btn_ManipulatorActions.getBounds();
-                        Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
-                        mnu_Manipulator.setLocation(getShell().getDisplay().map(btn_ManipulatorActions.getParent(), null, mLoc));
-                        mnu_Manipulator.setVisible(true);
-                        Editor3DWindow.getWindow().regainFocus();
-                    }
-                });
-                {
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_0_toOrigin[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ManipulatorToOrigin);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_toOrigin.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_XIII_toWorld[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ManipulatorToWorld);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_toWorld.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_XIV_adjustRotationCenter[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_AdjustRotationCenter);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator1 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_X_XReverse[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ReverseX);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_XI_YReverse[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ReverseY);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_XII_ZReverse[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ReverseZ);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator2 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_SwitchXY[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_SwapXY);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_SwitchXZ[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_SwapXZ);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_SwitchYZ[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_SwapYZ);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator3 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_1_cameraToPos[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_CamToManipulator);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_cameratomanipulator.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_2_toAverage[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ManipulatorToAvg);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator31 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_3_toSubfile[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ManipulatorToSubfile);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_32_subfileTo[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_SubfileToManipulator);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator32 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_4_toVertex[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ManipulatorToVertex);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertex.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_5_toEdge[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ManipulatorToEdge);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedge.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_6_toSurface[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ManipulatorToFace);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator4 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_7_toVertexNormal[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ManipulatorToVertexN);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_8_toEdgeNormal[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ManipulatorToEdgeN);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                        this.btn_Manipulator_9_toSurfaceNormal[0] = btn_Mani;
-                        btn_Mani.setText(I18n.E3D_ManipulatorToFaceN);
-                        btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
-                    }
-                }
-            }
-        }
-        {
-            ToolItem toolItem_MiscClick = new ToolItem(cmpNorth, SWT.NONE, true);
-            {
-                Button btn_BFCswap = new Button(toolItem_MiscClick, SWT.NONE);
-                this.btn_BFCswap[0] = btn_BFCswap;
-                btn_BFCswap.setToolTipText(I18n.E3D_SwapWinding);
-                btn_BFCswap.setImage(ResourceManager.getImage("icon16_bfcSwap.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_CompileSubfile = new Button(toolItem_MiscClick, SWT.NONE);
-                this.btn_CompileSubfile[0] = btn_CompileSubfile;
-                btn_CompileSubfile.setToolTipText(I18n.E3D_CompileSubfileData);
-                btn_CompileSubfile.setImage(ResourceManager.getImage("icon16_subcompile.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_SplitQuad = new Button(toolItem_MiscClick, SWT.NONE);
-                this.btn_SplitQuad[0] = btn_SplitQuad;
-                btn_SplitQuad.setImage(ResourceManager.getImage("icon16_quadToTri.png")); //$NON-NLS-1$
-                btn_SplitQuad.setToolTipText(I18n.E3D_SplitQuad);
-            }
-            {
-                Button btn_CondlineToLine = new Button(toolItem_MiscClick, SWT.NONE);
-                this.btn_CondlineToLine[0] = btn_CondlineToLine;
-                // FIXME Needs icon!
-                btn_CondlineToLine.setText("C2L"); //$NON-NLS-1$
-                btn_CondlineToLine.setToolTipText(I18n.E3D_CondlineToLine);
-            }
-            {
-                Button btn_LineToCondline = new Button(toolItem_MiscClick, SWT.NONE);
-                this.btn_LineToCondline[0] = btn_LineToCondline;
-                // FIXME Needs icon!
-                btn_LineToCondline.setText("L2C"); //$NON-NLS-1$
-                btn_LineToCondline.setToolTipText(I18n.E3D_LineToCondline);
-            }
-            {
-                Button btn_MoveOnLine = new Button(toolItem_MiscClick, SWT.NONE);
-                this.btn_MoveOnLine[0] = btn_MoveOnLine;
-                // FIXME Needs icon!
-                btn_MoveOnLine.setText("ML"); //$NON-NLS-1$
-                btn_MoveOnLine.setToolTipText(I18n.E3D_MoveOnLine);
-            }
-            {
-                Button btn_RoundSelection = new Button(toolItem_MiscClick, SWT.NONE);
-                this.btn_RoundSelection[0] = btn_RoundSelection;
-                btn_RoundSelection.setToolTipText(I18n.E3D_Round);
-                btn_RoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
-            }
-            {
-                final Button btn_Select = new Button(toolItem_MiscClick, SWT.PUSH);
-                this.btn_Select2[0] = btn_Select;
-                btn_Select.setToolTipText(I18n.E3D_AdvancedSelect);
-                btn_Select.setText(I18n.E3D_AdvancedSelect);
-                this.mnu_Select = new Menu(this.getShell(), SWT.POP_UP);
-                btn_Select.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        showSelectMenu();
-                        Editor3DWindow.getWindow().regainFocus();
-                    }
-                });
-                {
-                    {
-                        MenuItem mntm_SelectAll = new MenuItem(mnu_Select, SWT.PUSH);
-                        this.mntm_SelectAll[0] = mntm_SelectAll;
-                        KeyStateManager.addKeyText(mntm_SelectAll, I18n.E3D_All, Task.SELECT_ALL);
-                    }
-                    {
-                        MenuItem mntm_SelectNone = new MenuItem(mnu_Select, SWT.PUSH);
-                        this.mntm_SelectNone[0] = mntm_SelectNone;
-                        KeyStateManager.addKeyText(mntm_SelectNone, I18n.E3D_None, Task.SELECT_NONE);
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator0 = new MenuItem(mnu_Select, SWT.SEPARATOR);
-                    {
-                        MenuItem mntm_SelectInverse = new MenuItem(mnu_Select, SWT.PUSH);
-                        this.mntm_SelectInverse[0] = mntm_SelectInverse;
-                        mntm_SelectInverse.setText(I18n.E3D_Inverse);
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator1 = new MenuItem(mnu_Select, SWT.SEPARATOR);
-                    {
-                        MenuItem mntm_SelectAllVisible = new MenuItem(mnu_Select, SWT.PUSH);
-                        this.mntm_SelectAllVisible[0] = mntm_SelectAllVisible;
-                        mntm_SelectAllVisible.setText(I18n.E3D_AllShown);
-                    }
-                    {
-                        MenuItem mntm_SelectAllWithColours = new MenuItem(mnu_Select, SWT.PUSH);
-                        this.mntm_SelectAllWithColours[0] = mntm_SelectAllWithColours;
-                        KeyStateManager.addKeyText(mntm_SelectAllWithColours, I18n.E3D_AllSameColours, Task.SELECT_ALL_WITH_SAME_COLOURS);
-                    }
-                    {
-                        MenuItem mntm_SelectAllVisibleWithColours = new MenuItem(mnu_Select, SWT.PUSH);
-                        this.mntm_SelectAllVisibleWithColours[0] = mntm_SelectAllVisibleWithColours;
-                        mntm_SelectAllVisibleWithColours.setText(I18n.E3D_AllSameColoursShown);
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator2 = new MenuItem(mnu_Select, SWT.SEPARATOR);
-                    {
-                        MenuItem mntm_SelectEverything = new MenuItem(mnu_Select, SWT.PUSH);
-                        this.mntm_SelectEverything[0] = mntm_SelectEverything;
-                        mntm_SelectEverything.setText(I18n.E3D_Everything);
-                        mntm_SelectEverything.setEnabled(false);
-                    }
-                    {
-                        MenuItem mntm_SelectConnected = new MenuItem(mnu_Select, SWT.PUSH);
-                        this.mntm_SelectConnected[0] = mntm_SelectConnected;
-                        KeyStateManager.addKeyText(mntm_SelectConnected, I18n.E3D_Connected, Task.SELECT_CONNECTED);
-                    }
-                    {
-                        MenuItem mntm_SelectTouching = new MenuItem(mnu_Select, SWT.PUSH);
-                        this.mntm_SelectTouching[0] = mntm_SelectTouching;
-                        KeyStateManager.addKeyText(mntm_SelectTouching, I18n.E3D_Touching, Task.SELECT_TOUCHING);
-                    }
-                    {
-                        MenuItem mntm_WithSameColour = new MenuItem(mnu_Select, SWT.CHECK);
-                        this.mntm_WithSameColour[0] = mntm_WithSameColour;
-                        KeyStateManager.addKeyText(mntm_WithSameColour, I18n.E3D_WithSameColour, Task.SELECT_OPTION_WITH_SAME_COLOURS);
-                    }
-                    {
-                        MenuItem mntm_WithSameOrientation = new MenuItem(mnu_Select, SWT.CHECK);
-                        this.mntm_WithSameOrientation[0] = mntm_WithSameOrientation;
-                        mntm_WithSameOrientation.setText(I18n.E3D_WithSameOrientation);
-                    }
-                    {
-                        MenuItem mntm_WithAccuracy = new MenuItem(mnu_Select, SWT.CHECK);
-                        this.mntm_WithAccuracy[0] = mntm_WithAccuracy;
-                        mntm_WithAccuracy.setText(I18n.E3D_WithAccuracy);
-                    }
-                    {
-                        MenuItem mntm_WithHiddenData = new MenuItem(mnu_Select, SWT.CHECK);
-                        this.mntm_WithHiddenData[0] = mntm_WithHiddenData;
-                        mntm_WithHiddenData.setText(I18n.E3D_WhatIsHidden);
-                        mntm_WithHiddenData.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
-                    }
-                    {
-                        MenuItem mntm_ExceptSubfiles = new MenuItem(mnu_Select, SWT.CHECK);
-                        this.mntm_ExceptSubfiles[0] = mntm_ExceptSubfiles;
-                        mntm_ExceptSubfiles.setText(I18n.E3D_ExceptSubfile);
-                    }
-                    {
-                        MenuItem mntm_WithWholeSubfiles = new MenuItem(mnu_Select, SWT.CHECK);
-                        this.mntm_WithWholeSubfiles[0] = mntm_WithWholeSubfiles;
-                        mntm_WithWholeSubfiles.setText(I18n.E3D_WithWholeSubfileSelection);
-                    }
-                    {
-                        MenuItem mntm_StopAtEdges = new MenuItem(mnu_Select, SWT.CHECK);
-                        this.mntm_StopAtEdges[0] = mntm_StopAtEdges;
-                        mntm_StopAtEdges.setText(I18n.E3D_StopSelectionAtEdges);
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator3 = new MenuItem(mnu_Select, SWT.SEPARATOR);
-                    {
-                        MenuItem mntm_SelectSingleVertex = new MenuItem(mnu_Select, SWT.PUSH);
-                        this.mntm_SelectSingleVertex[0] = mntm_SelectSingleVertex;
-                        mntm_SelectSingleVertex.setText(I18n.E3D_SelectVertex);
-                    }
-                    {
-                        MenuItem mntm_SelectIsolatedVertices = new MenuItem(mnu_Select, SWT.PUSH);
-                        this.mntm_SelectIsolatedVertices[0] = mntm_SelectIsolatedVertices;
-                        mntm_SelectIsolatedVertices.setText(I18n.E3D_IsolatedVertices);
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator4 = new MenuItem(mnu_Select, SWT.SEPARATOR);
-                    {
-                        MenuItem mntm_SVertices = new MenuItem(mnu_Select, SWT.CHECK);
-                        this.mntm_SVertices[0] = mntm_SVertices;
-                        mntm_SVertices.setText(I18n.E3D_Vertices);
-                        mntm_SVertices.setSelection(true);
-                    }
-                    {
-                        MenuItem mntm_SLines = new MenuItem(mnu_Select, SWT.CHECK);
-                        this.mntm_SLines[0] = mntm_SLines;
-                        mntm_SLines.setText(I18n.E3D_Lines);
-                        mntm_SLines.setSelection(true);
-                    }
-                    {
-                        MenuItem mntm_STriangles = new MenuItem(mnu_Select, SWT.CHECK);
-                        this.mntm_STriangles[0] = mntm_STriangles;
-                        mntm_STriangles.setText(I18n.E3D_Triangles);
-                        mntm_STriangles.setSelection(true);
-                    }
-                    {
-                        MenuItem mntm_SQuads = new MenuItem(mnu_Select, SWT.CHECK);
-                        this.mntm_SQuads[0] = mntm_SQuads;
-                        mntm_SQuads.setText(I18n.E3D_Quads);
-                        mntm_SQuads.setSelection(true);
-                    }
-                    {
-                        MenuItem mntm_SCLines = new MenuItem(mnu_Select, SWT.CHECK);
-                        this.mntm_SCLines[0] = mntm_SCLines;
-                        mntm_SCLines.setText(I18n.E3D_Condlines);
-                        mntm_SCLines.setSelection(true);
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator5 = new MenuItem(mnu_Select, SWT.SEPARATOR);
-                    {
-                        MenuItem mntm_needsThreshold = new MenuItem(mnu_Select, SWT.PUSH);
-                        mntm_needsThreshold.setText(I18n.E3D_NeedsAThreshold);
-                        mntm_needsThreshold.setEnabled(false);
-                    }
-                    {
-                        MenuItem mntm_noEffect = new MenuItem(mnu_Select, SWT.PUSH);
-                        mntm_noEffect.setText(I18n.E3D_NoEffectSelectEverything);
-                        mntm_noEffect.setEnabled(false);
-                    }
-                }
-            }
-            {
-                final Button btn_MergeNSplit = new Button(toolItem_MiscClick, SWT.PUSH);
-                btn_MergeNSplit.setToolTipText(I18n.E3D_MergeSplit);
-                btn_MergeNSplit.setText(I18n.E3D_MergeSplit);
-                this.mnu_Merge = new Menu(this.getShell(), SWT.POP_UP);
-                btn_MergeNSplit.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        Point loc = btn_MergeNSplit.getLocation();
-                        Rectangle rect = btn_MergeNSplit.getBounds();
-                        Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
-                        mnu_Merge.setLocation(getShell().getDisplay().map(btn_MergeNSplit.getParent(), null, mLoc));
-                        mnu_Merge.setVisible(true);
-                        Editor3DWindow.getWindow().regainFocus();
-                    }
-                });
-                {
-                    MenuItem mntm_Flip = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_Flip[0] = mntm_Flip;
-                    mntm_Flip.setText(I18n.E3D_FlipRotate);
-                }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator2 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
-                {
-                    MenuItem mntm_Split = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_Split[0] = mntm_Split;
-                    KeyStateManager.addKeyText(mntm_Split, I18n.E3D_Split, Task.SPLIT);
-                }
-                {
-                    MenuItem mntm_SplitNTimes = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_SplitNTimes[0] = mntm_SplitNTimes;
-                    mntm_SplitNTimes.setText(I18n.E3D_SplitNTimes);
-                }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator3 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
-                {
-                    MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_MergeToAverage[0] = mntm_mergeTo;
-                    KeyStateManager.addKeyText(mntm_mergeTo, I18n.E3D_MergeToAvg, Task.MERGE_TO_AVERAGE);
-                }
-                {
-                    MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_MergeToLastSelected[0] = mntm_mergeTo;
-                    KeyStateManager.addKeyText(mntm_mergeTo, I18n.E3D_MergeToLastSelected, Task.MERGE_TO_LAST);
-                }
-                {
-                    MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_MergeToNearestVertex[0] = mntm_mergeTo;
-                    mntm_mergeTo.setText(I18n.E3D_MergeToNearestVertex);
-                }
-                {
-                    MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_MergeToNearestEdge[0] = mntm_mergeTo;
-                    mntm_mergeTo.setText(I18n.E3D_MergeToNearestEdge);
-                }
-                {
-                    MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_MergeToNearestFace[0] = mntm_mergeTo;
-                    mntm_mergeTo.setText(I18n.E3D_MergeToNearestFace);
-                }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator4 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
-                {
-                    MenuItem mntm_setXYZ = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_setXYZ[0] = mntm_setXYZ;
-                    mntm_setXYZ.setText(I18n.E3D_SetXYZ);
-                }
-                {
-                    MenuItem mntm_Translate = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_Translate[0] = mntm_Translate;
-                    mntm_Translate.setText(I18n.E3D_TranslateSelection);
-                }
-                {
-                    MenuItem mntm_Rotate = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_Rotate[0] = mntm_Rotate;
-                    mntm_Rotate.setText(I18n.E3D_RotateSelection);
-                }
-                {
-                    MenuItem mntm_Scale = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_Scale[0] = mntm_Scale;
-                    mntm_Scale.setText(I18n.E3D_ScaleSelection);
-                }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator1 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
-                {
-                    MenuItem mntm_SubdivideCatmullClark = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_SubdivideCatmullClark[0] = mntm_SubdivideCatmullClark;
-                    mntm_SubdivideCatmullClark.setText(I18n.E3D_SubdivideCatmullClark);
-                }
-                {
-                    MenuItem mntm_SubdivideLoop = new MenuItem(mnu_Merge, SWT.PUSH);
-                    this.mntm_SubdivideLoop[0] = mntm_SubdivideLoop;
-                    mntm_SubdivideLoop.setText(I18n.E3D_SubdivideLoop);
-                }
-            }
-            {
-                final Button btn_ToolsActions = new Button(toolItem_MiscClick, SWT.ARROW | SWT.DOWN);
-                btn_ToolsActions.setToolTipText(I18n.E3D_ToolsOptions);
-                this.mnu_Tools = new Menu(this.getShell(), SWT.POP_UP);
-                btn_ToolsActions.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        Point loc = btn_ToolsActions.getLocation();
-                        Rectangle rect = btn_ToolsActions.getBounds();
-                        Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
-                        mnu_Tools.setLocation(getShell().getDisplay().map(btn_ToolsActions.getParent(), null, mLoc));
-                        mnu_Tools.setVisible(true);
-                        Editor3DWindow.getWindow().regainFocus();
-                    }
-                });
-                {
-                    {
-                        MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_Edger2[0] = mntm_Edger2;
-                        mntm_Edger2.setText(I18n.E3D_Edger2);
-                    }
-                    {
-                        MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_Txt2Dat[0] = mntm_Edger2;
-                        mntm_Edger2.setText(I18n.E3D_Txt2Dat);
-                    }
-                    {
-                        MenuItem mntm_Rectifier = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_Rectifier[0] = mntm_Rectifier;
-                        mntm_Rectifier.setText(I18n.E3D_Rectifier);
-                    }
-                    {
-                        MenuItem mntm_Isecalc = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_Isecalc[0] = mntm_Isecalc;
-                        mntm_Isecalc.setText(I18n.E3D_Isecalc);
-                    }
-                    {
-                        MenuItem mntm_SlicerPro = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_SlicerPro[0] = mntm_SlicerPro;
-                        mntm_SlicerPro.setText(I18n.E3D_SlicerPro);
-                    }
-                    {
-                        MenuItem mntm_Intersector = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_Intersector[0] = mntm_Intersector;
-                        mntm_Intersector.setText(I18n.E3D_Intersector);
-                    }
-                    {
-                        MenuItem mntm_Lines2Pattern = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_Lines2Pattern[0] = mntm_Lines2Pattern;
-                        mntm_Lines2Pattern.setText(I18n.E3D_Lines2Pattern);
-                    }
-                    {
-                        MenuItem mntm_PathTruder = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_PathTruder[0] = mntm_PathTruder;
-                        mntm_PathTruder.setText(I18n.E3D_PathTruder);
-                    }
-                    {
-                        MenuItem mntm_SymSplitter = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_SymSplitter[0] = mntm_SymSplitter;
-                        mntm_SymSplitter.setText(I18n.E3D_SymSplitter);
-                    }
-                    {
-                        MenuItem mntm_Unificator = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_Unificator[0] = mntm_Unificator;
-                        mntm_Unificator.setText(I18n.E3D_Unificator);
-                    }
-                    {
-                        MenuItem mntm_RingsAndCones = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_RingsAndCones[0] = mntm_RingsAndCones;
-                        mntm_RingsAndCones.setText(I18n.E3D_RingsAndCones);
-                    }
-                    {
-                        MenuItem mntm_TJunctionFinder = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_TJunctionFinder[0] = mntm_TJunctionFinder;
-                        mntm_TJunctionFinder.setText(I18n.E3D_Tjunction);
-                    }
-                    {
-                        MenuItem mntm_MeshReducer = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_MeshReducer[0] = mntm_MeshReducer;
-                        mntm_MeshReducer.setText(I18n.E3D_MeshReduce);
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator1 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
-                    {
-                        MenuItem mntm_CustomiseKeys = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_CustomiseKeys[0] = mntm_CustomiseKeys;
-                        mntm_CustomiseKeys.setText(I18n.KEYBOARD_CustomiseShortkeys);
-                    }
-                    {
-                        MenuItem mntm_ResetSettingsOnRestart = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_ResetSettingsOnRestart[0] = mntm_ResetSettingsOnRestart;
-                        mntm_ResetSettingsOnRestart.setText(I18n.E3D_ResetAll);
-                    }
-                    {
-                        MenuItem mntm_SelectAnotherLDConfig = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_SelectAnotherLDConfig[0] = mntm_SelectAnotherLDConfig;
-                        mntm_SelectAnotherLDConfig.setText(I18n.E3D_SelectLDConfig);
-                    }
-                    {
-                        final MenuItem mntm_SetIconSize = new MenuItem(mnu_Tools, SWT.CASCADE);
-                        mntm_SetIconSize.setText(I18n.E3D_SetIconSize);
-                        final Menu mnu_IconSize = new Menu(mntm_SetIconSize);
-                        mntm_SetIconSize.setMenu(mnu_IconSize);
-                        final int iconSize = Editor3DWindow.getIconsize();
-                        {
-                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
-                            this.mntm_IconSize1[0] = mntm_IconSize;
-                            mntm_IconSize.setText(I18n.E3D_IconSize1);
-                            mntm_IconSize.setSelection(iconSize == 0);
-                        }
-                        {
-                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
-                            this.mntm_IconSize2[0] = mntm_IconSize;
-                            mntm_IconSize.setText(I18n.E3D_IconSize2);
-                            mntm_IconSize.setSelection(iconSize == 1);
-                        }
-                        {
-                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
-                            this.mntm_IconSize3[0] = mntm_IconSize;
-                            mntm_IconSize.setText(I18n.E3D_IconSize3);
-                            mntm_IconSize.setSelection(iconSize == 2);
-                        }
-                        {
-                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
-                            this.mntm_IconSize4[0] = mntm_IconSize;
-                            mntm_IconSize.setText(I18n.E3D_IconSize4);
-                            mntm_IconSize.setSelection(iconSize == 3);
-                        }
-                        {
-                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
-                            this.mntm_IconSize5[0] = mntm_IconSize;
-                            mntm_IconSize.setText(I18n.E3D_IconSize5);
-                            mntm_IconSize.setSelection(iconSize == 4);
-                        }
-                        {
-                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
-                            this.mntm_IconSize6[0] = mntm_IconSize;
-                            mntm_IconSize.setText(I18n.E3D_IconSize6);
-                            mntm_IconSize.setSelection(iconSize == 5);
-                        }
-                        @SuppressWarnings("unused")
-                        final MenuItem mntmSeparator2 = new MenuItem(mnu_IconSize, SWT.SEPARATOR);
-                        {
-                            MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.PUSH);
-                            mntm_IconSize.setText(I18n.E3D_RequiresRestart);
-                            mntm_IconSize.setEnabled(false);
-                        }
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator2 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
-                    {
-                        MenuItem mntm_UploadErrorLog = new MenuItem(mnu_Tools, SWT.PUSH);
-                        this.mntm_UploadLogs[0] = mntm_UploadErrorLog;
-                        mntm_UploadErrorLog.setText(I18n.E3D_UploadErrorLogs);
-                    }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator3 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
-                    {
-                        MenuItem mntm_SyncWithTextEditor = new MenuItem(mnu_Tools, SWT.CHECK);
-                        mntm_SyncWithTextEditor.setSelection(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
-                        this.mntm_SyncWithTextEditor[0] = mntm_SyncWithTextEditor;
-                        mntm_SyncWithTextEditor.setText(I18n.E3D_Sync3DEditor);
-                    }
-                    {
-                        MenuItem mntm_SyncLpeInline = new MenuItem(mnu_Tools, SWT.CHECK);
-                        mntm_SyncLpeInline.setSelection(WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get());
-                        mntm_SyncLpeInline.setEnabled(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
-                        this.mntm_SyncLpeInline[0] = mntm_SyncLpeInline;
-                        mntm_SyncLpeInline.setText(I18n.E3D_ParseInline);
-                    }
-                }
-            }
 
-        }
-        {
-            ToolItem toolItem_CCPD = new ToolItem(cmpNorth, SWT.NONE, true);
-            {
-                Button btn_Cut = new Button(toolItem_CCPD, SWT.NONE);
-                this.btn_Cut[0] = btn_Cut;
-                btn_Cut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
-                KeyStateManager.addTooltipText(btn_Cut, I18n.COPYNPASTE_Cut, Task.CUT);
-            }
-            {
-                Button btn_Copy = new Button(toolItem_CCPD, SWT.NONE);
-                this.btn_Copy[0] = btn_Copy;
-                btn_Copy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
-                KeyStateManager.addTooltipText(btn_Copy, I18n.COPYNPASTE_Copy, Task.COPY);
-            }
-            {
-                Button btn_Paste = new Button(toolItem_CCPD, SWT.NONE);
-                this.btn_Paste[0] = btn_Paste;
-                btn_Paste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
-                KeyStateManager.addTooltipText(btn_Paste, I18n.COPYNPASTE_Paste, Task.PASTE);
-            }
-            {
-                Button btn_Delete = new Button(toolItem_CCPD, SWT.NONE);
-                this.btn_Delete[0] = btn_Delete;
-                btn_Delete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
-                KeyStateManager.addTooltipText(btn_Delete, I18n.COPYNPASTE_Delete, Task.DELETE);
-            }
-        }
-        {
-            ToolItem toolItem_Mode = new ToolItem(cmpNorth, SWT.NONE, true);
-            {
-                Button btn_Vertices = new Button(toolItem_Mode, SWT.TOGGLE);
-                this.btn_Vertices[0] = btn_Vertices;
-                KeyStateManager.addTooltipText(btn_Vertices, I18n.E3D_ModeVertex, Task.OBJ_VERTEX);
-                btn_Vertices.setSelection(true);
-                btn_Vertices.setImage(ResourceManager.getImage("icon16_vertices.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_TrisNQuads = new Button(toolItem_Mode, SWT.TOGGLE);
-                this.btn_TrisNQuads[0] = btn_TrisNQuads;
-                KeyStateManager.addTooltipText(btn_TrisNQuads, I18n.E3D_ModeSurface, Task.OBJ_FACE);
-                btn_TrisNQuads.setImage(ResourceManager.getImage("icon16_trisNquads.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_Lines = new Button(toolItem_Mode, SWT.TOGGLE);
-                this.btn_Lines[0] = btn_Lines;
-                KeyStateManager.addTooltipText(btn_Lines, I18n.E3D_ModeLine, Task.OBJ_LINE);
-                btn_Lines.setImage(ResourceManager.getImage("icon16_lines.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_Subfiles = new Button(toolItem_Mode, SWT.TOGGLE);
-                this.btn_Subfiles[0] = btn_Subfiles;
-                KeyStateManager.addTooltipText(btn_Subfiles, I18n.E3D_ModeSubpart, Task.OBJ_PRIMITIVE);
-                btn_Subfiles.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
-            }
-        }
-        {
-            ToolItem toolItem_InsertAtCursorPosition = new ToolItem(cmpNorth, SWT.NONE, true);
-
-            Button btn_InsertAtCursorPosition = new Button(toolItem_InsertAtCursorPosition, SWT.TOGGLE);
-            this.btn_InsertAtCursorPosition[0] = btn_InsertAtCursorPosition;
-            KeyStateManager.addTooltipText(btn_InsertAtCursorPosition, I18n.E3D_InsertAtCursorPosition, Task.INSERT_AT_CURSOR);
-            btn_InsertAtCursorPosition.setImage(ResourceManager.getImage("icon16_insertAtCursor.png")); //$NON-NLS-1$
-        }
-        {
-            ToolItem toolItem_Add = new ToolItem(cmpNorth, SWT.NONE, true);
-
-            Button btn_AddComment = new Button(toolItem_Add, SWT.NONE);
-            this.btn_AddComment[0] = btn_AddComment;
-            KeyStateManager.addTooltipText(btn_AddComment, I18n.E3D_AddComment, Task.ADD_COMMENTS);
-            btn_AddComment.setImage(ResourceManager.getImage("icon16_addcomment.png")); //$NON-NLS-1$
-
-            Button btn_AddVertex = new Button(toolItem_Add, SWT.TOGGLE);
-            this.btn_AddVertex[0] = btn_AddVertex;
-            KeyStateManager.addTooltipText(btn_AddVertex, I18n.E3D_AddVertex, Task.ADD_VERTEX);
-            btn_AddVertex.setImage(ResourceManager.getImage("icon16_addvertex.png")); //$NON-NLS-1$
-
-            Button btn_AddPrimitive = new Button(toolItem_Add, SWT.TOGGLE);
-            this.btn_AddPrimitive[0] = btn_AddPrimitive;
-            btn_AddPrimitive.setToolTipText(I18n.E3D_AddSubpart);
-            btn_AddPrimitive.setImage(ResourceManager.getImage("icon16_addprimitive.png")); //$NON-NLS-1$
-
-            Button btn_AddLine = new Button(toolItem_Add, SWT.TOGGLE);
-            this.btn_AddLine[0] = btn_AddLine;
-            KeyStateManager.addTooltipText(btn_AddLine, I18n.E3D_AddLine, Task.ADD_LINE);
-            btn_AddLine.setImage(ResourceManager.getImage("icon16_addline.png")); //$NON-NLS-1$
-
-            Button btn_AddTriangle = new Button(toolItem_Add, SWT.TOGGLE);
-            this.btn_AddTriangle[0] = btn_AddTriangle;
-            KeyStateManager.addTooltipText(btn_AddTriangle, I18n.E3D_AddTriangle, Task.ADD_TRIANGLE);
-            btn_AddTriangle.setImage(ResourceManager.getImage("icon16_addtriangle.png")); //$NON-NLS-1$
-
-            Button btn_AddQuad = new Button(toolItem_Add, SWT.TOGGLE);
-            this.btn_AddQuad[0] = btn_AddQuad;
-            KeyStateManager.addTooltipText(btn_AddQuad, I18n.E3D_AddQuad, Task.ADD_QUAD);
-            btn_AddQuad.setImage(ResourceManager.getImage("icon16_addquad.png")); //$NON-NLS-1$
-
-            Button btn_AddCondline = new Button(toolItem_Add, SWT.TOGGLE);
-            this.btn_AddCondline[0] = btn_AddCondline;
-            KeyStateManager.addTooltipText(btn_AddCondline, I18n.E3D_AddCondline, Task.ADD_CONDLINE);
-            btn_AddCondline.setImage(ResourceManager.getImage("icon16_addcondline.png")); //$NON-NLS-1$
-        }
-        {
-            ToolItem toolItem_Colours = new ToolItem(cmpNorth, SWT.NONE, true);
-            List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
-            addColorButton(toolItem_Colours, colours.get(0), 0);
-            addColorButton(toolItem_Colours, colours.get(1), 1);
-            addColorButton(toolItem_Colours, colours.get(2), 2);
-            addColorButton(toolItem_Colours, colours.get(3), 3);
-            addColorButton(toolItem_Colours, colours.get(4), 4);
-            addColorButton(toolItem_Colours, colours.get(5), 5);
-            addColorButton(toolItem_Colours, colours.get(6), 6);
-            addColorButton(toolItem_Colours, colours.get(7), 7);
-            addColorButton(toolItem_Colours, colours.get(8), 8);
-            addColorButton(toolItem_Colours, colours.get(9), 9);
-            addColorButton(toolItem_Colours, colours.get(10), 10);
-            addColorButton(toolItem_Colours, colours.get(11), 11);
-            addColorButton(toolItem_Colours, colours.get(12), 12);
-            addColorButton(toolItem_Colours, colours.get(13), 13);
-            addColorButton(toolItem_Colours, colours.get(14), 14);
-            addColorButton(toolItem_Colours, colours.get(15), 15);
-            addColorButton(toolItem_Colours, colours.get(16), 16);
-            {
-                Button btn_Palette = new Button(toolItem_Colours, SWT.NONE);
-                this.btn_Palette[0] = btn_Palette;
-                btn_Palette.setToolTipText(I18n.E3D_More);
-                btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
-            }
-        }
-        {
-            ToolItem toolItem_ColourFunctions = new ToolItem(cmpNorth, SWT.NONE, true);
-            {
-                Button btn_LastUsedColour = new Button(toolItem_ColourFunctions, SWT.NONE);
-                this.btn_LastUsedColour[0] = btn_LastUsedColour;
-                btn_LastUsedColour.setToolTipText(I18n.E3D_Colour16);
-                btn_LastUsedColour.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
-                final Color col = SWTResourceManager.getColor(128, 128, 128);
-                final Point size = btn_LastUsedColour.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-                final int x = Math.round(size.x / 5f);
-                final int y = Math.round(size.y / 5f);
-                final int w = Math.round(size.x * (3f / 5f));
-                final int h = Math.round(size.y * (3f / 5f));
-                btn_LastUsedColour.addPaintListener(new PaintListener() {
-                    @Override
-                    public void paintControl(PaintEvent e) {
-                        e.gc.setBackground(col);
-                        e.gc.fillRectangle(x, y, w, h);
-                    }
-                });
-                btn_LastUsedColour.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        if (Project.getFileToEdit() != null) {
-                            Project.getFileToEdit().getVertexManager().addSnapshot();
-                            Project.getFileToEdit().getVertexManager().colourChangeSelection(16, .5f, .5f, .5f, 1f);
-                        }
-                        Editor3DWindow.getWindow().regainFocus();
-                    }
-                });
-            }
-            {
-                Button btn_Pipette = new Button(toolItem_ColourFunctions, SWT.NONE);
-                this.btn_Pipette[0] = btn_Pipette;
-                btn_Pipette.setToolTipText(I18n.E3D_Pipette);
-                btn_Pipette.setImage(ResourceManager.getImage("icon16_pipette.png")); //$NON-NLS-1$
-            }
-        }
-        {
-            ToolItem toolItem_LineThickness = new ToolItem(cmpNorth, SWT.NONE, true);
-            {
-                Button btn_lineSize1 = new Button(toolItem_LineThickness, SWT.TOGGLE);
-                this.btn_lineSize1[0] = btn_lineSize1;
-                btn_lineSize1.setToolTipText(I18n.E3D_LineSize1);
-                btn_lineSize1.setImage(ResourceManager.getImage("icon16_linesize1.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_lineSize2 = new Button(toolItem_LineThickness, SWT.TOGGLE);
-                this.btn_lineSize2[0] = btn_lineSize2;
-                btn_lineSize2.setToolTipText(I18n.E3D_LineSize2);
-                btn_lineSize2.setImage(ResourceManager.getImage("icon16_linesize2.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_lineSize3 = new Button(toolItem_LineThickness, SWT.TOGGLE);
-                btn_lineSize3.setSelection(true);
-                this.btn_lineSize3[0] = btn_lineSize3;
-                btn_lineSize3.setToolTipText(I18n.E3D_LineSize3);
-                btn_lineSize3.setImage(ResourceManager.getImage("icon16_linesize3.png")); //$NON-NLS-1$
-            }
-            {
-                Button btn_lineSize4 = new Button(toolItem_LineThickness, SWT.TOGGLE);
-                this.btn_lineSize4[0] = btn_lineSize4;
-                btn_lineSize4.setToolTipText(I18n.E3D_LineSize4);
-                btn_lineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
-            }
-        }
+        createToolItemSync();
+        createToolItemNewOpenSave();
+        createToolItemNewOpenDat();
+        createToolItemHideUnhide();
+        createToolItemMiscToggle();
+        createToolItemUndoRedo();
+        createToolItemTransformations();
+        createToolItemTransformationModes();
+        createToolItemMiscClick();
+        createToolItemCCPD();
+        createToolItemMode();
+        createToolItemInsertAtCursorPosition();
+        createToolItemAdd();
+        createToolItemColours();
+        createToolItemLineThickness();
 
         {
             Composite cmp_main_editor = new Composite(container, SWT.BORDER);
@@ -2179,6 +1218,998 @@ class Editor3DDesign extends ApplicationWindow {
             lbl_Status.setText(""); //$NON-NLS-1$
         }
         return container;
+    }
+
+    private void createToolItemLineThickness() {
+        ToolItem toolItem_LineThickness = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_lineSize1 = new Button(toolItem_LineThickness, SWT.TOGGLE);
+            this.btn_lineSize1[0] = btn_lineSize1;
+            btn_lineSize1.setToolTipText(I18n.E3D_LineSize1);
+            btn_lineSize1.setImage(ResourceManager.getImage("icon16_linesize1.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_lineSize2 = new Button(toolItem_LineThickness, SWT.TOGGLE);
+            this.btn_lineSize2[0] = btn_lineSize2;
+            btn_lineSize2.setToolTipText(I18n.E3D_LineSize2);
+            btn_lineSize2.setImage(ResourceManager.getImage("icon16_linesize2.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_lineSize3 = new Button(toolItem_LineThickness, SWT.TOGGLE);
+            btn_lineSize3.setSelection(true);
+            this.btn_lineSize3[0] = btn_lineSize3;
+            btn_lineSize3.setToolTipText(I18n.E3D_LineSize3);
+            btn_lineSize3.setImage(ResourceManager.getImage("icon16_linesize3.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_lineSize4 = new Button(toolItem_LineThickness, SWT.TOGGLE);
+            this.btn_lineSize4[0] = btn_lineSize4;
+            btn_lineSize4.setToolTipText(I18n.E3D_LineSize4);
+            btn_lineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
+        }
+    }
+
+    private void createToolItemColours() {
+        ToolItem toolItem_Colours = new ToolItem(cmpNorth, SWT.NONE, true);
+        List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
+
+        addColorButton(toolItem_Colours, colours.get(0), 0);
+        addColorButton(toolItem_Colours, colours.get(1), 1);
+        addColorButton(toolItem_Colours, colours.get(2), 2);
+        addColorButton(toolItem_Colours, colours.get(3), 3);
+        addColorButton(toolItem_Colours, colours.get(4), 4);
+        addColorButton(toolItem_Colours, colours.get(5), 5);
+        addColorButton(toolItem_Colours, colours.get(6), 6);
+        addColorButton(toolItem_Colours, colours.get(7), 7);
+        addColorButton(toolItem_Colours, colours.get(8), 8);
+        addColorButton(toolItem_Colours, colours.get(9), 9);
+        addColorButton(toolItem_Colours, colours.get(10), 10);
+        addColorButton(toolItem_Colours, colours.get(11), 11);
+        addColorButton(toolItem_Colours, colours.get(12), 12);
+        addColorButton(toolItem_Colours, colours.get(13), 13);
+        addColorButton(toolItem_Colours, colours.get(14), 14);
+        addColorButton(toolItem_Colours, colours.get(15), 15);
+        addColorButton(toolItem_Colours, colours.get(16), 16);
+
+        {
+            Button btn_Palette = new Button(toolItem_Colours, SWT.NONE);
+            this.btn_Palette[0] = btn_Palette;
+            btn_Palette.setToolTipText(I18n.E3D_More);
+            btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
+        }
+        ToolItem toolItem_ColourFunctions = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_LastUsedColour = new Button(toolItem_ColourFunctions, SWT.NONE);
+            this.btn_LastUsedColour[0] = btn_LastUsedColour;
+            btn_LastUsedColour.setToolTipText(I18n.E3D_Colour16);
+            btn_LastUsedColour.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
+            final Color col = SWTResourceManager.getColor(128, 128, 128);
+            final Point size = btn_LastUsedColour.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+            final int x = Math.round(size.x / 5f);
+            final int y = Math.round(size.y / 5f);
+            final int w = Math.round(size.x * (3f / 5f));
+            final int h = Math.round(size.y * (3f / 5f));
+            btn_LastUsedColour.addPaintListener(new PaintListener() {
+                @Override
+                public void paintControl(PaintEvent e) {
+                    e.gc.setBackground(col);
+                    e.gc.fillRectangle(x, y, w, h);
+                }
+            });
+            btn_LastUsedColour.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    if (Project.getFileToEdit() != null) {
+                        Project.getFileToEdit().getVertexManager().addSnapshot();
+                        Project.getFileToEdit().getVertexManager().colourChangeSelection(16, .5f, .5f, .5f, 1f);
+                    }
+                    Editor3DWindow.getWindow().regainFocus();
+                }
+            });
+        }
+        {
+            Button btn_Pipette = new Button(toolItem_ColourFunctions, SWT.NONE);
+            this.btn_Pipette[0] = btn_Pipette;
+            btn_Pipette.setToolTipText(I18n.E3D_Pipette);
+            btn_Pipette.setImage(ResourceManager.getImage("icon16_pipette.png")); //$NON-NLS-1$
+        }
+    }
+
+    private void createToolItemAdd() {
+        ToolItem toolItem_Add = new ToolItem(cmpNorth, SWT.NONE, true);
+
+        Button btn_AddComment = new Button(toolItem_Add, SWT.NONE);
+        this.btn_AddComment[0] = btn_AddComment;
+        KeyStateManager.addTooltipText(btn_AddComment, I18n.E3D_AddComment, Task.ADD_COMMENTS);
+        btn_AddComment.setImage(ResourceManager.getImage("icon16_addcomment.png")); //$NON-NLS-1$
+
+        Button btn_AddVertex = new Button(toolItem_Add, SWT.TOGGLE);
+        this.btn_AddVertex[0] = btn_AddVertex;
+        KeyStateManager.addTooltipText(btn_AddVertex, I18n.E3D_AddVertex, Task.ADD_VERTEX);
+        btn_AddVertex.setImage(ResourceManager.getImage("icon16_addvertex.png")); //$NON-NLS-1$
+
+        Button btn_AddPrimitive = new Button(toolItem_Add, SWT.TOGGLE);
+        this.btn_AddPrimitive[0] = btn_AddPrimitive;
+        btn_AddPrimitive.setToolTipText(I18n.E3D_AddSubpart);
+        btn_AddPrimitive.setImage(ResourceManager.getImage("icon16_addprimitive.png")); //$NON-NLS-1$
+
+        Button btn_AddLine = new Button(toolItem_Add, SWT.TOGGLE);
+        this.btn_AddLine[0] = btn_AddLine;
+        KeyStateManager.addTooltipText(btn_AddLine, I18n.E3D_AddLine, Task.ADD_LINE);
+        btn_AddLine.setImage(ResourceManager.getImage("icon16_addline.png")); //$NON-NLS-1$
+
+        Button btn_AddTriangle = new Button(toolItem_Add, SWT.TOGGLE);
+        this.btn_AddTriangle[0] = btn_AddTriangle;
+        KeyStateManager.addTooltipText(btn_AddTriangle, I18n.E3D_AddTriangle, Task.ADD_TRIANGLE);
+        btn_AddTriangle.setImage(ResourceManager.getImage("icon16_addtriangle.png")); //$NON-NLS-1$
+
+        Button btn_AddQuad = new Button(toolItem_Add, SWT.TOGGLE);
+        this.btn_AddQuad[0] = btn_AddQuad;
+        KeyStateManager.addTooltipText(btn_AddQuad, I18n.E3D_AddQuad, Task.ADD_QUAD);
+        btn_AddQuad.setImage(ResourceManager.getImage("icon16_addquad.png")); //$NON-NLS-1$
+
+        Button btn_AddCondline = new Button(toolItem_Add, SWT.TOGGLE);
+        this.btn_AddCondline[0] = btn_AddCondline;
+        KeyStateManager.addTooltipText(btn_AddCondline, I18n.E3D_AddCondline, Task.ADD_CONDLINE);
+        btn_AddCondline.setImage(ResourceManager.getImage("icon16_addcondline.png")); //$NON-NLS-1$
+    }
+
+    private void createToolItemInsertAtCursorPosition() {
+        ToolItem toolItem_InsertAtCursorPosition = new ToolItem(cmpNorth, SWT.NONE, true);
+        Button btn_InsertAtCursorPosition = new Button(toolItem_InsertAtCursorPosition, SWT.TOGGLE);
+        this.btn_InsertAtCursorPosition[0] = btn_InsertAtCursorPosition;
+        KeyStateManager.addTooltipText(btn_InsertAtCursorPosition, I18n.E3D_InsertAtCursorPosition, Task.INSERT_AT_CURSOR);
+        btn_InsertAtCursorPosition.setImage(ResourceManager.getImage("icon16_insertAtCursor.png")); //$NON-NLS-1$
+    }
+
+    private void createToolItemMode() {
+        ToolItem toolItem_Mode = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_Vertices = new Button(toolItem_Mode, SWT.TOGGLE);
+            this.btn_Vertices[0] = btn_Vertices;
+            KeyStateManager.addTooltipText(btn_Vertices, I18n.E3D_ModeVertex, Task.OBJ_VERTEX);
+            btn_Vertices.setSelection(true);
+            btn_Vertices.setImage(ResourceManager.getImage("icon16_vertices.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_TrisNQuads = new Button(toolItem_Mode, SWT.TOGGLE);
+            this.btn_TrisNQuads[0] = btn_TrisNQuads;
+            KeyStateManager.addTooltipText(btn_TrisNQuads, I18n.E3D_ModeSurface, Task.OBJ_FACE);
+            btn_TrisNQuads.setImage(ResourceManager.getImage("icon16_trisNquads.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Lines = new Button(toolItem_Mode, SWT.TOGGLE);
+            this.btn_Lines[0] = btn_Lines;
+            KeyStateManager.addTooltipText(btn_Lines, I18n.E3D_ModeLine, Task.OBJ_LINE);
+            btn_Lines.setImage(ResourceManager.getImage("icon16_lines.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Subfiles = new Button(toolItem_Mode, SWT.TOGGLE);
+            this.btn_Subfiles[0] = btn_Subfiles;
+            KeyStateManager.addTooltipText(btn_Subfiles, I18n.E3D_ModeSubpart, Task.OBJ_PRIMITIVE);
+            btn_Subfiles.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
+        }
+    }
+
+    private void createToolItemCCPD() {
+        ToolItem toolItem_CCPD = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_Cut = new Button(toolItem_CCPD, SWT.NONE);
+            this.btn_Cut[0] = btn_Cut;
+            btn_Cut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
+            KeyStateManager.addTooltipText(btn_Cut, I18n.COPYNPASTE_Cut, Task.CUT);
+        }
+        {
+            Button btn_Copy = new Button(toolItem_CCPD, SWT.NONE);
+            this.btn_Copy[0] = btn_Copy;
+            btn_Copy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
+            KeyStateManager.addTooltipText(btn_Copy, I18n.COPYNPASTE_Copy, Task.COPY);
+        }
+        {
+            Button btn_Paste = new Button(toolItem_CCPD, SWT.NONE);
+            this.btn_Paste[0] = btn_Paste;
+            btn_Paste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
+            KeyStateManager.addTooltipText(btn_Paste, I18n.COPYNPASTE_Paste, Task.PASTE);
+        }
+        {
+            Button btn_Delete = new Button(toolItem_CCPD, SWT.NONE);
+            this.btn_Delete[0] = btn_Delete;
+            btn_Delete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
+            KeyStateManager.addTooltipText(btn_Delete, I18n.COPYNPASTE_Delete, Task.DELETE);
+        }
+    }
+
+    private void createToolItemMiscClick() {
+        ToolItem toolItem_MiscClick = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_BFCswap = new Button(toolItem_MiscClick, SWT.NONE);
+            this.btn_BFCswap[0] = btn_BFCswap;
+            btn_BFCswap.setToolTipText(I18n.E3D_SwapWinding);
+            btn_BFCswap.setImage(ResourceManager.getImage("icon16_bfcSwap.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_CompileSubfile = new Button(toolItem_MiscClick, SWT.NONE);
+            this.btn_CompileSubfile[0] = btn_CompileSubfile;
+            btn_CompileSubfile.setToolTipText(I18n.E3D_CompileSubfileData);
+            btn_CompileSubfile.setImage(ResourceManager.getImage("icon16_subcompile.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_SplitQuad = new Button(toolItem_MiscClick, SWT.NONE);
+            this.btn_SplitQuad[0] = btn_SplitQuad;
+            btn_SplitQuad.setImage(ResourceManager.getImage("icon16_quadToTri.png")); //$NON-NLS-1$
+            btn_SplitQuad.setToolTipText(I18n.E3D_SplitQuad);
+        }
+        {
+            Button btn_CondlineToLine = new Button(toolItem_MiscClick, SWT.NONE);
+            this.btn_CondlineToLine[0] = btn_CondlineToLine;
+            // FIXME Needs icon!
+            btn_CondlineToLine.setText("C2L"); //$NON-NLS-1$
+            btn_CondlineToLine.setToolTipText(I18n.E3D_CondlineToLine);
+        }
+        {
+            Button btn_LineToCondline = new Button(toolItem_MiscClick, SWT.NONE);
+            this.btn_LineToCondline[0] = btn_LineToCondline;
+            // FIXME Needs icon!
+            btn_LineToCondline.setText("L2C"); //$NON-NLS-1$
+            btn_LineToCondline.setToolTipText(I18n.E3D_LineToCondline);
+        }
+        {
+            Button btn_MoveOnLine = new Button(toolItem_MiscClick, SWT.NONE);
+            this.btn_MoveOnLine[0] = btn_MoveOnLine;
+            // FIXME Needs icon!
+            btn_MoveOnLine.setText("ML"); //$NON-NLS-1$
+            btn_MoveOnLine.setToolTipText(I18n.E3D_MoveOnLine);
+        }
+        {
+            Button btn_RoundSelection = new Button(toolItem_MiscClick, SWT.NONE);
+            this.btn_RoundSelection[0] = btn_RoundSelection;
+            btn_RoundSelection.setToolTipText(I18n.E3D_Round);
+            btn_RoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
+        }
+        {
+            final Button btn_Select = new Button(toolItem_MiscClick, SWT.PUSH);
+            this.btn_Select2[0] = btn_Select;
+            btn_Select.setToolTipText(I18n.E3D_AdvancedSelect);
+            btn_Select.setText(I18n.E3D_AdvancedSelect);
+            this.mnu_Select = new Menu(this.getShell(), SWT.POP_UP);
+            btn_Select.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    showSelectMenu();
+                    Editor3DWindow.getWindow().regainFocus();
+                }
+            });
+            {
+                {
+                    MenuItem mntm_SelectAll = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SelectAll[0] = mntm_SelectAll;
+                    KeyStateManager.addKeyText(mntm_SelectAll, I18n.E3D_All, Task.SELECT_ALL);
+                }
+                {
+                    MenuItem mntm_SelectNone = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SelectNone[0] = mntm_SelectNone;
+                    KeyStateManager.addKeyText(mntm_SelectNone, I18n.E3D_None, Task.SELECT_NONE);
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator0 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_SelectInverse = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SelectInverse[0] = mntm_SelectInverse;
+                    mntm_SelectInverse.setText(I18n.E3D_Inverse);
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator1 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_SelectAllVisible = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SelectAllVisible[0] = mntm_SelectAllVisible;
+                    mntm_SelectAllVisible.setText(I18n.E3D_AllShown);
+                }
+                {
+                    MenuItem mntm_SelectAllWithColours = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SelectAllWithColours[0] = mntm_SelectAllWithColours;
+                    KeyStateManager.addKeyText(mntm_SelectAllWithColours, I18n.E3D_AllSameColours, Task.SELECT_ALL_WITH_SAME_COLOURS);
+                }
+                {
+                    MenuItem mntm_SelectAllVisibleWithColours = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SelectAllVisibleWithColours[0] = mntm_SelectAllVisibleWithColours;
+                    mntm_SelectAllVisibleWithColours.setText(I18n.E3D_AllSameColoursShown);
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator2 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_SelectEverything = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SelectEverything[0] = mntm_SelectEverything;
+                    mntm_SelectEverything.setText(I18n.E3D_Everything);
+                    mntm_SelectEverything.setEnabled(false);
+                }
+                {
+                    MenuItem mntm_SelectConnected = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SelectConnected[0] = mntm_SelectConnected;
+                    KeyStateManager.addKeyText(mntm_SelectConnected, I18n.E3D_Connected, Task.SELECT_CONNECTED);
+                }
+                {
+                    MenuItem mntm_SelectTouching = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SelectTouching[0] = mntm_SelectTouching;
+                    KeyStateManager.addKeyText(mntm_SelectTouching, I18n.E3D_Touching, Task.SELECT_TOUCHING);
+                }
+                {
+                    MenuItem mntm_WithSameColour = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_WithSameColour[0] = mntm_WithSameColour;
+                    KeyStateManager.addKeyText(mntm_WithSameColour, I18n.E3D_WithSameColour, Task.SELECT_OPTION_WITH_SAME_COLOURS);
+                }
+                {
+                    MenuItem mntm_WithSameOrientation = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_WithSameOrientation[0] = mntm_WithSameOrientation;
+                    mntm_WithSameOrientation.setText(I18n.E3D_WithSameOrientation);
+                }
+                {
+                    MenuItem mntm_WithAccuracy = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_WithAccuracy[0] = mntm_WithAccuracy;
+                    mntm_WithAccuracy.setText(I18n.E3D_WithAccuracy);
+                }
+                {
+                    MenuItem mntm_WithHiddenData = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_WithHiddenData[0] = mntm_WithHiddenData;
+                    mntm_WithHiddenData.setText(I18n.E3D_WhatIsHidden);
+                    mntm_WithHiddenData.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem mntm_ExceptSubfiles = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_ExceptSubfiles[0] = mntm_ExceptSubfiles;
+                    mntm_ExceptSubfiles.setText(I18n.E3D_ExceptSubfile);
+                }
+                {
+                    MenuItem mntm_WithWholeSubfiles = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_WithWholeSubfiles[0] = mntm_WithWholeSubfiles;
+                    mntm_WithWholeSubfiles.setText(I18n.E3D_WithWholeSubfileSelection);
+                }
+                {
+                    MenuItem mntm_StopAtEdges = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_StopAtEdges[0] = mntm_StopAtEdges;
+                    mntm_StopAtEdges.setText(I18n.E3D_StopSelectionAtEdges);
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator3 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_SelectSingleVertex = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SelectSingleVertex[0] = mntm_SelectSingleVertex;
+                    mntm_SelectSingleVertex.setText(I18n.E3D_SelectVertex);
+                }
+                {
+                    MenuItem mntm_SelectIsolatedVertices = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SelectIsolatedVertices[0] = mntm_SelectIsolatedVertices;
+                    mntm_SelectIsolatedVertices.setText(I18n.E3D_IsolatedVertices);
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator4 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_SVertices = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_SVertices[0] = mntm_SVertices;
+                    mntm_SVertices.setText(I18n.E3D_Vertices);
+                    mntm_SVertices.setSelection(true);
+                }
+                {
+                    MenuItem mntm_SLines = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_SLines[0] = mntm_SLines;
+                    mntm_SLines.setText(I18n.E3D_Lines);
+                    mntm_SLines.setSelection(true);
+                }
+                {
+                    MenuItem mntm_STriangles = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_STriangles[0] = mntm_STriangles;
+                    mntm_STriangles.setText(I18n.E3D_Triangles);
+                    mntm_STriangles.setSelection(true);
+                }
+                {
+                    MenuItem mntm_SQuads = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_SQuads[0] = mntm_SQuads;
+                    mntm_SQuads.setText(I18n.E3D_Quads);
+                    mntm_SQuads.setSelection(true);
+                }
+                {
+                    MenuItem mntm_SCLines = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_SCLines[0] = mntm_SCLines;
+                    mntm_SCLines.setText(I18n.E3D_Condlines);
+                    mntm_SCLines.setSelection(true);
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator5 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_needsThreshold = new MenuItem(mnu_Select, SWT.PUSH);
+                    mntm_needsThreshold.setText(I18n.E3D_NeedsAThreshold);
+                    mntm_needsThreshold.setEnabled(false);
+                }
+                {
+                    MenuItem mntm_noEffect = new MenuItem(mnu_Select, SWT.PUSH);
+                    mntm_noEffect.setText(I18n.E3D_NoEffectSelectEverything);
+                    mntm_noEffect.setEnabled(false);
+                }
+            }
+        }
+        {
+            final Button btn_MergeNSplit = new Button(toolItem_MiscClick, SWT.PUSH);
+            btn_MergeNSplit.setToolTipText(I18n.E3D_MergeSplit);
+            btn_MergeNSplit.setText(I18n.E3D_MergeSplit);
+            this.mnu_Merge = new Menu(this.getShell(), SWT.POP_UP);
+            btn_MergeNSplit.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    Point loc = btn_MergeNSplit.getLocation();
+                    Rectangle rect = btn_MergeNSplit.getBounds();
+                    Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
+                    mnu_Merge.setLocation(getShell().getDisplay().map(btn_MergeNSplit.getParent(), null, mLoc));
+                    mnu_Merge.setVisible(true);
+                    Editor3DWindow.getWindow().regainFocus();
+                }
+            });
+            {
+                MenuItem mntm_Flip = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_Flip[0] = mntm_Flip;
+                mntm_Flip.setText(I18n.E3D_FlipRotate);
+            }
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator2 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+            {
+                MenuItem mntm_Split = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_Split[0] = mntm_Split;
+                KeyStateManager.addKeyText(mntm_Split, I18n.E3D_Split, Task.SPLIT);
+            }
+            {
+                MenuItem mntm_SplitNTimes = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_SplitNTimes[0] = mntm_SplitNTimes;
+                mntm_SplitNTimes.setText(I18n.E3D_SplitNTimes);
+            }
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator3 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+            {
+                MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_MergeToAverage[0] = mntm_mergeTo;
+                KeyStateManager.addKeyText(mntm_mergeTo, I18n.E3D_MergeToAvg, Task.MERGE_TO_AVERAGE);
+            }
+            {
+                MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_MergeToLastSelected[0] = mntm_mergeTo;
+                KeyStateManager.addKeyText(mntm_mergeTo, I18n.E3D_MergeToLastSelected, Task.MERGE_TO_LAST);
+            }
+            {
+                MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_MergeToNearestVertex[0] = mntm_mergeTo;
+                mntm_mergeTo.setText(I18n.E3D_MergeToNearestVertex);
+            }
+            {
+                MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_MergeToNearestEdge[0] = mntm_mergeTo;
+                mntm_mergeTo.setText(I18n.E3D_MergeToNearestEdge);
+            }
+            {
+                MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_MergeToNearestFace[0] = mntm_mergeTo;
+                mntm_mergeTo.setText(I18n.E3D_MergeToNearestFace);
+            }
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator4 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+            {
+                MenuItem mntm_setXYZ = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_setXYZ[0] = mntm_setXYZ;
+                mntm_setXYZ.setText(I18n.E3D_SetXYZ);
+            }
+            {
+                MenuItem mntm_Translate = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_Translate[0] = mntm_Translate;
+                mntm_Translate.setText(I18n.E3D_TranslateSelection);
+            }
+            {
+                MenuItem mntm_Rotate = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_Rotate[0] = mntm_Rotate;
+                mntm_Rotate.setText(I18n.E3D_RotateSelection);
+            }
+            {
+                MenuItem mntm_Scale = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_Scale[0] = mntm_Scale;
+                mntm_Scale.setText(I18n.E3D_ScaleSelection);
+            }
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator1 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+            {
+                MenuItem mntm_SubdivideCatmullClark = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_SubdivideCatmullClark[0] = mntm_SubdivideCatmullClark;
+                mntm_SubdivideCatmullClark.setText(I18n.E3D_SubdivideCatmullClark);
+            }
+            {
+                MenuItem mntm_SubdivideLoop = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_SubdivideLoop[0] = mntm_SubdivideLoop;
+                mntm_SubdivideLoop.setText(I18n.E3D_SubdivideLoop);
+            }
+        }
+        {
+            final Button btn_ToolsActions = new Button(toolItem_MiscClick, SWT.ARROW | SWT.DOWN);
+            btn_ToolsActions.setToolTipText(I18n.E3D_ToolsOptions);
+            this.mnu_Tools = new Menu(this.getShell(), SWT.POP_UP);
+            btn_ToolsActions.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    Point loc = btn_ToolsActions.getLocation();
+                    Rectangle rect = btn_ToolsActions.getBounds();
+                    Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
+                    mnu_Tools.setLocation(getShell().getDisplay().map(btn_ToolsActions.getParent(), null, mLoc));
+                    mnu_Tools.setVisible(true);
+                    Editor3DWindow.getWindow().regainFocus();
+                }
+            });
+            {
+                {
+                    MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_Edger2[0] = mntm_Edger2;
+                    mntm_Edger2.setText(I18n.E3D_Edger2);
+                }
+                {
+                    MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_Txt2Dat[0] = mntm_Edger2;
+                    mntm_Edger2.setText(I18n.E3D_Txt2Dat);
+                }
+                {
+                    MenuItem mntm_Rectifier = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_Rectifier[0] = mntm_Rectifier;
+                    mntm_Rectifier.setText(I18n.E3D_Rectifier);
+                }
+                {
+                    MenuItem mntm_Isecalc = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_Isecalc[0] = mntm_Isecalc;
+                    mntm_Isecalc.setText(I18n.E3D_Isecalc);
+                }
+                {
+                    MenuItem mntm_SlicerPro = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_SlicerPro[0] = mntm_SlicerPro;
+                    mntm_SlicerPro.setText(I18n.E3D_SlicerPro);
+                }
+                {
+                    MenuItem mntm_Intersector = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_Intersector[0] = mntm_Intersector;
+                    mntm_Intersector.setText(I18n.E3D_Intersector);
+                }
+                {
+                    MenuItem mntm_Lines2Pattern = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_Lines2Pattern[0] = mntm_Lines2Pattern;
+                    mntm_Lines2Pattern.setText(I18n.E3D_Lines2Pattern);
+                }
+                {
+                    MenuItem mntm_PathTruder = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_PathTruder[0] = mntm_PathTruder;
+                    mntm_PathTruder.setText(I18n.E3D_PathTruder);
+                }
+                {
+                    MenuItem mntm_SymSplitter = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_SymSplitter[0] = mntm_SymSplitter;
+                    mntm_SymSplitter.setText(I18n.E3D_SymSplitter);
+                }
+                {
+                    MenuItem mntm_Unificator = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_Unificator[0] = mntm_Unificator;
+                    mntm_Unificator.setText(I18n.E3D_Unificator);
+                }
+                {
+                    MenuItem mntm_RingsAndCones = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_RingsAndCones[0] = mntm_RingsAndCones;
+                    mntm_RingsAndCones.setText(I18n.E3D_RingsAndCones);
+                }
+                {
+                    MenuItem mntm_TJunctionFinder = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_TJunctionFinder[0] = mntm_TJunctionFinder;
+                    mntm_TJunctionFinder.setText(I18n.E3D_Tjunction);
+                }
+                {
+                    MenuItem mntm_MeshReducer = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_MeshReducer[0] = mntm_MeshReducer;
+                    mntm_MeshReducer.setText(I18n.E3D_MeshReduce);
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator1 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_CustomiseKeys = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_CustomiseKeys[0] = mntm_CustomiseKeys;
+                    mntm_CustomiseKeys.setText(I18n.KEYBOARD_CustomiseShortkeys);
+                }
+                {
+                    MenuItem mntm_ResetSettingsOnRestart = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_ResetSettingsOnRestart[0] = mntm_ResetSettingsOnRestart;
+                    mntm_ResetSettingsOnRestart.setText(I18n.E3D_ResetAll);
+                }
+                {
+                    MenuItem mntm_SelectAnotherLDConfig = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_SelectAnotherLDConfig[0] = mntm_SelectAnotherLDConfig;
+                    mntm_SelectAnotherLDConfig.setText(I18n.E3D_SelectLDConfig);
+                }
+                {
+                    final MenuItem mntm_SetIconSize = new MenuItem(mnu_Tools, SWT.CASCADE);
+                    mntm_SetIconSize.setText(I18n.E3D_SetIconSize);
+                    final Menu mnu_IconSize = new Menu(mntm_SetIconSize);
+                    mntm_SetIconSize.setMenu(mnu_IconSize);
+                    final int iconSize = Editor3DWindow.getIconsize();
+                    {
+                        MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
+                        this.mntm_IconSize1[0] = mntm_IconSize;
+                        mntm_IconSize.setText(I18n.E3D_IconSize1);
+                        mntm_IconSize.setSelection(iconSize == 0);
+                    }
+                    {
+                        MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
+                        this.mntm_IconSize2[0] = mntm_IconSize;
+                        mntm_IconSize.setText(I18n.E3D_IconSize2);
+                        mntm_IconSize.setSelection(iconSize == 1);
+                    }
+                    {
+                        MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
+                        this.mntm_IconSize3[0] = mntm_IconSize;
+                        mntm_IconSize.setText(I18n.E3D_IconSize3);
+                        mntm_IconSize.setSelection(iconSize == 2);
+                    }
+                    {
+                        MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
+                        this.mntm_IconSize4[0] = mntm_IconSize;
+                        mntm_IconSize.setText(I18n.E3D_IconSize4);
+                        mntm_IconSize.setSelection(iconSize == 3);
+                    }
+                    {
+                        MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
+                        this.mntm_IconSize5[0] = mntm_IconSize;
+                        mntm_IconSize.setText(I18n.E3D_IconSize5);
+                        mntm_IconSize.setSelection(iconSize == 4);
+                    }
+                    {
+                        MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
+                        this.mntm_IconSize6[0] = mntm_IconSize;
+                        mntm_IconSize.setText(I18n.E3D_IconSize6);
+                        mntm_IconSize.setSelection(iconSize == 5);
+                    }
+                    @SuppressWarnings("unused")
+                    final MenuItem mntmSeparator2 = new MenuItem(mnu_IconSize, SWT.SEPARATOR);
+                    {
+                        MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.PUSH);
+                        mntm_IconSize.setText(I18n.E3D_RequiresRestart);
+                        mntm_IconSize.setEnabled(false);
+                    }
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator2 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_UploadErrorLog = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_UploadLogs[0] = mntm_UploadErrorLog;
+                    mntm_UploadErrorLog.setText(I18n.E3D_UploadErrorLogs);
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator3 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_SyncWithTextEditor = new MenuItem(mnu_Tools, SWT.CHECK);
+                    mntm_SyncWithTextEditor.setSelection(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
+                    this.mntm_SyncWithTextEditor[0] = mntm_SyncWithTextEditor;
+                    mntm_SyncWithTextEditor.setText(I18n.E3D_Sync3DEditor);
+                }
+                {
+                    MenuItem mntm_SyncLpeInline = new MenuItem(mnu_Tools, SWT.CHECK);
+                    mntm_SyncLpeInline.setSelection(WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get());
+                    mntm_SyncLpeInline.setEnabled(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
+                    this.mntm_SyncLpeInline[0] = mntm_SyncLpeInline;
+                    mntm_SyncLpeInline.setText(I18n.E3D_ParseInline);
+                }
+            }
+        }
+    }
+
+    private void createToolItemTransformationModes() {
+        ToolItem toolItem_TransformationModes = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            this.btn_Local[0] = btn_Local;
+            btn_Local.setToolTipText(I18n.E3D_Local);
+            btn_Local.setSelection(true);
+            btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            this.btn_Global[0] = btn_Global;
+            btn_Global.setToolTipText(I18n.E3D_Global);
+            btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
+        }
+        {
+            final Button btn_ManipulatorActions = new Button(toolItem_TransformationModes, SWT.ARROW | SWT.DOWN);
+            btn_ManipulatorActions.setToolTipText(I18n.E3D_ModifyManipulator);
+            this.mnu_Manipulator = new Menu(this.getShell(), SWT.POP_UP);
+            btn_ManipulatorActions.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    Point loc = btn_ManipulatorActions.getLocation();
+                    Rectangle rect = btn_ManipulatorActions.getBounds();
+                    Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
+                    mnu_Manipulator.setLocation(getShell().getDisplay().map(btn_ManipulatorActions.getParent(), null, mLoc));
+                    mnu_Manipulator.setVisible(true);
+                    Editor3DWindow.getWindow().regainFocus();
+                }
+            });
+            {
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_0_toOrigin[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ManipulatorToOrigin);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_toOrigin.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_XIII_toWorld[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ManipulatorToWorld);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_toWorld.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_XIV_adjustRotationCenter[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_AdjustRotationCenter);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator1 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_X_XReverse[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ReverseX);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_XI_YReverse[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ReverseY);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_XII_ZReverse[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ReverseZ);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator2 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_SwitchXY[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_SwapXY);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_SwitchXZ[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_SwapXZ);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_SwitchYZ[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_SwapYZ);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator3 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_1_cameraToPos[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_CamToManipulator);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_cameratomanipulator.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_2_toAverage[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ManipulatorToAvg);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator31 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_3_toSubfile[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ManipulatorToSubfile);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_32_subfileTo[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_SubfileToManipulator);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator32 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_4_toVertex[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ManipulatorToVertex);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertex.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_5_toEdge[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ManipulatorToEdge);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedge.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_6_toSurface[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ManipulatorToFace);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator4 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_7_toVertexNormal[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ManipulatorToVertexN);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_8_toEdgeNormal[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ManipulatorToEdgeN);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.btn_Manipulator_9_toSurfaceNormal[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ManipulatorToFaceN);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
+                }
+            }
+        }
+    }
+
+    private void createToolItemTransformations() {
+        ToolItem toolItem_Transformations = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_Select = new Button(toolItem_Transformations, SWT.TOGGLE);
+            this.btn_Select[0] = btn_Select;
+            KeyStateManager.addTooltipText(btn_Select, I18n.E3D_Select, Task.MODE_SELECT);
+            btn_Select.setSelection(true);
+            btn_Select.setImage(ResourceManager.getImage("icon16_select.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Move = new Button(toolItem_Transformations, SWT.TOGGLE);
+            this.btn_Move[0] = btn_Move;
+            KeyStateManager.addTooltipText(btn_Move, I18n.E3D_Move, Task.MODE_MOVE);
+            btn_Move.setImage(ResourceManager.getImage("icon16_move.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Rotate = new Button(toolItem_Transformations, SWT.TOGGLE);
+            this.btn_Rotate[0] = btn_Rotate;
+            KeyStateManager.addTooltipText(btn_Rotate, I18n.E3D_Rotate, Task.MODE_ROTATE);
+            btn_Rotate.setImage(ResourceManager.getImage("icon16_rotate.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Scale = new Button(toolItem_Transformations, SWT.TOGGLE);
+            this.btn_Scale[0] = btn_Scale;
+            KeyStateManager.addTooltipText(btn_Scale, I18n.E3D_Scale, Task.MODE_SCALE);
+            btn_Scale.setImage(ResourceManager.getImage("icon16_scale.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Combined = new Button(toolItem_Transformations, SWT.TOGGLE);
+            this.btn_Combined[0] = btn_Combined;
+            KeyStateManager.addTooltipText(btn_Combined, I18n.E3D_Combined, Task.MODE_COMBINED);
+            btn_Combined.setImage(ResourceManager.getImage("icon16_combined.png")); //$NON-NLS-1$
+        }
+    }
+
+    private void createToolItemUndoRedo() {
+        ToolItem toolItem_UndoRedo = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_Undo = new Button(toolItem_UndoRedo, SWT.NONE);
+            this.btn_Undo[0] = btn_Undo;
+            btn_Undo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
+            KeyStateManager.addTooltipText(btn_Undo, I18n.E3D_Undo, Task.UNDO);
+        }
+        if (NLogger.DEBUG) {
+            Button btn_Snapshot = new Button(toolItem_UndoRedo, SWT.NONE);
+            this.btn_AddHistory[0] = btn_Snapshot;
+            btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
+            btn_Snapshot.setToolTipText(I18n.E3D_Snapshot);
+        }
+        {
+            Button btn_Redo = new Button(toolItem_UndoRedo, SWT.NONE);
+            this.btn_Redo[0] = btn_Redo;
+            btn_Redo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
+            KeyStateManager.addTooltipText(btn_Redo, I18n.E3D_Redo, Task.REDO);
+        }
+    }
+
+    private void createToolItemMiscToggle() {
+        ToolItem toolItem_MiscToggle = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_AdjacentMove = new Button(toolItem_MiscToggle, SWT.TOGGLE);
+            this.btn_MoveAdjacentData[0] = btn_AdjacentMove;
+            btn_AdjacentMove.setToolTipText(I18n.E3D_MoveAdjacentData);
+            btn_AdjacentMove.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
+            btn_AdjacentMove.setSelection(false);
+        }
+        {
+            Button btn_TransSelection = new Button(toolItem_MiscToggle, SWT.TOGGLE);
+            this.btn_NoTransparentSelection[0] = btn_TransSelection;
+            btn_TransSelection.setToolTipText(I18n.E3D_ToggleTransparent);
+            btn_TransSelection.setImage(ResourceManager.getImage("icon16_notrans.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_BFCToggle = new Button(toolItem_MiscToggle, SWT.TOGGLE);
+            this.btn_BFCToggle[0] = btn_BFCToggle;
+            btn_BFCToggle.setToolTipText(I18n.E3D_ToggleBFC);
+            btn_BFCToggle.setImage(ResourceManager.getImage("icon16_bfc.png")); //$NON-NLS-1$
+        }
+    }
+
+    private void createToolItemHideUnhide() {
+        ToolItem toolItem_HideUnhide = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_Hide = new Button(toolItem_HideUnhide, SWT.NONE);
+            this.btn_Hide[0] = btn_Hide;
+            btn_Hide.setToolTipText(I18n.E3D_Hide);
+            btn_Hide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Unhide = new Button(toolItem_HideUnhide, SWT.NONE);
+            this.btn_ShowAll[0] = btn_Unhide;
+            btn_Unhide.setToolTipText(I18n.E3D_ShowAll);
+            btn_Unhide.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
+        }
+    }
+
+    private void createToolItemNewOpenDat() {
+        ToolItem toolItem_NewOpenDAT = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_NewDat = new Button(toolItem_NewOpenDAT, SWT.NONE);
+            this.btn_NewDat[0] = btn_NewDat;
+            btn_NewDat.setToolTipText(I18n.E3D_NewDat);
+            btn_NewDat.setImage(ResourceManager.getImage("icon16_document-newdat.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_OpenDAT = new Button(toolItem_NewOpenDAT, SWT.NONE);
+            this.btn_OpenDat[0] = btn_OpenDAT;
+            btn_OpenDAT.setToolTipText(I18n.E3D_OpenDat);
+            btn_OpenDAT.setImage(ResourceManager.getImage("icon16_document-opendat.png")); //$NON-NLS-1$
+        }
+    }
+
+    private void createToolItemNewOpenSave() {
+        ToolItem toolItem_NewOpenSave = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_New = new Button(toolItem_NewOpenSave, SWT.NONE);
+            this.btn_New[0] = btn_New;
+            btn_New.setToolTipText(I18n.E3D_New);
+            btn_New.setImage(ResourceManager.getImage("icon16_document-new.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Open = new Button(toolItem_NewOpenSave, SWT.NONE);
+            this.btn_Open[0] = btn_Open;
+            btn_Open.setToolTipText(I18n.E3D_Open);
+            btn_Open.setImage(ResourceManager.getImage("icon16_document-open.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Save = new Button(toolItem_NewOpenSave, SWT.NONE);
+            this.btn_Save[0] = btn_Save;
+            KeyStateManager.addTooltipText(btn_Save, I18n.E3D_Save, Task.SAVE);
+            btn_Save.setImage(ResourceManager.getImage("icon16_document-save.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_SaveAll = new Button(toolItem_NewOpenSave, SWT.NONE);
+            this.btn_SaveAll[0] = btn_SaveAll;
+            btn_SaveAll.setToolTipText(I18n.E3D_SaveAll);
+            btn_SaveAll.setImage(ResourceManager.getImage("icon16_document-saveall.png")); //$NON-NLS-1$
+        }
+    }
+
+    private void createToolItemSync() {
+        ToolItem toolItem_Sync = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_Sync = new Button(toolItem_Sync, SWT.NONE);
+            this.btn_Sync[0] = btn_Sync;
+            btn_Sync.setToolTipText(I18n.E3D_SyncFolders);
+            btn_Sync.setImage(ResourceManager.getImage("icon16_sync.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Snapshot = new Button(toolItem_Sync, SWT.NONE);
+            this.btn_LastOpen[0] = btn_Snapshot;
+            btn_Snapshot.setToolTipText(I18n.E3D_LastOpened);
+            btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
+        }
     }
 
     private void createComposite3D(SashForm sashForm, CompositeContainer c, Composite3DState state) {
