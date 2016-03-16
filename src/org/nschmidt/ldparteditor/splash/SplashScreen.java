@@ -16,7 +16,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.splash;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.ApplicationWindow;
@@ -49,6 +53,11 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shells.editor3d.ToolItemDrawLocation;
+import org.nschmidt.ldparteditor.shells.editor3d.ToolItemDrawMode;
+import org.nschmidt.ldparteditor.shells.editor3d.ToolItemState;
+import org.nschmidt.ldparteditor.text.LDParsingException;
+import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -195,6 +204,53 @@ public class SplashScreen extends ApplicationWindow {
                     threadReturn[0] = ReturnType.READ_ERROR;
                     return;
                 }
+
+                // Load the toolItem state for the 3D editor
+                UTF8BufferedReader reader;
+                String line = null;
+                try {
+                    ArrayList<ToolItemState> states = WorkbenchManager.getUserSettingState().getToolItemConfig3D();
+                    if (states == null) {
+                        states = new ArrayList<ToolItemState>();
+                    }
+                    reader = new UTF8BufferedReader("layout_3D_editor.cfg"); //$NON-NLS-1$
+                    states.clear();
+                    while (true) {
+                        line = reader.readLine();
+                        if (line == null) {
+                            break;
+                        }
+                        final String[] data_segments = Pattern.compile(";").split(line.trim()); //$NON-NLS-1$
+                        if (data_segments.length > 3) {
+                            for (int i = 0; i < 4; i++) {
+                                data_segments[i] = data_segments[i].trim();
+                            }
+                            ToolItemDrawMode mode = ToolItemDrawMode.HORIZONTAL;
+                            ToolItemDrawLocation location = ToolItemDrawLocation.NORTH;
+                            if ("EAST".equals(data_segments[1])) { //$NON-NLS-1$
+                                location = ToolItemDrawLocation.EAST;
+                            } else if ("WEST".equals(data_segments[1])) { //$NON-NLS-1$
+                                location = ToolItemDrawLocation.WEST;
+                            }
+                            if ("VERTICAL".equals(data_segments[2])) { //$NON-NLS-1$
+                                mode = ToolItemDrawMode.VERTICAL;
+                            } else if ("DROPDWNMNU".equals(data_segments[2])) { //$NON-NLS-1$
+                                mode = ToolItemDrawMode.DROP_DOWN;
+                            }
+                            if ("NO_LABEL".equals(data_segments[3])) { //$NON-NLS-1$
+                                data_segments[3] = ""; //$NON-NLS-1$
+                            }
+                            states.add(new ToolItemState(data_segments[0], location, mode, data_segments[3]));
+                        }
+                    }
+                    reader.close();
+                } catch (FileNotFoundException consumed) {
+                } catch (LDParsingException e1) {
+                    NLogger.error(getClass(), e1);
+                } catch (UnsupportedEncodingException e1) {
+                    NLogger.error(getClass(), e1);
+                }
+
                 // Finish it.
                 display.syncExec(new Runnable() {
                     @Override

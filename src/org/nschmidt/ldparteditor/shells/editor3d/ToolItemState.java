@@ -27,9 +27,11 @@ public class ToolItemState implements Serializable {
 
     private String key = ""; //$NON-NLS-1$
     private ToolItemDrawMode drawMode = ToolItemDrawMode.HORIZONTAL;
+    private ToolItemDrawLocation drawLocation = ToolItemDrawLocation.NORTH;
     private String label = ""; //$NON-NLS-1$
-    public ToolItemState(String key, ToolItemDrawMode drawMode, String label) {
+    public ToolItemState(String key, ToolItemDrawLocation drawLocation, ToolItemDrawMode drawMode, String label) {
         this.key = key;
+        this.drawLocation = drawLocation;
         this.drawMode = drawMode;
         this.label = label;
     }
@@ -50,6 +52,12 @@ public class ToolItemState implements Serializable {
     }
     public void setLabel(String label) {
         this.label = label;
+    }
+    public ToolItemDrawLocation getDrawLocation() {
+        return drawLocation;
+    }
+    public void setDrawLocation(ToolItemDrawLocation drawLocation) {
+        this.drawLocation = drawLocation;
     }
     @Override
     public int hashCode() {
