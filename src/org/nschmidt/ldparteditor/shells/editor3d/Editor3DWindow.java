@@ -972,11 +972,13 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                             String typeSuffix = ""; //$NON-NLS-1$
                                             String folderPrefix = ""; //$NON-NLS-1$
+                                            String subfilePrefix = ""; //$NON-NLS-1$
                                             String path = new File(selected).getParent();
 
                                             if (path.endsWith(File.separator + "S") || path.endsWith(File.separator + "s")) { //$NON-NLS-1$ //$NON-NLS-2$
                                                 typeSuffix = "Unofficial_Subpart"; //$NON-NLS-1$
                                                 folderPrefix = "S\\"; //$NON-NLS-1$
+                                                subfilePrefix = "~"; //$NON-NLS-1$
                                             } else if (path.endsWith(File.separator + "P" + File.separator + "48") || path.endsWith(File.separator + "p" + File.separator + "48")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                                                 typeSuffix = "Unofficial_48_Primitive"; //$NON-NLS-1$
                                                 folderPrefix = "P\\"; //$NON-NLS-1$
@@ -989,7 +991,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             }
 
                                             UTF8PrintWriter r = new UTF8PrintWriter(selected);
-                                            r.println("0 "); //$NON-NLS-1$
+                                            r.println("0 " + subfilePrefix); //$NON-NLS-1$
                                             r.println("0 Name: " + folderPrefix + new File(selected).getName()); //$NON-NLS-1$
                                             String ldrawName = WorkbenchManager.getUserSettingState().getLdrawUserName();
                                             if (ldrawName == null || ldrawName.isEmpty()) {
