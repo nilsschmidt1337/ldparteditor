@@ -27,11 +27,16 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class ToolItem extends Composite {
 
-    public ToolItem(Composite parent, int style) {
+    public ToolItem(Composite parent, int style, boolean isHorizontal) {
         super(parent, style);
-        this.setLayout(new RowLayout(SWT.HORIZONTAL));
-        @SuppressWarnings("unused")
-        ToolSeparator srt_Seperator = new ToolSeparator(this, SWT.NONE);
+        if (isHorizontal) {
+            this.setLayout(new RowLayout(SWT.HORIZONTAL));
+            @SuppressWarnings("unused")
+            ToolSeparator srt_Seperator = new ToolSeparator(this, SWT.NONE, isHorizontal);
+        } else {
+            this.setLayout(new RowLayout(SWT.VERTICAL));
+            @SuppressWarnings("unused")
+            ToolSeparator srt_Seperator = new ToolSeparator(this, SWT.NONE, isHorizontal);
+        }
     }
-
 }

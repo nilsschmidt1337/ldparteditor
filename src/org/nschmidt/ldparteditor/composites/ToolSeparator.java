@@ -28,10 +28,14 @@ import org.eclipse.wb.swt.SWTResourceManager;
  */
 public class ToolSeparator extends Composite {
 
-    public ToolSeparator(Composite parent, int style) {
+    public ToolSeparator(Composite parent, int style, boolean isHorizontal) {
         super(parent, style);
         this.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
-        this.setLayoutData(new RowData(1, 25));
+        if (isHorizontal) {
+            this.setLayoutData(new RowData(1, 25));
+        } else {
+            this.setLayoutData(new RowData(25, 1));
+        }
     }
 
 }
