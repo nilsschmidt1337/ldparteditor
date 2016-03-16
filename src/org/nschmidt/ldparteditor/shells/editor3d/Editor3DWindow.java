@@ -1821,13 +1821,6 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        //        treeParts[0].addSelectionListener(new SelectionAdapter() {
-        //            @Override
-        //            public void widgetSelected(final SelectionEvent e) {
-        //
-        //            }
-        //        });
-
         treeParts[0].addListener(SWT.MouseDown, new Listener() {
             @Override
             public void handleEvent(Event event) {
@@ -2171,6 +2164,11 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                     df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
 
+                                    final File f = new File(df.getNewName());
+                                    if (f.getParentFile() != null) {
+                                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                                    }
+
                                     HashSet<EditorTextWindow> windows = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
                                     for (EditorTextWindow win : windows) {
                                         win.updateTabWithDatfile(df);
@@ -2245,6 +2243,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         }
                                     }
                                 }
+                                Project.setLastVisitedPath(Project.getProjectPath());
                             } else {
                                 MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                                 messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
