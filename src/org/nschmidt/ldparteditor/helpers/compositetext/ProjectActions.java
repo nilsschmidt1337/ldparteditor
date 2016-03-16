@@ -49,7 +49,7 @@ public enum ProjectActions {
      * Creates a new project
      * @param createOnlyDefault
      */
-    public static void createNewProject(Editor3DWindow win, boolean createOnlyDefault) {
+    public static boolean createNewProject(Editor3DWindow win, boolean createOnlyDefault) {
         if (askForUnsavedChanges(win, createOnlyDefault, true) && !createOnlyDefault && new NewProjectDialog(false).open() == IDialogConstants.OK_ID) {
             while (new File(Project.getTempProjectPath()).isDirectory()) {
                 MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.YES | SWT.CANCEL | SWT.NO);
@@ -59,9 +59,9 @@ public enum ProjectActions {
                 if (result2 == SWT.YES) {
                     break;
                 } else if (result2 == SWT.NO){
-                    if (new NewProjectDialog(false).open() != IDialogConstants.OK_ID) return;
+                    if (new NewProjectDialog(false).open() != IDialogConstants.OK_ID) return false;
                 } else {
-                    return;
+                    return false;
                 }
             }
             String newProjectPath = Project.getTempProjectPath() + File.separator;
@@ -70,12 +70,15 @@ public enum ProjectActions {
                 messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
                 messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
                 messageBox.open();
-                return;
+                return false;
             }
             Project.setProjectName(Project.getTempProjectName());
             Project.setProjectPath(Project.getTempProjectPath());
             Project.create(true);
+            Project.setLastVisitedPath(Project.getProjectPath());
+            return true;
         }
+        return false;
     }
 
     private static boolean askForUnsavedChanges(Editor3DWindow win, boolean createOnlyDefault, boolean ignoreNonProjectFiles) {
