@@ -41,6 +41,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
+import org.nschmidt.ldparteditor.composites.ToolItemDrawLocation;
+import org.nschmidt.ldparteditor.composites.ToolItemDrawMode;
+import org.nschmidt.ldparteditor.composites.ToolItemState;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.dialogs.startup.StartupDialog;
 import org.nschmidt.ldparteditor.enums.View;
@@ -53,9 +56,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.shells.editor3d.ToolItemDrawLocation;
-import org.nschmidt.ldparteditor.shells.editor3d.ToolItemDrawMode;
-import org.nschmidt.ldparteditor.shells.editor3d.ToolItemState;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -212,6 +212,7 @@ public class SplashScreen extends ApplicationWindow {
                     ArrayList<ToolItemState> states = WorkbenchManager.getUserSettingState().getToolItemConfig3D();
                     if (states == null) {
                         states = new ArrayList<ToolItemState>();
+                        WorkbenchManager.getUserSettingState().setToolItemConfig3D(states);
                     }
                     reader = new UTF8BufferedReader("layout_3D_editor.cfg"); //$NON-NLS-1$
                     states.clear();

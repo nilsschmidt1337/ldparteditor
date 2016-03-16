@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.nschmidt.ldparteditor.composites.ToolItemState;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
-import org.nschmidt.ldparteditor.shells.editor3d.ToolItemState;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 
 /**

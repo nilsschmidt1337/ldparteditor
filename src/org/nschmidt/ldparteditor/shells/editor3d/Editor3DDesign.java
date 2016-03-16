@@ -58,6 +58,9 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.composites.ToolItem;
+import org.nschmidt.ldparteditor.composites.ToolItemDrawLocation;
+import org.nschmidt.ldparteditor.composites.ToolItemDrawMode;
+import org.nschmidt.ldparteditor.composites.ToolItemState;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
@@ -137,25 +140,46 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_AddHistory = new Button[1];
     final Button[] btn_Redo = new Button[1];
 
-    final MenuItem[] btn_Manipulator_0_toOrigin = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_X_XReverse = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_XI_YReverse = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_XII_ZReverse = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_XIII_toWorld = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_1_cameraToPos = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_2_toAverage = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_3_toSubfile = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_32_subfileTo = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_4_toVertex = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_5_toEdge = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_6_toSurface = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_7_toVertexNormal = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_8_toEdgeNormal = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_9_toSurfaceNormal = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_XIV_adjustRotationCenter = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_SwitchXY = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_SwitchXZ = new MenuItem[1];
-    final MenuItem[] btn_Manipulator_SwitchYZ = new MenuItem[1];
+
+    final Button[] btn_Manipulator_0_toOrigin = new Button[1];
+    final Button[] btn_Manipulator_X_XReverse = new Button[1];
+    final Button[] btn_Manipulator_XI_YReverse = new Button[1];
+    final Button[] btn_Manipulator_XII_ZReverse = new Button[1];
+    final Button[] btn_Manipulator_XIII_toWorld = new Button[1];
+    final Button[] btn_Manipulator_1_cameraToPos = new Button[1];
+    final Button[] btn_Manipulator_2_toAverage = new Button[1];
+    final Button[] btn_Manipulator_3_toSubfile = new Button[1];
+    final Button[] btn_Manipulator_32_subfileTo = new Button[1];
+    final Button[] btn_Manipulator_4_toVertex = new Button[1];
+    final Button[] btn_Manipulator_5_toEdge = new Button[1];
+    final Button[] btn_Manipulator_6_toSurface = new Button[1];
+    final Button[] btn_Manipulator_7_toVertexNormal = new Button[1];
+    final Button[] btn_Manipulator_8_toEdgeNormal = new Button[1];
+    final Button[] btn_Manipulator_9_toSurfaceNormal = new Button[1];
+    final Button[] btn_Manipulator_XIV_adjustRotationCenter = new Button[1];
+    final Button[] btn_Manipulator_SwitchXY = new Button[1];
+    final Button[] btn_Manipulator_SwitchXZ = new Button[1];
+    final Button[] btn_Manipulator_SwitchYZ = new Button[1];
+
+    final MenuItem[] mntm_Manipulator_0_toOrigin = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_X_XReverse = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_XI_YReverse = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_XII_ZReverse = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_XIII_toWorld = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_1_cameraToPos = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_2_toAverage = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_3_toSubfile = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_32_subfileTo = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_4_toVertex = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_5_toEdge = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_6_toSurface = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_7_toVertexNormal = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_8_toEdgeNormal = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_9_toSurfaceNormal = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_XIV_adjustRotationCenter = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_SwitchXY = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_SwitchXZ = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_SwitchYZ = new MenuItem[1];
 
     final Button[] btn_LastUsedColour = new Button[1];
     final Button[] btn_Pipette = new Button[1];
@@ -413,21 +437,109 @@ class Editor3DDesign extends ApplicationWindow {
             cmpWest.setLayout(rl_toolBar);
         }
 
-        createToolItemSync();
-        createToolItemNewOpenSave();
-        createToolItemNewOpenDat();
-        createToolItemHideUnhide();
-        createToolItemMiscToggle();
-        createToolItemUndoRedo();
-        createToolItemTransformationMode();
-        createToolItemManipulatorMode();
-        createToolItemMiscClick();
-        createToolItemCCPD();
-        createToolItemMode();
-        createToolItemInsertAtCursorPosition();
-        createToolItemAdd();
-        createToolItemColours();
-        createToolItemLineThickness();
+        HashSet<String> missingItemsToCreate = new HashSet<String>();
+        missingItemsToCreate.add("SYNC_AND_RECENT_FILES"); //$NON-NLS-1$
+        missingItemsToCreate.add("PROJECT_MANAGEMENT"); //$NON-NLS-1$
+        missingItemsToCreate.add("OPEN_SAVE_DATFILE"); //$NON-NLS-1$
+        missingItemsToCreate.add("SHOW_AND_HIDE"); //$NON-NLS-1$
+        missingItemsToCreate.add("MISC_TOGGLE"); //$NON-NLS-1$
+        missingItemsToCreate.add("UNDO_REDO"); //$NON-NLS-1$
+        missingItemsToCreate.add("TRANSFORMATION_MODE"); //$NON-NLS-1$
+        missingItemsToCreate.add("MANIPULATOR_MODE"); //$NON-NLS-1$
+        missingItemsToCreate.add("MANIPULATOR_ACTIONS"); //$NON-NLS-1$
+        missingItemsToCreate.add("MISC_CLICK"); //$NON-NLS-1$
+        missingItemsToCreate.add("CUT_COPY_PASTE_DELETE"); //$NON-NLS-1$
+        missingItemsToCreate.add("OBJECT_MODE"); //$NON-NLS-1$
+        missingItemsToCreate.add("INSERT_AT_CURSOR"); //$NON-NLS-1$
+        missingItemsToCreate.add("ADD_SOMETHING"); //$NON-NLS-1$
+        missingItemsToCreate.add("COLOUR_BAR"); //$NON-NLS-1$
+        missingItemsToCreate.add("LINE_THICKNESS"); //$NON-NLS-1$
+
+        ToolItem lastToolItem = null;
+        for (ToolItemState s : WorkbenchManager.getUserSettingState().getToolItemConfig3D()) {
+            String obj = s.getKey();
+            if (obj.equals("SYNC_AND_RECENT_FILES")) { //$NON-NLS-1$
+                lastToolItem = createToolItemSync(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // SYNC_AND_RECENT_FILES
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("PROJECT_MANAGEMENT")) { //$NON-NLS-1$
+                lastToolItem = createToolItemNewOpenSave(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // PROJECT_MANAGEMENT
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("OPEN_SAVE_DATFILE")) { //$NON-NLS-1$
+                lastToolItem = createToolItemNewOpenDat(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // OPEN_SAVE_DATFILE
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("SHOW_AND_HIDE")) { //$NON-NLS-1$
+                lastToolItem = createToolItemHideUnhide(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // SHOW_AND_HIDE
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("MISC_TOGGLE")) { //$NON-NLS-1$
+                lastToolItem = createToolItemMiscToggle(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // MISC_TOGGLE
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("UNDO_REDO")) { //$NON-NLS-1$
+                lastToolItem = createToolItemUndoRedo(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // UNDO_REDO
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("TRANSFORMATION_MODE")) { //$NON-NLS-1$
+                lastToolItem = createToolItemTransformationMode(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // TRANSFORMATION_MODE
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("MANIPULATOR_MODE")) { //$NON-NLS-1$
+                lastToolItem = createToolItemManipulatorMode(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // MANIPULATOR_MODE
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("MANIPULATOR_ACTIONS")) { //$NON-NLS-1$
+                lastToolItem = createToolItemManipulatorActions(s.getDrawLocation(), s.getDrawMode(), s.getLabel(), lastToolItem); // MANIPULATOR_ACTIONS
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("MISC_CLICK")) { //$NON-NLS-1$
+                lastToolItem = createToolItemMiscClick(s.getLabel()); // MISC_CLICK
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("CUT_COPY_PASTE_DELETE")) { //$NON-NLS-1$
+                lastToolItem = createToolItemCCPD(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // CUT_COPY_PASTE_DELETE
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("OBJECT_MODE")) { //$NON-NLS-1$
+                lastToolItem = createToolItemMode(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // OBJECT_MODE
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("INSERT_AT_CURSOR")) { //$NON-NLS-1$
+                lastToolItem = createToolItemInsertAtCursorPosition(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // INSERT_AT_CURSOR
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("ADD_SOMETHING")) { //$NON-NLS-1$
+                lastToolItem = createToolItemAdd(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // ADD_SOMETHING
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("COLOUR_BAR")) { //$NON-NLS-1$
+                lastToolItem = createToolItemColours(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // COLOUR_BAR
+                missingItemsToCreate.remove(obj);
+            }
+            if (obj.equals("LINE_THICKNESS")) { //$NON-NLS-1$
+                lastToolItem = createToolItemLineThickness(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // LINE_THICKNESS
+                missingItemsToCreate.remove(obj);
+            }
+        }
+
+        if (missingItemsToCreate.contains("SYNC_AND_RECENT_FILES")) lastToolItem = createToolItemSync(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // SYNC_AND_RECENT_FILES //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("PROJECT_MANAGEMENT")) lastToolItem = createToolItemNewOpenSave(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // PROJECT_MANAGEMENT //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("OPEN_SAVE_DATFILE")) lastToolItem = createToolItemNewOpenDat(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // OPEN_SAVE_DATFILE //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("SHOW_AND_HIDE")) lastToolItem = createToolItemHideUnhide(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // SHOW_AND_HIDE //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("MISC_TOGGLE")) lastToolItem = createToolItemMiscToggle(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // MISC_TOGGLE //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("UNDO_REDO")) lastToolItem = createToolItemUndoRedo(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // UNDO_REDO //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("TRANSFORMATION_MODE")) lastToolItem = createToolItemTransformationMode(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // TRANSFORMATION_MODE //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("MANIPULATOR_MODE")) lastToolItem = createToolItemManipulatorMode(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // MANIPULATOR_MODE //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("MANIPULATOR_ACTIONS")) lastToolItem = createToolItemManipulatorActions(ToolItemDrawLocation.NORTH, ToolItemDrawMode.DROP_DOWN, "", lastToolItem); // MANIPULATOR_ACTIONS //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("MISC_CLICK")) lastToolItem = createToolItemMiscClick(""); // MISC_CLICK //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("CUT_COPY_PASTE_DELETE")) lastToolItem = createToolItemCCPD(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // CUT_COPY_PASTE_DELETE //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("OBJECT_MODE")) lastToolItem = createToolItemMode(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // OBJECT_MODE //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("INSERT_AT_CURSOR")) lastToolItem = createToolItemInsertAtCursorPosition(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // INSERT_AT_CURSOR //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("ADD_SOMETHING")) lastToolItem = createToolItemAdd(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // ADD_SOMETHING //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("COLOUR_BAR")) lastToolItem = createToolItemColours(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // COLOUR_BAR //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("LINE_THICKNESS")) lastToolItem = createToolItemLineThickness(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // LINE_THICKNESS //$NON-NLS-1$ //$NON-NLS-2$
 
         {
             Composite cmp_main_editor = new Composite(container, SWT.BORDER);
@@ -1220,8 +1332,21 @@ class Editor3DDesign extends ApplicationWindow {
         return container;
     }
 
-    private void createToolItemLineThickness() {
-        ToolItem toolItem_LineThickness = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemLineThickness(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_LineThickness = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_lineSize1 = new Button(toolItem_LineThickness, SWT.TOGGLE);
             this.btn_lineSize1[0] = btn_lineSize1;
@@ -1247,10 +1372,24 @@ class Editor3DDesign extends ApplicationWindow {
             btn_lineSize4.setToolTipText(I18n.E3D_LineSize4);
             btn_lineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
         }
+        return toolItem_LineThickness;
     }
 
-    private void createToolItemColours() {
-        ToolItem toolItem_Colours = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemColours(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_Colours = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
 
         addColorButton(toolItem_Colours, colours.get(0), 0);
@@ -1277,7 +1416,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Palette.setToolTipText(I18n.E3D_More);
             btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
         }
-        ToolItem toolItem_ColourFunctions = new ToolItem(cmpNorth, SWT.NONE, true);
+        ToolItem toolItem_ColourFunctions = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_LastUsedColour = new Button(toolItem_ColourFunctions, SWT.NONE);
             this.btn_LastUsedColour[0] = btn_LastUsedColour;
@@ -1313,10 +1452,24 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Pipette.setToolTipText(I18n.E3D_Pipette);
             btn_Pipette.setImage(ResourceManager.getImage("icon16_pipette.png")); //$NON-NLS-1$
         }
+        return toolItem_ColourFunctions;
     }
 
-    private void createToolItemAdd() {
-        ToolItem toolItem_Add = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemAdd(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_Add = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
 
         Button btn_AddComment = new Button(toolItem_Add, SWT.NONE);
         this.btn_AddComment[0] = btn_AddComment;
@@ -1352,18 +1505,47 @@ class Editor3DDesign extends ApplicationWindow {
         this.btn_AddCondline[0] = btn_AddCondline;
         KeyStateManager.addTooltipText(btn_AddCondline, I18n.E3D_AddCondline, Task.ADD_CONDLINE);
         btn_AddCondline.setImage(ResourceManager.getImage("icon16_addcondline.png")); //$NON-NLS-1$
+
+        return toolItem_Add;
     }
 
-    private void createToolItemInsertAtCursorPosition() {
-        ToolItem toolItem_InsertAtCursorPosition = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemInsertAtCursorPosition(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_InsertAtCursorPosition = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         Button btn_InsertAtCursorPosition = new Button(toolItem_InsertAtCursorPosition, SWT.TOGGLE);
         this.btn_InsertAtCursorPosition[0] = btn_InsertAtCursorPosition;
         KeyStateManager.addTooltipText(btn_InsertAtCursorPosition, I18n.E3D_InsertAtCursorPosition, Task.INSERT_AT_CURSOR);
         btn_InsertAtCursorPosition.setImage(ResourceManager.getImage("icon16_insertAtCursor.png")); //$NON-NLS-1$
+        return toolItem_InsertAtCursorPosition;
     }
 
-    private void createToolItemMode() {
-        ToolItem toolItem_Mode = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemMode(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_Mode = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_Vertices = new Button(toolItem_Mode, SWT.TOGGLE);
             this.btn_Vertices[0] = btn_Vertices;
@@ -1389,10 +1571,24 @@ class Editor3DDesign extends ApplicationWindow {
             KeyStateManager.addTooltipText(btn_Subfiles, I18n.E3D_ModeSubpart, Task.OBJ_PRIMITIVE);
             btn_Subfiles.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
         }
+        return toolItem_Mode;
     }
 
-    private void createToolItemCCPD() {
-        ToolItem toolItem_CCPD = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemCCPD(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_CCPD = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_Cut = new Button(toolItem_CCPD, SWT.NONE);
             this.btn_Cut[0] = btn_Cut;
@@ -1417,9 +1613,10 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Delete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btn_Delete, I18n.COPYNPASTE_Delete, Task.DELETE);
         }
+        return toolItem_CCPD;
     }
 
-    private void createToolItemMiscClick() {
+    private ToolItem createToolItemMiscClick(String label) {
         ToolItem toolItem_MiscClick = new ToolItem(cmpNorth, SWT.NONE, true);
         {
             Button btn_BFCswap = new Button(toolItem_MiscClick, SWT.NONE);
@@ -1893,25 +2090,28 @@ class Editor3DDesign extends ApplicationWindow {
                 }
             }
         }
+        return toolItem_MiscClick;
     }
 
-    private void createToolItemManipulatorMode() {
-        ToolItem toolItem_TransformationModes = new ToolItem(cmpNorth, SWT.NONE, true);
-        {
-            Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
-            this.btn_Local[0] = btn_Local;
-            btn_Local.setToolTipText(I18n.E3D_Local);
-            btn_Local.setSelection(true);
-            btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+    private ToolItem createToolItemManipulatorActions(ToolItemDrawLocation location, ToolItemDrawMode mode, String label, ToolItem toolItem) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
         }
-        {
-            Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
-            this.btn_Global[0] = btn_Global;
-            btn_Global.setToolTipText(I18n.E3D_Global);
-            btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
-        }
-        {
-            final Button btn_ManipulatorActions = new Button(toolItem_TransformationModes, SWT.ARROW | SWT.DOWN);
+        if (mode == ToolItemDrawMode.DROP_DOWN) {
+            if (toolItem == null) {
+                toolItem = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);;
+            }
+            final Button btn_ManipulatorActions = new Button(toolItem, SWT.ARROW | SWT.DOWN);
             btn_ManipulatorActions.setToolTipText(I18n.E3D_ModifyManipulator);
             this.mnu_Manipulator = new Menu(this.getShell(), SWT.POP_UP);
             btn_ManipulatorActions.addSelectionListener(new SelectionAdapter() {
@@ -1928,19 +2128,19 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_0_toOrigin[0] = btn_Mani;
+                    this.mntm_Manipulator_0_toOrigin[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ManipulatorToOrigin);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_toOrigin.png")); //$NON-NLS-1$
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_XIII_toWorld[0] = btn_Mani;
+                    this.mntm_Manipulator_XIII_toWorld[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ManipulatorToWorld);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_toWorld.png")); //$NON-NLS-1$
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_XIV_adjustRotationCenter[0] = btn_Mani;
+                    this.mntm_Manipulator_XIV_adjustRotationCenter[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_AdjustRotationCenter);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
                 }
@@ -1948,19 +2148,19 @@ class Editor3DDesign extends ApplicationWindow {
                 final MenuItem mntmSeparator1 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_X_XReverse[0] = btn_Mani;
+                    this.mntm_Manipulator_X_XReverse[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ReverseX);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_XI_YReverse[0] = btn_Mani;
+                    this.mntm_Manipulator_XI_YReverse[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ReverseY);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_XII_ZReverse[0] = btn_Mani;
+                    this.mntm_Manipulator_XII_ZReverse[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ReverseZ);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
                 }
@@ -1968,19 +2168,19 @@ class Editor3DDesign extends ApplicationWindow {
                 final MenuItem mntmSeparator2 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_SwitchXY[0] = btn_Mani;
+                    this.mntm_Manipulator_SwitchXY[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_SwapXY);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_SwitchXZ[0] = btn_Mani;
+                    this.mntm_Manipulator_SwitchXZ[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_SwapXZ);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_SwitchYZ[0] = btn_Mani;
+                    this.mntm_Manipulator_SwitchYZ[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_SwapYZ);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
                 }
@@ -1988,13 +2188,13 @@ class Editor3DDesign extends ApplicationWindow {
                 final MenuItem mntmSeparator3 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_1_cameraToPos[0] = btn_Mani;
+                    this.mntm_Manipulator_1_cameraToPos[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_CamToManipulator);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_cameratomanipulator.png")); //$NON-NLS-1$
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_2_toAverage[0] = btn_Mani;
+                    this.mntm_Manipulator_2_toAverage[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ManipulatorToAvg);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
                 }
@@ -2002,13 +2202,13 @@ class Editor3DDesign extends ApplicationWindow {
                 final MenuItem mntmSeparator31 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_3_toSubfile[0] = btn_Mani;
+                    this.mntm_Manipulator_3_toSubfile[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ManipulatorToSubfile);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_32_subfileTo[0] = btn_Mani;
+                    this.mntm_Manipulator_32_subfileTo[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_SubfileToManipulator);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
                 }
@@ -2016,19 +2216,19 @@ class Editor3DDesign extends ApplicationWindow {
                 final MenuItem mntmSeparator32 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_4_toVertex[0] = btn_Mani;
+                    this.mntm_Manipulator_4_toVertex[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ManipulatorToVertex);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertex.png")); //$NON-NLS-1$
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_5_toEdge[0] = btn_Mani;
+                    this.mntm_Manipulator_5_toEdge[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ManipulatorToEdge);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedge.png")); //$NON-NLS-1$
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_6_toSurface[0] = btn_Mani;
+                    this.mntm_Manipulator_6_toSurface[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ManipulatorToFace);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
                 }
@@ -2036,28 +2236,191 @@ class Editor3DDesign extends ApplicationWindow {
                 final MenuItem mntmSeparator4 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_7_toVertexNormal[0] = btn_Mani;
+                    this.mntm_Manipulator_7_toVertexNormal[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ManipulatorToVertexN);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_8_toEdgeNormal[0] = btn_Mani;
+                    this.mntm_Manipulator_8_toEdgeNormal[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ManipulatorToEdgeN);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                    this.btn_Manipulator_9_toSurfaceNormal[0] = btn_Mani;
+                    this.mntm_Manipulator_9_toSurfaceNormal[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ManipulatorToFaceN);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
                 }
             }
+            return null;
+        } else {
+            ToolItem toolItem_ManipulatorActions = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_0_toOrigin[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ManipulatorToOrigin);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_toOrigin.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_XIII_toWorld[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ManipulatorToWorld);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_toWorld.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_XIV_adjustRotationCenter[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_AdjustRotationCenter);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_X_XReverse[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ReverseX);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_XI_YReverse[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ReverseY);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_XII_ZReverse[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ReverseZ);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_SwitchXY[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_SwapXY);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_SwitchXZ[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_SwapXZ);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_SwitchYZ[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_SwapYZ);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_1_cameraToPos[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_CamToManipulator);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_cameratomanipulator.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_2_toAverage[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ManipulatorToAvg);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_3_toSubfile[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ManipulatorToSubfile);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_32_subfileTo[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_SubfileToManipulator);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_4_toVertex[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ManipulatorToVertex);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertex.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_5_toEdge[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ManipulatorToEdge);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedge.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_6_toSurface[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ManipulatorToFace);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_7_toVertexNormal[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ManipulatorToVertexN);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_8_toEdgeNormal[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ManipulatorToEdgeN);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_9_toSurfaceNormal[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ManipulatorToFaceN);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
+            }
+
+            return null;
         }
     }
 
-    private void createToolItemTransformationMode() {
-        ToolItem toolItem_TransformationMode = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemManipulatorMode(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_TransformationModes = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
+        {
+            Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            this.btn_Local[0] = btn_Local;
+            btn_Local.setToolTipText(I18n.E3D_Local);
+            btn_Local.setSelection(true);
+            btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            this.btn_Global[0] = btn_Global;
+            btn_Global.setToolTipText(I18n.E3D_Global);
+            btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
+        }
+        return toolItem_TransformationModes;
+    }
+
+    private ToolItem createToolItemTransformationMode(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_TransformationMode = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_Select = new Button(toolItem_TransformationMode, SWT.TOGGLE);
             this.btn_Select[0] = btn_Select;
@@ -2089,10 +2452,24 @@ class Editor3DDesign extends ApplicationWindow {
             KeyStateManager.addTooltipText(btn_Combined, I18n.E3D_Combined, Task.MODE_COMBINED);
             btn_Combined.setImage(ResourceManager.getImage("icon16_combined.png")); //$NON-NLS-1$
         }
+        return toolItem_TransformationMode;
     }
 
-    private void createToolItemUndoRedo() {
-        ToolItem toolItem_UndoRedo = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemUndoRedo(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_UndoRedo = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_Undo = new Button(toolItem_UndoRedo, SWT.NONE);
             this.btn_Undo[0] = btn_Undo;
@@ -2111,10 +2488,24 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Redo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btn_Redo, I18n.E3D_Redo, Task.REDO);
         }
+        return toolItem_UndoRedo;
     }
 
-    private void createToolItemMiscToggle() {
-        ToolItem toolItem_MiscToggle = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemMiscToggle(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_MiscToggle = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_AdjacentMove = new Button(toolItem_MiscToggle, SWT.TOGGLE);
             this.btn_MoveAdjacentData[0] = btn_AdjacentMove;
@@ -2134,10 +2525,24 @@ class Editor3DDesign extends ApplicationWindow {
             btn_BFCToggle.setToolTipText(I18n.E3D_ToggleBFC);
             btn_BFCToggle.setImage(ResourceManager.getImage("icon16_bfc.png")); //$NON-NLS-1$
         }
+        return toolItem_MiscToggle;
     }
 
-    private void createToolItemHideUnhide() {
-        ToolItem toolItem_HideUnhide = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemHideUnhide(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_HideUnhide = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_Hide = new Button(toolItem_HideUnhide, SWT.NONE);
             this.btn_Hide[0] = btn_Hide;
@@ -2150,10 +2555,24 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Unhide.setToolTipText(I18n.E3D_ShowAll);
             btn_Unhide.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
         }
+        return toolItem_HideUnhide;
     }
 
-    private void createToolItemNewOpenDat() {
-        ToolItem toolItem_NewOpenDAT = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemNewOpenDat(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_NewOpenDAT = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_NewDat = new Button(toolItem_NewOpenDAT, SWT.NONE);
             this.btn_NewDat[0] = btn_NewDat;
@@ -2166,10 +2585,24 @@ class Editor3DDesign extends ApplicationWindow {
             btn_OpenDAT.setToolTipText(I18n.E3D_OpenDat);
             btn_OpenDAT.setImage(ResourceManager.getImage("icon16_document-opendat.png")); //$NON-NLS-1$
         }
+        return toolItem_NewOpenDAT;
     }
 
-    private void createToolItemNewOpenSave() {
-        ToolItem toolItem_NewOpenSave = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemNewOpenSave(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_NewOpenSave = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_New = new Button(toolItem_NewOpenSave, SWT.NONE);
             this.btn_New[0] = btn_New;
@@ -2194,10 +2627,24 @@ class Editor3DDesign extends ApplicationWindow {
             btn_SaveAll.setToolTipText(I18n.E3D_SaveAll);
             btn_SaveAll.setImage(ResourceManager.getImage("icon16_document-saveall.png")); //$NON-NLS-1$
         }
+        return toolItem_NewOpenSave;
     }
 
-    private void createToolItemSync() {
-        ToolItem toolItem_Sync = new ToolItem(cmpNorth, SWT.NONE, true);
+    private ToolItem createToolItemSync(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_Sync = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_Sync = new Button(toolItem_Sync, SWT.NONE);
             this.btn_Sync[0] = btn_Sync;
@@ -2210,6 +2657,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Snapshot.setToolTipText(I18n.E3D_LastOpened);
             btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
         }
+        return toolItem_Sync;
     }
 
     private void createComposite3D(SashForm sashForm, CompositeContainer c, Composite3DState state) {
