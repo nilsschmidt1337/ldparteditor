@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Scrollable;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * The standard platform behavior on Windows is to scroll the widget with
@@ -103,20 +104,20 @@ public class Win32MouseWheelFilter implements Listener {
             return;
 
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            NLogger.error(getClass(), e);
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            NLogger.error(getClass(), e);
         } catch (SecurityException e) {
-            e.printStackTrace();
+            NLogger.error(getClass(), e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            NLogger.error(getClass(), e);
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+            NLogger.error(getClass(), e);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            NLogger.error(getClass(), e);
         }
 
-        System.out.println("Warning: Running on win32 SWT platform, " //$NON-NLS-1$
+        NLogger.error(getClass(), "Warning: Running on win32 SWT platform, " //$NON-NLS-1$
                 + "but unable to install Win32MouseWheelFilter filter."); //$NON-NLS-1$
     }
 
@@ -222,15 +223,15 @@ public class Win32MouseWheelFilter implements Listener {
                 }
 
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                NLogger.error(getClass(), e);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                NLogger.error(getClass(), e);
             } catch (InvocationTargetException e) {
-                e.printStackTrace();
+                NLogger.error(getClass(), e);
             } catch (SecurityException e) {
-                e.printStackTrace();
+                NLogger.error(getClass(), e);
             } catch (NoSuchFieldException e) {
-                e.printStackTrace();
+                NLogger.error(getClass(), e);
             }
         } else {
             // It makes no sense using the low-level OS event delivery, since
