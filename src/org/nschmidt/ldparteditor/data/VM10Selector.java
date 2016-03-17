@@ -602,7 +602,6 @@ class VM10Selector extends VM09WindingChange {
                                                     if (notAdjacent || faceCount != angleCount) break;
                                                 }
 
-
                                                 addedSelectedQuads.add((GData4) g);
                                                 newSelectedQuads.add((GData4) g);
                                                 Vertex[] verts = quads.get(g);
@@ -676,7 +675,6 @@ class VM10Selector extends VM09WindingChange {
                                 selectedCondlines.addAll(addedSelectedCondlines);
                                 selectedData.addAll(selectedCondlines);
                             }
-
                         }
 
                         break;
