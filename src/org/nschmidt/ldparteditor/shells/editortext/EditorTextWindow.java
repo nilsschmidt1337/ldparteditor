@@ -234,7 +234,7 @@ public class EditorTextWindow extends EditorTextDesign {
             public void widgetDefaultSelected(SelectionEvent e) {
             }
         });
-        btn_SaveAs[0].addSelectionListener(new SelectionListener() {
+        btn_SaveAs[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (tabFolder[0].getSelection() != null) {
@@ -242,21 +242,6 @@ public class EditorTextWindow extends EditorTextDesign {
 
                     FileDialog fd = new FileDialog(sh, SWT.SAVE);
                     fd.setText(I18n.E3D_SaveDatFileAs);
-
-                    /*
-                    if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
-                        try {
-                            String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                            String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
-                            decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
-                            fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
-                        } catch (Exception consumed) {
-                            fd.setFilterPath(Project.getProjectPath());
-                        }
-                    } else {
-                        fd.setFilterPath(Project.getProjectPath());
-                    }
-                     */
 
                     {
                         File f = new File(((CompositeTab) tabFolder[0].getSelection()).getState().getFileNameObj().getNewName()).getParentFile();
@@ -325,10 +310,6 @@ public class EditorTextWindow extends EditorTextDesign {
                         break;
                     }
                 }
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
             }
         });
         btn_Cut[0].addSelectionListener(new SelectionAdapter() {
