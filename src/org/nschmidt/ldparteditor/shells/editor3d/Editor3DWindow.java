@@ -721,6 +721,91 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        btn_SaveDat[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (Project.getFileToEdit() != null) {
+                    final DatFile df = Project.getFileToEdit();
+                    Editor3DWindow.getWindow().addRecentFile(df);
+                    if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
+                        if (df.save()) {
+                            Editor3DWindow.getWindow().addRecentFile(df);
+                            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                        } else {
+                            MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                            messageBoxError.setText(I18n.DIALOG_Error);
+                            messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                        }
+                    }
+                }
+                regainFocus();
+            }
+        });
+
+        btn_SaveAsDat[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (Project.getFileToEdit() != null) {
+                    final DatFile df2 = Project.getFileToEdit();
+
+                    FileDialog fd = new FileDialog(sh, SWT.SAVE);
+                    fd.setText(I18n.E3D_SaveDatFileAs);
+
+                    {
+                        File f = new File(df2.getNewName()).getParentFile();
+                        if (f.exists()) {
+                            fd.setFilterPath(f.getAbsolutePath());
+                        } else {
+                            fd.setFilterPath(Project.getLastVisitedPath());
+                        }
+                    }
+
+                    String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+                    fd.setFilterExtensions(filterExt);
+                    String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
+                    fd.setFilterNames(filterNames);
+
+                    while (true) {
+                        try {
+                            String selected = fd.open();
+                            if (selected != null) {
+
+                                if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
+                                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
+                                    messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
+                                    messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
+
+                                    int result = messageBox.open();
+
+                                    if (result == SWT.CANCEL) {
+                                        break;
+                                    } else if (result == SWT.RETRY) {
+                                        continue;
+                                    }
+                                }
+
+                                df2.saveAs(selected);
+
+                                DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, selected);
+                                if (df != null) {
+                                    Editor3DWindow.getWindow().addRecentFile(df);
+                                    final File f = new File(df.getNewName());
+                                    if (f.getParentFile() != null) {
+                                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                                    }
+                                }
+                            }
+                        } catch (Exception ex) {
+                            NLogger.error(getClass(), ex);
+                        }
+                        break;
+                    }
+
+                }
+                regainFocus();
+            }
+        });
+
         btn_Undo[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

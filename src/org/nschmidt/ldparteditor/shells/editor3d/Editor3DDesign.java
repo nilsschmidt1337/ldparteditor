@@ -341,6 +341,8 @@ class Editor3DDesign extends ApplicationWindow {
 
     final Button[] btn_NewDat = new Button[1];
     final Button[] btn_OpenDat = new Button[1];
+    final Button[] btn_SaveDat = new Button[1];
+    final Button[] btn_SaveAsDat = new Button[1];
 
     final Button[] btn_PreviousSelection = new Button[1];
     final Button[] btn_NextSelection = new Button[1];
@@ -2584,6 +2586,19 @@ class Editor3DDesign extends ApplicationWindow {
             this.btn_OpenDat[0] = btn_OpenDAT;
             btn_OpenDAT.setToolTipText(I18n.E3D_OpenDat);
             btn_OpenDAT.setImage(ResourceManager.getImage("icon16_document-opendat.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_SaveDAT = new Button(toolItem_NewOpenDAT, SWT.NONE);
+            this.btn_SaveDat[0] = btn_SaveDAT;
+            KeyStateManager.addTooltipText(btn_SaveDAT, I18n.E3D_Save, Task.SAVE);
+            btn_SaveDAT.setImage(ResourceManager.getImage("icon16_document-savedat.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_SaveAsDAT = new Button(toolItem_NewOpenDAT, SWT.NONE);
+            this.btn_SaveAsDat[0] = btn_SaveAsDAT;
+            btn_SaveAsDAT.setToolTipText(I18n.E3D_SaveAs);
+            btn_SaveAsDAT.setImage(ResourceManager.getImage("icon16_document-savedat.png")); //$NON-NLS-1$
+            btn_SaveAsDAT.setText("..."); //$NON-NLS-1$
         }
         return toolItem_NewOpenDAT;
     }
