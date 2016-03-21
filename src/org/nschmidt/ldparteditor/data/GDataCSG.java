@@ -36,6 +36,7 @@ import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -129,7 +130,7 @@ public final class GDataCSG extends GData {
                 if (c != null) {
                     colour = c.clone();
                 } else {
-                    colour = null;
+                    colour = View.getLDConfigColour(16);
                 }
                 matrix = MathHelper.matrixFromStrings(data_segments[5], data_segments[6], data_segments[7], data_segments[8], data_segments[11], data_segments[14], data_segments[9],
                         data_segments[12], data_segments[15], data_segments[10], data_segments[13], data_segments[16]);
