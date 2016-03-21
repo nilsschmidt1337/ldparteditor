@@ -290,6 +290,7 @@ public final class I18n {
     public static final String E3D_AngleX = E3D.getString(getProperty());
     public static final String E3D_AngleY = E3D.getString(getProperty());
     public static final String E3D_AngleZ = E3D.getString(getProperty());
+    public static final String E3D_AntiAliasing = E3D.getString(getProperty());
     public static final String E3D_BackgroundImage = E3D.getString(getProperty());
     public static final String E3D_CamToManipulator = E3D.getString(getProperty());
     public static final String E3D_CloseView = E3D.getString(getProperty());

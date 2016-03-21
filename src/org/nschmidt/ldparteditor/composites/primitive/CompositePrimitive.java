@@ -145,6 +145,10 @@ public class CompositePrimitive extends Composite {
         data.redSize = 8;
         data.greenSize = 8;
         data.stencilSize = 8;
+        if (WorkbenchManager.getUserSettingState().isAntiAliasing()) {
+            data.sampleBuffers = 1;
+            data.samples = 4;
+        }
         canvas = new GLCanvas(this, I18n.I18N_NON_BIDIRECT(), data);
         canvas.setCurrent();
         canvas.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_HAND));

@@ -4586,6 +4586,14 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        mntm_AntiAliasing[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().setAntiAliasing(mntm_AntiAliasing[0].getSelection());
+                regainFocus();
+            }
+        });
+
         mntm_SyncWithTextEditor[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
