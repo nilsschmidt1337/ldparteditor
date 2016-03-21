@@ -111,7 +111,7 @@ public class UserSettingState implements Serializable {
     private ArrayList<ToolItemState> toolItemConfig3D = new ArrayList<ToolItemState>();
 
     /** {@code true} if anti-aliasing is enabled for 3D windows */
-    private boolean antiAliasing = true;
+    private boolean antiAliasing = false;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
