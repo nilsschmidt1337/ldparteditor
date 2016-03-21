@@ -256,6 +256,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
     final MenuItem[] mntm_UploadLogs = new MenuItem[1];
+    final MenuItem[] mntm_AntiAliasing = new MenuItem[1];
     final MenuItem[] mntm_SyncWithTextEditor = new MenuItem[1];
     final MenuItem[] mntm_SyncLpeInline = new MenuItem[1];
 
@@ -2077,6 +2078,14 @@ class Editor3DDesign extends ApplicationWindow {
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator3 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_AntiAliasing = new MenuItem(mnu_Tools, SWT.CHECK);
+                    mntm_AntiAliasing.setSelection(WorkbenchManager.getUserSettingState().isAntiAliasing());
+                    this.mntm_AntiAliasing[0] = mntm_AntiAliasing;
+                    mntm_AntiAliasing.setText(I18n.E3D_AntiAliasing);
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator4 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
                 {
                     MenuItem mntm_SyncWithTextEditor = new MenuItem(mnu_Tools, SWT.CHECK);
                     mntm_SyncWithTextEditor.setSelection(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
