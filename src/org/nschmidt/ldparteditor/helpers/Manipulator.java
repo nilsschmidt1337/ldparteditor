@@ -939,10 +939,7 @@ public class Manipulator {
             c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, Editor3DWindow.getWindow().isMovingAdjacentData());
             modified = false;
         }
-        accurateResult = View.ACCURATE_ID;
-        accurateScale = View.ACCURATE_ID;
-        Matrix4f.setIdentity(result);
-        Matrix4f.setIdentity(scale);
+        resetTranslation();
     }
 
     public void applyTranslationAtSelect(Composite3D c3d) {
@@ -950,12 +947,16 @@ public class Manipulator {
             c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, Editor3DWindow.getWindow().isMovingAdjacentData());
             modified = false;
         }
+        resetTranslation();
+        x_Translate = false;
+        y_Translate = false;
+    }
+
+    public void resetTranslation() {
         accurateResult = View.ACCURATE_ID;
         accurateScale = View.ACCURATE_ID;
         Matrix4f.setIdentity(result);
         Matrix4f.setIdentity(scale);
-        x_Translate = false;
-        y_Translate = false;
     }
 
     public Vector4f transform(Vector2f old_mouse_position, int new_x, int new_y, Composite3D c3d) {
