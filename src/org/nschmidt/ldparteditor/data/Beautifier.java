@@ -191,9 +191,13 @@ public enum Beautifier {
         String trimmedLine = line.trim();
         String[] data_segments = trimmedLine.split("\\s+"); //$NON-NLS-1$
         StringBuilder normalized = new StringBuilder();
+        int i = 0;
         for (String string : data_segments) {
-            normalized.append(string);
-            normalized.append(" "); //$NON-NLS-1$
+            if (i != 1) {
+                normalized.append(string);
+                normalized.append(" "); //$NON-NLS-1$
+            }
+            i++;
         }
         String normalizedLine = normalized.toString().trim();
 
@@ -250,8 +254,8 @@ public enum Beautifier {
 
                 normalized2.append(data_segments[0]);
                 normalized2.append(" "); //$NON-NLS-1$
-                normalized2.append(data_segments[1]);
-                normalized2.append(" "); //$NON-NLS-1$
+                // normalized2.append(data_segments[1]);
+                // normalized2.append(" "); //$NON-NLS-1$
 
                 normalized2.append(data_segments[5]);
                 normalized2.append(" "); //$NON-NLS-1$
@@ -289,8 +293,8 @@ public enum Beautifier {
 
                 normalized2.append(data_segments[0]);
                 normalized2.append(" "); //$NON-NLS-1$
-                normalized2.append(data_segments[1]);
-                normalized2.append(" "); //$NON-NLS-1$
+                // normalized2.append(data_segments[1]);
+                // normalized2.append(" "); //$NON-NLS-1$
 
                 normalized2.append(data_segments[8]);
                 normalized2.append(" "); //$NON-NLS-1$
@@ -322,8 +326,8 @@ public enum Beautifier {
 
                     normalized3.append(data_segments[0]);
                     normalized3.append(" "); //$NON-NLS-1$
-                    normalized3.append(data_segments[1]);
-                    normalized3.append(" "); //$NON-NLS-1$
+                    // normalized3.append(data_segments[1]);
+                    // normalized3.append(" "); //$NON-NLS-1$
 
                     normalized3.append(data_segments[5]);
                     normalized3.append(" "); //$NON-NLS-1$
@@ -368,8 +372,8 @@ public enum Beautifier {
 
                 normalized2.append(data_segments[0]);
                 normalized2.append(" "); //$NON-NLS-1$
-                normalized2.append(data_segments[1]);
-                normalized2.append(" "); //$NON-NLS-1$
+                // normalized2.append(data_segments[1]);
+                // normalized2.append(" "); //$NON-NLS-1$
 
                 normalized2.append(data_segments[11]);
                 normalized2.append(" "); //$NON-NLS-1$
@@ -408,8 +412,8 @@ public enum Beautifier {
 
                     normalized3.append(data_segments[0]);
                     normalized3.append(" "); //$NON-NLS-1$
-                    normalized3.append(data_segments[1]);
-                    normalized3.append(" "); //$NON-NLS-1$
+                    // normalized3.append(data_segments[1]);
+                    // normalized3.append(" "); //$NON-NLS-1$
 
                     normalized3.append(data_segments[8]);
                     normalized3.append(" "); //$NON-NLS-1$
@@ -447,8 +451,8 @@ public enum Beautifier {
 
                         normalized4.append(data_segments[0]);
                         normalized4.append(" "); //$NON-NLS-1$
-                        normalized4.append(data_segments[1]);
-                        normalized4.append(" "); //$NON-NLS-1$
+                        // normalized4.append(data_segments[1]);
+                        // normalized4.append(" "); //$NON-NLS-1$
 
                         normalized4.append(data_segments[5]);
                         normalized4.append(" "); //$NON-NLS-1$
@@ -511,8 +515,8 @@ public enum Beautifier {
 
                 normalized3.append(data_segments[0]);
                 normalized3.append(" "); //$NON-NLS-1$
-                normalized3.append(data_segments[1]);
-                normalized3.append(" "); //$NON-NLS-1$
+                // normalized3.append(data_segments[1]);
+                // normalized3.append(" "); //$NON-NLS-1$
 
                 normalized3.append(data_segments[2]);
                 normalized3.append(" "); //$NON-NLS-1$
@@ -538,8 +542,8 @@ public enum Beautifier {
 
                     normalized2.append(data_segments[0]);
                     normalized2.append(" "); //$NON-NLS-1$
-                    normalized2.append(data_segments[1]);
-                    normalized2.append(" "); //$NON-NLS-1$
+                    // normalized2.append(data_segments[1]);
+                    // normalized2.append(" "); //$NON-NLS-1$
 
                     normalized2.append(data_segments[5]);
                     normalized2.append(" "); //$NON-NLS-1$
