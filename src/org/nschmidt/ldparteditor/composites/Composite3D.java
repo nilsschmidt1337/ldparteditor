@@ -1265,6 +1265,14 @@ public class Composite3D extends ScalableComposite {
                                     if (f2.getParentFile() != null) {
                                         Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
                                     }
+                                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                        for (CTabItem t : w.getTabFolder().getItems()) {
+                                            if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                                w.closeTabWithDatfile(df);
+                                                return;
+                                            }
+                                        }
+                                    }
                                 }
                                 break;
                             }
