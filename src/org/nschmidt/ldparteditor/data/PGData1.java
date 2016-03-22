@@ -155,4 +155,8 @@ public final class PGData1 extends PGData implements Serializable {
     public int type() {
         return 1;
     }
+    @Override
+    public PGData data() {
+        return this;
+    }
 }

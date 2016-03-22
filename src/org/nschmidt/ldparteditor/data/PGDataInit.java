@@ -40,4 +40,9 @@ public final class PGDataInit extends PGData implements Serializable {
     public int type() {
         return 7;
     }
+
+    @Override
+    public PGData data() {
+        return this;
+    }
 }
