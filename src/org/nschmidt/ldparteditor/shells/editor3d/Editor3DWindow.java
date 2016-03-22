@@ -6798,6 +6798,10 @@ public class Editor3DWindow extends Editor3DDesign {
 
             } else {
 
+                // FIXME Needs code cleanup!!
+
+                df = original;
+
                 df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
                 if (original.isProjectFile()) {
                     openDatFile(df, where, null);

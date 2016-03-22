@@ -19,6 +19,7 @@ import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -34,6 +35,7 @@ import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -150,6 +152,47 @@ public class EditorTextWindow extends EditorTextDesign {
         }
 
         // MARK All final listeners will be configured here..
+        {
+            DropTarget dt = new DropTarget(tabFolder[0].getParent().getParent(), DND.DROP_DEFAULT | DND.DROP_MOVE );
+            dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
+            dt.addDropListener(new DropTargetAdapter() {
+                public void drop(DropTargetEvent event) {
+                    String fileList[] = null;
+                    FileTransfer ft = FileTransfer.getInstance();
+                    if (ft.isSupportedType(event.currentDataType)) {
+                        fileList = (String[]) event.data;
+                        if (fileList != null) {
+                            for (String f : fileList) {
+                                NLogger.debug(getClass(), f);
+                                if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
+                                    final File fileToOpen = new File(f);
+                                    if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
+                                    DatFile df = Editor3DWindow.getWindow().openDatFile(tabFolder[0].getWindow().getShell(), OpenInWhat.EDITOR_3D, f);
+                                    if (df != null) {
+                                        Editor3DWindow.getWindow().addRecentFile(df);
+                                        final File f2 = new File(df.getNewName());
+                                        if (f2.getParentFile() != null) {
+                                            Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
+                                        }
+                                        if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabFolder[0].getWindow())) {
+                                            {
+                                                CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
+                                                tbtmnewItem.setWindow(tabFolder[0].getWindow());
+                                                tbtmnewItem.getState().setFileNameObj(df);
+                                                tabFolder[0].setSelection(tbtmnewItem);
+                                                tbtmnewItem.parseForErrorAndHints();
+                                                tbtmnewItem.getTextComposite().redraw();
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
         tabFolder[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

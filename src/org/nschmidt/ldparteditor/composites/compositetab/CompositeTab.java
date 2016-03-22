@@ -15,8 +15,10 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites.compositetab;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Locale;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -32,6 +34,12 @@ import org.eclipse.swt.custom.LineStyleEvent;
 import org.eclipse.swt.custom.LineStyleListener;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.VerifyKeyListener;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.FileTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.FocusEvent;
@@ -57,6 +65,7 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
+import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
@@ -123,6 +132,47 @@ public class CompositeTab extends CompositeTabDesign {
         // single text line
         this.state.setTab(this);
 
+        {
+            DropTarget dt = new DropTarget(compositeText[0], DND.DROP_DEFAULT | DND.DROP_MOVE );
+            dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
+            dt.addDropListener(new DropTargetAdapter() {
+                public void drop(DropTargetEvent event) {
+                    String fileList[] = null;
+                    FileTransfer ft = FileTransfer.getInstance();
+                    if (ft.isSupportedType(event.currentDataType)) {
+                        fileList = (String[]) event.data;
+                        if (fileList != null) {
+                            for (String f : fileList) {
+                                NLogger.debug(getClass(), f);
+                                if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
+                                    final File fileToOpen = new File(f);
+                                    if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
+                                    DatFile df = Editor3DWindow.getWindow().openDatFile(state.window[0].getShell(), OpenInWhat.EDITOR_3D, f);
+                                    if (df != null) {
+                                        Editor3DWindow.getWindow().addRecentFile(df);
+                                        final File f2 = new File(df.getNewName());
+                                        if (f2.getParentFile() != null) {
+                                            Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
+                                        }
+                                        if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, state.window[0])) {
+                                            {
+                                                CompositeTab tbtmnewItem = new CompositeTab(state.window[0].getTabFolder(), SWT.CLOSE);
+                                                tbtmnewItem.setWindow(state.window[0]);
+                                                tbtmnewItem.getState().setFileNameObj(df);
+                                                state.window[0].getTabFolder().setSelection(tbtmnewItem);
+                                                tbtmnewItem.parseForErrorAndHints();
+                                                tbtmnewItem.getTextComposite().redraw();
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
         compositeText[0].addLineStyleListener(new LineStyleListener() {
             @Override
             public void lineGetStyle(final LineStyleEvent e) {
@@ -1074,7 +1124,7 @@ public class CompositeTab extends CompositeTabDesign {
 
                 for (int y = y_offset; y < height; y += caretHeight) { // Font.MONOSPACE_HEIGHT) {
 
-                    if (NLogger.DEBUG) {
+                    if (NLogger.DEBUG && Project.getFileToEdit() != null) {
 
                         // TODO DEBUG Emergency reference debugging
 

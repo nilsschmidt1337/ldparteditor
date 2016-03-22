@@ -15,9 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -30,6 +32,7 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -72,6 +75,7 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.snapshot.SnapshotDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
+import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.View;
@@ -1237,6 +1241,36 @@ public class Composite3D extends ScalableComposite {
             @Override
             public void focusGained(FocusEvent e) {
                 Project.setFileToEdit(lockableDatFileReference);
+            }
+        });
+
+        DropTarget dt = new DropTarget(canvas, DND.DROP_DEFAULT | DND.DROP_MOVE );
+        dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
+        dt.addDropListener(new DropTargetAdapter() {
+            public void drop(DropTargetEvent event) {
+                String fileList[] = null;
+                FileTransfer ft = FileTransfer.getInstance();
+                if (ft.isSupportedType(event.currentDataType)) {
+                    fileList = (String[]) event.data;
+                    if (fileList != null) {
+                        for (String f : fileList) {
+                            NLogger.debug(getClass(), f);
+                            if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
+                                final File fileToOpen = new File(f);
+                                if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
+                                DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, f);
+                                if (df != null) {
+                                    Editor3DWindow.getWindow().addRecentFile(df);
+                                    final File f2 = new File(df.getNewName());
+                                    if (f2.getParentFile() != null) {
+                                        Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
             }
         });
 
