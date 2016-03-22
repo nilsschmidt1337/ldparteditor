@@ -18,7 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.io.Serializable;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.lwjgl.BufferUtils;
@@ -62,7 +62,7 @@ public final class PGData1 extends PGData implements Serializable {
      * @param hotMap
      * @param firstRef
      */
-    public PGData1(Matrix4f tMatrix, LinkedList<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
+    public PGData1(Matrix4f tMatrix, List<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
             Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
 
         depth++;

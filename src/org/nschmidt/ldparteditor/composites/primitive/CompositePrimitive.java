@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -890,7 +889,7 @@ public class CompositePrimitive extends Composite {
                         final String path = f.getAbsolutePath();
                         PGTimestamp new_ts = new PGTimestamp(path, f.lastModified());
                         PGTimestamp ts = hotMap.get(new_ts);
-                        ArrayList<String> filedata = new ArrayList<String>();
+                        ArrayList<String> filedata;
                         if (ts != null && ts.isHot() && fileCache.containsKey(ts)) {
                             filedata = fileCache.get(ts);
                             fileCacheHits.add(ts);
@@ -934,6 +933,7 @@ public class CompositePrimitive extends Composite {
                             titleMap.put(newPrimitive.getName(), newPrimitive);
                             isEmpty = false;
                         } else {
+                            filedata = new ArrayList<String>();
                             if (ts != null) {
                                 fileCache.remove(ts);
                             }
@@ -1307,7 +1307,7 @@ public class CompositePrimitive extends Composite {
                 if (fileExists) break;
             }
 
-            LinkedList<String> lines = null;
+            ArrayList<String> lines = null;
             String absoluteFilename = null;
             // MARK Virtual file check for project files...
             boolean isVirtual = false;
@@ -1320,7 +1320,7 @@ public class CompositePrimitive extends Composite {
                         for (int a3 = 0; a3 < suffix.length; a3++) {
                             String s3 = suffix[a3];
                             if (fn.equals(s1 + s2 + s3)) {
-                                lines = new LinkedList<String>();
+                                lines = new ArrayList<String>();
                                 lines.addAll(Arrays.asList(df.getText().split(StringHelper.getLineDelimiter())));
                                 absoluteFilename = fn;
                                 isVirtual = true;
@@ -1347,11 +1347,11 @@ public class CompositePrimitive extends Composite {
                 absoluteFilename = fileToOpen.getAbsolutePath();
                 PGTimestamp new_ts = new PGTimestamp(absoluteFilename, fileToOpen.lastModified());
                 PGTimestamp ts = hotMap.get(new_ts);
-                lines = new LinkedList<String>();
                 if (ts != null && ts.isHot() && fileCache.containsKey(ts)) {
-                    lines.addAll(fileCache.get(ts));
+                    lines = fileCache.get(ts);
                     fileCacheHits.add(ts);
                 } else {
+                    lines = new ArrayList<String>();
                     if (ts != null) {
                         fileCache.remove(ts);
                     }
@@ -1374,7 +1374,7 @@ public class CompositePrimitive extends Composite {
                     } catch (UnsupportedEncodingException e1) {
                         return null;
                     }
-                    fileCache.put(new_ts, new ArrayList<String>(lines));
+                    fileCache.put(new_ts, lines);
                     fileCacheHits.add(new_ts);
                 }
                 det = tMatrix.determinant();
