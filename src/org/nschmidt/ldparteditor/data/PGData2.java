@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.io.Serializable;
+
 import org.lwjgl.opengl.GL11;
 import org.nschmidt.ldparteditor.enums.View;
 
@@ -22,7 +24,10 @@ import org.nschmidt.ldparteditor.enums.View;
  * @author nils
  *
  */
-public final class PGData2 extends PGData {
+public final class PGData2 extends PGData implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     final float x1;
     final float y1;
     final float z1;

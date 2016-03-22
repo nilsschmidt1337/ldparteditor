@@ -65,6 +65,7 @@ import org.nschmidt.ldparteditor.data.PGData4;
 import org.nschmidt.ldparteditor.data.PGData5;
 import org.nschmidt.ldparteditor.data.PGDataBFC;
 import org.nschmidt.ldparteditor.data.PGDataInit;
+import org.nschmidt.ldparteditor.data.PGTimestamp;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
 import org.nschmidt.ldparteditor.dnd.MyDummyType2;
@@ -129,6 +130,8 @@ public class CompositePrimitive extends Composite {
 
     private ArrayList<Primitive> searchResults = new ArrayList<Primitive>();
     private static HashMap<String, PGData> cache = new HashMap<String, PGData>();
+    private static HashMap<PGTimestamp, ArrayList<String>> fileCache = new HashMap<PGTimestamp, ArrayList<String>>();
+    private static HashSet<PGTimestamp> fileCacheHits = new HashSet<PGTimestamp>();
 
     public CompositePrimitive(Composite parent) {
         super(parent, I18n.I18N_NON_BIDIRECT() | SWT.BORDER);
@@ -874,60 +877,121 @@ public class CompositePrimitive extends Composite {
                 }
                 isEmpty = true;
                 isUppercase = !isUppercase;
+
+                HashMap<PGTimestamp, PGTimestamp> hotMap = new HashMap<PGTimestamp, PGTimestamp>();
+                for (PGTimestamp ts : fileCache.keySet()) {
+                    hotMap.put(ts, ts);
+                }
+
                 for (File f : files) {
                     final String fileName = f.getName();
                     if (f.isFile() && fileName.matches(".*.dat")) { //$NON-NLS-1$
-                        try {
+                        final String path = f.getAbsolutePath();
+                        PGTimestamp new_ts = new PGTimestamp(path, f.lastModified());
+                        PGTimestamp ts = hotMap.get(new_ts);
+                        ArrayList<String> filedata = new ArrayList<String>();
+                        if (ts != null && ts.isHot() && fileCache.containsKey(ts)) {
+                            filedata = fileCache.get(ts);
+                            fileCacheHits.add(ts);
+                            final int s = filedata.size();
                             Primitive newPrimitive = new Primitive();
                             ArrayList<PGData> data = new ArrayList<PGData>();
-                            final String path = f.getAbsolutePath();
                             String description = ""; //$NON-NLS-1$
-                            reader = new UTF8BufferedReader(path);
-                            String line;
-                            line = reader.readLine();
-                            if (line != null) {
+                            PGData gd = null;
+                            if (s > 0) {
+                                String line = filedata.get(0);
                                 data.add(new PGDataInit());
-                                PGData gd;
                                 if (line.trim().startsWith("0")) { //$NON-NLS-1$
                                     description = line.trim();
                                     if (description.length() > 2) {
                                         description = description.substring(1).trim();
                                         if (description.startsWith("~")) continue; //$NON-NLS-1$
                                     }
-                                } else if ((gd = parseLine(line, 0, View.ID, new HashSet<String>())) != null) {
+                                } else if ((gd = parseLine(line, 0, View.ID, new HashSet<String>(), hotMap)) != null) {
                                     data.add(gd);
                                 }
                                 final HashSet<String> set = new HashSet<String>();
-                                while ((line = reader.readLine()) != null) {
-                                    gd = parseLine(line, 0, View.ID, set);
+                                for (int i = 1; i < s; i++) {
+                                    gd = parseLine(filedata.get(i), 0, View.ID, set, hotMap);
                                     if (gd != null && gd.type() != 0) {
                                         data.add(gd);
                                     }
                                     set.clear();
                                 }
-                                newPrimitive.setGraphicalData(data);
-                                primitiveMap.put(path, newPrimitive);
-                                if (folderPath.endsWith(hiResSuffix)) {
-                                    newPrimitive.setName("48\\" + fileName); //$NON-NLS-1$
-                                } else if (folderPath.endsWith(lowResSuffix)) {
-                                    newPrimitive.setName("8\\" + fileName); //$NON-NLS-1$
-                                } else {
-                                    newPrimitive.setName(fileName);
-                                }
-                                newPrimitive.setDescription(description);
-                                newPrimitive.calculateZoom();
-                                titleMap.put(newPrimitive.getName(), newPrimitive);
-                                isEmpty = false;
                             }
-                        } catch (LDParsingException e) {
-                        } catch (FileNotFoundException e) {
-                        } catch (UnsupportedEncodingException e) {
-                        } finally {
+                            newPrimitive.setGraphicalData(data);
+                            primitiveMap.put(path, newPrimitive);
+                            if (folderPath.endsWith(hiResSuffix)) {
+                                newPrimitive.setName("48\\" + fileName); //$NON-NLS-1$
+                            } else if (folderPath.endsWith(lowResSuffix)) {
+                                newPrimitive.setName("8\\" + fileName); //$NON-NLS-1$
+                            } else {
+                                newPrimitive.setName(fileName);
+                            }
+                            newPrimitive.setDescription(description);
+                            newPrimitive.calculateZoom();
+                            titleMap.put(newPrimitive.getName(), newPrimitive);
+                            isEmpty = false;
+                        } else {
+                            if (ts != null) {
+                                fileCache.remove(ts);
+                            }
                             try {
-                                if (reader != null)
-                                    reader.close();
-                            } catch (LDParsingException e1) {
+                                Primitive newPrimitive = new Primitive();
+                                ArrayList<PGData> data = new ArrayList<PGData>();
+                                String description = ""; //$NON-NLS-1$
+                                reader = new UTF8BufferedReader(path);
+                                String line;
+                                line = reader.readLine();
+                                if (line != null) {
+                                    filedata.add(line);
+                                    data.add(new PGDataInit());
+                                    PGData gd;
+                                    if (line.trim().startsWith("0")) { //$NON-NLS-1$
+                                        description = line.trim();
+                                        if (description.length() > 2) {
+                                            description = description.substring(1).trim();
+                                            if (description.startsWith("~")) continue; //$NON-NLS-1$
+                                        }
+                                    } else if ((gd = parseLine(line, 0, View.ID, new HashSet<String>(), hotMap)) != null) {
+                                        data.add(gd);
+                                    }
+                                    final HashSet<String> set = new HashSet<String>();
+                                    while ((line = reader.readLine()) != null) {
+                                        gd = parseLine(line, 0, View.ID, set, hotMap);
+                                        if (gd != null && gd.type() != 0) {
+                                            filedata.add(line);
+                                            data.add(gd);
+                                        }
+                                        set.clear();
+                                    }
+                                    newPrimitive.setGraphicalData(data);
+                                    primitiveMap.put(path, newPrimitive);
+                                    if (folderPath.endsWith(hiResSuffix)) {
+                                        newPrimitive.setName("48\\" + fileName); //$NON-NLS-1$
+                                    } else if (folderPath.endsWith(lowResSuffix)) {
+                                        newPrimitive.setName("8\\" + fileName); //$NON-NLS-1$
+                                    } else {
+                                        newPrimitive.setName(fileName);
+                                    }
+                                    newPrimitive.setDescription(description);
+                                    newPrimitive.calculateZoom();
+                                    titleMap.put(newPrimitive.getName(), newPrimitive);
+                                    isEmpty = false;
+                                }
+                            } catch (LDParsingException e) {
+                            } catch (FileNotFoundException e) {
+                            } catch (UnsupportedEncodingException e) {
+                            } finally {
+                                try {
+                                    if (reader != null)
+                                        reader.close();
+                                } catch (LDParsingException e1) {
+                                }
                             }
+                            new_ts = new PGTimestamp(path, f.lastModified());
+                            fileCache.put(new_ts, filedata);
+                            fileCacheHits.add(new_ts);
                         }
                     }
                 }
@@ -935,6 +999,24 @@ public class CompositePrimitive extends Composite {
         } catch (SecurityException consumed) {
 
         }
+
+        // Clear superflous cache data
+        {
+            HashSet<PGTimestamp> toRemove = new HashSet<PGTimestamp>();
+            for (PGTimestamp t : fileCache.keySet()) {
+                if (!fileCacheHits.contains(t)) {
+                    toRemove.add(t);
+                }
+            }
+            for (PGTimestamp t : toRemove) {
+                if (fileCache.containsKey(t)) {
+                    fileCache.get(t).clear();
+                }
+                fileCache.remove(t);
+            }
+            fileCacheHits.clear();
+        }
+
         // Set category titles
         for (String catKey : leavesMap.keySet()) {
             String key = leavesTitleMap.get(catKey);
@@ -1047,7 +1129,7 @@ public class CompositePrimitive extends Composite {
         Collections.sort(primitives);
         stopDraw.set(false);
         // Clear the cache
-        cache.clear();
+        // cache.clear();
     }
 
     // What follows now is a very minimalistic DAT file parser (<500LOC)
@@ -1060,7 +1142,7 @@ public class CompositePrimitive extends Composite {
     private static final Vector3f vertexD = new Vector3f();
     private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
 
-    public static PGData parseLine(String line, int depth, Matrix4f productMatrix, Set<String> alreadyParsed) {
+    public static PGData parseLine(String line, int depth, Matrix4f productMatrix, Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
 
         PGData result = null;
 
@@ -1090,6 +1172,8 @@ public class CompositePrimitive extends Composite {
         int linetype = 0;
         char c;
         if (!(data_segments.length > 0 && data_segments[0].length() == 1 && Character.isDigit(c = data_segments[0].charAt(0)))) {
+            result = new PGDataBFC(BFC.PLACEHOLDER);
+            cache.put(line, result);
             return result;
         }
         linetype = Character.getNumericValue(c);
@@ -1100,7 +1184,7 @@ public class CompositePrimitive extends Composite {
             result = parse_Comment(line);
             break;
         case 1:
-            return parse_Reference(data_segments, depth, productMatrix, alreadyParsed);
+            return parse_Reference(data_segments, depth, productMatrix, alreadyParsed, hotMap);
         case 2:
             result = parse_Line(data_segments);
             break;
@@ -1158,7 +1242,7 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static PGData parse_Reference(String[] data_segments, int depth, Matrix4f productMatrix, Set<String> alreadyParsed) {
+    private static PGData parse_Reference(String[] data_segments, int depth, Matrix4f productMatrix, Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
         if (data_segments.length < 15) {
             return null;
         } else {
@@ -1256,38 +1340,50 @@ public class CompositePrimitive extends Composite {
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
                 final PGData1 result = new PGData1(tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
-                        destMatrix, alreadyParsed);
+                        destMatrix, alreadyParsed, hotMap);
                 alreadyParsed.remove(shortFilename);
                 return result;
             } else if (!fileExists) {
                 return null;
             } else {
                 absoluteFilename = fileToOpen.getAbsolutePath();
-                UTF8BufferedReader reader;
-                String line = null;
+                PGTimestamp new_ts = new PGTimestamp(absoluteFilename, fileToOpen.lastModified());
+                PGTimestamp ts = hotMap.get(new_ts);
                 lines = new LinkedList<String>();
-                try {
-                    reader = new UTF8BufferedReader(absoluteFilename);
-                    while (true) {
-                        line = reader.readLine();
-                        if (line == null) {
-                            break;
-                        }
-                        lines.add(line);
+                if (ts != null && ts.isHot() && fileCache.containsKey(ts)) {
+                    lines.addAll(fileCache.get(ts));
+                    fileCacheHits.add(ts);
+                } else {
+                    if (ts != null) {
+                        fileCache.remove(ts);
                     }
-                    reader.close();
-                } catch (FileNotFoundException e1) {
-                    return null;
-                } catch (LDParsingException e1) {
-                    return null;
-                } catch (UnsupportedEncodingException e1) {
-                    return null;
+                    UTF8BufferedReader reader;
+                    String line = null;
+                    try {
+                        reader = new UTF8BufferedReader(absoluteFilename);
+                        while (true) {
+                            line = reader.readLine();
+                            if (line == null) {
+                                break;
+                            }
+                            lines.add(line);
+                        }
+                        reader.close();
+                    } catch (FileNotFoundException e1) {
+                        return null;
+                    } catch (LDParsingException e1) {
+                        return null;
+                    } catch (UnsupportedEncodingException e1) {
+                        return null;
+                    }
+                    fileCache.put(new_ts, new ArrayList<String>(lines));
+                    fileCacheHits.add(new_ts);
                 }
                 det = tMatrix.determinant();
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
                 final PGData1 result = new PGData1(tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
-                        destMatrix, alreadyParsed);
+                        destMatrix, alreadyParsed, hotMap);
                 alreadyParsed.remove(shortFilename);
                 return result;
             }
@@ -1432,5 +1528,21 @@ public class CompositePrimitive extends Composite {
         for (Primitive p : primitives) {
             p.collapse();
         }
+    }
+
+    public static HashMap<String, PGData> getCache() {
+        return cache;
+    }
+
+    public static void setCache(HashMap<String, PGData> cache) {
+        CompositePrimitive.cache = cache;
+    }
+
+    public static HashMap<PGTimestamp, ArrayList<String>> getFileCache() {
+        return fileCache;
+    }
+
+    public static void setFileCache(HashMap<PGTimestamp, ArrayList<String>> file_cache) {
+        CompositePrimitive.fileCache = file_cache;
     }
 }

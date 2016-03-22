@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -23,7 +24,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author nils
  *
  */
-public abstract class PGData implements IPGData {
+public abstract class PGData implements IPGData, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private PGData next;
     private PGData before;

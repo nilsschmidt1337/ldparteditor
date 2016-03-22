@@ -89,8 +89,13 @@ public enum WorkbenchManager {
                         WorkbenchManager.userSettingState.getMedium_scale_snap());
             }
         } catch (FileNotFoundException e) {
+
         } catch (IOException e) {
+            e.fillInStackTrace().printStackTrace(System.err);
         } catch (ClassNotFoundException e) {
+            System.err.println(e);
+        } catch (Exception e) {
+            System.err.println(e);
         } finally {
             if (configFileStream != null) {
                 try {

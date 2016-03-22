@@ -15,12 +15,16 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.io.Serializable;
+
 
 /**
  * @author nils
  *
  */
-public final class PGDataInit extends PGData {
+public final class PGDataInit extends PGData implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public PGDataInit() {}
 
