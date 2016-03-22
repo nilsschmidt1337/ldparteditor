@@ -567,23 +567,35 @@ public class EditorTextWindow extends EditorTextDesign {
                             }
                         }
 
-                        if (canUpdate) {
-                            final VertexManager vm = df.getVertexManager();
-                            if (vm.isModified()) {
-                                df.setText(df.getText());
-                            }
-                            df.parseForData(true);
-
-                            Project.setFileToEdit(df);
+                        if (!canUpdate) {
                             for (OpenGLRenderer renderer : renders) {
                                 Composite3D c3d = renderer.getC3D();
-                                if (!c3d.isDatFileLockedOnDisplay()) {
-                                    c3d.setLockableDatFileReference(df);
-                                    c3d.getModifier().zoomToFit();
-                                }
+                                c3d.getModifier().switchLockedDat(false);
                             }
+                        }
 
-                            df.getVertexManager().addSnapshot();
+                        final VertexManager vm = df.getVertexManager();
+                        if (vm.isModified()) {
+                            df.setText(df.getText());
+                        }
+                        df.parseForData(true);
+
+                        Project.setFileToEdit(df);
+                        for (OpenGLRenderer renderer : renders) {
+                            Composite3D c3d = renderer.getC3D();
+                            if (!c3d.isDatFileLockedOnDisplay()) {
+                                c3d.setLockableDatFileReference(df);
+                                c3d.getModifier().zoomToFit();
+                            }
+                        }
+
+                        df.getVertexManager().addSnapshot();
+
+                        if (!canUpdate) {
+                            for (OpenGLRenderer renderer : renders) {
+                                Composite3D c3d = renderer.getC3D();
+                                c3d.getModifier().switchLockedDat(true);
+                            }
                         }
                     }
                 }
