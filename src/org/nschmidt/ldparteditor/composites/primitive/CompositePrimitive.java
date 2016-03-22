@@ -65,6 +65,7 @@ import org.nschmidt.ldparteditor.data.PGData4;
 import org.nschmidt.ldparteditor.data.PGData5;
 import org.nschmidt.ldparteditor.data.PGDataBFC;
 import org.nschmidt.ldparteditor.data.PGDataInit;
+import org.nschmidt.ldparteditor.data.PGDataProxy;
 import org.nschmidt.ldparteditor.data.PGTimestamp;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
@@ -1150,17 +1151,14 @@ public class CompositePrimitive extends Composite {
         if ((result = cache.get(line)) != null) {
             switch (result.type()) {
             case 2:
-                return PGData2.clone((PGData2) result);
             case 3:
-                return PGData3.clone((PGData3) result);
             case 4:
-                return PGData4.clone((PGData4) result);
             case 5:
-                return PGData5.clone((PGData5) result);
+                return new PGDataProxy(result);
             case 6:
                 PGDataBFC bfc = (PGDataBFC) result;
                 if (bfc.getType() != BFC.PLACEHOLDER) {
-                    return PGDataBFC.clone(bfc);
+                    return new PGDataProxy(bfc);
                 } else {
                     return null;
                 }

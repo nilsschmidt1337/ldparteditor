@@ -73,4 +73,9 @@ public final class PGDataBFC extends PGData implements Serializable {
     public static PGDataBFC clone(PGDataBFC o) {
         return new PGDataBFC(o.type);
     }
+
+    @Override
+    public PGData data() {
+        return this;
+    }
 }

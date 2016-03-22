@@ -421,6 +421,7 @@ public class Primitive implements Comparable<Primitive> {
         float maxY = 0f;
         float maxZ = 0f;
         for (PGData gd : graphicalData) {
+            gd = gd.data();
             switch (gd.type()) {
             case 1:
                 float[] result = calculateZoom(maxX, maxY, maxZ, (PGData1) gd);
@@ -487,18 +488,20 @@ public class Primitive implements Comparable<Primitive> {
         float[] result = new float[]{maxX, maxY, maxZ};
         Matrix4f productMatrix = gd0.productMatrix;
         if (productMatrix == null) return result;
-        PGData gd = gd0.myGData;
-        while ((gd = gd.getNext()) != null) {
-            switch (gd.type()) {
+        PGData gd1 = gd0.myGData;
+        PGData gd2;
+        while ((gd1 = gd1.getNext()) != null) {
+            gd2 = gd1.data();
+            switch (gd2.type()) {
             case 1:
-                float[] result2 = calculateZoom(maxX, maxY, maxZ, (PGData1) gd);
+                float[] result2 = calculateZoom(maxX, maxY, maxZ, (PGData1) gd2);
                 maxX = Math.max(maxX, result2[0]);
                 maxY = Math.max(maxY, result2[1]);
                 maxZ = Math.max(maxZ, result2[2]);
                 break;
             case 2:
             {
-                PGData2 g = (PGData2) gd;
+                PGData2 g = (PGData2) gd2;
                 Vector4f v1 = new Vector4f(g.x1, g.y1, g.z1, 1f);
                 Vector4f v2 = new Vector4f(g.x2, g.y2, g.z2, 1f);
                 Matrix4f.transform(productMatrix, v1, v1);
@@ -513,7 +516,7 @@ public class Primitive implements Comparable<Primitive> {
             break;
             case 3:
             {
-                PGData3 g = (PGData3) gd;
+                PGData3 g = (PGData3) gd2;
                 Vector4f v1 = new Vector4f(g.x1, g.y1, g.z1, 1f);
                 Vector4f v2 = new Vector4f(g.x2, g.y2, g.z2, 1f);
                 Vector4f v3 = new Vector4f(g.x3, g.y3, g.z3, 1f);
@@ -533,7 +536,7 @@ public class Primitive implements Comparable<Primitive> {
             break;
             case 4:
             {
-                PGData4 g = (PGData4) gd;
+                PGData4 g = (PGData4) gd2;
                 Vector4f v1 = new Vector4f(g.x1, g.y1, g.z1, 1f);
                 Vector4f v2 = new Vector4f(g.x2, g.y2, g.z2, 1f);
                 Vector4f v3 = new Vector4f(g.x3, g.y3, g.z3, 1f);
@@ -558,7 +561,7 @@ public class Primitive implements Comparable<Primitive> {
             break;
             case 5:
             {
-                PGData5 g = (PGData5) gd;
+                PGData5 g = (PGData5) gd2;
                 Vector4f v1 = new Vector4f(g.x1, g.y1, g.z1, 1f);
                 Vector4f v2 = new Vector4f(g.x2, g.y2, g.z2, 1f);
                 Matrix4f.transform(productMatrix, v1, v1);

@@ -59,4 +59,9 @@ public final class PGData5 extends PGData implements Serializable {
     public static PGData5 clone(PGData5 o) {
         return new PGData5(o.x1, o.y1, o.z1, o.x2, o.y2, o.z2);
     }
+
+    @Override
+    public PGData data() {
+        return this;
+    }
 }
