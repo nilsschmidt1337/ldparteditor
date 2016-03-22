@@ -709,7 +709,7 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_OpenDat[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                DatFile dat = openDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, null);
+                DatFile dat = openDatFile(getShell(), OpenInWhat.EDITOR_3D, null);
                 if (dat != null) {
                     addRecentFile(dat);
                     final File f = new File(dat.getNewName());
@@ -2260,24 +2260,36 @@ public class Editor3DWindow extends Editor3DDesign {
                                         }
                                     }
 
-                                    if (canUpdate) {
-                                        DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                        final VertexManager vm = df.getVertexManager();
-                                        if (vm.isModified()) {
-                                            df.setText(df.getText());
-                                        }
-                                        df.parseForData(true);
-
-                                        Project.setFileToEdit(df);
+                                    if (!canUpdate) {
                                         for (OpenGLRenderer renderer : renders) {
                                             Composite3D c3d = renderer.getC3D();
-                                            if (!c3d.isDatFileLockedOnDisplay()) {
-                                                c3d.setLockableDatFileReference(df);
-                                                c3d.getModifier().zoomToFit();
-                                            }
+                                            c3d.getModifier().switchLockedDat(false);
                                         }
+                                    }
 
-                                        df.getVertexManager().addSnapshot();
+                                    DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+                                    final VertexManager vm = df.getVertexManager();
+                                    if (vm.isModified()) {
+                                        df.setText(df.getText());
+                                    }
+                                    df.parseForData(true);
+
+                                    Project.setFileToEdit(df);
+                                    for (OpenGLRenderer renderer : renders) {
+                                        Composite3D c3d = renderer.getC3D();
+                                        if (!c3d.isDatFileLockedOnDisplay()) {
+                                            c3d.setLockableDatFileReference(df);
+                                            c3d.getModifier().zoomToFit();
+                                        }
+                                    }
+
+                                    df.getVertexManager().addSnapshot();
+
+                                    if (!canUpdate) {
+                                        for (OpenGLRenderer renderer : renders) {
+                                            Composite3D c3d = renderer.getC3D();
+                                            c3d.getModifier().switchLockedDat(true);
+                                        }
                                     }
                                 }
                             } else {
@@ -6926,19 +6938,29 @@ public class Editor3DWindow extends Editor3DDesign {
                         break;
                     }
                 }
-                if (canUpdate) {
-                    final VertexManager vm = df.getVertexManager();
-                    if (vm.isModified()) {
-                        df.setText(df.getText());
-                    }
-                    df.parseForData(true);
-                    Project.setFileToEdit(df);
+                if (!canUpdate) {
                     for (OpenGLRenderer renderer : renders) {
                         Composite3D c3d = renderer.getC3D();
-                        if (!c3d.isDatFileLockedOnDisplay()) {
-                            c3d.setLockableDatFileReference(df);
-                            c3d.getModifier().zoomToFit();
-                        }
+                        c3d.getModifier().switchLockedDat(false);
+                    }
+                }
+                final VertexManager vm = df.getVertexManager();
+                if (vm.isModified()) {
+                    df.setText(df.getText());
+                }
+                df.parseForData(true);
+                Project.setFileToEdit(df);
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (!c3d.isDatFileLockedOnDisplay()) {
+                        c3d.setLockableDatFileReference(df);
+                        c3d.getModifier().zoomToFit();
+                    }
+                }
+                if (!canUpdate) {
+                    for (OpenGLRenderer renderer : renders) {
+                        Composite3D c3d = renderer.getC3D();
+                        c3d.getModifier().switchLockedDat(true);
                     }
                 }
             }
