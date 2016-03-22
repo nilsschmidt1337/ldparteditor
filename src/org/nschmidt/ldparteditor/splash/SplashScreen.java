@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -44,7 +45,10 @@ import org.lwjgl.opengl.GLContext;
 import org.nschmidt.ldparteditor.composites.ToolItemDrawLocation;
 import org.nschmidt.ldparteditor.composites.ToolItemDrawMode;
 import org.nschmidt.ldparteditor.composites.ToolItemState;
+import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.PGData;
+import org.nschmidt.ldparteditor.data.PGTimestamp;
 import org.nschmidt.ldparteditor.dialogs.startup.StartupDialog;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
@@ -205,6 +209,15 @@ public class SplashScreen extends ApplicationWindow {
                     return;
                 }
 
+                // Load the primitive cache
+                HashMap<String, PGData> pcache = WorkbenchManager.getUserSettingState().getPrimitiveCache();
+                if (pcache != null) {
+                    CompositePrimitive.setCache(pcache);
+                }
+                HashMap<PGTimestamp, ArrayList<String>> pfcache = WorkbenchManager.getUserSettingState().getPrimitiveFileCache();
+                if (pfcache != null) {
+                    CompositePrimitive.setFileCache(pfcache);
+                }
                 // Load the toolItem state for the 3D editor
                 UTF8BufferedReader reader;
                 String line = null;

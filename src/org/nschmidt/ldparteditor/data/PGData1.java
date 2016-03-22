@@ -15,7 +15,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.io.Serializable;
 import java.nio.FloatBuffer;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -29,10 +31,12 @@ import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
  * @author nils
  *
  */
-public final class PGData1 extends PGData {
+public final class PGData1 extends PGData implements Serializable {
 
-    final FloatBuffer matrix;
-    final FloatBuffer matrix2;
+    private static final long serialVersionUID = 1L;
+
+    final transient FloatBuffer matrix;
+    final transient FloatBuffer matrix2;
     final Matrix4f productMatrix;
     final Matrix4f localMatrix;
 
@@ -55,10 +59,11 @@ public final class PGData1 extends PGData {
      * @param depth
      * @param det
      * @param pMatrix
+     * @param hotMap
      * @param firstRef
      */
     public PGData1(Matrix4f tMatrix, LinkedList<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
-            Set<String> alreadyParsed) {
+            Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
 
         depth++;
         if (depth < 16) {
@@ -82,7 +87,7 @@ public final class PGData1 extends PGData {
 
             for (String line : lines) {
                 if (isNotBlank(line)) {
-                    PGData gdata = CompositePrimitive.parseLine(line, depth, pMatrix, alreadyParsed);
+                    PGData gdata = CompositePrimitive.parseLine(line, depth, pMatrix, alreadyParsed, hotMap);
                     if (gdata != null) {
                         anchorData.setNext(gdata);
                         anchorData = gdata;
