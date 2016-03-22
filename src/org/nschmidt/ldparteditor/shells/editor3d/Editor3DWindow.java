@@ -717,6 +717,14 @@ public class Editor3DWindow extends Editor3DDesign {
                         Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
                     }
                 }
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    for (CTabItem t : w.getTabFolder().getItems()) {
+                        if (dat.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                            w.closeTabWithDatfile(dat);
+                            return;
+                        }
+                    }
+                }
                 regainFocus();
             }
         });
@@ -6799,7 +6807,6 @@ public class Editor3DWindow extends Editor3DDesign {
             } else {
 
                 // FIXME Needs code cleanup!!
-
                 df = original;
 
                 df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));

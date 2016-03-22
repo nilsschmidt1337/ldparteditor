@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -37,6 +38,7 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.composites.CompositeScale;
 import org.nschmidt.ldparteditor.composites.ScalableComposite;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
@@ -45,6 +47,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 
 /**
  * Provides functions to perform view actions for the {@linkplain Composite3D}
@@ -387,6 +390,14 @@ public class Composite3DModifier {
                                         final File f2 = new File(df.getNewName());
                                         if (f2.getParentFile() != null) {
                                             Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
+                                        }
+                                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                            for (CTabItem t : w.getTabFolder().getItems()) {
+                                                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                                    w.closeTabWithDatfile(df);
+                                                    return;
+                                                }
+                                            }
                                         }
                                     }
                                     break;
