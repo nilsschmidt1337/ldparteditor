@@ -2192,6 +2192,14 @@ public class Editor3DWindow extends Editor3DDesign {
                     @SuppressWarnings("unused")
                     MenuItem mntm_Separator = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
 
+                    MenuItem mntmClose = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                    mntm_Close[0] = mntmClose;
+                    mntmClose.setEnabled(true);
+                    mntmClose.setText(I18n.E3D_Close);
+
+                    @SuppressWarnings("unused")
+                    MenuItem mntm_Separator2 = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
+
                     MenuItem mntmRename = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_Rename[0] = mntmRename;
                     mntmRename.setEnabled(true);
@@ -2202,13 +2210,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     mntmRevert.setEnabled(true);
                     mntmRevert.setText(I18n.E3D_RevertAllChanges);
 
-                    MenuItem mntmDelete = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
-                    mntm_Delete[0] = mntmDelete;
-                    mntmDelete.setEnabled(true);
-                    mntmDelete.setText(I18n.E3D_Delete);
-
                     @SuppressWarnings("unused")
-                    MenuItem mntm_Separator2 = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
+                    MenuItem mntm_Separator3 = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
 
                     MenuItem mntmCopyToUnofficial = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                     mntm_CopyToUnofficial[0] = mntmCopyToUnofficial;
@@ -2236,10 +2239,10 @@ public class Editor3DWindow extends Editor3DDesign {
                                 new EditorTextWindow().run(df);
                                 df.getVertexManager().addSnapshot();
                             } else {
-                                MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                                messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
-                                messageBoxError.setMessage(I18n.DIALOG_Unavailable);
-                                messageBoxError.open();
+                                // MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                                // messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
+                                // messageBoxError.setMessage(I18n.DIALOG_Unavailable);
+                                // messageBoxError.open();
                             }
                             cleanupClosedData();
                         }
@@ -2310,10 +2313,10 @@ public class Editor3DWindow extends Editor3DDesign {
                                     }
                                 }
                             } else {
-                                MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                                messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
-                                messageBoxError.setMessage(I18n.DIALOG_Unavailable);
-                                messageBoxError.open();
+                                // MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                                // messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
+                                // messageBoxError.setMessage(I18n.DIALOG_Unavailable);
+                                // messageBoxError.open();
                             }
                             cleanupClosedData();
                             regainFocus();
@@ -2390,47 +2393,59 @@ public class Editor3DWindow extends Editor3DDesign {
                                     }
                                 }
                             } else {
-                                MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                                messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
-                                messageBoxError.setMessage(I18n.DIALOG_Unavailable);
-                                messageBoxError.open();
+                                // MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                                // messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
+                                // messageBoxError.setMessage(I18n.DIALOG_Unavailable);
+                                // messageBoxError.open();
                             }
                             regainFocus();
                         }
                     });
-                    mntm_Delete[0].addSelectionListener(new SelectionAdapter() {
+                    mntm_Close[0].addSelectionListener(new SelectionAdapter() {
                         @Override
                         public void widgetSelected(SelectionEvent e) {
                             if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
                                 DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                if (df.isReadOnly()) {
-                                    if (treeParts[0].getSelection()[0].getParentItem().getParentItem() == treeItem_Project[0]) {
-                                        updateTree_removeEntry(df);
-                                        cleanupClosedData();
-                                    }
-                                    regainFocus();
-                                    return;
-                                }
+                                if (Project.getUnsavedFiles().contains(df) && !df.isReadOnly()) {
+                                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
+                                    messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
 
-                                updateTree_removeEntry(df);
-                                if (df.getOldName().startsWith(Project.getProjectPath()) && df.getNewName().startsWith(Project.getProjectPath())) {
-                                    try {
-                                        File f = new File(df.getOldName());
-                                        if (f.exists()) {
-                                            File bakFile = new File(df.getOldName() + ".bak"); //$NON-NLS-1$
-                                            if (bakFile.exists()) {
-                                                bakFile.delete();
-                                            }
-                                            f.renameTo(bakFile);
+                                    Object[] messageArguments = {df.getShortName()};
+                                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                    formatter.setLocale(MyLanguage.LOCALE);
+                                    formatter.applyPattern(I18n.DIALOG_UnsavedChanges);
+                                    messageBox.setMessage(formatter.format(messageArguments));
+
+                                    int result = messageBox.open();
+
+                                    if (result == SWT.NO) {
+                                    } else if (result == SWT.YES) {
+                                        if (df.save()) {
+                                            Editor3DWindow.getWindow().addRecentFile(df);
+                                        } else {
+                                            MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                                            messageBoxError.setText(I18n.DIALOG_Error);
+                                            messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                                            messageBoxError.open();
+                                            cleanupClosedData();
+                                            updateTree_unsavedEntries();
+                                            regainFocus();
+                                            return;
                                         }
-                                    } catch (Exception ex) {}
+                                    } else {
+                                        cleanupClosedData();
+                                        updateTree_unsavedEntries();
+                                        regainFocus();
+                                        return;
+                                    }
                                 }
+                                updateTree_removeEntry(df);
                                 cleanupClosedData();
                             } else {
-                                MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                                messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
-                                messageBoxError.setMessage(I18n.DIALOG_Unavailable);
-                                messageBoxError.open();
+                                // MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                                // messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
+                                // messageBoxError.setMessage(I18n.DIALOG_Unavailable);
+                                // messageBoxError.open();
                             }
                             regainFocus();
                         }
@@ -2600,10 +2615,10 @@ public class Editor3DWindow extends Editor3DDesign {
                                     }
                                 }
                             } else {
-                                MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                                messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
-                                messageBoxError.setMessage(I18n.DIALOG_Unavailable);
-                                messageBoxError.open();
+                                // MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                                // messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
+                                // messageBoxError.setMessage(I18n.DIALOG_Unavailable);
+                                // messageBoxError.open();
                             }
                             regainFocus();
                         }
@@ -2667,10 +2682,10 @@ public class Editor3DWindow extends Editor3DDesign {
                                     targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
                                     targetTreeItem = treeItem_UnofficialSubparts[0];
                                 } else {
-                                    MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                                    messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
-                                    messageBoxError.setMessage(I18n.DIALOG_Unavailable);
-                                    messageBoxError.open();
+                                    // MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                                    // messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
+                                    // messageBoxError.setMessage(I18n.DIALOG_Unavailable);
+                                    // messageBoxError.open();
                                     regainFocus();
                                     return;
                                 }
