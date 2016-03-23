@@ -1686,6 +1686,24 @@ public class VM01SelectHelper extends VM01Select {
         selectedData.addAll(selectedSubfiles);
     }
 
+    private GData1 getSubfile(GData g) {
+        GData1 result = View.DUMMY_REFERENCE;
+        int counter = 0;
+        while (counter < 100) {
+            while ((g = g.getBefore()) != null && g.type() != 7) {
+            }
+            if (g == null) break;
+            GData1 p = ((GDataInit) g).getParent();
+            if (View.DUMMY_REFERENCE.equals(p)) {
+                return result;
+            }
+            result = p;
+            counter++;
+        }
+        NLogger.error(getClass(), "VM01SelectHelper.getSubfile() had too many iterations!"); //$NON-NLS-1$
+        return View.DUMMY_REFERENCE;
+    }
+
     public synchronized void selectSubfiles(Composite3D c3d, Event event) {
 
         selectedVerticesForSubfile.clear();
@@ -1726,9 +1744,30 @@ public class VM01SelectHelper extends VM01Select {
         backupSelection();
         clearSelection();
 
-        selectVertices2(c3d);
+        // selectVertices2(c3d);
         selectFaces2(c3d, event);
         selectLines2(c3d);
+
+        // Determine which subfiles were selected
+
+        selectedData.addAll(selectedLinesForSubfile);
+        selectedData.addAll(selectedTrianglesForSubfile);
+        selectedData.addAll(selectedQuadsForSubfile);
+        selectedData.addAll(selectedCondlinesForSubfile);
+
+        NLogger.debug(getClass(), "Selected data:"); //$NON-NLS-1$
+        for (GData g : selectedData) {
+            System.out.println(g.toString());
+        }
+
+        NLogger.debug(getClass(), "Subfiles in selection:"); //$NON-NLS-1$
+        HashSet<GData1> subs = new HashSet<GData1>();
+        for (GData g : selectedData) {
+            GData1 s = getSubfile(g);
+            if (!View.DUMMY_REFERENCE.equals(s)) {
+                subs.add(s);
+            }
+        }
 
         restoreSelection();
 
