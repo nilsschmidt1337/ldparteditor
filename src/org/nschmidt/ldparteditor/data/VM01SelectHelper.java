@@ -1725,6 +1725,60 @@ public class VM01SelectHelper extends VM01Select {
         return View.DUMMY_REFERENCE;
     }
 
+    private void removeSubfileFromSelection(GData1 subf) {
+        selectedData.remove(subf);
+        selectedSubfiles.remove(subf);
+        Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+        for (VertexInfo vertexInfo : vis) {
+            selectedVertices.remove(vertexInfo.getVertex());
+            GData g = vertexInfo.getLinkedData();
+            selectedData.remove(g);
+            switch (g.type()) {
+            case 2:
+                selectedLines.remove(g);
+                break;
+            case 3:
+                selectedTriangles.remove(g);
+                break;
+            case 4:
+                selectedQuads.remove(g);
+                break;
+            case 5:
+                selectedCondlines.remove(g);
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    private void addSubfileToSelection(GData1 subf) {
+        selectedData.add(subf);
+        selectedSubfiles.add(subf);
+        Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+        for (VertexInfo vertexInfo : vis) {
+            selectedVertices.add(vertexInfo.getVertex());
+            GData g = vertexInfo.getLinkedData();
+            selectedData.add(g);
+            switch (g.type()) {
+            case 2:
+                selectedLines.add((GData2) g);
+                break;
+            case 3:
+                selectedTriangles.add((GData3) g);
+                break;
+            case 4:
+                selectedQuads.add((GData4) g);
+                break;
+            case 5:
+                selectedCondlines.add((GData5) g);
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
     public synchronized void selectSubfiles(Composite3D c3d, Event event) {
 
         selectedVerticesForSubfile.clear();
@@ -1733,36 +1787,16 @@ public class VM01SelectHelper extends VM01Select {
         selectedQuadsForSubfile.clear();
         selectedCondlinesForSubfile.clear();
 
+        HashSet<GData1> backupSubfiles = new HashSet<GData1>(selectedSubfiles);
+
         if (!c3d.getKeys().isCtrlPressed()) {
-            for (GData1 subf : selectedSubfiles) {
-                Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
-                for (VertexInfo vertexInfo : vis) {
-                    selectedVertices.remove(vertexInfo.getVertex());
-                    GData g = vertexInfo.getLinkedData();
-                    selectedData.remove(g);
-                    switch (g.type()) {
-                    case 2:
-                        selectedLines.remove(g);
-                        break;
-                    case 3:
-                        selectedTriangles.remove(g);
-                        break;
-                    case 4:
-                        selectedQuads.remove(g);
-                        break;
-                    case 5:
-                        selectedCondlines.remove(g);
-                        break;
-                    default:
-                        break;
-                    }
-                }
+            for (GData1 subf : backupSubfiles) {
+                removeSubfileFromSelection(subf);
             }
             selectedData.removeAll(selectedSubfiles);
             selectedSubfiles.clear();
+            backupSubfiles.clear();
         }
-
-        HashSet<GData1> backupSubfiles = new HashSet<GData1>(selectedSubfiles);
 
         backupSelection();
         clearSelection();
@@ -1777,6 +1811,12 @@ public class VM01SelectHelper extends VM01Select {
         selectedData.addAll(selectedTrianglesForSubfile);
         selectedData.addAll(selectedQuadsForSubfile);
         selectedData.addAll(selectedCondlinesForSubfile);
+
+        selectedVerticesForSubfile.clear();
+        selectedLinesForSubfile.clear();
+        selectedTrianglesForSubfile.clear();
+        selectedQuadsForSubfile.clear();
+        selectedCondlinesForSubfile.clear();
 
         NLogger.debug(getClass(), "Selected data:"); //$NON-NLS-1$
         for (GData g : selectedData) {
@@ -1795,6 +1835,8 @@ public class VM01SelectHelper extends VM01Select {
             NLogger.debug(getClass(), g.toString());
         }
 
+        selectedData.clear();
+
         NLogger.debug(getClass(), "Subfiles in selection, to add/remove:"); //$NON-NLS-1$
         HashSet<GData1> subsToAdd = new HashSet<GData1>();
         HashSet<GData1> subsToRemove = new HashSet<GData1>();
@@ -1806,40 +1848,28 @@ public class VM01SelectHelper extends VM01Select {
                     subsToAdd.add(subf);
                 }
             }
+            for (GData1 subf : subs) {
+                if (!subsToRemove.contains(subf)) {
+                    subsToAdd.add(subf);
+                }
+            }
         } else {
             subsToAdd.addAll(subs);
         }
 
         restoreSelection();
 
-        NLogger.debug(getClass(), "Subfiles in selection (ADD)"); //$NON-NLS-1$
-        for (GData g : subsToAdd) {
-            NLogger.debug(getClass(), g.toString());
-        }
-
         NLogger.debug(getClass(), "Subfiles in selection (REMOVE)"); //$NON-NLS-1$
-        for (GData g : subsToRemove) {
+        for (GData1 g : subsToRemove) {
             NLogger.debug(getClass(), g.toString());
+            addSubfileToSelection(g);
         }
 
-        /*
-        selectedLines.addAll(selectedLinesForSubfile);
-        selectedTriangles.addAll(selectedTrianglesForSubfile);
-        selectedQuads.addAll(selectedQuadsForSubfile);
-        selectedCondlines.addAll(selectedCondlinesForSubfile);
-         */
-
-        selectedVerticesForSubfile.clear();
-        selectedLinesForSubfile.clear();
-        selectedTrianglesForSubfile.clear();
-        selectedQuadsForSubfile.clear();
-        selectedCondlinesForSubfile.clear();
-
-        selectedData.addAll(selectedLines);
-        selectedData.addAll(selectedTriangles);
-        selectedData.addAll(selectedQuads);
-        selectedData.addAll(selectedCondlines);
-        selectedData.addAll(selectedSubfiles);
+        NLogger.debug(getClass(), "Subfiles in selection (ADD)"); //$NON-NLS-1$
+        for (GData1 g : subsToAdd) {
+            NLogger.debug(getClass(), g.toString());
+            addSubfileToSelection(g);
+        }
     }
 
     public Vector4f getSelectionCenter() {
