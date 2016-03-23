@@ -920,7 +920,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 ((CompositeTab) tabFolder[0].getSelection()).getTextComposite().forceFocus();
             }
         });
-        Transfer[] types = new Transfer[] { MyDummyTransfer.getInstance(), FileTransfer.getInstance()};
+        Transfer[] types = new Transfer[] { MyDummyTransfer.getInstance() };
         int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
 
         final DragSource source = new DragSource(tabFolder[0], operations);
@@ -942,8 +942,9 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
+        Transfer[] types2 = new Transfer[] { MyDummyTransfer.getInstance(), FileTransfer.getInstance()};
         DropTarget target = new DropTarget(tabFolder[0], operations);
-        target.setTransfer(types);
+        target.setTransfer(types2);
         target.addDropListener(new DropTargetAdapter() {
             @Override
             public void dragOver(DropTargetEvent event) {
