@@ -140,7 +140,6 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_AddHistory = new Button[1];
     final Button[] btn_Redo = new Button[1];
 
-
     final Button[] btn_Manipulator_0_toOrigin = new Button[1];
     final Button[] btn_Manipulator_X_XReverse = new Button[1];
     final Button[] btn_Manipulator_XI_YReverse = new Button[1];
@@ -335,6 +334,7 @@ class Editor3DDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spn_PngSX = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_PngSY = new BigDecimalSpinner[1];
 
+    final Button[] btn_ToggleLinesOpenGL = new Button[1];
     final Button[] btn_lineSize1 = new Button[1];
     final Button[] btn_lineSize2 = new Button[1];
     final Button[] btn_lineSize3 = new Button[1];
@@ -1375,6 +1375,12 @@ class Editor3DDesign extends ApplicationWindow {
             this.btn_lineSize4[0] = btn_lineSize4;
             btn_lineSize4.setToolTipText(I18n.E3D_LineSize4);
             btn_lineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_toggleLinesOpenGL = new Button(target, SWT.TOGGLE);
+            this.btn_ToggleLinesOpenGL[0] = btn_toggleLinesOpenGL;
+            btn_toggleLinesOpenGL.setToolTipText(I18n.E3D_LineSize1);
+            btn_toggleLinesOpenGL.setImage(ResourceManager.getImage("icon16_linesize1.png")); //$NON-NLS-1$
         }
         return toolItem_LineThickness;
     }

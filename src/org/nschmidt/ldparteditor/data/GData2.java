@@ -232,7 +232,7 @@ public final class GData2 extends GData {
 
         GL11.glDisable(GL11.GL_LIGHTING);
 
-        if (c3d.getZoom() > 5e-6) {
+        if (c3d.getZoom() > View.edge_threshold) {
 
             GL11.glPushMatrix();
 
