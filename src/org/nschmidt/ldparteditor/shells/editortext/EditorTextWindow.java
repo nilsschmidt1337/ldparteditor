@@ -156,6 +156,7 @@ public class EditorTextWindow extends EditorTextDesign {
             DropTarget dt = new DropTarget(tabFolder[0].getParent().getParent(), DND.DROP_DEFAULT | DND.DROP_MOVE );
             dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
             dt.addDropListener(new DropTargetAdapter() {
+                @Override
                 public void drop(DropTargetEvent event) {
                     String fileList[] = null;
                     FileTransfer ft = FileTransfer.getInstance();
@@ -919,7 +920,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 ((CompositeTab) tabFolder[0].getSelection()).getTextComposite().forceFocus();
             }
         });
-        Transfer[] types = new Transfer[] { MyDummyTransfer.getInstance() };
+        Transfer[] types = new Transfer[] { MyDummyTransfer.getInstance(), FileTransfer.getInstance()};
         int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
 
         final DragSource source = new DragSource(tabFolder[0], operations);
@@ -958,6 +959,39 @@ public class EditorTextWindow extends EditorTextDesign {
 
             @Override
             public void drop(DropTargetEvent event) {
+                String fileList[] = null;
+                FileTransfer ft = FileTransfer.getInstance();
+                if (ft.isSupportedType(event.currentDataType)) {
+                    fileList = (String[]) event.data;
+                    if (fileList != null) {
+                        for (String f : fileList) {
+                            NLogger.debug(getClass(), f);
+                            if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
+                                final File fileToOpen = new File(f);
+                                if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
+                                DatFile df = Editor3DWindow.getWindow().openDatFile(tabFolder[0].getWindow().getShell(), OpenInWhat.EDITOR_3D, f);
+                                if (df != null) {
+                                    Editor3DWindow.getWindow().addRecentFile(df);
+                                    final File f2 = new File(df.getNewName());
+                                    if (f2.getParentFile() != null) {
+                                        Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
+                                    }
+                                    if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabFolder[0].getWindow())) {
+                                        {
+                                            CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
+                                            tbtmnewItem.setWindow(tabFolder[0].getWindow());
+                                            tbtmnewItem.getState().setFileNameObj(df);
+                                            tabFolder[0].setSelection(tbtmnewItem);
+                                            tbtmnewItem.parseForErrorAndHints();
+                                            tbtmnewItem.getTextComposite().redraw();
+                                        }
+                                    }
+                                }
+                                return;
+                            }
+                        }
+                    }
+                }
                 if (EditorTextWindow.draggedTabOrigin != null && !EditorTextWindow.draggedTabOrigin.equals(EditorTextWindow.draggedTabTarget)) {
                     if (!EditorTextWindow.draggedTabOrigin.getState().getFileNameObj().getVertexManager().isUpdated()) return;
                     if (EditorTextWindow.draggedTabTarget != null && !EditorTextWindow.draggedTabTarget.getState().getFileNameObj().getVertexManager().isUpdated()) return;
