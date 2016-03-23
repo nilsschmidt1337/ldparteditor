@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 
 /**
@@ -51,6 +52,8 @@ class RotateDesign extends Dialog {
     final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
+    final Button[] btn_PivotClipboard = new Button[1];
+    final Button[] btn_PivotManipulator = new Button[1];
     final BigDecimalSpinner[] spn_pX = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_pY = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_pZ = new BigDecimalSpinner[1];
@@ -131,6 +134,27 @@ class RotateDesign extends Dialog {
 
         Label lbl_Pivot = new Label(cmp_container, SWT.NONE);
         lbl_Pivot.setText(I18n.ROTATE_Pivot);
+
+        {
+            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
+            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmp_txt.setLayout(new GridLayout(1, true));
+            Button btn_PivotClipboard = new Button(cmp_txt, SWT.NONE);
+            this.btn_PivotClipboard[0] = btn_PivotClipboard;
+            btn_PivotClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            btn_PivotClipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
+            btn_PivotClipboard.setText(I18n.ROTATE_PivotClipboard);
+        }
+        {
+            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
+            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmp_txt.setLayout(new GridLayout(1, true));
+            Button btn_PivotManipulator = new Button(cmp_txt, SWT.NONE);
+            this.btn_PivotManipulator[0] = btn_PivotManipulator;
+            btn_PivotManipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            btn_PivotManipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btn_PivotManipulator.setText(I18n.ROTATE_PivotManipulator);
+        }
 
         {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
