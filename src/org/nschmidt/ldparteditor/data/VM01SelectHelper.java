@@ -1690,7 +1690,7 @@ public class VM01SelectHelper extends VM01Select {
         GData1 result = View.DUMMY_REFERENCE;
         int counter = 0;
         while (counter < 100) {
-            while ((g = g.getBefore()) != null && ((g.type() < 1 || g.type() > 5) && g.type() != 7)) {
+            while ((g = g.getBefore()) != null && (g.type() < 1 || g.type() > 5) && g.type() != 7) {
             }
             if (g == null) break;
             GData1 p = View.DUMMY_REFERENCE;
@@ -1752,7 +1752,7 @@ public class VM01SelectHelper extends VM01Select {
         }
     }
 
-    private void addSubfileToSelection(GData1 subf) {
+    public void addSubfileToSelection(GData1 subf) {
         selectedData.add(subf);
         selectedSubfiles.add(subf);
         Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
