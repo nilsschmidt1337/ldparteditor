@@ -594,17 +594,18 @@ class Editor3DDesign extends ApplicationWindow {
                                 Composite cmp_dummy = new Composite(cmp_snappingArea, SWT.NONE);
                                 cmp_dummy.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-                                Button btnCoarse = new Button(cmp_dummy, SWT.NONE);
+                                Button btnCoarse = new Button(cmp_dummy, SWT.RADIO);
                                 this.btn_Coarse[0] = btnCoarse;
                                 btnCoarse.setImage(ResourceManager.getImage("icon8_coarse.png")); //$NON-NLS-1$
                                 btnCoarse.setToolTipText(I18n.E3D_Coarse);
 
-                                Button btnMedium = new Button(cmp_dummy, SWT.NONE);
+                                Button btnMedium = new Button(cmp_dummy, SWT.RADIO);
                                 this.btn_Medium[0] = btnMedium;
+                                btnMedium.setSelection(true);
                                 btnMedium.setImage(ResourceManager.getImage("icon8_medium.png")); //$NON-NLS-1$
                                 btnMedium.setToolTipText(I18n.E3D_Medium);
 
-                                Button btnFine = new Button(cmp_dummy, SWT.NONE);
+                                Button btnFine = new Button(cmp_dummy, SWT.RADIO);
                                 this.btn_Fine[0] = btnFine;
                                 btnFine.setImage(ResourceManager.getImage("icon8_fine.png")); //$NON-NLS-1$
                                 btnFine.setToolTipText(I18n.E3D_Fine);

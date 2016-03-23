@@ -1546,6 +1546,9 @@ public class Editor3DWindow extends Editor3DDesign {
                             spn_Rotate[0].setValue(r);
                             spn_Scale[0].setValue(s);
                             Manipulator.setSnap(m, r, s);
+                            btn_Coarse[0].setSelection(true);
+                            btn_Medium[0].setSelection(false);
+                            btn_Fine[0].setSelection(false);
                             regainFocus();
                         }
                     });
@@ -1596,6 +1599,9 @@ public class Editor3DWindow extends Editor3DDesign {
                             spn_Rotate[0].setValue(r);
                             spn_Scale[0].setValue(s);
                             Manipulator.setSnap(m, r, s);
+                            btn_Coarse[0].setSelection(false);
+                            btn_Medium[0].setSelection(true);
+                            btn_Fine[0].setSelection(false);
                             regainFocus();
                         }
                     });
@@ -1646,6 +1652,9 @@ public class Editor3DWindow extends Editor3DDesign {
                             spn_Rotate[0].setValue(r);
                             spn_Scale[0].setValue(s);
                             Manipulator.setSnap(m, r, s);
+                            btn_Coarse[0].setSelection(false);
+                            btn_Medium[0].setSelection(false);
+                            btn_Fine[0].setSelection(true);
                             regainFocus();
                         }
                     });
