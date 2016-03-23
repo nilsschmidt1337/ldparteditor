@@ -480,7 +480,7 @@ public class Composite3D extends ScalableComposite {
                                         if (gs != null && gs.type() > 0 && gs.type() < 6) {
                                             switch (gs.type()) {
                                             case 1:
-                                                vm.getSelectedSubfiles().add((GData1) gs);
+                                                vm.addSubfileToSelection((GData1) gs);
                                                 break;
                                             case 2:
                                                 vm.getSelectedLines().add((GData2) gs);
