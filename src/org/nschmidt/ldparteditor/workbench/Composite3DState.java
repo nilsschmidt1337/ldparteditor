@@ -40,6 +40,7 @@ public class Composite3DState implements Serializable {
     private boolean subfileMeshlines = false;
     private boolean vertices = false;
     private boolean hiddenVertices = false;
+    private boolean condlineControlPoints = false;
     private boolean studLogo = false;
     private int lineMode = 0;
     private boolean alwaysBlackLines = false;
@@ -240,6 +241,14 @@ public class Composite3DState implements Serializable {
     @Override
     public String toString() {
         return this.parentPath + " -> " + path; //$NON-NLS-1$
+    }
+
+    public boolean isCondlineControlPoints() {
+        return condlineControlPoints;
+    }
+
+    public void setCondlineControlPoints(boolean condlineControlPoints) {
+        this.condlineControlPoints = condlineControlPoints;
     }
 
 }

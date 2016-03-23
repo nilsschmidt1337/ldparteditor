@@ -5676,6 +5676,7 @@ public class Editor3DWindow extends Editor3DDesign {
             st.setMeshlines(c3d.isMeshLines());
             st.setSubfileMeshlines(c3d.isSubMeshLines());
             st.setVertices(c3d.isShowingVertices());
+            st.setCondlineControlPoints(c3d.isShowingCondlineControlPoints());
             st.setHiddenVertices(c3d.isShowingHiddenVertices());
             st.setStudLogo(c3d.isShowingLogo());
             st.setLineMode(c3d.getLineMode());
