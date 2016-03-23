@@ -1257,46 +1257,7 @@ public class Composite3D extends ScalableComposite {
             }
         });
 
-        DropTarget dt = new DropTarget(canvas, DND.DROP_DEFAULT | DND.DROP_MOVE );
-        dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
-        dt.addDropListener(new DropTargetAdapter() {
-            @Override
-            public void drop(DropTargetEvent event) {
-                String fileList[] = null;
-                FileTransfer ft = FileTransfer.getInstance();
-                if (ft.isSupportedType(event.currentDataType)) {
-                    fileList = (String[]) event.data;
-                    if (fileList != null) {
-                        for (String f : fileList) {
-                            NLogger.debug(getClass(), f);
-                            if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
-                                final File fileToOpen = new File(f);
-                                if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
-                                DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, f);
-                                if (df != null) {
-                                    Editor3DWindow.getWindow().addRecentFile(df);
-                                    final File f2 = new File(df.getNewName());
-                                    if (f2.getParentFile() != null) {
-                                        Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
-                                    }
-                                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                        for (CTabItem t : w.getTabFolder().getItems()) {
-                                            if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                                w.closeTabWithDatfile(df);
-                                                return;
-                                            }
-                                        }
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        Transfer[] types = new Transfer[] { MyDummyTransfer2.getInstance() };
+        Transfer[] types = new Transfer[] { MyDummyTransfer2.getInstance(), FileTransfer.getInstance() };
         int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
         DropTarget target = new DropTarget(this, operations);
         target.setTransfer(types);
@@ -1335,6 +1296,38 @@ public class Composite3D extends ScalableComposite {
 
             @Override
             public void drop(DropTargetEvent event) {
+                String fileList[] = null;
+                FileTransfer ft = FileTransfer.getInstance();
+                if (ft.isSupportedType(event.currentDataType)) {
+                    fileList = (String[]) event.data;
+                    if (fileList != null) {
+                        for (String f : fileList) {
+                            NLogger.debug(getClass(), f);
+                            if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
+                                final File fileToOpen = new File(f);
+                                if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
+                                DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, f);
+                                if (df != null) {
+                                    Editor3DWindow.getWindow().addRecentFile(df);
+                                    final File f2 = new File(df.getNewName());
+                                    if (f2.getParentFile() != null) {
+                                        Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
+                                    }
+                                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                        for (CTabItem t : w.getTabFolder().getItems()) {
+                                            if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                                w.closeTabWithDatfile(df);
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    return;
+                }
                 NLogger.debug(getClass(), "Primitive dropped at: {0} | {1}", event.x, event.y); //$NON-NLS-1$
                 final Editor3DWindow window = Editor3DWindow.getWindow();
                 final org.nschmidt.ldparteditor.data.Primitive p = window.getCompositePrimitive().getSelectedPrimitive();
