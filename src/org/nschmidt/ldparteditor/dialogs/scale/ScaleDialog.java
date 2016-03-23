@@ -47,8 +47,8 @@ public class ScaleDialog extends ScaleDesign {
      *
      * @param parentShell
      */
-    public ScaleDialog(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices) {
-        super(parentShell, v, clipboardVertices);
+    public ScaleDialog(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition) {
+        super(parentShell, v, clipboardVertices, manipulatorPosition);
         x = true;
         y = true;
         z = true;
@@ -59,6 +59,7 @@ public class ScaleDialog extends ScaleDesign {
         }
         if (clipboardVertices.size() == 1) {
             p = clipboardVertices.iterator().next();
+            c = new Vertex(p.X, p.Y, p.Z);
         }
     }
 
@@ -118,6 +119,22 @@ public class ScaleDialog extends ScaleDesign {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
                 setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue()));
+            }
+        });
+        btn_PivotManipulator[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                spn_pX[0].setValue(m.X);
+                spn_pY[0].setValue(m.Y);
+                spn_pZ[0].setValue(m.Z);
+            }
+        });
+        btn_PivotClipboard[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                spn_pX[0].setValue(c.X);
+                spn_pY[0].setValue(c.Y);
+                spn_pZ[0].setValue(c.Z);
             }
         });
         return super.open();

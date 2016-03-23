@@ -62,8 +62,13 @@ class RotateDesign extends Dialog {
 
     Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex p = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-    RotateDesign(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices) {
+    Vertex m = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+    Vertex c = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+    RotateDesign(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition) {
         super(parentShell);
+        if (manipulatorPosition != null) {
+            m = manipulatorPosition;
+        }
         if (v == null) {
             this.v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
         } else {
@@ -71,6 +76,7 @@ class RotateDesign extends Dialog {
         }
         if (clipboardVertices.size() == 1) {
             p = clipboardVertices.iterator().next();
+            c = new Vertex(p.X, p.Y, p.Z);
         }
     }
 
@@ -139,21 +145,21 @@ class RotateDesign extends Dialog {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(1, true));
-            Button btn_PivotClipboard = new Button(cmp_txt, SWT.NONE);
-            this.btn_PivotClipboard[0] = btn_PivotClipboard;
-            btn_PivotClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btn_PivotClipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
-            btn_PivotClipboard.setText(I18n.ROTATE_PivotClipboard);
-        }
-        {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(1, true));
             Button btn_PivotManipulator = new Button(cmp_txt, SWT.NONE);
             this.btn_PivotManipulator[0] = btn_PivotManipulator;
             btn_PivotManipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btn_PivotManipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
             btn_PivotManipulator.setText(I18n.ROTATE_PivotManipulator);
+        }
+        {
+            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
+            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmp_txt.setLayout(new GridLayout(1, true));
+            Button btn_PivotClipboard = new Button(cmp_txt, SWT.NONE);
+            this.btn_PivotClipboard[0] = btn_PivotClipboard;
+            btn_PivotClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            btn_PivotClipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
+            btn_PivotClipboard.setText(I18n.ROTATE_PivotClipboard);
         }
 
         {
