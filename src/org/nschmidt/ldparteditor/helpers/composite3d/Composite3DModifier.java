@@ -153,8 +153,22 @@ public class Composite3DModifier {
      *            True if hidden vertices are drawn
      */
     public void switchHiddenVertices(boolean verticesShown) {
-        NLogger.debug(Composite3DModifier.class, "[All Vertices]"); //$NON-NLS-1$
+        NLogger.debug(Composite3DModifier.class, "[Hidden Vertices]"); //$NON-NLS-1$
         c3d.setShowingHiddenVertices(verticesShown);
+    }
+
+    /**
+     * Switches mesh lines within {@linkplain Composite3D}.
+     *
+     * @param verticesShown
+     *            True if hidden vertices are drawn
+     */
+    public void switchCondlineControlPoints(boolean pointsShown) {
+        NLogger.debug(Composite3DModifier.class, "[Condline Control Points]"); //$NON-NLS-1$
+        c3d.setShowingCondlineControlPoints(pointsShown);
+        if (pointsShown) {
+            c3d.getLockableDatFileReference().getVertexManager().getHiddenVertices().clear();
+        }
     }
 
     /**
@@ -373,6 +387,7 @@ public class Composite3DModifier {
             DropTarget dt = new DropTarget(nc, DND.DROP_DEFAULT | DND.DROP_MOVE );
             dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
             dt.addDropListener(new DropTargetAdapter() {
+                @Override
                 public void drop(DropTargetEvent event) {
                     String fileList[] = null;
                     FileTransfer ft = FileTransfer.getInstance();

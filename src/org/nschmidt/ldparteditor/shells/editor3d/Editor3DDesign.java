@@ -2714,6 +2714,7 @@ class Editor3DDesign extends ApplicationWindow {
         c3d.setShowingAxis(state.isShowAxis());
         c3d.setAnaglyph3d(state.isAnaglyph3d());
         c3d.setRenderMode(renderMode);
+        c3d.setShowingCondlineControlPoints(state.isCondlineControlPoints());
 
         c3d.getMntmFront().setSelection(perspective == Perspective.FRONT);
         c3d.getMntmBack().setSelection(perspective == Perspective.BACK);
@@ -2735,6 +2736,7 @@ class Editor3DDesign extends ApplicationWindow {
         c3d.getMntmSubMeshLines().setSelection(state.isSubfileMeshlines());
         c3d.getMntmVertices().setSelection(state.isVertices());
         c3d.getMntmHiddenVertices().setSelection(state.isHiddenVertices());
+        c3d.getMntmControlPointVertices().setSelection(state.isCondlineControlPoints());
         c3d.getMntmStudLogo().setSelection(state.isStudLogo());
         c3d.getMntmAxis().setSelection(state.isShowAxis());
         c3d.getMntmAnaglyph().setSelection(state.isAnaglyph3d());

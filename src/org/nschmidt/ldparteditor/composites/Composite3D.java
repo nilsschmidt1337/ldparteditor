@@ -209,6 +209,7 @@ public class Composite3D extends ScalableComposite {
     private boolean subMeshLines;
     private boolean showingVertices;
     private boolean showingHiddenVertices;
+    private boolean showingCondlineControlPoints;
     private boolean fillingSelectedFaces;
     private boolean showingLogo;
     private boolean blackEdges;
@@ -243,6 +244,7 @@ public class Composite3D extends ScalableComposite {
     final MenuItem[] mntmStdLines = new MenuItem[1];
     final MenuItem[] mntmShowAll = new MenuItem[1];
     final MenuItem[] mntmStudLogo = new MenuItem[1];
+    final MenuItem[] mntmControlPointVertices = new MenuItem[1];
     final MenuItem[] mntmHiddenVertices = new MenuItem[1];
     final MenuItem[] mntmVertices = new MenuItem[1];
     final MenuItem[] mntmSubMeshLines = new MenuItem[1];
@@ -290,6 +292,7 @@ public class Composite3D extends ScalableComposite {
         this.setSubMeshLines(false);
         this.setShowingVertices(true);
         this.setShowingHiddenVertices(false);
+        this.setShowingCondlineControlPoints(false);
         this.setAnaglyph3d(false);
         this.setFillingSelectedFaces(false);
         this.setBlackEdges(false);
@@ -828,6 +831,16 @@ public class Composite3D extends ScalableComposite {
             mntmHiddenVertices.setText(I18n.C3D_HiddenVertices);
             mntmHiddenVertices.setSelection(false);
 
+            final MenuItem mntmControlPointVertices = new MenuItem(mnu_viewActions, SWT.CHECK);
+            this.mntmControlPointVertices[0] = mntmControlPointVertices;
+            mntmControlPointVertices.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    c3d_modifier.switchCondlineControlPoints(mntmControlPointVertices.getSelection());
+                }
+            });
+            mntmControlPointVertices.setText(I18n.C3D_CondlineVertices);
+
             final MenuItem mntmStudLogo = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmStudLogo[0] = mntmStudLogo;
             mntmStudLogo.addSelectionListener(new SelectionAdapter() {
@@ -1126,7 +1139,7 @@ public class Composite3D extends ScalableComposite {
                     getRenderer().disposeAllTextures();
                 }
             });
-            mntmCondlineMode.setText(I18n.C3D_CondLineMode);
+            mntmCondlineMode.setText(I18n.C3D_CondlineMode);
 
 
             final MenuItem mntmWireframeMode = new MenuItem(mnu_renderMode, SWT.CHECK);
@@ -1247,6 +1260,7 @@ public class Composite3D extends ScalableComposite {
         DropTarget dt = new DropTarget(canvas, DND.DROP_DEFAULT | DND.DROP_MOVE );
         dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
         dt.addDropListener(new DropTargetAdapter() {
+            @Override
             public void drop(DropTargetEvent event) {
                 String fileList[] = null;
                 FileTransfer ft = FileTransfer.getInstance();
@@ -1908,6 +1922,10 @@ public class Composite3D extends ScalableComposite {
         return mntmStudLogo[0];
     }
 
+    public MenuItem getMntmControlPointVertices() {
+        return mntmControlPointVertices[0];
+    }
+
     public MenuItem getMntmHiddenVertices() {
         return mntmHiddenVertices[0];
     }
@@ -1982,5 +2000,13 @@ public class Composite3D extends ScalableComposite {
 
     public void setWarpedSelection(boolean warpedSelection) {
         this.warpedSelection = warpedSelection;
+    }
+
+    public boolean isShowingCondlineControlPoints() {
+        return showingCondlineControlPoints;
+    }
+
+    public void setShowingCondlineControlPoints(boolean showingCondlineControlPoints) {
+        this.showingCondlineControlPoints = showingCondlineControlPoints;
     }
 }

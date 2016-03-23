@@ -62,6 +62,47 @@ public final class VertexManager extends VM99Clipboard {
         final boolean modifiedManipulator = manipulator.isModified();
 
         if (c3d.isShowingVertices()) {
+
+            if (c3d.isShowingCondlineControlPoints()) {
+                if (!hiddenVertices.isEmpty()) {
+                    for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
+                        if (!hiddenVertices.contains(vertex))
+                            continue;
+                        Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(vertex);
+                        if (manis != null) {
+                            boolean pureControlPoint = true;
+                            for (VertexManifestation m : manis) {
+                                if (m.getGdata().type() != 5 || m.getPosition() < 2) {
+                                    pureControlPoint = false;
+                                    break;
+                                }
+                            }
+                            if (pureControlPoint) {
+                                hiddenVertices.remove(vertex);
+                            }
+                        }
+                    }
+                }
+            } else {
+                for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
+                    if (hiddenVertices.contains(vertex))
+                        continue;
+                    Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(vertex);
+                    if (manis != null) {
+                        boolean pureControlPoint = true;
+                        for (VertexManifestation m : manis) {
+                            if (m.getGdata().type() != 5 || m.getPosition() < 2) {
+                                pureControlPoint = false;
+                                break;
+                            }
+                        }
+                        if (pureControlPoint) {
+                            hiddenVertices.add(vertex);
+                        }
+                    }
+                }
+            }
+
             Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * c3d.getZoom(), 1f);
             Matrix4f.transform(ivm, tr, tr);
             GL11.glDisable(GL11.GL_LIGHTING);
