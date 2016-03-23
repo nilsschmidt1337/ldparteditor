@@ -1801,7 +1801,6 @@ public class VM01SelectHelper extends VM01Select {
         backupSelection();
         clearSelection();
 
-        // selectVertices2(c3d);
         selectFaces2(c3d, event);
         selectLines2(c3d);
 
@@ -1818,9 +1817,11 @@ public class VM01SelectHelper extends VM01Select {
         selectedQuadsForSubfile.clear();
         selectedCondlinesForSubfile.clear();
 
-        NLogger.debug(getClass(), "Selected data:"); //$NON-NLS-1$
-        for (GData g : selectedData) {
-            NLogger.debug(getClass(), g.toString());
+        if (NLogger.DEBUG) {
+            NLogger.debug(getClass(), "Selected data:"); //$NON-NLS-1$
+            for (GData g : selectedData) {
+                NLogger.debug(getClass(), g.toString());
+            }
         }
 
         NLogger.debug(getClass(), "Subfiles in selection:"); //$NON-NLS-1$
@@ -1862,7 +1863,7 @@ public class VM01SelectHelper extends VM01Select {
         NLogger.debug(getClass(), "Subfiles in selection (REMOVE)"); //$NON-NLS-1$
         for (GData1 g : subsToRemove) {
             NLogger.debug(getClass(), g.toString());
-            addSubfileToSelection(g);
+            removeSubfileFromSelection(g);
         }
 
         NLogger.debug(getClass(), "Subfiles in selection (ADD)"); //$NON-NLS-1$
