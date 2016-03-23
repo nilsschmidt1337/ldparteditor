@@ -214,7 +214,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_OpenInTextEditor = new MenuItem[1];
     final MenuItem[] mntm_Rename = new MenuItem[1];
     final MenuItem[] mntm_Revert = new MenuItem[1];
-    final MenuItem[] mntm_Delete = new MenuItem[1];
+    final MenuItem[] mntm_Close = new MenuItem[1];
     final MenuItem[] mntm_CopyToUnofficial = new MenuItem[1];
 
     final Button[] btn_Select2 = new Button[1];

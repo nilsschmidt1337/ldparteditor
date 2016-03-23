@@ -294,6 +294,7 @@ public final class I18n {
     public static final String E3D_AntiAliasing = E3D.getString(getProperty());
     public static final String E3D_BackgroundImage = E3D.getString(getProperty());
     public static final String E3D_CamToManipulator = E3D.getString(getProperty());
+    public static final String E3D_Close = E3D.getString(getProperty());
     public static final String E3D_CloseView = E3D.getString(getProperty());
     public static final String E3D_Coarse = E3D.getString(getProperty());
     public static final String E3D_Colour16 = E3D.getString(getProperty());
@@ -304,7 +305,6 @@ public final class I18n {
     public static final String E3D_Connected = E3D.getString(getProperty());
     public static final String E3D_CopyToUnofficialLibrary = E3D.getString(getProperty());
     public static final String E3D_CreateNewDat = E3D.getString(getProperty());
-    public static final String E3D_Delete = E3D.getString(getProperty());
     public static final String E3D_DeleteConfig = E3D.getString(getProperty());
     public static final String E3D_DragHint = E3D.getString(getProperty());
     public static final String E3D_Edger2 = E3D.getString(getProperty());
