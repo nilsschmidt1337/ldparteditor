@@ -413,7 +413,11 @@ public class VM01SelectHelper extends VM01Select {
         }
     }
 
-    private synchronized void selectVertices2(final Composite3D c3d, boolean addSomething) {
+    /**
+     * ONLY FOR SELECT SUBFILES
+     * @param c3d
+     */
+    private synchronized void selectVertices2(final Composite3D c3d) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
 
         final Vector4f selectionStart = new Vector4f(c3d.getSelectionStart());
@@ -1061,12 +1065,16 @@ public class VM01SelectHelper extends VM01Select {
         selectedVertices.addAll(selectedVerticesTemp);
     }
 
+    /**
+     * ONLY FOR SELECT SUBFILES
+     * @param c3d
+     */
     private synchronized void selectLines2(Composite3D c3d) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
         Set<Vertex> tmpVerts = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         tmpVerts.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
-        selectVertices2(c3d, false);
+        selectVertices2(c3d);
         boolean allVertsFromLine = false;
         Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
         Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
@@ -1378,11 +1386,16 @@ public class VM01SelectHelper extends VM01Select {
         selectedVertices.addAll(selectedVerticesTemp);
     }
 
+    /**
+     * ONLY FOR SELECT SUBFILES
+     * @param c3d
+     * @param event
+     */
     private synchronized void selectFaces2(Composite3D c3d, Event event) {
         Set<Vertex> selVert4sTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         selVert4sTemp.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
-        selectVertices2(c3d, false);
+        selectVertices2(c3d);
         boolean allVertsFromLine = false;
         Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
         Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
@@ -1517,48 +1530,13 @@ public class VM01SelectHelper extends VM01Select {
         return result;
     }
 
-    public synchronized void selectSubfiles(Composite3D c3d, Event event, boolean preSelection) {
+    public synchronized void selectWholeSubfiles() {
 
         selectedVerticesForSubfile.clear();
         selectedLinesForSubfile.clear();
         selectedTrianglesForSubfile.clear();
         selectedQuadsForSubfile.clear();
         selectedCondlinesForSubfile.clear();
-
-        if (preSelection) {
-            selectVertices2(c3d, false);
-            selectFaces2(c3d, event);
-            selectLines2(c3d);
-        }
-
-        if (preSelection && !c3d.getKeys().isCtrlPressed()) {
-            for (GData1 subf : selectedSubfiles) {
-                Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
-                for (VertexInfo vertexInfo : vis) {
-                    selectedVertices.remove(vertexInfo.getVertex());
-                    GData g = vertexInfo.getLinkedData();
-                    selectedData.remove(g);
-                    switch (g.type()) {
-                    case 2:
-                        selectedLines.remove(g);
-                        break;
-                    case 3:
-                        selectedTriangles.remove(g);
-                        break;
-                    case 4:
-                        selectedQuads.remove(g);
-                        break;
-                    case 5:
-                        selectedCondlines.remove(g);
-                        break;
-                    default:
-                        break;
-                    }
-                }
-            }
-            selectedData.removeAll(selectedSubfiles);
-            selectedSubfiles.clear();
-        }
 
         TreeSet<Vertex> verticesToRemove = new TreeSet<Vertex>();
         HashSet<GData1> subfilesToLink = new HashSet<GData1>();
@@ -1700,6 +1678,212 @@ public class VM01SelectHelper extends VM01Select {
                 }
             }
         }
+
+        selectedData.addAll(selectedLines);
+        selectedData.addAll(selectedTriangles);
+        selectedData.addAll(selectedQuads);
+        selectedData.addAll(selectedCondlines);
+        selectedData.addAll(selectedSubfiles);
+    }
+
+    public synchronized void selectSubfiles(Composite3D c3d, Event event) {
+
+        selectedVerticesForSubfile.clear();
+        selectedLinesForSubfile.clear();
+        selectedTrianglesForSubfile.clear();
+        selectedQuadsForSubfile.clear();
+        selectedCondlinesForSubfile.clear();
+
+        if (!c3d.getKeys().isCtrlPressed()) {
+            for (GData1 subf : selectedSubfiles) {
+                Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+                for (VertexInfo vertexInfo : vis) {
+                    selectedVertices.remove(vertexInfo.getVertex());
+                    GData g = vertexInfo.getLinkedData();
+                    selectedData.remove(g);
+                    switch (g.type()) {
+                    case 2:
+                        selectedLines.remove(g);
+                        break;
+                    case 3:
+                        selectedTriangles.remove(g);
+                        break;
+                    case 4:
+                        selectedQuads.remove(g);
+                        break;
+                    case 5:
+                        selectedCondlines.remove(g);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+            selectedData.removeAll(selectedSubfiles);
+            selectedSubfiles.clear();
+        }
+
+        backupSelection();
+        clearSelection();
+
+        selectVertices2(c3d);
+        selectFaces2(c3d, event);
+        selectLines2(c3d);
+
+        restoreSelection();
+
+        selectedLines.addAll(selectedLinesForSubfile);
+        selectedTriangles.addAll(selectedTrianglesForSubfile);
+        selectedQuads.addAll(selectedQuadsForSubfile);
+        selectedCondlines.addAll(selectedCondlinesForSubfile);
+
+        selectedVerticesForSubfile.clear();
+        selectedLinesForSubfile.clear();
+        selectedTrianglesForSubfile.clear();
+        selectedQuadsForSubfile.clear();
+        selectedCondlinesForSubfile.clear();
+
+        /*
+        TreeSet<Vertex> verticesToRemove = new TreeSet<Vertex>();
+        HashSet<GData1> subfilesToLink = new HashSet<GData1>();
+        HashSet<GData2> linesToRemove = new HashSet<GData2>();
+        HashSet<GData3> trianglesToRemove = new HashSet<GData3>();
+        HashSet<GData4> quadsToRemove = new HashSet<GData4>();
+        HashSet<GData5> condlinesToRemove = new HashSet<GData5>();
+
+        for (Vertex v : selectedVerticesForSubfile) {
+            Set<GData1> subfiles = vertexLinkedToSubfile.get(v);
+            if (subfiles == null) {
+                verticesToRemove.add(v);
+            } else {
+                subfilesToLink.addAll(subfiles);
+            }
+        }
+
+        for (GData2 l : selectedLinesForSubfile) {
+            Vertex[] verts = lines.get(l);
+            if (verts != null) {
+                Set<GData1> subfiles1 = vertexLinkedToSubfile.get(verts[0]);
+                Set<GData1> subfiles2 = vertexLinkedToSubfile.get(verts[1]);
+                if (subfiles1 == null || subfiles2 == null) {
+                    linesToRemove.add(l);
+                } else {
+                    subfiles1 = new HashSet<GData1>(subfiles1);
+                    subfiles1.retainAll(subfiles2);
+                    if (!subfiles1.isEmpty()) {
+                        subfilesToLink.addAll(subfiles1);
+                    } else {
+                        linesToRemove.add(l);
+                    }
+                }
+            }
+        }
+
+        for (GData3 t : selectedTrianglesForSubfile) {
+            Vertex[] verts = triangles.get(t);
+            if (verts != null) {
+                Set<GData1> subfiles1 = vertexLinkedToSubfile.get(verts[0]);
+                Set<GData1> subfiles2 = vertexLinkedToSubfile.get(verts[1]);
+                Set<GData1> subfiles3 = vertexLinkedToSubfile.get(verts[2]);
+                if (subfiles1 == null || subfiles2 == null || subfiles3 == null) {
+                    trianglesToRemove.add(t);
+                } else {
+                    subfiles1 = new HashSet<GData1>(subfiles1);
+                    subfiles3 = new HashSet<GData1>(subfiles3);
+                    subfiles3.retainAll(subfiles2);
+                    subfiles1.retainAll(subfiles3);
+                    if (!subfiles1.isEmpty()) {
+                        subfilesToLink.addAll(subfiles1);
+                    } else {
+                        trianglesToRemove.add(t);
+                    }
+                }
+            }
+        }
+
+        for (GData4 q : selectedQuadsForSubfile) {
+            Vertex[] verts = quads.get(q);
+            if (verts != null) {
+                Set<GData1> subfiles1 = vertexLinkedToSubfile.get(verts[0]);
+                Set<GData1> subfiles2 = vertexLinkedToSubfile.get(verts[1]);
+                Set<GData1> subfiles3 = vertexLinkedToSubfile.get(verts[2]);
+                Set<GData1> subfiles4 = vertexLinkedToSubfile.get(verts[3]);
+                if (subfiles1 == null || subfiles2 == null || subfiles3 == null || subfiles4 == null) {
+                    quadsToRemove.add(q);
+                } else {
+                    subfiles1 = new HashSet<GData1>(subfiles1);
+                    subfiles3 = new HashSet<GData1>(subfiles3);
+                    subfiles4 = new HashSet<GData1>(subfiles4);
+                    subfiles3.retainAll(subfiles2);
+                    subfiles4.retainAll(subfiles3);
+                    subfiles1.retainAll(subfiles4);
+                    if (!subfiles1.isEmpty()) {
+                        subfilesToLink.addAll(subfiles1);
+                    } else {
+                        quadsToRemove.add(q);
+                    }
+                }
+            }
+        }
+
+        for (GData5 c : selectedCondlinesForSubfile) {
+            Vertex[] verts = condlines.get(c);
+            if (verts != null) {
+                Set<GData1> subfiles1 = vertexLinkedToSubfile.get(verts[0]);
+                Set<GData1> subfiles2 = vertexLinkedToSubfile.get(verts[1]);
+                Set<GData1> subfiles3 = vertexLinkedToSubfile.get(verts[2]);
+                Set<GData1> subfiles4 = vertexLinkedToSubfile.get(verts[3]);
+                if (subfiles1 == null || subfiles2 == null || subfiles3 == null || subfiles4 == null) {
+                    condlinesToRemove.add(c);
+                } else {
+                    subfiles1 = new HashSet<GData1>(subfiles1);
+                    subfiles3 = new HashSet<GData1>(subfiles3);
+                    subfiles4 = new HashSet<GData1>(subfiles4);
+                    subfiles3.retainAll(subfiles2);
+                    subfiles4.retainAll(subfiles3);
+                    subfiles1.retainAll(subfiles4);
+                    if (!subfiles1.isEmpty()) {
+                        subfilesToLink.addAll(subfiles1);
+                    } else {
+                        condlinesToRemove.add(c);
+                    }
+                }
+            }
+        }
+
+        subfilesToLink.addAll(selectedSubfiles);
+        selectedVerticesForSubfile.clear();
+        selectedLinesForSubfile.clear();
+        selectedTrianglesForSubfile.clear();
+        selectedQuadsForSubfile.clear();
+        selectedCondlinesForSubfile.clear();
+
+        for (GData1 subf : subfilesToLink) {
+            if (hiddenData.contains(subf))
+                continue;
+            selectedSubfiles.add(subf);
+            Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+            for (VertexInfo vertexInfo : vis) {
+                selectedVertices.add(vertexInfo.getVertex());
+                GData g = vertexInfo.getLinkedData();
+                switch (g.type()) {
+                case 2:
+                    selectedLines.add((GData2) g);
+                    break;
+                case 3:
+                    selectedTriangles.add((GData3) g);
+                    break;
+                case 4:
+                    selectedQuads.add((GData4) g);
+                    break;
+                case 5:
+                    selectedCondlines.add((GData5) g);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }*/
 
         selectedData.addAll(selectedLines);
         selectedData.addAll(selectedTriangles);

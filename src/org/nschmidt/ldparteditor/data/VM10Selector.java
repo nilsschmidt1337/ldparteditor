@@ -686,7 +686,7 @@ class VM10Selector extends VM09WindingChange {
 
                     // Extend selection to whole subfiles
                     if (ss.isWholeSubfiles() && !ss.isNoSubfiles()) {
-                        selectSubfiles(null, null, false);
+                        selectWholeSubfiles();
                     }
                 }
             });
