@@ -59,6 +59,8 @@ public enum View {
     public static String unit = "LDU"; //$NON-NLS-1$
     /** The current unit factor */
     public static BigDecimal unit_factor = BigDecimal.ONE;
+    /** threshold for "solid" edges (default: 5e-6f) */
+    public static float edge_threshold = 5e-6f;
     /** The standard decimal format for floating point numbers (0 digits) */
     public static final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##0;-###,##0", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
     /** The standard decimal format for floating point numbers (1 digit) */

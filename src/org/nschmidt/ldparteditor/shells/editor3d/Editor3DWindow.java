@@ -1256,6 +1256,17 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
+        btn_ToggleLinesOpenGL[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (btn_ToggleLinesOpenGL[0].getSelection()) {
+                    View.edge_threshold = 5e6f;
+                } else {
+                    View.edge_threshold = 5e-6f;
+                }
+                regainFocus();
+            }
+        });
         btn_lineSize1[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
