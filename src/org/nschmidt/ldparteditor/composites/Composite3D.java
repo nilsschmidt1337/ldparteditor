@@ -355,6 +355,16 @@ public class Composite3D extends ScalableComposite {
         @SuppressWarnings("unused")
         final MenuItem mntmSeparator3 = new MenuItem(menu, SWT.SEPARATOR);
 
+        final MenuItem mntmCloseDat = new MenuItem(menu, SWT.NONE);
+        mntmCloseDat.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Editor3DWindow.getWindow().closeDatfile(lockableDatFileReference);
+            }
+        });
+        mntmCloseDat.setText(I18n.E3D_Close);
+        mntmCloseDat.setSelection(false);
+
         final MenuItem mntmLockedDat = new MenuItem(menu, SWT.CHECK);
         locked = mntmLockedDat;
         mntmLockedDat.addSelectionListener(new SelectionAdapter() {
