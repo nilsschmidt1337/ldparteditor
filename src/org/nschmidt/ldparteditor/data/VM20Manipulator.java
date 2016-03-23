@@ -759,7 +759,7 @@ public class VM20Manipulator extends VM19ColourChanger {
         }
         selectedData.add(reloadedSubfile);
         selectedSubfiles.add(reloadedSubfile);
-        selectSubfiles(null, null, false);
+        selectWholeSubfiles();
         if (syncWithTextEditor) {
             setModified(true, true);
         } else {

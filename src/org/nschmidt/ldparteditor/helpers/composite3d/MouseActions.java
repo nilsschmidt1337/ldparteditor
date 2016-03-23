@@ -1161,7 +1161,7 @@ public class MouseActions {
                     vm.reSelectSubFiles();
                     break;
                 case SUBFILES:
-                    vm.selectSubfiles(c3d, event, true);
+                    vm.selectSubfiles(c3d, event);
                     break;
                 }
                 checkSyncEditMode(vm, datfile);
