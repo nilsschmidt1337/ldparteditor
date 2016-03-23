@@ -61,31 +61,10 @@ public final class VertexManager extends VM99Clipboard {
         FloatBuffer matrix = manipulator.getTempTransformation();
         final boolean modifiedManipulator = manipulator.isModified();
 
-        if (c3d.isShowingVertices()) {
-
-            if (c3d.isShowingCondlineControlPoints()) {
-                if (!hiddenVertices.isEmpty()) {
-                    for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
-                        if (!hiddenVertices.contains(vertex))
-                            continue;
-                        Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(vertex);
-                        if (manis != null) {
-                            boolean pureControlPoint = true;
-                            for (VertexManifestation m : manis) {
-                                if (m.getGdata().type() != 5 || m.getPosition() < 2) {
-                                    pureControlPoint = false;
-                                    break;
-                                }
-                            }
-                            if (pureControlPoint) {
-                                hiddenVertices.remove(vertex);
-                            }
-                        }
-                    }
-                }
-            } else {
+        if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6) {
+            if (!hiddenVertices.isEmpty()) {
                 for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
-                    if (hiddenVertices.contains(vertex))
+                    if (!hiddenVertices.contains(vertex))
                         continue;
                     Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(vertex);
                     if (manis != null) {
@@ -97,11 +76,32 @@ public final class VertexManager extends VM99Clipboard {
                             }
                         }
                         if (pureControlPoint) {
-                            hiddenVertices.add(vertex);
+                            hiddenVertices.remove(vertex);
                         }
                     }
                 }
             }
+        } else {
+            for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
+                if (hiddenVertices.contains(vertex))
+                    continue;
+                Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(vertex);
+                if (manis != null) {
+                    boolean pureControlPoint = true;
+                    for (VertexManifestation m : manis) {
+                        if (m.getGdata().type() != 5 || m.getPosition() < 2) {
+                            pureControlPoint = false;
+                            break;
+                        }
+                    }
+                    if (pureControlPoint) {
+                        hiddenVertices.add(vertex);
+                    }
+                }
+            }
+        }
+
+        if (c3d.isShowingVertices()) {
 
             Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * c3d.getZoom(), 1f);
             Matrix4f.transform(ivm, tr, tr);
