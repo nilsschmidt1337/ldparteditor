@@ -827,6 +827,8 @@ public final class I18n {
     public static final String RECTIFIER_TriQuads1 = RECTIFIER.getString(getProperty());
     public static final String RECTIFIER_TriQuads2 = RECTIFIER.getString(getProperty());
     public static final String ROTATE_Pivot = ROTATE.getString(getProperty());
+    public static final String ROTATE_PivotClipboard = ROTATE.getString(getProperty());
+    public static final String ROTATE_PivotManipulator = ROTATE.getString(getProperty());
     public static final String ROTATE_Title = ROTATE.getString(getProperty());
     public static final String ROTATE_X = ROTATE.getString(getProperty());
     public static final String ROTATE_Y = ROTATE.getString(getProperty());
@@ -836,6 +838,8 @@ public final class I18n {
     public static final String ROUND_MatrixPrecision = ROUND.getString(getProperty());
     public static final String ROUND_Title = ROUND.getString(getProperty());
     public static final String SCALE_Pivot = SCALE.getString(getProperty());
+    public static final String SCALE_PivotClipboard = SCALE.getString(getProperty());
+    public static final String SCALE_PivotManipulator = SCALE.getString(getProperty());
     public static final String SCALE_Title = SCALE.getString(getProperty());
     public static final String SCALE_X = SCALE.getString(getProperty());
     public static final String SCALE_Y = SCALE.getString(getProperty());
