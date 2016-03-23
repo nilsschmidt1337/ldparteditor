@@ -1690,14 +1690,35 @@ public class VM01SelectHelper extends VM01Select {
         GData1 result = View.DUMMY_REFERENCE;
         int counter = 0;
         while (counter < 100) {
-            while ((g = g.getBefore()) != null && g.type() != 7) {
+            while ((g = g.getBefore()) != null && ((g.type() < 1 || g.type() > 5) && g.type() != 7)) {
             }
             if (g == null) break;
-            GData1 p = ((GDataInit) g).getParent();
+            GData1 p = View.DUMMY_REFERENCE;
+            switch (g.type()) {
+            case 1:
+                p = ((GData1) g).parent;
+                break;
+            case 2:
+                p = ((GData2) g).parent;
+                break;
+            case 3:
+                p = ((GData3) g).parent;
+                break;
+            case 4:
+                p = ((GData4) g).parent;
+                break;
+            case 5:
+                p = ((GData5) g).parent;
+                break;
+            case 7:
+                p = ((GDataInit) g).getParent();
+                break;
+            }
             if (View.DUMMY_REFERENCE.equals(p)) {
                 return result;
             }
             result = p;
+            g = p;
             counter++;
         }
         NLogger.error(getClass(), "VM01SelectHelper.getSubfile() had too many iterations!"); //$NON-NLS-1$
@@ -1741,6 +1762,8 @@ public class VM01SelectHelper extends VM01Select {
             selectedSubfiles.clear();
         }
 
+        HashSet<GData1> backupSubfiles = new HashSet<GData1>(selectedSubfiles);
+
         backupSelection();
         clearSelection();
 
@@ -1757,7 +1780,7 @@ public class VM01SelectHelper extends VM01Select {
 
         NLogger.debug(getClass(), "Selected data:"); //$NON-NLS-1$
         for (GData g : selectedData) {
-            System.out.println(g.toString());
+            NLogger.debug(getClass(), g.toString());
         }
 
         NLogger.debug(getClass(), "Subfiles in selection:"); //$NON-NLS-1$
@@ -1768,161 +1791,49 @@ public class VM01SelectHelper extends VM01Select {
                 subs.add(s);
             }
         }
+        for (GData g : subs) {
+            NLogger.debug(getClass(), g.toString());
+        }
+
+        NLogger.debug(getClass(), "Subfiles in selection, to add/remove:"); //$NON-NLS-1$
+        HashSet<GData1> subsToAdd = new HashSet<GData1>();
+        HashSet<GData1> subsToRemove = new HashSet<GData1>();
+        if (c3d.getKeys().isCtrlPressed()) {
+            for (GData1 subf : backupSubfiles) {
+                if (subs.contains(subf)) {
+                    subsToRemove.add(subf);
+                } else {
+                    subsToAdd.add(subf);
+                }
+            }
+        } else {
+            subsToAdd.addAll(subs);
+        }
 
         restoreSelection();
 
+        NLogger.debug(getClass(), "Subfiles in selection (ADD)"); //$NON-NLS-1$
+        for (GData g : subsToAdd) {
+            NLogger.debug(getClass(), g.toString());
+        }
+
+        NLogger.debug(getClass(), "Subfiles in selection (REMOVE)"); //$NON-NLS-1$
+        for (GData g : subsToRemove) {
+            NLogger.debug(getClass(), g.toString());
+        }
+
+        /*
         selectedLines.addAll(selectedLinesForSubfile);
         selectedTriangles.addAll(selectedTrianglesForSubfile);
         selectedQuads.addAll(selectedQuadsForSubfile);
         selectedCondlines.addAll(selectedCondlinesForSubfile);
+         */
 
         selectedVerticesForSubfile.clear();
         selectedLinesForSubfile.clear();
         selectedTrianglesForSubfile.clear();
         selectedQuadsForSubfile.clear();
         selectedCondlinesForSubfile.clear();
-
-        /*
-        TreeSet<Vertex> verticesToRemove = new TreeSet<Vertex>();
-        HashSet<GData1> subfilesToLink = new HashSet<GData1>();
-        HashSet<GData2> linesToRemove = new HashSet<GData2>();
-        HashSet<GData3> trianglesToRemove = new HashSet<GData3>();
-        HashSet<GData4> quadsToRemove = new HashSet<GData4>();
-        HashSet<GData5> condlinesToRemove = new HashSet<GData5>();
-
-        for (Vertex v : selectedVerticesForSubfile) {
-            Set<GData1> subfiles = vertexLinkedToSubfile.get(v);
-            if (subfiles == null) {
-                verticesToRemove.add(v);
-            } else {
-                subfilesToLink.addAll(subfiles);
-            }
-        }
-
-        for (GData2 l : selectedLinesForSubfile) {
-            Vertex[] verts = lines.get(l);
-            if (verts != null) {
-                Set<GData1> subfiles1 = vertexLinkedToSubfile.get(verts[0]);
-                Set<GData1> subfiles2 = vertexLinkedToSubfile.get(verts[1]);
-                if (subfiles1 == null || subfiles2 == null) {
-                    linesToRemove.add(l);
-                } else {
-                    subfiles1 = new HashSet<GData1>(subfiles1);
-                    subfiles1.retainAll(subfiles2);
-                    if (!subfiles1.isEmpty()) {
-                        subfilesToLink.addAll(subfiles1);
-                    } else {
-                        linesToRemove.add(l);
-                    }
-                }
-            }
-        }
-
-        for (GData3 t : selectedTrianglesForSubfile) {
-            Vertex[] verts = triangles.get(t);
-            if (verts != null) {
-                Set<GData1> subfiles1 = vertexLinkedToSubfile.get(verts[0]);
-                Set<GData1> subfiles2 = vertexLinkedToSubfile.get(verts[1]);
-                Set<GData1> subfiles3 = vertexLinkedToSubfile.get(verts[2]);
-                if (subfiles1 == null || subfiles2 == null || subfiles3 == null) {
-                    trianglesToRemove.add(t);
-                } else {
-                    subfiles1 = new HashSet<GData1>(subfiles1);
-                    subfiles3 = new HashSet<GData1>(subfiles3);
-                    subfiles3.retainAll(subfiles2);
-                    subfiles1.retainAll(subfiles3);
-                    if (!subfiles1.isEmpty()) {
-                        subfilesToLink.addAll(subfiles1);
-                    } else {
-                        trianglesToRemove.add(t);
-                    }
-                }
-            }
-        }
-
-        for (GData4 q : selectedQuadsForSubfile) {
-            Vertex[] verts = quads.get(q);
-            if (verts != null) {
-                Set<GData1> subfiles1 = vertexLinkedToSubfile.get(verts[0]);
-                Set<GData1> subfiles2 = vertexLinkedToSubfile.get(verts[1]);
-                Set<GData1> subfiles3 = vertexLinkedToSubfile.get(verts[2]);
-                Set<GData1> subfiles4 = vertexLinkedToSubfile.get(verts[3]);
-                if (subfiles1 == null || subfiles2 == null || subfiles3 == null || subfiles4 == null) {
-                    quadsToRemove.add(q);
-                } else {
-                    subfiles1 = new HashSet<GData1>(subfiles1);
-                    subfiles3 = new HashSet<GData1>(subfiles3);
-                    subfiles4 = new HashSet<GData1>(subfiles4);
-                    subfiles3.retainAll(subfiles2);
-                    subfiles4.retainAll(subfiles3);
-                    subfiles1.retainAll(subfiles4);
-                    if (!subfiles1.isEmpty()) {
-                        subfilesToLink.addAll(subfiles1);
-                    } else {
-                        quadsToRemove.add(q);
-                    }
-                }
-            }
-        }
-
-        for (GData5 c : selectedCondlinesForSubfile) {
-            Vertex[] verts = condlines.get(c);
-            if (verts != null) {
-                Set<GData1> subfiles1 = vertexLinkedToSubfile.get(verts[0]);
-                Set<GData1> subfiles2 = vertexLinkedToSubfile.get(verts[1]);
-                Set<GData1> subfiles3 = vertexLinkedToSubfile.get(verts[2]);
-                Set<GData1> subfiles4 = vertexLinkedToSubfile.get(verts[3]);
-                if (subfiles1 == null || subfiles2 == null || subfiles3 == null || subfiles4 == null) {
-                    condlinesToRemove.add(c);
-                } else {
-                    subfiles1 = new HashSet<GData1>(subfiles1);
-                    subfiles3 = new HashSet<GData1>(subfiles3);
-                    subfiles4 = new HashSet<GData1>(subfiles4);
-                    subfiles3.retainAll(subfiles2);
-                    subfiles4.retainAll(subfiles3);
-                    subfiles1.retainAll(subfiles4);
-                    if (!subfiles1.isEmpty()) {
-                        subfilesToLink.addAll(subfiles1);
-                    } else {
-                        condlinesToRemove.add(c);
-                    }
-                }
-            }
-        }
-
-        subfilesToLink.addAll(selectedSubfiles);
-        selectedVerticesForSubfile.clear();
-        selectedLinesForSubfile.clear();
-        selectedTrianglesForSubfile.clear();
-        selectedQuadsForSubfile.clear();
-        selectedCondlinesForSubfile.clear();
-
-        for (GData1 subf : subfilesToLink) {
-            if (hiddenData.contains(subf))
-                continue;
-            selectedSubfiles.add(subf);
-            Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
-            for (VertexInfo vertexInfo : vis) {
-                selectedVertices.add(vertexInfo.getVertex());
-                GData g = vertexInfo.getLinkedData();
-                switch (g.type()) {
-                case 2:
-                    selectedLines.add((GData2) g);
-                    break;
-                case 3:
-                    selectedTriangles.add((GData3) g);
-                    break;
-                case 4:
-                    selectedQuads.add((GData4) g);
-                    break;
-                case 5:
-                    selectedCondlines.add((GData5) g);
-                    break;
-                default:
-                    break;
-                }
-            }
-        }*/
 
         selectedData.addAll(selectedLines);
         selectedData.addAll(selectedTriangles);
