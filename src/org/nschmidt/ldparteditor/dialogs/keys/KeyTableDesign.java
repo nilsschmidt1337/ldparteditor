@@ -160,6 +160,7 @@ class KeyTableDesign extends Dialog {
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_SelectAll, TextTask.EDITORTEXT_SELECTALL);
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Undo, TextTask.EDITORTEXT_UNDO);
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_FindReplace, TextTask.EDITORTEXT_FIND);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_InsertReference, TextTask.EDITORTEXT_INSERT_REFERENCE);
 
         TreeItem trtm_Temp = new TreeItem(tree, SWT.NONE);
         trtm_Temp.setText(new String[] { "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
