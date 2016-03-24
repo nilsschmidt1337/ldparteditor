@@ -457,6 +457,7 @@ class VM03Adjacency extends VM02Add {
         // 0. Deselect selected subfile data (for whole selected subfiles)
         for (GData1 subf : selectedSubfiles) {
             Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+            if (vis == null) continue;
             for (VertexInfo vertexInfo : vis) {
                 if (!moveAdjacentData)
                     selectedVertices.remove(vertexInfo.getVertex());
@@ -654,6 +655,7 @@ class VM03Adjacency extends VM02Add {
 
                 for (GData1 subf : selectedSubfiles) {
                     Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+                    if (vis == null) continue;
                     for (VertexInfo vertexInfo : vis) {
                         selectedVertices.add(vertexInfo.getVertex());
                         GData g = vertexInfo.getLinkedData();

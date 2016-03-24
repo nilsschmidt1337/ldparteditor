@@ -76,6 +76,7 @@ class VM99Clipboard extends VM24MeshReducer {
             // 0. Deselect selected subfile data I (for whole selected subfiles)
             for (GData1 subf : selectedSubfiles) {
                 Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+                if (vis == null) continue;
                 for (VertexInfo vertexInfo : vis) {
                     selectedVertices.remove(vertexInfo.getVertex());
                     GData g = vertexInfo.getLinkedData();
@@ -185,6 +186,7 @@ class VM99Clipboard extends VM24MeshReducer {
             // completely selected subfile)
             for (GData1 subf : selectedSubfiles) {
                 Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+                if (vis == null) continue;
                 for (VertexInfo vertexInfo : vis) {
                     GData g = vertexInfo.getLinkedData();
                     switch (g.type()) {
@@ -540,6 +542,7 @@ class VM99Clipboard extends VM24MeshReducer {
                     case 1:
                         selectedSubfiles.add((GData1) pasted);
                         Set<VertexInfo> vis = lineLinkedToVertices.get(pasted);
+                        if (vis == null) continue;
                         for (VertexInfo vertexInfo : vis) {
                             selectedVertices.add(vertexInfo.getVertex());
                             GData gs = vertexInfo.getLinkedData();
@@ -618,32 +621,34 @@ class VM99Clipboard extends VM24MeshReducer {
                     case 1:
                         selectedSubfiles.add((GData1) pasted);
                         Set<VertexInfo> vis = lineLinkedToVertices.get(pasted);
-                        for (VertexInfo vertexInfo : vis) {
-                            selectedVertices.add(vertexInfo.getVertex());
-                            GData gs = vertexInfo.getLinkedData();
-                            selectedData.add(gs);
-                            switch (gs.type()) {
-                            case 0:
-                                selectedData.remove(gs);
-                                Vertex vertex2 = ((GData0) gs).getVertex();
-                                if (vertex2 != null) {
-                                    selectedVertices.add(vertex2);
+                        if (vis != null) {
+                            for (VertexInfo vertexInfo : vis) {
+                                selectedVertices.add(vertexInfo.getVertex());
+                                GData gs = vertexInfo.getLinkedData();
+                                selectedData.add(gs);
+                                switch (gs.type()) {
+                                case 0:
+                                    selectedData.remove(gs);
+                                    Vertex vertex2 = ((GData0) gs).getVertex();
+                                    if (vertex2 != null) {
+                                        selectedVertices.add(vertex2);
+                                    }
+                                    break;
+                                case 2:
+                                    selectedLines.add((GData2) gs);
+                                    break;
+                                case 3:
+                                    selectedTriangles.add((GData3) gs);
+                                    break;
+                                case 4:
+                                    selectedQuads.add((GData4) gs);
+                                    break;
+                                case 5:
+                                    selectedCondlines.add((GData5) gs);
+                                    break;
+                                default:
+                                    break;
                                 }
-                                break;
-                            case 2:
-                                selectedLines.add((GData2) gs);
-                                break;
-                            case 3:
-                                selectedTriangles.add((GData3) gs);
-                                break;
-                            case 4:
-                                selectedQuads.add((GData4) gs);
-                                break;
-                            case 5:
-                                selectedCondlines.add((GData5) gs);
-                                break;
-                            default:
-                                break;
                             }
                         }
                         break;

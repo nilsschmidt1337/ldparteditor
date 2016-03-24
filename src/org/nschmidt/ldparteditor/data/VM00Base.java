@@ -1349,6 +1349,7 @@ class VM00Base {
         // 0. Deselect selected subfile data (for whole selected subfiles)
         for (GData1 subf : selectedSubfiles) {
             Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+            if (vis == null) continue;
             for (VertexInfo vertexInfo : vis) {
                 if (!moveAdjacentData)
                     selectedVertices.remove(vertexInfo.getVertex());
