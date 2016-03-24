@@ -24,8 +24,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.nschmidt.ldparteditor.composites.ToolItemState;
 import org.nschmidt.ldparteditor.data.GColour;
-import org.nschmidt.ldparteditor.data.PGData;
-import org.nschmidt.ldparteditor.data.PGTimestamp;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
@@ -114,9 +112,6 @@ public class UserSettingState implements Serializable {
 
     /** {@code true} if anti-aliasing is enabled for 3D windows */
     private boolean antiAliasing = false;
-
-    private HashMap<String, PGData> primitiveCache = new HashMap<String, PGData>();
-    private HashMap<PGTimestamp, ArrayList<String>> primitiveFileCache = new HashMap<PGTimestamp, ArrayList<String>>();
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -504,21 +499,5 @@ public class UserSettingState implements Serializable {
 
     public void setAntiAliasing(boolean antiAliasing) {
         this.antiAliasing = antiAliasing;
-    }
-
-    public HashMap<String, PGData> getPrimitiveCache() {
-        return primitiveCache;
-    }
-
-    public void setPrimitiveCache(HashMap<String, PGData> primitiveCache) {
-        this.primitiveCache = primitiveCache;
-    }
-
-    public HashMap<PGTimestamp, ArrayList<String>> getPrimitiveFileCache() {
-        return primitiveFileCache;
-    }
-
-    public void setPrimitiveFileCache(HashMap<PGTimestamp, ArrayList<String>> primitiveFileCache) {
-        this.primitiveFileCache = primitiveFileCache;
     }
 }

@@ -611,6 +611,7 @@ public class Composite3D extends ScalableComposite {
             }
         });
         mntmCut.setText(I18n.COPYNPASTE_Cut);
+        mntmCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
         MenuItem mntmCopy = new MenuItem(menu, I18n.I18N_RTL());
         mntmCopy.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -621,6 +622,7 @@ public class Composite3D extends ScalableComposite {
             }
         });
         mntmCopy.setText(I18n.COPYNPASTE_Copy);
+        mntmCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
         MenuItem mntmPaste = new MenuItem(menu, I18n.I18N_RTL());
         mntmPaste.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -632,6 +634,7 @@ public class Composite3D extends ScalableComposite {
             }
         });
         mntmPaste.setText(I18n.COPYNPASTE_Paste);
+        mntmPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
         MenuItem mntmDelete = new MenuItem(menu, I18n.I18N_RTL());
         mntmDelete.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -642,6 +645,7 @@ public class Composite3D extends ScalableComposite {
             }
         });
         mntmDelete.setText(I18n.COPYNPASTE_Delete);
+        mntmDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
 
         @SuppressWarnings("unused")
         final MenuItem mntmSeparator2 = new MenuItem(menu, SWT.SEPARATOR);

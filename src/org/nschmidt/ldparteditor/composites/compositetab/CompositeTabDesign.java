@@ -207,15 +207,19 @@ class CompositeTabDesign extends CTabItem {
 
             MenuItem mntmCut = new MenuItem(menu[0], I18n.I18N_RTL());
             mntmCut.setText(I18n.COPYNPASTE_Cut);
+            mntmCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
             mntm_Cut[0] = mntmCut;
             MenuItem mntmCopy = new MenuItem(menu[0], I18n.I18N_RTL());
             mntmCopy.setText(I18n.COPYNPASTE_Copy);
+            mntmCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
             mntm_Copy[0] = mntmCopy;
             MenuItem mntmPaste = new MenuItem(menu[0], I18n.I18N_RTL());
             mntmPaste.setText(I18n.COPYNPASTE_Paste);
+            mntmPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
             mntm_Paste[0] = mntmPaste;
             MenuItem mntmDelete = new MenuItem(menu[0], I18n.I18N_RTL());
             mntmDelete.setText(I18n.COPYNPASTE_Delete);
+            mntmDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
             mntm_Delete[0] = mntmDelete;
         }
     }

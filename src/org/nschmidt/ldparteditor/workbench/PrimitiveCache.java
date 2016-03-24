@@ -13,61 +13,42 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.data;
+package org.nschmidt.ldparteditor.workbench;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
+import org.nschmidt.ldparteditor.data.PGData;
+import org.nschmidt.ldparteditor.data.PGTimestamp;
 
 /**
+ * This class represents the primitive cache
+ *
  * @author nils
  *
  */
-public final class PGDataProxy extends PGData implements Serializable {
-
+public class PrimitiveCache implements Serializable {
+    // TODO New values, which were not included in the state before, have to be initialized! (@ WorkbenchManager.loadWorkbench())
+    /** V1.00 */
     private static final long serialVersionUID = 1L;
 
-    private PGData data;
-    private transient boolean initialised = false;
+    private HashMap<String, PGData> primitiveCache = new HashMap<String, PGData>();
+    private HashMap<PGTimestamp, ArrayList<String>> primitiveFileCache = new HashMap<PGTimestamp, ArrayList<String>>();
 
-    public PGDataProxy(PGData proxy) {
-        data = proxy;
+    public HashMap<String, PGData> getPrimitiveCache() {
+        return primitiveCache;
     }
 
-    @Override
-    public void drawBFCprimitive(int drawOnlyMode) {
-        if (initialised) {
-            data.drawBFCprimitive(drawOnlyMode);
-        } else {
-            initialised = true;
-            switch (data.type()) {
-            case 2:
-                data = PGData2.clone((PGData2) data);
-                break;
-            case 3:
-                data = PGData3.clone((PGData3) data);
-                break;
-            case 4:
-                data = PGData4.clone((PGData4) data);
-                break;
-            case 5:
-                data = PGData5.clone((PGData5) data);
-                break;
-            case 6:
-                data = PGDataBFC.clone((PGDataBFC) data);
-                break;
-            default:
-                initialised = false;
-            }
-        }
+    public void setPrimitiveCache(HashMap<String, PGData> primitiveCache) {
+        this.primitiveCache = primitiveCache;
     }
 
-    @Override
-    public int type() {
-        return data.type();
+    public HashMap<PGTimestamp, ArrayList<String>> getPrimitiveFileCache() {
+        return primitiveFileCache;
     }
 
-    @Override
-    public PGData data() {
-        return data;
+    public void setPrimitiveFileCache(HashMap<PGTimestamp, ArrayList<String>> primitiveFileCache) {
+        this.primitiveFileCache = primitiveFileCache;
     }
 }
