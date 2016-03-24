@@ -5633,8 +5633,8 @@ public class Editor3DWindow extends Editor3DDesign {
         winState.setPrimitiveZoomExponent(cmp_Primitives[0].getZoom_exponent());
         winState.setPrimitiveViewport(cmp_Primitives[0].getViewport2());
 
-        WorkbenchManager.getUserSettingState().setPrimitiveCache(CompositePrimitive.getCache());
-        WorkbenchManager.getUserSettingState().setPrimitiveFileCache(CompositePrimitive.getFileCache());
+        WorkbenchManager.getPrimitiveCache().setPrimitiveCache(CompositePrimitive.getCache());
+        WorkbenchManager.getPrimitiveCache().setPrimitiveFileCache(CompositePrimitive.getFileCache());
 
         WorkbenchManager.getUserSettingState().setRecentItems(getRecentItems());
         // Save the workbench

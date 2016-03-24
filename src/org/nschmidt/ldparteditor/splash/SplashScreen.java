@@ -62,6 +62,7 @@ import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
+import org.nschmidt.ldparteditor.workbench.PrimitiveCache;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -210,11 +211,14 @@ public class SplashScreen extends ApplicationWindow {
                 }
 
                 // Load the primitive cache
-                HashMap<String, PGData> pcache = WorkbenchManager.getUserSettingState().getPrimitiveCache();
+                if (WorkbenchManager.getPrimitiveCache() == null) {
+                    WorkbenchManager.setPrimitiveCache(new PrimitiveCache());
+                }
+                HashMap<String, PGData> pcache = WorkbenchManager.getPrimitiveCache().getPrimitiveCache();
                 if (pcache != null) {
                     CompositePrimitive.setCache(pcache);
                 }
-                HashMap<PGTimestamp, ArrayList<String>> pfcache = WorkbenchManager.getUserSettingState().getPrimitiveFileCache();
+                HashMap<PGTimestamp, ArrayList<String>> pfcache = WorkbenchManager.getPrimitiveCache().getPrimitiveFileCache();
                 if (pfcache != null) {
                     CompositePrimitive.setFileCache(pfcache);
                 }

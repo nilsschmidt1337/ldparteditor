@@ -28,6 +28,7 @@ import java.util.zip.GZIPOutputStream;
 import org.eclipse.swt.graphics.Rectangle;
 import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -47,11 +48,14 @@ public enum WorkbenchManager {
     private static EditorTextWindowState editorTextWindowState;
     /** The state of the user setting */
     private static UserSettingState userSettingState;
+    /** The primitive cache */
+    private static PrimitiveCache primitiveCache;
 
     /**
      * Writes a default config.gz file
      */
     public static void createDefaultWorkbench() {
+        primitiveCache = new PrimitiveCache();
         userSettingState = new UserSettingState();
         editor3DWindowState = new Editor3DWindowState();
         editor3DWindowState.setWindowState(new WindowState());
@@ -84,9 +88,14 @@ public enum WorkbenchManager {
                 WorkbenchManager.editorTextWindowState = (EditorTextWindowState) configFileStream.readObject();
                 WorkbenchManager.userSettingState = (UserSettingState) configFileStream.readObject();
                 WorkbenchManager.userSettingState.loadShortkeys();
-                configFileStream.close();
                 Manipulator.setSnap(WorkbenchManager.userSettingState.getMedium_move_snap(), WorkbenchManager.userSettingState.getMedium_rotate_snap(),
                         WorkbenchManager.userSettingState.getMedium_scale_snap());
+                try {
+                    WorkbenchManager.primitiveCache = (PrimitiveCache) configFileStream.readObject();
+                } catch (Exception e) {
+                    NLogger.error(WorkbenchManager.class, e);
+                }
+                configFileStream.close();
             }
         } catch (FileNotFoundException e) {
 
@@ -133,10 +142,17 @@ public enum WorkbenchManager {
             configFileStream.writeObject(WorkbenchManager.editorTextWindowState);
             if (WorkbenchManager.userSettingState != null) WorkbenchManager.userSettingState.saveShortkeys();
             configFileStream.writeObject(WorkbenchManager.userSettingState);
+            try {
+                configFileStream.writeObject(WorkbenchManager.primitiveCache);
+            } catch (Exception e) {
+                NLogger.error(WorkbenchManager.class, e);
+            }
             configFileStream.close();
         } catch (SecurityException se) {
         } catch (FileNotFoundException fe) {
         } catch (IOException ie) {
+        } catch (Exception e) {
+            NLogger.error(WorkbenchManager.class, e);
         } finally {
             if (configFileStream != null) {
                 try {
@@ -205,6 +221,14 @@ public enum WorkbenchManager {
      */
     public static void setUserSettingState(UserSettingState userSettingState) {
         WorkbenchManager.userSettingState = userSettingState;
+    }
+
+    public static PrimitiveCache getPrimitiveCache() {
+        return primitiveCache;
+    }
+
+    public static void setPrimitiveCache(PrimitiveCache primitiveCache) {
+        WorkbenchManager.primitiveCache = primitiveCache;
     }
 
 }
