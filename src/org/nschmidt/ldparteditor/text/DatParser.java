@@ -1000,11 +1000,25 @@ public enum DatParser {
             String shortFilename2 = shortFilename.startsWith("S" + File.separator) ? "s" + shortFilename.substring(1) : shortFilename; //$NON-NLS-1$ //$NON-NLS-2$
             File fileToOpen = null;
             boolean readOnly = false;
-            String[] prefix = new String[]{Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
-            String[] middle = new String[]{File.separator + "PARTS", File.separator + "parts", File.separator + "P", File.separator + "p"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+            String[] prefix ;
+            int readyOnlyAt = 2;
+            if (datFile != null && !datFile.isProjectFile()) {
+                File dff = new File(datFile.getOldName()).getParentFile();
+                if (dff != null && dff.exists() && dff.isDirectory()) {
+                    prefix = new String[]{dff.getAbsolutePath(), Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+                    readyOnlyAt = 3;
+                } else {
+                    prefix = new String[]{Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+                }
+            } else {
+                prefix = new String[]{Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+            }
+
+            String[] middle = new String[]{"", File.separator + "PARTS", File.separator + "parts", File.separator + "P", File.separator + "p"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
             String[] suffix = new String[]{File.separator + shortFilename, File.separator + shortFilename2};
             for (int a1 = 0; a1 < prefix.length; a1++) {
-                readOnly = a1 == 2;
+                readOnly = a1 == readyOnlyAt;
                 String s1 = prefix[a1];
                 for (int a2 = 0; a2 < middle.length; a2++) {
                     String s2 = middle[a2];
