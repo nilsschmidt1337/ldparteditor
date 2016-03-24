@@ -708,7 +708,7 @@ public enum DatParser {
                     result.add(new ParsingResult(new GData0(line)));
                 }
             } else if (line.startsWith("0 !: ")) { //$NON-NLS-1$
-                GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed);
+                GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
                 if (newLPEmetaTag == null) {
                     newLPEmetaTag = new GData0(line);
                     result.add(new ParsingResult(newLPEmetaTag));
@@ -717,7 +717,7 @@ public enum DatParser {
                     result.add(new ParsingResult(newLPEmetaTag));
                 }
             } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
-                GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent);
+                GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent, datFile);
                 if (newLPEmetaTag == null) {
                     newLPEmetaTag = new GData0(line);
                     result.add(new ParsingResult(newLPEmetaTag));
@@ -997,7 +997,8 @@ public enum DatParser {
             } else {
                 alreadyParsed.add(shortFilename);
             }
-            String shortFilename2 = shortFilename.startsWith("S" + File.separator) ? "s" + shortFilename.substring(1) : shortFilename; //$NON-NLS-1$ //$NON-NLS-2$
+            String shortFilename2 = shortFilename.startsWith("s" + File.separator) ? "S" + shortFilename.substring(1) : shortFilename; //$NON-NLS-1$ //$NON-NLS-2$
+            String shortFilename3 = shortFilename.startsWith("s" + File.separator) ? shortFilename.substring(2) : shortFilename; //$NON-NLS-1$
             File fileToOpen = null;
             boolean readOnly = false;
 
@@ -1016,7 +1017,7 @@ public enum DatParser {
             }
 
             String[] middle = new String[]{"", File.separator + "PARTS", File.separator + "parts", File.separator + "P", File.separator + "p"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-            String[] suffix = new String[]{File.separator + shortFilename, File.separator + shortFilename2};
+            String[] suffix = new String[]{File.separator + shortFilename, File.separator + shortFilename2, File.separator + shortFilename3};
             for (int a1 = 0; a1 < prefix.length; a1++) {
                 readOnly = a1 == readyOnlyAt;
                 String s1 = prefix[a1];
