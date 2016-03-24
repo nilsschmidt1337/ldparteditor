@@ -50,6 +50,7 @@ class VM19ColourChanger extends VM18LineConverter {
         // 0. Deselect selected subfile data (for whole selected subfiles)
         for (GData1 subf : selectedSubfiles) {
             Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+            if (vis == null) continue;
             for (VertexInfo vertexInfo : vis) {
                 GData gt = vertexInfo.getLinkedData();
                 switch (gt.type()) {
@@ -188,6 +189,7 @@ class VM19ColourChanger extends VM18LineConverter {
 
             for (GData1 subf : selectedSubfiles) {
                 Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+                if (vis == null) continue;
                 for (VertexInfo vertexInfo : vis) {
                     selectedVertices.add(vertexInfo.getVertex());
                     GData gt = vertexInfo.getLinkedData();

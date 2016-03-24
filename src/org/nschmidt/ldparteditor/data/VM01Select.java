@@ -185,6 +185,7 @@ class VM01Select extends VM00Snapshot {
             for (GData1 subf : effSelectedSubfiles) {
                 selectedSubfiles.add(subf);
                 Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+                if (vis == null) continue;
                 for (VertexInfo vertexInfo : vis) {
                     selectedVertices.add(vertexInfo.getVertex());
                     GData g = vertexInfo.getLinkedData();
@@ -510,6 +511,7 @@ class VM01Select extends VM00Snapshot {
                 selectedSubfiles.add(g1);
                 selectedData.add(g1);
                 Set<VertexInfo> vis = lineLinkedToVertices.get(g1);
+                if (vis == null) return;
                 for (VertexInfo vertexInfo : vis) {
                     GData g = vertexInfo.getLinkedData();
                     switch (g.type()) {
@@ -675,6 +677,7 @@ class VM01Select extends VM00Snapshot {
         // Restore selected subfiles
         for (GData1 subf : selectedSubfiles) {
             Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+            if (vis == null) continue;
             for (VertexInfo vertexInfo : vis) {
                 selectedVertices.add(vertexInfo.getVertex());
                 GData g = vertexInfo.getLinkedData();

@@ -331,6 +331,7 @@ public class VM20Manipulator extends VM19ColourChanger {
         // 0. Deselect selected subfile data (for whole selected subfiles)
         for (GData1 subf : selectedSubfiles) {
             Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+            if (vis == null) continue;
             for (VertexInfo vertexInfo : vis) {
                 if (!moveAdjacentData)
                     selectedVertices.remove(vertexInfo.getVertex());
@@ -545,6 +546,7 @@ public class VM20Manipulator extends VM19ColourChanger {
 
                 for (GData1 subf : selectedSubfiles) {
                     Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+                    if (vis == null) continue;
                     for (VertexInfo vertexInfo : vis) {
                         selectedVertices.add(vertexInfo.getVertex());
                         GData g = vertexInfo.getLinkedData();

@@ -1657,6 +1657,7 @@ public class VM01SelectHelper extends VM01Select {
                 continue;
             selectedSubfiles.add(subf);
             Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+            if (vis == null) continue;
             for (VertexInfo vertexInfo : vis) {
                 selectedVertices.add(vertexInfo.getVertex());
                 GData g = vertexInfo.getLinkedData();
@@ -1729,6 +1730,7 @@ public class VM01SelectHelper extends VM01Select {
         selectedData.remove(subf);
         selectedSubfiles.remove(subf);
         Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+        if (vis == null) return;
         for (VertexInfo vertexInfo : vis) {
             selectedVertices.remove(vertexInfo.getVertex());
             GData g = vertexInfo.getLinkedData();
@@ -1756,6 +1758,7 @@ public class VM01SelectHelper extends VM01Select {
         selectedData.add(subf);
         selectedSubfiles.add(subf);
         Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+        if (vis == null) return;
         for (VertexInfo vertexInfo : vis) {
             selectedVertices.add(vertexInfo.getVertex());
             GData g = vertexInfo.getLinkedData();
@@ -1918,6 +1921,7 @@ public class VM01SelectHelper extends VM01Select {
 
             for (GData1 subf : selectedSubfiles) {
                 Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
+                if (vis == null) continue;
                 for (VertexInfo vertexInfo : vis) {
                     objectVertices.add(vertexInfo.getVertex());
                 }
