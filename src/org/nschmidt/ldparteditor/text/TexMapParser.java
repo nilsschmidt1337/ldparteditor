@@ -58,13 +58,13 @@ public enum TexMapParser {
 
     private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
 
-    public static GDataTEX parseGeometry(String line, int depth, float r, float g, float b, float a, GData1 gData1, Matrix4f pMatrix, Set<String> alreadyParsed) {
+    public static GDataTEX parseGeometry(String line, int depth, float r, float g, float b, float a, GData1 gData1, Matrix4f pMatrix, Set<String> alreadyParsed, DatFile datFile) {
         String tline = line.replaceAll("0\\s+\\Q!:\\E\\s+", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        GData data = parseLine(tline, depth, r, g, b, a, gData1, pMatrix, alreadyParsed);
+        GData data = parseLine(tline, depth, r, g, b, a, gData1, pMatrix, alreadyParsed, datFile);
         return new GDataTEX(data, line, TexMeta.GEOMETRY, null);
     }
 
-    public static GDataTEX parseTEXMAP(String[] data_segments, String line, GData1 parent) {
+    public static GDataTEX parseTEXMAP(String[] data_segments, String line, GData1 parent, DatFile datFile) {
         int segs = data_segments.length;
         if (segs == 3) {
             if (data_segments[2].equals("END")) { //$NON-NLS-1$
@@ -278,9 +278,9 @@ public enum TexMapParser {
         return null;
     }
 
-    public static GData parseLine(String line, int depth, float r, float g, float b, float a, GData1 gData1, Matrix4f pMatrix, Set<String> alreadyParsed) {
+    public static GData parseLine(String line, int depth, float r, float g, float b, float a, GData1 gData1, Matrix4f pMatrix, Set<String> alreadyParsed, DatFile df) {
         final String[] data_segments = WHITESPACE.split(line.trim());
-        return parseLine(data_segments, line, depth, r, g, b, a, gData1, pMatrix, alreadyParsed);
+        return parseLine(data_segments, line, depth, r, g, b, a, gData1, pMatrix, alreadyParsed, df);
     }
 
     // What follows now is a very minimalistic DAT file parser (<500LOC)
@@ -295,7 +295,7 @@ public enum TexMapParser {
     private static final Vector3f controlI = new Vector3f();
     private static final Vector3f controlII = new Vector3f();
 
-    public static GData parseLine(String[] data_segments, String line, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed) {
+    public static GData parseLine(String[] data_segments, String line, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
         // Get the linetype
         int linetype = 0;
         char c;
@@ -306,9 +306,9 @@ public enum TexMapParser {
         // Parse the line according to its type
         switch (linetype) {
         case 0:
-            return parse_Comment(line, data_segments, depth, r, g, b, a, parent, productMatrix, alreadyParsed);
+            return parse_Comment(line, data_segments, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
         case 1:
-            return parse_Reference(data_segments, depth, r, g, b, a, parent, productMatrix, alreadyParsed);
+            return parse_Reference(data_segments, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
         case 2:
             return parse_Line(data_segments, r, g, b, a, parent);
         case 3:
@@ -374,13 +374,13 @@ public enum TexMapParser {
         return cValue;
     }
 
-    private static GData parse_Comment(String line, String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed) {
+    private static GData parse_Comment(String line, String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
         line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
         if (line.startsWith("0 !: ")) { //$NON-NLS-1$
-            GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed);
+            GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
             return newLPEmetaTag;
         } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
-            GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent);
+            GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent, datFile);
             return newLPEmetaTag;
         } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
@@ -417,7 +417,7 @@ public enum TexMapParser {
         }
     }
 
-    private static GData parse_Reference(String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed) {
+    private static GData parse_Reference(String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
         if (data_segments.length < 15) {
             return null;
         } else {
@@ -469,11 +469,23 @@ public enum TexMapParser {
             } else {
                 alreadyParsed.add(shortFilename);
             }
-            String shortFilename2 = shortFilename.startsWith("S" + File.separator) ? "s" + shortFilename.substring(1) : shortFilename; //$NON-NLS-1$ //$NON-NLS-2$
+            String shortFilename2 = shortFilename.startsWith("s" + File.separator) ? "S" + shortFilename.substring(1) : shortFilename; //$NON-NLS-1$ //$NON-NLS-2$
+            String shortFilename3 = shortFilename.startsWith("s" + File.separator) ? shortFilename.substring(2) : shortFilename; //$NON-NLS-1$
             File fileToOpen = null;
-            String[] prefix = new String[]{Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+            String[] prefix;
+            if (datFile != null && !datFile.isProjectFile() && !View.DUMMY_DATFILE.equals(datFile)) {
+                File dff = new File(datFile.getOldName()).getParentFile();
+                if (dff != null && dff.exists() && dff.isDirectory()) {
+                    prefix = new String[]{dff.getAbsolutePath(), Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+                } else {
+                    prefix = new String[]{Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+                }
+            } else {
+                prefix = new String[]{Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+            }
+
             String[] middle = new String[]{File.separator + "PARTS", File.separator + "parts", File.separator + "P", File.separator + "p"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            String[] suffix = new String[]{File.separator + shortFilename, File.separator + shortFilename2};
+            String[] suffix = new String[]{File.separator + shortFilename, File.separator + shortFilename2, File.separator + shortFilename3};
             for (int a1 = 0; a1 < prefix.length; a1++) {
                 String s1 = prefix[a1];
                 for (int a2 = 0; a2 < middle.length; a2++) {
@@ -523,7 +535,7 @@ public enum TexMapParser {
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
                 GDataCSG.forceRecompile();
                 final GData1 result = new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
-                        destMatrix, parent.firstRef, alreadyParsed, parent);
+                        destMatrix, parent.firstRef, alreadyParsed, parent, datFile);
                 if (result != null && result.firstRef.isRecursive()) {
                     return null;
                 }
@@ -557,7 +569,7 @@ public enum TexMapParser {
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
                 GDataCSG.forceRecompile();
                 final GData1 result = new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
-                        destMatrix, parent.firstRef, alreadyParsed, parent);
+                        destMatrix, parent.firstRef, alreadyParsed, parent, datFile);
                 alreadyParsed.remove(shortFilename);
                 if (result != null && result.firstRef.isRecursive()) {
                     return null;

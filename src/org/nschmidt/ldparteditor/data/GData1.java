@@ -319,7 +319,7 @@ public final class GData1 extends GData {
      * @param firstRef
      */
     public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, ArrayList<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
-            GData1 firstRef, Set<String> alreadyParsed, GData1 parent) {
+            GData1 firstRef, Set<String> alreadyParsed, GData1 parent, DatFile datFile) {
 
         this.accurateLocalMatrix = null;
         this.accurateProductMatrix = null;
@@ -359,7 +359,7 @@ public final class GData1 extends GData {
 
             for (String line : lines) {
                 if (isNotBlank(line)) {
-                    GData gdata = TexMapParser.parseLine(line, depth, r, g, b, a, this, pMatrix, alreadyParsed);
+                    GData gdata = TexMapParser.parseLine(line, depth, r, g, b, a, this, pMatrix, alreadyParsed, datFile);
                     if (gdata == null) {
                         gdata = new GData0(line);
                     }
