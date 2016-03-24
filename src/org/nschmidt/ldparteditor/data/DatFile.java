@@ -1131,6 +1131,25 @@ public final class DatFile {
         }
     }
 
+    public void replaceComment(GData target, GData gdata) {
+        if (target.type() != 0) return;
+        GData tail = drawPerLine.getValue(drawPerLine.keySet().size());
+        if (tail == null) {
+            drawChainTail = null;
+            tail = getDrawChainTail();
+        }
+        GData next = target.getNext();
+        GData before = target.getBefore();
+        before.setNext(gdata);
+        gdata.setNext(next);
+
+        if (target.equals(tail)) {
+            drawChainTail = gdata;
+        }
+        drawPerLine.put(drawPerLine.getKey(target), gdata);
+        target.derefer();
+    }
+
     public Vertex getNearestObjVertex1() {
         return nearestObjVertex1;
     }
