@@ -1003,7 +1003,7 @@ public enum DatParser {
 
             String[] prefix ;
             int readyOnlyAt = 2;
-            if (datFile != null && !datFile.isProjectFile()) {
+            if (datFile != null && !datFile.isProjectFile() && !View.DUMMY_DATFILE.equals(datFile)) {
                 File dff = new File(datFile.getOldName()).getParentFile();
                 if (dff != null && dff.exists() && dff.isDirectory()) {
                     prefix = new String[]{dff.getAbsolutePath(), Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};

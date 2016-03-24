@@ -34,6 +34,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
@@ -457,20 +458,22 @@ public class GTexture {
         }
 
         if (disposed) {
-            // TODO Load it here
-            ID = loadPNGTexture(texture, GL13.GL_TEXTURE0);
+
+            DatFile df = renderer.getC3D().getLockableDatFileReference();
+
+            ID = loadPNGTexture(texture, GL13.GL_TEXTURE0, df);
             if (glossy)
-                ID_glossmap = loadPNGTexture(glossmap, GL13.GL_TEXTURE1);
+                ID_glossmap = loadPNGTexture(glossmap, GL13.GL_TEXTURE1, df);
             if (cubeMapIndex > 0) {
                 switch (cubeMapIndex) {
                 case 1:
-                    ID_cubemap = loadPNGTexture("cmap.png", GL13.GL_TEXTURE2); //$NON-NLS-1$
+                    ID_cubemap = loadPNGTexture("cmap.png", GL13.GL_TEXTURE2, df ); //$NON-NLS-1$
                     break;
                 case 2:
-                    ID_cubemap_matte = loadPNGTexture("matte_metal.png", GL13.GL_TEXTURE3); //$NON-NLS-1$
+                    ID_cubemap_matte = loadPNGTexture("matte_metal.png", GL13.GL_TEXTURE3, df); //$NON-NLS-1$
                     break;
                 case 3:
-                    ID_cubemap_metal = loadPNGTexture("metal.png", GL13.GL_TEXTURE4); //$NON-NLS-1$
+                    ID_cubemap_metal = loadPNGTexture("metal.png", GL13.GL_TEXTURE4, df); //$NON-NLS-1$
                     break;
                 }
             }
@@ -519,8 +522,6 @@ public class GTexture {
                     break;
                 }
             }
-
-
         }
     }
 
@@ -535,7 +536,7 @@ public class GTexture {
      *            e.g. GL13.GL_TEXTURE0
      * @return
      */
-    private int loadPNGTexture(String filename, int textureUnit) {
+    private int loadPNGTexture(String filename, int textureUnit, DatFile datFile) {
 
         int max = GL11.glGetInteger(GL11.GL_MAX_TEXTURE_SIZE);
 
@@ -560,8 +561,20 @@ public class GTexture {
             String p_tex = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + filename;
             String p_tex_u = Project.getProjectPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
             String p_tex_l = Project.getProjectPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
-            String tex = filename;
+            String f_tex = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + filename;
+            String f_tex_u = Project.getProjectPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
+            String f_tex_l = Project.getProjectPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
+            if (datFile != null && !datFile.isProjectFile() && !View.DUMMY_DATFILE.equals(datFile)) {
+                File dff = new File(datFile.getOldName()).getParentFile();
+                if (dff != null && dff.exists() && dff.isDirectory()) {
+                    String ap = dff.getAbsolutePath();
+                    f_tex = ap + File.separator + filename;
+                    f_tex_u = ap + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
+                    f_tex_l = ap + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
+                }
+            }
 
+            String tex = filename;
 
             File official_texture = new File(o_tex);
             File official_texture_u = new File(o_tex_u);
@@ -572,12 +585,24 @@ public class GTexture {
             File project_texture = new File(p_tex);
             File project_texture_u = new File(p_tex_u);
             File project_texture_l = new File(p_tex_l);
+            File local_texture = new File(f_tex);
+            File local_texture_u = new File(f_tex_u);
+            File local_texture_l = new File(f_tex_l);
             File texture = new File(tex);
 
-            boolean fileExists = ((fileToOpen = FileHelper.exist(project_texture)) != null || (fileToOpen = FileHelper.exist(project_texture_u)) != null
-                    || (fileToOpen = FileHelper.exist(project_texture_l)) != null || (fileToOpen = FileHelper.exist(unofficial_texture)) != null
-                    || (fileToOpen = FileHelper.exist(unofficial_texture_u)) != null || (fileToOpen = FileHelper.exist(unofficial_texture_l)) != null
-                    || (fileToOpen = FileHelper.exist(official_texture)) != null || (fileToOpen = FileHelper.exist(official_texture_u)) != null || (fileToOpen = FileHelper.exist(official_texture_l)) != null
+            boolean fileExists = (
+                    (fileToOpen = FileHelper.exist(local_texture)) != null
+                    || (fileToOpen = FileHelper.exist(local_texture_u)) != null
+                    || (fileToOpen = FileHelper.exist(local_texture_l)) != null
+                    || (fileToOpen = FileHelper.exist(project_texture)) != null
+                    || (fileToOpen = FileHelper.exist(project_texture_u)) != null
+                    || (fileToOpen = FileHelper.exist(project_texture_l)) != null
+                    || (fileToOpen = FileHelper.exist(unofficial_texture)) != null
+                    || (fileToOpen = FileHelper.exist(unofficial_texture_u)) != null
+                    || (fileToOpen = FileHelper.exist(unofficial_texture_l)) != null
+                    || (fileToOpen = FileHelper.exist(official_texture)) != null
+                    || (fileToOpen = FileHelper.exist(official_texture_u)) != null
+                    || (fileToOpen = FileHelper.exist(official_texture_l)) != null
                     || (fileToOpen = FileHelper.exist(texture)) != null)
                     && fileToOpen.isFile();
 
