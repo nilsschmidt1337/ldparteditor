@@ -34,6 +34,7 @@ public class SelectorSettings {
     private boolean hidden = false;
     private boolean noSubfiles = false;
     private boolean wholeSubfiles = false;
+    private boolean edgeAdjacency = false;
     private BigDecimal angle = BigDecimal.ZERO;
     private BigDecimal equalDistance = new BigDecimal("0.0001"); //$NON-NLS-1$
     private boolean vertices = true;
@@ -130,5 +131,11 @@ public class SelectorSettings {
     }
     public void setCondlines(boolean condlines) {
         this.condlines = condlines;
+    }
+    public boolean isEdgeAdjacency() {
+        return edgeAdjacency;
+    }
+    public void setEdgeAdjacency(boolean edgeAdjacency) {
+        this.edgeAdjacency = edgeAdjacency;
     }
 }

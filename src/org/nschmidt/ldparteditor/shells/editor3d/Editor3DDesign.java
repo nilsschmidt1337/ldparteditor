@@ -229,6 +229,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_SelectTouching = new MenuItem[1];
     final MenuItem[] mntm_WithSameOrientation = new MenuItem[1];
     final MenuItem[] mntm_WithAccuracy = new MenuItem[1];
+    final MenuItem[] mntm_WithAdjacency = new MenuItem[1];
     final MenuItem[] mntm_WithWholeSubfiles = new MenuItem[1];
     final MenuItem[] mntm_WithSameColour = new MenuItem[1];
     final MenuItem[] mntm_WithHiddenData = new MenuItem[1];
@@ -1753,6 +1754,11 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_WithAccuracy = new MenuItem(mnu_Select, SWT.CHECK);
                     this.mntm_WithAccuracy[0] = mntm_WithAccuracy;
                     mntm_WithAccuracy.setText(I18n.E3D_WithAccuracy);
+                }
+                {
+                    MenuItem mntm_WithAdjacency = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_WithAdjacency[0] = mntm_WithAdjacency;
+                    mntm_WithAdjacency.setText(I18n.E3D_WithAdjacency);
                 }
                 {
                     MenuItem mntm_WithHiddenData = new MenuItem(mnu_Select, SWT.CHECK);

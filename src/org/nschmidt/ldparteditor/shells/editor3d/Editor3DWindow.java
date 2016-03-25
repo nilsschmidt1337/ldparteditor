@@ -3513,6 +3513,18 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
+        mntm_WithAdjacency[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSelectMenu();
+                    }
+                });
+                regainFocus();
+            }
+        });
         mntm_ExceptSubfiles[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -7122,6 +7134,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public SelectorSettings loadSelectorSettings()  {
         sels.setColour(mntm_WithSameColour[0].getSelection());
+        sels.setEdgeAdjacency(mntm_WithAdjacency[0].getSelection());
         sels.setEdgeStop(mntm_StopAtEdges[0].getSelection());
         sels.setHidden(mntm_WithHiddenData[0].getSelection());
         sels.setNoSubfiles(mntm_ExceptSubfiles[0].getSelection());
