@@ -228,7 +228,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
             if (g == null) {
                 return;
             } else {
-                lastHeaderLine = g;
+                lastHeaderLine = g.getBefore();
             }
         }
 
