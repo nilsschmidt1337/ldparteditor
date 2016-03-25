@@ -38,6 +38,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabState;
 import org.nschmidt.ldparteditor.data.colour.GCChrome;
 import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
 import org.nschmidt.ldparteditor.data.colour.GCMetal;
@@ -58,6 +59,7 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The DAT file class
@@ -1060,30 +1062,66 @@ public final class DatFile {
     }
 
     public void insertAfterCursor(GData gdata) {
+        // The feature is only available when the 3D view and the text editor view are synchronized!
+        if (!WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) {
+            addToTail(gdata);
+            return;
+        }
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {
-                if (this.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                CompositeTabState state = ((CompositeTab) t).getState();
+                if (this.equals(state.getFileNameObj())) {
                     StyledText st = ((CompositeTab) t).getTextComposite();
                     int s1 = st.getSelectionRange().x;
                     if (s1 > -1) {
                         int line = st.getLineAtOffset(s1) + 1;
                         GData target = null;
-                        if (lastInsertedObject == null) {
-                            try {
-                                target = drawPerLine.getValue(line);
-                                int offset = st.getOffsetAtLine(line);
-                                st.setSelection(offset, offset);
-                            } catch (IllegalArgumentException iae) {
-                                lastInsertedObject = gdata;
+                        target = drawPerLine.getValue(line);
+                        if (target != null) {
+                            boolean doReplace = false;
+                            boolean insertEmptyLine = true;
+                            if (target.type() == 0) {
+                                doReplace = !StringHelper.isNotBlank(target.toString());
                             }
-                        } else {
-                            target = lastInsertedObject;
-                            lastInsertedObject = gdata;
+                            if (doReplace) {
+                                GData next = target.getNext();
+                                if (next != null && next.type() == 0) {
+                                    insertEmptyLine = StringHelper.isNotBlank(next.toString());
+                                }
+                                replaceComment(target, gdata);
+                                if (insertEmptyLine) insertAfter(gdata, new GData0("")); //$NON-NLS-1$
+                            } else  {
+                                insertAfter(target, gdata);
+                                insertAfter(gdata, new GData0("")); //$NON-NLS-1$
+                            }
+                            state.setSync(true);
+                            try {
+                                if (doReplace) {
+                                    if (insertEmptyLine) {
+                                        int offset = st.getOffsetAtLine(line - 1);
+                                        st.setSelection(offset, offset + target.toString().length());
+                                        st.insert(gdata.toString() + StringHelper.getLineDelimiter());
+                                        offset += StringHelper.getLineDelimiter().length() + gdata.toString().length();
+                                        st.setSelection(offset, offset);
+                                    } else {
+                                        int offset = st.getOffsetAtLine(line - 1);
+                                        st.setSelection(offset, offset + target.toString().length());
+                                        st.insert(gdata.toString());
+                                        offset += StringHelper.getLineDelimiter().length() + gdata.toString().length();
+                                        st.setSelection(offset, offset);
+                                    }
+                                } else {
+                                    int offset = st.getOffsetAtLine(line - 1) + target.toString().length() + StringHelper.getLineDelimiter().length();
+                                    st.setSelection(offset, offset);
+                                    st.insert(StringHelper.getLineDelimiter() + gdata.toString());
+                                    offset += StringHelper.getLineDelimiter().length() + gdata.toString().length();
+                                    st.setSelection(offset, offset);
+                                }
+                            } catch (IllegalArgumentException iae) {
+                            }
+                            state.setSync(false);
                         }
-                        if (target != null && drawPerLine.containsValue(target)) {
-                            insertAfter(target, gdata);
-                            return;
-                        }
+                        return;
                     }
                 }
             }
