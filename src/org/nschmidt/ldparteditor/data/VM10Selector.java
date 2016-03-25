@@ -281,7 +281,7 @@ class VM10Selector extends VM09WindingChange {
                                     }
                                     if (!skipEdge) {
                                         for (GData3 g : triangles.keySet()) {
-                                            if (!addedSelectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && hasSameEdge(edge, g, adjaencyByPrecision)) {
+                                            if (!addedSelectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && hasSameEdge(edge, g, adjaencyByPrecision) && isEdgeAdjacent(ss, g, addedSelectedLines, addedSelectedTriangles, addedSelectedQuads, addedSelectedCondlines, newSelectedLines, newSelectedTriangles, newSelectedQuads, newSelectedCondlines, adjaencyByPrecision)) {
                                                 if (ss.isOrientation()) {
                                                     int faceCount = 0;
                                                     int angleCount = 0;
@@ -318,7 +318,7 @@ class VM10Selector extends VM09WindingChange {
                                             }
                                         }
                                         for (GData4 g : quads.keySet()) {
-                                            if (!addedSelectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && hasSameEdge(edge, g, adjaencyByPrecision)) {
+                                            if (!addedSelectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && hasSameEdge(edge, g, adjaencyByPrecision) && isEdgeAdjacent(ss, g, addedSelectedLines, addedSelectedTriangles, addedSelectedQuads, addedSelectedCondlines, newSelectedLines, newSelectedTriangles, newSelectedQuads, newSelectedCondlines, adjaencyByPrecision)) {
                                                 if (ss.isOrientation()) {
                                                     int faceCount = 0;
                                                     int angleCount = 0;
@@ -382,7 +382,7 @@ class VM10Selector extends VM09WindingChange {
                             // Now add lines and condlines
                             if (ss.isLines()) {
                                 for (GData2 g : lines.keySet()) {
-                                    if (canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                    if (canSelect(null, g, ss, allNormals, allColours, angle2) && isEdgeAdjacent(ss, g, adjaencyByPrecision)) {
                                         Vertex[] verts = lines.get(g);
                                         if (addedSelectedVertices.contains(verts[0]) && addedSelectedVertices.contains(verts[1])) {
                                             selectedLines.add(g);
@@ -393,7 +393,7 @@ class VM10Selector extends VM09WindingChange {
                             }
                             if (ss.isCondlines()) {
                                 for (GData5 g : condlines.keySet()) {
-                                    if (canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                    if (canSelect(null, g, ss, allNormals, allColours, angle2) && isEdgeAdjacent(ss, g, adjaencyByPrecision)) {
                                         Vertex[] verts = condlines.get(g);
                                         if (addedSelectedVertices.contains(verts[0]) && addedSelectedVertices.contains(verts[1])) {
                                             selectedCondlines.add(g);
@@ -522,7 +522,7 @@ class VM10Selector extends VM09WindingChange {
                                         GData g = mani.getGdata();
                                         switch (g.type()) {
                                         case 2:
-                                            if (!addedSelectedLines.contains(g) &&  canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                            if (!addedSelectedLines.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && isEdgeAdjacent(ss, g, addedSelectedLines, addedSelectedTriangles, addedSelectedQuads, addedSelectedCondlines, newSelectedLines, newSelectedTriangles, newSelectedQuads, newSelectedCondlines, adjaencyByPrecision)) {
                                                 addedSelectedLines.add((GData2) g);
                                                 newSelectedLines.add((GData2) g);
                                                 Vertex[] verts = lines.get(g);
@@ -536,7 +536,7 @@ class VM10Selector extends VM09WindingChange {
                                             break;
                                         case 3:
 
-                                            if (!addedSelectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                            if (!addedSelectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && isEdgeAdjacent(ss, g, addedSelectedLines, addedSelectedTriangles, addedSelectedQuads, addedSelectedCondlines, newSelectedLines, newSelectedTriangles, newSelectedQuads, newSelectedCondlines, adjaencyByPrecision)) {
 
                                                 if (ss.isOrientation()) {
                                                     // We have to find a selected face, which shares one edge
@@ -576,7 +576,7 @@ class VM10Selector extends VM09WindingChange {
                                             }
                                             break;
                                         case 4:
-                                            if (!addedSelectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                            if (!addedSelectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && isEdgeAdjacent(ss, g, addedSelectedLines, addedSelectedTriangles, addedSelectedQuads, addedSelectedCondlines, newSelectedLines, newSelectedTriangles, newSelectedQuads, newSelectedCondlines, adjaencyByPrecision)) {
 
                                                 if (ss.isOrientation()) {
                                                     // We have to find a selected face, which shares one edge
@@ -614,7 +614,7 @@ class VM10Selector extends VM09WindingChange {
                                             }
                                             break;
                                         case 5:
-                                            if (!addedSelectedCondlines.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2)) {
+                                            if (!addedSelectedCondlines.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && isEdgeAdjacent(ss, g, addedSelectedLines, addedSelectedTriangles, addedSelectedQuads, addedSelectedCondlines, newSelectedLines, newSelectedTriangles, newSelectedQuads, newSelectedCondlines, adjaencyByPrecision)) {
                                                 addedSelectedCondlines.add((GData5) g);
                                                 newSelectedCondlines.add((GData5) g);
                                                 Vertex[] verts = condlines.get(g);
@@ -632,7 +632,6 @@ class VM10Selector extends VM09WindingChange {
                                         default:
                                             break;
                                         }
-
                                     }
                                 }
 
@@ -694,6 +693,39 @@ class VM10Selector extends VM09WindingChange {
         } catch (InterruptedException consumed) {
         }
         linkedDatFile.setDrawSelection(true);
+    }
+
+
+    private boolean isEdgeAdjacent(SelectorSettings ss, GData g1, TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
+        if (ss.isEdgeAdjacency()) {
+            return isEdgeAdjacentToSelectedData(g1, null, adjaencyByPrecision);
+        }
+        return true;
+    }
+
+    private boolean isEdgeAdjacent(SelectorSettings ss, GData g1,
+            Set<? extends GData> data2,
+            Set<? extends GData> data3,
+            Set<? extends GData> data4,
+            Set<? extends GData> data5,
+            Set<? extends GData> data2r,
+            Set<? extends GData> data3r,
+            Set<? extends GData> data4r,
+            Set<? extends GData> data5r,
+            TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
+        if (ss.isEdgeAdjacency()) {
+            HashSet<GData> selectedData = new HashSet<GData>();
+            selectedData.addAll(data2);
+            selectedData.addAll(data3);
+            selectedData.addAll(data4);
+            selectedData.addAll(data5);
+            selectedData.removeAll(data2r);
+            selectedData.removeAll(data3r);
+            selectedData.removeAll(data4r);
+            selectedData.removeAll(data5r);
+            return isEdgeAdjacentToSelectedData(g1, selectedData, adjaencyByPrecision);
+        }
+        return true;
     }
 
     private boolean canSelect(GData adjacentTo, GData what, SelectorSettings ss, Set<Vector3d> allNormals, Set<GColour> allColours, double angle) {
