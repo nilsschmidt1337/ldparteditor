@@ -348,6 +348,129 @@ class VM03Adjacency extends VM02Add {
         return false;
     }
 
+    public boolean isEdgeAdjacentToSelectedData(GData g1, Set<? extends GData> data, TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
+        if (data == null) {
+            data = selectedData;
+        }
+        for (GData g2 : data) {
+            if (hasSameEdge2(g1, g2, adjaencyByPrecision)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Tests, if two surfaces share a common edge, or if a surface has an edge or a condline
+     * @param g1 a surface
+     * @param g2 another surface
+     * @param adjaencyByPrecision a map which contains informations about near vertices
+     * @return {@code true} if they do / {@code false} otherwise
+     */
+    private boolean hasSameEdge2(GData g1, GData g2, TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
+
+        int t1 = g1.type();
+        int t2 = g2.type();
+
+        TreeSet<Vertex> v1 = new TreeSet<Vertex>();
+        TreeSet<Vertex> v2 = new TreeSet<Vertex>();
+
+        switch (t1) {
+        case 2:
+            Vertex[] va0 = lines.get(g1);
+            v1.add(va0[0]);
+            v1.add(va0[1]);
+            break;
+        case 3:
+            Vertex[] va = triangles.get(g1);
+            v1.add(va[0]);
+            v1.add(va[1]);
+            v1.add(va[2]);
+            break;
+        case 4:
+            Vertex[] va2 = quads.get(g1);
+            v1.add(va2[0]);
+            v1.add(va2[1]);
+            v1.add(va2[2]);
+            v1.add(va2[3]);
+            break;
+        case 5:
+            Vertex[] va3 = condlines.get(g1);
+            v1.add(va3[0]);
+            v1.add(va3[1]);
+            break;
+        default:
+            return false;
+        }
+
+        switch (t2) {
+        case 2:
+            Vertex[] va0 = lines.get(g2);
+            v2.add(va0[0]);
+            v2.add(va0[1]);
+            break;
+        case 3:
+            Vertex[] va = triangles.get(g2);
+            v2.add(va[0]);
+            v2.add(va[1]);
+            v2.add(va[2]);
+            break;
+        case 4:
+            Vertex[] va2 = quads.get(g2);
+            v2.add(va2[0]);
+            v2.add(va2[1]);
+            v2.add(va2[2]);
+            v2.add(va2[3]);
+            break;
+        case 5:
+            Vertex[] va3 = condlines.get(g2);
+            v2.add(va3[0]);
+            v2.add(va3[1]);
+            break;
+        default:
+            return false;
+        }
+
+        // Create the sets
+
+        ArrayList<TreeSet<Vertex>> setList1 = new ArrayList<TreeSet<Vertex>>();
+        ArrayList<TreeSet<Vertex>> setList2 = new ArrayList<TreeSet<Vertex>>();
+
+        for (Vertex v : v1) {
+            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
+            newSet.addAll(adjaencyByPrecision.get(v));
+            setList1.add(newSet);
+        }
+
+        for (Vertex v : v2) {
+            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
+            newSet.addAll(adjaencyByPrecision.get(v));
+            setList2.add(newSet);
+        }
+
+        // Now we have to detect a least 2 set intersections
+
+        int intersections = 0;
+        for (TreeSet<Vertex> s1 : setList1) {
+            for (TreeSet<Vertex> s2 : setList2) {
+                TreeSet<Vertex> newSet = new TreeSet<Vertex>();
+                newSet.addAll(s1);
+                int co = newSet.size();
+                newSet.removeAll(s2);
+                int cn = newSet.size();
+                if (co != cn) {
+                    intersections++;
+                    if (intersections == 2) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Tests, if an edge and a surface share a common edge, or if the edge is equal to another edge
      * @param e1 an edge
