@@ -1603,17 +1603,21 @@ public final class DatFile {
         final int objCount = drawPerLine.size();
         GData[] backup = new GData[objCount];
         boolean[] backupSelection = new boolean[objCount];
-        boolean[] backupHideShowState = null;
+        String[] backupHideShowState = null;
         int count = 0;
         GData data2draw = drawChainAnchor;
         Set<GData> sd = vertices.getSelectedData();
-
         if (vertices.hiddenData.size() > 0) {
-            backupHideShowState = new boolean[objCount];
+            vertices.cleanupHiddenData();
+            backupHideShowState = new String[vertices.hiddenData.size()];
+            int i = 0;
+            for (GData g : vertices.hiddenData) {
+                backupHideShowState[i] = g.getNiceString();
+                i++;
+            }
             while (count < objCount) {
                 data2draw = data2draw.getNext();
                 backup[count] = data2draw;
-                backupHideShowState[count] = data2draw.visible;
                 backupSelection[count] = sd.contains(data2draw);
                 count++;
             }

@@ -2939,8 +2939,11 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
-                    Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().getVertexManager().hideSelection();
+                    if (Project.getFileToEdit().getVertexManager().getSelectedData().size() > 0) {
+                        Project.getFileToEdit().getVertexManager().addSnapshot();
+                        Project.getFileToEdit().getVertexManager().hideSelection();
+                        Project.getFileToEdit().addHistory();
+                    }
                 }
                 regainFocus();
             }
@@ -2951,6 +2954,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().showAll();
+                    Project.getFileToEdit().addHistory();
                 }
                 regainFocus();
             }

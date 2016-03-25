@@ -65,7 +65,7 @@ public class HistoryManager {
         this.df = df;
     }
 
-    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, boolean[] selectedData, boolean[] hiddenData, Vertex[] selectedVertices, Vertex[] hiddenVertices, int topIndex) {
+    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, boolean[] selectedData, String[] hiddenData, Vertex[] selectedVertices, Vertex[] hiddenVertices, int topIndex) {
         if (df.isReadOnly()) return;
         if (hasNoThread) {
             hasNoThread = false;
@@ -85,7 +85,7 @@ public class HistoryManager {
                     final ArrayList<Integer> historyTopIndex = new ArrayList<Integer>();
                     final ArrayList<int[]> historyText = new ArrayList<int[]>();
                     final ArrayList<boolean[]> historySelectedData = new ArrayList<boolean[]>();
-                    final ArrayList<boolean[]> historyHiddenData = new ArrayList<boolean[]>();
+                    final ArrayList<String[]> historyHiddenData = new ArrayList<String[]>();
                     final ArrayList<Vertex[]> historySelectedVertices = new ArrayList<Vertex[]>();
                     final ArrayList<Vertex[]> historyHiddenVertices = new ArrayList<Vertex[]>();
 
@@ -156,7 +156,7 @@ public class HistoryManager {
                                 historySelectedData.add((boolean[]) newEntry[4]);
                                 historySelectedVertices.add((Vertex[]) newEntry[5]);
                                 historyTopIndex.add((Integer) newEntry[6]);
-                                historyHiddenData.add((boolean[]) newEntry[7]);
+                                historyHiddenData.add((String[]) newEntry[7]);
                                 historyHiddenVertices.add((Vertex[]) newEntry[8]);
                                 historyText.add(result);
 
@@ -360,20 +360,13 @@ public class HistoryManager {
                                                     }
                                                 }
 
-                                                boolean[] hiddenSelection = historyHiddenData.get(pointer2);
+                                                String[] hiddenSelection = historyHiddenData.get(pointer2);
                                                 if (hiddenSelection != null) {
-                                                    int i = 0;
-                                                    final HashBiMap<Integer, GData> map = df.getDrawPerLine_NOCLONE();
-                                                    TreeSet<Integer> ts = new TreeSet<Integer>(map.keySet());
                                                     vm.hiddenData.clear();
-                                                    for (Integer key : ts) {
-                                                        if (!hiddenSelection[i]) {
-                                                            GData gd = map.getValue(key);
-                                                            gd.visible = false;
-                                                            vm.hiddenData.add(gd);
-                                                        }
-                                                        i++;
+                                                    for (String s : hiddenSelection) {
+                                                        vm.hiddenData.add(new GData0(s));
                                                     }
+                                                    vm.cleanupHiddenData();
                                                 }
                                                 boolean[] selection = historySelectedData.get(pointer2);
                                                 if (selection != null) {
