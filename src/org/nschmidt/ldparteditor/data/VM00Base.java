@@ -496,7 +496,7 @@ class VM00Base {
         }
     }
 
-    private final void cleanupHiddenData() {
+    final void cleanupHiddenData() {
         if (hiddenData.size() > 0) {
             HashSet<GData> dataToHide = new HashSet<GData>();
             for (Iterator<GData> hi = hiddenData.iterator(); hi.hasNext();) {
