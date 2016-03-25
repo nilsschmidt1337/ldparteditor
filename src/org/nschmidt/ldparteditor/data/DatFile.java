@@ -1615,19 +1615,12 @@ public final class DatFile {
                 backupHideShowState[i] = g.getNiceString();
                 i++;
             }
-            while (count < objCount) {
-                data2draw = data2draw.getNext();
-                backup[count] = data2draw;
-                backupSelection[count] = sd.contains(data2draw);
-                count++;
-            }
-        } else {
-            while (count < objCount) {
-                data2draw = data2draw.getNext();
-                backup[count] = data2draw;
-                backupSelection[count] = sd.contains(data2draw);
-                count++;
-            }
+        }
+        while (count < objCount) {
+            data2draw = data2draw.getNext();
+            backup[count] = data2draw;
+            backupSelection[count] = sd.contains(data2draw);
+            count++;
         }
 
         Vertex[] backupSelectedVertices = vertices.getSelectedVertices().toArray(new Vertex[vertices.getSelectedVertices().size()]);
