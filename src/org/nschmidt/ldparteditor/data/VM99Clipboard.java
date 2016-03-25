@@ -515,7 +515,6 @@ class VM99Clipboard extends VM24MeshReducer {
         if (linkedDatFile.isReadOnly())
             return;
         if (!CLIPBOARD.isEmpty()) {
-            linkedDatFile.resetInsertState();
             clearSelection();
             if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
                 for (GData g : CLIPBOARD) {

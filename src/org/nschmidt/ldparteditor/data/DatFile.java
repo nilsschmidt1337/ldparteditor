@@ -113,7 +113,6 @@ public final class DatFile {
     private Date lastSavedOpened = new Date();
 
     private GData drawChainTail = null;
-    private GData lastInsertedObject = null;
 
     private Composite3D lastSelectedComposite = null;
     private static Composite3D lastHoveredComposite = null;
@@ -1054,7 +1053,6 @@ public final class DatFile {
 
     public void addToTailOrInsertAfterCursorReset(GData gdata) {
         if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
-            resetInsertState();
             insertAfterCursor(gdata);
         } else {
             addToTail(gdata);
@@ -1127,10 +1125,6 @@ public final class DatFile {
             }
         }
         addToTail(gdata);
-    }
-
-    public void resetInsertState() {
-        lastInsertedObject = null;
     }
 
     public void addToTail(GData gdata) {
