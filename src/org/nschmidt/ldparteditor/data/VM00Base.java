@@ -397,6 +397,7 @@ class VM00Base {
             selectedData.addAll(selectedCondlines);
         }
         cleanupSelection();
+        cleanupHiddenData();
         // Do not validate more stuff on release, since it costs a lot performance.
         if (!NLogger.DEBUG) return;
 
@@ -495,7 +496,45 @@ class VM00Base {
         }
     }
 
-    public final void cleanupSelection() {
+    private final void cleanupHiddenData() {
+        if (hiddenData.size() > 0) {
+            HashSet<GData> dataToHide = new HashSet<GData>();
+            for (Iterator<GData> hi = hiddenData.iterator(); hi.hasNext();) {
+                GData g = hi.next();
+                if (!lines.containsKey(g) || !triangles.containsKey(g) || !quads.containsKey(g) || !condlines.containsKey(g)) {
+                    String representation = g.toString();
+                    for (GData2 g2 : lines.keySet()) {
+                        if (g2.toString().equals(representation)) {
+                            dataToHide.add(g2);
+                            g2.visible = false;
+                        }
+                    }
+                    for (GData3 g2 : triangles.keySet()) {
+                        if (g2.toString().equals(representation)) {
+                            dataToHide.add(g2);
+                            g2.visible = false;
+                        }
+                    }
+                    for (GData4 g2 : quads.keySet()) {
+                        if (g2.toString().equals(representation)) {
+                            dataToHide.add(g2);
+                            g2.visible = false;
+                        }
+                    }
+                    for (GData5 g2 : condlines.keySet()) {
+                        if (g2.toString().equals(representation)) {
+                            dataToHide.add(g2);
+                            g2.visible = false;
+                        }
+                    }
+                    hi.remove();
+                }
+            }
+            hiddenData.addAll(dataToHide);
+        }
+    }
+
+    private final void cleanupSelection() {
 
         selectedData.clear();
 
