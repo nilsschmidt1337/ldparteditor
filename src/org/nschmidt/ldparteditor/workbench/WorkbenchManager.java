@@ -98,18 +98,19 @@ public enum WorkbenchManager {
                 configFileStream.close();
             }
         } catch (FileNotFoundException e) {
-
+            NLogger.error(WorkbenchManager.class, e);
         } catch (IOException e) {
-            e.fillInStackTrace().printStackTrace(System.err);
+            NLogger.error(WorkbenchManager.class, e);
         } catch (ClassNotFoundException e) {
-            System.err.println(e);
+            NLogger.error(WorkbenchManager.class, e);
         } catch (Exception e) {
-            System.err.println(e);
+            NLogger.error(WorkbenchManager.class, e);
         } finally {
             if (configFileStream != null) {
                 try {
                     configFileStream.close();
                 } catch (IOException e) {
+                    NLogger.error(WorkbenchManager.class, e);
                 }
             }
         }
@@ -149,8 +150,11 @@ public enum WorkbenchManager {
             }
             configFileStream.close();
         } catch (SecurityException se) {
+            NLogger.error(WorkbenchManager.class, se);
         } catch (FileNotFoundException fe) {
+            NLogger.error(WorkbenchManager.class, fe);
         } catch (IOException ie) {
+            NLogger.error(WorkbenchManager.class, ie);
         } catch (Exception e) {
             NLogger.error(WorkbenchManager.class, e);
         } finally {
@@ -158,6 +162,7 @@ public enum WorkbenchManager {
                 try {
                     configFileStream.close();
                 } catch (IOException e) {
+                    NLogger.error(WorkbenchManager.class, e);
                 }
             }
         }
@@ -230,5 +235,4 @@ public enum WorkbenchManager {
     public static void setPrimitiveCache(PrimitiveCache primitiveCache) {
         WorkbenchManager.primitiveCache = primitiveCache;
     }
-
 }
