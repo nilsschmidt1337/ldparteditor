@@ -172,7 +172,6 @@ class VM16Subdivide extends VM15Flipper {
 
         }
 
-        linkedDatFile.resetInsertState();
         for (GData g : newLines) {
             linkedDatFile.addToTailOrInsertAfterCursor(g);
         }
@@ -266,7 +265,6 @@ class VM16Subdivide extends VM15Flipper {
             newTris.add(new GData3(colourNumber, r, g, b, a, originalVerts[2], ve[2], ve[1], View.DUMMY_REFERENCE, linkedDatFile));
         }
 
-        linkedDatFile.resetInsertState();
         for (GData g : newLines) {
             linkedDatFile.addToTailOrInsertAfterCursor(g);
         }

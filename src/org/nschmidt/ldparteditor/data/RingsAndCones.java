@@ -60,8 +60,6 @@ public enum RingsAndCones {
 
         if (df.isReadOnly()) return;
 
-        df.resetInsertState();
-
         final VertexManager vm = df.getVertexManager();
 
         vm.clearSelection2();

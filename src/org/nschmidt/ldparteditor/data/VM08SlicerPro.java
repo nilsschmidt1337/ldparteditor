@@ -350,7 +350,6 @@ public class VM08SlicerPro extends VM07PathTruder {
             }
 
             // Append the triangles
-            linkedDatFile.resetInsertState();
             for (GData3 tri : newTriangles) {
                 linkedDatFile.addToTailOrInsertAfterCursor(tri);
             }
