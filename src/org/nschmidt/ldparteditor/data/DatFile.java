@@ -1603,16 +1603,16 @@ public final class DatFile {
         final int objCount = drawPerLine.size();
         GData[] backup = new GData[objCount];
         boolean[] backupSelection = new boolean[objCount];
-        String[] backupHideShowState = null;
+        String[] backupHiddenData = null;
         int count = 0;
         GData data2draw = drawChainAnchor;
         Set<GData> sd = vertices.getSelectedData();
         if (vertices.hiddenData.size() > 0) {
             vertices.cleanupHiddenData();
-            backupHideShowState = new String[vertices.hiddenData.size()];
+            backupHiddenData = new String[vertices.hiddenData.size()];
             int i = 0;
             for (GData g : vertices.hiddenData) {
-                backupHideShowState[i] = g.getNiceString();
+                backupHiddenData[i] = g.getNiceString();
                 i++;
             }
         }
@@ -1631,7 +1631,7 @@ public final class DatFile {
                 -1,
                 backup,
                 backupSelection,
-                backupHideShowState,
+                backupHiddenData,
                 backupSelectedVertices,
                 backupHiddenVertices,
                 -1
