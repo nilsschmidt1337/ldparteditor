@@ -144,10 +144,10 @@ class VM00Base {
 
     protected final HashMap<GData, Byte> bfcMap = new HashMap<GData, Byte>();
 
-    protected final AtomicBoolean resetTimer = new AtomicBoolean(false);
-    protected final AtomicInteger tid = new AtomicInteger(0);
-    protected final AtomicInteger openThreads = new AtomicInteger(0);
-    protected final Lock lock = new ReentrantLock();
+    protected volatile AtomicBoolean resetTimer = new AtomicBoolean(false);
+    protected volatile AtomicInteger tid = new AtomicInteger(0);
+    protected volatile AtomicInteger openThreads = new AtomicInteger(0);
+    protected volatile Lock lock = new ReentrantLock();
 
     protected VM00Base(DatFile linkedDatFile) {
         this.linkedDatFile = linkedDatFile;
@@ -303,14 +303,26 @@ class VM00Base {
                             NLogger.debug(getClass(), "Synchronisation was skipped due to undo/redo."); //$NON-NLS-1$
                         }
                     } finally {
-                        if (lock2 != null && tryToUnlockLock2) lock2.unlock();
-                        lock.unlock();
+                        try {
+                            if (lock2 != null && tryToUnlockLock2) lock2.unlock();
+                        } catch (Exception e) {
+                            NLogger.error(getClass(), e);
+                        }
+                        try {
+                            lock.unlock();
+                        } catch (Exception e) {
+                            NLogger.error(getClass(), e);
+                        }
                     }
                 }
             });
             syncThread.start();
         } finally {
-            lock.unlock();
+            try {
+                lock.unlock();
+            } catch (Exception e) {
+                NLogger.error(getClass(), e);
+            }
         }
     }
 
