@@ -566,7 +566,9 @@ class VM00Base {
         while (counter < 100) {
             while ((g = g.getBefore()) != null && (g.type() < 1 || g.type() > 5) && g.type() != 7) {
             }
-            if (g == null) break;
+            if (g == null) {
+                return View.DUMMY_REFERENCE;
+            }
             GData1 p = View.DUMMY_REFERENCE;
             switch (g.type()) {
             case 1:
