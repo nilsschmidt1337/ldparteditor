@@ -552,7 +552,10 @@ class VM00Base {
         // FIXME Needs implementation
         GData1 s1 = getSubfile(g1);
         GData1 s2 = getSubfile(g2);
-        return true;
+        /*if (s1.firstRefLine == s2.firstRefLine) {
+            return true;
+        }*/
+        return false;
     }
 
     public GData1 getSubfile(GData g) {
@@ -580,7 +583,7 @@ class VM00Base {
                 p = ((GData5) g).parent;
                 break;
             case 7:
-                p = ((GDataInit) g).getParent();
+                p = ((GDataInit) g).getParent().firstRef;
                 break;
             }
             if (View.DUMMY_REFERENCE.equals(p)) {
