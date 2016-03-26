@@ -67,6 +67,7 @@ class VM11HideShow extends VM10Selector {
     }
 
     public void showAll() {
+        cleanupHiddenData();
         for (GData ghost : hiddenData) {
             ghost.show();
         }

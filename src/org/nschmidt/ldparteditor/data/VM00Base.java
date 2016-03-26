@@ -504,34 +504,39 @@ class VM00Base {
 
     final void cleanupHiddenData() {
         if (hiddenData.size() > 0) {
+            HashMap<String, ArrayList<GData>> dict = new HashMap<String, ArrayList<GData>>();
+            for (GData1 g2 : vertexCountInSubfile.keySet()) {
+                final String key = g2.getNiceString();
+                dict.putIfAbsent(key, new ArrayList<GData>());
+                dict.get(key).add(g2);
+            }
+            for (GData2 g2 : lines.keySet()) {
+                final String key = g2.getNiceString();
+                dict.putIfAbsent(key, new ArrayList<GData>());
+                dict.get(key).add(g2);
+            }
+            for (GData3 g2 : triangles.keySet()) {
+                final String key = g2.getNiceString();
+                dict.putIfAbsent(key, new ArrayList<GData>());
+                dict.get(key).add(g2);
+            }
+            for (GData4 g2 : quads.keySet()) {
+                final String key = g2.getNiceString();
+                dict.putIfAbsent(key, new ArrayList<GData>());
+                dict.get(key).add(g2);
+            }
+            for (GData5 g2 : condlines.keySet()) {
+                final String key = g2.getNiceString();
+                dict.putIfAbsent(key, new ArrayList<GData>());
+                dict.get(key).add(g2);
+            }
             HashSet<GData> dataToHide = new HashSet<GData>();
             for (Iterator<GData> hi = hiddenData.iterator(); hi.hasNext();) {
-                GData g = hi.next();
-                if (!lines.containsKey(g) || !triangles.containsKey(g) || !quads.containsKey(g) || !condlines.containsKey(g)) {
-                    String representation = g.toString();
-                    for (GData2 g2 : lines.keySet()) {
-                        if (g2.toString().equals(representation)) {
-                            dataToHide.add(g2);
-                            g2.visible = false;
-                        }
-                    }
-                    for (GData3 g2 : triangles.keySet()) {
-                        if (g2.toString().equals(representation)) {
-                            dataToHide.add(g2);
-                            g2.visible = false;
-                        }
-                    }
-                    for (GData4 g2 : quads.keySet()) {
-                        if (g2.toString().equals(representation)) {
-                            dataToHide.add(g2);
-                            g2.visible = false;
-                        }
-                    }
-                    for (GData5 g2 : condlines.keySet()) {
-                        if (g2.toString().equals(representation)) {
-                            dataToHide.add(g2);
-                            g2.visible = false;
-                        }
+                ArrayList<GData> g3 = dict.get(hi.next().toString());
+                if (g3 != null) {
+                    for (GData g : g3) {
+                        dataToHide.add(g);
+                        g.visible = false;
                     }
                     hi.remove();
                 }
