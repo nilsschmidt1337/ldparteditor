@@ -1511,7 +1511,7 @@ public class OpenGLRenderer {
             if (window.isAddingSomething() && c3d.getLockableDatFileReference().getLastSelectedComposite() != null && c3d.getLockableDatFileReference().getLastSelectedComposite().equals(c3d)) {
                 if (window.isAddingVertices()) {
                     // Point for add vertex
-                    GL11.glColor3f(0.9f, 0.9f, 0.0f); // TODO Needs custom colour!
+                    GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
                     GL11.glBegin(GL11.GL_POINTS);
                     Vector4f cursor3D = c3d.getCursorSnapped3D();
                     GL11.glVertex3f(cursor3D.x, cursor3D.y, cursor3D.z);
@@ -1523,7 +1523,7 @@ public class OpenGLRenderer {
                     if (v != null) {
                         GL11.glLineWidth(4f);
                         GL11.glBegin(GL11.GL_LINES);
-                        GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                        GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
                         GL11.glVertex3f(v.x, v.y, v.z);
                         GL11.glVertex3f(cur.x, cur.y, cur.z);
                         GL11.glEnd();
@@ -1537,7 +1537,7 @@ public class OpenGLRenderer {
                         if (v2 != null) {
                             GL11.glLineWidth(4f);
                             GL11.glBegin(GL11.GL_LINES);
-                            GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                            GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
                             GL11.glVertex3f(v.x, v.y, v.z);
                             GL11.glVertex3f(cur.x, cur.y, cur.z);
                             GL11.glVertex3f(v2.x, v2.y, v2.z);
@@ -1548,7 +1548,7 @@ public class OpenGLRenderer {
                         } else {
                             GL11.glLineWidth(4f);
                             GL11.glBegin(GL11.GL_LINES);
-                            GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                            GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
                             GL11.glVertex3f(v.x, v.y, v.z);
                             GL11.glVertex3f(cur.x, cur.y, cur.z);
                             GL11.glEnd();
@@ -1567,7 +1567,7 @@ public class OpenGLRenderer {
                                 if (v4 != null) {
                                     GL11.glLineWidth(4f);
                                     GL11.glBegin(GL11.GL_LINES);
-                                    GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                    GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
                                     GL11.glVertex3f(v2.x, v2.y, v2.z);
                                     GL11.glVertex3f(cur.x, cur.y, cur.z);
                                     GL11.glVertex3f(v2.x, v2.y, v2.z);
@@ -1578,7 +1578,7 @@ public class OpenGLRenderer {
                                     v2 = dat.getObjVertex2();
                                     GL11.glLineWidth(4f);
                                     GL11.glBegin(GL11.GL_LINES);
-                                    GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                    GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
                                     GL11.glVertex3f(v.x, v.y, v.z);
                                     GL11.glVertex3f(v2.x, v2.y, v2.z);
                                     GL11.glVertex3f(v2.x, v2.y, v2.z);
@@ -1592,7 +1592,7 @@ public class OpenGLRenderer {
                             } else {
                                 GL11.glLineWidth(4f);
                                 GL11.glBegin(GL11.GL_LINES);
-                                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
                                 GL11.glVertex3f(v2.x, v2.y, v2.z);
                                 GL11.glVertex3f(cur.x, cur.y, cur.z);
                                 GL11.glVertex3f(v2.x, v2.y, v2.z);
@@ -1602,7 +1602,7 @@ public class OpenGLRenderer {
                         } else {
                             GL11.glLineWidth(4f);
                             GL11.glBegin(GL11.GL_LINES);
-                            GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                            GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
                             GL11.glVertex3f(v.x, v.y, v.z);
                             GL11.glVertex3f(cur.x, cur.y, cur.z);
                             GL11.glEnd();
@@ -1621,7 +1621,7 @@ public class OpenGLRenderer {
                                 if (v4 != null) {
                                     GL11.glLineWidth(4f);
                                     GL11.glBegin(GL11.GL_LINES);
-                                    GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                    GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
                                     GL11.glVertex3f(cur.x, cur.y, cur.z);
                                     GL11.glVertex3f(v.x, v.y, v.z);
                                     GL11.glEnd();
@@ -1630,7 +1630,7 @@ public class OpenGLRenderer {
                                     v2 = dat.getObjVertex2();
                                     GL11.glLineWidth(4f);
                                     GL11.glBegin(GL11.GL_LINES);
-                                    GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                    GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
                                     GL11.glVertex3f(v.x, v.y, v.z);
                                     GL11.glVertex3f(v2.x, v2.y, v2.z);
                                     GL11.glVertex3f(v2.x, v2.y, v2.z);
@@ -1642,7 +1642,7 @@ public class OpenGLRenderer {
                             } else {
                                 GL11.glLineWidth(4f);
                                 GL11.glBegin(GL11.GL_LINES);
-                                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
                                 GL11.glVertex3f(v2.x, v2.y, v2.z);
                                 GL11.glVertex3f(cur.x, cur.y, cur.z);
                                 GL11.glVertex3f(v2.x, v2.y, v2.z);
@@ -1652,7 +1652,7 @@ public class OpenGLRenderer {
                         } else {
                             GL11.glLineWidth(4f);
                             GL11.glBegin(GL11.GL_LINES);
-                            GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                            GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
                             GL11.glVertex3f(v.x, v.y, v.z);
                             GL11.glVertex3f(cur.x, cur.y, cur.z);
                             GL11.glEnd();
