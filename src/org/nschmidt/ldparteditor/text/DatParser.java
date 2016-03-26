@@ -1082,7 +1082,7 @@ public enum DatParser {
                         Matrix4f.mul(productMatrix, tMatrix, destMatrix);
 
                         result.add(new ParsingResult(new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, TMatrix, lines, absoluteFilename, sb
-                                .toString(), depth, det < 0, destMatrix, DESTMatrix, datFile, parent.firstRef, readOnly, errorCheckOnly, alreadyParsed, parent, lineNumber)));
+                                .toString(), depth, det < 0, destMatrix, DESTMatrix, datFile, parent.firstRef, readOnly, errorCheckOnly, alreadyParsed, parent)));
                         GDataCSG.forceRecompile();
                     }
 
@@ -1141,7 +1141,7 @@ public enum DatParser {
                         Matrix4f.mul(productMatrix, tMatrix, destMatrix);
 
                         result.add(new ParsingResult(new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, TMatrix, lines, absoluteFilename, sb
-                                .toString(), depth, det < 0, destMatrix, DESTMatrix, datFile, parent.firstRef, readOnly, errorCheckOnly, alreadyParsed, parent, lineNumber)));
+                                .toString(), depth, det < 0, destMatrix, DESTMatrix, datFile, parent.firstRef, readOnly, errorCheckOnly, alreadyParsed, parent)));
                     }
 
                     // Avoid scaling of flat files
