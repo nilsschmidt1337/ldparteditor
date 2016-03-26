@@ -69,6 +69,9 @@ class IntersectorDesign extends Dialog {
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
+        Label lbl_description = new Label(cmp_container, SWT.NONE);
+        lbl_description.setText(I18n.INTERSECTOR_Description);
+
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
         cmb_scope.setItems(new String[] {I18n.INTERSECTOR_ScopeFile, I18n.INTERSECTOR_ScopeSelection});
