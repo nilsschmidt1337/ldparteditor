@@ -230,7 +230,6 @@ class VM00Base {
                     Lock lock2 = null;
                     try {
                         lock2 = linkedDatFile.getHistory().getLock();
-                        lock.lock();
                         // "lock2" will be locked, if undo/redo tries to restore the state.
                         // Any attempt to broke the data structure with an old synchronisation state will be
                         // prevented with this lock.
@@ -305,11 +304,6 @@ class VM00Base {
                     } finally {
                         try {
                             if (lock2 != null && tryToUnlockLock2) lock2.unlock();
-                        } catch (Exception e) {
-                            NLogger.error(getClass(), e);
-                        }
-                        try {
-                            lock.unlock();
                         } catch (Exception e) {
                             NLogger.error(getClass(), e);
                         }
