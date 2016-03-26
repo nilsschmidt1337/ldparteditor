@@ -91,6 +91,7 @@ public final class GData1 extends GData {
 
     final GData myGData = new GDataInit(this);
 
+    public final int firstRefLine;
     public final GData1 firstRef;
     public final GData1 parent;
 
@@ -103,6 +104,7 @@ public final class GData1 extends GData {
         this.b = 0;
         this.a = 0;
         this.firstRef = this;
+        this.firstRefLine = -1;
         this.parent = View.DUMMY_REFERENCE;
         this.depth = 0;
         this.matrix = null;
@@ -117,16 +119,18 @@ public final class GData1 extends GData {
     }
 
     public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, Matrix TMatrix, ArrayList<String> lines, String name, String shortName, int depth, boolean det,
-            Matrix4f pMatrix, Matrix PMatrix, DatFile datFile, GData1 firstRef, boolean readOnly, boolean errorCheckOnly, Set<String> alreadyParsed, GData1 parent) {
+            Matrix4f pMatrix, Matrix PMatrix, DatFile datFile, GData1 firstRef, boolean readOnly, boolean errorCheckOnly, Set<String> alreadyParsed, GData1 parent, int lineNumber) {
         this.parent = parent;
         depth++;
         if (depth < 16) {
             if (depth == 1) {
                 this.firstRef = this;
                 this.readOnly = readOnly;
+                this.firstRefLine = lineNumber;
             } else {
                 this.firstRef = firstRef.firstRef;
                 this.readOnly = firstRef.readOnly;
+                this.firstRefLine = firstRef.firstRefLine;
             }
 
             this.depth = depth;
@@ -183,7 +187,7 @@ public final class GData1 extends GData {
                             alreadyParsed.add(gd1.shortName);
                             GData1 newGdata1 = new GData1(gd1.colourNumber, gd1.r, gd1.g, gd1.b, gd1.a, new Matrix4f(gd1.localMatrix), gd1.accurateLocalMatrix,
                                     GData.CACHE_parsedFilesSource.get(gd1.name), gd1.name, gd1.shortName, depth, gd1.negativeDeterminant, Matrix4f.mul(this.productMatrix, gd1.localMatrix, null),
-                                    Matrix.mul(this.accurateProductMatrix, gd1.accurateLocalMatrix), datFile, this.firstRef, false, errorCheckOnly, alreadyParsed, this);
+                                    Matrix.mul(this.accurateProductMatrix, gd1.accurateLocalMatrix), datFile, this.firstRef, false, errorCheckOnly, alreadyParsed, this, firstRefLine);
                             alreadyParsed.remove(gd1.shortName);
                             this.boundingBoxMin.x = Math.min(this.boundingBoxMin.x, newGdata1.boundingBoxMin.x);
                             this.boundingBoxMin.y = Math.min(this.boundingBoxMin.y, newGdata1.boundingBoxMin.y);
@@ -284,6 +288,7 @@ public final class GData1 extends GData {
         } else {
             this.firstRef = firstRef;
             this.readOnly = firstRef.readOnly;
+            this.firstRefLine = firstRef.firstRefLine;
             this.depth = depth;
             this.colourNumber = 0;
             this.r = 0;
@@ -324,6 +329,7 @@ public final class GData1 extends GData {
         this.accurateLocalMatrix = null;
         this.accurateProductMatrix = null;
         this.parent = parent;
+        this.firstRefLine = -1;
         depth++;
         if (depth < 16) {
             if (depth == 1) {
