@@ -1544,45 +1544,6 @@ public class VM01SelectHelper extends VM01Select {
         }
     }
 
-    private GData1 getSubfile(GData g) {
-        GData1 result = View.DUMMY_REFERENCE;
-        int counter = 0;
-        while (counter < 100) {
-            while ((g = g.getBefore()) != null && (g.type() < 1 || g.type() > 5) && g.type() != 7) {
-            }
-            if (g == null) break;
-            GData1 p = View.DUMMY_REFERENCE;
-            switch (g.type()) {
-            case 1:
-                p = ((GData1) g).parent;
-                break;
-            case 2:
-                p = ((GData2) g).parent;
-                break;
-            case 3:
-                p = ((GData3) g).parent;
-                break;
-            case 4:
-                p = ((GData4) g).parent;
-                break;
-            case 5:
-                p = ((GData5) g).parent;
-                break;
-            case 7:
-                p = ((GDataInit) g).getParent();
-                break;
-            }
-            if (View.DUMMY_REFERENCE.equals(p)) {
-                return result;
-            }
-            result = p;
-            g = p;
-            counter++;
-        }
-        NLogger.error(getClass(), "VM01SelectHelper.getSubfile() had too many iterations!"); //$NON-NLS-1$
-        return View.DUMMY_REFERENCE;
-    }
-
     private void removeSubfileFromSelection(GData1 subf) {
         selectedData.remove(subf);
         selectedSubfiles.remove(subf);

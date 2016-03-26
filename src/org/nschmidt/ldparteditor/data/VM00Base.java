@@ -532,17 +532,66 @@ class VM00Base {
             }
             HashSet<GData> dataToHide = new HashSet<GData>();
             for (Iterator<GData> hi = hiddenData.iterator(); hi.hasNext();) {
-                ArrayList<GData> g3 = dict.get(hi.next().toString());
+                final GData oldData = hi.next();
+                ArrayList<GData> g3 = dict.get(oldData.toString());
                 if (g3 != null) {
                     for (GData g : g3) {
-                        dataToHide.add(g);
-                        g.visible = false;
+                        if (isSharingSameSubfileByLineNumberOrMatrix(g, oldData)) {
+                            dataToHide.add(g);
+                            g.visible = false;
+                        }
                     }
                     hi.remove();
                 }
             }
             hiddenData.addAll(dataToHide);
         }
+    }
+
+    private boolean isSharingSameSubfileByLineNumberOrMatrix(GData g1, GData g2) {
+        // FIXME Needs implementation
+        GData1 s1 = getSubfile(g1);
+        GData1 s2 = getSubfile(g2);
+        return true;
+    }
+
+    public GData1 getSubfile(GData g) {
+        GData1 result = View.DUMMY_REFERENCE;
+        int counter = 0;
+        while (counter < 100) {
+            while ((g = g.getBefore()) != null && (g.type() < 1 || g.type() > 5) && g.type() != 7) {
+            }
+            if (g == null) break;
+            GData1 p = View.DUMMY_REFERENCE;
+            switch (g.type()) {
+            case 1:
+                p = ((GData1) g).parent.firstRef;
+                break;
+            case 2:
+                p = ((GData2) g).parent;
+                break;
+            case 3:
+                p = ((GData3) g).parent;
+                break;
+            case 4:
+                p = ((GData4) g).parent;
+                break;
+            case 5:
+                p = ((GData5) g).parent;
+                break;
+            case 7:
+                p = ((GDataInit) g).getParent();
+                break;
+            }
+            if (View.DUMMY_REFERENCE.equals(p)) {
+                return result;
+            }
+            result = p;
+            g = p;
+            counter++;
+        }
+        NLogger.error(getClass(), "VM00Base.getSubfile() had too many iterations!"); //$NON-NLS-1$
+        return View.DUMMY_REFERENCE;
     }
 
     private final void cleanupSelection() {
