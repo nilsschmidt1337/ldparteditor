@@ -536,7 +536,7 @@ class VM00Base {
                 ArrayList<GData> g3 = dict.get(oldData.toString());
                 if (g3 != null) {
                     for (GData g : g3) {
-                        if (isSharingSameSubfileByLineNumberOrMatrix(g, oldData)) {
+                        if (isSharingSameSubfile(g, oldData)) {
                             dataToHide.add(g);
                             g.visible = false;
                         }
@@ -548,14 +548,16 @@ class VM00Base {
         }
     }
 
-    private boolean isSharingSameSubfileByLineNumberOrMatrix(GData g1, GData g2) {
-        // FIXME Needs implementation
+    private boolean isSharingSameSubfile(GData g1, GData g2) {
         GData1 s1 = getSubfile(g1);
         GData1 s2 = getSubfile(g2);
-        /*if (s1.firstRefLine == s2.firstRefLine) {
+        if (s1 == View.DUMMY_REFERENCE && s2 == View.DUMMY_REFERENCE) {
             return true;
-        }*/
-        return false;
+        }
+        if (s1 == View.DUMMY_REFERENCE || s2 == View.DUMMY_REFERENCE) {
+            return false;
+        }
+        return s1.getNiceString().equals(s2.getNiceString());
     }
 
     public GData1 getSubfile(GData g) {
