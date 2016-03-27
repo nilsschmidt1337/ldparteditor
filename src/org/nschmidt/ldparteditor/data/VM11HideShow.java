@@ -15,9 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 class VM11HideShow extends VM10Selector {
+
+    private ArrayList<Boolean> state = new ArrayList<Boolean>();
 
     protected VM11HideShow(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -73,6 +76,50 @@ class VM11HideShow extends VM10Selector {
         }
         hiddenVertices.clear();
         hiddenData.clear();
+    }
+
+    public void backupHideShowState() {
+        if (hiddenData.size() > 0) {
+            state.clear();
+            backup(linkedDatFile.getDrawChainStart(), state);
+        }
+    }
+
+    private void backup(GData g, ArrayList<Boolean> s) {
+        s.add(g.visible);
+        while ((g = g.getNext()) != null) {
+            s.add(g.visible);
+            if (g.type() == 1) {
+                backup(((GData1) g).myGData, s);
+            }
+        }
+    }
+
+    public void restoreHideShowState() {
+        if (state.size() > 0) {
+            restore(linkedDatFile.getDrawChainStart(), state, new int[]{0}, state.size());
+            state.clear();
+        }
+    }
+
+    private void restore(GData g, ArrayList<Boolean> s, int[] c, final int size) {
+        g.visible = s.get(c[0]);
+        if (!g.visible) {
+            hiddenData.add(g);
+        }
+        c[0]++;
+        if (c[0] == size) return;
+        while ((g = g.getNext()) != null) {
+            g.visible = s.get(c[0]);
+            if (!g.visible) {
+                hiddenData.add(g);
+            }
+            c[0]++;
+            if (c[0] == size) return;
+            if (g.type() == 1) {
+                restore(((GData1) g).myGData, s, c, size);
+            }
+        }
     }
 
 }
