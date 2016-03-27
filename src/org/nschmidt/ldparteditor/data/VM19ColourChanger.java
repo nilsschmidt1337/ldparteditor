@@ -34,6 +34,8 @@ class VM19ColourChanger extends VM18LineConverter {
         if (linkedDatFile.isReadOnly())
             return;
 
+        backupHideShowState();
+
         final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
         final HashSet<GData3> effSelectedTriangles = new HashSet<GData3>();
         final HashSet<GData4> effSelectedQuads = new HashSet<GData4>();
@@ -228,6 +230,8 @@ class VM19ColourChanger extends VM18LineConverter {
             syncWithTextEditors(true);
             updateUnsavedStatus();
         }
+
+        restoreHideShowState();
     }
 
     private final synchronized GData changeColour(int index, float r, float g, float b, float a, GData dataToModify) {
