@@ -88,6 +88,8 @@ class VM11HideShow extends VM10Selector {
         return null;
     }
 
+    // FIXME Skip BFC commands during backup and restore !!
+
     private void backup(GData g, HashMap<String, ArrayList<Boolean>> s, int depth, int currentLine) {
         final ArrayList<Boolean> st = new ArrayList<Boolean>();
         int lineNumber = 1;
