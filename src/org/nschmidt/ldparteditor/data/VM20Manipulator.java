@@ -585,11 +585,15 @@ public class VM20Manipulator extends VM19ColourChanger {
             newSelectedData.clear();
             selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
         }
+
+        restoreHideShowState();
     }
 
     public final void setXyzOrTranslateOrTransform(Vertex target, Vertex pivot, TransformationMode tm, boolean x, boolean y, boolean z, boolean moveAdjacentData, boolean syncWithTextEditors) {
         if (linkedDatFile.isReadOnly())
             return;
+
+        backupHideShowState();
 
         Matrix transformation = null;
         Vertex offset = null;

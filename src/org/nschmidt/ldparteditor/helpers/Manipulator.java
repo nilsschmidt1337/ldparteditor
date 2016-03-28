@@ -914,6 +914,7 @@ public class Manipulator {
     }
 
     public void startTranslation(Composite3D c3d) {
+        c3d.getLockableDatFileReference().getVertexManager().backupHideShowState();
         modified = false;
         Matrix4f.setIdentity(result);
         Matrix4f.setIdentity(scale);
@@ -923,6 +924,7 @@ public class Manipulator {
     }
 
     public void startTranslation2(Composite3D c3d) {
+        c3d.getLockableDatFileReference().getVertexManager().backupHideShowState();
         modified = false;
         Matrix4f.setIdentity(result);
         Matrix4f.setIdentity(scale);

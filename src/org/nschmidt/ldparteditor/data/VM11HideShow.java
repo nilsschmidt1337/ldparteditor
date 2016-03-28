@@ -16,11 +16,12 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 class VM11HideShow extends VM10Selector {
 
-    private ArrayList<Boolean> state = new ArrayList<Boolean>();
+    private HashMap<String, ArrayList<Boolean>> state = new HashMap<String, ArrayList<Boolean>>();
 
     protected VM11HideShow(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -78,47 +79,66 @@ class VM11HideShow extends VM10Selector {
         hiddenData.clear();
     }
 
-    public void backupHideShowState() {
+    public HashMap<String, ArrayList<Boolean>> backupHideShowState() {
+        state.clear();
         if (hiddenData.size() > 0) {
-            state.clear();
-            backup(linkedDatFile.getDrawChainStart(), state);
+            backup(linkedDatFile.getDrawChainStart(), state, 0, 0);
+            return state;
         }
+        return null;
     }
 
-    private void backup(GData g, ArrayList<Boolean> s) {
-        s.add(g.visible);
+    private void backup(GData g, HashMap<String, ArrayList<Boolean>> s, int depth, int currentLine) {
+        final ArrayList<Boolean> st = new ArrayList<Boolean>();
+        int lineNumber = 1;
+        ++depth;
+        final String key;
+        if (depth == 1) {
+            key = "TOP"; //$NON-NLS-1$
+        } else {
+            GData1 g1 = ((GDataInit) g).getParent();
+            key = depth + "|" + currentLine + " " + g1.shortName; //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        state.put(key, st);
+        st.add(g.visible);
         while ((g = g.getNext()) != null) {
-            s.add(g.visible);
+            st.add(g.visible);
             if (g.type() == 1) {
-                backup(((GData1) g).myGData, s);
+                backup(((GData1) g).myGData, s, depth, lineNumber);
             }
+            lineNumber++;
         }
     }
 
     public void restoreHideShowState() {
         if (state.size() > 0) {
-            restore(linkedDatFile.getDrawChainStart(), state, new int[]{0}, state.size());
+            restore(linkedDatFile.getDrawChainStart(), state, 0, 0);
             state.clear();
         }
     }
 
-    private void restore(GData g, ArrayList<Boolean> s, int[] c, final int size) {
-        g.visible = s.get(c[0]);
-        if (!g.visible) {
-            hiddenData.add(g);
+    private void restore(GData g, HashMap<String, ArrayList<Boolean>> s, int depth, int currentLine) {
+        int lineNumber = 1;
+        ++depth;
+        final String key;
+        if (depth == 1) {
+            key = "TOP"; //$NON-NLS-1$
+        } else {
+            GData1 g1 = ((GDataInit) g).getParent();
+            key = depth + "|" + currentLine + " " + g1.shortName; //$NON-NLS-1$ //$NON-NLS-2$
         }
-        c[0]++;
-        if (c[0] == size) return;
+        s.putIfAbsent(key, new ArrayList<Boolean>());
+        final ArrayList<Boolean> st = s.get(key);
+        final int size = st.size();
+        g.visible = st.get(0);
+        if (!g.visible) hiddenData.add(g);
         while ((g = g.getNext()) != null) {
-            g.visible = s.get(c[0]);
-            if (!g.visible) {
-                hiddenData.add(g);
-            }
-            c[0]++;
-            if (c[0] == size) return;
+            g.visible = lineNumber >= size ? true : st.get(lineNumber);
+            if (!g.visible) hiddenData.add(g);
             if (g.type() == 1) {
-                restore(((GData1) g).myGData, s, c, size);
+                restore(((GData1) g).myGData, s, depth, lineNumber);
             }
+            lineNumber++;
         }
     }
 
