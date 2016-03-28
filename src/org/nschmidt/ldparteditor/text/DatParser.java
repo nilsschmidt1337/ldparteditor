@@ -997,8 +997,8 @@ public enum DatParser {
             } else {
                 alreadyParsed.add(shortFilename);
             }
-            String shortFilename2 = shortFilename.startsWith("s" + File.separator) ? "S" + shortFilename.substring(1) : shortFilename; //$NON-NLS-1$ //$NON-NLS-2$
-            String shortFilename3 = shortFilename.startsWith("s" + File.separator) ? shortFilename.substring(2) : shortFilename; //$NON-NLS-1$
+            String shortFilename2 = shortFilename.startsWith("S" + File.separator) ? "s" + shortFilename.substring(1) : shortFilename; //$NON-NLS-1$ //$NON-NLS-2$
+            String shortFilename3 = shortFilename.startsWith("S" + File.separator) ? shortFilename.substring(2) : shortFilename; //$NON-NLS-1$
             File fileToOpen = null;
             boolean readOnly = false;
 
