@@ -1300,7 +1300,9 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
+                    Project.getFileToEdit().getVertexManager().backupHideShowState();
                     Project.getFileToEdit().getVertexManager().windingChangeSelection();
+                    Project.getFileToEdit().getVertexManager().restoreHideShowState();
                 }
                 regainFocus();
             }
@@ -1314,8 +1316,10 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (new RoundDialog(getShell()).open() == IDialogConstants.CANCEL_ID) return;
                     }
                     Project.getFileToEdit().getVertexManager().addSnapshot();
+                    Project.getFileToEdit().getVertexManager().backupHideShowState();
                     Project.getFileToEdit().getVertexManager()
                     .roundSelection(WorkbenchManager.getUserSettingState().getCoordsPrecision(), WorkbenchManager.getUserSettingState().getTransMatrixPrecision(), isMovingAdjacentData(), true);
+                    Project.getFileToEdit().getVertexManager().restoreHideShowState();
                 }
                 regainFocus();
             }
@@ -7444,8 +7448,10 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         vm.addSnapshot();
+                        vm.backupHideShowState();
                         Manipulator ma = c3d.getManipulator();
                         vm.transformSubfile(subfile, ma.getAccurateMatrix(), true, true);
+                        vm.restoreHideShowState();
                         break;
                     }
                 }
