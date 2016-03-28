@@ -136,6 +136,7 @@ public class CompositeTab extends CompositeTabDesign {
             DropTarget dt = new DropTarget(compositeText[0], DND.DROP_DEFAULT | DND.DROP_MOVE );
             dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
             dt.addDropListener(new DropTargetAdapter() {
+                @Override
                 public void drop(DropTargetEvent event) {
                     String fileList[] = null;
                     FileTransfer ft = FileTransfer.getInstance();
@@ -997,6 +998,8 @@ public class CompositeTab extends CompositeTabDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
+                    final VertexManager vm = state.getFileNameObj().getVertexManager();
+                    if (!vm.isUpdated()) return;
                     HashSet<TreeItem> items = new HashSet<TreeItem>();
                     for (TreeItem sort : tree_Problems[0].getSelection()) {
                         items.add(sort);
@@ -1045,6 +1048,8 @@ public class CompositeTab extends CompositeTabDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
+                    final VertexManager vm = state.getFileNameObj().getVertexManager();
+                    if (!vm.isUpdated()) return;
                     HashSet<TreeItem> items = new HashSet<TreeItem>();
                     HashSet<String> sorts = new HashSet<String>();
                     for (TreeItem sort : tree_Problems[0].getSelection()) {
