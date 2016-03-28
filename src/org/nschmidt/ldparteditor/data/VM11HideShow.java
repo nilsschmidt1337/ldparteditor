@@ -127,7 +127,9 @@ class VM11HideShow extends VM10Selector {
             GData1 g1 = ((GDataInit) g).getParent();
             key = depth + "|" + currentLine + " " + g1.shortName; //$NON-NLS-1$ //$NON-NLS-2$
         }
-        s.putIfAbsent(key, new ArrayList<Boolean>());
+        ArrayList<Boolean> nl = new ArrayList<Boolean>();
+        nl.add(true);
+        s.putIfAbsent(key, nl);
         final ArrayList<Boolean> st = s.get(key);
         final int size = st.size();
         g.visible = st.get(0);
