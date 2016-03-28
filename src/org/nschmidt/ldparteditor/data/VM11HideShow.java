@@ -104,11 +104,14 @@ class VM11HideShow extends VM10Selector {
         state.put(key, st);
         st.add(g.visible);
         while ((g = g.getNext()) != null) {
-            st.add(g.visible);
-            if (g.type() == 1) {
-                backup(((GData1) g).myGData, s, depth, lineNumber);
+            final int type = g.type();
+            if (type > 0 && type < 6) {
+                st.add(g.visible);
+                if (type == 1) {
+                    backup(((GData1) g).myGData, s, depth, lineNumber);
+                }
+                lineNumber++;
             }
-            lineNumber++;
         }
     }
 
@@ -137,16 +140,19 @@ class VM11HideShow extends VM10Selector {
         g.visible = st.get(0);
         if (!g.visible) hiddenData.add(g);
         while ((g = g.getNext()) != null) {
-            if (lineNumber < size) {
-                g.visible = st.get(lineNumber);
-            } else {
-                g.visible = true;
+            final int type = g.type();
+            if (type > 0 && type < 6) {
+                if (lineNumber < size) {
+                    g.visible = st.get(lineNumber);
+                } else {
+                    g.visible = true;
+                }
+                if (!g.visible) hiddenData.add(g);
+                if (type  == 1) {
+                    restore(((GData1) g).myGData, s, depth, lineNumber);
+                }
+                lineNumber++;
             }
-            if (!g.visible) hiddenData.add(g);
-            if (g.type() == 1) {
-                restore(((GData1) g).myGData, s, depth, lineNumber);
-            }
-            lineNumber++;
         }
     }
 }
