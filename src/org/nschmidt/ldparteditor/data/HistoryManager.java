@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
@@ -65,11 +66,12 @@ public class HistoryManager {
         this.df = df;
     }
 
-    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, boolean[] selectedData, String[] hiddenData, Vertex[] selectedVertices, Vertex[] hiddenVertices, int topIndex) {
+    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, boolean[] selectedData, HashMap<String, ArrayList<Boolean>> hiddenData, Vertex[] selectedVertices, Vertex[] hiddenVertices, int topIndex) {
         if (df.isReadOnly()) return;
         if (hasNoThread) {
             hasNoThread = false;
             new Thread(new Runnable() {
+                @SuppressWarnings("unchecked")
                 @Override
                 public void run() {
 
@@ -85,7 +87,7 @@ public class HistoryManager {
                     final ArrayList<Integer> historyTopIndex = new ArrayList<Integer>();
                     final ArrayList<int[]> historyText = new ArrayList<int[]>();
                     final ArrayList<boolean[]> historySelectedData = new ArrayList<boolean[]>();
-                    final ArrayList<String[]> historyHiddenData = new ArrayList<String[]>();
+                    final ArrayList<HashMap<String, ArrayList<Boolean>>> historyHiddenData = new ArrayList<HashMap<String, ArrayList<Boolean>>>();
                     final ArrayList<Vertex[]> historySelectedVertices = new ArrayList<Vertex[]>();
                     final ArrayList<Vertex[]> historyHiddenVertices = new ArrayList<Vertex[]>();
 
@@ -156,7 +158,7 @@ public class HistoryManager {
                                 historySelectedData.add((boolean[]) newEntry[4]);
                                 historySelectedVertices.add((Vertex[]) newEntry[5]);
                                 historyTopIndex.add((Integer) newEntry[6]);
-                                historyHiddenData.add((String[]) newEntry[7]);
+                                historyHiddenData.add((HashMap<String, ArrayList<Boolean>>) newEntry[7]);
                                 historyHiddenVertices.add((Vertex[]) newEntry[8]);
                                 historyText.add(result);
 
@@ -360,13 +362,10 @@ public class HistoryManager {
                                                     }
                                                 }
 
-                                                String[] hiddenSelection = historyHiddenData.get(pointer2);
+                                                HashMap<String, ArrayList<Boolean>> hiddenSelection = historyHiddenData.get(pointer2);
                                                 if (hiddenSelection != null) {
                                                     vm.hiddenData.clear();
-                                                    for (String s : hiddenSelection) {
-                                                        vm.hiddenData.add(new GData0(s));
-                                                    }
-                                                    vm.cleanupHiddenData();
+                                                    vm.restoreHideShowState(hiddenSelection);
                                                 }
                                                 boolean[] selection = historySelectedData.get(pointer2);
                                                 if (selection != null) {

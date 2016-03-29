@@ -318,7 +318,7 @@ public class VM09WindingChange extends VM08SlicerPro {
             selectedData.addAll(selectedQuads);
             selectedData.addAll(selectedCondlines);
             selectedData.addAll(selectedSubfiles);
-
+            linkedDatFile.getVertexManager().restoreHideShowState();
             syncWithTextEditors(true);
             updateUnsavedStatus();
         }

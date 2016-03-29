@@ -226,12 +226,12 @@ class VM19ColourChanger extends VM18LineConverter {
             selectedData.addAll(selectedQuads);
             selectedData.addAll(selectedCondlines);
             selectedData.addAll(selectedSubfiles);
-
+            restoreHideShowState();
             syncWithTextEditors(true);
             updateUnsavedStatus();
+        } else {
+            restoreHideShowState();
         }
-
-        restoreHideShowState();
     }
 
     private final synchronized GData changeColour(int index, float r, float g, float b, float a, GData dataToModify) {

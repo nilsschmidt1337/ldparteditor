@@ -1302,7 +1302,6 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().backupHideShowState();
                     Project.getFileToEdit().getVertexManager().windingChangeSelection();
-                    Project.getFileToEdit().getVertexManager().restoreHideShowState();
                 }
                 regainFocus();
             }
@@ -1319,7 +1318,6 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().backupHideShowState();
                     Project.getFileToEdit().getVertexManager()
                     .roundSelection(WorkbenchManager.getUserSettingState().getCoordsPrecision(), WorkbenchManager.getUserSettingState().getTransMatrixPrecision(), isMovingAdjacentData(), true);
-                    Project.getFileToEdit().getVertexManager().restoreHideShowState();
                 }
                 regainFocus();
             }
@@ -7451,7 +7449,6 @@ public class Editor3DWindow extends Editor3DDesign {
                         vm.backupHideShowState();
                         Manipulator ma = c3d.getManipulator();
                         vm.transformSubfile(subfile, ma.getAccurateMatrix(), true, true);
-                        vm.restoreHideShowState();
                         break;
                     }
                 }
