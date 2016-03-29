@@ -154,6 +154,39 @@ class VM11HideShow extends VM10Selector {
         }
     }
 
+    public void backupHideShowAndSelectedState(HashMap<String, ArrayList<Boolean>> s1, HashMap<String, ArrayList<Boolean>> s2) {
+        backup3(linkedDatFile.getDrawChainStart(), s1, s2, 0, 0);
+    }
+
+    private void backup3(GData g, HashMap<String, ArrayList<Boolean>> s1, HashMap<String, ArrayList<Boolean>> s2, int depth, int currentLine) {
+        final ArrayList<Boolean> st1 = new ArrayList<Boolean>();
+        final ArrayList<Boolean> st2 = new ArrayList<Boolean>();
+        int lineNumber = 1;
+        ++depth;
+        final String key;
+        if (depth == 1) {
+            key = "TOP"; //$NON-NLS-1$
+        } else {
+            GData1 g1 = ((GDataInit) g).getParent();
+            key = depth + "|" + currentLine + " " + g1.shortName; //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        s1.put(key, st1);
+        s2.put(key, st2);
+        st1.add(g.visible);
+        st2.add(selectedData.contains(g));
+        while ((g = g.getNext()) != null) {
+            final int type = g.type();
+            if (type > 0 && type < 6) {
+                st1.add(g.visible);
+                st2.add(selectedData.contains(g));
+                if (type == 1) {
+                    backup3(((GData1) g).myGData, s1, s2, depth, lineNumber);
+                }
+                lineNumber++;
+            }
+        }
+    }
+
     public void restoreHideShowState() {
         if (state.size() > 0) {
             restore(linkedDatFile.getDrawChainStart(), state, 0, 0);
