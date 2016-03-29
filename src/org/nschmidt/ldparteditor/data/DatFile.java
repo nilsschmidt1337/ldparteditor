@@ -1606,15 +1606,23 @@ public final class DatFile {
         HashMap<String, ArrayList<Boolean>> backupSelectedData = null;
         int count = 0;
         GData data2draw = drawChainAnchor;
-        if (vertices.hiddenData.size() > 0) {
-            backupHiddenData = vertices.backupHideShowState(new HashMap<String, ArrayList<Boolean>>());
-        } else {
+        final boolean isBackupHiddenData = vertices.hiddenData.size() > 0;
+        final boolean isBackupSelectedData = vertices.selectedData.size() > 0;
+        if (isBackupHiddenData && isBackupSelectedData) {
             backupHiddenData = new HashMap<String, ArrayList<Boolean>>();
-        }
-        if (vertices.selectedData.size() > 0) {
-            backupSelectedData = vertices.backupSelectedDataState(new HashMap<String, ArrayList<Boolean>>());
-        } else {
             backupSelectedData = new HashMap<String, ArrayList<Boolean>>();
+            vertices.backupHideShowAndSelectedState(backupHiddenData, backupSelectedData);
+        } else {
+            if (isBackupHiddenData) {
+                backupHiddenData = vertices.backupHideShowState(new HashMap<String, ArrayList<Boolean>>());
+            } else {
+                backupHiddenData = new HashMap<String, ArrayList<Boolean>>();
+            }
+            if (isBackupSelectedData) {
+                backupSelectedData = vertices.backupSelectedDataState(new HashMap<String, ArrayList<Boolean>>());
+            } else {
+                backupSelectedData = new HashMap<String, ArrayList<Boolean>>();
+            }
         }
         while (count < objCount) {
             data2draw = data2draw.getNext();
