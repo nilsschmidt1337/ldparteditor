@@ -1602,20 +1602,23 @@ public final class DatFile {
         final long start = System.currentTimeMillis();
         final int objCount = drawPerLine.size();
         GData[] backup = new GData[objCount];
-        boolean[] backupSelection = new boolean[objCount];
         HashMap<String, ArrayList<Boolean>> backupHiddenData = null;
+        HashMap<String, ArrayList<Boolean>> backupSelectedData = null;
         int count = 0;
         GData data2draw = drawChainAnchor;
-        Set<GData> sd = vertices.getSelectedData();
         if (vertices.hiddenData.size() > 0) {
             backupHiddenData = vertices.backupHideShowState(new HashMap<String, ArrayList<Boolean>>());
         } else {
             backupHiddenData = new HashMap<String, ArrayList<Boolean>>();
         }
+        if (vertices.selectedData.size() > 0) {
+            backupSelectedData = vertices.backupSelectedDataState(new HashMap<String, ArrayList<Boolean>>());
+        } else {
+            backupSelectedData = new HashMap<String, ArrayList<Boolean>>();
+        }
         while (count < objCount) {
             data2draw = data2draw.getNext();
             backup[count] = data2draw;
-            backupSelection[count] = sd.contains(data2draw);
             count++;
         }
 
@@ -1626,7 +1629,7 @@ public final class DatFile {
                 -1,
                 -1,
                 backup,
-                backupSelection,
+                backupSelectedData,
                 backupHiddenData,
                 backupSelectedVertices,
                 backupHiddenVertices,

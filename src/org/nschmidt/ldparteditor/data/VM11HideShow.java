@@ -96,8 +96,6 @@ class VM11HideShow extends VM10Selector {
         return new HashMap<String, ArrayList<Boolean>>();
     }
 
-    // FIXME Skip BFC commands during backup and restore !!
-
     private void backup(GData g, HashMap<String, ArrayList<Boolean>> s, int depth, int currentLine) {
         final ArrayList<Boolean> st = new ArrayList<Boolean>();
         int lineNumber = 1;
@@ -117,6 +115,39 @@ class VM11HideShow extends VM10Selector {
                 st.add(g.visible);
                 if (type == 1) {
                     backup(((GData1) g).myGData, s, depth, lineNumber);
+                }
+                lineNumber++;
+            }
+        }
+    }
+
+    public HashMap<String, ArrayList<Boolean>> backupSelectedDataState(HashMap<String, ArrayList<Boolean>> s) {
+        if (selectedData.size() > 0) {
+            backup2(linkedDatFile.getDrawChainStart(), s, 0, 0);
+            return s;
+        }
+        return new HashMap<String, ArrayList<Boolean>>();
+    }
+
+    private void backup2(GData g, HashMap<String, ArrayList<Boolean>> s, int depth, int currentLine) {
+        final ArrayList<Boolean> st = new ArrayList<Boolean>();
+        int lineNumber = 1;
+        ++depth;
+        final String key;
+        if (depth == 1) {
+            key = "TOP"; //$NON-NLS-1$
+        } else {
+            GData1 g1 = ((GDataInit) g).getParent();
+            key = depth + "|" + currentLine + " " + g1.shortName; //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        s.put(key, st);
+        st.add(selectedData.contains(g));
+        while ((g = g.getNext()) != null) {
+            final int type = g.type();
+            if (type > 0 && type < 6) {
+                st.add(selectedData.contains(g));
+                if (type == 1) {
+                    backup2(((GData1) g).myGData, s, depth, lineNumber);
                 }
                 lineNumber++;
             }
@@ -164,6 +195,84 @@ class VM11HideShow extends VM10Selector {
                 if (!g.visible) hiddenData.add(g);
                 if (type  == 1) {
                     restore(((GData1) g).myGData, s, depth, lineNumber);
+                }
+                lineNumber++;
+            }
+        }
+    }
+
+    public void restoreSelectedDataState(HashMap<String, ArrayList<Boolean>> s) {
+        if (s.size() > 0) {
+            restore2(linkedDatFile.getDrawChainStart(), s, 0, 0);
+        }
+    }
+
+    private void restore2(GData g, HashMap<String, ArrayList<Boolean>> s, int depth, int currentLine) {
+        int lineNumber = 1;
+        ++depth;
+        final String key;
+        if (depth == 1) {
+            key = "TOP"; //$NON-NLS-1$
+        } else {
+            GData1 g1 = ((GDataInit) g).getParent();
+            key = depth + "|" + currentLine + " " + g1.shortName; //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        ArrayList<Boolean> nl = new ArrayList<Boolean>();
+        nl.add(true);
+        s.putIfAbsent(key, nl);
+        final ArrayList<Boolean> st = s.get(key);
+        final int size = st.size();
+        if (st.get(0)) {
+            selectedData.add(g);
+            switch (g.type()) {
+            case 1:
+                selectedSubfiles.add((GData1) g);
+                break;
+            case 2:
+                selectedLines.add((GData2) g);
+                break;
+            case 3:
+                selectedTriangles.add((GData3) g);
+                break;
+            case 4:
+                selectedQuads.add((GData4) g);
+                break;
+            case 5:
+                selectedCondlines.add((GData5) g);
+                break;
+            default:
+                break;
+            }
+        }
+        while ((g = g.getNext()) != null) {
+            final int type = g.type();
+            if (type > 0 && type < 6) {
+                if (lineNumber < size) {
+                    if (st.get(lineNumber)) {
+                        selectedData.add(g);
+                        switch (type) {
+                        case 1:
+                            selectedSubfiles.add((GData1) g);
+                            break;
+                        case 2:
+                            selectedLines.add((GData2) g);
+                            break;
+                        case 3:
+                            selectedTriangles.add((GData3) g);
+                            break;
+                        case 4:
+                            selectedQuads.add((GData4) g);
+                            break;
+                        case 5:
+                            selectedCondlines.add((GData5) g);
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }
+                if (type  == 1) {
+                    restore2(((GData1) g).myGData, s, depth, lineNumber);
                 }
                 lineNumber++;
             }
