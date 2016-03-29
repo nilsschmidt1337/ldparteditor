@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
@@ -39,7 +38,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
-import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -66,7 +64,7 @@ public class HistoryManager {
         this.df = df;
     }
 
-    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, boolean[] selectedData, HashMap<String, ArrayList<Boolean>> hiddenData, Vertex[] selectedVertices, Vertex[] hiddenVertices, int topIndex) {
+    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, HashMap<String, ArrayList<Boolean>> selectedData, HashMap<String, ArrayList<Boolean>> hiddenData, Vertex[] selectedVertices, Vertex[] hiddenVertices, int topIndex) {
         if (df.isReadOnly()) return;
         if (hasNoThread) {
             hasNoThread = false;
@@ -86,7 +84,7 @@ public class HistoryManager {
                     final ArrayList<Integer> historySelectionEnd = new ArrayList<Integer>();
                     final ArrayList<Integer> historyTopIndex = new ArrayList<Integer>();
                     final ArrayList<int[]> historyText = new ArrayList<int[]>();
-                    final ArrayList<boolean[]> historySelectedData = new ArrayList<boolean[]>();
+                    final ArrayList<HashMap<String, ArrayList<Boolean>>> historySelectedData = new ArrayList<HashMap<String, ArrayList<Boolean>>>();
                     final ArrayList<HashMap<String, ArrayList<Boolean>>> historyHiddenData = new ArrayList<HashMap<String, ArrayList<Boolean>>>();
                     final ArrayList<Vertex[]> historySelectedVertices = new ArrayList<Vertex[]>();
                     final ArrayList<Vertex[]> historyHiddenVertices = new ArrayList<Vertex[]>();
@@ -155,7 +153,7 @@ public class HistoryManager {
 
                                 historySelectionStart.add((Integer) newEntry[1]);
                                 historySelectionEnd.add((Integer) newEntry[2]);
-                                historySelectedData.add((boolean[]) newEntry[4]);
+                                historySelectedData.add((HashMap<String, ArrayList<Boolean>>) newEntry[4]);
                                 historySelectedVertices.add((Vertex[]) newEntry[5]);
                                 historyTopIndex.add((Integer) newEntry[6]);
                                 historyHiddenData.add((HashMap<String, ArrayList<Boolean>>) newEntry[7]);
@@ -367,37 +365,9 @@ public class HistoryManager {
                                                     vm.hiddenData.clear();
                                                     vm.restoreHideShowState(hiddenSelection);
                                                 }
-                                                boolean[] selection = historySelectedData.get(pointer2);
+                                                HashMap<String, ArrayList<Boolean>> selection = historySelectedData.get(pointer2);
                                                 if (selection != null) {
-                                                    int i = 0;
-                                                    final HashBiMap<Integer, GData> map = df.getDrawPerLine_NOCLONE();
-                                                    TreeSet<Integer> ts = new TreeSet<Integer>(map.keySet());
-                                                    for (Integer key : ts) {
-                                                        if (selection[i]) {
-                                                            GData gd = map.getValue(key);
-                                                            vm.getSelectedData().add(gd);
-                                                            switch (gd.type()) {
-                                                            case 1:
-                                                                vm.getSelectedSubfiles().add((GData1) gd);
-                                                                break;
-                                                            case 2:
-                                                                vm.getSelectedLines().add((GData2) gd);
-                                                                break;
-                                                            case 3:
-                                                                vm.getSelectedTriangles().add((GData3) gd);
-                                                                break;
-                                                            case 4:
-                                                                vm.getSelectedQuads().add((GData4) gd);
-                                                                break;
-                                                            case 5:
-                                                                vm.getSelectedCondlines().add((GData5) gd);
-                                                                break;
-                                                            default:
-                                                                break;
-                                                            }
-                                                        }
-                                                        i++;
-                                                    }
+                                                    vm.restoreSelectedDataState(selection);
                                                     ThreadsafeHashMap<GData, Set<VertexInfo>> llv = vm.getLineLinkedToVertices();
                                                     for (GData1 g1 : vm.getSelectedSubfiles()) {
                                                         final Set<VertexInfo> vis = llv.get(g1);
