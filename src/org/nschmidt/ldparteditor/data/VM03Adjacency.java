@@ -822,7 +822,10 @@ class VM03Adjacency extends VM02Add {
                 selectedData.addAll(selectedCondlines);
                 selectedData.addAll(selectedSubfiles);
 
-                if (syncWithTextEditors) syncWithTextEditors(true);
+                if (syncWithTextEditors){
+                    linkedDatFile.getVertexManager().restoreHideShowState();
+                    syncWithTextEditors(true);
+                }
                 updateUnsavedStatus();
             }
 

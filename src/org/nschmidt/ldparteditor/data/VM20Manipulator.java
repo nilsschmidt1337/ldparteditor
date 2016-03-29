@@ -577,7 +577,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                 selectedData.addAll(selectedQuads);
                 selectedData.addAll(selectedCondlines);
                 selectedData.addAll(selectedSubfiles);
-
+                restoreHideShowState();
                 syncWithTextEditors(true);
                 updateUnsavedStatus();
 
@@ -585,8 +585,6 @@ public class VM20Manipulator extends VM19ColourChanger {
             newSelectedData.clear();
             selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
         }
-
-        restoreHideShowState();
     }
 
     public final void setXyzOrTranslateOrTransform(Vertex target, Vertex pivot, TransformationMode tm, boolean x, boolean y, boolean z, boolean moveAdjacentData, boolean syncWithTextEditors) {
@@ -767,6 +765,7 @@ public class VM20Manipulator extends VM19ColourChanger {
         selectedSubfiles.add(reloadedSubfile);
         selectWholeSubfiles();
         if (syncWithTextEditor) {
+            restoreHideShowState();
             setModified(true, true);
         } else {
             setModified_NoSync();

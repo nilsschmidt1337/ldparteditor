@@ -85,7 +85,15 @@ class VM11HideShow extends VM10Selector {
             backup(linkedDatFile.getDrawChainStart(), state, 0, 0);
             return state;
         }
-        return null;
+        return new HashMap<String, ArrayList<Boolean>>();
+    }
+
+    public HashMap<String, ArrayList<Boolean>> backupHideShowState(HashMap<String, ArrayList<Boolean>> s) {
+        if (hiddenData.size() > 0) {
+            backup(linkedDatFile.getDrawChainStart(), s, 0, 0);
+            return s;
+        }
+        return new HashMap<String, ArrayList<Boolean>>();
     }
 
     // FIXME Skip BFC commands during backup and restore !!
@@ -101,7 +109,7 @@ class VM11HideShow extends VM10Selector {
             GData1 g1 = ((GDataInit) g).getParent();
             key = depth + "|" + currentLine + " " + g1.shortName; //$NON-NLS-1$ //$NON-NLS-2$
         }
-        state.put(key, st);
+        s.put(key, st);
         st.add(g.visible);
         while ((g = g.getNext()) != null) {
             final int type = g.type();
@@ -120,6 +128,12 @@ class VM11HideShow extends VM10Selector {
             restore(linkedDatFile.getDrawChainStart(), state, 0, 0);
             state.clear();
         }
+    }
+
+    public void restoreHideShowState(HashMap<String, ArrayList<Boolean>> s) {
+        state.clear();
+        state.putAll(s);
+        restoreHideShowState();
     }
 
     private void restore(GData g, HashMap<String, ArrayList<Boolean>> s, int depth, int currentLine) {
