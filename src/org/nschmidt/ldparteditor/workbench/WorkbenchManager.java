@@ -91,9 +91,7 @@ public enum WorkbenchManager {
                 Manipulator.setSnap(WorkbenchManager.userSettingState.getMedium_move_snap(), WorkbenchManager.userSettingState.getMedium_rotate_snap(),
                         WorkbenchManager.userSettingState.getMedium_scale_snap());
                 try {
-                    if (!"x86".equals(System.getProperty("os.arch"))) { //$NON-NLS-1$ //$NON-NLS-2$
-                        WorkbenchManager.primitiveCache = (PrimitiveCache) configFileStream.readObject();
-                    }
+                    WorkbenchManager.primitiveCache = (PrimitiveCache) configFileStream.readObject();
                 } catch (Exception e) {
                     NLogger.error(WorkbenchManager.class, e);
                 }
@@ -146,9 +144,7 @@ public enum WorkbenchManager {
             if (WorkbenchManager.userSettingState != null) WorkbenchManager.userSettingState.saveShortkeys();
             configFileStream.writeObject(WorkbenchManager.userSettingState);
             try {
-                if (!"x86".equals(System.getProperty("os.arch"))) { //$NON-NLS-1$ //$NON-NLS-2$
-                    configFileStream.writeObject(WorkbenchManager.primitiveCache);
-                }
+                configFileStream.writeObject(WorkbenchManager.primitiveCache);
             } catch (Exception e) {
                 NLogger.error(WorkbenchManager.class, e);
             }
