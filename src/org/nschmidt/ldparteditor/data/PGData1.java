@@ -37,17 +37,17 @@ public final class PGData1 extends PGData implements Serializable {
 
     final transient FloatBuffer matrix;
     final transient FloatBuffer matrix2;
-    final Matrix4f productMatrix;
-    final Matrix4f localMatrix;
+    final transient Matrix4f productMatrix;
+    final transient Matrix4f localMatrix;
 
-    final String name;
-    final String shortName;
+    final transient String name;
+    final transient String shortName;
 
-    final boolean negativeDeterminant;
+    final transient boolean negativeDeterminant;
 
-    final PGData myGData = new PGDataInit();
+    final transient PGData myGData = new PGDataInit();
 
-    final int depth;
+    final transient int depth;
 
     /**
      * SLOWER, FOR PRIMITIVE CHOOSER ONLY, uses no cache, uses no bounding box!

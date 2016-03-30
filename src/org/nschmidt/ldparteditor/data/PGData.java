@@ -28,8 +28,8 @@ public abstract class PGData implements IPGData, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private PGData next;
-    private PGData before;
+    private transient PGData next;
+    private transient PGData before;
 
     static byte localWinding = BFC.NOCERTIFY;
     static int accumClip = 0;
