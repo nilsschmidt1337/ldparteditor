@@ -26,7 +26,7 @@ public final class PGDataProxy extends PGData implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private PGData data;
+    private transient PGData data;
     private transient boolean initialised = false;
 
     public PGDataProxy(PGData proxy) {
