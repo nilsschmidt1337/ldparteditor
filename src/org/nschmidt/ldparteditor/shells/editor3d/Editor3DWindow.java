@@ -6715,20 +6715,6 @@ public class Editor3DWindow extends Editor3DDesign {
         FileDialog fd = new FileDialog(sh, SWT.OPEN);
         fd.setText(I18n.E3D_OpenDatFile);
 
-        /*
-        if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
-            try {
-                String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
-                decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
-                fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
-            } catch (Exception consumed) {
-                fd.setFilterPath(Project.getProjectPath());
-            }
-        } else {
-            fd.setFilterPath(Project.getProjectPath());
-        }
-         */
         fd.setFilterPath(Project.getLastVisitedPath());
 
         String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
