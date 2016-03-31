@@ -5546,7 +5546,8 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         }
 
-        if (unsavedProjectFiles && Project.isDefaultProject()) {
+        final boolean ENABLE_DEFAULT_PROJECT_SAVE = !((Math.random() + 1) > 0);
+        if (unsavedProjectFiles && Project.isDefaultProject() && ENABLE_DEFAULT_PROJECT_SAVE) {
             // Save new project here, if the project contains at least one non-empty file
             boolean cancelIt = false;
             boolean secondRun = false;
