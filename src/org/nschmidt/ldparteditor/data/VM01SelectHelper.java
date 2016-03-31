@@ -1273,10 +1273,10 @@ public class VM01SelectHelper extends VM01Select {
         Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         selectedVerticesTemp.addAll(selectedVertices);
         selectedVertices.clear();
-        selectVertices(c3d, false);
         boolean allVertsFromLine = false;
         Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
         Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
+        selectVertices(c3d, false);
         boolean needRayTest = false;
         if (Math.abs(selectionWidth.x) < 0.001f && Math.abs(selectionWidth.y) < 0.001f && Math.abs(selectionWidth.z) < 0.001f)
             needRayTest = true;
@@ -1395,10 +1395,10 @@ public class VM01SelectHelper extends VM01Select {
         Set<Vertex> selVert4sTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         selVert4sTemp.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
-        selectVertices2(c3d);
-        boolean allVertsFromLine = false;
         Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
         Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
+        selectVertices2(c3d);
+        boolean allVertsFromLine = false;
         boolean needRayTest = false;
         if (Math.abs(selectionWidth.x) < 0.001f && Math.abs(selectionWidth.y) < 0.001f && Math.abs(selectionWidth.z) < 0.001f)
             needRayTest = true;
