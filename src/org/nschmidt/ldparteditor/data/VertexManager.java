@@ -141,11 +141,11 @@ public final class VertexManager extends VM99Clipboard {
             GL11.glLineWidth(2f);
             if (c3d.isShowingVertices()) {
                 GL11.glBegin(GL11.GL_POINTS);
+                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                 for (Vertex vertex : selectedVertices) {
-                    GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                     GL11.glVertex3f(vertex.x, vertex.y, vertex.z);
-                    GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
                 }
+                GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
                 GL11.glEnd();
             }
 
@@ -414,13 +414,13 @@ public final class VertexManager extends VM99Clipboard {
             }
         } else if (c3d.isShowingVertices()) {
             GL11.glBegin(GL11.GL_POINTS);
+            GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
             for (Vertex vertex : selectedVertices) {
                 if (hiddenVertices.contains(vertex))
                     continue;
-                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                 GL11.glVertex3f(vertex.x, vertex.y, vertex.z);
-                GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
             }
+            GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
             GL11.glEnd();
         }
 
