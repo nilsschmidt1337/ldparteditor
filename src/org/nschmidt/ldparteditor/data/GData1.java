@@ -2548,11 +2548,11 @@ public final class GData1 extends GData {
         GData data2draw = myGData;
         if (GData.accumClip > 0) {
             GData.accumClip++;
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+            while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                 data2draw.getBFCorientationMapNOCERTIFY(map);
             GData.accumClip--;
         } else {
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+            while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                 data2draw.getBFCorientationMapNOCERTIFY(map);
             if (GData.accumClip > 0)
                 GData.accumClip = 0;
@@ -2599,11 +2599,11 @@ public final class GData1 extends GData {
                 GData data2draw = myGData;
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                         data2draw.getVertexNormalMapNOCLIP(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
                     GData.accumClip--;
                 } else {
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (GData.localWinding) {
                         case BFC.NOCERTIFY:
                             data2draw.getVertexNormalMapNOCERTIFY(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
@@ -2645,11 +2645,11 @@ public final class GData1 extends GData {
         GData data2draw = myGData;
         if (GData.accumClip > 0) {
             GData.accumClip++;
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+            while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                 data2draw.getVertexNormalMapNOCERTIFY(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
             GData.accumClip--;
         } else {
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+            while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                 data2draw.getVertexNormalMapNOCERTIFY(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
             if (GData.accumClip > 0)
                 GData.accumClip = 0;
@@ -2664,11 +2664,11 @@ public final class GData1 extends GData {
         GData data2draw = myGData;
         if (GData.accumClip > 0) {
             GData.accumClip++;
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+            while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                 data2draw.getVertexNormalMapNOCLIP(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
             GData.accumClip--;
         } else {
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+            while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                 data2draw.getVertexNormalMapNOCLIP(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
             if (GData.accumClip > 0)
                 GData.accumClip = 0;
