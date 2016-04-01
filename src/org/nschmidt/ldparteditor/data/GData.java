@@ -39,8 +39,8 @@ public abstract class GData implements IGData {
         return getNiceString();
     }
 
-    private GData next;
-    private GData before;
+    protected GData next;
+    protected GData before;
 
     protected boolean visible = true;
 

@@ -275,7 +275,7 @@ public final class GData1 extends GData {
                 }
             }
 
-            GData description = myGData.getNext();
+            GData description = myGData.next;
             if (description != null && description.type() == 0) {
                 if (((GData0) description).text.trim().startsWith("0 ~Moved to")) { //$NON-NLS-1$
                     this.firstRef.setMovedTo(true);
@@ -476,11 +476,11 @@ public final class GData1 extends GData {
                 GData data2draw = myGData;
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                         data2draw.draw(c3d);
                     GData.accumClip--;
                 } else {
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                         data2draw.draw(c3d);
                     if (GData.accumClip > 0)
                         GData.accumClip = 0;
@@ -561,11 +561,11 @@ public final class GData1 extends GData {
                 GData data2draw = myGData;
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                         data2draw.drawRandomColours(c3d);
                     GData.accumClip--;
                 } else {
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                         data2draw.drawRandomColours(c3d);
                     if (GData.accumClip > 0)
                         GData.accumClip = 0;
@@ -690,11 +690,11 @@ public final class GData1 extends GData {
 
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                         data2draw.draw(c3d);
                     GData.accumClip--;
                 } else {
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (tempWinding) {
                         case BFC.NOCERTIFY:
                             data2draw.drawBFCuncertified(c3d);
@@ -790,11 +790,11 @@ public final class GData1 extends GData {
                 GData data2draw = myGData;
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                         data2draw.drawBFCuncertified(c3d);
                     GData.accumClip--;
                 } else {
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                         data2draw.drawBFCuncertified(c3d);
                     if (GData.accumClip > 0)
                         GData.accumClip = 0;
@@ -886,11 +886,11 @@ public final class GData1 extends GData {
 
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                         data2draw.draw(c3d);
                     GData.accumClip--;
                 } else {
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (tempWinding) {
                         case BFC.NOCERTIFY:
                             data2draw.drawBFCuncertified(c3d);
@@ -989,11 +989,11 @@ public final class GData1 extends GData {
 
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                         data2draw.draw(c3d);
                     GData.accumClip--;
                 } else {
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (tempWinding) {
                         case BFC.NOCERTIFY:
                             data2draw.drawBFCuncertified(c3d);
@@ -1086,11 +1086,11 @@ public final class GData1 extends GData {
 
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                         data2draw.drawBFC_Textured(c3d);
                     GData.accumClip--;
                 } else {
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         data2draw.drawBFC_Textured(c3d);
                     }
                     if (GData.accumClip > 0)
@@ -1194,7 +1194,7 @@ public final class GData1 extends GData {
 
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (data2draw.type()) {
                         case 1:
                         case 5:
@@ -1206,7 +1206,7 @@ public final class GData1 extends GData {
                     }
                     GData.accumClip--;
                 } else {
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (tempWinding) {
                         case BFC.NOCERTIFY:
                             switch (data2draw.type()) {
@@ -1629,7 +1629,7 @@ public final class GData1 extends GData {
 
         ArrayList<GData> dataToInline = new ArrayList<GData>();
         GData data2draw = myGData;
-        while ((data2draw = data2draw.getNext()) != null) {
+        while ((data2draw = data2draw.next) != null) {
             dataToInline.add(data2draw);
         }
 
@@ -2516,11 +2516,11 @@ public final class GData1 extends GData {
                 GData data2draw = myGData;
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                         data2draw.getBFCorientationMapNOCLIP(map);
                     GData.accumClip--;
                 } else {
-                    while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (GData.localWinding) {
                         case BFC.NOCERTIFY:
                             data2draw.getBFCorientationMapNOCERTIFY(map);
@@ -2567,11 +2567,11 @@ public final class GData1 extends GData {
         GData data2draw = myGData;
         if (GData.accumClip > 0) {
             GData.accumClip++;
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+            while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                 data2draw.getBFCorientationMapNOCLIP(map);
             GData.accumClip--;
         } else {
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+            while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
                 data2draw.getBFCorientationMapNOCLIP(map);
             if (GData.accumClip > 0)
                 GData.accumClip = 0;
@@ -2677,12 +2677,12 @@ public final class GData1 extends GData {
     }
 
     private String getSolvedMoveTo(GColour col, int depth) {
-        GData description = myGData.getNext();
+        GData description = myGData.next;
         if (description.type() == 0) {
             if (((GData0) description).text.trim().startsWith("0 ~Moved to")) { //$NON-NLS-1$
                 GData data2draw = myGData;
                 GData1 nextReference = null;
-                while ((data2draw = data2draw.getNext()) != null) {
+                while ((data2draw = data2draw.next) != null) {
                     if (data2draw.type() == 1) {
                         nextReference = (GData1) data2draw;
                         break;
