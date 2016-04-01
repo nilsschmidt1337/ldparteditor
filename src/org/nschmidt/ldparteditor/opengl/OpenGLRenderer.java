@@ -2018,7 +2018,7 @@ public class OpenGLRenderer {
         GL20.glCompileShader(shaderID);
 
         if (GL20.glGetShader(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-            NLogger.error(OpenGLRenderer.class, new Exception("Could not compile shader.")); //$NON-NLS-1$;
+            NLogger.error(OpenGLRenderer.class, new Exception("Could not compile fragment shader.")); //$NON-NLS-1$;
             return -1;
         }
 
@@ -2046,7 +2046,7 @@ public class OpenGLRenderer {
         GL20.glCompileShader(shaderID);
 
         if (GL20.glGetShader(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-            NLogger.error(OpenGLRenderer.class, new Exception("Could not compile shader.")); //$NON-NLS-1$;
+            NLogger.error(OpenGLRenderer.class, new Exception("Could not compile vertex shader.")); //$NON-NLS-1$;
             return -1;
         }
 
