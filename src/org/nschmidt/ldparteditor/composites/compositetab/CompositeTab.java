@@ -1030,7 +1030,7 @@ public class CompositeTab extends CompositeTabDesign {
                     }
 
                     for (TreeItem issue : items) {
-                        if (issue.getData() != null) {
+                        if (issue != null && issue.getData() != null) {
                             NLogger.debug(getClass(), "+Fix {0}", issue.getText(1)); //$NON-NLS-1$
                         }
                     }
@@ -1053,6 +1053,7 @@ public class CompositeTab extends CompositeTabDesign {
                     HashSet<TreeItem> items = new HashSet<TreeItem>();
                     HashSet<String> sorts = new HashSet<String>();
                     for (TreeItem sort : tree_Problems[0].getSelection()) {
+                        if (sort == null) continue;
                         if (sort.equals(treeItem_Hints[0])) {
                             items.add(treeItem_Hints[0]);
                         } else if (sort.equals(treeItem_Errors[0])) {

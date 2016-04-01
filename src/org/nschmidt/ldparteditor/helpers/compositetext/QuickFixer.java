@@ -48,7 +48,7 @@ public enum QuickFixer {
      */
     public static void fixTextIssues(StyledText cText, HashSet<TreeItem> issues, DatFile datFile) {
 
-        if (datFile.isReadOnly())
+        if (datFile.isReadOnly() || issues.isEmpty())
             return;
 
         ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
@@ -57,7 +57,7 @@ public enum QuickFixer {
         {
             HashSet<Integer> numbers = new HashSet<Integer>();
             for (TreeItem t : issues) {
-                if (t.getText(0).isEmpty())
+                if (t == null || t.getText(0).isEmpty())
                     continue;
                 int offset = (Integer) t.getData();
                 Integer i = offset > -1 ? cText.getLineAtOffset(offset) : offset * -1;
@@ -69,6 +69,8 @@ public enum QuickFixer {
                 issuesInLine.get(i).add(t);
             }
         }
+
+        if (lineNumbers.isEmpty()) return;
 
         Collections.sort(lineNumbers);
         Collections.reverse(lineNumbers);
