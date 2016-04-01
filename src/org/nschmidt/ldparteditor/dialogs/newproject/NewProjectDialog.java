@@ -36,7 +36,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public class NewProjectDialog extends NewProjectDesign {
 
     private String projectName = ""; //$NON-NLS-1$
-    private String projectPath = new File(Project.getProjectPath()).getParent();
+    private String projectPath = WorkbenchManager.getUserSettingState().getAuthoringFolderPath();
 
     /**
      * Create the dialog.
