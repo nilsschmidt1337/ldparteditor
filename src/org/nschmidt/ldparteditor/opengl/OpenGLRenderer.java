@@ -390,7 +390,6 @@ public class OpenGLRenderer {
                 // NLogger.debug(getClass(), arr[(int) (w * 50.5f * 4)] + " " + arr[(int) (w * 50.5f * 4 + 1)] + " " + arr[(int) (w * 50.5f * 4 + 2)] + " " + arr[(int) (w * 50.5f * 4 + 3)]);  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
             }
 
-
             if (window.getCompositePrimitive().isDoingDND()) {
                 final Primitive p = c3d.getDraggedPrimitive();
                 if (p != null) {

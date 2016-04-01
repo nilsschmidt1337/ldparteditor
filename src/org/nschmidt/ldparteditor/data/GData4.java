@@ -330,9 +330,9 @@ public final class GData4 extends GData {
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glColor4f(r, g, b, a);
         if (GData.globalNegativeDeterminant) {
-            GL11.glColor4f(r, g, b, a);
-            GL11.glBegin(GL11.GL_QUADS);
             GL11.glNormal3f(xn, yn, zn);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x4, y4, z4);
@@ -343,10 +343,7 @@ public final class GData4 extends GData {
             GL11.glVertex3f(x2, y2, z2);
             GL11.glVertex3f(x3, y3, z3);
             GL11.glVertex3f(x4, y4, z4);
-            GL11.glEnd();
         } else {
-            GL11.glColor4f(r, g, b, a);
-            GL11.glBegin(GL11.GL_QUADS);
             GL11.glNormal3f(-xn, -yn, -zn);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x4, y4, z4);
@@ -357,8 +354,8 @@ public final class GData4 extends GData {
             GL11.glVertex3f(x2, y2, z2);
             GL11.glVertex3f(x3, y3, z3);
             GL11.glVertex3f(x4, y4, z4);
-            GL11.glEnd();
         }
+        GL11.glEnd();
     }
 
     @Override

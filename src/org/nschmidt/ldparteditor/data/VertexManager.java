@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.math.BigDecimal;
 import java.nio.FloatBuffer;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -63,14 +64,14 @@ public final class VertexManager extends VM99Clipboard {
 
         if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6) {
             if (!hiddenVertices.isEmpty()) {
-                for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
-                    if (!hiddenVertices.contains(vertex))
-                        continue;
-                    Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(vertex);
+                boolean pureControlPoint;
+                for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
+                    final Vertex vertex = entry.getKey();
+                    Set<VertexManifestation> manis = entry.getValue();
                     if (manis != null) {
-                        boolean pureControlPoint = true;
+                        pureControlPoint = true;
                         for (VertexManifestation m : manis) {
-                            if (m.getGdata().type() != 5 || m.getPosition() < 2) {
+                            if (m.getPosition() < 2 || m.getGdata().type() != 5) {
                                 pureControlPoint = false;
                                 break;
                             }
@@ -82,14 +83,14 @@ public final class VertexManager extends VM99Clipboard {
                 }
             }
         } else {
-            for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
-                if (hiddenVertices.contains(vertex))
-                    continue;
-                Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(vertex);
+            boolean pureControlPoint;
+            for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
+                final Vertex vertex = entry.getKey();
+                Set<VertexManifestation> manis = entry.getValue();
                 if (manis != null) {
-                    boolean pureControlPoint = true;
+                    pureControlPoint = true;
                     for (VertexManifestation m : manis) {
-                        if (m.getGdata().type() != 5 || m.getPosition() < 2) {
+                        if (m.getPosition() < 2  || m.getGdata().type() != 5) {
                             pureControlPoint = false;
                             break;
                         }
@@ -131,7 +132,6 @@ public final class VertexManager extends VM99Clipboard {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 
         GL11.glPushMatrix();
-        // Matrix4f.transform(ivm, tr, tr);
         GL11.glMultMatrix(matrix);
 
         if (modifiedManipulator) {
