@@ -1,3 +1,5 @@
+#version 120
+
 uniform sampler2D colorMap;
 uniform sampler2D glossMap;
 uniform sampler2D cubeMap;
@@ -16,7 +18,7 @@ void main()
    gl_FrontColor = gl_Color;
 
    normal = normalize(gl_NormalMatrix * gl_Normal);
-   if (normalSwitch == 0f) normal = vec3(-normal.x, -normal.y, -normal.z);
+   if (normalSwitch == 0) normal = vec3(-normal.x, -normal.y, -normal.z);
 
    position = vec3(gl_ModelViewMatrix * gl_Vertex);
    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
