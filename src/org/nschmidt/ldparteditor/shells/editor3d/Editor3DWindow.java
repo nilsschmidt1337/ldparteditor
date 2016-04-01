@@ -89,6 +89,7 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.data.GData0;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GDataBFC;
 import org.nschmidt.ldparteditor.data.GDataPNG;
@@ -6680,21 +6681,6 @@ public class Editor3DWindow extends Editor3DDesign {
         FileDialog fd = new FileDialog(sh, SWT.SAVE);
         fd.setText(I18n.E3D_CreateNewDat);
 
-        /*
-        if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
-            try {
-                String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
-                decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
-                fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
-            } catch (Exception consumed) {
-                fd.setFilterPath(Project.getProjectPath());
-            }
-        } else {
-            fd.setFilterPath(Project.getProjectPath());
-        }
-         */
-
         fd.setFilterPath(Project.getLastVisitedPath());
 
         String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
@@ -6723,7 +6709,54 @@ public class Editor3DWindow extends Editor3DDesign {
                         break;
                     }
                 } else {
-                    TreeItem ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
+
+                    String typeSuffix = ""; //$NON-NLS-1$
+                    String folderPrefix = ""; //$NON-NLS-1$
+                    String subfilePrefix = ""; //$NON-NLS-1$
+                    String path = new File(selected).getParent();
+                    TreeItem parent = this.treeItem_ProjectParts[0];
+
+                    if (path.endsWith(File.separator + "S") || path.endsWith(File.separator + "s")) { //$NON-NLS-1$ //$NON-NLS-2$
+                        typeSuffix = "Unofficial_Subpart"; //$NON-NLS-1$
+                        folderPrefix = "s\\"; //$NON-NLS-1$
+                        subfilePrefix = "~"; //$NON-NLS-1$
+                        parent = this.treeItem_ProjectSubparts[0];
+                    } else if (path.endsWith(File.separator + "P" + File.separator + "48") || path.endsWith(File.separator + "p" + File.separator + "48")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                        typeSuffix = "Unofficial_48_Primitive"; //$NON-NLS-1$
+                        folderPrefix = "48\\"; //$NON-NLS-1$
+                        parent = this.treeItem_ProjectPrimitives48[0];
+                    } else if (path.endsWith(File.separator + "P" + File.separator + "8") || path.endsWith(File.separator + "p" + File.separator + "8")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                        typeSuffix = "Unofficial_8_Primitive"; //$NON-NLS-1$
+                        folderPrefix = "8\\"; //$NON-NLS-1$
+                        parent = this.treeItem_ProjectPrimitives8[0];
+                    } else if (path.endsWith(File.separator + "P") || path.endsWith(File.separator + "p")) { //$NON-NLS-1$ //$NON-NLS-2$
+                        typeSuffix = "Unofficial_Primitive"; //$NON-NLS-1$
+                        parent = this.treeItem_ProjectPrimitives[0];
+                    }
+
+                    df.addToTail(new GData0("0 " + subfilePrefix)); //$NON-NLS-1$
+                    df.addToTail(new GData0("0 Name: " + folderPrefix + new File(selected).getName())); //$NON-NLS-1$
+                    String ldrawName = WorkbenchManager.getUserSettingState().getLdrawUserName();
+                    if (ldrawName == null || ldrawName.isEmpty()) {
+                        df.addToTail(new GData0("0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName())); //$NON-NLS-1$
+                    } else {
+                        df.addToTail(new GData0("0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName() + " [" + WorkbenchManager.getUserSettingState().getLdrawUserName() + "]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    }
+                    df.addToTail(new GData0("0 !LDRAW_ORG " + typeSuffix)); //$NON-NLS-1$
+                    String license = WorkbenchManager.getUserSettingState().getLicense();
+                    if (license == null || license.isEmpty()) {
+                        df.addToTail(new GData0("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt")); //$NON-NLS-1$
+                    } else {
+                        df.addToTail(new GData0(license));
+                    }
+                    df.addToTail(new GData0("")); //$NON-NLS-1$
+                    df.addToTail(new GDataBFC(BFC.CCW_CLIP));
+                    df.addToTail(new GData0("")); //$NON-NLS-1$
+                    df.addToTail(new GData0("")); //$NON-NLS-1$
+
+                    df.getVertexManager().setModified(true, true);
+
+                    TreeItem ti = new TreeItem(parent, SWT.NONE);
                     StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
                     nameSb.append(I18n.E3D_NewFile);
                     ti.setText(nameSb.toString());
@@ -6736,6 +6769,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.addUnsavedFile(df);
                     updateTree_renamedEntries();
                     updateTree_unsavedEntries();
+                    updateTree_selectedDatFile(df);
 
                     openDatFile(df, where, null);
                     return df;
