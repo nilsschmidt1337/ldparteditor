@@ -5793,6 +5793,42 @@ public class Editor3DWindow extends Editor3DDesign {
         this.treeParts[0].redraw();
     }
 
+    /**
+     * Updates the tree for new unsaved entries
+     */
+    public void updateTree_selectedDatFile(DatFile sdf) {
+        ArrayList<TreeItem> categories = new ArrayList<TreeItem>();
+        categories.add(this.treeItem_ProjectParts[0]);
+        categories.add(this.treeItem_ProjectSubparts[0]);
+        categories.add(this.treeItem_ProjectPrimitives[0]);
+        categories.add(this.treeItem_ProjectPrimitives48[0]);
+        categories.add(this.treeItem_ProjectPrimitives8[0]);
+        categories.add(this.treeItem_UnofficialParts[0]);
+        categories.add(this.treeItem_UnofficialSubparts[0]);
+        categories.add(this.treeItem_UnofficialPrimitives[0]);
+        categories.add(this.treeItem_UnofficialPrimitives48[0]);
+        categories.add(this.treeItem_UnofficialPrimitives8[0]);
+        categories.add(this.treeItem_OfficialParts[0]);
+        categories.add(this.treeItem_OfficialSubparts[0]);
+        categories.add(this.treeItem_OfficialPrimitives[0]);
+        categories.add(this.treeItem_OfficialPrimitives48[0]);
+        categories.add(this.treeItem_OfficialPrimitives8[0]);
+        for (TreeItem item : categories) {
+            ArrayList<TreeItem> datFileTreeItems = item.getItems();
+            for (TreeItem df : datFileTreeItems) {
+                DatFile d = (DatFile) df.getData();
+                if (d.equals(sdf)) {
+                    item.setVisible(true);
+                    item.getParentItem().setVisible(true);
+                    this.treeParts[0].build();
+                    this.treeParts[0].setSelection(df);
+                    this.treeParts[0].redraw();
+                    return;
+                }
+            }
+        }
+    }
+
 
     /**
      * Updates the tree for renamed entries
@@ -6977,6 +7013,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 }
             }
+            updateTree_selectedDatFile(df);
         }
 
         if (where == OpenInWhat.EDITOR_TEXT || where == OpenInWhat.EDITOR_TEXT_AND_3D) {

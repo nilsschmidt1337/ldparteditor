@@ -167,4 +167,11 @@ public class Tree {
         this.itemsSWT = itemsSWT;
     }
 
+    public void setSelection(TreeItem treeItem) {
+        if (SWTFromTi.containsKey(treeItem)) {
+            tree.select(SWTFromTi.get(treeItem));
+            tree.showSelection();
+        }
+    }
+
 }

@@ -642,6 +642,7 @@ public class EditorTextWindow extends EditorTextDesign {
                             }
                         }
                     }
+                    Editor3DWindow.getWindow().updateTree_selectedDatFile(df);
                 }
             }
         });
