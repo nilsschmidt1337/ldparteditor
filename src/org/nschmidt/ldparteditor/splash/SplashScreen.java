@@ -366,7 +366,7 @@ public class SplashScreen extends ApplicationWindow {
             // Finally, open the editor window!
 
             if (NLogger.DEBUG) {
-                DatFile fileToEdit = new DatFile(Project.getProjectPath() + File.separator + "PARTS" + File.separator + "new.dat"); //$NON-NLS-1$ //$NON-NLS-2$
+                DatFile fileToEdit = new DatFile(Project.getProjectPath() + File.separator + "parts" + File.separator + "new.dat"); //$NON-NLS-1$ //$NON-NLS-2$
                 Project.setFileToEdit(fileToEdit);
             }
             new Editor3DWindow().run();

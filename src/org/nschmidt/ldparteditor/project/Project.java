@@ -210,17 +210,17 @@ public enum Project {
                 File projectFolder = new File(getProjectPath());
                 projectFolder.mkdir();
             }
-            File partsFolder = new File(getProjectPath() + File.separator + "PARTS"); //$NON-NLS-1$
+            File partsFolder = new File(getProjectPath() + File.separator + "parts"); //$NON-NLS-1$
             partsFolder.mkdir();
-            File subpartsFolder = new File(getProjectPath() + File.separator + "PARTS" + File.separator + "S"); //$NON-NLS-1$ //$NON-NLS-2$
+            File subpartsFolder = new File(getProjectPath() + File.separator + "parts" + File.separator + "s"); //$NON-NLS-1$ //$NON-NLS-2$
             subpartsFolder.mkdir();
-            File primitivesFolder = new File(getProjectPath() + File.separator + "P"); //$NON-NLS-1$
+            File primitivesFolder = new File(getProjectPath() + File.separator + "p"); //$NON-NLS-1$
             primitivesFolder.mkdir();
-            File primitives48Folder = new File(getProjectPath() + File.separator + "P" + File.separator + "48"); //$NON-NLS-1$ //$NON-NLS-2$
+            File primitives48Folder = new File(getProjectPath() + File.separator + "p" + File.separator + "48"); //$NON-NLS-1$ //$NON-NLS-2$
             primitives48Folder.mkdir();
-            File primitives8Folder = new File(getProjectPath() + File.separator + "P" + File.separator + "8"); //$NON-NLS-1$ //$NON-NLS-2$
+            File primitives8Folder = new File(getProjectPath() + File.separator + "p" + File.separator + "8"); //$NON-NLS-1$ //$NON-NLS-2$
             primitives8Folder.mkdir();
-            File texturesFolder = new File(getProjectPath() + File.separator + "TEXTURES"); //$NON-NLS-1$
+            File texturesFolder = new File(getProjectPath() + File.separator + "textures"); //$NON-NLS-1$
             texturesFolder.mkdir();
         } catch (SecurityException consumed) {
         }
