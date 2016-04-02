@@ -145,6 +145,7 @@ class VM00Base {
     protected final HashMap<GData, Byte> bfcMap = new HashMap<GData, Byte>();
 
     protected volatile AtomicBoolean resetTimer = new AtomicBoolean(false);
+    protected volatile AtomicBoolean skipTimer = new AtomicBoolean(false);
     protected volatile AtomicInteger tid = new AtomicInteger(0);
     protected volatile AtomicInteger openThreads = new AtomicInteger(0);
     protected volatile Lock lock = new ReentrantLock();
@@ -214,6 +215,9 @@ class VM00Base {
                 public void run() {
                     openThreads.incrementAndGet();
                     do {
+                        if (skipTimer.get()) {
+                            break;
+                        }
                         resetTimer.set(false);
                         for(int i = 0; i < 4; i++) {
                             try {
@@ -223,6 +227,7 @@ class VM00Base {
                             if (tid2.get() != tid.get()) break;
                         }
                     } while (resetTimer.get());
+                    skipTimer.set(false);
                     openThreads.decrementAndGet();
                     if (tid2.get() != tid.get() || isSkipSyncWithTextEditor() || !isSyncWithTextEditor()) return;
                     boolean notFound = true;
@@ -1797,5 +1802,9 @@ class VM00Base {
         selectedQuads.clear();
         selectedCondlines.clear();
         lastSelectedVertex = null;
+    }
+
+    public void skipSyncTimer() {
+        skipTimer.set(true);
     }
 }

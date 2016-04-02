@@ -770,7 +770,7 @@ public class EditorTextWindow extends EditorTextDesign {
                             toLine++;
                             NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                             NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                            ColourChanger.changeColour(st, fromLine, toLine, df, num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB());
+                            ColourChanger.changeColour(fromLine, toLine, df, num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
                             st.forceFocus();
                         }
                     }

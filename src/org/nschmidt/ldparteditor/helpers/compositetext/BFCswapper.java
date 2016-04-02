@@ -44,6 +44,7 @@ public enum BFCswapper {
     public static void swap(int lineStart, int lineEnd, DatFile datFile) {
         Text2SelectionConverter.convert(lineStart, lineEnd, datFile);
         datFile.getVertexManager().backupHideShowState();
+        datFile.getVertexManager().skipSyncTimer();
         datFile.getVertexManager().windingChangeSelection();
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {
