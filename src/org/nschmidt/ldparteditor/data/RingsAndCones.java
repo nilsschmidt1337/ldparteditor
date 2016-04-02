@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,6 +38,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
@@ -126,9 +128,8 @@ public enum RingsAndCones {
                                     @Override
                                     public void run() {
                                         {
+                                            final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
                                             int amount = 0;
-
-
                                             final long min_r = 1;
                                             long max_r = 100;
 
@@ -224,9 +225,9 @@ public enum RingsAndCones {
                                                             }
                                                             min_amount = amount;
                                                             if (min_digits == Integer.MAX_VALUE) {
-                                                                m.subTask("Best Solution - " + min_amount + " Primitives, with " + View.NUMBER_FORMAT4F.format(new BigDecimal(delta).divide(factor, Threshold.mc).doubleValue()) + " deviation."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                                                m.subTask("Best Solution - " + min_amount + " Primitives, with " + NUMBER_FORMAT4F.format(new BigDecimal(delta).divide(factor, Threshold.mc).doubleValue()) + " deviation."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                                             } else {
-                                                                m.subTask("Best Solution - " + min_amount + " Primitives, with " + View.NUMBER_FORMAT4F.format(new BigDecimal(delta).divide(factor, Threshold.mc).doubleValue()) + " deviation and " + min_digits + " digits."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                                                                m.subTask("Best Solution - " + min_amount + " Primitives, with " + NUMBER_FORMAT4F.format(new BigDecimal(delta).divide(factor, Threshold.mc).doubleValue()) + " deviation and " + min_digits + " digits."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                                                             }
                                                             tlock.lock();
                                                             if (min_amount < min_amountA.get()  || min_amount == min_amountA.get() && min_delta <= min_deltaA.get()) {

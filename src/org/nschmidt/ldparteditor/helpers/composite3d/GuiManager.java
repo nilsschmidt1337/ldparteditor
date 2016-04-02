@@ -17,12 +17,14 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -37,15 +39,16 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 public enum GuiManager {
     INSTANCE;
 
+    private static DecimalFormat df = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+    private static DecimalFormat df2 = new java.text.DecimalFormat(View.NUMBER_FORMAT1F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+
     /**
      * Updates the status text from {@linkplain Editor3DWindow}
      *
      * @param c3d
      *            the active {@linkplain Composite3D}
      */
-    public static void updateStatus(Composite3D c3d) {
-        DecimalFormat df = View.NUMBER_FORMAT4F;
-        DecimalFormat df2 = View.NUMBER_FORMAT1F;
+    public static synchronized void updateStatus(Composite3D c3d) {
         final StringBuilder sb = new StringBuilder();
         if (c3d.isClassicPerspective()) {
             sb.append("["); //$NON-NLS-1$

@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.composites;
 
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
+import java.text.DecimalFormatSymbols;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -37,6 +38,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.enums.Font;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -46,6 +48,8 @@ import org.nschmidt.ldparteditor.resources.ResourceManager;
  *
  */
 public class CompositeScale extends ScalableComposite {
+
+    private final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
 
     private final Canvas canvas_horizontal;
     private final Canvas canvas_vertical;
@@ -164,7 +168,7 @@ public class CompositeScale extends ScalableComposite {
                         // Big lines
                         for (float x = origin + tenstep; x < width; x = x + tenstep) {
                             if (x > 20) {
-                                gc.drawText(View.NUMBER_FORMAT2F.format((x - origin2) * scale_factor), (int) x + 2, -2);
+                                gc.drawText(NUMBER_FORMAT2F.format((x - origin2) * scale_factor), (int) x + 2, -2);
                                 gc.drawLine((int) x, 5, (int) x, 10);
                             }
                         }
@@ -187,7 +191,7 @@ public class CompositeScale extends ScalableComposite {
                         float origin2 = offset + halfwidth;
                         // Big lines
                         for (float x = origin - tenstep; x > 20; x = x - tenstep) {
-                            gc.drawText(View.NUMBER_FORMAT2F.format((x - origin2) * scale_factor), (int) x + 2, -2);
+                            gc.drawText(NUMBER_FORMAT2F.format((x - origin2) * scale_factor), (int) x + 2, -2);
                             gc.drawLine((int) x, 5, (int) x, 10);
                         }
                         // Small lines
@@ -210,11 +214,11 @@ public class CompositeScale extends ScalableComposite {
                         }
                         // Big lines
                         for (float x = origin - tenstep; x > 20; x = x - tenstep) {
-                            gc.drawText(View.NUMBER_FORMAT2F.format((x - origin) * scale_factor), (int) x + 2, -2);
+                            gc.drawText(NUMBER_FORMAT2F.format((x - origin) * scale_factor), (int) x + 2, -2);
                             gc.drawLine((int) x, 5, (int) x, 10);
                         }
                         for (float x = origin + tenstep; x < width; x = x + tenstep) {
-                            gc.drawText(View.NUMBER_FORMAT2F.format((x - origin) * scale_factor), (int) x + 2, -2);
+                            gc.drawText(NUMBER_FORMAT2F.format((x - origin) * scale_factor), (int) x + 2, -2);
                             gc.drawLine((int) x, 5, (int) x, 10);
                         }
                         // Small lines
@@ -327,7 +331,7 @@ public class CompositeScale extends ScalableComposite {
                             tr.translate(0, (int) y);
                             tr.rotate(-90);
                             gc.setTransform(tr);
-                            gc.drawText(View.NUMBER_FORMAT2F.format((y - origin2) * scale_factor), 0, 0);
+                            gc.drawText(NUMBER_FORMAT2F.format((y - origin2) * scale_factor), 0, 0);
                             gc.setTransform(null);
                             gc.drawLine(5, (int) y, 10, (int) y);
                         }
@@ -350,7 +354,7 @@ public class CompositeScale extends ScalableComposite {
                             tr.translate(0, (int) y);
                             tr.rotate(-90);
                             gc.setTransform(tr);
-                            gc.drawText(View.NUMBER_FORMAT2F.format((y - origin2) * scale_factor), 0, 0);
+                            gc.drawText(NUMBER_FORMAT2F.format((y - origin2) * scale_factor), 0, 0);
                             gc.setTransform(null);
                             gc.drawLine(5, (int) y, 10, (int) y);
                         }
@@ -376,7 +380,7 @@ public class CompositeScale extends ScalableComposite {
                             tr.translate(0, (int) y);
                             tr.rotate(-90);
                             gc.setTransform(tr);
-                            gc.drawText(View.NUMBER_FORMAT2F.format((y - origin) * scale_factor), 0, 0);
+                            gc.drawText(NUMBER_FORMAT2F.format((y - origin) * scale_factor), 0, 0);
                             gc.setTransform(null);
                             gc.drawLine(5, (int) y, 10, (int) y);
                         }
@@ -385,7 +389,7 @@ public class CompositeScale extends ScalableComposite {
                             tr.translate(0, (int) y);
                             tr.rotate(-90);
                             gc.setTransform(tr);
-                            gc.drawText(View.NUMBER_FORMAT2F.format((y - origin) * scale_factor), 0, 0);
+                            gc.drawText(NUMBER_FORMAT2F.format((y - origin) * scale_factor), 0, 0);
                             gc.setTransform(null);
                             gc.drawLine(5, (int) y, 10, (int) y);
                         }
