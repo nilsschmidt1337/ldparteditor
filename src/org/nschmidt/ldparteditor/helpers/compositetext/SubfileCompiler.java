@@ -260,6 +260,7 @@ public enum SubfileCompiler {
                         String realFilename = sb2.toString();
                         String shortFilename = realFilename;
                         shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
+                        String shortFilename2 = realFilename;
                         try {
                             shortFilename = shortFilename.replaceAll("s\\\\", "S" + File.separator).replaceAll("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         } catch (Exception e) {
@@ -269,8 +270,13 @@ public enum SubfileCompiler {
                         if (isValidName(Project.getProjectPath() + File.separator + "PARTS" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$ Neat trick to protect user data
                                 isValidName(Project.getProjectPath() + File.separator + "parts" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$
                                 isValidName(Project.getProjectPath() + File.separator + "P" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$
-                                isValidName(Project.getProjectPath() + File.separator + "p" + File.separator + shortFilename + ".tmp") //$NON-NLS-1$ //$NON-NLS-2$
-                                ) {
+                                isValidName(Project.getProjectPath() + File.separator + "p" + File.separator + shortFilename + ".tmp") ||  //$NON-NLS-1$ //$NON-NLS-2$
+                                (shortFilename = shortFilename2).startsWith("s") && //$NON-NLS-1$
+                                (isValidName(Project.getProjectPath() + File.separator + "PARTS" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$ Neat trick to protect user data
+                                        isValidName(Project.getProjectPath() + File.separator + "parts" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$
+                                        isValidName(Project.getProjectPath() + File.separator + "P" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$
+                                        isValidName(Project.getProjectPath() + File.separator + "p" + File.separator + shortFilename + ".tmp") //$NON-NLS-1$ //$NON-NLS-2$
+                                        )) {
 
                             if (matrixInvStack.isEmpty()) {
                                 matrixProd = new Matrix(theMatrix);
@@ -489,6 +495,9 @@ public enum SubfileCompiler {
     private static boolean isValidName(String text) {
         try {
             File file = new File(text);
+            if (file.getParentFile() != null && (!file.getParentFile().exists() || !file.getParentFile().isDirectory())) {
+                return false;
+            }
             file.createNewFile();
             if (file.exists())
                 file.delete();
