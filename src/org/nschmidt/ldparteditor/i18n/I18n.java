@@ -303,6 +303,7 @@ public final class I18n {
     public static final String E3D_CondlineToLine = E3D.getString(getProperty());
     public static final String E3D_Condlines = E3D.getString(getProperty());
     public static final String E3D_Connected = E3D.getString(getProperty());
+    public static final String E3D_ControlClickModify = E3D.getString(getProperty());
     public static final String E3D_CopyToUnofficialLibrary = E3D.getString(getProperty());
     public static final String E3D_CreateNewDat = E3D.getString(getProperty());
     public static final String E3D_DeleteConfig = E3D.getString(getProperty());
