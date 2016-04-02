@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers;
 
+import org.nschmidt.ldparteditor.logger.NLogger;
+
 /**
  * Provides simple stop-watch functions.
  *
@@ -42,10 +44,8 @@ public enum StopWatch {
      * Resets and starts the watch
      */
     public static void restart() {
-        if (running) {
-            reset();
-            start();
-        }
+        reset();
+        start();
     }
 
     /**
@@ -77,4 +77,9 @@ public enum StopWatch {
         }
     }
 
+    public static void printDuration() {
+        stop();
+        NLogger.debug(StopWatch.class, "Duration: " + getDuration()); //$NON-NLS-1$
+        start();
+    }
 }
