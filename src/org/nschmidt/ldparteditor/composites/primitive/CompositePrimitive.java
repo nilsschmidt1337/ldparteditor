@@ -1337,7 +1337,7 @@ public class CompositePrimitive extends Composite {
                 det = tMatrix.determinant();
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
-                final PGData1 result = new PGData1(tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
+                final PGData1 result = new PGData1(tMatrix, lines, depth, det < 0,
                         destMatrix, alreadyParsed, hotMap);
                 alreadyParsed.remove(shortFilename);
                 return result;
@@ -1380,7 +1380,7 @@ public class CompositePrimitive extends Composite {
                 det = tMatrix.determinant();
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
-                final PGData1 result = new PGData1(tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
+                final PGData1 result = new PGData1(tMatrix, lines, depth, det < 0,
                         destMatrix, alreadyParsed, hotMap);
                 alreadyParsed.remove(shortFilename);
                 return result;
