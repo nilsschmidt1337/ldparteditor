@@ -1696,7 +1696,7 @@ class Editor3DDesign extends ApplicationWindow {
         {
             Button btn_RoundSelection = new Button(toolItem_MiscClick, SWT.NONE);
             this.btn_RoundSelection[0] = btn_RoundSelection;
-            btn_RoundSelection.setToolTipText(I18n.E3D_Round);
+            btn_RoundSelection.setToolTipText(I18n.E3D_Round + I18n.E3D_ControlClickModify);
             btn_RoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
         }
         {
@@ -2833,7 +2833,7 @@ class Editor3DDesign extends ApplicationWindow {
             Object[] messageArguments = {num, View.getLDConfigColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour1 + I18n.E3D_ControlClickModify);
 
             btn_Col.setToolTipText(formatter.format(messageArguments));
         } else {
@@ -2846,7 +2846,7 @@ class Editor3DDesign extends ApplicationWindow {
             Object[] messageArguments = {colourBuilder.toString()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour2 + I18n.E3D_ControlClickModify);
 
             btn_Col.setToolTipText(formatter.format(messageArguments));
         }
@@ -2872,7 +2872,7 @@ class Editor3DDesign extends ApplicationWindow {
                         Object[] messageArguments = {num, View.getLDConfigColourName(num)};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour1 + I18n.E3D_ControlClickModify);
 
                         btn_Col.setToolTipText(formatter.format(messageArguments));
                     } else {
@@ -2885,7 +2885,7 @@ class Editor3DDesign extends ApplicationWindow {
                         Object[] messageArguments = {colourBuilder.toString()};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour2 + I18n.E3D_ControlClickModify);
 
                         btn_Col.setToolTipText(formatter.format(messageArguments));
                     }
