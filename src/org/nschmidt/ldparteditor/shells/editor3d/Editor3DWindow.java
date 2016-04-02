@@ -1329,16 +1329,25 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (Project.getFileToEdit() != null) {
                     VertexManager vm = Project.getFileToEdit().getVertexManager();
                     vm.addSnapshot();
-                    final GColour gColour2 = vm.getRandomSelectedColour(lastUsedColour);
+                    final GColour gColour2;
+                    {
+                        GColour gColour3 = vm.getRandomSelectedColour(lastUsedColour);
+                        if (gColour3.getColourNumber() == 16) {
+                            gColour2 = View.getLDConfigColour(16);
+                        } else {
+                            gColour2 = gColour3;
+                        }
+                        lastUsedColour = gColour2;
+                    }
                     setLastUsedColour(gColour2);
                     btn_LastUsedColour[0].removeListener(SWT.Paint, btn_LastUsedColour[0].getListeners(SWT.Paint)[0]);
                     btn_LastUsedColour[0].removeListener(SWT.Selection, btn_LastUsedColour[0].getListeners(SWT.Selection)[0]);
                     final Color col = SWTResourceManager.getColor((int) (gColour2.getR() * 255f), (int) (gColour2.getG() * 255f), (int) (gColour2.getB() * 255f));
                     final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
-                    final int x = size.x / 4;
-                    final int y = size.y / 4;
-                    final int w = size.x / 2;
-                    final int h = size.y / 2;
+                    final int x = Math.round(size.x / 5f);
+                    final int y = Math.round(size.y / 5f);
+                    final int w = Math.round(size.x * (3f / 5f));
+                    final int h = Math.round(size.y * (3f / 5f));
                     int num = gColour2.getColourNumber();
                     btn_LastUsedColour[0].addPaintListener(new PaintListener() {
                         @Override
@@ -1417,10 +1426,10 @@ public class Editor3DWindow extends Editor3DDesign {
                         btn_LastUsedColour[0].removeListener(SWT.Selection, btn_LastUsedColour[0].getListeners(SWT.Selection)[0]);
                         final Color col = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
                         final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
-                        final int x = size.x / 4;
-                        final int y = size.y / 4;
-                        final int w = size.x / 2;
-                        final int h = size.y / 2;
+                        final int x = Math.round(size.x / 5f);
+                        final int y = Math.round(size.y / 5f);
+                        final int w = Math.round(size.x * (3f / 5f));
+                        final int h = Math.round(size.y * (3f / 5f));
                         btn_LastUsedColour[0].addPaintListener(new PaintListener() {
                             @Override
                             public void paintControl(PaintEvent e) {
@@ -5547,7 +5556,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         }
 
-        final boolean ENABLE_DEFAULT_PROJECT_SAVE = !((Math.random() + 1) > 0);
+        final boolean ENABLE_DEFAULT_PROJECT_SAVE = !(Math.random() + 1 > 0);
         if (unsavedProjectFiles && Project.isDefaultProject() && ENABLE_DEFAULT_PROJECT_SAVE) {
             // Save new project here, if the project contains at least one non-empty file
             boolean cancelIt = false;
