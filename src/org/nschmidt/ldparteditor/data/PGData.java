@@ -29,26 +29,19 @@ public abstract class PGData implements IPGData, Serializable {
     private static final long serialVersionUID = 1L;
 
     private transient PGData next;
-    private transient PGData before;
 
     static byte localWinding = BFC.NOCERTIFY;
     static int accumClip = 0;
     static boolean globalInvertNext = false;
     static boolean globalInvertNextFound = false;
     static boolean globalNegativeDeterminant = false;
-    static boolean globalDrawObjects = true;
-    static boolean globalFoundTEXMAPNEXT = false;
 
     public PGData getNext() {
         return next;
     }
 
-    public PGData getBefore() {
-        return before;
-    }
-
     private static final AtomicInteger id_counter = new AtomicInteger(0); // Integer.MIN_VALUE);
-    protected final int ID;
+    private transient final int ID;
 
     PGData() {
         // NOTE: A possible overflow is irrelevant since equals() will return distinct results!!
@@ -58,9 +51,6 @@ public abstract class PGData implements IPGData, Serializable {
     // anchor is the next data to render
     public void setNext(PGData next) {
         this.next = next;
-        if (next != null) {
-            next.before = this;
-        }
     }
 
     @Override

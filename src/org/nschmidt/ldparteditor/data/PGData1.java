@@ -40,9 +40,6 @@ public final class PGData1 extends PGData implements Serializable {
     final transient Matrix4f productMatrix;
     final transient Matrix4f localMatrix;
 
-    final transient String name;
-    final transient String shortName;
-
     final transient boolean negativeDeterminant;
 
     final transient PGData myGData = new PGDataInit();
@@ -62,15 +59,13 @@ public final class PGData1 extends PGData implements Serializable {
      * @param hotMap
      * @param firstRef
      */
-    public PGData1(Matrix4f tMatrix, List<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
+    public PGData1(Matrix4f tMatrix, List<String> lines, int depth, boolean det, Matrix4f pMatrix,
             Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
 
         depth++;
         if (depth < 16) {
             this.depth = depth;
             negativeDeterminant = det;
-            this.name = name;
-            this.shortName = shortName;
             this.productMatrix = new Matrix4f(pMatrix);
             this.localMatrix = new Matrix4f(tMatrix);
             matrix = BufferUtils.createFloatBuffer(16);
@@ -96,8 +91,6 @@ public final class PGData1 extends PGData implements Serializable {
             }
         } else {
             this.depth = depth;
-            this.name = null;
-            this.shortName = null;
             this.matrix = null;
             this.matrix2 = null;
             this.productMatrix = null;
