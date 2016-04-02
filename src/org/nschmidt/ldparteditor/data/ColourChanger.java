@@ -15,9 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
-import org.eclipse.swt.custom.StyledText;
-import org.nschmidt.ldparteditor.helpers.math.MathHelper;
-import org.nschmidt.ldparteditor.text.StringHelper;
+import org.eclipse.swt.custom.CTabItem;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.helpers.compositetext.Text2SelectionConverter;
+import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 
 /**
  * Sorts selected lines by a given criteria
@@ -28,90 +30,18 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 public enum ColourChanger {
     INSTANCE;
 
-    public static void changeColour(StyledText st, int fromLine, int toLine, DatFile fileNameObj, int colourNumber, float r, float g, float b) {
-
-        // Backup selection range
-        final int x = st.getSelectionRange().x;
-        final int y = st.getSelectionRange().y;
-
-        // Replace colours
-
-        StringBuilder colourBuilder = new StringBuilder();
-        if (colourNumber == -1) {
-            colourBuilder.append("0x2"); //$NON-NLS-1$
-            colourBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
-            colourBuilder.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
-            colourBuilder.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
-        } else {
-            colourBuilder.append(colourNumber);
-        }
-        String col = colourBuilder.toString();
-        StringBuilder newDatText = new StringBuilder();
-        final String ld = StringHelper.getLineDelimiter();
-        GData data2draw = fileNameObj.getDrawChainStart();
-        int lineCount = 0;
-        while ((data2draw = data2draw.getNext()) != null) {
-            lineCount += 1;
-            if (lineCount >= fromLine && lineCount <= toLine) {
-                switch (data2draw.type()) {
-                case 1:
-                {
-                    GData1 gd = (GData1) data2draw;
-                    newDatText.append(gd.colourReplace(col));
-                }
-                break;
-                case 2:
-                {
-                    GData2 gd = (GData2) data2draw;
-                    newDatText.append(gd.colourReplace(col));
-                }
-                break;
-                case 3:
-                {
-                    GData3 gd = (GData3) data2draw;
-                    newDatText.append(gd.colourReplace(col));
-                }
-                break;
-                case 4:
-                {
-                    GData4 gd = (GData4) data2draw;
-                    newDatText.append(gd.colourReplace(col));
-                }
-                break;
-                case 5:
-                {
-                    GData5 gd = (GData5) data2draw;
-                    newDatText.append(gd.colourReplace(col));
-                }
-                break;
-                default:
-                    newDatText.append(data2draw.toString());
+    public static void changeColour(int lineStart, int lineEnd, DatFile datFile, int colourNumber, float r, float g, float b, float a) {
+        Text2SelectionConverter.convert(lineStart, lineEnd, datFile);
+        datFile.getVertexManager().skipSyncTimer();
+        datFile.getVertexManager().colourChangeSelection(colourNumber, r, g, b, a);
+        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+            for (CTabItem t : w.getTabFolder().getItems()) {
+                if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                    ((CompositeTab) t).parseForErrorAndHints();
+                    ((CompositeTab) t).getTextComposite().redraw();
                     break;
                 }
-            } else {
-                newDatText.append(data2draw.toString());
-            }
-
-            if (data2draw.getNext() != null) newDatText.append(ld);
-        }
-
-        st.setText(newDatText.toString());
-
-
-        // Restore selection range
-
-        try {
-            st.setSelectionRange(x, y);
-        } catch (IllegalArgumentException iae1) {
-            try {
-                st.setSelectionRange(x - 1, y);
-            } catch (IllegalArgumentException iae2) {
-                try {
-                    st.setSelectionRange(x - 2, y);
-                } catch (IllegalArgumentException consumed) {}
             }
         }
-
-        st.showSelection();
     }
 }
