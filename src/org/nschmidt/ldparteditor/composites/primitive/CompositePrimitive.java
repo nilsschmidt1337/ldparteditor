@@ -1169,7 +1169,7 @@ public class CompositePrimitive extends Composite {
         // Get the linetype
         int linetype = 0;
         char c;
-        if (!(data_segments.length > 0 && data_segments[0].length() == 1 && Character.isDigit(c = data_segments[0].charAt(0)))) {
+        if (!(data_segments.length > 2 && data_segments[0].length() == 1 && Character.isDigit(c = data_segments[0].charAt(0)))) {
             result = new PGDataBFC(BFC.PLACEHOLDER);
             cache.put(line, result);
             return result;
@@ -1179,7 +1179,7 @@ public class CompositePrimitive extends Composite {
 
         switch (linetype) {
         case 0:
-            result = parse_Comment(line);
+            result = parse_Comment(line, data_segments[1]);
             break;
         case 1:
             return parse_Reference(data_segments, depth, productMatrix, alreadyParsed, hotMap);
@@ -1203,9 +1203,9 @@ public class CompositePrimitive extends Composite {
         return result;
     }
 
-    private static PGData parse_Comment(String line) {
-        line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
-        if (line.startsWith("BFC ", 2)) { //$NON-NLS-1$
+    private static PGData parse_Comment(String line, String bfc) {
+        if ("BFC".equals(bfc)) { //$NON-NLS-1$
+            line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
                 return new PGDataBFC(BFC.INVERTNEXT);
             } else if (line.startsWith("CERTIFY CCW", 6)) { //$NON-NLS-1$
