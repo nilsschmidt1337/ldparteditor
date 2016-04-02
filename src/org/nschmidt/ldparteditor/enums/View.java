@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.enums;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -62,13 +61,13 @@ public enum View {
     /** threshold for "solid" edges (default: 5e-6f) */
     public static float edge_threshold = 5e-6f;
     /** The standard decimal format for floating point numbers (0 digits) */
-    public static final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat("###,##0;-###,##0", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
+    public static final String NUMBER_FORMAT0F = "###,##0;-###,##0"; //$NON-NLS-1$
     /** The standard decimal format for floating point numbers (1 digit) */
-    public static final java.text.DecimalFormat NUMBER_FORMAT1F = new java.text.DecimalFormat(" ###,##0.00;-###,##0.00", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
+    public static final String NUMBER_FORMAT1F = " ###,##0.00;-###,##0.00"; //$NON-NLS-1$
     /** The standard decimal format for floating point numbers (2 digits) */
-    public static final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(" ###,##0.00;-###,##0.00", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
+    public static final String NUMBER_FORMAT2F = " ###,##0.00;-###,##0.00"; //$NON-NLS-1$
     /** The standard decimal format for floating point numbers (4 digits) */
-    public static final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat("###,##0.0000;-###,##0.0000", new DecimalFormatSymbols(MyLanguage.LOCALE)); //$NON-NLS-1$
+    public static final String NUMBER_FORMAT4F = "###,##0.0000;-###,##0.0000"; //$NON-NLS-1$
 
     public static final float[] BFC_front_Colour_r = new float[] { 0f };
     public static final float[] BFC_front_Colour_g = new float[] { .9f };

@@ -16,7 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.widgets;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 
 import org.eclipse.swt.SWT;
@@ -30,6 +30,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 
 /**
@@ -48,6 +49,7 @@ public class BigDecimalSpinner extends Composite {
     private ValueChangeAdapter myListener;
 
     private final BigDecimalSpinner me;
+    private final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
 
     /**
      * @param parent
@@ -131,10 +133,9 @@ public class BigDecimalSpinner extends Composite {
                 }
                 int caret = txt_val[0].getCaretPosition();
 
-                DecimalFormat df = View.NUMBER_FORMAT4F;
                 try {
-                    df.setParseBigDecimal(true);
-                    BigDecimal val = (BigDecimal) df.parseObject(txt_val[0].getText());
+                    NUMBER_FORMAT4F.setParseBigDecimal(true);
+                    BigDecimal val = (BigDecimal) NUMBER_FORMAT4F.parseObject(txt_val[0].getText());
 
                     value = val;
                     if (value.compareTo(maximum) > 0 || value.compareTo(minimum) < 0) {
@@ -149,12 +150,12 @@ public class BigDecimalSpinner extends Composite {
                     if (oldValue[0].compareTo(value) != 0) {
                         oldValue[0] = value;
                         invalidInput[0] = true;
-                        txt_val[0].setText(df.format(value));
+                        txt_val[0].setText(NUMBER_FORMAT4F.format(value));
                     }
                 } catch (ParseException ex) {
                     if (!invalidInput[0]) {
                         invalidInput[0] = true;
-                        txt_val[0].setText(df.format(value));
+                        txt_val[0].setText(NUMBER_FORMAT4F.format(value));
                         invalidInput[0] = false;
                     }
                 }
@@ -191,8 +192,7 @@ public class BigDecimalSpinner extends Composite {
     public void setValue(BigDecimal value) {
         this.value = value.compareTo(maximum) == 1 ? maximum : value;
         this.value = value.compareTo(minimum) == -1 ? minimum : value;
-        DecimalFormat df = View.NUMBER_FORMAT4F;
-        txt_val[0].setText(df.format(this.value));
+        txt_val[0].setText(NUMBER_FORMAT4F.format(this.value));
         if (myListener != null)
             myListener.valueChanged(this);
     }

@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialogs.ringsandcones;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormatSymbols;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -70,6 +72,9 @@ class RingsAndConesDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
+
+        final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+
         Composite cmp_container = (Composite) super.createDialogArea(parent);
         GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
         gridLayout.verticalSpacing = 10;
@@ -195,7 +200,7 @@ class RingsAndConesDesign extends Dialog {
                 rs.getAngles().clear();
                 int i = 0;
                 for (String it : cmb.getItems()) {
-                    cmb.setItem(i, it.replace('.', View.NUMBER_FORMAT4F.getDecimalFormatSymbols().getDecimalSeparator()));
+                    cmb.setItem(i, it.replace('.', NUMBER_FORMAT4F.getDecimalFormatSymbols().getDecimalSeparator()));
                     rs.getAngles().add(it);
                     i++;
                 }
