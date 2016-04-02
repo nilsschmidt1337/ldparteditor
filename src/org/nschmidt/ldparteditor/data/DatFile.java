@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -473,9 +474,8 @@ public final class DatFile {
                     drawPerLine.removeByKey(actionStartLine);
                     actionStartLine++;
                 }
-                for (Integer i : copy_drawPerLine.keySet()) {
-                    GData nd = copy_drawPerLine.get(i);
-                    drawPerLine.put(i, nd);
+                for (Entry<Integer, GData> entry : copy_drawPerLine.entrySet()) {
+                    drawPerLine.put(entry.getKey(), entry.getValue());
                 }
                 copy_drawPerLine.clear();
             }
@@ -520,9 +520,8 @@ public final class DatFile {
                         copy_drawPerLine.put(i + newLineCount, drawPerLine.getValue(i));
                         drawPerLine.removeByKey(i);
                     }
-                    for (Integer i : copy_drawPerLine.keySet()) {
-                        GData nd = copy_drawPerLine.get(i);
-                        drawPerLine.put(i, nd);
+                    for (Entry<Integer, GData> entry : copy_drawPerLine.entrySet()) {
+                        drawPerLine.put(entry.getKey(), entry.getValue());
                     }
                     copy_drawPerLine.clear();
                 }
