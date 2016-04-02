@@ -258,6 +258,12 @@ public enum SubfileCompiler {
                         }
                         sb2.append(data_segments[data_segments.length - 1]);
                         String realFilename = sb2.toString();
+                        try {
+                            realFilename = realFilename.replaceAll("\\\\", File.separator); //$NON-NLS-1$
+                        } catch (Exception e) {
+                            // Workaround for windows OS / JVM BUG
+                            realFilename = realFilename.replace("\\\\", File.separator); //$NON-NLS-1$
+                        }
                         String shortFilename = realFilename;
                         shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
                         String shortFilename2 = realFilename;
@@ -271,7 +277,7 @@ public enum SubfileCompiler {
                                 isValidName(Project.getProjectPath() + File.separator + "parts" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$
                                 isValidName(Project.getProjectPath() + File.separator + "P" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$
                                 isValidName(Project.getProjectPath() + File.separator + "p" + File.separator + shortFilename + ".tmp") ||  //$NON-NLS-1$ //$NON-NLS-2$
-                                (shortFilename = shortFilename2).startsWith("s") && //$NON-NLS-1$
+                                (shortFilename = shortFilename2).startsWith("s" + File.separator ) && //$NON-NLS-1$
                                 (isValidName(Project.getProjectPath() + File.separator + "PARTS" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$ Neat trick to protect user data
                                         isValidName(Project.getProjectPath() + File.separator + "parts" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$
                                         isValidName(Project.getProjectPath() + File.separator + "P" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$
