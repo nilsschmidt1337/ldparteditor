@@ -1269,7 +1269,11 @@ public class EditorTextWindow extends EditorTextDesign {
             if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
-            int x = selection.getTextComposite().getSelection().x;
+            final int x = selection.getTextComposite().getSelection().x;
+            if (selection.getTextComposite().getSelection().y == x) {
+                selection.getTextComposite().forceFocus();
+                return;
+            }
             selection.getTextComposite().insert(""); //$NON-NLS-1$
             selection.getTextComposite().setSelection(new Point(x, x));
             selection.getTextComposite().forceFocus();
