@@ -107,10 +107,10 @@ import org.nschmidt.ldparteditor.dialogs.copy.CopyDialog;
 import org.nschmidt.ldparteditor.dialogs.edger2.EdgerDialog;
 import org.nschmidt.ldparteditor.dialogs.intersector.IntersectorDialog;
 import org.nschmidt.ldparteditor.dialogs.isecalc.IsecalcDialog;
-import org.nschmidt.ldparteditor.dialogs.keys.KeyTableDialog;
 import org.nschmidt.ldparteditor.dialogs.lines2pattern.Lines2PatternDialog;
 import org.nschmidt.ldparteditor.dialogs.logupload.LogUploadDialog;
 import org.nschmidt.ldparteditor.dialogs.newproject.NewProjectDialog;
+import org.nschmidt.ldparteditor.dialogs.options.OptionsDialog;
 import org.nschmidt.ldparteditor.dialogs.pathtruder.PathTruderDialog;
 import org.nschmidt.ldparteditor.dialogs.rectifier.RectifierDialog;
 import org.nschmidt.ldparteditor.dialogs.ringsandcones.RingsAndConesDialog;
@@ -4410,10 +4410,12 @@ public class Editor3DWindow extends Editor3DDesign {
         mntm_CustomiseKeys[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                KeyTableDialog dialog = new KeyTableDialog(getShell());
-                if (dialog.open() == IDialogConstants.OK_ID) {
-
-                }
+                OptionsDialog dialog = new OptionsDialog(getShell());
+                dialog.run();
+                // KeyTableDialog dialog = new KeyTableDialog(getShell());
+                // if (dialog.open() == IDialogConstants.OK_ID) {
+                //
+                // }
                 regainFocus();
             }
         });
