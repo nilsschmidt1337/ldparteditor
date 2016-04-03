@@ -81,9 +81,8 @@ class KeyTableDesign extends Dialog {
         Label lbl_DoubleClick = new Label(cmp_container, I18n.I18N_RTL());
         lbl_DoubleClick.setText(I18n.KEYBOARD_DoubleClick);
 
-        final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, Task.values().length + TextTask.values().length - 7);
+        final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, Task.values().length + TextTask.values().length - 11);
 
-        // tree_Problems[0] = tree;
         tree.setLinesVisible(true);
         tree.setHeaderVisible(true);
         tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -97,13 +96,11 @@ class KeyTableDesign extends Dialog {
         trclmn_Location.setText(I18n.KEYBOARD_Shortkey);
 
         TreeItem trtm_Editor3D = new TreeItem(tree, SWT.NONE);
-        // treeItem_Hints[0] = trtm_Hints;
         trtm_Editor3D.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
         trtm_Editor3D.setText(new String[] { I18n.KEYBOARD_Editor3D, "" }); //$NON-NLS-1$
         trtm_Editor3D.setVisible(true);
 
         TreeItem trtm_EditorText = new TreeItem(tree, SWT.NONE);
-        // treeItem_Warnings[0] = trtm_Warnings;
         trtm_EditorText.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
         trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
         trtm_EditorText.setVisible(true);
@@ -161,10 +158,6 @@ class KeyTableDesign extends Dialog {
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Undo, TextTask.EDITORTEXT_UNDO, true);
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_FindReplace, TextTask.EDITORTEXT_FIND, true);
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_InsertReference, TextTask.EDITORTEXT_INSERT_REFERENCE, true);
-
-        TreeItem trtm_Temp = new TreeItem(tree, SWT.NONE);
-        trtm_Temp.setText(new String[] { "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
-        trtm_Temp.setVisible(true);
 
         if (s1.size() != Task.values().length || s2.size() != TextTask.values().length) {
             throw new AssertionError("Not all shortkey items are covered by this dialog! Please fix it"); //$NON-NLS-1$
