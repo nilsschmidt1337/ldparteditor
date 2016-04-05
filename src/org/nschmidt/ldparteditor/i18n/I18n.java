@@ -410,6 +410,7 @@ public final class I18n {
     public static final String E3D_OpenInTextEditor = E3D.getString(getProperty());
     public static final String E3D_OpenLDConfig = E3D.getString(getProperty());
     public static final String E3D_OpenPngImage = E3D.getString(getProperty());
+    public static final String E3D_Options = E3D.getString(getProperty());
     public static final String E3D_Origin = E3D.getString(getProperty());
     public static final String E3D_ParseInline = E3D.getString(getProperty());
     public static final String E3D_PathTruder = E3D.getString(getProperty());
