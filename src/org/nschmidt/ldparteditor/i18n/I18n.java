@@ -474,6 +474,7 @@ public final class I18n {
     public static final String E3D_SetXYZ = E3D.getString(getProperty());
     public static final String E3D_ShowAll = E3D.getString(getProperty());
     public static final String E3D_SlicerPro = E3D.getString(getProperty());
+    public static final String E3D_Snapping = E3D.getString(getProperty());
     public static final String E3D_Snapshot = E3D.getString(getProperty());
     public static final String E3D_Split = E3D.getString(getProperty());
     public static final String E3D_SplitEdges = E3D.getString(getProperty());
