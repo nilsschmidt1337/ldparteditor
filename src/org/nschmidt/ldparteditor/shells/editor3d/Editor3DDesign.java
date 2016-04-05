@@ -577,6 +577,7 @@ class Editor3DDesign extends ApplicationWindow {
                         tabFolder_Settings.setSize(700, 500);
 
                         CTabItem tItem = new CTabItem(tabFolder_Settings, SWT.NONE);
+                        // FIXME Needs translation!
                         tItem.setText("Snapping:"); //$NON-NLS-1$
                         {
                             final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
