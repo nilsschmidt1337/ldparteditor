@@ -4407,7 +4407,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_CustomiseKeys[0].addSelectionListener(new SelectionAdapter() {
+        mntm_Options[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 OptionsDialog dialog = new OptionsDialog(getShell());

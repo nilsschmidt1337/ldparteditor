@@ -12,6 +12,7 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -85,7 +86,7 @@ class OptionsDesign extends ApplicationWindow {
             tabFolder_Settings.setSize(1024, 768);
 
             CTabItem tItem = new CTabItem(tabFolder_Settings, SWT.NONE);
-            tItem.setText("Snapping:"); //$NON-NLS-1$
+            tItem.setText(I18n.KEYBOARD_CustomiseShortkeys);
             {
                 final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
                 Composite cmp_container = new Composite(cmp_scroll, SWT.NONE);
@@ -634,6 +635,13 @@ class OptionsDesign extends ApplicationWindow {
         }
     }
 
+    /**
+     * Return the initial size of the dialog.
+     */
+    @Override
+    protected Point getInitialSize() {
+        return new Point(super.getInitialSize().x, super.getInitialSize().y * 2);
+    }
 
     // FIXME OptionsDialog needs implementation!
 }

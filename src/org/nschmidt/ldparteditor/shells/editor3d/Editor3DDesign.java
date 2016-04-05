@@ -252,7 +252,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_TJunctionFinder = new MenuItem[1];
     final MenuItem[] mntm_MeshReducer = new MenuItem[1];
 
-    final MenuItem[] mntm_CustomiseKeys = new MenuItem[1];
+    final MenuItem[] mntm_Options = new MenuItem[1];
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
     final MenuItem[] mntm_UploadLogs = new MenuItem[1];
@@ -2043,9 +2043,9 @@ class Editor3DDesign extends ApplicationWindow {
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator1 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
                 {
-                    MenuItem mntm_CustomiseKeys = new MenuItem(mnu_Tools, SWT.PUSH);
-                    this.mntm_CustomiseKeys[0] = mntm_CustomiseKeys;
-                    mntm_CustomiseKeys.setText(I18n.KEYBOARD_CustomiseShortkeys);
+                    MenuItem mntm_Options = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_Options[0] = mntm_Options;
+                    mntm_Options.setText(I18n.E3D_Options);
                 }
                 {
                     MenuItem mntm_ResetSettingsOnRestart = new MenuItem(mnu_Tools, SWT.PUSH);
