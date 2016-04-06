@@ -12,6 +12,7 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -27,6 +28,7 @@ import org.nschmidt.ldparteditor.dialogs.keys.KeyDialog;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
@@ -85,11 +87,11 @@ class OptionsDesign extends ApplicationWindow {
             tabFolder_Settings.setLayoutData(gridData);
             tabFolder_Settings.setSize(1024, 768);
 
-            CTabItem tItem = new CTabItem(tabFolder_Settings, SWT.NONE);
+            final CTabItem tItem = new CTabItem(tabFolder_Settings, SWT.NONE);
             tItem.setText(I18n.KEYBOARD_CustomiseShortkeys);
             {
                 final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
-                Composite cmp_container = new Composite(cmp_scroll, SWT.NONE);
+                final Composite cmp_container = new Composite(cmp_scroll, SWT.NONE);
                 tItem.setControl(cmp_scroll);
                 cmp_scroll.setContent(cmp_container);
                 cmp_scroll.setExpandHorizontal(true);
@@ -268,6 +270,14 @@ class OptionsDesign extends ApplicationWindow {
                 spinner3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
                 //*/
+                tree.addMouseMoveListener(new MouseMoveListener() {
+                    @Override
+                    public void mouseMove(MouseEvent e) {
+                        NLogger.debug(getClass(), "Mouse moved..."); //$NON-NLS-1$
+                        cmp_container.forceFocus();
+                    }
+                });
+
                 cmp_scroll.setMinSize(cmp_container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
             }
 
@@ -640,7 +650,7 @@ class OptionsDesign extends ApplicationWindow {
      */
     @Override
     protected Point getInitialSize() {
-        return new Point(super.getInitialSize().x, super.getInitialSize().y * 2);
+        return new Point(super.getInitialSize().x, super.getInitialSize().y * 3);
     }
 
     // FIXME OptionsDialog needs implementation!
