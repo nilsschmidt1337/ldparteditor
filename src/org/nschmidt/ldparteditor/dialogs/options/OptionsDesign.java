@@ -12,7 +12,6 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -28,7 +27,6 @@ import org.nschmidt.ldparteditor.dialogs.keys.KeyDialog;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
@@ -90,12 +88,8 @@ class OptionsDesign extends ApplicationWindow {
             final CTabItem tItem = new CTabItem(tabFolder_Settings, SWT.NONE);
             tItem.setText(I18n.KEYBOARD_CustomiseShortkeys);
             {
-                final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
-                final Composite cmp_container = new Composite(cmp_scroll, SWT.NONE);
-                tItem.setControl(cmp_scroll);
-                cmp_scroll.setContent(cmp_container);
-                cmp_scroll.setExpandHorizontal(true);
-                cmp_scroll.setExpandVertical(true);
+                final Composite cmp_container = new Composite(tabFolder_Settings, SWT.NONE);
+                tItem.setControl(cmp_container);
 
                 cmp_container.setLayout(new GridLayout());
                 cmp_container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -209,76 +203,6 @@ class OptionsDesign extends ApplicationWindow {
                         }
                     }
                 });
-
-                /*
-                {
-                    Composite cmp_dummy = new Composite(cmp_snappingArea, SWT.NONE);
-                    cmp_dummy.setLayout(new FillLayout(SWT.HORIZONTAL));
-
-                    Button btnCoarse = new Button(cmp_dummy, SWT.RADIO);
-                    btnCoarse.setImage(ResourceManager.getImage("icon8_coarse.png")); //$NON-NLS-1$
-                    btnCoarse.setToolTipText(I18n.E3D_Coarse);
-
-                    Button btnMedium = new Button(cmp_dummy, SWT.RADIO);
-                    btnMedium.setSelection(true);
-                    btnMedium.setImage(ResourceManager.getImage("icon8_medium.png")); //$NON-NLS-1$
-                    btnMedium.setToolTipText(I18n.E3D_Medium);
-
-                    Button btnFine = new Button(cmp_dummy, SWT.RADIO);
-                    btnFine.setImage(ResourceManager.getImage("icon8_fine.png")); //$NON-NLS-1$
-                    btnFine.setToolTipText(I18n.E3D_Fine);
-
-                    cmp_dummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 3, 1));
-                }
-
-                {
-                    Object[] messageArguments = {I18n.UNIT_CurrentUnit()};
-                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.E3D_MoveSnap);
-
-                    Label lblNewLabel = new Label(cmp_snappingArea, SWT.NONE);
-                    lblNewLabel.setText(formatter.format(messageArguments));
-                    lblNewLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-
-                }
-
-                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE);
-                spinner.setMaximum(new BigDecimal("100")); //$NON-NLS-1$
-                spinner.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
-                spinner.setValue(WorkbenchManager.getUserSettingState().getMedium_move_snap());
-                spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-
-                Label lblNewLabel2 = new Label(cmp_snappingArea, SWT.NONE);
-                lblNewLabel2.setText(I18n.E3D_RotateSnap);
-                lblNewLabel2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-
-                BigDecimalSpinner spinner2 = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE);
-                spinner2.setMaximum(new BigDecimal("360.0")); //$NON-NLS-1$
-                spinner2.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
-                spinner2.setValue(WorkbenchManager.getUserSettingState().getMedium_rotate_snap());
-                spinner2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-
-                Label lblNewLabel3 = new Label(cmp_snappingArea, SWT.NONE);
-                lblNewLabel3.setText(I18n.E3D_ScaleSnap);
-                lblNewLabel3.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-
-                BigDecimalSpinner spinner3 = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE);
-                spinner3.setMaximum(new BigDecimal("100.0")); //$NON-NLS-1$
-                spinner3.setMinimum(new BigDecimal("0.01")); //$NON-NLS-1$
-                spinner3.setValue(WorkbenchManager.getUserSettingState().getMedium_scale_snap());
-                spinner3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-
-                //*/
-                tree.addMouseMoveListener(new MouseMoveListener() {
-                    @Override
-                    public void mouseMove(MouseEvent e) {
-                        NLogger.debug(getClass(), "Mouse moved..."); //$NON-NLS-1$
-                        cmp_container.forceFocus();
-                    }
-                });
-
-                cmp_scroll.setMinSize(cmp_container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
             }
 
             CTabItem tItem2 = new CTabItem(tabFolder_Settings, SWT.NONE);
@@ -609,6 +533,36 @@ class OptionsDesign extends ApplicationWindow {
 
             tabFolder_Settings.setSelection(tItem);
         }
+
+
+        Composite cmp_Buttons = new Composite(container, SWT.NONE);
+
+        GridData gridData = new GridData();
+        gridData.horizontalAlignment = SWT.FILL;
+        gridData.minimumHeight = 200;
+        gridData.minimumWidth = 160;
+        gridData.verticalAlignment = SWT.FILL;
+        gridData.grabExcessHorizontalSpace = true;
+        cmp_Buttons.setLayoutData(gridData);
+
+        GridLayout gl = new GridLayout(2, true);
+        cmp_Buttons.setLayout(gl);
+
+        Composite spacer = new Composite(cmp_Buttons, SWT.NONE);
+
+        GridData gridData2 = new GridData();
+        gridData2.horizontalAlignment = SWT.FILL;
+        gridData2.grabExcessHorizontalSpace = true;
+        spacer.setLayoutData(gridData2);
+
+        Button btnOK = new Button(cmp_Buttons, SWT.NONE);
+        btnOK.setText(I18n.DIALOG_OK);
+
+        GridData gridData3 = new GridData();
+        gridData3.horizontalAlignment = SWT.FILL;
+        gridData3.grabExcessHorizontalSpace = true;
+        btnOK.setLayoutData(gridData3);
+
         return container;
     }
 
@@ -650,7 +604,7 @@ class OptionsDesign extends ApplicationWindow {
      */
     @Override
     protected Point getInitialSize() {
-        return new Point(super.getInitialSize().x, super.getInitialSize().y * 3);
+        return new Point(super.getInitialSize().x, super.getInitialSize().y * 2);
     }
 
     // FIXME OptionsDialog needs implementation!
