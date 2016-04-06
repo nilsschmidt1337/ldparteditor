@@ -20,7 +20,6 @@ import java.util.HashMap;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -72,10 +71,6 @@ public class Tree {
 
     public void addMouseListener(MouseAdapter mouseAdapter) {
         tree.addMouseListener(mouseAdapter);
-    }
-
-    public void addMouseMoveListener(MouseMoveListener mouseListener) {
-        tree.addMouseMoveListener(mouseListener);
     }
 
     public int getSelectionCount() {
