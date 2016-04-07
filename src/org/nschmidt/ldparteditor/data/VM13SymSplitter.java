@@ -284,10 +284,10 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                     {
                         boolean hasInvertnext = false;
                         GData invertNextData = g1.getBefore();
-                        while (invertNextData != null && invertNextData.type() != 1 && (invertNextData.type() != 6 || ((GDataBFC) invertNextData).type != BFC.INVERTNEXT)) {
+                        while (invertNextData != null && invertNextData.type() != 1 && !(invertNextData.type() == 6 && ((GDataBFC) invertNextData).type == BFC.INVERTNEXT)) {
                             invertNextData = invertNextData.getBefore();
                         }
-                        if (invertNextData != null && invertNextData.type() == 6) {
+                        if (invertNextData != null && invertNextData.type() == 6 && ((GDataBFC) invertNextData).type == BFC.INVERTNEXT) {
                             hasInvertnext = true;
                         }
                         if (hasInvertnext) {
@@ -480,6 +480,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 case 1:
                                     if (subfilesWithInvertnext.contains(g)) {
                                         beforeSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                        beforeSb.append(StringHelper.getLineDelimiter());
                                     }
                                     beforeSb.append(((GData1) g).colourReplace(blue.toString()));
                                     break;
@@ -495,6 +496,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                             } else {
                                 if (subfilesWithInvertnext.contains(g)) {
                                     beforeSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                    beforeSb.append(StringHelper.getLineDelimiter());
                                 }
                                 beforeSb.append(g.toString());
                             }
@@ -603,6 +605,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 case 1:
                                     if (subfilesWithInvertnext.contains(g)) {
                                         betweenSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                        betweenSb.append(StringHelper.getLineDelimiter());
                                     }
                                     betweenSb.append(((GData1) g).colourReplace(yellow.toString()));
                                     break;
@@ -636,6 +639,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 case 1:
                                     if (subfilesWithInvertnext.contains(g)) {
                                         betweenSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                        betweenSb.append(StringHelper.getLineDelimiter());
                                     }
                                     betweenSb.append(((GData1) g).colourReplace(yellow.toString()));
                                     break;
@@ -651,6 +655,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                             } else {
                                 if (subfilesWithInvertnext.contains(g)) {
                                     betweenSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                    betweenSb.append(StringHelper.getLineDelimiter());
                                 }
                                 betweenSb.append(g.toString());
                             }
@@ -670,6 +675,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         if (behind.contains(g)) {
                             if (subfilesWithInvertnext.contains(g)) {
                                 behindSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                behindSb.append(StringHelper.getLineDelimiter());
                             }
                             behindSb.append(g.toString());
                             if (!g.equals(tail)) behindSb.append(StringHelper.getLineDelimiter());
