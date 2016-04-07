@@ -442,20 +442,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
 
                 updateTree_unsavedEntries();
-
-                try {
-                    new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
-                        @Override
-                        public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                            monitor.beginTask(I18n.E3D_LoadingPrimitives, IProgressMonitor.UNKNOWN);
-                            Thread.sleep(1500);
-                        }
-                    });
-                } catch (InvocationTargetException consumed) {
-                } catch (InterruptedException consumed) {
-                }
-
-                cmp_Primitives[0].load(false);
+                treeParts[0].getTree().showItem(treeParts[0].getTree().getItem(0));
 
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                 messageBox.setText(I18n.DIALOG_SyncTitle);
