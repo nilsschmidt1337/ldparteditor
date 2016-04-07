@@ -188,18 +188,20 @@ public final class GData1 extends GData {
                                     GData.CACHE_parsedFilesSource.get(gd1.name), gd1.name, gd1.shortName, depth, gd1.negativeDeterminant, Matrix4f.mul(this.productMatrix, gd1.localMatrix, null),
                                     Matrix.mul(this.accurateProductMatrix, gd1.accurateLocalMatrix), datFile, this.firstRef, false, errorCheckOnly, alreadyParsed, this);
                             alreadyParsed.remove(gd1.shortName);
-                            this.boundingBoxMin.x = Math.min(this.boundingBoxMin.x, newGdata1.boundingBoxMin.x);
-                            this.boundingBoxMin.y = Math.min(this.boundingBoxMin.y, newGdata1.boundingBoxMin.y);
-                            this.boundingBoxMin.z = Math.min(this.boundingBoxMin.z, newGdata1.boundingBoxMin.z);
-                            this.boundingBoxMin.x = Math.min(this.boundingBoxMin.x, newGdata1.boundingBoxMax.x);
-                            this.boundingBoxMin.y = Math.min(this.boundingBoxMin.y, newGdata1.boundingBoxMax.y);
-                            this.boundingBoxMin.z = Math.min(this.boundingBoxMin.z, newGdata1.boundingBoxMax.z);
-                            this.boundingBoxMax.x = Math.max(this.boundingBoxMax.x, newGdata1.boundingBoxMin.x);
-                            this.boundingBoxMax.y = Math.max(this.boundingBoxMax.y, newGdata1.boundingBoxMin.y);
-                            this.boundingBoxMax.z = Math.max(this.boundingBoxMax.z, newGdata1.boundingBoxMin.z);
-                            this.boundingBoxMax.x = Math.max(this.boundingBoxMax.x, newGdata1.boundingBoxMax.x);
-                            this.boundingBoxMax.y = Math.max(this.boundingBoxMax.y, newGdata1.boundingBoxMax.y);
-                            this.boundingBoxMax.z = Math.max(this.boundingBoxMax.z, newGdata1.boundingBoxMax.z);
+                            if (newGdata1.boundingBoxMin.x != Float.MAX_VALUE) {
+                                this.boundingBoxMin.x = Math.min(this.boundingBoxMin.x, newGdata1.boundingBoxMin.x);
+                                this.boundingBoxMin.y = Math.min(this.boundingBoxMin.y, newGdata1.boundingBoxMin.y);
+                                this.boundingBoxMin.z = Math.min(this.boundingBoxMin.z, newGdata1.boundingBoxMin.z);
+                                this.boundingBoxMin.x = Math.min(this.boundingBoxMin.x, newGdata1.boundingBoxMax.x);
+                                this.boundingBoxMin.y = Math.min(this.boundingBoxMin.y, newGdata1.boundingBoxMax.y);
+                                this.boundingBoxMin.z = Math.min(this.boundingBoxMin.z, newGdata1.boundingBoxMax.z);
+                                this.boundingBoxMax.x = Math.max(this.boundingBoxMax.x, newGdata1.boundingBoxMin.x);
+                                this.boundingBoxMax.y = Math.max(this.boundingBoxMax.y, newGdata1.boundingBoxMin.y);
+                                this.boundingBoxMax.z = Math.max(this.boundingBoxMax.z, newGdata1.boundingBoxMin.z);
+                                this.boundingBoxMax.x = Math.max(this.boundingBoxMax.x, newGdata1.boundingBoxMax.x);
+                                this.boundingBoxMax.y = Math.max(this.boundingBoxMax.y, newGdata1.boundingBoxMax.y);
+                                this.boundingBoxMax.z = Math.max(this.boundingBoxMax.z, newGdata1.boundingBoxMax.z);
+                            }
                             res_gdata = newGdata1;
                             break;
                         case 2:
@@ -252,18 +254,20 @@ public final class GData1 extends GData {
                             GData.parsedLines.put(key3, gdata);
                             if (gdata.type() == 1) {
                                 GData1 newGdata1 = (GData1) gdata;
-                                this.boundingBoxMin.x = Math.min(this.boundingBoxMin.x, newGdata1.boundingBoxMin.x);
-                                this.boundingBoxMin.y = Math.min(this.boundingBoxMin.y, newGdata1.boundingBoxMin.y);
-                                this.boundingBoxMin.z = Math.min(this.boundingBoxMin.z, newGdata1.boundingBoxMin.z);
-                                this.boundingBoxMin.x = Math.min(this.boundingBoxMin.x, newGdata1.boundingBoxMax.x);
-                                this.boundingBoxMin.y = Math.min(this.boundingBoxMin.y, newGdata1.boundingBoxMax.y);
-                                this.boundingBoxMin.z = Math.min(this.boundingBoxMin.z, newGdata1.boundingBoxMax.z);
-                                this.boundingBoxMax.x = Math.max(this.boundingBoxMax.x, newGdata1.boundingBoxMin.x);
-                                this.boundingBoxMax.y = Math.max(this.boundingBoxMax.y, newGdata1.boundingBoxMin.y);
-                                this.boundingBoxMax.z = Math.max(this.boundingBoxMax.z, newGdata1.boundingBoxMin.z);
-                                this.boundingBoxMax.x = Math.max(this.boundingBoxMax.x, newGdata1.boundingBoxMax.x);
-                                this.boundingBoxMax.y = Math.max(this.boundingBoxMax.y, newGdata1.boundingBoxMax.y);
-                                this.boundingBoxMax.z = Math.max(this.boundingBoxMax.z, newGdata1.boundingBoxMax.z);
+                                if (newGdata1.boundingBoxMin.x != Float.MAX_VALUE) {
+                                    this.boundingBoxMin.x = Math.min(this.boundingBoxMin.x, newGdata1.boundingBoxMin.x);
+                                    this.boundingBoxMin.y = Math.min(this.boundingBoxMin.y, newGdata1.boundingBoxMin.y);
+                                    this.boundingBoxMin.z = Math.min(this.boundingBoxMin.z, newGdata1.boundingBoxMin.z);
+                                    this.boundingBoxMin.x = Math.min(this.boundingBoxMin.x, newGdata1.boundingBoxMax.x);
+                                    this.boundingBoxMin.y = Math.min(this.boundingBoxMin.y, newGdata1.boundingBoxMax.y);
+                                    this.boundingBoxMin.z = Math.min(this.boundingBoxMin.z, newGdata1.boundingBoxMax.z);
+                                    this.boundingBoxMax.x = Math.max(this.boundingBoxMax.x, newGdata1.boundingBoxMin.x);
+                                    this.boundingBoxMax.y = Math.max(this.boundingBoxMax.y, newGdata1.boundingBoxMin.y);
+                                    this.boundingBoxMax.z = Math.max(this.boundingBoxMax.z, newGdata1.boundingBoxMin.z);
+                                    this.boundingBoxMax.x = Math.max(this.boundingBoxMax.x, newGdata1.boundingBoxMax.x);
+                                    this.boundingBoxMax.y = Math.max(this.boundingBoxMax.y, newGdata1.boundingBoxMax.y);
+                                    this.boundingBoxMax.z = Math.max(this.boundingBoxMax.z, newGdata1.boundingBoxMax.z);
+                                }
                             }
                         } else {
                             gdata = new GData0(line);
