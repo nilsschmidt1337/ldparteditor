@@ -389,7 +389,7 @@ public enum ReferenceParser {
                 shortFilename = shortFilename.replaceAll("s\\\\", "S" + File.separator).replaceAll("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             } catch (Exception e) {
                 // Workaround for windows OS / JVM BUG
-                shortFilename = shortFilename.replace("s\\\\", "S" + File.separator).replace("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             if (showNotFoundWarning) {
                 if (alreadyParsed.contains(shortFilename)) {

@@ -262,7 +262,7 @@ public enum SubfileCompiler {
                             realFilename = realFilename.replaceAll("\\\\", File.separator); //$NON-NLS-1$
                         } catch (Exception e) {
                             // Workaround for windows OS / JVM BUG
-                            realFilename = realFilename.replace("\\\\", File.separator); //$NON-NLS-1$
+                            realFilename = realFilename.replace("\\", File.separator); //$NON-NLS-1$
                         }
                         String shortFilename = realFilename;
                         shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
@@ -271,7 +271,7 @@ public enum SubfileCompiler {
                             shortFilename = shortFilename.replaceAll("s\\\\", "S" + File.separator).replaceAll("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         } catch (Exception e) {
                             // Workaround for windows OS / JVM BUG
-                            shortFilename = shortFilename.replace("s\\\\", "S" + File.separator).replace("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         }
                         if (isValidName(Project.getProjectPath() + File.separator + "PARTS" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$ Neat trick to protect user data
                                 isValidName(Project.getProjectPath() + File.separator + "parts" + File.separator + shortFilename + ".tmp") || //$NON-NLS-1$ //$NON-NLS-2$
