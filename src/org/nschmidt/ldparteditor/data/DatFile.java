@@ -1256,7 +1256,7 @@ public final class DatFile {
             shortFilename = shortFilename.replaceAll("\\\\", File.separator); //$NON-NLS-1$
         } catch (Exception e) {
             // Workaround for windows OS / JVM BUG
-            shortFilename = shortFilename.replace("\\\\", File.separator); //$NON-NLS-1$
+            shortFilename = shortFilename.replace("\\", File.separator); //$NON-NLS-1$
         }
         if (type.equals(DatType.SUBPART)) {
             shortFilename = "S" + File.separator + shortFilename; //$NON-NLS-1$
