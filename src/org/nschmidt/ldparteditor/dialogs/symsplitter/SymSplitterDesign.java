@@ -144,7 +144,7 @@ class SymSplitterDesign extends Dialog {
         {
             Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {I18n.SYMSPLITTER_NotColourise, I18n.COLOURDIALOG_Colour});
+            cmb_colourise.setItems(new String[] {I18n.SYMSPLITTER_NotColourise, I18n.SYMSPLITTER_Colourise});
             cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_colourise.setText(cmb_colourise.getItem(ss.isColourise() ? 1 : 0));
             cmb_colourise.select(ss.isColourise() ? 1 : 0);
