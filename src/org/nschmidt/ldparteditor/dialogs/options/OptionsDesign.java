@@ -13,16 +13,19 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.keys.KeyDialog;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
@@ -206,195 +209,71 @@ class OptionsDesign extends ApplicationWindow {
             }
 
             CTabItem tItem2 = new CTabItem(tabFolder_Settings, SWT.NONE);
-            tItem2.setText(I18n.E3D_Selection);
+            tItem2.setText(I18n.COLOUR_CustomiseColours);
 
             {
-                final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
-                Composite cmp_bgArea = new Composite(cmp_scroll, SWT.NONE);
-                tItem2.setControl(cmp_scroll);
-                cmp_scroll.setContent(cmp_bgArea);
-                cmp_scroll.setExpandHorizontal(true);
-                cmp_scroll.setExpandVertical(true);
+                final Composite cmp_container = new Composite(tabFolder_Settings, SWT.NONE);
+                tItem2.setControl(cmp_container);
 
-                cmp_bgArea.setLayout(new GridLayout(3, false));
-                ((GridLayout) cmp_bgArea.getLayout()).verticalSpacing = 0;
-                ((GridLayout) cmp_bgArea.getLayout()).marginHeight = 0;
-                ((GridLayout) cmp_bgArea.getLayout()).marginWidth = 0;
+                cmp_container.setLayout(new GridLayout());
+                cmp_container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-                {
-                    Composite cmp_Dummy = new Composite(cmp_bgArea, SWT.NONE);
-                    cmp_Dummy.setLayout(new FillLayout(SWT.HORIZONTAL));
+                Label lbl_DoubleClick = new Label(cmp_container, I18n.I18N_RTL());
+                lbl_DoubleClick.setText(I18n.COLOUR_DoubleClick);
 
-                    Button btn_PreviousSelection = new Button(cmp_Dummy, SWT.NONE);
-                    btn_PreviousSelection.setImage(ResourceManager.getImage("icon8_previous.png")); //$NON-NLS-1$
-                    btn_PreviousSelection.setToolTipText(I18n.E3D_PreviousItem);
+                final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, Task.values().length + TextTask.values().length - 11);
 
-                    Button btn_NextSelection = new Button(cmp_Dummy, SWT.NONE);
-                    btn_NextSelection.setImage(ResourceManager.getImage("icon8_next.png")); //$NON-NLS-1$
-                    btn_NextSelection.setToolTipText(I18n.E3D_NextItem);
+                tree.setLinesVisible(true);
+                tree.setHeaderVisible(true);
+                tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-                    cmp_Dummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 3, 1));
-                }
+                TreeColumn trclmn_Description = new TreeColumn(tree, SWT.NONE);
+                trclmn_Description.setWidth(598);
+                trclmn_Description.setText(I18n.COLOUR_Description);
 
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_TextLine);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Composite cmp_LineSetup = new Composite(cmp_bgArea, SWT.NONE);
-                    cmp_LineSetup.setLayout(new GridLayout(1, false));
+                TreeColumn trclmn_Colour = new TreeColumn(tree, SWT.NONE);
+                trclmn_Colour.setWidth(100);
+                trclmn_Colour.setText(I18n.COLOUR_Colour);
 
-                    Text txt_Line = new Text(cmp_LineSetup, SWT.BORDER);
-                    txt_Line.setEnabled(false);
-                    txt_Line.setEditable(false);
-                    txt_Line.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+                TreeItem trtm_Editor3D = new TreeItem(tree, SWT.NONE);
+                trtm_Editor3D.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
+                trtm_Editor3D.setText(new String[] { I18n.KEYBOARD_Editor3D, "" }); //$NON-NLS-1$
+                trtm_Editor3D.setVisible(true);
 
-                    Button btn_moveAdjacentData2 = new Button(cmp_LineSetup, SWT.TOGGLE);
-                    btn_moveAdjacentData2.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
-                    btn_moveAdjacentData2.setText(I18n.E3D_MoveAdjacentData);
+                TreeItem trtm_EditorText = new TreeItem(tree, SWT.NONE);
+                trtm_EditorText.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
+                trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
+                trtm_EditorText.setVisible(true);
 
-                    cmp_LineSetup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.SEPARATOR | SWT.HORIZONTAL);
-                    lbl_Label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionX1);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setEnabled(false);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionY1);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setEnabled(false);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionZ1);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setEnabled(false);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionX2);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setEnabled(false);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionY2);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setEnabled(false);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionZ2);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setEnabled(false);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionX3);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setEnabled(false);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionY3);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setEnabled(false);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionZ3);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setEnabled(false);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionX4);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setEnabled(false);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionY4);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setEnabled(false);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionZ4);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setEnabled(false);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                cmp_scroll.setMinSize(cmp_bgArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, Task.INSERT_AT_CURSOR, true);
+                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddComment, Task.ADD_COMMENTS, true);
+
+                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Esc2, TextTask.EDITORTEXT_ESC, true);
+                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Inline, TextTask.EDITORTEXT_INLINE, true);
+
+                tree.build();
+
+                tree.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseDoubleClick(MouseEvent e) {
+                        final TreeItem selection;
+                        if (tree.getSelectionCount() == 1 && (selection = tree.getSelection()[0]).getData() != null) {
+                            ColorDialog dlg = new ColorDialog(getShell());
+                            // Change the title bar text
+                            dlg.setText(selection.getText(0));
+                            // Open the dialog and retrieve the selected color
+                            RGB rgb = dlg.open();
+                            if (rgb != null) {
+                                GColour refCol = new GColour(-1, rgb.red / 255f, rgb.green / 255f, rgb.blue / 255f, 1f);
+                                tree.build();
+                                tree.update();
+                            }
+                        }
+                    }
+                });
             }
 
+            /*
             CTabItem tItem3 = new CTabItem(tabFolder_Settings, SWT.NONE);
             tItem3.setText(I18n.E3D_BackgroundImage);
 
@@ -530,6 +409,7 @@ class OptionsDesign extends ApplicationWindow {
                 }
                 cmp_scroll.setMinSize(cmp_bgArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
             }
+             */
 
             tabFolder_Settings.setSelection(tItem);
         }
