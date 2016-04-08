@@ -145,6 +145,14 @@ public enum View {
     public static final float[] add_Object_Colour_g = new float[] { 0.6f };
     public static final float[] add_Object_Colour_b = new float[] { 0f };
 
+    public static final float[] origin_Colour_r = new float[] { 0f };
+    public static final float[] origin_Colour_g = new float[] { 0f };
+    public static final float[] origin_Colour_b = new float[] { 0f };
+
+    public static final float[] text_Colour_r = new float[] { 0f };
+    public static final float[] text_Colour_g = new float[] { 0f };
+    public static final float[] text_Colour_b = new float[] { 0f };
+
     public static final float[] primitive_background_Colour_r = new float[] { 1f };
     public static final float[] primitive_background_Colour_g = new float[] { 1f };
     public static final float[] primitive_background_Colour_b = new float[] { 1f };
