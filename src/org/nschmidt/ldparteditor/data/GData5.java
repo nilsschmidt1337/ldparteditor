@@ -729,13 +729,13 @@ public final class GData5 extends GData {
         } else {
             GL11.glLineWidth(View.lineWidthGL[0]);
             if (result > -1e-20f) {
-                GL11.glColor4f(0f, 0f, 0f, 1f);
+                GL11.glColor4f(View.condline_Colour_r[0], View.condline_Colour_g[0], View.condline_Colour_b[0], 1f);
                 wasShown = true;
             } else {
                 if (wasShown) {
-                    GL11.glColor4f(.553f, .22f, .789f, 1f);
+                    GL11.glColor4f(View.condline_shown_Colour_r[0], View.condline_shown_Colour_g[0], View.condline_shown_Colour_b[0], 1f);
                 } else {
-                    GL11.glColor4f(1f, .44f, .1f, 1f);
+                    GL11.glColor4f(View.condline_hidden_Colour_r[0], View.condline_hidden_Colour_g[0], View.condline_hidden_Colour_b[0], 1f);
                 }
             }
             GL11.glBegin(GL11.GL_LINES);
