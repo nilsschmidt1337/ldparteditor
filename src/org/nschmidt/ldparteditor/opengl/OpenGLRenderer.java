@@ -179,20 +179,20 @@ public class OpenGLRenderer {
 
         GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, BufferFactory.floatBuffer(new float[] { 0.1f, 0.1f, 0.1f, 1f }));
 
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.85f, 0.85f, 0.85f, 1f }));
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 0.5f, 0.5f, 0.5f, 1f }));
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.light1_Colour_r[0], View.light1_Colour_g[0], View.light1_Colour_b[0], 1f }));
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.light1_specular_Colour_r[0], View.light1_specular_Colour_g[0], View.light1_specular_Colour_b[0], 1f }));
         GL11.glLightf(GL11.GL_LIGHT0, GL11.GL_LINEAR_ATTENUATION, .001f);
 
-        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.27f, 0.27f, 0.27f, 1f }));
-        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 0.0f, 0.0f, 0.0f, 1f }));
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.light2_Colour_r[0], View.light2_Colour_g[0], View.light2_Colour_b[0], 1f }));
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.light2_specular_Colour_r[0], View.light2_specular_Colour_g[0], View.light2_specular_Colour_b[0], 1f }));
         GL11.glLightf(GL11.GL_LIGHT1, GL11.GL_LINEAR_ATTENUATION, .001f);
 
-        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.27f, 0.27f, 0.27f, 1f }));
-        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 0.0f, 0.0f, 0.0f, 1f }));
+        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.light3_Colour_r[0], View.light3_Colour_g[0], View.light3_Colour_b[0], 1f }));
+        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.light3_specular_Colour_r[0], View.light3_specular_Colour_g[0], View.light3_specular_Colour_b[0], 1f }));
         GL11.glLightf(GL11.GL_LIGHT2, GL11.GL_LINEAR_ATTENUATION, .001f);
 
-        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { 0.27f, 0.27f, 0.27f, 1f }));
-        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 0.0f, 0.0f, 0.0f, 1f }));
+        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.light4_Colour_r[0], View.light4_Colour_g[0], View.light4_Colour_b[0], 1f }));
+        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.light4_specular_Colour_r[0], View.light4_specular_Colour_g[0], View.light4_specular_Colour_b[0], 1f }));
         GL11.glLightf(GL11.GL_LIGHT3, GL11.GL_LINEAR_ATTENUATION, .001f);
 
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
