@@ -101,10 +101,6 @@ public enum View {
     public static final float[] background_Colour_g = new float[] { 1f };
     public static final float[] background_Colour_b = new float[] { 1f };
 
-    public static final float[] primitive_background_Colour_r = new float[] { 1f };
-    public static final float[] primitive_background_Colour_g = new float[] { 1f };
-    public static final float[] primitive_background_Colour_b = new float[] { 1f };
-
     public static final float[] light1_Colour_r = new float[] { 0.85f };
     public static final float[] light1_Colour_g = new float[] { 0.85f };
     public static final float[] light1_Colour_b = new float[] { 0.85f };
@@ -136,6 +132,22 @@ public enum View {
     public static final float[] light4_specular_Colour_r = new float[] { 0f };
     public static final float[] light4_specular_Colour_g = new float[] { 0f };
     public static final float[] light4_specular_Colour_b = new float[] { 0f };
+
+    public static final float[] manipulator_selected_Colour_r = new float[] { 0.75f };
+    public static final float[] manipulator_selected_Colour_g = new float[] { 0.75f };
+    public static final float[] manipulator_selected_Colour_b = new float[] { 0f };
+
+    public static final float[] lineWidth1000 = new float[] { 100f };
+    public static final float[] lineWidth = new float[] { .100f };
+    public static final float[] lineWidthGL = new float[] { 1.5f };
+
+    public static final float[] add_Object_Colour_r = new float[] { 1f };
+    public static final float[] add_Object_Colour_g = new float[] { 0.6f };
+    public static final float[] add_Object_Colour_b = new float[] { 0f };
+
+    public static final float[] primitive_background_Colour_r = new float[] { 1f };
+    public static final float[] primitive_background_Colour_g = new float[] { 1f };
+    public static final float[] primitive_background_Colour_b = new float[] { 1f };
 
     public static final float[] primitive_light1_Colour_r = new float[] { 0.8f };
     public static final float[] primitive_light1_Colour_g = new float[] { 0.8f };
@@ -172,18 +184,6 @@ public enum View {
     public static final float[] primitive_plusNminus_Colour_r = new float[] { 1f };
     public static final float[] primitive_plusNminus_Colour_g = new float[] { 1f };
     public static final float[] primitive_plusNminus_Colour_b = new float[] { 1f };
-
-    public static final float[] manipulator_selected_Colour_r = new float[] { 0.75f };
-    public static final float[] manipulator_selected_Colour_g = new float[] { 0.75f };
-    public static final float[] manipulator_selected_Colour_b = new float[] { 0f };
-
-    public static final float[] lineWidth1000 = new float[] { 100f };
-    public static final float[] lineWidth = new float[] { .100f };
-    public static final float[] lineWidthGL = new float[] { 1.5f };
-
-    public static final float[] add_Object_Colour_r = new float[] { 1f };
-    public static final float[] add_Object_Colour_g = new float[] { 0.6f };
-    public static final float[] add_Object_Colour_b = new float[] { 0f };
 
     public final static Set<PGData3> FRONT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_FRONT, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
     public final static Set<PGData3> BACK = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BACK, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
