@@ -58,6 +58,7 @@ public final class I18n {
     private static final ResourceBundle COPYNPASTE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CopyAndPaste", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle DIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Dialog", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle E3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Editor3D", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle COLOUR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Colour", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle COLOURDIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.ColourDialog", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle COMPOSITETAB = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CompositeTab", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle COORDINATESDIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CoordinatesDialog", MyLanguage.LOCALE); //$NON-NLS-1$
@@ -137,6 +138,11 @@ public final class I18n {
     public static final String COLOURDIALOG_DirectColour = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_ShowColourTable = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_StandardColours = COLOURDIALOG.getString(getProperty());
+    public static final String COLOUR_Colour = COLOUR.getString(getProperty());
+    public static final String COLOUR_CustomiseColours = COLOUR.getString(getProperty());
+    public static final String COLOUR_Description = COLOUR.getString(getProperty());
+    public static final String COLOUR_DoubleClick = COLOUR.getString(getProperty());
+    public static final String COLOUR_VertexColour = COLOUR.getString(getProperty());
     public static final String COMPOSITETAB_Description = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_Errors = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_FileEncodingError = COMPOSITETAB.getString(getProperty());
