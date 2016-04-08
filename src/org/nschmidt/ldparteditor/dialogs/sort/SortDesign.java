@@ -103,6 +103,9 @@ class SortDesign extends Dialog {
         cmb_sortCriteria.select(2);
         criteria = 2;
 
+        // FIXME Needs translation / implementation!
+        new Button(cmp_container, SWT.CHECK).setText("Ignore the structure (comments, etc.)"); //$NON-NLS-1$
+
         cmp_container.pack();
         return cmp_container;
     }
