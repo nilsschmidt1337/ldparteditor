@@ -119,9 +119,9 @@ public class CompositePrimitive extends Composite {
 
     private float rotationWidth = 300f;
 
-    private AtomicBoolean dontRefresh = new AtomicBoolean(false);
-    private AtomicBoolean hasDrawn = new AtomicBoolean(false);
-    private AtomicBoolean stopDraw = new AtomicBoolean(true);
+    private volatile AtomicBoolean dontRefresh = new AtomicBoolean(false);
+    private volatile AtomicBoolean hasDrawn = new AtomicBoolean(false);
+    private volatile AtomicBoolean stopDraw = new AtomicBoolean(true);
 
     private final KeyStateManager keyboard = new KeyStateManager(this);
     private float maxY = 0f;

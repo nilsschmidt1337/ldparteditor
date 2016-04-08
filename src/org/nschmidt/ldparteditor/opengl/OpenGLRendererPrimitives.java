@@ -66,7 +66,7 @@ public class OpenGLRendererPrimitives {
         GL11.glDepthFunc(GL11.GL_LESS);
         GL11.glEnable(GL11.GL_STENCIL_TEST);
         GL11.glClearDepth(1.0f);
-        GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        GL11.glClearColor(View.primitive_background_Colour_r[0], View.primitive_background_Colour_g[0], View.primitive_background_Colour_b[0], 1.0f);
 
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
         GL11.glPointSize(4);
