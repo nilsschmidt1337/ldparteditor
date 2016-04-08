@@ -241,6 +241,14 @@ public enum View {
     public static final float[] primitive_categoryCell_2_Colour_g = new float[] { .5f };
     public static final float[] primitive_categoryCell_2_Colour_b = new float[] { .4f };
 
+    public static final float[] primitive_edge_Colour_r = new float[] { 0f };
+    public static final float[] primitive_edge_Colour_g = new float[] { 0f };
+    public static final float[] primitive_edge_Colour_b = new float[] { 0f };
+
+    public static final float[] primitive_condline_Colour_r = new float[] { 0f };
+    public static final float[] primitive_condline_Colour_g = new float[] { 0f };
+    public static final float[] primitive_condline_Colour_b = new float[] { 1f };
+
     public final static Set<PGData3> FRONT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_FRONT, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
     public final static Set<PGData3> BACK = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BACK, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
     public final static Set<PGData3> BOTTOM = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BOTTOM, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
