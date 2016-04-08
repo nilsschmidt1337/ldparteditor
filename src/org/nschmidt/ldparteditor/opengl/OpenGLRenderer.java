@@ -1844,9 +1844,9 @@ public class OpenGLRenderer {
                     GL11.glPushMatrix();
                     GL11.glTranslatef(ox - viewport_width, viewport_height - oy, 0f);
                     GL11.glMultMatrix(rotation);
-                    new Arrow(1f, 0f, 0f, 1f,l, 0f, 0f, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
-                    new Arrow(0f, 1f, 0f, 1f, 0f,l, 0f, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
-                    new Arrow(0f, 0f, 1f, 1f, 0f, 0f,l, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
+                    new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,  l, 0f, 0f, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
+                    new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,  l, 0f, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
+                    new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,  l, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
                     GL11.glPopMatrix();
                 }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
