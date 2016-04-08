@@ -1792,7 +1792,7 @@ public class OpenGLRenderer {
                 // Origin
                 GL11.glLineWidth(2f);
                 GL11.glBegin(GL11.GL_LINES);
-                GL11.glColor3f(0f, 0f, 0f);
+                GL11.glColor3f(View.origin_Colour_r[0], View.origin_Colour_g[0], View.origin_Colour_b[0]);
                 GL11.glVertex3f(viewport_origin_axis[0].x, viewport_origin_axis[0].y, viewport_origin_axis[0].z + z_offset);
                 GL11.glVertex3f(viewport_origin_axis[1].x, viewport_origin_axis[1].y, viewport_origin_axis[1].z + z_offset);
                 GL11.glVertex3f(viewport_origin_axis[2].x, viewport_origin_axis[2].y, viewport_origin_axis[2].z + z_offset);
@@ -1851,6 +1851,7 @@ public class OpenGLRenderer {
                 }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 if (c3d.isShowingLabels() && c3d.isClassicPerspective()) {
+                    PGData3.beginDrawText();
                     switch (c3d.getPerspectiveIndex()) {
                     case FRONT:
                         for (PGData3 tri : View.FRONT) {
@@ -1886,6 +1887,7 @@ public class OpenGLRenderer {
                     default:
                         break;
                     }
+                    PGData3.endDrawText();
                 }
                 if (Project.getFileToEdit().equals(c3d.getLockableDatFileReference())) {
                     if (Project.getFileToEdit().isReadOnly()) {

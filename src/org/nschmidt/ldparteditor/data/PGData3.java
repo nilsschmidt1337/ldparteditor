@@ -181,12 +181,16 @@ public final class PGData3 extends PGData implements Serializable {
             GL11.glEnd();
         }
     }
-    public void drawText(float x, float y, float z) {
-        GL11.glColor4f(0f, 0f, 0f, 1f);
+    public static void beginDrawText() {
+        GL11.glColor4f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0], 1f);
         GL11.glBegin(GL11.GL_TRIANGLES);
+    }
+    public void drawText(float x, float y, float z) {
         GL11.glVertex3f(-x1 + x, y1 + y, z1 + z);
         GL11.glVertex3f(-x3 + x, y3 + y, z3 + z);
         GL11.glVertex3f(-x2 + x, y2 + y, z2 + z);
+    }
+    public static void endDrawText() {
         GL11.glEnd();
     }
     public static PGData3 clone(PGData3 o) {
