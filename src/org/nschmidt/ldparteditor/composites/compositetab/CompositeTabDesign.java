@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -117,6 +118,8 @@ class CompositeTabDesign extends CTabItem {
             gd_compositeText.minimumWidth = 50;
             compositeText.setLayoutData(gd_compositeText);
 
+            compositeText.setBackground(Colour.text_background);
+            compositeText.setForeground(Colour.text_foreground);
             compositeText.setFont(Font.MONOSPACE);
             compositeText.setLineSpacing(0);
 

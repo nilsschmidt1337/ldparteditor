@@ -1358,4 +1358,10 @@ public class CompositeTab extends CompositeTabDesign {
         lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     }
 
+    public void updateColours() {
+        this.state.getTab().compositeText[0].setBackground(Colour.text_background);
+        this.state.getTab().compositeText[0].setForeground(Colour.text_foreground);
+        this.state.getTab().compositeText[0].redrawRange(0, this.state.getTab().compositeText[0].getText().length(), false);
+    }
+
 }
