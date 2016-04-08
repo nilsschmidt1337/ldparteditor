@@ -48,6 +48,10 @@ public enum Colour {
     public static org.eclipse.swt.graphics.Color line_quad_font = SWTResourceManager.getColor(187, 24, 41);
     /** The main font colour of font borders */
     public static org.eclipse.swt.graphics.Color line_box_font = SWTResourceManager.getColor(24, 24, 24);
+    /** The main background colour of the text */
+    public static org.eclipse.swt.graphics.Color text_background = SWTResourceManager.getColor(255, 255, 255);
+    /** The main foreground colour of the text */
+    public static org.eclipse.swt.graphics.Color text_foreground = SWTResourceManager.getColor(0, 0, 0);
 
     /**
      * Disposes all colours
@@ -64,6 +68,8 @@ public enum Colour {
         line_quad_font.dispose();
         line_colourAttr_font.dispose();
         line_box_font.dispose();
+        text_background.dispose();
+        text_foreground.dispose();
     }
 
     /**

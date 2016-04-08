@@ -1,6 +1,5 @@
 package org.nschmidt.ldparteditor.dialogs.options;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -9,12 +8,10 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -24,15 +21,18 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.keys.KeyDialog;
+import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeColumn;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
@@ -41,6 +41,11 @@ class OptionsDesign extends ApplicationWindow {
 
     private HashSet<Task>  s1 = new HashSet<Task>();
     private HashSet<TextTask> s2 = new HashSet<TextTask>();
+
+    private enum ColourType {
+        SWT_COLOUR,
+        OPENGL_COLOUR
+    }
 
     {
         s1.add(Task.COLOUR_NUMBER0);
@@ -265,6 +270,11 @@ class OptionsDesign extends ApplicationWindow {
                             RGB rgb = dlg.open();
                             if (rgb != null) {
                                 GColour refCol = new GColour(-1, rgb.red / 255f, rgb.green / 255f, rgb.blue / 255f, 1f);
+                                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                    for (CTabItem t : w.getTabFolder().getItems()) {
+                                        ((CompositeTab) t).updateColours();
+                                    }
+                                }
                                 tree.build();
                                 tree.update();
                             }
