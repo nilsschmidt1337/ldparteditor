@@ -303,7 +303,7 @@ public class OpenGLRendererPrimitives {
 
     private void drawPlus(float x, float y) {
         drawSignBackground(x, y);
-        GL11.glColor4f(1f, 1f, 1f, 1f);
+        GL11.glColor4f(View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0], 1f);
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glNormal3f(0f, 0f, 1f);
         GL11.glVertex3f(x + 14f, y + 15.75f, 0f);
@@ -320,7 +320,7 @@ public class OpenGLRendererPrimitives {
 
     private void drawMinus(float x, float y) {
         drawSignBackground(x, y);
-        GL11.glColor4f(1f, 1f, 1f, 1f);
+        GL11.glColor4f(View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0], 1f);
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glNormal3f(0f, 0f, 1f);
         GL11.glVertex3f(x + 14f, y + 15.75f, 0f);

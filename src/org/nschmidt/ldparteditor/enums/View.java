@@ -169,6 +169,10 @@ public enum View {
     public static final float[] primitive_light4_specular_Colour_g = new float[] { 0f };
     public static final float[] primitive_light4_specular_Colour_b = new float[] { 0f };
 
+    public static final float[] primitive_plusNminus_Colour_r = new float[] { 1f };
+    public static final float[] primitive_plusNminus_Colour_g = new float[] { 1f };
+    public static final float[] primitive_plusNminus_Colour_b = new float[] { 1f };
+
     public static final float[] manipulator_selected_Colour_r = new float[] { 0.75f };
     public static final float[] manipulator_selected_Colour_g = new float[] { 0.75f };
     public static final float[] manipulator_selected_Colour_b = new float[] { 0f };
