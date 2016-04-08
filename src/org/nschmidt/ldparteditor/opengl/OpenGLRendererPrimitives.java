@@ -285,18 +285,18 @@ public class OpenGLRendererPrimitives {
 
     private void drawCell(float x, float y, boolean selected, boolean category, boolean focused) {
         if (selected) {
-            drawRoundRectangle(x, y, 20f, 20f, 5f, 1f, .3f, .3f);
+            drawRoundRectangle(x, y, 20f, 20f, 5f, View.primitive_selectedCell_Colour_r[0], View.primitive_selectedCell_Colour_g[0], View.primitive_selectedCell_Colour_b[0]);
         } else if (focused) {
-            drawRoundRectangle(x, y, 20f, 20f, 5f, .6f, .6f, 1f);
+            drawRoundRectangle(x, y, 20f, 20f, 5f, View.primitive_focusedCell_Colour_r[0], View.primitive_focusedCell_Colour_g[0], View.primitive_focusedCell_Colour_b[0]);
         } else {
-            drawRoundRectangle(x, y, 20f, 20f, 5f, .3f, .3f, .3f);
+            drawRoundRectangle(x, y, 20f, 20f, 5f, View.primitive_normalCell_Colour_r[0], View.primitive_normalCell_Colour_g[0], View.primitive_normalCell_Colour_b[0]);
         }
         if (category) {
-            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, .6f, .4f, .3f);
-            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, .7f, .5f, .4f);
+            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, View.primitive_categoryCell_1_Colour_r[0], View.primitive_categoryCell_1_Colour_g[0], View.primitive_categoryCell_1_Colour_b[0]);
+            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, View.primitive_categoryCell_2_Colour_r[0], View.primitive_categoryCell_2_Colour_g[0], View.primitive_categoryCell_2_Colour_b[0]);
         } else {
-            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, .7f, .7f, .7f);
-            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, 1f, 1f, 1f);
+            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, View.primitive_cell_1_Colour_r[0], View.primitive_cell_1_Colour_g[0], View.primitive_cell_1_Colour_b[0]);
+            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, View.primitive_cell_2_Colour_r[0], View.primitive_cell_2_Colour_g[0], View.primitive_cell_2_Colour_b[0]);
         }
     }
 
@@ -314,7 +314,6 @@ public class OpenGLRendererPrimitives {
         GL11.glVertex3f(x + 15.25f, y + 14.6f, 0f);
         GL11.glVertex3f(x + 15.25f, y + 16.4f, 0f);
         GL11.glEnd();
-
     }
 
     private void drawMinus(float x, float y) {
@@ -330,8 +329,8 @@ public class OpenGLRendererPrimitives {
     }
 
     private void drawSignBackground(float x, float y) {
-        drawRoundRectangle(x + 13.2f, y + 13.6f, 4f, 4f, .5f, 1f, 1f, 1f);
-        drawRoundRectangle(x + 13.3f, y + 13.7f, 3.6f, 3.6f, .5f, .2f, .2f, 1f);
+        drawRoundRectangle(x + 13.2f, y + 13.6f, 4f, 4f, .5f, View.primitive_signBG_Colour_r[0], View.primitive_signBG_Colour_g[0], View.primitive_signBG_Colour_b[0]);
+        drawRoundRectangle(x + 13.3f, y + 13.7f, 3.6f, 3.6f, .5f, View.primitive_signFG_Colour_r[0], View.primitive_signFG_Colour_g[0], View.primitive_signFG_Colour_b[0]);
     }
     private void drawRoundRectangle(float x, float y,float width, float height, float radius, float r, float g, float b) {
 

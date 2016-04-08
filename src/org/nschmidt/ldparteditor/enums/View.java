@@ -201,9 +201,45 @@ public enum View {
     public static final float[] primitive_light4_specular_Colour_g = new float[] { 0f };
     public static final float[] primitive_light4_specular_Colour_b = new float[] { 0f };
 
+    public static final float[] primitive_signFG_Colour_r = new float[] { .2f };
+    public static final float[] primitive_signFG_Colour_g = new float[] { .2f };
+    public static final float[] primitive_signFG_Colour_b = new float[] { 1f };
+
+    public static final float[] primitive_signBG_Colour_r = new float[] { 1f };
+    public static final float[] primitive_signBG_Colour_g = new float[] { 1f };
+    public static final float[] primitive_signBG_Colour_b = new float[] { 1f };
+
     public static final float[] primitive_plusNminus_Colour_r = new float[] { 1f };
     public static final float[] primitive_plusNminus_Colour_g = new float[] { 1f };
     public static final float[] primitive_plusNminus_Colour_b = new float[] { 1f };
+
+    public static final float[] primitive_selectedCell_Colour_r = new float[] { 1f };
+    public static final float[] primitive_selectedCell_Colour_g = new float[] { .3f };
+    public static final float[] primitive_selectedCell_Colour_b = new float[] { .3f };
+
+    public static final float[] primitive_focusedCell_Colour_r = new float[] { .6f };
+    public static final float[] primitive_focusedCell_Colour_g = new float[] { .6f };
+    public static final float[] primitive_focusedCell_Colour_b = new float[] { 1f };
+
+    public static final float[] primitive_normalCell_Colour_r = new float[] { .3f };
+    public static final float[] primitive_normalCell_Colour_g = new float[] { .3f };
+    public static final float[] primitive_normalCell_Colour_b = new float[] { .3f };
+
+    public static final float[] primitive_cell_1_Colour_r = new float[] { .7f };
+    public static final float[] primitive_cell_1_Colour_g = new float[] { .7f };
+    public static final float[] primitive_cell_1_Colour_b = new float[] { .7f };
+
+    public static final float[] primitive_cell_2_Colour_r = new float[] { 1f };
+    public static final float[] primitive_cell_2_Colour_g = new float[] { 1f };
+    public static final float[] primitive_cell_2_Colour_b = new float[] { 1f };
+
+    public static final float[] primitive_categoryCell_1_Colour_r = new float[] { .6f };
+    public static final float[] primitive_categoryCell_1_Colour_g = new float[] { .4f };
+    public static final float[] primitive_categoryCell_1_Colour_b = new float[] { .3f };
+
+    public static final float[] primitive_categoryCell_2_Colour_r = new float[] { .7f };
+    public static final float[] primitive_categoryCell_2_Colour_g = new float[] { .5f };
+    public static final float[] primitive_categoryCell_2_Colour_b = new float[] { .4f };
 
     public final static Set<PGData3> FRONT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_FRONT, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
     public final static Set<PGData3> BACK = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BACK, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
