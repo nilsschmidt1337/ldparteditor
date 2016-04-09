@@ -77,7 +77,6 @@ public enum WorkbenchManager {
      * Loads the workbench from config.gz
      */
     public static void loadWorkbench() {
-        Colour.loadColours();
         ObjectInputStream configFileStream = null;
         try {
             File configGzFile = new File("config.gz"); //$NON-NLS-1$
@@ -89,6 +88,7 @@ public enum WorkbenchManager {
                 WorkbenchManager.userSettingState.loadShortkeys();
                 Manipulator.setSnap(WorkbenchManager.userSettingState.getMedium_move_snap(), WorkbenchManager.userSettingState.getMedium_rotate_snap(),
                         WorkbenchManager.userSettingState.getMedium_scale_snap());
+                Colour.loadColours();
                 try {
                     WorkbenchManager.primitiveCache = (PrimitiveCache) configFileStream.readObject();
                 } catch (Exception e) {
