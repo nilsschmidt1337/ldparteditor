@@ -118,8 +118,8 @@ class CompositeTabDesign extends CTabItem {
             gd_compositeText.minimumWidth = 50;
             compositeText.setLayoutData(gd_compositeText);
 
-            compositeText.setBackground(Colour.text_background);
-            compositeText.setForeground(Colour.text_foreground);
+            compositeText.setBackground(Colour.text_background[0]);
+            compositeText.setForeground(Colour.text_foreground[0]);
             compositeText.setFont(Font.MONOSPACE);
             compositeText.setLineSpacing(0);
 
