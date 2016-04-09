@@ -959,7 +959,7 @@ public class CompositeTab extends CompositeTabDesign {
                 int caret_offset = event.caretOffset;
                 state.currentLineIndex = compositeText[0].getLineAtOffset(caret_offset);
                 if (compositeText[0].getSelectionCount() == 0) {
-                    compositeText[0].setLineBackground(state.currentLineIndex, 1, Colour.line_highlight_background);
+                    compositeText[0].setLineBackground(state.currentLineIndex, 1, Colour.line_highlight_background[0]);
                 }
                 if (state.isReplacingVertex()) {
                     state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SyncEdit); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1359,8 +1359,8 @@ public class CompositeTab extends CompositeTabDesign {
     }
 
     public void updateColours() {
-        this.state.getTab().compositeText[0].setBackground(Colour.text_background);
-        this.state.getTab().compositeText[0].setForeground(Colour.text_foreground);
+        this.state.getTab().compositeText[0].setBackground(Colour.text_background[0]);
+        this.state.getTab().compositeText[0].setForeground(Colour.text_foreground[0]);
         this.state.getTab().compositeText[0].redrawRange(0, this.state.getTab().compositeText[0].getText().length(), false);
     }
 
