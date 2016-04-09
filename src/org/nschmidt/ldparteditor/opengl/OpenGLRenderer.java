@@ -1449,7 +1449,7 @@ public class OpenGLRenderer {
                     new Arc(c.getR(), c.getG(), c.getB(), 1f, manipulator.getXaxis().x, manipulator.getXaxis().y, manipulator.getXaxis().z, rotateSize, arcWidth).draw(mx, my, mz, zoom);
 
                     if (manipulator.isX_Rotate()) {
-                        c = manipulator.checkManipulatorStatus(.5f, 0f, 0f, Manipulator.X_ROTATE_ARROW, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(View.manipulator_x_axis_Colour_r[0], View.manipulator_x_axis_Colour_g[0], View.manipulator_x_axis_Colour_b[0], Manipulator.X_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getX_RotateArrow().x, rotateSize * manipulator.getX_RotateArrow().y, rotateSize * manipulator.getX_RotateArrow().z, cone_height, cone_width, lineWidth)
                         .draw(mx, my, mz, zoom);
                     }
@@ -1458,7 +1458,7 @@ public class OpenGLRenderer {
                     new Arc(c.getR(), c.getG(), c.getB(), 1f, manipulator.getYaxis().x, manipulator.getYaxis().y, manipulator.getYaxis().z, rotateSize, arcWidth).draw(mx, my, mz, zoom);
 
                     if (manipulator.isY_Rotate()) {
-                        c = manipulator.checkManipulatorStatus(0f, .5f, 0f, Manipulator.Y_ROTATE_ARROW, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(View.manipulator_y_axis_Colour_r[0], View.manipulator_y_axis_Colour_g[0], View.manipulator_y_axis_Colour_b[0], Manipulator.Y_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getY_RotateArrow().x, rotateSize * manipulator.getY_RotateArrow().y, rotateSize * manipulator.getY_RotateArrow().z, cone_height, cone_width, lineWidth)
                         .draw(mx, my, mz, zoom);
                     }
@@ -1467,18 +1467,18 @@ public class OpenGLRenderer {
                     new Arc(c.getR(), c.getG(), c.getB(), 1f, manipulator.getZaxis().x, manipulator.getZaxis().y, manipulator.getZaxis().z, rotateSize, arcWidth).draw(mx, my, mz, zoom);
 
                     if (manipulator.isZ_Rotate()) {
-                        c = manipulator.checkManipulatorStatus(0f, 0f, .5f, Manipulator.Z_ROTATE_ARROW, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(View.manipulator_z_axis_Colour_r[0], View.manipulator_z_axis_Colour_g[0], View.manipulator_z_axis_Colour_b[0], Manipulator.Z_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getZ_RotateArrow().x, rotateSize * manipulator.getZ_RotateArrow().y, rotateSize * manipulator.getZ_RotateArrow().z, cone_height, cone_width, lineWidth)
                         .draw(mx, my, mz, zoom);
                     }
 
                     Vector4f[] gen = c3d.getGenerator();
-                    new Circle(.3f, .3f, .3f, 1f, gen[2].x, gen[2].y, gen[2].z, rotateSize, circleWidth).draw(mx, my, mz, zoom);
-                    c = manipulator.checkManipulatorStatus(.85f, .85f, .85f, Manipulator.V_ROTATE, c3d, zoom);
+                    new Circle(View.manipulator_innerCircle_Colour_r[0], View.manipulator_innerCircle_Colour_g[0], View.manipulator_innerCircle_Colour_b[0], 1f, gen[2].x, gen[2].y, gen[2].z, rotateSize, circleWidth).draw(mx, my, mz, zoom);
+                    c = manipulator.checkManipulatorStatus(View.manipulator_outerCircle_Colour_r[0], View.manipulator_outerCircle_Colour_g[0], View.manipulator_outerCircle_Colour_b[0], Manipulator.V_ROTATE, c3d, zoom);
                     new Circle(c.getR(), c.getG(), c.getB(), 1f, gen[2].x, gen[2].y, gen[2].z, rotateOuterSize, circleWidth).draw(mx, my, mz, zoom);
 
                     if (manipulator.isV_Rotate()) {
-                        c = manipulator.checkManipulatorStatus(.7f, .7f, .7f, Manipulator.V_ROTATE_ARROW, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(View.manipulator_outerCircle_Colour_r[0], View.manipulator_outerCircle_Colour_g[0], View.manipulator_outerCircle_Colour_b[0], Manipulator.V_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateOuterSize * manipulator.getV_RotateArrow().x, rotateOuterSize * manipulator.getV_RotateArrow().y, rotateOuterSize * manipulator.getV_RotateArrow().z, cone_height, cone_width, lineWidth)
                         .draw(mx, my, mz, zoom);
                     }
@@ -1752,11 +1752,11 @@ public class OpenGLRenderer {
                 // Grid-1 and 10
                 for (int r = 0; r < 5; r += 4) {
                     if (r == 4) {
-                        GL11.glColor3f(.5f, .5f, .5f);
+                        GL11.glColor3f(View.grid10_Colour_r[0], View.grid10_Colour_g[0], View.grid10_Colour_b[0]);
                         z_offset = 1f;
                         GL11.glLineWidth(2f);
                     } else {
-                        GL11.glColor3f(0.15f, 0.15f, 0.15f);
+                        GL11.glColor3f(View.grid_Colour_r[0], View.grid_Colour_g[0], View.grid_Colour_b[0]);
                         z_offset = 0;
                         GL11.glLineWidth(1f);
                     }
