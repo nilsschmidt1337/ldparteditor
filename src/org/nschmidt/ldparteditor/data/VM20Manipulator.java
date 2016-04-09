@@ -704,7 +704,6 @@ public class VM20Manipulator extends VM19ColourChanger {
 
         if (tm == TransformationMode.SET) {
 
-            // FIXME Needs implementation for issue #148
             transformSelection(View.ACCURATE_ID, new Vector3d(x ? target.X : null,  y ? target.Y : null, z ? target.Z : null), moveAdjacentData);
 
         } else {

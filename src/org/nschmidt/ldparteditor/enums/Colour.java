@@ -76,14 +76,14 @@ public enum Colour {
      * Saves the editor colours
      */
     public static void saveColours() {
-
+     // FIXME Needs implementation!
     }
 
     /**
      * Loads the editor colours
      */
     public static void loadColours() {
-
+        // FIXME Needs implementation!
     }
 
     /**
