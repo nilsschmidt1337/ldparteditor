@@ -21,11 +21,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.keys.KeyDialog;
-import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -250,11 +248,11 @@ class OptionsDesign extends ApplicationWindow {
                 trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
                 trtm_EditorText.setVisible(true);
 
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, Task.INSERT_AT_CURSOR, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddComment, Task.ADD_COMMENTS, true);
+                registerColour(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, ColourType.SWT_COLOUR, new Object[]{});
+                registerColour(trtm_Editor3D, I18n.KEYBOARD_AddComment, ColourType.SWT_COLOUR, new Object[]{});
 
-                registerTask(trtm_EditorText, I18n.KEYBOARD_Esc2, TextTask.EDITORTEXT_ESC, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_Inline, TextTask.EDITORTEXT_INLINE, true);
+                registerColour(trtm_EditorText, I18n.KEYBOARD_Esc2, ColourType.SWT_COLOUR, new Object[]{});
+                registerColour(trtm_EditorText, I18n.KEYBOARD_Inline, ColourType.SWT_COLOUR, new Object[]{});
 
                 tree.build();
 
@@ -487,6 +485,22 @@ class OptionsDesign extends ApplicationWindow {
             trtm_newKey.setVisible(true);
             trtm_newKey.setData(new Object[]{t1, t2, key});
         }
+    }
+
+    private void registerColour(TreeItem parent, String description, ColourType type, Object[] colourObj) {
+        final StringBuilder sb = new StringBuilder();
+        switch (type) {
+        case OPENGL_COLOUR:
+            break;
+        case SWT_COLOUR:
+            break;
+        default:
+            break;
+        }
+        TreeItem trtm_newKey = new TreeItem(parent, SWT.PUSH);
+        trtm_newKey.setText(new String[] { description, sb.toString() });
+        trtm_newKey.setVisible(true);
+        trtm_newKey.setData(new Object[]{type, colourObj});
     }
 
     /**
