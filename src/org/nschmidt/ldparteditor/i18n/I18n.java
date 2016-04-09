@@ -165,6 +165,7 @@ public final class I18n {
     public static final String COLOUR_ManipulatorXaxisColour = COLOUR.getString(getProperty());
     public static final String COLOUR_ManipulatorYaxisColour = COLOUR.getString(getProperty());
     public static final String COLOUR_ManipulatorZaxisColour = COLOUR.getString(getProperty());
+    public static final String COLOUR_MeshLineColour = COLOUR.getString(getProperty());
     public static final String COLOUR_OriginColour = COLOUR.getString(getProperty());
     public static final String COLOUR_PrimitveBGColour = COLOUR.getString(getProperty());
     public static final String COLOUR_PrimitveCategoryCell1Colour = COLOUR.getString(getProperty());

@@ -265,6 +265,8 @@ class OptionsDesign extends ApplicationWindow {
                 registerColour(trtm_Editor3D, I18n.COLOUR_GridColour, ColourType.OPENGL_COLOUR, new Object[]{View.grid_Colour_r, View.grid_Colour_g, View.grid_Colour_b});
                 registerColour(trtm_Editor3D, I18n.COLOUR_Grid10Colour, ColourType.OPENGL_COLOUR, new Object[]{View.grid10_Colour_r, View.grid10_Colour_g, View.grid10_Colour_b});
 
+                registerColour(trtm_Editor3D, I18n.COLOUR_MeshLineColour, ColourType.OPENGL_COLOUR, new Object[]{View.meshline_Colour_r, View.meshline_Colour_g, View.meshline_Colour_b});
+
                 registerColour(trtm_Editor3D, I18n.COLOUR_AddObjectColour, ColourType.OPENGL_COLOUR, new Object[]{View.add_Object_Colour_r, View.add_Object_Colour_g, View.add_Object_Colour_b});
                 registerColour(trtm_Editor3D, I18n.COLOUR_CondlineColour, ColourType.OPENGL_COLOUR, new Object[]{View.condline_Colour_r, View.condline_Colour_g, View.condline_Colour_b});
                 registerColour(trtm_Editor3D, I18n.COLOUR_ShownCondlineColour, ColourType.OPENGL_COLOUR, new Object[]{View.condline_shown_Colour_r, View.condline_shown_Colour_g, View.condline_shown_Colour_b});

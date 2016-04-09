@@ -97,6 +97,10 @@ public enum View {
     public static final float[] line_Colour_g = new float[] { 0f };
     public static final float[] line_Colour_b = new float[] { 0f };
 
+    public static final float[] meshline_Colour_r = new float[] { 0f };
+    public static final float[] meshline_Colour_g = new float[] { 0f };
+    public static final float[] meshline_Colour_b = new float[] { 0f };
+
     public static final float[] condline_Colour_r = new float[] { 0f };
     public static final float[] condline_Colour_g = new float[] { 0f };
     public static final float[] condline_Colour_b = new float[] { 0f };
