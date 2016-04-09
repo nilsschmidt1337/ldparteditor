@@ -129,59 +129,59 @@ class OptionsDesign extends ApplicationWindow {
                 trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
                 trtm_EditorText.setVisible(true);
 
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, Task.INSERT_AT_CURSOR, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddComment, Task.ADD_COMMENTS, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddVertex, Task.ADD_VERTEX, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddLine, Task.ADD_LINE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddTriangle, Task.ADD_TRIANGLE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddQuad, Task.ADD_QUAD, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddCondline, Task.ADD_CONDLINE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Cut, Task.CUT, false);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Copy, Task.COPY, false);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Paste, Task.PASTE, false);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Delete, Task.DELETE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Esc1, Task.ESC, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_LMB, Task.LMB, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_MergeToAvg, Task.MERGE_TO_AVERAGE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_MergeToLast, Task.MERGE_TO_LAST, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_MMB, Task.MMB, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeCombined, Task.MODE_COMBINED, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeMove, Task.MODE_MOVE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeRotate, Task.MODE_ROTATE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeScale, Task.MODE_SCALE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeSelect, Task.MODE_SELECT, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ObjFace, Task.OBJ_FACE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ObjLine, Task.OBJ_LINE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ObjPrimitive, Task.OBJ_PRIMITIVE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ObjVertex, Task.OBJ_VERTEX, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ResetView, Task.RESET_VIEW, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_RMB, Task.RMB, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Save, Task.SAVE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectAll, Task.SELECT_ALL, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectAllWithSameColours, Task.SELECT_ALL_WITH_SAME_COLOURS, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectConnected, Task.SELECT_CONNECTED, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectNone, Task.SELECT_NONE, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectOptionWithSameColours, Task.SELECT_OPTION_WITH_SAME_COLOURS, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectTouching, Task.SELECT_TOUCHING, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ShowGrid, Task.SHOW_GRID, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ShowRuler, Task.SHOW_RULER, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Split, Task.SPLIT, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Undo, Task.UNDO, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Redo, Task.REDO, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ZoomIn, Task.ZOOM_IN, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ZoomOut, Task.ZOOM_OUT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, Task.INSERT_AT_CURSOR, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddComment, Task.ADD_COMMENTS, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddVertex, Task.ADD_VERTEX, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddLine, Task.ADD_LINE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddTriangle, Task.ADD_TRIANGLE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddQuad, Task.ADD_QUAD, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddCondline, Task.ADD_CONDLINE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_Cut, Task.CUT, false);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_Copy, Task.COPY, false);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_Paste, Task.PASTE, false);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_Delete, Task.DELETE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_Esc1, Task.ESC, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_LMB, Task.LMB, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MergeToAvg, Task.MERGE_TO_AVERAGE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MergeToLast, Task.MERGE_TO_LAST, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MMB, Task.MMB, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeCombined, Task.MODE_COMBINED, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeMove, Task.MODE_MOVE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeRotate, Task.MODE_ROTATE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeScale, Task.MODE_SCALE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeSelect, Task.MODE_SELECT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjFace, Task.OBJ_FACE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjLine, Task.OBJ_LINE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjPrimitive, Task.OBJ_PRIMITIVE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjVertex, Task.OBJ_VERTEX, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ResetView, Task.RESET_VIEW, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RMB, Task.RMB, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_Save, Task.SAVE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectAll, Task.SELECT_ALL, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectAllWithSameColours, Task.SELECT_ALL_WITH_SAME_COLOURS, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectConnected, Task.SELECT_CONNECTED, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectNone, Task.SELECT_NONE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectOptionWithSameColours, Task.SELECT_OPTION_WITH_SAME_COLOURS, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectTouching, Task.SELECT_TOUCHING, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ShowGrid, Task.SHOW_GRID, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ShowRuler, Task.SHOW_RULER, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_Split, Task.SPLIT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_Undo, Task.UNDO, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_Redo, Task.REDO, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ZoomIn, Task.ZOOM_IN, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ZoomOut, Task.ZOOM_OUT, true);
 
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Esc2, TextTask.EDITORTEXT_ESC, true);
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Inline, TextTask.EDITORTEXT_INLINE, true);
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_QuickFix, TextTask.EDITORTEXT_QUICKFIX, true);
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Redo, TextTask.EDITORTEXT_REDO, true);
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_ReplaceVertex, TextTask.EDITORTEXT_REPLACE_VERTEX, true);
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Round, TextTask.EDITORTEXT_ROUND, true);
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Save, TextTask.EDITORTEXT_SAVE, true);
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_SelectAll, TextTask.EDITORTEXT_SELECTALL, true);
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Undo, TextTask.EDITORTEXT_UNDO, true);
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_FindReplace, TextTask.EDITORTEXT_FIND, true);
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_InsertReference, TextTask.EDITORTEXT_INSERT_REFERENCE, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_Esc2, TextTask.EDITORTEXT_ESC, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_Inline, TextTask.EDITORTEXT_INLINE, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_QuickFix, TextTask.EDITORTEXT_QUICKFIX, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_Redo, TextTask.EDITORTEXT_REDO, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_ReplaceVertex, TextTask.EDITORTEXT_REPLACE_VERTEX, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_Round, TextTask.EDITORTEXT_ROUND, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_Save, TextTask.EDITORTEXT_SAVE, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_SelectAll, TextTask.EDITORTEXT_SELECTALL, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_Undo, TextTask.EDITORTEXT_UNDO, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_FindReplace, TextTask.EDITORTEXT_FIND, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_InsertReference, TextTask.EDITORTEXT_INSERT_REFERENCE, true);
 
                 if (s1.size() != Task.values().length || s2.size() != TextTask.values().length) {
                     throw new AssertionError("Not all shortkey items are covered by this dialog! Please fix it"); //$NON-NLS-1$
@@ -250,11 +250,11 @@ class OptionsDesign extends ApplicationWindow {
                 trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
                 trtm_EditorText.setVisible(true);
 
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, Task.INSERT_AT_CURSOR, true);
-                registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AddComment, Task.ADD_COMMENTS, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, Task.INSERT_AT_CURSOR, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddComment, Task.ADD_COMMENTS, true);
 
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Esc2, TextTask.EDITORTEXT_ESC, true);
-                registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Inline, TextTask.EDITORTEXT_INLINE, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_Esc2, TextTask.EDITORTEXT_ESC, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_Inline, TextTask.EDITORTEXT_INLINE, true);
 
                 tree.build();
 
@@ -456,17 +456,17 @@ class OptionsDesign extends ApplicationWindow {
         return container;
     }
 
-    private void registerDoubleClickEvent(TreeItem parent, String description, Task t, boolean visibility) {
+    private void registerTask(TreeItem parent, String description, Task t, boolean visibility) {
         s1.add(t);
-        registerDoubleClickEvent(parent, description, t, null, visibility);
+        registerTask(parent, description, t, null, visibility);
     }
 
-    private void registerDoubleClickEvent(TreeItem parent, String description, TextTask t, boolean visibility) {
+    private void registerTask(TreeItem parent, String description, TextTask t, boolean visibility) {
         s2.add(t);
-        registerDoubleClickEvent(parent, description, null, t, visibility);
+        registerTask(parent, description, null, t, visibility);
     }
 
-    private void registerDoubleClickEvent(TreeItem parent, String description, Task t1, TextTask t2, boolean visibility) {
+    private void registerTask(TreeItem parent, String description, Task t1, TextTask t2, boolean visibility) {
 
         String keyCombination = ""; //$NON-NLS-1$
 
