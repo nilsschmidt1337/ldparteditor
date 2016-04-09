@@ -256,7 +256,19 @@ class OptionsDesign extends ApplicationWindow {
 
                 registerColour(trtm_Editor3D, I18n.COLOUR_VertexColour, ColourType.OPENGL_COLOUR, new Object[]{View.vertex_Colour_r, View.vertex_Colour_g, View.vertex_Colour_b});
 
-                registerColour(trtm_EditorText, I18n.COLOUR_VertexColour, ColourType.SWT_COLOUR, Colour.text_background);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorBGColour, ColourType.SWT_COLOUR, Colour.text_background);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorBoxColour, ColourType.SWT_COLOUR, Colour.line_box_font);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorColourAttrColour, ColourType.SWT_COLOUR, Colour.line_colourAttr_font);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorCommentColour, ColourType.SWT_COLOUR, Colour.line_comment_font);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorErrorUnderlineColour, ColourType.SWT_COLOUR, Colour.line_error_underline);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorFGColour, ColourType.SWT_COLOUR, Colour.text_foreground);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorHighlightBGColour, ColourType.SWT_COLOUR, Colour.line_highlight_background);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorHintUnderlineColour, ColourType.SWT_COLOUR, Colour.line_hint_underline);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorPrimaryColour, ColourType.SWT_COLOUR, Colour.line_primary_font);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorQuadColour, ColourType.SWT_COLOUR, Colour.line_quad_font);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorSecondaryColour, ColourType.SWT_COLOUR, Colour.line_secondary_font);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorSelectedBGColour, ColourType.SWT_COLOUR, Colour.line_highlight_selected_background);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorWarningUnderlineColour, ColourType.SWT_COLOUR, Colour.line_warning_underline);
 
                 tree.build();
 
