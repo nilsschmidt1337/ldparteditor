@@ -10,6 +10,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
@@ -25,6 +26,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.keys.KeyDialog;
+import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
@@ -253,10 +255,8 @@ class OptionsDesign extends ApplicationWindow {
                 trtm_EditorText.setVisible(true);
 
                 registerColour(trtm_Editor3D, I18n.COLOUR_VertexColour, ColourType.OPENGL_COLOUR, new Object[]{View.vertex_Colour_r, View.vertex_Colour_g, View.vertex_Colour_b});
-                registerColour(trtm_Editor3D, I18n.KEYBOARD_AddComment, ColourType.SWT_COLOUR, new Object[]{});
 
-                registerColour(trtm_EditorText, I18n.KEYBOARD_Esc2, ColourType.SWT_COLOUR, new Object[]{});
-                registerColour(trtm_EditorText, I18n.KEYBOARD_Inline, ColourType.SWT_COLOUR, new Object[]{});
+                registerColour(trtm_EditorText, I18n.COLOUR_VertexColour, ColourType.SWT_COLOUR, Colour.text_background);
 
                 tree.build();
 
@@ -283,6 +283,7 @@ class OptionsDesign extends ApplicationWindow {
                                     ((float[]) ((Object[]) colourObj[1])[2])[0] = refCol.getB();
                                     break;
                                 case SWT_COLOUR:
+                                    ((Color[]) colourObj[1])[0] = SWTResourceManager.getColor(rgb) ;
                                     break;
                                 default:
                                     break;
@@ -501,6 +502,7 @@ class OptionsDesign extends ApplicationWindow {
                         (int) (255f * ((float[])((Object[]) colourObj[1])[2])[0])));
                 break;
             case SWT_COLOUR:
+                key.setBackground(1, ((Color[]) colourObj[1])[0]);
                 break;
             default:
                 break;

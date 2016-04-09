@@ -77,9 +77,9 @@ public enum View {
     public static final float[] BFC_back__Colour_g = new float[] { 0f };
     public static final float[] BFC_back__Colour_b = new float[] { 0f };
 
-    public static final float[] BFC_uncertified__Colour_r = new float[] { 0f };
-    public static final float[] BFC_uncertified__Colour_g = new float[] { 0f };
-    public static final float[] BFC_uncertified__Colour_b = new float[] { 1f };
+    public static final float[] BFC_uncertified_Colour_r = new float[] { 0f };
+    public static final float[] BFC_uncertified_Colour_g = new float[] { 0f };
+    public static final float[] BFC_uncertified_Colour_b = new float[] { 1f };
 
     public static final float[] vertex_Colour_r = new float[] { 0.9f };
     public static final float[] vertex_Colour_g = new float[] { 0.9f };
@@ -149,6 +149,26 @@ public enum View {
     public static final float[] manipulator_selected_Colour_g = new float[] { 0.75f };
     public static final float[] manipulator_selected_Colour_b = new float[] { 0f };
 
+    public static final float[] manipulator_innerCircle_Colour_r = new float[] { .3f };
+    public static final float[] manipulator_innerCircle_Colour_g = new float[] { .3f };
+    public static final float[] manipulator_innerCircle_Colour_b = new float[] { .3f };
+
+    public static final float[] manipulator_outerCircle_Colour_r = new float[] { .85f };
+    public static final float[] manipulator_outerCircle_Colour_g = new float[] { .85f };
+    public static final float[] manipulator_outerCircle_Colour_b = new float[] { .85f };
+
+    public static final float[] manipulator_x_axis_Colour_r = new float[] { .5f };
+    public static final float[] manipulator_x_axis_Colour_g = new float[] { 0f };
+    public static final float[] manipulator_x_axis_Colour_b = new float[] { 0f };
+
+    public static final float[] manipulator_y_axis_Colour_r = new float[] { 0f };
+    public static final float[] manipulator_y_axis_Colour_g = new float[] { .5f };
+    public static final float[] manipulator_y_axis_Colour_b = new float[] { 0f };
+
+    public static final float[] manipulator_z_axis_Colour_r = new float[] { 0f };
+    public static final float[] manipulator_z_axis_Colour_g = new float[] { 0f };
+    public static final float[] manipulator_z_axis_Colour_b = new float[] { .5f };
+
     public static final float[] lineWidth1000 = new float[] { 100f };
     public static final float[] lineWidth = new float[] { .100f };
     public static final float[] lineWidthGL = new float[] { 1.5f };
@@ -160,6 +180,14 @@ public enum View {
     public static final float[] origin_Colour_r = new float[] { 0f };
     public static final float[] origin_Colour_g = new float[] { 0f };
     public static final float[] origin_Colour_b = new float[] { 0f };
+
+    public static final float[] grid10_Colour_r = new float[] { .5f };
+    public static final float[] grid10_Colour_g = new float[] { .5f };
+    public static final float[] grid10_Colour_b = new float[] { .5f };
+
+    public static final float[] grid_Colour_r = new float[] { 0.15f };
+    public static final float[] grid_Colour_g = new float[] { 0.15f };
+    public static final float[] grid_Colour_b = new float[] { 0.15f };
 
     public static final float[] rubberBand_Colour_r = new float[] { 1f };
     public static final float[] rubberBand_Colour_g = new float[] { 0f };

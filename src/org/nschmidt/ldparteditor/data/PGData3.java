@@ -159,7 +159,7 @@ public final class PGData3 extends PGData implements Serializable {
             }
             break;
         case BFC.NOCERTIFY:
-            GL11.glColor4f(View.BFC_uncertified__Colour_r[0], View.BFC_uncertified__Colour_g[0], View.BFC_uncertified__Colour_b[0], 1f);
+            GL11.glColor4f(View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], 1f);
             GL11.glBegin(GL11.GL_TRIANGLES);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x3, y3, z3);
