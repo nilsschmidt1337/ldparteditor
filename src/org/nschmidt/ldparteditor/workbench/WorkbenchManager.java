@@ -77,7 +77,6 @@ public enum WorkbenchManager {
      * Loads the workbench from config.gz
      */
     public static void loadWorkbench() {
-        // createDefaultWorkbench();
         Colour.loadColours();
         ObjectInputStream configFileStream = null;
         try {
