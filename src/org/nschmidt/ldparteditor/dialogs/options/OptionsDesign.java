@@ -21,11 +21,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.keys.KeyDialog;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -70,6 +72,7 @@ class OptionsDesign extends ApplicationWindow {
      */
     @Override
     protected Control createContents(Composite parent) {
+        final Tree treeColours;
         setStatus(I18n.E3D_ReadyStatus);
         Composite container = new Composite(parent, SWT.BORDER);
         GridLayout gridLayout = new GridLayout(1, true);
@@ -225,6 +228,7 @@ class OptionsDesign extends ApplicationWindow {
                 lbl_DoubleClick.setText(I18n.COLOUR_DoubleClick);
 
                 final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, Task.values().length + TextTask.values().length - 11);
+                treeColours = tree;
 
                 tree.setLinesVisible(true);
                 tree.setHeaderVisible(true);
@@ -248,7 +252,7 @@ class OptionsDesign extends ApplicationWindow {
                 trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
                 trtm_EditorText.setVisible(true);
 
-                registerColour(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, ColourType.SWT_COLOUR, new Object[]{});
+                registerColour(trtm_Editor3D, I18n.COLOUR_VertexColour, ColourType.OPENGL_COLOUR, new Object[]{View.vertex_Colour_r, View.vertex_Colour_g, View.vertex_Colour_b});
                 registerColour(trtm_Editor3D, I18n.KEYBOARD_AddComment, ColourType.SWT_COLOUR, new Object[]{});
 
                 registerColour(trtm_EditorText, I18n.KEYBOARD_Esc2, ColourType.SWT_COLOUR, new Object[]{});
@@ -264,10 +268,26 @@ class OptionsDesign extends ApplicationWindow {
                             ColorDialog dlg = new ColorDialog(getShell());
                             // Change the title bar text
                             dlg.setText(selection.getText(0));
+                            dlg.setRGB(selection.getParent().getMapInv().get(selection).getBackground(1).getRGB());
                             // Open the dialog and retrieve the selected color
                             RGB rgb = dlg.open();
                             if (rgb != null) {
                                 GColour refCol = new GColour(-1, rgb.red / 255f, rgb.green / 255f, rgb.blue / 255f, 1f);
+                                tree.getMapInv().get(selection).setBackground(1, SWTResourceManager.getColor(rgb));
+                                Object[] colourObj = (Object[]) selection.getData();
+                                ColourType type = (ColourType) colourObj[0];
+                                switch (type) {
+                                case OPENGL_COLOUR:
+                                    ((float[]) ((Object[]) colourObj[1])[0])[0] = refCol.getR();
+                                    ((float[]) ((Object[]) colourObj[1])[1])[0] = refCol.getG();
+                                    ((float[]) ((Object[]) colourObj[1])[2])[0] = refCol.getB();
+                                    break;
+                                case SWT_COLOUR:
+                                    break;
+                                default:
+                                    break;
+                                }
+
                                 for (EditorTextWindow w : Project.getOpenTextWindows()) {
                                     for (CTabItem t : w.getTabFolder().getItems()) {
                                         ((CompositeTab) t).updateColours();
@@ -451,7 +471,44 @@ class OptionsDesign extends ApplicationWindow {
         gridData3.grabExcessHorizontalSpace = true;
         btnOK.setLayoutData(gridData3);
 
+        Display.getCurrent().timerExec(1000, new Runnable() {
+            @Override
+            public void run() {
+                updateColours(treeColours);
+                treeColours.redraw();
+            }
+        });
+
         return container;
+    }
+
+    private void updateColours(Tree tree) {
+        for(TreeItem ti : tree.getItems()) {
+            updateColoursHelper(ti);
+        }
+    }
+
+    private void updateColoursHelper(TreeItem ti) {
+        org.eclipse.swt.widgets.TreeItem key = ti.getParent().getMapInv().get(ti);
+        if (key != null && ti.getData() != null && ((Object[]) ti.getData()).length == 2) {
+            Object[] colourObj = ((Object[]) ti.getData());
+            ColourType type = (ColourType) colourObj[0];
+            switch (type) {
+            case OPENGL_COLOUR:
+                key.setBackground(1, SWTResourceManager.getColor(
+                        (int) (255f * ((float[])((Object[]) colourObj[1])[0])[0]),
+                        (int) (255f * ((float[])((Object[]) colourObj[1])[1])[0]),
+                        (int) (255f * ((float[])((Object[]) colourObj[1])[2])[0])));
+                break;
+            case SWT_COLOUR:
+                break;
+            default:
+                break;
+            }
+        }
+        for (TreeItem ti2 : ti.getItems()) {
+            updateColoursHelper(ti2);
+        }
     }
 
     private void registerTask(TreeItem parent, String description, Task t, boolean visibility) {
@@ -488,17 +545,8 @@ class OptionsDesign extends ApplicationWindow {
     }
 
     private void registerColour(TreeItem parent, String description, ColourType type, Object[] colourObj) {
-        final StringBuilder sb = new StringBuilder();
-        switch (type) {
-        case OPENGL_COLOUR:
-            break;
-        case SWT_COLOUR:
-            break;
-        default:
-            break;
-        }
         TreeItem trtm_newKey = new TreeItem(parent, SWT.PUSH);
-        trtm_newKey.setText(new String[] { description, sb.toString() });
+        trtm_newKey.setText(new String[] { description, "" }); //$NON-NLS-1$
         trtm_newKey.setVisible(true);
         trtm_newKey.setData(new Object[]{type, colourObj});
     }
