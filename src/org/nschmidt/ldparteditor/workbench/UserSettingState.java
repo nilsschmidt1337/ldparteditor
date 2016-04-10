@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.ToolItemState;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.enums.Task;
@@ -112,6 +113,250 @@ public class UserSettingState implements Serializable {
 
     /** {@code true} if anti-aliasing is enabled for 3D windows */
     private boolean antiAliasing = false;
+
+    private float[] BFC_front_Colour_r = null;
+    private float[] BFC_front_Colour_g = null;
+    private float[] BFC_front_Colour_b = null;
+
+    private float[] BFC_back__Colour_r = null;
+    private float[] BFC_back__Colour_g = null;
+    private float[] BFC_back__Colour_b = null;
+
+    private float[] BFC_uncertified_Colour_r = null;
+    private float[] BFC_uncertified_Colour_g = null;
+    private float[] BFC_uncertified_Colour_b = null;
+
+    private float[] vertex_Colour_r = null;
+    private float[] vertex_Colour_g = null;
+    private float[] vertex_Colour_b = null;
+
+    private float[] vertex_selected_Colour_r = null;
+    private float[] vertex_selected_Colour_g = null;
+    private float[] vertex_selected_Colour_b = null;
+
+    private float[] condline_selected_Colour_r = null;
+    private float[] condline_selected_Colour_g = null;
+    private float[] condline_selected_Colour_b = null;
+
+    private float[] line_Colour_r = null;
+    private float[] line_Colour_g = null;
+    private float[] line_Colour_b = null;
+
+    private float[] meshline_Colour_r = null;
+    private float[] meshline_Colour_g = null;
+    private float[] meshline_Colour_b = null;
+
+    private float[] condline_Colour_r = null;
+    private float[] condline_Colour_g = null;
+    private float[] condline_Colour_b = null;
+
+    private float[] condline_hidden_Colour_r = null;
+    private float[] condline_hidden_Colour_g = null;
+    private float[] condline_hidden_Colour_b = null;
+
+    private float[] condline_shown_Colour_r = null;
+    private float[] condline_shown_Colour_g = null;
+    private float[] condline_shown_Colour_b = null;
+
+    private float[] background_Colour_r = null;
+    private float[] background_Colour_g = null;
+    private float[] background_Colour_b = null;
+
+    private float[] light1_Colour_r = null;
+    private float[] light1_Colour_g = null;
+    private float[] light1_Colour_b = null;
+
+    private float[] light1_specular_Colour_r = null;
+    private float[] light1_specular_Colour_g = null;
+    private float[] light1_specular_Colour_b = null;
+
+    private float[] light2_Colour_r = null;
+    private float[] light2_Colour_g = null;
+    private float[] light2_Colour_b = null;
+
+    private float[] light2_specular_Colour_r = null;
+    private float[] light2_specular_Colour_g = null;
+    private float[] light2_specular_Colour_b = null;
+
+    private float[] light3_Colour_r = null;
+    private float[] light3_Colour_g = null;
+    private float[] light3_Colour_b = null;
+
+    private float[] light3_specular_Colour_r = null;
+    private float[] light3_specular_Colour_g = null;
+    private float[] light3_specular_Colour_b = null;
+
+    private float[] light4_Colour_r = null;
+    private float[] light4_Colour_g = null;
+    private float[] light4_Colour_b = null;
+
+    private float[] light4_specular_Colour_r = null;
+    private float[] light4_specular_Colour_g = null;
+    private float[] light4_specular_Colour_b = null;
+
+    private float[] manipulator_selected_Colour_r = null;
+    private float[] manipulator_selected_Colour_g = null;
+    private float[] manipulator_selected_Colour_b = null;
+
+    private float[] manipulator_innerCircle_Colour_r = null;
+    private float[] manipulator_innerCircle_Colour_g = null;
+    private float[] manipulator_innerCircle_Colour_b = null;
+
+    private float[] manipulator_outerCircle_Colour_r = null;
+    private float[] manipulator_outerCircle_Colour_g = null;
+    private float[] manipulator_outerCircle_Colour_b = null;
+
+    private float[] manipulator_x_axis_Colour_r = null;
+    private float[] manipulator_x_axis_Colour_g = null;
+    private float[] manipulator_x_axis_Colour_b = null;
+
+    private float[] manipulator_y_axis_Colour_r = null;
+    private float[] manipulator_y_axis_Colour_g = null;
+    private float[] manipulator_y_axis_Colour_b = null;
+
+    private float[] manipulator_z_axis_Colour_r = null;
+    private float[] manipulator_z_axis_Colour_g = null;
+    private float[] manipulator_z_axis_Colour_b = null;
+
+    private float[] add_Object_Colour_r = null;
+    private float[] add_Object_Colour_g = null;
+    private float[] add_Object_Colour_b = null;
+
+    private float[] origin_Colour_r = null;
+    private float[] origin_Colour_g = null;
+    private float[] origin_Colour_b = null;
+
+    private float[] grid10_Colour_r = null;
+    private float[] grid10_Colour_g = null;
+    private float[] grid10_Colour_b = null;
+
+    private float[] grid_Colour_r = null;
+    private float[] grid_Colour_g = null;
+    private float[] grid_Colour_b = null;
+
+    private float[] rubberBand_Colour_r = null;
+    private float[] rubberBand_Colour_g = null;
+    private float[] rubberBand_Colour_b = null;
+
+    private float[] text_Colour_r = null;
+    private float[] text_Colour_g = null;
+    private float[] text_Colour_b = null;
+
+    private float[] x_axis_Colour_r = null;
+    private float[] x_axis_Colour_g = null;
+    private float[] x_axis_Colour_b = null;
+
+    private float[] y_axis_Colour_r = null;
+    private float[] y_axis_Colour_g = null;
+    private float[] y_axis_Colour_b = null;
+
+    private float[] z_axis_Colour_r = null;
+    private float[] z_axis_Colour_g = null;
+    private float[] z_axis_Colour_b = null;
+
+    private float[] primitive_background_Colour_r = null;
+    private float[] primitive_background_Colour_g = null;
+    private float[] primitive_background_Colour_b = null;
+
+    private float[] primitive_signFG_Colour_r = null;
+    private float[] primitive_signFG_Colour_g = null;
+    private float[] primitive_signFG_Colour_b = null;
+
+    private float[] primitive_signBG_Colour_r = null;
+    private float[] primitive_signBG_Colour_g = null;
+    private float[] primitive_signBG_Colour_b = null;
+
+    private float[] primitive_plusNminus_Colour_r = null;
+    private float[] primitive_plusNminus_Colour_g = null;
+    private float[] primitive_plusNminus_Colour_b = null;
+
+    private float[] primitive_selectedCell_Colour_r = null;
+    private float[] primitive_selectedCell_Colour_g = null;
+    private float[] primitive_selectedCell_Colour_b = null;
+
+    private float[] primitive_focusedCell_Colour_r = null;
+    private float[] primitive_focusedCell_Colour_g = null;
+    private float[] primitive_focusedCell_Colour_b = null;
+
+    private float[] primitive_normalCell_Colour_r = null;
+    private float[] primitive_normalCell_Colour_g = null;
+    private float[] primitive_normalCell_Colour_b = null;
+
+    private float[] primitive_cell_1_Colour_r = null;
+    private float[] primitive_cell_1_Colour_g = null;
+    private float[] primitive_cell_1_Colour_b = null;
+
+    private float[] primitive_cell_2_Colour_r = null;
+    private float[] primitive_cell_2_Colour_g = null;
+    private float[] primitive_cell_2_Colour_b = null;
+
+    private float[] primitive_categoryCell_1_Colour_r = null;
+    private float[] primitive_categoryCell_1_Colour_g = null;
+    private float[] primitive_categoryCell_1_Colour_b = null;
+
+    private float[] primitive_categoryCell_2_Colour_r = null;
+    private float[] primitive_categoryCell_2_Colour_g = null;
+    private float[] primitive_categoryCell_2_Colour_b = null;
+
+    private float[] primitive_edge_Colour_r = null;
+    private float[] primitive_edge_Colour_g = null;
+    private float[] primitive_edge_Colour_b = null;
+
+    private float[] primitive_condline_Colour_r = null;
+    private float[] primitive_condline_Colour_g = null;
+    private float[] primitive_condline_Colour_b = null;
+
+    private int[] line_box_font_r = null;
+    private int[] line_box_font_g = null;
+    private int[] line_box_font_b = null;
+
+    private int[] line_colourAttr_font_r = null;
+    private int[] line_colourAttr_font_g = null;
+    private int[] line_colourAttr_font_b = null;
+
+    private int[] line_comment_font_r = null;
+    private int[] line_comment_font_g = null;
+    private int[] line_comment_font_b = null;
+
+    private int[] line_error_underline_r = null;
+    private int[] line_error_underline_g = null;
+    private int[] line_error_underline_b = null;
+
+    private int[] line_highlight_background_r = null;
+    private int[] line_highlight_background_g = null;
+    private int[] line_highlight_background_b = null;
+
+    private int[] line_highlight_selected_background_r = null;
+    private int[] line_highlight_selected_background_g = null;
+    private int[] line_highlight_selected_background_b = null;
+
+    private int[] line_hint_underline_r = null;
+    private int[] line_hint_underline_g = null;
+    private int[] line_hint_underline_b = null;
+
+    private int[] line_primary_font_r = null;
+    private int[] line_primary_font_g = null;
+    private int[] line_primary_font_b = null;
+
+    private int[] line_quad_font_r = null;
+    private int[] line_quad_font_g = null;
+    private int[] line_quad_font_b = null;
+
+    private int[] line_secondary_font_r = null;
+    private int[] line_secondary_font_g = null;
+    private int[] line_secondary_font_b = null;
+
+    private int[] line_warning_underline_r = null;
+    private int[] line_warning_underline_g = null;
+    private int[] line_warning_underline_b = null;
+
+    private int[] text_background_r = null;
+    private int[] text_background_g = null;
+    private int[] text_background_b = null;
+
+    private int[] text_foreground_r = null;
+    private int[] text_foreground_g = null;
+    private int[] text_foreground_b = null;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
