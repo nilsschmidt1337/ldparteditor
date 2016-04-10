@@ -1187,58 +1187,57 @@ public class UserSettingState implements Serializable {
         if (primitive_condline_Colour_g != null) View.primitive_condline_Colour_g[0] = primitive_condline_Colour_g[0];
         if (primitive_condline_Colour_b != null) View.primitive_condline_Colour_b[0] = primitive_condline_Colour_b[0];
 
-        /*
-        line_box_font_r = null;
-        line_box_font_g = null;
-        line_box_font_b = null;
 
-        line_colourAttr_font_r = null;
-        line_colourAttr_font_g = null;
-        line_colourAttr_font_b = null;
+        if (line_box_font_r != null) {
+            Colour.line_box_font[0] = SWTResourceManager.getColor(line_box_font_r[0], line_box_font_g[0], line_box_font_b[0]);
+        }
 
-        line_comment_font_r = null;
-        line_comment_font_g = null;
-        line_comment_font_b = null;
+        if (line_colourAttr_font_r != null) {
+            Colour.line_colourAttr_font[0] = SWTResourceManager.getColor(line_colourAttr_font_r[0], line_colourAttr_font_g[0], line_colourAttr_font_b[0]);
+        }
 
-        line_error_underline_r = null;
-        line_error_underline_g = null;
-        line_error_underline_b = null;
+        if (line_comment_font_r != null) {
+            Colour.line_comment_font[0] = SWTResourceManager.getColor(line_comment_font_r[0], line_comment_font_g[0], line_comment_font_b[0]);
+        }
 
-        line_highlight_background_r = null;
-        line_highlight_background_g = null;
-        line_highlight_background_b = null;
+        if (line_error_underline_r != null) {
+            Colour.line_error_underline[0] = SWTResourceManager.getColor(line_error_underline_r[0], line_error_underline_g[0], line_error_underline_b[0]);
+        }
 
-        line_highlight_selected_background_r = null;
-        line_highlight_selected_background_g = null;
-        line_highlight_selected_background_b = null;
+        if (line_highlight_background_r != null) {
+            Colour.line_highlight_background[0] = SWTResourceManager.getColor(line_highlight_background_r[0], line_highlight_background_g[0], line_highlight_background_b[0]);
+        }
 
-        line_hint_underline_r = null;
-        line_hint_underline_g = null;
-        line_hint_underline_b = null;
+        if (line_highlight_selected_background_r != null) {
+            Colour.line_highlight_selected_background[0] = SWTResourceManager.getColor(line_highlight_selected_background_r[0], line_highlight_selected_background_g[0], line_highlight_selected_background_b[0]);
+        }
 
-        line_primary_font_r = null;
-        line_primary_font_g = null;
-        line_primary_font_b = null;
+        if (line_hint_underline_r != null) {
+            Colour.line_hint_underline[0] = SWTResourceManager.getColor(line_hint_underline_r[0], line_hint_underline_g[0], line_hint_underline_b[0]);
+        }
 
-        line_quad_font_r = null;
-        line_quad_font_g = null;
-        line_quad_font_b = null;
+        if (line_primary_font_r != null) {
+            Colour.line_primary_font[0] = SWTResourceManager.getColor(line_primary_font_r[0], line_primary_font_g[0], line_primary_font_b[0]);
+        }
 
-        line_secondary_font_r = null;
-        line_secondary_font_g = null;
-        line_secondary_font_b = null;
+        if (line_quad_font_r != null) {
+            Colour.line_quad_font[0] = SWTResourceManager.getColor(line_quad_font_r[0], line_quad_font_g[0], line_quad_font_b[0]);
+        }
 
-        line_warning_underline_r = null;
-        line_warning_underline_g = null;
-        line_warning_underline_b = null;
+        if (line_secondary_font_r != null) {
+            Colour.line_secondary_font[0] = SWTResourceManager.getColor(line_secondary_font_r[0], line_secondary_font_g[0], line_secondary_font_b[0]);
+        }
 
-        text_background_r = null;
-        text_background_g = null;
-        text_background_b = null;
+        if (line_warning_underline_r != null) {
+            Colour.line_warning_underline[0] = SWTResourceManager.getColor(line_warning_underline_r[0], line_warning_underline_g[0], line_warning_underline_b[0]);
+        }
 
-        text_foreground_r = null;
-        text_foreground_g = null;
-        text_foreground_b = null;
-        */
+        if (text_background_r != null) {
+            Colour.text_background[0] = SWTResourceManager.getColor(text_background_r[0], text_background_g[0], text_background_b[0]);
+        }
+
+        if (text_foreground_r != null) {
+            Colour.text_foreground[0] = SWTResourceManager.getColor(text_foreground_r[0], text_foreground_g[0], text_foreground_b[0]);
+        }
     }
 }
