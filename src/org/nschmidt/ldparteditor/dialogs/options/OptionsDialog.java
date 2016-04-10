@@ -27,6 +27,7 @@ public class OptionsDialog extends OptionsDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Editor3DWindow.getWindow().compileAll();
+                Editor3DWindow.getWindow().initAllRenderers();
                 me.close();
             }
         });
@@ -37,6 +38,7 @@ public class OptionsDialog extends OptionsDesign {
     @Override
     protected void handleShellCloseEvent() {
         Editor3DWindow.getWindow().compileAll();
+        Editor3DWindow.getWindow().initAllRenderers();
         super.handleShellCloseEvent();
     }
 

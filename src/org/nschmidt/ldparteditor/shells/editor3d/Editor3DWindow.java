@@ -7330,6 +7330,31 @@ public class Editor3DWindow extends Editor3DDesign {
         }
     }
 
+    public void initAllRenderers() {
+        for (OpenGLRenderer renderer : renders) {
+            final GLCanvas canvas = renderer.getC3D().getCanvas();
+            if (!canvas.isCurrent()) {
+                canvas.setCurrent();
+                try {
+                    GLContext.useContext(canvas);
+                } catch (LWJGLException e) {
+                    NLogger.error(OpenGLRenderer.class, e);
+                }
+            }
+            renderer.init();
+        }
+        final GLCanvas canvas = getCompositePrimitive().getCanvas();
+        if (!canvas.isCurrent()) {
+            canvas.setCurrent();
+            try {
+                GLContext.useContext(canvas);
+            } catch (LWJGLException e) {
+                NLogger.error(OpenGLRenderer.class, e);
+            }
+        }
+        getCompositePrimitive().getOpenGL().init();
+    }
+
     public void regainFocus() {
         for (OpenGLRenderer r : renders) {
             if (r.getC3D().getLockableDatFileReference().equals(Project.getFileToEdit())) {
