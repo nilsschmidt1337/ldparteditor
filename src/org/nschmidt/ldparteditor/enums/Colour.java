@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.enums;
 
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * A colour "constants" provider for the EditorTextWindow class
@@ -70,20 +71,6 @@ public enum Colour {
         line_box_font[0].dispose();
         text_background[0].dispose();
         text_foreground[0].dispose();
-    }
-
-    /**
-     * Saves the editor colours
-     */
-    public static void saveColours() {
-     // FIXME Needs implementation!
-    }
-
-    /**
-     * Loads the editor colours
-     */
-    public static void loadColours() {
-        // FIXME Needs implementation!
     }
 
     /**
