@@ -88,7 +88,7 @@ public enum WorkbenchManager {
                 WorkbenchManager.userSettingState.loadShortkeys();
                 Manipulator.setSnap(WorkbenchManager.userSettingState.getMedium_move_snap(), WorkbenchManager.userSettingState.getMedium_rotate_snap(),
                         WorkbenchManager.userSettingState.getMedium_scale_snap());
-                Colour.loadColours();
+                WorkbenchManager.userSettingState.loadColours();
                 try {
                     WorkbenchManager.primitiveCache = (PrimitiveCache) configFileStream.readObject();
                 } catch (Exception e) {
@@ -121,7 +121,6 @@ public enum WorkbenchManager {
      * Saves the workbench to config.gz
      */
     public static void saveWorkbench() {
-        Colour.saveColours();
         ObjectOutputStream configFileStream = null;
         try {
             File configGzFile = new File("config.gz"); //$NON-NLS-1$
@@ -140,7 +139,10 @@ public enum WorkbenchManager {
                 configFileStream.writeObject(state3D);
             }
             configFileStream.writeObject(WorkbenchManager.editorTextWindowState);
-            if (WorkbenchManager.userSettingState != null) WorkbenchManager.userSettingState.saveShortkeys();
+            if (WorkbenchManager.userSettingState != null) {
+                WorkbenchManager.userSettingState.saveShortkeys();
+                WorkbenchManager.userSettingState.saveColours();
+            }
             configFileStream.writeObject(WorkbenchManager.userSettingState);
             try {
                 configFileStream.writeObject(WorkbenchManager.primitiveCache);

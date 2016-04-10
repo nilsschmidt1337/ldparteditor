@@ -25,8 +25,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.ToolItemState;
 import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 
 /**
@@ -744,5 +746,497 @@ public class UserSettingState implements Serializable {
 
     public void setAntiAliasing(boolean antiAliasing) {
         this.antiAliasing = antiAliasing;
+    }
+
+    public void saveColours() {
+        BFC_front_Colour_r = View.BFC_front_Colour_r;
+        BFC_front_Colour_g = View.BFC_front_Colour_g;
+        BFC_front_Colour_b = View.BFC_front_Colour_b;
+
+        BFC_back__Colour_r = View.BFC_back__Colour_r;
+        BFC_back__Colour_g = View.BFC_back__Colour_g;
+        BFC_back__Colour_b = View.BFC_back__Colour_b;
+
+        BFC_uncertified_Colour_r = View.BFC_uncertified_Colour_r;
+        BFC_uncertified_Colour_g = View.BFC_uncertified_Colour_g;
+        BFC_uncertified_Colour_b = View.BFC_uncertified_Colour_b;
+
+        vertex_Colour_r = View.vertex_Colour_r;
+        vertex_Colour_g = View.vertex_Colour_g;
+        vertex_Colour_b = View.vertex_Colour_b;
+
+        vertex_selected_Colour_r = View.vertex_selected_Colour_r;
+        vertex_selected_Colour_g = View.vertex_selected_Colour_g;
+        vertex_selected_Colour_b = View.vertex_selected_Colour_b;
+
+        condline_selected_Colour_r = View.condline_selected_Colour_r;
+        condline_selected_Colour_g = View.condline_selected_Colour_g;
+        condline_selected_Colour_b = View.condline_selected_Colour_b;
+
+        line_Colour_r = View.line_Colour_r;
+        line_Colour_g = View.line_Colour_g;
+        line_Colour_b = View.line_Colour_b;
+
+        meshline_Colour_r = View.meshline_Colour_r;
+        meshline_Colour_g = View.meshline_Colour_g;
+        meshline_Colour_b = View.meshline_Colour_b;
+
+        condline_Colour_r = View.condline_Colour_r;
+        condline_Colour_g = View.condline_Colour_g;
+        condline_Colour_b = View.condline_Colour_b;
+
+        condline_hidden_Colour_r = View.condline_hidden_Colour_r;
+        condline_hidden_Colour_g = View.condline_hidden_Colour_g;
+        condline_hidden_Colour_b = View.condline_hidden_Colour_b;
+
+        condline_shown_Colour_r = View.condline_shown_Colour_r;
+        condline_shown_Colour_g = View.condline_shown_Colour_g;
+        condline_shown_Colour_b = View.condline_shown_Colour_b;
+
+        background_Colour_r = View.background_Colour_r;
+        background_Colour_g = View.background_Colour_g;
+        background_Colour_b = View.background_Colour_b;
+
+        light1_Colour_r = View.light1_Colour_r;
+        light1_Colour_g = View.light1_Colour_g;
+        light1_Colour_b = View.light1_Colour_b;
+
+        light1_specular_Colour_r = View.light1_specular_Colour_r;
+        light1_specular_Colour_g = View.light1_specular_Colour_g;
+        light1_specular_Colour_b = View.light1_specular_Colour_b;
+
+        light2_Colour_r = View.light2_Colour_r;
+        light2_Colour_g = View.light2_Colour_g;
+        light2_Colour_b = View.light2_Colour_b;
+
+        light2_specular_Colour_r = View.light2_specular_Colour_r;
+        light2_specular_Colour_g = View.light2_specular_Colour_g;
+        light2_specular_Colour_b = View.light2_specular_Colour_b;
+
+        light3_Colour_r = View.light3_Colour_r;
+        light3_Colour_g = View.light3_Colour_g;
+        light3_Colour_b = View.light3_Colour_b;
+
+        light3_specular_Colour_r = View.light3_specular_Colour_r;
+        light3_specular_Colour_g = View.light3_specular_Colour_g;
+        light3_specular_Colour_b = View.light3_specular_Colour_b;
+
+        light4_Colour_r = View.light4_Colour_r;
+        light4_Colour_g = View.light4_Colour_g;
+        light4_Colour_b = View.light4_Colour_b;
+
+        light4_specular_Colour_r = View.light4_specular_Colour_r;
+        light4_specular_Colour_g = View.light4_specular_Colour_g;
+        light4_specular_Colour_b = View.light4_specular_Colour_b;
+
+        manipulator_selected_Colour_r = View.manipulator_selected_Colour_r;
+        manipulator_selected_Colour_g = View.manipulator_selected_Colour_g;
+        manipulator_selected_Colour_b = View.manipulator_selected_Colour_b;
+
+        manipulator_innerCircle_Colour_r = View.manipulator_innerCircle_Colour_r;
+        manipulator_innerCircle_Colour_g = View.manipulator_innerCircle_Colour_g;
+        manipulator_innerCircle_Colour_b = View.manipulator_innerCircle_Colour_b;
+
+        manipulator_outerCircle_Colour_r = View.manipulator_outerCircle_Colour_r;
+        manipulator_outerCircle_Colour_g = View.manipulator_outerCircle_Colour_g;
+        manipulator_outerCircle_Colour_b = View.manipulator_outerCircle_Colour_b;
+
+        manipulator_x_axis_Colour_r = View.manipulator_x_axis_Colour_r;
+        manipulator_x_axis_Colour_g = View.manipulator_x_axis_Colour_g;
+        manipulator_x_axis_Colour_b = View.manipulator_x_axis_Colour_b;
+
+        manipulator_y_axis_Colour_r = View.manipulator_y_axis_Colour_r;
+        manipulator_y_axis_Colour_g = View.manipulator_y_axis_Colour_g;
+        manipulator_y_axis_Colour_b = View.manipulator_y_axis_Colour_b;
+
+        manipulator_z_axis_Colour_r = View.manipulator_z_axis_Colour_r;
+        manipulator_z_axis_Colour_g = View.manipulator_z_axis_Colour_g;
+        manipulator_z_axis_Colour_b = View.manipulator_z_axis_Colour_b;
+
+        add_Object_Colour_r = View.add_Object_Colour_r;
+        add_Object_Colour_g = View.add_Object_Colour_g;
+        add_Object_Colour_b = View.add_Object_Colour_b;
+
+        origin_Colour_r = View.origin_Colour_r;
+        origin_Colour_g = View.origin_Colour_g;
+        origin_Colour_b = View.origin_Colour_b;
+
+        grid10_Colour_r = View.grid10_Colour_r;
+        grid10_Colour_g = View.grid10_Colour_g;
+        grid10_Colour_b = View.grid10_Colour_b;
+
+        grid_Colour_r = View.grid_Colour_r;
+        grid_Colour_g = View.grid_Colour_b;
+        grid_Colour_b = View.grid_Colour_b;
+
+        rubberBand_Colour_r = View.rubberBand_Colour_r;
+        rubberBand_Colour_g = View.rubberBand_Colour_g;
+        rubberBand_Colour_b = View.rubberBand_Colour_b;
+
+        text_Colour_r = View.text_Colour_r;
+        text_Colour_g = View.text_Colour_g;
+        text_Colour_b = View.text_Colour_b;
+
+        x_axis_Colour_r = View.x_axis_Colour_r;
+        x_axis_Colour_g = View.x_axis_Colour_g;
+        x_axis_Colour_b = View.x_axis_Colour_b;
+
+        y_axis_Colour_r = View.y_axis_Colour_r;
+        y_axis_Colour_g = View.y_axis_Colour_g;
+        y_axis_Colour_b = View.y_axis_Colour_b;
+
+        z_axis_Colour_r = View.z_axis_Colour_r;
+        z_axis_Colour_g = View.z_axis_Colour_g;
+        z_axis_Colour_b = View.z_axis_Colour_b;
+
+        primitive_background_Colour_r = View.primitive_background_Colour_r;
+        primitive_background_Colour_g = View.primitive_background_Colour_g;
+        primitive_background_Colour_b = View.primitive_background_Colour_b;
+
+        primitive_signFG_Colour_r = View.primitive_signFG_Colour_r;
+        primitive_signFG_Colour_g = View.primitive_signFG_Colour_g;
+        primitive_signFG_Colour_b = View.primitive_signFG_Colour_b;
+
+        primitive_signBG_Colour_r = View.primitive_signBG_Colour_r;
+        primitive_signBG_Colour_g = View.primitive_signBG_Colour_g;
+        primitive_signBG_Colour_b = View.primitive_signBG_Colour_b;
+
+        primitive_plusNminus_Colour_r = View.primitive_plusNminus_Colour_r;
+        primitive_plusNminus_Colour_g = View.primitive_plusNminus_Colour_g;
+        primitive_plusNminus_Colour_b = View.primitive_plusNminus_Colour_b;
+
+        primitive_selectedCell_Colour_r = View.primitive_selectedCell_Colour_r;
+        primitive_selectedCell_Colour_g = View.primitive_selectedCell_Colour_g;
+        primitive_selectedCell_Colour_b = View.primitive_selectedCell_Colour_b;
+
+        primitive_focusedCell_Colour_r = View.primitive_focusedCell_Colour_r;
+        primitive_focusedCell_Colour_g = View.primitive_focusedCell_Colour_g;
+        primitive_focusedCell_Colour_b = View.primitive_focusedCell_Colour_b;
+
+        primitive_normalCell_Colour_r = View.primitive_normalCell_Colour_r;
+        primitive_normalCell_Colour_g = View.primitive_normalCell_Colour_g;
+        primitive_normalCell_Colour_b = View.primitive_normalCell_Colour_b;
+
+        primitive_cell_1_Colour_r = View.primitive_cell_1_Colour_r;
+        primitive_cell_1_Colour_g = View.primitive_cell_1_Colour_g;
+        primitive_cell_1_Colour_b = View.primitive_cell_1_Colour_b;
+
+        primitive_cell_2_Colour_r = View.primitive_cell_2_Colour_r;
+        primitive_cell_2_Colour_g = View.primitive_cell_2_Colour_g;
+        primitive_cell_2_Colour_b = View.primitive_cell_2_Colour_b;
+
+        primitive_categoryCell_1_Colour_r = View.primitive_categoryCell_1_Colour_r;
+        primitive_categoryCell_1_Colour_g = View.primitive_categoryCell_1_Colour_g;
+        primitive_categoryCell_1_Colour_b = View.primitive_categoryCell_1_Colour_b;
+
+        primitive_categoryCell_2_Colour_r = View.primitive_categoryCell_2_Colour_r;
+        primitive_categoryCell_2_Colour_g = View.primitive_categoryCell_2_Colour_g;
+        primitive_categoryCell_2_Colour_b = View.primitive_categoryCell_2_Colour_b;
+
+        primitive_edge_Colour_r = View.primitive_edge_Colour_r;
+        primitive_edge_Colour_g = View.primitive_edge_Colour_g;
+        primitive_edge_Colour_b = View.primitive_edge_Colour_b;
+
+        primitive_condline_Colour_r = View.primitive_condline_Colour_r;
+        primitive_condline_Colour_g = View.primitive_condline_Colour_g;
+        primitive_condline_Colour_b = View.primitive_condline_Colour_b;
+
+        line_box_font_r = new int[]{Colour.line_box_font[0].getRed()};
+        line_box_font_g = new int[]{Colour.line_box_font[0].getGreen()};
+        line_box_font_b = new int[]{Colour.line_box_font[0].getBlue()};
+
+        line_colourAttr_font_r = new int[]{Colour.line_colourAttr_font[0].getRed()};
+        line_colourAttr_font_g = new int[]{Colour.line_colourAttr_font[0].getGreen()};
+        line_colourAttr_font_b = new int[]{Colour.line_colourAttr_font[0].getBlue()};
+
+        line_comment_font_r = new int[]{Colour.line_comment_font[0].getRed()};
+        line_comment_font_g = new int[]{Colour.line_comment_font[0].getGreen()};
+        line_comment_font_b = new int[]{Colour.line_comment_font[0].getBlue()};
+
+        line_error_underline_r = new int[]{Colour.line_error_underline[0].getRed()};
+        line_error_underline_g = new int[]{Colour.line_error_underline[0].getGreen()};
+        line_error_underline_b = new int[]{Colour.line_error_underline[0].getBlue()};
+
+        line_highlight_background_r = new int[]{Colour.line_highlight_background[0].getRed()};
+        line_highlight_background_g = new int[]{Colour.line_highlight_background[0].getGreen()};
+        line_highlight_background_b = new int[]{Colour.line_highlight_background[0].getBlue()};
+
+        line_highlight_selected_background_r = new int[]{Colour.line_highlight_selected_background[0].getRed()};
+        line_highlight_selected_background_g = new int[]{Colour.line_highlight_selected_background[0].getGreen()};
+        line_highlight_selected_background_b = new int[]{Colour.line_highlight_selected_background[0].getBlue()};
+
+        line_hint_underline_r = new int[]{Colour.line_hint_underline[0].getRed()};
+        line_hint_underline_g = new int[]{Colour.line_hint_underline[0].getGreen()};
+        line_hint_underline_b = new int[]{Colour.line_hint_underline[0].getBlue()};
+
+        line_primary_font_r = new int[]{Colour.line_primary_font[0].getRed()};
+        line_primary_font_g = new int[]{Colour.line_primary_font[0].getGreen()};
+        line_primary_font_b = new int[]{Colour.line_primary_font[0].getBlue()};
+
+        line_quad_font_r = new int[]{Colour.line_quad_font[0].getRed()};
+        line_quad_font_g = new int[]{Colour.line_quad_font[0].getGreen()};
+        line_quad_font_b = new int[]{Colour.line_quad_font[0].getBlue()};
+
+        line_secondary_font_r = new int[]{Colour.line_secondary_font[0].getRed()};
+        line_secondary_font_g = new int[]{Colour.line_secondary_font[0].getGreen()};
+        line_secondary_font_b = new int[]{Colour.line_secondary_font[0].getBlue()};
+
+        line_warning_underline_r = new int[]{Colour.line_warning_underline[0].getRed()};
+        line_warning_underline_g = new int[]{Colour.line_warning_underline[0].getGreen()};
+        line_warning_underline_b = new int[]{Colour.line_warning_underline[0].getBlue()};
+
+        text_background_r = new int[]{Colour.text_background[0].getRed()};
+        text_background_g = new int[]{Colour.text_background[0].getGreen()};
+        text_background_b = new int[]{Colour.text_background[0].getBlue()};
+
+        text_foreground_r = new int[]{Colour.text_foreground[0].getRed()};
+        text_foreground_g = new int[]{Colour.text_foreground[0].getGreen()};
+        text_foreground_b = new int[]{Colour.text_foreground[0].getBlue()};
+    }
+
+    public void loadColours() {
+        BFC_front_Colour_r = null;
+        BFC_front_Colour_g = null;
+        BFC_front_Colour_b = null;
+
+        BFC_back__Colour_r = null;
+        BFC_back__Colour_g = null;
+        BFC_back__Colour_b = null;
+
+        BFC_uncertified_Colour_r = null;
+        BFC_uncertified_Colour_g = null;
+        BFC_uncertified_Colour_b = null;
+
+        vertex_Colour_r = null;
+        vertex_Colour_g = null;
+        vertex_Colour_b = null;
+
+        vertex_selected_Colour_r = null;
+        vertex_selected_Colour_g = null;
+        vertex_selected_Colour_b = null;
+
+        condline_selected_Colour_r = null;
+        condline_selected_Colour_g = null;
+        condline_selected_Colour_b = null;
+
+        line_Colour_r = null;
+        line_Colour_g = null;
+        line_Colour_b = null;
+
+        meshline_Colour_r = null;
+        meshline_Colour_g = null;
+        meshline_Colour_b = null;
+
+        condline_Colour_r = null;
+        condline_Colour_g = null;
+        condline_Colour_b = null;
+
+        condline_hidden_Colour_r = null;
+        condline_hidden_Colour_g = null;
+        condline_hidden_Colour_b = null;
+
+        condline_shown_Colour_r = null;
+        condline_shown_Colour_g = null;
+        condline_shown_Colour_b = null;
+
+        background_Colour_r = null;
+        background_Colour_g = null;
+        background_Colour_b = null;
+
+        light1_Colour_r = null;
+        light1_Colour_g = null;
+        light1_Colour_b = null;
+
+        light1_specular_Colour_r = null;
+        light1_specular_Colour_g = null;
+        light1_specular_Colour_b = null;
+
+        light2_Colour_r = null;
+        light2_Colour_g = null;
+        light2_Colour_b = null;
+
+        light2_specular_Colour_r = null;
+        light2_specular_Colour_g = null;
+        light2_specular_Colour_b = null;
+
+        light3_Colour_r = null;
+        light3_Colour_g = null;
+        light3_Colour_b = null;
+
+        light3_specular_Colour_r = null;
+        light3_specular_Colour_g = null;
+        light3_specular_Colour_b = null;
+
+        light4_Colour_r = null;
+        light4_Colour_g = null;
+        light4_Colour_b = null;
+
+        light4_specular_Colour_r = null;
+        light4_specular_Colour_g = null;
+        light4_specular_Colour_b = null;
+
+        manipulator_selected_Colour_r = null;
+        manipulator_selected_Colour_g = null;
+        manipulator_selected_Colour_b = null;
+
+        manipulator_innerCircle_Colour_r = null;
+        manipulator_innerCircle_Colour_g = null;
+        manipulator_innerCircle_Colour_b = null;
+
+        manipulator_outerCircle_Colour_r = null;
+        manipulator_outerCircle_Colour_g = null;
+        manipulator_outerCircle_Colour_b = null;
+
+        manipulator_x_axis_Colour_r = null;
+        manipulator_x_axis_Colour_g = null;
+        manipulator_x_axis_Colour_b = null;
+
+        manipulator_y_axis_Colour_r = null;
+        manipulator_y_axis_Colour_g = null;
+        manipulator_y_axis_Colour_b = null;
+
+        manipulator_z_axis_Colour_r = null;
+        manipulator_z_axis_Colour_g = null;
+        manipulator_z_axis_Colour_b = null;
+
+        add_Object_Colour_r = null;
+        add_Object_Colour_g = null;
+        add_Object_Colour_b = null;
+
+        origin_Colour_r = null;
+        origin_Colour_g = null;
+        origin_Colour_b = null;
+
+        grid10_Colour_r = null;
+        grid10_Colour_g = null;
+        grid10_Colour_b = null;
+
+        grid_Colour_r = null;
+        grid_Colour_g = null;
+        grid_Colour_b = null;
+
+        rubberBand_Colour_r = null;
+        rubberBand_Colour_g = null;
+        rubberBand_Colour_b = null;
+
+        text_Colour_r = null;
+        text_Colour_g = null;
+        text_Colour_b = null;
+
+        x_axis_Colour_r = null;
+        x_axis_Colour_g = null;
+        x_axis_Colour_b = null;
+
+        y_axis_Colour_r = null;
+        y_axis_Colour_g = null;
+        y_axis_Colour_b = null;
+
+        z_axis_Colour_r = null;
+        z_axis_Colour_g = null;
+        z_axis_Colour_b = null;
+
+        primitive_background_Colour_r = null;
+        primitive_background_Colour_g = null;
+        primitive_background_Colour_b = null;
+
+        primitive_signFG_Colour_r = null;
+        primitive_signFG_Colour_g = null;
+        primitive_signFG_Colour_b = null;
+
+        primitive_signBG_Colour_r = null;
+        primitive_signBG_Colour_g = null;
+        primitive_signBG_Colour_b = null;
+
+        primitive_plusNminus_Colour_r = null;
+        primitive_plusNminus_Colour_g = null;
+        primitive_plusNminus_Colour_b = null;
+
+        primitive_selectedCell_Colour_r = null;
+        primitive_selectedCell_Colour_g = null;
+        primitive_selectedCell_Colour_b = null;
+
+        primitive_focusedCell_Colour_r = null;
+        primitive_focusedCell_Colour_g = null;
+        primitive_focusedCell_Colour_b = null;
+
+        primitive_normalCell_Colour_r = null;
+        primitive_normalCell_Colour_g = null;
+        primitive_normalCell_Colour_b = null;
+
+        primitive_cell_1_Colour_r = null;
+        primitive_cell_1_Colour_g = null;
+        primitive_cell_1_Colour_b = null;
+
+        primitive_cell_2_Colour_r = null;
+        primitive_cell_2_Colour_g = null;
+        primitive_cell_2_Colour_b = null;
+
+        primitive_categoryCell_1_Colour_r = null;
+        primitive_categoryCell_1_Colour_g = null;
+        primitive_categoryCell_1_Colour_b = null;
+
+        primitive_categoryCell_2_Colour_r = null;
+        primitive_categoryCell_2_Colour_g = null;
+        primitive_categoryCell_2_Colour_b = null;
+
+        primitive_edge_Colour_r = null;
+        primitive_edge_Colour_g = null;
+        primitive_edge_Colour_b = null;
+
+        primitive_condline_Colour_r = null;
+        primitive_condline_Colour_g = null;
+        primitive_condline_Colour_b = null;
+
+        line_box_font_r = null;
+        line_box_font_g = null;
+        line_box_font_b = null;
+
+        line_colourAttr_font_r = null;
+        line_colourAttr_font_g = null;
+        line_colourAttr_font_b = null;
+
+        line_comment_font_r = null;
+        line_comment_font_g = null;
+        line_comment_font_b = null;
+
+        line_error_underline_r = null;
+        line_error_underline_g = null;
+        line_error_underline_b = null;
+
+        line_highlight_background_r = null;
+        line_highlight_background_g = null;
+        line_highlight_background_b = null;
+
+        line_highlight_selected_background_r = null;
+        line_highlight_selected_background_g = null;
+        line_highlight_selected_background_b = null;
+
+        line_hint_underline_r = null;
+        line_hint_underline_g = null;
+        line_hint_underline_b = null;
+
+        line_primary_font_r = null;
+        line_primary_font_g = null;
+        line_primary_font_b = null;
+
+        line_quad_font_r = null;
+        line_quad_font_g = null;
+        line_quad_font_b = null;
+
+        line_secondary_font_r = null;
+        line_secondary_font_g = null;
+        line_secondary_font_b = null;
+
+        line_warning_underline_r = null;
+        line_warning_underline_g = null;
+        line_warning_underline_b = null;
+
+        text_background_r = null;
+        text_background_g = null;
+        text_background_b = null;
+
+        text_foreground_r = null;
+        text_foreground_g = null;
+        text_foreground_b = null;
     }
 }
