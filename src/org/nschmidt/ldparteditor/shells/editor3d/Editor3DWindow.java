@@ -311,6 +311,8 @@ public class Editor3DWindow extends Editor3DDesign {
      */
     public void run() {
         window = this;
+        // Load colours
+        WorkbenchManager.getUserSettingState().loadColours();
         // Load recent files
         recentItems = WorkbenchManager.getUserSettingState().getRecentItems();
         if (recentItems == null) recentItems = new ArrayList<String>();
@@ -7313,6 +7315,11 @@ public class Editor3DWindow extends Editor3DDesign {
         View.lineWidth1000[0] = line_width1000;
         View.lineWidth[0] = line_width;
         View.lineWidthGL[0] = line_width_gl;
+        compileAll();
+        clickSingleBtn(btn);
+    }
+
+    public void compileAll() {
         Set<DatFile> dfs = new HashSet<DatFile>();
         for (OpenGLRenderer renderer : renders) {
             dfs.add(renderer.getC3D().getLockableDatFileReference());
@@ -7321,7 +7328,6 @@ public class Editor3DWindow extends Editor3DDesign {
             df.getVertexManager().addSnapshot();
             SubfileCompiler.compile(df, false, false);
         }
-        clickSingleBtn(btn);
     }
 
     public void regainFocus() {

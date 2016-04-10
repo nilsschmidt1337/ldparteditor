@@ -6,6 +6,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 public class OptionsDialog extends OptionsDesign {
 
@@ -25,11 +26,18 @@ public class OptionsDialog extends OptionsDesign {
         btn_OK[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
+                Editor3DWindow.getWindow().compileAll();
                 me.close();
             }
         });
 
         this.open();
+    }
+
+    @Override
+    protected void handleShellCloseEvent() {
+        Editor3DWindow.getWindow().compileAll();
+        super.handleShellCloseEvent();
     }
 
     // FIXME OptionsDialog needs implementation!

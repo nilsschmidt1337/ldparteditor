@@ -88,7 +88,6 @@ public enum WorkbenchManager {
                 WorkbenchManager.userSettingState.loadShortkeys();
                 Manipulator.setSnap(WorkbenchManager.userSettingState.getMedium_move_snap(), WorkbenchManager.userSettingState.getMedium_rotate_snap(),
                         WorkbenchManager.userSettingState.getMedium_scale_snap());
-                WorkbenchManager.userSettingState.loadColours();
                 try {
                     WorkbenchManager.primitiveCache = (PrimitiveCache) configFileStream.readObject();
                 } catch (Exception e) {
