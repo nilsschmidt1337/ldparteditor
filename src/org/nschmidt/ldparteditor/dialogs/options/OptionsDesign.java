@@ -38,9 +38,12 @@ import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeColumn;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 class OptionsDesign extends ApplicationWindow {
 
+    Button[] btn_AllowInvalidShapes = new Button[1];
     Button[] btn_OK = new Button[1];
 
     private HashSet<Task>  s1 = new HashSet<Task>();
@@ -368,143 +371,25 @@ class OptionsDesign extends ApplicationWindow {
                 });
             }
 
-            /*
+
             CTabItem tItem3 = new CTabItem(tabFolder_Settings, SWT.NONE);
-            tItem3.setText(I18n.E3D_BackgroundImage);
+            tItem3.setText(I18n.OPTIONS_MiscOptions);
 
             {
-                final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
-                Composite cmp_bgArea = new Composite(cmp_scroll, SWT.NONE);
-                tItem3.setControl(cmp_scroll);
-                cmp_scroll.setContent(cmp_bgArea);
-                cmp_scroll.setExpandHorizontal(true);
-                cmp_scroll.setExpandVertical(true);
+                final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
 
-                cmp_bgArea.setLayout(new GridLayout(3, false));
-                ((GridLayout) cmp_bgArea.getLayout()).verticalSpacing = 0;
-                ((GridLayout) cmp_bgArea.getLayout()).marginHeight = 0;
-                ((GridLayout) cmp_bgArea.getLayout()).marginWidth = 0;
+                final Composite cmp_container = new Composite(tabFolder_Settings, SWT.NONE);
+                tItem3.setControl(cmp_container);
 
-                {
-                    Composite cmp_dummy = new Composite(cmp_bgArea, SWT.NONE);
-                    cmp_dummy.setLayout(new FillLayout(SWT.HORIZONTAL));
+                cmp_container.setLayout(new GridLayout());
+                cmp_container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-                    Button btnPrevious = new Button(cmp_dummy, SWT.NONE);
-                    btnPrevious.setImage(ResourceManager.getImage("icon8_previous.png")); //$NON-NLS-1$
-                    btnPrevious.setToolTipText(I18n.E3D_Previous);
-
-                    Button btnFocusBG = new Button(cmp_dummy, SWT.NONE);
-                    btnFocusBG.setImage(ResourceManager.getImage("icon8_focus.png")); //$NON-NLS-1$
-                    btnFocusBG.setToolTipText(I18n.E3D_Focus);
-
-                    Button btnNext = new Button(cmp_dummy, SWT.NONE);
-                    btnNext.setImage(ResourceManager.getImage("icon8_next.png")); //$NON-NLS-1$
-                    btnNext.setToolTipText(I18n.E3D_Next);
-
-                    cmp_dummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 3, 1));
-                }
-
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_Image);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Composite cmp_pathChooser1 = new Composite(cmp_bgArea, SWT.NONE);
-                    cmp_pathChooser1.setLayout(new GridLayout(2, false));
-
-                    Text txt_pngPath = new Text(cmp_pathChooser1, SWT.BORDER);
-                    txt_pngPath.setEditable(false);
-                    txt_pngPath.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-                    Button btn_BrowsePngPath = new Button(cmp_pathChooser1, SWT.NONE);
-                    btn_BrowsePngPath.setText(I18n.DIALOG_Browse);
-
-                    cmp_pathChooser1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionX);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionY);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_PositionZ);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E10")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_AngleY);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setMaximum(new BigDecimal("360")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-360")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_AngleX);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setMaximum(new BigDecimal("360")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-360")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_AngleZ);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setMaximum(new BigDecimal("360")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-360")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_ScaleX);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setMaximum(new BigDecimal("1E6")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E6")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                {
-                    Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                    lbl_Label.setText(I18n.E3D_ScaleY);
-                    lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                    BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
-                    spinner.setMaximum(new BigDecimal("1E6")); //$NON-NLS-1$
-                    spinner.setMinimum(new BigDecimal("-1E6")); //$NON-NLS-1$
-                    spinner.setValue(new BigDecimal(0));
-                    spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                }
-                cmp_scroll.setMinSize(cmp_bgArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+                Button btn_AllowInvalidShapes = new Button(cmp_container, SWT.CHECK);
+                this.btn_AllowInvalidShapes[0] = btn_AllowInvalidShapes;
+                btn_AllowInvalidShapes.setText(I18n.OPTIONS_AllowInvalidShapes);
+                btn_AllowInvalidShapes.setSelection(userSettings.isAllowInvalidShapes());
             }
-             */
+
 
             tabFolder_Settings.setSelection(tItem);
         }
@@ -559,7 +444,7 @@ class OptionsDesign extends ApplicationWindow {
     private void updateColoursHelper(TreeItem ti) {
         org.eclipse.swt.widgets.TreeItem key = ti.getParent().getMapInv().get(ti);
         if (key != null && ti.getData() != null && ((Object[]) ti.getData()).length == 2) {
-            Object[] colourObj = ((Object[]) ti.getData());
+            Object[] colourObj = (Object[]) ti.getData();
             ColourType type = (ColourType) colourObj[0];
             switch (type) {
             case OPENGL_COLOUR:

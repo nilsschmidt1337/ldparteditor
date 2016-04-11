@@ -116,6 +116,9 @@ public class UserSettingState implements Serializable {
     /** {@code true} if anti-aliasing is enabled for 3D windows */
     private boolean antiAliasing = false;
 
+    /** {@code true} if invalid shapes are allowed in the 3D editor */
+    private boolean allowInvalidShapes = false;
+
     private float[] BFC_front_Colour_r = null;
     private float[] BFC_front_Colour_g = null;
     private float[] BFC_front_Colour_b = null;
@@ -1239,5 +1242,13 @@ public class UserSettingState implements Serializable {
         if (text_foreground_r != null) {
             Colour.text_foreground[0] = SWTResourceManager.getColor(text_foreground_r[0], text_foreground_g[0], text_foreground_b[0]);
         }
+    }
+
+    public boolean isAllowInvalidShapes() {
+        return allowInvalidShapes;
+    }
+
+    public void setAllowInvalidShapes(boolean allowInvalidShapes) {
+        this.allowInvalidShapes = allowInvalidShapes;
     }
 }
