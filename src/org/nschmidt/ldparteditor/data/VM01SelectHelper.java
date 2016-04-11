@@ -1773,14 +1773,15 @@ public class VM01SelectHelper extends VM01Select {
     }
 
     public void toggleTEXMAP() {
-        toggleHelper("0 !:"); //$NON-NLS-1$
+        toggleHelper("0 !: "); //$NON-NLS-1$
     }
 
     public void toggleComment() {
-        toggleHelper("0 //"); //$NON-NLS-1$
+        toggleHelper("0 // "); //$NON-NLS-1$
     }
 
     private void toggleHelper(final String token) {
+        final String token2 = token.substring(0, 4);
         HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
         for (GData g : selectedData) {
             final GData b = g.getBefore();
@@ -1788,6 +1789,8 @@ public class VM01SelectHelper extends VM01Select {
             final String oldStr = g.toString();
             final String lineToParse;
             if (oldStr.startsWith(token)) {
+                lineToParse = oldStr.substring(5);
+            } else if (oldStr.startsWith(token2)) {
                 lineToParse = oldStr.substring(4);
             } else {
                 lineToParse = token + oldStr;
