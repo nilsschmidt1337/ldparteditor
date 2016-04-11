@@ -15,15 +15,19 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers.compositetext;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Set;
 
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Point;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GDataCSG;
-import org.nschmidt.ldparteditor.text.StringHelper;
+import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
+import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 
 /**
  * Annotates selected lines
@@ -33,8 +37,6 @@ import org.nschmidt.ldparteditor.text.StringHelper;
  */
 public enum AnnotatorTexmap {
     INSTANCE;
-
-    private static int offset;
 
     /**
      * Annotates selected lines with the TEXMAP meta command (clears the selection)
@@ -52,149 +54,41 @@ public enum AnnotatorTexmap {
         if (datFile.isReadOnly())
             return;
 
-        offset = 0;
+        final VertexManager vm = datFile.getVertexManager();
+        vm.backupHideShowState();
+        vm.backupSelection();
+        vm.clearSelection();
 
-        datFile.getVertexManager().clearSelection();
+        final Set<GData> sd = datFile.getVertexManager().getSelectedData();
+        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
 
         GDataCSG.resetCSG();
         GDataCSG.forceRecompile();
 
-        ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
         lineEnd += 1;
         for (int line = lineStart; line < lineEnd; line++) {
-            lineNumbers.add(line);
+            sd.add(dpl.getValue(line));
         }
 
-        Collections.sort(lineNumbers);
-        Collections.reverse(lineNumbers);
-
-        String text = cText.getText();
-        String text2 = text;
-        int c = cText.getSelectionRange().x + cText.getSelectionRange().y;
-
-        // Set the identifiers for each line
-        text2 = "<L1>" + text2; //$NON-NLS-1$
-        if (text2.contains("\r\n")) { //$NON-NLS-1$ Windows line termination
-            text2 = text2.replaceAll("\\r\\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (text2.contains("\n")) { //$NON-NLS-1$ Linux/Mac line termination
-            text2 = text2.replaceAll("\\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (!text2.endsWith("#!%")) { //$NON-NLS-1$
-            text2 = text2 + "#!%"; //$NON-NLS-1$
-        }
-        {
-            int state = 0;
-            int l = 1;
-            StringBuilder sb = new StringBuilder();
-            for (char ch : text2.toCharArray()) {
-                if (state == 0 && ch == '#') {
-                    state++;
-                } else if (state == 1 && ch == '!') {
-                    state++;
-                } else if (state == 2 && ch == '%') {
-                    state = 0;
-                    sb.append("</L" + l + "><L" + (l + 1) + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    l++;
-                } else {
-                    sb.append(ch);
+        vm.toggleTEXMAP();
+        vm.restoreSelection();
+        vm.restoreHideShowState();
+        vm.setModified_NoSync();
+        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+            for (CTabItem t : w.getTabFolder().getItems()) {
+                if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                    ((CompositeTab) t).getState().setSync(true);
+                    Point s = ((CompositeTab) t).getTextComposite().getSelection();
+                    ((CompositeTab) t).getTextComposite().setText(datFile.getText());
+                    ((CompositeTab) t).getTextComposite().setSelection(s);
+                    ((CompositeTab) t).getState().setSync(false);
+                    ((CompositeTab) t).parseForErrorAndHints();
+                    ((CompositeTab) t).getTextComposite().redraw();
+                    break;
                 }
             }
-            text2 = sb.toString();
         }
-        for (Integer l : lineNumbers) {
-            String line = getLine(l, text2);
-            text2 = AnnotatorTexmap.annotate(l, line, text2);
-        }
-        cText.setText(restoreLineTermination(text2));
-        int tl = cText.getText().length();
-        try {
-            cText.setSelection(Math.min(c + offset, tl));
-        } catch (Exception e) {
-            cText.setSelection(0);
-        }
-
+        vm.skipSyncTimer();
+        vm.setModified(true, true);
     }
-
-    static String insertBeforeLine(int line, String textToInsert, String text) {
-        return text.replaceFirst("<L" + line + ">", textToInsert + "<L" + line + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    }
-
-    static String setLine(int line, String textToSet, String text) {
-        return text.replaceFirst("<L" + line + ">.*</L" + line + ">", "<L" + line + ">" + textToSet.replace("\\", "\\\\") + "</L" + line + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
-    }
-
-    static String getLine(int line, String text) {
-        Pattern pattern = Pattern.compile("<L" + line + ">.*</L" + line + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        Matcher matcher = pattern.matcher(text);
-        if (matcher.find()) {
-            Pattern pattern2 = Pattern.compile(">.*<"); //$NON-NLS-1$
-            Matcher matcher2 = pattern2.matcher(matcher.group(0));
-            if (matcher2.find()) {
-                String g = matcher2.group();
-                return g.substring(1, g.length() - 1);
-            }
-        }
-        return ""; //$NON-NLS-1$
-    }
-
-    static String insertAfterLine(int line, String textToInsert, String text) {
-        return text.replaceFirst("</L" + line + ">", "</L" + line + ">" + textToInsert); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    }
-
-    static String restoreLineTermination(String text) {
-        text = text.replaceAll("<L[0-9]+><rm></L[0-9]+>", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        text = text.replaceAll("</L[0-9]+>", "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
-        text = text.replaceAll("<L[0-9]+>", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        final int tl = text.length();
-        if (tl > 3) text = text.substring(0, tl - 4);
-        return text.replaceAll("<br>", StringHelper.getLineDelimiter()); //$NON-NLS-1$
-    }
-
-    private static String annotate(Integer lineNumber, String line, String source) {
-
-        String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
-
-        if (data_segments.length > 1) {
-            if (data_segments[0].equals("0") && data_segments[1].equals("!:")) { //$NON-NLS-1$ //$NON-NLS-2$
-                int state = 0;
-                StringBuilder sb = new StringBuilder();
-                char[] ca = line.toCharArray();
-                for (char ch : ca) {
-                    if (state < 4) {
-                        if (state == 0 && ch == ' ') {
-                        } else if (state == 0 && ch == '0') {
-                            state++;
-                        } else if (state == 0) {
-                            state = 4;
-                        } else if (state == 1 && ch == ' ') {
-                        } else if (state == 1 && ch == '!') {
-                            state++;
-                        } else if (state == 1) {
-                            state = 4;
-                        } else if (state == 2 && ch == ':') {
-                            state++;
-                        } else if (state == 3) {
-                            state = 4;
-                        }
-                        offset--;
-                    } else {
-                        sb.append(ch);
-                    }
-                }
-                line = sb.toString();
-            } else {
-                line = "0 !: " + line; //$NON-NLS-1$
-                offset += 5;
-            }
-        } else {
-            line = "0 !: " + line; //$NON-NLS-1$
-            offset += 5;
-        }
-
-        source = setLine(lineNumber, line, source);
-
-        return source;
-    }
-
 }
