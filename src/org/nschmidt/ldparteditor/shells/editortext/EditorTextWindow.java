@@ -1245,20 +1245,37 @@ public class EditorTextWindow extends EditorTextDesign {
     public void cut() {
         CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
         if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+            final StyledText ct = selection.getTextComposite();
             if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
-                selection.getTextComposite().copy();
+                ct.copy();
                 return;
             }
-            selection.getTextComposite().cut();
-            selection.getTextComposite().forceFocus();
+            final int x = ct.getSelection().x;
+            if (ct.getSelection().y == x) {
+                final int start = ct.getOffsetAtLine(ct.getLineAtOffset(x));
+                ct.setSelection(start, start + ct.getLine(ct.getLineAtOffset(x)).length());
+            }
+            final int x2 = ct.getSelection().x;
+            if (ct.getSelection().y == x2) {
+                ct.forceFocus();
+                return;
+            }
+            ct.cut();
+            ct.forceFocus();
         }
     }
 
     public void copy() {
         CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
         if (selection != null) {
-            selection.getTextComposite().copy();
-            selection.getTextComposite().forceFocus();
+            final StyledText ct = selection.getTextComposite();
+            final int x = ct.getSelection().x;
+            if (ct.getSelection().y == x) {
+                final int start = ct.getOffsetAtLine(ct.getLineAtOffset(x));
+                ct.setSelection(start, start + ct.getLine(ct.getLineAtOffset(x)).length());
+            }
+            ct.copy();
+            ct.forceFocus();
         }
     }
 
@@ -1268,8 +1285,9 @@ public class EditorTextWindow extends EditorTextDesign {
             if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
-            selection.getTextComposite().paste();
-            selection.getTextComposite().forceFocus();
+            final StyledText ct = selection.getTextComposite();
+            ct.paste();
+            ct.forceFocus();
         }
     }
 
@@ -1279,14 +1297,20 @@ public class EditorTextWindow extends EditorTextDesign {
             if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
-            final int x = selection.getTextComposite().getSelection().x;
-            if (selection.getTextComposite().getSelection().y == x) {
-                selection.getTextComposite().forceFocus();
+            final StyledText ct = selection.getTextComposite();
+            final int x = ct.getSelection().x;
+            if (ct.getSelection().y == x) {
+                final int start = ct.getOffsetAtLine(ct.getLineAtOffset(x));
+                ct.setSelection(start, start + ct.getLine(ct.getLineAtOffset(x)).length());
+            }
+            final int x2 = ct.getSelection().x;
+            if (ct.getSelection().y == x2) {
+                ct.forceFocus();
                 return;
             }
-            selection.getTextComposite().insert(""); //$NON-NLS-1$
-            selection.getTextComposite().setSelection(new Point(x, x));
-            selection.getTextComposite().forceFocus();
+            ct.insert(""); //$NON-NLS-1$
+            ct.setSelection(new Point(x, x));
+            ct.forceFocus();
         }
     }
 }
