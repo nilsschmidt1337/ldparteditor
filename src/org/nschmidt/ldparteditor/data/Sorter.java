@@ -81,8 +81,8 @@ public enum Sorter {
                         if (lineCount == fromLine - 1) {
                             if (data2draw.type() == 6) {
                                 GDataBFC bfc = (GDataBFC) data2draw;
-                                if (!(bfc.getType() == BFC.INVERTNEXT && data2draw.getNext() != null && data2draw.getNext().type() == 1 && destructiveSort)) {
-                                    break;
+                                if (!(bfc.getType() == BFC.INVERTNEXT && data2draw.getNext() != null && data2draw.getNext().type() == 1)) {
+                                    if (!destructiveSort) break;
                                 }
                             }
                         } else if (lineCount < fromLine || lineCount > toLine) {
@@ -92,8 +92,8 @@ public enum Sorter {
                     // CHECK FOR BFC INVERTNEXT
                     if (data2draw.type() == 6) {
                         GDataBFC bfc = (GDataBFC) data2draw;
-                        if (!(bfc.getType() == BFC.INVERTNEXT && data2draw.getNext() != null && data2draw.getNext().type() == 1 && destructiveSort)) {
-                            break;
+                        if (!(bfc.getType() == BFC.INVERTNEXT && data2draw.getNext() != null && data2draw.getNext().type() == 1)) {
+                            if (!destructiveSort) break;
                         }
                     }
                     if (state != 1) {
