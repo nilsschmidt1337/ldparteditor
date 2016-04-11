@@ -1307,7 +1307,13 @@ public final class DatFile {
             UTF8PrintWriter r = new UTF8PrintWriter(newName);
             ArrayList<String> lines = new ArrayList<String>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
-
+            if (!lines.isEmpty()) {
+                final int index = lines.size() - 1;
+                String lastLine = lines.get(index);
+                if (!isNotBlank(lastLine)) {
+                    lines.remove(index);
+                }
+            }
             if (lines.isEmpty())
                 lines.add(""); //$NON-NLS-1$
 
@@ -1346,7 +1352,13 @@ public final class DatFile {
             UTF8PrintWriter r = new UTF8PrintWriter(newName);
             ArrayList<String> lines = new ArrayList<String>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
-
+            if (!lines.isEmpty()) {
+                final int index = lines.size() - 1;
+                String lastLine = lines.get(index);
+                if (!isNotBlank(lastLine)) {
+                    lines.remove(index);
+                }
+            }
             if (lines.isEmpty())
                 lines.add(""); //$NON-NLS-1$
 
@@ -1381,6 +1393,13 @@ public final class DatFile {
             UTF8PrintWriter r = new UTF8PrintWriter(newName);
             ArrayList<String> lines = new ArrayList<String>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
+            if (!lines.isEmpty()) {
+                final int index = lines.size() - 1;
+                String lastLine = lines.get(index);
+                if (!isNotBlank(lastLine)) {
+                    lines.remove(index);
+                }
+            }
             if (lines.isEmpty())
                 lines.add(""); //$NON-NLS-1$
 
