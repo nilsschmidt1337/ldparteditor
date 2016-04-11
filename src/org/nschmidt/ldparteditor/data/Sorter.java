@@ -63,21 +63,25 @@ public enum Sorter {
             ArrayList<GData> currentList = new ArrayList<GData>();
             int lineCount = 0;
             while ((data2draw = data2draw.getNext()) != null) {
+                boolean validType = false;
                 lineCount += 1;
                 switch (data2draw.type()) {
                 case 0:
-                    if (!data2draw.toString().trim().isEmpty()) break;
+                    if (!data2draw.toString().trim().isEmpty() && !destructiveSort) break;
                 case 1:
                 case 2:
                 case 3:
                 case 4:
                 case 5:
                 case 6:
+                    validType = true;
+                default:
+                    if (!validType && !destructiveSort) break;
                     if (scope == 1 && fromLine < toLine) {
                         if (lineCount == fromLine - 1) {
                             if (data2draw.type() == 6) {
                                 GDataBFC bfc = (GDataBFC) data2draw;
-                                if (!(bfc.getType() == BFC.INVERTNEXT && data2draw.getNext() != null && data2draw.getNext().type() == 1)) {
+                                if (!(bfc.getType() == BFC.INVERTNEXT && data2draw.getNext() != null && data2draw.getNext().type() == 1 && destructiveSort)) {
                                     break;
                                 }
                             }
@@ -88,11 +92,11 @@ public enum Sorter {
                     // CHECK FOR BFC INVERTNEXT
                     if (data2draw.type() == 6) {
                         GDataBFC bfc = (GDataBFC) data2draw;
-                        if (!(bfc.getType() == BFC.INVERTNEXT && data2draw.getNext() != null && data2draw.getNext().type() == 1)) {
+                        if (!(bfc.getType() == BFC.INVERTNEXT && data2draw.getNext() != null && data2draw.getNext().type() == 1 && destructiveSort)) {
                             break;
                         }
                     }
-                    if (state != 1 && !destructiveSort) {
+                    if (state != 1) {
                         currentList = new ArrayList<GData>();
                         state = 1;
                         shouldListBeSorted.add(true);
@@ -100,21 +104,14 @@ public enum Sorter {
                     }
                     currentList.add(data2draw);
                     continue;
-                default:
-                    break;
                 }
-                if (state != 2 && !destructiveSort) {
+                if (state != 2) {
                     currentList = new ArrayList<GData>();
                     state = 2;
                     shouldListBeSorted.add(false);
                     subLists.add(currentList);
                 }
                 currentList.add(data2draw);
-            }
-
-            if (destructiveSort) {
-                subLists.add(currentList);
-                shouldListBeSorted.add(true);
             }
         }
 
