@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +36,7 @@ import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
+import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
@@ -42,6 +44,8 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.text.DatParser;
+import org.nschmidt.ldparteditor.text.StringHelper;
 
 public class VM01SelectHelper extends VM01Select {
 
@@ -1758,6 +1762,47 @@ public class VM01SelectHelper extends VM01Select {
             return new Vector4f(x / count, y / count, z / count, 1f);
         } else {
             return new Vector4f(0f, 0f, 0f, 1f);
+        }
+    }
+
+    public void toggleTEXMAP() {
+        toggleHelper("0 !:"); //$NON-NLS-1$
+    }
+
+    public void toggleComment() {
+        toggleHelper("0 //"); //$NON-NLS-1$
+    }
+
+    private void toggleHelper(final String token) {
+        HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+        for (GData g : selectedData) {
+            final GData b = g.getBefore();
+            final GData n = g.getNext();
+            final String oldStr = g.toString();
+            final String lineToParse;
+            if (oldStr.startsWith(token)) {
+                lineToParse = oldStr.substring(4);
+            } else {
+                lineToParse = token + oldStr;
+            }
+            Integer line = dpl.getKey(g);
+            if (remove(g)) {
+                linkedDatFile.setDrawChainTail(b);
+            }
+            Set<String> alreadyParsed = new HashSet<String>();
+            alreadyParsed.add(linkedDatFile.getShortName());
+            GData pasted;
+            if (StringHelper.isNotBlank(lineToParse)) {
+                ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, 0.5f, 0.5f, 0.5f, 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                pasted = result.get(0).getGraphicalData();
+                if (pasted == null)
+                    pasted = new GData0(lineToParse);
+            } else {
+                pasted = new GData0(lineToParse);
+            }
+            b.setNext(pasted);
+            pasted.setNext(n);
+            dpl.put(line, pasted);
         }
     }
 }

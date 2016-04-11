@@ -96,7 +96,7 @@ public enum DatParser {
         final String[] data_segments = WHITESPACE.split(line.trim());
 
         char c;
-        if (data_segments.length < 1 || data_segments[0].length() > 1 || !Character.isDigit(c = data_segments[0].charAt(0))) {
+        if (data_segments.length < 1 || data_segments[0].length() >  1 || !Character.isDigit(c = data_segments[0].charAt(0))) {
             result.add(new ParsingResult(I18n.DATPARSER_InvalidType, "[E0D] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
             return result;
         }
