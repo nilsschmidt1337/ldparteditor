@@ -53,7 +53,13 @@ public class VM01SelectHelper extends VM01Select {
         super(linkedDatFile);
     }
 
-    public synchronized void selectVertices(final Composite3D c3d, boolean addSomething) {
+    /**
+     *
+     * @param c3d
+     * @param addSomething
+     * @return {@code true} if the selection did not use a rubber band
+     */
+    public synchronized boolean selectVertices(final Composite3D c3d, boolean addSomething) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
         if (!c3d.getKeys().isCtrlPressed() && !addSomething || addSomething) {
             selectedVertices.clear();
@@ -415,6 +421,7 @@ public class VM01SelectHelper extends VM01Select {
                 }
             }
         }
+        return needRayTest;
     }
 
     /**

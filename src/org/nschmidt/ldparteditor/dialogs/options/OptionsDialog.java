@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class OptionsDialog extends OptionsDesign {
 
@@ -29,6 +30,13 @@ public class OptionsDialog extends OptionsDesign {
                 Editor3DWindow.getWindow().compileAll();
                 Editor3DWindow.getWindow().initAllRenderers();
                 me.close();
+            }
+        });
+
+        btn_AllowInvalidShapes[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btn_AllowInvalidShapes[0].getSelection());
             }
         });
 

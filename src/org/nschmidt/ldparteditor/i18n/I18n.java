@@ -70,6 +70,7 @@ public final class I18n {
     private static final ResourceBundle INTERSECTOR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Intersector", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle ISECALC = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Isecalc", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle LINES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.LinesPattern", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle OPTIONS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Options", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle PATHTRUDER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PathTruder", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle RECTIFIER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Rectifier", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle RCONES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.RingsAndCones", MyLanguage.LOCALE); //$NON-NLS-1$
@@ -784,6 +785,8 @@ public final class I18n {
     public static final String META_VertexY = META.getString(getProperty());
     public static final String META_VertexZ = META.getString(getProperty());
     public static final String META_YearRelease = META.getString(getProperty());
+    public static final String OPTIONS_AllowInvalidShapes = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_MiscOptions = OPTIONS.getString(getProperty());
     public static final String PARTS_HiResPrimitives = PARTS.getString(getProperty());
     public static final String PARTS_LowResPrimitives = PARTS.getString(getProperty());
     public static final String PARTS_Parts = PARTS.getString(getProperty());
