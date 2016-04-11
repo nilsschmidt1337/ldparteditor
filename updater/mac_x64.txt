@@ -1,1 +1,1 @@
-https://github.com/nilsschmidt1337/ldparteditor/releases/download/v0.8.9-beta/LDPartEditor_mac_x64.zip
+https://github.com/nilsschmidt1337/ldparteditor/releases/download/v0.8.10-beta/LDPartEditor_mac_x64.zip
