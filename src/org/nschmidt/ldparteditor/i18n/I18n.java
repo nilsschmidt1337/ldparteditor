@@ -941,6 +941,7 @@ public final class I18n {
     public static final String SORT_ByTypeColourAsc = SORT.getString(getProperty());
     public static final String SORT_ByTypeColourDesc = SORT.getString(getProperty());
     public static final String SORT_ByTypeDesc = SORT.getString(getProperty());
+    public static final String SORT_IgnoreStructure = SORT.getString(getProperty());
     public static final String SORT_ScopeFile = SORT.getString(getProperty());
     public static final String SORT_ScopeSelection = SORT.getString(getProperty());
     public static final String SORT_Title = SORT.getString(getProperty());

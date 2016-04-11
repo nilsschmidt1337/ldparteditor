@@ -45,6 +45,8 @@ class SortDesign extends Dialog {
 
     final Button[] btn_OK = new Button[1];
 
+    final Button[] btn_ignoreStructure = new Button[1];
+
     final Combo[] cmb_scope = new Combo[1];
     final Combo[] cmb_sortCriteria = new Combo[1];
 
@@ -55,6 +57,8 @@ class SortDesign extends Dialog {
 
     int scope;
     int criteria;
+
+    boolean destructive = false;
 
     // Use final only for subclass/listener references!
 
@@ -104,8 +108,9 @@ class SortDesign extends Dialog {
         criteria = 2;
 
         // FIXME Needs translation / implementation!
-        new Button(cmp_container, SWT.CHECK).setText("Ignore the structure (comments, etc.)"); //$NON-NLS-1$
-
+        Button btn_ignoreStructure = new Button(cmp_container, SWT.CHECK);
+        this.btn_ignoreStructure[0] = btn_ignoreStructure;
+        btn_ignoreStructure.setText(I18n.SORT_IgnoreStructure);
         cmp_container.pack();
         return cmp_container;
     }
