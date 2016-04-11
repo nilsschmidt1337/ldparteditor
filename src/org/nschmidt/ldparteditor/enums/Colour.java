@@ -16,7 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.enums;
 
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * A colour "constants" provider for the EditorTextWindow class
