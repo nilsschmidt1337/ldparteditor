@@ -41,7 +41,7 @@ public enum Sorter {
      * 4 = "By type and then colour, ascending.",
      * 5 = "By type and then colour, descending."
      */
-    public static void sort(StyledText st, int fromLine, int toLine, DatFile fileNameObj, int scope, int sortCriteria) {
+    public static void sort(StyledText st, int fromLine, int toLine, DatFile fileNameObj, int scope, int sortCriteria, boolean destructiveSort) {
 
         // Backup selection range
         final int x = st.getSelectionRange().x;

@@ -53,7 +53,7 @@ public class SortDialog extends SortDesign {
         btn_OK[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                Sorter.sort(st, fromLine, toLine, fileNameObj, scope, criteria);
+                Sorter.sort(st, fromLine, toLine, fileNameObj, scope, criteria, destructive);
             }
         });
 
@@ -68,6 +68,13 @@ public class SortDialog extends SortDesign {
             @Override
             public void handleEvent(Event event) {
                 criteria = cmb_sortCriteria[0].getSelectionIndex();
+            }
+        });
+
+        btn_ignoreStructure[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                destructive = btn_ignoreStructure[0].getSelection();
             }
         });
 
