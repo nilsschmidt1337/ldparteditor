@@ -92,7 +92,7 @@ public enum Sorter {
                             break;
                         }
                     }
-                    if (state != 1) {
+                    if (state != 1 && !destructiveSort) {
                         currentList = new ArrayList<GData>();
                         state = 1;
                         shouldListBeSorted.add(true);
@@ -103,13 +103,18 @@ public enum Sorter {
                 default:
                     break;
                 }
-                if (state != 2) {
+                if (state != 2 && !destructiveSort) {
                     currentList = new ArrayList<GData>();
                     state = 2;
                     shouldListBeSorted.add(false);
                     subLists.add(currentList);
                 }
                 currentList.add(data2draw);
+            }
+
+            if (destructiveSort) {
+                subLists.add(currentList);
+                shouldListBeSorted.add(true);
             }
         }
 
@@ -123,8 +128,8 @@ public enum Sorter {
                     Collections.sort(listToSort, new Comparator<GData>() {
                         @Override
                         public int compare(GData g1, GData g2) {
-                            float c1 = 0f;
-                            float c2 = 0f;
+                            float c1 = -2f;
+                            float c2 = -2f;
                             switch (g1.type()) {
                             case 1:
                             {GData1 g = (GData1) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
@@ -159,7 +164,7 @@ public enum Sorter {
                             {GData5 g = (GData5) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
                             break;
                             }
-                            if (g1.type() == 6) {
+                            if (g1.type() == 6 && g1.getNext() != null) {
                                 switch (g1.getNext().type()) {
                                 case 1:
                                 {GData1 g = (GData1) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
@@ -178,7 +183,7 @@ public enum Sorter {
                                 break;
                                 }
                             }
-                            if (g2.type() == 6) {
+                            if (g2.type() == 6 && g2.getNext() != null) {
                                 switch (g2.getNext().type()) {
                                 case 1:
                                 {GData1 g = (GData1) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
@@ -205,8 +210,8 @@ public enum Sorter {
                     Collections.sort(listToSort, new Comparator<GData>() {
                         @Override
                         public int compare(GData g1, GData g2) {
-                            float c1 = 0f;
-                            float c2 = 0f;
+                            float c1 = -2f;
+                            float c2 = -2f;
                             switch (g1.type()) {
                             case 1:
                             {GData1 g = (GData1) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
@@ -241,7 +246,7 @@ public enum Sorter {
                             {GData5 g = (GData5) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
                             break;
                             }
-                            if (g1.type() == 6) {
+                            if (g1.type() == 6 && g1.getNext() != null) {
                                 switch (g1.getNext().type()) {
                                 case 1:
                                 {GData1 g = (GData1) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
@@ -260,7 +265,7 @@ public enum Sorter {
                                 break;
                                 }
                             }
-                            if (g2.type() == 6) {
+                            if (g2.type() == 6 && g2.getNext() != null) {
                                 switch (g2.getNext().type()) {
                                 case 1:
                                 {GData1 g = (GData1) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
@@ -289,10 +294,10 @@ public enum Sorter {
                         public int compare(GData g1, GData g2) {
                             int t1 = g1.type();
                             int t2 = g2.type();
-                            if (t1 == 6) {
+                            if (t1 == 6 && g1.getNext() != null) {
                                 t1 = g1.getNext().type();
                             }
-                            if (t2 == 6) {
+                            if (t2 == 6 && g2.getNext() != null) {
                                 t2 = g2.getNext().type();
                             }
                             return Integer.compare(t1, t2);
@@ -305,10 +310,10 @@ public enum Sorter {
                         public int compare(GData g1, GData g2) {
                             int t1 = g1.type();
                             int t2 = g2.type();
-                            if (t1 == 6) {
+                            if (t1 == 6 && g1.getNext() != null) {
                                 t1 = g1.getNext().type();
                             }
-                            if (t2 == 6) {
+                            if (t2 == 6 && g2.getNext() != null) {
                                 t2 = g2.getNext().type();
                             }
                             return Integer.compare(t2, t1);
@@ -321,10 +326,10 @@ public enum Sorter {
                         public int compare(GData g1, GData g2) {
                             int t1 = g1.type();
                             int t2 = g2.type();
-                            if (t1 == 6) {
+                            if (t1 == 6 && g1.getNext() != null) {
                                 t1 = g1.getNext().type();
                             }
-                            if (t2 == 6) {
+                            if (t2 == 6 && g2.getNext() != null) {
                                 t2 = g2.getNext().type();
                             }
                             int cmp1 = Integer.compare(t1, t2);
@@ -365,7 +370,7 @@ public enum Sorter {
                                 {GData5 g = (GData5) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
                                 break;
                                 }
-                                if (g1.type() == 6) {
+                                if (g1.type() == 6 && g1.getNext() != null) {
                                     switch (g1.getNext().type()) {
                                     case 1:
                                     {GData1 g = (GData1) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
@@ -384,7 +389,7 @@ public enum Sorter {
                                     break;
                                     }
                                 }
-                                if (g2.type() == 6) {
+                                if (g2.type() == 6 && g2.getNext() != null) {
                                     switch (g2.getNext().type()) {
                                     case 1:
                                     {GData1 g = (GData1) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
@@ -460,7 +465,7 @@ public enum Sorter {
                                 {GData5 g = (GData5) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
                                 break;
                                 }
-                                if (g1.type() == 6) {
+                                if (g1.type() == 6 && g1.getNext() != null) {
                                     switch (g1.getNext().type()) {
                                     case 1:
                                     {GData1 g = (GData1) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
@@ -479,7 +484,7 @@ public enum Sorter {
                                     break;
                                     }
                                 }
-                                if (g2.type() == 6) {
+                                if (g2.type() == 6 && g2.getNext() != null) {
                                     switch (g2.getNext().type()) {
                                     case 1:
                                     {GData1 g = (GData1) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
