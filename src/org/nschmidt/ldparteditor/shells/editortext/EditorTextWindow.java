@@ -515,6 +515,11 @@ public class EditorTextWindow extends EditorTextDesign {
                     int s2 = s1 + st.getSelectionRange().y;
                     int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
                     int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                    if (fromLine != toLine) {
+                        if (s2 == st.getOffsetAtLine(toLine)) {
+                            toLine -= 1;
+                        }
+                    }
                     fromLine++;
                     toLine++;
                     NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
@@ -539,6 +544,11 @@ public class EditorTextWindow extends EditorTextDesign {
                     int s2 = s1 + st.getSelectionRange().y;
                     int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
                     int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                    if (fromLine != toLine) {
+                        if (s2 == st.getOffsetAtLine(toLine)) {
+                            toLine -= 1;
+                        }
+                    }
                     fromLine++;
                     toLine++;
                     NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
