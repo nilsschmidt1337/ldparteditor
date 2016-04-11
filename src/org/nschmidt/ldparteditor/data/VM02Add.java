@@ -396,7 +396,7 @@ class VM02Add extends VM01SelectHelper {
         Vector3f v33f = new Vector3f(v3.x, v3.y, v3.z);
         Vector3f.sub(v13f, v33f, v13f);
         Vector3f.sub(v23f, v33f, v23f);
-        double angle = Vector3f.angle(v13f, v23f);
+        double angle = Vector3f.angle(v13f, v23f) * 180d / Math.PI;;
         if (angle < Threshold.collinear_angle_minimum && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
             return;
@@ -592,18 +592,18 @@ class VM02Add extends VM01SelectHelper {
             }
         }
 
-        double angle2 = Math.acos(Vector3f.angle(normals[0], normals[2])) * 180d / Math.PI;
+        double angle2 = Vector3f.angle(normals[0], normals[2]) * 180d / Math.PI;
         double angle;
 
         boolean parseError = false;
         Vector3f.sub(v13f, v43f, v13f);
         Vector3f.sub(v23f, v43f, v23f);
         Vector3f.sub(v33f, v43f, v33f);
-        angle = Vector3f.angle(v13f, v23f);
+        angle = Vector3f.angle(v13f, v23f) * 180d / Math.PI;;
         parseError = angle < Threshold.collinear_angle_minimum;
-        angle = Vector3f.angle(v23f, v33f);
+        angle = Vector3f.angle(v23f, v33f) * 180d / Math.PI;;
         parseError = parseError || angle < Threshold.collinear_angle_minimum;
-        angle = Vector3f.angle(v33f, v13f);
+        angle = Vector3f.angle(v33f, v13f) * 180d / Math.PI;;
         parseError = parseError || angle < Threshold.collinear_angle_minimum;
 
         // Collinearity
