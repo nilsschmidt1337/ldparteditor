@@ -35,6 +35,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * @author nils
@@ -358,6 +359,7 @@ class VM02Add extends VM01SelectHelper {
 
     public void addTriangle(Vertex v1, Vertex v2, Vertex v3, Composite3D c3d) {
         if (v1 == null || v2 == null || v3 == null) return;
+        final boolean allowInvalidShapes = WorkbenchManager.getUserSettingState().isAllowInvalidShapes();
         if (v1.equals(v2) || v1.equals(v3) || v2.equals(v3))
             return;
         Set<VertexManifestation> refs1 = vertexLinkedToPositionInFile.get(v1);
@@ -395,7 +397,7 @@ class VM02Add extends VM01SelectHelper {
         Vector3f.sub(v13f, v33f, v13f);
         Vector3f.sub(v23f, v33f, v23f);
         double angle = Vector3f.angle(v13f, v23f);
-        if (angle < Threshold.collinear_angle_minimum) {
+        if (angle < Threshold.collinear_angle_minimum && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
             return;
         }
@@ -425,6 +427,7 @@ class VM02Add extends VM01SelectHelper {
 
     public void addQuad(Vertex v1, Vertex v2, Vertex v3, Vertex v4, Composite3D c3d) {
         if (v1 == null || v2 == null || v3 == null || v4 == null) return;
+        final boolean allowInvalidShapes = WorkbenchManager.getUserSettingState().isAllowInvalidShapes();
         {
             Set<Vertex> dupl = new TreeSet<Vertex>();
             dupl.add(v1);
@@ -566,7 +569,7 @@ class VM02Add extends VM01SelectHelper {
                 v13f = new Vector3f(v1.x, v1.y, v1.z);
                 v23f = new Vector3f(v2.x, v2.y, v2.z);
                 v33f = new Vector3f(v3.x, v3.y, v3.z);
-            } else if (cnc == 1 || cnc == 3) {
+            } else if ((cnc == 1 || cnc == 3) && !allowInvalidShapes) {
                 // Concave
                 linkedDatFile.setObjVertex4(null);
                 return;
@@ -589,7 +592,7 @@ class VM02Add extends VM01SelectHelper {
             }
         }
 
-        double angle2 = Vector3f.angle(normals[0], normals[2]);
+        double angle2 = Math.acos(Vector3f.angle(normals[0], normals[2])) * 180d / Math.PI;
         double angle;
 
         boolean parseError = false;
@@ -604,14 +607,14 @@ class VM02Add extends VM01SelectHelper {
         parseError = parseError || angle < Threshold.collinear_angle_minimum;
 
         // Collinearity
-        if (parseError) {
+        if (parseError && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
             linkedDatFile.setObjVertex4(null);
             return;
         }
 
         // Coplanarity
-        if (angle2 > Threshold.coplanarity_angle_error) {
+        if (angle2 > Threshold.coplanarity_angle_error && !allowInvalidShapes) {
             linkedDatFile.setObjVertex4(null);
             return;
         }
