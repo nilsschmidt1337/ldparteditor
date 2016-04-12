@@ -57,6 +57,7 @@ import org.nschmidt.ldparteditor.data.Beautifier;
 import org.nschmidt.ldparteditor.data.ColourChanger;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.data.QuadMerger;
 import org.nschmidt.ldparteditor.data.QuadSplitter;
 import org.nschmidt.ldparteditor.data.Rounder;
 import org.nschmidt.ldparteditor.data.Unrectifier;
@@ -738,6 +739,32 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             }
         });
+
+        btn_MergeQuad[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                        return;
+                    }
+                    NLogger.debug(getClass(), "Merge triangles into quad.."); //$NON-NLS-1$
+                    final StyledText st = selection.getTextComposite();
+                    int s1 = st.getSelectionRange().x;
+                    int s2 = s1 + st.getSelectionRange().y;
+                    int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                    int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                    fromLine++;
+                    toLine++;
+                    NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
+                    QuadMerger.mergeTrianglesIntoQuad(st, fromLine, toLine, selection.getState().getFileNameObj());
+                    st.forceFocus();
+                }
+            }
+        });
+
+
 
         btn_Unrectify[0].addSelectionListener(new SelectionAdapter() {
             @Override
