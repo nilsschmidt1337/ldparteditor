@@ -502,7 +502,7 @@ public class HistoryManager {
                                 }
                                 monitor.beginTask(I18n.E3D_LoadingData, 100);
                                 while (action.get() > 0) {
-                                    Integer inc = sq.poll(1000, TimeUnit.MILLISECONDS);
+                                    Integer inc = sq.poll(200, TimeUnit.MILLISECONDS);
                                     if (inc != null) {
                                         monitor.worked(inc);
                                         NLogger.debug(getClass(), "Polled progress info. ({0})", inc); //$NON-NLS-1$
