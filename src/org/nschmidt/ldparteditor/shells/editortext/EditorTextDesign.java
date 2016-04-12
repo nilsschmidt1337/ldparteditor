@@ -90,6 +90,7 @@ class EditorTextDesign extends ApplicationWindow {
     final Button[] btn_FindAndReplace = new Button[1];
     final Button[] btn_Sort = new Button[1];
     final Button[] btn_SplitQuad = new Button[1];
+    final Button[] btn_MergeQuad = new Button[1];
     final Button[] btn_Unrectify = new Button[1];
     final Button[] btn_Beautify = new Button[1];
     final Button[] btn_ShowSelectionIn3D = new Button[1];
@@ -228,6 +229,12 @@ class EditorTextDesign extends ApplicationWindow {
             this.btn_SplitQuad[0] = btn_SplitQuad;
             btn_SplitQuad.setImage(ResourceManager.getImage("icon16_quadToTri.png")); //$NON-NLS-1$
             btn_SplitQuad.setToolTipText(I18n.EDITORTEXT_SplitQuad);
+        }
+        {
+            Button btn_MergeQuad = new Button(toolItem_Debug, SWT.NONE);
+            this.btn_MergeQuad[0] = btn_MergeQuad;
+            btn_MergeQuad.setImage(ResourceManager.getImage("icon16_triToquad.png")); //$NON-NLS-1$
+            btn_MergeQuad.setToolTipText(I18n.EDITORTEXT_MergeQuad);
         }
         {
             Button btn_ShowSelectionIn3D = new Button(toolItem_Debug, SWT.NONE);

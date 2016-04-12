@@ -440,6 +440,7 @@ public final class I18n {
     public static final String E3D_ManipulatorToVertexN = E3D.getString(getProperty());
     public static final String E3D_ManipulatorToWorld = E3D.getString(getProperty());
     public static final String E3D_Medium = E3D.getString(getProperty());
+    public static final String E3D_MergeQuad = E3D.getString(getProperty());
     public static final String E3D_MergeSplit = E3D.getString(getProperty());
     public static final String E3D_MergeToAvg = E3D.getString(getProperty());
     public static final String E3D_MergeToLastSelected = E3D.getString(getProperty());
@@ -620,6 +621,7 @@ public final class I18n {
     public static final String EDITORTEXT_Inline1 = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Inline2 = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Inline3 = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_MergeQuad = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_NewFile = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Other = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Others = EDITORTEXT.getString(getProperty());
