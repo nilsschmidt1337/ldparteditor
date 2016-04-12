@@ -1693,6 +1693,20 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        btn_MergeQuad[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
+                    RectifierSettings rs = new RectifierSettings();
+                    rs.setScope(1);
+                    rs.setNoBorderedQuadToRectConversation(true);
+                    Project.getFileToEdit().getVertexManager().rectify(rs, true, true);
+                }
+                regainFocus();
+            }
+        });
+
         btn_CondlineToLine[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
