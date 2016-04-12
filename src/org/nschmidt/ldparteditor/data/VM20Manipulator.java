@@ -52,6 +52,7 @@ public class VM20Manipulator extends VM19ColourChanger {
     private void transform(Set<GData> allData, Set<Vertex> allVertices, Matrix transformation, Vector3d newVertex, boolean updateSelection, boolean moveAdjacentData) {
         HashSet<GData> allData2 = new HashSet<GData>(allData);
         TreeSet<Vertex> verticesToTransform = new TreeSet<Vertex>();
+        TreeSet<Vertex> transformedLPEvertices = new TreeSet<Vertex>();
         verticesToTransform.addAll(allVertices);
         for (GData gd : allData) {
             Set<VertexInfo> vis = lineLinkedToVertices.get(gd);
@@ -122,12 +123,17 @@ public class VM20Manipulator extends VM19ColourChanger {
             {
                 Vertex[] verts = declaredVertices.get(gd);
                 if (verts != null) {
-                    Vertex v1 = oldToNewVertex.get(verts[0]);
-                    if (v1 == null) v1 = verts[0];
-                    newData = addVertex(v1);
-                    if (updateSelection) {
-                        selectedVertices.remove(verts[0]);
-                        selectedVertices.add(v1);
+                    if (transformedLPEvertices.contains(verts[0])) {
+                        continue;
+                    } else {
+                        if (!moveAdjacentData) transformedLPEvertices.add(verts[0]);
+                        Vertex v1 = oldToNewVertex.get(verts[0]);
+                        if (v1 == null) v1 = verts[0];
+                        newData = addVertex(v1);
+                        if (updateSelection) {
+                            selectedVertices.remove(verts[0]);
+                            selectedVertices.add(v1);
+                        }
                     }
                 }
             }
