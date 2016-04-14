@@ -939,7 +939,7 @@ class VM00Base {
                 if (v2[1].equals(oldVertex))
                     v2[1] = newVertex;
 
-                GData2 newGdata2 = new GData2(gd2.colourNumber, gd2.r, gd2.g, gd2.b, gd2.a, v2[0], v2[1], View.DUMMY_REFERENCE, linkedDatFile, true);
+                GData2 newGdata2 = new GData2(gd2.colourNumber, gd2.r, gd2.g, gd2.b, gd2.a, v2[0], v2[1], View.DUMMY_REFERENCE, linkedDatFile, gd2.isLine);
 
                 // modifiedData.add(newGdata2);
                 drawPerLine.put(oldNumber, newGdata2);
