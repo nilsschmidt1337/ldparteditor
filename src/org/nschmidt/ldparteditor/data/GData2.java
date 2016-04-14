@@ -211,10 +211,14 @@ public final class GData2 extends GData {
         default:
             break;
         }
-        if (!isLine)
-            drawDistance(c3d);
 
         GL11.glDisable(GL11.GL_LIGHTING);
+
+        if (!isLine) {
+            drawDistance(c3d);
+            GL11.glEnable(GL11.GL_LIGHTING);
+            return;
+        }
 
         if (c3d.getZoom() > View.edge_threshold) {
 
@@ -315,14 +319,20 @@ public final class GData2 extends GData {
         default:
             break;
         }
-        if (!isLine)
+
+        GL11.glDisable(GL11.GL_LIGHTING);
+
+        if (!isLine) {
             drawDistance(c3d);
+            GL11.glEnable(GL11.GL_LIGHTING);
+            return;
+        }
 
         final float r = MathHelper.randomFloat(ID, 0);
         final float g = MathHelper.randomFloat(ID, 1);
         final float b = MathHelper.randomFloat(ID, 2);
 
-        GL11.glDisable(GL11.GL_LIGHTING);
+
 
         if (c3d.getZoom() > 5e-6) {
 
@@ -684,6 +694,17 @@ public final class GData2 extends GData {
         GL11.glVertex3f(x1, y1, z1);
         GL11.glVertex3f(x2, y2, z2);
         GL11.glEnd();
+        // GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        // GL11.glLoadMatrix(c3d.getRenderer().getRotationInverse());
+        PGData3.beginDrawText();
+        for (PGData3 tri : View.D5) {
+            tri.drawText(x1, y1, z1);
+        }
+        PGData3.endDrawText();
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        // GL11.glPopMatrix();
+
     }
 
     /*
