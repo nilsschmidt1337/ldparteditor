@@ -159,8 +159,8 @@ class VM16Subdivide extends VM15Flipper {
                 ve[i] = new Vertex(Vector3d.add(new Vector3d(originalVerts[i]), new Vector3d(originalVerts[(i + 1) % c])).scaledByHalf());
                 GData2 g2 = null;
                 if ((g2 = hasEdge(originalVerts[i], originalVerts[(i + 1) % c])) != null) {
-                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[i], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[i], ve[i], View.DUMMY_REFERENCE, linkedDatFile));
-                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[(i + 1) % c], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[(i + 1) % c], ve[i], View.DUMMY_REFERENCE, linkedDatFile));
+                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[i], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[i], ve[i], View.DUMMY_REFERENCE, linkedDatFile, true));
+                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[(i + 1) % c], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[(i + 1) % c], ve[i], View.DUMMY_REFERENCE, linkedDatFile, true));
                     linesToDelete2.add(g2);
                 }
             }
@@ -252,8 +252,8 @@ class VM16Subdivide extends VM15Flipper {
                 ve[i] = new Vertex(Vector3d.add(new Vector3d(originalVerts[i]), new Vector3d(originalVerts[(i + 1) % c])).scaledByHalf());
                 GData2 g2 = null;
                 if ((g2 = hasEdge(originalVerts[i], originalVerts[(i + 1) % c])) != null) {
-                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[i], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[i], ve[i], View.DUMMY_REFERENCE, linkedDatFile));
-                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[(i + 1) % c], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[(i + 1) % c], ve[i], View.DUMMY_REFERENCE, linkedDatFile));
+                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[i], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[i], ve[i], View.DUMMY_REFERENCE, linkedDatFile, true));
+                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[(i + 1) % c], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[(i + 1) % c], ve[i], View.DUMMY_REFERENCE, linkedDatFile, true));
                     linesToDelete2.add(g2);
                 }
             }

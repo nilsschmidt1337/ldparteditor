@@ -1095,7 +1095,7 @@ class VM14Splitter extends VM13SymSplitter {
                         A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
                         A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
 
-                        View.DUMMY_REFERENCE, linkedDatFile));
+                        View.DUMMY_REFERENCE, linkedDatFile, true));
                 cur = next;
             }
         }
@@ -1130,8 +1130,8 @@ class VM14Splitter extends VM13SymSplitter {
         if (!start.equals(end)) {
             Vertex[] verts = lines.get(g);
             if ((verts[0].equals(start) || verts[0].equals(end)) && (verts[1].equals(start) || verts[1].equals(end))) {
-                result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a, start.X, start.Y, start.Z, target.X, target.Y, target.Z, View.DUMMY_REFERENCE, linkedDatFile));
-                result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a, target.X, target.Y, target.Z, end.X, end.Y, end.Z, View.DUMMY_REFERENCE, linkedDatFile));
+                result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a, start.X, start.Y, start.Z, target.X, target.Y, target.Z, View.DUMMY_REFERENCE, linkedDatFile, true));
+                result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a, target.X, target.Y, target.Z, end.X, end.Y, end.Z, View.DUMMY_REFERENCE, linkedDatFile, true));
             }
         }
         return result;

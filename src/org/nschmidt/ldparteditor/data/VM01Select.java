@@ -457,7 +457,7 @@ class VM01Select extends VM00Snapshot {
                     GData2 g2 = (GData2) selectedLine;
                     selectedLines.remove(g2);
                     selectedData.remove(g2);
-                    newData = new GData2(g2.colourNumber, g2.r, g2.g, g2.b, g2.a, new Vertex(x1, y1, z1), new Vertex(x2, y2, z2), g2.parent, linkedDatFile);
+                    newData = new GData2(g2.colourNumber, g2.r, g2.g, g2.b, g2.a, new Vertex(x1, y1, z1), new Vertex(x2, y2, z2), g2.parent, linkedDatFile, true);
                     selectedLines.add((GData2) newData);
                     selectedData.add(newData);
                     break;

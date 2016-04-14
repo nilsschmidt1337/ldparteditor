@@ -1,0 +1,11 @@
+00 Comment
+01 Sub-File Reference
+02 Line
+03 Triangle
+04 Quad
+05 Condline
+06 BFC
+07 Init
+08 CSG
+09 !TEXMAP
+10 PNG

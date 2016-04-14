@@ -249,7 +249,7 @@ class VM99Clipboard extends VM24MeshReducer {
                     Vertex[] verts = lines.get(line);
                     if (verts == null)
                         continue;
-                    effSelectedLines.add(new GData2(verts[0], verts[1], line.parent, new GColour(line.colourNumber, line.r, line.g, line.b, line.a)));
+                    effSelectedLines.add(new GData2(verts[0], verts[1], line.parent, new GColour(line.colourNumber, line.r, line.g, line.b, line.a), true));
                 }
                 Vertex[] verts = lines.get(line);
                 if (verts == null)

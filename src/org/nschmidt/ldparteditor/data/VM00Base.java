@@ -939,7 +939,7 @@ class VM00Base {
                 if (v2[1].equals(oldVertex))
                     v2[1] = newVertex;
 
-                GData2 newGdata2 = new GData2(gd2.colourNumber, gd2.r, gd2.g, gd2.b, gd2.a, v2[0], v2[1], View.DUMMY_REFERENCE, linkedDatFile);
+                GData2 newGdata2 = new GData2(gd2.colourNumber, gd2.r, gd2.g, gd2.b, gd2.a, v2[0], v2[1], View.DUMMY_REFERENCE, linkedDatFile, true);
 
                 // modifiedData.add(newGdata2);
                 drawPerLine.put(oldNumber, newGdata2);
@@ -1068,11 +1068,11 @@ class VM00Base {
                 switch (mani.getPosition()) {
                 case 0:
                     newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, newVertex.X, newVertex.Y, newVertex.Z, oldLin.X2, oldLin.Y2, oldLin.Z2, oldLin.parent,
-                            linkedDatFile);
+                            linkedDatFile, true);
                     break;
                 case 1:
                     newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, oldLin.X1, oldLin.Y1, oldLin.Z1, newVertex.X, newVertex.Y, newVertex.Z, oldLin.parent,
-                            linkedDatFile);
+                            linkedDatFile, true);
                     break;
                 }
                 newData = newLin;
@@ -1221,11 +1221,11 @@ class VM00Base {
                 switch (mani.getPosition()) {
                 case 0:
                     newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, newVertex.X, newVertex.Y, newVertex.Z, oldLin.X2, oldLin.Y2, oldLin.Z2, oldLin.parent,
-                            linkedDatFile);
+                            linkedDatFile, true);
                     break;
                 case 1:
                     newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, oldLin.X1, oldLin.Y1, oldLin.Z1, newVertex.X, newVertex.Y, newVertex.Z, oldLin.parent,
-                            linkedDatFile);
+                            linkedDatFile, true);
                     break;
                 }
                 newData = newLin;

@@ -352,7 +352,7 @@ class VM02Add extends VM01SelectHelper {
             // Will never return a 'null' colour!
             col = DatParser.validateColour(24, 0f, 0f, .0f, 0f);
         }
-        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData2(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
+        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData2(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
         linkedDatFile.setObjVertex1(v1);
         linkedDatFile.setObjVertex2(v2);
     }

@@ -171,7 +171,7 @@ class VM15Flipper extends VM14Splitter {
         }
 
         for (GData2 g : effSelectedLines) {
-            GData2 n = new GData2(g.colourNumber, g.r, g.g, g.b, g.a, g.X2, g.Y2, g.Z2, g.X1, g.Y1, g.Z1, g.parent, linkedDatFile);
+            GData2 n = new GData2(g.colourNumber, g.r, g.g, g.b, g.a, g.X2, g.Y2, g.Z2, g.X1, g.Y1, g.Z1, g.parent, linkedDatFile, true);
             newLines.add(n);
             linkedDatFile.insertAfter(g, n);
             linesToDelete2.add(g);
