@@ -556,6 +556,7 @@ public final class GData2 extends GData {
 
     @Override
     public String transformAndColourReplace(String colour, Matrix matrix) {
+        // FIXME needs implementation for issue #192
         BigDecimal[] v1;
         BigDecimal[] v2;
         if (X1 == null) {
@@ -655,6 +656,7 @@ public final class GData2 extends GData {
     public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
     public String colourReplace(String col) {
+        // FIXME needs implementation for issue #192
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(2);
         lineBuilder.append(" "); //$NON-NLS-1$
@@ -676,7 +678,12 @@ public final class GData2 extends GData {
 
     private void drawDistance(Composite3D c3d) {
         // FIXME needs implementation for issue #192
-
+        GL11.glLineWidth(View.lineWidthGL[0]);
+        GL11.glColor4f(r, g, b, a);
+        GL11.glBegin(GL11.GL_LINES);
+        GL11.glVertex3f(x1, y1, z1);
+        GL11.glVertex3f(x2, y2, z2);
+        GL11.glEnd();
     }
 
     /*

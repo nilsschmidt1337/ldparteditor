@@ -304,6 +304,19 @@ public enum View {
     public final static Set<PGData3> RIGHT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_RIGHT, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
     public final static Set<PGData3> TOP = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_TOP, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
 
+    public final static Set<PGData3> D0 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "0", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> D1 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "1", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> D2 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "2", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> D3 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "3", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> D4 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "4", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> D5 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "5", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> D6 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "6", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> D7 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "7", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> D8 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "8", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> D9 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "9", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> Dd = TextTriangulator.triangulateGLText(Font.MONOSPACE, ".", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+
+
     private static final GColour BLACK = new GColour(-1, 0f, 0f, 0f, 1f);
 
     public static final int NUM_CORES = Runtime.getRuntime().availableProcessors();
