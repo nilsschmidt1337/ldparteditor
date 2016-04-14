@@ -214,6 +214,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private boolean addingTriangles = false;
     private boolean addingQuads = false;
     private boolean addingCondlines = false;
+    private boolean addingDistance = false;
     private boolean addingSubfiles = false;
     private boolean movingAdjacentData = false;
     private boolean noTransparentSelection = false;
@@ -1224,6 +1225,16 @@ public class Editor3DWindow extends Editor3DDesign {
                 setAddingCondlines(btn_AddCondline[0].getSelection());
                 setAddingSomething(isAddingCondlines());
                 clickSingleBtn(btn_AddCondline[0]);
+                regainFocus();
+            }
+        });
+        btn_AddDistance[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                resetAddState();
+                setAddingDistance(btn_AddDistance[0].getSelection());
+                setAddingSomething(isAddingDistance());
+                clickSingleBtn(btn_AddDistance[0]);
                 regainFocus();
             }
         });
@@ -5392,6 +5403,7 @@ public class Editor3DWindow extends Editor3DDesign {
         setAddingTriangles(false);
         setAddingQuads(false);
         setAddingCondlines(false);
+        setAddingDistance(false);
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             DatFile df = c3d.getLockableDatFileReference();
@@ -5412,6 +5424,7 @@ public class Editor3DWindow extends Editor3DDesign {
             btn_AddTriangle[0].setSelection(false);
             btn_AddQuad[0].setSelection(false);
             btn_AddCondline[0].setSelection(false);
+            btn_AddDistance[0].setSelection(false);
             btn_AddPrimitive[0].setSelection(false);
             setAddingSomething(false);
         }
@@ -5448,6 +5461,11 @@ public class Editor3DWindow extends Editor3DDesign {
             btn_AddCondline[0].setSelection(isAddingCondlines());
             setAddingSomething(isAddingCondlines());
             clickSingleBtn(btn_AddCondline[0]);
+        case 6:
+            setAddingDistance(!isAddingDistance());
+            btn_AddDistance[0].setSelection(isAddingDistance());
+            setAddingSomething(isAddingDistance());
+            clickSingleBtn(btn_AddDistance[0]);
             break;
         }
     }
@@ -6189,6 +6207,14 @@ public class Editor3DWindow extends Editor3DDesign {
         this.addingSubfiles = addingSubfiles;
     }
 
+    public boolean isAddingDistance() {
+        return addingDistance;
+    }
+
+    public void setAddingDistance(boolean addingDistance) {
+        this.addingDistance = addingDistance;
+    }
+
     public void disableAddAction() {
         addingSomething = false;
         addingVertices = false;
@@ -6197,11 +6223,13 @@ public class Editor3DWindow extends Editor3DDesign {
         addingQuads = false;
         addingCondlines = false;
         addingSubfiles = false;
+        addingDistance = false;
         btn_AddVertex[0].setSelection(false);
         btn_AddLine[0].setSelection(false);
         btn_AddTriangle[0].setSelection(false);
         btn_AddQuad[0].setSelection(false);
         btn_AddCondline[0].setSelection(false);
+        btn_AddDistance[0].setSelection(false);
         btn_AddPrimitive[0].setSelection(false);
     }
 
