@@ -32,7 +32,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
  * @author nils
  *
  */
-public class GData2 extends GData {
+public final class GData2 extends GData {
 
     final int colourNumber;
 

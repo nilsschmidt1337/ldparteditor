@@ -651,36 +651,36 @@ public final class GData1 extends GData {
                     || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
 
 
-//                // Bounding Boxes:
-//                GL11.glPushMatrix();
-//                GL11.glLoadIdentity();
-//                GL11.glMultMatrix(c3d.getRenderer().getViewport());
-//
-//                GL11.glLineWidth(3f); GL11.glBegin(GL11.GL_LINES);
-//                GL11.glColor3f(1f, 1f, 0f);
-//
-//                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMinReal.y, boundingBoxMinReal.z);
-//                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMinReal.y, boundingBoxMaxReal.z);
-//
-//                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMinReal.y, boundingBoxMinReal.z);
-//                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMaxReal.y, boundingBoxMinReal.z);
-//
-//                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMinReal.y, boundingBoxMinReal.z);
-//                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMinReal.y, boundingBoxMinReal.z);
-//
-//                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMaxReal.y, boundingBoxMaxReal.z);
-//                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMaxReal.y, boundingBoxMaxReal.z);
-//
-//                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMinReal.y, boundingBoxMaxReal.z);
-//                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMaxReal.y, boundingBoxMaxReal.z);
-//
-//                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMaxReal.y, boundingBoxMinReal.z);
-//                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMaxReal.y, boundingBoxMaxReal.z);
-//
-//
-//                GL11.glEnd();
-//
-//                GL11.glPopMatrix();
+                //                // Bounding Boxes:
+                //                GL11.glPushMatrix();
+                //                GL11.glLoadIdentity();
+                //                GL11.glMultMatrix(c3d.getRenderer().getViewport());
+                //
+                //                GL11.glLineWidth(3f); GL11.glBegin(GL11.GL_LINES);
+                //                GL11.glColor3f(1f, 1f, 0f);
+                //
+                //                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMinReal.y, boundingBoxMinReal.z);
+                //                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMinReal.y, boundingBoxMaxReal.z);
+                //
+                //                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMinReal.y, boundingBoxMinReal.z);
+                //                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMaxReal.y, boundingBoxMinReal.z);
+                //
+                //                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMinReal.y, boundingBoxMinReal.z);
+                //                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMinReal.y, boundingBoxMinReal.z);
+                //
+                //                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMaxReal.y, boundingBoxMaxReal.z);
+                //                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMaxReal.y, boundingBoxMaxReal.z);
+                //
+                //                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMinReal.y, boundingBoxMaxReal.z);
+                //                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMaxReal.y, boundingBoxMaxReal.z);
+                //
+                //                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMaxReal.y, boundingBoxMinReal.z);
+                //                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMaxReal.y, boundingBoxMaxReal.z);
+                //
+                //
+                //                GL11.glEnd();
+                //
+                //                GL11.glPopMatrix();
 
 
                 GL11.glPushMatrix();

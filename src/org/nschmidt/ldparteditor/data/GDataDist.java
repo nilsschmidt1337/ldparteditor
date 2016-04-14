@@ -15,37 +15,142 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
-import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.TreeMap;
+
+import org.nschmidt.ldparteditor.composites.Composite3D;
 
 /**
  * @author nils
  *
  */
-public final class GDataDist extends GData2 {
+public final class GDataDist extends GData {
 
-    public GDataDist(GColour c, GData1 parent, Vertex v1, Vertex v2) {
-        super(c, parent, v1, v2);
+    final GData2 line;
+    // FIXME Needs implementation!
+
+    public GDataDist(final GData2 line) {
+        this.line = line;
     }
 
-    public GDataDist(GData1 parent, int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, float x12,
-            float y12, float z12, float x22, float y22, float z22, DatFile datFile) {
-        super(parent, colourNumber, r, g, b, a, x1, y1, z1, x2, y2, z2, x12, y12, z12, x22, y22, z22, datFile);
+
+    @Override
+    String getNiceString() {
+        if (text != null)
+            return text;
+        StringBuilder lineBuilder = new StringBuilder();
+        lineBuilder.append("0 !LPE DISTANCE "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(line.X1));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(line.Y1));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(line.Z1));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(line.X2));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(line.Y2));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(line.Z2));
+        text = lineBuilder.toString();
+        return text;
     }
 
-    public GDataDist(int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, GData1 parent, DatFile datFile) {
-        super(colourNumber, r, g, b, a, x1, y1, z1, x2, y2, z2, parent, datFile);
+    @Override
+    public String inlinedString(byte bfc, GColour colour) {
+        return getNiceString();
     }
 
-    public GDataDist(int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, GData1 parent, DatFile datFile) {
-        super(colourNumber, r, g, b, a, v1, v2, parent, datFile);
+
+    @Override
+    public void draw(Composite3D c3d) {
+        // TODO Auto-generated method stub
+
     }
 
-    public GDataDist(Vertex v1, Vertex v2, GColour c, GData1 parent) {
-        super(v1, v2, c, parent);
+
+    @Override
+    public void drawRandomColours(Composite3D c3d) {
+        // TODO Auto-generated method stub
+
     }
 
-    public GDataDist(Vertex v1, Vertex v2, GData1 parent, GColour c) {
-        super(v1, v2, parent, c);
+
+    @Override
+    public void drawBFC(Composite3D c3d) {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    @Override
+    public void drawBFCuncertified(Composite3D c3d) {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    @Override
+    public void drawBFC_backOnly(Composite3D c3d) {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    @Override
+    public void drawBFC_Colour(Composite3D c3d) {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    @Override
+    public void drawBFC_Textured(Composite3D c3d) {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    @Override
+    public void drawWhileAddCondlines(Composite3D c3d) {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    @Override
+    public void getBFCorientationMap(HashMap<GData, Byte> map) {}
+
+
+    @Override
+    public void getBFCorientationMapNOCERTIFY(HashMap<GData, Byte> map) {}
+
+
+    @Override
+    public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map) {}
+
+
+    @Override
+    public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+
+
+    @Override
+    public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+
+
+    @Override
+    public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+
+
+    @Override
+    public String transformAndColourReplace(String colour, Matrix matrix) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    @Override
+    public int type() {
+        return 42;
     }
 
 }
