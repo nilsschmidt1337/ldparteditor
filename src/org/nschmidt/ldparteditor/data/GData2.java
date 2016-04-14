@@ -21,6 +21,7 @@ import java.util.TreeMap;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.GLPrimitives;
@@ -688,23 +689,27 @@ public final class GData2 extends GData {
 
     private void drawDistance(Composite3D c3d) {
         // FIXME needs implementation for issue #192
+        final OpenGLRenderer renderer = c3d.getRenderer();
+        final float zoom = 1f / c3d.getZoom();
         GL11.glLineWidth(View.lineWidthGL[0]);
-        GL11.glColor4f(r, g, b, a);
+        GL11.glColor4f(r, g, b, 1f);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(x1, y1, z1);
         GL11.glVertex3f(x2, y2, z2);
         GL11.glEnd();
-        // GL11.glPushMatrix();
+        GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_CULL_FACE);
-        // GL11.glLoadMatrix(c3d.getRenderer().getRotationInverse());
+        GL11.glMultMatrix(renderer.getRotationInverse());
         PGData3.beginDrawText();
+        GL11.glColor4f(r, g, b, 1f);
+        final Vector4f textOrigin = new Vector4f(x1, y1, z1, 1f);
+        Matrix4f.transform(c3d.getRotation(), textOrigin, textOrigin);
         for (PGData3 tri : View.D5) {
-            tri.drawText(x1, y1, z1);
+            tri.drawText(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
         }
         PGData3.endDrawText();
         GL11.glEnable(GL11.GL_CULL_FACE);
-        // GL11.glPopMatrix();
-
+        GL11.glPopMatrix();
     }
 
     /*

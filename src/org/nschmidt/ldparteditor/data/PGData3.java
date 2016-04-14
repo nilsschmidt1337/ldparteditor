@@ -190,6 +190,11 @@ public final class PGData3 extends PGData implements Serializable {
         GL11.glVertex3f(-x3 + x, y3 + y, z3 + z);
         GL11.glVertex3f(-x2 + x, y2 + y, z2 + z);
     }
+    public void drawText(float x, float y, float z, float scale) {
+        GL11.glVertex3f(-x1 * scale + x, y1 * scale + y, z1 * scale + z);
+        GL11.glVertex3f(-x3 * scale + x, y3 * scale + y, z3 * scale + z);
+        GL11.glVertex3f(-x2 * scale + x, y2 * scale + y, z2 * scale + z);
+    }
     public static void endDrawText() {
         GL11.glEnd();
     }
