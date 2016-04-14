@@ -671,7 +671,7 @@ public class MouseActions {
                             if (window.isAddingLines()) {
                                 vm.addLine(datfile.getNearestObjVertex1(), nv);
                             } else {
-                                // FIXME Needs implementation for issue #192
+                                vm.addDistance(datfile.getNearestObjVertex1(), nv);
                             }
                             vm.getSelectedVertices().clear();
                             vm.setModified(true, true);
@@ -699,7 +699,7 @@ public class MouseActions {
                             if (window.isAddingLines()) {
                                 vm.addLine(datfile.getNearestObjVertex1(), nv);
                             } else {
-                                // FIXME Needs implementation for issue #192
+                                vm.addDistance(datfile.getNearestObjVertex1(), nv);
                             }
                             vm.getSelectedVertices().clear();
                             vm.setModified(true, true);
@@ -717,7 +717,7 @@ public class MouseActions {
                         if (window.isAddingLines()) {
                             vm.addLine(v1, v2);
                         } else {
-                            // FIXME Needs implementation for issue #192
+                            vm.addDistance(v1, v2);
                         }
                         vm.getSelectedVertices().clear();
                         vm.setModified(true, true);

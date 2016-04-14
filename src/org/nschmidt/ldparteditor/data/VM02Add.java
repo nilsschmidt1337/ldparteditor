@@ -322,6 +322,14 @@ class VM02Add extends VM01SelectHelper {
     }
 
     public void addLine(Vertex v1, Vertex v2) {
+        addLine(v1, v2, true);
+    }
+
+    public void addDistance(Vertex v1, Vertex v2) {
+        addLine(v1, v2, false);
+    }
+
+    private void addLine(Vertex v1, Vertex v2, boolean isRealLine) {
         if (v1 == null || v2 == null) return;
         linkedDatFile.setObjVertex1(null);
         linkedDatFile.setObjVertex2(null);
@@ -352,7 +360,7 @@ class VM02Add extends VM01SelectHelper {
             // Will never return a 'null' colour!
             col = DatParser.validateColour(24, 0f, 0f, .0f, 0f);
         }
-        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData2(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
+        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData2(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, isRealLine));
         linkedDatFile.setObjVertex1(v1);
         linkedDatFile.setObjVertex2(v2);
     }
