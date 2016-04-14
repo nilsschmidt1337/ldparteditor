@@ -86,6 +86,8 @@ public class OpenGLRenderer {
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
     private final FloatBuffer viewport = BufferUtils.createFloatBuffer(16);
     private final FloatBuffer rotation = BufferUtils.createFloatBuffer(16);
+    private final FloatBuffer rotation_inv = BufferUtils.createFloatBuffer(16);
+    private final Matrix4f rotation_inv4f = new Matrix4f();
 
     private final float[][][] renderedPoints = new float[1][][];
     private final float[][] solidColours = new float[1][];
@@ -104,6 +106,14 @@ public class OpenGLRenderer {
 
     public FloatBuffer getViewport() {
         return viewport;
+    }
+
+    public FloatBuffer getRotationInverse() {
+        return rotation_inv;
+    }
+
+    public Matrix4f getRotationInverse4f() {
+        return rotation_inv4f;
     }
 
     public OpenGLRenderer(Composite3D c3d) {
@@ -293,6 +303,9 @@ public class OpenGLRenderer {
             Matrix4f viewport_rotation = c3d.getRotation();
             viewport_rotation.store(rotation);
             rotation.flip();
+            Matrix4f.load(viewport_rotation, rotation_inv4f);
+            ((Matrix4f) rotation_inv4f.invert()).store(rotation_inv);
+            rotation_inv.flip();
             Matrix4f.mul(viewport_rotation, viewport_transform, viewport_transform);
             Matrix4f viewport_translation = c3d.getTranslation();
             Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
