@@ -35,6 +35,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 public final class GData2 extends GData {
 
     final int colourNumber;
+    final boolean isLine;
 
     final float r;
     final float g;
@@ -60,7 +61,7 @@ public final class GData2 extends GData {
 
     final GData1 parent;
 
-    public GData2(int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, GData1 parent, DatFile datFile) {
+    public GData2(int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, GData1 parent, DatFile datFile, boolean isLine) {
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -81,11 +82,12 @@ public final class GData2 extends GData {
         this.y2 = Y2.floatValue() * 1000f;
         this.z2 = Z2.floatValue() * 1000f;
         this.parent = parent;
+        this.isLine = isLine;
         datFile.getVertexManager().add(this);
     }
 
     public GData2(GData1 parent, int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, float x12, float y12,
-            float z12, float x22, float y22, float z22, DatFile datFile) {
+            float z12, float x22, float y22, float z22, DatFile datFile, boolean isLine) {
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -105,10 +107,11 @@ public final class GData2 extends GData {
         this.z2 = z22;
         this.lGeom = MathHelper.getLineVertices1000(new Vector4f(this.x1, this.y1, this.z1, 1f), new Vector4f(this.x2, this.y2, this.z2, 1f), parent.productMatrix);
         this.parent = parent;
+        this.isLine = isLine;
         datFile.getVertexManager().add(this);
     }
 
-    public GData2(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, GData1 parent, DatFile datFile) {
+    public GData2(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, GData1 parent, DatFile datFile, boolean isLine) {
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -127,6 +130,7 @@ public final class GData2 extends GData {
         this.Y2 = v2.Y;
         this.Z2 = v2.Z;
         this.parent = parent;
+        this.isLine = isLine;
         datFile.getVertexManager().add(this);
         this.lGeom = MathHelper.getLineVertices1000(new Vector4f(x1, y1, z1, 1f), new Vector4f(x2, y2, z2, 1f), parent.productMatrix);
     }
@@ -138,8 +142,9 @@ public final class GData2 extends GData {
      * @param v2
      * @param parent
      * @param c
+     * @param isLine TODO
      */
-    GData2(Vertex v1, Vertex v2, GData1 parent, GColour c) {
+    GData2(Vertex v1, Vertex v2, GData1 parent, GColour c, boolean isLine) {
         this.colourNumber = c.getColourNumber();
         this.r = c.getR();
         this.g = c.getG();
@@ -158,31 +163,7 @@ public final class GData2 extends GData {
         this.Y2 = v2.Y;
         this.Z2 = v2.Z;
         this.parent = parent;
-        this.lGeom = null;
-    }
-
-    /**
-     * FOR Primitives ONLY!
-     */
-    public GData2(GColour c, GData1 parent, Vertex v1, Vertex v2) {
-        this.colourNumber = c.getColourNumber();
-        this.r = c.getR();
-        this.g = c.getG();
-        this.b = c.getB();
-        this.a = c.getA();
-        this.x1 = v1.x;
-        this.y1 = v1.y;
-        this.z1 = v1.z;
-        this.x2 = v2.x;
-        this.y2 = v2.y;
-        this.z2 = v2.z;
-        this.X1 = v1.X;
-        this.Y1 = v1.Y;
-        this.Z1 = v1.Z;
-        this.X2 = v2.X;
-        this.Y2 = v2.Y;
-        this.Z2 = v2.Z;
-        this.parent = parent;
+        this.isLine = isLine;
         this.lGeom = null;
     }
 
@@ -207,6 +188,7 @@ public final class GData2 extends GData {
         this.y2 = v2.y;
         this.z2 = v2.z;
         this.parent = parent;
+        this.isLine = true;
         this.lGeom = MathHelper.getLineVertices1000(new Vector4f(x1, y1, z1, 1f), new Vector4f(x2, y2, z2, 1f), parent.productMatrix);
         this.X1 = null;
         this.Y1 = null;
