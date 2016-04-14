@@ -280,7 +280,7 @@ class VM19ColourChanger extends VM18LineConverter {
             switch (gData.type()) {
             case 2:
                 GData2 gd2 = (GData2) gData;
-                GData2 newGdata2 = new GData2(gd2.parent, index, r, g, b, a, gd2.X1, gd2.Y1, gd2.Z1, gd2.X2, gd2.Y2, gd2.Z2, gd2.x1, gd2.y1, gd2.z1, gd2.x2, gd2.y2, gd2.z2, linkedDatFile, true);
+                GData2 newGdata2 = new GData2(gd2.parent, index, r, g, b, a, gd2.X1, gd2.Y1, gd2.Z1, gd2.X2, gd2.Y2, gd2.Z2, gd2.x1, gd2.y1, gd2.z1, gd2.x2, gd2.y2, gd2.z2, linkedDatFile, gd2.isLine);
                 newData.add(newGdata2);
                 newGData = newGdata2;
                 break;

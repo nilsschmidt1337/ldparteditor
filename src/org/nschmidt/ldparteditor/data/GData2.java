@@ -142,7 +142,7 @@ public final class GData2 extends GData {
      * @param v2
      * @param parent
      * @param c
-     * @param isLine TODO
+     * @param isLine
      */
     GData2(Vertex v1, Vertex v2, GData1 parent, GColour c, boolean isLine) {
         this.colourNumber = c.getColourNumber();
@@ -211,6 +211,8 @@ public final class GData2 extends GData {
         default:
             break;
         }
+        if (!isLine)
+            drawDistance(c3d);
 
         GL11.glDisable(GL11.GL_LIGHTING);
 
@@ -313,6 +315,8 @@ public final class GData2 extends GData {
         default:
             break;
         }
+        if (!isLine)
+            drawDistance(c3d);
 
         final float r = MathHelper.randomFloat(ID, 0);
         final float g = MathHelper.randomFloat(ID, 1);
@@ -451,6 +455,8 @@ public final class GData2 extends GData {
             default:
                 break;
             }
+            if (!isLine)
+                return;
 
             float r2;
             float g2;
@@ -492,29 +498,54 @@ public final class GData2 extends GData {
         if (text != null)
             return text;
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(2);
-        lineBuilder.append(" "); //$NON-NLS-1$
-        if (colourNumber == -1) {
-            lineBuilder.append("0x2"); //$NON-NLS-1$
-            lineBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
-            lineBuilder.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
-            lineBuilder.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
+        if (isLine) {
+            lineBuilder.append(2);
+            lineBuilder.append(" "); //$NON-NLS-1$
+            if (colourNumber == -1) {
+                lineBuilder.append("0x2"); //$NON-NLS-1$
+                lineBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
+                lineBuilder.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
+                lineBuilder.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
+            } else {
+                lineBuilder.append(colourNumber);
+            }
+            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append(bigDecimalToString(X1));
+            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append(bigDecimalToString(Y1));
+            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append(bigDecimalToString(Z1));
+            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append(bigDecimalToString(X2));
+            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append(bigDecimalToString(Y2));
+            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append(bigDecimalToString(Z2));
+            text = lineBuilder.toString();
         } else {
-            lineBuilder.append(colourNumber);
+            lineBuilder.append("0 !LPE DISTANCE "); //$NON-NLS-1$
+            if (colourNumber == -1) {
+                lineBuilder.append("0x2"); //$NON-NLS-1$
+                lineBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
+                lineBuilder.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
+                lineBuilder.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
+            } else {
+                lineBuilder.append(colourNumber);
+            }
+            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append(bigDecimalToString(X1));
+            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append(bigDecimalToString(Y1));
+            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append(bigDecimalToString(Z1));
+            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append(bigDecimalToString(X2));
+            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append(bigDecimalToString(Y2));
+            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append(bigDecimalToString(Z2));
+            text = lineBuilder.toString();
         }
-        lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X1));
-        lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y1));
-        lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z1));
-        lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X2));
-        lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y2));
-        lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z2));
-        text = lineBuilder.toString();
         return text;
     }
 
@@ -641,6 +672,11 @@ public final class GData2 extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(Z2));
         return lineBuilder.toString();
+    }
+
+    private void drawDistance(Composite3D c3d) {
+        // FIXME needs implementation for issue #192
+
     }
 
     /*
