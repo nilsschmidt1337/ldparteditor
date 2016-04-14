@@ -1242,7 +1242,7 @@ public enum DatParser {
                     result.add(new ParsingResult(I18n.DATPARSER_IdenticalVertices, "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                 }
                 if (result.size() < 1 && !errorCheckOnly) {
-                    GData2 data = new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile);
+                    GData2 data = new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile, true);
                     result.add(new ParsingResult(data));
                 }
                 // [WARNING] Dithered colour

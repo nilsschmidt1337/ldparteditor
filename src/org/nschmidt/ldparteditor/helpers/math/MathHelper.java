@@ -1665,7 +1665,7 @@ public enum MathHelper {
                         v2.X,
                         v2.Y,
                         v2.Z,
-                        dummyReference, df));
+                        dummyReference, df, true));
                 break;
             case 2:
                 counter += 4;

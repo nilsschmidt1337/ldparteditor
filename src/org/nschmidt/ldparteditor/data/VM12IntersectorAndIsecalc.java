@@ -218,15 +218,15 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     // SET(OutLine[i][a], OutLine[j][b]);
                                     if (a == 1) {
                                         if (b == 1) {
-                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l1.X1, l1.Y1, l1.Z1, l2.X2, l2.Y2, l2.Z2, View.DUMMY_REFERENCE, linkedDatFile);
+                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l1.X1, l1.Y1, l1.Z1, l2.X2, l2.Y2, l2.Z2, View.DUMMY_REFERENCE, linkedDatFile, true);
                                         } else {
-                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l1.X1, l1.Y1, l1.Z1, l2.X1, l2.Y1, l2.Z1, View.DUMMY_REFERENCE, linkedDatFile);
+                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l1.X1, l1.Y1, l1.Z1, l2.X1, l2.Y1, l2.Z1, View.DUMMY_REFERENCE, linkedDatFile, true);
                                         }
                                     } else {
                                         if (b == 1) {
-                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l2.X2, l2.Y2, l2.Z2, l1.X2, l1.Y2, l1.Z2, View.DUMMY_REFERENCE, linkedDatFile);
+                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l2.X2, l2.Y2, l2.Z2, l1.X2, l1.Y2, l1.Z2, View.DUMMY_REFERENCE, linkedDatFile, true);
                                         } else {
-                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l2.X1, l2.Y1, l2.Z1, l1.X2, l1.Y2, l1.Z2, View.DUMMY_REFERENCE, linkedDatFile);
+                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l2.X1, l2.Y1, l2.Z1, l1.X2, l1.Y2, l1.Z2, View.DUMMY_REFERENCE, linkedDatFile, true);
                                         }
                                     }
                                     remove(l1);
@@ -890,20 +890,20 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
         if (points.size() == 4) {
             ArrayList<Vector3d> points2 = new ArrayList<Vector3d>();
             points2.addAll(points);
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(1).X, points2.get(1).Y, points2.get(1).Z, View.DUMMY_REFERENCE, linkedDatFile));
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(1).X, points2.get(1).Y, points2.get(1).Z, points2.get(2).X, points2.get(2).Y, points2.get(2).Z, View.DUMMY_REFERENCE, linkedDatFile));
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(2).X, points2.get(2).Y, points2.get(2).Z, points2.get(3).X, points2.get(3).Y, points2.get(3).Z, View.DUMMY_REFERENCE, linkedDatFile));
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(3).X, points2.get(3).Y, points2.get(3).Z, View.DUMMY_REFERENCE, linkedDatFile));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(1).X, points2.get(1).Y, points2.get(1).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(1).X, points2.get(1).Y, points2.get(1).Z, points2.get(2).X, points2.get(2).Y, points2.get(2).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(2).X, points2.get(2).Y, points2.get(2).Z, points2.get(3).X, points2.get(3).Y, points2.get(3).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(3).X, points2.get(3).Y, points2.get(3).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
         } else if (points.size() == 3) {
             ArrayList<Vector3d> points2 = new ArrayList<Vector3d>();
             points2.addAll(points);
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(1).X, points2.get(1).Y, points2.get(1).Z, View.DUMMY_REFERENCE, linkedDatFile));
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(2).X, points2.get(2).Y, points2.get(2).Z, points2.get(1).X, points2.get(1).Y, points2.get(1).Z, View.DUMMY_REFERENCE, linkedDatFile));
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(2).X, points2.get(2).Y, points2.get(2).Z, View.DUMMY_REFERENCE, linkedDatFile));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(1).X, points2.get(1).Y, points2.get(1).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(2).X, points2.get(2).Y, points2.get(2).Z, points2.get(1).X, points2.get(1).Y, points2.get(1).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(2).X, points2.get(2).Y, points2.get(2).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
         } else if (points.size() == 2) {
             ArrayList<Vector3d> points2 = new ArrayList<Vector3d>();
             points2.addAll(points);
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(1).X, points2.get(1).Y, points2.get(1).Z, View.DUMMY_REFERENCE, linkedDatFile));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(1).X, points2.get(1).Y, points2.get(1).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
         }
 
         return result;

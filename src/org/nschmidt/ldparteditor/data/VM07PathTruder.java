@@ -143,20 +143,20 @@ class VM07PathTruder extends VM06Edger2 {
                         Vertex[] verts = lines.get(shape1.get(i));
                         if (i == 0) {
                             if (liVerts.contains(verts[0])) {
-                                shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour()));
+                                shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour(), true));
                                 indices.add(i);
                             }
                             shapeTmp.add(shape1.get(i));
                         } else if (i == ssm) {
                             shapeTmp.add(shape1.get(i));
                             if (liVerts.contains(verts[1])) {
-                                shapeTmp.add(new GData2(verts[1], verts[1], View.DUMMY_REFERENCE, new GColour()));
+                                shapeTmp.add(new GData2(verts[1], verts[1], View.DUMMY_REFERENCE, new GColour(), true));
                                 indices.add(i);
                             }
                         } else {
                             Vertex[] verts2 = lines.get(shape1.get(i - 1));
                             if (verts2[1].equals(verts[0]) && liVerts.contains(verts[0])) {
-                                shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour()));
+                                shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour(), true));
                                 indices.add(i);
                             }
                             shapeTmp.add(shape1.get(i));
@@ -175,17 +175,17 @@ class VM07PathTruder extends VM06Edger2 {
                         Vertex[] verts = lines.get(shape2.get(i));
                         if (i == 0) {
                             if (indices.contains(i)) {
-                                shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour()));
+                                shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour(), true));
                             }
                             shapeTmp.add(shape2.get(i));
                         } else if (i == ssm) {
                             shapeTmp.add(shape2.get(i));
                             if (indices.contains(i)) {
-                                shapeTmp.add(new GData2(verts[1], verts[1], View.DUMMY_REFERENCE, new GColour()));
+                                shapeTmp.add(new GData2(verts[1], verts[1], View.DUMMY_REFERENCE, new GColour(), true));
                             }
                         } else {
                             if (indices.contains(i)) {
-                                shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour()));
+                                shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour(), true));
                             }
                             shapeTmp.add(shape2.get(i));
                         }
@@ -613,7 +613,7 @@ class VM07PathTruder extends VM06Edger2 {
                                     for (int i = 0; i < Shape1Len; i++) {
                                         Vertex v1 = new Vertex(new BigDecimal(NxtShape[i][0][0]), new BigDecimal(NxtShape[i][0][1]), new BigDecimal(NxtShape[i][0][2]));
                                         Vertex v2 = new Vertex(new BigDecimal(NxtShape[i][1][0]), new BigDecimal(NxtShape[i][1][1]), new BigDecimal(NxtShape[i][1][2]));
-                                        newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
+                                        newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
                                     }
                                 }
 
@@ -696,7 +696,7 @@ class VM07PathTruder extends VM06Edger2 {
                                         for (int j = 0; j < Shape1Len; j++) {
                                             Vertex v1 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
                                             Vertex v2 = new Vertex(new BigDecimal(NxtShape[j][1][0]), new BigDecimal(NxtShape[j][1][1]), new BigDecimal(NxtShape[j][1][2]));
-                                            newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
+                                            newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
                                         }
                                     }
                                     // Generate tri/quad sheet
@@ -707,7 +707,7 @@ class VM07PathTruder extends VM06Edger2 {
                                                 // -> generate line at that place
                                                 Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
                                                 Vertex v2 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
-                                                newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
+                                                newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
                                             }
                                         }
                                         if (DIST(CurShape[j][0], CurShape[j][1]) < VERTMERGE) {

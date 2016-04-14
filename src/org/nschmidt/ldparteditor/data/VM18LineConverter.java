@@ -55,7 +55,7 @@ class VM18LineConverter extends VM17Unificator {
 
         for (GData5 g5 : condlinesToParse) {
             Vertex[] v = condlines.get(g5);
-            GData2 line = new GData2(g5.colourNumber, g5.r, g5.g, g5.b, g5.a, v[0], v[1], View.DUMMY_REFERENCE, linkedDatFile);
+            GData2 line = new GData2(g5.colourNumber, g5.r, g5.g, g5.b, g5.a, v[0], v[1], View.DUMMY_REFERENCE, linkedDatFile, true);
             newLines.add(line);
             linkedDatFile.insertAfter(g5, line);
         }
