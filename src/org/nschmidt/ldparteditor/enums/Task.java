@@ -49,6 +49,7 @@ public enum Task {
     ADD_QUAD,
     ADD_CONDLINE,
     ADD_COMMENTS,
+    ADD_DISTANCE,
 
     ZOOM_IN,
     ZOOM_OUT,
