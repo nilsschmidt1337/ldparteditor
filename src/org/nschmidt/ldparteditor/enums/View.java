@@ -309,7 +309,7 @@ public enum View {
     public final static Set<PGData3> D2 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "2", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
     public final static Set<PGData3> D3 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "3", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
     public final static Set<PGData3> D4 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "4", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
-    public final static Set<PGData3> D5 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "5", 0.07, 0.3, 100.010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> D5 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "5", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
     public final static Set<PGData3> D6 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "6", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
     public final static Set<PGData3> D7 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "7", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
     public final static Set<PGData3> D8 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "8", 0.07, 0.3, .010f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
