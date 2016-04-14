@@ -358,7 +358,7 @@ public class MouseActions {
         GuiManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales(event.x, event.y);
         if (Editor3DWindow.getWindow().isAddingSomething() && !c3d.isDoingSelection()) {
-            if (Editor3DWindow.getWindow().isAddingLines()) {
+            if (Editor3DWindow.getWindow().isAddingLines() || Editor3DWindow.getWindow().isAddingDistance()) {
                 Vertex v1 = c3d.getLockableDatFileReference().getObjVertex1();
                 if (v1 != null) {
                     if (keyboard.isShiftPressed()) {
@@ -660,7 +660,7 @@ public class MouseActions {
             final Editor3DWindow window = Editor3DWindow.getWindow();
             if (window.isAddingSomething() && !datfile.isReadOnly()) {
                 final boolean createVertex = vm.selectVertices(c3d, true); // vm.selectVertices(c3d, window.isAddingSomething());
-                if (window.isAddingLines()) {
+                if (window.isAddingLines() || window.isAddingDistance()) {
                     Vertex vl1 = datfile.getObjVertex1();
                     if (vm.getSelectedVertices().size() == 1) {
                         if (vl1 != null) {
@@ -668,7 +668,11 @@ public class MouseActions {
                             Vertex nv = vi.next();
                             datfile.setObjVertex1(vl1);
                             datfile.setObjVertex2(nv);
-                            vm.addLine(datfile.getNearestObjVertex1(), nv);
+                            if (window.isAddingLines()) {
+                                vm.addLine(datfile.getNearestObjVertex1(), nv);
+                            } else {
+                                // FIXME Needs implementation for issue #192
+                            }
                             vm.getSelectedVertices().clear();
                             vm.setModified(true, true);
                         } else {
@@ -692,7 +696,11 @@ public class MouseActions {
                             final Vertex nv = new Vertex(cu3d);
                             datfile.setObjVertex1(vl1);
                             datfile.setObjVertex2(nv);
-                            vm.addLine(datfile.getNearestObjVertex1(), nv);
+                            if (window.isAddingLines()) {
+                                vm.addLine(datfile.getNearestObjVertex1(), nv);
+                            } else {
+                                // FIXME Needs implementation for issue #192
+                            }
                             vm.getSelectedVertices().clear();
                             vm.setModified(true, true);
                         }
@@ -706,7 +714,11 @@ public class MouseActions {
                         final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();
                         Vertex v1 = vi.next();
                         Vertex v2 = vi.next();
-                        vm.addLine(v1, v2);
+                        if (window.isAddingLines()) {
+                            vm.addLine(v1, v2);
+                        } else {
+                            // FIXME Needs implementation for issue #192
+                        }
                         vm.getSelectedVertices().clear();
                         vm.setModified(true, true);
                     }

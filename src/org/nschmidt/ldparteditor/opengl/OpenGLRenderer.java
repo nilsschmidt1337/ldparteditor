@@ -1515,7 +1515,7 @@ public class OpenGLRenderer {
                     Vector4f cursor3D = c3d.getCursorSnapped3D();
                     GL11.glVertex3f(cursor3D.x, cursor3D.y, cursor3D.z);
                     GL11.glEnd();
-                } else if (window.isAddingLines()) {
+                } else if (window.isAddingLines() || window.isAddingDistance()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();
