@@ -68,6 +68,7 @@ public class Manipulator {
     private Matrix accurateScale = View.ACCURATE_ID;
 
     private final FloatBuffer matrix = BufferUtils.createFloatBuffer(16);
+    private final FloatBuffer matrix_inv = BufferUtils.createFloatBuffer(16);
     private boolean modified = false;
 
     private static float translate_size = 140f;
@@ -267,6 +268,12 @@ public class Manipulator {
         result.store(matrix);
         matrix.position(0);
         return matrix;
+    }
+
+    public FloatBuffer getTempTransformationInv() {
+        resultinv.store(matrix_inv);
+        matrix_inv.position(0);
+        return matrix_inv;
     }
 
     public Vector4f getUntransformed(float x, float y, float z) {

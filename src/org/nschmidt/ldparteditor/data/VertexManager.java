@@ -60,6 +60,7 @@ public final class VertexManager extends VM99Clipboard {
 
         Manipulator manipulator = c3d.getManipulator();
         FloatBuffer matrix = manipulator.getTempTransformation();
+        FloatBuffer matrix_inv = manipulator.getTempTransformationInv();
         final boolean modifiedManipulator = manipulator.isModified();
 
         if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6) {
@@ -276,6 +277,7 @@ public final class VertexManager extends VM99Clipboard {
                         }
                         switch (gd.type()) {
                         case 2:
+                            final GData2 gd2 = (GData2) gd;
                             Vertex[] lineverts2 = lines.get(gd);
                             Vertex[] lineverts = lineverts2.clone();
                             for (int i = 0; i < 2; i++) {
@@ -284,6 +286,17 @@ public final class VertexManager extends VM99Clipboard {
                                     Vector4f res = manipulator.getUntransformed(v2.x, v2.y, v2.z);
                                     lineverts[i] = new Vertex(res.x, res.y, res.z, true);
                                 }
+                            }
+                            if (!gd2.isLine) {
+                                GL11.glMultMatrix(matrix_inv);
+                                new GData2(lineverts2[0], lineverts2[1], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawDistance(c3d, lineverts[0].x, lineverts[0].y, lineverts[0].z, lineverts[1].x, lineverts[1].y, lineverts[1].z);
+                                GL11.glBegin(GL11.GL_LINES);
+                                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                GL11.glVertex3f(lineverts2[0].x, lineverts2[0].y, lineverts2[0].z);
+                                GL11.glVertex3f(lineverts2[1].x, lineverts2[1].y, lineverts2[1].z);
+                                GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
+                                GL11.glEnd();
+                                GL11.glMultMatrix(matrix);
                             }
                             GL11.glBegin(GL11.GL_LINES);
                             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
@@ -528,19 +541,55 @@ public final class VertexManager extends VM99Clipboard {
             int i = 0;
             if (!selectedLines.isEmpty()) {
                 GL11.glLineWidth(3f);
-                GL11.glBegin(GL11.GL_LINES);
+                boolean hasDistanceLine = false;
                 for (GData2 line : selectedLines) {
-                    i = 0;
-                    if (lines.get(line) != null) {
-                        for (Vertex tvertex : lines.get(line)) {
-                            dataVerts[i] = tvertex;
-                            i++;
-                        }
-                        GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
-                        GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
+                    if (!line.isLine) {
+                        hasDistanceLine = true;
+                        break;
                     }
                 }
-                GL11.glEnd();
+                if (hasDistanceLine) {
+                    for (GData2 line : selectedLines) {
+                        i = 0;
+                        if (lines.get(line) != null) {
+                            for (Vertex tvertex : lines.get(line)) {
+                                dataVerts[i] = tvertex;
+                                i++;
+                            }
+                            if (!line.isLine) {
+                                Vertex[] lineverts2 = lines.get(line);
+                                Vertex[] lineverts = lineverts2.clone();
+                                for (int i1 = 0; i1 < 2; i1++) {
+                                    Vertex v2 = lineverts[i1];
+                                    Vector4f res = manipulator.getUntransformed(v2.x, v2.y, v2.z);
+                                    lineverts[i1] = new Vertex(res.x, res.y, res.z, true);
+                                }
+                                GL11.glMultMatrix(matrix_inv);
+                                new GData2(dataVerts[0], dataVerts[1], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawDistance(c3d, lineverts[0].x, lineverts[0].y, lineverts[0].z, lineverts[1].x, lineverts[1].y, lineverts[1].z);;
+                                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                GL11.glMultMatrix(matrix);
+                            }
+                            GL11.glBegin(GL11.GL_LINES);
+                            GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
+                            GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
+                            GL11.glEnd();
+                        }
+                    }
+                } else {
+                    GL11.glBegin(GL11.GL_LINES);
+                    for (GData2 line : selectedLines) {
+                        i = 0;
+                        if (lines.get(line) != null) {
+                            for (Vertex tvertex : lines.get(line)) {
+                                dataVerts[i] = tvertex;
+                                i++;
+                            }
+                            GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
+                            GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
+                        }
+                    }
+                    GL11.glEnd();
+                }
             }
             if (!selectedCondlines.isEmpty()) {
                 GL11.glLineWidth(3f);

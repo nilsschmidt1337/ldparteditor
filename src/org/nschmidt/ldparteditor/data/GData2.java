@@ -221,7 +221,7 @@ public final class GData2 extends GData {
         GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
-            drawDistance(c3d);
+            drawDistance(c3d, x1, y1, z1, x2, y2, z2);
             GL11.glEnable(GL11.GL_LIGHTING);
             return;
         }
@@ -329,7 +329,7 @@ public final class GData2 extends GData {
         GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
-            drawDistance(c3d);
+            drawDistance(c3d, x1, y1, z1, x2, y2, z2);
             GL11.glEnable(GL11.GL_LIGHTING);
             return;
         }
@@ -692,7 +692,7 @@ public final class GData2 extends GData {
         return lineBuilder.toString();
     }
 
-    private void drawDistance(Composite3D c3d) {
+    public void drawDistance(Composite3D c3d, float x1c, float y1c, float z1c, float x2c, float y2c, float z2c) {
         // FIXME needs implementation for issue #192
         final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer renderer = c3d.getRenderer();
@@ -708,11 +708,11 @@ public final class GData2 extends GData {
         GL11.glMultMatrix(renderer.getRotationInverse());
         PGData3.beginDrawText();
         GL11.glColor4f(r, g, b, 1f);
-        final Vector4f textOrigin = new Vector4f(x1, y1, z1, 1f);
+        final Vector4f textOrigin = new Vector4f((x1 + x2) / 2f, (y1 + y2) / 2f, (z1 + z2) / 2f, 1f);
         Matrix4f.transform(c3d.getRotation(), textOrigin, textOrigin);
-        float dx_f = (x2 - x1) / 1000f;
-        float dy_f = (y2 - y1) / 1000f;
-        float dz_f = (z2 - z1) / 1000f;
+        float dx_f = (x2c - x1c) / 1000f;
+        float dy_f = (y2c - y1c) / 1000f;
+        float dz_f = (z2c - z1c) / 1000f;
         BigDecimal dx = new BigDecimal(dx_f);
         BigDecimal dy = new BigDecimal(dy_f);
         BigDecimal dz = new BigDecimal(dz_f);
