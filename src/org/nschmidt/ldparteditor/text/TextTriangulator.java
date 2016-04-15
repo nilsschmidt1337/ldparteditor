@@ -329,13 +329,13 @@ public class TextTriangulator {
                     double wind = vec1[0] * vec2[1] - vec1[1] * vec2[0];
                     if (wind < 0) {
                         GData3 gdt = new GData3(-1, 0.1f, 0.1f, 0.1f, 1f, (float) (point1.coord(0) * scale), (float) (point1.coord(1) * scale), 0f, (float) (point2.coord(0) * scale),
-                                (float) (point2.coord(1) * scale), 0f, (float) (point3.coord(0) * scale), (float) (point3.coord(1) * scale), 0f, parent, datFile);
+                                (float) (point2.coord(1) * scale), 0f, (float) (point3.coord(0) * scale), (float) (point3.coord(1) * scale), 0f, parent, datFile, true);
                         anchor.setNext(gdt);
                         anchor = gdt;
                         finalTriangleSet.add(gdt);
                     } else {
                         GData3 gdt = new GData3(-1, 0.1f, 0.1f, 0.1f, 1f, (float) (point1.coord(0) * scale), (float) (point1.coord(1) * scale), 0f, (float) (point3.coord(0) * scale),
-                                (float) (point3.coord(1) * scale), 0f, (float) (point2.coord(0) * scale), (float) (point2.coord(1) * scale), 0f, parent, datFile);
+                                (float) (point3.coord(1) * scale), 0f, (float) (point2.coord(0) * scale), (float) (point2.coord(1) * scale), 0f, parent, datFile, true);
                         anchor.setNext(gdt);
                         anchor = gdt;
                         finalTriangleSet.add(gdt);
@@ -380,13 +380,13 @@ public class TextTriangulator {
                     double wind = vec1[0] * vec2[1] - vec1[1] * vec2[0];
                     if (wind < 0) {
                         GData3 gdt = new GData3(-1, 0.95f, 0.95f, 0.90f, 1f, (float) (point1.coord(0) * scale), (float) (point1.coord(1) * scale), 0f, (float) (point2.coord(0) * scale),
-                                (float) (point2.coord(1) * scale), 0f, (float) (point3.coord(0) * scale), (float) (point3.coord(1) * scale), 0f, parent, datFile);
+                                (float) (point2.coord(1) * scale), 0f, (float) (point3.coord(0) * scale), (float) (point3.coord(1) * scale), 0f, parent, datFile, true);
                         anchor.setNext(gdt);
                         anchor = gdt;
                         finalTriangleSet.add(gdt);
                     } else {
                         GData3 gdt = new GData3(-1, 0.95f, 0.95f, 0.90f, 1f, (float) (point1.coord(0) * scale), (float) (point1.coord(1) * scale), 0f, (float) (point3.coord(0) * scale),
-                                (float) (point3.coord(1) * scale), 0f, (float) (point2.coord(0) * scale), (float) (point2.coord(1) * scale), 0f, parent, datFile);
+                                (float) (point3.coord(1) * scale), 0f, (float) (point2.coord(0) * scale), (float) (point2.coord(1) * scale), 0f, parent, datFile, true);
                         anchor.setNext(gdt);
                         anchor = gdt;
                         finalTriangleSet.add(gdt);

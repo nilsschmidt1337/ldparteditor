@@ -429,7 +429,7 @@ class VM02Add extends VM01SelectHelper {
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
-        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
         setModified(true, true);
     }
 
@@ -541,8 +541,8 @@ class VM02Add extends VM01SelectHelper {
                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
             }
             GColour col = Editor3DWindow.getWindow().getLastUsedColour();
-            linkedDatFile.addToTailOrInsertAfterCursorReset(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
-            linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v4, v1, v2, View.DUMMY_REFERENCE, linkedDatFile));
+            linkedDatFile.addToTailOrInsertAfterCursorReset(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile, true));
+            linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v4, v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
             setModified(true, true);
             return;
         }

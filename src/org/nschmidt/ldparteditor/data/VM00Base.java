@@ -959,7 +959,7 @@ class VM00Base {
                 if (v3[2].equals(oldVertex))
                     v3[2] = newVertex;
 
-                GData3 newGdata3 = new GData3(gd3.colourNumber, gd3.r, gd3.g, gd3.b, gd3.a, v3[0], v3[1], v3[2], View.DUMMY_REFERENCE, linkedDatFile);
+                GData3 newGdata3 = new GData3(gd3.colourNumber, gd3.r, gd3.g, gd3.b, gd3.a, v3[0], v3[1], v3[2], View.DUMMY_REFERENCE, linkedDatFile, true);
 
                 // modifiedData.add(newGdata3);
                 drawPerLine.put(oldNumber, newGdata3);
@@ -1087,15 +1087,15 @@ class VM00Base {
                 switch (mani.getPosition()) {
                 case 0:
                     newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, newVertex, new Vertex(oldTri.X2, oldTri.Y2, oldTri.Z2),
-                            new Vertex(oldTri.X3, oldTri.Y3, oldTri.Z3), oldTri.parent, linkedDatFile);
+                            new Vertex(oldTri.X3, oldTri.Y3, oldTri.Z3), oldTri.parent, linkedDatFile, true);
                     break;
                 case 1:
                     newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.X1, oldTri.Y1, oldTri.Z1), newVertex,
-                            new Vertex(oldTri.X3, oldTri.Y3, oldTri.Z3), oldTri.parent, linkedDatFile);
+                            new Vertex(oldTri.X3, oldTri.Y3, oldTri.Z3), oldTri.parent, linkedDatFile, true);
                     break;
                 case 2:
                     newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.X1, oldTri.Y1, oldTri.Z1), new Vertex(oldTri.X2, oldTri.Y2, oldTri.Z2),
-                            newVertex, oldTri.parent, linkedDatFile);
+                            newVertex, oldTri.parent, linkedDatFile, true);
                     break;
                 }
                 newData = newTri;
@@ -1240,15 +1240,15 @@ class VM00Base {
                 switch (mani.getPosition()) {
                 case 0:
                     newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, newVertex, new Vertex(oldTri.X2, oldTri.Y2, oldTri.Z2),
-                            new Vertex(oldTri.X3, oldTri.Y3, oldTri.Z3), oldTri.parent, linkedDatFile);
+                            new Vertex(oldTri.X3, oldTri.Y3, oldTri.Z3), oldTri.parent, linkedDatFile, true);
                     break;
                 case 1:
                     newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.X1, oldTri.Y1, oldTri.Z1), newVertex,
-                            new Vertex(oldTri.X3, oldTri.Y3, oldTri.Z3), oldTri.parent, linkedDatFile);
+                            new Vertex(oldTri.X3, oldTri.Y3, oldTri.Z3), oldTri.parent, linkedDatFile, true);
                     break;
                 case 2:
                     newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.X1, oldTri.Y1, oldTri.Z1), new Vertex(oldTri.X2, oldTri.Y2, oldTri.Z2),
-                            newVertex, oldTri.parent, linkedDatFile);
+                            newVertex, oldTri.parent, linkedDatFile, true);
                     break;
                 }
                 newData = newTri;

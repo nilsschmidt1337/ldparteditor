@@ -190,7 +190,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                         }
                     }
                     GData3 g3 = (GData3) gd;
-                    newData = new GData3(g3.colourNumber, g3.r, g3.g, g3.b, g3.a, v1, v2, v3, g3.parent, linkedDatFile);
+                    newData = new GData3(g3.colourNumber, g3.r, g3.g, g3.b, g3.a, v1, v2, v3, g3.parent, linkedDatFile, true);
                 }
             }
             break;

@@ -265,7 +265,7 @@ class VM99Clipboard extends VM24MeshReducer {
                     Vertex[] verts = triangles.get(triangle);
                     if (verts == null)
                         continue;
-                    effSelectedTriangles.add(new GData3(verts[0], verts[1], verts[2], triangle.parent, new GColour(triangle.colourNumber, triangle.r, triangle.g, triangle.b, triangle.a)));
+                    effSelectedTriangles.add(new GData3(verts[0], verts[1], verts[2], triangle.parent, new GColour(triangle.colourNumber, triangle.r, triangle.g, triangle.b, triangle.a), true));
                 }
                 Vertex[] verts = triangles.get(triangle);
                 if (verts == null)

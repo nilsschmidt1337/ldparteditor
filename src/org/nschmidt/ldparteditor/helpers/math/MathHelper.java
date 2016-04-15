@@ -1525,12 +1525,12 @@ public enum MathHelper {
                 vertex,
                 vertex2,
                 vertex3,
-                dummyReference, df));
+                dummyReference, df, true));
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
                 vertex3,
                 vertex4,
-                dummyReference, df));
+                dummyReference, df, true));
         return result;
     }
 
@@ -1540,17 +1540,17 @@ public enum MathHelper {
                 vertex,
                 vertex2,
                 vertex3,
-                dummyReference, df));
+                dummyReference, df, true));
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
                 vertex3,
                 vertex4,
-                dummyReference, df));
+                dummyReference, df, true));
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
                 vertex4,
                 vertex5,
-                dummyReference, df));
+                dummyReference, df, true));
         return result;
     }
 
@@ -1560,22 +1560,22 @@ public enum MathHelper {
                 vertex,
                 vertex2,
                 vertex3,
-                dummyReference, df));
+                dummyReference, df, true));
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
                 vertex3,
                 vertex4,
-                dummyReference, df));
+                dummyReference, df, true));
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
                 vertex4,
                 vertex5,
-                dummyReference, df));
+                dummyReference, df, true));
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
                 vertex5,
                 vertex6,
-                dummyReference, df));
+                dummyReference, df, true));
         return result;
     }
 
@@ -1586,22 +1586,22 @@ public enum MathHelper {
                 vertex,
                 vertex3,
                 vertex4,
-                dummyReference, df));
+                dummyReference, df, true));
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
                 vertex4,
                 vertex5,
-                dummyReference, df));
+                dummyReference, df, true));
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
                 vertex5,
                 vertex6,
-                dummyReference, df));
+                dummyReference, df, true));
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
                 vertex6,
                 vertex7,
-                dummyReference, df));
+                dummyReference, df, true));
         return result;
     }
 
@@ -1628,7 +1628,7 @@ public enum MathHelper {
                         v3.X,
                         v3.Y,
                         v3.Z,
-                        dummyReference, df));
+                        dummyReference, df, true));
                 break;
             case 1:
                 counter += 2;
@@ -1750,7 +1750,7 @@ public enum MathHelper {
                 x2,
                 y2,
                 z2,
-                dummyReference, df));
+                dummyReference, df, true));
 
         for (int i = 2; i < pointsToTriangulate; i++) {
 
@@ -1774,7 +1774,7 @@ public enum MathHelper {
                     x2,
                     y2,
                     z2,
-                    dummyReference, df));
+                    dummyReference, df, true));
         }
         return result;
     }

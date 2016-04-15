@@ -217,11 +217,11 @@ public final class DatFile {
             vertices.fillVertexNormalCache(data2draw);
             data2draw.drawBFC_Textured(c3d);
             CUBEMAP.drawBFC_Textured(c3d);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome())).drawBFC_Textured(c3d.getComposite3D());
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome()), true).drawBFC_Textured(c3d.getComposite3D());
             CUBEMAP_MATTE.drawBFC_Textured(c3d);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal())).drawBFC_Textured(c3d.getComposite3D());
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawBFC_Textured(c3d.getComposite3D());
             CUBEMAP_METAL.drawBFC_Textured(c3d);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal())).drawBFC_Textured(c3d.getComposite3D());
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawBFC_Textured(c3d.getComposite3D());
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 data2draw.drawBFC_Textured(c3d);
             }

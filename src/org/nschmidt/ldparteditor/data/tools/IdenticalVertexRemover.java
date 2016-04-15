@@ -115,7 +115,7 @@ public enum IdenticalVertexRemover {
                         }
                     }
 
-                    df.insertAfter(g4, new GData3(g4.colourNumber, g4.r, g4.g, g4.b, g4.a, v1, v2, v3, g4.parent, df));
+                    df.insertAfter(g4, new GData3(g4.colourNumber, g4.r, g4.g, g4.b, g4.a, v1, v2, v3, g4.parent, df, true));
                     quadsToDelete2.add(g4);
                 } else if (verts2.size() < 4 || g4.isCollinear()) {
                     quadsToDelete2.add(g4);

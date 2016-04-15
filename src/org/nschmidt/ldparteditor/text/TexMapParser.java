@@ -628,7 +628,7 @@ public enum TexMapParser {
                 return null;
             }
             return new GData3(new Vertex(vertexA.x * 1000f, vertexA.y * 1000f, vertexA.z * 1000f, false), new Vertex(vertexB.x * 1000f, vertexB.y * 1000f, vertexB.z * 1000f, false), new Vertex(vertexC.x * 1000f,
-                    vertexC.y * 1000f, vertexC.z * 1000f, false), parent, colour);
+                    vertexC.y * 1000f, vertexC.z * 1000f, false), parent, colour, true);
         }
     }
 
