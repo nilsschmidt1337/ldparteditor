@@ -791,6 +791,8 @@ public enum DatParser {
                             result.add(0, new ParsingResult(new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile, false)));
                         }
                     }
+                } else if (line.startsWith("PROTRACTOR ", 7)) { //$NON-NLS-1$) {
+                    // FIXME Needs implementation for issue #193
                 } else if (line.startsWith("CSG_", 7)) { //$NON-NLS-1$
                     if (line.startsWith("UNION", 11)) { //$NON-NLS-1$
                         result.remove(0);
