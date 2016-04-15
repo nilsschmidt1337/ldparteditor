@@ -190,7 +190,7 @@ public final class GData3 extends GData {
      * @param v3
      * @param parent
      * @param c
-     * @param isTriangle TODO
+     * @param isTriangle
      */
     public GData3(Vertex v1, Vertex v2, Vertex v3, GData1 parent, GColour c, boolean isTriangle) {
 
@@ -1262,6 +1262,7 @@ public final class GData3 extends GData {
 
     @Override
     String getNiceString() {
+        // FIXME Needs implementation for issue #193
         if (text != null)
             return text;
         StringBuilder lineBuilder = new StringBuilder();
@@ -1304,6 +1305,7 @@ public final class GData3 extends GData {
 
     @Override
     public String transformAndColourReplace(String colour, Matrix matrix) {
+        // FIXME Needs implementation for issue #193
         BigDecimal[] v1;
         BigDecimal[] v2;
         BigDecimal[] v3;
@@ -1530,6 +1532,7 @@ public final class GData3 extends GData {
     }
 
     public String colourReplace(String col) {
+        // FIXME Needs implementation for issue #193
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(3);
         lineBuilder.append(" "); //$NON-NLS-1$
