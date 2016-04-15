@@ -741,15 +741,7 @@ public enum DatParser {
                     if (data_segments.length == 6) {
                         try {
                             start.setX(new BigDecimal(data_segments[3], Threshold.mc));
-                        } catch (NumberFormatException nfe) {
-                            numberError = true;
-                        }
-                        try {
                             start.setY(new BigDecimal(data_segments[4], Threshold.mc));
-                        } catch (NumberFormatException nfe) {
-                            numberError = true;
-                        }
-                        try {
                             start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
                         } catch (NumberFormatException nfe) {
                             numberError = true;
@@ -766,6 +758,37 @@ public enum DatParser {
                             Vector4f vert = new Vector4f(start.getXf() * 1000f, start.getYf() * 1000f, start.getZf() * 1000f, 1f);
                             Matrix4f.transform(productMatrix, vert, vert);
                             datFile.getVertexManager().addSubfileVertex(new Vertex(vert), newLPEmetaTag, parent);
+                        }
+                    }
+                } else if (line.startsWith("DISTANCE ", 7)) { //$NON-NLS-1$
+                    boolean numberError = false;
+                    final GColour colour;
+                    if (data_segments.length == 10) {
+                        colour = validateColour(data_segments[3], r, g, b, a);
+                        if (colour == null) {
+                            result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                            return result;
+                        }
+                        try {
+                            start.setX(new BigDecimal(data_segments[4], Threshold.mc));
+                            start.setY(new BigDecimal(data_segments[5], Threshold.mc));
+                            start.setZ(new BigDecimal(data_segments[6], Threshold.mc));
+                            end.setX(new BigDecimal(data_segments[7], Threshold.mc));
+                            end.setY(new BigDecimal(data_segments[8], Threshold.mc));
+                            end.setZ(new BigDecimal(data_segments[9], Threshold.mc));
+                        } catch (NumberFormatException nfe) {
+                            numberError = true;
+                        }
+                    } else {
+                        numberError = true;
+                        colour = null;
+                    }
+                    if (numberError) {
+                        result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                    } else if (!errorCheckOnly) {
+                        if (depth == 0) {
+                            result.remove(0);
+                            result.add(0, new ParsingResult(new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile, false)));
                         }
                     }
                 } else if (line.startsWith("CSG_", 7)) { //$NON-NLS-1$
