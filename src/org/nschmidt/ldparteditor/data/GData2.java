@@ -708,7 +708,7 @@ public final class GData2 extends GData {
                 state = -1;
             }
         } else {
-            Vector3d tr = c3d.getManipulator().getAccurateMatrix().transform(new Vector3d(dx, dy, dz));
+            Vector3d tr = c3d.getManipulator().getAccurateRotation().transform(new Vector3d(dx, dy, dz));
             dx = tr.X;
             dy = tr.Y;
             dz = tr.Z;
