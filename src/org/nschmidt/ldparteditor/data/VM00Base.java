@@ -1068,11 +1068,11 @@ class VM00Base {
                 switch (mani.getPosition()) {
                 case 0:
                     newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, newVertex.X, newVertex.Y, newVertex.Z, oldLin.X2, oldLin.Y2, oldLin.Z2, oldLin.parent,
-                            linkedDatFile, true);
+                            linkedDatFile, oldLin.isLine);
                     break;
                 case 1:
                     newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, oldLin.X1, oldLin.Y1, oldLin.Z1, newVertex.X, newVertex.Y, newVertex.Z, oldLin.parent,
-                            linkedDatFile, true);
+                            linkedDatFile, oldLin.isLine);
                     break;
                 }
                 newData = newLin;
@@ -1221,11 +1221,11 @@ class VM00Base {
                 switch (mani.getPosition()) {
                 case 0:
                     newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, newVertex.X, newVertex.Y, newVertex.Z, oldLin.X2, oldLin.Y2, oldLin.Z2, oldLin.parent,
-                            linkedDatFile, true);
+                            linkedDatFile, oldLin.isLine);
                     break;
                 case 1:
                     newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, oldLin.X1, oldLin.Y1, oldLin.Z1, newVertex.X, newVertex.Y, newVertex.Z, oldLin.parent,
-                            linkedDatFile, true);
+                            linkedDatFile, oldLin.isLine);
                     break;
                 }
                 newData = newLin;
