@@ -36,6 +36,8 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
  */
 public final class GData3 extends GData {
 
+    final boolean isTriangle;
+
     public final int colourNumber;
 
     public final float r;
@@ -70,7 +72,9 @@ public final class GData3 extends GData {
     public final float zn;
     public final GData1 parent;
 
-    public GData3(final int colourNumber, float r, float g, float b, float a, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, GData1 parent, DatFile datFile) {
+    public GData3(final int colourNumber, float r, float g, float b, float a, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, GData1 parent, DatFile datFile, boolean isTriangle) {
+
+        this.isTriangle = isTriangle;
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -102,8 +106,9 @@ public final class GData3 extends GData {
     }
 
     public GData3(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3, BigDecimal y3,
-            BigDecimal z3, GData1 parent, DatFile datFile) {
+            BigDecimal z3, GData1 parent, DatFile datFile, boolean isTriangle) {
 
+        this.isTriangle = isTriangle;
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -144,8 +149,9 @@ public final class GData3 extends GData {
 
     }
 
-    public GData3(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, Vertex v3, GData1 parent, DatFile datFile) {
+    public GData3(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, Vertex v3, GData1 parent, DatFile datFile, boolean isTriangle) {
 
+        this.isTriangle = isTriangle;
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -184,9 +190,11 @@ public final class GData3 extends GData {
      * @param v3
      * @param parent
      * @param c
+     * @param isTriangle TODO
      */
-    public GData3(Vertex v1, Vertex v2, Vertex v3, GData1 parent, GColour c) {
+    public GData3(Vertex v1, Vertex v2, Vertex v3, GData1 parent, GColour c, boolean isTriangle) {
 
+        this.isTriangle = isTriangle;
         this.colourNumber = c.getColourNumber();
         this.r = c.getR();
         this.g = c.getG();
@@ -217,8 +225,9 @@ public final class GData3 extends GData {
     }
 
     public GData3(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3, BigDecimal y3,
-            BigDecimal z3, float x12, float y12, float z12, float x22, float y22, float z22, float x32, float y32, float z32, float xn, float yn, float zn, GData1 parent, DatFile datFile) {
+            BigDecimal z3, float x12, float y12, float z12, float x22, float y22, float z22, float x32, float y32, float z32, float xn, float yn, float zn, GData1 parent, DatFile datFile, boolean isTriangle) {
 
+        this.isTriangle = isTriangle;
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;

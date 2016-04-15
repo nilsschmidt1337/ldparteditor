@@ -465,7 +465,7 @@ class VM01Select extends VM00Snapshot {
                     GData3 g3 = (GData3) selectedLine;
                     selectedTriangles.remove(g3);
                     selectedData.remove(g3);
-                    newData = new GData3(g3.colourNumber, g3.r, g3.g, g3.b, g3.a, new Vertex(x1, y1, z1), new Vertex(x2, y2, z2), new Vertex(x3, y3, z3), g3.parent, linkedDatFile);
+                    newData = new GData3(g3.colourNumber, g3.r, g3.g, g3.b, g3.a, new Vertex(x1, y1, z1), new Vertex(x2, y2, z2), new Vertex(x3, y3, z3), g3.parent, linkedDatFile, true);
                     selectedTriangles.add((GData3) newData);
                     selectedData.add(newData);
                     break;

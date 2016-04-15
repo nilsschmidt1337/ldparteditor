@@ -144,8 +144,8 @@ class VM15Flipper extends VM14Splitter {
                         }
                         if (fourth == null) continue;
 
-                        GData3 n1 = new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, first, second, third, s1.parent, linkedDatFile);
-                        GData3 n2 = new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, third, fourth, first, s1.parent, linkedDatFile);
+                        GData3 n1 = new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, first, second, third, s1.parent, linkedDatFile, true);
+                        GData3 n2 = new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, third, fourth, first, s1.parent, linkedDatFile, true);
 
                         linkedDatFile.insertAfter(s1, n1);
                         linkedDatFile.insertAfter(s2, n2);
@@ -178,7 +178,7 @@ class VM15Flipper extends VM14Splitter {
         }
 
         for (GData3 g : effSelectedTriangles) {
-            GData3 n = new GData3(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X2, g.Y2, g.Z2), g.parent, linkedDatFile);
+            GData3 n = new GData3(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X2, g.Y2, g.Z2), g.parent, linkedDatFile, true);
             newTriangles.add(n);
             linkedDatFile.insertAfter(g, n);
             trisToDelete2.add(g);

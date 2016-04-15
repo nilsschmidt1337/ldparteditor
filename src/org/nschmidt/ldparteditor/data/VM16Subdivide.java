@@ -259,10 +259,10 @@ class VM16Subdivide extends VM15Flipper {
             }
 
             // Build triangles
-            newTris.add(new GData3(colourNumber, r, g, b, a, ve[0], ve[1], ve[2], View.DUMMY_REFERENCE, linkedDatFile));
-            newTris.add(new GData3(colourNumber, r, g, b, a, originalVerts[0], ve[0], ve[2], View.DUMMY_REFERENCE, linkedDatFile));
-            newTris.add(new GData3(colourNumber, r, g, b, a, originalVerts[1], ve[1], ve[0], View.DUMMY_REFERENCE, linkedDatFile));
-            newTris.add(new GData3(colourNumber, r, g, b, a, originalVerts[2], ve[2], ve[1], View.DUMMY_REFERENCE, linkedDatFile));
+            newTris.add(new GData3(colourNumber, r, g, b, a, ve[0], ve[1], ve[2], View.DUMMY_REFERENCE, linkedDatFile, true));
+            newTris.add(new GData3(colourNumber, r, g, b, a, originalVerts[0], ve[0], ve[2], View.DUMMY_REFERENCE, linkedDatFile, true));
+            newTris.add(new GData3(colourNumber, r, g, b, a, originalVerts[1], ve[1], ve[0], View.DUMMY_REFERENCE, linkedDatFile, true));
+            newTris.add(new GData3(colourNumber, r, g, b, a, originalVerts[2], ve[2], ve[1], View.DUMMY_REFERENCE, linkedDatFile, true));
         }
 
         for (GData g : newLines) {

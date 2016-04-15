@@ -719,7 +719,7 @@ class VM07PathTruder extends VM06Edger2 {
                                                 Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
                                                 Vertex v2 = new Vertex(new BigDecimal(NxtShape[j][1][0]), new BigDecimal(NxtShape[j][1][1]), new BigDecimal(NxtShape[j][1][2]));
                                                 Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
-                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
                                                 continue;
                                             }
                                         }
@@ -732,7 +732,7 @@ class VM07PathTruder extends VM06Edger2 {
                                                 Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
                                                 Vertex v2 = new Vertex(new BigDecimal(CurShape[j][1][0]), new BigDecimal(CurShape[j][1][1]), new BigDecimal(CurShape[j][1][2]));
                                                 Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
-                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
                                                 continue;
                                             }
                                         }
@@ -745,7 +745,7 @@ class VM07PathTruder extends VM06Edger2 {
                                                 Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
                                                 Vertex v2 = new Vertex(new BigDecimal(CurShape[j][1][0]), new BigDecimal(CurShape[j][1][1]), new BigDecimal(CurShape[j][1][2]));
                                                 Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][1][0]), new BigDecimal(NxtShape[j][1][1]), new BigDecimal(NxtShape[j][1][2]));
-                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
                                                 continue;
                                             }
                                         }
@@ -753,7 +753,7 @@ class VM07PathTruder extends VM06Edger2 {
                                             Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
                                             Vertex v2 = new Vertex(new BigDecimal(CurShape[j][1][0]), new BigDecimal(CurShape[j][1][1]), new BigDecimal(CurShape[j][1][2]));
                                             Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
-                                            newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+                                            newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
                                             continue;
                                         }
                                         if (Tri_Angle(CurShape[j][0], NxtShape[j][0], NxtShape[j][1], CurShape[j][1]) < SMALLANGLE) {
@@ -767,13 +767,13 @@ class VM07PathTruder extends VM06Edger2 {
                                                 Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
                                                 Vertex v2 = new Vertex(new BigDecimal(NxtShape[j][1][0]), new BigDecimal(NxtShape[j][1][1]), new BigDecimal(NxtShape[j][1][2]));
                                                 Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][0][0]), new BigDecimal(NxtShape[j][0][1]), new BigDecimal(NxtShape[j][0][2]));
-                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
                                             }
                                             {
                                                 Vertex v1 = new Vertex(new BigDecimal(CurShape[j][0][0]), new BigDecimal(CurShape[j][0][1]), new BigDecimal(CurShape[j][0][2]));
                                                 Vertex v2 = new Vertex(new BigDecimal(CurShape[j][1][0]), new BigDecimal(CurShape[j][1][1]), new BigDecimal(CurShape[j][1][2]));
                                                 Vertex v3 = new Vertex(new BigDecimal(NxtShape[j][1][0]), new BigDecimal(NxtShape[j][1][1]), new BigDecimal(NxtShape[j][1][2]));
-                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile));
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
                                             }
                                         }
                                     }

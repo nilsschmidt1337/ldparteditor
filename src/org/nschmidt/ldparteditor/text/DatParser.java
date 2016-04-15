@@ -1332,7 +1332,7 @@ public enum DatParser {
                 }
                 if (!errorCheckOnly) { // result.size() < 1 &&
                     GData3 data = new GData3(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA.X, vertexA.Y, vertexA.Z, vertexB.X, vertexB.Y, vertexB.Z,
-                            vertexC.X, vertexC.Y, vertexC.Z, parent, datFile);
+                            vertexC.X, vertexC.Y, vertexC.Z, parent, datFile, true);
                     result.add(new ParsingResult(data));
                 }
                 if (depth < 1) {

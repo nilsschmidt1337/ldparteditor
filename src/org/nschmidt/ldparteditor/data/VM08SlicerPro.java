@@ -271,7 +271,7 @@ public class VM08SlicerPro extends VM07PathTruder {
                                                                 av.get(0).X, av.get(0).Y, av.get(0).Z,
                                                                 av.get(1).X, av.get(1).Y, av.get(1).Z,
                                                                 av.get(2).X, av.get(2).Y, av.get(2).Z,
-                                                                View.DUMMY_REFERENCE, linkedDatFile));
+                                                                View.DUMMY_REFERENCE, linkedDatFile, true));
                                                         break;
                                                     case 4:
                                                     case 5:
@@ -904,7 +904,7 @@ public class VM08SlicerPro extends VM07PathTruder {
         Matrix4f.transform(vport, n, n);
         Vector4f.sub(n, new Vector4f(vport.m03, vport.m13, vport.m23, 0f), n);
         if (n.z > 0f ^ Editor3DWindow.getWindow().hasBfcToggle()) {
-            return new GData3(g3.colourNumber, g3.r, g3.g, g3.b, g3.a, v[0], v[2], v[1], View.DUMMY_REFERENCE, linkedDatFile);
+            return new GData3(g3.colourNumber, g3.r, g3.g, g3.b, g3.a, v[0], v[2], v[1], View.DUMMY_REFERENCE, linkedDatFile, true);
         } else {
             return null;
         }
