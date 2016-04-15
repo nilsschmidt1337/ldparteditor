@@ -31,6 +31,7 @@ import org.nschmidt.ldparteditor.enums.GLPrimitives;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -66,6 +67,8 @@ public final class GData2 extends GData {
     final float[][] lGeom;
 
     final GData1 parent;
+
+    private BigDecimal length = null;
 
     public GData2(int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, GData1 parent, DatFile datFile, boolean isLine) {
         this.colourNumber = colourNumber;
@@ -221,7 +224,7 @@ public final class GData2 extends GData {
         GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
-            drawDistance(c3d, x1, y1, z1, x2, y2, z2);
+            drawDistance(c3d, X1, Y1, Z1, X2, Y2, Z2);
             GL11.glEnable(GL11.GL_LIGHTING);
             return;
         }
@@ -329,7 +332,7 @@ public final class GData2 extends GData {
         GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
-            drawDistance(c3d, x1, y1, z1, x2, y2, z2);
+            drawDistance(c3d, X1, Y1, Z1, X2, Y2, Z2);
             GL11.glEnable(GL11.GL_LIGHTING);
             return;
         }
@@ -517,51 +520,30 @@ public final class GData2 extends GData {
         if (isLine) {
             lineBuilder.append(2);
             lineBuilder.append(" "); //$NON-NLS-1$
-            if (colourNumber == -1) {
-                lineBuilder.append("0x2"); //$NON-NLS-1$
-                lineBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
-                lineBuilder.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
-                lineBuilder.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
-            } else {
-                lineBuilder.append(colourNumber);
-            }
-            lineBuilder.append(" "); //$NON-NLS-1$
-            lineBuilder.append(bigDecimalToString(X1));
-            lineBuilder.append(" "); //$NON-NLS-1$
-            lineBuilder.append(bigDecimalToString(Y1));
-            lineBuilder.append(" "); //$NON-NLS-1$
-            lineBuilder.append(bigDecimalToString(Z1));
-            lineBuilder.append(" "); //$NON-NLS-1$
-            lineBuilder.append(bigDecimalToString(X2));
-            lineBuilder.append(" "); //$NON-NLS-1$
-            lineBuilder.append(bigDecimalToString(Y2));
-            lineBuilder.append(" "); //$NON-NLS-1$
-            lineBuilder.append(bigDecimalToString(Z2));
-            text = lineBuilder.toString();
         } else {
             lineBuilder.append("0 !LPE DISTANCE "); //$NON-NLS-1$
-            if (colourNumber == -1) {
-                lineBuilder.append("0x2"); //$NON-NLS-1$
-                lineBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
-                lineBuilder.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
-                lineBuilder.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
-            } else {
-                lineBuilder.append(colourNumber);
-            }
-            lineBuilder.append(" "); //$NON-NLS-1$
-            lineBuilder.append(bigDecimalToString(X1));
-            lineBuilder.append(" "); //$NON-NLS-1$
-            lineBuilder.append(bigDecimalToString(Y1));
-            lineBuilder.append(" "); //$NON-NLS-1$
-            lineBuilder.append(bigDecimalToString(Z1));
-            lineBuilder.append(" "); //$NON-NLS-1$
-            lineBuilder.append(bigDecimalToString(X2));
-            lineBuilder.append(" "); //$NON-NLS-1$
-            lineBuilder.append(bigDecimalToString(Y2));
-            lineBuilder.append(" "); //$NON-NLS-1$
-            lineBuilder.append(bigDecimalToString(Z2));
-            text = lineBuilder.toString();
         }
+        if (colourNumber == -1) {
+            lineBuilder.append("0x2"); //$NON-NLS-1$
+            lineBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
+            lineBuilder.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
+            lineBuilder.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
+        } else {
+            lineBuilder.append(colourNumber);
+        }
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(X1));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(Y1));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(Z1));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(X2));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(Y2));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(Z2));
+        text = lineBuilder.toString();
         return text;
     }
 
@@ -572,7 +554,6 @@ public final class GData2 extends GData {
 
     @Override
     public String transformAndColourReplace(String colour, Matrix matrix) {
-        // FIXME needs implementation for issue #192
         BigDecimal[] v1;
         BigDecimal[] v2;
         if (X1 == null) {
@@ -583,8 +564,12 @@ public final class GData2 extends GData {
             v2 = matrix.transform(X2, Y2, Z2);
         }
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(2);
-        lineBuilder.append(" "); //$NON-NLS-1$
+        if (isLine) {
+            lineBuilder.append(2);
+            lineBuilder.append(" "); //$NON-NLS-1$
+        } else {
+            lineBuilder.append("0 !LPE DISTANCE "); //$NON-NLS-1$
+        }
         StringBuilder colourBuilder = new StringBuilder();
         if (colourNumber == -1) {
             colourBuilder.append("0x2"); //$NON-NLS-1$
@@ -672,10 +657,13 @@ public final class GData2 extends GData {
     public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
     public String colourReplace(String col) {
-        // FIXME needs implementation for issue #192
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(2);
-        lineBuilder.append(" "); //$NON-NLS-1$
+        if (isLine) {
+            lineBuilder.append(2);
+            lineBuilder.append(" "); //$NON-NLS-1$
+        } else {
+            lineBuilder.append("0 !LPE DISTANCE "); //$NON-NLS-1$
+        }
         lineBuilder.append(col);
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(X1));
@@ -692,8 +680,7 @@ public final class GData2 extends GData {
         return lineBuilder.toString();
     }
 
-    public void drawDistance(Composite3D c3d, float x1c, float y1c, float z1c, float x2c, float y2c, float z2c) {
-        // FIXME needs implementation for issue #192
+    public void drawDistance(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c) {
         final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer renderer = c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
@@ -710,13 +697,13 @@ public final class GData2 extends GData {
         GL11.glColor4f(r, g, b, 1f);
         final Vector4f textOrigin = new Vector4f((x1 + x2) / 2f, (y1 + y2) / 2f, (z1 + z2) / 2f, 1f);
         Matrix4f.transform(c3d.getRotation(), textOrigin, textOrigin);
-        float dx_f = (x2c - x1c) / 1000f;
-        float dy_f = (y2c - y1c) / 1000f;
-        float dz_f = (z2c - z1c) / 1000f;
-        BigDecimal dx = new BigDecimal(dx_f);
-        BigDecimal dy = new BigDecimal(dy_f);
-        BigDecimal dz = new BigDecimal(dz_f);
-        BigDecimal dA = new BigDecimal(Math.sqrt(dx_f * dx_f + dy_f * dy_f + dz_f * dz_f));
+        BigDecimal dx = x2c.subtract(x1c);
+        BigDecimal dy = y2c.subtract(y1c);
+        BigDecimal dz = z2c.subtract(z1c);
+        if (length == null) {
+            length = new Vector3d(dx, dy, dz).length();
+        }
+        BigDecimal dA = length;
         String dx_s = NUMBER_FORMAT4F.format(dx);
         String dy_s = NUMBER_FORMAT4F.format(dy);
         String dz_s = NUMBER_FORMAT4F.format(dz);

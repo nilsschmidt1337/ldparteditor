@@ -284,12 +284,16 @@ public final class VertexManager extends VM99Clipboard {
                                 Vertex v2 = lineverts[i];
                                 if (!v2.equals(vertex)) {
                                     Vector4f res = manipulator.getUntransformed(v2.x, v2.y, v2.z);
-                                    lineverts[i] = new Vertex(res.x, res.y, res.z, true);
+                                    if (gd2.isLine) {
+                                        lineverts[i] = new Vertex(res.x, res.y, res.z, true);
+                                    } else {
+                                        lineverts[i] = new Vertex(res.x, res.y, res.z);
+                                    }
                                 }
                             }
                             if (!gd2.isLine) {
                                 GL11.glMultMatrix(matrix_inv);
-                                new GData2(lineverts2[0], lineverts2[1], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawDistance(c3d, lineverts[0].x, lineverts[0].y, lineverts[0].z, lineverts[1].x, lineverts[1].y, lineverts[1].z);
+                                new GData2(lineverts2[0], lineverts2[1], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawDistance(c3d, lineverts[0].X, lineverts[0].Y, lineverts[0].Z, lineverts[1].X, lineverts[1].Y, lineverts[1].Z);
                                 GL11.glBegin(GL11.GL_LINES);
                                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                                 GL11.glVertex3f(lineverts2[0].x, lineverts2[0].y, lineverts2[0].z);
@@ -562,10 +566,10 @@ public final class VertexManager extends VM99Clipboard {
                                 for (int i1 = 0; i1 < 2; i1++) {
                                     Vertex v2 = lineverts[i1];
                                     Vector4f res = manipulator.getUntransformed(v2.x, v2.y, v2.z);
-                                    lineverts[i1] = new Vertex(res.x, res.y, res.z, true);
+                                    lineverts[i1] = new Vertex(res.x, res.y, res.z);
                                 }
                                 GL11.glMultMatrix(matrix_inv);
-                                new GData2(dataVerts[0], dataVerts[1], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawDistance(c3d, lineverts[0].x, lineverts[0].y, lineverts[0].z, lineverts[1].x, lineverts[1].y, lineverts[1].z);;
+                                new GData2(dataVerts[0], dataVerts[1], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawDistance(c3d, lineverts[0].X, lineverts[0].Y, lineverts[0].Z, lineverts[1].X, lineverts[1].Y, lineverts[1].Z);
                                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                                 GL11.glMultMatrix(matrix);
                             }
