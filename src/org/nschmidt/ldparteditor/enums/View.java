@@ -314,12 +314,13 @@ public enum View {
     public final static Set<PGData3> D7 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "7", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
     public final static Set<PGData3> D8 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "8", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
     public final static Set<PGData3> D9 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "9", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
-    public final static Set<PGData3> Dd = TextTriangulator.triangulateGLText(Font.MONOSPACE, ".", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
-    public final static Set<PGData3> Dc = TextTriangulator.triangulateGLText(Font.MONOSPACE, ",", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
-    public final static Set<PGData3> DX = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dX", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
-    public final static Set<PGData3> DY = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dY", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
-    public final static Set<PGData3> DZ = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dZ", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
-    public final static Set<PGData3> DA = TextTriangulator.triangulateGLText(Font.MONOSPACE, " D", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> Dd = TextTriangulator.triangulateGLText(Font.MONOSPACE, ".", 0.07, 0.3, .004f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> Dc = TextTriangulator.triangulateGLText(Font.MONOSPACE, ",", 0.07, 0.3, .004f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> DX = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dX =", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> DY = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dY =", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> DZ = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dZ =", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> DA = TextTriangulator.triangulateGLText(Font.MONOSPACE, "D  =", 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
+    public final static Set<PGData3> DM = TextTriangulator.triangulateGLText(Font.MONOSPACE, "-", 0.07, 0.3, .003f * (1f + Editor3DWindow.getIconsize()), 16.9); //$NON-NLS-1$
 
 
 

@@ -1797,6 +1797,7 @@ public class Composite3D extends ScalableComposite {
         this.drawingSolidMaterials = drawingSolidMaterials;
     }
 
+    // FIXME Remove legacy attribute!
     public boolean isFillingSelectedFaces() {
         return fillingSelectedFaces;
     }

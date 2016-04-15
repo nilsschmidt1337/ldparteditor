@@ -16,7 +16,10 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.lwjgl.opengl.GL11;
@@ -25,9 +28,11 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.GLPrimitives;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
  * @author nils
@@ -689,6 +694,7 @@ public final class GData2 extends GData {
 
     private void drawDistance(Composite3D c3d) {
         // FIXME needs implementation for issue #192
+        final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer renderer = c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
         GL11.glLineWidth(View.lineWidthGL[0]);
@@ -704,12 +710,104 @@ public final class GData2 extends GData {
         GL11.glColor4f(r, g, b, 1f);
         final Vector4f textOrigin = new Vector4f(x1, y1, z1, 1f);
         Matrix4f.transform(c3d.getRotation(), textOrigin, textOrigin);
-        for (PGData3 tri : View.D5) {
+        float dx_f = (x2 - x1) / 1000f;
+        float dy_f = (y2 - y1) / 1000f;
+        float dz_f = (z2 - z1) / 1000f;
+        BigDecimal dx = new BigDecimal(dx_f);
+        BigDecimal dy = new BigDecimal(dy_f);
+        BigDecimal dz = new BigDecimal(dz_f);
+        BigDecimal dA = new BigDecimal(Math.sqrt(dx_f * dx_f + dy_f * dy_f + dz_f * dz_f));
+        String dx_s = NUMBER_FORMAT4F.format(dx);
+        String dy_s = NUMBER_FORMAT4F.format(dy);
+        String dz_s = NUMBER_FORMAT4F.format(dz);
+        String dA_s = NUMBER_FORMAT4F.format(dA);
+        final float oy1 = .03f * zoom * (1f + Editor3DWindow.getIconsize());
+        final float oy2 = .06f * zoom * (1f + Editor3DWindow.getIconsize());
+        final float oy3 = .09f * zoom * (1f + Editor3DWindow.getIconsize());
+        final float ox1 = -.05f * zoom * (1f + Editor3DWindow.getIconsize());
+        for (PGData3 tri : View.DA) {
             tri.drawText(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
         }
+        for (PGData3 tri : View.DX) {
+            tri.drawText(textOrigin.x, textOrigin.y + oy1, textOrigin.z + 100000f, zoom);
+        }
+        for (PGData3 tri : View.DY) {
+            tri.drawText(textOrigin.x, textOrigin.y + oy2, textOrigin.z + 100000f, zoom);
+        }
+        for (PGData3 tri : View.DZ) {
+            tri.drawText(textOrigin.x, textOrigin.y + oy3, textOrigin.z + 100000f, zoom);
+        }
+        drawNumber(dA_s, textOrigin.x + ox1, textOrigin.y, textOrigin.z, zoom);
+        drawNumber(dx_s, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);
+        drawNumber(dy_s, textOrigin.x + ox1, textOrigin.y + oy2, textOrigin.z, zoom);
+        drawNumber(dz_s, textOrigin.x + ox1, textOrigin.y + oy3, textOrigin.z, zoom);
         PGData3.endDrawText();
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
+    }
+
+    private void drawNumber(String number, float ox, float oy, float oz, float zoom) {
+        final int length =  number.length();
+        float ox2 = 0f;
+        for (int i = 0; i < length; i++) {
+            float ox3 = ox2;
+            float oy3 = oy;
+            Set<PGData3> tris = new HashSet<PGData3>();
+            final char c = number.charAt(i);
+            switch (c) {
+            case '0':
+                tris = View.D0;
+                break;
+            case '1':
+                tris = View.D1;
+                break;
+            case '2':
+                tris = View.D2;
+                break;
+            case '3':
+                tris = View.D3;
+                break;
+            case '4':
+                tris = View.D4;
+                break;
+            case '5':
+                tris = View.D5;
+                break;
+            case '6':
+                tris = View.D6;
+                break;
+            case '7':
+                tris = View.D7;
+                break;
+            case '8':
+                tris = View.D8;
+                break;
+            case '9':
+                tris = View.D9;
+                break;
+            case '.':
+                tris = View.Dd;
+                ox3 = ox2 - .009f * zoom;
+                oy3 = oy3 - .008f * zoom;
+                break;
+            case ',':
+                tris = View.Dc;
+                ox3 = ox2 - .015f * zoom;
+                oy3 = oy3 - .008f * zoom;
+                break;
+            case '-':
+                tris = View.DM;
+                ox3 = ox2 - .005f * zoom;
+                oy3 = oy3 - .004f * zoom;
+                break;
+            default:
+                break;
+            }
+            for (PGData3 tri : tris) {
+                tri.drawText(ox + ox3, oy3, oz + 100000f, zoom);
+            }
+            ox2 = ox2 - .01f * zoom  * (1f + Editor3DWindow.getIconsize());
+        }
     }
 
     /*
