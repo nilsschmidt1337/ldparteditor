@@ -28,6 +28,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.GLPrimitives;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -69,6 +70,7 @@ public final class GData2 extends GData {
     final GData1 parent;
 
     private BigDecimal length = null;
+    private int state = 0;
 
     public GData2(int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, GData1 parent, DatFile datFile, boolean isLine) {
         this.colourNumber = colourNumber;
@@ -700,10 +702,24 @@ public final class GData2 extends GData {
         BigDecimal dx = x2c.subtract(x1c);
         BigDecimal dy = y2c.subtract(y1c);
         BigDecimal dz = z2c.subtract(z1c);
-        if (length == null) {
-            length = new Vector3d(dx, dy, dz).length();
+        if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
+            if (state != -1) {
+                length = new Vector3d(dx, dy, dz).length();
+                state = -1;
+            }
+        } else {
+            Vector3d tr = c3d.getManipulator().getAccurateMatrix().transform(new Vector3d(dx, dy, dz));
+            dx = tr.X;
+            dy = tr.Y;
+            dz = tr.Z;
+            if (state < 1) {
+                length = new Vector3d(dx, dy, dz).length();
+                state = 11;
+            }
+            state--;
         }
         BigDecimal dA = length;
+
         String dx_s = NUMBER_FORMAT4F.format(dx);
         String dy_s = NUMBER_FORMAT4F.format(dy);
         String dz_s = NUMBER_FORMAT4F.format(dz);
