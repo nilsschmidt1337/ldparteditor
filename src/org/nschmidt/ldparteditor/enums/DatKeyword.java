@@ -48,7 +48,6 @@ public enum DatKeyword {
         keywords.add("CODE"); //$NON-NLS-1$
         keywords.add("CW"); //$NON-NLS-1$
         keywords.add("CYLINDRICAL"); //$NON-NLS-1$
-        keywords.add("DISTANCE"); //$NON-NLS-1$
         keywords.add("EDGE"); //$NON-NLS-1$
         keywords.add("END"); //$NON-NLS-1$
         keywords.add("FALLBACK"); //$NON-NLS-1$
@@ -82,6 +81,9 @@ public enum DatKeyword {
 
         keywords.add("TODO"); //$NON-NLS-1$
         keywords.add("VERTEX"); //$NON-NLS-1$
+
+        keywords.add("DISTANCE"); //$NON-NLS-1$
+        keywords.add("PROTRACTOR"); //$NON-NLS-1$
 
         keywords.add("PNG"); //$NON-NLS-1$
 
