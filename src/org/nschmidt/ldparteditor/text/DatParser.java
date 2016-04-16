@@ -792,7 +792,39 @@ public enum DatParser {
                         }
                     }
                 } else if (line.startsWith("PROTRACTOR ", 7)) { //$NON-NLS-1$) {
-                    // FIXME Needs implementation for issue #193
+                    boolean numberError = false;
+                    final GColour colour;
+                    if (data_segments.length == 13) {
+                        colour = validateColour(data_segments[3], r, g, b, a);
+                        if (colour == null) {
+                            result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                            return result;
+                        }
+                        try {
+                            vertexA.setX(new BigDecimal(data_segments[4], Threshold.mc));
+                            vertexA.setY(new BigDecimal(data_segments[5], Threshold.mc));
+                            vertexA.setZ(new BigDecimal(data_segments[6], Threshold.mc));
+                            vertexB.setX(new BigDecimal(data_segments[7], Threshold.mc));
+                            vertexB.setY(new BigDecimal(data_segments[8], Threshold.mc));
+                            vertexB.setZ(new BigDecimal(data_segments[9], Threshold.mc));
+                            vertexC.setX(new BigDecimal(data_segments[10], Threshold.mc));
+                            vertexC.setY(new BigDecimal(data_segments[11], Threshold.mc));
+                            vertexC.setZ(new BigDecimal(data_segments[12], Threshold.mc));
+                        } catch (NumberFormatException nfe) {
+                            numberError = true;
+                        }
+                    } else {
+                        numberError = true;
+                        colour = null;
+                    }
+                    if (numberError) {
+                        result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                    } else if (!errorCheckOnly) {
+                        if (depth == 0) {
+                            result.remove(0);
+                            result.add(0, new ParsingResult(new GData3(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA.X, vertexA.Y, vertexA.Z, vertexB.X, vertexB.Y, vertexB.Z, vertexC.X, vertexC.Y, vertexC.Z, parent, datFile, false)));
+                        }
+                    }
                 } else if (line.startsWith("CSG_", 7)) { //$NON-NLS-1$
                     if (line.startsWith("UNION", 11)) { //$NON-NLS-1$
                         result.remove(0);
