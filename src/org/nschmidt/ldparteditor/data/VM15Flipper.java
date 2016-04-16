@@ -144,8 +144,8 @@ class VM15Flipper extends VM14Splitter {
                         }
                         if (fourth == null) continue;
 
-                        GData3 n1 = new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, first, second, third, s1.parent, linkedDatFile, true);
-                        GData3 n2 = new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, third, fourth, first, s1.parent, linkedDatFile, true);
+                        GData3 n1 = new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, first, second, third, s1.parent, linkedDatFile, s1.isTriangle);
+                        GData3 n2 = new GData3(s1.colourNumber, s1.r, s1.g, s1.b, s1.a, third, fourth, first, s1.parent, linkedDatFile, s1.isTriangle);
 
                         linkedDatFile.insertAfter(s1, n1);
                         linkedDatFile.insertAfter(s2, n2);

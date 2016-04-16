@@ -219,17 +219,39 @@ public final class VertexManager extends VM99Clipboard {
                             nx = (triverts[2].y - triverts[0].y) * (triverts[1].z - triverts[0].z) - (triverts[2].z - triverts[0].z) * (triverts[1].y - triverts[0].y);
                             ny = (triverts[2].z - triverts[0].z) * (triverts[1].x - triverts[0].x) - (triverts[2].x - triverts[0].x) * (triverts[1].z - triverts[0].z);
                             nz = (triverts[2].x - triverts[0].x) * (triverts[1].y - triverts[0].y) - (triverts[2].y - triverts[0].y) * (triverts[1].x - triverts[0].x);
-                            GL11.glBegin(GL11.GL_TRIANGLES);
-                            GL11.glColor3f(gd3.r, gd3.g, gd3.b);
-                            GL11.glNormal3f(nx, ny, nz);
-                            GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
-                            GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
-                            GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
-                            GL11.glNormal3f(-nx, -ny, -nz);
-                            GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
-                            GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
-                            GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
-                            GL11.glEnd();
+                            if (!gd3.isTriangle) {
+                                Vertex[] triverts2 = triverts.clone();
+                                for (int i = 0; i < 3; i++) {
+                                    Vertex v3 = triverts[i];
+                                    if (!allVertices.contains(v3)) {
+                                        Vector4f res = manipulator.getUntransformed(v3.x, v3.y, v3.z);
+                                        triverts[i] = new Vertex(res.x, res.y, res.z);
+                                    }
+                                }
+                                GL11.glMultMatrix(matrix_inv);
+                                new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawProtractor(c3d, triverts[0].X, triverts[0].Y, triverts[0].Z, triverts[1].X, triverts[1].Y, triverts[1].Z, triverts[2].X, triverts[2].Y, triverts[2].Z);
+                                GL11.glMultMatrix(matrix);
+                                GL11.glBegin(GL11.GL_LINES);
+                                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
+                                GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
+                                GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
+                                GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
+                                GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
+                                GL11.glEnd();
+                            } else {
+                                GL11.glBegin(GL11.GL_TRIANGLES);
+                                GL11.glColor3f(gd3.r, gd3.g, gd3.b);
+                                GL11.glNormal3f(nx, ny, nz);
+                                GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
+                                GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
+                                GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
+                                GL11.glNormal3f(-nx, -ny, -nz);
+                                GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
+                                GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
+                                GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
+                                GL11.glEnd();
+                            }
                             break;
                         case 4:
                             GData4 gd4 = (GData4) gd;
@@ -317,35 +339,53 @@ public final class VertexManager extends VM99Clipboard {
                                 Vertex v3 = triverts[i];
                                 if (!allVertices.contains(v3)) {
                                     Vector4f res = manipulator.getUntransformed(v3.x, v3.y, v3.z);
-                                    triverts[i] = new Vertex(res.x, res.y, res.z, true);
+                                    if (gd3.isTriangle) {
+                                        triverts[i] = new Vertex(res.x, res.y, res.z, true);
+                                    } else {
+                                        triverts[i] = new Vertex(res.x, res.y, res.z);
+                                    }
                                 }
                             }
                             nx = (triverts[2].y - triverts[0].y) * (triverts[1].z - triverts[0].z) - (triverts[2].z - triverts[0].z) * (triverts[1].y - triverts[0].y);
                             ny = (triverts[2].z - triverts[0].z) * (triverts[1].x - triverts[0].x) - (triverts[2].x - triverts[0].x) * (triverts[1].z - triverts[0].z);
                             nz = (triverts[2].x - triverts[0].x) * (triverts[1].y - triverts[0].y) - (triverts[2].y - triverts[0].y) * (triverts[1].x - triverts[0].x);
-                            GL11.glBegin(GL11.GL_TRIANGLES);
-                            GL11.glColor3f(gd3.r, gd3.g, gd3.b);
-                            GL11.glNormal3f(nx, ny, nz);
-                            GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
-                            GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
-                            GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
-                            GL11.glNormal3f(-nx, -ny, -nz);
-                            GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
-                            GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
-                            GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
-                            GL11.glEnd();
-                            GL11.glBegin(GL11.GL_LINES);
-                            GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
-                            GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
-                            GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
+                            if (!gd3.isTriangle) {
+                                GL11.glMultMatrix(matrix_inv);
+                                new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawProtractor(c3d, triverts[0].X, triverts[0].Y, triverts[0].Z, triverts[1].X, triverts[1].Y, triverts[1].Z, triverts[2].X, triverts[2].Y, triverts[2].Z);
+                                GL11.glMultMatrix(matrix);
+                                GL11.glBegin(GL11.GL_LINES);
+                                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
+                                GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
+                                GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
+                                GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
+                                GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
+                                GL11.glEnd();
+                            } else {
+                                GL11.glBegin(GL11.GL_TRIANGLES);
+                                GL11.glColor3f(gd3.r, gd3.g, gd3.b);
+                                GL11.glNormal3f(nx, ny, nz);
+                                GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
+                                GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
+                                GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
+                                GL11.glNormal3f(-nx, -ny, -nz);
+                                GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
+                                GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
+                                GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
+                                GL11.glEnd();
+                                GL11.glBegin(GL11.GL_LINES);
+                                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
+                                GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
 
-                            GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
-                            GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
+                                GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
+                                GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
 
-                            GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
-                            GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
-                            GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
-                            GL11.glEnd();
+                                GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
+                                GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
+                                GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
+                                GL11.glEnd();
+                            }
                             break;
                         case 4:
                             GData4 gd4 = (GData4) gd;
@@ -458,7 +498,7 @@ public final class VertexManager extends VM99Clipboard {
             if (c3d.isSubMeshLines() || drawWireframe) {
                 Vertex[] quadverts = new Vertex[4];
                 for (GData3 gdata : triangles.keySet()) {
-                    if (!gdata.visible) // if (hiddenData.contains(gdata))
+                    if (!(gdata.visible || gdata.isTriangle))
                         continue;
                     GL11.glBegin(GL11.GL_LINE_LOOP);
                     for (Vertex vertex : triangles.get(gdata)) {
@@ -491,6 +531,8 @@ public final class VertexManager extends VM99Clipboard {
                         continue;
                     switch (gdata.type()) {
                     case 3:
+                        if (!(((GData3) gdata).isTriangle))
+                            continue;
                         GL11.glBegin(GL11.GL_LINE_LOOP);
                         for (VertexInfo info : lineLinkedToVertices.get(gdata)) {
                             Vertex triVertex = info.vertex;
@@ -676,24 +718,65 @@ public final class VertexManager extends VM99Clipboard {
                 GL11.glLineWidth(2f);
                 if (c3d.isFillingSelectedFaces())
                     GL11.glColor3f(View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0]);
-                GL11.glBegin(GL11.GL_LINES);
+                boolean hasProtractor = false;
                 for (GData3 tri : selectedTriangles) {
-                    i = 0;
-                    if (triangles.get(tri) != null) {
-                        for (Vertex tvertex : triangles.get(tri)) {
-                            dataVerts[i] = tvertex;
-                            i++;
-                        }
-                        GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
-                        GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
-                        GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
-                        GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
-                        GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
-                        GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
+                    if (!tri.isTriangle) {
+                        hasProtractor = true;
+                        break;
                     }
                 }
-                GL11.glEnd();
-                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                if (hasProtractor) {
+
+                    for (GData3 tri : selectedTriangles) {
+                        i = 0;
+                        if (triangles.get(tri) != null) {
+                            for (Vertex tvertex : triangles.get(tri)) {
+                                dataVerts[i] = tvertex;
+                                i++;
+                            }
+                            if (!tri.isTriangle) {
+                                Vertex[] lineverts2 = triangles.get(tri);
+                                Vertex[] lineverts = lineverts2.clone();
+                                for (int i1 = 0; i1 < 3; i1++) {
+                                    Vertex v2 = lineverts[i1];
+                                    Vector4f res = manipulator.getUntransformed(v2.x, v2.y, v2.z);
+                                    lineverts[i1] = new Vertex(res.x, res.y, res.z);
+                                }
+                                GL11.glMultMatrix(matrix_inv);
+                                new GData3(dataVerts[0], dataVerts[1], dataVerts[2], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawProtractor(c3d, lineverts[0].X, lineverts[0].Y, lineverts[0].Z, lineverts[1].X, lineverts[1].Y, lineverts[1].Z, lineverts[2].X, lineverts[2].Y, lineverts[2].Z);
+                                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                GL11.glMultMatrix(matrix);
+                            }
+                            GL11.glBegin(GL11.GL_LINES);
+                            GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
+                            GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
+                            GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
+                            GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
+                            GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
+                            GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
+                            GL11.glEnd();
+                        }
+                    }
+                } else {
+                    GL11.glBegin(GL11.GL_LINES);
+                    for (GData3 tri : selectedTriangles) {
+                        i = 0;
+                        if (triangles.get(tri) != null) {
+                            for (Vertex tvertex : triangles.get(tri)) {
+                                dataVerts[i] = tvertex;
+                                i++;
+                            }
+                            GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
+                            GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
+                            GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
+                            GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
+                            GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
+                            GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
+                        }
+                    }
+                    GL11.glEnd();
+                    GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                }
             }
             if (!selectedQuads.isEmpty()) {
                 GL11.glLineWidth(2f);
