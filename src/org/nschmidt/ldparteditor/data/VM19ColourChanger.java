@@ -287,7 +287,7 @@ class VM19ColourChanger extends VM18LineConverter {
             case 3:
                 GData3 gd3 = (GData3) gData;
                 GData3 newGdata3 = new GData3(index, r, g, b, a, gd3.X1, gd3.Y1, gd3.Z1, gd3.X2, gd3.Y2, gd3.Z2, gd3.X3, gd3.Y3, gd3.Z3, gd3.x1, gd3.y1, gd3.z1, gd3.x2, gd3.y2, gd3.z2, gd3.x3,
-                        gd3.y3, gd3.z3, gd3.xn, gd3.yn, gd3.zn, gd3.parent, linkedDatFile, true);
+                        gd3.y3, gd3.z3, gd3.xn, gd3.yn, gd3.zn, gd3.parent, linkedDatFile, gd3.isTriangle);
                 newData.add(newGdata3);
                 newGData = newGdata3;
                 break;

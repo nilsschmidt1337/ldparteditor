@@ -16,7 +16,10 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.lwjgl.opengl.GL11;
@@ -24,6 +27,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -272,6 +276,10 @@ public final class GData3 extends GData {
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
+        if (!isTriangle) {
+            drawProtractor(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            return;
+        }
         if (GData.globalNegativeDeterminant) {
             GL11.glColor4f(r, g, b, a);
             GL11.glBegin(GL11.GL_TRIANGLES);
@@ -305,6 +313,10 @@ public final class GData3 extends GData {
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
+        if (!isTriangle) {
+            drawProtractor(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            return;
+        }
         final float r = MathHelper.randomFloat(ID, 0);
         final float g = MathHelper.randomFloat(ID, 1);
         final float b = MathHelper.randomFloat(ID, 2);
@@ -341,6 +353,10 @@ public final class GData3 extends GData {
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
+        if (!isTriangle) {
+            drawProtractor(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            return;
+        }
         switch (GData.localWinding) {
         case BFC.CCW:
             if (GData.globalNegativeDeterminant) {
@@ -556,6 +572,10 @@ public final class GData3 extends GData {
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
+        if (!isTriangle) {
+            drawProtractor(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            return;
+        }
         switch (GData.localWinding) {
         case BFC.CCW:
             if (GData.globalNegativeDeterminant) {
@@ -738,6 +758,10 @@ public final class GData3 extends GData {
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
+        if (!isTriangle) {
+            drawProtractor(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            return;
+        }
         switch (a < 1f ? BFC.NOCERTIFY : GData.localWinding) {
         case BFC.CCW:
             if (GData.globalNegativeDeterminant) {
@@ -879,6 +903,10 @@ public final class GData3 extends GData {
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
+        if (!isTriangle) {
+            drawProtractor(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            return;
+        }
         switch (a < 1f ? BFC.NOCERTIFY : GData.localWinding) {
         case BFC.CCW:
             if (GData.globalNegativeDeterminant) {
@@ -1262,12 +1290,15 @@ public final class GData3 extends GData {
 
     @Override
     String getNiceString() {
-        // FIXME Needs implementation for issue #193
         if (text != null)
             return text;
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(3);
-        lineBuilder.append(" "); //$NON-NLS-1$
+        if (isTriangle) {
+            lineBuilder.append(3);
+            lineBuilder.append(" "); //$NON-NLS-1$
+        } else {
+            lineBuilder.append("0 !LPE PROTACTOR "); //$NON-NLS-1$
+        }
         if (colourNumber == -1) {
             lineBuilder.append("0x2"); //$NON-NLS-1$
             lineBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
@@ -1305,7 +1336,6 @@ public final class GData3 extends GData {
 
     @Override
     public String transformAndColourReplace(String colour, Matrix matrix) {
-        // FIXME Needs implementation for issue #193
         BigDecimal[] v1;
         BigDecimal[] v2;
         BigDecimal[] v3;
@@ -1319,8 +1349,12 @@ public final class GData3 extends GData {
             v3 = matrix.transform(X3, Y3, Z3);
         }
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(3);
-        lineBuilder.append(" "); //$NON-NLS-1$
+        if (isTriangle) {
+            lineBuilder.append(3);
+            lineBuilder.append(" "); //$NON-NLS-1$
+        } else {
+            lineBuilder.append("0 !LPE PROTACTOR "); //$NON-NLS-1$
+        }
         StringBuilder colourBuilder = new StringBuilder();
         if (colourNumber == -1) {
             colourBuilder.append("0x2"); //$NON-NLS-1$
@@ -1532,10 +1566,13 @@ public final class GData3 extends GData {
     }
 
     public String colourReplace(String col) {
-        // FIXME Needs implementation for issue #193
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(3);
-        lineBuilder.append(" "); //$NON-NLS-1$
+        if (isTriangle) {
+            lineBuilder.append(3);
+            lineBuilder.append(" "); //$NON-NLS-1$
+        } else {
+            lineBuilder.append("0 !LPE PROTACTOR "); //$NON-NLS-1$
+        }
         lineBuilder.append(col);
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(X1));
@@ -1556,5 +1593,98 @@ public final class GData3 extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(Z3));
         return lineBuilder.toString();
+    }
+
+    public void drawProtractor(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
+        // FIXME Needs implementation for issue #193
+        final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        final OpenGLRenderer renderer = c3d.getRenderer();
+        final float zoom = 1f / c3d.getZoom();
+        GL11.glLineWidth(View.lineWidthGL[0]);
+        GL11.glColor4f(r, g, b, 1f);
+        GL11.glBegin(GL11.GL_LINES);
+        GL11.glVertex3f(x1, y1, z1);
+        GL11.glVertex3f(x2, y2, z2);
+        GL11.glVertex3f(x1, y1, z1);
+        GL11.glVertex3f(x3, y3, z3);
+        GL11.glEnd();
+        GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glMultMatrix(renderer.getRotationInverse());
+        PGData3.beginDrawText();
+        GL11.glColor4f(r, g, b, 1f);
+        final Vector4f textOrigin = new Vector4f(x1, y1, z1, 1f);
+        Matrix4f.transform(c3d.getRotation(), textOrigin, textOrigin);
+
+        Vector3d a = new Vector3d(x1c, y1c, z1c);
+        Vector3d b = new Vector3d(x2c, y2c, z2c);
+        Vector3d c = new Vector3d(x3c, y3c, z3c);
+        b = Vector3d.sub(a, b);
+        c = Vector3d.sub(a, c);
+        BigDecimal ang = new BigDecimal(Vector3d.angle(b, c));
+        String angle = NUMBER_FORMAT2F.format(ang) + "°"; //$NON-NLS-1$
+        drawNumber(angle, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
+        PGData3.endDrawText();
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glPopMatrix();
+    }
+
+    private void drawNumber(String number, float ox, float oy, float oz, float zoom) {
+        final int length =  number.length();
+        float ox2 = 0f;
+        for (int i = 0; i < length; i++) {
+            Set<PGData3> tris = new HashSet<PGData3>();
+            final char c = number.charAt(i);
+            switch (c) {
+            case '0':
+                tris = View.D0;
+                break;
+            case '1':
+                tris = View.D1;
+                break;
+            case '2':
+                tris = View.D2;
+                break;
+            case '3':
+                tris = View.D3;
+                break;
+            case '4':
+                tris = View.D4;
+                break;
+            case '5':
+                tris = View.D5;
+                break;
+            case '6':
+                tris = View.D6;
+                break;
+            case '7':
+                tris = View.D7;
+                break;
+            case '8':
+                tris = View.D8;
+                break;
+            case '9':
+                tris = View.D9;
+                break;
+            case '.':
+                tris = View.Dd;
+                break;
+            case ',':
+                tris = View.Dc;
+                break;
+            case '°':
+                tris = View.Dg;
+                break;
+            case '-':
+                tris = View.DM;
+                break;
+            default:
+                break;
+            }
+            for (PGData3 tri : tris) {
+                tri.drawText(ox + ox2, oy, oz + 100000f, zoom);
+            }
+            ox2 = ox2 - .01f * zoom;
+        }
     }
 }
