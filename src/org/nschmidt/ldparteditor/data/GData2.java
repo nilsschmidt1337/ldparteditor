@@ -724,10 +724,10 @@ public final class GData2 extends GData {
         String dy_s = NUMBER_FORMAT4F.format(dy);
         String dz_s = NUMBER_FORMAT4F.format(dz);
         String dA_s = NUMBER_FORMAT4F.format(dA);
-        final float oy1 = .03f * zoom * (1f + Editor3DWindow.getIconsize());
-        final float oy2 = .06f * zoom * (1f + Editor3DWindow.getIconsize());
-        final float oy3 = .09f * zoom * (1f + Editor3DWindow.getIconsize());
-        final float ox1 = -.05f * zoom * (1f + Editor3DWindow.getIconsize());
+        final float oy1 = .015f * zoom;
+        final float oy2 = .03f * zoom;
+        final float oy3 = .045f * zoom;
+        final float ox1 = -.045f * zoom;
         for (PGData3 tri : View.DA) {
             tri.drawText(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
         }
@@ -753,8 +753,6 @@ public final class GData2 extends GData {
         final int length =  number.length();
         float ox2 = 0f;
         for (int i = 0; i < length; i++) {
-            float ox3 = ox2;
-            float oy3 = oy;
             Set<PGData3> tris = new HashSet<PGData3>();
             final char c = number.charAt(i);
             switch (c) {
@@ -790,26 +788,20 @@ public final class GData2 extends GData {
                 break;
             case '.':
                 tris = View.Dd;
-                ox3 = ox2 - .009f * zoom;
-                oy3 = oy3 - .008f * zoom;
                 break;
             case ',':
                 tris = View.Dc;
-                ox3 = ox2 - .015f * zoom;
-                oy3 = oy3 - .008f * zoom;
                 break;
             case '-':
                 tris = View.DM;
-                ox3 = ox2 - .005f * zoom;
-                oy3 = oy3 - .004f * zoom;
                 break;
             default:
                 break;
             }
             for (PGData3 tri : tris) {
-                tri.drawText(ox + ox3, oy3, oz + 100000f, zoom);
+                tri.drawText(ox + ox2, oy, oz + 100000f, zoom);
             }
-            ox2 = ox2 - .01f * zoom  * (1f + Editor3DWindow.getIconsize());
+            ox2 = ox2 - .01f * zoom;
         }
     }
 
