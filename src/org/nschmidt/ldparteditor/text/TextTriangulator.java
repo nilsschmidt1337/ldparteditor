@@ -452,6 +452,30 @@ public class TextTriangulator {
         return finalTriangleSet2;
     }
 
+    public static Set<PGData3> triangulateGLText(org.eclipse.swt.graphics.Font font, final String text, final double flatness, final double interpolateFlatness, final double deltaAngle) {
+        String[] ff = font.getFontData()[0].getName().split(Pattern.quote("-")); //$NON-NLS-1$
+        String fontName;
+        if (ff.length > 1) {
+            fontName = ff[1];
+        } else {
+            fontName = ff[0];
+        }
+        Font myFont = new Font(fontName, Font.BOLD | Font.HANGING_BASELINE, 8);
+        final GlyphVector vector = myFont.createGlyphVector(new FontRenderContext(null, false, false), text);
+
+        final Set<PGData3> finalTriangleSet = new HashSet<PGData3>();
+
+        if (vector.getNumGlyphs() == 0)
+            return finalTriangleSet;
+
+        for (int j = 0; j < vector.getNumGlyphs(); j++) {
+            Shape characterShape = vector.getGlyphOutline(j);
+            Set<PGData3> characterTriangleSet = triangulateGLShape(characterShape, flatness, interpolateFlatness, .002f, deltaAngle);
+            finalTriangleSet.addAll(characterTriangleSet);
+        }
+        return finalTriangleSet;
+    }
+
     private static Set<PGData3> triangulateGLShape(Shape shape, double flatness, double interpolateFlatness, double scale, double deltaAngle) {
         PathIterator shapePathIterator = shape.getPathIterator(null, flatness);
         /*
