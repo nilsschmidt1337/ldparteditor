@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
 import org.nschmidt.ldparteditor.enums.RotationSnap;
 import org.nschmidt.ldparteditor.enums.Threshold;
@@ -32,6 +34,8 @@ import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.HeaderState;
 
@@ -334,6 +338,21 @@ public class VM20Manipulator extends VM19ColourChanger {
 
         selectedData.clear();
 
+        //-1. Update CSG Tree
+
+        if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
+            Matrix4f lowAccTransformation = transformation.getMatrix4f();
+            ArrayList<GData> newSelection = new ArrayList<>();
+            for (GDataCSG gd : GDataCSG.getSelection(linkedDatFile))
+                newSelection.add(transformCSG(lowAccTransformation, gd));
+            GDataCSG.getSelection(linkedDatFile).clear();
+            for (GData gd : newSelection) {
+                GDataCSG.getSelection(linkedDatFile).add((GDataCSG) gd);
+            }
+            GDataCSG.rebuildSelection();
+            setModified_NoSync();
+        }
+
         // 0. Deselect selected subfile data (for whole selected subfiles)
         for (GData1 subf : selectedSubfiles) {
             Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
@@ -591,6 +610,14 @@ public class VM20Manipulator extends VM19ColourChanger {
             newSelectedData.clear();
             selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
         }
+    }
+
+    private GDataCSG transformCSG(Matrix4f lowAccTransformation, GDataCSG gData) {
+        // FIXME Needs implementation for issue #161
+        GDataCSG gdC = (GDataCSG) gData;
+        GDataCSG newGData = new GDataCSG(lowAccTransformation, gdC);
+        linker(gData, newGData);
+        return newGData;
     }
 
     public final void setXyzOrTranslateOrTransform(Vertex target, Vertex pivot, TransformationMode tm, boolean x, boolean y, boolean z, boolean moveAdjacentData, boolean syncWithTextEditors) {
