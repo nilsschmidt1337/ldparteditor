@@ -757,16 +757,22 @@ public final class VertexManager extends VM99Clipboard {
                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
             }
 
-            if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
-                GDataCSG.rebuildSelection(linkedDatFile);
-                GDataCSG.drawSelectionCSG(c3d, modifiedManipulator);
-            }
-
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             if (c3d.isLightOn())
                 GL11.glEnable(GL11.GL_LIGHTING);
 
             GL11.glPopMatrix();
+
+            if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
+                if (!modifiedManipulator)
+                    GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GDataCSG.rebuildSelection(linkedDatFile);
+                GDataCSG.drawSelectionCSG(c3d, modifiedManipulator);
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+                if (c3d.isLightOn())
+                    GL11.glEnable(GL11.GL_LIGHTING);
+            }
         }
     }
 
