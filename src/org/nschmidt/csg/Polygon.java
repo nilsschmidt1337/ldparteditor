@@ -222,7 +222,7 @@ public final class Polygon {
                 if ((colour = (GColourIndex) this.shared.getFirstValue()) == null) {
                     result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                 } else {
-                    // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16)), colour.getIndex());
+                    // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16), true), colour.getIndex());
                     result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                 }
             }
