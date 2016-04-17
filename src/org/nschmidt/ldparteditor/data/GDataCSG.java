@@ -522,4 +522,8 @@ public final class GDataCSG extends GData {
     public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
     @Override
     public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+
+    public static void drawSelectionCSG() {
+        // FIXME Needs implementation for issue #161
+    }
 }

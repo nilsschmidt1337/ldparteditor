@@ -210,7 +210,6 @@ public class Composite3D extends ScalableComposite {
     private boolean showingVertices;
     private boolean showingHiddenVertices;
     private boolean showingCondlineControlPoints;
-    private boolean fillingSelectedFaces;
     private boolean showingLogo;
     private boolean blackEdges;
 
@@ -294,7 +293,6 @@ public class Composite3D extends ScalableComposite {
         this.setShowingHiddenVertices(false);
         this.setShowingCondlineControlPoints(false);
         this.setAnaglyph3d(false);
-        this.setFillingSelectedFaces(false);
         this.setBlackEdges(false);
         this.setRenderMode(0);
         this.setLockableDatFileReference(Project.getFileToEdit());
@@ -1795,15 +1793,6 @@ public class Composite3D extends ScalableComposite {
 
     public void setDrawingSolidMaterials(boolean drawingSolidMaterials) {
         this.drawingSolidMaterials = drawingSolidMaterials;
-    }
-
-    // FIXME Remove legacy attribute!
-    public boolean isFillingSelectedFaces() {
-        return fillingSelectedFaces;
-    }
-
-    public void setFillingSelectedFaces(boolean fillSelectedFaces) {
-        this.fillingSelectedFaces = fillSelectedFaces;
     }
 
     public boolean hasNegDeterminant() {

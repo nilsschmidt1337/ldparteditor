@@ -531,7 +531,7 @@ public final class VertexManager extends VM99Clipboard {
                         continue;
                     switch (gdata.type()) {
                     case 3:
-                        if (!(((GData3) gdata).isTriangle))
+                        if (!((GData3) gdata).isTriangle)
                             continue;
                         GL11.glBegin(GL11.GL_LINE_LOOP);
                         for (VertexInfo info : lineLinkedToVertices.get(gdata)) {
@@ -672,52 +672,8 @@ public final class VertexManager extends VM99Clipboard {
                 GL11.glEnd();
                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
             }
-            if (c3d.isFillingSelectedFaces()) {
-                if (!selectedTriangles.isEmpty()) {
-                    GL11.glBegin(GL11.GL_TRIANGLES);
-                    for (GData3 tri : selectedTriangles) {
-                        i = 0;
-                        if (triangles.get(tri) != null) {
-                            for (Vertex tvertex : triangles.get(tri)) {
-                                dataVerts[i] = tvertex;
-                                i++;
-                            }
-                            GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
-                            GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
-                            GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
-                            GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
-                            GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
-                            GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
-                        }
-                    }
-                    GL11.glEnd();
-                }
-                if (!selectedQuads.isEmpty()) {
-                    GL11.glBegin(GL11.GL_QUADS);
-                    for (GData4 quad : selectedQuads) {
-                        i = 0;
-                        if (quads.get(quad) != null) {
-                            for (Vertex tvertex : quads.get(quad)) {
-                                dataVerts[i] = tvertex;
-                                i++;
-                            }
-                            GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
-                            GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
-                            GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
-                            GL11.glVertex3f(dataVerts[3].x, dataVerts[3].y, dataVerts[3].z);
-                            GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
-                            GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
-                            GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
-                            GL11.glVertex3f(dataVerts[3].x, dataVerts[3].y, dataVerts[3].z);
-                        }
-                    }
-                    GL11.glEnd();
-                }
-            }
             if (!selectedTriangles.isEmpty()) {
                 GL11.glLineWidth(2f);
-                if (c3d.isFillingSelectedFaces())
-                    GL11.glColor3f(View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0]);
                 boolean hasProtractor = false;
                 for (GData3 tri : selectedTriangles) {
                     if (!tri.isTriangle) {
@@ -780,8 +736,6 @@ public final class VertexManager extends VM99Clipboard {
             }
             if (!selectedQuads.isEmpty()) {
                 GL11.glLineWidth(2f);
-                if (c3d.isFillingSelectedFaces())
-                    GL11.glColor3f(View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0]);
                 GL11.glBegin(GL11.GL_LINES);
                 for (GData4 quad : selectedQuads) {
                     i = 0;
@@ -803,6 +757,7 @@ public final class VertexManager extends VM99Clipboard {
                 GL11.glEnd();
                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
             }
+            GDataCSG.drawSelectionCSG();
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             if (c3d.isLightOn())
                 GL11.glEnable(GL11.GL_LIGHTING);
