@@ -1540,7 +1540,7 @@ public class OpenGLRenderer {
                         GL11.glVertex3f(cur.x, cur.y, cur.z);
                         GL11.glEnd();
                     }
-                } else if (window.isAddingTriangles()) {
+                } else if (window.isAddingTriangles() || window.isAddingProtractor()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();

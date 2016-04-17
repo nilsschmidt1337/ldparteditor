@@ -366,6 +366,14 @@ class VM02Add extends VM01SelectHelper {
     }
 
     public void addTriangle(Vertex v1, Vertex v2, Vertex v3, Composite3D c3d) {
+        addTriangle(v1, v2, v3, c3d, true);
+    }
+
+    public void addProtractor(Vertex v1, Vertex v2, Vertex v3, Composite3D c3d) {
+        addTriangle(v1, v2, v3, c3d, false);
+    }
+
+    public void addTriangle(Vertex v1, Vertex v2, Vertex v3, Composite3D c3d, boolean isTriangle) {
         if (v1 == null || v2 == null || v3 == null) return;
         final boolean allowInvalidShapes = WorkbenchManager.getUserSettingState().isAllowInvalidShapes();
         if (v1.equals(v2) || v1.equals(v3) || v2.equals(v3))
@@ -429,7 +437,7 @@ class VM02Add extends VM01SelectHelper {
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
-        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
+        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, isTriangle));
         setModified(true, true);
     }
 

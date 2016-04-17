@@ -206,6 +206,7 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_AddQuad = new Button[1];
     final Button[] btn_AddCondline = new Button[1];
     final Button[] btn_AddDistance = new Button[1];
+    final Button[] btn_AddProtractor = new Button[1];
 
     final MenuItem[] mntm_gridCoarseDefault = new MenuItem[1];
     final MenuItem[] mntm_gridMediumDefault = new MenuItem[1];
@@ -1548,6 +1549,11 @@ class Editor3DDesign extends ApplicationWindow {
         this.btn_AddDistance[0] = btn_AddDistance;
         KeyStateManager.addTooltipText(btn_AddDistance, I18n.E3D_AddDistance, Task.ADD_DISTANCE);
         btn_AddDistance.setImage(ResourceManager.getImage("icon16_adddistance.png")); //$NON-NLS-1$
+
+        Button btn_AddProtractor = new Button(toolItem_Add, SWT.TOGGLE);
+        this.btn_AddProtractor[0] = btn_AddProtractor;
+        KeyStateManager.addTooltipText(btn_AddProtractor, I18n.E3D_AddProtractor, Task.ADD_PROTRACTOR);
+        btn_AddProtractor.setImage(ResourceManager.getImage("icon16_addprotractor.png")); //$NON-NLS-1$
 
         return toolItem_Add;
     }

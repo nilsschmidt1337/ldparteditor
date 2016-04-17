@@ -50,6 +50,7 @@ public enum Task {
     ADD_CONDLINE,
     ADD_COMMENTS,
     ADD_DISTANCE,
+    ADD_PROTRACTOR,
 
     ZOOM_IN,
     ZOOM_OUT,
