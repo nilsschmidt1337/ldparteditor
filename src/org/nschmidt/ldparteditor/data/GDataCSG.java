@@ -19,11 +19,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.csg.CSG;
@@ -51,6 +53,7 @@ public final class GDataCSG extends GData {
     final byte type;
 
     private final static HashMap<String, CSG> linkedCSG = new HashMap<String, CSG>();
+    private final static HashMap<DatFile, HashSet<GData3>> selectedTrianglesMap = new HashMap<DatFile, HashSet<GData3>>();
     private static boolean deleteAndRecompile = true;
 
     private final static HashSet<GDataCSG> registeredData = new HashSet<GDataCSG>();
@@ -523,7 +526,47 @@ public final class GDataCSG extends GData {
     @Override
     public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
-    public static void drawSelectionCSG() {
+    public static boolean hasSelectionCSG(Composite3D c3d) {
         // FIXME Needs implementation for issue #161
+        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.get(c3d.getLockableDatFileReference());
+        if (selectedTriangles == null) {
+            selectedTrianglesMap.put(c3d.getLockableDatFileReference(), new HashSet<GData3>());
+        }
+        // return !selectedTriangles.isEmpty();
+        return true;
+    }
+
+    public static void drawSelectionCSG(Composite3D c3d) {
+        // FIXME Needs implementation for issue #161
+        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.get(c3d.getLockableDatFileReference());
+        if (selectedTriangles == null) {
+            selectedTrianglesMap.put(c3d.getLockableDatFileReference(), new HashSet<GData3>());
+        }
+        Integer firstKey = null;
+        for (CSG csg : linkedCSG.values()) {
+            for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
+                final boolean isNull = firstKey == null;
+                if (isNull && (firstKey = pair.getValue()) != null) {
+                } else {
+                    if (firstKey == pair.getValue() && !isNull) {
+                        selectedTriangles.add(pair.getKey());
+                    }
+                }
+            }
+        }
+        if (!selectedTriangles.isEmpty()) {
+            GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+            GL11.glBegin(GL11.GL_LINES);
+            for (GData3 tri : selectedTriangles) {
+                GL11.glVertex3f(tri.x1, tri.y1, tri.z1);
+                GL11.glVertex3f(tri.x2, tri.y2, tri.z2);
+                GL11.glVertex3f(tri.x2, tri.y2, tri.z2);
+                GL11.glVertex3f(tri.x3, tri.y3, tri.z3);
+                GL11.glVertex3f(tri.x3, tri.y3, tri.z3);
+                GL11.glVertex3f(tri.x1, tri.y1, tri.z1);
+            }
+            GL11.glEnd();
+        }
+        selectedTriangles.clear();
     }
 }
