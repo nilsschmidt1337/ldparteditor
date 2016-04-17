@@ -59,7 +59,7 @@ public final class GDataCSG extends GData {
     private final static HashMap<String, CSG> linkedCSG = new HashMap<String, CSG>();
     private final static HashMap<Integer, GDataCSG> idToGDataCSG = new HashMap<Integer, GDataCSG>();
     private final static HashMap<DatFile, HashSet<GData3>> selectedTrianglesMap = new HashMap<DatFile, HashSet<GData3>>();
-    private final static HashMap<DatFile, GDataCSG> selectedBodyMap = new HashMap<DatFile, GDataCSG>();
+    private final static HashMap<DatFile, HashSet<GDataCSG>> selectedBodyMap = new HashMap<DatFile, HashSet<GDataCSG>>();
     private static boolean deleteAndRecompile = true;
 
     private final static HashSet<GDataCSG> registeredData = new HashSet<GDataCSG>();
@@ -634,7 +634,9 @@ public final class GDataCSG extends GData {
             selectedTrianglesMap.put(c3d.getLockableDatFileReference(), new HashSet<GData3>());
             return;
         }
-        selectedTriangles.clear();
+        if (!c3d.getKeys().isCtrlPressed()) {
+            selectedTriangles.clear();
+        }
         Integer selectedBodyID = selectCSG_helper(c3d, event);
         if (selectedBodyID != null) {
             for (CSG csg : linkedCSG.values()) {
@@ -695,16 +697,15 @@ public final class GDataCSG extends GData {
                 }
             }
         }
-
-        selectedBodyMap.put(c3d.getLockableDatFileReference(), resultObj);
+        selectedBodyMap.putIfAbsent(c3d.getLockableDatFileReference(), new HashSet<GDataCSG>());
+        if (!c3d.getKeys().isCtrlPressed()) {
+            selectedBodyMap.get(c3d.getLockableDatFileReference()).clear();
+        }
+        selectedBodyMap.get(c3d.getLockableDatFileReference()).add(resultObj);
         return result;
     }
 
-    public static GData getSelection(DatFile df) {
+    public static HashSet<GDataCSG> getSelection(DatFile df) {
         return selectedBodyMap.get(df);
-    }
-
-    public static void setSelection(DatFile df, GDataCSG csg) {
-        selectedBodyMap.put(df, csg);
     }
 }
