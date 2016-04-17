@@ -1608,22 +1608,65 @@ public final class GData3 extends GData {
         GL11.glVertex3f(x1, y1, z1);
         GL11.glVertex3f(x3, y3, z3);
         GL11.glEnd();
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glMultMatrix(renderer.getRotationInverse());
-        PGData3.beginDrawText();
-        GL11.glColor4f(r, g, b, 1f);
+
         final Vector4f textOrigin = new Vector4f(x1, y1, z1, 1f);
         Matrix4f.transform(c3d.getRotation(), textOrigin, textOrigin);
 
-        Vector3d a = new Vector3d(x1c, y1c, z1c);
-        Vector3d b = new Vector3d(x2c, y2c, z2c);
-        Vector3d c = new Vector3d(x3c, y3c, z3c);
-        b = Vector3d.sub(a, b);
-        c = Vector3d.sub(a, c);
-        BigDecimal ang = new BigDecimal(Vector3d.angle(b, c));
-        String angle = NUMBER_FORMAT2F.format(ang) + "°"; //$NON-NLS-1$
-        drawNumber(angle, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
+        Vector3d va = new Vector3d(x1c, y1c, z1c);
+        Vector3d vb = new Vector3d(x2c, y2c, z2c);
+        Vector3d vc = new Vector3d(x3c, y3c, z3c);
+        vb = Vector3d.sub(va, vb);
+        vc = Vector3d.sub(va, vc);
+        double angle = Vector3d.angle(vb, vc);
+        BigDecimal ang = new BigDecimal(angle);
+        String angle_s = NUMBER_FORMAT2F.format(ang) + "°"; //$NON-NLS-1$
+
+        float sx1 = x1 + (x2 - x1) * .2f;
+        float sy1 = y1 + (y2 - y1) * .2f;
+        float sz1 = z1 + (z2 - z1) * .2f;
+        float sx2 = x1 + (x3 - x1) * .2f;
+        float sy2 = y1 + (y3 - y1) * .2f;
+        float sz2 = z1 + (z3 - z1) * .2f;
+        float sx1t = x1 + (x2 - x1) * .25f;
+        float sy1t = y1 + (y2 - y1) * .25f;
+        float sz1t = z1 + (z2 - z1) * .25f;
+        float sx2t = x1 + (x3 - x1) * .25f;
+        float sy2t = y1 + (y3 - y1) * .25f;
+        float sz2t = z1 + (z3 - z1) * .25f;
+        float sx1tt = x1 + (x2 - x1) * .24f;
+        float sy1tt = y1 + (y2 - y1) * .24f;
+        float sz1tt = z1 + (z2 - z1) * .24f;
+        float sx2tt = x1 + (x3 - x1) * .24f;
+        float sy2tt = y1 + (y3 - y1) * .24f;
+        float sz2tt = z1 + (z3 - z1) * .24f;
+        float sx3 = sx1t * .5f + sx2t * .5f;
+        float sy3 = sy1t * .5f + sy2t * .5f;
+        float sz3 = sz1t * .5f + sz2t * .5f;
+        float sx3r = sx1tt * .7f + sx2tt * .3f;
+        float sy3r = sy1tt * .7f + sy2tt * .3f;
+        float sz3r = sz1tt * .7f + sz2tt * .3f;
+        float sx3l = sx1tt * .3f + sx2tt * .7f;
+        float sy3l = sy1tt * .3f + sy2tt * .7f;
+        float sz3l = sz1tt * .3f + sz2tt * .7f;
+
+        GL11.glBegin(GL11.GL_LINES);
+        GL11.glVertex3f(sx1, sy1, sz1);
+        GL11.glVertex3f(sx3r, sy3r, sz3r);
+        GL11.glVertex3f(sx3r, sy3r, sz3r);
+        GL11.glVertex3f(sx3, sy3, sz3);
+        GL11.glVertex3f(sx3, sy3, sz3);
+        GL11.glVertex3f(sx3l, sy3l, sz3l);
+        GL11.glVertex3f(sx3l, sy3l, sz3l);
+        GL11.glVertex3f(sx2, sy2, sz2);
+        GL11.glEnd();
+
+        GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glMultMatrix(renderer.getRotationInverse());
+
+        PGData3.beginDrawText();
+        GL11.glColor4f(r, g, b, 1f);
+        drawNumber(angle_s, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
         PGData3.endDrawText();
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();

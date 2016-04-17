@@ -1514,8 +1514,8 @@ public class VM01SelectHelper extends VM01Select {
             }
 
             if (powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
-                if (dist[0] < minDist) {
-                    minDist = dist[0];
+                if (dist[0] < minDist && (result == null ^ triangle.isTriangle)) {
+                    if (triangle.isTriangle) minDist = dist[0];
                     result = triangle;
                 }
             }
