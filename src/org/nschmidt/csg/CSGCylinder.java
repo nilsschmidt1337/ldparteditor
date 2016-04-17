@@ -49,7 +49,7 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  */
 public class CSGCylinder extends CSGPrimitive implements Primitive {
 
-    private final int ID = id_counter.getAndIncrement();
+    public final int ID = id_counter.getAndIncrement();
 
     private Vector3d start;
     private Vector3d end;
