@@ -40,6 +40,7 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
+import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.ParsingResult;
 import org.nschmidt.ldparteditor.data.Vertex;
@@ -1200,6 +1201,7 @@ public class MouseActions {
                     break;
                 case SUBFILES:
                     vm.selectSubfiles(c3d, event);
+                    GDataCSG.selectCSG(c3d, event);
                     break;
                 }
                 checkSyncEditMode(vm, datfile);

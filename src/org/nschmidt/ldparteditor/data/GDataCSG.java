@@ -25,6 +25,7 @@ import java.util.TreeMap;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.Event;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
@@ -39,7 +40,10 @@ import org.nschmidt.csg.Plane;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
+import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -53,7 +57,9 @@ public final class GDataCSG extends GData {
     final byte type;
 
     private final static HashMap<String, CSG> linkedCSG = new HashMap<String, CSG>();
+    private final static HashMap<Integer, GDataCSG> idToGDataCSG = new HashMap<Integer, GDataCSG>();
     private final static HashMap<DatFile, HashSet<GData3>> selectedTrianglesMap = new HashMap<DatFile, HashSet<GData3>>();
+    private final static HashMap<DatFile, GDataCSG> selectedBodyMap = new HashMap<DatFile, GDataCSG>();
     private static boolean deleteAndRecompile = true;
 
     private final static HashSet<GDataCSG> registeredData = new HashSet<GDataCSG>();
@@ -81,6 +87,7 @@ public final class GDataCSG extends GData {
         registeredData.clear();
         linkedCSG.clear();
         parsedData.clear();
+        idToGDataCSG.clear();
         Plane.EPSILON = 1e-3;
     }
 
@@ -93,6 +100,7 @@ public final class GDataCSG extends GData {
             registeredData.clear();
             registeredData.add(null);
             linkedCSG.clear();
+            idToGDataCSG.clear();
         }
         parsedData.clear();
     }
@@ -225,31 +233,37 @@ public final class GDataCSG extends GData {
                             switch (type) {
                             case CSG.QUAD:
                                 CSGQuad quad = new CSGQuad();
+                                idToGDataCSG.put(quad.ID, this);
                                 CSG csgQuad = quad.toCSG(colour).transformed(matrix);
                                 linkedCSG.put(ref1, csgQuad);
                                 break;
                             case CSG.CIRCLE:
                                 CSGCircle circle = new CSGCircle(quality);
+                                idToGDataCSG.put(circle.ID, this);
                                 CSG csgCircle = circle.toCSG(colour).transformed(matrix);
                                 linkedCSG.put(ref1, csgCircle);
                                 break;
                             case CSG.ELLIPSOID:
                                 CSGSphere sphere = new CSGSphere(quality, quality / 2);
+                                idToGDataCSG.put(sphere.ID, this);
                                 CSG csgSphere = sphere.toCSG(colour).transformed(matrix);
                                 linkedCSG.put(ref1, csgSphere);
                                 break;
                             case CSG.CUBOID:
                                 CSGCube cube = new CSGCube();
+                                idToGDataCSG.put(cube.ID, this);
                                 CSG csgCube = cube.toCSG(colour).transformed(matrix);
                                 linkedCSG.put(ref1, csgCube);
                                 break;
                             case CSG.CYLINDER:
                                 CSGCylinder cylinder = new CSGCylinder(quality);
+                                idToGDataCSG.put(cylinder.ID, this);
                                 CSG csgCylinder = cylinder.toCSG(colour).transformed(matrix);
                                 linkedCSG.put(ref1, csgCylinder);
                                 break;
                             case CSG.CONE:
                                 CSGCone cone = new CSGCone(quality);
+                                idToGDataCSG.put(cone.ID, this);
                                 CSG csgCone = cone.toCSG(colour).transformed(matrix);
                                 linkedCSG.put(ref1, csgCone);
                                 break;
@@ -541,18 +555,7 @@ public final class GDataCSG extends GData {
         final HashSet<GData3> selectedTriangles = selectedTrianglesMap.get(c3d.getLockableDatFileReference());
         if (selectedTriangles == null) {
             selectedTrianglesMap.put(c3d.getLockableDatFileReference(), new HashSet<GData3>());
-        }
-        Integer firstKey = null;
-        for (CSG csg : linkedCSG.values()) {
-            for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
-                final boolean isNull = firstKey == null;
-                if (isNull && (firstKey = pair.getValue()) != null) {
-                } else {
-                    if (firstKey == pair.getValue() && !isNull) {
-                        selectedTriangles.add(pair.getKey());
-                    }
-                }
-            }
+            return;
         }
         if (!selectedTriangles.isEmpty()) {
             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
@@ -567,6 +570,78 @@ public final class GDataCSG extends GData {
             }
             GL11.glEnd();
         }
+    }
+
+    public static void selectCSG(Composite3D c3d, Event event) {
+        // FIXME Needs implementation for issue #161
+        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.get(c3d.getLockableDatFileReference());
+        if (selectedTriangles == null) {
+            selectedTrianglesMap.put(c3d.getLockableDatFileReference(), new HashSet<GData3>());
+            return;
+        }
         selectedTriangles.clear();
+        Integer selectedBodyID = selectCSG_helper(c3d, event);
+        if (selectedBodyID != null) {
+            for (CSG csg : linkedCSG.values()) {
+                for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
+                    if (selectedBodyID.equals(pair.getValue())) {
+                        selectedTriangles.add(pair.getKey());
+                    }
+                }
+            }
+        }
+    }
+
+    private static Integer selectCSG_helper(Composite3D c3d, Event event) {
+        final PowerRay powerRay = new PowerRay();
+        final HashBiMap<Integer, GData> dpl = c3d.getLockableDatFileReference().getDrawPerLine_NOCLONE();
+
+        PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
+        Matrix4f viewport_rotation = c3d.getRotation();
+        Vector4f zAxis4f = new Vector4f(0, 0, -1f, 1f);
+        Matrix4f ovr_inverse2 = Matrix4f.invert(viewport_rotation, null);
+        Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
+        Vector4f rayDirection = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
+        rayDirection.w = 1f;
+
+        Vertex[] triQuadVerts = new Vertex[3];
+
+        Vector4f orig = perspective.get3DCoordinatesFromScreen(event.x, event.y);
+        Vector4f point = new Vector4f(orig);
+
+        double minDist = Double.MAX_VALUE;
+        final double[] dist = new double[1];
+        Integer result = null;
+        GDataCSG resultObj = null;
+        for (CSG csg : linkedCSG.values()) {
+            for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
+                final GData3 triangle = pair.getKey();
+
+                triQuadVerts[0] = new Vertex(triangle.x1, triangle.y1, triangle.z1);
+                triQuadVerts[1] = new Vertex(triangle.x2, triangle.y2, triangle.z2);
+                triQuadVerts[2] = new Vertex(triangle.x3, triangle.y3, triangle.z3);
+
+                if (powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
+                    if (dist[0] < minDist) {
+                        Integer result2 = pair.getValue();
+                        if (result2 != null) {
+                            for (GDataCSG c : registeredData) {
+                                if (dpl.containsValue(c) && idToGDataCSG.containsKey(result2)) {
+                                    if (c.ref1 != null && c.ref2 == null && c.ref3 == null && c.type != CSG.COMPILE) {
+                                        minDist = dist[0];
+                                        result = result2;
+                                        resultObj = c;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        selectedBodyMap.put(c3d.getLockableDatFileReference(), resultObj);
+        return result;
     }
 }
