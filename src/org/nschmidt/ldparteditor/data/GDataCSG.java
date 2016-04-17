@@ -73,6 +73,8 @@ public final class GDataCSG extends GData {
     private final String ref2;
     private final String ref3;
 
+    final GData1 parent;
+
     private CSG compiledCSG = null;
     private final GColour colour;
     final Matrix4f matrix;
@@ -109,10 +111,15 @@ public final class GDataCSG extends GData {
         return type;
     }
 
+    public GDataCSG(final int colourNumber, float r, float g, float b, float a, GDataCSG c) {
+        this(c.type, c.colourReplace(new GColour(colourNumber, r, g, b, a).toString()), c.parent);
+    }
+
     // CASE 1 0 !LPE [CSG TAG] [ID] [COLOUR] [MATRIX] 17
     // CASE 2 0 !LPE [CSG TAG] [ID] [ID2] [ID3] 6
     // CASE 3 0 !LPE [CSG TAG] [ID] 4
     public GDataCSG(byte type, String csgLine, GData1 parent) {
+        this.parent = parent;
         registeredData.add(this);
         String[] data_segments = csgLine.trim().split("\\s+"); //$NON-NLS-1$
         this.type = type;
@@ -527,6 +534,56 @@ public final class GDataCSG extends GData {
         }
     }
 
+    public String colourReplace(String colour2) {
+        boolean notChoosen = true;
+        String t = null;
+        switch (type) {
+        case CSG.QUAD:
+            if (notChoosen) {
+                t = " CSG_QUAD "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.CIRCLE:
+            if (notChoosen) {
+                t = " CSG_CIRCLE "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.ELLIPSOID:
+            if (notChoosen) {
+                t = " CSG_ELLIPSOID "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.CUBOID:
+            if (notChoosen) {
+                t = " CSG_CUBOID "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.CYLINDER:
+            if (notChoosen) {
+                t = " CSG_CYLINDER "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.CONE:
+            if (notChoosen) {
+                t = " CSG_CONE "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+            Matrix4f newMatrix = new Matrix4f(this.matrix);
+            Matrix4f.transpose(newMatrix, newMatrix);
+            newMatrix.m30 = newMatrix.m03;
+            newMatrix.m31 = newMatrix.m13;
+            newMatrix.m32 = newMatrix.m23;
+            newMatrix.m03 = 0f;
+            newMatrix.m13 = 0f;
+            newMatrix.m23 = 0f;
+            String col = colour2;
+            String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
+            return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        default:
+            return text;
+        }
+    }
+
     @Override
     public void getBFCorientationMap(HashMap<GData, Byte> map) {}
     @Override
@@ -540,14 +597,13 @@ public final class GDataCSG extends GData {
     @Override
     public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
-    public static boolean hasSelectionCSG(Composite3D c3d) {
-        // FIXME Needs implementation for issue #161
-        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.get(c3d.getLockableDatFileReference());
+    public static boolean hasSelectionCSG(DatFile df) {
+        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.get(df);
         if (selectedTriangles == null) {
-            selectedTrianglesMap.put(c3d.getLockableDatFileReference(), new HashSet<GData3>());
+            selectedTrianglesMap.put(df, new HashSet<GData3>());
+            return false;
         }
-        // return !selectedTriangles.isEmpty();
-        return true;
+        return !selectedTriangles.isEmpty();
     }
 
     public static void drawSelectionCSG(Composite3D c3d) {
@@ -573,7 +629,6 @@ public final class GDataCSG extends GData {
     }
 
     public static void selectCSG(Composite3D c3d, Event event) {
-        // FIXME Needs implementation for issue #161
         final HashSet<GData3> selectedTriangles = selectedTrianglesMap.get(c3d.getLockableDatFileReference());
         if (selectedTriangles == null) {
             selectedTrianglesMap.put(c3d.getLockableDatFileReference(), new HashSet<GData3>());
@@ -630,7 +685,7 @@ public final class GDataCSG extends GData {
                                     if (c.ref1 != null && c.ref2 == null && c.ref3 == null && c.type != CSG.COMPILE) {
                                         minDist = dist[0];
                                         result = result2;
-                                        resultObj = c;
+                                        resultObj = idToGDataCSG.get(result2);
                                         break;
                                     }
                                 }
@@ -643,5 +698,13 @@ public final class GDataCSG extends GData {
 
         selectedBodyMap.put(c3d.getLockableDatFileReference(), resultObj);
         return result;
+    }
+
+    public static GData getSelection(DatFile df) {
+        return selectedBodyMap.get(df);
+    }
+
+    public static void setSelection(DatFile df, GDataCSG csg) {
+        selectedBodyMap.put(df, csg);
     }
 }

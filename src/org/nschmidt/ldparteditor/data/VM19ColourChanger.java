@@ -114,6 +114,11 @@ class VM19ColourChanger extends VM18LineConverter {
         for (GData5 gd : effSelectedCondlines)
             modData.add(changeColour(index, r, g, b, a, gd));
 
+        if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
+            modData.add(changeColour(index, r, g, b, a, GDataCSG.getSelection(linkedDatFile)));
+            setModified_NoSync();
+        }
+
         selectedLines.clear();
         selectedTriangles.clear();
         selectedQuads.clear();
@@ -304,6 +309,13 @@ class VM19ColourChanger extends VM18LineConverter {
                         gd5.y2, gd5.z2, gd5.x3, gd5.y3, gd5.z3, gd5.x4, gd5.y4, gd5.z4, gd5.parent, linkedDatFile);
                 newData.add(newGdata5);
                 newGData = newGdata5;
+                break;
+            case 8:
+                GDataCSG gdC = (GDataCSG) gData;
+                GDataCSG newGdataC = new GDataCSG(index, r, g, b, a, gdC);
+                GDataCSG.setSelection(linkedDatFile, newGdataC);
+                newData.add(newGdataC);
+                newGData = newGdataC;
                 break;
             }
             linker(gData, newGData);

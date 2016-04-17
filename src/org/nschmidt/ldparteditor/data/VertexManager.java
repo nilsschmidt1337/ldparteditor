@@ -568,7 +568,7 @@ public final class VertexManager extends VM99Clipboard {
                 GL11.glEnable(GL11.GL_LIGHTING);
         }
 
-        if (!selectedData.isEmpty() || GDataCSG.hasSelectionCSG(c3d)) {
+        if (!selectedData.isEmpty() || GDataCSG.hasSelectionCSG(linkedDatFile)) {
 
             GL11.glPushMatrix();
 
