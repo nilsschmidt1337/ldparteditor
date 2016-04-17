@@ -1596,7 +1596,6 @@ public final class GData3 extends GData {
     }
 
     public void drawProtractor(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
-        // FIXME Needs implementation for issue #193
         final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer renderer = c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
