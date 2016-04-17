@@ -30,6 +30,8 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  */
 public class CSGQuad extends CSGPrimitive implements Primitive {
 
+    private final int ID = id_counter.getAndIncrement();
+
     /**
      * Center of this quad.
      */
@@ -78,7 +80,7 @@ public class CSGQuad extends CSGPrimitive implements Primitive {
                 vertices.add(new Vertex(pos, new Vector3d(info[1][0], info[1][1], info[1][2])));
             }
             PropertyStorage properties = new PropertyStorage();
-            properties.set("colour", new GColourIndex(colour, id_counter.getAndIncrement())); //$NON-NLS-1$
+            properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
             polygons.add(new Polygon(vertices, properties));
         }
 

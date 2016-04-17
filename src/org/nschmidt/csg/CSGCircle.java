@@ -31,6 +31,7 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  */
 public class CSGCircle extends CSGPrimitive implements Primitive {
 
+    private final int ID = id_counter.getAndIncrement();
     private Vector3d start;
     private Vector3d end;
     private double radius;
@@ -74,25 +75,22 @@ public class CSGCircle extends CSGPrimitive implements Primitive {
         Vertex endV = new Vertex(e, axisZ.unit());
         List<Polygon> polygons = new ArrayList<Polygon>();
 
-        final int top = id_counter.getAndIncrement();
-        final int bottom = id_counter.getAndIncrement();
-
         for (int i = 0; i < numSlices; i++) {
             double t0 = i / (double) numSlices, t1 = (i + 1) / (double) numSlices;
             {
                 PropertyStorage properties = new PropertyStorage();
-                properties.set("colour", new GColourIndex(colour, top)); //$NON-NLS-1$
+                properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
                 polygons.add(new Polygon(Arrays.asList(startV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, -1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, -1)), properties));
             }
             {
                 PropertyStorage properties = new PropertyStorage();
-                properties.set("colour", new GColourIndex(colour, id_counter.getAndIncrement())); //$NON-NLS-1$
+                properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
                 polygons.add(new Polygon(Arrays.asList(cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, 0),
                         cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0)), properties));
             }
             {
                 PropertyStorage properties = new PropertyStorage();
-                properties.set("colour", new GColourIndex(colour, bottom)); //$NON-NLS-1$
+                properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
                 polygons.add(new Polygon(Arrays.asList(endV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)), properties));
             }
         }
