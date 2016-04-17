@@ -607,8 +607,16 @@ public final class GDataCSG extends GData {
                 colourBuilder.append(colour.getColourNumber());
             }
             Matrix4f newMatrix = new Matrix4f();
+            newMatrix.m30 = m.m03 * 1000f;
+            newMatrix.m31 = m.m13 * 1000f;
+            newMatrix.m32 = m.m23 * 1000f;
+
+            newMatrix.m20 = m.m02;
+            newMatrix.m21 = m.m12;
+            newMatrix.m22 = m.m22;
+
             Matrix4f newMatrix2 = new Matrix4f(this.matrix);
-            Matrix4f.mul(newMatrix2, m, newMatrix);
+            Matrix4f.mul(newMatrix, newMatrix2, newMatrix);
             Matrix4f.transpose(newMatrix, newMatrix);
             newMatrix.m30 = newMatrix.m03;
             newMatrix.m31 = newMatrix.m13;
