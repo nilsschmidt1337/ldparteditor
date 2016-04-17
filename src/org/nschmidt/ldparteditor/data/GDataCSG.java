@@ -57,7 +57,7 @@ public final class GDataCSG extends GData {
     final byte type;
 
     private final static HashMap<String, CSG> linkedCSG = new HashMap<String, CSG>();
-    private final static HashMap<Integer, GDataCSG> idToGDataCSG = new HashMap<Integer, GDataCSG>();
+    private final static HashBiMap<Integer, GDataCSG> idToGDataCSG = new HashBiMap<Integer, GDataCSG>();
     private final static HashMap<DatFile, HashSet<GData3>> selectedTrianglesMap = new HashMap<DatFile, HashSet<GData3>>();
     private final static HashMap<DatFile, HashSet<GDataCSG>> selectedBodyMap = new HashMap<DatFile, HashSet<GDataCSG>>();
     private static boolean deleteAndRecompile = true;
@@ -76,6 +76,7 @@ public final class GDataCSG extends GData {
     final GData1 parent;
 
     private CSG compiledCSG = null;
+
     private final GColour colour;
     final Matrix4f matrix;
 
@@ -113,6 +114,10 @@ public final class GDataCSG extends GData {
 
     public GDataCSG(final int colourNumber, float r, float g, float b, float a, GDataCSG c) {
         this(c.type, c.colourReplace(new GColour(colourNumber, r, g, b, a).toString()), c.parent);
+    }
+
+    public GDataCSG(Matrix4f m, GDataCSG c) {
+        this(c.type, c.transform(m), c.parent);
     }
 
     // CASE 1 0 !LPE [CSG TAG] [ID] [COLOUR] [MATRIX] 17
@@ -223,7 +228,9 @@ public final class GDataCSG extends GData {
 
     private void drawAndParse(Composite3D c3d) {
         parsedData.add(this);
-        if (deleteAndRecompile) {
+        final boolean modified = c3d.getManipulator().isModified();
+        if (deleteAndRecompile || modified) {
+            final Matrix4f m = c3d.getManipulator().getTempTransformationCSG4f();
             registeredData.remove(null);
             try {
                 compiledCSG = null;
@@ -242,36 +249,42 @@ public final class GDataCSG extends GData {
                                 CSGQuad quad = new CSGQuad();
                                 idToGDataCSG.put(quad.ID, this);
                                 CSG csgQuad = quad.toCSG(colour).transformed(matrix);
+                                if (isSelected(c3d)) csgQuad = csgQuad.transformed(m);
                                 linkedCSG.put(ref1, csgQuad);
                                 break;
                             case CSG.CIRCLE:
                                 CSGCircle circle = new CSGCircle(quality);
                                 idToGDataCSG.put(circle.ID, this);
                                 CSG csgCircle = circle.toCSG(colour).transformed(matrix);
+                                if (isSelected(c3d)) csgCircle = csgCircle.transformed(m);
                                 linkedCSG.put(ref1, csgCircle);
                                 break;
                             case CSG.ELLIPSOID:
                                 CSGSphere sphere = new CSGSphere(quality, quality / 2);
                                 idToGDataCSG.put(sphere.ID, this);
                                 CSG csgSphere = sphere.toCSG(colour).transformed(matrix);
+                                if (isSelected(c3d)) csgSphere = csgSphere.transformed(m);
                                 linkedCSG.put(ref1, csgSphere);
                                 break;
                             case CSG.CUBOID:
                                 CSGCube cube = new CSGCube();
                                 idToGDataCSG.put(cube.ID, this);
                                 CSG csgCube = cube.toCSG(colour).transformed(matrix);
+                                if (isSelected(c3d)) csgCube = csgCube.transformed(m);
                                 linkedCSG.put(ref1, csgCube);
                                 break;
                             case CSG.CYLINDER:
                                 CSGCylinder cylinder = new CSGCylinder(quality);
                                 idToGDataCSG.put(cylinder.ID, this);
                                 CSG csgCylinder = cylinder.toCSG(colour).transformed(matrix);
+                                if (isSelected(c3d)) csgCylinder = csgCylinder.transformed(m);
                                 linkedCSG.put(ref1, csgCylinder);
                                 break;
                             case CSG.CONE:
                                 CSGCone cone = new CSGCone(quality);
                                 idToGDataCSG.put(cone.ID, this);
                                 CSG csgCone = cone.toCSG(colour).transformed(matrix);
+                                if (isSelected(c3d)) csgCone = csgCone.transformed(m);
                                 linkedCSG.put(ref1, csgCone);
                                 break;
                             default:
@@ -534,6 +547,65 @@ public final class GDataCSG extends GData {
         }
     }
 
+    public String transform(Matrix4f m) {
+        boolean notChoosen = true;
+        String t = null;
+        switch (type) {
+        case CSG.QUAD:
+            if (notChoosen) {
+                t = " CSG_QUAD "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.CIRCLE:
+            if (notChoosen) {
+                t = " CSG_CIRCLE "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.ELLIPSOID:
+            if (notChoosen) {
+                t = " CSG_ELLIPSOID "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.CUBOID:
+            if (notChoosen) {
+                t = " CSG_CUBOID "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.CYLINDER:
+            if (notChoosen) {
+                t = " CSG_CYLINDER "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.CONE:
+            if (notChoosen) {
+                t = " CSG_CONE "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+            StringBuilder colourBuilder = new StringBuilder();
+            if (colour == null) {
+                colourBuilder.append(16);
+            } else if (colour.getColourNumber() == -1) {
+                colourBuilder.append("0x2"); //$NON-NLS-1$
+                colourBuilder.append(MathHelper.toHex((int) (255f * colour.getR())).toUpperCase());
+                colourBuilder.append(MathHelper.toHex((int) (255f * colour.getG())).toUpperCase());
+                colourBuilder.append(MathHelper.toHex((int) (255f * colour.getB())).toUpperCase());
+            } else {
+                colourBuilder.append(colour.getColourNumber());
+            }
+            Matrix4f newMatrix = new Matrix4f(this.matrix);
+            Matrix4f newMatrix2 = new Matrix4f(m);
+            // Matrix4f.transpose(newMatrix, newMatrix);
+            newMatrix2.m30 = newMatrix2.m30 * 1000f;
+            newMatrix2.m31 = newMatrix2.m31 * 1000f;
+            newMatrix2.m32 = newMatrix2.m32 * 1000f;
+            Matrix4f.mul(newMatrix2, newMatrix, newMatrix);
+            String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
+            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        default:
+            return text;
+        }
+    }
+
     public String colourReplace(String colour2) {
         boolean notChoosen = true;
         String t = null;
@@ -606,8 +678,15 @@ public final class GDataCSG extends GData {
         return !selectedTriangles.isEmpty();
     }
 
-    public static void drawSelectionCSG(Composite3D c3d) {
-        // FIXME Needs implementation for issue #161
+    public boolean isSelected(Composite3D c3d) {
+        final HashSet<GDataCSG> map = selectedBodyMap.get(c3d.getLockableDatFileReference());
+        if (map == null) {
+            return false;
+        }
+        return map.contains(this);
+    }
+
+    public static void drawSelectionCSG(Composite3D c3d, final boolean modifiedManipulator) {
         final HashSet<GData3> selectedTriangles = selectedTrianglesMap.get(c3d.getLockableDatFileReference());
         if (selectedTriangles == null) {
             selectedTrianglesMap.put(c3d.getLockableDatFileReference(), new HashSet<GData3>());
@@ -687,7 +766,7 @@ public final class GDataCSG extends GData {
                                     if (c.ref1 != null && c.ref2 == null && c.ref3 == null && c.type != CSG.COMPILE) {
                                         minDist = dist[0];
                                         result = result2;
-                                        resultObj = idToGDataCSG.get(result2);
+                                        resultObj = idToGDataCSG.getValue(result2);
                                         break;
                                     }
                                 }
@@ -707,5 +786,9 @@ public final class GDataCSG extends GData {
 
     public static HashSet<GDataCSG> getSelection(DatFile df) {
         return selectedBodyMap.get(df);
+    }
+
+    public static void rebuildSelection() {
+        // FIXME Needs implementation for issue #161
     }
 }

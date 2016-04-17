@@ -270,6 +270,18 @@ public class Manipulator {
         return matrix;
     }
 
+    public Matrix4f getTempTransformationCSG4f() {
+        Matrix4f m = new Matrix4f(result);
+        m = (Matrix4f) m.transpose();
+        m.m30 = m.m03;
+        m.m31 = m.m13;
+        m.m32 = m.m23;
+        m.m03 = 0f;
+        m.m13 = 0f;
+        m.m23 = 0f;
+        return m;
+    }
+
     public FloatBuffer getTempTransformationInv() {
         resultinv.store(matrix_inv);
         matrix_inv.position(0);
