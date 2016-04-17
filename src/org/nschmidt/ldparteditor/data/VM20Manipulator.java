@@ -34,8 +34,6 @@ import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
-import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.HeaderState;
 
@@ -342,6 +340,7 @@ public class VM20Manipulator extends VM19ColourChanger {
 
         if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
             Matrix4f lowAccTransformation = transformation.getMatrix4f();
+            Matrix4f.transpose(lowAccTransformation, lowAccTransformation);
             ArrayList<GData> newSelection = new ArrayList<>();
             for (GDataCSG gd : GDataCSG.getSelection(linkedDatFile))
                 newSelection.add(transformCSG(lowAccTransformation, gd));
@@ -349,7 +348,6 @@ public class VM20Manipulator extends VM19ColourChanger {
             for (GData gd : newSelection) {
                 GDataCSG.getSelection(linkedDatFile).add((GDataCSG) gd);
             }
-            GDataCSG.rebuildSelection();
             setModified_NoSync();
         }
 

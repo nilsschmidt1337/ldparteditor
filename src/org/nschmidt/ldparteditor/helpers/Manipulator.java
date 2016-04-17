@@ -301,6 +301,10 @@ public class Manipulator {
         }
     }
 
+    public void setModified(boolean modified) {
+        this.modified = modified;
+    }
+
     public Vector4f getXaxis() {
         return xAxis;
     }
