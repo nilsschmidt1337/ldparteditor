@@ -40,6 +40,7 @@ import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.csg.Polygon;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
@@ -257,7 +258,7 @@ public final class GDataCSG extends GData {
                                 CSGQuad quad = new CSGQuad();
                                 idToGDataCSG.put(quad.ID, this);
                                 CSG csgQuad = quad.toCSG(colour).transformed(matrix);
-                                if (isSelected(c3d)) csgQuad = csgQuad.transformed(m);
+                                if (isSelected(c3d)) csgQuad = transformWithManipulator(csgQuad, m);
                                 dataCSG = csgQuad;
                                 linkedCSG.put(ref1, csgQuad);
                                 break;
@@ -265,7 +266,7 @@ public final class GDataCSG extends GData {
                                 CSGCircle circle = new CSGCircle(quality);
                                 idToGDataCSG.put(circle.ID, this);
                                 CSG csgCircle = circle.toCSG(colour).transformed(matrix);
-                                if (isSelected(c3d)) csgCircle = csgCircle.transformed(m);
+                                if (isSelected(c3d)) csgCircle = transformWithManipulator(csgCircle, m);
                                 dataCSG = csgCircle;
                                 linkedCSG.put(ref1, csgCircle);
                                 break;
@@ -273,7 +274,7 @@ public final class GDataCSG extends GData {
                                 CSGSphere sphere = new CSGSphere(quality, quality / 2);
                                 idToGDataCSG.put(sphere.ID, this);
                                 CSG csgSphere = sphere.toCSG(colour).transformed(matrix);
-                                if (isSelected(c3d)) csgSphere = csgSphere.transformed(m);
+                                if (isSelected(c3d)) csgSphere = transformWithManipulator(csgSphere, m);
                                 dataCSG = csgSphere;
                                 linkedCSG.put(ref1, csgSphere);
                                 break;
@@ -281,7 +282,7 @@ public final class GDataCSG extends GData {
                                 CSGCube cube = new CSGCube();
                                 idToGDataCSG.put(cube.ID, this);
                                 CSG csgCube = cube.toCSG(colour).transformed(matrix);
-                                if (isSelected(c3d)) csgCube = csgCube.transformed(m);
+                                if (isSelected(c3d)) csgCube = transformWithManipulator(csgCube, m);
                                 dataCSG = csgCube;
                                 linkedCSG.put(ref1, csgCube);
                                 break;
@@ -289,7 +290,7 @@ public final class GDataCSG extends GData {
                                 CSGCylinder cylinder = new CSGCylinder(quality);
                                 idToGDataCSG.put(cylinder.ID, this);
                                 CSG csgCylinder = cylinder.toCSG(colour).transformed(matrix);
-                                if (isSelected(c3d)) csgCylinder = csgCylinder.transformed(m);
+                                if (isSelected(c3d)) csgCylinder = transformWithManipulator(csgCylinder, m);
                                 dataCSG = csgCylinder;
                                 linkedCSG.put(ref1, csgCylinder);
                                 break;
@@ -297,7 +298,7 @@ public final class GDataCSG extends GData {
                                 CSGCone cone = new CSGCone(quality);
                                 idToGDataCSG.put(cone.ID, this);
                                 CSG csgCone = cone.toCSG(colour).transformed(matrix);
-                                if (isSelected(c3d)) csgCone = csgCone.transformed(m);
+                                if (isSelected(c3d)) csgCone = transformWithManipulator(csgCone, m);
                                 dataCSG = csgCone;
                                 linkedCSG.put(ref1, csgCone);
                                 break;
@@ -357,6 +358,10 @@ public final class GDataCSG extends GData {
                 compiledCSG.draw_textured(c3d);
             }
         }
+    }
+
+    private CSG transformWithManipulator(CSG csg, Matrix4f m) {
+        return csg.transformed(m);
     }
 
     @Override
@@ -607,16 +612,34 @@ public final class GDataCSG extends GData {
                 colourBuilder.append(colour.getColourNumber());
             }
             Matrix4f newMatrix = new Matrix4f();
-            newMatrix.m30 = m.m03 * 1000f;
-            newMatrix.m31 = m.m13 * 1000f;
-            newMatrix.m32 = m.m23 * 1000f;
-
-            newMatrix.m20 = m.m02;
-            newMatrix.m21 = m.m12;
-            newMatrix.m22 = m.m22;
-
             Matrix4f newMatrix2 = new Matrix4f(this.matrix);
-            Matrix4f.mul(newMatrix, newMatrix2, newMatrix);
+
+            if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
+
+                newMatrix.m30 = m.m03 * 1000f;
+                newMatrix.m31 = m.m13 * 1000f;
+                newMatrix.m32 = m.m23 * 1000f;
+
+                newMatrix.m00 = m.m00;
+                newMatrix.m01 = m.m01;
+                newMatrix.m02 = m.m02;
+
+                newMatrix.m10 = m.m10;
+                newMatrix.m11 = m.m11;
+                newMatrix.m12 = m.m12;
+
+                newMatrix.m20 = m.m20;
+                newMatrix.m21 = m.m21;
+                newMatrix.m22 = m.m22;
+
+                Matrix4f.mul(newMatrix, newMatrix2, newMatrix);
+
+            } else {
+
+            }
+
+
+
             Matrix4f.transpose(newMatrix, newMatrix);
             newMatrix.m30 = newMatrix.m03;
             newMatrix.m31 = newMatrix.m13;
