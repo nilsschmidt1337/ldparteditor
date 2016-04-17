@@ -344,6 +344,7 @@ public final class I18n {
     public static final String E3D_AddCondline = E3D.getString(getProperty());
     public static final String E3D_AddDistance = E3D.getString(getProperty());
     public static final String E3D_AddLine = E3D.getString(getProperty());
+    public static final String E3D_AddProtractor = E3D.getString(getProperty());
     public static final String E3D_AddQuad = E3D.getString(getProperty());
     public static final String E3D_AddSubpart = E3D.getString(getProperty());
     public static final String E3D_AddTriangle = E3D.getString(getProperty());
@@ -656,6 +657,7 @@ public final class I18n {
     public static final String KEYBOARD_AddCondline = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_AddDistance = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_AddLine = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_AddProtractor = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_AddQuad = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_AddTriangle = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_AddVertex = KEYBOARD.getString(getProperty());

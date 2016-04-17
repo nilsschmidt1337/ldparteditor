@@ -145,6 +145,7 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AddQuad, Task.ADD_QUAD, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AddCondline, Task.ADD_CONDLINE, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AddDistance, Task.ADD_DISTANCE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddProtractor, Task.ADD_PROTRACTOR, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Cut, Task.CUT, false);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Copy, Task.COPY, false);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Paste, Task.PASTE, false);

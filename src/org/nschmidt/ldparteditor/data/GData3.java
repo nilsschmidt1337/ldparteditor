@@ -1297,7 +1297,7 @@ public final class GData3 extends GData {
             lineBuilder.append(3);
             lineBuilder.append(" "); //$NON-NLS-1$
         } else {
-            lineBuilder.append("0 !LPE PROTACTOR "); //$NON-NLS-1$
+            lineBuilder.append("0 !LPE PROTRACTOR "); //$NON-NLS-1$
         }
         if (colourNumber == -1) {
             lineBuilder.append("0x2"); //$NON-NLS-1$
@@ -1353,7 +1353,7 @@ public final class GData3 extends GData {
             lineBuilder.append(3);
             lineBuilder.append(" "); //$NON-NLS-1$
         } else {
-            lineBuilder.append("0 !LPE PROTACTOR "); //$NON-NLS-1$
+            lineBuilder.append("0 !LPE PROTRACTOR "); //$NON-NLS-1$
         }
         StringBuilder colourBuilder = new StringBuilder();
         if (colourNumber == -1) {
@@ -1571,7 +1571,7 @@ public final class GData3 extends GData {
             lineBuilder.append(3);
             lineBuilder.append(" "); //$NON-NLS-1$
         } else {
-            lineBuilder.append("0 !LPE PROTACTOR "); //$NON-NLS-1$
+            lineBuilder.append("0 !LPE PROTRACTOR "); //$NON-NLS-1$
         }
         lineBuilder.append(col);
         lineBuilder.append(" "); //$NON-NLS-1$

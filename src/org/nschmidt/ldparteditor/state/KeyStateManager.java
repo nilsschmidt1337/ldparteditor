@@ -135,6 +135,7 @@ public class KeyStateManager {
         addTask(Task.ADD_LINE, '8');
         addTask(Task.ADD_CONDLINE, '9');
         addTask(Task.ADD_DISTANCE, 'd');
+        addTask(Task.ADD_PROTRACTOR, 'p');
         addTask(Task.ADD_COMMENTS, '0');
 
         addTask(Task.ZOOM_IN,  '+');
@@ -343,6 +344,9 @@ public class KeyStateManager {
                         break;
                     case ADD_DISTANCE:
                         win.setAddState(6);
+                        break;
+                    case ADD_PROTRACTOR:
+                        win.setAddState(7);
                         break;
                     case ADD_CONDLINE:
                         win.setAddState(5);

@@ -383,7 +383,7 @@ public class MouseActions {
                         }
                     }
                 }
-            } else if (Editor3DWindow.getWindow().isAddingTriangles()) {
+            } else if (Editor3DWindow.getWindow().isAddingTriangles() || Editor3DWindow.getWindow().isAddingProtractor()) {
                 Vertex v1 = c3d.getLockableDatFileReference().getObjVertex1();
                 Vertex v2 = c3d.getLockableDatFileReference().getObjVertex2();
                 Vertex v3 = c3d.getLockableDatFileReference().getObjVertex3();
@@ -722,7 +722,7 @@ public class MouseActions {
                         vm.getSelectedVertices().clear();
                         vm.setModified(true, true);
                     }
-                } else if (window.isAddingTriangles()) {
+                } else if (window.isAddingTriangles() || window.isAddingProtractor()) {
                     Vertex vt1 = datfile.getObjVertex1();
                     Vertex vt2 = datfile.getObjVertex2();
                     Vertex vt3 = datfile.getObjVertex3();
@@ -738,7 +738,11 @@ public class MouseActions {
                                     Vertex v1 = vi.next();
                                     Vertex v2 = vi.next();
                                     datfile.setObjVertex3(nv);
-                                    vm.addTriangle(v1, v2, nv, c3d);
+                                    if (window.isAddingTriangles()) {
+                                        vm.addTriangle(v1, v2, nv, c3d);
+                                    } else {
+                                        vm.addProtractor(v1, v2, nv, c3d);
+                                    }
                                     vm.getSelectedVertices().clear();
                                 }
                             } else {
@@ -761,7 +765,11 @@ public class MouseActions {
                                     final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();
                                     Vertex v1 = vi.next();
                                     datfile.setObjVertex3(v1);
-                                    vm.addTriangle(vt1, vt2, v1, c3d);
+                                    if (window.isAddingTriangles()) {
+                                        vm.addTriangle(vt1, vt2, v1, c3d);
+                                    } else {
+                                        vm.addProtractor(vt1, vt2, v1, c3d);
+                                    }
                                     vm.getSelectedVertices().clear();
                                     return;
                                 }
@@ -799,7 +807,11 @@ public class MouseActions {
                                 final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                                 final Vertex nv = new Vertex(cu3d);
                                 datfile.setObjVertex3(nv);
-                                vm.addTriangle(vt1, vt2, nv, c3d);
+                                if (window.isAddingTriangles()) {
+                                    vm.addTriangle(vt1, vt2, nv, c3d);
+                                } else {
+                                    vm.addProtractor(vt1, vt2, nv, c3d);
+                                }
                                 vm.getSelectedVertices().clear();
                                 return;
                             }
@@ -816,7 +828,11 @@ public class MouseActions {
                                 datfile.setObjVertex1(nv);
                                 datfile.setObjVertex2(vn1);
                                 datfile.setObjVertex3(vn2);
-                                vm.addTriangle(vn1, vn2, nv, c3d);
+                                if (window.isAddingTriangles()) {
+                                    vm.addTriangle(vn1, vn2, nv, c3d);
+                                } else {
+                                    vm.addProtractor(vn1, vn2, nv, c3d);
+                                }
                                 vm.getSelectedVertices().clear();
                                 return;
                             }
@@ -827,7 +843,11 @@ public class MouseActions {
                                 datfile.setObjVertex1(v1);
                                 datfile.setObjVertex2(vn1);
                                 datfile.setObjVertex3(vn2);
-                                vm.addTriangle(vn1, vn2, v1, c3d);
+                                if (window.isAddingTriangles()) {
+                                    vm.addTriangle(vn1, vn2, v1, c3d);
+                                } else {
+                                    vm.addProtractor(vn1, vn2, v1, c3d);
+                                }
                                 vm.getSelectedVertices().clear();
                                 return;
                             }
@@ -841,7 +861,11 @@ public class MouseActions {
                         datfile.setObjVertex1(v1);
                         datfile.setObjVertex2(v2);
                         datfile.setObjVertex3(v3);
-                        vm.addTriangle(v1, v2, v3, c3d);
+                        if (window.isAddingTriangles()) {
+                            vm.addTriangle(v1, v2, v3, c3d);
+                        } else {
+                            vm.addProtractor(v1, v2, v3, c3d);
+                        }
                         vm.getSelectedVertices().clear();
                     }
                 } else if (window.isAddingQuads()) {
