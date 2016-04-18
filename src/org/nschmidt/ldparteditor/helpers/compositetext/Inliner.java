@@ -128,7 +128,7 @@ public enum Inliner {
             }
         }
 
-        GDataCSG.resetCSG();
+        GDataCSG.resetCSG(false);
         GDataCSG.forceRecompile();
 
         ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
@@ -253,7 +253,7 @@ public enum Inliner {
             bfcStatusToLine.put(key, bfcStatusTarget);
         }
 
-        GDataCSG.resetCSG();
+        GDataCSG.resetCSG(false);
         GDataCSG.forceRecompile();
 
         Collections.sort(lineNumbers);

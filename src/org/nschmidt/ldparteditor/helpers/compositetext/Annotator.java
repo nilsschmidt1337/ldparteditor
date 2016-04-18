@@ -62,7 +62,7 @@ public enum Annotator {
         final Set<GData> sd = datFile.getVertexManager().getSelectedData();
         HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
 
-        GDataCSG.resetCSG();
+        GDataCSG.resetCSG(false);
         GDataCSG.forceRecompile();
 
         lineEnd += 1;

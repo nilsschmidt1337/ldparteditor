@@ -98,8 +98,8 @@ public final class GDataCSG extends GData {
         Plane.EPSILON = 1e-3;
     }
 
-    public static void resetCSG() {
-        quality = 16;
+    public static void resetCSG(boolean useLowQuality) {
+        quality = useLowQuality ? 12 : 16;
         HashSet<GDataCSG> ref = new HashSet<GDataCSG>(registeredData);
         ref.removeAll(parsedData);
         deleteAndRecompile = !ref.isEmpty();
@@ -257,48 +257,72 @@ public final class GDataCSG extends GData {
                             case CSG.QUAD:
                                 CSGQuad quad = new CSGQuad();
                                 idToGDataCSG.put(quad.ID, this);
-                                CSG csgQuad = quad.toCSG(colour).transformed(matrix);
-                                if (isSelected(c3d)) csgQuad = transformWithManipulator(csgQuad, m);
+                                CSG csgQuad = quad.toCSG(colour);
+                                if (modified && isSelected(c3d)) {
+                                    csgQuad = transformWithManipulator(csgQuad, m, matrix);
+                                } else {
+                                    csgQuad = csgQuad.transformed(matrix);
+                                }
                                 dataCSG = csgQuad;
                                 linkedCSG.put(ref1, csgQuad);
                                 break;
                             case CSG.CIRCLE:
                                 CSGCircle circle = new CSGCircle(quality);
                                 idToGDataCSG.put(circle.ID, this);
-                                CSG csgCircle = circle.toCSG(colour).transformed(matrix);
-                                if (isSelected(c3d)) csgCircle = transformWithManipulator(csgCircle, m);
+                                CSG csgCircle = circle.toCSG(colour);
+                                if (modified && isSelected(c3d)) {
+                                    csgCircle = transformWithManipulator(csgCircle, m, matrix);
+                                } else {
+                                    csgCircle = csgCircle.transformed(matrix);
+                                }
                                 dataCSG = csgCircle;
                                 linkedCSG.put(ref1, csgCircle);
                                 break;
                             case CSG.ELLIPSOID:
                                 CSGSphere sphere = new CSGSphere(quality, quality / 2);
                                 idToGDataCSG.put(sphere.ID, this);
-                                CSG csgSphere = sphere.toCSG(colour).transformed(matrix);
-                                if (isSelected(c3d)) csgSphere = transformWithManipulator(csgSphere, m);
+                                CSG csgSphere = sphere.toCSG(colour);
+                                if (modified && isSelected(c3d)) {
+                                    csgSphere = transformWithManipulator(csgSphere, m, matrix);
+                                } else {
+                                    csgSphere = csgSphere.transformed(matrix);
+                                }
                                 dataCSG = csgSphere;
                                 linkedCSG.put(ref1, csgSphere);
                                 break;
                             case CSG.CUBOID:
                                 CSGCube cube = new CSGCube();
                                 idToGDataCSG.put(cube.ID, this);
-                                CSG csgCube = cube.toCSG(colour).transformed(matrix);
-                                if (isSelected(c3d)) csgCube = transformWithManipulator(csgCube, m);
+                                CSG csgCube = cube.toCSG(colour);
+                                if (modified && isSelected(c3d)) {
+                                    csgCube = transformWithManipulator(csgCube, m, matrix);
+                                } else {
+                                    csgCube = csgCube.transformed(matrix);
+                                }
                                 dataCSG = csgCube;
                                 linkedCSG.put(ref1, csgCube);
                                 break;
                             case CSG.CYLINDER:
                                 CSGCylinder cylinder = new CSGCylinder(quality);
                                 idToGDataCSG.put(cylinder.ID, this);
-                                CSG csgCylinder = cylinder.toCSG(colour).transformed(matrix);
-                                if (isSelected(c3d)) csgCylinder = transformWithManipulator(csgCylinder, m);
+                                CSG csgCylinder = cylinder.toCSG(colour);
+                                if (modified && isSelected(c3d)) {
+                                    csgCylinder = transformWithManipulator(csgCylinder, m, matrix);
+                                } else {
+                                    csgCylinder = csgCylinder.transformed(matrix);
+                                }
                                 dataCSG = csgCylinder;
                                 linkedCSG.put(ref1, csgCylinder);
                                 break;
                             case CSG.CONE:
                                 CSGCone cone = new CSGCone(quality);
                                 idToGDataCSG.put(cone.ID, this);
-                                CSG csgCone = cone.toCSG(colour).transformed(matrix);
-                                if (isSelected(c3d)) csgCone = transformWithManipulator(csgCone, m);
+                                CSG csgCone = cone.toCSG(colour);
+                                if (modified && isSelected(c3d)) {
+                                    csgCone = transformWithManipulator(csgCone, m, matrix);
+                                } else {
+                                    csgCone = csgCone.transformed(matrix);
+                                }
                                 dataCSG = csgCone;
                                 linkedCSG.put(ref1, csgCone);
                                 break;
@@ -331,7 +355,7 @@ public final class GDataCSG extends GData {
                         }
                         break;
                     case CSG.QUALITY:
-                        quality = global_quality;
+                        quality = c3d.getManipulator().isModified() ? 12 : global_quality;
                         break;
                     case CSG.EPSILON:
                         Plane.EPSILON = global_epsilon;
@@ -360,8 +384,13 @@ public final class GDataCSG extends GData {
         }
     }
 
-    private CSG transformWithManipulator(CSG csg, Matrix4f m) {
-        return csg.transformed(m);
+    private CSG transformWithManipulator(CSG csg, Matrix4f transformation, Matrix4f myMatrix) {
+        if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
+            return csg.transformed(myMatrix).transformed(transformation);
+        } else {
+            // FIXME Needs implementation for issue #161
+            return csg.transformed(myMatrix).transformed(transformation);
+        }
     }
 
     @Override
@@ -612,9 +641,11 @@ public final class GDataCSG extends GData {
                 colourBuilder.append(colour.getColourNumber());
             }
             Matrix4f newMatrix = new Matrix4f();
-            Matrix4f newMatrix2 = new Matrix4f(this.matrix);
+            Matrix4f oldMatrix = new Matrix4f(this.matrix);
 
-            if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
+            if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL || true) {
+
+                // FIXME Needs implementation for issue #161
 
                 newMatrix.m30 = m.m03 * 1000f;
                 newMatrix.m31 = m.m13 * 1000f;
@@ -632,10 +663,10 @@ public final class GDataCSG extends GData {
                 newMatrix.m21 = m.m21;
                 newMatrix.m22 = m.m22;
 
-                Matrix4f.mul(newMatrix, newMatrix2, newMatrix);
+                Matrix4f.mul(oldMatrix, newMatrix, newMatrix);
 
             } else {
-
+                // FIXME Needs implementation for issue #161
             }
 
 

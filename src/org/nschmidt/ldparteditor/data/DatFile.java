@@ -148,7 +148,7 @@ public final class DatFile {
     public synchronized void draw(Composite3D c3d) {
 
 
-        GDataCSG.resetCSG();
+        GDataCSG.resetCSG(c3d.getManipulator().isModified());
 
         GData data2draw = drawChainAnchor;
         int renderMode = c3d.getRenderMode();
@@ -252,7 +252,7 @@ public final class DatFile {
     }
 
     public synchronized void getBFCorientationMap(HashMap<GData, Byte> bfcMap) {
-        GDataCSG.resetCSG();
+        GDataCSG.resetCSG(false);
         GData data2draw = drawChainAnchor;
         data2draw.getBFCorientationMap(bfcMap);
         while ((data2draw = data2draw.getNext()) != null) {
