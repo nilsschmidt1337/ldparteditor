@@ -29,6 +29,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Event;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.csg.CSG;
 import org.nschmidt.csg.CSGCircle;
@@ -385,11 +386,28 @@ public final class GDataCSG extends GData {
     }
 
     private CSG transformWithManipulator(CSG csg, Matrix4f transformation, Matrix4f myMatrix) {
+
+        // FIXME Needs implementation for issue #161
+
         if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
+            // done!
             return csg.transformed(myMatrix).transformed(transformation);
         } else {
-            // FIXME Needs implementation for issue #161
-            return csg.transformed(myMatrix).transformed(transformation);
+
+            Matrix4f toLocalSpace = new Matrix4f();
+            Matrix4f.setIdentity(toLocalSpace);
+            toLocalSpace = toLocalSpace.translate(new Vector3f(-myMatrix.m30, -myMatrix.m31, -myMatrix.m32));
+
+
+            Matrix4f toGlobalSpace = new Matrix4f();
+            Matrix4f.setIdentity(toGlobalSpace);
+            toGlobalSpace = toGlobalSpace.translate(new Vector3f(myMatrix.m30 + transformation.m30, myMatrix.m31 + transformation.m31, myMatrix.m32 + transformation.m32));
+
+            transformation.m30 = 0f;
+            transformation.m31 = 0f;
+            transformation.m32 = 0f;
+
+            return csg.transformed(myMatrix).transformed(toLocalSpace).transformed(transformation).transformed(toGlobalSpace);
         }
     }
 
@@ -640,46 +658,77 @@ public final class GDataCSG extends GData {
             } else {
                 colourBuilder.append(colour.getColourNumber());
             }
-            Matrix4f newMatrix = new Matrix4f();
+            Matrix4f transformtion = new Matrix4f();
             Matrix4f oldMatrix = new Matrix4f(this.matrix);
 
-            if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL || true) {
+            final float dx = m.m03 * 1000f;
+            final float dy = m.m13 * 1000f;
+            final float dz = m.m23 * 1000f;
+
+            if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
 
                 // FIXME Needs implementation for issue #161
 
-                newMatrix.m30 = m.m03 * 1000f;
-                newMatrix.m31 = m.m13 * 1000f;
-                newMatrix.m32 = m.m23 * 1000f;
+                transformtion.m00 = m.m00;
+                transformtion.m01 = m.m01;
+                transformtion.m02 = m.m02;
 
-                newMatrix.m00 = m.m00;
-                newMatrix.m01 = m.m01;
-                newMatrix.m02 = m.m02;
+                transformtion.m10 = m.m10;
+                transformtion.m11 = m.m11;
+                transformtion.m12 = m.m12;
 
-                newMatrix.m10 = m.m10;
-                newMatrix.m11 = m.m11;
-                newMatrix.m12 = m.m12;
+                transformtion.m20 = m.m20;
+                transformtion.m21 = m.m21;
+                transformtion.m22 = m.m22;
 
-                newMatrix.m20 = m.m20;
-                newMatrix.m21 = m.m21;
-                newMatrix.m22 = m.m22;
+                Matrix4f toLocalSpace = new Matrix4f();
+                Matrix4f.setIdentity(toLocalSpace);
+                toLocalSpace = toLocalSpace.translate(new Vector3f(-oldMatrix.m30, -oldMatrix.m31, -oldMatrix.m32));
 
-                Matrix4f.mul(oldMatrix, newMatrix, newMatrix);
+
+                Matrix4f toGlobalSpace = new Matrix4f();
+                Matrix4f.setIdentity(toGlobalSpace);
+                toGlobalSpace = toGlobalSpace.translate(new Vector3f(oldMatrix.m30, oldMatrix.m31, oldMatrix.m32));
+
+                Matrix4f.mul(oldMatrix, transformtion, transformtion);
+
+                // Matrix4f.mul(oldMatrix, toLocalSpace, oldMatrix);
+                // Matrix4f.mul(oldMatrix, transformtion, oldMatrix);
+                // Matrix4f.mul(oldMatrix, toGlobalSpace, transformtion);
+
+
+                // return csg.transformed(myMatrix).transformed(toLocalSpace).transformed(transformation).transformed(toGlobalSpace);
 
             } else {
-                // FIXME Needs implementation for issue #161
+
+                // done!
+
+                transformtion.m00 = m.m00;
+                transformtion.m01 = m.m01;
+                transformtion.m02 = m.m02;
+
+                transformtion.m10 = m.m10;
+                transformtion.m11 = m.m11;
+                transformtion.m12 = m.m12;
+
+                transformtion.m20 = m.m20;
+                transformtion.m21 = m.m21;
+                transformtion.m22 = m.m22;
+
+                Matrix4f.mul(oldMatrix, transformtion, transformtion);
             }
 
 
 
-            Matrix4f.transpose(newMatrix, newMatrix);
-            newMatrix.m30 = newMatrix.m03;
-            newMatrix.m31 = newMatrix.m13;
-            newMatrix.m32 = newMatrix.m23;
-            newMatrix.m03 = 0f;
-            newMatrix.m13 = 0f;
-            newMatrix.m23 = 0f;
+            Matrix4f.transpose(transformtion, transformtion);
+            transformtion.m30 = transformtion.m03 + dx;
+            transformtion.m31 = transformtion.m13 + dy;
+            transformtion.m32 = transformtion.m23 + dz;
+            transformtion.m03 = 0f;
+            transformtion.m13 = 0f;
+            transformtion.m23 = 0f;
             String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
-            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(transformtion); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         default:
             return text;
         }
@@ -868,7 +917,6 @@ public final class GDataCSG extends GData {
     }
 
     public static void rebuildSelection(DatFile df) {
-        // FIXME Needs implementation for issue #161
         final Composite3D c3d = df.getLastSelectedComposite();
         if (c3d == null || df.getLastSelectedComposite().isDisposed()) return;
         final HashSet<GData3> selectedTriangles = selectedTrianglesMap.get(df);

@@ -611,8 +611,7 @@ public class VM20Manipulator extends VM19ColourChanger {
     }
 
     private GDataCSG transformCSG(Matrix4f lowAccTransformation, GDataCSG gData) {
-        // FIXME Needs implementation for issue #161
-        GDataCSG gdC = (GDataCSG) gData;
+        GDataCSG gdC = gData;
         GDataCSG newGData = new GDataCSG(lowAccTransformation, gdC);
         linker(gData, newGData);
         return newGData;
