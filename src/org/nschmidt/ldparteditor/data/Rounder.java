@@ -58,7 +58,7 @@ public enum Rounder {
 
         datFile.getVertexManager().clearSelection();
 
-        GDataCSG.resetCSG();
+        GDataCSG.resetCSG(false);
         GDataCSG.forceRecompile();
 
         // Check here if single vertex replacing (ALT+SHIFT+R) is active

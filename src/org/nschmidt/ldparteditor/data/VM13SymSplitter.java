@@ -710,7 +710,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                     Editor3DWindow.getWindow().updateTree_unsavedEntries();
                 }
 
-                GDataCSG.resetCSG();
+                GDataCSG.resetCSG(false);
                 GDataCSG.forceRecompile();
                 setModified_NoSync();
                 linkedDatFile.setText(symSplitterOutput);
