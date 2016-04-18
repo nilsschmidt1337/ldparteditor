@@ -658,77 +658,78 @@ public final class GDataCSG extends GData {
             } else {
                 colourBuilder.append(colour.getColourNumber());
             }
-            Matrix4f transformtion = new Matrix4f();
+            Matrix4f transformation = new Matrix4f();
             Matrix4f oldMatrix = new Matrix4f(this.matrix);
 
-            final float dx = m.m03 * 1000f;
-            final float dy = m.m13 * 1000f;
-            final float dz = m.m23 * 1000f;
+            float dx = m.m03 * 1000f;
+            float dy = m.m13 * 1000f;
+            float dz = m.m23 * 1000f;
 
             if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
 
                 // FIXME Needs implementation for issue #161
 
-                transformtion.m00 = m.m00;
-                transformtion.m01 = m.m01;
-                transformtion.m02 = m.m02;
+                transformation.m00 = m.m00;
+                transformation.m01 = m.m01;
+                transformation.m02 = m.m02;
 
-                transformtion.m10 = m.m10;
-                transformtion.m11 = m.m11;
-                transformtion.m12 = m.m12;
+                transformation.m10 = m.m10;
+                transformation.m11 = m.m11;
+                transformation.m12 = m.m12;
 
-                transformtion.m20 = m.m20;
-                transformtion.m21 = m.m21;
-                transformtion.m22 = m.m22;
+                transformation.m20 = m.m20;
+                transformation.m21 = m.m21;
+                transformation.m22 = m.m22;
 
-                Matrix4f toLocalSpace = new Matrix4f();
-                Matrix4f.setIdentity(toLocalSpace);
-                toLocalSpace = toLocalSpace.translate(new Vector3f(-oldMatrix.m30, -oldMatrix.m31, -oldMatrix.m32));
+                transformation.m30 = m.m03 * 1000f;
+                transformation.m31 = m.m13 * 1000f;
+                transformation.m32 = m.m23 * 1000f;
 
+                Matrix4f.transpose(transformation, transformation);
+                transformation.m30 = transformation.m03;
+                transformation.m31 = transformation.m13;
+                transformation.m32 = transformation.m23;
+                transformation.m03 = 0f;
+                transformation.m13 = 0f;
+                transformation.m23 = 0f;
 
-                Matrix4f toGlobalSpace = new Matrix4f();
-                Matrix4f.setIdentity(toGlobalSpace);
-                toGlobalSpace = toGlobalSpace.translate(new Vector3f(oldMatrix.m30, oldMatrix.m31, oldMatrix.m32));
-
-                Matrix4f.mul(oldMatrix, transformtion, transformtion);
-
-                // Matrix4f.mul(oldMatrix, toLocalSpace, oldMatrix);
-                // Matrix4f.mul(oldMatrix, transformtion, oldMatrix);
-                // Matrix4f.mul(oldMatrix, toGlobalSpace, transformtion);
-
-
-                // return csg.transformed(myMatrix).transformed(toLocalSpace).transformed(transformation).transformed(toGlobalSpace);
+                float tx = oldMatrix.m30;
+                float ty = oldMatrix.m31;
+                float tz = oldMatrix.m32;
+                Matrix4f.translate(new Vector3f(-tx, -ty, -tz), oldMatrix, oldMatrix);
+                Matrix4f.mul(oldMatrix, transformation, oldMatrix);
+                Matrix4f.translate(new Vector3f(tx, ty, tz), oldMatrix, transformation);
 
             } else {
 
                 // done!
 
-                transformtion.m00 = m.m00;
-                transformtion.m01 = m.m01;
-                transformtion.m02 = m.m02;
+                transformation.m00 = m.m00;
+                transformation.m01 = m.m01;
+                transformation.m02 = m.m02;
 
-                transformtion.m10 = m.m10;
-                transformtion.m11 = m.m11;
-                transformtion.m12 = m.m12;
+                transformation.m10 = m.m10;
+                transformation.m11 = m.m11;
+                transformation.m12 = m.m12;
 
-                transformtion.m20 = m.m20;
-                transformtion.m21 = m.m21;
-                transformtion.m22 = m.m22;
+                transformation.m20 = m.m20;
+                transformation.m21 = m.m21;
+                transformation.m22 = m.m22;
 
-                Matrix4f.mul(oldMatrix, transformtion, transformtion);
+                Matrix4f.mul(oldMatrix, transformation, transformation);
+
             }
 
+            Matrix4f.transpose(transformation, transformation);
+            transformation.m30 = transformation.m03 + dx;
+            transformation.m31 = transformation.m13 + dy;
+            transformation.m32 = transformation.m23 + dz;
+            transformation.m03 = 0f;
+            transformation.m13 = 0f;
+            transformation.m23 = 0f;
 
-
-            Matrix4f.transpose(transformtion, transformtion);
-            transformtion.m30 = transformtion.m03 + dx;
-            transformtion.m31 = transformtion.m13 + dy;
-            transformtion.m32 = transformtion.m23 + dz;
-            transformtion.m03 = 0f;
-            transformtion.m13 = 0f;
-            transformtion.m23 = 0f;
             String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
-            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(transformtion); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(transformation); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         default:
             return text;
         }
