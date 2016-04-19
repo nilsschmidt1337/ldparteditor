@@ -1319,6 +1319,40 @@ public class MouseActions {
                 c3d.getManipulator().setAccurateZaxis(new BigDecimal(c3d.getManipulator().getZaxis().x), new BigDecimal(c3d.getManipulator().getZaxis().y),
                         new BigDecimal(c3d.getManipulator().getZaxis().z));
             }
+        } else if (GDataCSG.getSelection(c3d.getLockableDatFileReference()).size() == 1) {
+            GDataCSG csg = null;
+            for (GDataCSG c1 : GDataCSG.getSelection(c3d.getLockableDatFileReference())) {
+                csg = c1;
+                break;
+            }
+            Matrix4f m = csg.getLDrawMatrix();
+            if (m == null) {
+                return;
+            }
+            Matrix4f m2 = new Matrix4f(m);
+            m2.m30 = m2.m30 / 1000f;
+            m2.m31 = m2.m31 / 1000f;
+            m2.m32 = m2.m32 / 1000f;
+            Matrix M = new Matrix(m2);
+            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                c3d.getManipulator().getPosition().set(m.m30, m.m31, m.m32, 1f);
+                c3d.getManipulator().setAccuratePosition(M.M30, M.M31, M.M32);
+                Vector3f x = new Vector3f(m.m00, m.m01, m.m02);
+                x.normalise();
+                Vector3f y = new Vector3f(m.m10, m.m11, m.m12);
+                y.normalise();
+                Vector3f z = new Vector3f(m.m20, m.m21, m.m22);
+                z.normalise();
+                c3d.getManipulator().getXaxis().set(x.x, x.y, x.z, 1f);
+                c3d.getManipulator().getYaxis().set(y.x, y.y, y.z, 1f);
+                c3d.getManipulator().getZaxis().set(z.x, z.y, z.z, 1f);
+                c3d.getManipulator().setAccurateXaxis(new BigDecimal(c3d.getManipulator().getXaxis().x), new BigDecimal(c3d.getManipulator().getXaxis().y),
+                        new BigDecimal(c3d.getManipulator().getXaxis().z));
+                c3d.getManipulator().setAccurateYaxis(new BigDecimal(c3d.getManipulator().getYaxis().x), new BigDecimal(c3d.getManipulator().getYaxis().y),
+                        new BigDecimal(c3d.getManipulator().getYaxis().z));
+                c3d.getManipulator().setAccurateZaxis(new BigDecimal(c3d.getManipulator().getZaxis().x), new BigDecimal(c3d.getManipulator().getZaxis().y),
+                        new BigDecimal(c3d.getManipulator().getZaxis().z));
+            }
         }
     }
 }
