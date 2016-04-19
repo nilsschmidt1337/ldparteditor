@@ -98,6 +98,8 @@ public final class GDataCSG extends GData {
         linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).clear();
         parsedData.putIfAbsent(df, new HashSet<GDataCSG>()).clear();
         idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>()).clear();
+        selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>()).clear();
+        selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>()).clear();
         Plane.EPSILON = 1e-3;
     }
 

@@ -1231,6 +1231,7 @@ public final class DatFile {
 
     public void disposeData() {
         history.deleteHistory();
+        GDataCSG.fullReset(this);
         text = ""; //$NON-NLS-1$
         vertices.setModified(false, true);
         vertices.clear();
