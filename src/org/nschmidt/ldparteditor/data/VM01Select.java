@@ -177,7 +177,11 @@ class VM01Select extends VM00Snapshot {
             allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
         }
 
+        allColours.addAll(GDataCSG.getSelectedColours(linkedDatFile));
+
         clearSelection();
+
+        GDataCSG.selectAllWithSameColours(linkedDatFile, allColours);
 
         if (ss.isVertices() && ss.isLines() && ss.isTriangles() && ss.isQuads() && ss.isCondlines()) {
             for (GData1 g : vertexCountInSubfile.keySet()) {
