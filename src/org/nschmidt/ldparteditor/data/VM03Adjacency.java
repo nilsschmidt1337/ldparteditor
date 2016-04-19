@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
@@ -800,6 +801,42 @@ class VM03Adjacency extends VM02Add {
                         }
                     }
                 }
+                setModified_NoSync();
+            }
+
+            if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
+                HashSet<GDataCSG> newCSGSelection = new HashSet<GDataCSG>();
+                HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+                for (GDataCSG csg : GDataCSG.getSelection(linkedDatFile)) {
+                    if (csg.type == CSG.COMPILE || csg.type == CSG.QUALITY || csg.type == CSG.UNION || csg.type == CSG.DIFFERENCE || csg.type == CSG.INTERSECTION  || csg.type == CSG.EPSILON) {
+                        continue;
+                    }
+                    GColour col = csg.getColour();
+                    String roundedString = csg.getRoundedString(coordsDecimalPlaces, matrixDecimalPlaces);
+                    GData roundedCSG;
+                    if (16 == col.getColourNumber()) {
+                        roundedCSG = DatParser
+                                .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, new HashSet<String>(), false)
+                                .get(0).getGraphicalData();
+                    } else {
+                        roundedCSG = DatParser
+                                .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, col.getR(), col.getG(), col.getB(), col.getA(), View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
+                                        new HashSet<String>(), false).get(0).getGraphicalData();
+                    }
+                    if (csg.equals(linkedDatFile.getDrawChainTail()))
+                        linkedDatFile.setDrawChainTail(roundedCSG);
+                    GData oldNext = csg.getNext();
+                    GData oldBefore = csg.getBefore();
+                    oldBefore.setNext(roundedCSG);
+                    roundedCSG.setNext(oldNext);
+                    Integer oldNumber = drawPerLine.getKey(csg);
+                    if (oldNumber != null)
+                        drawPerLine.put(oldNumber, roundedCSG);
+                    remove(csg);
+                    newCSGSelection.add((GDataCSG) roundedCSG);
+                }
+                GDataCSG.getSelection(linkedDatFile).clear();
+                GDataCSG.getSelection(linkedDatFile).addAll(newCSGSelection);
                 setModified_NoSync();
             }
 

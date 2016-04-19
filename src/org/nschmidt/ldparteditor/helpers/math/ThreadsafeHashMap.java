@@ -114,6 +114,20 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
     }
 
     @Override
+    public V putIfAbsent(K key, V value) {
+        rl.lock();
+        V entry = map.get(key);
+        rl.unlock();
+        if (entry == null) {
+            wl.lock();
+            map.put(key, value);
+            entry = value;
+            wl.unlock();
+        }
+        return entry;
+    }
+
+    @Override
     public Set<K> keySet() {
         rl.lock();
         final Set<K> val = map.keySet();

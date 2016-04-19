@@ -277,8 +277,8 @@ public class HistoryManager {
                                                     sq.put(20);
                                                 } catch (InterruptedException e) {
                                                 }
-                                                GDataCSG.resetCSG(false);
-                                                GDataCSG.forceRecompile();
+                                                GDataCSG.resetCSG(df, false);
+                                                GDataCSG.forceRecompile(df);
                                                 Project.getUnsavedFiles().add(df);
                                                 df.setText(decompressed);
                                                 m[0].getShell().redraw();

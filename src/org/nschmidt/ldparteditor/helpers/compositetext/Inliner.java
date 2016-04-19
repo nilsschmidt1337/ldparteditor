@@ -128,8 +128,8 @@ public enum Inliner {
             }
         }
 
-        GDataCSG.resetCSG(false);
-        GDataCSG.forceRecompile();
+        GDataCSG.resetCSG(datFile, false);
+        GDataCSG.forceRecompile(datFile);
 
         ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
         lineEnd += 1;
@@ -253,8 +253,8 @@ public enum Inliner {
             bfcStatusToLine.put(key, bfcStatusTarget);
         }
 
-        GDataCSG.resetCSG(false);
-        GDataCSG.forceRecompile();
+        GDataCSG.resetCSG(datFile, false);
+        GDataCSG.forceRecompile(datFile);
 
         Collections.sort(lineNumbers);
         Collections.reverse(lineNumbers);

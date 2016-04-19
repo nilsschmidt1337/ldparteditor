@@ -234,7 +234,7 @@ public final class GData1 extends GData {
                             break;
                         case 8:
                             GDataCSG gd8 = (GDataCSG) gdata;
-                            res_gdata = new GDataCSG(gd8.type, gd8.text, this);
+                            res_gdata = new GDataCSG(datFile, gd8.type, gd8.text, this);
                             break;
                         case 9:
                             GDataTEX gd9 = (GDataTEX) gdata;

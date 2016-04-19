@@ -24,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.custom.StyledText;
+import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabState;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
@@ -58,8 +59,8 @@ public enum Rounder {
 
         datFile.getVertexManager().clearSelection();
 
-        GDataCSG.resetCSG(false);
-        GDataCSG.forceRecompile();
+        GDataCSG.resetCSG(datFile, false);
+        GDataCSG.forceRecompile(datFile);
 
         // Check here if single vertex replacing (ALT+SHIFT+R) is active
         // If so, round only this vertex!
@@ -259,6 +260,35 @@ public enum Rounder {
             if (oldNumber != null)
                 drawPerLine.put(oldNumber, roundedSubfile);
             datFile.getVertexManager().remove(subf);
+            source = setLine(lineNumber, roundedString, source);
+
+        } else if (gd.type() == 8) {
+            GDataCSG csg = (GDataCSG) gd;
+            if (csg.type == CSG.COMPILE || csg.type == CSG.QUALITY || csg.type == CSG.UNION || csg.type == CSG.DIFFERENCE || csg.type == CSG.INTERSECTION  || csg.type == CSG.EPSILON) {
+                return source;
+            }
+            GColour col = csg.getColour();
+            String roundedString = csg.getRoundedString(coordsDecimalPlaces, matrixDecimalPlaces);
+            GData roundedCSG;
+            if (16 == col.getColourNumber()) {
+                roundedCSG = DatParser
+                        .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false, new HashSet<String>(), false)
+                        .get(0).getGraphicalData();
+            } else {
+                roundedCSG = DatParser
+                        .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, col.getR(), col.getG(), col.getB(), col.getA(), View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false,
+                                new HashSet<String>(), false).get(0).getGraphicalData();
+            }
+            if (csg.equals(datFile.getDrawChainTail()))
+                datFile.setDrawChainTail(roundedCSG);
+            GData oldNext = csg.getNext();
+            GData oldBefore = csg.getBefore();
+            oldBefore.setNext(roundedCSG);
+            roundedCSG.setNext(oldNext);
+            Integer oldNumber = drawPerLine.getKey(csg);
+            if (oldNumber != null)
+                drawPerLine.put(oldNumber, roundedCSG);
+            datFile.getVertexManager().remove(csg);
             source = setLine(lineNumber, roundedString, source);
         } else {
             Set<VertexInfo> singleVertices = datFile.getVertexManager().getLineLinkedToVertices().get(gd);
