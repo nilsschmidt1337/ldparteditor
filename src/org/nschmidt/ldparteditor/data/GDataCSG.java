@@ -877,4 +877,16 @@ public final class GDataCSG extends GData {
             selectedBodies.clear();
         }
     }
+
+    public Matrix4f getLDrawMatrix() {
+        Matrix4f oldMatrix = new Matrix4f(matrix);
+        Matrix4f.transpose(oldMatrix, oldMatrix);
+        oldMatrix.m30 = oldMatrix.m03;
+        oldMatrix.m31 = oldMatrix.m13;
+        oldMatrix.m32 = oldMatrix.m23;
+        oldMatrix.m03 = 0f;
+        oldMatrix.m13 = 0f;
+        oldMatrix.m23 = 0f;
+        return oldMatrix;
+    }
 }
