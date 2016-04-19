@@ -533,7 +533,7 @@ public enum TexMapParser {
             if (isVirtual) {
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
-                GDataCSG.forceRecompile();
+                GDataCSG.forceRecompile(datFile);
                 final GData1 result = new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
                         destMatrix, parent.firstRef, alreadyParsed, parent, datFile);
                 if (result != null && result.firstRef.isRecursive()) {
@@ -567,7 +567,7 @@ public enum TexMapParser {
                 }
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
-                GDataCSG.forceRecompile();
+                GDataCSG.forceRecompile(datFile);
                 final GData1 result = new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, lines, absoluteFilename, sb.toString(), depth, det < 0,
                         destMatrix, parent.firstRef, alreadyParsed, parent, datFile);
                 alreadyParsed.remove(shortFilename);

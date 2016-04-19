@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.helpers.math;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeSet;
@@ -831,6 +832,34 @@ public enum MathHelper {
             return null;
         }
         return tMatrix;
+    }
+
+    public static String matrixToString(Matrix4f matrix, int coordsDecimalPlaces, int matrixDecimalPlaces) {
+        StringBuilder lineBuilder = new StringBuilder();
+        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m30 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m31 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m32 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m00).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m10).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m20).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m01).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m11).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m21).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m02).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m12).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m22).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        return lineBuilder.toString();
     }
 
     public static String matrixToString(Matrix4f matrix) {

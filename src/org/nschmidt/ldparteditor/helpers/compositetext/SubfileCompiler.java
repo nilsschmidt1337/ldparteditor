@@ -144,8 +144,8 @@ public enum SubfileCompiler {
             }
         }
         vm.clearSelection();
-        GDataCSG.resetCSG(false);
-        GDataCSG.forceRecompile();
+        GDataCSG.resetCSG(datFile, false);
+        GDataCSG.forceRecompile(datFile);
         skipCompile = true;
         matrixInv = View.ACCURATE_ID;
         matrixProd = View.ACCURATE_ID;

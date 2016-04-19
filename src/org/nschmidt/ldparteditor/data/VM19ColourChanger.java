@@ -319,7 +319,7 @@ class VM19ColourChanger extends VM18LineConverter {
                 break;
             case 8:
                 GDataCSG gdC = (GDataCSG) gData;
-                GDataCSG newGdataC = new GDataCSG(index, r, g, b, a, gdC);
+                GDataCSG newGdataC = new GDataCSG(linkedDatFile, index, r, g, b, a, gdC);
                 newData.add(newGdataC);
                 newGData = newGdataC;
                 break;

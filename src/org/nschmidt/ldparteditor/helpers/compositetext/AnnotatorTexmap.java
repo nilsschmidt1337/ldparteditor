@@ -62,8 +62,8 @@ public enum AnnotatorTexmap {
         final Set<GData> sd = datFile.getVertexManager().getSelectedData();
         HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
 
-        GDataCSG.resetCSG(false);
-        GDataCSG.forceRecompile();
+        GDataCSG.resetCSG(datFile, false);
+        GDataCSG.forceRecompile(datFile);
 
         lineEnd += 1;
         for (int line = lineStart; line < lineEnd; line++) {

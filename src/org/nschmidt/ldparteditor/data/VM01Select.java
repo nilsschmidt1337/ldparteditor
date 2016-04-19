@@ -676,6 +676,13 @@ class VM01Select extends VM00Snapshot {
             case 5:
                 selectedCondlines.add((GData5) gd);
                 break;
+            case 8:
+                HashSet<GDataCSG> selection = GDataCSG.getSelection(linkedDatFile);
+                GDataCSG g = (GDataCSG) gd;
+                if (g.canSelect()) {
+                    selection.add(g);
+                }
+                break;
             default:
                 break;
             }

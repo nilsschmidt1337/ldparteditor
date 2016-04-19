@@ -61,8 +61,8 @@ public enum Beautifier {
 
         datFile.getVertexManager().clearSelection();
 
-        GDataCSG.resetCSG(false);
-        GDataCSG.forceRecompile();
+        GDataCSG.resetCSG(datFile, false);
+        GDataCSG.forceRecompile(datFile);
 
         TreeSet<Integer> lineNumbers = new TreeSet<Integer>(datFile.getDrawPerLine_NOCLONE().keySet());
 
