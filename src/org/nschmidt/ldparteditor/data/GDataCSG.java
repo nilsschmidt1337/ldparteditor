@@ -66,10 +66,16 @@ public final class GDataCSG extends GData {
     private final static ThreadsafeHashMap<DatFile, HashBiMap<Integer, GDataCSG>> idToGDataCSG = new ThreadsafeHashMap<DatFile, HashBiMap<Integer, GDataCSG>>();
     private final static ThreadsafeHashMap<DatFile, HashSet<GData3>> selectedTrianglesMap = new ThreadsafeHashMap<DatFile, HashSet<GData3>>();
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> selectedBodyMap = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
+
+    private final static ThreadsafeHashMap<DatFile, HashSet<GData3>> backupSelectedTrianglesMap = new ThreadsafeHashMap<DatFile, HashSet<GData3>>();
+    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> backupSelectedBodyMap = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
+
     private static boolean deleteAndRecompile = true;
 
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> registeredData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> parsedData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
+
+
 
     private static int quality = 16;
     private int global_quality = 16;
@@ -100,6 +106,7 @@ public final class GDataCSG extends GData {
         idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>()).clear();
         selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>()).clear();
         selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>()).clear();
+        backupSelectionClear(df);
         Plane.EPSILON = 1e-3;
     }
 
@@ -1004,4 +1011,20 @@ public final class GDataCSG extends GData {
         }
         return null;
     }
+
+    public static synchronized void backupSelection(DatFile linkedDatFile) {
+        backupSelectedBodyMap.put(linkedDatFile, new HashSet<GDataCSG>(selectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<GDataCSG>())));
+        backupSelectedTrianglesMap.put(linkedDatFile, new HashSet<GData3>(selectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<GData3>())));
+    }
+
+    public static synchronized void backupSelectionClear(DatFile linkedDatFile) {
+        backupSelectedBodyMap.put(linkedDatFile, new HashSet<GDataCSG>());
+        backupSelectedTrianglesMap.put(linkedDatFile, new HashSet<GData3>());
+    }
+
+    public static synchronized void restoreSelection(DatFile linkedDatFile) {
+        selectedBodyMap.put(linkedDatFile, backupSelectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<GDataCSG>()));
+        selectedTrianglesMap.put(linkedDatFile, backupSelectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<GData3>()));
+    }
+
 }
