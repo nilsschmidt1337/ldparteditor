@@ -273,6 +273,7 @@ class VM01Select extends VM00Snapshot {
         backupSelectedSubfiles.addAll(selectedSubfiles);
         backupSelectedTriangles.addAll(selectedTriangles);
         backupSelectedVertices.addAll(selectedVertices);
+        GDataCSG.backupSelection(linkedDatFile);
     }
 
     protected void backupSelectionClear() {
@@ -283,6 +284,7 @@ class VM01Select extends VM00Snapshot {
         backupSelectedSubfiles.clear();
         backupSelectedTriangles.clear();
         backupSelectedVertices.clear();
+        GDataCSG.backupSelectionClear(linkedDatFile);
     }
 
     public void restoreSelection() {
@@ -294,6 +296,7 @@ class VM01Select extends VM00Snapshot {
         selectedSubfiles.addAll(backupSelectedSubfiles);
         selectedTriangles.addAll(backupSelectedTriangles);
         selectedVertices.addAll(backupSelectedVertices);
+        GDataCSG.restoreSelection(linkedDatFile);
         backupSelectionClear();
     }
 
