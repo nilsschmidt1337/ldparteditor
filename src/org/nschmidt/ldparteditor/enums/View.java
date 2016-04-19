@@ -68,6 +68,8 @@ public enum View {
     public static final String NUMBER_FORMAT2F = " ###,##0.00;-###,##0.00"; //$NON-NLS-1$
     /** The standard decimal format for floating point numbers (4 digits) */
     public static final String NUMBER_FORMAT4F = "###,##0.0000;-###,##0.0000"; //$NON-NLS-1$
+    /** The standard decimal format for floating point numbers (8 digits) */
+    public static final String NUMBER_FORMAT8F = "###,##0.00000000;-###,##0.00000000"; //$NON-NLS-1$
 
     public static final float[] BFC_front_Colour_r = new float[] { 0f };
     public static final float[] BFC_front_Colour_g = new float[] { .9f };

@@ -49,7 +49,15 @@ public class BigDecimalSpinner extends Composite {
     private ValueChangeAdapter myListener;
 
     private final BigDecimalSpinner me;
-    private final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+    private final java.text.DecimalFormat NUMBER_FORMAT4F;
+
+
+    public BigDecimalSpinner(final Composite parent, int style, String numberFormat) {
+        super(parent, style);
+        NUMBER_FORMAT4F = new java.text.DecimalFormat(numberFormat, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        me = this;
+        createContents(parent);
+    }
 
     /**
      * @param parent
@@ -57,7 +65,13 @@ public class BigDecimalSpinner extends Composite {
      */
     public BigDecimalSpinner(final Composite parent, int style) {
         super(parent, style);
+        NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         me = this;
+        createContents(parent);
+    }
+
+    private void createContents(final Composite parent) {
+
         GridLayout gl = new GridLayout(3, false);
 
         gl.marginBottom = 0;

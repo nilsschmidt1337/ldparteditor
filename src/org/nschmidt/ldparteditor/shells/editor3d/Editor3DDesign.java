@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
@@ -67,6 +68,7 @@ import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.Task;
+import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -80,6 +82,7 @@ import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
+import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.Editor3DWindowState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -657,6 +660,74 @@ class Editor3DDesign extends ApplicationWindow {
                             spinner3.setMinimum(new BigDecimal("0.01")); //$NON-NLS-1$
                             spinner3.setValue(WorkbenchManager.getUserSettingState().getMedium_scale_snap());
                             spinner3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+                            Label separator = new Label(cmp_snappingArea, SWT.SEPARATOR | SWT.HORIZONTAL);
+                            separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+                            Label lblNewLabel4 = new Label(cmp_snappingArea, SWT.NONE);
+                            lblNewLabel4.setText(I18n.UNITS_Name_LDU + " [" + I18n.UNITS_LDU + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+                            lblNewLabel4.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+
+                            final BigDecimalSpinner spinnerLDU = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE, View.NUMBER_FORMAT8F);
+                            spinnerLDU.setMaximum(new BigDecimal("9999.99999999")); //$NON-NLS-1$
+                            spinnerLDU.setMinimum(new BigDecimal("-9999.99999999")); //$NON-NLS-1$
+                            spinnerLDU.setValue(BigDecimal.ZERO);
+                            spinnerLDU.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+                            Label lblNewLabel5 = new Label(cmp_snappingArea, SWT.NONE);
+                            lblNewLabel5.setText(I18n.UNITS_Name_secondary + " [" + I18n.UNITS_secondary + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+                            lblNewLabel5.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+
+                            final BigDecimalSpinner spinnerMM = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE, View.NUMBER_FORMAT8F);
+                            spinnerMM.setMaximum(new BigDecimal("9999.99999999")); //$NON-NLS-1$
+                            spinnerMM.setMinimum(new BigDecimal("-9999.99999999")); //$NON-NLS-1$
+                            spinnerMM.setValue(BigDecimal.ZERO);
+                            spinnerMM.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+                            Label lblNewLabel6 = new Label(cmp_snappingArea, SWT.NONE);
+                            lblNewLabel6.setText(I18n.UNITS_Name_primary + " [" + I18n.UNITS_primary + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+                            lblNewLabel6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+
+                            final BigDecimalSpinner spinnerInch = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE, View.NUMBER_FORMAT8F);
+                            spinnerInch.setMaximum(new BigDecimal("9999.99999999")); //$NON-NLS-1$
+                            spinnerInch.setMinimum(new BigDecimal("-9999.99999999")); //$NON-NLS-1$
+                            spinnerInch.setValue(BigDecimal.ZERO);
+                            spinnerInch.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+                            final AtomicBoolean change = new AtomicBoolean();
+
+                            spinnerLDU.addValueChangeListener(new ValueChangeAdapter() {
+                                @Override
+                                public void valueChanged(BigDecimalSpinner spn) {
+                                    if (change.get()) return;
+                                    change.set(true);
+                                    spinnerInch.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
+                                    spinnerMM.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
+                                    change.set(false);
+                                }
+                            });
+
+                            spinnerInch.addValueChangeListener(new ValueChangeAdapter() {
+                                @Override
+                                public void valueChanged(BigDecimalSpinner spn) {
+                                    if (change.get()) return;
+                                    change.set(true);
+                                    spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
+                                    spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
+                                    change.set(false);
+                                }
+                            });
+
+                            spinnerMM.addValueChangeListener(new ValueChangeAdapter() {
+                                @Override
+                                public void valueChanged(BigDecimalSpinner spn) {
+                                    if (change.get()) return;
+                                    change.set(true);
+                                    spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
+                                    spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
+                                    change.set(false);
+                                }
+                            });
 
                             cmp_scroll.setMinSize(cmp_snappingArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
                         }
