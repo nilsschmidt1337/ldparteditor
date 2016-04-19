@@ -779,12 +779,17 @@ public final class GDataCSG extends GData {
         if (!c3d.getKeys().isCtrlPressed()) {
             selectedTriangles.clear();
         }
-        Integer selectedBodyID = selectCSG_helper(c3d, event);
+        final Integer selectedBodyID = selectCSG_helper(c3d, event);
         if (selectedBodyID != null) {
-            for (CSG csg : linkedCSG.values()) {
-                for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
-                    if (selectedBodyID.equals(pair.getValue())) {
-                        selectedTriangles.add(pair.getKey());
+            for (Entry<String, CSG> csg_pair : linkedCSG.entrySet()) {
+                if (csg_pair.getKey() != null && csg_pair.getKey().endsWith("#>null")) { //$NON-NLS-1$
+                    CSG csg = csg_pair.getValue();
+                    if (csg != null) {
+                        for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
+                            if (selectedBodyID.equals(pair.getValue())) {
+                                selectedTriangles.add(pair.getKey());
+                            }
+                        }
                     }
                 }
             }
