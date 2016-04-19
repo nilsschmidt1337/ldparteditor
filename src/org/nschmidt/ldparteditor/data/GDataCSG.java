@@ -862,6 +862,11 @@ public final class GDataCSG extends GData {
         }
         selectedTriangles.clear();
         for (GDataCSG c : selectedBodies) {
+            if (c == null) {
+                selectedTriangles.clear();
+                selectedBodies.clear();
+                return;
+            }
             if (c.dataCSG == null) {
                 selectedTriangles.clear();
             }
