@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -867,6 +868,29 @@ public final class GDataCSG extends GData {
             final GDataCSG g = it.next();
             if (g.ref1 != null && g.ref2 == null && g.ref3 == null && g.type != CSG.COMPILE) {
                 if (g.ref1.endsWith("#>null") && g.type != CSG.QUALITY) { //$NON-NLS-1$
+                    continue;
+                }
+            }
+            it.remove();
+        }
+        selectedBodyMap.get(df).addAll(newSelection);
+    }
+
+    public static HashSet<GColour> getSelectedColours(DatFile df) {
+        final HashSet<GColour> colours = new HashSet<GColour>();
+        final HashSet<GDataCSG> selection = getSelection(df);
+        for (GDataCSG g : selection) {
+            colours.add(g.colour);
+        }
+        return colours;
+    }
+
+    public static void selectAllWithSameColours(DatFile df, Set<GColour> allColours) {
+        HashSet<GDataCSG> newSelection = new HashSet<GDataCSG>(registeredData);
+        for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
+            final GDataCSG g = it.next();
+            if (g.ref1 != null && g.ref2 == null && g.ref3 == null && g.type != CSG.COMPILE) {
+                if (g.ref1.endsWith("#>null") && g.type != CSG.QUALITY && allColours.contains(g.colour)) { //$NON-NLS-1$
                     continue;
                 }
             }
