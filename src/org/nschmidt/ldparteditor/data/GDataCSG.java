@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +30,6 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Event;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.csg.CSG;
 import org.nschmidt.csg.CSGCircle;
@@ -41,7 +41,6 @@ import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.csg.Polygon;
 import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
@@ -385,30 +384,10 @@ public final class GDataCSG extends GData {
         }
     }
 
-    private CSG transformWithManipulator(CSG csg, Matrix4f transformation, Matrix4f myMatrix) {
-
+    private CSG transformWithManipulator(CSG csg, Matrix4f transformation4f, Matrix4f myMatrix) {
         // FIXME Needs implementation for issue #161
-
-        if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
-            // done!
-            return csg.transformed(myMatrix).transformed(transformation);
-        } else {
-
-            Matrix4f toLocalSpace = new Matrix4f();
-            Matrix4f.setIdentity(toLocalSpace);
-            toLocalSpace = toLocalSpace.translate(new Vector3f(-myMatrix.m30, -myMatrix.m31, -myMatrix.m32));
-
-
-            Matrix4f toGlobalSpace = new Matrix4f();
-            Matrix4f.setIdentity(toGlobalSpace);
-            toGlobalSpace = toGlobalSpace.translate(new Vector3f(myMatrix.m30 + transformation.m30, myMatrix.m31 + transformation.m31, myMatrix.m32 + transformation.m32));
-
-            transformation.m30 = 0f;
-            transformation.m31 = 0f;
-            transformation.m32 = 0f;
-
-            return csg.transformed(myMatrix).transformed(toLocalSpace).transformed(transformation).transformed(toGlobalSpace);
-        }
+        // done!?
+        return csg.transformed(myMatrix).transformed(transformation4f);
     }
 
     @Override
@@ -658,78 +637,33 @@ public final class GDataCSG extends GData {
             } else {
                 colourBuilder.append(colour.getColourNumber());
             }
-            Matrix4f transformation = new Matrix4f();
-            Matrix4f oldMatrix = new Matrix4f(this.matrix);
 
-            float dx = m.m03 * 1000f;
-            float dy = m.m13 * 1000f;
-            float dz = m.m23 * 1000f;
+            // FIXME Needs implementation for issue #161
+            // done!
 
-            if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
-
-                // FIXME Needs implementation for issue #161
-
-                transformation.m00 = m.m00;
-                transformation.m01 = m.m01;
-                transformation.m02 = m.m02;
-
-                transformation.m10 = m.m10;
-                transformation.m11 = m.m11;
-                transformation.m12 = m.m12;
-
-                transformation.m20 = m.m20;
-                transformation.m21 = m.m21;
-                transformation.m22 = m.m22;
-
-                transformation.m30 = m.m03 * 1000f;
-                transformation.m31 = m.m13 * 1000f;
-                transformation.m32 = m.m23 * 1000f;
-
-                Matrix4f.transpose(transformation, transformation);
-                transformation.m30 = transformation.m03;
-                transformation.m31 = transformation.m13;
-                transformation.m32 = transformation.m23;
-                transformation.m03 = 0f;
-                transformation.m13 = 0f;
-                transformation.m23 = 0f;
-
-                float tx = oldMatrix.m30;
-                float ty = oldMatrix.m31;
-                float tz = oldMatrix.m32;
-                Matrix4f.translate(new Vector3f(-tx, -ty, -tz), oldMatrix, oldMatrix);
-                Matrix4f.mul(oldMatrix, transformation, oldMatrix);
-                Matrix4f.translate(new Vector3f(tx, ty, tz), oldMatrix, transformation);
-
-            } else {
-
-                // done!
-
-                transformation.m00 = m.m00;
-                transformation.m01 = m.m01;
-                transformation.m02 = m.m02;
-
-                transformation.m10 = m.m10;
-                transformation.m11 = m.m11;
-                transformation.m12 = m.m12;
-
-                transformation.m20 = m.m20;
-                transformation.m21 = m.m21;
-                transformation.m22 = m.m22;
-
-                Matrix4f.mul(oldMatrix, transformation, transformation);
-
-            }
-
-            Matrix4f.transpose(transformation, transformation);
-            transformation.m30 = transformation.m03 + dx;
-            transformation.m31 = transformation.m13 + dy;
-            transformation.m32 = transformation.m23 + dz;
-            transformation.m03 = 0f;
-            transformation.m13 = 0f;
-            transformation.m23 = 0f;
+            Matrix4f oldMatrix = new Matrix4f(matrix);
+            oldMatrix.m30 = oldMatrix.m30 / 1000f;
+            oldMatrix.m31 = oldMatrix.m31 / 1000f;
+            oldMatrix.m32 = oldMatrix.m32 / 1000f;
+            Matrix4f.transpose(oldMatrix, oldMatrix);
+            oldMatrix.m30 = oldMatrix.m03;
+            oldMatrix.m31 = oldMatrix.m13;
+            oldMatrix.m32 = oldMatrix.m23;
+            oldMatrix.m03 = 0f;
+            oldMatrix.m13 = 0f;
+            oldMatrix.m23 = 0f;
+            Matrix accurateLocalMatrix = new Matrix(oldMatrix);
+            Matrix transformation = new Matrix(m);
+            transformation = transformation.transpose();
+            BigDecimal tx = accurateLocalMatrix.M30.add(BigDecimal.ZERO);
+            BigDecimal ty = accurateLocalMatrix.M31.add(BigDecimal.ZERO);
+            BigDecimal tz = accurateLocalMatrix.M32.add(BigDecimal.ZERO);
+            accurateLocalMatrix = accurateLocalMatrix.translate(new BigDecimal[] { tx.negate(), ty.negate(), tz.negate() });
+            accurateLocalMatrix = Matrix.mul(transformation, accurateLocalMatrix);
+            accurateLocalMatrix = accurateLocalMatrix.translate(new BigDecimal[] { tx, ty, tz });
 
             String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
-            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(transformation); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + accurateLocalMatrix.toLDrawString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         default:
             return text;
         }
@@ -928,6 +862,9 @@ public final class GDataCSG extends GData {
         }
         selectedTriangles.clear();
         for (GDataCSG c : selectedBodies) {
+            if (c.dataCSG == null) {
+                selectedTriangles.clear();
+            }
             for (Polygon p : c.dataCSG.getPolygons()) {
                 Matrix4f id = new Matrix4f();
                 Matrix4f.setIdentity(id);
@@ -935,6 +872,9 @@ public final class GDataCSG extends GData {
                         new HashSet<String>(), View.DUMMY_REFERENCE);
                 selectedTriangles.addAll(p.toLDrawTriangles(g1).keySet());
             }
+        }
+        if (selectedTriangles.isEmpty()) {
+            selectedBodies.clear();
         }
     }
 }
