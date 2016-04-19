@@ -59,6 +59,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.Rounder;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
@@ -179,10 +180,11 @@ public class CompositeTab extends CompositeTabDesign {
             public void lineGetStyle(final LineStyleEvent e) {
                 // So the line will be formated with the syntax formatter from
                 // the CompositeText.
-
-                final VertexManager vm = state.getFileNameObj().getVertexManager();
-                boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(state.getFileNameObj().getDrawPerLine_NOCLONE().getValue(compositeText[0].getLineAtOffset(e.lineOffset) + 1));
-
+                final DatFile df = state.getFileNameObj();
+                final VertexManager vm = df.getVertexManager();
+                final GData data = df.getDrawPerLine_NOCLONE().getValue(compositeText[0].getLineAtOffset(e.lineOffset) + 1);
+                boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
+                isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
                 syntaxFormatter.format(e, state.getToReplaceX(), state.getToReplaceY(), state.getToReplaceZ(), state.getReplaceEpsilon(), state.isReplacingVertex(), isSelected);
             }
         });

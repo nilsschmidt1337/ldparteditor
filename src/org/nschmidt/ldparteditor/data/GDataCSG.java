@@ -21,6 +21,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
@@ -733,12 +734,12 @@ public final class GDataCSG extends GData {
     public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
     public static boolean hasSelectionCSG(DatFile df) {
-        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.get(df);
-        if (selectedTriangles == null) {
-            selectedTrianglesMap.put(df, new HashSet<GData3>());
+        final HashSet<GDataCSG> selectedBodies = selectedBodyMap.get(df);
+        if (selectedBodies == null) {
+            selectedBodyMap.put(df, new HashSet<GDataCSG>());
             return false;
         }
-        return !selectedTriangles.isEmpty();
+        return !selectedBodies.isEmpty();
     }
 
     public boolean isSelected(Composite3D c3d) {
@@ -832,10 +833,12 @@ public final class GDataCSG extends GData {
                             for (GDataCSG c : registeredData) {
                                 if (dpl.containsValue(c) && idToGDataCSG.containsKey(result2)) {
                                     if (c.ref1 != null && c.ref2 == null && c.ref3 == null && c.type != CSG.COMPILE) {
-                                        minDist = dist[0];
-                                        result = result2;
                                         resultObj = idToGDataCSG.getValue(result2);
-                                        break;
+                                        if (resultObj != null && resultObj.ref1 != null && resultObj.ref1.endsWith("#>null")) { //$NON-NLS-1$
+                                            minDist = dist[0];
+                                            result = result2;
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -853,7 +856,28 @@ public final class GDataCSG extends GData {
     }
 
     public static HashSet<GDataCSG> getSelection(DatFile df) {
+        selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>());
         return selectedBodyMap.get(df);
+    }
+
+    public static void selectAll(DatFile df) {
+        clearSelection(df);
+        HashSet<GDataCSG> newSelection = new HashSet<GDataCSG>(registeredData);
+        for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
+            final GDataCSG g = it.next();
+            if (g.ref1 != null && g.ref2 == null && g.ref3 == null && g.type != CSG.COMPILE) {
+                if (g.ref1.endsWith("#>null") && g.type != CSG.QUALITY) { //$NON-NLS-1$
+                    continue;
+                }
+            }
+            it.remove();
+        }
+        selectedBodyMap.get(df).addAll(newSelection);
+    }
+
+    public static void clearSelection(DatFile df) {
+        selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>());
+        selectedBodyMap.get(df).clear();
     }
 
     public static void rebuildSelection(DatFile df) {

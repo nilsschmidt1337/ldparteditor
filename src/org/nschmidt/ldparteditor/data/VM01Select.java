@@ -63,6 +63,7 @@ class VM01Select extends VM00Snapshot {
         selectedQuads.clear();
         selectedCondlines.clear();
         lastSelectedVertex = null;
+        GDataCSG.clearSelection(linkedDatFile);
     }
 
     public synchronized void clearSelection2() {
@@ -75,9 +76,10 @@ class VM01Select extends VM00Snapshot {
         selectedQuads.clear();
         selectedCondlines.clear();
         lastSelectedVertex = null;
+        GDataCSG.clearSelection(linkedDatFile);
     }
 
-    protected void clearSelection3() {
+    private void clearSelection3() {
         selectedItemIndex = -1;
         selectedData.clear();
         selectedVertices.clear();
@@ -87,6 +89,7 @@ class VM01Select extends VM00Snapshot {
         selectedQuads.clear();
         selectedCondlines.clear();
         lastSelectedVertex = null;
+        GDataCSG.clearSelection(linkedDatFile);
     }
 
     public synchronized void selectAll(SelectorSettings ss, boolean includeHidden) {
@@ -144,6 +147,8 @@ class VM01Select extends VM00Snapshot {
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
         selectedData.addAll(selectedSubfiles);
+
+        GDataCSG.selectAll(linkedDatFile);
     }
 
     public void selectAllWithSameColours(SelectorSettings ss, boolean includeHidden) {
