@@ -1325,6 +1325,9 @@ public class MouseActions {
                 csg = c1;
                 break;
             }
+            if (csg == null) {
+                return;
+            }
             Matrix4f m = csg.getLDrawMatrix();
             if (m == null) {
                 return;
