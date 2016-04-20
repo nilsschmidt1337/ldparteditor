@@ -1599,6 +1599,9 @@ public final class GData3 extends GData {
         final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer renderer = c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
+
+        GL11.glDisable(GL11.GL_LIGHTING);
+
         GL11.glLineWidth(View.lineWidthGL[0]);
         GL11.glColor4f(r, g, b, 1f);
         GL11.glBegin(GL11.GL_LINES);
@@ -1669,6 +1672,8 @@ public final class GData3 extends GData {
         PGData3.endDrawText();
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
+
+        GL11.glEnable(GL11.GL_LIGHTING);
     }
 
     private void drawNumber(String number, float ox, float oy, float oz, float zoom) {
