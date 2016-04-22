@@ -103,7 +103,6 @@ public class CSG {
     HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
 
     private List<Polygon> polygons;
-    private OptType optType = OptType.POLYGON_BOUND;
 
     private CSG() {
     }
@@ -150,13 +149,10 @@ public class CSG {
     public CSG clone() {
         CSG csg = new CSG();
 
-        csg.optType = this.optType;
-
         csg.polygons = new ArrayList<Polygon>();
         for (Polygon polygon : polygons) {
             csg.polygons.add(polygon.clone());
         }
-        ;
 
         return csg;
     }
@@ -167,18 +163,6 @@ public class CSG {
      */
     public List<Polygon> getPolygons() {
         return polygons;
-    }
-
-    /**
-     * Defines the CSg optimization type.
-     *
-     * @param type
-     *            optimization type
-     * @return this CSG
-     */
-    public CSG optimization(OptType type) {
-        this.optType = type;
-        return this;
     }
 
     /**
@@ -211,23 +195,7 @@ public class CSG {
      * @return union of this csg and the specified csg
      */
     public CSG union(CSG csg) {
-        switch (optType) {
-        case CSG_BOUND:
-            return _unionCSGBoundsOpt(csg);
-        case POLYGON_BOUND:
-            return _unionPolygonBoundsOpt(csg);
-        default:
-            return _unionNoOpt(csg);
-        }
-    }
 
-    private CSG _unionCSGBoundsOpt(CSG csg) {
-        System.err.println("WARNING: using " + CSG.OptType.POLYGON_BOUND //$NON-NLS-1$
-                + " since other optimization types missing for union operation."); //$NON-NLS-1$
-        return _unionPolygonBoundsOpt(csg);
-    }
-
-    private CSG _unionPolygonBoundsOpt(CSG csg) {
         List<Polygon> inner = new ArrayList<Polygon>();
         List<Polygon> outer = new ArrayList<Polygon>();
 
@@ -240,7 +208,6 @@ public class CSG {
                 outer.add(p);
             }
         }
-        ;
 
         List<Polygon> allPolygons = new ArrayList<Polygon>();
 
@@ -254,7 +221,7 @@ public class CSG {
             allPolygons.addAll(csg.polygons);
         }
 
-        return CSG.fromPolygons(allPolygons).optimization(optType);
+        return CSG.fromPolygons(allPolygons);
     }
 
     private CSG _unionNoOpt(CSG csg) {
@@ -266,7 +233,7 @@ public class CSG {
         b.clipTo(a);
         b.invert();
         a.build(b.allPolygons());
-        return CSG.fromPolygons(a.allPolygons()).optimization(optType);
+        return CSG.fromPolygons(a.allPolygons());
     }
 
     /**
@@ -297,26 +264,7 @@ public class CSG {
      * @return difference of this csg and the specified csg
      */
     public CSG difference(CSG csg) {
-        switch (optType) {
-        case CSG_BOUND:
-            return _differenceCSGBoundsOpt(csg);
-        case POLYGON_BOUND:
-            return _differencePolygonBoundsOpt(csg);
-        default:
-            return _differenceNoOpt(csg);
-        }
-    }
 
-    private CSG _differenceCSGBoundsOpt(CSG csg) {
-        CSG b = csg;
-
-        CSG a1 = this._differenceNoOpt(csg.getBounds().toCSG());
-        CSG a2 = this.intersect(csg.getBounds().toCSG());
-
-        return a2._differenceNoOpt(b).union(a1).optimization(optType);
-    }
-
-    private CSG _differencePolygonBoundsOpt(CSG csg) {
         List<Polygon> inner = new ArrayList<Polygon>();
         List<Polygon> outer = new ArrayList<Polygon>();
 
@@ -329,7 +277,6 @@ public class CSG {
                 outer.add(p);
             }
         }
-        ;
 
         CSG innerCSG = CSG.fromPolygons(inner);
 
@@ -337,7 +284,7 @@ public class CSG {
         allPolygons.addAll(outer);
         allPolygons.addAll(innerCSG._differenceNoOpt(csg).polygons);
 
-        return CSG.fromPolygons(allPolygons).optimization(optType);
+        return CSG.fromPolygons(allPolygons);
     }
 
     private CSG _differenceNoOpt(CSG csg) {
@@ -354,7 +301,7 @@ public class CSG {
         a.build(b.allPolygons());
         a.invert();
 
-        CSG csgA = CSG.fromPolygons(a.allPolygons()).optimization(optType);
+        CSG csgA = CSG.fromPolygons(a.allPolygons());
         return csgA;
     }
 
@@ -396,7 +343,7 @@ public class CSG {
         b.clipTo(a);
         a.build(b.allPolygons());
         a.invert();
-        return CSG.fromPolygons(a.allPolygons()).optimization(optType);
+        return CSG.fromPolygons(a.allPolygons());
     }
 
     /**
@@ -543,7 +490,7 @@ public class CSG {
         for (Polygon p : polygons) {
             newpolygons.add(p.transformed(transform));
         }
-        CSG result = CSG.fromPolygons(newpolygons).optimization(optType);
+        CSG result = CSG.fromPolygons(newpolygons);
         return result;
     }
 
@@ -605,10 +552,4 @@ public class CSG {
 
         return new Bounds(new Vector3d(minX, minY, minZ), new Vector3d(maxX, maxY, maxZ));
     }
-
-    public static enum OptType {
-
-        CSG_BOUND, POLYGON_BOUND, NONE
-    }
-
 }
