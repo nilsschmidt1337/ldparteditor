@@ -375,6 +375,7 @@ public final class I18n {
     public static final String E3D_ControlClickModify = E3D.getString(getProperty());
     public static final String E3D_CopyToUnofficialLibrary = E3D.getString(getProperty());
     public static final String E3D_CreateNewDat = E3D.getString(getProperty());
+    public static final String E3D_Decolour = E3D.getString(getProperty());
     public static final String E3D_DeleteConfig = E3D.getString(getProperty());
     public static final String E3D_DragHint = E3D.getString(getProperty());
     public static final String E3D_Edger2 = E3D.getString(getProperty());

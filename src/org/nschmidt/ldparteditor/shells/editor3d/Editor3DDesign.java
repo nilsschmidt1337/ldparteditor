@@ -185,6 +185,7 @@ class Editor3DDesign extends ApplicationWindow {
 
     final Button[] btn_LastUsedColour = new Button[1];
     final Button[] btn_Pipette = new Button[1];
+    final Button[] btn_Decolour = new Button[1];
     final Button[] btn_Palette = new Button[1];
 
     final Button[] btn_MoveAdjacentData = new Button[1];
@@ -1561,6 +1562,12 @@ class Editor3DDesign extends ApplicationWindow {
             this.btn_Pipette[0] = btn_Pipette;
             btn_Pipette.setToolTipText(I18n.E3D_Pipette);
             btn_Pipette.setImage(ResourceManager.getImage("icon16_pipette.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Decolour = new Button(toolItem_ColourFunctions, SWT.NONE);
+            this.btn_Decolour[0] = btn_Decolour;
+            btn_Decolour.setToolTipText(I18n.E3D_Decolour);
+            btn_Decolour.setImage(ResourceManager.getImage("icon16_uncolour.png")); //$NON-NLS-1$
         }
         return toolItem_ColourFunctions;
     }

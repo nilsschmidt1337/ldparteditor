@@ -1418,6 +1418,18 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+
+        btn_Pipette[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (Project.getFileToEdit() != null) {
+                    VertexManager vm = Project.getFileToEdit().getVertexManager();
+                    vm.addSnapshot();
+                    // FIXME Needs implementation for issue #236
+                }
+            }
+        });
+
         btn_Palette[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
