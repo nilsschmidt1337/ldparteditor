@@ -140,6 +140,7 @@ public final class GDataCSG extends GData {
         this(df, c.type, c.transform(m), c.parent);
     }
 
+    // CASE 0 0 !LPE [CSG TAG] [ID] [ID2] [COLOUR] [MATRIX] 17
     // CASE 1 0 !LPE [CSG TAG] [ID] [COLOUR] [MATRIX] 17
     // CASE 2 0 !LPE [CSG TAG] [ID] [ID2] [ID3] 6
     // CASE 3 0 !LPE [CSG TAG] [ID] 4
@@ -199,6 +200,26 @@ public final class GDataCSG extends GData {
             }
             colour = null;
             matrix = null;
+            break;
+        case CSG.TRANSFORM:
+            if (data_segments.length == 18) {
+                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+                ref2 = data_segments[4] + "#>" + parent.shortName; //$NON-NLS-1$
+                GColour c = DatParser.validateColour(data_segments[5], .5f, .5f, .5f, 1f);
+                if (c != null) {
+                    colour = c.clone();
+                } else {
+                    colour = View.getLDConfigColour(16);
+                }
+                matrix = MathHelper.matrixFromStrings(data_segments[6], data_segments[7], data_segments[8], data_segments[9], data_segments[10], data_segments[11], data_segments[12],
+                        data_segments[13], data_segments[14], data_segments[15], data_segments[16], data_segments[17]);
+            } else {
+                colour = null;
+                ref1 = null;
+                ref2 = null;
+                matrix = null;
+            }
+            ref3 = null;
             break;
         case CSG.QUALITY:
             if (data_segments.length == 4) {
@@ -375,6 +396,11 @@ public final class GDataCSG extends GData {
                             linkedCSG.put(ref3, linkedCSG.get(ref1).union(linkedCSG.get(ref2)));
                         }
                         break;
+                    case CSG.TRANSFORM:
+                        if (linkedCSG.containsKey(ref1) && matrix != null) {
+                            linkedCSG.put(ref2, linkedCSG.get(ref1).transformed(matrix, colour));
+                        }
+                        break;
                     case CSG.QUALITY:
                         quality = c3d.getManipulator().isModified() ? 12 : global_quality;
                         break;
@@ -406,8 +432,6 @@ public final class GDataCSG extends GData {
     }
 
     private CSG transformWithManipulator(CSG csg, Matrix4f transformation4f, Matrix4f myMatrix) {
-        // FIXME Needs implementation for issue #161
-        // done!?
         return csg.transformed(myMatrix).transformed(transformation4f);
     }
 
@@ -577,6 +601,11 @@ public final class GDataCSG extends GData {
                 t = " CSG_CYLINDER "; //$NON-NLS-1$
                 notChoosen = false;
             }
+        case CSG.TRANSFORM:
+            if (notChoosen) {
+                t = " CSG_TRANSFORM "; //$NON-NLS-1$
+                notChoosen = false;
+            }
         case CSG.CONE:
             if (notChoosen) {
                 t = " CSG_CONE "; //$NON-NLS-1$
@@ -642,6 +671,11 @@ public final class GDataCSG extends GData {
                 t = " CSG_CYLINDER "; //$NON-NLS-1$
                 notChoosen = false;
             }
+        case CSG.TRANSFORM:
+            if (notChoosen) {
+                t = " CSG_TRANSFORM "; //$NON-NLS-1$
+                notChoosen = false;
+            }
         case CSG.CONE:
             if (notChoosen) {
                 t = " CSG_CONE "; //$NON-NLS-1$
@@ -658,9 +692,6 @@ public final class GDataCSG extends GData {
             } else {
                 colourBuilder.append(colour.getColourNumber());
             }
-
-            // FIXME Needs implementation for issue #161
-            // done!
 
             Matrix4f oldMatrix = new Matrix4f(matrix);
             oldMatrix.m30 = oldMatrix.m30 / 1000f;
@@ -684,6 +715,9 @@ public final class GDataCSG extends GData {
             accurateLocalMatrix = accurateLocalMatrix.translate(new BigDecimal[] { tx, ty, tz });
 
             String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
+            if (type == CSG.TRANSFORM) {
+                tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
+            }
             return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + accurateLocalMatrix.toLDrawString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         default:
             return text;
@@ -719,6 +753,11 @@ public final class GDataCSG extends GData {
                 t = " CSG_CYLINDER "; //$NON-NLS-1$
                 notChoosen = false;
             }
+        case CSG.TRANSFORM:
+            if (notChoosen) {
+                t = " CSG_TRANSFORM "; //$NON-NLS-1$
+                notChoosen = false;
+            }
         case CSG.CONE:
             if (notChoosen) {
                 t = " CSG_CONE "; //$NON-NLS-1$
@@ -734,6 +773,9 @@ public final class GDataCSG extends GData {
             newMatrix.m23 = 0f;
             String col = colour2;
             String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
+            if (type == CSG.TRANSFORM) {
+                tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
+            }
             return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         default:
             return text;
@@ -981,6 +1023,11 @@ public final class GDataCSG extends GData {
                 t = " CSG_CYLINDER "; //$NON-NLS-1$
                 notChoosen = false;
             }
+        case CSG.TRANSFORM:
+            if (notChoosen) {
+                t = " CSG_TRANSFORM "; //$NON-NLS-1$
+                notChoosen = false;
+            }
         case CSG.CONE:
             if (notChoosen) {
                 t = " CSG_CONE "; //$NON-NLS-1$
@@ -1007,6 +1054,9 @@ public final class GDataCSG extends GData {
             newMatrix.m13 = 0f;
             newMatrix.m23 = 0f;
             String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
+            if (type == CSG.TRANSFORM) {
+                tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
+            }
             return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix, coordsDecimalPlaces, matrixDecimalPlaces ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         return null;

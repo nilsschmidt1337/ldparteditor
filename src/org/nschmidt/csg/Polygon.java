@@ -300,6 +300,18 @@ public final class Polygon {
         return clone().transform(transform);
     }
 
+    public Polygon transformed(Transform transform, GColour c) {
+        Polygon result = clone().transform(transform);
+        GColourIndex colour = null;
+        if ((colour = (GColourIndex) this.shared.getFirstValue()) != null) {
+            GColour c2;
+            if ((c2 = colour.getColour()) != null && c2.getColourNumber() == 16) {
+                result.shared.set("colour", new GColourIndex(c.clone(), colour.getIndex())); //$NON-NLS-1$
+            }
+        }
+        return result;
+    }
+
     /**
      * Creates a polygon from the specified point list.
      *

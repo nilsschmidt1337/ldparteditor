@@ -689,6 +689,54 @@ public class EditorMetaWindow extends EditorMetaDesign {
             final org.eclipse.swt.events.FocusAdapter a = new org.eclipse.swt.events.FocusAdapter() {
                 @Override
                 public void focusGained(FocusEvent e) {
+                    updateCSGtrans();
+                }
+            };
+
+            final ModifyListener m = new ModifyListener() {
+                @Override
+                public void modifyText(ModifyEvent e) {
+                    updateCSGtrans();
+                }
+            };
+
+            ev_csgTrans1_txt[0].addFocusListener(a);
+            ev_csgTrans1_txt[0].addModifyListener(m);
+            ev_csgTrans2_txt[0].addFocusListener(a);
+            ev_csgTrans2_txt[0].addModifyListener(m);
+            ev_csgTrans3_txt[0].addFocusListener(a);
+            ev_csgTrans3_txt[0].addModifyListener(m);
+            ev_csgTrans4_txt[0].addFocusListener(a);
+            ev_csgTrans4_txt[0].addModifyListener(m);
+            ev_csgTrans5_txt[0].addFocusListener(a);
+            ev_csgTrans5_txt[0].addModifyListener(m);
+            ev_csgTrans6_txt[0].addFocusListener(a);
+            ev_csgTrans6_txt[0].addModifyListener(m);
+            ev_csgTrans7_txt[0].addFocusListener(a);
+            ev_csgTrans7_txt[0].addModifyListener(m);
+            ev_csgTrans8_txt[0].addFocusListener(a);
+            ev_csgTrans8_txt[0].addModifyListener(m);
+            ev_csgTrans9_txt[0].addFocusListener(a);
+            ev_csgTrans9_txt[0].addModifyListener(m);
+            ev_csgTrans10_txt[0].addFocusListener(a);
+            ev_csgTrans10_txt[0].addModifyListener(m);
+            ev_csgTrans11_txt[0].addFocusListener(a);
+            ev_csgTrans11_txt[0].addModifyListener(m);
+            ev_csgTrans12_txt[0].addFocusListener(a);
+            ev_csgTrans12_txt[0].addModifyListener(m);
+            ev_csgTrans13_txt[0].addFocusListener(a);
+            ev_csgTrans13_txt[0].addModifyListener(m);
+            ev_csgTrans14_txt[0].addFocusListener(a);
+            ev_csgTrans14_txt[0].addModifyListener(m);
+            ev_csgTrans15_txt[0].addFocusListener(a);
+            ev_csgTrans15_txt[0].addModifyListener(m);
+
+        }
+
+        {
+            final org.eclipse.swt.events.FocusAdapter a = new org.eclipse.swt.events.FocusAdapter() {
+                @Override
+                public void focusGained(FocusEvent e) {
                     updateCSGaction();
                 }
             };
@@ -930,6 +978,42 @@ public class EditorMetaWindow extends EditorMetaDesign {
         sb.append(ev_csgBody13_txt[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
         sb.append(ev_csgBody14_txt[0].getText().trim());
+        lbl_lineToInsert[0].setText(sb.toString());
+        lbl_lineToInsert[0].getParent().layout();
+    }
+
+    private void updateCSGtrans() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("0 !LPE CSG_TRANSFORM "); //$NON-NLS-1$
+        sb.append(ev_csgTrans1_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans2_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans3_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans4_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans5_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans6_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans7_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans8_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans9_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans10_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans11_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans12_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans13_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans14_txt[0].getText().trim());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(ev_csgTrans15_txt[0].getText().trim());
         lbl_lineToInsert[0].setText(sb.toString());
         lbl_lineToInsert[0].getParent().layout();
     }

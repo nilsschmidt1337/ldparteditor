@@ -93,6 +93,7 @@ public enum DatKeyword {
         keywords.add("CSG_UNION"); //$NON-NLS-1$
         keywords.add("CSG_DIFFERENCE"); //$NON-NLS-1$
         keywords.add("CSG_INTERSECTION"); //$NON-NLS-1$
+        keywords.add("CSG_TRANSFORM"); //$NON-NLS-1$
 
         keywords.add("CSG_CUBOID"); //$NON-NLS-1$
         keywords.add("CSG_ELLIPSOID"); //$NON-NLS-1$

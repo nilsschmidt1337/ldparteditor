@@ -835,6 +835,9 @@ public enum DatParser {
                     } else if (line.startsWith("INTERSECTION", 11)) { //$NON-NLS-1$
                         result.remove(0);
                         result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.INTERSECTION, line, parent)));
+                    } else if (line.startsWith("TRANSFORM", 11)) { //$NON-NLS-1$
+                        result.remove(0);
+                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.TRANSFORM, line, parent)));
                     } else if (line.startsWith("CUBOID", 11)) { //$NON-NLS-1$
                         result.remove(0);
                         result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CUBOID, line, parent)));
