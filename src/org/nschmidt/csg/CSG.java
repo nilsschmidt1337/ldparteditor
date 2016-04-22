@@ -41,6 +41,7 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.enums.View;
@@ -119,6 +120,7 @@ public class CSG {
     public static final byte QUALITY = 9;
     public static final byte EPSILON = 10;
     public static final byte CONE = 11;
+    public static final byte TRANSFORM = 12;
 
     /**
      * Constructs a CSG from a list of {@link Polygon} instances.
@@ -502,8 +504,37 @@ public class CSG {
      *
      * @return a transformed copy of this CSG
      */
+    public CSG transformed(Transform transform, GColour c) {
+        List<Polygon> newpolygons = new ArrayList<Polygon>();
+        for (Polygon p : polygons) {
+            newpolygons.add(p.transformed(transform, c));
+        }
+        CSG result = CSG.fromPolygons(newpolygons);
+        return result;
+    }
+
+    /**
+     * Returns a transformed copy of this CSG.
+     *
+     * @param transform
+     *            the transform to apply
+     *
+     * @return a transformed copy of this CSG
+     */
     public CSG transformed(Matrix4f transform) {
         return transformed(new Transform().apply(transform));
+    }
+
+    /**
+     * Returns a transformed coloured, copy of this CSG.
+     *
+     * @param transform
+     *            the transform to apply
+     *
+     * @return a transformed copy of this CSG
+     */
+    public CSG transformed(Matrix4f transform, GColour c) {
+        return transformed(new Transform().apply(transform), c);
     }
 
     /**

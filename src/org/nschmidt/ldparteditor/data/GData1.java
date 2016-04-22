@@ -2023,6 +2023,9 @@ public final class GData1 extends GData {
                 case CSG.UNION:
                     lineBuilder8.append("0 !LPE CSG_UNION "); //$NON-NLS-1$
                     break;
+                case CSG.TRANSFORM:
+                    lineBuilder8.append("0 !LPE CSG_TRANSFORM "); //$NON-NLS-1$
+                    break;
                 default:
                     break;
                 }
@@ -2031,6 +2034,10 @@ public final class GData1 extends GData {
                 case CSG.DIFFERENCE:
                 case CSG.UNION:
                     lineBuilder8.append(data_segments2[3] + this.ID + " " + data_segments2[4] + this.ID + " " + data_segments2[5] + this.ID); //$NON-NLS-1$ //$NON-NLS-2$
+                    break;
+                case CSG.TRANSFORM:
+                    lineBuilder8.append(data_segments2[3] + this.ID + " " + data_segments2[4] + this.ID + " " + data_segments2[5] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;
                 case CSG.QUAD:
                 case CSG.CUBOID:
