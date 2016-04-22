@@ -29,7 +29,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
-import org.nschmidt.ldparteditor.enums.MergeTo;
+import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
@@ -59,6 +59,9 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
         clearSelection();
 
         final int[] reduceCount = new int[1];
+        final VertexManager vm = (VertexManager) this;
+        final DatFile df = linkedDatFile;
+
         try
         {
             new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
@@ -211,14 +214,9 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                             }
                                             // Als letzten Schritt => Kante zusammenfallen lassen
 
-                                            clearSelection2();
-
-                                            selectedVertices.add(v);
-                                            selectedVertices.add(t);
-
-                                            lastSelectedVertex = t;
-
-                                            merge(MergeTo.LAST_SELECTED, false);
+                                            // merge(MergeTo.LAST_SELECTED, false);
+                                            changeVertexDirectFast(v, t, true);
+                                            IdenticalVertexRemover.removeIdenticalVertices(vm, df, false, true);
 
                                             // addLine(v, t);
                                             reduceCount[0]++;
