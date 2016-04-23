@@ -38,6 +38,7 @@ import org.nschmidt.csg.CSGCircle;
 import org.nschmidt.csg.CSGCone;
 import org.nschmidt.csg.CSGCube;
 import org.nschmidt.csg.CSGCylinder;
+import org.nschmidt.csg.CSGMesh;
 import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.Plane;
@@ -75,7 +76,7 @@ public final class GDataCSG extends GData {
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> registeredData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> parsedData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
 
-
+    private final ArrayList<GData> cachedData = new ArrayList<GData>();
 
     private static int quality = 16;
     private int global_quality = 16;
@@ -167,6 +168,7 @@ public final class GDataCSG extends GData {
         case CSG.ELLIPSOID:
         case CSG.CUBOID:
         case CSG.CYLINDER:
+        case CSG.MESH:
         case CSG.CONE:
             if (data_segments.length == 17) {
                 ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
@@ -272,7 +274,7 @@ public final class GDataCSG extends GData {
         final HashSet<GDataCSG> parsedData = GDataCSG.parsedData.putIfAbsent(df, new HashSet<GDataCSG>());
         parsedData.add(this);
         final boolean modified = c3d.getManipulator().isModified();
-        if (deleteAndRecompile || modified) {
+        if (deleteAndRecompile || modified || type == CSG.MESH && CSGMesh.needCacheRefresh(cachedData, this, df)) {
             final HashBiMap<Integer, GDataCSG> idToGDataCSG = GDataCSG.idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>());
             final HashMap<String, CSG> linkedCSG = GDataCSG.linkedCSG.putIfAbsent(df, new HashMap<String, CSG>());
             final HashSet<GDataCSG> registeredData = GDataCSG.registeredData.putIfAbsent(df, new HashSet<GDataCSG>());
@@ -294,6 +296,7 @@ public final class GDataCSG extends GData {
                     case CSG.CUBOID:
                     case CSG.CYLINDER:
                     case CSG.CONE:
+                    case CSG.MESH:
                         if (matrix != null) {
                             switch (type) {
                             case CSG.QUAD:
@@ -367,6 +370,19 @@ public final class GDataCSG extends GData {
                                 }
                                 dataCSG = csgCone;
                                 linkedCSG.put(ref1, csgCone);
+                                break;
+                            case CSG.MESH:
+                                CSGMesh mesh = new CSGMesh(this, cachedData);
+                                CSGMesh.fillCache(cachedData, this);
+                                CSG csgMesh = mesh.toCSG(colour);
+                                idToGDataCSG.put(mesh.ID, this);
+                                if (modified && isSelected(df)) {
+                                    csgMesh = transformWithManipulator(csgMesh, m, matrix);
+                                } else {
+                                    csgMesh = csgMesh.transformed(matrix);
+                                }
+                                dataCSG = csgMesh;
+                                linkedCSG.put(ref1, csgMesh);
                                 break;
                             default:
                                 break;
@@ -601,6 +617,11 @@ public final class GDataCSG extends GData {
                 t = " CSG_CYLINDER "; //$NON-NLS-1$
                 notChoosen = false;
             }
+        case CSG.MESH:
+            if (notChoosen) {
+                t = " CSG_MESH "; //$NON-NLS-1$
+                notChoosen = false;
+            }
         case CSG.TRANSFORM:
             if (notChoosen) {
                 t = " CSG_TRANSFORM "; //$NON-NLS-1$
@@ -669,6 +690,11 @@ public final class GDataCSG extends GData {
         case CSG.CYLINDER:
             if (notChoosen) {
                 t = " CSG_CYLINDER "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.MESH:
+            if (notChoosen) {
+                t = " CSG_MESH "; //$NON-NLS-1$
                 notChoosen = false;
             }
         case CSG.TRANSFORM:
@@ -751,6 +777,11 @@ public final class GDataCSG extends GData {
         case CSG.CYLINDER:
             if (notChoosen) {
                 t = " CSG_CYLINDER "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.MESH:
+            if (notChoosen) {
+                t = " CSG_MESH "; //$NON-NLS-1$
                 notChoosen = false;
             }
         case CSG.TRANSFORM:
@@ -1021,6 +1052,11 @@ public final class GDataCSG extends GData {
         case CSG.CYLINDER:
             if (notChoosen) {
                 t = " CSG_CYLINDER "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.MESH:
+            if (notChoosen) {
+                t = " CSG_MESH "; //$NON-NLS-1$
                 notChoosen = false;
             }
         case CSG.TRANSFORM:

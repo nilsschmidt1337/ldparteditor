@@ -312,4 +312,8 @@ public final class GDataTEX extends GData {
             }
         }
     }
+
+    public GData getLinkedData() {
+        return linkedData;
+    }
 }

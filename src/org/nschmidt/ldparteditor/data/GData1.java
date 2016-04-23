@@ -2013,7 +2013,9 @@ public final class GData1 extends GData {
                 case CSG.CYLINDER:
                     lineBuilder8.append("0 !LPE CSG_CYLINDER "); //$NON-NLS-1$
                     break;
-
+                case CSG.MESH:
+                    lineBuilder8.append("0 !LPE CSG_MESH "); //$NON-NLS-1$
+                    break;
                 case CSG.INTERSECTION:
                     lineBuilder8.append("0 !LPE CSG_INTERSECTION "); //$NON-NLS-1$
                     break;
@@ -2044,6 +2046,7 @@ public final class GData1 extends GData {
                 case CSG.ELLIPSOID:
                 case CSG.CIRCLE:
                 case CSG.CYLINDER:
+                case CSG.MESH:
                     lineBuilder8.append(data_segments2[3] + this.ID + " " + data_segments2[4] + " " + //$NON-NLS-1$ //$NON-NLS-2$
                             MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;
