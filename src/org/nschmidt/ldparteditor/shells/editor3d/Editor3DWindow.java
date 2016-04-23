@@ -1312,7 +1312,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().backupHideShowState();
-                    Project.getFileToEdit().getVertexManager().windingChangeSelection();
+                    Project.getFileToEdit().getVertexManager().windingChangeSelection(true);
                 }
                 regainFocus();
             }

@@ -45,7 +45,7 @@ public enum BFCswapper {
         Text2SelectionConverter.convert(lineStart, lineEnd, datFile);
         datFile.getVertexManager().backupHideShowState();
         datFile.getVertexManager().skipSyncTimer();
-        datFile.getVertexManager().windingChangeSelection();
+        datFile.getVertexManager().windingChangeSelection(true);
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {
                 if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {
