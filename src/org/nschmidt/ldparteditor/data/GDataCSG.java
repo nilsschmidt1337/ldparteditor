@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1111,6 +1112,10 @@ public final class GDataCSG extends GData {
     public static synchronized void restoreSelection(DatFile linkedDatFile) {
         selectedBodyMap.put(linkedDatFile, backupSelectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<GDataCSG>()));
         selectedTrianglesMap.put(linkedDatFile, backupSelectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<GData3>()));
+    }
+
+    public static Collection<CSG> getCSGs(final DatFile df) {
+        return linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).values();
     }
 
 }
