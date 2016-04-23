@@ -35,6 +35,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -141,6 +142,7 @@ import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
+import org.nschmidt.ldparteditor.helpers.FileHelper;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.Sphere;
@@ -4149,12 +4151,43 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         mntm_PartReview[0].addSelectionListener(new SelectionAdapter() {
+
+            final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
+            final Pattern pattern = Pattern.compile("\r?\n|\r"); //$NON-NLS-1$
+
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (new PartReviewDialog(getShell()).open() == IDialogConstants.OK_ID) {
 
+                    String fileName = PartReviewDialog.getFileName().toLowerCase(Locale.ENGLISH);
+                    if (!fileName.endsWith(".dat")) fileName = fileName + ".dat"; //$NON-NLS-1$ //$NON-NLS-2$
+                    try {
+                        fileName = fileName.replaceAll("\\\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+                    } catch (Exception ex) {
+                        // Workaround for windows OS / JVM BUG
+                        fileName = fileName.replace("\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+
                     // Download first, then build the views
 
+                    // http://www.ldraw.org/library/unofficial
+
+                    String source = FileHelper.downloadPartFile("parts/" + fileName); //$NON-NLS-1$
+                    if (source == null) source = FileHelper.downloadPartFile("parts/s/" + fileName); //$NON-NLS-1$
+                    if (source == null) source = FileHelper.downloadPartFile("p/" + fileName); //$NON-NLS-1$
+                    if (source == null) source = FileHelper.downloadPartFile("p/8/" + fileName); //$NON-NLS-1$
+                    if (source == null) source = FileHelper.downloadPartFile("p/48/" + fileName); //$NON-NLS-1$
+                    if (source == null) {
+                        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                        messageBox.setText(I18n.DIALOG_Error);
+                        messageBox.setMessage(I18n.E3D_PartReviewError);
+                        messageBox.open();
+                        return;
+                    }
+
+                    HashSet<String> files = new HashSet<String>();
+                    files.add(fileName);
+                    ArrayList<String> list = buildFileList(source, new ArrayList<String>(), files);
 
                     closeAllComposite3D();
                     for (EditorTextWindow txtwin : Project.getOpenTextWindows()) {
@@ -4164,7 +4197,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
                     getShell().setText(Version.getApplicationName());
                     getShell().update();
-                    treeItem_Project[0].setText(PartReviewDialog.getFileName());
+                    treeItem_Project[0].setText(fileName);
                     treeItem_Project[0].setData(Project.getProjectPath());
 
                     treeItem_ProjectParts[0].getItems().clear();
@@ -4173,6 +4206,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     treeItem_ProjectPrimitives48[0].getItems().clear();
                     treeItem_ProjectPrimitives8[0].getItems().clear();
 
+                    treeItem_OfficialParts[0].setData(null);
                     resetSearch();
 
                     treeItem_Project[0].getParent().build();
@@ -4222,6 +4256,51 @@ public class Editor3DWindow extends Editor3DDesign {
                     // FIXME Needs implementation for issue #229
                 }
                 regainFocus();
+            }
+
+            private ArrayList<String> buildFileList(String source, ArrayList<String> result, HashSet<String> files) {
+                String[] lines;
+
+                lines = pattern.split(source, -1);
+
+                for (String line : lines) {
+                    line = line.trim();
+                    if (line.startsWith("1 ")) { //$NON-NLS-1$
+                        final String[] data_segments = WHITESPACE.split(line.trim());
+                        if (data_segments.length > 14) {
+                            StringBuilder sb = new StringBuilder();
+                            for (int s = 14; s < data_segments.length - 1; s++) {
+                                sb.append(data_segments[s]);
+                                sb.append(" "); //$NON-NLS-1$
+                            }
+                            sb.append(data_segments[data_segments.length - 1]);
+                            String fileName = sb.toString();
+                            fileName = fileName.toLowerCase(Locale.ENGLISH);
+                            try {
+                                fileName = fileName.replaceAll("\\\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+                            } catch (Exception e) {
+                                // Workaround for windows OS / JVM BUG
+                                fileName = fileName.replace("\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+                            }
+
+                            if (files.contains(fileName)) continue;
+                            files.add(fileName);
+
+                            String source2 = FileHelper.downloadPartFile("parts/" + fileName); //$NON-NLS-1$
+                            if (source2 == null) source2 = FileHelper.downloadPartFile("parts/s/" + fileName); //$NON-NLS-1$
+                            if (source2 == null) source2 = FileHelper.downloadPartFile("p/" + fileName); //$NON-NLS-1$
+                            if (source2 == null) source2 = FileHelper.downloadPartFile("p/8/" + fileName); //$NON-NLS-1$
+                            if (source2 == null) source2 = FileHelper.downloadPartFile("p/48/" + fileName); //$NON-NLS-1$
+
+                            if (source2 != null) {
+                                result.add(fileName);
+                                result.add(source2);
+                                buildFileList(source2, result, files);
+                            }
+                        }
+                    }
+                }
+                return result;
             }
         });
 
