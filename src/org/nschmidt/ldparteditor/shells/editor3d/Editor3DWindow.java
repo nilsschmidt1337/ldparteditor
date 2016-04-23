@@ -112,6 +112,7 @@ import org.nschmidt.ldparteditor.dialogs.lines2pattern.Lines2PatternDialog;
 import org.nschmidt.ldparteditor.dialogs.logupload.LogUploadDialog;
 import org.nschmidt.ldparteditor.dialogs.newproject.NewProjectDialog;
 import org.nschmidt.ldparteditor.dialogs.options.OptionsDialog;
+import org.nschmidt.ldparteditor.dialogs.partreview.PartReviewDialog;
 import org.nschmidt.ldparteditor.dialogs.pathtruder.PathTruderDialog;
 import org.nschmidt.ldparteditor.dialogs.rectifier.RectifierDialog;
 import org.nschmidt.ldparteditor.dialogs.ringsandcones.RingsAndConesDialog;
@@ -4151,6 +4152,9 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 // FIXME Needs implementation for issue #229
+                if (new PartReviewDialog(getShell()).open() == IDialogConstants.OK_ID) {
+
+                }
                 regainFocus();
             }
         });
