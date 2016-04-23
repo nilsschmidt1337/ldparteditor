@@ -1551,7 +1551,7 @@ class Editor3DDesign extends ApplicationWindow {
                 public void widgetSelected(SelectionEvent e) {
                     if (Project.getFileToEdit() != null) {
                         Project.getFileToEdit().getVertexManager().addSnapshot();
-                        Project.getFileToEdit().getVertexManager().colourChangeSelection(16, .5f, .5f, .5f, 1f);
+                        Project.getFileToEdit().getVertexManager().colourChangeSelection(16, .5f, .5f, .5f, 1f, true);
                     }
                     Editor3DWindow.getWindow().regainFocus();
                 }
@@ -2995,7 +2995,7 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                     if (Project.getFileToEdit() != null) {
                         Project.getFileToEdit().getVertexManager().addSnapshot();
-                        Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
+                        Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
                     }
                     Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
                     btn_LastUsedColour[0].removeListener(SWT.Paint, btn_LastUsedColour[0].getListeners(SWT.Paint)[0]);
@@ -3030,7 +3030,7 @@ class Editor3DDesign extends ApplicationWindow {
                                     num = -1;
                                 }
                                 Project.getFileToEdit().getVertexManager().addSnapshot();
-                                Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
+                                Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
                             }
                             Editor3DWindow.getWindow().regainFocus();
                         }
