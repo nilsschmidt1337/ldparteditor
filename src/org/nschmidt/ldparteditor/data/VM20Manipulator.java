@@ -623,6 +623,7 @@ public class VM20Manipulator extends VM19ColourChanger {
 
         backupHideShowState();
 
+        boolean swapWinding = false;
         Matrix transformation = null;
         Vertex offset = null;
         if (tm == TransformationMode.TRANSLATE) offset = new Vertex(target.X, target.Y, target.Z);
@@ -710,9 +711,19 @@ public class VM20Manipulator extends VM19ColourChanger {
             BigDecimal sx = target.X;
             BigDecimal sy = target.Y;
             BigDecimal sz = target.Z;
-            if (sx.compareTo(BigDecimal.ZERO) == 0) sx = new BigDecimal("0.000000001"); //$NON-NLS-1$
-            if (sy.compareTo(BigDecimal.ZERO) == 0) sy = new BigDecimal("0.000000001"); //$NON-NLS-1$
-            if (sz.compareTo(BigDecimal.ZERO) == 0) sz = new BigDecimal("0.000000001"); //$NON-NLS-1$
+
+            int count = 0;
+            int cmp1 = 0;
+            int cmp2 = 0;
+            int cmp3 = 0;
+            if ((cmp1 = sx.compareTo(BigDecimal.ZERO)) == 0) sx = new BigDecimal("0.000000001"); //$NON-NLS-1$
+            if ((cmp2 = sy.compareTo(BigDecimal.ZERO)) == 0) sy = new BigDecimal("0.000000001"); //$NON-NLS-1$
+            if ((cmp3 = sz.compareTo(BigDecimal.ZERO)) == 0) sz = new BigDecimal("0.000000001"); //$NON-NLS-1$
+            if (cmp1 < 0) count++;
+            if (cmp2 < 0) count++;
+            if (cmp3 < 0) count++;
+            swapWinding = count == 1 || count == 3;
+
             transformation = new Matrix(
                     x ? sx : BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
                             BigDecimal.ZERO, y ? sy : BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
@@ -744,6 +755,11 @@ public class VM20Manipulator extends VM19ColourChanger {
             transformation = Matrix.mul(transformation, forward);
 
             transformSelection(transformation, null, moveAdjacentData);
+
+            if (swapWinding) {
+                backupHideShowState();
+                windingChangeSelection(syncWithTextEditors);
+            }
 
         }
 

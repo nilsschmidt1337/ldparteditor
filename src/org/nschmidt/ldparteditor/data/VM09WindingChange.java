@@ -32,7 +32,7 @@ public class VM09WindingChange extends VM08SlicerPro {
         super(linkedDatFile);
     }
 
-    public synchronized void windingChangeSelection() {
+    public synchronized void windingChangeSelection(boolean syncWithEditors) {
         if (linkedDatFile.isReadOnly())
             return;
 
@@ -319,7 +319,7 @@ public class VM09WindingChange extends VM08SlicerPro {
             selectedData.addAll(selectedCondlines);
             selectedData.addAll(selectedSubfiles);
             linkedDatFile.getVertexManager().restoreHideShowState();
-            syncWithTextEditors(true);
+            if (syncWithEditors) syncWithTextEditors(true);
             updateUnsavedStatus();
         }
 

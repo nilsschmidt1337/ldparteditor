@@ -943,7 +943,7 @@ public final class GDataCSG extends GData {
         HashSet<GDataCSG> newSelection = new HashSet<GDataCSG>(registeredData.putIfAbsent(df, new HashSet<GDataCSG>()));
         for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
             final GDataCSG g = it.next();
-            if (g.canSelect()) {
+            if (g != null && g.canSelect()) {
                 continue;
             }
             it.remove();
