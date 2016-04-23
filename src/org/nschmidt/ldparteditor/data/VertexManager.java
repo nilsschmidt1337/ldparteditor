@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.nio.FloatBuffer;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -28,6 +29,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.ScalableComposite;
 import org.nschmidt.ldparteditor.enums.View;
@@ -824,6 +826,26 @@ public final class VertexManager extends VM99Clipboard {
                 }
             }
         }
+
+        for (CSG csg : GDataCSG.getCSGs(linkedDatFile)) {
+            for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
+                final GData3 triangle = pair.getKey();
+
+                triQuadVerts[0] = new Vertex(triangle.x1, triangle.y1, triangle.z1);
+                triQuadVerts[1] = new Vertex(triangle.x2, triangle.y2, triangle.z2);
+                triQuadVerts[2] = new Vertex(triangle.x3, triangle.y3, triangle.z3);
+
+                if (powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
+                    if (dist[0] < minDist) {
+                        minDist = dist[0];
+                        minPoint.set(point);
+                        objectSelected = true;
+                        selectedObject = triangle;
+                    }
+                }
+            }
+        }
+
         for (GData4 quad : quads.keySet()) {
             if (hiddenData.contains(quad))
                 continue;
