@@ -251,7 +251,7 @@ public enum Project {
      * @param defaultProject
      *            {@code true} if the project is the default project
      */
-    private static void setDefaultProject(boolean defaultProject) {
+    public static void setDefaultProject(boolean defaultProject) {
         Project.defaultProject = defaultProject;
     }
 
