@@ -850,6 +850,9 @@ public enum DatParser {
                     } else if (line.startsWith("CYLINDER", 11)) { //$NON-NLS-1$
                         result.remove(0);
                         result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CYLINDER, line, parent)));
+                    } else if (line.startsWith("MESH", 11)) { //$NON-NLS-1$
+                        result.remove(0);
+                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.MESH, line, parent)));
                     } else if (line.startsWith("CONE", 11)) { //$NON-NLS-1$
                         result.remove(0);
                         result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CONE, line, parent)));

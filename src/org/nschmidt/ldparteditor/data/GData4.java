@@ -44,21 +44,21 @@ public final class GData4 extends GData {
     public final float b;
     public final float a;
 
-    final float x1;
-    final float y1;
-    final float z1;
+    public final float x1;
+    public final float y1;
+    public final float z1;
 
-    final float x2;
-    final float y2;
-    final float z2;
+    public final float x2;
+    public final float y2;
+    public final float z2;
 
-    final float x3;
-    final float y3;
-    final float z3;
+    public final float x3;
+    public final float y3;
+    public final float z3;
 
-    final float x4;
-    final float y4;
-    final float z4;
+    public final float x4;
+    public final float y4;
+    public final float z4;
 
     final BigDecimal X1;
     final BigDecimal Y1;

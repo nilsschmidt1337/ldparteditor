@@ -121,6 +121,7 @@ public class CSG {
     public static final byte EPSILON = 10;
     public static final byte CONE = 11;
     public static final byte TRANSFORM = 12;
+    public static final byte MESH = 13;
 
     /**
      * Constructs a CSG from a list of {@link Polygon} instances.
