@@ -16,8 +16,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helpers;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.sun.org.apache.xerces.internal.impl.io.UTF8Reader;
 
 /**
  * A helper enum class for file actions
@@ -125,6 +130,34 @@ public enum FileHelper {
             return file;
         }
         return null;
+    }
+
+    public static String downloadPartFile(String name) {
+
+        final StringBuilder sb = new StringBuilder();
+
+        UTF8Reader in = null;
+        try {
+            in = new UTF8Reader(new URL("http://www.ldraw.org/library/unofficial/" + name).openStream()); //$NON-NLS-1$
+            int c;
+            while ((c = in.read()) != -1) {
+                sb.append((char) c);
+            }
+
+        } catch (MalformedURLException e) {
+            return null;
+        } catch (IOException e) {
+            return null;
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    return null;
+                }
+            }
+        }
+        return sb.toString();
     }
 
 }
