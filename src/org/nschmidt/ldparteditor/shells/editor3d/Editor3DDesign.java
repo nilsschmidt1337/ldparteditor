@@ -245,6 +245,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_SelectIsolatedVertices = new MenuItem[1];
     final MenuItem[] mntm_SelectSingleVertex = new MenuItem[1];
 
+    final MenuItem[] mntm_PartReview = new MenuItem[1];
     final MenuItem[] mntm_Edger2 = new MenuItem[1];
     final MenuItem[] mntm_Txt2Dat = new MenuItem[1];
     final MenuItem[] mntm_Rectifier = new MenuItem[1];
@@ -2072,6 +2073,11 @@ class Editor3DDesign extends ApplicationWindow {
                 }
             });
             {
+                {
+                    MenuItem mntm_PartReview = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_PartReview[0] = mntm_PartReview;
+                    mntm_PartReview.setText(I18n.E3D_PartReview);
+                }
                 {
                     MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);
                     this.mntm_Edger2[0] = mntm_Edger2;

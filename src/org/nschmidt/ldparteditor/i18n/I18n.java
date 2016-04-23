@@ -484,6 +484,10 @@ public final class I18n {
     public static final String E3D_Options = E3D.getString(getProperty());
     public static final String E3D_Origin = E3D.getString(getProperty());
     public static final String E3D_ParseInline = E3D.getString(getProperty());
+    public static final String E3D_PartReview = E3D.getString(getProperty());
+    public static final String E3D_PartReviewEnterPartName = E3D.getString(getProperty());
+    public static final String E3D_PartReviewError = E3D.getString(getProperty());
+    public static final String E3D_PartReviewInfo = E3D.getString(getProperty());
     public static final String E3D_PathTruder = E3D.getString(getProperty());
     public static final String E3D_Pipette = E3D.getString(getProperty());
     public static final String E3D_PortableNetworkGraphics = E3D.getString(getProperty());

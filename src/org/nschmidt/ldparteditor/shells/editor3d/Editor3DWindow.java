@@ -4147,7 +4147,13 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-
+        mntm_PartReview[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                // FIXME Needs implementation for issue #229
+                regainFocus();
+            }
+        });
 
         mntm_Edger2[0].addSelectionListener(new SelectionAdapter() {
             @Override
