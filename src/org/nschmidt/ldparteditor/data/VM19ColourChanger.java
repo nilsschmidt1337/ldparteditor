@@ -30,7 +30,7 @@ class VM19ColourChanger extends VM18LineConverter {
         super(linkedDatFile);
     }
 
-    public final synchronized void colourChangeSelection(int index, float r, float g, float b, float a) {
+    public final synchronized void colourChangeSelection(int index, float r, float g, float b, float a, boolean syncWithEditors) {
         if (linkedDatFile.isReadOnly())
             return;
 
@@ -239,7 +239,7 @@ class VM19ColourChanger extends VM18LineConverter {
             selectedData.addAll(selectedCondlines);
             selectedData.addAll(selectedSubfiles);
             restoreHideShowState();
-            syncWithTextEditors(true);
+            if (syncWithEditors) syncWithTextEditors(true);
             updateUnsavedStatus();
         } else {
             restoreHideShowState();

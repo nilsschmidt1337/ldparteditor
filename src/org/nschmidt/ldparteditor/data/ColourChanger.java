@@ -33,7 +33,7 @@ public enum ColourChanger {
     public static void changeColour(int lineStart, int lineEnd, DatFile datFile, int colourNumber, float r, float g, float b, float a) {
         Text2SelectionConverter.convert(lineStart, lineEnd, datFile);
         datFile.getVertexManager().skipSyncTimer();
-        datFile.getVertexManager().colourChangeSelection(colourNumber, r, g, b, a);
+        datFile.getVertexManager().colourChangeSelection(colourNumber, r, g, b, a, true);
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {
                 if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {

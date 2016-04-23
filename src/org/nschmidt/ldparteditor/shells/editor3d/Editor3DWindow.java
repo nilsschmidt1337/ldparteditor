@@ -92,6 +92,7 @@ import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData0;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GDataBFC;
+import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.GDataPNG;
 import org.nschmidt.ldparteditor.data.GraphicalDataTools;
 import org.nschmidt.ldparteditor.data.LibraryManager;
@@ -1381,7 +1382,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     num = -1;
                                 }
                                 Project.getFileToEdit().getVertexManager().addSnapshot();
-                                Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2.getR(), gColour2.getG(), gColour2.getB(), gColour2.getA());
+                                Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2.getR(), gColour2.getG(), gColour2.getB(), gColour2.getA(), true);
                             }
                             regainFocus();
                         }
@@ -1418,14 +1419,24 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-
-        btn_Pipette[0].addSelectionListener(new SelectionAdapter() {
+        btn_Decolour[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (Project.getFileToEdit() != null) {
+                if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                     VertexManager vm = Project.getFileToEdit().getVertexManager();
                     vm.addSnapshot();
-                    // FIXME Needs implementation for issue #236
+                    vm.selectAll(new SelectorSettings(), true);
+                    GDataCSG.clearSelection(Project.getFileToEdit());
+                    GColour c = View.getLDConfigColour(16);
+                    vm.colourChangeSelection(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), false);
+                    vm.getSelectedData().removeAll(vm.getTriangles().keySet());
+                    vm.getSelectedData().removeAll(vm.getQuads().keySet());
+                    vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
+                    vm.getSelectedSubfiles().clear();
+                    vm.getSelectedTriangles().removeAll(vm.getTriangles().keySet());
+                    vm.getSelectedQuads().removeAll(vm.getQuads().keySet());
+                    c = View.getLDConfigColour(24);
+                    vm.colourChangeSelection(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), true);
                 }
             }
         });
@@ -1443,7 +1454,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             num = -1;
                         }
                         Project.getFileToEdit().getVertexManager().addSnapshot();
-                        Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
+                        Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
 
                         btn_LastUsedColour[0].removeListener(SWT.Paint, btn_LastUsedColour[0].getListeners(SWT.Paint)[0]);
                         btn_LastUsedColour[0].removeListener(SWT.Selection, btn_LastUsedColour[0].getListeners(SWT.Selection)[0]);
@@ -1474,7 +1485,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         num = -1;
                                     }
                                     Project.getFileToEdit().getVertexManager().addSnapshot();
-                                    Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
+                                    Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
                                 }
                                 regainFocus();
                             }
@@ -6485,7 +6496,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (!View.hasLDConfigColour(num)) {
                         num = -1;
                     }
-                    Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
+                    Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
                 }
             }
 
