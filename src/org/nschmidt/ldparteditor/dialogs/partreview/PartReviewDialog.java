@@ -23,4 +23,12 @@ public class PartReviewDialog extends PartReviewDesign {
         super(parentShell);
     }
 
+    public static String getFileName() {
+        return fileName;
+    }
+
+    public static void setFileName(String fileName) {
+        PartReviewDialog.fileName = fileName;
+    }
+
 }

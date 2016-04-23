@@ -4151,9 +4151,75 @@ public class Editor3DWindow extends Editor3DDesign {
         mntm_PartReview[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // FIXME Needs implementation for issue #229
                 if (new PartReviewDialog(getShell()).open() == IDialogConstants.OK_ID) {
 
+                    // Download first, then build the views
+
+
+                    closeAllComposite3D();
+                    for (EditorTextWindow txtwin : Project.getOpenTextWindows()) {
+                        txtwin.getShell().close();
+                    }
+                    Project.setDefaultProject(true);
+                    Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
+                    getShell().setText(Version.getApplicationName());
+                    getShell().update();
+                    treeItem_Project[0].setText(PartReviewDialog.getFileName());
+                    treeItem_Project[0].setData(Project.getProjectPath());
+
+                    treeItem_ProjectParts[0].getItems().clear();
+                    treeItem_ProjectSubparts[0].getItems().clear();
+                    treeItem_ProjectPrimitives[0].getItems().clear();
+                    treeItem_ProjectPrimitives48[0].getItems().clear();
+                    treeItem_ProjectPrimitives8[0].getItems().clear();
+
+                    resetSearch();
+
+                    treeItem_Project[0].getParent().build();
+                    treeItem_Project[0].getParent().redraw();
+                    treeItem_Project[0].getParent().update();
+
+                    {
+                        int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
+                        Editor3DWindow.getSashForm().getChildren()[1].dispose();
+                        CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
+                        cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
+                        DatFile df = View.DUMMY_DATFILE;
+                        Project.setFileToEdit(df);
+                        cmp_Container.getComposite3D().setLockableDatFileReference(df);
+                        Editor3DWindow.getSashForm().getParent().layout();
+                        Editor3DWindow.getSashForm().setWeights(mainSashWeights);
+
+                        SashForm s = cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
+                        ((CompositeContainer) s.getChildren()[0]).getComposite3D().getModifier().splitViewVertically();
+                        ((CompositeContainer) s.getChildren()[1]).getComposite3D().getModifier().splitViewVertically();
+                    }
+
+
+                    int state = 0;
+                    for (OpenGLRenderer renderer : getRenders()) {
+                        Composite3D c3d = renderer.getC3D();
+                        WidgetSelectionHelper.unselectAllChildButtons(c3d.mnu_renderMode);
+                        if (state == 0) {
+                            c3d.mntmNoBFC[0].setSelection(true);
+                            c3d.getModifier().setRenderMode(0);
+                        }
+                        if (state == 1) {
+                            c3d.mntmRandomColours[0].setSelection(true);
+                            c3d.getModifier().setRenderMode(1);
+                        }
+                        if (state == 2) {
+                            c3d.mntmCondlineMode[0].setSelection(true);
+                            c3d.getModifier().setRenderMode(6);
+                        }
+                        if (state == 3) {
+                            c3d.mntmWireframeMode[0].setSelection(true);
+                            c3d.getModifier().setRenderMode(-1);
+                        }
+                        state++;
+                    }
+
+                    // FIXME Needs implementation for issue #229
                 }
                 regainFocus();
             }
@@ -6651,11 +6717,13 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void closeAllComposite3D() {
+        canvasList.clear();
         ArrayList<OpenGLRenderer> renders2 = new ArrayList<OpenGLRenderer>(renders);
         for (OpenGLRenderer renderer : renders2) {
             Composite3D c3d = renderer.getC3D();
             c3d.getModifier().closeView();
         }
+        renders.clear();
     }
 
     public TreeData getDatFileTreeData(DatFile df) {

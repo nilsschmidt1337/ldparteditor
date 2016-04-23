@@ -113,7 +113,7 @@ public class Composite3D extends ScalableComposite {
     /** The "View Angles"-Menu */
     private final Menu mnu_viewAngles;
     /** The "Render Mode"-Menu */
-    private final Menu mnu_renderMode;
+    public final Menu mnu_renderMode;
     /** The "Line Mode"-Menu */
     private final Menu mnu_lineMode;
 
@@ -228,14 +228,14 @@ public class Composite3D extends ScalableComposite {
     /** The grid size */
     private float grid_scale = 1f;
 
-    final MenuItem[] mntmNoBFC = new MenuItem[1];
-    final MenuItem[] mntmRandomColours = new MenuItem[1];
+    public final MenuItem[] mntmNoBFC = new MenuItem[1];
+    public final MenuItem[] mntmRandomColours = new MenuItem[1];
     final MenuItem[] mntmBFCFrontBack = new MenuItem[1];
     final MenuItem[] mntmBFCBack = new MenuItem[1];
     final MenuItem[] mntmBFCReal = new MenuItem[1];
     final MenuItem[] mntmBFCTextured = new MenuItem[1];
-    final MenuItem[] mntmCondlineMode = new MenuItem[1];
-    final MenuItem[] mntmWireframeMode = new MenuItem[1];
+    public final MenuItem[] mntmCondlineMode = new MenuItem[1];
+    public final MenuItem[] mntmWireframeMode = new MenuItem[1];
     final MenuItem[] mntmAnaglyph = new MenuItem[1];
     final MenuItem[] mntmAxis = new MenuItem[1];
     final MenuItem[] mntmAlwaysBlack = new MenuItem[1];

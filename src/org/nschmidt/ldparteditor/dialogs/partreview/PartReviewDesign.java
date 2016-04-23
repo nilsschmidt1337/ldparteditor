@@ -18,6 +18,8 @@ package org.nschmidt.ldparteditor.dialogs.partreview;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -31,13 +33,15 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 
 class PartReviewDesign extends Dialog {
 
+    static String fileName = ""; //$NON-NLS-1$
+
     protected PartReviewDesign(Shell parentShell) {
         super(parentShell);
     }
 
     Button[] btn_ok = new Button[1];
     Button[] btn_cancel = new Button[1];
-    Text[] txt_file = new Text[1];
+    final Text[] txt_file = new Text[1];
 
     /**
      * Create contents of the dialog.
@@ -54,12 +58,19 @@ class PartReviewDesign extends Dialog {
         Label lbl_Unit = new Label(cmp_Container, SWT.NONE);
         lbl_Unit.setText(I18n.E3D_PartReviewEnterPartName);
 
-        Text txt_file = new Text(cmp_Container, SWT.NONE);
-        this.txt_file[0] = txt_file;
+        Text txt_file2 = new Text(cmp_Container, SWT.NONE);
+        this.txt_file[0] = txt_file2;
         GridData gd = new GridData();
         gd.grabExcessHorizontalSpace = true;
         gd.horizontalAlignment = SWT.FILL;
-        txt_file.setLayoutData(gd);
+        txt_file2.setLayoutData(gd);
+
+        this.txt_file[0].addModifyListener(new ModifyListener() {
+            @Override
+            public void modifyText(ModifyEvent e) {
+                fileName = txt_file[0].getText();
+            }
+        });
 
         Label lbl_Info = new Label(cmp_Container, SWT.NONE);
         lbl_Info.setText(I18n.E3D_PartReviewInfo);
