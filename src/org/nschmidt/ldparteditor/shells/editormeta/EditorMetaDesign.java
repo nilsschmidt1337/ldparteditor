@@ -155,6 +155,13 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] ev_csgTrans13_txt  = new Text[1];
     final Text[] ev_csgTrans14_txt  = new Text[1];
     final Text[] ev_csgTrans15_txt  = new Text[1];
+    final Text[] ev_csgEx1_txt = new Text[1];
+    final Text[] ev_csgEx2_txt = new Text[1];
+    final Text[] ev_csgEx3_txt = new Text[1];
+    final Text[] ev_csgEx4_txt = new Text[1];
+    final Text[] ev_csgEx5_txt = new Text[1];
+    final Text[] ev_csgEx6_txt = new Text[1];
+    final Text[] ev_csgEx7_txt = new Text[1];
     final Text[] ev_csgCompile_txt  = new Text[1];
     final Text[] ev_csgQuality_txt  = new Text[1];
     final Text[] ev_csgEpsilon_txt  = new Text[1];
@@ -1046,6 +1053,58 @@ class EditorMetaDesign extends ApplicationWindow {
                     txt_m.setMessage(I18n.META_M22);
                     txt_m.setToolTipText(I18n.META_TransMatrix);
                     ev_csgTrans15_txt[0] = txt_m;
+                }
+            }
+
+            {
+                Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
+                cmp_lpe.setLayout(new GridLayout(16, false));
+                Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
+                lbl_vertex.setText("0 !LPE CSG_EXT_CFG "); //$NON-NLS-1$
+                {
+                    Text txt_csgid1 = new Text(cmp_lpe, SWT.SEARCH);
+                    txt_csgid1.setMessage(I18n.META_CSGExtrude1a);
+                    txt_csgid1.setToolTipText(I18n.META_CSGExtrude1b);
+                    ev_csgEx1_txt[0] = txt_csgid1;
+                }
+                {
+                    Text txt_csgid2 = new Text(cmp_lpe, SWT.SEARCH);
+                    txt_csgid2.setMessage(I18n.META_CSGExtrude2a);
+                    txt_csgid2.setToolTipText(I18n.META_CSGExtrude2b);
+                    ev_csgEx2_txt[0] = txt_csgid2;
+
+                }
+                {
+                    Text txt_csgcol = new Text(cmp_lpe, SWT.SEARCH);
+                    txt_csgcol.setMessage(I18n.META_CSGExtrude3a);
+                    txt_csgcol.setToolTipText(I18n.META_CSGExtrude3b);
+                    ev_csgEx3_txt[0] = txt_csgcol;
+
+                }
+                {
+                    Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
+                    txt_x.setMessage(I18n.META_CSGExtrude4a);
+                    txt_x.setToolTipText(I18n.META_CSGExtrude4b);
+                    ev_csgEx4_txt[0] = txt_x;
+                }
+                {
+                    Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
+                    txt_y.setMessage(I18n.META_CSGExtrude5a);
+                    txt_y.setToolTipText(I18n.META_CSGExtrude5b);
+                    ev_csgEx5_txt[0] = txt_y;
+                }
+                {
+                    Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
+                    txt_z.setMessage(I18n.META_CSGExtrude6a);
+                    txt_z.setToolTipText(I18n.META_CSGExtrude6b);
+                    ev_csgEx6_txt[0] = txt_z;
+                }
+
+                {
+                    Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
+                    txt_m.setMessage(I18n.META_CSGExtrude7a);
+                    txt_m.setToolTipText(I18n.META_CSGExtrude7b);
+                    ev_csgEx7_txt[0] = txt_m;
                 }
             }
 

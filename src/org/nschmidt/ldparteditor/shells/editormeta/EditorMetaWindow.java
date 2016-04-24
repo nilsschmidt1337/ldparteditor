@@ -737,6 +737,37 @@ public class EditorMetaWindow extends EditorMetaDesign {
             final org.eclipse.swt.events.FocusAdapter a = new org.eclipse.swt.events.FocusAdapter() {
                 @Override
                 public void focusGained(FocusEvent e) {
+                    updateCSGextrude();
+                }
+            };
+
+            final ModifyListener m = new ModifyListener() {
+                @Override
+                public void modifyText(ModifyEvent e) {
+                    updateCSGextrude();
+                }
+            };
+
+            ev_csgEx1_txt[0].addFocusListener(a);
+            ev_csgEx1_txt[0].addModifyListener(m);
+            ev_csgEx2_txt[0].addFocusListener(a);
+            ev_csgEx2_txt[0].addModifyListener(m);
+            ev_csgEx3_txt[0].addFocusListener(a);
+            ev_csgEx3_txt[0].addModifyListener(m);
+            ev_csgEx4_txt[0].addFocusListener(a);
+            ev_csgEx4_txt[0].addModifyListener(m);
+            ev_csgEx5_txt[0].addFocusListener(a);
+            ev_csgEx5_txt[0].addModifyListener(m);
+            ev_csgEx6_txt[0].addFocusListener(a);
+            ev_csgEx6_txt[0].addModifyListener(m);
+            ev_csgEx7_txt[0].addFocusListener(a);
+            ev_csgEx7_txt[0].addModifyListener(m);
+        }
+
+        {
+            final org.eclipse.swt.events.FocusAdapter a = new org.eclipse.swt.events.FocusAdapter() {
+                @Override
+                public void focusGained(FocusEvent e) {
                     updateCSGaction();
                 }
             };
@@ -1014,6 +1045,57 @@ public class EditorMetaWindow extends EditorMetaDesign {
         sb.append(ev_csgTrans14_txt[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
         sb.append(ev_csgTrans15_txt[0].getText().trim());
+        lbl_lineToInsert[0].setText(sb.toString());
+        lbl_lineToInsert[0].getParent().layout();
+    }
+
+    private void updateCSGextrude() {
+        // 0 !LPE CSG_EXT_CFG seg_len= 100000.0 no_of_tr= 1 curve= 10.0 center= 0.5 rot= 0.0 comp= false invert= false
+        StringBuilder sb = new StringBuilder();
+        String arg;
+        sb.append("0 !LPE CSG_EXT_CFG "); //$NON-NLS-1$
+        sb.append("seg_len= "); //$NON-NLS-1$
+        if ((arg = ev_csgEx1_txt[0].getText().trim()).isEmpty()) {
+            sb.append("100000.0"); //$NON-NLS-1$
+        } else {
+            sb.append(arg);
+        }
+        sb.append(" no_of_tr= "); //$NON-NLS-1$
+        if ((arg = ev_csgEx2_txt[0].getText().trim()).isEmpty()) {
+            sb.append("1"); //$NON-NLS-1$
+        } else {
+            sb.append(arg);
+        }
+        sb.append(" curve= "); //$NON-NLS-1$
+        if ((arg = ev_csgEx3_txt[0].getText().trim()).isEmpty()) {
+            sb.append("10.0"); //$NON-NLS-1$
+        } else {
+            sb.append(arg);
+        }
+        sb.append(" center= "); //$NON-NLS-1$
+        if ((arg = ev_csgEx4_txt[0].getText().trim()).isEmpty()) {
+            sb.append("0.5"); //$NON-NLS-1$
+        } else {
+            sb.append(arg);
+        }
+        sb.append(" rot= "); //$NON-NLS-1$
+        if ((arg = ev_csgEx5_txt[0].getText().trim()).isEmpty()) {
+            sb.append("0.0"); //$NON-NLS-1$
+        } else {
+            sb.append(arg);
+        }
+        sb.append(" comp= "); //$NON-NLS-1$
+        if ((arg = ev_csgEx6_txt[0].getText().trim()).isEmpty()) {
+            sb.append("false"); //$NON-NLS-1$
+        } else {
+            sb.append(arg);
+        }
+        sb.append(" invert= "); //$NON-NLS-1$
+        if ((arg = ev_csgEx7_txt[0].getText().trim()).isEmpty()) {
+            sb.append("false"); //$NON-NLS-1$
+        } else {
+            sb.append(arg);
+        }
         lbl_lineToInsert[0].setText(sb.toString());
         lbl_lineToInsert[0].getParent().layout();
     }
