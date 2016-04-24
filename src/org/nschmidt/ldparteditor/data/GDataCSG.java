@@ -48,6 +48,7 @@ import org.nschmidt.csg.Polygon;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -79,6 +80,7 @@ public final class GDataCSG extends GData {
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> parsedData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
 
     private final ArrayList<GData> cachedData = new ArrayList<GData>();
+    private final PathTruderSettings extruderConfig = new PathTruderSettings();
 
     private static int quality = 16;
     private int global_quality = 16;
@@ -391,7 +393,17 @@ public final class GDataCSG extends GData {
                                 linkedCSG.put(ref1, csgMesh);
                                 break;
                             case CSG.EXTRUDE:
-                                // FIXME Needs implementation for issue #272
+                                CSGExtrude extruder = new CSGExtrude(this, cachedData, extruderConfig);
+                                CSGExtrude.fillCache(cachedData, this);
+                                CSG csgExtruder = extruder.toCSG(colour);
+                                idToGDataCSG.put(extruder.ID, this);
+                                if (modified && isSelected(df)) {
+                                    csgExtruder = transformWithManipulator(csgExtruder, m, matrix);
+                                } else {
+                                    csgExtruder = csgExtruder.transformed(matrix);
+                                }
+                                dataCSG = csgExtruder;
+                                linkedCSG.put(ref1, csgExtruder);
                                 break;
                             default:
                                 break;

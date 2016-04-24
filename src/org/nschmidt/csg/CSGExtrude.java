@@ -16,18 +16,125 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.csg;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.data.GDataTEX;
+import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 
-public class CSGExtrude {
+public class CSGExtrude extends CSGPrimitive implements Primitive {
 
     // FIXME Needs implementation for issue #272
+    public final int ID = id_counter.getAndIncrement();
 
-    public static boolean needCacheRefresh(ArrayList<GData> cachedData, GDataCSG gDataCSG, DatFile df) {
-        // FIXME Needs implementation for issue #272
+    private final GDataCSG start;
+    private final ArrayList<GData> cachedData;
+    private final PathTruderSettings pts;
+
+    public CSGExtrude(GDataCSG gDataCSG, ArrayList<GData> cachedData2, PathTruderSettings pts2) {
+        start = gDataCSG;
+        cachedData = cachedData2;
+        pts = pts2;
+    }
+
+    @Override
+    public List<Polygon> toPolygons(GColour colour) {
+        List<Polygon> polygons = new ArrayList<Polygon>();
+
+        cachedData.clear();
+        fillCache(cachedData, start);
+
+        for (GData g : cachedData) {
+            if (g.type() == 9) {
+                g = ((GDataTEX) g).getLinkedData();
+            }
+
+            // FIXME Needs implementation for issue #272
+        }
+
+        return polygons;
+    }
+
+
+    public static void fillCache(ArrayList<GData> cachedData, GData start) {
+        if (cachedData.isEmpty()) {
+            GData next = start;
+            while ((next = next.getNext()) != null && next.type() == 8) {
+
+            }
+            if (next == null) {
+                return;
+            }
+            next = next.getBefore();
+            while ((next = next.getNext()) != null) {
+                final int type = next.type();
+                if (type > 2 && type < 5) {
+                    cachedData.add(next);
+                } else if (type == 9) {
+                    final GData tex = ((GDataTEX) next).getLinkedData();
+                    if (tex != null) {
+                        final int textype = tex.type();
+                        if (textype > 2 && textype < 5) {
+                            cachedData.add(next);
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    public static boolean needCacheRefresh(ArrayList<GData> cachedData2, GData start, DatFile df) {
+        ArrayList<GData> cachedData = new ArrayList<GData>();
+        GData next = start;
+        while ((next = next.getNext()) != null && next.type() == 8) {
+
+        }
+        if (next == null) {
+            return false;
+        }
+        next = next.getBefore();
+        while ((next = next.getNext()) != null) {
+            final int type = next.type();
+            if (type == 2) {
+                cachedData.add(next);
+            } else if (type == 9) {
+                final GData tex = ((GDataTEX) next).getLinkedData();
+                if (tex != null) {
+                    final int textype = tex.type();
+                    if (textype == 2) {
+                        cachedData.add(next);
+                    }
+                }
+            } else {
+                break;
+            }
+        }
+
+        final int size = cachedData.size();
+        if (size != cachedData2.size()) {
+            GDataCSG.resetCSG(df, false);
+            GDataCSG.forceRecompile(df);
+            return true;
+        }
+
+        for (int i = 0; i < size; i++) {
+            if (cachedData.get(i) != cachedData2.get(i)) {
+                GDataCSG.resetCSG(df, false);
+                GDataCSG.forceRecompile(df);
+                return true;
+            }
+        }
+
         return false;
     }
 
+    @Override
+    public CSG toCSG(GColour colour) {
+        return CSG.fromPolygons(toPolygons(colour));
+    }
 }
