@@ -504,13 +504,14 @@ public class CSG {
      *
      * @param transform
      *            the transform to apply
+     * @param ID
      *
      * @return a transformed copy of this CSG
      */
-    public CSG transformed(Transform transform, GColour c) {
+    public CSG transformed(Transform transform, GColour c, int ID) {
         List<Polygon> newpolygons = new ArrayList<Polygon>();
         for (Polygon p : polygons) {
-            newpolygons.add(p.transformed(transform, c));
+            newpolygons.add(p.transformed(transform, c, ID));
         }
         CSG result = CSG.fromPolygons(newpolygons);
         return result;
@@ -533,11 +534,12 @@ public class CSG {
      *
      * @param transform
      *            the transform to apply
+     * @param ID
      *
      * @return a transformed copy of this CSG
      */
-    public CSG transformed(Matrix4f transform, GColour c) {
-        return transformed(new Transform().apply(transform), c);
+    public CSG transformed(Matrix4f transform, GColour c, int ID) {
+        return transformed(new Transform().apply(transform), c, ID);
     }
 
     /**

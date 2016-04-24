@@ -486,7 +486,13 @@ public final class GDataCSG extends GData {
                         break;
                     case CSG.TRANSFORM:
                         if (linkedCSG.containsKey(ref1) && matrix != null) {
-                            linkedCSG.put(ref2, linkedCSG.get(ref1).transformed(matrix, colour));
+                            idToGDataCSG.put(ID, this);
+                            if (modified && isSelected(df)) {
+                                dataCSG = linkedCSG.get(ref1).transformed(matrix).transformed(m, colour, ID);
+                            } else {
+                                dataCSG = linkedCSG.get(ref1).transformed(matrix, colour, ID);
+                            }
+                            linkedCSG.put(ref2, dataCSG);
                         }
                         break;
                     case CSG.QUALITY:
@@ -1001,7 +1007,7 @@ public final class GDataCSG extends GData {
                         if (result2 != null) {
                             for (GDataCSG c : registeredData.get(df)) {
                                 if (dpl.containsValue(c) && idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>()).containsKey(result2)) {
-                                    if (c.ref1 != null && c.ref2 == null && c.ref3 == null && c.type != CSG.COMPILE) {
+                                    if (c.type == CSG.TRANSFORM && c.ref1 != null && c.ref2 != null || c.ref1 != null && c.ref2 == null && c.ref3 == null && c.type != CSG.COMPILE) {
                                         resultObj = idToGDataCSG.get(df).getValue(result2);
                                         if (resultObj != null && resultObj.ref1 != null && resultObj.ref1.endsWith("#>null")) { //$NON-NLS-1$
                                             minDist = dist[0];
