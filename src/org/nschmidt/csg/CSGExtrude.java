@@ -72,7 +72,11 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
         for (GData g : cachedData) {
             if (g.type() == 9) {
                 g = ((GDataTEX) g).getLinkedData();
-            } else {
+                if (g.type() == 2) {
+                    g = ((GData2) g).unboundCopy();
+                }
+            }
+            if (g.type() == 2) {
                 sd.add(g);
                 sl.add((GData2) g);
             }
@@ -80,7 +84,16 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
 
         vm.pathTruder(pts, false);
 
-        for (GData g : vm.getSelectedData()) {
+        for (GData g : cachedData) {
+            if (g.type() == 9) {
+                g = ((GDataTEX) g).getLinkedData();
+            }
+            if (g.type() > 2 && g.type() < 5) {
+                sd.add(g);
+            }
+        }
+
+        for (GData g : sd) {
             if (g.type() == 3) {
                 GData3 g3 = (GData3) g;
                 GColour colour2 = colour;
@@ -138,13 +151,13 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
             while ((next = next.getNext()) != null) {
                 final int type = next.type();
                 if (type == 0) continue;
-                if (type == 2 && ((GData2) next).isLine) {
+                if (type > 2 && type < 5 || type == 2 && ((GData2) next).isLine) {
                     cachedData.add(next);
                 } else if (type == 9) {
                     final GData tex = ((GDataTEX) next).getLinkedData();
                     if (tex != null) {
                         final int textype = tex.type();
-                        if (textype == 2 && ((GData2) tex).isLine) {
+                        if (textype > 2 && textype < 5 || textype == 2 && ((GData2) tex).isLine) {
                             cachedData.add(next);
                         }
                     }
@@ -168,13 +181,13 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
         while ((next = next.getNext()) != null) {
             final int type = next.type();
             if (type == 0) continue;
-            if (type == 2 && ((GData2) next).isLine) {
+            if (type > 2 && type < 5 || type == 2 && ((GData2) next).isLine) {
                 cachedData.add(next);
             } else if (type == 9) {
                 final GData tex = ((GDataTEX) next).getLinkedData();
                 if (tex != null) {
                     final int textype = tex.type();
-                    if (textype == 2 && ((GData2) tex).isLine) {
+                    if (textype > 2 && textype < 5 || textype == 2 && ((GData2) tex).isLine) {
                         cachedData.add(next);
                     }
                 }

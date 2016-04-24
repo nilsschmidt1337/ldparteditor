@@ -69,43 +69,39 @@ class VM07PathTruder extends VM06Edger2 {
             final GData2 shape2Normal;
             GData2 shape1Normal2 = null;
             GData2 shape2Normal2 = null;
-            GData data2draw = linkedDatFile.getDrawChainStart();
-            while ((data2draw = data2draw.getNext()) != null) {
-                if (originalSelection.contains(data2draw)) {
-                    GData2 line = (GData2) data2draw;
-                    switch (line.colourNumber) {
-                    case 1:
-                        path1.add(line);
-                        break;
-                    case 2:
-                        path2.add(line);
-                        break;
-                    case 5:
-                        shape1.add(line);
-                        break;
-                    case 7:
-                        lineIndicators.add(line);
-                        break;
-                    case 13:
-                        shape2.add(line);
-                        break;
-                    case 4:
-                        if (shape1Normal2 == null) {
-                            shape1Normal2 = line;
-                        } else {
-                            return;
-                        }
-                        break;
-                    case 12:
-                        if (shape2Normal2 == null) {
-                            shape2Normal2 = line;
-                        } else {
-                            return;
-                        }
-                        break;
-                    default:
-                        break;
+            for (GData2 line : originalSelection) {
+                switch (line.colourNumber) {
+                case 1:
+                    path1.add(line);
+                    break;
+                case 2:
+                    path2.add(line);
+                    break;
+                case 5:
+                    shape1.add(line);
+                    break;
+                case 7:
+                    lineIndicators.add(line);
+                    break;
+                case 13:
+                    shape2.add(line);
+                    break;
+                case 4:
+                    if (shape1Normal2 == null) {
+                        shape1Normal2 = line;
+                    } else {
+                        return;
                     }
+                    break;
+                case 12:
+                    if (shape2Normal2 == null) {
+                        shape2Normal2 = line;
+                    } else {
+                        return;
+                    }
+                    break;
+                default:
+                    break;
                 }
             }
             if (shape1Normal2 == null || shape1.isEmpty() || path1.isEmpty() || path2.isEmpty() || shape2Normal2 != null && shape2.isEmpty()) {
@@ -128,6 +124,11 @@ class VM07PathTruder extends VM06Edger2 {
                 Set<Vertex> liVerts = new TreeSet<Vertex>();
                 for (GData2 ind : lineIndicators) {
                     Vertex[] verts = lines.get(ind);
+                    if (verts == null) {
+                        verts = new Vertex[2];
+                        verts[0] = new Vertex(ind.X1, ind.Y1, ind.Z1);
+                        verts[1] = new Vertex(ind.X2, ind.Y2, ind.Z2);
+                    }
                     liVerts.add(verts[0]);
                     liVerts.add(verts[1]);
                 }
@@ -141,6 +142,12 @@ class VM07PathTruder extends VM06Edger2 {
                     int ssm = ss - 1;
                     for (int i = 0; i < ss; i++) {
                         Vertex[] verts = lines.get(shape1.get(i));
+                        if (verts == null) {
+                            GData2 ind = shape1.get(i);
+                            verts = new Vertex[2];
+                            verts[0] = new Vertex(ind.X1, ind.Y1, ind.Z1);
+                            verts[1] = new Vertex(ind.X2, ind.Y2, ind.Z2);
+                        }
                         if (i == 0) {
                             if (liVerts.contains(verts[0])) {
                                 shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour(), true));
@@ -155,6 +162,12 @@ class VM07PathTruder extends VM06Edger2 {
                             }
                         } else {
                             Vertex[] verts2 = lines.get(shape1.get(i - 1));
+                            if (verts2 == null) {
+                                GData2 ind = shape1.get(i - 1);
+                                verts = new Vertex[2];
+                                verts[0] = new Vertex(ind.X1, ind.Y1, ind.Z1);
+                                verts[1] = new Vertex(ind.X2, ind.Y2, ind.Z2);
+                            }
                             if (verts2[1].equals(verts[0]) && liVerts.contains(verts[0])) {
                                 shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour(), true));
                                 indices.add(i);
@@ -173,6 +186,12 @@ class VM07PathTruder extends VM06Edger2 {
                     int ssm = ss - 1;
                     for (int i = 0; i < ss; i++) {
                         Vertex[] verts = lines.get(shape2.get(i));
+                        if (verts == null) {
+                            GData2 ind = shape2.get(i);
+                            verts = new Vertex[2];
+                            verts[0] = new Vertex(ind.X1, ind.Y1, ind.Z1);
+                            verts[1] = new Vertex(ind.X2, ind.Y2, ind.Z2);
+                        }
                         if (i == 0) {
                             if (indices.contains(i)) {
                                 shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour(), true));
@@ -1622,12 +1641,4 @@ class VM07PathTruder extends VM06Edger2 {
         if(dist > 0.9999999999) return 90;
         return 180 / Math.PI * Math.asin(dist);
     }
-
-
-    public ArrayList<GData> pathTruder_GetShape(final PathTruderSettings ps) {
-        final ArrayList<GData> result = new ArrayList<GData>();
-        pathTruder(ps, false);
-        return result;
-    }
-
 }
