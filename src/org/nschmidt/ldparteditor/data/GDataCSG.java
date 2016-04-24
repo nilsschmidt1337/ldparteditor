@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
@@ -80,6 +81,7 @@ public final class GDataCSG extends GData {
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> parsedData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
 
     private final ArrayList<GData> cachedData = new ArrayList<GData>();
+    private final List<Polygon> polygonCache = new ArrayList<Polygon>();
     private final PathTruderSettings extruderConfig = new PathTruderSettings();
 
     private static int quality = 16;
@@ -397,7 +399,7 @@ public final class GDataCSG extends GData {
                                 linkedCSG.put(ref1, csgCone);
                                 break;
                             case CSG.MESH:
-                                CSGMesh mesh = new CSGMesh(this, cachedData);
+                                CSGMesh mesh = new CSGMesh(this, cachedData, df, polygonCache);
                                 CSGMesh.fillCache(cachedData, this);
                                 CSG csgMesh = mesh.toCSG(colour);
                                 idToGDataCSG.put(mesh.ID, this);
@@ -410,7 +412,7 @@ public final class GDataCSG extends GData {
                                 linkedCSG.put(ref1, csgMesh);
                                 break;
                             case CSG.EXTRUDE:
-                                CSGExtrude extruder = new CSGExtrude(this, cachedData, extruderConfig, df.getVertexManager());
+                                CSGExtrude extruder = new CSGExtrude(this, cachedData, extruderConfig, df, polygonCache);
                                 CSGExtrude.fillCache(cachedData, this);
                                 CSG csgExtruder = extruder.toCSG(colour);
                                 idToGDataCSG.put(extruder.ID, this);

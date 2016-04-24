@@ -871,6 +871,12 @@ public final class VertexManager extends VM99Clipboard {
                 if (selectedObject.type() == 3) {
                     GData3 tri = (GData3) selectedObject;
                     Vertex[] verts = triangles.get(tri);
+                    if (verts == null) {
+                        verts = new Vertex[3];
+                        verts[0] = new Vertex(tri.x1, tri.y1, tri.z1, true);
+                        verts[1] = new Vertex(tri.x2, tri.y2, tri.z2, true);
+                        verts[2] = new Vertex(tri.x3, tri.y3, tri.z3, true);
+                    }
                     float xn = (verts[2].y - verts[0].y) * (verts[1].z - verts[0].z) - (verts[2].z - verts[0].z) * (verts[1].y - verts[0].y);
                     float yn = (verts[2].z - verts[0].z) * (verts[1].x - verts[0].x) - (verts[2].x - verts[0].x) * (verts[1].z - verts[0].z);
                     float zn = (verts[2].x - verts[0].x) * (verts[1].y - verts[0].y) - (verts[2].y - verts[0].y) * (verts[1].x - verts[0].x);
