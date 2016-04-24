@@ -265,7 +265,24 @@ public final class GDataCSG extends GData {
             break;
         case CSG.EXTRUDE:
             // FIXME Needs implementation for issue #272
-            // break;
+            if (data_segments.length == 17) {
+                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+                GColour c = DatParser.validateColour(data_segments[4], .5f, .5f, .5f, 1f);
+                if (c != null) {
+                    colour = c.clone();
+                } else {
+                    colour = View.getLDConfigColour(16);
+                }
+                matrix = MathHelper.matrixFromStrings(data_segments[5], data_segments[6], data_segments[7], data_segments[8], data_segments[11], data_segments[14], data_segments[9],
+                        data_segments[12], data_segments[15], data_segments[10], data_segments[13], data_segments[16]);
+            } else {
+                colour = null;
+                matrix = null;
+                ref1 = null;
+            }
+            ref2 = null;
+            ref3 = null;
+            break;
         default:
             ref1 = null;
             ref2 = null;
@@ -393,7 +410,7 @@ public final class GDataCSG extends GData {
                                 linkedCSG.put(ref1, csgMesh);
                                 break;
                             case CSG.EXTRUDE:
-                                CSGExtrude extruder = new CSGExtrude(this, cachedData, extruderConfig);
+                                CSGExtrude extruder = new CSGExtrude(this, cachedData, extruderConfig, df.getVertexManager());
                                 CSGExtrude.fillCache(cachedData, this);
                                 CSG csgExtruder = extruder.toCSG(colour);
                                 idToGDataCSG.put(extruder.ID, this);

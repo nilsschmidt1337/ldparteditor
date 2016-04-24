@@ -103,6 +103,7 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
             next = next.getBefore();
             while ((next = next.getNext()) != null) {
                 final int type = next.type();
+                if (type == 0) continue;
                 if (type > 2 && type < 5) {
                     cachedData.add(next);
                 } else if (type == 9) {
@@ -132,6 +133,7 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
         next = next.getBefore();
         while ((next = next.getNext()) != null) {
             final int type = next.type();
+            if (type == 0) continue;
             if (type > 2 && type < 5) {
                 cachedData.add(next);
             } else if (type == 9) {
