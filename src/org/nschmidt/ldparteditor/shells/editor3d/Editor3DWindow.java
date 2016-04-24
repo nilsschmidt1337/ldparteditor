@@ -4159,103 +4159,164 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (new PartReviewDialog(getShell()).open() == IDialogConstants.OK_ID) {
 
-                    String fileName = PartReviewDialog.getFileName().toLowerCase(Locale.ENGLISH);
-                    if (!fileName.endsWith(".dat")) fileName = fileName + ".dat"; //$NON-NLS-1$ //$NON-NLS-2$
                     try {
-                        fileName = fileName.replaceAll("\\\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
-                    } catch (Exception ex) {
-                        // Workaround for windows OS / JVM BUG
-                        fileName = fileName.replace("\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+                        new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
+                            @Override
+                            public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                                monitor.beginTask(I18n.E3D_PartReview, IProgressMonitor.UNKNOWN);
+                                Display.getDefault().asyncExec(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String fileName = PartReviewDialog.getFileName().toLowerCase(Locale.ENGLISH);
+                                        if (!fileName.endsWith(".dat")) fileName = fileName + ".dat"; //$NON-NLS-1$ //$NON-NLS-2$
+                                        String oldFileName = fileName;
+                                        try {
+                                            oldFileName = oldFileName.replaceAll("\\\\", File.separator); //$NON-NLS-1$
+                                        } catch (Exception ex) {
+                                            // Workaround for windows OS / JVM BUG
+                                            oldFileName = oldFileName.replace("\\", File.separator); //$NON-NLS-1$
+                                        }
+                                        try {
+                                            fileName = fileName.replaceAll("\\\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+                                        } catch (Exception ex) {
+                                            // Workaround for windows OS / JVM BUG
+                                            fileName = fileName.replace("\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+                                        }
+
+                                        // Download first, then build the views
+
+                                        // http://www.ldraw.org/library/unofficial
+
+                                        String source = FileHelper.downloadPartFile("parts/" + fileName); //$NON-NLS-1$
+                                        if (source == null) source = FileHelper.downloadPartFile("parts/s/" + fileName); //$NON-NLS-1$
+                                        if (source == null) source = FileHelper.downloadPartFile("p/" + fileName); //$NON-NLS-1$
+                                        if (source == null) source = FileHelper.downloadPartFile("p/8/" + fileName); //$NON-NLS-1$
+                                        if (source == null) source = FileHelper.downloadPartFile("p/48/" + fileName); //$NON-NLS-1$
+                                        if (source == null) {
+                                            MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                                            messageBox.setText(I18n.DIALOG_Error);
+                                            messageBox.setMessage(I18n.E3D_PartReviewError);
+                                            messageBox.open();
+                                            return;
+                                        }
+
+                                        HashSet<String> files = new HashSet<String>();
+                                        files.add(fileName);
+                                        ArrayList<String> list = buildFileList(source, new ArrayList<String>(), files);
+
+                                        closeAllComposite3D();
+                                        for (EditorTextWindow txtwin : Project.getOpenTextWindows()) {
+                                            txtwin.getShell().close();
+                                        }
+                                        Project.setDefaultProject(true);
+                                        Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
+                                        getShell().setText(Version.getApplicationName());
+                                        getShell().update();
+                                        treeItem_Project[0].setText(fileName);
+                                        treeItem_Project[0].setData(Project.getProjectPath());
+
+                                        treeItem_ProjectParts[0].getItems().clear();
+                                        treeItem_ProjectSubparts[0].getItems().clear();
+                                        treeItem_ProjectPrimitives[0].getItems().clear();
+                                        treeItem_ProjectPrimitives48[0].getItems().clear();
+                                        treeItem_ProjectPrimitives8[0].getItems().clear();
+
+                                        treeItem_OfficialParts[0].setData(null);
+
+                                        list.add(0, new File("project").getAbsolutePath() + File.separator + oldFileName); //$NON-NLS-1$
+                                        list.add(1, source);
+
+                                        DatFile main = View.DUMMY_DATFILE;
+
+                                        for (int i =  list.size() - 2; i >= 0; i -= 2) {
+                                            DatFile df;
+                                            TreeItem n;
+                                            fileName = list.get(i);
+                                            source = list.get(i + 1);
+                                            df = new DatFile(fileName);
+                                            df.setText(source);
+                                            Project.addUnsavedFile(df);
+                                            df.parseForData(true);
+                                            Project.getParsedFiles().add(df);
+                                            if (source.contains("0 !LDRAW_ORG Unofficial_Subpart")) { //$NON-NLS-1$
+                                                n = new TreeItem(treeItem_ProjectSubparts[0], SWT.NONE);
+                                                df.setType(DatType.PART);
+                                            } else if (source.contains("0 !LDRAW_ORG Unofficial_Primitive")) { //$NON-NLS-1$
+                                                n = new TreeItem(treeItem_ProjectPrimitives[0], SWT.NONE);
+                                                df.setType(DatType.PART);
+                                            } else if (source.contains("0 !LDRAW_ORG Unofficial_48_Primitive")) { //$NON-NLS-1$
+                                                n = new TreeItem(treeItem_ProjectPrimitives48[0], SWT.NONE);
+                                                df.setType(DatType.PART);
+                                            } else if (source.contains("0 !LDRAW_ORG Unofficial_8_Primitive")) { //$NON-NLS-1$
+                                                n = new TreeItem(treeItem_ProjectPrimitives8[0], SWT.NONE);
+                                                df.setType(DatType.PART);
+                                            } else {
+                                                n = new TreeItem(treeItem_ProjectParts[0], SWT.NONE);
+                                                df.setType(DatType.PART);
+                                            }
+                                            n.setText(fileName);
+                                            n.setData(df);
+
+                                            if (i == 0) {
+                                                main = df;
+                                            }
+                                        }
+
+                                        resetSearch();
+
+                                        treeItem_Project[0].getParent().build();
+                                        treeItem_Project[0].getParent().redraw();
+                                        treeItem_Project[0].getParent().update();
+
+                                        {
+                                            int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
+                                            Editor3DWindow.getSashForm().getChildren()[1].dispose();
+                                            CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
+                                            cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
+                                            DatFile df = main;
+                                            Project.setFileToEdit(df);
+                                            cmp_Container.getComposite3D().setLockableDatFileReference(df);
+                                            Editor3DWindow.getSashForm().getParent().layout();
+                                            Editor3DWindow.getSashForm().setWeights(mainSashWeights);
+
+                                            SashForm s = cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
+                                            ((CompositeContainer) s.getChildren()[0]).getComposite3D().getModifier().splitViewVertically();
+                                            ((CompositeContainer) s.getChildren()[1]).getComposite3D().getModifier().splitViewVertically();
+                                        }
+
+
+                                        int state = 0;
+                                        for (OpenGLRenderer renderer : getRenders()) {
+                                            Composite3D c3d = renderer.getC3D();
+                                            WidgetSelectionHelper.unselectAllChildButtons(c3d.mnu_renderMode);
+                                            if (state == 0) {
+                                                c3d.mntmNoBFC[0].setSelection(true);
+                                                c3d.getModifier().setRenderMode(0);
+                                            }
+                                            if (state == 1) {
+                                                c3d.mntmRandomColours[0].setSelection(true);
+                                                c3d.getModifier().setRenderMode(1);
+                                            }
+                                            if (state == 2) {
+                                                c3d.mntmCondlineMode[0].setSelection(true);
+                                                c3d.getModifier().setRenderMode(6);
+                                            }
+                                            if (state == 3) {
+                                                c3d.mntmWireframeMode[0].setSelection(true);
+                                                c3d.getModifier().setRenderMode(-1);
+                                            }
+                                            state++;
+                                        }
+                                        updateTree_unsavedEntries();
+                                        regainFocus();
+                                    }
+                                });
+                            }
+                        });
+                    } catch (InvocationTargetException consumed) {
+                    } catch (InterruptedException consumed) {
                     }
-
-                    // Download first, then build the views
-
-                    // http://www.ldraw.org/library/unofficial
-
-                    String source = FileHelper.downloadPartFile("parts/" + fileName); //$NON-NLS-1$
-                    if (source == null) source = FileHelper.downloadPartFile("parts/s/" + fileName); //$NON-NLS-1$
-                    if (source == null) source = FileHelper.downloadPartFile("p/" + fileName); //$NON-NLS-1$
-                    if (source == null) source = FileHelper.downloadPartFile("p/8/" + fileName); //$NON-NLS-1$
-                    if (source == null) source = FileHelper.downloadPartFile("p/48/" + fileName); //$NON-NLS-1$
-                    if (source == null) {
-                        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBox.setText(I18n.DIALOG_Error);
-                        messageBox.setMessage(I18n.E3D_PartReviewError);
-                        messageBox.open();
-                        return;
-                    }
-
-                    HashSet<String> files = new HashSet<String>();
-                    files.add(fileName);
-                    ArrayList<String> list = buildFileList(source, new ArrayList<String>(), files);
-
-                    closeAllComposite3D();
-                    for (EditorTextWindow txtwin : Project.getOpenTextWindows()) {
-                        txtwin.getShell().close();
-                    }
-                    Project.setDefaultProject(true);
-                    Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
-                    getShell().setText(Version.getApplicationName());
-                    getShell().update();
-                    treeItem_Project[0].setText(fileName);
-                    treeItem_Project[0].setData(Project.getProjectPath());
-
-                    treeItem_ProjectParts[0].getItems().clear();
-                    treeItem_ProjectSubparts[0].getItems().clear();
-                    treeItem_ProjectPrimitives[0].getItems().clear();
-                    treeItem_ProjectPrimitives48[0].getItems().clear();
-                    treeItem_ProjectPrimitives8[0].getItems().clear();
-
-                    treeItem_OfficialParts[0].setData(null);
-                    resetSearch();
-
-                    treeItem_Project[0].getParent().build();
-                    treeItem_Project[0].getParent().redraw();
-                    treeItem_Project[0].getParent().update();
-
-                    {
-                        int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
-                        Editor3DWindow.getSashForm().getChildren()[1].dispose();
-                        CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
-                        cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
-                        DatFile df = View.DUMMY_DATFILE;
-                        Project.setFileToEdit(df);
-                        cmp_Container.getComposite3D().setLockableDatFileReference(df);
-                        Editor3DWindow.getSashForm().getParent().layout();
-                        Editor3DWindow.getSashForm().setWeights(mainSashWeights);
-
-                        SashForm s = cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
-                        ((CompositeContainer) s.getChildren()[0]).getComposite3D().getModifier().splitViewVertically();
-                        ((CompositeContainer) s.getChildren()[1]).getComposite3D().getModifier().splitViewVertically();
-                    }
-
-
-                    int state = 0;
-                    for (OpenGLRenderer renderer : getRenders()) {
-                        Composite3D c3d = renderer.getC3D();
-                        WidgetSelectionHelper.unselectAllChildButtons(c3d.mnu_renderMode);
-                        if (state == 0) {
-                            c3d.mntmNoBFC[0].setSelection(true);
-                            c3d.getModifier().setRenderMode(0);
-                        }
-                        if (state == 1) {
-                            c3d.mntmRandomColours[0].setSelection(true);
-                            c3d.getModifier().setRenderMode(1);
-                        }
-                        if (state == 2) {
-                            c3d.mntmCondlineMode[0].setSelection(true);
-                            c3d.getModifier().setRenderMode(6);
-                        }
-                        if (state == 3) {
-                            c3d.mntmWireframeMode[0].setSelection(true);
-                            c3d.getModifier().setRenderMode(-1);
-                        }
-                        state++;
-                    }
-
-                    // FIXME Needs implementation for issue #229
                 }
-                regainFocus();
             }
 
             private ArrayList<String> buildFileList(String source, ArrayList<String> result, HashSet<String> files) {
@@ -4293,7 +4354,15 @@ public class Editor3DWindow extends Editor3DDesign {
                             if (source2 == null) source2 = FileHelper.downloadPartFile("p/48/" + fileName); //$NON-NLS-1$
 
                             if (source2 != null) {
-                                result.add(fileName);
+
+                                try {
+                                    fileName = fileName.replaceAll("\\\\", File.separator); //$NON-NLS-1$
+                                } catch (Exception ex) {
+                                    // Workaround for windows OS / JVM BUG
+                                    fileName = fileName.replace("\\", File.separator); //$NON-NLS-1$
+                                }
+
+                                result.add(new File("project").getAbsolutePath() + File.separator + fileName); //$NON-NLS-1$
                                 result.add(source2);
                                 buildFileList(source2, result, files);
                             }
