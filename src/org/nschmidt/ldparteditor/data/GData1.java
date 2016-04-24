@@ -2016,6 +2016,9 @@ public final class GData1 extends GData {
                 case CSG.MESH:
                     lineBuilder8.append("0 !LPE CSG_MESH "); //$NON-NLS-1$
                     break;
+                case CSG.EXTRUDE:
+                    lineBuilder8.append("0 !LPE CSG_EXTRUDE "); //$NON-NLS-1$
+                    break;
                 case CSG.INTERSECTION:
                     lineBuilder8.append("0 !LPE CSG_INTERSECTION "); //$NON-NLS-1$
                     break;
@@ -2038,6 +2041,11 @@ public final class GData1 extends GData {
                     lineBuilder8.append(data_segments2[3] + this.ID + " " + data_segments2[4] + this.ID + " " + data_segments2[5] + this.ID); //$NON-NLS-1$ //$NON-NLS-2$
                     break;
                 case CSG.TRANSFORM:
+                    lineBuilder8.append(data_segments2[3] + this.ID + " " + data_segments2[4] + this.ID + " " + data_segments2[5] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            MathHelper.csgMatrixMult(g8.matrix, productMatrix));
+                    break;
+                case CSG.EXTRUDE:
+                    // FIXME Needs implementation for issue #272
                     lineBuilder8.append(data_segments2[3] + this.ID + " " + data_segments2[4] + this.ID + " " + data_segments2[5] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;

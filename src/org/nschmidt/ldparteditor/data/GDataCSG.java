@@ -39,6 +39,7 @@ import org.nschmidt.csg.CSGCircle;
 import org.nschmidt.csg.CSGCone;
 import org.nschmidt.csg.CSGCube;
 import org.nschmidt.csg.CSGCylinder;
+import org.nschmidt.csg.CSGExtrude;
 import org.nschmidt.csg.CSGMesh;
 import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
@@ -260,6 +261,9 @@ public final class GDataCSG extends GData {
             colour = null;
             matrix = null;
             break;
+        case CSG.EXTRUDE:
+            // FIXME Needs implementation for issue #272
+            // break;
         default:
             ref1 = null;
             ref2 = null;
@@ -275,7 +279,7 @@ public final class GDataCSG extends GData {
         final HashSet<GDataCSG> parsedData = GDataCSG.parsedData.putIfAbsent(df, new HashSet<GDataCSG>());
         parsedData.add(this);
         final boolean modified = c3d.getManipulator().isModified();
-        if (deleteAndRecompile || modified || type == CSG.MESH && CSGMesh.needCacheRefresh(cachedData, this, df)) {
+        if (deleteAndRecompile || modified || type == CSG.MESH && CSGMesh.needCacheRefresh(cachedData, this, df) || type == CSG.EXTRUDE && CSGExtrude.needCacheRefresh(cachedData, this, df)) {
             final HashBiMap<Integer, GDataCSG> idToGDataCSG = GDataCSG.idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>());
             final HashMap<String, CSG> linkedCSG = GDataCSG.linkedCSG.putIfAbsent(df, new HashMap<String, CSG>());
             final HashSet<GDataCSG> registeredData = GDataCSG.registeredData.putIfAbsent(df, new HashSet<GDataCSG>());
@@ -298,6 +302,7 @@ public final class GDataCSG extends GData {
                     case CSG.CYLINDER:
                     case CSG.CONE:
                     case CSG.MESH:
+                    case CSG.EXTRUDE:
                         if (matrix != null) {
                             switch (type) {
                             case CSG.QUAD:
@@ -384,6 +389,9 @@ public final class GDataCSG extends GData {
                                 }
                                 dataCSG = csgMesh;
                                 linkedCSG.put(ref1, csgMesh);
+                                break;
+                            case CSG.EXTRUDE:
+                                // FIXME Needs implementation for issue #272
                                 break;
                             default:
                                 break;
@@ -623,6 +631,11 @@ public final class GDataCSG extends GData {
                 t = " CSG_MESH "; //$NON-NLS-1$
                 notChoosen = false;
             }
+        case CSG.EXTRUDE:
+            if (notChoosen) {
+                t = " CSG_EXTRUDE "; //$NON-NLS-1$
+                notChoosen = false;
+            }
         case CSG.TRANSFORM:
             if (notChoosen) {
                 t = " CSG_TRANSFORM "; //$NON-NLS-1$
@@ -658,7 +671,12 @@ public final class GDataCSG extends GData {
             if (col.equals(colour2))
                 col = "16"; //$NON-NLS-1$
             String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
-            return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            if (type == CSG.EXTRUDE) {
+                // FIXME Needs implementation for issue #272
+                return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            } else {
+                return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
         default:
             return text;
         }
@@ -696,6 +714,11 @@ public final class GDataCSG extends GData {
         case CSG.MESH:
             if (notChoosen) {
                 t = " CSG_MESH "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case CSG.EXTRUDE:
+            if (notChoosen) {
+                t = " CSG_EXTRUDE "; //$NON-NLS-1$
                 notChoosen = false;
             }
         case CSG.TRANSFORM:
@@ -745,7 +768,12 @@ public final class GDataCSG extends GData {
             if (type == CSG.TRANSFORM) {
                 tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + accurateLocalMatrix.toLDrawString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            if (type == CSG.EXTRUDE) {
+                // FIXME Needs implementation for issue #272
+                return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + accurateLocalMatrix.toLDrawString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            } else {
+                return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + accurateLocalMatrix.toLDrawString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
         default:
             return text;
         }
@@ -785,6 +813,11 @@ public final class GDataCSG extends GData {
                 t = " CSG_MESH "; //$NON-NLS-1$
                 notChoosen = false;
             }
+        case CSG.EXTRUDE:
+            if (notChoosen) {
+                t = " CSG_EXTRUDE "; //$NON-NLS-1$
+                notChoosen = false;
+            }
         case CSG.TRANSFORM:
             if (notChoosen) {
                 t = " CSG_TRANSFORM "; //$NON-NLS-1$
@@ -808,7 +841,12 @@ public final class GDataCSG extends GData {
             if (type == CSG.TRANSFORM) {
                 tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            if (type == CSG.EXTRUDE) {
+                // FIXME Needs implementation for issue #272
+                return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            } else {
+                return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
         default:
             return text;
         }
@@ -1060,6 +1098,11 @@ public final class GDataCSG extends GData {
                 t = " CSG_MESH "; //$NON-NLS-1$
                 notChoosen = false;
             }
+        case CSG.EXTRUDE:
+            if (notChoosen) {
+                t = " CSG_EXTRUDE "; //$NON-NLS-1$
+                notChoosen = false;
+            }
         case CSG.TRANSFORM:
             if (notChoosen) {
                 t = " CSG_TRANSFORM "; //$NON-NLS-1$
@@ -1094,7 +1137,12 @@ public final class GDataCSG extends GData {
             if (type == CSG.TRANSFORM) {
                 tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix, coordsDecimalPlaces, matrixDecimalPlaces ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            if (type == CSG.EXTRUDE) {
+                // FIXME Needs implementation for issue #272
+                return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix, coordsDecimalPlaces, matrixDecimalPlaces ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            } else {
+                return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix, coordsDecimalPlaces, matrixDecimalPlaces ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
         }
         return null;
     }
