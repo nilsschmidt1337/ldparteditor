@@ -868,6 +868,9 @@ public enum DatParser {
                     } else if (line.startsWith("EPSILON", 11)) { //$NON-NLS-1$
                         result.remove(0);
                         result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EPSILON, line, parent)));
+                    } else if (line.startsWith("EXTRUDE", 11)) { //$NON-NLS-1$
+                        result.remove(0);
+                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EXTRUDE, line, parent)));
                     }
                 } else if (line.startsWith("PNG", 7) && depth == 0 && data_segments.length >= 12) { //$NON-NLS-1$
                     try {

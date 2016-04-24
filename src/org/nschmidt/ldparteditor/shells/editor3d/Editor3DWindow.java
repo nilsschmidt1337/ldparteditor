@@ -4228,12 +4228,15 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                         DatFile main = View.DUMMY_DATFILE;
 
+                                        HashSet<DatFile> dfsToOpen = new HashSet<DatFile>();
+
                                         for (int i =  list.size() - 2; i >= 0; i -= 2) {
                                             DatFile df;
                                             TreeItem n;
                                             fileName = list.get(i);
                                             source = list.get(i + 1);
                                             df = new DatFile(fileName);
+                                            dfsToOpen.add(df);
                                             df.setText(source);
                                             Project.addUnsavedFile(df);
                                             df.parseForData(true);
@@ -4261,6 +4264,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                                 main = df;
                                             }
                                         }
+
+                                        dfsToOpen.remove(main);
 
                                         resetSearch();
 
@@ -4308,6 +4313,14 @@ public class Editor3DWindow extends Editor3DDesign {
                                             state++;
                                         }
                                         updateTree_unsavedEntries();
+
+                                        EditorTextWindow txt = new EditorTextWindow();
+                                        txt.run(main);
+
+                                        for (DatFile df : dfsToOpen) {
+                                            txt.openNewDatFileTab(df);
+                                        }
+
                                         regainFocus();
                                     }
                                 });

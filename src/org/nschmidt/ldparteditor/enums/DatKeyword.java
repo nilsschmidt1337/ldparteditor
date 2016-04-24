@@ -95,6 +95,9 @@ public enum DatKeyword {
         keywords.add("CSG_INTERSECTION"); //$NON-NLS-1$
         keywords.add("CSG_TRANSFORM"); //$NON-NLS-1$
 
+        keywords.add("DEFAULT"); //$NON-NLS-1$
+
+        keywords.add("CSG_EXTRUDE"); //$NON-NLS-1$
         keywords.add("CSG_MESH"); //$NON-NLS-1$
         keywords.add("CSG_CUBOID"); //$NON-NLS-1$
         keywords.add("CSG_ELLIPSOID"); //$NON-NLS-1$

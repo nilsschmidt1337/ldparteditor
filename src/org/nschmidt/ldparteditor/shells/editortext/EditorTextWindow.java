@@ -236,21 +236,7 @@ public class EditorTextWindow extends EditorTextDesign {
             public void widgetSelected(SelectionEvent e) {
                 DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, null);
                 if (df != null) {
-                    Editor3DWindow.getWindow().addRecentFile(df);
-                    final File f = new File(df.getNewName());
-                    if (f.getParentFile() != null) {
-                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
-                    }
-                    if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
-                        {
-                            CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
-                            tbtmnewItem.setWindow(editorTextWindow);
-                            tbtmnewItem.getState().setFileNameObj(df);
-                            tabFolder[0].setSelection(tbtmnewItem);
-                            tbtmnewItem.parseForErrorAndHints();
-                            tbtmnewItem.getTextComposite().redraw();
-                        }
-                    }
+                    openNewDatFileTab(df);
                 }
             }
         });
@@ -1181,8 +1167,16 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         }
 
+        HashSet<DatFile> myFiles = new HashSet<DatFile>();
+        for (CTabItem tab : tabFolder[0].getItems()) {
+            CompositeTab cTab = (CompositeTab) tab;
+            myFiles.add(cTab.getState().getFileNameObj());
+        }
+
+        unsavedFiles.retainAll(myFiles);
+
         for (DatFile df : unsavedFiles) {
-            if (!df.getText().equals(df.getOriginalText()) || df.isVirtual() && !df.getText().trim().isEmpty()) {
+            if (df != null && !df.getText().equals(df.getOriginalText()) || df.isVirtual() && !df.getText().trim().isEmpty()) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
                 messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
 
@@ -1338,6 +1332,24 @@ public class EditorTextWindow extends EditorTextDesign {
             ct.insert(""); //$NON-NLS-1$
             ct.setSelection(new Point(x, x));
             ct.forceFocus();
+        }
+    }
+
+    public void openNewDatFileTab(DatFile df) {
+        Editor3DWindow.getWindow().addRecentFile(df);
+        final File f = new File(df.getNewName());
+        if (f.getParentFile() != null) {
+            Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+        }
+        if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
+            {
+                CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
+                tbtmnewItem.setWindow(editorTextWindow);
+                tbtmnewItem.getState().setFileNameObj(df);
+                tabFolder[0].setSelection(tbtmnewItem);
+                tbtmnewItem.parseForErrorAndHints();
+                tbtmnewItem.getTextComposite().redraw();
+            }
         }
     }
 }
