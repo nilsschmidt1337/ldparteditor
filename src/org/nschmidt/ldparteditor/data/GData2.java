@@ -178,6 +178,10 @@ public final class GData2 extends GData {
         this.lGeom = null;
     }
 
+    public GData2 unboundCopy() {
+        return new GData2(new Vertex(x1, y1, z1), new Vertex(x2, y2, z2), parent, new GColour(colourNumber, r, g, b, a), isLine);
+    }
+
     /**
      * FOR TEXMAP ONLY!
      *
