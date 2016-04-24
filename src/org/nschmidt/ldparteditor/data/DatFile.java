@@ -247,6 +247,9 @@ public final class DatFile {
         default:
             break;
         }
+
+        GDataCSG.finishCacheCleanup(c3d.getLockableDatFileReference());
+
         if (c3d.isDrawingSolidMaterials() && renderMode != 5)
             vertices.showHidden();
     }

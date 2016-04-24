@@ -33,7 +33,6 @@ import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 
 public class CSGExtrude extends CSGPrimitive implements Primitive {
 
-    // FIXME Needs implementation for issue #272
     public final int ID = id_counter.getAndIncrement();
 
     private final GDataCSG start;
@@ -77,8 +76,6 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
                 sd.add(g);
                 sl.add((GData2) g);
             }
-
-            // FIXME Needs implementation for issue #272
         }
 
         vm.pathTruder(pts, false);

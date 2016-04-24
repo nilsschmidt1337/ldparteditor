@@ -2045,10 +2045,6 @@ public final class GData1 extends GData {
                             MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;
                 case CSG.EXTRUDE:
-                    // FIXME Needs implementation for issue #272
-                    lineBuilder8.append(data_segments2[3] + this.ID + " " + data_segments2[4] + this.ID + " " + data_segments2[5] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            MathHelper.csgMatrixMult(g8.matrix, productMatrix));
-                    break;
                 case CSG.QUAD:
                 case CSG.CUBOID:
                 case CSG.ELLIPSOID:
@@ -2060,6 +2056,7 @@ public final class GData1 extends GData {
                     break;
                 case CSG.QUALITY:
                 case CSG.EPSILON:
+                case CSG.EXTRUDE_CFG:
                     lineBuilder8.append(g8.getNiceString());
                     break;
                 case CSG.COMPILE:

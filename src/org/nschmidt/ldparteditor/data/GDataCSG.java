@@ -79,10 +79,15 @@ public final class GDataCSG extends GData {
 
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> registeredData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> parsedData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
+    private final static ThreadsafeHashMap<DatFile, PathTruderSettings> globalExtruderConfig = new ThreadsafeHashMap<DatFile, PathTruderSettings>();
+    private final static ThreadsafeHashMap<DatFile, Boolean> clearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
+    private final static ThreadsafeHashMap<DatFile, Boolean> fullClearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
+
 
     private final ArrayList<GData> cachedData = new ArrayList<GData>();
     private final List<Polygon> polygonCache = new ArrayList<Polygon>();
-    private final PathTruderSettings extruderConfig = new PathTruderSettings();
+    private PathTruderSettings extruderConfig = new PathTruderSettings();
+
 
     private static int quality = 16;
     private int global_quality = 16;
@@ -102,6 +107,7 @@ public final class GDataCSG extends GData {
 
     public synchronized static void forceRecompile(DatFile df) {
         registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(null);
+        clearPolygonCache.putIfAbsent(df, true);
         Plane.EPSILON = 1e-3;
     }
 
@@ -125,8 +131,11 @@ public final class GDataCSG extends GData {
         quality = useLowQuality ? 12 : 16;
         HashSet<GDataCSG> ref = new HashSet<GDataCSG>(registeredData.putIfAbsent(df, new HashSet<GDataCSG>()));
         ref.removeAll(parsedData.putIfAbsent(df, new HashSet<GDataCSG>()));
+        clearPolygonCache.putIfAbsent(df, true);
+        fullClearPolygonCache.putIfAbsent(df, true);
         deleteAndRecompile = !ref.isEmpty();
         if (deleteAndRecompile) {
+            globalExtruderConfig.put(df, new PathTruderSettings());
             registeredData.get(df).clear();
             registeredData.get(df).add(null);
             linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).clear();
@@ -152,6 +161,8 @@ public final class GDataCSG extends GData {
     // CASE 2 0 !LPE [CSG TAG] [ID] [ID2] [ID3] 6
     // CASE 3 0 !LPE [CSG TAG] [ID] 4
     public GDataCSG(DatFile df, byte type, String csgLine, GData1 parent) {
+        clearPolygonCache.put(df, true);
+        fullClearPolygonCache.put(df, false);
         this.parent = parent;
         registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(this);
         String[] data_segments = csgLine.trim().split("\\s+"); //$NON-NLS-1$
@@ -175,6 +186,7 @@ public final class GDataCSG extends GData {
         case CSG.CUBOID:
         case CSG.CYLINDER:
         case CSG.MESH:
+        case CSG.EXTRUDE:
         case CSG.CONE:
             if (data_segments.length == 17) {
                 ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
@@ -265,25 +277,30 @@ public final class GDataCSG extends GData {
             colour = null;
             matrix = null;
             break;
-        case CSG.EXTRUDE:
-            // FIXME Needs implementation for issue #272
-            if (data_segments.length == 17) {
+        case CSG.EXTRUDE_CFG:
+            if (data_segments.length == 4 && "DEFAULT".equals(data_segments[3])) { //$NON-NLS-1$
+                extruderConfig = new PathTruderSettings();
                 ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
-                GColour c = DatParser.validateColour(data_segments[4], .5f, .5f, .5f, 1f);
-                if (c != null) {
-                    colour = c.clone();
-                } else {
-                    colour = View.getLDConfigColour(16);
+            } else if (data_segments.length == 17) {
+                try {
+                    extruderConfig.setMaxPathSegmentLength(new BigDecimal(data_segments[4]));
+                    extruderConfig.setTransitionCount(Integer.parseInt(data_segments[6]));
+                    extruderConfig.setTransitionCurveControl(new BigDecimal(data_segments[8]));
+                    extruderConfig.setTransitionCurveCenter(new BigDecimal(data_segments[10]));
+                    extruderConfig.setRotation(new BigDecimal(data_segments[12]));
+                    extruderConfig.setCompensation(Boolean.parseBoolean(data_segments[14]));
+                    extruderConfig.setInverted(Boolean.parseBoolean(data_segments[16]));
+                } catch (Exception ex) {
+                    extruderConfig = new PathTruderSettings();
                 }
-                matrix = MathHelper.matrixFromStrings(data_segments[5], data_segments[6], data_segments[7], data_segments[8], data_segments[11], data_segments[14], data_segments[9],
-                        data_segments[12], data_segments[15], data_segments[10], data_segments[13], data_segments[16]);
+                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
-                colour = null;
-                matrix = null;
                 ref1 = null;
             }
             ref2 = null;
             ref3 = null;
+            colour = null;
+            matrix = null;
             break;
         default:
             ref1 = null;
@@ -297,10 +314,14 @@ public final class GDataCSG extends GData {
 
     private void drawAndParse(Composite3D c3d) {
         final DatFile df = c3d.getLockableDatFileReference();
+        final boolean clearCaches = clearPolygonCache.putIfAbsent(df, true) || type == CSG.MESH && CSGMesh.needCacheRefresh(cachedData, this, df) || type == CSG.EXTRUDE && CSGExtrude.needCacheRefresh(cachedData, this, df);
+        if (clearCaches) {
+            clearPolygonCache.put(df, true);
+        }
         final HashSet<GDataCSG> parsedData = GDataCSG.parsedData.putIfAbsent(df, new HashSet<GDataCSG>());
         parsedData.add(this);
         final boolean modified = c3d.getManipulator().isModified();
-        if (deleteAndRecompile || modified || type == CSG.MESH && CSGMesh.needCacheRefresh(cachedData, this, df) || type == CSG.EXTRUDE && CSGExtrude.needCacheRefresh(cachedData, this, df)) {
+        if (deleteAndRecompile || modified || clearCaches) {
             final HashBiMap<Integer, GDataCSG> idToGDataCSG = GDataCSG.idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>());
             final HashMap<String, CSG> linkedCSG = GDataCSG.linkedCSG.putIfAbsent(df, new HashMap<String, CSG>());
             final HashSet<GDataCSG> registeredData = GDataCSG.registeredData.putIfAbsent(df, new HashSet<GDataCSG>());
@@ -399,6 +420,9 @@ public final class GDataCSG extends GData {
                                 linkedCSG.put(ref1, csgCone);
                                 break;
                             case CSG.MESH:
+                                if (clearCaches) {
+                                    polygonCache.clear();
+                                }
                                 CSGMesh mesh = new CSGMesh(this, cachedData, df, polygonCache);
                                 CSGMesh.fillCache(cachedData, this);
                                 CSG csgMesh = mesh.toCSG(colour);
@@ -412,6 +436,14 @@ public final class GDataCSG extends GData {
                                 linkedCSG.put(ref1, csgMesh);
                                 break;
                             case CSG.EXTRUDE:
+                                if (clearCaches) {
+                                    polygonCache.clear();
+                                }
+                                PathTruderSettings gconf = globalExtruderConfig.putIfAbsent(df, extruderConfig);
+                                if (gconf != extruderConfig) {
+                                    extruderConfig = gconf;
+                                    polygonCache.clear();
+                                }
                                 CSGExtrude extruder = new CSGExtrude(this, cachedData, extruderConfig, df, polygonCache);
                                 CSGExtrude.fillCache(cachedData, this);
                                 CSG csgExtruder = extruder.toCSG(colour);
@@ -462,6 +494,9 @@ public final class GDataCSG extends GData {
                         break;
                     case CSG.EPSILON:
                         Plane.EPSILON = global_epsilon;
+                        break;
+                    case CSG.EXTRUDE_CFG:
+                        globalExtruderConfig.put(df, extruderConfig);
                         break;
                     default:
                         break;
@@ -702,12 +737,7 @@ public final class GDataCSG extends GData {
             if (col.equals(colour2))
                 col = "16"; //$NON-NLS-1$
             String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
-            if (type == CSG.EXTRUDE) {
-                // FIXME Needs implementation for issue #272
-                return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            } else {
-                return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
+            return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         default:
             return text;
         }
@@ -799,12 +829,7 @@ public final class GDataCSG extends GData {
             if (type == CSG.TRANSFORM) {
                 tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if (type == CSG.EXTRUDE) {
-                // FIXME Needs implementation for issue #272
-                return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + accurateLocalMatrix.toLDrawString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            } else {
-                return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + accurateLocalMatrix.toLDrawString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
+            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + accurateLocalMatrix.toLDrawString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         default:
             return text;
         }
@@ -872,12 +897,7 @@ public final class GDataCSG extends GData {
             if (type == CSG.TRANSFORM) {
                 tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if (type == CSG.EXTRUDE) {
-                // FIXME Needs implementation for issue #272
-                return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            } else {
-                return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
+            return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         default:
             return text;
         }
@@ -1168,12 +1188,7 @@ public final class GDataCSG extends GData {
             if (type == CSG.TRANSFORM) {
                 tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if (type == CSG.EXTRUDE) {
-                // FIXME Needs implementation for issue #272
-                return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix, coordsDecimalPlaces, matrixDecimalPlaces ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            } else {
-                return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix, coordsDecimalPlaces, matrixDecimalPlaces ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
+            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix, coordsDecimalPlaces, matrixDecimalPlaces ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         return null;
     }
@@ -1195,6 +1210,17 @@ public final class GDataCSG extends GData {
 
     public static Collection<CSG> getCSGs(final DatFile df) {
         return linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).values();
+    }
+
+    public static void finishCacheCleanup(DatFile df) {
+        if (clearPolygonCache.get(df) == true) {
+            if (fullClearPolygonCache.get(df) != true) {
+                fullClearPolygonCache.put(df, true);
+                clearPolygonCache.put(df, true);
+            } else {
+                clearPolygonCache.put(df, false);
+            }
+        }
     }
 
 }
