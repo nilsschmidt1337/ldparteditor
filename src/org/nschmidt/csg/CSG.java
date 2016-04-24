@@ -123,6 +123,7 @@ public class CSG {
     public static final byte TRANSFORM = 12;
     public static final byte MESH = 13;
     public static final byte EXTRUDE = 14;
+    public static final byte EXTRUDE_CFG = 15;
 
     /**
      * Constructs a CSG from a list of {@link Polygon} instances.

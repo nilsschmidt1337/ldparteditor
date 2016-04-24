@@ -97,7 +97,19 @@ public enum DatKeyword {
 
         keywords.add("DEFAULT"); //$NON-NLS-1$
 
+        keywords.add("false"); //$NON-NLS-1$
+        keywords.add("true"); //$NON-NLS-1$
+
+        keywords.add("seg_len="); //$NON-NLS-1$
+        keywords.add("no_of_tr="); //$NON-NLS-1$
+        keywords.add("curve="); //$NON-NLS-1$
+        keywords.add("center="); //$NON-NLS-1$
+        keywords.add("rot="); //$NON-NLS-1$
+        keywords.add("comp="); //$NON-NLS-1$
+        keywords.add("invert="); //$NON-NLS-1$
+
         keywords.add("CSG_EXTRUDE"); //$NON-NLS-1$
+        keywords.add("CSG_EXT_CFG"); //$NON-NLS-1$
         keywords.add("CSG_MESH"); //$NON-NLS-1$
         keywords.add("CSG_CUBOID"); //$NON-NLS-1$
         keywords.add("CSG_ELLIPSOID"); //$NON-NLS-1$

@@ -1,6 +1,7 @@
 
 0 BFC CERTIFY CCW
 
+0 !LPE CSG_EXT_CFG seg_len= 100000.0 no_of_tr= 1 curve= 10.0 center= 0.5 rot= 0.0 comp= false invert= false
 0 !LPE CSG_EXTRUDE P 16 22.6 -1.5 1.4 1 0 0 0 .70711 .70711 0 -.70711 .70711
 2 1 10 -10 0 9.239 -10 3.827
 2 1 9.239 -10 3.827 7.071 -10 7.071
