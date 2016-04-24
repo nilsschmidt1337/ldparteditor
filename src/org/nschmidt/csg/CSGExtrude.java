@@ -39,22 +39,33 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
     private final GDataCSG start;
     private final ArrayList<GData> cachedData;
     private final PathTruderSettings pts;
-    private final VertexManager vm;
+    private final List<Polygon> polygonCache;
+    private final DatFile df;
 
-    public CSGExtrude(GDataCSG gDataCSG, ArrayList<GData> cachedData2, PathTruderSettings pts2, VertexManager vm2) {
+    public CSGExtrude(GDataCSG gDataCSG, ArrayList<GData> cachedData2, PathTruderSettings pts2, DatFile df2, List<Polygon> polygonCache2) {
         start = gDataCSG;
         cachedData = cachedData2;
         pts = pts2;
-        vm = vm2;
+        df = df2;
+        polygonCache = polygonCache2;
     }
 
     @Override
     public List<Polygon> toPolygons(GColour colour) {
         List<Polygon> polygons = new ArrayList<Polygon>();
 
+        if (!needCacheRefresh(cachedData, start, df) && !polygonCache.isEmpty()) {
+            for (Polygon p : polygonCache) {
+                GColourIndex i = (GColourIndex) p.getShared().getValue("colour"); //$NON-NLS-1$
+                p.getShared().set("colour", new GColourIndex(i.getColour(), ID)); //$NON-NLS-1$
+            }
+            return polygonCache;
+        }
+
         cachedData.clear();
         fillCache(cachedData, start);
 
+        final VertexManager vm= df.getVertexManager();
         vm.backupSelection();
         vm.clearSelection2();
         final Set<GData> sd = vm.getSelectedData();
@@ -111,6 +122,8 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
         }
         vm.restoreSelection();
 
+        polygonCache.clear();
+        polygonCache.addAll(polygons);
         return polygons;
     }
 

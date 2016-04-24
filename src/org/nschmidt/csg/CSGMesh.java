@@ -33,15 +33,27 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
 
     private final GDataCSG start;
     private final ArrayList<GData> cachedData;
+    private final List<Polygon> polygonCache;
+    private final DatFile df;
 
-    public CSGMesh(GDataCSG gDataCSG, ArrayList<GData> cachedData2) {
+    public CSGMesh(GDataCSG gDataCSG, ArrayList<GData> cachedData2, DatFile df2, List<Polygon> polygonCache2) {
         start = gDataCSG;
         cachedData = cachedData2;
+        df = df2;
+        polygonCache = polygonCache2;
     }
 
     @Override
     public List<Polygon> toPolygons(GColour colour) {
         List<Polygon> polygons = new ArrayList<Polygon>();
+
+        if (!needCacheRefresh(cachedData, start, df) && !polygonCache.isEmpty()) {
+            for (Polygon p : polygonCache) {
+                GColourIndex i = (GColourIndex) p.getShared().getValue("colour"); //$NON-NLS-1$
+                p.getShared().set("colour", new GColourIndex(i.getColour(), ID)); //$NON-NLS-1$
+            }
+            return polygonCache;
+        }
 
         cachedData.clear();
         fillCache(cachedData, start);
@@ -87,7 +99,8 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
                 polygons.add(p2);
             }
         }
-
+        polygonCache.clear();
+        polygonCache.addAll(polygons);
         return polygons;
     }
 
