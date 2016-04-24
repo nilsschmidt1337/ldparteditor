@@ -811,9 +811,11 @@ public final class GDataCSG extends GData {
             }
 
             Matrix4f oldMatrix = new Matrix4f(matrix);
+
             oldMatrix.m30 = oldMatrix.m30 / 1000f;
             oldMatrix.m31 = oldMatrix.m31 / 1000f;
             oldMatrix.m32 = oldMatrix.m32 / 1000f;
+
             Matrix4f.transpose(oldMatrix, oldMatrix);
             oldMatrix.m30 = oldMatrix.m03;
             oldMatrix.m31 = oldMatrix.m13;
@@ -821,6 +823,7 @@ public final class GDataCSG extends GData {
             oldMatrix.m03 = 0f;
             oldMatrix.m13 = 0f;
             oldMatrix.m23 = 0f;
+
             Matrix accurateLocalMatrix = new Matrix(oldMatrix);
             Matrix transformation = new Matrix(m);
             transformation = transformation.transpose();
@@ -834,6 +837,8 @@ public final class GDataCSG extends GData {
             String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
             if (type == CSG.TRANSFORM) {
                 tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
+                accurateLocalMatrix = accurateLocalMatrix.transpose();
+                accurateLocalMatrix = accurateLocalMatrix.transposeXYZ();
             }
             return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + accurateLocalMatrix.toLDrawString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         default:

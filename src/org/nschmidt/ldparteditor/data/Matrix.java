@@ -209,6 +209,22 @@ public final class Matrix {
         return new Matrix(Mn);
     }
 
+    public Matrix transposeXYZ() {
+        final BigDecimal[][] Mn = new BigDecimal[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                Mn[i][j] = this.M[i][j];
+            }
+        }
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (i == 3 || j == 3)
+                    Mn[j][i] = this.M[i][j];
+            }
+        }
+        return new Matrix(Mn);
+    }
+
     public Matrix invert() {
         final BigDecimal[][] Mn = new BigDecimal[4][4];
 
