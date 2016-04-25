@@ -46,6 +46,8 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
 
     public void meshReduce() {
 
+        // FIXME Needs better performance. I have to implement time measurements first.
+
         linkedDatFile.setDrawSelection(false);
 
         final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
