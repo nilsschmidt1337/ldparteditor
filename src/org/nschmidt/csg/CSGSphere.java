@@ -101,7 +101,7 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
         theta *= Math.PI * 2;
         phi *= Math.PI;
         Vector3d dir = new Vector3d(Math.cos(theta) * Math.sin(phi), Math.cos(phi), Math.sin(theta) * Math.sin(phi));
-        return new Vertex(c.plus(dir.times(r)), dir);
+        return new Vertex(c.plus(dir.times(r)));
     }
 
     @Override

@@ -34,9 +34,7 @@
 package org.nschmidt.csg;
 
 /**
- * Represents a vertex of a polygon. This class provides {@link #normal} so
- * primitives like {@link CSGCube} can return a smooth vertex normal, but
- * {@link #normal} is not used anywhere else.
+ * Represents a vertex of a polygon.
  */
 public class Vertex {
 
@@ -46,39 +44,26 @@ public class Vertex {
     public Vector3d pos;
 
     /**
-     * Normal.
-     */
-    public Vector3d normal;
-
-    /**
      * Constructor. Creates a vertex.
-     * 
+     *
      * @param pos
      *            position
      * @param normal
      *            normal
      */
-    public Vertex(Vector3d pos, Vector3d normal) {
+    public Vertex(Vector3d pos) {
         this.pos = pos;
-        this.normal = normal;
     }
 
     @Override
     public Vertex clone() {
-        return new Vertex(pos.clone(), normal.clone());
-    }
-
-    /**
-     * Inverts all orientation-specific data. (e.g. vertex normal).
-     */
-    public void flip() {
-        normal = normal.negated();
+        return new Vertex(pos.clone());
     }
 
     /**
      * Create a new vertex between this vertex and the specified vertex by
      * linearly interpolating all properties using a parameter t.
-     * 
+     *
      * @param other
      *            vertex
      * @param t
@@ -86,12 +71,12 @@ public class Vertex {
      * @return a new vertex between this and the specified vertex
      */
     public Vertex interpolate(Vertex other, double t) {
-        return new Vertex(pos.lerp(other.pos, t), normal.lerp(other.normal, t));
+        return new Vertex(pos.lerp(other.pos, t));
     }
 
     /**
      * Returns this vertex in STL string format.
-     * 
+     *
      * @return this vertex in STL string format
      */
     public String toStlString() {
@@ -100,7 +85,7 @@ public class Vertex {
 
     /**
      * Returns this vertex in STL string format.
-     * 
+     *
      * @param sb
      *            string builder
      * @return the specified string builder
@@ -112,7 +97,7 @@ public class Vertex {
 
     /**
      * Returns this vertex in OBJ string format.
-     * 
+     *
      * @param sb
      *            string builder
      * @return the specified string builder
@@ -124,7 +109,7 @@ public class Vertex {
 
     /**
      * Returns this vertex in OBJ string format.
-     * 
+     *
      * @return this vertex in OBJ string format
      */
     public String toObjString() {
@@ -133,7 +118,7 @@ public class Vertex {
 
     /**
      * Applies the specified transform to this vertex.
-     * 
+     *
      * @param transform
      *            the transform to apply
      * @return this vertex
@@ -145,7 +130,7 @@ public class Vertex {
 
     /**
      * Applies the specified transform to a copy of this vertex.
-     * 
+     *
      * @param transform
      *            the transform to apply
      * @return a copy of this transform
