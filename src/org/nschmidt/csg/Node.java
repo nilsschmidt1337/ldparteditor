@@ -64,9 +64,9 @@ final class Node {
 
     /**
      * Constructor.
-     * 
+     *
      * Creates a BSP node consisting of the specified polygons.
-     * 
+     *
      * @param polygons
      *            polygons
      */
@@ -108,7 +108,6 @@ final class Node {
         for (Polygon polygon : this.polygons) {
             polygon.flip();
         }
-        ;
 
         if (this.plane == null && !polygons.isEmpty()) {
             this.plane = polygons.get(0).plane.clone();
@@ -132,12 +131,12 @@ final class Node {
     /**
      * Recursively removes all polygons in the {@link polygons} list that are
      * contained within this BSP tree.
-     * 
+     *
      * <b>Note:</b> polygons are splitted if necessary.
-     * 
+     *
      * @param polygons
      *            the polygons to clip
-     * 
+     *
      * @return the cliped list of polygons
      */
     private List<Polygon> clipPolygons(List<Polygon> polygons) {
@@ -170,9 +169,9 @@ final class Node {
     /**
      * Removes all polygons in this BSP tree that are inside the specified BSP
      * tree ({@code bsp}).
-     * 
+     *
      * <b>Note:</b> polygons are splitted if necessary.
-     * 
+     *
      * @param bsp
      *            bsp that shall be used for clipping
      */
@@ -188,17 +187,15 @@ final class Node {
 
     /**
      * Returns a list of all polygons in this BSP tree.
-     * 
+     *
      * @return a list of all polygons in this BSP tree
      */
     public List<Polygon> allPolygons() {
         List<Polygon> localPolygons = new ArrayList<Polygon>(this.polygons);
         if (this.front != null) {
             localPolygons.addAll(this.front.allPolygons());
-            // polygons = Utils.concat(polygons, this.front.allPolygons());
         }
         if (this.back != null) {
-            // polygons = Utils.concat(polygons, this.back.allPolygons());
             localPolygons.addAll(this.back.allPolygons());
         }
 
@@ -210,7 +207,7 @@ final class Node {
      * tree, the new polygons are filtered down to the bottom of the tree and
      * become new nodes there. Each set of polygons is partitioned using the
      * first polygon (no heuristic is used to pick a good split).
-     * 
+     *
      * @param polygons
      *            polygons used to build the BSP
      */

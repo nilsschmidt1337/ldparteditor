@@ -33,6 +33,7 @@ package org.nschmidt.csg;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GColourIndex;
 
@@ -105,7 +106,7 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
     }
 
     @Override
-    public List<Polygon> toPolygons(GColour colour) {
+    public List<Polygon> toPolygons(DatFile df, GColour colour) {
         List<Polygon> polygons = new ArrayList<Polygon>();
         for (int i = 0; i < numSlices; i++) {
             for (int j = 0; j < numStacks; j++) {
@@ -121,7 +122,7 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
                 vertices.add(sphereVertex(center, radius, i / (double) numSlices, (j + 1) / (double) numStacks));
                 PropertyStorage properties = new PropertyStorage();
                 properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
-                polygons.add(new Polygon(vertices, properties));
+                polygons.add(new Polygon(df, vertices, properties));
             }
         }
         return polygons;
@@ -188,7 +189,7 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
     }
 
     @Override
-    public CSG toCSG(GColour colour) {
-        return CSG.fromPolygons(toPolygons(colour));
+    public CSG toCSG(DatFile df, GColour colour) {
+        return CSG.fromPolygons(toPolygons(df, colour));
     }
 }

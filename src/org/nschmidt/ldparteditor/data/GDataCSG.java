@@ -82,6 +82,7 @@ public final class GDataCSG extends GData {
     private final static ThreadsafeHashMap<DatFile, PathTruderSettings> globalExtruderConfig = new ThreadsafeHashMap<DatFile, PathTruderSettings>();
     private final static ThreadsafeHashMap<DatFile, Boolean> clearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
     private final static ThreadsafeHashMap<DatFile, Boolean> fullClearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
+    private final static ThreadsafeHashMap<DatFile, ArrayList<Polygon>> allPolygons = new ThreadsafeHashMap<DatFile, ArrayList<Polygon>>();
 
 
     private final ArrayList<GData> cachedData = new ArrayList<GData>();
@@ -107,6 +108,7 @@ public final class GDataCSG extends GData {
 
     public synchronized static void forceRecompile(DatFile df) {
         registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(null);
+        allPolygons.putIfAbsent(df, new ArrayList<Polygon>()).clear();
         clearPolygonCache.putIfAbsent(df, true);
         Plane.EPSILON = 1e-3;
     }
@@ -119,6 +121,7 @@ public final class GDataCSG extends GData {
         idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>()).clear();
         selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>()).clear();
         selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>()).clear();
+        allPolygons.putIfAbsent(df, new ArrayList<Polygon>()).clear();
         backupSelectionClear(df);
         Plane.EPSILON = 1e-3;
     }
@@ -350,7 +353,7 @@ public final class GDataCSG extends GData {
                             case CSG.QUAD:
                                 CSGQuad quad = new CSGQuad();
                                 idToGDataCSG.put(quad.ID, this);
-                                CSG csgQuad = quad.toCSG(colour);
+                                CSG csgQuad = quad.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgQuad = transformWithManipulator(csgQuad, m, matrix);
                                 } else {
@@ -362,7 +365,7 @@ public final class GDataCSG extends GData {
                             case CSG.CIRCLE:
                                 CSGCircle circle = new CSGCircle(quality);
                                 idToGDataCSG.put(circle.ID, this);
-                                CSG csgCircle = circle.toCSG(colour);
+                                CSG csgCircle = circle.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgCircle = transformWithManipulator(csgCircle, m, matrix);
                                 } else {
@@ -374,7 +377,7 @@ public final class GDataCSG extends GData {
                             case CSG.ELLIPSOID:
                                 CSGSphere sphere = new CSGSphere(quality, quality / 2);
                                 idToGDataCSG.put(sphere.ID, this);
-                                CSG csgSphere = sphere.toCSG(colour);
+                                CSG csgSphere = sphere.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgSphere = transformWithManipulator(csgSphere, m, matrix);
                                 } else {
@@ -386,7 +389,7 @@ public final class GDataCSG extends GData {
                             case CSG.CUBOID:
                                 CSGCube cube = new CSGCube();
                                 idToGDataCSG.put(cube.ID, this);
-                                CSG csgCube = cube.toCSG(colour);
+                                CSG csgCube = cube.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgCube = transformWithManipulator(csgCube, m, matrix);
                                 } else {
@@ -398,7 +401,7 @@ public final class GDataCSG extends GData {
                             case CSG.CYLINDER:
                                 CSGCylinder cylinder = new CSGCylinder(quality);
                                 idToGDataCSG.put(cylinder.ID, this);
-                                CSG csgCylinder = cylinder.toCSG(colour);
+                                CSG csgCylinder = cylinder.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgCylinder = transformWithManipulator(csgCylinder, m, matrix);
                                 } else {
@@ -410,7 +413,7 @@ public final class GDataCSG extends GData {
                             case CSG.CONE:
                                 CSGCone cone = new CSGCone(quality);
                                 idToGDataCSG.put(cone.ID, this);
-                                CSG csgCone = cone.toCSG(colour);
+                                CSG csgCone = cone.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgCone = transformWithManipulator(csgCone, m, matrix);
                                 } else {
@@ -423,9 +426,9 @@ public final class GDataCSG extends GData {
                                 if (clearCaches) {
                                     polygonCache.clear();
                                 }
-                                CSGMesh mesh = new CSGMesh(this, cachedData, df, polygonCache);
+                                CSGMesh mesh = new CSGMesh(this, cachedData, polygonCache);
                                 CSGMesh.fillCache(cachedData, this);
-                                CSG csgMesh = mesh.toCSG(colour);
+                                CSG csgMesh = mesh.toCSG(df, colour);
                                 idToGDataCSG.put(mesh.ID, this);
                                 if (modified && isSelected(df)) {
                                     csgMesh = transformWithManipulator(csgMesh, m, matrix);
@@ -444,9 +447,9 @@ public final class GDataCSG extends GData {
                                     extruderConfig = gconf;
                                     polygonCache.clear();
                                 }
-                                CSGExtrude extruder = new CSGExtrude(this, cachedData, extruderConfig, df, polygonCache);
+                                CSGExtrude extruder = new CSGExtrude(this, cachedData, extruderConfig, polygonCache);
                                 CSGExtrude.fillCache(cachedData, this);
-                                CSG csgExtruder = extruder.toCSG(colour);
+                                CSG csgExtruder = extruder.toCSG(df, colour);
                                 idToGDataCSG.put(extruder.ID, this);
                                 if (modified && isSelected(df)) {
                                     csgExtruder = transformWithManipulator(csgExtruder, m, matrix);
@@ -1233,6 +1236,10 @@ public final class GDataCSG extends GData {
                 clearPolygonCache.put(df, false);
             }
         }
+    }
+
+    public static List<Polygon> getPolyList(DatFile df) {
+        return allPolygons.putIfAbsent(df, new ArrayList<Polygon>());
     }
 
 }

@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GColourIndex;
 import org.nschmidt.ldparteditor.data.GData1;
@@ -63,6 +64,10 @@ public final class Polygon {
      * Shared property (can be used for shared color etc.).
      */
     private final PropertyStorage shared;
+    /**
+     * The linked DatFile
+     */
+    final DatFile df;
 
     public PropertyStorage getShared() {
         return shared;
@@ -81,13 +86,13 @@ public final class Polygon {
      *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
-     *
      * @param vertices
      *            polygon vertices
      * @param shared
      *            shared property
      */
-    public Polygon(List<Vector3d> vertices, PropertyStorage shared) {
+    public Polygon(DatFile df, List<Vector3d> vertices, PropertyStorage shared) {
+        this.df = df;
         this.vertices = vertices;
         this.shared = shared;
         this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
@@ -99,11 +104,11 @@ public final class Polygon {
      *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
-     *
      * @param vertices
      *            polygon vertices
      */
-    public Polygon(List<Vector3d> vertices) {
+    public Polygon(DatFile df, List<Vector3d> vertices) {
+        this.df = df;
         this.vertices = vertices;
         this.shared = new PropertyStorage();
         this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
@@ -115,13 +120,13 @@ public final class Polygon {
      *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
-     *
+     * @param df TODO
      * @param vertices
      *            polygon vertices
      *
      */
-    public Polygon(Vector3d... vertices) {
-        this(Arrays.asList(vertices));
+    public Polygon(DatFile df, Vector3d... vertices) {
+        this(df, Arrays.asList(vertices));
     }
 
     @Override
@@ -130,7 +135,7 @@ public final class Polygon {
         for (Vector3d vertex : vertices) {
             newVertices.add(vertex.clone());
         }
-        return new Polygon(newVertices, new PropertyStorage(shared));
+        return new Polygon(df, newVertices, new PropertyStorage(shared));
     }
 
     /**
@@ -275,8 +280,8 @@ public final class Polygon {
      *            shared property storage
      * @return a polygon defined by the specified point list
      */
-    public static Polygon fromPoints(List<Vector3d> points, PropertyStorage shared) {
-        return fromPoints(points, shared, null);
+    public static Polygon fromPoints(DatFile df, List<Vector3d> points, PropertyStorage shared) {
+        return fromPoints(df, points, shared, null);
     }
 
     /**
@@ -286,8 +291,8 @@ public final class Polygon {
      *            the points that define the polygon
      * @return a polygon defined by the specified point list
      */
-    public static Polygon fromPoints(List<Vector3d> points) {
-        return fromPoints(points, new PropertyStorage(), null);
+    public static Polygon fromPoints(DatFile df, List<Vector3d> points) {
+        return fromPoints(df, points, new PropertyStorage(), null);
     }
 
     /**
@@ -297,8 +302,8 @@ public final class Polygon {
      *            the points that define the polygon
      * @return a polygon defined by the specified point list
      */
-    public static Polygon fromPoints(Vector3d... points) {
-        return fromPoints(Arrays.asList(points), new PropertyStorage(), null);
+    public static Polygon fromPoints(DatFile df, Vector3d... points) {
+        return fromPoints(df, Arrays.asList(points), new PropertyStorage(), null);
     }
 
     /**
@@ -311,7 +316,7 @@ public final class Polygon {
      *            may be null
      * @return a polygon defined by the specified point list
      */
-    private static Polygon fromPoints(List<Vector3d> points, PropertyStorage shared, Plane plane) {
+    private static Polygon fromPoints(DatFile df, List<Vector3d> points, PropertyStorage shared, Plane plane) {
 
         List<Vector3d> vertices = new ArrayList<Vector3d>();
 
@@ -319,7 +324,7 @@ public final class Polygon {
             vertices.add(p.clone());
         }
 
-        return new Polygon(vertices, shared);
+        return new Polygon(df, vertices, shared);
     }
 
     /**
