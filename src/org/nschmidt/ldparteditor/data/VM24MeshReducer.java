@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -77,7 +78,20 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
 
                         final AtomicBoolean a = new AtomicBoolean();
 
+                        final ArrayList<Long> durations = new ArrayList<Long>(1500);
+                        final long start = System.currentTimeMillis();
+                        long duration = 0;
+                        long min_duration = Long.MAX_VALUE;
+                        long max_duration = Long.MIN_VALUE;
+                        long start2 = System.currentTimeMillis();
                         for (final Vertex v : verticesToProcess) {
+                            final long end2 = System.currentTimeMillis();
+                            final long it_duration = end2 - start2;
+                            durations.add(it_duration);
+                            if (it_duration > max_duration) max_duration = it_duration;
+                            if (it_duration < min_duration) min_duration = it_duration;
+                            duration = duration + it_duration;
+                            start2 = System.currentTimeMillis();
                             if (monitor.isCanceled()) break;
                             if (!vertexLinkedToPositionInFile.containsKey(v)) continue;
                             Display.getDefault().asyncExec(new Runnable() {
@@ -236,6 +250,21 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                             }
                             a.set(false);
                         }
+                        NLogger.debug(getClass(), "Duration " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+                        double avg = (double) duration / (double) verticesToProcess.size();
+                        NLogger.debug(getClass(), "Avg. duration per vertex " + avg + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+                        NLogger.debug(getClass(), "Min. duration per vertex " + min_duration + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+                        NLogger.debug(getClass(), "Max. duration per vertex " + max_duration + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+                        double sum = 0;
+                        double factor = 1.0 / (verticesToProcess.size() - 1.0);
+                        for (long l : durations) {
+                            double delta = l - avg;
+                            sum = sum + delta * delta;
+                        }
+                        sum = sum * factor;
+                        NLogger.debug(getClass(), "Std. deviration " + Math.sqrt(sum) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+
+
                     } catch (Exception ex) {
                         NLogger.error(getClass(), ex);
                     } finally {
