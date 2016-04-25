@@ -58,7 +58,7 @@ public final class Polygon {
     /**
      * Polygon vertices
      */
-    public final List<Vertex> vertices;
+    public final List<Vector3d> vertices;
     /**
      * Shared property (can be used for shared color etc.).
      */
@@ -87,10 +87,10 @@ public final class Polygon {
      * @param shared
      *            shared property
      */
-    public Polygon(List<Vertex> vertices, PropertyStorage shared) {
+    public Polygon(List<Vector3d> vertices, PropertyStorage shared) {
         this.vertices = vertices;
         this.shared = shared;
-        this.plane = Plane.createFromPoints(vertices.get(0).pos, vertices.get(1).pos, vertices.get(2).pos);
+        this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
     }
 
     /**
@@ -103,10 +103,10 @@ public final class Polygon {
      * @param vertices
      *            polygon vertices
      */
-    public Polygon(List<Vertex> vertices) {
+    public Polygon(List<Vector3d> vertices) {
         this.vertices = vertices;
         this.shared = new PropertyStorage();
-        this.plane = Plane.createFromPoints(vertices.get(0).pos, vertices.get(1).pos, vertices.get(2).pos);
+        this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
     }
 
     /**
@@ -120,17 +120,16 @@ public final class Polygon {
      *            polygon vertices
      *
      */
-    public Polygon(Vertex... vertices) {
+    public Polygon(Vector3d... vertices) {
         this(Arrays.asList(vertices));
     }
 
     @Override
     public Polygon clone() {
-        List<Vertex> newVertices = new ArrayList<Vertex>();
-        for (Vertex vertex : vertices) {
+        List<Vector3d> newVertices = new ArrayList<Vector3d>(vertices.size());
+        for (Vector3d vertex : vertices) {
             newVertices.add(vertex.clone());
         }
-        ;
         return new Polygon(newVertices, new PropertyStorage(shared));
     }
 
@@ -164,12 +163,12 @@ public final class Polygon {
             int dID = CSGPrimitive.id_counter.getAndIncrement();
             final GColour c16 = View.getLDConfigColour(16);
             for (int i = 0; i < this.vertices.size() - 2; i++) {
-                org.nschmidt.ldparteditor.data.Vertex v1 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(0).pos.x, (float) this.vertices.get(0).pos.y,
-                        (float) this.vertices.get(0).pos.z);
-                org.nschmidt.ldparteditor.data.Vertex v2 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 1).pos.x, (float) this.vertices.get(i + 1).pos.y,
-                        (float) this.vertices.get(i + 1).pos.z);
-                org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 2).pos.x, (float) this.vertices.get(i + 2).pos.y,
-                        (float) this.vertices.get(i + 2).pos.z);
+                org.nschmidt.ldparteditor.data.Vertex v1 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(0).x, (float) this.vertices.get(0).y,
+                        (float) this.vertices.get(0).z);
+                org.nschmidt.ldparteditor.data.Vertex v2 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 1).x, (float) this.vertices.get(i + 1).y,
+                        (float) this.vertices.get(i + 1).z);
+                org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 2).x, (float) this.vertices.get(i + 2).y,
+                        (float) this.vertices.get(i + 2).z);
                 GColourIndex colour = null;
                 if ((colour = (GColourIndex) this.shared.getFirstValue()) == null) {
                     result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
@@ -190,8 +189,8 @@ public final class Polygon {
      * @return this polygon
      */
     public Polygon translate(Vector3d v) {
-        for (Vertex vertex : vertices) {
-            vertex.pos = vertex.pos.plus(v);
+        for (Vector3d vertex : vertices) {
+            vertex = vertex.plus(v);
         }
         ;
         return this;
@@ -224,10 +223,9 @@ public final class Polygon {
      */
     public Polygon transform(Transform transform) {
 
-        for (Vertex v : vertices) {
+        for (Vector3d v : vertices) {
             v.transform(transform);
         }
-        ;
 
         if (transform.isMirror()) {
             // the transformation includes mirroring. flip polygon
@@ -315,12 +313,10 @@ public final class Polygon {
      */
     private static Polygon fromPoints(List<Vector3d> points, PropertyStorage shared, Plane plane) {
 
-        List<Vertex> vertices = new ArrayList<Vertex>();
+        List<Vector3d> vertices = new ArrayList<Vector3d>();
 
         for (Vector3d p : points) {
-            Vector3d vec = p.clone();
-            Vertex vertex = new Vertex(vec);
-            vertices.add(vertex);
+            vertices.add(p.clone());
         }
 
         return new Polygon(vertices, shared);
@@ -342,26 +338,26 @@ public final class Polygon {
 
         for (int i = 0; i < vertices.size(); i++) {
 
-            Vertex vert = vertices.get(i);
+            Vector3d vert = vertices.get(i);
 
-            if (vert.pos.x < minX) {
-                minX = vert.pos.x;
+            if (vert.x < minX) {
+                minX = vert.x;
             }
-            if (vert.pos.y < minY) {
-                minY = vert.pos.y;
+            if (vert.y < minY) {
+                minY = vert.y;
             }
-            if (vert.pos.z < minZ) {
-                minZ = vert.pos.z;
+            if (vert.z < minZ) {
+                minZ = vert.z;
             }
 
-            if (vert.pos.x > maxX) {
-                maxX = vert.pos.x;
+            if (vert.x > maxX) {
+                maxX = vert.x;
             }
-            if (vert.pos.y > maxY) {
-                maxY = vert.pos.y;
+            if (vert.y > maxY) {
+                maxY = vert.y;
             }
-            if (vert.pos.z > maxZ) {
-                maxZ = vert.pos.z;
+            if (vert.z > maxZ) {
+                maxZ = vert.z;
             }
 
         } // end for vertices

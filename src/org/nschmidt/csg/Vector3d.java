@@ -35,7 +35,7 @@ package org.nschmidt.csg;
 
 /**
  * 3D Vector3d.
- * 
+ *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 public class Vector3d {
@@ -50,9 +50,15 @@ public class Vector3d {
     public static final Vector3d Y_ONE = new Vector3d(0, 1, 0);
     public static final Vector3d Z_ONE = new Vector3d(0, 0, 1);
 
+    public Vector3d(Vector3d pos) {
+        this.x = pos.x;
+        this.y = pos.y;
+        this.z = pos.z;
+    }
+
     /**
      * Creates a new vector.
-     * 
+     *
      * @param x
      *            x value
      * @param y
@@ -70,7 +76,7 @@ public class Vector3d {
     /**
      * Creates a new vector with specified {@code x}, {@code y} and
      * {@code z = 0}.
-     * 
+     *
      * @param x
      *            x value
      * @param y
@@ -90,9 +96,9 @@ public class Vector3d {
 
     /**
      * Returns a negated copy of this vector.
-     * 
+     *
      * <b>Note:</b> this vector is not modified.
-     * 
+     *
      * @return a negated copy of this vector
      */
     public Vector3d negated() {
@@ -101,12 +107,12 @@ public class Vector3d {
 
     /**
      * Returns the sum of this vector and the specified vector.
-     * 
+     *
      * @param v
      *            the vector to add
-     * 
+     *
      *            <b>Note:</b> this vector is not modified.
-     * 
+     *
      * @return the sum of this vector and the specified vector
      */
     public Vector3d plus(Vector3d v) {
@@ -115,12 +121,12 @@ public class Vector3d {
 
     /**
      * Returns the difference of this vector and the specified vector.
-     * 
+     *
      * @param v
      *            the vector to subtract
-     * 
+     *
      *            <b>Note:</b> this vector is not modified.
-     * 
+     *
      * @return the difference of this vector and the specified vector
      */
     public Vector3d minus(Vector3d v) {
@@ -129,12 +135,12 @@ public class Vector3d {
 
     /**
      * Returns the product of this vector and the specified value.
-     * 
+     *
      * @param a
      *            the value
-     * 
+     *
      *            <b>Note:</b> this vector is not modified.
-     * 
+     *
      * @return the product of this vector and the specified value
      */
     public Vector3d times(double a) {
@@ -143,12 +149,12 @@ public class Vector3d {
 
     /**
      * Returns the product of this vector and the specified vector.
-     * 
+     *
      * @param a
      *            the vector
-     * 
+     *
      *            <b>Note:</b> this vector is not modified.
-     * 
+     *
      * @return the product of this vector and the specified vector
      */
     public Vector3d times(Vector3d a) {
@@ -157,12 +163,12 @@ public class Vector3d {
 
     /**
      * Returns this vector devided by the specified value.
-     * 
+     *
      * @param a
      *            the value
-     * 
+     *
      *            <b>Note:</b> this vector is not modified.
-     * 
+     *
      * @return this vector devided by the specified value
      */
     public Vector3d dividedBy(double a) {
@@ -171,12 +177,12 @@ public class Vector3d {
 
     /**
      * Returns the dot product of this vector and the specified vector.
-     * 
+     *
      * <b>Note:</b> this vector is not modified.
-     * 
+     *
      * @param a
      *            the second vector
-     * 
+     *
      * @return the dot product of this vector and the specified vector
      */
     public double dot(Vector3d a) {
@@ -185,14 +191,14 @@ public class Vector3d {
 
     /**
      * Linearly interpolates between this and the specified vector.
-     * 
+     *
      * <b>Note:</b> this vector is not modified.
-     * 
+     *
      * @param a
      *            vector
      * @param t
      *            interpolation value
-     * 
+     *
      * @return copy of this vector if {@code t = 0}; copy of a if {@code t = 1};
      *         the point midway between this and the specified vector if
      *         {@code t = 0.5}
@@ -203,9 +209,9 @@ public class Vector3d {
 
     /**
      * Returns the magnitude of this vector.
-     * 
+     *
      * <b>Note:</b> this vector is not modified.
-     * 
+     *
      * @return the magnitude of this vector
      */
     public double magnitude() {
@@ -214,9 +220,9 @@ public class Vector3d {
 
     /**
      * Returns a normalized copy of this vector with {@code length}.
-     * 
+     *
      * <b>Note:</b> this vector is not modified.
-     * 
+     *
      * @return a normalized copy of this vector with {@code length}
      */
     public Vector3d unit() {
@@ -225,12 +231,12 @@ public class Vector3d {
 
     /**
      * Returns the cross product of this vector and the specified vector.
-     * 
+     *
      * <b>Note:</b> this vector is not modified.
-     * 
+     *
      * @param a
      *            the vector
-     * 
+     *
      * @return the cross product of this vector and the specified vector.
      */
     public Vector3d cross(Vector3d a) {
@@ -238,55 +244,11 @@ public class Vector3d {
     }
 
     /**
-     * Returns this vector in STL string format.
-     * 
-     * @return this vector in STL string format
-     */
-    public String toStlString() {
-        return toStlString(new StringBuilder()).toString();
-    }
-
-    /**
-     * Returns this vector in STL string format.
-     * 
-     * @param sb
-     *            string builder
-     * @return the specified string builder
-     */
-    public StringBuilder toStlString(StringBuilder sb) {
-        return sb.append(this.x).append(" "). //$NON-NLS-1$
-                append(this.y).append(" "). //$NON-NLS-1$
-                append(this.z);
-    }
-
-    /**
-     * Returns this vector in OBJ string format.
-     * 
-     * @return this vector in OBJ string format
-     */
-    public String toObjString() {
-        return toObjString(new StringBuilder()).toString();
-    }
-
-    /**
-     * Returns this vector in OBJ string format.
-     * 
-     * @param sb
-     *            string builder
-     * @return the specified string builder
-     */
-    public StringBuilder toObjString(StringBuilder sb) {
-        return sb.append(this.x).append(" "). //$NON-NLS-1$
-                append(this.y).append(" "). //$NON-NLS-1$
-                append(this.z);
-    }
-
-    /**
      * Applies the specified transformation to this vector.
-     * 
+     *
      * @param transform
      *            the transform to apply
-     * 
+     *
      * @return this vector
      */
     public Vector3d transform(Transform transform) {
@@ -295,12 +257,12 @@ public class Vector3d {
 
     /**
      * Returns a transformed copy of this vector.
-     * 
+     *
      * @param transform
      *            the transform to apply
-     * 
+     *
      *            <b>Note:</b> this vector is not modified.
-     * 
+     *
      * @return a transformed copy of this vector
      */
     public Vector3d transformed(Transform transform) {
@@ -342,4 +304,18 @@ public class Vector3d {
         return hash;
     }
 
+
+    /**
+     * Create a new vertex between this vertex and the specified vertex by
+     * linearly interpolating all properties using a parameter t.
+     *
+     * @param other
+     *            vertex
+     * @param t
+     *            interpolation parameter
+     * @return a new vertex between this and the specified vertex
+     */
+    public Vector3d interpolate(Vector3d other, double t) {
+        return this.lerp(other, t);
+    }
 }

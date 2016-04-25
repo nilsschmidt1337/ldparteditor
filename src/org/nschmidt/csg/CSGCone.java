@@ -92,7 +92,7 @@ public class CSGCone extends CSGPrimitive implements Primitive {
         boolean isY = Math.abs(axisZ.y) > 0.5;
         final Vector3d axisX = new Vector3d(isY ? 1 : 0, !isY ? 1 : 0, 0).cross(axisZ).unit();
         final Vector3d axisY = axisX.cross(axisZ).unit();
-        Vertex endV = new Vertex(e);
+        Vector3d endV = new Vector3d(e);
         List<Polygon> polygons = new ArrayList<Polygon>();
 
         for (int i = 0; i < numSlices; i++) {
@@ -113,11 +113,11 @@ public class CSGCone extends CSGPrimitive implements Primitive {
         return polygons;
     }
 
-    private Vertex cylPoint(Vector3d axisX, Vector3d axisY, Vector3d axisZ, Vector3d ray, Vector3d s, double r, double stack, double slice, double normalBlend) {
+    private Vector3d cylPoint(Vector3d axisX, Vector3d axisY, Vector3d axisZ, Vector3d ray, Vector3d s, double r, double stack, double slice, double normalBlend) {
         double angle = slice * Math.PI * 2;
         Vector3d out = axisX.times(Math.cos(angle)).plus(axisY.times(Math.sin(angle)));
         Vector3d pos = s.plus(ray.times(stack)).plus(out.times(r));
-        return new Vertex(pos);
+        return pos;
     }
 
     /**
