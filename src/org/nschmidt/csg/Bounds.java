@@ -60,7 +60,7 @@ public class Bounds {
 
     @Override
     public Bounds clone() {
-        return new Bounds(min.clone(), max.clone());
+        return new Bounds(min, max);
     }
 
     /**
