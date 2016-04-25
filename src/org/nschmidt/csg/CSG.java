@@ -352,34 +352,6 @@ public class CSG {
     }
 
     /**
-     * Returns this csg in STL string format.
-     *
-     * @return this csg in STL string format
-     */
-    public String toStlString() {
-        StringBuilder sb = new StringBuilder();
-        toStlString(sb);
-        return sb.toString();
-    }
-
-    /**
-     * Returns this csg in STL string format.
-     *
-     * @param sb
-     *            string builder
-     *
-     * @return the specified string builder
-     */
-    public StringBuilder toStlString(StringBuilder sb) {
-        sb.append("solid v3d.csg\n"); //$NON-NLS-1$
-        for (Polygon p : this.polygons) {
-            p.toStlString(sb);
-        }
-        sb.append("endsolid v3d.csg\n"); //$NON-NLS-1$
-        return sb;
-    }
-
-    /**
      * Returns this csg as list of LDraw triangles
      *
      * @return this csg as list of LDraw triangles
@@ -415,71 +387,6 @@ public class CSG {
 
     public HashMap<GData3, Integer> getResult() {
         return result;
-    }
-
-    /**
-     * Returns this csg in OBJ string format.
-     *
-     * @param sb
-     *            string builder
-     * @return the specified string builder
-     */
-    public StringBuilder toObjString(StringBuilder sb) {
-        sb.append("# Group").append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
-        sb.append("g v3d.csg\n"); //$NON-NLS-1$
-
-        List<Vertex> vertices = new ArrayList<Vertex>();
-        List<List<Integer>> indices = new ArrayList<List<Integer>>();
-
-        sb.append("\n# Vertices\n"); //$NON-NLS-1$
-
-        for (Polygon p : polygons) {
-            List<Integer> polyIndices = new ArrayList<Integer>();
-            for (Vertex v : p.vertices) {
-
-                if (!vertices.contains(v)) {
-                    vertices.add(v);
-                    v.toObjString(sb);
-                    polyIndices.add(vertices.size());
-                } else {
-                    polyIndices.add(vertices.indexOf(v) + 1);
-                }
-            }
-
-            indices.add(polyIndices);
-        }
-
-        sb.append("\n# Faces").append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
-
-        for (List<Integer> pVerts : indices) {
-
-            // we triangulate the polygon to ensure
-            // compatibility with 3d printer software
-            int index1 = pVerts.get(0);
-            for (int i = 0; i < pVerts.size() - 2; i++) {
-                int index2 = pVerts.get(i + 1);
-                int index3 = pVerts.get(i + 2);
-
-                sb.append("f "). //$NON-NLS-1$
-                append(index1).append(" "). //$NON-NLS-1$
-                append(index2).append(" "). //$NON-NLS-1$
-                append(index3).append("\n"); //$NON-NLS-1$
-            }
-        }
-
-        sb.append("\n# End Group v3d.csg").append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
-
-        return sb;
-    }
-
-    /**
-     * Returns this csg in OBJ string format.
-     *
-     * @return this csg in OBJ string format
-     */
-    public String toObjString() {
-        StringBuilder sb = new StringBuilder();
-        return toObjString(sb).toString();
     }
 
     /**

@@ -75,48 +75,6 @@ public class Vertex {
     }
 
     /**
-     * Returns this vertex in STL string format.
-     *
-     * @return this vertex in STL string format
-     */
-    public String toStlString() {
-        return "vertex " + this.pos.toStlString(); //$NON-NLS-1$
-    }
-
-    /**
-     * Returns this vertex in STL string format.
-     *
-     * @param sb
-     *            string builder
-     * @return the specified string builder
-     */
-    public StringBuilder toStlString(StringBuilder sb) {
-        sb.append("vertex "); //$NON-NLS-1$
-        return this.pos.toStlString(sb);
-    }
-
-    /**
-     * Returns this vertex in OBJ string format.
-     *
-     * @param sb
-     *            string builder
-     * @return the specified string builder
-     */
-    public StringBuilder toObjString(StringBuilder sb) {
-        sb.append("v "); //$NON-NLS-1$
-        return this.pos.toObjString(sb).append("\n"); //$NON-NLS-1$
-    }
-
-    /**
-     * Returns this vertex in OBJ string format.
-     *
-     * @return this vertex in OBJ string format
-     */
-    public String toObjString() {
-        return toObjString(new StringBuilder()).toString();
-    }
-
-    /**
      * Applies the specified transform to this vertex.
      *
      * @param transform
