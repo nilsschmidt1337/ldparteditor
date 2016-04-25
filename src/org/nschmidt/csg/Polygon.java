@@ -224,7 +224,7 @@ public final class Polygon {
     public Polygon transform(Transform transform) {
 
         for (Vector3d v : vertices) {
-            v.transform(transform);
+            transform.transform(v);
         }
 
         if (transform.isMirror()) {
