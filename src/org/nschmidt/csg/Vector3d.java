@@ -50,12 +50,6 @@ public class Vector3d {
     public static final Vector3d Y_ONE = new Vector3d(0, 1, 0);
     public static final Vector3d Z_ONE = new Vector3d(0, 0, 1);
 
-    public Vector3d(Vector3d pos) {
-        this.x = pos.x;
-        this.y = pos.y;
-        this.z = pos.z;
-    }
-
     /**
      * Creates a new vector.
      *
