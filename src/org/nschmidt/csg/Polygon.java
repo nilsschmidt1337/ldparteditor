@@ -140,12 +140,8 @@ public final class Polygon {
      * @return this polygon
      */
     public Polygon flip() {
-        for (Vertex vertex : vertices) {
-            vertex.flip();
-        }
-        ;
-        Collections.reverse(vertices);
 
+        Collections.reverse(vertices);
         plane.flip();
 
         return this;
@@ -192,9 +188,9 @@ public final class Polygon {
             for (int i = 0; i < this.vertices.size() - 2; i++) {
                 sb.append("  facet normal ").append( //$NON-NLS-1$
                         this.plane.normal.toStlString()).append("\n"). //$NON-NLS-1$
-                        append("    outer loop\n"). //$NON-NLS-1$
-                        append("      ").append(firstVertexStl).append("\n"). //$NON-NLS-1$ //$NON-NLS-2$
-                        append("      "); //$NON-NLS-1$
+                append("    outer loop\n"). //$NON-NLS-1$
+                append("      ").append(firstVertexStl).append("\n"). //$NON-NLS-1$ //$NON-NLS-2$
+                append("      "); //$NON-NLS-1$
                 this.vertices.get(i + 1).toStlString(sb).append("\n"). //$NON-NLS-1$
                 append("      "); //$NON-NLS-1$
                 this.vertices.get(i + 2).toStlString(sb).append("\n"). //$NON-NLS-1$
@@ -363,13 +359,11 @@ public final class Polygon {
      */
     private static Polygon fromPoints(List<Vector3d> points, PropertyStorage shared, Plane plane) {
 
-        Vector3d normal = plane != null ? plane.normal.clone() : new Vector3d(0, 0, 0);
-
         List<Vertex> vertices = new ArrayList<Vertex>();
 
         for (Vector3d p : points) {
             Vector3d vec = p.clone();
-            Vertex vertex = new Vertex(vec, normal);
+            Vertex vertex = new Vertex(vec);
             vertices.add(vertex);
         }
 

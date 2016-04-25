@@ -125,7 +125,7 @@ public class CSGCube extends CSGPrimitive implements Primitive {
             for (int i : info[0]) {
                 Vector3d pos = new Vector3d(center.x + dimensions.x * (1 * Math.min(1, i & 1) - 0.5), center.y + dimensions.y * (1 * Math.min(1, i & 2) - 0.5), center.z + dimensions.z
                         * (1 * Math.min(1, i & 4) - 0.5));
-                vertices.add(new Vertex(pos, new Vector3d(info[1][0], info[1][1], info[1][2])));
+                vertices.add(new Vertex(pos));
             }
             PropertyStorage properties = new PropertyStorage();
             properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$

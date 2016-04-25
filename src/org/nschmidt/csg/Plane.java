@@ -182,6 +182,10 @@ public class Plane {
                 }
                 if ((ti | tj) == SPANNING) {
                     double t = (this.dist - this.normal.dot(vi.pos)) / this.normal.dot(vj.pos.minus(vi.pos));
+                    // FIXME The interpolation has to be propagated to other polygons
+                    // This process can be done in parallel, since the polygons are independent from each other.
+                    // However, the current "polygon" object should be ignored by this process, since its vertices
+                    // are used within this for loop.
                     Vertex v = vi.interpolate(vj, t);
                     f.add(v);
                     b.add(v.clone());

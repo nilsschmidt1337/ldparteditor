@@ -111,8 +111,8 @@ public class CSGCylinder extends CSGPrimitive implements Primitive {
         boolean isY = Math.abs(axisZ.y) > 0.5;
         final Vector3d axisX = new Vector3d(isY ? 1 : 0, !isY ? 1 : 0, 0).cross(axisZ).unit();
         final Vector3d axisY = axisX.cross(axisZ).unit();
-        Vertex startV = new Vertex(s, axisZ.negated());
-        Vertex endV = new Vertex(e, axisZ.unit());
+        Vertex startV = new Vertex(s);
+        Vertex endV = new Vertex(e);
         List<Polygon> polygons = new ArrayList<Polygon>();
 
         for (int i = 0; i < numSlices; i++) {
@@ -143,8 +143,7 @@ public class CSGCylinder extends CSGPrimitive implements Primitive {
         double angle = slice * Math.PI * 2;
         Vector3d out = axisX.times(Math.cos(angle)).plus(axisY.times(Math.sin(angle)));
         Vector3d pos = s.plus(ray.times(stack)).plus(out.times(r));
-        Vector3d normal = out.times(1.0 - Math.abs(normalBlend)).plus(axisZ.times(normalBlend));
-        return new Vertex(pos, normal);
+        return new Vertex(pos);
     }
 
     /**
