@@ -33,8 +33,6 @@
  */
 package org.nschmidt.csg;
 
-import org.nschmidt.ldparteditor.enums.View;
-
 /**
  * Bounding box for CSGs.
  *
@@ -42,12 +40,9 @@ import org.nschmidt.ldparteditor.enums.View;
  */
 public class Bounds {
 
-    private final Vector3d center;
     private final Vector3d bounds;
     private final Vector3d min;
     private final Vector3d max;
-    private final CSG csg;
-    private final CSGCube cube;
 
     /**
      * Constructor.
@@ -58,29 +53,14 @@ public class Bounds {
      *            max x,y,z values
      */
     public Bounds(Vector3d min, Vector3d max) {
-        this.center = new Vector3d((max.x + min.x) / 2, (max.y + min.y) / 2, (max.z + min.z) / 2);
-
         this.bounds = new Vector3d(Math.abs(max.x - min.x), Math.abs(max.y - min.y), Math.abs(max.z - min.z));
-
         this.min = min.clone();
         this.max = max.clone();
-
-        cube = new CSGCube(center, bounds);
-        csg = cube.toCSG(View.getLDConfigColour(16));
     }
 
     @Override
     public Bounds clone() {
         return new Bounds(min.clone(), max.clone());
-    }
-
-    /**
-     * Returns the position of the center.
-     *
-     * @return the center position
-     */
-    public Vector3d getCenter() {
-        return center;
     }
 
     /**
@@ -90,76 +70,6 @@ public class Bounds {
      */
     public Vector3d getBounds() {
         return bounds;
-    }
-
-    /**
-     * Returns this bounding box as csg.
-     *
-     * @return this bounding box as csg
-     */
-    public CSG toCSG() {
-        return csg;
-    }
-
-    /**
-     * Returns this bounding box as cube.
-     *
-     * @return this bounding box as cube
-     */
-    public CSGCube toCube() {
-        return cube;
-    }
-
-    /**
-     * Indicates whether the specified point is contained within this bounding
-     * box (check includes box boundary).
-     *
-     * @param v
-     *            vertex to check
-     * @return {@code true} if the point is contained within this bounding box;
-     *         {@code false} otherwise
-     */
-    public boolean contains(Vector3d v) {
-        boolean inX = min.x <= v.x && v.x <= max.x;
-        boolean inY = min.y <= v.y && v.y <= max.y;
-        boolean inZ = min.z <= v.z && v.z <= max.z;
-
-        return inX && inY && inZ;
-    }
-
-    /**
-     * Indicates whether the specified polygon is contained within this bounding
-     * box (check includes box boundary).
-     *
-     * @param p
-     *            polygon to check
-     * @return {@code true} if the polygon is contained within this bounding
-     *         box; {@code false} otherwise
-     */
-    public boolean contains(Polygon p) {
-        boolean result = true;
-        for (Vector3d v : p.vertices) {
-            if (!contains(v)) {
-                result = false;
-                break;
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Indicates whether the specified polygon intersects with this bounding box
-     * (check includes box boundary).
-     *
-     * @param p
-     *            polygon to check
-     * @return {@code true} if the polygon intersects this bounding box;
-     *         {@code false} otherwise
-     * @deprecated not implemented yet
-     */
-    @Deprecated
-    public boolean intersects(Polygon p) {
-        throw new UnsupportedOperationException("Implementation missing!"); //$NON-NLS-1$
     }
 
     /**
@@ -173,13 +83,13 @@ public class Bounds {
      */
     public boolean intersects(Bounds b) {
 
-        if (b.getMin().x > this.getMax().x || b.getMax().x < this.getMin().x) {
+        if (b.min.x > max.x || b.max.x < min.x) {
             return false;
         }
-        if (b.getMin().y > this.getMax().y || b.getMax().y < this.getMin().y) {
+        if (b.min.y > max.y || b.max.y < min.y) {
             return false;
         }
-        if (b.getMin().z > this.getMax().z || b.getMax().z < this.getMin().z) {
+        if (b.min.z > max.z || b.max.z < min.z) {
             return false;
         }
 
@@ -203,7 +113,6 @@ public class Bounds {
 
     @Override
     public String toString() {
-        return "[center: " + center + ", bounds: " + bounds + "]"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+        return "[bounds: " + bounds + "]"; //$NON-NLS-1$//$NON-NLS-2$
     }
-
 }

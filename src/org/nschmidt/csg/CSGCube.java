@@ -38,6 +38,7 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GColourIndex;
 
@@ -113,7 +114,7 @@ public class CSGCube extends CSGPrimitive implements Primitive {
     }
 
     @Override
-    public List<Polygon> toPolygons(GColour colour) {
+    public List<Polygon> toPolygons(DatFile df, GColour colour) {
 
         int[][][] a = {
                 // position // normal
@@ -129,7 +130,7 @@ public class CSGCube extends CSGPrimitive implements Primitive {
             }
             PropertyStorage properties = new PropertyStorage();
             properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
-            polygons.add(new Polygon(vertices, properties));
+            polygons.add(new Polygon(df, vertices, properties));
         }
 
         if (!centered) {
@@ -181,8 +182,8 @@ public class CSGCube extends CSGPrimitive implements Primitive {
     }
 
     @Override
-    public CSG toCSG(GColour colour) {
-        return CSG.fromPolygons(toPolygons(colour));
+    public CSG toCSG(DatFile df, GColour colour) {
+        return CSG.fromPolygons(toPolygons(df, colour));
     }
 
 }

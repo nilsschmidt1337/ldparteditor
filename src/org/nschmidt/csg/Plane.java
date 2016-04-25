@@ -37,6 +37,8 @@ package org.nschmidt.csg;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nschmidt.ldparteditor.data.DatFile;
+
 /**
  * Represents a plane in 3D space.
  *
@@ -166,6 +168,7 @@ public class Plane {
             back.add(polygon);
             break;
         case SPANNING:
+            final DatFile df = polygon.df;
             List<Vector3d> f = new ArrayList<Vector3d>();
             List<Vector3d> b = new ArrayList<Vector3d>();
             for (int i = 0; i < polygon.vertices.size(); i++) {
@@ -192,10 +195,10 @@ public class Plane {
                 }
             }
             if (f.size() >= 3) {
-                front.add(new Polygon(f, polygon.getShared()));
+                front.add(new Polygon(df, f, polygon.getShared()));
             }
             if (b.size() >= 3) {
-                back.add(new Polygon(b, polygon.getShared()));
+                back.add(new Polygon(df, b, polygon.getShared()));
             }
             break;
         }

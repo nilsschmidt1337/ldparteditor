@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GColourIndex;
 
@@ -103,7 +104,7 @@ public class CSGCylinder extends CSGPrimitive implements Primitive {
     }
 
     @Override
-    public List<Polygon> toPolygons(GColour colour) {
+    public List<Polygon> toPolygons(DatFile df, GColour colour) {
         final Vector3d s = getStart();
         Vector3d e = getEnd();
         final Vector3d ray = e.minus(s);
@@ -120,18 +121,18 @@ public class CSGCylinder extends CSGPrimitive implements Primitive {
             {
                 PropertyStorage properties = new PropertyStorage();
                 properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
-                polygons.add(new Polygon(Arrays.asList(startV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, -1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, -1)), properties));
+                polygons.add(new Polygon(df, Arrays.asList(startV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, -1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, -1)), properties));
             }
             {
                 PropertyStorage properties = new PropertyStorage();
                 properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
-                polygons.add(new Polygon(Arrays.asList(cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, 0),
+                polygons.add(new Polygon(df, Arrays.asList(cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, 0),
                         cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0)), properties));
             }
             {
                 PropertyStorage properties = new PropertyStorage();
                 properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
-                polygons.add(new Polygon(Arrays.asList(endV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1),
+                polygons.add(new Polygon(df, Arrays.asList(endV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1),
                         cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)), properties));
             }
         }
@@ -207,7 +208,7 @@ public class CSGCylinder extends CSGPrimitive implements Primitive {
     }
 
     @Override
-    public CSG toCSG(GColour colour) {
-        return CSG.fromPolygons(toPolygons(colour));
+    public CSG toCSG(DatFile df, GColour colour) {
+        return CSG.fromPolygons(toPolygons(df, colour));
     }
 }
