@@ -467,26 +467,26 @@ public class CSG {
 
             for (int i = 0; i < p.vertices.size(); i++) {
 
-                Vertex vert = p.vertices.get(i);
+                Vector3d vert = p.vertices.get(i);
 
-                if (vert.pos.x < minX) {
-                    minX = vert.pos.x;
+                if (vert.x < minX) {
+                    minX = vert.x;
                 }
-                if (vert.pos.y < minY) {
-                    minY = vert.pos.y;
+                if (vert.y < minY) {
+                    minY = vert.y;
                 }
-                if (vert.pos.z < minZ) {
-                    minZ = vert.pos.z;
+                if (vert.z < minZ) {
+                    minZ = vert.z;
                 }
 
-                if (vert.pos.x > maxX) {
-                    maxX = vert.pos.x;
+                if (vert.x > maxX) {
+                    maxX = vert.x;
                 }
-                if (vert.pos.y > maxY) {
-                    maxY = vert.pos.y;
+                if (vert.y > maxY) {
+                    maxY = vert.y;
                 }
-                if (vert.pos.z > maxZ) {
-                    maxZ = vert.pos.z;
+                if (vert.z > maxZ) {
+                    maxZ = vert.z;
                 }
 
             } // end for vertices

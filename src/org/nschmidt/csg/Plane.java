@@ -148,7 +148,7 @@ public class Plane {
         int polygonType = 0;
         List<Integer> types = new ArrayList<Integer>();
         for (int i = 0; i < polygon.vertices.size(); i++) {
-            double t = this.normal.dot(polygon.vertices.get(i).pos) - this.dist;
+            double t = this.normal.dot(polygon.vertices.get(i)) - this.dist;
             int type = t < -Plane.EPSILON ? BACK : t > Plane.EPSILON ? FRONT : COPLANAR;
             polygonType |= type;
             types.add(type);
@@ -166,14 +166,14 @@ public class Plane {
             back.add(polygon);
             break;
         case SPANNING:
-            List<Vertex> f = new ArrayList<Vertex>();
-            List<Vertex> b = new ArrayList<Vertex>();
+            List<Vector3d> f = new ArrayList<Vector3d>();
+            List<Vector3d> b = new ArrayList<Vector3d>();
             for (int i = 0; i < polygon.vertices.size(); i++) {
                 int j = (i + 1) % polygon.vertices.size();
                 int ti = types.get(i);
                 int tj = types.get(j);
-                Vertex vi = polygon.vertices.get(i);
-                Vertex vj = polygon.vertices.get(j);
+                Vector3d vi = polygon.vertices.get(i);
+                Vector3d vj = polygon.vertices.get(j);
                 if (ti != BACK) {
                     f.add(vi);
                 }
@@ -181,12 +181,12 @@ public class Plane {
                     b.add(ti != BACK ? vi.clone() : vi);
                 }
                 if ((ti | tj) == SPANNING) {
-                    double t = (this.dist - this.normal.dot(vi.pos)) / this.normal.dot(vj.pos.minus(vi.pos));
+                    double t = (this.dist - this.normal.dot(vi)) / this.normal.dot(vj.minus(vi));
                     // FIXME The interpolation has to be propagated to other polygons
                     // This process can be done in parallel, since the polygons are independent from each other.
                     // However, the current "polygon" object should be ignored by this process, since its vertices
                     // are used within this for loop.
-                    Vertex v = vi.interpolate(vj, t);
+                    Vector3d v = vi.interpolate(vj, t);
                     f.add(v);
                     b.add(v.clone());
                 }

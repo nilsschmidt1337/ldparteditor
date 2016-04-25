@@ -73,11 +73,11 @@ public class CSGQuad extends CSGPrimitive implements Primitive {
                 { { 4, 5, 7, 6 }, { 0, 0, +1 } } };
         List<Polygon> polygons = new ArrayList<Polygon>();
         for (int[][] info : a) {
-            List<Vertex> vertices = new ArrayList<Vertex>();
+            List<Vector3d> vertices = new ArrayList<Vector3d>();
             for (int i : info[0]) {
                 Vector3d pos = new Vector3d(center.x + dimensions.x * (1 * Math.min(1, i & 1) - 0.5), center.y + dimensions.y * (1 * Math.min(1, i & 2) - 0.5), center.z + dimensions.z
                         * (1 * Math.min(1, i & 4) - 0.5));
-                vertices.add(new Vertex(pos));
+                vertices.add(pos);
             }
             PropertyStorage properties = new PropertyStorage();
             properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$

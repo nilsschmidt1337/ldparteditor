@@ -111,19 +111,6 @@ public class Bounds {
     }
 
     /**
-     * Indicates whether the specified vertex is contained within this bounding
-     * box (check includes box boundary).
-     *
-     * @param v
-     *            vertex to check
-     * @return {@code true} if the vertex is contained within this bounding box;
-     *         {@code false} otherwise
-     */
-    public boolean contains(Vertex v) {
-        return contains(v.pos);
-    }
-
-    /**
      * Indicates whether the specified point is contained within this bounding
      * box (check includes box boundary).
      *
@@ -151,7 +138,7 @@ public class Bounds {
      */
     public boolean contains(Polygon p) {
         boolean result = true;
-        for (Vertex v : p.vertices) {
+        for (Vector3d v : p.vertices) {
             if (!contains(v)) {
                 result = false;
                 break;

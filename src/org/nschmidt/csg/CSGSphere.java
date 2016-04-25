@@ -97,11 +97,11 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
         numStacks = 8;
     }
 
-    private Vertex sphereVertex(Vector3d c, double r, double theta, double phi) {
+    private Vector3d sphereVertex(Vector3d c, double r, double theta, double phi) {
         theta *= Math.PI * 2;
         phi *= Math.PI;
         Vector3d dir = new Vector3d(Math.cos(theta) * Math.sin(phi), Math.cos(phi), Math.sin(theta) * Math.sin(phi));
-        return new Vertex(c.plus(dir.times(r)));
+        return c.plus(dir.times(r));
     }
 
     @Override
@@ -109,7 +109,7 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
         List<Polygon> polygons = new ArrayList<Polygon>();
         for (int i = 0; i < numSlices; i++) {
             for (int j = 0; j < numStacks; j++) {
-                final List<Vertex> vertices = new ArrayList<Vertex>();
+                final List<Vector3d> vertices = new ArrayList<Vector3d>();
 
                 vertices.add(sphereVertex(center, radius, i / (double) numSlices, j / (double) numStacks));
                 if (j > 0) {
