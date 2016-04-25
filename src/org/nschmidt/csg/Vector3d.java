@@ -237,32 +237,6 @@ public class Vector3d {
         return new Vector3d(this.y * a.z - this.z * a.y, this.z * a.x - this.x * a.z, this.x * a.y - this.y * a.x);
     }
 
-    /**
-     * Applies the specified transformation to this vector.
-     *
-     * @param transform
-     *            the transform to apply
-     *
-     * @return this vector
-     */
-    public Vector3d transform(Transform transform) {
-        return transform.transform(this);
-    }
-
-    /**
-     * Returns a transformed copy of this vector.
-     *
-     * @param transform
-     *            the transform to apply
-     *
-     *            <b>Note:</b> this vector is not modified.
-     *
-     * @return a transformed copy of this vector
-     */
-    public Vector3d transformed(Transform transform) {
-        return clone().transform(transform);
-    }
-
     @Override
     public String toString() {
         return "[" + x + ", " + y + ", " + z + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
