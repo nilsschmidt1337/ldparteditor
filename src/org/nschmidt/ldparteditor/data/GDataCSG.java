@@ -173,6 +173,16 @@ public final class GDataCSG extends GData {
     public GDataCSG(DatFile df, byte type, String csgLine, GData1 parent) {
         clearPolygonCache.put(df, true);
         fullClearPolygonCache.put(df, false);
+
+        //        {
+        //            Collection<GData> drawnData = df.getDrawPerLine_NOCLONE().values();
+        //            List<Polygon> newList = GDataCSG.getPolyList(df).stream()
+        //                    .filter(key -> drawnData.contains(key.csg))
+        //                    .collect(Collectors.toList());
+        //            GDataCSG.getPolyList(df).clear();
+        //            GDataCSG.getPolyList(df).addAll(newList);
+        //        }
+
         this.parent = parent;
         registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(this);
         String[] data_segments = csgLine.trim().split("\\s+"); //$NON-NLS-1$
@@ -360,7 +370,7 @@ public final class GDataCSG extends GData {
                             case CSG.QUAD:
                                 CSGQuad quad = new CSGQuad();
                                 idToGDataCSG.put(quad.ID, this);
-                                CSG csgQuad = quad.toCSG(this, df, colour);
+                                CSG csgQuad = quad.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgQuad = transformWithManipulator(csgQuad, m, matrix);
                                 } else {
@@ -372,7 +382,7 @@ public final class GDataCSG extends GData {
                             case CSG.CIRCLE:
                                 CSGCircle circle = new CSGCircle(quality);
                                 idToGDataCSG.put(circle.ID, this);
-                                CSG csgCircle = circle.toCSG(this, df, colour);
+                                CSG csgCircle = circle.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgCircle = transformWithManipulator(csgCircle, m, matrix);
                                 } else {
@@ -384,7 +394,7 @@ public final class GDataCSG extends GData {
                             case CSG.ELLIPSOID:
                                 CSGSphere sphere = new CSGSphere(quality, quality / 2);
                                 idToGDataCSG.put(sphere.ID, this);
-                                CSG csgSphere = sphere.toCSG(this, df, colour);
+                                CSG csgSphere = sphere.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgSphere = transformWithManipulator(csgSphere, m, matrix);
                                 } else {
@@ -396,7 +406,7 @@ public final class GDataCSG extends GData {
                             case CSG.CUBOID:
                                 CSGCube cube = new CSGCube();
                                 idToGDataCSG.put(cube.ID, this);
-                                CSG csgCube = cube.toCSG(this, df, colour);
+                                CSG csgCube = cube.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgCube = transformWithManipulator(csgCube, m, matrix);
                                 } else {
@@ -408,7 +418,7 @@ public final class GDataCSG extends GData {
                             case CSG.CYLINDER:
                                 CSGCylinder cylinder = new CSGCylinder(quality);
                                 idToGDataCSG.put(cylinder.ID, this);
-                                CSG csgCylinder = cylinder.toCSG(this, df, colour);
+                                CSG csgCylinder = cylinder.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgCylinder = transformWithManipulator(csgCylinder, m, matrix);
                                 } else {
@@ -420,7 +430,7 @@ public final class GDataCSG extends GData {
                             case CSG.CONE:
                                 CSGCone cone = new CSGCone(quality);
                                 idToGDataCSG.put(cone.ID, this);
-                                CSG csgCone = cone.toCSG(this, df, colour);
+                                CSG csgCone = cone.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgCone = transformWithManipulator(csgCone, m, matrix);
                                 } else {
@@ -435,7 +445,7 @@ public final class GDataCSG extends GData {
                                 }
                                 CSGMesh mesh = new CSGMesh(this, cachedData, polygonCache);
                                 CSGMesh.fillCache(cachedData, this);
-                                CSG csgMesh = mesh.toCSG(this, df, colour);
+                                CSG csgMesh = mesh.toCSG(df, colour);
                                 idToGDataCSG.put(mesh.ID, this);
                                 if (modified && isSelected(df)) {
                                     csgMesh = transformWithManipulator(csgMesh, m, matrix);
@@ -456,7 +466,7 @@ public final class GDataCSG extends GData {
                                 }
                                 CSGExtrude extruder = new CSGExtrude(this, cachedData, extruderConfig, polygonCache);
                                 CSGExtrude.fillCache(cachedData, this);
-                                CSG csgExtruder = extruder.toCSG(this, df, colour);
+                                CSG csgExtruder = extruder.toCSG(df, colour);
                                 idToGDataCSG.put(extruder.ID, this);
                                 if (modified && isSelected(df)) {
                                     csgExtruder = transformWithManipulator(csgExtruder, m, matrix);
@@ -1239,6 +1249,7 @@ public final class GDataCSG extends GData {
             if (fullClearPolygonCache.get(df) != true) {
                 fullClearPolygonCache.put(df, true);
                 clearPolygonCache.put(df, true);
+                GDataCSG.getPolyList(df).clear();
             } else {
                 clearPolygonCache.put(df, false);
             }

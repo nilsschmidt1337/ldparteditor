@@ -17,12 +17,11 @@ package org.nschmidt.ldparteditor.helpers;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.sun.org.apache.xerces.internal.impl.io.UTF8Reader;
 
 /**
  * A helper enum class for file actions
@@ -136,9 +135,9 @@ public enum FileHelper {
 
         final StringBuilder sb = new StringBuilder();
 
-        UTF8Reader in = null;
+        InputStreamReader in = null;
         try {
-            in = new UTF8Reader(new URL("http://www.ldraw.org/library/unofficial/" + name).openStream()); //$NON-NLS-1$
+            in = new InputStreamReader(new URL("http://www.ldraw.org/library/unofficial/" + name).openStream(), "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
             int c;
             while ((c = in.read()) != -1) {
                 sb.append((char) c);

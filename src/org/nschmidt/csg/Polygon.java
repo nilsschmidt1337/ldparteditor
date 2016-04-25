@@ -69,10 +69,6 @@ public final class Polygon {
      * The linked DatFile
      */
     final DatFile df;
-    /**
-     * The linked CSG
-     */
-    final GDataCSG csg;
 
     public PropertyStorage getShared() {
         return shared;
@@ -91,14 +87,12 @@ public final class Polygon {
      *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
-     * @param csg TODO
      * @param vertices
      *            polygon vertices
      * @param shared
      *            shared property
      */
-    public Polygon(GDataCSG csg, DatFile df, List<Vector3d> vertices, PropertyStorage shared) {
-        this.csg = csg;
+    public Polygon(DatFile df, List<Vector3d> vertices, PropertyStorage shared) {
         this.df = df;
         this.vertices = vertices;
         this.shared = shared;
@@ -112,12 +106,10 @@ public final class Polygon {
      *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
-     * @param csg TODO
      * @param vertices
      *            polygon vertices
      */
-    public Polygon(GDataCSG csg, DatFile df, List<Vector3d> vertices) {
-        this.csg = csg;
+    public Polygon(DatFile df, List<Vector3d> vertices) {
         this.df = df;
         this.vertices = vertices;
         this.shared = new PropertyStorage();
@@ -131,14 +123,13 @@ public final class Polygon {
      *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
-     * @param csg TODO
      * @param df TODO
      * @param vertices
      *            polygon vertices
      *
      */
-    public Polygon(GDataCSG csg, DatFile df, Vector3d... vertices) {
-        this(csg, df, Arrays.asList(vertices));
+    public Polygon(DatFile df, Vector3d... vertices) {
+        this(df, Arrays.asList(vertices));
     }
 
     @Override
@@ -147,7 +138,7 @@ public final class Polygon {
         for (Vector3d vertex : vertices) {
             newVertices.add(vertex.clone());
         }
-        return new Polygon(csg, df, newVertices, new PropertyStorage(shared));
+        return new Polygon(df, newVertices, new PropertyStorage(shared));
     }
 
     /**
@@ -339,7 +330,7 @@ public final class Polygon {
             vertices.add(p.clone());
         }
 
-        return new Polygon(csg, df, vertices, shared);
+        return new Polygon(df, vertices, shared);
     }
 
     /**
