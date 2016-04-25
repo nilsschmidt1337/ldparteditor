@@ -35,9 +35,11 @@ package org.nschmidt.csg;
 
 // # class Plane
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.GData;
 
 /**
  * Represents a plane in 3D space.
@@ -184,6 +186,11 @@ public class Plane {
                     b.add(ti != BACK ? vi.clone() : vi);
                 }
                 if ((ti | tj) == SPANNING) {
+
+                    Collection<GData> drawnData = df.getDrawPerLine_NOCLONE().values();
+
+
+
                     double t = (this.dist - this.normal.dot(vi)) / this.normal.dot(vj.minus(vi));
                     // FIXME The interpolation has to be propagated to other polygons
                     // This process can be done in parallel, since the polygons are independent from each other.
@@ -195,10 +202,10 @@ public class Plane {
                 }
             }
             if (f.size() >= 3) {
-                front.add(new Polygon(df, f, polygon.getShared()));
+                front.add(new Polygon(polygon.csg, df, f, polygon.getShared()));
             }
             if (b.size() >= 3) {
-                back.add(new Polygon(df, b, polygon.getShared()));
+                back.add(new Polygon(polygon.csg, df, b, polygon.getShared()));
             }
             break;
         }
