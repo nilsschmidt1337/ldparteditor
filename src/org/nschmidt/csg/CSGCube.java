@@ -41,6 +41,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GColourIndex;
+import org.nschmidt.ldparteditor.data.GDataCSG;
 
 /**
  * An axis-aligned solid cuboid defined by {@code center} and {@code dimensions}
@@ -114,7 +115,7 @@ public class CSGCube extends CSGPrimitive implements Primitive {
     }
 
     @Override
-    public List<Polygon> toPolygons(DatFile df, GColour colour) {
+    public List<Polygon> toPolygons(GDataCSG csg, DatFile df, GColour colour) {
 
         int[][][] a = {
                 // position // normal
@@ -130,7 +131,7 @@ public class CSGCube extends CSGPrimitive implements Primitive {
             }
             PropertyStorage properties = new PropertyStorage();
             properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
-            polygons.add(new Polygon(df, vertices, properties));
+            polygons.add(new Polygon(csg, df, vertices, properties));
         }
 
         if (!centered) {
@@ -182,8 +183,8 @@ public class CSGCube extends CSGPrimitive implements Primitive {
     }
 
     @Override
-    public CSG toCSG(DatFile df, GColour colour) {
-        return CSG.fromPolygons(toPolygons(df, colour));
+    public CSG toCSG(GDataCSG csg, DatFile df, GColour colour) {
+        return CSG.fromPolygons(toPolygons(csg, df, colour));
     }
 
 }

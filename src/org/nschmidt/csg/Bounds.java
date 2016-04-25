@@ -40,7 +40,6 @@ package org.nschmidt.csg;
  */
 public class Bounds {
 
-    private final Vector3d bounds;
     private final Vector3d min;
     private final Vector3d max;
 
@@ -53,23 +52,8 @@ public class Bounds {
      *            max x,y,z values
      */
     public Bounds(Vector3d min, Vector3d max) {
-        this.bounds = new Vector3d(Math.abs(max.x - min.x), Math.abs(max.y - min.y), Math.abs(max.z - min.z));
         this.min = min.clone();
         this.max = max.clone();
-    }
-
-    @Override
-    public Bounds clone() {
-        return new Bounds(min, max);
-    }
-
-    /**
-     * Returns the bounds (width,height,depth).
-     *
-     * @return the bounds (width,height,depth)
-     */
-    public Vector3d getBounds() {
-        return bounds;
     }
 
     /**
@@ -109,10 +93,5 @@ public class Bounds {
      */
     public Vector3d getMax() {
         return max;
-    }
-
-    @Override
-    public String toString() {
-        return "[bounds: " + bounds + "]"; //$NON-NLS-1$//$NON-NLS-2$
     }
 }

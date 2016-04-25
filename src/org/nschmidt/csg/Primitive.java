@@ -34,6 +34,7 @@ import java.util.List;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.data.GDataCSG;
 
 /**
  * A primitive geometry.
@@ -47,18 +48,14 @@ public interface Primitive {
      *
      * <b>Note:</b> this method computes the polygons each time this method is
      * called. The polygons can be cached inside a {@link CSG} object.
-     * @param df TODO
-     *
      * @return al list of polygons that define this primitive
      */
-    public List<Polygon> toPolygons(DatFile df, GColour colour);
+    public List<Polygon> toPolygons(GDataCSG csg, DatFile df, GColour colour);
 
     /**
      * Returns this primitive as {@link CSG}.
-     * @param df TODO
-     *
      * @return this primitive as {@link CSG}
      */
-    public CSG toCSG(DatFile df, GColour colour);
+    public CSG toCSG(GDataCSG csg, DatFile df, GColour colour);
 
 }

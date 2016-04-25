@@ -44,6 +44,7 @@ import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GColourIndex;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
+import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.enums.View;
 
 /**
@@ -68,6 +69,10 @@ public final class Polygon {
      * The linked DatFile
      */
     final DatFile df;
+    /**
+     * The linked CSG
+     */
+    final GDataCSG csg;
 
     public PropertyStorage getShared() {
         return shared;
@@ -86,16 +91,19 @@ public final class Polygon {
      *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
+     * @param csg TODO
      * @param vertices
      *            polygon vertices
      * @param shared
      *            shared property
      */
-    public Polygon(DatFile df, List<Vector3d> vertices, PropertyStorage shared) {
+    public Polygon(GDataCSG csg, DatFile df, List<Vector3d> vertices, PropertyStorage shared) {
+        this.csg = csg;
         this.df = df;
         this.vertices = vertices;
         this.shared = shared;
         this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
+        GDataCSG.getPolyList(df).add(this);
     }
 
     /**
@@ -104,14 +112,17 @@ public final class Polygon {
      *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
+     * @param csg TODO
      * @param vertices
      *            polygon vertices
      */
-    public Polygon(DatFile df, List<Vector3d> vertices) {
+    public Polygon(GDataCSG csg, DatFile df, List<Vector3d> vertices) {
+        this.csg = csg;
         this.df = df;
         this.vertices = vertices;
         this.shared = new PropertyStorage();
         this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
+        GDataCSG.getPolyList(df).add(this);
     }
 
     /**
@@ -120,13 +131,14 @@ public final class Polygon {
      *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
+     * @param csg TODO
      * @param df TODO
      * @param vertices
      *            polygon vertices
      *
      */
-    public Polygon(DatFile df, Vector3d... vertices) {
-        this(df, Arrays.asList(vertices));
+    public Polygon(GDataCSG csg, DatFile df, Vector3d... vertices) {
+        this(csg, df, Arrays.asList(vertices));
     }
 
     @Override
@@ -135,7 +147,7 @@ public final class Polygon {
         for (Vector3d vertex : vertices) {
             newVertices.add(vertex.clone());
         }
-        return new Polygon(df, newVertices, new PropertyStorage(shared));
+        return new Polygon(csg, df, newVertices, new PropertyStorage(shared));
     }
 
     /**
@@ -197,7 +209,6 @@ public final class Polygon {
         for (Vector3d vertex : vertices) {
             vertex = vertex.plus(v);
         }
-        ;
         return this;
     }
 
@@ -273,50 +284,54 @@ public final class Polygon {
 
     /**
      * Creates a polygon from the specified point list.
-     *
+     * @param csg TODO
      * @param points
      *            the points that define the polygon
      * @param shared
      *            shared property storage
+     *
      * @return a polygon defined by the specified point list
      */
-    public static Polygon fromPoints(DatFile df, List<Vector3d> points, PropertyStorage shared) {
-        return fromPoints(df, points, shared, null);
+    public static Polygon fromPoints(GDataCSG csg, DatFile df, List<Vector3d> points, PropertyStorage shared) {
+        return fromPoints(csg, df, points, shared, null);
     }
 
     /**
      * Creates a polygon from the specified point list.
-     *
+     * @param csg TODO
      * @param points
      *            the points that define the polygon
+     *
      * @return a polygon defined by the specified point list
      */
-    public static Polygon fromPoints(DatFile df, List<Vector3d> points) {
-        return fromPoints(df, points, new PropertyStorage(), null);
+    public static Polygon fromPoints(GDataCSG csg, DatFile df, List<Vector3d> points) {
+        return fromPoints(csg, df, points, new PropertyStorage(), null);
     }
 
     /**
      * Creates a polygon from the specified points.
-     *
+     * @param csg TODO
      * @param points
      *            the points that define the polygon
+     *
      * @return a polygon defined by the specified point list
      */
-    public static Polygon fromPoints(DatFile df, Vector3d... points) {
-        return fromPoints(df, Arrays.asList(points), new PropertyStorage(), null);
+    public static Polygon fromPoints(GDataCSG csg, DatFile df, Vector3d... points) {
+        return fromPoints(csg, df, Arrays.asList(points), new PropertyStorage(), null);
     }
 
     /**
      * Creates a polygon from the specified point list.
-     *
+     * @param csg TODO
      * @param points
      *            the points that define the polygon
      * @param shared
      * @param plane
      *            may be null
+     *
      * @return a polygon defined by the specified point list
      */
-    private static Polygon fromPoints(DatFile df, List<Vector3d> points, PropertyStorage shared, Plane plane) {
+    private static Polygon fromPoints(GDataCSG csg, DatFile df, List<Vector3d> points, PropertyStorage shared, Plane plane) {
 
         List<Vector3d> vertices = new ArrayList<Vector3d>();
 
@@ -324,7 +339,7 @@ public final class Polygon {
             vertices.add(p.clone());
         }
 
-        return new Polygon(df, vertices, shared);
+        return new Polygon(csg, df, vertices, shared);
     }
 
     /**
