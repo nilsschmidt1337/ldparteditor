@@ -56,7 +56,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 
@@ -84,6 +84,7 @@ public final class GDataCSG extends GData {
     private final static ThreadsafeHashMap<DatFile, Boolean> clearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
     private final static ThreadsafeHashMap<DatFile, Boolean> fullClearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
     private final static ThreadsafeHashMap<DatFile, ArrayList<Polygon>> allPolygons = new ThreadsafeHashMap<DatFile, ArrayList<Polygon>>();
+    private final static ThreadsafeHashMap<DatFile, Boolean> compileAndInline = new ThreadsafeHashMap<DatFile, Boolean>();
 
 
     private final ArrayList<GData> cachedData = new ArrayList<GData>();
@@ -104,6 +105,7 @@ public final class GDataCSG extends GData {
     private CSG compiledCSG = null;
     private CSG dataCSG = null;
 
+    private final DatFile myDat;
     private final GColour colour;
     final Matrix4f matrix;
 
@@ -132,9 +134,10 @@ public final class GDataCSG extends GData {
     }
 
     public synchronized static void resetCSG(DatFile df, boolean useLowQuality) {
-        if (allPolygons.containsKey(df)) NLogger.debug(GDataCSG.class, "Registered polygons: " + allPolygons.get(df).size()); //$NON-NLS-1$
         if (useLowQuality) {
-            GDataCSG.getPolyList(df).clear();
+            if (allPolygons.containsKey(df)) {
+                allPolygons.get(df).clear();
+            }
             quality = 12;
         } else {
             quality = 16;
@@ -143,6 +146,7 @@ public final class GDataCSG extends GData {
         ref.removeAll(parsedData.putIfAbsent(df, new HashSet<GDataCSG>()));
         clearPolygonCache.putIfAbsent(df, true);
         fullClearPolygonCache.putIfAbsent(df, true);
+        compileAndInline.putIfAbsent(df, false);
         deleteAndRecompile = !ref.isEmpty();
         if (deleteAndRecompile) {
             globalExtruderConfig.put(df, new PathTruderSettings());
@@ -173,16 +177,7 @@ public final class GDataCSG extends GData {
     public GDataCSG(DatFile df, byte type, String csgLine, GData1 parent) {
         clearPolygonCache.put(df, true);
         fullClearPolygonCache.put(df, false);
-
-        //        {
-        //            Collection<GData> drawnData = df.getDrawPerLine_NOCLONE().values();
-        //            List<Polygon> newList = GDataCSG.getPolyList(df).stream()
-        //                    .filter(key -> drawnData.contains(key.csg))
-        //                    .collect(Collectors.toList());
-        //            GDataCSG.getPolyList(df).clear();
-        //            GDataCSG.getPolyList(df).addAll(newList);
-        //        }
-
+        myDat = df;
         this.parent = parent;
         registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(this);
         String[] data_segments = csgLine.trim().split("\\s+"); //$NON-NLS-1$
@@ -334,13 +329,18 @@ public final class GDataCSG extends GData {
 
     private void drawAndParse(Composite3D c3d) {
         final DatFile df = c3d.getLockableDatFileReference();
+        drawAndParse(c3d, df);
+    }
+
+    private void drawAndParse(Composite3D c3d, DatFile df) {
+
         final boolean clearCaches = clearPolygonCache.putIfAbsent(df, true) || type == CSG.MESH && CSGMesh.needCacheRefresh(cachedData, this, df) || type == CSG.EXTRUDE && CSGExtrude.needCacheRefresh(cachedData, this, df);
         if (clearCaches) {
             clearPolygonCache.put(df, true);
         }
         final HashSet<GDataCSG> parsedData = GDataCSG.parsedData.putIfAbsent(df, new HashSet<GDataCSG>());
         parsedData.add(this);
-        final boolean modified = c3d.getManipulator().isModified();
+        final boolean modified = c3d != null && c3d.getManipulator().isModified();
         if (deleteAndRecompile || modified || clearCaches) {
             final HashBiMap<Integer, GDataCSG> idToGDataCSG = GDataCSG.idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>());
             final HashMap<String, CSG> linkedCSG = GDataCSG.linkedCSG.putIfAbsent(df, new HashMap<String, CSG>());
@@ -516,7 +516,7 @@ public final class GDataCSG extends GData {
                         }
                         break;
                     case CSG.QUALITY:
-                        quality = c3d.getManipulator().isModified() ? 12 : global_quality;
+                        quality = c3d != null && c3d.getManipulator().isModified() ? 12 : global_quality;
                         break;
                     case CSG.EPSILON:
                         Plane.EPSILON = global_epsilon;
@@ -539,7 +539,7 @@ public final class GDataCSG extends GData {
 
             }
         }
-        if (compiledCSG != null) {
+        if (compiledCSG != null && c3d != null) {
             if (c3d.getRenderMode() != 5) {
                 compiledCSG.draw(c3d);
             } else {
@@ -607,6 +607,17 @@ public final class GDataCSG extends GData {
         switch (type) {
         case CSG.COMPILE:
             if (compiledCSG != null) {
+                compileAndInline.put(myDat, true);
+                resetCSG(myDat, false);
+                GDataCSG.forceRecompile(myDat);
+                GData g = myDat.getDrawChainStart();
+                while ((g = g.getNext()) != null) {
+                    if (g.type() == 8) {
+                        GDataCSG gcsg = (GDataCSG) g;
+                        gcsg.drawAndParse(null, myDat);
+                    }
+                }
+                compileAndInline.put(Project.getFileToEdit(), false);
 
                 final StringBuilder sb = new StringBuilder();
 
@@ -1249,7 +1260,9 @@ public final class GDataCSG extends GData {
             if (fullClearPolygonCache.get(df) != true) {
                 fullClearPolygonCache.put(df, true);
                 clearPolygonCache.put(df, true);
-                GDataCSG.getPolyList(df).clear();
+                if (allPolygons.containsKey(df)) {
+                    allPolygons.get(df).clear();
+                }
             } else {
                 clearPolygonCache.put(df, false);
             }
@@ -1257,7 +1270,12 @@ public final class GDataCSG extends GData {
     }
 
     public static List<Polygon> getPolyList(DatFile df) {
-        return allPolygons.putIfAbsent(df, new ArrayList<Polygon>());
+        ArrayList<Polygon> result = new ArrayList<Polygon>();
+        if (compileAndInline.get(df)) {
+            return allPolygons.putIfAbsent(df, result);
+        } else {
+            return result;
+        }
     }
 
 }
