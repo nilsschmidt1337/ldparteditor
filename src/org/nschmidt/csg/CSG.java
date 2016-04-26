@@ -35,15 +35,18 @@ package org.nschmidt.csg;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
+import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.enums.View;
 
 /**
@@ -371,6 +374,43 @@ public class CSG {
                 new HashSet<String>(), View.DUMMY_REFERENCE);
         this.result = toLDrawTriangles(g1);
         return g1;
+    }
+
+    public GData1 compile_without_t_junctions(DatFile df) {
+        final List<Vector3d[]> splitList = Collections.synchronizedList(GDataCSG.getNewPolyVertices(df));
+        this.polygons.parallelStream().forEach((poly) -> {
+            final List<Vector3d> verts = poly.vertices;
+            for (Vector3d[] split : splitList) {
+                final Vector3d vi = split[0];
+                final Vector3d vj = split[1];
+                final Vector3d v = split[2];
+                final int size = verts.size();
+                for (int k = 0; k < size; k++) {
+                    int l = (k + 1) % size;
+                    if (verts.get(k).equals(vi) && verts.get(l).equals(vj)) {
+                        verts.add(l, v.clone());
+                        break;
+                    } else if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
+                        verts.add(l, v.clone());
+                        break;
+                    }
+                }
+            }
+        });
+        Matrix4f id = new Matrix4f();
+        Matrix4f.setIdentity(id);
+        GData1 g1 = new GData1(-1, .5f, .5f, .5f, 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
+                new HashSet<String>(), View.DUMMY_REFERENCE);
+        this.result = toLDrawTriangles2(g1);
+        return g1;
+    }
+
+    public HashMap<GData3, Integer> toLDrawTriangles2(GData1 parent) {
+        HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
+        for (Polygon p : this.polygons) {
+            result.putAll(p.toLDrawTriangles2(parent));
+        }
+        return result;
     }
 
     public void draw(Composite3D c3d) {
