@@ -46,6 +46,7 @@ import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.csg.Polygon;
+import org.nschmidt.csg.Vector3d;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
@@ -83,7 +84,7 @@ public final class GDataCSG extends GData {
     private final static ThreadsafeHashMap<DatFile, PathTruderSettings> globalExtruderConfig = new ThreadsafeHashMap<DatFile, PathTruderSettings>();
     private final static ThreadsafeHashMap<DatFile, Boolean> clearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
     private final static ThreadsafeHashMap<DatFile, Boolean> fullClearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
-    private final static ThreadsafeHashMap<DatFile, ArrayList<Polygon>> allPolygons = new ThreadsafeHashMap<DatFile, ArrayList<Polygon>>();
+    private final static ThreadsafeHashMap<DatFile, ArrayList<Vector3d[]>> allNewPolygonVertices = new ThreadsafeHashMap<DatFile, ArrayList<Vector3d[]>>();
     private final static ThreadsafeHashMap<DatFile, Boolean> compileAndInline = new ThreadsafeHashMap<DatFile, Boolean>();
 
 
@@ -111,7 +112,7 @@ public final class GDataCSG extends GData {
 
     public synchronized static void forceRecompile(DatFile df) {
         registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(null);
-        allPolygons.putIfAbsent(df, new ArrayList<Polygon>()).clear();
+        allNewPolygonVertices.putIfAbsent(df, new ArrayList<Vector3d[]>()).clear();
         clearPolygonCache.putIfAbsent(df, true);
         Plane.EPSILON = 1e-3;
     }
@@ -124,7 +125,7 @@ public final class GDataCSG extends GData {
         idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>()).clear();
         selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>()).clear();
         selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>()).clear();
-        allPolygons.putIfAbsent(df, new ArrayList<Polygon>()).clear();
+        allNewPolygonVertices.putIfAbsent(df, new ArrayList<Vector3d[]>()).clear();
         backupSelectionClear(df);
         Plane.EPSILON = 1e-3;
     }
@@ -135,8 +136,8 @@ public final class GDataCSG extends GData {
 
     public synchronized static void resetCSG(DatFile df, boolean useLowQuality) {
         if (useLowQuality) {
-            if (allPolygons.containsKey(df)) {
-                allPolygons.get(df).clear();
+            if (allNewPolygonVertices.containsKey(df)) {
+                allNewPolygonVertices.get(df).clear();
             }
             quality = 12;
         } else {
@@ -484,7 +485,11 @@ public final class GDataCSG extends GData {
                     case CSG.COMPILE:
                         if (linkedCSG.containsKey(ref1)) {
                             compiledCSG = linkedCSG.get(ref1);
-                            compiledCSG.compile();
+                            if (GDataCSG.isInlining(df)) {
+                                compiledCSG.compile_without_t_junctions(df);
+                            } else {
+                                compiledCSG.compile();
+                            }
                         } else {
                             compiledCSG = null;
                         }
@@ -618,6 +623,8 @@ public final class GDataCSG extends GData {
                     }
                 }
                 compileAndInline.put(Project.getFileToEdit(), false);
+
+                allNewPolygonVertices.get(myDat).clear();
 
                 final StringBuilder sb = new StringBuilder();
 
@@ -1260,8 +1267,8 @@ public final class GDataCSG extends GData {
             if (fullClearPolygonCache.get(df) != true) {
                 fullClearPolygonCache.put(df, true);
                 clearPolygonCache.put(df, true);
-                if (allPolygons.containsKey(df)) {
-                    allPolygons.get(df).clear();
+                if (allNewPolygonVertices.containsKey(df)) {
+                    allNewPolygonVertices.get(df).clear();
                 }
             } else {
                 clearPolygonCache.put(df, false);
@@ -1269,13 +1276,16 @@ public final class GDataCSG extends GData {
         }
     }
 
-    public static List<Polygon> getPolyList(DatFile df) {
-        ArrayList<Polygon> result = new ArrayList<Polygon>();
+    public static List<Vector3d[]> getNewPolyVertices(DatFile df) {
+        ArrayList<Vector3d[]> result = new ArrayList<Vector3d[]>();
         if (compileAndInline.get(df)) {
-            return allPolygons.putIfAbsent(df, result);
+            return allNewPolygonVertices.putIfAbsent(df, result);
         } else {
             return result;
         }
     }
 
+    public static boolean isInlining(DatFile df) {
+        return compileAndInline.get(df);
+    }
 }
