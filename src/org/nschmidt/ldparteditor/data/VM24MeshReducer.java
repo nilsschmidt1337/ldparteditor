@@ -44,248 +44,261 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
         super(linkedDatFile);
     }
 
-    public void meshReduce() {
+    public void meshReduce(int count) {
 
         // FIXME Needs better performance. I have to implement time measurements first.
 
+        final int[] reduceCount = new int[1];
+        final boolean[] newIteration = new boolean[1];
+
         linkedDatFile.setDrawSelection(false);
 
-        final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
-        final Set<Vertex> verticesToSelect = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
-
-        verticesToProcess.addAll(vertexLinkedToPositionInFile.keySet());
-
-        clearSelection();
-        selectAll(new SelectorSettings(), true);
-        splitQuads(false);
-        clearSelection();
-
-        final int[] reduceCount = new int[1];
-        final VertexManager vm = (VertexManager) this;
-        final DatFile df = linkedDatFile;
-
-        try
         {
-            new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
+            final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+
+            verticesToProcess.addAll(vertexLinkedToPositionInFile.keySet());
+
+            clearSelection();
+            selectAll(new SelectorSettings(), true);
+            splitQuads(false);
+            clearSelection();
+
+
+            final VertexManager vm = (VertexManager) this;
+            final DatFile df = linkedDatFile;
+            newIteration[0] = true;
+            try
             {
-                @Override
-                public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+                new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
                 {
-                    try
+                    @Override
+                    public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
                     {
-                        monitor.beginTask(I18n.E3D_MeshReduce, verticesToProcess.size());
+                        try
+                        {
+                            monitor.beginTask(I18n.E3D_MeshReduce, verticesToProcess.size());
 
-                        final AtomicBoolean a = new AtomicBoolean();
+                            final AtomicBoolean a = new AtomicBoolean();
 
-                        //                        final ArrayList<Long> durations = new ArrayList<Long>(1500);
-                        //                        final long start = System.currentTimeMillis();
-                        //                        double processedVertices = 0.0;
-                        //                        long duration = 0;
-                        //                        long min_duration = Long.MAX_VALUE;
-                        //                        long max_duration = Long.MIN_VALUE;
-                        //                        long start2 = System.currentTimeMillis();
-                        for (final Vertex v : verticesToProcess) {
-                            // processedVertices = processedVertices + 1.0;
-                            // final long end2 = System.currentTimeMillis();
-                            // final long it_duration = end2 - start2;
-                            // durations.add(it_duration);
-                            // if (it_duration > max_duration) max_duration = it_duration;
-                            // if (it_duration < min_duration && it_duration > 0) min_duration = it_duration;
-                            // duration = duration + it_duration;
-                            // start2 = System.currentTimeMillis();
-                            if (monitor.isCanceled()) break;
-                            if (!vertexLinkedToPositionInFile.containsKey(v)) continue;
-                            Display.getDefault().asyncExec(new Runnable() {
-                                @Override
-                                public void run() {
+                            //                        final ArrayList<Long> durations = new ArrayList<Long>(1500);
+                            //                        final long start = System.currentTimeMillis();
+                            //                        double processedVertices = 0.0;
+                            //                        long duration = 0;
+                            //                        long min_duration = Long.MAX_VALUE;
+                            //                        long max_duration = Long.MIN_VALUE;
+                            //                        long start2 = System.currentTimeMillis();
+                            for (final Vertex v : verticesToProcess) {
+                                // processedVertices = processedVertices + 1.0;
+                                // final long end2 = System.currentTimeMillis();
+                                // final long it_duration = end2 - start2;
+                                // durations.add(it_duration);
+                                // if (it_duration > max_duration) max_duration = it_duration;
+                                // if (it_duration < min_duration && it_duration > 0) min_duration = it_duration;
+                                // duration = duration + it_duration;
+                                // start2 = System.currentTimeMillis();
+                                if (monitor.isCanceled()) break;
+                                if (!vertexLinkedToPositionInFile.containsKey(v)) continue;
+                                Display.getDefault().asyncExec(new Runnable() {
+                                    @Override
+                                    public void run() {
 
-                                    while (true) {
+                                        while (true) {
 
-                                        // 1. Ermittle alle angrenzenden Flächen
-                                        final HashSet<GData> surfs = getLinkedSurfaces(v);
+                                            // 1. Ermittle alle angrenzenden Flächen
+                                            final HashSet<GData> surfs = getLinkedSurfaces(v);
 
-                                        // 2. Ermittle alle angrenzenden Punkte
-                                        final TreeSet<Vertex> verts = new TreeSet<Vertex>();
+                                            // 2. Ermittle alle angrenzenden Punkte
+                                            final TreeSet<Vertex> verts = new TreeSet<Vertex>();
 
-                                        {
-                                            int delta = 1;
+                                            {
+                                                int delta = 1;
 
-                                            for (final GData gData : surfs) {
-                                                if (gData.type() == 3) {
-                                                    for (Vertex tv : triangles.get(gData)) {
-                                                        verts.add(tv);
+                                                for (final GData gData : surfs) {
+                                                    if (gData.type() == 3) {
+                                                        for (Vertex tv : triangles.get(gData)) {
+                                                            verts.add(tv);
+                                                        }
+                                                    } else {
+                                                        for (Vertex tv : quads.get(gData)) {
+                                                            verts.add(tv);
+                                                        }
+                                                        delta += 1;
                                                     }
-                                                } else {
-                                                    for (Vertex tv : quads.get(gData)) {
-                                                        verts.add(tv);
-                                                    }
-                                                    delta += 1;
+                                                }
+
+                                                // 3. Ist das Polygon geschlossen? Wenn nein, breche ab.
+                                                if (verts.size() - delta != surfs.size()) {
+                                                    break;
                                                 }
                                             }
 
-                                            // 3. Ist das Polygon geschlossen? Wenn nein, breche ab.
-                                            if (verts.size() - delta != surfs.size()) {
+                                            // 4. Entferne den Ursprungspunkt aus der Menge
+                                            verts.remove(v);
+
+                                            // 7. Prüfe die Kandidaten
+                                            for (final Vertex t : verts) {
+                                                final HashSet<GData> tsurfs = getLinkedSurfaces(t);
+                                                final int oldcount = tsurfs.size();
+                                                tsurfs.removeAll(surfs);
+
+                                                // 7.1 t muss zwei Flächen mit v teilen
+                                                if (oldcount - tsurfs.size() != 2) {
+                                                    continue;
+                                                }
+
+                                                // 7.2 t darf nur zwei angrenzende Punkte mit v teilen
+                                                {
+                                                    final TreeSet<Vertex> verts2 = new TreeSet<Vertex>();
+                                                    for (final GData gData : tsurfs) {
+                                                        if (gData.type() == 3) {
+                                                            for (Vertex tv : triangles.get(gData)) {
+                                                                verts2.add(tv);
+                                                            }
+                                                        } else {
+                                                            for (Vertex tv : quads.get(gData)) {
+                                                                verts2.add(tv);
+                                                            }
+                                                        }
+                                                    }
+                                                    verts2.remove(t);
+                                                    int oldcount2 = verts2.size();
+                                                    verts2.removeAll(verts);
+                                                    if (oldcount2 - verts2.size() != 2) {
+                                                        continue;
+                                                    }
+                                                }
+
+                                                // 7.3 die Normalen dürfen nicht kippen!
+                                                {
+                                                    boolean cont = false;
+                                                    final int surfcount = surfs.size();
+                                                    Vertex[][] surfsv = new Vertex[surfcount][4];
+                                                    Vector3d[] oldNormals = new Vector3d[surfcount];
+                                                    Vector3d[] newNormals = new Vector3d[surfcount];
+                                                    int s = 0;
+                                                    for (final GData gData : surfs) {
+                                                        int i = 0;
+                                                        if (gData.type() == 3) {
+                                                            for (Vertex tv : triangles.get(gData)) {
+                                                                surfsv[s][i] = tv;
+                                                                i++;
+                                                            }
+                                                        } else {
+                                                            for (Vertex tv : quads.get(gData)) {
+                                                                surfsv[s][i] = tv;
+                                                                i++;
+                                                            }
+                                                            if (surfsv[s][1].equals(v)) {
+                                                                surfsv[s][0] = surfsv[s][1];
+                                                                surfsv[s][1] = surfsv[s][2];
+                                                                surfsv[s][2] = surfsv[s][3];
+                                                            } else if (surfsv[s][2].equals(v)) {
+                                                                Vertex tmp = surfsv[s][0];
+                                                                surfsv[s][0] = surfsv[s][2];
+                                                                surfsv[s][1] = surfsv[s][3];
+                                                                surfsv[s][2] = tmp;
+                                                            } else if (surfsv[s][3].equals(v)) {
+                                                                Vertex tmp = surfsv[s][0];
+                                                                Vertex tmp2 = surfsv[s][1];
+                                                                surfsv[s][0] = surfsv[s][3];
+                                                                surfsv[s][1] = tmp;
+                                                                surfsv[s][2] = tmp2;
+                                                            }
+                                                            surfsv[s][3] = null;
+                                                        }
+                                                        oldNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
+                                                        s++;
+                                                    }
+                                                    HashSet<Integer> ignoreSet = new HashSet<Integer>();
+                                                    for (s = 0; s < surfcount; s++) {
+                                                        for (int i = 0; i < 3; i++) {
+                                                            if (surfsv[s][i].equals(t)) {
+                                                                ignoreSet.add(s);
+                                                            }
+                                                            if (surfsv[s][i].equals(v)) {
+                                                                surfsv[s][i] = t;
+                                                            }
+                                                        }
+                                                        if (!ignoreSet.contains(s)) {
+                                                            newNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
+                                                            double angle = Vector3d.angle(oldNormals[s], newNormals[s]);
+                                                            if (angle > 3.0) {
+                                                                cont = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    if (cont) {
+                                                        continue;
+                                                    }
+                                                }
+                                                // Als letzten Schritt => Kante zusammenfallen lassen
+
+                                                // merge(MergeTo.LAST_SELECTED, false);
+                                                changeVertexDirectFast(v, t, true);
+                                                // IdenticalVertexRemover.removeIdenticalVertices(vm, df, false, true);
+
+                                                // addLine(v, t);
+                                                reduceCount[0]++;
+
                                                 break;
                                             }
-                                        }
-
-                                        // 4. Entferne den Ursprungspunkt aus der Menge
-                                        verts.remove(v);
-
-                                        // 7. Prüfe die Kandidaten
-                                        for (final Vertex t : verts) {
-                                            final HashSet<GData> tsurfs = getLinkedSurfaces(t);
-                                            final int oldcount = tsurfs.size();
-                                            tsurfs.removeAll(surfs);
-
-                                            // 7.1 t muss zwei Flächen mit v teilen
-                                            if (oldcount - tsurfs.size() != 2) {
-                                                continue;
-                                            }
-
-                                            // 7.2 t darf nur zwei angrenzende Punkte mit v teilen
-                                            {
-                                                final TreeSet<Vertex> verts2 = new TreeSet<Vertex>();
-                                                for (final GData gData : tsurfs) {
-                                                    if (gData.type() == 3) {
-                                                        for (Vertex tv : triangles.get(gData)) {
-                                                            verts2.add(tv);
-                                                        }
-                                                    } else {
-                                                        for (Vertex tv : quads.get(gData)) {
-                                                            verts2.add(tv);
-                                                        }
-                                                    }
-                                                }
-                                                verts2.remove(t);
-                                                int oldcount2 = verts2.size();
-                                                verts2.removeAll(verts);
-                                                if (oldcount2 - verts2.size() != 2) {
-                                                    continue;
-                                                }
-                                            }
-
-                                            // 7.3 die Normalen dürfen nicht kippen!
-                                            {
-                                                boolean cont = false;
-                                                final int surfcount = surfs.size();
-                                                Vertex[][] surfsv = new Vertex[surfcount][4];
-                                                Vector3d[] oldNormals = new Vector3d[surfcount];
-                                                Vector3d[] newNormals = new Vector3d[surfcount];
-                                                int s = 0;
-                                                for (final GData gData : surfs) {
-                                                    int i = 0;
-                                                    if (gData.type() == 3) {
-                                                        for (Vertex tv : triangles.get(gData)) {
-                                                            surfsv[s][i] = tv;
-                                                            i++;
-                                                        }
-                                                    } else {
-                                                        for (Vertex tv : quads.get(gData)) {
-                                                            surfsv[s][i] = tv;
-                                                            i++;
-                                                        }
-                                                        if (surfsv[s][1].equals(v)) {
-                                                            surfsv[s][0] = surfsv[s][1];
-                                                            surfsv[s][1] = surfsv[s][2];
-                                                            surfsv[s][2] = surfsv[s][3];
-                                                        } else if (surfsv[s][2].equals(v)) {
-                                                            Vertex tmp = surfsv[s][0];
-                                                            surfsv[s][0] = surfsv[s][2];
-                                                            surfsv[s][1] = surfsv[s][3];
-                                                            surfsv[s][2] = tmp;
-                                                        } else if (surfsv[s][3].equals(v)) {
-                                                            Vertex tmp = surfsv[s][0];
-                                                            Vertex tmp2 = surfsv[s][1];
-                                                            surfsv[s][0] = surfsv[s][3];
-                                                            surfsv[s][1] = tmp;
-                                                            surfsv[s][2] = tmp2;
-                                                        }
-                                                        surfsv[s][3] = null;
-                                                    }
-                                                    oldNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
-                                                    s++;
-                                                }
-                                                HashSet<Integer> ignoreSet = new HashSet<Integer>();
-                                                for (s = 0; s < surfcount; s++) {
-                                                    for (int i = 0; i < 3; i++) {
-                                                        if (surfsv[s][i].equals(t)) {
-                                                            ignoreSet.add(s);
-                                                        }
-                                                        if (surfsv[s][i].equals(v)) {
-                                                            surfsv[s][i] = t;
-                                                        }
-                                                    }
-                                                    if (!ignoreSet.contains(s)) {
-                                                        newNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
-                                                        double angle = Vector3d.angle(oldNormals[s], newNormals[s]);
-                                                        if (angle > 3.0) {
-                                                            cont = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-                                                if (cont) {
-                                                    continue;
-                                                }
-                                            }
-                                            // Als letzten Schritt => Kante zusammenfallen lassen
-
-                                            // merge(MergeTo.LAST_SELECTED, false);
-                                            changeVertexDirectFast(v, t, true);
-                                            // IdenticalVertexRemover.removeIdenticalVertices(vm, df, false, true);
-
-                                            // addLine(v, t);
-                                            reduceCount[0]++;
 
                                             break;
                                         }
-
-                                        break;
-                                    }
-                                    monitor.worked(1);
-                                    a.set(true);
-                                }});
-                            while (!a.get()) {
-                                Thread.sleep(5);
+                                        monitor.worked(1);
+                                        a.set(true);
+                                    }});
+                                while (!a.get()) {
+                                    Thread.sleep(5);
+                                }
+                                a.set(false);
                             }
-                            a.set(false);
+
+                            IdenticalVertexRemover.removeIdenticalVertices(vm, df, false, true);
+
+                            //                        NLogger.debug(getClass(), "Duration " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+                            //                        double avg = duration / processedVertices;
+                            //                        NLogger.debug(getClass(), "Avg. duration per vertex " + avg + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+                            //                        NLogger.debug(getClass(), "Min. duration per vertex " + min_duration + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+                            //                        NLogger.debug(getClass(), "Max. duration per vertex " + max_duration + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+                            //                        double sum = 0;
+                            //                        double factor = 1.0 / (processedVertices - 1.0);
+                            //                        for (long l : durations) {
+                            //                            double delta = l - avg;
+                            //                            sum = sum + delta * delta;
+                            //                        }
+                            //                        sum = sum * factor;
+                            //                        NLogger.debug(getClass(), "Std. deviration " + Math.sqrt(sum) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+
+
+                        } catch (Exception ex) {
+                            NLogger.error(getClass(), ex);
+                        } finally {
+                            if (monitor.isCanceled()) {
+                                newIteration[0] = false;
+                            }
+                            monitor.done();
                         }
-
-                        IdenticalVertexRemover.removeIdenticalVertices(vm, df, false, true);
-
-                        //                        NLogger.debug(getClass(), "Duration " + (System.currentTimeMillis() - start) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
-                        //                        double avg = duration / processedVertices;
-                        //                        NLogger.debug(getClass(), "Avg. duration per vertex " + avg + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
-                        //                        NLogger.debug(getClass(), "Min. duration per vertex " + min_duration + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
-                        //                        NLogger.debug(getClass(), "Max. duration per vertex " + max_duration + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
-                        //                        double sum = 0;
-                        //                        double factor = 1.0 / (processedVertices - 1.0);
-                        //                        for (long l : durations) {
-                        //                            double delta = l - avg;
-                        //                            sum = sum + delta * delta;
-                        //                        }
-                        //                        sum = sum * factor;
-                        //                        NLogger.debug(getClass(), "Std. deviration " + Math.sqrt(sum) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
-
-
-                    } catch (Exception ex) {
-                        NLogger.error(getClass(), ex);
-                    } finally {
-                        monitor.done();
                     }
-                }
-            });
-        }
-        catch (InvocationTargetException consumed) {
-        } catch (InterruptedException consumed) {
+                });
+            }
+            catch (InvocationTargetException consumed) {
+            } catch (InterruptedException consumed) {
+            }
+
+            clearSelection2();
+
         }
 
-        clearSelection2();
+        if (reduceCount[0] > 0 && newIteration[0]) {
+            meshReduce(reduceCount[0] + count);
+            return;
+        }
 
         MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
         messageBox.setText(I18n.DIALOG_Info);
-        Object[] messageArguments = {reduceCount[0]};
+        Object[] messageArguments = {count};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.LOCALE);
         formatter.applyPattern(I18n.E3D_ReduceCount);
@@ -295,7 +308,6 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
         syncWithTextEditors(true);
         setModified(true, true);
 
-        selectedVertices.addAll(verticesToSelect);
         linkedDatFile.setDrawSelection(true);
 
     }
