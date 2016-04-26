@@ -209,6 +209,10 @@ public class Plane {
                                         verts.add(k, v.clone());
                                         break;
                                     }
+                                    if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
+                                        verts.add(k, v.clone());
+                                        break;
+                                    }
                                 }
                             }
                         });
