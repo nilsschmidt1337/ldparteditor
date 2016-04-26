@@ -97,7 +97,6 @@ public final class Polygon {
         this.vertices = vertices;
         this.shared = shared;
         this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
-        GDataCSG.getPolyList(df).add(this);
     }
 
     /**
@@ -114,7 +113,6 @@ public final class Polygon {
         this.vertices = vertices;
         this.shared = new PropertyStorage();
         this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
-        GDataCSG.getPolyList(df).add(this);
     }
 
     /**
@@ -177,6 +175,43 @@ public final class Polygon {
                         (float) this.vertices.get(i + 1).z);
                 org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 2).x, (float) this.vertices.get(i + 2).y,
                         (float) this.vertices.get(i + 2).z);
+                GColourIndex colour = null;
+                if ((colour = (GColourIndex) this.shared.getFirstValue()) == null) {
+                    result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
+                } else {
+                    // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16), true), colour.getIndex());
+                    result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                }
+            }
+        }
+        return result;
+    }
+
+    public HashMap<GData3, Integer> toLDrawTriangles2(GData1 parent) {
+        HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
+        final int size = this.vertices.size();
+        if (size >= 3) {
+            int dID = CSGPrimitive.id_counter.getAndIncrement();
+            final GColour c16 = View.getLDConfigColour(16);
+            double mx = 0.0;
+            double my = 0.0;
+            double mz = 0.0;
+            for (int i = 0; i < size; i++) {
+                mx = mx + this.vertices.get(i).x;
+                my = my + this.vertices.get(i).y;
+                mz = mz + this.vertices.get(i).z;
+            }
+
+            mx = mx / size;
+            my = my / size;
+            mz = mz / size;
+
+            org.nschmidt.ldparteditor.data.Vertex v1 = new org.nschmidt.ldparteditor.data.Vertex((float) mx, (float) my, (float) mz);
+            for (int i = 0; i < size; i++) {
+                org.nschmidt.ldparteditor.data.Vertex v2 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i).x, (float) this.vertices.get(i).y,
+                        (float) this.vertices.get(i).z);
+                org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get((i + 1) % size).x, (float) this.vertices.get((i + 1) % size).y,
+                        (float) this.vertices.get((i + 1) % size).z);
                 GColourIndex colour = null;
                 if ((colour = (GColourIndex) this.shared.getFirstValue()) == null) {
                     result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
