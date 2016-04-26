@@ -121,7 +121,6 @@ public final class Polygon {
      *
      * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
      * and form a convex loop.
-     * @param df TODO
      * @param vertices
      *            polygon vertices
      *
@@ -310,7 +309,6 @@ public final class Polygon {
 
     /**
      * Creates a polygon from the specified point list.
-     * @param csg TODO
      * @param points
      *            the points that define the polygon
      * @param shared
@@ -324,7 +322,6 @@ public final class Polygon {
 
     /**
      * Creates a polygon from the specified point list.
-     * @param csg TODO
      * @param points
      *            the points that define the polygon
      *
@@ -336,7 +333,6 @@ public final class Polygon {
 
     /**
      * Creates a polygon from the specified points.
-     * @param csg TODO
      * @param points
      *            the points that define the polygon
      *
@@ -348,7 +344,6 @@ public final class Polygon {
 
     /**
      * Creates a polygon from the specified point list.
-     * @param csg TODO
      * @param points
      *            the points that define the polygon
      * @param shared
