@@ -36,8 +36,6 @@ package org.nschmidt.csg;
 // # class Plane
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GDataCSG;
@@ -172,8 +170,7 @@ public class Plane {
             break;
         case SPANNING:
             final DatFile df = polygon.df;
-            final boolean doOptimize = !GDataCSG.getPolyList(df).isEmpty();
-            final TreeMap<Integer, Vector3d> newVerts = new TreeMap<Integer, Vector3d>();
+            final boolean doOptimize = GDataCSG.isInlining(df);
             List<Vector3d> f = new ArrayList<Vector3d>();
             List<Vector3d> b = new ArrayList<Vector3d>();
             for (int i = 0; i < polygon.vertices.size(); i++) {
@@ -198,36 +195,12 @@ public class Plane {
                     final Vector3d v = vi.interpolate(vj, t);
 
                     if (doOptimize) {
-                        newVerts.put(i, v);
-                        GDataCSG.getPolyList(df).parallelStream().forEach((poly) -> {
-                            if (poly != polygon) {
-                                final List<Vector3d> verts = poly.vertices;
-                                final int size = verts.size();
-                                for (int k = 0; k < size; k++) {
-                                    int l = (k + 1) % size;
-                                    if (verts.get(k).equals(vi) && verts.get(l).equals(vj)) {
-                                        verts.add(k, v.clone());
-                                        break;
-                                    }
-                                    if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
-                                        verts.add(k, v.clone());
-                                        break;
-                                    }
-                                }
-                            }
-                        });
+                        GDataCSG.getNewPolyVertices(df).add(new Vector3d[]{vi.clone(), vj.clone(), v.clone()});
                     }
 
 
                     f.add(v);
                     b.add(v.clone());
-                }
-            }
-            if (doOptimize) {
-                int offset = 0;
-                for (Entry<Integer, Vector3d> entry : newVerts.entrySet()) {
-                    polygon.vertices.add(entry.getKey() + offset, entry.getValue().clone());
-                    offset++;
                 }
             }
             if (f.size() >= 3) {
