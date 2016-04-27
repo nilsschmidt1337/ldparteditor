@@ -1112,7 +1112,7 @@ public final class GDataCSG extends GData {
         HashSet<GDataCSG> newSelection = new HashSet<GDataCSG>(registeredData.putIfAbsent(df, new HashSet<GDataCSG>()));
         for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
             final GDataCSG g = it.next();
-            if (g.canSelect() && allColours.contains(g.colour)) {
+            if (g != null && g.canSelect() && allColours.contains(g.colour)) {
                 continue;
             }
             it.remove();
