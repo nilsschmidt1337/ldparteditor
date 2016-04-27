@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
@@ -257,22 +258,26 @@ class VM00Base {
                                             Display.getDefault().asyncExec(new Runnable() {
                                                 @Override
                                                 public void run() {
-
-                                                    int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
-
-                                                    Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
-                                                    ((CompositeTab) t).getState().setSync(true);
-                                                    if (isModified() && txt != null) {
-                                                        ((CompositeTab) t).getTextComposite().setText(txt);
-                                                    }
-                                                    ((CompositeTab) t).getTextComposite().setTopIndex(ti);
                                                     try {
-                                                        ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
-                                                    } catch (IllegalArgumentException consumed) {}
-                                                    ((CompositeTab) t).getTextComposite().redraw();
-                                                    ((CompositeTab) t).getControl().redraw();
-                                                    ((CompositeTab) t).getState().setSync(false);
-                                                    setUpdated(true);
+                                                        int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
+                                                        Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
+                                                        ((CompositeTab) t).getState().setSync(true);
+                                                        if (isModified() && txt != null) {
+                                                            ((CompositeTab) t).getTextComposite().setText(txt);
+                                                        }
+                                                        ((CompositeTab) t).getTextComposite().setTopIndex(ti);
+                                                        try {
+                                                            ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
+                                                        } catch (IllegalArgumentException consumed) {}
+                                                        ((CompositeTab) t).getTextComposite().redraw();
+                                                        ((CompositeTab) t).getControl().redraw();
+                                                        ((CompositeTab) t).getState().setSync(false);
+                                                    } catch (SWTException ex) {
+                                                        // The text editor widget could be disposed
+                                                        NLogger.error(getClass(), ex);
+                                                    } finally {
+                                                        setUpdated(true);
+                                                    }
                                                 }
                                             });
                                         }
