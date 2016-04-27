@@ -61,26 +61,9 @@ public class Vector3d {
      *            z value
      */
     public Vector3d(double x, double y, double z) {
-
         this.x = x;
         this.y = y;
         this.z = z;
-    }
-
-    /**
-     * Creates a new vector with specified {@code x}, {@code y} and
-     * {@code z = 0}.
-     *
-     * @param x
-     *            x value
-     * @param y
-     *            y value
-     */
-    public Vector3d(double x, double y) {
-
-        this.x = x;
-        this.y = y;
-        this.z = 0;
     }
 
     @Override

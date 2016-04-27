@@ -35,6 +35,7 @@ package org.nschmidt.csg;
 
 // # class Plane
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -203,6 +204,37 @@ public class Plane {
                     b.add(v.clone());
                 }
             }
+
+            if (doOptimize) {
+                final List<Vector3d[]> splitList = Collections.synchronizedList(GDataCSG.getNewPolyVertices(df));
+                List<Polygon> polygons = new ArrayList<Polygon>();
+                polygons.add(polygon);
+                polygons.addAll(coplanarFront);
+                polygons.addAll(coplanarBack);
+                polygons.addAll(front);
+                polygons.addAll(back);
+                polygons.add(polygon);
+                polygons.stream().forEach((poly) -> {
+                    final List<Vector3d> verts = poly.vertices;
+                    for (Vector3d[] split : splitList) {
+                        final Vector3d vi = split[0];
+                        final Vector3d vj = split[1];
+                        final Vector3d v = split[2];
+                        final int size = verts.size();
+                        for (int k = 0; k < size; k++) {
+                            int l = (k + 1) % size;
+                            if (verts.get(k).equals(vi) && verts.get(l).equals(vj)) {
+                                verts.add(l, v.clone());
+                                break;
+                            } else if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
+                                verts.add(l, v.clone());
+                                break;
+                            }
+                        }
+                    }
+                });
+            }
+
             if (f.size() >= 3) {
                 front.add(new Polygon(df, f, polygon.getShared()));
             }
