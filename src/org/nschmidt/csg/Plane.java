@@ -35,7 +35,6 @@ package org.nschmidt.csg;
 
 // # class Plane
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -158,6 +157,9 @@ public class Plane {
             types.add(type);
         }
 
+        final DatFile df = polygon.df;
+        final boolean doOptimize = GDataCSG.isInlining(df);
+
         // Put the polygon in the correct list, splitting it when necessary.
         switch (polygonType) {
         case COPLANAR:
@@ -170,8 +172,6 @@ public class Plane {
             back.add(polygon);
             break;
         case SPANNING:
-            final DatFile df = polygon.df;
-            final boolean doOptimize = GDataCSG.isInlining(df);
             List<Vector3d> f = new ArrayList<Vector3d>();
             List<Vector3d> b = new ArrayList<Vector3d>();
             for (int i = 0; i < polygon.vertices.size(); i++) {
@@ -193,6 +193,7 @@ public class Plane {
                     // This process can be done in parallel, since the polygons are independent from each other.
                     // However, the current "polygon" object should be ignored by this process, since its vertices
                     // are used within this for loop.
+
                     final Vector3d v = vi.interpolate(vj, t);
 
                     if (doOptimize) {
@@ -205,41 +206,19 @@ public class Plane {
                 }
             }
 
-            if (doOptimize) {
-                final List<Vector3d[]> splitList = Collections.synchronizedList(GDataCSG.getNewPolyVertices(df));
-                List<Polygon> polygons = new ArrayList<Polygon>();
-                polygons.add(polygon);
-                polygons.addAll(coplanarFront);
-                polygons.addAll(coplanarBack);
-                polygons.addAll(front);
-                polygons.addAll(back);
-                polygons.add(polygon);
-                polygons.stream().forEach((poly) -> {
-                    final List<Vector3d> verts = poly.vertices;
-                    for (Vector3d[] split : splitList) {
-                        final Vector3d vi = split[0];
-                        final Vector3d vj = split[1];
-                        final Vector3d v = split[2];
-                        final int size = verts.size();
-                        for (int k = 0; k < size; k++) {
-                            int l = (k + 1) % size;
-                            if (verts.get(k).equals(vi) && verts.get(l).equals(vj)) {
-                                verts.add(l, v.clone());
-                                break;
-                            } else if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
-                                verts.add(l, v.clone());
-                                break;
-                            }
-                        }
-                    }
-                });
-            }
-
             if (f.size() >= 3) {
                 front.add(new Polygon(df, f, polygon.getShared()));
             }
             if (b.size() >= 3) {
                 back.add(new Polygon(df, b, polygon.getShared()));
+            }
+
+            if (doOptimize) {
+                GDataCSG.ALL_POLYGONS.addAll(coplanarFront);
+                GDataCSG.ALL_POLYGONS.addAll(coplanarBack);
+                GDataCSG.ALL_POLYGONS.addAll(front);
+                GDataCSG.ALL_POLYGONS.addAll(back);
+                GDataCSG.ALL_POLYGONS.add(polygon);
             }
             break;
         }

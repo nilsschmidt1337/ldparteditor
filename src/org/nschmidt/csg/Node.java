@@ -35,6 +35,7 @@ package org.nschmidt.csg;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Holds a node in a BSP tree. A BSP tree is built from a collection of polygons
@@ -73,7 +74,19 @@ final class Node {
     public Node(List<Polygon> polygons) {
         this.polygons = new ArrayList<Polygon>();
         if (polygons != null) {
-            this.build(polygons);
+            // this.build(polygons);
+
+            Stack<NodePolygon> st = new Stack<>();
+            st.push(new NodePolygon(this, polygons));
+            int it = 0;
+            while (!st.isEmpty() && it < 10000) {
+                it++;
+                NodePolygon np = st.pop();
+                List<NodePolygon> npr = np.getNode().build(np.getPolygons());
+                for (NodePolygon np2 : npr) {
+                    st.push(np2);
+                }
+            }
         }
     }
 
@@ -211,12 +224,14 @@ final class Node {
      * @param polygons
      *            polygons used to build the BSP
      */
-    public final void build(List<Polygon> polygons) {
+    public final List<NodePolygon> build(List<Polygon> polygons) {
         if (this.plane == null && !polygons.isEmpty()) {
             this.plane = polygons.get(0).plane.clone();
         } else if (this.plane == null && polygons.isEmpty()) {
             throw new RuntimeException("Please fix me! I don't know what to do?"); //$NON-NLS-1$
         }
+
+        ArrayList<NodePolygon> result = new ArrayList<NodePolygon>(2);
 
         List<Polygon> frontP = new ArrayList<Polygon>();
         List<Polygon> backP = new ArrayList<Polygon>();
@@ -226,17 +241,25 @@ final class Node {
             this.plane.splitPolygon(polygon, this.polygons, this.polygons, frontP, backP);
         }
 
-        if (frontP.size() > 0) {
-            if (this.front == null) {
-                this.front = new Node();
-            }
-            this.front.build(frontP);
-        }
+        // Back before front. Reversed because of the new Stack to avoid build() recursion stack overflows
+
         if (backP.size() > 0) {
             if (this.back == null) {
                 this.back = new Node();
             }
-            this.back.build(backP);
+            result.add(new NodePolygon(back, backP));
+            // this.back.build(backP);
         }
+
+        if (frontP.size() > 0) {
+            if (this.front == null) {
+                this.front = new Node();
+            }
+            result.add(0, new NodePolygon(front, frontP));
+            // this.front.build(frontP);
+        }
+
+
+        return result;
     }
 }
