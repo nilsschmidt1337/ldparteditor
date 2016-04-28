@@ -220,7 +220,12 @@ public class TreeItem {
     public void build(int step) {
         org.eclipse.swt.widgets.TreeItem[] itemsSWT = parent.getItemsSWT();
         if (parent.counter > itemsSWT.length - 1) {
-            int doubleLength = itemsSWT.length * 2;
+            int doubleLength;
+            if (parent.counter < 20000) {
+                doubleLength = itemsSWT.length * 2;
+            } else {
+                doubleLength = itemsSWT.length + 10;
+            }
             parent.setItemsSWT(Arrays.copyOf(itemsSWT, doubleLength));
             itemsSWT = parent.getItemsSWT();
             org.eclipse.swt.widgets.Tree tree = parent.getTree();
