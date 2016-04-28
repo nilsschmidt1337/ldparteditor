@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -87,6 +89,8 @@ public final class GDataCSG extends GData {
     private final static ThreadsafeHashMap<DatFile, ArrayList<Vector3d[]>> allNewPolygonVertices = new ThreadsafeHashMap<DatFile, ArrayList<Vector3d[]>>();
     private final static ThreadsafeHashMap<DatFile, Boolean> compileAndInline = new ThreadsafeHashMap<DatFile, Boolean>();
 
+
+    public static final Set<Polygon> ALL_POLYGONS = new HashSet<Polygon>();
 
     private final ArrayList<GData> cachedData = new ArrayList<GData>();
     private final List<Polygon> polygonCache = new ArrayList<Polygon>();
@@ -616,15 +620,46 @@ public final class GDataCSG extends GData {
                 resetCSG(myDat, false);
                 GDataCSG.forceRecompile(myDat);
                 GData g = myDat.getDrawChainStart();
+                deleteAndRecompile = true;
                 while ((g = g.getNext()) != null) {
                     if (g.type() == 8) {
                         GDataCSG gcsg = (GDataCSG) g;
                         gcsg.drawAndParse(null, myDat);
                     }
                 }
+                if (!deleteAndRecompile) {
+                    return getNiceString() + "<br>0 // INLINE FAILED! :("; //$NON-NLS-1$
+                }
                 compileAndInline.put(Project.getFileToEdit(), false);
 
+                final List<Vector3d[]> splitList = Collections.synchronizedList(GDataCSG.getNewPolyVertices(myDat));
+                GDataCSG.ALL_POLYGONS.parallelStream().forEach((poly) -> {
+                    final List<Vector3d> verts = poly.vertices;
+                    if (poly.vertices.size() > 30) {
+                        return;
+                    }
+                    for (Vector3d[] split : splitList) {
+                        final Vector3d vi = split[0];
+                        final Vector3d vj = split[1];
+                        final Vector3d v = split[2];
+                        final int size = verts.size();
+                        for (int k = 0; k < size; k++) {
+                            int l = (k + 1) % size;
+                            if (verts.get(k).equals(vi) && verts.get(l).equals(vj)) {
+                                verts.add(l, v.clone());
+                                break;
+                            } else if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
+                                verts.add(l, v.clone());
+                                break;
+                            }
+                        }
+                    }
+                });
+
+
+
                 allNewPolygonVertices.get(myDat).clear();
+                ALL_POLYGONS.clear();
 
                 final StringBuilder sb = new StringBuilder();
 
@@ -677,6 +712,39 @@ public final class GDataCSG extends GData {
                                 lineBuilder3.append(floatToString(g3_v3.z / 1000f));
                                 sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
                             }
+
+
+                            VertexManager vm = myDat.getVertexManager();
+                            {
+                                TreeMap<Vertex, Integer> fc = new TreeMap<>();
+                                TreeMap<Vertex, TreeSet<Vertex>> av = new TreeMap<>();
+                                for (GData3 g3 : result.keySet()) {
+                                    Vertex[] verts = new Vertex[3];
+                                    verts[0] = new Vertex(g3.x1, g3.y1, g3.z1);
+                                    verts[1] = new Vertex(g3.x2, g3.y2, g3.z2);
+                                    verts[2] = new Vertex(g3.x3, g3.y3, g3.z3);
+                                    for (Vertex key : verts) {
+                                        fc.putIfAbsent(key, 0);
+                                        fc.compute(key, (k, v) -> {v = v + 1; return v;});
+                                        av.putIfAbsent(key, new TreeSet<Vertex>());
+                                        for (Vertex key2 : verts) {
+                                            if (key2 != key) av.compute(key, (k, v) -> {
+                                                v.add(key2);
+                                                return v;
+                                            });
+                                        }
+                                    }
+                                }
+
+                                for (Vertex v : fc.keySet()) {
+                                    if (fc.get(v) != av.get(v).size()) {
+                                        vm.getSelectedVertices().add(v);
+                                    }
+                                }
+
+                                vm.copy();
+                            }
+
                         }
                     });
                 } catch (InvocationTargetException consumed) {

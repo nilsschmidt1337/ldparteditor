@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Stack;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -238,7 +239,19 @@ public class CSG {
         b.invert();
         b.clipTo(a);
         b.invert();
-        a.build(b.allPolygons());
+
+        // a.build(b.allPolygons());
+
+        Stack<NodePolygon> st = new Stack<>();
+        st.push(new NodePolygon(a, b.allPolygons()));
+        while (!st.isEmpty()) {
+            NodePolygon np = st.pop();
+            List<NodePolygon> npr = np.getNode().build(np.getPolygons());
+            for (NodePolygon np2 : npr) {
+                st.push(np2);
+            }
+        }
+
         return CSG.fromPolygons(a.allPolygons());
     }
 
@@ -304,7 +317,19 @@ public class CSG {
         b.invert();
         b.clipTo(a);
         b.invert();
-        a.build(b.allPolygons());
+
+        // a.build(b.allPolygons());
+
+        Stack<NodePolygon> st = new Stack<>();
+        st.push(new NodePolygon(a, b.allPolygons()));
+        while (!st.isEmpty()) {
+            NodePolygon np = st.pop();
+            List<NodePolygon> npr = np.getNode().build(np.getPolygons());
+            for (NodePolygon np2 : npr) {
+                st.push(np2);
+            }
+        }
+
         a.invert();
 
         CSG csgA = CSG.fromPolygons(a.allPolygons());
@@ -347,7 +372,19 @@ public class CSG {
         b.invert();
         a.clipTo(b);
         b.clipTo(a);
-        a.build(b.allPolygons());
+
+        // a.build(b.allPolygons());
+
+        Stack<NodePolygon> st = new Stack<>();
+        st.push(new NodePolygon(a, b.allPolygons()));
+        while (!st.isEmpty()) {
+            NodePolygon np = st.pop();
+            List<NodePolygon> npr = np.getNode().build(np.getPolygons());
+            for (NodePolygon np2 : npr) {
+                st.push(np2);
+            }
+        }
+
         a.invert();
         return CSG.fromPolygons(a.allPolygons());
     }
