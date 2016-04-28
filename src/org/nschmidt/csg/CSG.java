@@ -50,6 +50,7 @@ import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 
 /**
  * Constructive Solid Geometry (CSG).
@@ -415,7 +416,6 @@ public class CSG {
     }
 
     public GData1 compile_without_t_junctions(DatFile df) {
-        // FIXME Needs fix for issue #108
 
         // 1. The interpolation has to be propagated to other polygons
         // This process can be done in parallel, since the polygons are independent from each other.
@@ -453,8 +453,32 @@ public class CSG {
             allVerts = Collections.synchronizedList(new ArrayList<Vector3d>(allVertsSet));
         }
 
+        // Copy...
         this.polygons.parallelStream().forEach((poly) -> {
-            // poly.vertices = new ArrayList<>();
+            poly.vertices = new ArrayList<>(poly.vertices);
+        });
+
+        // Find T-Junctions
+        this.polygons.parallelStream().forEach((poly) -> {
+            final List<Vector3d> verts = poly.vertices;
+            double min_dist = Double.MAX_VALUE;
+            for (Vector3d v : allVerts) {
+                final int size = verts.size();
+                for (int k = 0; k < size; k++) {
+                    int l = (k + 1) % size;
+
+                    Vector3d a = verts.get(k);
+                    Vector3d b = verts.get(l);
+
+                    if (a.minus(v).magnitude() > 0.01 && b.minus(v).magnitude() > 0.01) {
+                        double dist = MathHelper.getNearestPointToLineSegmentCSG(a.x, a.y, a.z, b.x, b.y, b.z, v.x, v.y, v.z).minus(v).magnitude();
+                        if (dist < min_dist) min_dist = dist;
+                        if (dist < 0.1) {
+                            verts.add(l, v.clone());
+                        }
+                    }
+                }
+            }
         });
 
         Matrix4f id = new Matrix4f();

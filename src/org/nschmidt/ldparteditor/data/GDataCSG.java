@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -680,39 +679,6 @@ public final class GDataCSG extends GData {
                                 lineBuilder3.append(floatToString(g3_v3.z / 1000f));
                                 sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
                             }
-
-
-                            VertexManager vm = myDat.getVertexManager();
-                            {
-                                TreeMap<Vertex, Integer> fc = new TreeMap<>();
-                                TreeMap<Vertex, TreeSet<Vertex>> av = new TreeMap<>();
-                                for (GData3 g3 : result.keySet()) {
-                                    Vertex[] verts = new Vertex[3];
-                                    verts[0] = new Vertex(g3.x1, g3.y1, g3.z1);
-                                    verts[1] = new Vertex(g3.x2, g3.y2, g3.z2);
-                                    verts[2] = new Vertex(g3.x3, g3.y3, g3.z3);
-                                    for (Vertex key : verts) {
-                                        fc.putIfAbsent(key, 0);
-                                        fc.compute(key, (k, v) -> {v = v + 1; return v;});
-                                        av.putIfAbsent(key, new TreeSet<Vertex>());
-                                        for (Vertex key2 : verts) {
-                                            if (key2 != key) av.compute(key, (k, v) -> {
-                                                v.add(key2);
-                                                return v;
-                                            });
-                                        }
-                                    }
-                                }
-
-                                for (Vertex v : fc.keySet()) {
-                                    if (fc.get(v) != av.get(v).size()) {
-                                        vm.getSelectedVertices().add(v);
-                                    }
-                                }
-
-                                vm.copy();
-                            }
-
                         }
                     });
                 } catch (InvocationTargetException consumed) {
