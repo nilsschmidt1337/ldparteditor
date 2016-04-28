@@ -478,6 +478,64 @@ public enum MathHelper {
         return new Vector4f(ax, ay, az, 1f);
     }
 
+    public static org.nschmidt.csg.Vector3d getNearestPointToLineSegmentCSG(double lx1, double ly1, double lz1, double lx2, double ly2, double lz2, double px, double py, double pz) {
+
+        // Fastest iterative approach without objects
+
+        // 0th Iteration
+        double ax = (lx1 + lx2) / 2d;
+        double ay = (ly1 + ly2) / 2d;
+        double az = (lz1 + lz2) / 2d;
+
+        // 1st to n-th Iteration
+        double ux = lx1;
+        double uy = ly1;
+        double uz = lz1;
+        double vx = lx2;
+        double vy = ly2;
+        double vz = lz2;
+
+        double dup = 0d;
+        double dvp = 1d;
+
+        double dap = 0d;
+        double odap = 1d;
+
+        while (Math.abs(dap - odap) > .0001d) {
+            double dxup = ux - px;
+            double dyup = uy - py;
+            double dzup = uz - pz;
+            dup = dxup * dxup + dyup * dyup + dzup * dzup;
+            double dxvp = vx - px;
+            double dyvp = vy - py;
+            double dzvp = vz - pz;
+            dvp = dxvp * dxvp + dyvp * dyvp + dzvp * dzvp;
+
+            if (dup < dvp) {
+                vx = ax;
+                vy = ay;
+                vz = az;
+                ax = (ax + ux) / 2d;
+                ay = (ay + uy) / 2d;
+                az = (az + uz) / 2d;
+            } else {
+                ux = ax;
+                uy = ay;
+                uz = az;
+                ax = (ax + vx) / 2d;
+                ay = (ay + vy) / 2d;
+                az = (az + vz) / 2d;
+            }
+            odap = dap;
+            double dxap = ax - px;
+            double dyap = ay - py;
+            double dzap = az - pz;
+            dap = dxap * dxap + dyap * dyap + dzap * dzap;
+
+        }
+        return new org.nschmidt.csg.Vector3d(ax, ay, az);
+    }
+
     public static Vector4f getNearestPointToLineSegment2(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
 
         // Fastest iterative approach without objects
