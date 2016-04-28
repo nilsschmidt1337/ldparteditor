@@ -35,9 +35,11 @@ package org.nschmidt.csg;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -46,6 +48,7 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
+import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.enums.View;
 
 /**
@@ -413,26 +416,47 @@ public class CSG {
 
     public GData1 compile_without_t_junctions(DatFile df) {
         // FIXME Needs fix for issue #108
-        //        final List<Vector3d[]> splitList = Collections.synchronizedList(GDataCSG.getNewPolyVertices(df));
-        //        this.polygons.parallelStream().forEach((poly) -> {
-        //            final List<Vector3d> verts = poly.vertices;
-        //            for (Vector3d[] split : splitList) {
-        //                final Vector3d vi = split[0];
-        //                final Vector3d vj = split[1];
-        //                final Vector3d v = split[2];
-        //                final int size = verts.size();
-        //                for (int k = 0; k < size; k++) {
-        //                    int l = (k + 1) % size;
-        //                    if (verts.get(k).equals(vi) && verts.get(l).equals(vj)) {
-        //                        verts.add(l, v.clone());
-        //                        break;
-        //                    } else if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
-        //                        verts.add(l, v.clone());
-        //                        break;
-        //                    }
-        //                }
-        //            }
-        //        });
+
+        // 1. The interpolation has to be propagated to other polygons
+        // This process can be done in parallel, since the polygons are independent from each other.
+
+        final List<Vector3d[]> splitList = Collections.synchronizedList(GDataCSG.getNewPolyVertices(df));
+        this.polygons.parallelStream().forEach((poly) -> {
+            final List<Vector3d> verts = poly.vertices;
+            for (Vector3d[] split : splitList) {
+                final Vector3d vi = split[0];
+                final Vector3d vj = split[1];
+                final Vector3d v = split[2];
+                final int size = verts.size();
+                for (int k = 0; k < size; k++) {
+                    int l = (k + 1) % size;
+                    if (verts.get(k).equals(vi) && verts.get(l).equals(vj)) {
+                        verts.add(l, v.clone());
+                        break;
+                    } else if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
+                        verts.add(l, v.clone());
+                        break;
+                    }
+                }
+            }
+        });
+
+        // 2. Find and fix T-Junctions
+        // This process can be done in parallel, since the polygons are independent from each other.
+
+        final List<Vector3d> allVerts;
+        {
+            final Set<Vector3d> allVertsSet = new HashSet<Vector3d>();
+            this.polygons.stream().forEach((poly) -> {
+                allVertsSet.addAll(poly.vertices);
+            });
+            allVerts = Collections.synchronizedList(new ArrayList<Vector3d>(allVertsSet));
+        }
+
+        this.polygons.parallelStream().forEach((poly) -> {
+            // poly.vertices = new ArrayList<>();
+        });
+
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
         GData1 g1 = new GData1(-1, .5f, .5f, .5f, 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,

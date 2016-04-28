@@ -189,10 +189,6 @@ public class Plane {
                 if ((ti | tj) == SPANNING) {
 
                     double t = (this.dist - this.normal.dot(vi)) / this.normal.dot(vj.minus(vi));
-                    // FIXME The interpolation has to be propagated to other polygons
-                    // This process can be done in parallel, since the polygons are independent from each other.
-                    // However, the current "polygon" object should be ignored by this process, since its vertices
-                    // are used within this for loop.
 
                     final Vector3d v = vi.interpolate(vj, t);
 
@@ -211,14 +207,6 @@ public class Plane {
             }
             if (b.size() >= 3) {
                 back.add(new Polygon(df, b, polygon.getShared()));
-            }
-
-            if (doOptimize) {
-                GDataCSG.ALL_POLYGONS.addAll(coplanarFront);
-                GDataCSG.ALL_POLYGONS.addAll(coplanarBack);
-                GDataCSG.ALL_POLYGONS.addAll(front);
-                GDataCSG.ALL_POLYGONS.addAll(back);
-                GDataCSG.ALL_POLYGONS.add(polygon);
             }
             break;
         }

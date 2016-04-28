@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -89,13 +88,9 @@ public final class GDataCSG extends GData {
     private final static ThreadsafeHashMap<DatFile, ArrayList<Vector3d[]>> allNewPolygonVertices = new ThreadsafeHashMap<DatFile, ArrayList<Vector3d[]>>();
     private final static ThreadsafeHashMap<DatFile, Boolean> compileAndInline = new ThreadsafeHashMap<DatFile, Boolean>();
 
-
-    public static final Set<Polygon> ALL_POLYGONS = new HashSet<Polygon>();
-
     private final ArrayList<GData> cachedData = new ArrayList<GData>();
     private final List<Polygon> polygonCache = new ArrayList<Polygon>();
     private PathTruderSettings extruderConfig = new PathTruderSettings();
-
 
     private static int quality = 16;
     private int global_quality = 16;
@@ -630,36 +625,9 @@ public final class GDataCSG extends GData {
                 if (!deleteAndRecompile) {
                     return getNiceString() + "<br>0 // INLINE FAILED! :("; //$NON-NLS-1$
                 }
+
                 compileAndInline.put(Project.getFileToEdit(), false);
-
-                final List<Vector3d[]> splitList = Collections.synchronizedList(GDataCSG.getNewPolyVertices(myDat));
-                GDataCSG.ALL_POLYGONS.parallelStream().forEach((poly) -> {
-                    final List<Vector3d> verts = poly.vertices;
-                    if (poly.vertices.size() > 30) {
-                        return;
-                    }
-                    for (Vector3d[] split : splitList) {
-                        final Vector3d vi = split[0];
-                        final Vector3d vj = split[1];
-                        final Vector3d v = split[2];
-                        final int size = verts.size();
-                        for (int k = 0; k < size; k++) {
-                            int l = (k + 1) % size;
-                            if (verts.get(k).equals(vi) && verts.get(l).equals(vj)) {
-                                verts.add(l, v.clone());
-                                break;
-                            } else if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
-                                verts.add(l, v.clone());
-                                break;
-                            }
-                        }
-                    }
-                });
-
-
-
                 allNewPolygonVertices.get(myDat).clear();
-                ALL_POLYGONS.clear();
 
                 final StringBuilder sb = new StringBuilder();
 
