@@ -60,7 +60,7 @@ public final class Polygon {
     /**
      * Polygon vertices
      */
-    public final List<Vector3d> vertices;
+    public List<Vector3d> vertices;
     /**
      * Shared property (can be used for shared color etc.).
      */
@@ -126,7 +126,7 @@ public final class Polygon {
      *
      */
     public Polygon(DatFile df, Vector3d... vertices) {
-        this(df, Arrays.asList(vertices));
+        this(df, new ArrayList<Vector3d>(Arrays.asList(vertices)));
     }
 
     @Override
@@ -339,7 +339,7 @@ public final class Polygon {
      * @return a polygon defined by the specified point list
      */
     public static Polygon fromPoints(GDataCSG csg, DatFile df, Vector3d... points) {
-        return fromPoints(csg, df, Arrays.asList(points), new PropertyStorage(), null);
+        return fromPoints(csg, df, new ArrayList<Vector3d>(Arrays.asList(points)), new PropertyStorage(), null);
     }
 
     /**
