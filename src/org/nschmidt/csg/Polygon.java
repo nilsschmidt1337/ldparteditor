@@ -33,6 +33,8 @@
  */
 package org.nschmidt.csg;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,6 +47,7 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 
 /**
@@ -192,31 +195,117 @@ public final class Polygon {
         if (size >= 3) {
             int dID = CSGPrimitive.id_counter.getAndIncrement();
             final GColour c16 = View.getLDConfigColour(16);
-            double mx = 0.0;
-            double my = 0.0;
-            double mz = 0.0;
-            for (int i = 0; i < size; i++) {
-                mx = mx + this.vertices.get(i).x;
-                my = my + this.vertices.get(i).y;
-                mz = mz + this.vertices.get(i).z;
+            final BigDecimal identical_vertex_distance = new BigDecimal("0.1", MathContext.DECIMAL128); //$NON-NLS-1$
+
+            boolean isCollinear = false;
+
+            // Collinearity check
+            for (int i = 0; i < this.vertices.size() - 2; i++) {
+                org.nschmidt.ldparteditor.helpers.math.Vector3d vertexA = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(0).x), new BigDecimal(this.vertices.get(0).y),
+                        new BigDecimal(this.vertices.get(0).z));
+                org.nschmidt.ldparteditor.helpers.math.Vector3d vertexB = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(i + 1).x), new BigDecimal(this.vertices.get(i + 1).y),
+                        new BigDecimal(this.vertices.get(i + 1).z));
+                org.nschmidt.ldparteditor.helpers.math.Vector3d vertexC = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(i + 2).x), new BigDecimal(this.vertices.get(i + 2).y),
+                        new BigDecimal(this.vertices.get(i + 2).z));
+
+                org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexC, vertexA);
+                org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexB, vertexC, vertexB);
+                boolean parseError = org.nschmidt.ldparteditor.helpers.math.Vector3d.angle(vertexA, vertexB) < Threshold.collinear_angle_minimum;
+
+                parseError = parseError ||vertexA.length().compareTo(identical_vertex_distance) < 0;
+                parseError = parseError || vertexB.length().compareTo(identical_vertex_distance) < 0;
+                parseError = parseError || org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
+
+                if (parseError) {
+                    isCollinear = true;
+                    break;
+                }
             }
 
-            mx = mx / size;
-            my = my / size;
-            mz = mz / size;
 
-            org.nschmidt.ldparteditor.data.Vertex v1 = new org.nschmidt.ldparteditor.data.Vertex((float) mx, (float) my, (float) mz);
-            for (int i = 0; i < size; i++) {
-                org.nschmidt.ldparteditor.data.Vertex v2 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i).x, (float) this.vertices.get(i).y,
-                        (float) this.vertices.get(i).z);
-                org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get((i + 1) % size).x, (float) this.vertices.get((i + 1) % size).y,
-                        (float) this.vertices.get((i + 1) % size).z);
-                GColourIndex colour = null;
-                if ((colour = (GColourIndex) this.shared.getFirstValue()) == null) {
-                    result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
-                } else {
-                    // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16), true), colour.getIndex());
-                    result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+            if (isCollinear) {
+                // Fix the collinearity by adding a center vertex
+                double mx = 0.0;
+                double my = 0.0;
+                double mz = 0.0;
+                for (int i = 0; i < size; i++) {
+                    mx = mx + this.vertices.get(i).x;
+                    my = my + this.vertices.get(i).y;
+                    mz = mz + this.vertices.get(i).z;
+                }
+
+                mx = mx / size;
+                my = my / size;
+                mz = mz / size;
+
+                org.nschmidt.ldparteditor.data.Vertex v1 = new org.nschmidt.ldparteditor.data.Vertex((float) mx, (float) my, (float) mz);
+                for (int i = 0; i < size; i++) {
+                    org.nschmidt.ldparteditor.data.Vertex v2 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i).x, (float) this.vertices.get(i).y,
+                            (float) this.vertices.get(i).z);
+                    org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get((i + 1) % size).x, (float) this.vertices.get((i + 1) % size).y,
+                            (float) this.vertices.get((i + 1) % size).z);
+
+                    org.nschmidt.ldparteditor.helpers.math.Vector3d vertexA = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(mx), new BigDecimal(my), new BigDecimal(mz));
+                    org.nschmidt.ldparteditor.helpers.math.Vector3d vertexB = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(i).x), new BigDecimal(this.vertices.get(i).y),
+                            new BigDecimal(this.vertices.get(i).z));
+                    org.nschmidt.ldparteditor.helpers.math.Vector3d vertexC = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get((i + 1) % size).x), new BigDecimal(this.vertices.get((i + 1) % size).y),
+                            new BigDecimal(this.vertices.get((i + 1) % size).z));
+
+                    org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexC, vertexA);
+                    org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexB, vertexC, vertexB);
+
+                    boolean parseError = vertexA.length().compareTo(identical_vertex_distance) < 0;
+                    parseError = parseError || vertexB.length().compareTo(identical_vertex_distance) < 0;
+                    parseError = parseError || org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
+
+                    if (parseError) {
+                        continue;
+                    }
+
+                    GColourIndex colour = null;
+                    if ((colour = (GColourIndex) this.shared.getFirstValue()) == null) {
+                        result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
+                    } else {
+                        // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16), true), colour.getIndex());
+                        result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                    }
+                }
+
+            } else {
+                // No collinearity, save one triangle
+                for (int i = 0; i < this.vertices.size() - 2; i++) {
+                    org.nschmidt.ldparteditor.data.Vertex v1 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(0).x, (float) this.vertices.get(0).y,
+                            (float) this.vertices.get(0).z);
+                    org.nschmidt.ldparteditor.data.Vertex v2 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 1).x, (float) this.vertices.get(i + 1).y,
+                            (float) this.vertices.get(i + 1).z);
+                    org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 2).x, (float) this.vertices.get(i + 2).y,
+                            (float) this.vertices.get(i + 2).z);
+
+                    org.nschmidt.ldparteditor.helpers.math.Vector3d vertexA = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(0).x), new BigDecimal(this.vertices.get(0).y),
+                            new BigDecimal(this.vertices.get(0).z));
+                    org.nschmidt.ldparteditor.helpers.math.Vector3d vertexB = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(i + 1).x), new BigDecimal(this.vertices.get(i + 1).y),
+                            new BigDecimal(this.vertices.get(i + 1).z));
+                    org.nschmidt.ldparteditor.helpers.math.Vector3d vertexC = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(i + 2).x), new BigDecimal(this.vertices.get(i + 2).y),
+                            new BigDecimal(this.vertices.get(i + 2).z));
+
+                    org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexC, vertexA);
+                    org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexB, vertexC, vertexB);
+
+                    boolean parseError = vertexA.length().compareTo(identical_vertex_distance) < 0;
+                    parseError = parseError || vertexB.length().compareTo(identical_vertex_distance) < 0;
+                    parseError = parseError || org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
+
+                    if (parseError) {
+                        continue;
+                    }
+
+                    GColourIndex colour = null;
+                    if ((colour = (GColourIndex) this.shared.getFirstValue()) == null) {
+                        result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
+                    } else {
+                        // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16), true), colour.getIndex());
+                        result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                    }
                 }
             }
         }

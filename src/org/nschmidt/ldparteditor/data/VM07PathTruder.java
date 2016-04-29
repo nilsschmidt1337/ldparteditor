@@ -69,39 +69,54 @@ class VM07PathTruder extends VM06Edger2 {
             final GData2 shape2Normal;
             GData2 shape1Normal2 = null;
             GData2 shape2Normal2 = null;
-            for (GData2 line : originalSelection) {
-                switch (line.colourNumber) {
-                case 1:
-                    path1.add(line);
-                    break;
-                case 2:
-                    path2.add(line);
-                    break;
-                case 5:
-                    shape1.add(line);
-                    break;
-                case 7:
-                    lineIndicators.add(line);
-                    break;
-                case 13:
-                    shape2.add(line);
-                    break;
-                case 4:
-                    if (shape1Normal2 == null) {
-                        shape1Normal2 = line;
-                    } else {
-                        return;
+            GData data2draw = linkedDatFile.getDrawChainStart();
+            int lineNumber = 0;
+            while ((data2draw = data2draw.getNext()) != null) {
+                lineNumber += 1;
+                GData2 line = null;
+                if (originalSelection.contains(data2draw) && data2draw.type() == 2) line = (GData2) data2draw;
+                if (!originalSelection.contains(data2draw) && data2draw.type() == 9) {
+                    for (GData2 g2 : originalSelection) {
+                        if ((int) g2.a == lineNumber) {
+                            line = g2;
+                            break;
+                        }
                     }
-                    break;
-                case 12:
-                    if (shape2Normal2 == null) {
-                        shape2Normal2 = line;
-                    } else {
-                        return;
+                }
+                if (line != null) {
+                    switch (line.colourNumber) {
+                    case 1:
+                        path1.add(line);
+                        break;
+                    case 2:
+                        path2.add(line);
+                        break;
+                    case 5:
+                        shape1.add(line);
+                        break;
+                    case 7:
+                        lineIndicators.add(line);
+                        break;
+                    case 13:
+                        shape2.add(line);
+                        break;
+                    case 4:
+                        if (shape1Normal2 == null) {
+                            shape1Normal2 = line;
+                        } else {
+                            return;
+                        }
+                        break;
+                    case 12:
+                        if (shape2Normal2 == null) {
+                            shape2Normal2 = line;
+                        } else {
+                            return;
+                        }
+                        break;
+                    default:
+                        break;
                     }
-                    break;
-                default:
-                    break;
                 }
             }
             if (shape1Normal2 == null || shape1.isEmpty() || path1.isEmpty() || path2.isEmpty() || shape2Normal2 != null && shape2.isEmpty()) {

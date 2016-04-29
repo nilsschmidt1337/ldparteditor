@@ -417,6 +417,22 @@ public class CSG {
 
     public GData1 compile_without_t_junctions(DatFile df) {
 
+        // Copy... and remove duplicates
+        this.polygons.parallelStream().forEach((poly) -> {
+            poly.vertices = new ArrayList<>(poly.vertices);
+            ArrayList<Vector3d> vertices = new ArrayList<>();
+            for (Vector3d v1 :  poly.vertices) {
+                for (Vector3d v2 :  poly.vertices) {
+                    if (v1 != v2) {
+                        if (v1.minus(v2).magnitude() < 0.01) {
+                            if (!vertices.contains(v2)) vertices.add(v1);
+                        }
+                    }
+                }
+            }
+            poly.vertices.removeAll(vertices);
+        });
+
         // 1. The interpolation has to be propagated to other polygons
         // This process can be done in parallel, since the polygons are independent from each other.
 
@@ -452,11 +468,6 @@ public class CSG {
             });
             allVerts = Collections.synchronizedList(new ArrayList<Vector3d>(allVertsSet));
         }
-
-        // Copy...
-        this.polygons.parallelStream().forEach((poly) -> {
-            poly.vertices = new ArrayList<>(poly.vertices);
-        });
 
         // Find T-Junctions
         this.polygons.parallelStream().forEach((poly) -> {
