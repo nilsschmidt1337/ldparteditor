@@ -30,6 +30,7 @@ import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.GDataTEX;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
+import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 
 public class CSGExtrude extends CSGPrimitive implements Primitive {
 
@@ -62,6 +63,7 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
         cachedData.clear();
         fillCache(cachedData, start);
 
+        final HashBiMap<Integer, GData> dpl = df.getDrawPerLine_NOCLONE();
         final VertexManager vm= df.getVertexManager();
         vm.backupSelection();
         vm.clearSelection2();
@@ -69,9 +71,10 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
         final Set<GData2> sl = vm.getSelectedLines();
         for (GData g : cachedData) {
             if (g.type() == 9) {
-                g = ((GDataTEX) g).getLinkedData();
+                GDataTEX tex = (GDataTEX) g;
+                g = tex.getLinkedData();
                 if (g.type() == 2) {
-                    g = ((GData2) g).unboundCopy();
+                    g = ((GData2) g).unboundCopy(dpl.getKey(tex));
                 }
             }
             if (g.type() == 2) {
