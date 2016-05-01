@@ -4369,6 +4369,12 @@ public class Editor3DWindow extends Editor3DDesign {
                             if (source2 != null) {
 
                                 try {
+                                    fileName = fileName.replaceAll("/", File.separator); //$NON-NLS-1$
+                                } catch (Exception ex) {
+                                    // Workaround for windows OS / JVM BUG
+                                    fileName = fileName.replace("/", File.separator); //$NON-NLS-1$
+                                }
+                                try {
                                     fileName = fileName.replaceAll("\\\\", File.separator); //$NON-NLS-1$
                                 } catch (Exception ex) {
                                     // Workaround for windows OS / JVM BUG
