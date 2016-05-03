@@ -225,10 +225,11 @@ class EditorMetaDesign extends ApplicationWindow {
                 cmp_scroll.setContent(cmp_metaArea);
                 cmp_scroll.setExpandHorizontal(true);
                 cmp_scroll.setExpandVertical(true);
+                cmp_scroll.setMinSize(600, 800);
 
                 GridData gdm = new GridData();
                 gdm.grabExcessHorizontalSpace = true;
-                // gdm.grabExcessVerticalSpace = true;
+                gdm.grabExcessVerticalSpace = true;
                 cmp_scroll.setLayoutData(gdm);
 
                 cmp_metaArea.setLayout(new GridLayout(1, false));
@@ -508,10 +509,11 @@ class EditorMetaDesign extends ApplicationWindow {
                 final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.H_SCROLL | SWT.V_SCROLL);
                 tItem2.setControl(cmp_scroll);
 
-                Composite cmp_metaArea = new Composite(cmp_scroll, SWT.V_SCROLL);
+                Composite cmp_metaArea = new Composite(cmp_scroll, SWT.NONE);
                 cmp_scroll.setContent(cmp_metaArea);
                 cmp_scroll.setExpandHorizontal(true);
                 cmp_scroll.setExpandVertical(true);
+                cmp_scroll.setMinSize(600, 800);
 
                 GridData gdm = new GridData();
                 gdm.grabExcessHorizontalSpace = true;
@@ -547,10 +549,11 @@ class EditorMetaDesign extends ApplicationWindow {
                 final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.H_SCROLL | SWT.V_SCROLL);
                 tItem3.setControl(cmp_scroll);
 
-                Composite cmp_metaArea = new Composite(cmp_scroll, SWT.V_SCROLL);
+                Composite cmp_metaArea = new Composite(cmp_scroll, SWT.NONE);
                 cmp_scroll.setContent(cmp_metaArea);
                 cmp_scroll.setExpandHorizontal(true);
                 cmp_scroll.setExpandVertical(true);
+                cmp_scroll.setMinSize(600, 800);
 
                 GridData gdm = new GridData();
                 gdm.grabExcessHorizontalSpace = true;
@@ -844,10 +847,11 @@ class EditorMetaDesign extends ApplicationWindow {
                 final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.H_SCROLL | SWT.V_SCROLL);
                 tItem4.setControl(cmp_scroll);
 
-                Composite cmp_metaArea = new Composite(cmp_scroll, SWT.V_SCROLL);
+                Composite cmp_metaArea = new Composite(cmp_scroll, SWT.NONE);
                 cmp_scroll.setContent(cmp_metaArea);
                 cmp_scroll.setExpandHorizontal(true);
                 cmp_scroll.setExpandVertical(true);
+                cmp_scroll.setMinSize(600, 800);
 
                 GridData gdm = new GridData();
                 gdm.grabExcessHorizontalSpace = true;
