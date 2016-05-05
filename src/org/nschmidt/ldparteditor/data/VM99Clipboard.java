@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -335,10 +336,10 @@ class VM99Clipboard extends VM24MeshReducer {
                 }
                 CLIPBOARD.addAll(selectedSubfiles);
             }
-
-
+            for (Iterator<GData> ci = CLIPBOARD.iterator(); ci.hasNext();) {
+                if (ci.next() == null) ci.remove();
+            }
             // Sort the clipboard content by linenumber (or ID if the linenumber is the same)
-
             {
                 final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
                 Collections.sort(CLIPBOARD, new Comparator<GData>(){
@@ -439,6 +440,13 @@ class VM99Clipboard extends VM24MeshReducer {
                                         }
                                         co2 = dpl.getKey(((GDataInit) t).getParent().firstRef);
                                     }
+                                }
+                                if (co1 == null && co2 == null) {
+                                    return 0;
+                                } else if (co1 == null) {
+                                    return -1;
+                                } else if (co2 == null) {
+                                    return 1;
                                 }
                                 int comparism = co1.compareTo(co2);
                                 if (comparism == 0) {
