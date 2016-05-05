@@ -570,8 +570,12 @@ public final class I18n {
     public static final String E3D_SwapXZ = E3D.getString(getProperty());
     public static final String E3D_SwapYZ = E3D.getString(getProperty());
     public static final String E3D_SymSplitter = E3D.getString(getProperty());
+    public static final String E3D_Sync = E3D.getString(getProperty());
     public static final String E3D_Sync3DEditor = E3D.getString(getProperty());
     public static final String E3D_SyncFolders = E3D.getString(getProperty());
+    public static final String E3D_SyncManipulator = E3D.getString(getProperty());
+    public static final String E3D_SyncTranslation = E3D.getString(getProperty());
+    public static final String E3D_SyncZoom = E3D.getString(getProperty());
     public static final String E3D_TextLine = E3D.getString(getProperty());
     public static final String E3D_ThreshInDeg = E3D.getString(getProperty());
     public static final String E3D_ThreshInLdu = E3D.getString(getProperty());
