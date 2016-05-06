@@ -44,6 +44,8 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -1154,6 +1156,67 @@ public class CompositeTab extends CompositeTabDesign {
                 }
                 compositeContainer[0].layout();
             }
+        });
+        canvas_lineNumberArea[0].addMouseListener(new MouseListener() {
+            
+            @Override
+            public void mouseUp(MouseEvent e) {}
+            
+            @Override
+            public void mouseDown(MouseEvent e) {
+                // TODO Auto-generated method stub
+                int y_offset = -compositeText[0].getVerticalBar().getSelection() % caretHeight;
+                int height = compositeContainer[0].getBounds().height;
+                int start_line = compositeText[0].getVerticalBar().getSelection() / caretHeight + 1;
+                int end_line = compositeText[0].getLineCount() - 1;
+
+                NLogger.debug(getClass(), "Mouse down on Line Number Area"); //$NON-NLS-1$
+                
+                NLogger.debug(getClass(), "y_offset" + y_offset); //$NON-NLS-1$
+                NLogger.debug(getClass(), "height" + height); //$NON-NLS-1$
+                NLogger.debug(getClass(), "start_line" + start_line); //$NON-NLS-1$
+                NLogger.debug(getClass(), "end_line" + end_line); //$NON-NLS-1$
+                
+                NLogger.debug(getClass(), "e.y" + e.y); //$NON-NLS-1$
+                
+                
+                int line = ((int) (e.y - y_offset) / caretHeight) + start_line;
+                
+                NLogger.debug(getClass(), "Line " + line); //$NON-NLS-1$
+                line--;
+                
+                final int oldSelectionStart = compositeText[0].getSelection().x;
+                final int oldSelectionEnd = compositeText[0].getSelection().y;
+                
+                if ((e.stateMask & SWT.CTRL) != 0) {
+                    try {
+                        int newstart = compositeText[0].getOffsetAtLine(line + 1);
+                        int newend = compositeText[0].getOffsetAtLine(line);
+                        newstart = Math.max(Math.max(oldSelectionStart, oldSelectionEnd), newstart);
+                        newend = Math.min(Math.min(oldSelectionStart, oldSelectionEnd), newend);
+                        compositeText[0].setSelection(newstart, newend);
+                    } catch (IllegalArgumentException iae) {
+                        try {
+                            int newstart = compositeText[0].getText().length();
+                            int newend = compositeText[0].getOffsetAtLine(line);
+                            newstart = Math.max(Math.max(oldSelectionStart, oldSelectionEnd), newstart);
+                            newend = Math.min(Math.min(oldSelectionStart, oldSelectionEnd), newend);
+                            compositeText[0].setSelection(newstart, newend);
+                        } catch (IllegalArgumentException consumed) {}
+                    } 
+                } else {
+                    try {
+                        compositeText[0].setSelection(compositeText[0].getOffsetAtLine(line + 1), compositeText[0].getOffsetAtLine(line));
+                    } catch (IllegalArgumentException iae) {
+                        try {
+                            compositeText[0].setSelection(compositeText[0].getText().length(), compositeText[0].getOffsetAtLine(line));
+                        } catch (IllegalArgumentException consumed) {}
+                    }    
+                }
+            }
+            
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {}
         });
         canvas_lineNumberArea[0].addPaintListener(new PaintListener() {
             @Override
