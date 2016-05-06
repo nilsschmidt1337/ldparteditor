@@ -1,7 +1,12 @@
 package org.nschmidt.ldparteditor.dialogs.options;
 
+import java.text.Collator;
+import java.text.DateFormat;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.ApplicationWindow;
@@ -15,13 +20,17 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ColorDialog;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -45,6 +54,19 @@ class OptionsDesign extends ApplicationWindow {
 
     Button[] btn_AllowInvalidShapes = new Button[1];
     Button[] btn_OK = new Button[1];
+        
+    final Combo[] cmb_locale = new Combo[1];
+    final Text[] txt_ldrawPath = new Text[1];
+    final Text[] txt_unofficialPath = new Text[1];
+    final Text[] txt_ldrawUserName = new Text[1];
+    final Text[] txt_realName = new Text[1];
+    final Text[] txt_partAuthoringPath = new Text[1];
+    final Combo[] cmb_license = new Combo[1];
+    final Button[] btn_browseLdrawPath = new Button[1];
+    final Button[] btn_browseUnofficialPath = new Button[1];
+    final Button[] btn_browseAuthoringPath = new Button[1];
+    
+    final HashMap<String, Locale> localeMap = new HashMap<String, Locale>();
 
     private HashSet<Task>  s1 = new HashSet<Task>();
     private HashSet<TextTask> s2 = new HashSet<TextTask>();
@@ -390,6 +412,111 @@ class OptionsDesign extends ApplicationWindow {
                 this.btn_AllowInvalidShapes[0] = btn_AllowInvalidShapes;
                 btn_AllowInvalidShapes.setText(I18n.OPTIONS_AllowInvalidShapes);
                 btn_AllowInvalidShapes.setSelection(userSettings.isAllowInvalidShapes());
+                                
+                Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
+                lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                
+                Label lbl_locale = new Label(cmp_container, SWT.NONE);
+                lbl_locale.setText(I18n.OPTIONS_ChooseLocale);
+
+                Combo cmb_locale = new Combo(cmp_container, SWT.READ_ONLY);
+                this.cmb_locale[0] = cmb_locale;
+
+                String[] locales = new String[DateFormat.getAvailableLocales().length];
+                Locale[] locs = DateFormat.getAvailableLocales();
+                final Locale l = userSettings.getLocale();
+                Arrays.sort(locs, new Comparator<Locale>() {
+                    @Override
+                    public int compare(Locale o1, Locale o2) {
+                        return Collator.getInstance(Locale.ENGLISH).compare(o1.getDisplayName(l), o2.getDisplayName(l));
+                    }
+                });
+                localeMap.clear();
+                int englishIndex = 0;
+                for (int i = 0; i < locales.length; i++) {
+                    locales[i] = locs[i].getDisplayName(l);
+                    localeMap.put(locales[i], locs[i]);
+                    if (locs[i].equals(l)) {
+                        englishIndex = i;
+                    }
+                }
+
+                cmb_locale.setItems(locales);
+                cmb_locale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmb_locale.select(englishIndex);
+
+                Label lbl_ldrawFolderQuestion = new Label(cmp_container, SWT.NONE);
+                lbl_ldrawFolderQuestion.setText(I18n.OPTIONS_LdrawFolder);
+
+                Composite cmp_pathChooser1 = new Composite(cmp_container, SWT.NONE);
+                cmp_pathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+                Text txt_ldrawPath = new Text(cmp_pathChooser1, SWT.BORDER);
+                this.txt_ldrawPath[0] = txt_ldrawPath;
+                txt_ldrawPath.setEditable(false);
+                txt_ldrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
+                txt_ldrawPath.setText(userSettings.getLdrawFolderPath());              
+
+                Button btn_BrowseLdrawPath = new Button(cmp_pathChooser1, SWT.NONE);
+                this.btn_browseLdrawPath[0] = btn_BrowseLdrawPath;
+                btn_BrowseLdrawPath.setText(I18n.OPTIONS_Browse);
+
+                Label lbl_ldrawUserQuestion = new Label(cmp_container, SWT.NONE);
+                lbl_ldrawUserQuestion.setText(I18n.OPTIONS_LdrawName);
+
+                Text txt_ldrawUserName = new Text(cmp_container, SWT.BORDER);
+                this.txt_ldrawUserName[0] = txt_ldrawUserName;
+                txt_ldrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                txt_ldrawUserName.setText(userSettings.getLdrawUserName());
+                
+                Label lbl_realNameQuestion = new Label(cmp_container, SWT.NONE);
+                lbl_realNameQuestion.setText(I18n.OPTIONS_RealName);
+
+                Text txt_realName = new Text(cmp_container, SWT.BORDER);
+                this.txt_realName[0] = txt_realName;
+                txt_realName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                txt_realName.setText(userSettings.getRealUserName());
+                
+                Label lbl_licenseQuestion = new Label(cmp_container, SWT.NONE);
+                lbl_licenseQuestion.setText(I18n.OPTIONS_License);
+
+                Combo cmb_license = new Combo(cmp_container, SWT.NONE);
+                this.cmb_license[0] = cmb_license;
+                cmb_license.setItems(new String[] { "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
+                cmb_license.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmb_license.setText(userSettings.getLicense());                
+
+                Label lbl_authoringFolderQuestion = new Label(cmp_container, SWT.NONE);
+                lbl_authoringFolderQuestion.setText(I18n.OPTIONS_AuthoringFolder);
+
+                Composite cmp_pathChooser2 = new Composite(cmp_container, SWT.NONE);
+                cmp_pathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+                Text txt_partAuthoringPath = new Text(cmp_pathChooser2, SWT.BORDER);
+                this.txt_partAuthoringPath[0] = txt_partAuthoringPath;
+                txt_partAuthoringPath.setEditable(false);
+                txt_partAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
+                txt_partAuthoringPath.setText(userSettings.getAuthoringFolderPath());
+                
+                Button btn_browseAuthoringPath = new Button(cmp_pathChooser2, SWT.NONE);
+                this.btn_browseAuthoringPath[0] = btn_browseAuthoringPath;
+                btn_browseAuthoringPath.setText(I18n.OPTIONS_Browse);
+
+                Label lbl_unofficialPathQuestion = new Label(cmp_container, SWT.NONE);
+                lbl_unofficialPathQuestion.setText(I18n.OPTIONS_UnofficialFolder);
+
+                Composite cmp_pathChooser3 = new Composite(cmp_container, SWT.NONE);
+                cmp_pathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+                Text txt_unofficialPath = new Text(cmp_pathChooser3, SWT.BORDER);
+                this.txt_unofficialPath[0] = txt_unofficialPath;
+                txt_unofficialPath.setEditable(false);
+                txt_unofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
+                txt_unofficialPath.setText(userSettings.getUnofficialFolderPath());
+
+                Button btn_browseUnofficialPath = new Button(cmp_pathChooser3, SWT.NONE);
+                this.btn_browseUnofficialPath[0] = btn_browseUnofficialPath;
+                btn_browseUnofficialPath.setText(I18n.OPTIONS_Browse);
             }
 
 
