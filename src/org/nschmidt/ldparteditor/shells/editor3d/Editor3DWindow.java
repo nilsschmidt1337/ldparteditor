@@ -4628,7 +4628,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (df.equals(Project.getFileToEdit()) && !df.isReadOnly()) {
                         VertexManager vm = df.getVertexManager();
                         vm.addSnapshot();
-                        // FIXME Needs implementation!
+                        vm.snapRectanglePrimitives();
                         regainFocus();
                         return;
                     }
