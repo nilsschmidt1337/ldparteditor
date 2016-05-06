@@ -4618,6 +4618,24 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
+        
+        mntm_RectangleSnap[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    DatFile df = c3d.getLockableDatFileReference();
+                    if (df.equals(Project.getFileToEdit()) && !df.isReadOnly()) {
+                        VertexManager vm = df.getVertexManager();
+                        vm.addSnapshot();
+                        // FIXME Needs implementation!
+                        regainFocus();
+                        return;
+                    }
+                }
+                regainFocus();
+            }
+        });
 
         mntm_Txt2Dat[0].addSelectionListener(new SelectionAdapter() {
             @Override

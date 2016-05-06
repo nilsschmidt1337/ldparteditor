@@ -259,6 +259,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_RingsAndCones = new MenuItem[1];
     final MenuItem[] mntm_TJunctionFinder = new MenuItem[1];
     final MenuItem[] mntm_MeshReducer = new MenuItem[1];
+    final MenuItem[] mntm_RectangleSnap = new MenuItem[1];
 
     final MenuItem[] mntm_Options = new MenuItem[1];
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
@@ -2142,6 +2143,11 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_MeshReducer = new MenuItem(mnu_Tools, SWT.PUSH);
                     this.mntm_MeshReducer[0] = mntm_MeshReducer;
                     mntm_MeshReducer.setText(I18n.E3D_MeshReduce);
+                }
+                {
+                    MenuItem mntm_RectangleSnap = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_RectangleSnap[0] = mntm_RectangleSnap;
+                    mntm_RectangleSnap.setText(I18n.E3D_RectSnap);
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator1 = new MenuItem(mnu_Tools, SWT.SEPARATOR);

@@ -512,6 +512,7 @@ public final class I18n {
     public static final String E3D_Quality1 = E3D.getString(getProperty());
     public static final String E3D_Quality2 = E3D.getString(getProperty());
     public static final String E3D_ReadyStatus = E3D.getString(getProperty());
+    public static final String E3D_RectSnap = E3D.getString(getProperty());
     public static final String E3D_Rectifier = E3D.getString(getProperty());
     public static final String E3D_Redo = E3D.getString(getProperty());
     public static final String E3D_ReduceCount = E3D.getString(getProperty());
