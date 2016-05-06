@@ -37,7 +37,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
-class VM99Clipboard extends VM24MeshReducer {
+class VM99Clipboard extends VM25RectangleSnap {
 
     private static final List<GData> CLIPBOARD = new ArrayList<GData>();
     private static final Set<GData> CLIPBOARD_InvNext = Collections.newSetFromMap(new ThreadsafeHashMap<GData, Boolean>());
