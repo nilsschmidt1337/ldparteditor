@@ -20,8 +20,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Point;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
 /**
@@ -41,12 +47,16 @@ public enum Sorter {
      * 4 = "By type and then colour, ascending.",
      * 5 = "By type and then colour, descending."
      */
-    public static void sort(StyledText st, int fromLine, int toLine, DatFile fileNameObj, int scope, int sortCriteria, boolean destructiveSort) {
+    public static void sort(StyledText st, int fromLine, int toLine, DatFile datFile, int scope, int sortCriteria, boolean destructiveSort) {
 
-        // Backup selection range
-        final int x = st.getSelectionRange().x;
-        final int y = st.getSelectionRange().y;
+        if (datFile.isReadOnly())
+            return;
 
+        final VertexManager vm = datFile.getVertexManager();
+        vm.backupHideShowState();
+        vm.backupSelection();
+        vm.clearSelection();
+        
         // Basic Data Structure
         List<ArrayList<GData>> subLists = new ArrayList<ArrayList<GData>>();
         List<Boolean> shouldListBeSorted = new ArrayList<Boolean>();
@@ -58,7 +68,7 @@ public enum Sorter {
             } else {
                 NLogger.debug(Sorter.class, "Sorting file.."); //$NON-NLS-1$
             }
-            GData data2draw = fileNameObj.getDrawChainStart();
+            GData data2draw = datFile.getDrawChainStart();
             int state = 0;
             ArrayList<GData> currentList = new ArrayList<GData>();
             int lineCount = 0;
@@ -514,35 +524,55 @@ public enum Sorter {
             }
         }
 
-
         StringBuilder newDatText = new StringBuilder();
         final String ld = StringHelper.getLineDelimiter();
+        final ArrayList<GData> sortedData = new ArrayList<GData>();
         for (int i = 0; i < listCount; i++) {
             List<GData> listToSort = subLists.get(i);
             int listCount2 = listToSort.size();
             for (int j = 0; j < listCount2; j++) {
                 GData g = listToSort.get(j);
+                sortedData.add(g);
                 newDatText.append(g.toString());
-                if (!(i == listCount - 1 && j == listCount2 - 1)) newDatText.append(ld);
-            }
-
-        }
-        st.setText(newDatText.toString());
-
-        // Restore selection range
-
-        try {
-            st.setSelectionRange(x, y);
-        } catch (IllegalArgumentException iae1) {
-            try {
-                st.setSelectionRange(x - 1, y);
-            } catch (IllegalArgumentException iae2) {
-                try {
-                    st.setSelectionRange(x - 2, y);
-                } catch (IllegalArgumentException consumed) {}
+                if (!(i == listCount - 1 && j == listCount2 - 1)) {
+                    newDatText.append(ld);
+                }
             }
         }
+        
+        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
 
-        st.showSelection();
+        final int size = sortedData.size() + 1;
+        
+        datFile.getDrawChainStart().setNext(sortedData.get(0));
+        datFile.setDrawChainTail(sortedData.get(size - 2));
+        
+        for (int line = 1; line < size; line++) {
+            GData g1 = (line < 2) ? datFile.getDrawChainStart() : sortedData.get(line - 2);
+            GData g2 = sortedData.get(line - 1);
+            g1.setNext(g2);
+            g2.setNext(null);
+            dpl.put(line, g2);
+        }
+            
+        vm.restoreSelection();
+        vm.restoreHideShowState();
+        vm.setModified_NoSync();
+        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+            for (CTabItem t : w.getTabFolder().getItems()) {
+                if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                    ((CompositeTab) t).getState().setSync(true);
+                    Point s = ((CompositeTab) t).getTextComposite().getSelection();
+                    ((CompositeTab) t).getTextComposite().setText(datFile.getText());
+                    ((CompositeTab) t).getTextComposite().setSelection(s);
+                    ((CompositeTab) t).getState().setSync(false);
+                    ((CompositeTab) t).parseForErrorAndHints();
+                    ((CompositeTab) t).getTextComposite().redraw();
+                    break;
+                }
+            }
+        }
+        vm.skipSyncTimer();
+        vm.setModified(true, true);
     }
 }
