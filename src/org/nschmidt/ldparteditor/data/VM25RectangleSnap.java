@@ -51,12 +51,37 @@ public class VM25RectangleSnap extends VM24MeshReducer {
                 
         // 1. Took all vertices in order from the rectangle-primitive
         
-        Set<VertexInfo> vis = lineLinkedToVertices.get(rect);
-        if (vis == null) return;
-        for (VertexInfo vi : vis) {
-            if (vi.linkedData.type() == 4) {
-                NLogger.debug(getClass(), vi.position);
+        Vertex[] verts = null;
+        {
+            Set<VertexInfo> vis = lineLinkedToVertices.get(rect);
+            if (vis == null) return;        
+            for (VertexInfo vi : vis) {
+                if (vi.linkedData.type() == 4) {
+                    NLogger.debug(getClass(), vi.position);
+                    verts = quads.get(vi.linkedData);
+                    break;
+                }
             }
         }
+        if (verts == null) return;
+        
+        // 2. Get a possible (and valid) new 4-vertex loop from the vertices of the rectangle
+        
+        Vertex[] loop = getLoop(verts);
+        if (loop == null) return;
+        
+        
+        // 3. Rectify the loop (with rectangle-primitives), delete the old rectangle primitive  
+        rectify(loop);
+    }   
+
+    private Vertex[] getLoop(Vertex[] verts) {
+        // FIXME Needs implementation for issue #230!
+        return null;
+    }
+    
+    private void rectify(Vertex[] loop) {
+        // FIXME Needs implementation for issue #230!
+        
     }
 }
