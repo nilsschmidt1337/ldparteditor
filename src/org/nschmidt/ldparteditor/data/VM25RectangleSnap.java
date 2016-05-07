@@ -18,6 +18,9 @@ package org.nschmidt.ldparteditor.data;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
+
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 public class VM25RectangleSnap extends VM24MeshReducer {
 
@@ -26,9 +29,6 @@ public class VM25RectangleSnap extends VM24MeshReducer {
     }
     
     public void snapRectanglePrimitives() {
-        
-        // FIXME Needs implementation for issue #230!
-        
         ArrayList<GData1> rectPrims = new ArrayList<GData1>();
         final HashSet<String> RECT_NAMES = new HashSet<String>();        
         RECT_NAMES.add("rect1.dat"); //$NON-NLS-1$
@@ -36,16 +36,27 @@ public class VM25RectangleSnap extends VM24MeshReducer {
         RECT_NAMES.add("rect2p.dat"); //$NON-NLS-1$
         RECT_NAMES.add("rect3.dat"); //$NON-NLS-1$
         RECT_NAMES.add("rect.dat"); //$NON-NLS-1$
-        
         for (GData1 g : selectedSubfiles) {
             if (RECT_NAMES.contains(g.shortName.toLowerCase(Locale.ENGLISH))) {
                 rectPrims.add(g);
             }
         }
-        
         for (GData1 rect : rectPrims) {
-            
+            snap(rect);
         }
     }
-    
+
+    private void snap(GData1 rect) {
+        // FIXME Needs implementation for issue #230!
+                
+        // 1. Took all vertices in order from the rectangle-primitive
+        
+        Set<VertexInfo> vis = lineLinkedToVertices.get(rect);
+        if (vis == null) return;
+        for (VertexInfo vi : vis) {
+            if (vi.linkedData.type() == 4) {
+                NLogger.debug(getClass(), vi.position);
+            }
+        }
+    }
 }
