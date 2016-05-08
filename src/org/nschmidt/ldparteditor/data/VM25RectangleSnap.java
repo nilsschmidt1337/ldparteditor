@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
@@ -28,6 +29,8 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 
 public class VM25RectangleSnap extends VM24MeshReducer {
 
+    private TreeSet<Vertex> selectedVerticesBackup = new TreeSet<Vertex>();
+    
     protected VM25RectangleSnap(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
@@ -45,6 +48,15 @@ public class VM25RectangleSnap extends VM24MeshReducer {
                 rectPrims.add(g);
             }
         }
+        for (GData1 rect : rectPrims) {
+            Set<VertexInfo> vis = lineLinkedToVertices.get(rect);
+            if (vis != null) {
+                for (VertexInfo vi : vis) {
+                    selectedVertices.remove(vi.vertex);
+                }
+            }
+        }
+        selectedVerticesBackup.addAll(selectedVertices);
         clearSelection();
         for (GData1 rect : rectPrims) {
             snap(rect);
@@ -84,7 +96,7 @@ public class VM25RectangleSnap extends VM24MeshReducer {
     private Vertex[] getLoop(Vertex[] verts) {
         Vertex[][] loops = new Vertex[4][];
         for (int i = 0; i < 4; i++) {
-            loops[i] = getLoop(verts[i]);
+            loops[i] = getLoop(verts[i], verts);
         }
         {
             float minDist = Float.MAX_VALUE;
@@ -104,9 +116,35 @@ public class VM25RectangleSnap extends VM24MeshReducer {
         return verts;
     }
     
-    private Vertex[] getLoop(Vertex verts) {
+    private Vertex[] getLoop(Vertex vert, Vertex[] verts) {
         // FIXME Needs implementation for issue #230!
         Vertex[] result = new Vertex[5];
+        TreeSet<Vertex> validVertices = new TreeSet<Vertex>();
+        if (selectedVerticesBackup.isEmpty()) {
+            validVertices.addAll(getVertices());    
+        } else {
+            validVertices.addAll(selectedVerticesBackup);
+        }
+        for (int i = 0; i < 4; i++) {
+            validVertices.remove(verts[i]);
+        }
+        boolean isConnectedToModel = getLinkedSurfaces(vert).size() > 1;
+        
+        // If the vertex is not connected to other surfaces, search for the closest vertex
+        if (!isConnectedToModel) {
+            BigDecimal minDistance = new BigDecimal("10000000000000"); //$NON-NLS-1$
+            for (Vertex v : validVertices) {
+                Vector3d v1 = new Vector3d(v);
+                Vector3d v2 = new Vector3d(vert);
+                BigDecimal distance = Vector3d.distSquare(v1, v2);
+                if (distance.compareTo(minDistance) < 0) {
+                    distance = minDistance;
+                    vert = v;
+                }
+            }
+        }
+        
+        
         
         return null;
     }
