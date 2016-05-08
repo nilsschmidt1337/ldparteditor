@@ -55,7 +55,6 @@ public class VM25RectangleSnap extends VM24MeshReducer {
     }
 
     private void snap(GData1 rect) {
-        // FIXME Needs implementation for issue #230!
                 
         // 1. Took all vertices in order from the rectangle-primitive
         
@@ -78,19 +77,41 @@ public class VM25RectangleSnap extends VM24MeshReducer {
         Vertex[] loop = getLoop(verts);
         if (loop == null) return;
         
-        
         // 3. Rectify the loop (with rectangle-primitives), delete the old rectangle primitive  
         rectify(loop, rect);
     }   
 
     private Vertex[] getLoop(Vertex[] verts) {
-        // FIXME Needs implementation for issue #230!
+        Vertex[][] loops = new Vertex[4][];
+        for (int i = 0; i < 4; i++) {
+            loops[i] = getLoop(verts[i]);
+        }
+        {
+            float minDist = Float.MAX_VALUE;
+            for (int i = 0; i < 4; i++) {
+                if (loops[i] != null && loops[i][0].x < minDist) minDist = loops[i][0].x;
+            }
+            for (int i = 0; i < 4; i++) {
+                if (loops[i] != null && loops[i][0].x == minDist){
+                    verts[0] = loops[i][1];
+                    verts[1] = loops[i][2];
+                    verts[2] = loops[i][3];
+                    verts[3] = loops[i][4];
+                    break;
+                }
+            }
+        }        
         return verts;
     }
     
-    private void rectify(Vertex[] loop, GData1 g) {
+    private Vertex[] getLoop(Vertex verts) {
         // FIXME Needs implementation for issue #230!
+        Vertex[] result = new Vertex[5];
         
+        return null;
+    }
+    
+    private void rectify(Vertex[] loop, GData1 g) {
         final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
         {
             Vertex v1 = loop[0];
@@ -111,7 +132,6 @@ public class VM25RectangleSnap extends VM24MeshReducer {
         for (int i = 0; i < 4; i++) {
             Vector3f.add(normals[i], normal, normal);
         }
-               
         GData4 quad = new GData4(
                 g.colourNumber, g.r, g.g, g.b, g.a, 
                 loop[0].X, loop[0].Y, loop[0].Z, 
@@ -120,9 +140,7 @@ public class VM25RectangleSnap extends VM24MeshReducer {
                 loop[3].X, loop[3].Y, loop[3].Z, 
                 new Vector3d(new BigDecimal(normal.x), new BigDecimal(normal.y), new BigDecimal(normal.z)), 
                 g.parent, linkedDatFile);
-        
         linker(g, quad);
-        
         selectedData.add(quad);
         selectedQuads.add(quad);
         RectifierSettings rs = new RectifierSettings();
