@@ -30,6 +30,8 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 public class VM25RectangleSnap extends VM24MeshReducer {
 
     private TreeSet<Vertex> selectedVerticesBackup = new TreeSet<Vertex>();
+    private final Vertex[] NO_SOLUTION = new Vertex[]{};
+    
     
     protected VM25RectangleSnap(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -129,26 +131,118 @@ public class VM25RectangleSnap extends VM24MeshReducer {
             validVertices.remove(verts[i]);
         }
         boolean isConnectedToModel = getLinkedSurfaces(vert).size() > 1;
+        BigDecimal minDistance = new BigDecimal("10000000000000"); //$NON-NLS-1$
         
         // If the vertex is not connected to other surfaces, search for the closest vertex
-        if (!isConnectedToModel) {
-            BigDecimal minDistance = new BigDecimal("10000000000000"); //$NON-NLS-1$
+        if (!isConnectedToModel) {      
+            Vertex vert2 = vert;
             for (Vertex v : validVertices) {
                 Vector3d v1 = new Vector3d(v);
                 Vector3d v2 = new Vector3d(vert);
                 BigDecimal distance = Vector3d.distSquare(v1, v2);
-                if (distance.compareTo(minDistance) < 0) {
-                    distance = minDistance;
-                    vert = v;
+                if (distance.compareTo(minDistance) < 0) {                    
+                    minDistance = distance;
+                    vert2 = v;
+                }
+            }
+            vert = vert2;
+        }
+        
+        Vertex[] loop = getLoop(vert, validVertices);
+        if (loop != null) {
+            result[0] = new Vertex(minDistance, BigDecimal.ZERO, BigDecimal.ZERO);
+            result[1] = loop[0];
+            result[2] = loop[1];
+            result[3] = loop[2];
+            result[4] = loop[3];
+        }
+        return result;
+    }
+    
+    private Vertex[] getLoop(Vertex vert, TreeSet<Vertex> validVertices) {
+        return getLoop(vert, new Vertex[4], 0, validVertices);
+    }
+
+    private Vertex[] getLoop(Vertex vert, Vertex[] verts, int depth,
+            TreeSet<Vertex> validVertices) {
+                       
+        if (depth > 3) {
+            return null;
+        }
+               
+        Vertex backup = verts[depth];
+        verts[depth] = vert;
+        
+        NLogger.debug(getClass(), "Depth: " + depth + " " + verts[0] + " " + verts[1] + " " + verts[2] + " " + verts[3]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$        
+                
+        TreeSet<Vertex> surfVerts = new TreeSet<Vertex>();
+        {
+            HashSet<GData> surfs = getLinkedSurfaces(vert);
+            for (GData g : surfs) {
+                int type = g.type();
+                if (type == 3) {
+                    Vertex[] t = triangles.get(g);
+                    if (t == null) continue;
+                    surfVerts.add(t[0]);
+                    surfVerts.add(t[1]);
+                    surfVerts.add(t[2]);
+                } else if (type == 4) {
+                    Vertex[] t = quads.get(g);
+                    if (t == null) continue;
+                    surfVerts.add(t[0]);
+                    surfVerts.add(t[1]);
+                    surfVerts.add(t[2]);
+                    surfVerts.add(t[3]);
                 }
             }
         }
         
+        boolean finishedLoopSearch = false; 
+        if (depth == 3) {
+            finishedLoopSearch = surfVerts.contains(verts[0]);
+        }                
         
+        for (int i = 0; i < (depth + 1); i++) {
+            surfVerts.remove(verts[i]);   
+        }
+        boolean foundSolution = false;
         
-        return null;
+        if (finishedLoopSearch) {
+            
+            HashSet<GData> s1 = getLinkedSurfaces(verts[0]);
+            HashSet<GData> s2 = getLinkedSurfaces(verts[1]);
+            HashSet<GData> s3 = getLinkedSurfaces(verts[2]);
+            HashSet<GData> s4 = getLinkedSurfaces(verts[3]);
+            
+            s1.retainAll(s2);
+            s1.retainAll(s3);
+            s1.retainAll(s4);
+            
+            if (!s1.isEmpty()) {
+                verts[depth] = backup;
+                return NO_SOLUTION;
+            }
+            
+        } else {
+            
+            for (Vertex v : surfVerts) {
+                Vertex[] solution = getLoop(v, verts, (depth + 1), validVertices);
+                if (solution != NO_SOLUTION) {
+                    foundSolution = true;
+                }
+            }
+            if (depth > 0 && !foundSolution) {
+                verts[depth] = backup;
+            }
+        }
+        
+        if (verts[0] != null && verts[1] != null && verts[2] != null && verts[3] != null) {
+            return verts;
+        } else {
+            return NO_SOLUTION;           
+        }       
     }
-    
+
     private void rectify(Vertex[] loop, GData1 g) {
         final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
         {
