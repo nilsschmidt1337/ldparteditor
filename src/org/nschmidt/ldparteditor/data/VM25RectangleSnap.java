@@ -15,11 +15,15 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import org.lwjgl.util.vector.Vector3f;
+import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
+import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
 public class VM25RectangleSnap extends VM24MeshReducer {
@@ -41,8 +45,12 @@ public class VM25RectangleSnap extends VM24MeshReducer {
                 rectPrims.add(g);
             }
         }
+        clearSelection();
         for (GData1 rect : rectPrims) {
             snap(rect);
+        }
+        if (!rectPrims.isEmpty()) {
+            setModified(true, true);
         }
     }
 
@@ -72,16 +80,55 @@ public class VM25RectangleSnap extends VM24MeshReducer {
         
         
         // 3. Rectify the loop (with rectangle-primitives), delete the old rectangle primitive  
-        rectify(loop);
+        rectify(loop, rect);
     }   
 
     private Vertex[] getLoop(Vertex[] verts) {
         // FIXME Needs implementation for issue #230!
-        return null;
+        return verts;
     }
     
-    private void rectify(Vertex[] loop) {
+    private void rectify(Vertex[] loop, GData1 g) {
         // FIXME Needs implementation for issue #230!
         
+        final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
+        {
+            Vertex v1 = loop[0];
+            Vertex v2 = loop[1];
+            Vertex v3 = loop[2];
+            Vertex v4 = loop[3];
+            final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
+            Vector3f.sub(new Vector3f(v2.x, v2.y, v2.z), new Vector3f(v1.x, v1.y, v1.z), lineVectors[0]);
+            Vector3f.sub(new Vector3f(v3.x, v3.y, v3.z), new Vector3f(v2.x, v2.y, v2.z), lineVectors[1]);
+            Vector3f.sub(new Vector3f(v4.x, v4.y, v4.z), new Vector3f(v3.x, v3.y, v3.z), lineVectors[2]);
+            Vector3f.sub(new Vector3f(v1.x, v1.y, v1.z), new Vector3f(v4.x, v4.y, v4.z), lineVectors[3]);
+            Vector3f.cross(lineVectors[0], lineVectors[1], normals[0]);
+            Vector3f.cross(lineVectors[1], lineVectors[2], normals[1]);
+            Vector3f.cross(lineVectors[2], lineVectors[3], normals[2]);
+            Vector3f.cross(lineVectors[3], lineVectors[0], normals[3]);
+        }
+        Vector3f normal = new Vector3f();
+        for (int i = 0; i < 4; i++) {
+            Vector3f.add(normals[i], normal, normal);
+        }
+               
+        GData4 quad = new GData4(
+                g.colourNumber, g.r, g.g, g.b, g.a, 
+                loop[0].X, loop[0].Y, loop[0].Z, 
+                loop[1].X, loop[1].Y, loop[1].Z, 
+                loop[2].X, loop[2].Y, loop[2].Z, 
+                loop[3].X, loop[3].Y, loop[3].Z, 
+                new Vector3d(new BigDecimal(normal.x), new BigDecimal(normal.y), new BigDecimal(normal.z)), 
+                g.parent, linkedDatFile);
+        
+        linker(g, quad);
+        
+        selectedData.add(quad);
+        selectedQuads.add(quad);
+        RectifierSettings rs = new RectifierSettings();
+        rs.setScope(1);        
+        rectify(rs, false, false);
+        selectedData.clear();
+        selectedQuads.clear();
     }
 }
