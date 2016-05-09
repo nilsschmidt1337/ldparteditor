@@ -262,6 +262,24 @@ public class Manipulator {
         Matrix4f.setIdentity(result);
         Matrix4f.setIdentity(scale);
     }
+    
+    public void copyState(Manipulator origin) {
+        this.accuratePosition = origin.accuratePosition.clone();
+        this.position = new Vector4f(origin.position);
+        this.xAxis = new Vector4f(origin.xAxis);
+        this.yAxis = new Vector4f(origin.yAxis);
+        this.zAxis = new Vector4f(origin.zAxis);        
+        this.accurateXaxis = origin.accurateXaxis.clone();
+        this.accurateYaxis = origin.accurateYaxis.clone();
+        this.accurateZaxis = origin.accurateZaxis.clone();
+        
+        this.result.load(origin.result);      
+        this.scale.load(origin.scale);   
+        this.accurateResult = new Matrix(origin.accurateResult);
+        this.accurateScale = new Matrix(origin.accurateScale);
+        
+        this.modified = origin.modified;
+    }
 
     public FloatBuffer getTempTransformation() {
         Matrix4f.invert(result, resultinv);

@@ -6025,6 +6025,9 @@ public class Editor3DWindow extends Editor3DDesign {
             st.setAlwaysBlackLines(c3d.isBlackEdges());
             st.setAnaglyph3d(c3d.isAnaglyph3d());
             st.setGridScale(c3d.getGrid_scale());
+            st.setSyncManipulator(c3d.isSyncManipulator());
+            st.setSyncTranslation(c3d.isSyncTranslation());
+            st.setSyncZoom(c3d.isSyncZoom());
         } else if (c instanceof SashForm) {
             NLogger.debug(getClass(), path);
             SashForm s = (SashForm) c;

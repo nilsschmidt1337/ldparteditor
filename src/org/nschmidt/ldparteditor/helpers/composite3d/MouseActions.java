@@ -54,6 +54,7 @@ import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
@@ -632,6 +633,35 @@ public class MouseActions {
                             if (v1 != null) c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().add(v1);
                         }
                     }
+                }
+            }
+        }
+        
+        if (c3d.isSyncManipulator()) {
+            for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                Composite3D c3d2 = renderer.getC3D();
+                if (c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
+                    c3d2.getManipulator().copyState(c3d.getManipulator());
+                    GuiManager.updateStatus(c3d2);
+                    ((ScalableComposite) c3d2.getParent()).redrawScales();
+                    c3d2.getPerspectiveCalculator().initializeViewportPerspective();
+                }
+            }
+        }
+        
+        if (c3d.isSyncTranslation()) {
+            float tx = c3d.getTranslation().m30;
+            float ty = c3d.getTranslation().m31;
+            float tz = c3d.getTranslation().m32;
+            for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                Composite3D c3d2 = renderer.getC3D();
+                if (c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
+                    c3d2.getTranslation().m30 = tx;
+                    c3d2.getTranslation().m31 = ty;
+                    c3d2.getTranslation().m32 = tz;
+                    GuiManager.updateStatus(c3d2);
+                    ((ScalableComposite) c3d2.getParent()).redrawScales();
+                    c3d2.getPerspectiveCalculator().initializeViewportPerspective();
                 }
             }
         }

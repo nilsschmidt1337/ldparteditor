@@ -52,6 +52,10 @@ public class Composite3DState implements Serializable {
 
     private String path = null;
     private String parentPath = null;
+    
+    private boolean syncManipulator = false;
+    private boolean syncTranslation = false;
+    private boolean syncZoom = false;
 
     public Composite3DState() {
 
@@ -249,6 +253,30 @@ public class Composite3DState implements Serializable {
 
     public void setCondlineControlPoints(boolean condlineControlPoints) {
         this.condlineControlPoints = condlineControlPoints;
+    }
+
+    public boolean isSyncManipulator() {
+        return syncManipulator;
+    }
+
+    public void setSyncManipulator(boolean syncManipulator) {
+        this.syncManipulator = syncManipulator;
+    }
+
+    public boolean isSyncTranslation() {
+        return syncTranslation;
+    }
+
+    public void setSyncTranslation(boolean syncTranslation) {
+        this.syncTranslation = syncTranslation;
+    }
+
+    public boolean isSyncZoom() {
+        return syncZoom;
+    }
+
+    public void setSyncZoom(boolean syncZoom) {
+        this.syncZoom = syncZoom;
     }
 
 }

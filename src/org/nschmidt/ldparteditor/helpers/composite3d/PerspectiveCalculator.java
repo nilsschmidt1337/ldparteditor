@@ -36,6 +36,8 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3r;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
  * Provides functions to set the perspective of the {@linkplain Composite3D}
@@ -412,6 +414,7 @@ public class PerspectiveCalculator {
         GuiManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();
         initializeViewportPerspective();
+        syncZoom();
     }
 
     /**
@@ -429,6 +432,7 @@ public class PerspectiveCalculator {
         GuiManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();
         initializeViewportPerspective();
+        syncZoom();
     }
 
     public void zoomReset() {
@@ -441,6 +445,7 @@ public class PerspectiveCalculator {
         GuiManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();
         initializeViewportPerspective();
+        syncZoom();
     }
 
     /**
@@ -477,4 +482,19 @@ public class PerspectiveCalculator {
         this.zoom_exponent = zoom_exponent;
     }
 
+    private void syncZoom() {
+        if (c3d.isSyncZoom()) {
+            for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                Composite3D c3d2 = renderer.getC3D();
+                if (c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
+                    c3d2.setZoom(c3d.getZoom());
+                    c3d2.getPerspectiveCalculator().setZoom_exponent(c3d.getPerspectiveCalculator().getZoom_exponent());
+                    c3d2.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
+                    GuiManager.updateStatus(c3d2);
+                    ((ScalableComposite) c3d2.getParent()).redrawScales();
+                    c3d2.getPerspectiveCalculator().initializeViewportPerspective();
+                }
+            }
+        }
+    }
 }

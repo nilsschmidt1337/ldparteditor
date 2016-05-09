@@ -116,6 +116,8 @@ public class Composite3D extends ScalableComposite {
     public final Menu mnu_renderMode;
     /** The "Line Mode"-Menu */
     private final Menu mnu_lineMode;
+    /** The "Synchronise..."-Menu */
+    public final Menu mnu_syncronise;
 
     /** The cursor position in the 3D space [LDU] */
     private final Vector4f cursor3D = new Vector4f(0f, 0f, 0f, 1f);
@@ -212,6 +214,10 @@ public class Composite3D extends ScalableComposite {
     private boolean showingCondlineControlPoints;
     private boolean showingLogo;
     private boolean blackEdges;
+    
+    private boolean syncManipulator;
+    private boolean syncTranslation;
+    private boolean syncZoom;
 
     private boolean showingAxis;
     private boolean showingLabels;
@@ -261,6 +267,10 @@ public class Composite3D extends ScalableComposite {
     final MenuItem[] mntmShowScale = new MenuItem[1];
     final MenuItem[] mntmLabel = new MenuItem[1];
     final MenuItem[] mntmRealPreview = new MenuItem[1];
+    
+    final MenuItem[] mntmSyncTranslate = new MenuItem[1];
+    final MenuItem[] mntmSyncZoom = new MenuItem[1];
+    final MenuItem[] mntmSyncManipulator = new MenuItem[1];
 
     /**
      * Creates a new 3D Composite in a {@link CompositeContainer}
@@ -349,6 +359,9 @@ public class Composite3D extends ScalableComposite {
 
         MenuItem mntmRenderModes = new MenuItem(menu, SWT.CASCADE);
         mntmRenderModes.setText(I18n.C3D_RenderMode);
+        
+        MenuItem mntmSynchronise = new MenuItem(menu, SWT.CASCADE);
+        mntmSynchronise.setText(I18n.E3D_Sync);
 
         @SuppressWarnings("unused")
         final MenuItem mntmSeparator3 = new MenuItem(menu, SWT.SEPARATOR);
@@ -1166,6 +1179,60 @@ public class Composite3D extends ScalableComposite {
                 }
             });
             mntmWireframeMode.setText(I18n.C3D_Wireframe);
+        }
+        
+        {
+            // MARK CMenu Synchronise
+            mnu_syncronise = new Menu(mntmSynchronise);
+            mntmSynchronise.setMenu(mnu_syncronise);
+
+            final MenuItem mntmSyncroniseManipulator = new MenuItem(mnu_syncronise, SWT.CHECK);
+            this.mntmSyncManipulator[0] = mntmSyncroniseManipulator;
+            mntmSyncroniseManipulator.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    setSyncManipulator(mntmSyncManipulator[0].getSelection());
+                    for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                        Composite3D c3d = renderer.getC3D();
+                        if (lockableDatFileReference.equals(c3d.getLockableDatFileReference())) {
+                            c3d.setSyncManipulator(isSyncManipulator());
+                        }
+                    }
+                }
+            });
+            mntmSyncroniseManipulator.setText(I18n.E3D_SyncManipulator);
+            
+            final MenuItem mntmSyncTranslation = new MenuItem(mnu_syncronise, SWT.CHECK);
+            this.mntmSyncTranslate[0] = mntmSyncTranslation;
+            mntmSyncTranslation.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    setSyncTranslation(mntmSyncTranslate[0].getSelection());
+                    for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                        Composite3D c3d = renderer.getC3D();
+                        if (lockableDatFileReference.equals(c3d.getLockableDatFileReference())) {
+                            c3d.setSyncTranslation(isSyncTranslation());
+                        }
+                    }
+                }
+            });
+            mntmSyncTranslation.setText(I18n.E3D_SyncTranslation);
+            
+            final MenuItem mntmSyncroniseZoom = new MenuItem(mnu_syncronise, SWT.CHECK);
+            this.mntmSyncZoom[0] = mntmSyncroniseZoom;
+            mntmSyncroniseZoom.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    setSyncZoom(mntmSyncZoom[0].getSelection());
+                    for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                        Composite3D c3d = renderer.getC3D();
+                        if (lockableDatFileReference.equals(c3d.getLockableDatFileReference())) {
+                            c3d.setSyncZoom(isSyncZoom());
+                        }
+                    }
+                }
+            });
+            mntmSyncroniseZoom.setText(I18n.E3D_SyncZoom);
         }
 
         try {
@@ -2004,5 +2071,32 @@ public class Composite3D extends ScalableComposite {
 
     public void setShowingCondlineControlPoints(boolean showingCondlineControlPoints) {
         this.showingCondlineControlPoints = showingCondlineControlPoints;
+    }
+
+    public boolean isSyncManipulator() {
+        return syncManipulator;
+    }
+
+    public void setSyncManipulator(boolean syncManipulator) {
+        this.syncManipulator = syncManipulator;
+        mntmSyncManipulator[0].setSelection(syncManipulator);
+    }
+
+    public boolean isSyncTranslation() {
+        return syncTranslation;
+    }
+
+    public void setSyncTranslation(boolean syncTranslation) {
+        this.syncTranslation = syncTranslation;
+        mntmSyncTranslate[0].setSelection(syncTranslation);
+    }
+
+    public boolean isSyncZoom() {
+        return syncZoom;
+    }
+
+    public void setSyncZoom(boolean syncZoom) {
+        this.syncZoom = syncZoom;
+        mntmSyncZoom[0].setSelection(syncZoom);
     }
 }
