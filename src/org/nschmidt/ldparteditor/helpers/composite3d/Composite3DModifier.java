@@ -512,7 +512,6 @@ public class Composite3DModifier {
                     c3d2.setZoom(c3d.getZoom());
                     c3d2.getPerspectiveCalculator().setZoom_exponent(c3d.getPerspectiveCalculator().getZoom_exponent());
                     c3d2.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
-                    GuiManager.updateStatus(c3d2);
                     ((ScalableComposite) c3d2.getParent()).redrawScales();
                     c3d2.getPerspectiveCalculator().initializeViewportPerspective();
                 }
