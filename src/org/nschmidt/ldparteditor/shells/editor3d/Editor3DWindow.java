@@ -712,12 +712,13 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (f.getParentFile() != null) {
                         Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
                     }
-                }
-                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    for (CTabItem t : w.getTabFolder().getItems()) {
-                        if (dat.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                            w.closeTabWithDatfile(dat);
-                            return;
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        for (CTabItem t : w.getTabFolder().getItems()) {
+                            if (dat.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                w.closeTabWithDatfile(dat);
+                                regainFocus();
+                                return;
+                            }
                         }
                     }
                 }
