@@ -2144,7 +2144,8 @@ class Editor3DDesign extends ApplicationWindow {
                     this.mntm_MeshReducer[0] = mntm_MeshReducer;
                     mntm_MeshReducer.setText(I18n.E3D_MeshReduce);
                 }
-                {
+                // FIXME Needs implementation for issue #230!
+                if (NLogger.DEBUG) {
                     MenuItem mntm_RectangleSnap = new MenuItem(mnu_Tools, SWT.PUSH);
                     this.mntm_RectangleSnap[0] = mntm_RectangleSnap;
                     mntm_RectangleSnap.setText(I18n.E3D_RectSnap);

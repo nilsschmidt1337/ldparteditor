@@ -31,6 +31,7 @@ public class VM25RectangleSnap extends VM24MeshReducer {
 
     private TreeSet<Vertex> selectedVerticesBackup = new TreeSet<Vertex>();
     private final Vertex[] NO_SOLUTION = new Vertex[]{};
+    private boolean foundSolution = false;
     
     
     protected VM25RectangleSnap(DatFile linkedDatFile) {
@@ -58,6 +59,7 @@ public class VM25RectangleSnap extends VM24MeshReducer {
                 }
             }
         }
+        selectedVerticesBackup.clear();
         selectedVerticesBackup.addAll(selectedVertices);
         clearSelection();
         for (GData1 rect : rectPrims) {
@@ -98,6 +100,7 @@ public class VM25RectangleSnap extends VM24MeshReducer {
     private Vertex[] getLoop(Vertex[] verts) {
         Vertex[][] loops = new Vertex[4][];
         for (int i = 0; i < 4; i++) {
+            foundSolution = false;
             loops[i] = getLoop(verts[i], verts);
         }
         {
@@ -189,10 +192,10 @@ public class VM25RectangleSnap extends VM24MeshReducer {
                 } else if (type == 4) {
                     Vertex[] t = quads.get(g);
                     if (t == null) continue;
-                    surfVerts.add(t[0]);
-                    surfVerts.add(t[1]);
-                    surfVerts.add(t[2]);
-                    surfVerts.add(t[3]);
+                    if (vert.equals(t[1]) || vert.equals(t[3])) surfVerts.add(t[0]);
+                    if (vert.equals(t[2]) || vert.equals(t[0])) surfVerts.add(t[1]);
+                    if (vert.equals(t[3]) || vert.equals(t[1])) surfVerts.add(t[2]);
+                    if (vert.equals(t[0]) || vert.equals(t[2])) surfVerts.add(t[3]);
                 }
             }
         }
@@ -205,7 +208,6 @@ public class VM25RectangleSnap extends VM24MeshReducer {
         for (int i = 0; i < (depth + 1); i++) {
             surfVerts.remove(verts[i]);   
         }
-        boolean foundSolution = false;
         
         if (finishedLoopSearch) {
             
@@ -215,20 +217,24 @@ public class VM25RectangleSnap extends VM24MeshReducer {
             HashSet<GData> s4 = getLinkedSurfaces(verts[3]);
             
             s1.retainAll(s2);
-            s1.retainAll(s3);
-            s1.retainAll(s4);
-            
-            if (!s1.isEmpty()) {
-                verts[depth] = backup;
-                return NO_SOLUTION;
+            if (s1.size() == 1) {
+                GData g = s1.iterator().next();
+                if (s3.contains(g) && s4.contains(g)) {
+                    verts[depth] = backup;
+                    return NO_SOLUTION;
+                }
             }
+            
+            foundSolution = true;
             
         } else {
             
             for (Vertex v : surfVerts) {
                 Vertex[] solution = getLoop(v, verts, (depth + 1), validVertices);
-                if (solution != NO_SOLUTION) {
+                if (solution == null) continue;
+                if (solution != NO_SOLUTION || foundSolution) {
                     foundSolution = true;
+                    break;
                 }
             }
             if (depth > 0 && !foundSolution) {
@@ -236,11 +242,10 @@ public class VM25RectangleSnap extends VM24MeshReducer {
             }
         }
         
-        if (verts[0] != null && verts[1] != null && verts[2] != null && verts[3] != null) {
+        if (foundSolution) {
             return verts;
-        } else {
-            return NO_SOLUTION;           
-        }       
+        } 
+        return NO_SOLUTION;
     }
 
     private void rectify(Vertex[] loop, GData1 g) {
