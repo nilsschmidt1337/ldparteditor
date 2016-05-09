@@ -20,6 +20,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -106,6 +107,7 @@ class CompositeTabDesign extends CTabItem {
             Canvas canvas_lineNumberArea = new Canvas(composite, SWT.NONE);
             this.canvas_lineNumberArea[0] = canvas_lineNumberArea;
             canvas_lineNumberArea.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+            canvas_lineNumberArea.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_HAND));
 
             GridData gd_canvas_lineNumberArea = new GridData(SWT.LEFT, SWT.FILL, false, true);
             canvas_lineNumberArea.setLayoutData(gd_canvas_lineNumberArea);
