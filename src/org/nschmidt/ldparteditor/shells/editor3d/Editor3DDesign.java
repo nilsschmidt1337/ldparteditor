@@ -2863,6 +2863,10 @@ class Editor3DDesign extends ApplicationWindow {
         c3d.setRenderMode(renderMode);
         c3d.setShowingCondlineControlPoints(state.isCondlineControlPoints());
 
+        c3d.setSyncManipulator(state.isSyncManipulator());
+        c3d.setSyncTranslation(state.isSyncTranslation());
+        c3d.setSyncZoom(state.isSyncZoom());
+        
         c3d.getMntmFront().setSelection(perspective == Perspective.FRONT);
         c3d.getMntmBack().setSelection(perspective == Perspective.BACK);
         c3d.getMntmLeft().setSelection(perspective == Perspective.LEFT);
