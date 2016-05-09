@@ -4618,8 +4618,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        
-        mntm_RectangleSnap[0].addSelectionListener(new SelectionAdapter() {
+        // FIXME Needs implementation for issue #230!
+        if (NLogger.DEBUG) mntm_RectangleSnap[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
