@@ -642,7 +642,7 @@ public class MouseActions {
                 Composite3D c3d2 = renderer.getC3D();
                 if (c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
                     c3d2.getManipulator().copyState(c3d.getManipulator());
-                    ((ScalableComposite) c3d2.getParent()).redrawScales();
+                    if (!c3d2.getParent().isDisposed()) ((ScalableComposite) c3d2.getParent()).redrawScales();
                     c3d2.getPerspectiveCalculator().initializeViewportPerspective();
                 }
             }
@@ -657,7 +657,7 @@ public class MouseActions {
                     c3d2.getTranslation().m30 = tx;
                     c3d2.getTranslation().m31 = ty;
                     c3d2.getTranslation().m32 = tz;
-                    ((ScalableComposite) c3d2.getParent()).redrawScales();
+                    if (!c3d2.getParent().isDisposed()) ((ScalableComposite) c3d2.getParent()).redrawScales();
                     c3d2.getPerspectiveCalculator().initializeViewportPerspective();
                 }
             }
