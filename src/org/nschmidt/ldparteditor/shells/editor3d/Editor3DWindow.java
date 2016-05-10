@@ -1012,6 +1012,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                             vm.addSnapshot();
                             vm.copy();
+                            vm.extendClipboardContent(cutTheSelection);
 
                             FileDialog fd = new FileDialog(sh, SWT.SAVE);
                             fd.setText(I18n.E3D_SaveDatFileAs);

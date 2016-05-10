@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.eclipse.swt.dnd.Clipboard;
@@ -682,6 +683,75 @@ class VM99Clipboard extends VM25RectangleSnap {
             }
             setModified(true, true);
             updateUnsavedStatus();
+        }
+    }
+    
+    public void extendClipboardContent(boolean cutExtension) {
+        
+        TreeMap<Integer, ArrayList<GData>> dataToInsert = new TreeMap<Integer, ArrayList<GData>>();
+        HashSet<GData> cset = new HashSet<GData>(CLIPBOARD);
+        int lineNumber = -1;
+        for (Iterator<GData> itc = CLIPBOARD.iterator(); itc.hasNext();) {
+            GData g = (GData) itc.next();
+            ArrayList<GData> l = new ArrayList<>();
+            while ((g = g.next) != null && (g.type() < 1 || g.type() > 5) && !CLIPBOARD_InvNext.contains(g) && !cset.contains(g)) {
+                l.add(g);
+            }
+            if (!l.isEmpty()) {
+                dataToInsert.put(lineNumber, l);
+            }
+            lineNumber--;
+        }
+        
+        for (int key : dataToInsert.keySet()) {
+            CLIPBOARD.addAll(-key, dataToInsert.get(key));
+        }
+        
+        {
+            java.util.ListIterator<GData> li = CLIPBOARD.listIterator(CLIPBOARD.size());
+            while(li.hasPrevious()) {
+                GData g = li.previous();
+                if (g.toString().trim().isEmpty() || g.type() == 0) {
+                    li.remove();
+                } else {
+                    break;
+                }
+            }
+        }
+        {
+            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+            java.util.ListIterator<GData> li = CLIPBOARD.listIterator(CLIPBOARD.size());
+            while(li.hasPrevious()) {
+                GData g = li.previous();
+                if (!cset.contains(g)) {
+                    dpl.removeByValue(g);
+                    g.getBefore().setNext(g.getNext());
+                    remove(g);
+                }
+            }
+        }
+        
+        final StringBuilder cbString = new StringBuilder();
+        for (GData data : CLIPBOARD) {
+            if (CLIPBOARD_InvNext.contains(data)) {
+                cbString.append("0 BFC INVERTNEXT"); //$NON-NLS-1$
+                cbString.append(StringHelper.getLineDelimiter());
+                cbString.append(data.toString());
+                cbString.append(StringHelper.getLineDelimiter());
+            } else {
+                cbString.append(data.toString());
+                cbString.append(StringHelper.getLineDelimiter());
+            }
+        }
+        int len = cbString.length();
+        if (len > StringHelper.getLineDelimiter().length()) cbString.delete(len - StringHelper.getLineDelimiter().length(), len);
+
+        final String cbs = cbString.toString();
+        if (!cbs.isEmpty()) {
+            Display display = Display.getCurrent();
+            Clipboard clipboard = new Clipboard(display);
+            clipboard.setContents(new Object[] { cbs }, new Transfer[] { TextTransfer.getInstance() });
+            clipboard.dispose();
         }
     }
 

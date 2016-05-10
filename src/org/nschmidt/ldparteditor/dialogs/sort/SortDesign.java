@@ -107,7 +107,6 @@ class SortDesign extends Dialog {
         cmb_sortCriteria.select(2);
         criteria = 2;
 
-        // FIXME Needs translation / implementation!
         Button btn_ignoreStructure = new Button(cmp_container, SWT.CHECK);
         this.btn_ignoreStructure[0] = btn_ignoreStructure;
         btn_ignoreStructure.setText(I18n.SORT_IgnoreStructure);
