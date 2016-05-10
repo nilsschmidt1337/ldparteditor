@@ -548,7 +548,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                 HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
                 HashSet<GData1> newSubfiles = new HashSet<GData1>();
                 for (GData1 subf : selectedSubfiles) {
-                    if (!drawPerLine.containsKey(subf)) {
+                    if (!drawPerLine.containsValue(subf)) {
                         continue;
                     }
                     String transformedString = subf.getTransformedString(transformation, linkedDatFile, true);
