@@ -45,7 +45,8 @@ public final class PGData5 extends PGData implements Serializable {
     @Override
     public void drawBFCprimitive(int drawOnlyMode) {
         if (drawOnlyMode == 1) return;
-        GL11.glLineWidth(View.lineWidthGL[0]);
+        // GL11.glLineWidth(View.lineWidthGL[0]);
+        GL11.glLineWidth(1f);
         GL11.glColor4f(View.primitive_condline_Colour_r[0], View.primitive_condline_Colour_g[0], View.primitive_condline_Colour_b[0], 1f);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(x1, y1, z1);
