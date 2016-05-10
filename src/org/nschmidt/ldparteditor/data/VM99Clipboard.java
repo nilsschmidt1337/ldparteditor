@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -690,6 +691,19 @@ class VM99Clipboard extends VM25RectangleSnap {
         
         TreeMap<Integer, ArrayList<GData>> dataToInsert = new TreeMap<Integer, ArrayList<GData>>();
         HashSet<GData> cset = new HashSet<GData>(CLIPBOARD);
+        
+        if (CLIPBOARD.size() > 0) {
+            final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
+            GData g = CLIPBOARD.get(0);
+            ArrayList<GData> l = new ArrayList<>();
+            while ((g = g.before) != null && g.type() == 0 && (g.toString().trim().isEmpty() || WHITESPACE.matcher(g.toString()).replaceAll(" ").trim().startsWith("0 //"))) { //$NON-NLS-1$ //$NON-NLS-2$
+                l.add(g);
+            }
+            if (!l.isEmpty()) {
+                dataToInsert.put(0, l);
+            }
+        }
+        
         int lineNumber = -1;
         for (Iterator<GData> itc = CLIPBOARD.iterator(); itc.hasNext();) {
             GData g = (GData) itc.next();
@@ -706,7 +720,6 @@ class VM99Clipboard extends VM25RectangleSnap {
         for (int key : dataToInsert.keySet()) {
             CLIPBOARD.addAll(-key, dataToInsert.get(key));
         }
-        
         {
             java.util.ListIterator<GData> li = CLIPBOARD.listIterator(CLIPBOARD.size());
             while(li.hasPrevious()) {
@@ -719,6 +732,17 @@ class VM99Clipboard extends VM25RectangleSnap {
             }
         }
         {
+            java.util.ListIterator<GData> li = CLIPBOARD.listIterator(0);
+            while(li.hasNext()) {
+                GData g = li.next();
+                if (g.toString().trim().isEmpty()) {
+                    li.remove();
+                } else {
+                    break;
+                }
+            }
+        }
+        if (cutExtension) {
             final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
             java.util.ListIterator<GData> li = CLIPBOARD.listIterator(CLIPBOARD.size());
             while(li.hasPrevious()) {
