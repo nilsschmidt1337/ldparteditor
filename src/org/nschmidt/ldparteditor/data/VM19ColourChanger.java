@@ -132,6 +132,7 @@ class VM19ColourChanger extends VM18LineConverter {
         selectedCondlines.clear();
 
         for (GData gData : modData) {
+            if (gData == null) continue;
             switch (gData.type()) {
             case 2:
                 selectedLines.add((GData2) gData);
@@ -265,6 +266,9 @@ class VM19ColourChanger extends VM18LineConverter {
         final float cb = colour.getB();
         final float ca = colour.getA();
         for (GData gData : dataToModify) {
+            if (!lineLinkedToVertices.containsKey(gData)) {
+                continue;
+            }
             if (index > -1) {
                 switch (gData.type()) {
                 case 2:
@@ -323,6 +327,8 @@ class VM19ColourChanger extends VM18LineConverter {
                 newData.add(newGdataC);
                 newGData = newGdataC;
                 break;
+            default:
+                continue;
             }
             linker(gData, newGData);
         }
