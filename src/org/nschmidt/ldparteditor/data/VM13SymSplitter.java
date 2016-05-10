@@ -937,8 +937,18 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
         validateState();
     }
 
-    private void hide(GData gdata) {
+    private void hide(GData gdata) {   
         gdata.hide();
         hiddenData.add(gdata);
+        if (gdata.type() == 1) {
+            hide((GData1) gdata);
+        }
+    }
+    
+    private void hide(GData1 gdata) {
+        GData g = gdata.myGData;
+        while ((g = g.next) != null) {
+            hide(g);
+        }
     }
 }
