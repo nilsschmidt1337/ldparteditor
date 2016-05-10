@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -214,7 +215,7 @@ public class Composite3D extends ScalableComposite {
     private boolean showingCondlineControlPoints;
     private boolean showingLogo;
     private boolean blackEdges;
-    
+
     private boolean syncManipulator;
     private boolean syncTranslation;
     private boolean syncZoom;
@@ -267,7 +268,7 @@ public class Composite3D extends ScalableComposite {
     final MenuItem[] mntmShowScale = new MenuItem[1];
     final MenuItem[] mntmLabel = new MenuItem[1];
     final MenuItem[] mntmRealPreview = new MenuItem[1];
-    
+
     final MenuItem[] mntmSyncTranslate = new MenuItem[1];
     final MenuItem[] mntmSyncZoom = new MenuItem[1];
     final MenuItem[] mntmSyncManipulator = new MenuItem[1];
@@ -359,7 +360,7 @@ public class Composite3D extends ScalableComposite {
 
         MenuItem mntmRenderModes = new MenuItem(menu, SWT.CASCADE);
         mntmRenderModes.setText(I18n.C3D_RenderMode);
-        
+
         MenuItem mntmSynchronise = new MenuItem(menu, SWT.CASCADE);
         mntmSynchronise.setText(I18n.E3D_Sync);
 
@@ -1180,7 +1181,7 @@ public class Composite3D extends ScalableComposite {
             });
             mntmWireframeMode.setText(I18n.C3D_Wireframe);
         }
-        
+
         {
             // MARK CMenu Synchronise
             mnu_syncronise = new Menu(mntmSynchronise);
@@ -1201,7 +1202,7 @@ public class Composite3D extends ScalableComposite {
                 }
             });
             mntmSyncroniseManipulator.setText(I18n.E3D_SyncManipulator);
-            
+
             final MenuItem mntmSyncTranslation = new MenuItem(mnu_syncronise, SWT.CHECK);
             this.mntmSyncTranslate[0] = mntmSyncTranslation;
             mntmSyncTranslation.addSelectionListener(new SelectionAdapter() {
@@ -1217,7 +1218,7 @@ public class Composite3D extends ScalableComposite {
                 }
             });
             mntmSyncTranslation.setText(I18n.E3D_SyncTranslation);
-            
+
             final MenuItem mntmSyncroniseZoom = new MenuItem(mnu_syncronise, SWT.CHECK);
             this.mntmSyncZoom[0] = mntmSyncroniseZoom;
             mntmSyncroniseZoom.addSelectionListener(new SelectionAdapter() {
@@ -1342,6 +1343,8 @@ public class Composite3D extends ScalableComposite {
         target.setTransfer(types);
         target.addDropListener(new DropTargetAdapter() {
 
+            volatile AtomicBoolean newMouseMove = new AtomicBoolean(true);
+
             @Override
             public void dragEnter(DropTargetEvent event) {
                 final org.nschmidt.ldparteditor.data.Primitive p = Editor3DWindow.getWindow().getCompositePrimitive().getSelectedPrimitive();
@@ -1358,11 +1361,12 @@ public class Composite3D extends ScalableComposite {
                 ev.x = event.x - toDisplay(1, 1).x;
                 ev.y = event.y - toDisplay(1, 1).y;
                 ev.stateMask = ev.stateMask;
-                Display.getCurrent().asyncExec(new Runnable() {
+                if (newMouseMove.compareAndSet(true, false)) Display.getCurrent().asyncExec(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             mouse.mouseMove(ev);
+                            newMouseMove.set(true);
                         } catch (SWTException swtEx) { /* consumed */ }
                     }
                 });
