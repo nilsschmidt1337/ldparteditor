@@ -50,6 +50,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
 
         final int[] reduceCount = new int[1];
         final boolean[] newIteration = new boolean[1];
+        final int faceCount = triangles.size() + quads.size();
 
         linkedDatFile.setDrawSelection(false);
 
@@ -291,7 +292,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
 
         }
 
-        if (reduceCount[0] > 0 && newIteration[0]) {
+        if (reduceCount[0] > 0 && newIteration[0] && faceCount != (triangles.size() + quads.size())) {
             meshReduce(reduceCount[0] + count);
             return;
         }
