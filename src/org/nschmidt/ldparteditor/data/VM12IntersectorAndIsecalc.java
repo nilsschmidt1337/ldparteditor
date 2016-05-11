@@ -582,6 +582,9 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                 selectedQuads.addAll(quadsToHide);
                 selectedData.addAll(selectedTriangles);
                 selectedData.addAll(selectedQuads);
+                selectedSubfiles.clear();
+                selectedSubfiles.addAll(vertexCountInSubfile.keySet());
+                selectedData.addAll(selectedSubfiles);
                 hideSelection();
 
                 clearSelection();
