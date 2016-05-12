@@ -640,9 +640,9 @@ public class MouseActions {
         if (c3d.isSyncManipulator()) {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d2 = renderer.getC3D();
-                if (c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
+                if (!c3d2.isDisposed() && c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
                     c3d2.getManipulator().copyState(c3d.getManipulator());
-                    if (!c3d2.getParent().isDisposed()) ((ScalableComposite) c3d2.getParent()).redrawScales();
+                    ((ScalableComposite) c3d2.getParent()).redrawScales();
                     c3d2.getPerspectiveCalculator().initializeViewportPerspective();
                 }
             }
@@ -653,11 +653,11 @@ public class MouseActions {
             float tz = c3d.getTranslation().m32;
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d2 = renderer.getC3D();
-                if (c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
+                if (!c3d2.isDisposed() && c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
                     c3d2.getTranslation().m30 = tx;
                     c3d2.getTranslation().m31 = ty;
                     c3d2.getTranslation().m32 = tz;
-                    if (!c3d2.getParent().isDisposed()) ((ScalableComposite) c3d2.getParent()).redrawScales();
+                    ((ScalableComposite) c3d2.getParent()).redrawScales();
                     c3d2.getPerspectiveCalculator().initializeViewportPerspective();
                 }
             }
