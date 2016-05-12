@@ -35,8 +35,10 @@ import org.nschmidt.ldparteditor.composites.ScalableComposite;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
+import org.nschmidt.ldparteditor.helpers.StopWatch;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -57,6 +59,9 @@ public final class VertexManager extends VM99Clipboard {
 
     public final synchronized void draw(Composite3D c3d) {
         if (!linkedDatFile.isDrawSelection()) return;
+        
+        StopWatch.restart();
+        
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewport_Inverse();
 
@@ -776,6 +781,10 @@ public final class VertexManager extends VM99Clipboard {
                     GL11.glEnable(GL11.GL_LIGHTING);
             }
         }
+        
+        double duration = StopWatch.getDuration();
+        if (duration > 0.0) NLogger.debug(getClass(), "Duration: " + duration + "ms    FPS " + 1000.0 / duration); //$NON-NLS-1$ //$NON-NLS-2$
+        StopWatch.stop();
     }
 
     public synchronized void adjustRotationCenter(Composite3D c3d, Event event) {

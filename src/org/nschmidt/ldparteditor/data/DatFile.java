@@ -45,6 +45,7 @@ import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
 import org.nschmidt.ldparteditor.data.colour.GCMetal;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.StopWatch;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -154,6 +155,8 @@ public final class DatFile {
         int renderMode = c3d.getRenderMode();
         if (!c3d.isDrawingSolidMaterials() && renderMode != 5)
             vertices.draw(c3d);
+        
+        StopWatch.restart();
 
         if (Editor3DWindow.getWindow().isAddingCondlines())
             renderMode = 6;
@@ -213,8 +216,8 @@ public final class DatFile {
             break;
         case 5: // Real BFC with texture mapping
             GL11.glEnable(GL11.GL_TEXTURE_2D);
-            data2draw.drawBFC_Textured(c3d);
-            vertices.fillVertexNormalCache(data2draw);
+            // data2draw.drawBFC_Textured(c3d);
+            // vertices.fillVertexNormalCache(data2draw);
             data2draw.drawBFC_Textured(c3d);
             CUBEMAP.drawBFC_Textured(c3d);
             new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome()), true).drawBFC_Textured(c3d.getComposite3D());
@@ -225,7 +228,7 @@ public final class DatFile {
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 data2draw.drawBFC_Textured(c3d);
             }
-            vertices.clearVertexNormalCache();
+            // vertices.clearVertexNormalCache();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 2);
@@ -252,6 +255,10 @@ public final class DatFile {
 
         if (c3d.isDrawingSolidMaterials() && renderMode != 5)
             vertices.showHidden();
+        
+        double duration = StopWatch.getDuration();
+        if (duration > 0.0) NLogger.debug(getClass(), "[DFDraw] Duration: " + duration + "ms    FPS " + 1000.0 / duration); //$NON-NLS-1$ //$NON-NLS-2$
+        StopWatch.stop();
     }
 
     public synchronized void getBFCorientationMap(HashMap<GData, Byte> bfcMap) {

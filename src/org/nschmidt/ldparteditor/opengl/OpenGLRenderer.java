@@ -269,6 +269,7 @@ public class OpenGLRenderer {
                 skipFrame = 0;
                 return;
             }
+            c3d.getVertexManager().fillVertexNormalCache(c3d.getLockableDatFileReference().getDrawChainStart());
             GL20.glUseProgram(pGlossId);
         } else {
             GL20.glUseProgram(0);
@@ -1932,6 +1933,10 @@ public class OpenGLRenderer {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
                 break;
             }
+        }
+        
+        if (raytraceMode) {
+            c3d.getVertexManager().clearVertexNormalCache();
         }
 
         // Lights
