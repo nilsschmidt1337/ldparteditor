@@ -4278,7 +4278,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         {
                                             int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
                                             Editor3DWindow.getSashForm().getChildren()[1].dispose();
-                                            CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
+                                            CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false, true, true, true);
                                             cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
                                             DatFile df = main;
                                             Project.setFileToEdit(df);

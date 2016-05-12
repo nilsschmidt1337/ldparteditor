@@ -212,7 +212,7 @@ public class Composite3DModifier {
         final SashForm newParentSashForm = new SashForm(c3d.getSashForm(), SWT.VERTICAL);
         c3d.getCompositeContainer().setParent(newParentSashForm);
 
-        CompositeContainer southComposite = new CompositeContainer(newParentSashForm, false);
+        CompositeContainer southComposite = new CompositeContainer(newParentSashForm, false, c3d.isSyncManipulator(), c3d.isSyncTranslation(), c3d.isSyncZoom());
         newParentSashForm.setWeights(new int[] { 1, 1 });
         southComposite.moveBelow(c3d.getCompositeContainer());
 
@@ -253,7 +253,7 @@ public class Composite3DModifier {
         final SashForm newParentSashForm = new SashForm(c3d.getSashForm(), SWT.HORIZONTAL);
         c3d.getCompositeContainer().setParent(newParentSashForm);
 
-        CompositeContainer southComposite = new CompositeContainer(newParentSashForm, false);
+        CompositeContainer southComposite = new CompositeContainer(newParentSashForm, false, c3d.isSyncManipulator(), c3d.isSyncTranslation(), c3d.isSyncZoom());
         newParentSashForm.setWeights(new int[] { 1, 1 });
         southComposite.moveBelow(c3d.getCompositeContainer());
 
