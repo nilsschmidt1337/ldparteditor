@@ -269,10 +269,20 @@ public class Composite3D extends ScalableComposite {
     final MenuItem[] mntmLabel = new MenuItem[1];
     final MenuItem[] mntmRealPreview = new MenuItem[1];
 
-    final MenuItem[] mntmSyncTranslate = new MenuItem[1];
-    final MenuItem[] mntmSyncZoom = new MenuItem[1];
+    final MenuItem[] mntmSyncTranslate = new MenuItem[1];    
     final MenuItem[] mntmSyncManipulator = new MenuItem[1];
+    final MenuItem[] mntmSyncZoom = new MenuItem[1];
 
+    public Composite3D(Composite parentCompositeContainer, boolean syncManipulator, boolean syncTranslation, boolean syncZoom) {
+        this(parentCompositeContainer);
+        setSyncManipulator(syncManipulator);
+        setSyncTranslation(syncTranslation);
+        setSyncZoom(syncZoom);
+        mntmSyncManipulator[0].setSelection(syncManipulator);
+        mntmSyncTranslate[0].setSelection(syncTranslation);
+        mntmSyncZoom[0].setSelection(syncZoom);
+    }
+    
     /**
      * Creates a new 3D Composite in a {@link CompositeContainer}
      *
