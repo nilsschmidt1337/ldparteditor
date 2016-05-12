@@ -4162,50 +4162,58 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (new PartReviewDialog(getShell()).open() == IDialogConstants.OK_ID) {
 
                     try {
-                        new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
+                        new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(false, false, new IRunnableWithProgress() {
                             @Override
                             public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                                 monitor.beginTask(I18n.E3D_PartReview, IProgressMonitor.UNKNOWN);
+                                
+                                String fileName = PartReviewDialog.getFileName().toLowerCase(Locale.ENGLISH);
+                                if (!fileName.endsWith(".dat")) fileName = fileName + ".dat"; //$NON-NLS-1$ //$NON-NLS-2$
+                                String oldFileName = fileName;
+                                try {
+                                    oldFileName = oldFileName.replaceAll("\\\\", File.separator); //$NON-NLS-1$
+                                } catch (Exception ex) {
+                                    // Workaround for windows OS / JVM BUG
+                                    oldFileName = oldFileName.replace("\\", File.separator); //$NON-NLS-1$
+                                }
+                                try {
+                                    fileName = fileName.replaceAll("\\\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+                                } catch (Exception ex) {
+                                    // Workaround for windows OS / JVM BUG
+                                    fileName = fileName.replace("\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+                                }
+
+                                // Download first, then build the views
+
+                                // http://www.ldraw.org/library/unofficial
+                                monitor.subTask(fileName);
+                                String source = FileHelper.downloadPartFile("parts/" + fileName); //$NON-NLS-1$
+                                if (source == null) source = FileHelper.downloadPartFile("parts/s/" + fileName); //$NON-NLS-1$
+                                if (source == null) source = FileHelper.downloadPartFile("p/" + fileName); //$NON-NLS-1$
+                                if (source == null) source = FileHelper.downloadPartFile("p/8/" + fileName); //$NON-NLS-1$
+                                if (source == null) source = FileHelper.downloadPartFile("p/48/" + fileName); //$NON-NLS-1$
+                                if (source == null) {
+                                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                                    messageBox.setText(I18n.DIALOG_Error);
+                                    messageBox.setMessage(I18n.E3D_PartReviewError);
+                                    messageBox.open();
+                                    return;
+                                }
+
+                                HashSet<String> files = new HashSet<String>();
+                                files.add(fileName);
+                                ArrayList<String> list = buildFileList(source, new ArrayList<String>(), files, monitor);
+                                
+                                final String fileName2 = fileName;
+                                final String source2 = source;
+                                final String oldFileName2 = oldFileName;
                                 Display.getDefault().asyncExec(new Runnable() {
                                     @Override
                                     public void run() {
-                                        String fileName = PartReviewDialog.getFileName().toLowerCase(Locale.ENGLISH);
-                                        if (!fileName.endsWith(".dat")) fileName = fileName + ".dat"; //$NON-NLS-1$ //$NON-NLS-2$
-                                        String oldFileName = fileName;
-                                        try {
-                                            oldFileName = oldFileName.replaceAll("\\\\", File.separator); //$NON-NLS-1$
-                                        } catch (Exception ex) {
-                                            // Workaround for windows OS / JVM BUG
-                                            oldFileName = oldFileName.replace("\\", File.separator); //$NON-NLS-1$
-                                        }
-                                        try {
-                                            fileName = fileName.replaceAll("\\\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
-                                        } catch (Exception ex) {
-                                            // Workaround for windows OS / JVM BUG
-                                            fileName = fileName.replace("\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
-                                        }
 
-                                        // Download first, then build the views
-
-                                        // http://www.ldraw.org/library/unofficial
-
-                                        String source = FileHelper.downloadPartFile("parts/" + fileName); //$NON-NLS-1$
-                                        if (source == null) source = FileHelper.downloadPartFile("parts/s/" + fileName); //$NON-NLS-1$
-                                        if (source == null) source = FileHelper.downloadPartFile("p/" + fileName); //$NON-NLS-1$
-                                        if (source == null) source = FileHelper.downloadPartFile("p/8/" + fileName); //$NON-NLS-1$
-                                        if (source == null) source = FileHelper.downloadPartFile("p/48/" + fileName); //$NON-NLS-1$
-                                        if (source == null) {
-                                            MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                                            messageBox.setText(I18n.DIALOG_Error);
-                                            messageBox.setMessage(I18n.E3D_PartReviewError);
-                                            messageBox.open();
-                                            return;
-                                        }
-
-                                        HashSet<String> files = new HashSet<String>();
-                                        files.add(fileName);
-                                        ArrayList<String> list = buildFileList(source, new ArrayList<String>(), files);
-
+                                        String fileName = fileName2;
+                                        String source = source2;
+                                                
                                         closeAllComposite3D();
                                         for (EditorTextWindow txtwin : Project.getOpenTextWindows()) {
                                             txtwin.getShell().close();
@@ -4220,12 +4228,10 @@ public class Editor3DWindow extends Editor3DDesign {
                                         treeItem_ProjectParts[0].getItems().clear();
                                         treeItem_ProjectSubparts[0].getItems().clear();
                                         treeItem_ProjectPrimitives[0].getItems().clear();
-                                        treeItem_ProjectPrimitives48[0].getItems().clear();
-                                        treeItem_ProjectPrimitives8[0].getItems().clear();
 
                                         treeItem_OfficialParts[0].setData(null);
 
-                                        list.add(0, new File("project").getAbsolutePath() + File.separator + oldFileName); //$NON-NLS-1$
+                                        list.add(0, new File("project").getAbsolutePath() + File.separator + oldFileName2); //$NON-NLS-1$
                                         list.add(1, source);
 
                                         DatFile main = View.DUMMY_DATFILE;
@@ -4238,6 +4244,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                             fileName = list.get(i);
                                             source = list.get(i + 1);
                                             df = new DatFile(fileName);
+                                            monitor.beginTask(fileName, IProgressMonitor.UNKNOWN);
+                                            Display.getCurrent().readAndDispatch();
                                             dfsToOpen.add(df);
                                             df.setText(source);
                                             Project.addUnsavedFile(df);
@@ -4245,21 +4253,21 @@ public class Editor3DWindow extends Editor3DDesign {
                                             Project.getParsedFiles().add(df);
                                             if (source.contains("0 !LDRAW_ORG Unofficial_Subpart")) { //$NON-NLS-1$
                                                 n = new TreeItem(treeItem_ProjectSubparts[0], SWT.NONE);
-                                                df.setType(DatType.PART);
+                                                df.setType(DatType.SUBPART);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_Primitive")) { //$NON-NLS-1$
                                                 n = new TreeItem(treeItem_ProjectPrimitives[0], SWT.NONE);
-                                                df.setType(DatType.PART);
+                                                df.setType(DatType.PRIMITIVE);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_48_Primitive")) { //$NON-NLS-1$
                                                 n = new TreeItem(treeItem_ProjectPrimitives48[0], SWT.NONE);
-                                                df.setType(DatType.PART);
+                                                df.setType(DatType.PRIMITIVE48);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_8_Primitive")) { //$NON-NLS-1$
                                                 n = new TreeItem(treeItem_ProjectPrimitives8[0], SWT.NONE);
-                                                df.setType(DatType.PART);
+                                                df.setType(DatType.PRIMITIVE8);
                                             } else {
                                                 n = new TreeItem(treeItem_ProjectParts[0], SWT.NONE);
                                                 df.setType(DatType.PART);
                                             }
-                                            n.setText(fileName);
+                                            n.setText(fileName2);
                                             n.setData(df);
 
                                             if (i == 0) {
@@ -4334,7 +4342,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
 
-            private ArrayList<String> buildFileList(String source, ArrayList<String> result, HashSet<String> files) {
+            private ArrayList<String> buildFileList(String source, ArrayList<String> result, HashSet<String> files, final IProgressMonitor monitor) {
                 String[] lines;
 
                 lines = pattern.split(source, -1);
@@ -4361,12 +4369,10 @@ public class Editor3DWindow extends Editor3DDesign {
 
                             if (files.contains(fileName)) continue;
                             files.add(fileName);
-
+                            monitor.subTask(fileName);
                             String source2 = FileHelper.downloadPartFile("parts/" + fileName); //$NON-NLS-1$
                             if (source2 == null) source2 = FileHelper.downloadPartFile("parts/s/" + fileName); //$NON-NLS-1$
                             if (source2 == null) source2 = FileHelper.downloadPartFile("p/" + fileName); //$NON-NLS-1$
-                            if (source2 == null) source2 = FileHelper.downloadPartFile("p/8/" + fileName); //$NON-NLS-1$
-                            if (source2 == null) source2 = FileHelper.downloadPartFile("p/48/" + fileName); //$NON-NLS-1$
 
                             if (source2 != null) {
 
@@ -4385,7 +4391,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                 result.add(new File("project").getAbsolutePath() + File.separator + fileName); //$NON-NLS-1$
                                 result.add(source2);
-                                buildFileList(source2, result, files);
+                                buildFileList(source2, result, files, monitor);
                             }
                         }
                     }
