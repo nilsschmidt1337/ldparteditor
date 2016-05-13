@@ -266,7 +266,7 @@ class VM19ColourChanger extends VM18LineConverter {
         final float cb = colour.getB();
         final float ca = colour.getA();
         for (GData gData : dataToModify) {
-            if (!lineLinkedToVertices.containsKey(gData)) {
+            if (gData.type() != 8 && !lineLinkedToVertices.containsKey(gData)) {
                 continue;
             }
             if (index > -1) {
