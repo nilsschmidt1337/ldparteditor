@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -79,8 +78,8 @@ class VM00Base {
         return lineLinkedToVertices;
     }
 
-    protected final TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE = new TreeMap<Vertex, float[]>();
-    protected final HashMap<GData, float[]> dataLinkedToNormalCACHE = new HashMap<GData, float[]>();
+    protected final ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE = new ThreadsafeTreeMap<Vertex, float[]>();
+    protected final ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE = new ThreadsafeHashMap<GData, float[]>();
 
     protected final ThreadsafeHashMap<GData1, Integer> vertexCountInSubfile = new ThreadsafeHashMap<GData1, Integer>();
 

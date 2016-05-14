@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeMap;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.lwjgl.BufferUtils;
@@ -39,6 +38,8 @@ import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -2602,7 +2603,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMap(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         if (matrix != null) {
             boolean tNext = GData.globalFoundTEXMAPNEXT;
             GData.globalFoundTEXMAPNEXT = false;
@@ -2661,7 +2662,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCERTIFY(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
         GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
         GData data2draw = myGData;
@@ -2680,7 +2681,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCLIP(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
         GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
         GData data2draw = myGData;

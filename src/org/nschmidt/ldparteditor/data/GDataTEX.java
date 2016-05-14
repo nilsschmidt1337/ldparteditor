@@ -17,9 +17,10 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 
 /**
  * @author nils
@@ -212,7 +213,7 @@ public final class GDataTEX extends GData {
     public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map) {}
 
     @Override
-    public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMap(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         boolean foundLocalTEXMAP = GData.globalFoundTEXMAPStack.peek();
         if (GData.globalFoundTEXMAPNEXT) {
             GData.globalFoundTEXMAPStack.pop();
@@ -246,7 +247,7 @@ public final class GDataTEX extends GData {
     }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCERTIFY(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         boolean foundLocalTEXMAP = GData.globalFoundTEXMAPStack.peek();
         if (GData.globalFoundTEXMAPNEXT) {
             GData.globalFoundTEXMAPStack.pop();
@@ -280,7 +281,7 @@ public final class GDataTEX extends GData {
     }
 
     @Override
-    public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCLIP(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         boolean foundLocalTEXMAP = GData.globalFoundTEXMAPStack.peek();
         if (GData.globalFoundTEXMAPNEXT) {
             GData.globalFoundTEXMAPStack.pop();
