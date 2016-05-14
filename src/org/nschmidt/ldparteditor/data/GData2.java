@@ -20,7 +20,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeMap;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -32,6 +31,8 @@ import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -654,13 +655,13 @@ public final class GData2 extends GData {
     }
 
     @Override
-    public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMap(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMapNOCERTIFY(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
     @Override
-    public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMapNOCLIP(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
     public String colourReplace(String col) {
         StringBuilder lineBuilder = new StringBuilder();

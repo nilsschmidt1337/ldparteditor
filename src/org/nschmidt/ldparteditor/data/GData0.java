@@ -17,10 +17,11 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.Threshold;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 
 /**
@@ -174,15 +175,15 @@ public final class GData0 extends GData {
     @Override
     public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map) {}
     @Override
-    public void getVertexNormalMap(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMap(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         drawBFC_Textured(null);
     }
     @Override
-    public void getVertexNormalMapNOCERTIFY(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCERTIFY(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         drawBFC_Textured(null);
     }
     @Override
-    public void getVertexNormalMapNOCLIP(TreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, HashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCLIP(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         drawBFC_Textured(null);
     }
 }
