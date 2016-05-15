@@ -400,6 +400,8 @@ public final class GData5 extends GData {
             break;
         case 2:
         case 4:
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
         default:
             final Matrix4f M2 = GData.CACHE_viewByProjection.get(parent);
@@ -424,7 +426,7 @@ public final class GData5 extends GData {
 
         if (result > -1e-20f) {
 
-            if (before == null || before.type() != 2 && before.type() != 5) GL11.glDisable(GL11.GL_LIGHTING);
+            if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
 
             if (zoom > View.edge_threshold) {
 
@@ -537,6 +539,8 @@ public final class GData5 extends GData {
             break;
         case 2:
         case 4:
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
         default:
             // Calculate the real coordinates
@@ -558,7 +562,7 @@ public final class GData5 extends GData {
             final float g = MathHelper.randomFloat(ID, 1);
             final float b = MathHelper.randomFloat(ID, 2);
 
-            if (before == null || before.type() != 2 && before.type() != 5) GL11.glDisable(GL11.GL_LIGHTING);
+            if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
 
             if (zoom > 5e-6) {
 
@@ -672,7 +676,7 @@ public final class GData5 extends GData {
 
         final float result = zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null));
 
-        if (before == null || before.type() != 2 && before.type() != 5) GL11.glDisable(GL11.GL_LIGHTING);
+        if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (zoom > 5e-6) {
 

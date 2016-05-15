@@ -216,19 +216,27 @@ public final class GData2 extends GData {
 
     @Override
     public void draw(Composite3D c3d) {
-        if (!visible)
+        if (!visible) {
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
-        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
+        }
+        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f) {
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
+        }
         switch (c3d.getLineMode()) {
         case 3:
         case 4:
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
         default:
             break;
         }
 
-        if (before == null || before.type() != 2 && before.type() != 5) GL11.glDisable(GL11.GL_LIGHTING);
+        if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
             drawDistance(c3d, X1, Y1, Z1, X2, Y2, Z2);
@@ -325,19 +333,22 @@ public final class GData2 extends GData {
 
     @Override
     public void drawRandomColours(Composite3D c3d) {
-        if (!visible)
+        if (!visible) {
             return;
-        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
+        }
+        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f) {
             return;
+        }
         switch (c3d.getLineMode()) {
         case 3:
         case 4:
+
             return;
         default:
             break;
         }
 
-        if (before == null || before.type() != 2 && before.type() != 5) GL11.glDisable(GL11.GL_LIGHTING);
+        if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
             drawDistance(c3d, X1, Y1, Z1, X2, Y2, Z2);
