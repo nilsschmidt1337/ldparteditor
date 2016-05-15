@@ -126,7 +126,7 @@ public class EditorTextWindow extends EditorTextDesign {
         // Creating the window to get the shell
         this.create();
         final Shell sh = this.getShell();
-        sh.setText(Version.getApplicationName());
+        sh.setText(Version.getApplicationName() + " " + Version.getVersion()); //$NON-NLS-1$
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         sh.setMinimumSize(640, 480);
         sh.setBounds(this.editorTextWindowState.getWindowState().getSizeAndPosition());
