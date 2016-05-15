@@ -4166,7 +4166,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             @Override
                             public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                                 monitor.beginTask(I18n.E3D_PartReview, IProgressMonitor.UNKNOWN);
-                                
+
                                 String fileName = PartReviewDialog.getFileName().toLowerCase(Locale.ENGLISH);
                                 if (!fileName.endsWith(".dat")) fileName = fileName + ".dat"; //$NON-NLS-1$ //$NON-NLS-2$
                                 String oldFileName = fileName;
@@ -4203,7 +4203,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 HashSet<String> files = new HashSet<String>();
                                 files.add(fileName);
                                 ArrayList<String> list = buildFileList(source, new ArrayList<String>(), files, monitor);
-                                
+
                                 final String fileName2 = fileName;
                                 final String source2 = source;
                                 final String oldFileName2 = oldFileName;
@@ -4213,7 +4213,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                         String fileName = fileName2;
                                         String source = source2;
-                                                
+
                                         closeAllComposite3D();
                                         for (EditorTextWindow txtwin : Project.getOpenTextWindows()) {
                                             txtwin.getShell().close();
