@@ -356,7 +356,7 @@ public class Editor3DWindow extends Editor3DDesign {
         // Creating the window to get the shell
         this.create();
         final Shell sh = this.getShell();
-        sh.setText(Version.getApplicationName());
+        sh.setText(Version.getApplicationName() + " " + Version.getVersion()); //$NON-NLS-1$
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         sh.setMinimumSize(640, 480);
         sh.setBounds(this.editor3DWindowState.getWindowState().getSizeAndPosition());
@@ -4220,7 +4220,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         }
                                         Project.setDefaultProject(true);
                                         Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
-                                        getShell().setText(Version.getApplicationName());
+                                        getShell().setText(Version.getApplicationName() + " " + Version.getVersion()); //$NON-NLS-1$
                                         getShell().update();
                                         treeItem_Project[0].setText(fileName);
                                         treeItem_Project[0].setData(Project.getProjectPath());

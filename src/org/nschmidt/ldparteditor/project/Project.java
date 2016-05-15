@@ -200,7 +200,7 @@ public enum Project {
         setDefaultProject(true);
         setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
         createFileStructure(false);
-        Editor3DWindow.getWindow().getShell().setText(Version.getApplicationName());
+        Editor3DWindow.getWindow().getShell().setText(Version.getApplicationName() + " " + Version.getVersion()); //$NON-NLS-1$
         Editor3DWindow.getWindow().getShell().update();
     }
 
@@ -237,7 +237,7 @@ public enum Project {
     public static void updateEditor() {
         // Update the window text of the 3D editor
         Editor3DWindow.getWindow().getProjectParts().getParentItem().setText(getProjectName());
-        Editor3DWindow.getWindow().getShell().setText(getProjectName() + " - " + Version.getApplicationName()); //$NON-NLS-1$
+        Editor3DWindow.getWindow().getShell().setText(getProjectName() + " - " + Version.getApplicationName() + " " + Version.getVersion()); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**

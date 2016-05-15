@@ -29,10 +29,10 @@ public class OptionsDialog extends OptionsDesign {
         this.setShellStyle(SWT.APPLICATION_MODAL | SWT.SHELL_TRIM ^ SWT.MIN);
         this.create();
         final Shell sh = this.getShell();
-        sh.setText(Version.getApplicationName());
+        sh.setText(Version.getApplicationName() + " " + Version.getVersion()); //$NON-NLS-1$
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         final UserSettingState userSettingState = WorkbenchManager.getUserSettingState();
-        
+
         btn_OK[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -48,7 +48,7 @@ public class OptionsDialog extends OptionsDesign {
                 WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btn_AllowInvalidShapes[0].getSelection());
             }
         });
-        
+
         btn_browseLdrawPath[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
