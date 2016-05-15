@@ -223,7 +223,7 @@ public final class GDataTEX extends GData {
             foundLocalTEXMAP = false;
         }
         if (linkedData != null && foundLocalTEXMAP) {
-            linkedData.getVertexNormalMap(null, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+            linkedData.getVertexNormalMap(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
         } else {
             if (meta == TexMeta.FALLBACK && foundLocalTEXMAP && state.globalDrawObjects) {
                 state.globalDrawObjects = false;
@@ -257,7 +257,7 @@ public final class GDataTEX extends GData {
             foundLocalTEXMAP = false;
         }
         if (linkedData != null && foundLocalTEXMAP) {
-            linkedData.getVertexNormalMapNOCERTIFY(null, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+            linkedData.getVertexNormalMapNOCERTIFY(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
         } else {
             if (meta == TexMeta.FALLBACK && foundLocalTEXMAP && state.globalDrawObjects) {
                 state.globalDrawObjects = false;
@@ -291,7 +291,7 @@ public final class GDataTEX extends GData {
             foundLocalTEXMAP = false;
         }
         if (linkedData != null && foundLocalTEXMAP) {
-            linkedData.getVertexNormalMapNOCLIP(null, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+            linkedData.getVertexNormalMapNOCLIP(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
         } else {
             if (meta == TexMeta.FALLBACK && foundLocalTEXMAP && state.globalDrawObjects) {
                 state.globalDrawObjects = false;
