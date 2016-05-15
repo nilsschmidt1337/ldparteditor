@@ -1076,7 +1076,11 @@ public final class GDataCSG extends GData {
     }
 
     public synchronized static HashSet<GDataCSG> getSelection(DatFile df) {
-        return selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>());
+        HashSet<GDataCSG> result = selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>());
+        for (Iterator<GDataCSG> it = result.iterator(); it.hasNext();) {
+            if (it.next() == null) it.remove();
+        }
+        return result;
     }
 
     public synchronized static void selectAll(DatFile df) {
