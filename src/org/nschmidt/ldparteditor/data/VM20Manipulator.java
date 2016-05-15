@@ -342,8 +342,9 @@ public class VM20Manipulator extends VM19ColourChanger {
             Matrix4f lowAccTransformation = transformation.getMatrix4f();
             Matrix4f.transpose(lowAccTransformation, lowAccTransformation);
             ArrayList<GData> newSelection = new ArrayList<>();
-            for (GDataCSG gd : GDataCSG.getSelection(linkedDatFile))
-                newSelection.add(transformCSG(lowAccTransformation, gd));
+            for (GDataCSG gd : GDataCSG.getSelection(linkedDatFile)) {
+                if (gd != null) newSelection.add(transformCSG(lowAccTransformation, gd));
+            }
             GDataCSG.getSelection(linkedDatFile).clear();
             for (GData gd : newSelection) {
                 GDataCSG.getSelection(linkedDatFile).add((GDataCSG) gd);
