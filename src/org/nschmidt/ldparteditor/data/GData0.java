@@ -175,15 +175,29 @@ public final class GData0 extends GData {
     @Override
     public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map) {}
     @Override
-    public void getVertexNormalMap(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        drawBFC_Textured(null);
+    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        normalMapHelper(state);
     }
     @Override
-    public void getVertexNormalMapNOCERTIFY(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        drawBFC_Textured(null);
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        normalMapHelper(state);
     }
     @Override
-    public void getVertexNormalMapNOCLIP(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        drawBFC_Textured(null);
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        normalMapHelper(state);
+    }
+
+    private void normalMapHelper(GDataState state) {
+        if (state.globalFoundTEXMAPNEXT && !text.equals("")) { //$NON-NLS-1$
+            state.globalFoundTEXMAPStack.pop();
+            state.globalTextureStack.pop();
+            state.globalFoundTEXMAPStack.push(false);
+            state.globalFoundTEXMAPNEXT = false;
+        } else if (isSTEP && !state.globalFoundTEXMAPStack.isEmpty() && state.globalFoundTEXMAPStack.peek()) {
+            state.globalFoundTEXMAPStack.pop();
+            state.globalTextureStack.pop();
+            state.globalFoundTEXMAPStack.push(false);
+            state.globalDrawObjects = true;
+        }
     }
 }

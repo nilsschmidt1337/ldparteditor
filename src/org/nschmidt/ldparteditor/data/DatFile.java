@@ -155,7 +155,7 @@ public final class DatFile {
         int renderMode = c3d.getRenderMode();
         if (!c3d.isDrawingSolidMaterials() && renderMode != 5)
             vertices.draw(c3d);
-        
+
         StopWatch.restart();
 
         if (Editor3DWindow.getWindow().isAddingCondlines())
@@ -216,8 +216,8 @@ public final class DatFile {
             break;
         case 5: // Real BFC with texture mapping
             GL11.glEnable(GL11.GL_TEXTURE_2D);
-            // data2draw.drawBFC_Textured(c3d);
-            // vertices.fillVertexNormalCache(data2draw);
+            data2draw.drawBFC_Textured(c3d);
+            GDataInit.resetBfcState();
             data2draw.drawBFC_Textured(c3d);
             CUBEMAP.drawBFC_Textured(c3d);
             new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome()), true).drawBFC_Textured(c3d.getComposite3D());
@@ -255,7 +255,7 @@ public final class DatFile {
 
         if (c3d.isDrawingSolidMaterials() && renderMode != 5)
             vertices.showHidden();
-        
+
         double duration = StopWatch.getDuration();
         if (duration > 0.0) NLogger.debug(getClass(), "[DFDraw] Duration: " + duration + "ms    FPS " + 1000.0 / duration); //$NON-NLS-1$ //$NON-NLS-2$
         StopWatch.stop();

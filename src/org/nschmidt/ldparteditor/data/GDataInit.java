@@ -119,7 +119,28 @@ public final class GDataInit extends GData {
         getBFCorientationMap(map);
     }
     @Override
-    public void getVertexNormalMap(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        state.localWinding = BFC.NOCERTIFY;
+        state.accumClip = 0;
+        state.globalInvertNext = false;
+        state.globalInvertNextFound = false;
+        state.globalNegativeDeterminant = false;
+        state.globalDrawObjects = true;
+        state.globalFoundTEXMAPNEXT = false;
+        state.globalFoundTEXMAPStack.clear();
+        state.globalFoundTEXMAPStack.push(false);
+        state.globalTextureStack.clear();
+    }
+    @Override
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        getVertexNormalMap(state, null, null, null);
+    }
+    @Override
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        getVertexNormalMap(state, null, null, null);
+    }
+
+    public static void resetBfcState() {
         GData.localWinding = BFC.NOCERTIFY;
         GData.accumClip = 0;
         GData.globalInvertNext = false;
@@ -130,14 +151,6 @@ public final class GDataInit extends GData {
         GData.globalFoundTEXMAPStack.clear();
         GData.globalFoundTEXMAPStack.push(false);
         GData.globalTextureStack.clear();
-    }
-    @Override
-    public void getVertexNormalMapNOCERTIFY(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        getVertexNormalMap(vertexLinkedToNormalCACHE, null, vm);
-    }
-    @Override
-    public void getVertexNormalMapNOCLIP(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        getVertexNormalMap(vertexLinkedToNormalCACHE, null, vm);
     }
 
     public GData1 getParent() {
