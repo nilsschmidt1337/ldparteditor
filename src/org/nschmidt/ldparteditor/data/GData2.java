@@ -228,11 +228,12 @@ public final class GData2 extends GData {
             break;
         }
 
-        GL11.glDisable(GL11.GL_LIGHTING);
+        if (before == null || before.type() != 2 && before.type() != 5) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
             drawDistance(c3d, X1, Y1, Z1, X2, Y2, Z2);
-            GL11.glEnable(GL11.GL_LIGHTING);
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
         }
 
@@ -318,7 +319,7 @@ public final class GData2 extends GData {
             GL11.glEnd();
         }
 
-        if (c3d.isLightOn())
+        if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
             GL11.glEnable(GL11.GL_LIGHTING);
     }
 
@@ -336,11 +337,12 @@ public final class GData2 extends GData {
             break;
         }
 
-        GL11.glDisable(GL11.GL_LIGHTING);
+        if (before == null || before.type() != 2 && before.type() != 5) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
             drawDistance(c3d, X1, Y1, Z1, X2, Y2, Z2);
-            GL11.glEnable(GL11.GL_LIGHTING);
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
         }
 
@@ -432,7 +434,7 @@ public final class GData2 extends GData {
             GL11.glEnd();
         }
 
-        if (c3d.isLightOn())
+        if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
             GL11.glEnable(GL11.GL_LIGHTING);
     }
 

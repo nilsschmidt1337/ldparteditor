@@ -396,11 +396,12 @@ public final class GData5 extends GData {
         case 4:
             return;
         default:
-            if (GData.CACHE_viewByProjection.containsKey(parent)) {
-                M = GData.CACHE_viewByProjection.get(parent);
-            } else {
+            final Matrix4f M2 = GData.CACHE_viewByProjection.get(parent);
+            if (M2 == null) {
                 Matrix4f.mul(c3d.getViewport(), parent.productMatrix, M);
                 GData.CACHE_viewByProjection.put(parent, M);
+            } else {
+                M = M2;
             }
             // Calculate the real coordinates
             Matrix4f.transform(M, A2, A);
@@ -417,7 +418,7 @@ public final class GData5 extends GData {
 
         if (result > -1e-20f) {
 
-            GL11.glDisable(GL11.GL_LIGHTING);
+            if (before == null || before.type() != 2 && before.type() != 5) GL11.glDisable(GL11.GL_LIGHTING);
 
             if (zoom > View.edge_threshold) {
 
@@ -493,7 +494,7 @@ public final class GData5 extends GData {
                 GL11.glVertex3f(x2, y2, z2);
                 GL11.glEnd();
             }
-            if (c3d.isLightOn())
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
                 GL11.glEnable(GL11.GL_LIGHTING);
         }
     }
@@ -505,11 +506,12 @@ public final class GData5 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
 
-        if (GData.CACHE_viewByProjection.containsKey(parent)) {
-            M = GData.CACHE_viewByProjection.get(parent);
-        } else {
+        final Matrix4f M2 = GData.CACHE_viewByProjection.get(parent);
+        if (M2 == null) {
             Matrix4f.mul(c3d.getViewport(), parent.productMatrix, M);
             GData.CACHE_viewByProjection.put(parent, M);
+        } else {
+            M = M2;
         }
 
         float result;
@@ -543,7 +545,7 @@ public final class GData5 extends GData {
             final float g = MathHelper.randomFloat(ID, 1);
             final float b = MathHelper.randomFloat(ID, 2);
 
-            GL11.glDisable(GL11.GL_LIGHTING);
+            if (before == null || before.type() != 2 && before.type() != 5) GL11.glDisable(GL11.GL_LIGHTING);
 
             if (zoom > 5e-6) {
 
@@ -619,7 +621,7 @@ public final class GData5 extends GData {
                 GL11.glVertex3f(x2, y2, z2);
                 GL11.glEnd();
             }
-            if (c3d.isLightOn())
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
                 GL11.glEnable(GL11.GL_LIGHTING);
         }
     }
@@ -633,11 +635,12 @@ public final class GData5 extends GData {
 
         final float zoom = c3d.getZoom();
 
-        if (GData.CACHE_viewByProjection.containsKey(parent)) {
-            M = GData.CACHE_viewByProjection.get(parent);
-        } else {
+        final Matrix4f M2 = GData.CACHE_viewByProjection.get(parent);
+        if (M2 == null) {
             Matrix4f.mul(c3d.getViewport(), parent.productMatrix, M);
             GData.CACHE_viewByProjection.put(parent, M);
+        } else {
+            M = M2;
         }
         // Calculate the real coordinates
         Matrix4f.transform(M, A2, A);
@@ -650,7 +653,7 @@ public final class GData5 extends GData {
 
         final float result = zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null));
 
-        GL11.glDisable(GL11.GL_LIGHTING);
+        if (before == null || before.type() != 2 && before.type() != 5) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (zoom > 5e-6) {
 
@@ -744,7 +747,7 @@ public final class GData5 extends GData {
             GL11.glVertex3f(x2, y2, z2);
             GL11.glEnd();
         }
-        if (c3d.isLightOn())
+        if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
             GL11.glEnable(GL11.GL_LIGHTING);
     }
 
@@ -793,11 +796,12 @@ public final class GData5 extends GData {
             case 4:
                 return;
             default:
-                if (GData.CACHE_viewByProjection.containsKey(parent)) {
-                    M = GData.CACHE_viewByProjection.get(parent);
-                } else {
+                final Matrix4f M2 = GData.CACHE_viewByProjection.get(parent);
+                if (M2 == null) {
                     Matrix4f.mul(c3d.getViewport(), parent.productMatrix, M);
                     GData.CACHE_viewByProjection.put(parent, M);
+                } else {
+                    M = M2;
                 }
                 // Calculate the real coordinates
                 Matrix4f.transform(M, A2, A);
