@@ -277,6 +277,10 @@ public class OpenGLRenderer {
                     public void run() {
                         c3d.getVertexManager().clearVertexNormalCache();
                         c3d.getVertexManager().fillVertexNormalCache(c3d.getLockableDatFileReference().getDrawChainStart());
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                        }
                         calculateVertexNormals.set(true);
                     }
                 }).start();
