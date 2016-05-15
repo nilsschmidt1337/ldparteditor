@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Event;
@@ -53,15 +54,17 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
  */
 public final class VertexManager extends VM99Clipboard {
 
+    private volatile AtomicBoolean calculateCondlineControlPoints = new AtomicBoolean(true);
+
     public VertexManager(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 
-    public final synchronized void draw(Composite3D c3d) {
+    public final synchronized void draw(final Composite3D c3d) {
         if (!linkedDatFile.isDrawSelection()) return;
-        
+
         StopWatch.restart();
-        
+
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewport_Inverse();
 
@@ -70,45 +73,54 @@ public final class VertexManager extends VM99Clipboard {
         FloatBuffer matrix_inv = manipulator.getTempTransformationInv();
         final boolean modifiedManipulator = manipulator.isModified();
 
-        if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6) {
-            if (!hiddenVertices.isEmpty()) {
-                boolean pureControlPoint;
-                for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
-                    final Vertex vertex = entry.getKey();
-                    Set<VertexManifestation> manis = entry.getValue();
-                    if (manis != null) {
-                        pureControlPoint = true;
-                        for (VertexManifestation m : manis) {
-                            if (m.getPosition() < 2 || m.getGdata().type() != 5) {
-                                pureControlPoint = false;
-                                break;
+        if (calculateCondlineControlPoints.compareAndSet(true, false)) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6) {
+                        if (!hiddenVertices.isEmpty()) {
+                            boolean pureControlPoint;
+                            for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
+                                final Vertex vertex = entry.getKey();
+                                Set<VertexManifestation> manis = entry.getValue();
+                                if (manis != null) {
+                                    pureControlPoint = true;
+                                    for (VertexManifestation m : manis) {
+                                        if (m.getPosition() < 2 || m.getGdata().type() != 5) {
+                                            pureControlPoint = false;
+                                            break;
+                                        }
+                                    }
+                                    if (pureControlPoint) {
+                                        hiddenVertices.remove(vertex);
+                                    }
+                                }
                             }
                         }
-                        if (pureControlPoint) {
-                            hiddenVertices.remove(vertex);
+                    } else {
+                        boolean pureControlPoint;
+                        for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
+                            final Vertex vertex = entry.getKey();
+                            Set<VertexManifestation> manis = entry.getValue();
+                            if (manis != null) {
+                                pureControlPoint = true;
+                                for (VertexManifestation m : manis) {
+                                    if (m.getPosition() < 2  || m.getGdata().type() != 5) {
+                                        pureControlPoint = false;
+                                        break;
+                                    }
+                                }
+                                if (pureControlPoint) {
+                                    hiddenVertices.add(vertex);
+                                }
+                            }
                         }
                     }
+                    calculateCondlineControlPoints.set(true);
                 }
-            }
-        } else {
-            boolean pureControlPoint;
-            for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
-                final Vertex vertex = entry.getKey();
-                Set<VertexManifestation> manis = entry.getValue();
-                if (manis != null) {
-                    pureControlPoint = true;
-                    for (VertexManifestation m : manis) {
-                        if (m.getPosition() < 2  || m.getGdata().type() != 5) {
-                            pureControlPoint = false;
-                            break;
-                        }
-                    }
-                    if (pureControlPoint) {
-                        hiddenVertices.add(vertex);
-                    }
-                }
-            }
+            }).start();
         }
+
 
         if (c3d.isShowingVertices()) {
 
@@ -781,7 +793,7 @@ public final class VertexManager extends VM99Clipboard {
                     GL11.glEnable(GL11.GL_LIGHTING);
             }
         }
-        
+
         double duration = StopWatch.getDuration();
         if (duration > 0.0) NLogger.debug(getClass(), "Duration: " + duration + "ms    FPS " + 1000.0 / duration); //$NON-NLS-1$ //$NON-NLS-2$
         StopWatch.stop();
