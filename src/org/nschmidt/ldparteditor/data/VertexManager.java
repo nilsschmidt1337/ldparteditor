@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.swt.graphics.Point;
@@ -74,30 +75,9 @@ public final class VertexManager extends VM99Clipboard {
         final boolean modifiedManipulator = manipulator.isModified();
 
         if (calculateCondlineControlPoints.compareAndSet(true, false)) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6) {
-                        if (!hiddenVertices.isEmpty()) {
-                            boolean pureControlPoint;
-                            for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
-                                final Vertex vertex = entry.getKey();
-                                Set<VertexManifestation> manis = entry.getValue();
-                                if (manis != null) {
-                                    pureControlPoint = true;
-                                    for (VertexManifestation m : manis) {
-                                        if (m.getPosition() < 2 || m.getGdata().type() != 5) {
-                                            pureControlPoint = false;
-                                            break;
-                                        }
-                                    }
-                                    if (pureControlPoint) {
-                                        hiddenVertices.remove(vertex);
-                                    }
-                                }
-                            }
-                        }
-                    } else {
+            CompletableFuture.runAsync( () -> {
+                if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6) {
+                    if (!hiddenVertices.isEmpty()) {
                         boolean pureControlPoint;
                         for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
                             final Vertex vertex = entry.getKey();
@@ -105,20 +85,38 @@ public final class VertexManager extends VM99Clipboard {
                             if (manis != null) {
                                 pureControlPoint = true;
                                 for (VertexManifestation m : manis) {
-                                    if (m.getPosition() < 2  || m.getGdata().type() != 5) {
+                                    if (m.getPosition() < 2 || m.getGdata().type() != 5) {
                                         pureControlPoint = false;
                                         break;
                                     }
                                 }
                                 if (pureControlPoint) {
-                                    hiddenVertices.add(vertex);
+                                    hiddenVertices.remove(vertex);
                                 }
                             }
                         }
                     }
-                    calculateCondlineControlPoints.set(true);
+                } else {
+                    boolean pureControlPoint;
+                    for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
+                        final Vertex vertex = entry.getKey();
+                        Set<VertexManifestation> manis = entry.getValue();
+                        if (manis != null) {
+                            pureControlPoint = true;
+                            for (VertexManifestation m : manis) {
+                                if (m.getPosition() < 2  || m.getGdata().type() != 5) {
+                                    pureControlPoint = false;
+                                    break;
+                                }
+                            }
+                            if (pureControlPoint) {
+                                hiddenVertices.add(vertex);
+                            }
+                        }
+                    }
                 }
-            }).start();
+                calculateCondlineControlPoints.set(true);
+            });
         }
 
 
