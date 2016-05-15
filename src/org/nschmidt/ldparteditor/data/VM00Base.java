@@ -1359,8 +1359,10 @@ class VM00Base {
     }
 
     public final void fillVertexNormalCache(GData data2draw) {
+        GDataState state = new GDataState();
+        data2draw.getVertexNormalMap(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, this);
         while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-            data2draw.getVertexNormalMap(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, this);
+            data2draw.getVertexNormalMap(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, this);
         }
     }
 

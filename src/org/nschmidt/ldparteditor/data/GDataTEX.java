@@ -213,102 +213,102 @@ public final class GDataTEX extends GData {
     public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map) {}
 
     @Override
-    public void getVertexNormalMap(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        boolean foundLocalTEXMAP = GData.globalFoundTEXMAPStack.peek();
-        if (GData.globalFoundTEXMAPNEXT) {
-            GData.globalFoundTEXMAPStack.pop();
-            GData.globalTextureStack.pop();
-            GData.globalFoundTEXMAPStack.push(false);
-            GData.globalFoundTEXMAPNEXT = false;
+    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        boolean foundLocalTEXMAP = state.globalFoundTEXMAPStack.peek();
+        if (state.globalFoundTEXMAPNEXT) {
+            state.globalFoundTEXMAPStack.pop();
+            state.globalTextureStack.pop();
+            state.globalFoundTEXMAPStack.push(false);
+            state.globalFoundTEXMAPNEXT = false;
             foundLocalTEXMAP = false;
         }
         if (linkedData != null && foundLocalTEXMAP) {
-            linkedData.getVertexNormalMap(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+            linkedData.getVertexNormalMap(null, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
         } else {
-            if (meta == TexMeta.FALLBACK && foundLocalTEXMAP && GData.globalDrawObjects) {
-                GData.globalDrawObjects = false;
+            if (meta == TexMeta.FALLBACK && foundLocalTEXMAP && state.globalDrawObjects) {
+                state.globalDrawObjects = false;
             } else if (meta == TexMeta.END && foundLocalTEXMAP) {
-                GData.globalFoundTEXMAPStack.pop();
-                GData.globalTextureStack.pop();
-                GData.globalFoundTEXMAPStack.push(false);
-                GData.globalDrawObjects = true;
+                state.globalFoundTEXMAPStack.pop();
+                state.globalTextureStack.pop();
+                state.globalFoundTEXMAPStack.push(false);
+                state.globalDrawObjects = true;
             } else if (!foundLocalTEXMAP) {
                 if (meta == TexMeta.START || meta == TexMeta.NEXT) {
-                    GData.globalFoundTEXMAPStack.pop();
-                    GData.globalFoundTEXMAPStack.push(true);
-                    GData.globalTextureStack.push(linkedTexture);
+                    state.globalFoundTEXMAPStack.pop();
+                    state.globalFoundTEXMAPStack.push(true);
+                    state.globalTextureStack.push(linkedTexture);
                     linkedTexture.refreshCache();
                     if (meta == TexMeta.NEXT)
-                        GData.globalFoundTEXMAPNEXT = true;
-                    GData.globalDrawObjects = true;
+                        state.globalFoundTEXMAPNEXT = true;
+                    state.globalDrawObjects = true;
                 }
             }
         }
     }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        boolean foundLocalTEXMAP = GData.globalFoundTEXMAPStack.peek();
-        if (GData.globalFoundTEXMAPNEXT) {
-            GData.globalFoundTEXMAPStack.pop();
-            GData.globalTextureStack.pop();
-            GData.globalFoundTEXMAPStack.push(false);
-            GData.globalFoundTEXMAPNEXT = false;
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        boolean foundLocalTEXMAP = state.globalFoundTEXMAPStack.peek();
+        if (state.globalFoundTEXMAPNEXT) {
+            state.globalFoundTEXMAPStack.pop();
+            state.globalTextureStack.pop();
+            state.globalFoundTEXMAPStack.push(false);
+            state.globalFoundTEXMAPNEXT = false;
             foundLocalTEXMAP = false;
         }
         if (linkedData != null && foundLocalTEXMAP) {
-            linkedData.getVertexNormalMapNOCERTIFY(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+            linkedData.getVertexNormalMapNOCERTIFY(null, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
         } else {
-            if (meta == TexMeta.FALLBACK && foundLocalTEXMAP && GData.globalDrawObjects) {
-                GData.globalDrawObjects = false;
+            if (meta == TexMeta.FALLBACK && foundLocalTEXMAP && state.globalDrawObjects) {
+                state.globalDrawObjects = false;
             } else if (meta == TexMeta.END && foundLocalTEXMAP) {
-                GData.globalFoundTEXMAPStack.pop();
-                GData.globalTextureStack.pop();
-                GData.globalFoundTEXMAPStack.push(false);
-                GData.globalDrawObjects = true;
+                state.globalFoundTEXMAPStack.pop();
+                state.globalTextureStack.pop();
+                state.globalFoundTEXMAPStack.push(false);
+                state.globalDrawObjects = true;
             } else if (!foundLocalTEXMAP) {
                 if (meta == TexMeta.START || meta == TexMeta.NEXT) {
-                    GData.globalFoundTEXMAPStack.pop();
-                    GData.globalFoundTEXMAPStack.push(true);
-                    GData.globalTextureStack.push(linkedTexture);
+                    state.globalFoundTEXMAPStack.pop();
+                    state.globalFoundTEXMAPStack.push(true);
+                    state.globalTextureStack.push(linkedTexture);
                     linkedTexture.refreshCache();
                     if (meta == TexMeta.NEXT)
-                        GData.globalFoundTEXMAPNEXT = true;
-                    GData.globalDrawObjects = true;
+                        state.globalFoundTEXMAPNEXT = true;
+                    state.globalDrawObjects = true;
                 }
             }
         }
     }
 
     @Override
-    public void getVertexNormalMapNOCLIP(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        boolean foundLocalTEXMAP = GData.globalFoundTEXMAPStack.peek();
-        if (GData.globalFoundTEXMAPNEXT) {
-            GData.globalFoundTEXMAPStack.pop();
-            GData.globalTextureStack.pop();
-            GData.globalFoundTEXMAPStack.push(false);
-            GData.globalFoundTEXMAPNEXT = false;
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        boolean foundLocalTEXMAP = state.globalFoundTEXMAPStack.peek();
+        if (state.globalFoundTEXMAPNEXT) {
+            state.globalFoundTEXMAPStack.pop();
+            state.globalTextureStack.pop();
+            state.globalFoundTEXMAPStack.push(false);
+            state.globalFoundTEXMAPNEXT = false;
             foundLocalTEXMAP = false;
         }
         if (linkedData != null && foundLocalTEXMAP) {
-            linkedData.getVertexNormalMapNOCLIP(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+            linkedData.getVertexNormalMapNOCLIP(null, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
         } else {
-            if (meta == TexMeta.FALLBACK && foundLocalTEXMAP && GData.globalDrawObjects) {
-                GData.globalDrawObjects = false;
+            if (meta == TexMeta.FALLBACK && foundLocalTEXMAP && state.globalDrawObjects) {
+                state.globalDrawObjects = false;
             } else if (meta == TexMeta.END && foundLocalTEXMAP) {
-                GData.globalFoundTEXMAPStack.pop();
-                GData.globalTextureStack.pop();
-                GData.globalFoundTEXMAPStack.push(false);
-                GData.globalDrawObjects = true;
+                state.globalFoundTEXMAPStack.pop();
+                state.globalTextureStack.pop();
+                state.globalFoundTEXMAPStack.push(false);
+                state.globalDrawObjects = true;
             } else if (!foundLocalTEXMAP) {
                 if (meta == TexMeta.START || meta == TexMeta.NEXT) {
-                    GData.globalFoundTEXMAPStack.pop();
-                    GData.globalFoundTEXMAPStack.push(true);
-                    GData.globalTextureStack.push(linkedTexture);
+                    state.globalFoundTEXMAPStack.pop();
+                    state.globalFoundTEXMAPStack.push(true);
+                    state.globalTextureStack.push(linkedTexture);
                     linkedTexture.refreshCache();
                     if (meta == TexMeta.NEXT)
-                        GData.globalFoundTEXMAPNEXT = true;
-                    GData.globalDrawObjects = true;
+                        state.globalFoundTEXMAPNEXT = true;
+                    state.globalDrawObjects = true;
                 }
             }
         }

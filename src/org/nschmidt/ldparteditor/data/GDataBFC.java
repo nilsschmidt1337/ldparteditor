@@ -238,18 +238,61 @@ public final class GDataBFC extends GData {
     }
 
     @Override
-    public void getVertexNormalMap(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        getBFCorientationMap(null);
+    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        switch (type) {
+        case BFC.CCW:
+            state.localWinding = BFC.CCW;
+            break;
+        case BFC.CCW_CLIP:
+            state.localWinding = BFC.CCW;
+            break;
+        case BFC.CW:
+            state.localWinding = BFC.CW;
+            break;
+        case BFC.CW_CLIP:
+            state.localWinding = BFC.CW;
+            break;
+        case BFC.INVERTNEXT:
+            state.globalInvertNext = !state.globalInvertNext;
+            state.globalInvertNextFound = true;
+            break;
+        case BFC.NOCERTIFY:
+            state.localWinding = BFC.NOCERTIFY;
+            break;
+        case BFC.NOCLIP:
+            if (state.accumClip == 0)
+                state.accumClip = 1;
+            break;
+        default:
+            break;
+        }
     }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        getBFCorientationMapNOCERTIFY(null);
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        getVertexNormalMap(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
     }
 
     @Override
-    public void getVertexNormalMapNOCLIP(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        getBFCorientationMapNOCLIP(null);
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        switch (type) {
+        case BFC.CCW_CLIP:
+            if (state.accumClip == 1)
+                state.accumClip = 0;
+            state.localWinding = BFC.CCW;
+            break;
+        case BFC.CLIP:
+            if (state.accumClip == 1)
+                state.accumClip = 0;
+            break;
+        case BFC.CW_CLIP:
+            if (state.accumClip == 1)
+                state.accumClip = 0;
+            state.localWinding = BFC.CW;
+            break;
+        default:
+            break;
+        }
     }
 
 }

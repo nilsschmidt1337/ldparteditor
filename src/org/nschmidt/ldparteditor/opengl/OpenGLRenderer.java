@@ -145,6 +145,8 @@ public class OpenGLRenderer {
 
     private int skipFrame;
 
+    private volatile AtomicBoolean calculateVertexNormals = new AtomicBoolean(true);
+
     /**
      * Registers a texture with a given ID
      *
@@ -269,7 +271,16 @@ public class OpenGLRenderer {
                 skipFrame = 0;
                 return;
             }
-            c3d.getVertexManager().fillVertexNormalCache(c3d.getLockableDatFileReference().getDrawChainStart());
+            if (calculateVertexNormals.compareAndSet(true, false)) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        c3d.getVertexManager().clearVertexNormalCache();
+                        c3d.getVertexManager().fillVertexNormalCache(c3d.getLockableDatFileReference().getDrawChainStart());
+                        calculateVertexNormals.set(true);
+                    }
+                }).start();
+            }
             GL20.glUseProgram(pGlossId);
         } else {
             GL20.glUseProgram(0);
@@ -1933,10 +1944,6 @@ public class OpenGLRenderer {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
                 break;
             }
-        }
-        
-        if (raytraceMode) {
-            c3d.getVertexManager().clearVertexNormalCache();
         }
 
         // Lights

@@ -2603,100 +2603,100 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getVertexNormalMap(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         if (matrix != null) {
-            boolean tNext = GData.globalFoundTEXMAPNEXT;
-            GData.globalFoundTEXMAPNEXT = false;
+            boolean tNext = state.globalFoundTEXMAPNEXT;
+            state.globalFoundTEXMAPNEXT = false;
 
-            byte tempWinding = GData.localWinding;
-            boolean tempInvertNext = GData.globalInvertNext;
-            boolean tempInvertNextFound = GData.globalInvertNextFound;
-            boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
-            GData.globalInvertNextFound = false;
-            GData.localWinding = BFC.NOCERTIFY;
-            GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
+            byte tempWinding = state.localWinding;
+            boolean tempInvertNext = state.globalInvertNext;
+            boolean tempInvertNextFound = state.globalInvertNextFound;
+            boolean tempNegativeDeterminant = state.globalNegativeDeterminant;
+            state.globalInvertNextFound = false;
+            state.localWinding = BFC.NOCERTIFY;
+            state.globalNegativeDeterminant = state.globalNegativeDeterminant ^ negativeDeterminant;
             if (true) {
 
-                GData.globalFoundTEXMAPStack.push(false);
+                state.globalFoundTEXMAPStack.push(false);
 
                 GData data2draw = myGData;
-                if (GData.accumClip > 0) {
-                    GData.accumClip++;
+                if (state.accumClip > 0) {
+                    state.accumClip++;
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.getVertexNormalMapNOCLIP(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
-                    GData.accumClip--;
+                        data2draw.getVertexNormalMapNOCLIP(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+                    state.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
-                        switch (GData.localWinding) {
+                        switch (state.localWinding) {
                         case BFC.NOCERTIFY:
-                            data2draw.getVertexNormalMapNOCERTIFY(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+                            data2draw.getVertexNormalMapNOCERTIFY(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
                             break;
                         default:
-                            data2draw.getVertexNormalMap(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+                            data2draw.getVertexNormalMap(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
                             break;
                         }
                     }
-                    if (GData.accumClip > 0)
-                        GData.accumClip = 0;
+                    if (state.accumClip > 0)
+                        state.accumClip = 0;
                 }
 
-                if (GData.globalFoundTEXMAPStack.peek()) {
-                    GData.globalFoundTEXMAPStack.pop();
-                    GData.globalTextureStack.pop();
-                    GData.globalFoundTEXMAPStack.push(false);
-                    GData.globalDrawObjects = true;
+                if (state.globalFoundTEXMAPStack.peek()) {
+                    state.globalFoundTEXMAPStack.pop();
+                    state.globalTextureStack.pop();
+                    state.globalFoundTEXMAPStack.push(false);
+                    state.globalDrawObjects = true;
                 }
-                GData.globalFoundTEXMAPStack.pop();
+                state.globalFoundTEXMAPStack.pop();
             }
-            GData.localWinding = tempWinding;
+            state.localWinding = tempWinding;
             if (tempInvertNextFound)
-                GData.globalInvertNext = !tempInvertNext;
-            GData.globalNegativeDeterminant = tempNegativeDeterminant;
+                state.globalInvertNext = !tempInvertNext;
+            state.globalNegativeDeterminant = tempNegativeDeterminant;
             if (tNext) {
-                GData.globalFoundTEXMAPStack.pop();
-                GData.globalTextureStack.pop();
-                GData.globalFoundTEXMAPStack.push(false);
-                GData.globalFoundTEXMAPNEXT = false;
+                state.globalFoundTEXMAPStack.pop();
+                state.globalTextureStack.pop();
+                state.globalFoundTEXMAPStack.push(false);
+                state.globalFoundTEXMAPNEXT = false;
             }
         }
     }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
-        GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        boolean tempNegativeDeterminant = state.globalNegativeDeterminant;
+        state.globalNegativeDeterminant = state.globalNegativeDeterminant ^ negativeDeterminant;
         GData data2draw = myGData;
-        if (GData.accumClip > 0) {
-            GData.accumClip++;
+        if (state.accumClip > 0) {
+            state.accumClip++;
             while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                data2draw.getVertexNormalMapNOCERTIFY(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
-            GData.accumClip--;
+                data2draw.getVertexNormalMapNOCERTIFY(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+            state.accumClip--;
         } else {
             while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                data2draw.getVertexNormalMapNOCERTIFY(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
-            if (GData.accumClip > 0)
-                GData.accumClip = 0;
+                data2draw.getVertexNormalMapNOCERTIFY(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+            if (state.accumClip > 0)
+                state.accumClip = 0;
         }
-        GData.globalNegativeDeterminant = tempNegativeDeterminant;
+        state.globalNegativeDeterminant = tempNegativeDeterminant;
     }
 
     @Override
-    public void getVertexNormalMapNOCLIP(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
-        GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        boolean tempNegativeDeterminant = state.globalNegativeDeterminant;
+        state.globalNegativeDeterminant = state.globalNegativeDeterminant ^ negativeDeterminant;
         GData data2draw = myGData;
-        if (GData.accumClip > 0) {
-            GData.accumClip++;
+        if (state.accumClip > 0) {
+            state.accumClip++;
             while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                data2draw.getVertexNormalMapNOCLIP(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
-            GData.accumClip--;
+                data2draw.getVertexNormalMapNOCLIP(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+            state.accumClip--;
         } else {
             while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                data2draw.getVertexNormalMapNOCLIP(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
-            if (GData.accumClip > 0)
-                GData.accumClip = 0;
+                data2draw.getVertexNormalMapNOCLIP(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+            if (state.accumClip > 0)
+                state.accumClip = 0;
         }
-        GData.globalNegativeDeterminant = tempNegativeDeterminant;
+        state.globalNegativeDeterminant = tempNegativeDeterminant;
     }
 
     private String getSolvedMoveTo(GColour col, int depth) {

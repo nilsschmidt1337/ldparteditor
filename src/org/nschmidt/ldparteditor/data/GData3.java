@@ -1368,8 +1368,8 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void getVertexNormalMap(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        if (GData.globalDrawObjects) {
+    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        if (state.globalDrawObjects) {
             Vertex[] verts = vm.getTriangles_NOCLONE().get(this);
             if (verts == null) {
                 verts = new Vertex[3];
@@ -1397,15 +1397,15 @@ public final class GData3 extends GData {
 
             for (Vertex vertex : verts) {
                 float[] result = new float[3];
-                switch (GData.localWinding) {
+                switch (state.localWinding) {
                 case BFC.NOCLIP:
                     result[0] = xn;
                     result[1] = yn;
                     result[2] = zn;
                     break;
                 case BFC.CCW:
-                    if (GData.globalInvertNext) {
-                        if (GData.globalNegativeDeterminant) {
+                    if (state.globalInvertNext) {
+                        if (state.globalNegativeDeterminant) {
                             result[0] = -xn;
                             result[1] = -yn;
                             result[2] = -zn;
@@ -1415,7 +1415,7 @@ public final class GData3 extends GData {
                             result[2] = zn;
                         }
                     } else {
-                        if (GData.globalNegativeDeterminant) {
+                        if (state.globalNegativeDeterminant) {
                             result[0] = -xn;
                             result[1] = -yn;
                             result[2] = -zn;
@@ -1427,8 +1427,8 @@ public final class GData3 extends GData {
                     }
                     break;
                 case BFC.CW:
-                    if (GData.globalInvertNext) {
-                        if (GData.globalNegativeDeterminant) {
+                    if (state.globalInvertNext) {
+                        if (state.globalNegativeDeterminant) {
                             result[0] = -xn;
                             result[1] = -yn;
                             result[2] = -zn;
@@ -1438,7 +1438,7 @@ public final class GData3 extends GData {
                             result[2] = zn;
                         }
                     } else {
-                        if (GData.globalNegativeDeterminant) {
+                        if (state.globalNegativeDeterminant) {
                             result[0] = -xn;
                             result[1] = -yn;
                             result[2] = -zn;
@@ -1452,7 +1452,7 @@ public final class GData3 extends GData {
                 case BFC.NOCERTIFY:
                     break;
                 }
-                if (GData.globalInvertNext) {
+                if (state.globalInvertNext) {
                     dataLinkedToNormalCACHE.put(this, new float[]{-result[0], -result[1], -result[2]});
                 } else {
                     dataLinkedToNormalCACHE.put(this, new float[]{result[0], result[1], result[2]});
@@ -1467,20 +1467,20 @@ public final class GData3 extends GData {
                 }
             }
         }
-        if (GData.globalFoundTEXMAPNEXT) {
-            GData.globalFoundTEXMAPStack.pop();
-            GData.globalTextureStack.pop();
-            GData.globalFoundTEXMAPStack.push(false);
-            GData.globalFoundTEXMAPNEXT = false;
+        if (state.globalFoundTEXMAPNEXT) {
+            state.globalFoundTEXMAPStack.pop();
+            state.globalTextureStack.pop();
+            state.globalFoundTEXMAPStack.push(false);
+            state.globalFoundTEXMAPNEXT = false;
         }
     }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
     @Override
-    public void getVertexNormalMapNOCLIP(ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
-        getVertexNormalMap(vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        getVertexNormalMap(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
     }
 
     public boolean isCollinear() {
