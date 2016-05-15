@@ -381,10 +381,16 @@ public final class GData5 extends GData {
 
     @Override
     public void draw(Composite3D c3d) {
-        if (!visible)
+        if (!visible) {
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
-        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
+        }
+        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f) {
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
+        }
 
         float result;
         float zoom = c3d.getZoom();
@@ -494,17 +500,24 @@ public final class GData5 extends GData {
                 GL11.glVertex3f(x2, y2, z2);
                 GL11.glEnd();
             }
-            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
-                GL11.glEnable(GL11.GL_LIGHTING);
         }
+
+        if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+            GL11.glEnable(GL11.GL_LIGHTING);
     }
 
     @Override
     public void drawRandomColours(Composite3D c3d) {
-        if (!visible)
+        if (!visible) {
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
-        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
+        }
+        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f) {
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
+        }
 
         final Matrix4f M2 = GData.CACHE_viewByProjection.get(parent);
         if (M2 == null) {
@@ -621,17 +634,23 @@ public final class GData5 extends GData {
                 GL11.glVertex3f(x2, y2, z2);
                 GL11.glEnd();
             }
-            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
-                GL11.glEnable(GL11.GL_LIGHTING);
         }
+        if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+            GL11.glEnable(GL11.GL_LIGHTING);
     }
 
     @Override
     public void drawWhileAddCondlines(Composite3D c3d) {
-        if (!visible)
+        if (!visible) {
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
-        if (!c3d.isDrawingSolidMaterials())
+        }
+        if (!c3d.isDrawingSolidMaterials()) {
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
             return;
+        }
 
         final float zoom = c3d.getZoom();
 
