@@ -166,6 +166,9 @@ public enum QuickFixer {
     }
 
     static String insertAfterLine(int line, String textToInsert, String text) {
+        if (line == 0) {
+            return insertBeforeLine(1, textToInsert, text);
+        }
         return text.replaceFirst("</L" + line + ">", "</L" + line + ">" + textToInsert); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
