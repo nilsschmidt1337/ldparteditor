@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
 /**
@@ -38,13 +39,14 @@ import org.nschmidt.ldparteditor.i18n.I18n;
  */
 public class ColourDialog extends ColourDesign {
 
+
     /**
      * Create the dialog.
      *
      * @param parentShell
      */
-    public ColourDialog(Shell parentShell, final GColour[] refCol) {
-        super(parentShell, refCol);
+    public ColourDialog(Shell parentShell, final GColour[] refCol, final boolean randomColours) {
+        super(parentShell, refCol, randomColours);
     }
 
     @Override
@@ -69,6 +71,13 @@ public class ColourDialog extends ColourDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 new ColourTableDialog(getShell(), refCol).open();
+            }
+        });
+        if (randomColours) btn_randomColours[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                refCol[0] = View.RANDOM_COLOUR;
+                me.close();
             }
         });
         return super.open();

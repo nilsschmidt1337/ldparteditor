@@ -137,6 +137,7 @@ public final class I18n {
     public static final String COLOURDIALOG_Colour = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_ColourTitle = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_DirectColour = COLOURDIALOG.getString(getProperty());
+    public static final String COLOURDIALOG_RandomColours = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_ShowColourTable = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_StandardColours = COLOURDIALOG.getString(getProperty());
     public static final String COLOUR_AddObjectColour = COLOUR.getString(getProperty());
@@ -819,7 +820,7 @@ public final class I18n {
     public static final String OPTIONS_AuthoringFolder = OPTIONS.getString(getProperty());
     public static final String OPTIONS_AuthoringWhere = OPTIONS.getString(getProperty());
     public static final String OPTIONS_Browse = OPTIONS.getString(getProperty());
-    public static final String OPTIONS_ChooseLocale = OPTIONS.getString(getProperty());               
+    public static final String OPTIONS_ChooseLocale = OPTIONS.getString(getProperty());
     public static final String OPTIONS_Directory = OPTIONS.getString(getProperty());
     public static final String OPTIONS_LdrawFolder = OPTIONS.getString(getProperty());
     public static final String OPTIONS_LdrawName = OPTIONS.getString(getProperty());

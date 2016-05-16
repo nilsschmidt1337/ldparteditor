@@ -1451,7 +1451,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
                     final GColour[] gColour2 = new GColour[1];
-                    new ColourDialog(getShell(), gColour2).open();
+                    new ColourDialog(getShell(), gColour2, true).open();
                     if (gColour2[0] != null) {
                         setLastUsedColour(gColour2[0]);
                         int num = gColour2[0].getColourNumber();
@@ -1476,6 +1476,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                 e.gc.fillRectangle(x, y, w, h);
                                 if (gColour2[0].getA() == 1f) {
                                     e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                                } else if (gColour2[0].getA() == 0f) {
+                                    e.gc.drawImage(ResourceManager.getImage("icon16_randomColours.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
                                 } else {
                                     e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
                                 }
@@ -1520,6 +1522,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             formatter.applyPattern(I18n.EDITORTEXT_Colour2);
 
                             btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
+                            if (gColour2[0].getA() == 0f) btn_LastUsedColour[0].setToolTipText(I18n.COLOURDIALOG_RandomColours);
                         }
                         btn_LastUsedColour[0].redraw();
                     }
@@ -6754,6 +6757,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 e.gc.fillRectangle(x, y, w, h);
                 if (gColour2[0].getA() == 1f) {
                     e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
+                } else if (gColour2[0].getA() == 0f) {
+                    e.gc.drawImage(ResourceManager.getImage("icon16_randomColours.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
                 } else {
                     e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 }
@@ -6797,6 +6802,7 @@ public class Editor3DWindow extends Editor3DDesign {
             formatter.applyPattern(I18n.EDITORTEXT_Colour2);
 
             btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
+            if (gColour2[0].getA() == 0f) btn_LastUsedColour[0].setToolTipText(I18n.COLOURDIALOG_RandomColours);
         }
         btn_LastUsedColour[0].redraw();
     }

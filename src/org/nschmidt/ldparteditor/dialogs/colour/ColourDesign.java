@@ -22,8 +22,8 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -54,14 +54,17 @@ class ColourDesign extends Dialog {
 
     final GColour[] refCol;
     final ColourDesign me;
+    final boolean randomColours;
 
     // Use final only for subclass/listener references!
     final Button[] btn_colourChoose = new Button[1];
     final Button[] btn_colourTable = new Button[1];
+    final Button[] btn_randomColours = new Button[1];
 
-    ColourDesign(Shell parentShell, GColour[] refCol) {
+    ColourDesign(Shell parentShell, GColour[] refCol, final boolean randomColours) {
         super(parentShell);
         this.refCol = refCol;
+        this.randomColours = randomColours;
         me = this;
     }
 
@@ -88,6 +91,13 @@ class ColourDesign extends Dialog {
         Button btn_pickDirectColour = new Button(cmp_container, SWT.NONE);
         btn_colourChoose[0] = btn_pickDirectColour;
         btn_pickDirectColour.setText(I18n.COLOURDIALOG_DirectColour);
+
+        if (randomColours) {
+            Button btn_randomColour = new Button(cmp_container, SWT.NONE);
+            btn_randomColours[0] = btn_randomColour;
+            btn_randomColour.setText(I18n.COLOURDIALOG_RandomColours);
+            btn_randomColour.setImage(ResourceManager.getImage("icon8_randomColours.png")); //$NON-NLS-1$
+        }
 
         {
             Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -146,15 +156,11 @@ class ColourDesign extends Dialog {
                     }
                 }
             });
-            btn_stdColour.addSelectionListener(new SelectionListener() {
+            btn_stdColour.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     refCol[0] = (GColour) btn_stdColour.getData();
                     me.close();
-                }
-
-                @Override
-                public void widgetDefaultSelected(SelectionEvent e) {
                 }
             });
         }

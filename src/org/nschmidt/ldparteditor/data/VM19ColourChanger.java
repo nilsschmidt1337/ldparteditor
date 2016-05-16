@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import org.nschmidt.ldparteditor.enums.View;
@@ -25,6 +26,8 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM19ColourChanger extends VM18LineConverter {
+
+    private final Random RND = new Random((GData.getLastID() + 1) * 19364792647L);
 
     protected VM19ColourChanger(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -171,10 +174,18 @@ class VM19ColourChanger extends VM18LineConverter {
                 colourBuilder.append(index);
             }
             String col = colourBuilder.toString();
-
+            final boolean isRandomColour = a == 0f;
             HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
             HashSet<GData1> newSubfiles = new HashSet<GData1>();
             for (GData1 subf : selectedSubfiles) {
+                if (isRandomColour) {
+                    colourBuilder.setLength(0);
+                    colourBuilder.append("0x2"); //$NON-NLS-1$
+                    colourBuilder.append(MathHelper.toHex((int) (255f * RND.nextFloat())).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex((int) (255f * RND.nextFloat())).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex((int) (255f * RND.nextFloat())).toUpperCase());
+                    col = colourBuilder.toString();
+                }
                 String colouredString = subf.getColouredString(col);
                 GData oldNext = subf.getNext();
                 GData oldBefore = subf.getBefore();
@@ -265,6 +276,10 @@ class VM19ColourChanger extends VM18LineConverter {
         final float cg = colour.getG();
         final float cb = colour.getB();
         final float ca = colour.getA();
+        final boolean isRandomColour = a == 0f;
+        if (isRandomColour) {
+            a = 1f;
+        }
         for (GData gData : dataToModify) {
             if (gData == null || gData.type() != 8 && !lineLinkedToVertices.containsKey(gData)) {
                 continue;
@@ -291,6 +306,10 @@ class VM19ColourChanger extends VM18LineConverter {
                     b = cb;
                     a = ca;
                 }
+            } else if (isRandomColour) {
+                r = RND.nextFloat();
+                g = RND.nextFloat();
+                b = RND.nextFloat();
             }
             GData newGData = null;
             switch (gData.type()) {
