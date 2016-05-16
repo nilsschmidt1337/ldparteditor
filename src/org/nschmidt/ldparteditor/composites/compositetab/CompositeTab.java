@@ -187,7 +187,9 @@ public class CompositeTab extends CompositeTabDesign {
                 final GData data = df.getDrawPerLine_NOCLONE().getValue(compositeText[0].getLineAtOffset(e.lineOffset) + 1);
                 boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
                 isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
-                syntaxFormatter.format(e, state.getToReplaceX(), state.getToReplaceY(), state.getToReplaceZ(), state.getReplaceEpsilon(), state.isReplacingVertex(), isSelected);
+                syntaxFormatter.format(e,
+                        state.getToReplaceX(), state.getToReplaceY(), state.getToReplaceZ(),
+                        state.getReplaceEpsilon(), state.isReplacingVertex(), isSelected, df);
             }
         });
         final boolean[] isDelPressed = new boolean[] { false };
@@ -1158,10 +1160,10 @@ public class CompositeTab extends CompositeTabDesign {
             }
         });
         canvas_lineNumberArea[0].addMouseListener(new MouseListener() {
-            
+
             @Override
             public void mouseUp(MouseEvent e) {}
-            
+
             @Override
             public void mouseDown(MouseEvent e) {
                 // TODO Auto-generated method stub
@@ -1171,23 +1173,23 @@ public class CompositeTab extends CompositeTabDesign {
                 int end_line = compositeText[0].getLineCount() - 1;
 
                 NLogger.debug(getClass(), "Mouse down on Line Number Area"); //$NON-NLS-1$
-                
+
                 NLogger.debug(getClass(), "y_offset" + y_offset); //$NON-NLS-1$
                 NLogger.debug(getClass(), "height" + height); //$NON-NLS-1$
                 NLogger.debug(getClass(), "start_line" + start_line); //$NON-NLS-1$
                 NLogger.debug(getClass(), "end_line" + end_line); //$NON-NLS-1$
-                
+
                 NLogger.debug(getClass(), "e.y" + e.y); //$NON-NLS-1$
-                
-                
-                int line = ((int) (e.y - y_offset) / caretHeight) + start_line;
-                
+
+
+                int line = (e.y - y_offset) / caretHeight + start_line;
+
                 NLogger.debug(getClass(), "Line " + line); //$NON-NLS-1$
                 line--;
-                
+
                 final int oldSelectionStart = compositeText[0].getSelection().x;
                 final int oldSelectionEnd = compositeText[0].getSelection().y;
-                
+
                 if ((e.stateMask & SWT.CTRL) != 0) {
                     try {
                         int newstart = compositeText[0].getOffsetAtLine(line + 1);
@@ -1203,7 +1205,7 @@ public class CompositeTab extends CompositeTabDesign {
                             newend = Math.min(Math.min(oldSelectionStart, oldSelectionEnd), newend);
                             compositeText[0].setSelection(newstart, newend);
                         } catch (IllegalArgumentException consumed) {}
-                    } 
+                    }
                 } else {
                     try {
                         compositeText[0].setSelection(compositeText[0].getOffsetAtLine(line + 1), compositeText[0].getOffsetAtLine(line));
@@ -1211,10 +1213,10 @@ public class CompositeTab extends CompositeTabDesign {
                         try {
                             compositeText[0].setSelection(compositeText[0].getText().length(), compositeText[0].getOffsetAtLine(line));
                         } catch (IllegalArgumentException consumed) {}
-                    }    
+                    }
                 }
             }
-            
+
             @Override
             public void mouseDoubleClick(MouseEvent e) {}
         });
