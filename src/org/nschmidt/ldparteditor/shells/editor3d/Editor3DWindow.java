@@ -1058,7 +1058,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
 
                                         boolean hasIOerror = false;
-
+                                        UTF8PrintWriter r = null;
                                         try {
 
                                             String typeSuffix = ""; //$NON-NLS-1$
@@ -1080,7 +1080,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                                 typeSuffix = "Unofficial_Primitive"; //$NON-NLS-1$
                                             }
 
-                                            UTF8PrintWriter r = new UTF8PrintWriter(selected);
+                                            r = new UTF8PrintWriter(selected);
                                             r.println("0 " + subfilePrefix); //$NON-NLS-1$
                                             r.println("0 Name: " + folderPrefix + new File(selected).getName()); //$NON-NLS-1$
                                             String ldrawName = WorkbenchManager.getUserSettingState().getLdrawUserName();
@@ -1127,6 +1127,10 @@ public class Editor3DWindow extends Editor3DDesign {
                                             r.close();
                                         } catch (Exception ex) {
                                             hasIOerror = true;
+                                        } finally {
+                                            if (r != null) {
+                                                r.close();
+                                            }
                                         }
 
                                         if (hasIOerror) {

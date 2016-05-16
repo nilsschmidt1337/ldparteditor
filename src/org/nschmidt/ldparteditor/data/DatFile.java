@@ -1306,6 +1306,7 @@ public final class DatFile {
 
         boolean deleteFirst = oldName.equals(newName);
 
+        UTF8PrintWriter r = null;
         try {
             if (deleteFirst) {
                 File oldFile = new File(oldName);
@@ -1329,7 +1330,7 @@ public final class DatFile {
                     }
                 }
             }
-            UTF8PrintWriter r = new UTF8PrintWriter(newName);
+            r = new UTF8PrintWriter(newName);
             ArrayList<String> lines = new ArrayList<String>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
             if (!lines.isEmpty()) {
@@ -1365,16 +1366,21 @@ public final class DatFile {
             return true;
         } catch (Exception ex) {
             return false;
+        } finally {
+            if (r != null) {
+                r.close();
+            }
         }
     }
 
     public boolean saveForced() {
+        UTF8PrintWriter r = null;
         try {
             File newFile = new File(newName);
             if (newFile.exists()) {
                 newFile.delete();
             }
-            UTF8PrintWriter r = new UTF8PrintWriter(newName);
+            r = new UTF8PrintWriter(newName);
             ArrayList<String> lines = new ArrayList<String>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
             if (!lines.isEmpty()) {
@@ -1406,16 +1412,21 @@ public final class DatFile {
             return true;
         } catch (Exception ex) {
             return false;
+        } finally {
+            if (r != null) {
+                r.close();
+            }
         }
     }
 
     public boolean saveAs(String newName) {
+        UTF8PrintWriter r = null;
         try {
             File newFile = new File(newName);
             if (newFile.exists()) {
                 newFile.delete();
             }
-            UTF8PrintWriter r = new UTF8PrintWriter(newName);
+            r = new UTF8PrintWriter(newName);
             ArrayList<String> lines = new ArrayList<String>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
             if (!lines.isEmpty()) {
@@ -1479,6 +1490,10 @@ public final class DatFile {
             return true;
         } catch (Exception ex) {
             return false;
+        } finally {
+            if (r != null) {
+                r.close();
+            }
         }
     }
 
