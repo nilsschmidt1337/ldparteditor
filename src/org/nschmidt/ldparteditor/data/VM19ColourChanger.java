@@ -278,6 +278,7 @@ class VM19ColourChanger extends VM18LineConverter {
         final float ca = colour.getA();
         final boolean isRandomColour = a == 0f;
         if (isRandomColour) {
+            index = -1;
             a = 1f;
         }
         for (GData gData : dataToModify) {
