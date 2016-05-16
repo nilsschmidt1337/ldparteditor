@@ -385,8 +385,9 @@ public final class DatFile {
     public ArrayList<String> getSource() {
         ArrayList<String> result = new ArrayList<String>();
         if (originalText.isEmpty() && new File(this.getOldName()).exists()) {
+            UTF8BufferedReader reader = null;
             try {
-                UTF8BufferedReader reader = new UTF8BufferedReader(this.getOldName());
+                reader = new UTF8BufferedReader(this.getOldName());
                 while (true) {
                     String line2 = reader.readLine();
                     if (line2 == null) {
@@ -394,10 +395,16 @@ public final class DatFile {
                     }
                     result.add(line2);
                 }
-                reader.close();
             } catch (FileNotFoundException e) {
             } catch (LDParsingException e) {
-            } catch (UnsupportedEncodingException e) {}
+            } catch (UnsupportedEncodingException e) {
+            } finally {
+                try {
+                    if (reader != null)
+                        reader.close();
+                } catch (LDParsingException e1) {
+                }
+            }
         } else {
             GData data2draw = drawChainAnchor;
             while ((data2draw = data2draw.getNext()) != null) {
@@ -779,8 +786,9 @@ public final class DatFile {
         } else {
             StringBuilder sb = new StringBuilder();
             ArrayList<String> lines2 = new ArrayList<String>(4096);
+            UTF8BufferedReader reader = null;
             try {
-                UTF8BufferedReader reader = new UTF8BufferedReader(this.getOldName());
+                reader = new UTF8BufferedReader(this.getOldName());
                 String line = reader.readLine();
                 if (line != null) {
                     sb.append(line);
@@ -797,13 +805,19 @@ public final class DatFile {
                 } else {
                     lines2.add(""); //$NON-NLS-1$
                 }
-                reader.close();
 
                 lastModified = new File(getOldName()).lastModified();
 
             } catch (FileNotFoundException e) {
             } catch (LDParsingException e) {
-            } catch (UnsupportedEncodingException e) {}
+            } catch (UnsupportedEncodingException e) {
+            } finally {
+                try {
+                    if (reader != null)
+                        reader.close();
+                } catch (LDParsingException e1) {
+                }
+            }
             lines = lines2.toArray(new String[lines2.size()]);
             setLastSavedOpened(new Date());
             originalText = sb.toString();
@@ -1531,8 +1545,9 @@ public final class DatFile {
     public String getSourceText() {
         StringBuilder source = new StringBuilder();
         if (originalText.isEmpty()) {
+            UTF8BufferedReader reader = null;
             try {
-                UTF8BufferedReader reader = new UTF8BufferedReader(this.getOldName());
+                reader = new UTF8BufferedReader(this.getOldName());
                 String line = reader.readLine();
                 if (line != null) {
                     source.append(line);
@@ -1545,10 +1560,16 @@ public final class DatFile {
                         source.append(line2);
                     }
                 }
-                reader.close();
             } catch (FileNotFoundException e) {
             } catch (LDParsingException e) {
-            } catch (UnsupportedEncodingException e) {}
+            } catch (UnsupportedEncodingException e) {
+            } finally {
+                try {
+                    if (reader != null)
+                        reader.close();
+                } catch (LDParsingException e1) {
+                }
+            }
         } else {
             GData data2draw = drawChainAnchor;
             if ((data2draw = data2draw.getNext()) != null) {

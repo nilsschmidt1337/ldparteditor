@@ -596,11 +596,11 @@ public class LibraryManager {
             HashMap<DatFileName, DatType> typeMap = new HashMap<DatFileName, DatType>();
             ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
             File libFolder = new File(folderPath);
-            UTF8BufferedReader reader = null;
             StringBuilder titleSb = new StringBuilder();
             for (File f : libFolder.listFiles()) {
                 if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
                     titleSb.setLength(0);
+                    UTF8BufferedReader reader = null;
                     try {
                         reader = new UTF8BufferedReader(f.getAbsolutePath());
                         String title = reader.readLine();
@@ -1075,7 +1075,6 @@ public class LibraryManager {
         final File baseFolder = new File(basePath);
 
         if (prefix1.isEmpty() && prefix2.isEmpty()) {
-            UTF8BufferedReader reader = null;
             StringBuilder titleSb = new StringBuilder();
             for (File f : baseFolder.listFiles()) {
                 if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
@@ -1091,6 +1090,7 @@ public class LibraryManager {
                     }
                     titleSb.setLength(0);
                     TreeItem treeItem2 = Editor3DWindow.getWindow().getProjectParts();
+                    UTF8BufferedReader reader = null;
                     try {
                         reader = new UTF8BufferedReader(path);
                         String title = reader.readLine();

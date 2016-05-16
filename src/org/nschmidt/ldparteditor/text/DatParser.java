@@ -1177,7 +1177,7 @@ public enum DatParser {
                 result.add(new ParsingResult(I18n.DATPARSER_FileNotFound, "[E01] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
             } else {
                 absoluteFilename = fileToOpen.getAbsolutePath();
-                UTF8BufferedReader reader;
+                UTF8BufferedReader reader = null;
                 String line = null;
                 lines = new ArrayList<String>(4096);
                 try {
@@ -1189,7 +1189,6 @@ public enum DatParser {
                         }
                         lines.add(line);
                     }
-                    reader.close();
                 } catch (FileNotFoundException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
@@ -1199,6 +1198,12 @@ public enum DatParser {
                 } catch (UnsupportedEncodingException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
+                } finally {
+                    try {
+                        if (reader != null)
+                            reader.close();
+                    } catch (LDParsingException e1) {
+                    }
                 }
 
                 if (result.size() < 1) {

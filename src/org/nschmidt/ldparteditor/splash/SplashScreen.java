@@ -223,7 +223,7 @@ public class SplashScreen extends ApplicationWindow {
                     CompositePrimitive.setFileCache(pfcache);
                 }
                 // Load the toolItem state for the 3D editor
-                UTF8BufferedReader reader;
+                UTF8BufferedReader reader = null;
                 String line = null;
                 try {
                     ArrayList<ToolItemState> states = WorkbenchManager.getUserSettingState().getToolItemConfig3D();
@@ -261,12 +261,17 @@ public class SplashScreen extends ApplicationWindow {
                             states.add(new ToolItemState(data_segments[0], location, mode, data_segments[3]));
                         }
                     }
-                    reader.close();
                 } catch (FileNotFoundException consumed) {
                 } catch (LDParsingException e1) {
                     NLogger.error(getClass(), e1);
                 } catch (UnsupportedEncodingException e1) {
                     NLogger.error(getClass(), e1);
+                } finally {
+                    try {
+                        if (reader != null)
+                            reader.close();
+                    } catch (LDParsingException e1) {
+                    }
                 }
 
                 // Finish it.
