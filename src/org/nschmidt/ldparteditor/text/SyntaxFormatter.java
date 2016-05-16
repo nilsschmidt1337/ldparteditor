@@ -74,7 +74,9 @@ public class SyntaxFormatter {
      * @param replaceEpsilon
      * @param isSelected
      */
-    public void format(LineStyleEvent e, BigDecimal VX, BigDecimal VY, BigDecimal VZ, float replaceEpsilon, boolean replaceVertex, boolean isSelected) {
+    public void format(LineStyleEvent e,
+            BigDecimal VX, BigDecimal VY, BigDecimal VZ,
+            float replaceEpsilon, boolean replaceVertex, boolean isSelected, DatFile df) {
 
         float vx = VX.floatValue();
         float vy = VY.floatValue();
@@ -111,7 +113,7 @@ public class SyntaxFormatter {
             formatComment(styles, e, text_segments, vx, vy, vz, replaceVertex, replaceEpsilon);
             break;
         case 1:
-            formatReference(styles, e, text_segments);
+            formatReference(styles, e, text_segments, df);
             break;
         case 2:
             formatLine(styles, e, text_segments, vx, vy, vz, replaceVertex, replaceEpsilon);
@@ -264,8 +266,7 @@ public class SyntaxFormatter {
         styles.add(commentStyleRange);
 
         if (offset == 0)
-            return; // We are on the first line. Do not highlight other KEYWORDS
-        // in these line
+            return; // We are on the first line. Do not highlight other KEYWORDS in these line
 
         for (String segment : text_segments) {
             if (segment.isEmpty() || segment.equals("0")) { //$NON-NLS-1$
@@ -391,7 +392,7 @@ public class SyntaxFormatter {
      * @param e
      *            the {@linkplain LineStyleEvent}
      */
-    private void formatReference(ArrayList<StyleRange> styles, LineStyleEvent e, String[] text_segments) {
+    private void formatReference(ArrayList<StyleRange> styles, LineStyleEvent e, String[] text_segments, DatFile datFile) {
         int offset = e.lineOffset;
 
         StyleRange lineStyleRange = new StyleRange();
@@ -560,9 +561,20 @@ public class SyntaxFormatter {
                 shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             String shortFilename2 = shortFilename.startsWith("S" + File.separator) ? "s" + shortFilename.substring(1) : shortFilename; //$NON-NLS-1$ //$NON-NLS-2$
-            String[] prefix = new String[]{Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+            String shortFilename3 = shortFilename.startsWith("S" + File.separator) ? shortFilename.substring(2) : shortFilename; //$NON-NLS-1$
+            String[] prefix ;
+            if (datFile != null && !datFile.isProjectFile() && !View.DUMMY_DATFILE.equals(datFile)) {
+                File dff = new File(datFile.getOldName()).getParentFile();
+                if (dff != null && dff.exists() && dff.isDirectory()) {
+                    prefix = new String[]{dff.getAbsolutePath(), Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+                } else {
+                    prefix = new String[]{Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+                }
+            } else {
+                prefix = new String[]{Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+            }
             String[] middle = new String[]{File.separator + "PARTS", File.separator + "parts", File.separator + "P", File.separator + "p"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            String[] suffix = new String[]{File.separator + shortFilename, File.separator + shortFilename2};
+            String[] suffix = new String[]{File.separator + shortFilename, File.separator + shortFilename2, File.separator + shortFilename3};
             for (int a1 = 0; a1 < prefix.length; a1++) {
                 String s1 = prefix[a1];
                 for (int a2 = 0; a2 < middle.length; a2++) {
