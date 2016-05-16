@@ -545,7 +545,7 @@ public enum TexMapParser {
                 return null;
             } else {
                 absoluteFilename = fileToOpen.getAbsolutePath();
-                UTF8BufferedReader reader;
+                UTF8BufferedReader reader = null;
                 String line = null;
                 lines = new ArrayList<String>(4096);
                 try {
@@ -557,13 +557,18 @@ public enum TexMapParser {
                         }
                         lines.add(line);
                     }
-                    reader.close();
                 } catch (FileNotFoundException e1) {
                     return null;
                 } catch (LDParsingException e1) {
                     return null;
                 } catch (UnsupportedEncodingException e1) {
                     return null;
+                } finally {
+                    try {
+                        if (reader != null)
+                            reader.close();
+                    } catch (LDParsingException e1) {
+                    }
                 }
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);

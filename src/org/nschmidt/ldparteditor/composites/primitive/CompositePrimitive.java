@@ -1355,7 +1355,7 @@ public class CompositePrimitive extends Composite {
                     if (ts != null) {
                         fileCache.remove(ts);
                     }
-                    UTF8BufferedReader reader;
+                    UTF8BufferedReader reader = null;
                     String line = null;
                     try {
                         reader = new UTF8BufferedReader(absoluteFilename);
@@ -1366,13 +1366,18 @@ public class CompositePrimitive extends Composite {
                             }
                             lines.add(line);
                         }
-                        reader.close();
                     } catch (FileNotFoundException e1) {
                         return null;
                     } catch (LDParsingException e1) {
                         return null;
                     } catch (UnsupportedEncodingException e1) {
                         return null;
+                    } finally {
+                        try {
+                            if (reader != null)
+                                reader.close();
+                        } catch (LDParsingException e1) {
+                        }
                     }
                     fileCache.put(new_ts, lines);
                     fileCacheHits.add(new_ts);

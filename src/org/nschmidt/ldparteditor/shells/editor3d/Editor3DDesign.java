@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editor3d;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -77,6 +79,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
+import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
@@ -1123,8 +1126,9 @@ class Editor3DDesign extends ApplicationWindow {
 
 
                         if (NLogger.DEBUG) {
+                            UTF8BufferedReader reader = null;
                             try {
-                                UTF8BufferedReader reader = new UTF8BufferedReader("testsource.txt"); //$NON-NLS-1$
+                                reader = new UTF8BufferedReader("testsource.txt"); //$NON-NLS-1$
                                 StringBuilder sb = new StringBuilder();
                                 String s;
                                 while ((s = reader.readLine()) != null) {
@@ -1132,8 +1136,15 @@ class Editor3DDesign extends ApplicationWindow {
                                     sb.append(StringHelper.getLineDelimiter());
                                 }
                                 Project.getFileToEdit().setText(sb.toString());
-                            } catch (Exception e) {
-
+                            } catch (LDParsingException e) {
+                            } catch (FileNotFoundException e) {
+                            } catch (UnsupportedEncodingException e) {
+                            } finally {
+                                try {
+                                    if (reader != null)
+                                        reader.close();
+                                } catch (LDParsingException e1) {
+                                }
                             }
                         } else {
                             final StringBuilder sb = new StringBuilder();
