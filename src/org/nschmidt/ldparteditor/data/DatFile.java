@@ -960,14 +960,14 @@ public final class DatFile {
             if (!h.hasBFC())
                 results.add(new ParsingResult(I18n.DATFILE_MissingBFC, "[H60] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
 
-            int fakeLine = -1;
+            int fakeLine = -6;
             for (ParsingResult result : results) {
                 TreeItem trtmNewTreeitem = new TreeItem(hints, SWT.NONE);
                 trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                 trtmNewTreeitem.setText(new String[] { result.getMessage(), "---", result.getType() }); //$NON-NLS-1$
                 trtmNewTreeitem.setData(fakeLine);
                 trtmNewTreeitem.setVisible(false);
-                fakeLine--;
+                fakeLine++;
             }
         }
         hints.sortItems();

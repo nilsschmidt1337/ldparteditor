@@ -35,13 +35,13 @@ final class HintFixer {
         int s = Integer.parseInt(sort, 16);
         switch (s) {
         case 0: // The title is missing
-            text = QuickFixer.insertBeforeLine(1, "0 " + I18n.HINTFIXER_Title, text); //$NON-NLS-1$
+            text = QuickFixer.insertAfterLine(0, "0 " + I18n.HINTFIXER_Title + "<br>", text); //$NON-NLS-1$ //$NON-NLS-2$
             break;
         case 1: // Invalid header line
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
             break;
         case 16: // The filename is missing
-            int l = 1;
+            int l = 0;
             if (h.hasTITLE())
                 l = h.getLineTITLE();
             if (type == DatType.SUBPART)
@@ -54,7 +54,7 @@ final class HintFixer {
                 text = QuickFixer.insertAfterLine(l, "0 Name: " + new File(datFile.getNewName()).getName() + "<br>", text); //$NON-NLS-1$ //$NON-NLS-2$
             break;
         case 32: // The author name is missing
-            l = 1;
+            l = 0;
             if (h.hasTITLE())
                 l = h.getLineTITLE();
             if (h.hasNAME())
@@ -68,7 +68,7 @@ final class HintFixer {
             }
             break;
         case 48: // The part type information is missing
-            l = 1;
+            l = 0;
             if (h.hasTITLE())
                 l = h.getLineTITLE();
             if (h.hasNAME())
@@ -87,7 +87,7 @@ final class HintFixer {
                 text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_Part<br>", text); //$NON-NLS-1$
             break;
         case 64: // The license information is missing
-            l = 1;
+            l = 0;
             if (h.hasTITLE())
                 l = h.getLineTITLE();
             if (h.hasNAME())
@@ -104,7 +104,7 @@ final class HintFixer {
             }
             break;
         case 96: // The BFC information is missing
-            l = 1;
+            l = 0;
             if (h.hasTITLE())
                 l = h.getLineTITLE();
             if (h.hasNAME())
