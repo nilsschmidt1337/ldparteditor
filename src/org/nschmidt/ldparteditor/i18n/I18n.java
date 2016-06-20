@@ -697,6 +697,7 @@ public final class I18n {
     public static final String KEYBOARD_ModeRotate = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ModeScale = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ModeSelect = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_MoveToAvg = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ObjFace = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ObjLine = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ObjPrimitive = KEYBOARD.getString(getProperty());

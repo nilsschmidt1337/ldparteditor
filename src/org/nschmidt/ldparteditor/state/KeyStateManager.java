@@ -128,6 +128,8 @@ public class KeyStateManager {
         addTask(Task.MODE_ROTATE,'3');
         addTask(Task.MODE_SCALE, '4');
         addTask(Task.MODE_COMBINED, 'c');
+        
+        addTask(Task.MOVE_TO_AVG, 'a');
 
         addTask(Task.ADD_VERTEX, '5');
         addTask(Task.ADD_TRIANGLE, '6');
@@ -300,6 +302,9 @@ public class KeyStateManager {
                         break;
                     case MODE_SELECT:
                         win.setWorkingAction(WorkingMode.SELECT);
+                        break;
+                    case MOVE_TO_AVG:
+                        win.mntm_Manipulator_2();
                         break;
                     case COLOUR_NUMBER0:
 
