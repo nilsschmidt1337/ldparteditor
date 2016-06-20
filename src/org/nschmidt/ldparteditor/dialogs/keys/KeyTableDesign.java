@@ -126,6 +126,7 @@ class KeyTableDesign extends Dialog {
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeRotate, Task.MODE_ROTATE, true);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeScale, Task.MODE_SCALE, true);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ModeSelect, Task.MODE_SELECT, true);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_MoveToAvg, Task.MOVE_TO_AVG, true);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ObjFace, Task.OBJ_FACE, true);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ObjLine, Task.OBJ_LINE, true);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ObjPrimitive, Task.OBJ_PRIMITIVE, true);

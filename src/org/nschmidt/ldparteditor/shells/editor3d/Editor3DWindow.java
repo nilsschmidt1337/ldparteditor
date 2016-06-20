@@ -7839,7 +7839,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_2() {
+    public void mntm_Manipulator_2() {
         if (Project.getFileToEdit() != null) {
             Vector4f avg = Project.getFileToEdit().getVertexManager().getSelectionCenter();
             for (OpenGLRenderer renderer : renders) {
