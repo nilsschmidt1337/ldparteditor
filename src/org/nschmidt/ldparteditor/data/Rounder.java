@@ -57,7 +57,7 @@ public enum Rounder {
 
         final VertexManager vm = datFile.getVertexManager();
 
-        if (st.isReplacingVertex() && vm.getVertices().contains(vm.getVertexToReplace())) {
+        if (st != null && st.isReplacingVertex() && vm.getVertexToReplace() != null && vm.getVertices().contains(vm.getVertexToReplace())) {
             vm.clearSelection();
             Text2SelectionConverter.convert(lineStart, lineEnd, datFile);
             vm.skipSyncTimer();
