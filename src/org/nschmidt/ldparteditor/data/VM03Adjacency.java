@@ -113,6 +113,9 @@ class VM03Adjacency extends VM02Add {
     public GData2 hasEdge(Vertex v1, Vertex v2) {
         Set<VertexManifestation> m1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> m2 = vertexLinkedToPositionInFile.get(v2);
+        if (m1 == null || m2 == null) {
+            return null;
+        }
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
                 if (a.getGdata().equals(b.getGdata()) && b.getGdata().type() == 2) {
@@ -127,6 +130,9 @@ class VM03Adjacency extends VM02Add {
     public GData5 hasCondline(Vertex v1, Vertex v2) {
         Set<VertexManifestation> m1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> m2 = vertexLinkedToPositionInFile.get(v2);
+        if (m1 == null || m2 == null) {
+            return null;
+        }
         for (VertexManifestation a : m1) {
             if (a.getPosition() > 1) continue;
             for (VertexManifestation b : m2) {
@@ -144,6 +150,9 @@ class VM03Adjacency extends VM02Add {
         ArrayList<GData> result = new ArrayList<GData>();
         Set<VertexManifestation> m1 = new HashSet<VertexManifestation>();
         Set<VertexManifestation> m2 = new HashSet<VertexManifestation>();
+        if (m1 == null || m2 == null) {
+            return result;
+        }
         for (Vertex v1 : h1) {
             m1.addAll(vertexLinkedToPositionInFile.get(v1));
         }
@@ -167,6 +176,9 @@ class VM03Adjacency extends VM02Add {
         ArrayList<GData> result = new ArrayList<GData>();
         Set<VertexManifestation> m1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> m2 = vertexLinkedToPositionInFile.get(v2);
+        if (m1 == null || m2 == null) {
+            return result;
+        }
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
                 GData bg = b.getGdata();
@@ -181,6 +193,9 @@ class VM03Adjacency extends VM02Add {
     public boolean isNeighbour(Vertex v1, Vertex v2) {
         Set<VertexManifestation> m1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> m2 = vertexLinkedToPositionInFile.get(v2);
+        if (m1 == null || m2 == null) {
+            return false;
+        }
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
                 if (a.getGdata().equals(b.getGdata())) {
