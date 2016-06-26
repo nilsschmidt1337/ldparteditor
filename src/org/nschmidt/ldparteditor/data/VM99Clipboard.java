@@ -35,6 +35,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
@@ -347,6 +348,7 @@ class VM99Clipboard extends VM25RectangleSnap {
                 Collections.sort(CLIPBOARD, new Comparator<GData>(){
                     @Override
                     public int compare(GData o1, GData o2) {
+                        try {
                         if (dpl.containsValue(o1)) {
                             if (dpl.containsValue(o2)) {
                                 return dpl.getKey(o1).compareTo(dpl.getKey(o2));
@@ -462,6 +464,16 @@ class VM99Clipboard extends VM25RectangleSnap {
                                 }
                             }
                         }
+                    } catch (NullPointerException npe) {
+                        NLogger.error(getClass(), "NullPointerException within CLIPBOARD!"); //$NON-NLS-1$
+                        NLogger.error(getClass(), "Object 1:" + o1.toString()); //$NON-NLS-1$
+                        NLogger.error(getClass(), "Object 2:" + o2.toString()); //$NON-NLS-1$
+                        if (o1.ID > o2.ID) { // The id can "never" be equal!
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    }
                     }
                 });
             }
