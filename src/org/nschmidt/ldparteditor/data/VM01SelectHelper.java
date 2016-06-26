@@ -965,12 +965,13 @@ public class VM01SelectHelper extends VM01Select {
                         float[] solution = MathHelper.gaussianElimination(M, b);
 
                         if (solution[1] >= 0f && solution[1] <= 1f) {
-                            float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
-                                    e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
-                            if (distanceSquared < discr) {
-                                Vertex[] v = lines.get(line);
-                                if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
+                            float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
+                            if (distanceSquared < discr) {                                
+                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
                                     continue;
+                                // Vertex[] v = lines.get(line);
+                                // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
+                                //    continue;
                                 if (selectedLines.contains(line)) {
                                     selectedData.remove(line);
                                     selectedLines.remove(line);
@@ -1016,9 +1017,11 @@ public class VM01SelectHelper extends VM01Select {
                             float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
                                     e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
                             if (distanceSquared < discr) {
-                                Vertex[] v = condlines.get(line);
-                                if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
+                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
                                     continue;
+                                // Vertex[] v = condlines.get(line);
+                                // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
+                                //     continue;
                                 if (selectedCondlines.contains(line)) {
                                     selectedData.remove(line);
                                     selectedCondlines.remove(line);
@@ -1190,9 +1193,11 @@ public class VM01SelectHelper extends VM01Select {
                             float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
                                     e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
                             if (distanceSquared < discr) {
-                                Vertex[] v = lines.get(line);
-                                if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
+                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
                                     continue;
+                                // Vertex[] v = lines.get(line);
+                                // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
+                                //    continue;
                                 selectedLinesForSubfile.add(line);
                             }
                         }
@@ -1232,9 +1237,11 @@ public class VM01SelectHelper extends VM01Select {
                             float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
                                     e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
                             if (distanceSquared < discr) {
-                                Vertex[] v = condlines.get(line);
-                                if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
+                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
                                     continue;
+                                // Vertex[] v = condlines.get(line);
+                                // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
+                                //    continue;
                                 selectedCondlinesForSubfile.add(line);
                             }
                         }
