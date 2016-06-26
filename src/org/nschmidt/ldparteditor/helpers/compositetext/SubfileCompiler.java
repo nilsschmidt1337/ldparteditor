@@ -401,7 +401,7 @@ public enum SubfileCompiler {
                     int odi = 0;
                     List<DatFile> od = (ArrayList<DatFile>) treeToSearch.getData();
                     for (DatFile odf : od) {
-                        if (odf.equals(df)) {
+                        if (odf.equals(df) || targetPath.toUpperCase(MyLanguage.LOCALE).equals(odf.getOldName().toUpperCase(MyLanguage.LOCALE))) {
                             old = odf;
                             odf.disposeData();
                             Project.removeUnsavedFile(odf);
