@@ -1691,7 +1691,7 @@ class VM00Base {
                     }
 
                     dpl.removeByValue(gd);
-                    gd.getBefore().setNext(gd.getNext());
+                    if (gd.getBefore() != null) gd.getBefore().setNext(gd.getNext());
                     remove(gd);
                 }
                 selectedSubfiles.clear();
