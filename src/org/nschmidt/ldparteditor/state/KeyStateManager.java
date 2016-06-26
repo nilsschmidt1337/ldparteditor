@@ -290,18 +290,23 @@ public class KeyStateManager {
                         break;
                     case MODE_COMBINED:
                         win.setWorkingAction(WorkingMode.COMBINED);
+                        win.disableAddAction();
                         break;
                     case MODE_MOVE:
                         win.setWorkingAction(WorkingMode.MOVE);
+                        win.disableAddAction();
                         break;
                     case MODE_ROTATE:
                         win.setWorkingAction(WorkingMode.ROTATE);
+                        win.disableAddAction();
                         break;
                     case MODE_SCALE:
                         win.setWorkingAction(WorkingMode.SCALE);
+                        win.disableAddAction();
                         break;
                     case MODE_SELECT:
                         win.setWorkingAction(WorkingMode.SELECT);
+                        win.disableAddAction();
                         break;
                     case MOVE_TO_AVG:
                         win.mntm_Manipulator_2();

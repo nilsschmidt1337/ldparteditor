@@ -850,6 +850,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Select[0]);
                 workingAction = WorkingMode.SELECT;
+                disableAddAction();
                 regainFocus();
             }
         });
@@ -858,6 +859,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Move[0]);
                 workingAction = WorkingMode.MOVE;
+                disableAddAction();
                 regainFocus();
             }
         });
@@ -866,6 +868,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Rotate[0]);
                 workingAction = WorkingMode.ROTATE;
+                disableAddAction();
                 regainFocus();
             }
         });
@@ -874,6 +877,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Scale[0]);
                 workingAction = WorkingMode.SCALE;
+                disableAddAction();
                 regainFocus();
             }
         });
@@ -882,6 +886,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Combined[0]);
                 workingAction = WorkingMode.COMBINED;
+                disableAddAction();
                 regainFocus();
             }
         });
