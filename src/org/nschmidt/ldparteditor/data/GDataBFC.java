@@ -101,8 +101,21 @@ public final class GDataBFC extends GData {
             GData.localWinding = BFC.CW;
             break;
         case BFC.INVERTNEXT:
-            GData.globalInvertNext = !GData.globalInvertNext;
-            GData.globalInvertNextFound = true;
+            boolean validState = false;
+            GData g = next;
+            while (g != null && g.type() < 2) {
+                if (g.type() == 1) {
+                    validState = true;
+                    break;
+                } else if (!g.toString().trim().isEmpty()) {
+                    break;
+                }
+                g = g.next;
+            }
+            if (validState) {
+                GData.globalInvertNext = !GData.globalInvertNext;
+                GData.globalInvertNextFound = true;
+            }
             break;
         case BFC.NOCERTIFY:
             GData.localWinding = BFC.NOCERTIFY;
@@ -195,8 +208,21 @@ public final class GDataBFC extends GData {
             GData.localWinding = BFC.CW;
             break;
         case BFC.INVERTNEXT:
-            GData.globalInvertNext = !GData.globalInvertNext;
-            GData.globalInvertNextFound = true;
+            boolean validState = false;
+            GData g = next;
+            while (g != null && g.type() < 2) {
+                if (g.type() == 1) {
+                    validState = true;
+                    break;
+                } else if (!g.toString().trim().isEmpty()) {
+                    break;
+                }
+                g = g.next;
+            }
+            if (validState) {
+                GData.globalInvertNext = !GData.globalInvertNext;
+                GData.globalInvertNextFound = true;
+            }
             break;
         case BFC.NOCERTIFY:
             GData.localWinding = BFC.NOCERTIFY;
@@ -253,8 +279,21 @@ public final class GDataBFC extends GData {
             state.localWinding = BFC.CW;
             break;
         case BFC.INVERTNEXT:
-            state.globalInvertNext = !state.globalInvertNext;
-            state.globalInvertNextFound = true;
+            boolean validState = false;
+            GData g = next;
+            while (g != null && g.type() < 2) {
+                if (g.type() == 1) {
+                    validState = true;
+                    break;
+                } else if (!g.toString().trim().isEmpty()) {
+                    break;
+                }
+                g = g.next;
+            }
+            if (validState) {
+                state.globalInvertNext = !state.globalInvertNext;
+                state.globalInvertNextFound = true;
+            }          
             break;
         case BFC.NOCERTIFY:
             state.localWinding = BFC.NOCERTIFY;
