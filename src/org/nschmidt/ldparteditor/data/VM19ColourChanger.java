@@ -178,6 +178,9 @@ class VM19ColourChanger extends VM18LineConverter {
             HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
             HashSet<GData1> newSubfiles = new HashSet<GData1>();
             for (GData1 subf : selectedSubfiles) {
+                if (!drawPerLine.containsValue(subf)) {
+                    continue;
+                }
                 if (isRandomColour) {
                     colourBuilder.setLength(0);
                     colourBuilder.append("0x2"); //$NON-NLS-1$
