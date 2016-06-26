@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -45,7 +46,6 @@ import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
 import org.nschmidt.ldparteditor.data.colour.GCMetal;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.StopWatch;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -156,8 +156,6 @@ public final class DatFile {
         if (!c3d.isDrawingSolidMaterials() && renderMode != 5)
             vertices.draw(c3d);
 
-        StopWatch.restart();
-
         if (Editor3DWindow.getWindow().isAddingCondlines())
             renderMode = 6;
         switch (renderMode) {
@@ -255,10 +253,6 @@ public final class DatFile {
 
         if (c3d.isDrawingSolidMaterials() && renderMode != 5)
             vertices.showHidden();
-
-        double duration = StopWatch.getDuration();
-        if (duration > 0.0) NLogger.debug(getClass(), "[DFDraw] Duration: " + duration + "ms    FPS " + 1000.0 / duration); //$NON-NLS-1$ //$NON-NLS-2$
-        StopWatch.stop();
     }
 
     public synchronized void getBFCorientationMap(HashMap<GData, Byte> bfcMap) {
@@ -629,6 +623,46 @@ public final class DatFile {
 
         anchorData.setNext(targetData);
 
+        // Check BFC INVERTNEXT
+        for (Iterator<TreeItem> it = errors.getItems().iterator(); it.hasNext();) {
+            TreeItem ti = it.next();
+            if (ti.getText(0).equals( I18n.DATPARSER_InvalidInvertNext)) {
+                it.remove();    
+            }     
+        }
+        GData gd = drawChainAnchor;
+        int lineNumber = 1;        
+        while ((gd = gd.next) != null)
+        {
+            if (gd.type() == 6 && ((GDataBFC) gd).type == BFC.INVERTNEXT) {
+                boolean validState = false;
+                GData g = gd.next;
+                while (g != null && g.type() < 2) {
+                    if (g.type() == 1) {
+                        validState = true;
+                        break;
+                    } else if (!g.toString().trim().isEmpty()) {
+                        break;
+                    }
+                    g = g.next;
+                }
+                if (!validState) {
+                    position = compositeText.getOffsetAtLine(lineNumber - 1);
+                    Object[] messageArguments = {lineNumber, position};
+                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.applyPattern(I18n.DATFILE_Line);
+
+                    TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
+                    trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
+                    trtmNewTreeitem.setVisible(false);
+                    trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNext, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                    trtmNewTreeitem.setData(position);
+                }
+            }
+            lineNumber++;
+        }
+        
         // Get tail
         if (tailRemoved || drawChainTail == null) {
             drawChainTail = anchorData;
@@ -741,6 +775,46 @@ public final class DatFile {
                 }
             }
             position += line.length() + offset;
+        }
+        
+        // Check BFC INVERTNEXT        
+        for (Iterator<TreeItem> it = errors.getItems().iterator(); it.hasNext();) {
+            TreeItem ti = it.next();
+            if (ti.getText(0).equals( I18n.DATPARSER_InvalidInvertNext)) {
+                it.remove();    
+            }     
+        }        
+        GData gd = drawChainAnchor;
+        int lineNumber = 1;        
+        while ((gd = gd.next) != null)
+        {
+            if (gd.type() == 6 && ((GDataBFC) gd).type == BFC.INVERTNEXT) {
+                boolean validState = false;
+                GData g = gd.next;
+                while (g != null && g.type() < 2) {
+                    if (g.type() == 1) {
+                        validState = true;
+                        break;
+                    } else if (!g.toString().trim().isEmpty()) {
+                        break;
+                    }
+                    g = g.next;
+                }
+                if (!validState) {
+                    position = compositeText.getOffsetAtLine(lineNumber - 1);
+                    Object[] messageArguments = {lineNumber, position};
+                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.applyPattern(I18n.DATFILE_Line);
+
+                    TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
+                    trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
+                    trtmNewTreeitem.setVisible(false);
+                    trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNext, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                    trtmNewTreeitem.setData(position);
+                }
+            }
+            lineNumber++;
         }
 
         if (unselectBgPicture) {
