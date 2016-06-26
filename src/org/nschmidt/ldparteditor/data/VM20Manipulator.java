@@ -762,7 +762,13 @@ public class VM20Manipulator extends VM19ColourChanger {
 
             if (swapWinding) {
                 backupHideShowState();
+                ArrayList<GData1> backupSubfiles = new ArrayList<GData1>();
+                backupSubfiles.addAll(selectedSubfiles);
+                selectedData.removeAll(selectedSubfiles);
+                selectedSubfiles.clear();
                 windingChangeSelection(syncWithTextEditors);
+                selectedData.addAll(backupSubfiles);
+                selectedSubfiles.addAll(backupSubfiles);
             }
 
         }
