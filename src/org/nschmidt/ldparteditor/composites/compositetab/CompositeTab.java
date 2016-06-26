@@ -1215,6 +1215,9 @@ public class CompositeTab extends CompositeTabDesign {
                         } catch (IllegalArgumentException consumed) {}
                     }
                 }
+                try {
+                    compositeText[0].setSelection(compositeText[0].getSelection().x, compositeText[0].getSelection().y - StringHelper.getLineDelimiter().length());
+                } catch (IllegalArgumentException consumed) {}
             }
 
             @Override
