@@ -53,6 +53,7 @@ class VM11HideShow extends VM10Selector {
         for (Vertex vert : selectedVertices) {
             Set<VertexManifestation> m = vertexLinkedToPositionInFile.get(vert);
             boolean isHidden = true;
+            if (m == null) continue;
             for (VertexManifestation vm : m) {
                 if (vm.getGdata().type() != 0 && vm.getGdata().visible) {
                     isHidden = false;
