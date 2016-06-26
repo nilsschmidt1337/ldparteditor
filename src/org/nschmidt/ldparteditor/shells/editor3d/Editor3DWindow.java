@@ -3944,6 +3944,7 @@ public class Editor3DWindow extends Editor3DDesign {
         mntm_setXYZ[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
+                final boolean noReset = (e.stateMask & SWT.CTRL) != SWT.CTRL;
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3995,31 +3996,86 @@ public class Editor3DWindow extends Editor3DDesign {
                             coordCount += CoordinatesDialog.isY() ? 1 : 0;
                             coordCount += CoordinatesDialog.isZ() ? 1 : 0;
                             if (coordCount == 1 && CoordinatesDialog.getStart() != null) {
-                                Vector3d delta = Vector3d.sub(CoordinatesDialog.getEnd(), CoordinatesDialog.getStart());
-                                boolean doMoveOnLine = false;
-                                BigDecimal s = BigDecimal.ZERO;
-                                Vector3d v1 = CoordinatesDialog.getStart();
-                                Vertex v2 = CoordinatesDialog.getVertex();
-                                if (CoordinatesDialog.isX() && delta.X.compareTo(BigDecimal.ZERO) != 0) {
-                                    doMoveOnLine = true;
-                                    s = v2.X.subtract(CoordinatesDialog.getStart().X).divide(delta.X, Threshold.mc);
-                                } else if (CoordinatesDialog.isY() && delta.Y.compareTo(BigDecimal.ZERO) != 0) {
-                                    doMoveOnLine = true;
-                                    s = v2.Y.subtract(CoordinatesDialog.getStart().Y).divide(delta.Y, Threshold.mc);
-                                } else if (CoordinatesDialog.isZ() && delta.Z.compareTo(BigDecimal.ZERO) != 0) {
-                                    doMoveOnLine = true;
-                                    s = v2.Z.subtract(CoordinatesDialog.getStart().Z).divide(delta.Z, Threshold.mc);
+                                TreeSet<Vertex> verts = new TreeSet<Vertex>();
+                                verts.addAll(vm.getSelectedVertices());
+                                vm.clearSelection();
+                                for (Vertex v2 : verts) {
+                                    final boolean a = CoordinatesDialog.isX();
+                                    final boolean b = CoordinatesDialog.isY();
+                                    final boolean c = CoordinatesDialog.isZ();
+                                    vm.getSelectedVertices().add(v2);
+                                    Vector3d delta = Vector3d.sub(CoordinatesDialog.getEnd(), CoordinatesDialog.getStart());
+                                    boolean doMoveOnLine = false;
+                                    BigDecimal s = BigDecimal.ZERO;
+                                    Vector3d v1 = CoordinatesDialog.getStart();                                    
+                                    if (CoordinatesDialog.isX() && delta.X.compareTo(BigDecimal.ZERO) != 0) {
+                                        doMoveOnLine = true;
+                                        s = v2.X.subtract(CoordinatesDialog.getStart().X).divide(delta.X, Threshold.mc);
+                                    } else if (CoordinatesDialog.isY() && delta.Y.compareTo(BigDecimal.ZERO) != 0) {
+                                        doMoveOnLine = true;
+                                        s = v2.Y.subtract(CoordinatesDialog.getStart().Y).divide(delta.Y, Threshold.mc);
+                                    } else if (CoordinatesDialog.isZ() && delta.Z.compareTo(BigDecimal.ZERO) != 0) {
+                                        doMoveOnLine = true;
+                                        s = v2.Z.subtract(CoordinatesDialog.getStart().Z).divide(delta.Z, Threshold.mc);
+                                    }
+                                    if (doMoveOnLine) {
+                                        CoordinatesDialog.setVertex(new Vertex(v1.X.add(delta.X.multiply(s)), v1.Y.add(delta.Y.multiply(s)), v1.Z.add(delta.Z.multiply(s))));
+                                        CoordinatesDialog.setX(true);
+                                        CoordinatesDialog.setY(true);
+                                        CoordinatesDialog.setZ(true);
+                                    }
+                                    vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedVertices().size() == 1, true);
+                                    vm.clearSelection();
+                                    CoordinatesDialog.setX(a);
+                                    CoordinatesDialog.setY(b);
+                                    CoordinatesDialog.setZ(c);
                                 }
-                                if (doMoveOnLine) {
-                                    CoordinatesDialog.setVertex(new Vertex(v1.X.add(delta.X.multiply(s)), v1.Y.add(delta.Y.multiply(s)), v1.Z.add(delta.Z.multiply(s))));
-                                    CoordinatesDialog.setX(true);
-                                    CoordinatesDialog.setY(true);
-                                    CoordinatesDialog.setZ(true);
-                                }
+                            }else if (coordCount == 2 && CoordinatesDialog.getStart() != null) {
+                                TreeSet<Vertex> verts = new TreeSet<Vertex>();
+                                verts.addAll(vm.getSelectedVertices());
+                                vm.clearSelection();
+                                for (Vertex v2 : verts) {
+                                    final boolean a = CoordinatesDialog.isX();
+                                    final boolean b = CoordinatesDialog.isY();
+                                    final boolean c = CoordinatesDialog.isZ();
+                                    vm.getSelectedVertices().add(v2);
+                                    Vector3d delta = Vector3d.sub(CoordinatesDialog.getEnd(), CoordinatesDialog.getStart());
+                                    boolean doMoveOnLine = false;
+                                    BigDecimal s = BigDecimal.ZERO;
+                                    Vector3d v1 = CoordinatesDialog.getStart();                                    
+                                    if (CoordinatesDialog.isX() && delta.X.compareTo(BigDecimal.ZERO) != 0) {
+                                        doMoveOnLine = true;
+                                        s = v2.X.subtract(CoordinatesDialog.getStart().X).divide(delta.X, Threshold.mc);
+                                    } else if (CoordinatesDialog.isY() && delta.Y.compareTo(BigDecimal.ZERO) != 0) {
+                                        doMoveOnLine = true;
+                                        s = v2.Y.subtract(CoordinatesDialog.getStart().Y).divide(delta.Y, Threshold.mc);
+                                    } else if (CoordinatesDialog.isZ() && delta.Z.compareTo(BigDecimal.ZERO) != 0) {
+                                        doMoveOnLine = true;
+                                        s = v2.Z.subtract(CoordinatesDialog.getStart().Z).divide(delta.Z, Threshold.mc);
+                                    }
+                                    BigDecimal X = !CoordinatesDialog.isX() ? v1.X.add(delta.X.multiply(s)) : v2.X;
+                                    BigDecimal Y = !CoordinatesDialog.isY() ? v1.Y.add(delta.Y.multiply(s)) : v2.Y;
+                                    BigDecimal Z = !CoordinatesDialog.isZ() ? v1.Z.add(delta.Z.multiply(s)) : v2.Z;
+                                    if (doMoveOnLine) {
+                                        CoordinatesDialog.setVertex(new Vertex(X, Y, Z));
+                                        CoordinatesDialog.setX(true);
+                                        CoordinatesDialog.setY(true);
+                                        CoordinatesDialog.setZ(true);
+                                    }
+                                    vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedVertices().size() == 1, true);
+                                    vm.clearSelection();
+                                    CoordinatesDialog.setX(a);
+                                    CoordinatesDialog.setY(b);
+                                    CoordinatesDialog.setZ(c);
+                                }          
+                            } else {
+                                vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedVertices().size() == 1, true);
                             }
-                            vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedVertices().size() == 1, true);
-                            CoordinatesDialog.setStart(null);
-                            CoordinatesDialog.setEnd(null);
+
+                            if (noReset) {
+                                CoordinatesDialog.setStart(null);
+                                CoordinatesDialog.setEnd(null);
+                            }
                         }
                         regainFocus();
                         return;
