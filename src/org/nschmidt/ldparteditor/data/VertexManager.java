@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.nio.FloatBuffer;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,6 +40,7 @@ import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -54,7 +56,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 public final class VertexManager extends VM99Clipboard {
 
     private volatile AtomicBoolean calculateCondlineControlPoints = new AtomicBoolean(true);
-
+    
     public VertexManager(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
@@ -64,7 +66,8 @@ public final class VertexManager extends VM99Clipboard {
 
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewport_Inverse();
-
+        Set<Vertex> tmpHiddenVertices = c3d.getTmpHiddenVertices();
+        
         Manipulator manipulator = c3d.getManipulator();
         FloatBuffer matrix = manipulator.getTempTransformation();
         FloatBuffer matrix_inv = manipulator.getTempTransformationInv();
@@ -72,8 +75,10 @@ public final class VertexManager extends VM99Clipboard {
 
         if (calculateCondlineControlPoints.compareAndSet(true, false)) {
             CompletableFuture.runAsync( () -> {
+                final Set<Vertex> tmpHiddenVertices2 = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+                tmpHiddenVertices2.addAll(hiddenVertices);
                 if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6) {
-                    if (!hiddenVertices.isEmpty()) {
+                    if (!tmpHiddenVertices.isEmpty()) {
                         boolean pureControlPoint;
                         for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
                             final Vertex vertex = entry.getKey();
@@ -87,7 +92,7 @@ public final class VertexManager extends VM99Clipboard {
                                     }
                                 }
                                 if (pureControlPoint) {
-                                    hiddenVertices.remove(vertex);
+                                    tmpHiddenVertices2.remove(vertex);
                                 }
                             }
                         }
@@ -106,11 +111,13 @@ public final class VertexManager extends VM99Clipboard {
                                 }
                             }
                             if (pureControlPoint) {
-                                hiddenVertices.add(vertex);
+                                tmpHiddenVertices2.add(vertex);
                             }
                         }
                     }
                 }
+                tmpHiddenVertices.clear();
+                tmpHiddenVertices.addAll(tmpHiddenVertices2);
                 calculateCondlineControlPoints.set(true);
             });
         }
@@ -126,7 +133,7 @@ public final class VertexManager extends VM99Clipboard {
                 GL11.glColor3f(View.vertex_Colour_r[0] * .5f, View.vertex_Colour_g[0] * .5f, View.vertex_Colour_b[0] * .5f);
                 GL11.glBegin(GL11.GL_POINTS);
                 for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
-                    if (hiddenVertices.contains(vertex))
+                    if (tmpHiddenVertices.contains(vertex))
                         continue;
                     GL11.glVertex3f(vertex.x, vertex.y, vertex.z);
                 }
@@ -136,7 +143,7 @@ public final class VertexManager extends VM99Clipboard {
             GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
             GL11.glBegin(GL11.GL_POINTS);
             for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
-                if (hiddenVertices.contains(vertex))
+                if (tmpHiddenVertices.contains(vertex))
                     continue;
                 GL11.glVertex3f(vertex.x + tr.x, vertex.y + tr.y, vertex.z + tr.z);
             }
@@ -486,7 +493,7 @@ public final class VertexManager extends VM99Clipboard {
             GL11.glBegin(GL11.GL_POINTS);
             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
             for (Vertex vertex : selectedVertices) {
-                if (hiddenVertices.contains(vertex))
+                if (tmpHiddenVertices.contains(vertex))
                     continue;
                 GL11.glVertex3f(vertex.x, vertex.y, vertex.z);
             }
