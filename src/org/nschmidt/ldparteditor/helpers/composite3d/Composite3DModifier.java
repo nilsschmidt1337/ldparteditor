@@ -168,6 +168,7 @@ public class Composite3DModifier {
         c3d.setShowingCondlineControlPoints(pointsShown);
         if (pointsShown) {
             c3d.getLockableDatFileReference().getVertexManager().getHiddenVertices().clear();
+            c3d.getTmpHiddenVertices().clear();
         }
     }
 

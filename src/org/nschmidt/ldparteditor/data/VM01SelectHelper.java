@@ -61,6 +61,7 @@ public class VM01SelectHelper extends VM01Select {
      */
     public synchronized boolean selectVertices(final Composite3D c3d, boolean addSomething) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
+        final boolean noCondlineVerts = !c3d.isShowingCondlineControlPoints();
         if (!c3d.getKeys().isCtrlPressed() && !addSomething || addSomething) {
             selectedVertices.clear();
         }
@@ -87,7 +88,7 @@ public class VM01SelectHelper extends VM01Select {
             final long complexity = c3d.isShowingHiddenVertices() ? vertexLinkedToPositionInFile.size() : vertexLinkedToPositionInFile.size() * ((long) triangles.size() + (long) quads.size());
             if (complexity < View.NUM_CORES * 100L) {
                 for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
-                    if (hiddenVertices.contains(vertex))
+                    if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
                         continue;
                     MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), selectionWidth);
                     if (selectionWidth.x * selectionWidth.x + selectionWidth.y * selectionWidth.y + selectionWidth.z * selectionWidth.z < discr) {
@@ -120,7 +121,7 @@ public class VM01SelectHelper extends VM01Select {
                             Vector4f result = new Vector4f();
                             for (int k = s; k < e; k++) {
                                 Vertex vertex = verts[k];
-                                if (hiddenVertices.contains(vertex))
+                                if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
                                     continue;
                                 MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), result);
                                 if (result.x * result.x + result.y * result.y + result.z * result.z < discr) {
@@ -208,7 +209,7 @@ public class VM01SelectHelper extends VM01Select {
                 float[][] A = new float[3][3];
                 float[] b = new float[3];
                 for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
-                    if (hiddenVertices.contains(vertex))
+                    if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
                         continue;
                     A[0][0] = selectionWidth.x;
                     A[1][0] = selectionWidth.y;
@@ -257,7 +258,7 @@ public class VM01SelectHelper extends VM01Select {
                             float[] b = new float[3];
                             for (int k = s; k < e; k++) {
                                 Vertex vertex = verts[k];
-                                if (hiddenVertices.contains(vertex))
+                                if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
                                     continue;
                                 A[0][0] = selectionWidth.x;
                                 A[1][0] = selectionWidth.y;
@@ -430,7 +431,8 @@ public class VM01SelectHelper extends VM01Select {
      */
     private synchronized void selectVertices2(final Composite3D c3d) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
-
+        final boolean noCondlineVerts = !c3d.isShowingCondlineControlPoints();
+        
         final Vector4f selectionStart = new Vector4f(c3d.getSelectionStart());
         final Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
         final Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
@@ -454,7 +456,7 @@ public class VM01SelectHelper extends VM01Select {
             final long complexity = c3d.isShowingHiddenVertices() ? vertexLinkedToPositionInFile.size() : vertexLinkedToPositionInFile.size() * ((long) triangles.size() + (long) quads.size());
             if (complexity < View.NUM_CORES * 100L) {
                 for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
-                    if (hiddenVertices.contains(vertex))
+                    if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
                         continue;
                     MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), selectionWidth);
                     if (selectionWidth.x * selectionWidth.x + selectionWidth.y * selectionWidth.y + selectionWidth.z * selectionWidth.z < discr) {
@@ -487,7 +489,7 @@ public class VM01SelectHelper extends VM01Select {
                             Vector4f result = new Vector4f();
                             for (int k = s; k < e; k++) {
                                 Vertex vertex = verts[k];
-                                if (hiddenVertices.contains(vertex))
+                                if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
                                     continue;
                                 MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), result);
                                 if (result.x * result.x + result.y * result.y + result.z * result.z < discr) {
@@ -574,7 +576,7 @@ public class VM01SelectHelper extends VM01Select {
                 float[][] A = new float[3][3];
                 float[] b = new float[3];
                 for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
-                    if (hiddenVertices.contains(vertex))
+                    if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
                         continue;
                     A[0][0] = selectionWidth.x;
                     A[1][0] = selectionWidth.y;
@@ -623,7 +625,7 @@ public class VM01SelectHelper extends VM01Select {
                             float[] b = new float[3];
                             for (int k = s; k < e; k++) {
                                 Vertex vertex = verts[k];
-                                if (hiddenVertices.contains(vertex))
+                                if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
                                     continue;
                                 A[0][0] = selectionWidth.x;
                                 A[1][0] = selectionWidth.y;
