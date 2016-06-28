@@ -205,7 +205,7 @@ class VM03Adjacency extends VM02Add {
         }
         return false;
     }
-
+    
     /**
      * Tests, if two surfaces share a common edge
      * @param g1 a surface

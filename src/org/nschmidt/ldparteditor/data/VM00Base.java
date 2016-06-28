@@ -192,6 +192,21 @@ class VM00Base {
         if (result.startsWith("0."))return result.substring(1); //$NON-NLS-1$
         return result;
     }
+    
+    public boolean isPureCondlineControlPoint(Vertex v) {
+        boolean pureControlPoint = false;
+        Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
+        if (manis != null) {
+            pureControlPoint = true;
+            for (VertexManifestation m : manis) {
+                if (m.getPosition() < 2 || m.getGdata().type() != 5) {
+                    pureControlPoint = false;
+                    break;
+                }
+            }
+        }
+        return pureControlPoint;
+    }
 
     public final void syncWithTextEditors(boolean addHistory) {
 
