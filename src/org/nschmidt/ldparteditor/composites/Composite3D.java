@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.composites;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -87,6 +88,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.MouseActions;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -149,6 +151,8 @@ public class Composite3D extends ScalableComposite {
     private float zoom;
 
     private final Vector4f screenXY = new Vector4f(0, 0, 0, 1);
+    
+    private final Set<Vertex> tmpHiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
     public Vector4f getScreenXY() {
         return screenXY;
@@ -2112,5 +2116,9 @@ public class Composite3D extends ScalableComposite {
     public void setSyncZoom(boolean syncZoom) {
         this.syncZoom = syncZoom;
         mntmSyncZoom[0].setSelection(syncZoom);
+    }
+
+    public Set<Vertex> getTmpHiddenVertices() {
+        return tmpHiddenVertices;
     }
 }
