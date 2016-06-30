@@ -2323,7 +2323,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 }
                                 // Project.getParsedFiles().add(df); IS NECESSARY HERE
                                 Project.getParsedFiles().add(df);
-                                new EditorTextWindow().run(df);
+                                new EditorTextWindow().run(df, false);
                                 df.getVertexManager().addSnapshot();
                             } else {
                                 // MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
@@ -4393,7 +4393,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         updateTree_unsavedEntries();
 
                                         EditorTextWindow txt = new EditorTextWindow();
-                                        txt.run(main);
+                                        txt.run(main, false);
 
                                         for (DatFile df : dfsToOpen) {
                                             txt.openNewDatFileTab(df);
@@ -5726,7 +5726,7 @@ public class Editor3DWindow extends Editor3DDesign {
         txt_Search[0].setText(""); //$NON-NLS-1$
 
         Project.getFileToEdit().setLastSelectedComposite(Editor3DWindow.renders.get(0).getC3D());
-        new EditorTextWindow().run(Project.getFileToEdit());
+        new EditorTextWindow().run(Project.getFileToEdit(), true);
 
         updateBgPictureTab();
         Project.getFileToEdit().addHistory();
@@ -5888,7 +5888,8 @@ public class Editor3DWindow extends Editor3DDesign {
         boolean unsavedProjectFiles = false;
         Set<DatFile> unsavedFiles = new HashSet<DatFile>(Project.getUnsavedFiles());
         for (DatFile df : unsavedFiles) {
-            if (!df.getText().equals(df.getOriginalText()) || df.isVirtual() && !df.getText().trim().isEmpty()) {
+            final String text = df.getText(); 
+            if ((!text.equals(df.getOriginalText()) || df.isVirtual() && !text.trim().isEmpty()) && !text.equals(WorkbenchManager.getDefaultFileHeader())) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
                 messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
 
@@ -7521,7 +7522,7 @@ public class Editor3DWindow extends Editor3DDesign {
             if (tWin == null) {
                 // Project.getParsedFiles().add(df); IS NECESSARY HERE
                 Project.getParsedFiles().add(df);
-                new EditorTextWindow().run(df);
+                new EditorTextWindow().run(df, false);
             }
         }
         return false;
