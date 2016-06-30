@@ -1146,33 +1146,8 @@ class Editor3DDesign extends ApplicationWindow {
                                 } catch (LDParsingException e1) {
                                 }
                             }
-                        } else {
-                            final StringBuilder sb = new StringBuilder();
-                            sb.append("0 "); //$NON-NLS-1$
-                            sb.append(StringHelper.getLineDelimiter());
-                            sb.append("0 Name: new.dat"); //$NON-NLS-1$
-                            sb.append(StringHelper.getLineDelimiter());
-                            String ldrawName = WorkbenchManager.getUserSettingState().getLdrawUserName();
-                            if (ldrawName == null || ldrawName.isEmpty()) {
-                                sb.append("0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName()); //$NON-NLS-1$
-                            } else {
-                                sb.append("0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName() + " [" + WorkbenchManager.getUserSettingState().getLdrawUserName() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            }
-                            sb.append(StringHelper.getLineDelimiter());
-                            sb.append("0 !LDRAW_ORG Unofficial_Part"); //$NON-NLS-1$
-                            sb.append(StringHelper.getLineDelimiter());
-                            String license = WorkbenchManager.getUserSettingState().getLicense();
-                            if (license == null || license.isEmpty()) {
-                                sb.append("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
-                            } else {
-                                sb.append(license);
-                            }
-                            sb.append(StringHelper.getLineDelimiter());
-                            sb.append(StringHelper.getLineDelimiter());
-                            sb.append("0 BFC CERTIFY CCW"); //$NON-NLS-1$
-                            sb.append(StringHelper.getLineDelimiter());
-                            sb.append(StringHelper.getLineDelimiter());
-                            Project.getFileToEdit().setText(sb.toString());
+                        } else {                            
+                            Project.getFileToEdit().setText(WorkbenchManager.getDefaultFileHeader());
                         }
 
                         TreeItem treeItemProjectSubparts = new TreeItem(treeItemProjectName, SWT.NONE);

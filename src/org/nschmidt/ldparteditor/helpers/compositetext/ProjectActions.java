@@ -87,7 +87,8 @@ public enum ProjectActions {
             Set<DatFile> unsavedFiles = new HashSet<DatFile>(Project.getUnsavedFiles());
             for (DatFile df : unsavedFiles) {
                 if (ignoreNonProjectFiles && !df.isProjectFile()) continue;
-                if (!df.getText().trim().equals("")) { //$NON-NLS-1$
+                final String text = df.getText();
+                if (!text.trim().equals("") && !text.equals(WorkbenchManager.getDefaultFileHeader())) { //$NON-NLS-1$
                     MessageBox messageBox = new MessageBox(win.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
                     messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
 

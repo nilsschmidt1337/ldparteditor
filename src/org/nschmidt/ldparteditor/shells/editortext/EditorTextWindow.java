@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CTabFolder2Listener;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
@@ -119,7 +120,7 @@ public class EditorTextWindow extends EditorTextDesign {
     /**
      * Run a fresh instance of this window
      */
-    public void run(DatFile fileToOpen) {
+    public void run(DatFile fileToOpen, boolean closeASAP) {
         Project.getOpenTextWindows().add(this);
         // Load the window state data
         this.editorTextWindowState = WorkbenchManager.getEditorTextWindowState();
@@ -137,8 +138,12 @@ public class EditorTextWindow extends EditorTextDesign {
         sh.getDisplay().asyncExec(new Runnable() {
             @Override
             public void run() {
-                sh.setMaximized(editorTextWindowState.getWindowState().isMaximized());
-                sh.forceActive();
+                try {
+                    if (!sh.isDisposed()) {
+                        sh.setMaximized(editorTextWindowState.getWindowState().isMaximized());
+                        sh.forceActive();
+                    }
+                } catch (SWTException consumed) {}
             }
         });
         // The window reference have to be added to the tab folder
@@ -1050,6 +1055,9 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
         this.open();
+        if (closeASAP) {
+            closeTabWithDatfile(Project.getFileToEdit());
+        }
     }
 
     /**
@@ -1176,7 +1184,8 @@ public class EditorTextWindow extends EditorTextDesign {
         unsavedFiles.retainAll(myFiles);
 
         for (DatFile df : unsavedFiles) {
-            if (df != null && !df.getText().equals(df.getOriginalText()) || df.isVirtual() && !df.getText().trim().isEmpty()) {
+            final String text = df.getText();
+            if (df != null && !text.equals(df.getOriginalText()) || df.isVirtual() && !text.trim().isEmpty() && !text.equals(WorkbenchManager.getDefaultFileHeader())) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
                 messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
 

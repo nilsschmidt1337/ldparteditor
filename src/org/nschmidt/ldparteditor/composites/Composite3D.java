@@ -422,7 +422,7 @@ public class Composite3D extends ScalableComposite {
                 }
                 // Project.getParsedFiles().add(df); IS NECESSARY HERE
                 Project.getParsedFiles().add(df);
-                new EditorTextWindow().run(df);
+                new EditorTextWindow().run(df, false);
             }
         });
         mntmOpenInTextEditor.setText(I18n.C3D_OpenInText);
@@ -499,7 +499,7 @@ public class Composite3D extends ScalableComposite {
                     Project.getParsedFiles().add(df);
 
                     final EditorTextWindow win = new EditorTextWindow();
-                    win.run(df);
+                    win.run(df, false);
                     win.open();
                     for (final CTabItem t : win.getTabFolder().getItems()) {
                         if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
