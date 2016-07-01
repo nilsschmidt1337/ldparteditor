@@ -21,6 +21,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+
 class VM15Flipper extends VM14Splitter {
 
     protected VM15Flipper(DatFile linkedDatFile) {
@@ -30,6 +32,9 @@ class VM15Flipper extends VM14Splitter {
     public void flipSelection() {
 
         if (linkedDatFile.isReadOnly()) return;
+        
+        final boolean adjacentData = Editor3DWindow.getWindow().isMovingAdjacentData();
+        Editor3DWindow.getWindow().setMovingAdjacentData(false);
 
         final Set<GData2> newLines = new HashSet<GData2>();
         final Set<GData3> newTriangles = new HashSet<GData3>();
@@ -229,7 +234,7 @@ class VM15Flipper extends VM14Splitter {
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
         delete(false, false);
-
+        
         clearSelection();
 
         selectedLines.addAll(newLines);
@@ -240,6 +245,8 @@ class VM15Flipper extends VM14Splitter {
         selectedData.addAll(selectedTriangles);
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
+        
+        Editor3DWindow.getWindow().setMovingAdjacentData(adjacentData);
 
         if (isModified()) {
             syncWithTextEditors(true);
