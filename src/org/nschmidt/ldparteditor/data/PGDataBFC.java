@@ -56,8 +56,21 @@ public final class PGDataBFC extends PGData implements Serializable {
             PGData.localWinding = BFC.CW;
             break;
         case BFC.INVERTNEXT:
-            PGData.globalInvertNext = !PGData.globalInvertNext;
-            PGData.globalInvertNextFound = true;
+            boolean validState = false;
+            PGData g = getNext();
+            while (g != null && g.type() < 2) {
+                if (g.type() == 1) {
+                    validState = true;
+                    break;
+                } else if (!g.toString().trim().isEmpty()) {
+                    break;
+                }
+                g = g.getNext();
+            }
+            if (validState) {
+                PGData.globalInvertNext = !PGData.globalInvertNext;
+                PGData.globalInvertNextFound = true;
+            }
             break;
         case BFC.NOCERTIFY:
             PGData.localWinding = BFC.NOCERTIFY;

@@ -105,7 +105,7 @@ public final class GDataBFC extends GData {
             GData g = next;
             while (g != null && g.type() < 2) {
                 if (g.type() == 1) {
-                    validState = true;
+                    if (g.visible) validState = true;
                     break;
                 } else if (!g.toString().trim().isEmpty()) {
                     break;
@@ -212,7 +212,7 @@ public final class GDataBFC extends GData {
             GData g = next;
             while (g != null && g.type() < 2) {
                 if (g.type() == 1) {
-                    validState = true;
+                    if (g.visible) validState = true;
                     break;
                 } else if (!g.toString().trim().isEmpty()) {
                     break;
@@ -283,7 +283,7 @@ public final class GDataBFC extends GData {
             GData g = next;
             while (g != null && g.type() < 2) {
                 if (g.type() == 1) {
-                    validState = true;
+                    if (g.visible) validState = true;
                     break;
                 } else if (!g.toString().trim().isEmpty()) {
                     break;
