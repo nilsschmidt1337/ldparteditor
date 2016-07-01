@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
@@ -57,6 +58,8 @@ class RotateDesign extends Dialog {
     final BigDecimalSpinner[] spn_pX = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_pY = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_pZ = new BigDecimalSpinner[1];
+    
+    private final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
 
     // Use final only for subclass/listener references!
 
@@ -167,7 +170,7 @@ class RotateDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(1, true));
 
-            BigDecimalSpinner spn_pX = new BigDecimalSpinner(cmp_txt, SWT.NONE);
+            BigDecimalSpinner spn_pX = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
             this.spn_pX[0] = spn_pX;
             spn_pX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spn_pX.setMaximum(new BigDecimal(1000000));
@@ -181,7 +184,7 @@ class RotateDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(1, true));
 
-            BigDecimalSpinner spn_pY = new BigDecimalSpinner(cmp_txt, SWT.NONE);
+            BigDecimalSpinner spn_pY = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
             this.spn_pY[0] = spn_pY;
             spn_pY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spn_pY.setMaximum(new BigDecimal(1000000));
@@ -194,7 +197,7 @@ class RotateDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(1, true));
 
-            BigDecimalSpinner spn_pZ = new BigDecimalSpinner(cmp_txt, SWT.NONE);
+            BigDecimalSpinner spn_pZ = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
             this.spn_pZ[0] = spn_pZ;
             spn_pZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spn_pZ.setMaximum(new BigDecimal(1000000));
