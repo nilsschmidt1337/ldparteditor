@@ -215,6 +215,9 @@ class VM15Flipper extends VM14Splitter {
         }
 
         for (GData5 g : effSelectedCondlines) {
+            if (clinesToDelete2.contains(g)) {
+                continue;
+            }
             GData5 n = new GData5(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X2, g.Y2, g.Z2), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X4, g.Y4, g.Z4), g.parent, linkedDatFile);
             newCondlines.add(n);
             linkedDatFile.insertAfter(g, n);
