@@ -267,9 +267,10 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Options = new MenuItem[1];
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
-    
-    final MenuItem[] mntm_SavePalette = new MenuItem[1];
+       
     final MenuItem[] mntm_LoadPalette = new MenuItem[1];
+    final MenuItem[] mntm_ResetPalette = new MenuItem[1];
+    final MenuItem[] mntm_SavePalette = new MenuItem[1];
     final MenuItem[] mntm_SetPaletteSize = new MenuItem[1];
     
     final MenuItem[] mntm_UploadLogs = new MenuItem[1];
@@ -2165,6 +2166,11 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_SetPaletteSize = new MenuItem(mnu_Tools, SWT.PUSH);
                     this.mntm_SetPaletteSize[0] = mntm_SetPaletteSize;
                     mntm_SetPaletteSize.setText(I18n.E3D_PaletteSetSize);
+                }
+                {
+                    MenuItem mntm_ResetPalette = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_ResetPalette[0] = mntm_ResetPalette;
+                    mntm_ResetPalette.setText(I18n.E3D_PaletteReset);
                 }
                 {
                     final MenuItem mntm_SetIconSize = new MenuItem(mnu_Tools, SWT.CASCADE);
