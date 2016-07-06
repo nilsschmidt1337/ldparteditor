@@ -4863,6 +4863,27 @@ public class Editor3DWindow extends Editor3DDesign {
                         Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
                     }
                     
+                    UTF8PrintWriter r = null;
+                    try {
+                        r = new UTF8PrintWriter(newPath);
+                        int x = 0;
+                        for (GColour col : WorkbenchManager.getUserSettingState().getUserPalette()) {
+                            r.println("1 " + col + " " + x + " 0 0 1 0 0 0 1 0 0 0 1 rect.dat"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            x += 2;
+                        }
+                        r.flush();
+                        r.close();
+                    } catch (Exception ex) {
+                        MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                        messageBoxError.setText(I18n.DIALOG_Error);
+                        messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                        messageBoxError.open();
+                    } finally {
+                        if (r != null) {
+                            r.close();
+                        }
+                    }
+                    
                 }
                 
                 regainFocus();
