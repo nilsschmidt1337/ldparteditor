@@ -487,6 +487,7 @@ public final class I18n {
     public static final String E3D_Options = E3D.getString(getProperty());
     public static final String E3D_Origin = E3D.getString(getProperty());
     public static final String E3D_PaletteLoad = E3D.getString(getProperty());
+    public static final String E3D_PaletteReset = E3D.getString(getProperty());
     public static final String E3D_PaletteSave = E3D.getString(getProperty());
     public static final String E3D_PaletteSetSize = E3D.getString(getProperty());
     public static final String E3D_ParseInline = E3D.getString(getProperty());    

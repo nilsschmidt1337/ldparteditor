@@ -5007,6 +5007,29 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
+        
+        mntm_ResetPalette[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+
+                final List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
+                colours.clear();
+
+                while (colours.size() < 17) {
+                    if (colours.size() == 8) {
+                        colours.add(View.getLDConfigColour(72));
+                    } else {
+                        colours.add(View.getLDConfigColour(colours.size()));
+                    }
+                }
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    w.reloadColours();
+                }
+                reloadColours();
+
+                regainFocus();
+            }
+        });
 
         mntm_UploadLogs[0].addSelectionListener(new SelectionAdapter() {
             @Override
