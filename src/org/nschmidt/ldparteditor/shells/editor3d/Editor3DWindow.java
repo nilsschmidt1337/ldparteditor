@@ -4841,8 +4841,6 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 
-                // FIXME Needs implementation!
-                
                 FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
                 
                 dlg.setFilterPath(Project.getLastVisitedPath());
@@ -4894,8 +4892,6 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 
-                // FIXME Needs implementation!
-                
                 FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.OPEN);
                 
                 dlg.setFilterPath(Project.getLastVisitedPath());
@@ -4914,6 +4910,37 @@ public class Editor3DWindow extends Editor3DDesign {
                     final File f = new File(newPath);
                     if (f.getParentFile() != null) {
                         Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                    }
+                    
+                    final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
+                    ArrayList<GColour> pal = WorkbenchManager.getUserSettingState().getUserPalette();
+                    ArrayList<GColour> newPal = new ArrayList<GColour>();
+                    
+                    
+                    UTF8BufferedReader reader = null;
+                    try {
+                        reader = new UTF8BufferedReader(newPath);
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            final String[] data_segments = WHITESPACE.split(line.trim());
+                            if (data_segments.length > 1) {
+                                GColour c = DatParser.validateColour(data_segments[1], 0f, 0f, 0f, 1f);
+                                if (c != null) {
+                                    newPal.add(c.clone());
+                                }
+                            }
+                        }
+                        pal.clear();
+                        pal.addAll(newPal);
+                    } catch (LDParsingException ex) {
+                    } catch (FileNotFoundException ex) {
+                    } catch (UnsupportedEncodingException ex) {
+                    } finally {
+                        try {
+                            if (reader != null)
+                                reader.close();
+                        } catch (LDParsingException ex2) {
+                        }
                     }
                     
                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
