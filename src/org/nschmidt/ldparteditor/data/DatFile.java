@@ -646,7 +646,24 @@ public final class DatFile {
                     }
                     g = g.next;
                 }
-                if (!validState) {
+                if (validState) {
+                    
+                    if (getVertexManager().isFlat((GData1) g)) {
+                        position = compositeText.getOffsetAtLine(lineNumber - 1);
+                        Object[] messageArguments = {lineNumber, position};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.DATFILE_Line);
+
+                        TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
+                        trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
+                        trtmNewTreeitem.setVisible(false);
+                        trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                        trtmNewTreeitem.setData(position);
+                    }
+                    
+                } else {           
+                    
                     position = compositeText.getOffsetAtLine(lineNumber - 1);
                     Object[] messageArguments = {lineNumber, position};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
@@ -800,7 +817,24 @@ public final class DatFile {
                     }
                     g = g.next;
                 }
-                if (!validState) {
+                if (validState) {
+                    
+                    if (getVertexManager().isFlat((GData1) g)) {
+                        position = compositeText.getOffsetAtLine(lineNumber - 1);
+                        Object[] messageArguments = {lineNumber, position};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.DATFILE_Line);
+
+                        TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
+                        trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
+                        trtmNewTreeitem.setVisible(false);
+                        trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                        trtmNewTreeitem.setData(position);
+                    }
+                    
+                } else {           
+                    
                     position = compositeText.getOffsetAtLine(lineNumber - 1);
                     Object[] messageArguments = {lineNumber, position};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$

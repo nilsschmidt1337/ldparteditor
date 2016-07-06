@@ -29,10 +29,46 @@ class VM23FlatSubfileTester extends VM22TJunctionFixer {
     protected VM23FlatSubfileTester(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
+    
+    public boolean isFlat(GData1 ref) {
+        
+        if (ref == null) return false;
+        
+        Matrix4f tMatrix = (Matrix4f) ref.accurateLocalMatrix.getMatrix4f().invert();
+        
+        boolean plainOnX = true;
+        boolean plainOnY = true;
+        boolean plainOnZ = true;
+
+        Set<VertexInfo> verts = lineLinkedToVertices.get(ref);
+        if (verts == null) return false;
+        for (VertexInfo vi : verts) {
+            Vector4f vert = vi.vertex.toVector4f();
+            vert.setX(vert.x / 1000f);
+            vert.setY(vert.y / 1000f);
+            vert.setZ(vert.z / 1000f);
+            Vector4f vert2 = Matrix4f.transform(tMatrix, vert, null);
+
+            if (plainOnX && Math.abs(vert2.x) > 0.001f) {
+                plainOnX = false;
+            }
+            if (plainOnY && Math.abs(vert2.y) > 0.001f) {
+                plainOnY = false;
+            }
+            if (plainOnZ && Math.abs(vert2.z) > 0.001f) {
+                plainOnZ = false;
+            }
+            if (!plainOnX && !plainOnY && !plainOnZ) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 
     public ArrayList<ParsingResult> checkForFlatScaling(GData1 ref) {
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
-
+        
         Matrix4f tMatrix = (Matrix4f) ref.accurateLocalMatrix.getMatrix4f().invert();
 
         boolean plainOnX = true;
