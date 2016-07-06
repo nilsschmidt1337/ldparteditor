@@ -35,6 +35,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
@@ -4832,6 +4833,85 @@ public class Editor3DWindow extends Editor3DDesign {
                         SubfileCompiler.compile(df, false, false);
                     }
                 }
+                regainFocus();
+            }
+        });
+        
+        mntm_SavePalette[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                
+                // FIXME Needs implementation!
+                
+                regainFocus();
+            }
+        });
+        
+        mntm_LoadPalette[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                
+                // FIXME Needs implementation!
+                
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    w.reloadColours();
+                }
+                reloadColours();
+                
+                regainFocus();
+            }
+        });
+        
+        mntm_SetPaletteSize[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                
+                final List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
+                
+                final int[] frac = new int[]{2};
+                if (new ValueDialogInt(getShell(), I18n.E3D_PaletteSetSize, "") { //$NON-NLS-1$
+
+                    @Override
+                    public void initializeSpinner() {
+                        this.spn_Value[0].setMinimum(1);
+                        this.spn_Value[0].setMaximum(100);
+                        this.spn_Value[0].setValue(colours.size());
+                    }
+
+                    @Override
+                    public void applyValue() {
+                        frac[0] = this.spn_Value[0].getValue();
+                    }
+                }.open() == OK) {
+
+                    final boolean reBuild = frac[0] != colours.size();
+                    
+                    if (frac[0] > colours.size()) {
+                        while (frac[0] > colours.size()) {
+                            if (colours.size() < 17) {
+                                if (colours.size() == 8) {
+                                    colours.add(View.getLDConfigColour(72));
+                                } else {
+                                    colours.add(View.getLDConfigColour(colours.size()));
+                                }
+                            } else {
+                                colours.add(View.getLDConfigColour(16));
+                            }
+                        }
+                    } else {
+                        while (frac[0] < colours.size()) {
+                            colours.remove(colours.size() - 1);
+                        }
+                    }
+                    
+                    if (reBuild) {
+                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                            w.reloadColours();
+                        }
+                        reloadColours();
+                    }
+                }
+                
                 regainFocus();
             }
         });

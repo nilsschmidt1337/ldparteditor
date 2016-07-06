@@ -106,6 +106,7 @@ class EditorTextDesign extends ApplicationWindow {
     final Button[] btn_Annotate = new Button[1];
 
     private Composite toolBar;
+    private ToolItem toolItem_ColourBar;
     /**
      * The reference to the underlying business logic (only for testing
      * purpose!)
@@ -319,24 +320,14 @@ class EditorTextDesign extends ApplicationWindow {
 
         {
             ToolItem toolItem_Colours = new ToolItem(toolBar, SWT.NONE, true);
+            toolItem_ColourBar = toolItem_Colours;
             List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
-            addColorButton(toolItem_Colours, colours.get(0), 0);
-            addColorButton(toolItem_Colours, colours.get(1), 1);
-            addColorButton(toolItem_Colours, colours.get(2), 2);
-            addColorButton(toolItem_Colours, colours.get(3), 3);
-            addColorButton(toolItem_Colours, colours.get(4), 4);
-            addColorButton(toolItem_Colours, colours.get(5), 5);
-            addColorButton(toolItem_Colours, colours.get(6), 6);
-            addColorButton(toolItem_Colours, colours.get(7), 7);
-            addColorButton(toolItem_Colours, colours.get(8), 8);
-            addColorButton(toolItem_Colours, colours.get(9), 9);
-            addColorButton(toolItem_Colours, colours.get(10), 10);
-            addColorButton(toolItem_Colours, colours.get(11), 11);
-            addColorButton(toolItem_Colours, colours.get(12), 12);
-            addColorButton(toolItem_Colours, colours.get(13), 13);
-            addColorButton(toolItem_Colours, colours.get(14), 14);
-            addColorButton(toolItem_Colours, colours.get(15), 15);
-            addColorButton(toolItem_Colours, colours.get(16), 16);
+            
+            final int size = colours.size();
+            for (int i = 0; i < size; i++) {
+                addColorButton(toolItem_Colours, colours.get(i), i);
+            }
+            
             {
                 Button btn_Palette = new Button(toolItem_Colours, SWT.NONE);
                 this.btn_Palette[0] = btn_Palette;
@@ -572,5 +563,28 @@ class EditorTextDesign extends ApplicationWindow {
                 }
             }
         });
+    }
+    
+    public void reloadColours() {
+        for (Control ctrl : toolItem_ColourBar.getChildren()) {
+            ctrl.dispose();
+        }
+        
+        List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
+        
+        final int size = colours.size();
+        for (int i = 0; i < size; i++) {
+            addColorButton(toolItem_ColourBar, colours.get(i), i);
+        }
+        
+        {
+            Button btn_Palette = new Button(toolItem_ColourBar, SWT.NONE);
+            this.btn_Palette[0] = btn_Palette;
+            btn_Palette.setToolTipText(I18n.E3D_More);
+            btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
+        }
+        
+        toolItem_ColourBar.getParent().layout();
+        toolItem_ColourBar.redraw();
     }
 }
