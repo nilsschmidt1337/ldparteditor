@@ -267,6 +267,11 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Options = new MenuItem[1];
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
+    
+    final MenuItem[] mntm_SavePalette = new MenuItem[1];
+    final MenuItem[] mntm_LoadPalette = new MenuItem[1];
+    final MenuItem[] mntm_SetPaletteSize = new MenuItem[1];
+    
     final MenuItem[] mntm_UploadLogs = new MenuItem[1];
     final MenuItem[] mntm_AntiAliasing = new MenuItem[1];
     final MenuItem[] mntm_SyncWithTextEditor = new MenuItem[1];
@@ -408,6 +413,8 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_IconSize4 = new MenuItem[1];
     final MenuItem[] mntm_IconSize5 = new MenuItem[1];
     final MenuItem[] mntm_IconSize6 = new MenuItem[1];
+    
+    private ToolItem toolItem_ColourBar;
 
     private static SashForm sashForm;
 
@@ -1489,25 +1496,15 @@ class Editor3DDesign extends ApplicationWindow {
             break;
         }
         ToolItem toolItem_Colours = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
+        toolItem_ColourBar = toolItem_Colours;
         List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
-
-        addColorButton(toolItem_Colours, colours.get(0), 0);
-        addColorButton(toolItem_Colours, colours.get(1), 1);
-        addColorButton(toolItem_Colours, colours.get(2), 2);
-        addColorButton(toolItem_Colours, colours.get(3), 3);
-        addColorButton(toolItem_Colours, colours.get(4), 4);
-        addColorButton(toolItem_Colours, colours.get(5), 5);
-        addColorButton(toolItem_Colours, colours.get(6), 6);
-        addColorButton(toolItem_Colours, colours.get(7), 7);
-        addColorButton(toolItem_Colours, colours.get(8), 8);
-        addColorButton(toolItem_Colours, colours.get(9), 9);
-        addColorButton(toolItem_Colours, colours.get(10), 10);
-        addColorButton(toolItem_Colours, colours.get(11), 11);
-        addColorButton(toolItem_Colours, colours.get(12), 12);
-        addColorButton(toolItem_Colours, colours.get(13), 13);
-        addColorButton(toolItem_Colours, colours.get(14), 14);
-        addColorButton(toolItem_Colours, colours.get(15), 15);
-        addColorButton(toolItem_Colours, colours.get(16), 16);
+        
+        {
+            final int size = colours.size();
+            for (int i = 0; i < size; i++) {
+                addColorButton(toolItem_Colours, colours.get(i), i);
+            }
+        }
 
         {
             Button btn_Palette = new Button(toolItem_Colours, SWT.NONE);
@@ -1515,6 +1512,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Palette.setToolTipText(I18n.E3D_More);
             btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
         }
+        
         ToolItem toolItem_ColourFunctions = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_LastUsedColour = new Button(toolItem_ColourFunctions, SWT.NONE);
@@ -2152,6 +2150,21 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_SelectAnotherLDConfig = new MenuItem(mnu_Tools, SWT.PUSH);
                     this.mntm_SelectAnotherLDConfig[0] = mntm_SelectAnotherLDConfig;
                     mntm_SelectAnotherLDConfig.setText(I18n.E3D_SelectLDConfig);
+                }
+                {
+                    MenuItem mntm_SavePalette = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_SavePalette[0] = mntm_SavePalette;
+                    mntm_SavePalette.setText(I18n.E3D_PaletteSave);
+                }
+                {
+                    MenuItem mntm_LoadPalette = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_LoadPalette[0] = mntm_LoadPalette;
+                    mntm_LoadPalette.setText(I18n.E3D_PaletteLoad);
+                }
+                {
+                    MenuItem mntm_SetPaletteSize = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_SetPaletteSize[0] = mntm_SetPaletteSize;
+                    mntm_SetPaletteSize.setText(I18n.E3D_PaletteSetSize);
                 }
                 {
                     final MenuItem mntm_SetIconSize = new MenuItem(mnu_Tools, SWT.CASCADE);
@@ -3152,5 +3165,28 @@ class Editor3DDesign extends ApplicationWindow {
 
     public static int getIconsize() {
         return iconSize;
+    }
+    
+    public void reloadColours() {
+        for (Control ctrl : toolItem_ColourBar.getChildren()) {
+            ctrl.dispose();
+        }
+        
+        List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
+        
+        final int size = colours.size();
+        for (int i = 0; i < size; i++) {
+            addColorButton(toolItem_ColourBar, colours.get(i), i);
+        }
+        
+        {
+            Button btn_Palette = new Button(toolItem_ColourBar, SWT.NONE);
+            this.btn_Palette[0] = btn_Palette;
+            btn_Palette.setToolTipText(I18n.E3D_More);
+            btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
+        }
+        
+        toolItem_ColourBar.getParent().layout();
+        toolItem_ColourBar.redraw();
     }
 }
