@@ -3187,6 +3187,7 @@ class Editor3DDesign extends ApplicationWindow {
         }
         
         toolItem_ColourBar.getParent().layout();
+        toolItem_ColourBar.layout();
         toolItem_ColourBar.redraw();
     }
 }

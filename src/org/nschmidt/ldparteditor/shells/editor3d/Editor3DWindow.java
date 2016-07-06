@@ -4843,6 +4843,28 @@ public class Editor3DWindow extends Editor3DDesign {
                 
                 // FIXME Needs implementation!
                 
+                FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
+                
+                dlg.setFilterPath(Project.getLastVisitedPath());
+
+                dlg.setFilterExtensions(new String[]{"*_pal.dat"}); //$NON-NLS-1$
+                dlg.setOverwrite(true);
+
+                // Change the title bar text
+                dlg.setText(I18n.E3D_PaletteSave);
+
+                // Calling open() will open and run the dialog.
+                // It will return the selected file, or
+                // null if user cancels
+                String newPath = dlg.open();
+                if (newPath != null) {
+                    final File f = new File(newPath);
+                    if (f.getParentFile() != null) {
+                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                    }
+                    
+                }
+                
                 regainFocus();
             }
         });
@@ -4853,10 +4875,32 @@ public class Editor3DWindow extends Editor3DDesign {
                 
                 // FIXME Needs implementation!
                 
-                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    w.reloadColours();
+                FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.OPEN);
+                
+                dlg.setFilterPath(Project.getLastVisitedPath());
+
+                dlg.setFilterExtensions(new String[]{"*_pal.dat"}); //$NON-NLS-1$
+                dlg.setOverwrite(true);
+
+                // Change the title bar text
+                dlg.setText(I18n.E3D_PaletteLoad);
+
+                // Calling open() will open and run the dialog.
+                // It will return the selected file, or
+                // null if user cancels
+                String newPath = dlg.open();
+                if (newPath != null) {
+                    final File f = new File(newPath);
+                    if (f.getParentFile() != null) {
+                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                    }
+                    
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        w.reloadColours();
+                    }
+                    reloadColours();
+                                        
                 }
-                reloadColours();
                 
                 regainFocus();
             }
