@@ -1711,10 +1711,10 @@ public class OpenGLRenderer {
 
                 GL11.glLineWidth(2f);
                 GL11.glBegin(GL11.GL_LINES);
-                GL11.glColor3f(1f, 0f, 0f);
+                GL11.glColor3f(View.cursor1_Colour_r[0], View.cursor1_Colour_g[0], View.cursor1_Colour_b[0]);
                 GL11.glVertex3f(selectionCorner3.x, selectionCorner3.y, selectionCorner3.z);
                 GL11.glVertex3f(selectionCorner1.x, selectionCorner1.y, selectionCorner1.z);
-                GL11.glColor3f(0f, 0f, 1f);
+                GL11.glColor3f(View.cursor2_Colour_r[0], View.cursor2_Colour_g[0], View.cursor2_Colour_b[0]);
                 GL11.glVertex3f(selectionCorner4.x, selectionCorner4.y, selectionCorner4.z);
                 GL11.glVertex3f(selectionCorner2.x, selectionCorner2.y, selectionCorner2.z);
 
