@@ -147,6 +147,8 @@ public final class I18n {
     public static final String COLOUR_BfcUncertified = COLOUR.getString(getProperty());
     public static final String COLOUR_Colour = COLOUR.getString(getProperty());
     public static final String COLOUR_CondlineColour = COLOUR.getString(getProperty());
+    public static final String COLOUR_Cursor1Colour = COLOUR.getString(getProperty());
+    public static final String COLOUR_Cursor2Colour = COLOUR.getString(getProperty());
     public static final String COLOUR_CustomiseColours = COLOUR.getString(getProperty());
     public static final String COLOUR_Description = COLOUR.getString(getProperty());
     public static final String COLOUR_DoubleClick = COLOUR.getString(getProperty());

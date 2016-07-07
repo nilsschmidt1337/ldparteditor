@@ -117,6 +117,14 @@ public enum View {
     public static final float[] condline_shown_Colour_r = new float[] { .553f };
     public static final float[] condline_shown_Colour_g = new float[] { .22f };
     public static final float[] condline_shown_Colour_b = new float[] { 1f };
+    
+    public static final float[] cursor1_Colour_r = new float[] { 1f };
+    public static final float[] cursor1_Colour_g = new float[] { 0f };
+    public static final float[] cursor1_Colour_b = new float[] { 0f };
+    
+    public static final float[] cursor2_Colour_r = new float[] { 0f };
+    public static final float[] cursor2_Colour_g = new float[] { 0f };
+    public static final float[] cursor2_Colour_b = new float[] { 1f };
 
     public static final float[] background_Colour_r = new float[] { 1f };
     public static final float[] background_Colour_g = new float[] { 1f };

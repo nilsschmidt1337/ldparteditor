@@ -362,6 +362,14 @@ public class UserSettingState implements Serializable {
     private int[] text_foreground_r = null;
     private int[] text_foreground_g = null;
     private int[] text_foreground_b = null;
+    
+    private float[] cursor1_Colour_r = null;
+    private float[] cursor1_Colour_g = null;
+    private float[] cursor1_Colour_b = null;
+    
+    private float[] cursor2_Colour_r = null;
+    private float[] cursor2_Colour_g = null;
+    private float[] cursor2_Colour_b = null;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -995,6 +1003,14 @@ public class UserSettingState implements Serializable {
         text_foreground_r = new int[]{Colour.text_foreground[0].getRed()};
         text_foreground_g = new int[]{Colour.text_foreground[0].getGreen()};
         text_foreground_b = new int[]{Colour.text_foreground[0].getBlue()};
+        
+        cursor1_Colour_r = View.cursor1_Colour_r;
+        cursor1_Colour_g = View.cursor1_Colour_g;
+        cursor1_Colour_b = View.cursor1_Colour_b;
+        
+        cursor2_Colour_r = View.cursor2_Colour_r;
+        cursor2_Colour_g = View.cursor2_Colour_g;
+        cursor2_Colour_b = View.cursor2_Colour_b;
     }
 
     public void loadColours() {
@@ -1190,6 +1206,13 @@ public class UserSettingState implements Serializable {
         if (primitive_condline_Colour_g != null) View.primitive_condline_Colour_g[0] = primitive_condline_Colour_g[0];
         if (primitive_condline_Colour_b != null) View.primitive_condline_Colour_b[0] = primitive_condline_Colour_b[0];
 
+        if (cursor1_Colour_r != null) View.cursor1_Colour_r[0] = cursor1_Colour_r[0];
+        if (cursor1_Colour_g != null) View.cursor1_Colour_g[0] = cursor1_Colour_g[0];
+        if (cursor1_Colour_b != null) View.cursor1_Colour_b[0] = cursor1_Colour_b[0];
+        
+        if (cursor2_Colour_r != null) View.cursor2_Colour_r[0] = cursor2_Colour_r[0];
+        if (cursor2_Colour_g != null) View.cursor2_Colour_g[0] = cursor2_Colour_g[0];
+        if (cursor2_Colour_b != null) View.cursor2_Colour_b[0] = cursor2_Colour_b[0];
 
         if (line_box_font_r != null) {
             Colour.line_box_font[0] = SWTResourceManager.getColor(line_box_font_r[0], line_box_font_g[0], line_box_font_b[0]);
