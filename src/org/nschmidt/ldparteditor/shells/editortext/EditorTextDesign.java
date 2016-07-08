@@ -512,6 +512,7 @@ class EditorTextDesign extends ApplicationWindow {
                         btn_Col.setToolTipText(formatter.format(messageArguments));
 
                     }
+                    Editor3DWindow.reloadAllColours();
                 } else {
                     int num = gColour2[0].getColourNumber();
                     if (View.hasLDConfigColour(num)) {

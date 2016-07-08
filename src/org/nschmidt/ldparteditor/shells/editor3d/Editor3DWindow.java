@@ -4943,10 +4943,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                     }
                     
-                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                        w.reloadColours();
-                    }
-                    reloadColours();
+                    reloadAllColours();                    
                                         
                 }
                 
@@ -4997,10 +4994,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                     
                     if (reBuild) {
-                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                            w.reloadColours();
-                        }
-                        reloadColours();
+                        reloadAllColours();
                     }
                 }
                 
@@ -5022,10 +5016,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         colours.add(View.getLDConfigColour(colours.size()));
                     }
                 }
-                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    w.reloadColours();
-                }
-                reloadColours();
+                
+                reloadAllColours();
 
                 regainFocus();
             }
