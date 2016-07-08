@@ -78,6 +78,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.StringHelper;
@@ -3008,6 +3009,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                         btn_Col.setToolTipText(formatter.format(messageArguments));
                     }
+                    reloadAllColours();
                 } else {
                     int num = gColour2[0].getColourNumber();
                     if (View.hasLDConfigColour(num)) {
@@ -3173,7 +3175,7 @@ class Editor3DDesign extends ApplicationWindow {
         return iconSize;
     }
     
-    public void reloadColours() {
+    void reloadColours() {
         for (Control ctrl : toolItem_ColourBar.getChildren()) {
             ctrl.dispose();
         }
@@ -3195,5 +3197,12 @@ class Editor3DDesign extends ApplicationWindow {
         toolItem_ColourBar.getParent().layout();
         toolItem_ColourBar.layout();
         toolItem_ColourBar.redraw();
+    }
+    
+    public static void reloadAllColours() {
+        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+            w.reloadColours();
+        }
+        Editor3DWindow.getWindow().reloadColours();
     }
 }
