@@ -204,7 +204,7 @@ class VM22TJunctionFixer extends VM21Merger {
             selectInverse(new SelectorSettings());
 
             double result = (double) getMinimalDistanceVerticesToLines(v, false)[3];
-            System.out.println(result);
+            NLogger.debug(getClass(), result);
             return result < 1.0;
         } else {
             return false;

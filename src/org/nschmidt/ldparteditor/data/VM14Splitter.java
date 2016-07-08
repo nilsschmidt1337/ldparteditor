@@ -1126,7 +1126,6 @@ class VM14Splitter extends VM13SymSplitter {
 
     private List<GData2> split(GData2 g, Vertex start, Vertex end, Vertex target) {
         ArrayList<GData2> result = new ArrayList<GData2>();
-
         if (!start.equals(end)) {
             Vertex[] verts = lines.get(g);
             if ((verts[0].equals(start) || verts[0].equals(end)) && (verts[1].equals(start) || verts[1].equals(end))) {
@@ -1195,6 +1194,7 @@ class VM14Splitter extends VM13SymSplitter {
 
         for (GData2 g : effSelectedLines) {
             List<GData2> result = split(g, start, end, target);
+            if (result.isEmpty()) continue;
             newLines.addAll(result);
             for (GData n : result) {
                 linkedDatFile.insertAfter(g, n);
@@ -1224,6 +1224,7 @@ class VM14Splitter extends VM13SymSplitter {
 
         for (GData5 g : effSelectedCondlines) {
             List<GData5> result = split(g, start, end, target);
+            if (result.isEmpty()) continue;
             newCondlines.addAll(result);
             for (GData n : result) {
                 linkedDatFile.insertAfter(g, n);
