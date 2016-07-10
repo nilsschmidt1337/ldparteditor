@@ -64,6 +64,8 @@ public class CompositeTabState {
     private BigDecimal toReplaceX = BigDecimal.ONE;
     private BigDecimal toReplaceY = new BigDecimal(2);
     private BigDecimal toReplaceZ = new BigDecimal(3);
+    
+    private int oldLineIndex = -1;
 
     public DatFile getFileNameObj() {
         return datFileObj;
@@ -215,6 +217,14 @@ public class CompositeTabState {
 
     public void setSync(boolean sync) {
         this.sync = sync;
+    }
+
+    public int getOldLineIndex() {
+        return oldLineIndex;
+    }
+
+    public void setOldLineIndex(int oldLineIndex) {
+        this.oldLineIndex = oldLineIndex;
     }
 
 }
