@@ -200,6 +200,7 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_LineToCondline = new Button[1];
     final Button[] btn_MoveOnLine = new Button[1];
     final Button[] btn_RoundSelection = new Button[1];
+    final Button[] btn_ShowSelectionInTextEditor = new Button[1];
     final Button[] btn_BFCswap = new Button[1];
     final Button[] btn_Vertices = new Button[1];
     final Button[] btn_TrisNQuads = new Button[1];
@@ -1733,6 +1734,12 @@ class Editor3DDesign extends ApplicationWindow {
 
     private ToolItem createToolItemMiscClick(String label) {
         ToolItem toolItem_MiscClick = new ToolItem(cmpNorth, SWT.NONE, true);
+        {
+            Button btn_ShowSelectionInTextEditor = new Button(toolItem_MiscClick, SWT.NONE);
+            this.btn_ShowSelectionInTextEditor[0] = btn_ShowSelectionInTextEditor;
+            btn_ShowSelectionInTextEditor.setToolTipText(I18n.C3D_ShowInText);
+            btn_ShowSelectionInTextEditor.setImage(ResourceManager.getImage("icon16_text2selection.png")); //$NON-NLS-1$
+        }
         {
             Button btn_BFCswap = new Button(toolItem_MiscClick, SWT.NONE);
             this.btn_BFCswap[0] = btn_BFCswap;

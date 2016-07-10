@@ -1322,6 +1322,17 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
+        
+        btn_ShowSelectionInTextEditor[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (Project.getFileToEdit() != null) {
+                    Composite3D.showSelectionInTextEditor(Project.getFileToEdit());
+                }
+                regainFocus();
+            }
+        });
+        
         btn_BFCswap[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
