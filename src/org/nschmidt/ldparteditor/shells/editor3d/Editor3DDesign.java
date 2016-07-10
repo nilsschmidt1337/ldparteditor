@@ -269,12 +269,12 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Options = new MenuItem[1];
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
-       
+
     final MenuItem[] mntm_LoadPalette = new MenuItem[1];
     final MenuItem[] mntm_ResetPalette = new MenuItem[1];
     final MenuItem[] mntm_SavePalette = new MenuItem[1];
     final MenuItem[] mntm_SetPaletteSize = new MenuItem[1];
-    
+
     final MenuItem[] mntm_UploadLogs = new MenuItem[1];
     final MenuItem[] mntm_AntiAliasing = new MenuItem[1];
     final MenuItem[] mntm_SyncWithTextEditor = new MenuItem[1];
@@ -416,7 +416,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_IconSize4 = new MenuItem[1];
     final MenuItem[] mntm_IconSize5 = new MenuItem[1];
     final MenuItem[] mntm_IconSize6 = new MenuItem[1];
-    
+
     private ToolItem toolItem_ColourBar;
 
     private static SashForm sashForm;
@@ -1156,7 +1156,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 } catch (LDParsingException e1) {
                                 }
                             }
-                        } else {                            
+                        } else {
                             Project.getFileToEdit().setText(WorkbenchManager.getDefaultFileHeader());
                         }
 
@@ -1501,7 +1501,7 @@ class Editor3DDesign extends ApplicationWindow {
         ToolItem toolItem_Colours = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         toolItem_ColourBar = toolItem_Colours;
         List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
-        
+
         {
             final int size = colours.size();
             for (int i = 0; i < size; i++) {
@@ -1515,7 +1515,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Palette.setToolTipText(I18n.E3D_More);
             btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
         }
-        
+
         ToolItem toolItem_ColourFunctions = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
         {
             Button btn_LastUsedColour = new Button(toolItem_ColourFunctions, SWT.NONE);
@@ -1738,7 +1738,7 @@ class Editor3DDesign extends ApplicationWindow {
             Button btn_ShowSelectionInTextEditor = new Button(toolItem_MiscClick, SWT.NONE);
             this.btn_ShowSelectionInTextEditor[0] = btn_ShowSelectionInTextEditor;
             btn_ShowSelectionInTextEditor.setToolTipText(I18n.C3D_ShowInText);
-            btn_ShowSelectionInTextEditor.setImage(ResourceManager.getImage("icon16_text2selection.png")); //$NON-NLS-1$
+            btn_ShowSelectionInTextEditor.setImage(ResourceManager.getImage("icon16_selection2text.png")); //$NON-NLS-1$
         }
         {
             Button btn_BFCswap = new Button(toolItem_MiscClick, SWT.NONE);
@@ -3181,31 +3181,31 @@ class Editor3DDesign extends ApplicationWindow {
     public static int getIconsize() {
         return iconSize;
     }
-    
+
     void reloadColours() {
         for (Control ctrl : toolItem_ColourBar.getChildren()) {
             ctrl.dispose();
         }
-        
+
         List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
-        
+
         final int size = colours.size();
         for (int i = 0; i < size; i++) {
             addColorButton(toolItem_ColourBar, colours.get(i), i);
         }
-        
+
         {
             Button btn_Palette = new Button(toolItem_ColourBar, SWT.NONE);
             this.btn_Palette[0] = btn_Palette;
             btn_Palette.setToolTipText(I18n.E3D_More);
             btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
         }
-        
+
         toolItem_ColourBar.getParent().layout();
         toolItem_ColourBar.layout();
         toolItem_ColourBar.redraw();
     }
-    
+
     public static void reloadAllColours() {
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             w.reloadColours();
