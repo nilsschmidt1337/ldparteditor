@@ -447,16 +447,42 @@ public class Composite3D extends ScalableComposite {
                                     public void run() {
                                         final VertexManager vm = df.getVertexManager();
                                         if (vm.getSelectedData().size() > 0) {
-                                            Integer index = df.getDrawPerLine_NOCLONE().getKey(vm.getSelectedData().iterator().next());
-                                            if (index == null) {
-                                                if (vm.getSelectedSubfiles().size() > 0) {
-                                                    index = df.getDrawPerLine_NOCLONE().getKey(vm.getSelectedSubfiles().iterator().next());
-                                                    if (index == null) return;
-                                                } else {
-                                                    return;
+                                            
+                                            final int oldIndex = ((CompositeTab) t).getTextComposite().getTopIndex() + 1;
+                                            final int lastSetIndex = ((CompositeTab) t).getState().getOldLineIndex();
+                                            final ArrayList<Integer> indices = new ArrayList<Integer>();                                              
+                                            final HashSet<GData> selection = new HashSet<GData>();
+                                            Integer index;
+                                            
+                                            selection.addAll(vm.getSelectedData());
+                                            selection.addAll(vm.getSelectedSubfiles());
+                                                                                                                                      
+                                            for (GData g : selection) {
+                                                index = df.getDrawPerLine_NOCLONE().getKey(g);
+                                                if (index != null) {
+                                                    indices.add(index);
+                                                }                                                
+                                            }                                                                                       
+                                            
+                                            if (!indices.isEmpty()) {
+                                                
+                                                Collections.sort(indices);
+                                                
+                                                index = indices.get(0);
+                                                for (int i : indices) {
+                                                    if (i > oldIndex) {
+                                                        index = i;
+                                                        break;
+                                                    }
                                                 }
-                                            }
-                                            ((CompositeTab) t).getTextComposite().setTopIndex(index - 1);
+                                                
+                                                if (index == lastSetIndex) {
+                                                    index = indices.get(0);                                                                                                       
+                                                }
+                                                
+                                                ((CompositeTab) t).getState().setOldLineIndex(index);                                                
+                                                ((CompositeTab) t).getTextComposite().setTopIndex(index - 1);   
+                                            }                                                                                                                                                                                                                       
                                         }
                                     }
                                 });

@@ -957,6 +957,7 @@ public class CompositeTab extends CompositeTabDesign {
             public void caretMoved(CaretEvent event) {
                 ViewIdleManager.pause[0].compareAndSet(false, true);
                 Point r = compositeText[0].getSelectionRange();
+                state.setOldLineIndex(-1);
                 if (!state.isSync()) state.getFileNameObj().addHistory(compositeText[0].getText(), r.x, r.y, compositeText[0].getTopIndex());
                 try {
                     compositeText[0].setLineBackground(state.currentLineIndex, 1, compositeText[0].getBackground());
