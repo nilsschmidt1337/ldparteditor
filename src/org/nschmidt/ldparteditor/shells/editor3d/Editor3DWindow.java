@@ -6364,7 +6364,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 DatFile d = (DatFile) df.getData();
                 StringBuilder nameSb = new StringBuilder(new File(d.getNewName()).getName());
                 final String d2 = d.getDescription();
-                if (counter < 6 && (!d.getNewName().startsWith(Project.getProjectPath()) || !d.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
+                if (counter < 6 && !d.getNewName().startsWith(Project.getProjectPath() + File.separator)) {
                     nameSb.insert(0, "(!) "); //$NON-NLS-1$
                 }
 
@@ -6657,7 +6657,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 } else {
                     StringBuilder nameSb = new StringBuilder(new File(d.getNewName()).getName());
                     final String d2 = d.getDescription();
-                    if (counter < 6 && (!d.getNewName().startsWith(Project.getProjectPath()) || !d.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
+                    if (counter < 6 && !d.getNewName().startsWith(Project.getProjectPath() + File.separator)) {
                         nameSb.insert(0, "(!) "); //$NON-NLS-1$
                     }
                     if (d2 != null)
@@ -7154,7 +7154,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     folder.removeAll();
                     for (DatFile part : (ArrayList<DatFile>) folder.getData()) {
                         StringBuilder nameSb = new StringBuilder(new File(part.getNewName()).getName());
-                        if (i > 9 && (!part.getNewName().startsWith(Project.getProjectPath()) || !part.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
+                        if (i > 9 && !part.getNewName().startsWith(Project.getProjectPath() + File.separator)) {
                             nameSb.insert(0, "(!) "); //$NON-NLS-1$
                         }
                         final String d = part.getDescription();
