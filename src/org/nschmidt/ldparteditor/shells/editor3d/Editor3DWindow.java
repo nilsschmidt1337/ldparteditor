@@ -4344,6 +4344,18 @@ public class Editor3DWindow extends Editor3DDesign {
                                                 n = new TreeItem(treeItem_ProjectPrimitives8[0], SWT.NONE);
                                                 df.setType(DatType.PRIMITIVE8);
                                             } else {
+                                                // FIXME Needs corrected filename!                                          
+                                                /*
+                                                 int ind = fileName.lastIndexOf(File.separator);
+                                                 if( ind>=0 )
+                                                       fileName = new StringBuilder(fileName).replace(ind, ind+1, File.separator + "parts" + File.separator).toString();  //$NON-NLS-1$
+                                                       
+                                                       OR EVEN BETTER
+                                                       
+                                                       fileName = "parts" + File.separator + fileName;
+                                                        df.setNewName(fileName);
+                                                        df.setOldName(fileName);
+                                                 */                                               
                                                 n = new TreeItem(treeItem_ProjectParts[0], SWT.NONE);
                                                 df.setType(DatType.PART);
                                             }
@@ -6364,7 +6376,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 DatFile d = (DatFile) df.getData();
                 StringBuilder nameSb = new StringBuilder(new File(d.getNewName()).getName());
                 final String d2 = d.getDescription();
-                if (counter < 6 && !d.getNewName().startsWith(Project.getProjectPath() + File.separator)) {
+                // FIXME Needs correction, again!
+                if (counter < 6 && !d.getNewName().startsWith(Project.getProjectPath() + File.separator)) {                              
                     nameSb.insert(0, "(!) "); //$NON-NLS-1$
                 }
 
@@ -6657,6 +6670,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 } else {
                     StringBuilder nameSb = new StringBuilder(new File(d.getNewName()).getName());
                     final String d2 = d.getDescription();
+                    // FIXME Needs correction, again!
                     if (counter < 6 && !d.getNewName().startsWith(Project.getProjectPath() + File.separator)) {
                         nameSb.insert(0, "(!) "); //$NON-NLS-1$
                     }
@@ -7154,6 +7168,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     folder.removeAll();
                     for (DatFile part : (ArrayList<DatFile>) folder.getData()) {
                         StringBuilder nameSb = new StringBuilder(new File(part.getNewName()).getName());
+                        // FIXME Needs correction, again!
                         if (i > 9 && !part.getNewName().startsWith(Project.getProjectPath() + File.separator)) {
                             nameSb.insert(0, "(!) "); //$NON-NLS-1$
                         }
