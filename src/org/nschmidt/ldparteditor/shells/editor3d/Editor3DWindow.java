@@ -4337,49 +4337,41 @@ public class Editor3DWindow extends Editor3DDesign {
                                                 int ind = fileName.lastIndexOf(File.separator + "s" + File.separator); //$NON-NLS-1$
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 1, File.separator + "parts" + File.separator + "s" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
-                                                }
-                                                df.setNewName(fileName);
-                                                df.setOldName(fileName);
+                                                }                                                
                                                 n = new TreeItem(treeItem_ProjectSubparts[0], SWT.NONE);
                                                 df.setType(DatType.SUBPART);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_Primitive")) { //$NON-NLS-1$
                                                 int ind = fileName.lastIndexOf(File.separator);
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length(), File.separator + "p" + File.separator).toString();  //$NON-NLS-1$
-                                                }
-                                                df.setNewName(fileName);
-                                                df.setOldName(fileName);
+                                                }                                                
                                                 n = new TreeItem(treeItem_ProjectPrimitives[0], SWT.NONE);
                                                 df.setType(DatType.PRIMITIVE);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_48_Primitive")) { //$NON-NLS-1$
                                                 int ind = fileName.lastIndexOf(File.separator + "48" + File.separator); //$NON-NLS-1$
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 2, File.separator + "p" + File.separator  + "48" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
-                                                }
-                                                df.setNewName(fileName);
-                                                df.setOldName(fileName);
+                                                }                                                
                                                 n = new TreeItem(treeItem_ProjectPrimitives48[0], SWT.NONE);
                                                 df.setType(DatType.PRIMITIVE48);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_8_Primitive")) { //$NON-NLS-1$
                                                 int ind = fileName.lastIndexOf(File.separator + "8" + File.separator); //$NON-NLS-1$
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 1, File.separator + "p" + File.separator  + "8" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
-                                                }
-                                                df.setNewName(fileName);
-                                                df.setOldName(fileName);
+                                                }                                                
                                                 n = new TreeItem(treeItem_ProjectPrimitives8[0], SWT.NONE);
                                                 df.setType(DatType.PRIMITIVE8);
                                             } else {
                                                 int ind = fileName.lastIndexOf(File.separator);
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length(), File.separator + "parts" + File.separator).toString();  //$NON-NLS-1$
-                                                }
-                                                df.setNewName(fileName);
-                                                df.setOldName(fileName);
+                                                }                                                
                                                 n = new TreeItem(treeItem_ProjectParts[0], SWT.NONE);
                                                 df.setType(DatType.PART);
                                             }
                                             
+                                            df.setNewName(fileName);
+                                            df.setOldName(fileName);
                                             Project.addUnsavedFile(df);
                                             Project.getParsedFiles().add(df);
                                             
