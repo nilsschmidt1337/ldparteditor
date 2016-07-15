@@ -304,19 +304,30 @@ public final class Matrix {
     public String toLDrawString() {
         StringBuilder result = new StringBuilder();
         result.append(" "); //$NON-NLS-1$
-        result.append(this.M30.doubleValue());
+        result.append(bigDecimalToString(this.M30));
         result.append(" "); //$NON-NLS-1$
-        result.append(this.M31.doubleValue());
+        result.append(bigDecimalToString(this.M31));
         result.append(" "); //$NON-NLS-1$
-        result.append(this.M32.doubleValue());
+        result.append(bigDecimalToString(this.M32));
         result.append(" "); //$NON-NLS-1$
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                result.append(this.M[j][i].doubleValue());
+                result.append(bigDecimalToString(this.M[j][i]));
                 result.append(" "); //$NON-NLS-1$
             }
         }
         return result.toString();
+    }
+    
+    private String bigDecimalToString(BigDecimal bd) {
+        String result;
+        if (bd.compareTo(BigDecimal.ZERO) == 0)
+            return "0"; //$NON-NLS-1$
+        BigDecimal bd2 = bd.stripTrailingZeros();
+        result = bd2.toPlainString();
+        if (result.startsWith("-0."))return "-" + result.substring(2); //$NON-NLS-1$ //$NON-NLS-2$
+        if (result.startsWith("0."))return result.substring(1); //$NON-NLS-1$
+        return result;
     }
 
     public Matrix4f getMatrix4f() {
