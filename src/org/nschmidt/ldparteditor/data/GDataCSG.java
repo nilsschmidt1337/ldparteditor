@@ -700,9 +700,9 @@ public final class GDataCSG extends GData {
         if (flt == (int) flt) {
             result = String.format("%d", (int) flt); //$NON-NLS-1$
         } else {
-            result = String.format("%s", flt); //$NON-NLS-1$
-            if (result.equals("0.0"))result = "0"; //$NON-NLS-1$ //$NON-NLS-2$
+            result = String.format("%s", flt); //$NON-NLS-1$            
         }
+        if (result.equals("0.0"))result = "0"; //$NON-NLS-1$ //$NON-NLS-2$
         if (result.startsWith("-0.")) return "-" + result.substring(2); //$NON-NLS-1$ //$NON-NLS-2$
         if (result.startsWith("0.")) return result.substring(1); //$NON-NLS-1$
         return result;
@@ -880,7 +880,7 @@ public final class GDataCSG extends GData {
                 accurateLocalMatrix = accurateLocalMatrix.transpose();
                 accurateLocalMatrix = accurateLocalMatrix.transposeXYZ();
             }
-            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + accurateLocalMatrix.toLDrawString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + accurateLocalMatrix.toLDrawString(); //$NON-NLS-1$ //$NON-NLS-2$
         default:
             return text;
         }
