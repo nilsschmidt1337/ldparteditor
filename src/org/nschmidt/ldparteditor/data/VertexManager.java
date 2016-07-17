@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.nio.FloatBuffer;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -116,7 +117,15 @@ public final class VertexManager extends VM99Clipboard {
                         }
                     }
                 }
-                tmpHiddenVertices.clear();
+                // tmpHiddenVertices.clear();
+                // tmpHiddenVertices.addAll(tmpHiddenVertices2);
+                for (Iterator<Vertex> iterator = tmpHiddenVertices.iterator(); iterator
+                        .hasNext();) {
+                    Vertex vertex = (Vertex) iterator.next();
+                    if (!tmpHiddenVertices2.contains(vertex)) {
+                        iterator.remove();
+                    }                    
+                }
                 tmpHiddenVertices.addAll(tmpHiddenVertices2);
                 calculateCondlineControlPoints.set(true);
             });
