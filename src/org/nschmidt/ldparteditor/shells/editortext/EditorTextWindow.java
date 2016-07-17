@@ -571,6 +571,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                     NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                     Text2SelectionConverter.convert(fromLine, toLine, selection.getState().getFileNameObj());
+                    st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
                     st.forceFocus();
                 }
             }
