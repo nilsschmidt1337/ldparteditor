@@ -2161,24 +2161,30 @@ class Editor3DDesign extends ApplicationWindow {
                     mntm_SelectAnotherLDConfig.setText(I18n.E3D_SelectLDConfig);
                 }
                 {
-                    MenuItem mntm_SavePalette = new MenuItem(mnu_Tools, SWT.PUSH);
-                    this.mntm_SavePalette[0] = mntm_SavePalette;
-                    mntm_SavePalette.setText(I18n.E3D_PaletteSave);
-                }
-                {
-                    MenuItem mntm_LoadPalette = new MenuItem(mnu_Tools, SWT.PUSH);
-                    this.mntm_LoadPalette[0] = mntm_LoadPalette;
-                    mntm_LoadPalette.setText(I18n.E3D_PaletteLoad);
-                }
-                {
-                    MenuItem mntm_SetPaletteSize = new MenuItem(mnu_Tools, SWT.PUSH);
-                    this.mntm_SetPaletteSize[0] = mntm_SetPaletteSize;
-                    mntm_SetPaletteSize.setText(I18n.E3D_PaletteSetSize);
-                }
-                {
-                    MenuItem mntm_ResetPalette = new MenuItem(mnu_Tools, SWT.PUSH);
-                    this.mntm_ResetPalette[0] = mntm_ResetPalette;
-                    mntm_ResetPalette.setText(I18n.E3D_PaletteReset);
+                    final MenuItem mntm_Palette = new MenuItem(mnu_Tools, SWT.CASCADE);
+                    mntm_Palette.setText(I18n.E3D_Palette);
+                    final Menu mnu_Palette = new Menu(mntm_Palette);
+                    mntm_Palette.setMenu(mnu_Palette);
+                    {
+                        MenuItem mntm_SavePalette = new MenuItem(mnu_Palette, SWT.PUSH);
+                        this.mntm_SavePalette[0] = mntm_SavePalette;
+                        mntm_SavePalette.setText(I18n.E3D_PaletteSave);
+                    }
+                    {
+                        MenuItem mntm_LoadPalette = new MenuItem(mnu_Palette, SWT.PUSH);
+                        this.mntm_LoadPalette[0] = mntm_LoadPalette;
+                        mntm_LoadPalette.setText(I18n.E3D_PaletteLoad);
+                    }
+                    {
+                        MenuItem mntm_SetPaletteSize = new MenuItem(mnu_Palette, SWT.PUSH);
+                        this.mntm_SetPaletteSize[0] = mntm_SetPaletteSize;
+                        mntm_SetPaletteSize.setText(I18n.E3D_PaletteSetSize);
+                    }
+                    {
+                        MenuItem mntm_ResetPalette = new MenuItem(mnu_Palette, SWT.PUSH);
+                        this.mntm_ResetPalette[0] = mntm_ResetPalette;
+                        mntm_ResetPalette.setText(I18n.E3D_PaletteReset);
+                    }
                 }
                 {
                     final MenuItem mntm_SetIconSize = new MenuItem(mnu_Tools, SWT.CASCADE);
