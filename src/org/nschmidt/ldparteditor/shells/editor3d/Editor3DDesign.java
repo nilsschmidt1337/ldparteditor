@@ -570,9 +570,45 @@ class Editor3DDesign extends ApplicationWindow {
         {
             Composite cmp_main_editor = new Composite(container, SWT.BORDER);
             cmp_main_editor.setLayoutData(BorderLayout.CENTER);
-            cmp_main_editor.setLayout(new FillLayout(SWT.HORIZONTAL));
+            cmp_main_editor.setLayout(new GridLayout(1, true));
             {
+                CTabFolder btn = new CTabFolder(cmp_main_editor, SWT.CLOSE);
+                btn.setMRUVisible(true);
+                btn.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                
+                {
+                    GridData gridDataX = new GridData();
+                    gridDataX.horizontalAlignment = SWT.FILL;
+                    gridDataX.minimumHeight = 10;
+                    gridDataX.minimumWidth = 160;
+                    gridDataX.heightHint = (int) (btn.getTabHeight() / 3);
+                    
+                    gridDataX.verticalAlignment = SWT.FILL;
+
+                    gridDataX.grabExcessHorizontalSpace = true;
+                    btn.setLayoutData(gridDataX);
+                }
+                
+                for (int i = 0; i < 20; i++) {
+                    CTabItem tItem = new CTabItem(btn, SWT.NONE);
+                    tItem.setText("C_TAB_ITEM_#" + i); //$NON-NLS-1$
+                }
+
                 SashForm sashForm = new SashForm(cmp_main_editor, SWT.NONE);
+
+                {
+                    GridData gridDataX = new GridData();
+                    gridDataX.horizontalAlignment = SWT.FILL;
+                    gridDataX.minimumHeight = 200;
+                    gridDataX.minimumWidth = 160;
+
+                    gridDataX.verticalAlignment = SWT.FILL;
+                    gridDataX.grabExcessVerticalSpace = true;
+
+                    gridDataX.grabExcessHorizontalSpace = true;
+                    sashForm.setLayoutData(gridDataX);
+                }
+                
                 Editor3DDesign.setSashForm(sashForm);
                 sashForm.setToolTipText(I18n.E3D_DragHint);
                 {
