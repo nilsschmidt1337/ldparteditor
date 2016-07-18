@@ -570,14 +570,24 @@ class Editor3DDesign extends ApplicationWindow {
         {
             Composite cmp_main_editor = new Composite(container, SWT.BORDER);
             cmp_main_editor.setLayoutData(BorderLayout.CENTER);
-            cmp_main_editor.setLayout(new GridLayout(1, true));
+            cmp_main_editor.setLayout(new GridLayout(2, false));
             {
+                Button bnt_Sync = new Button(cmp_main_editor, SWT.TOGGLE);
+                bnt_Sync.setText("Sync");  //$NON-NLS-1$
+                
+                {
+                    GridData gridDataX = new GridData();
+                    gridDataX.horizontalIndent = 10;
+                    bnt_Sync.setLayoutData(gridDataX);
+                }
+                
                 CTabFolder btn = new CTabFolder(cmp_main_editor, SWT.CLOSE);
                 btn.setMRUVisible(true);
                 btn.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
                 
                 {
                     GridData gridDataX = new GridData();
+                    
                     gridDataX.horizontalAlignment = SWT.FILL;
                     gridDataX.minimumHeight = 10;
                     gridDataX.minimumWidth = 160;
@@ -598,6 +608,9 @@ class Editor3DDesign extends ApplicationWindow {
 
                 {
                     GridData gridDataX = new GridData();
+                    
+                    gridDataX.horizontalSpan = 2;
+                    
                     gridDataX.horizontalAlignment = SWT.FILL;
                     gridDataX.minimumHeight = 200;
                     gridDataX.minimumWidth = 160;
