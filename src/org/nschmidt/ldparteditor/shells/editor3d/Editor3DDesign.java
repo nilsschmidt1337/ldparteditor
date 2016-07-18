@@ -603,6 +603,8 @@ class Editor3DDesign extends ApplicationWindow {
                     CTabItem tItem = new CTabItem(btn, SWT.NONE);
                     tItem.setText("C_TAB_ITEM_#" + i); //$NON-NLS-1$
                 }
+                
+                btn.setSelection(0);
 
                 SashForm sashForm = new SashForm(cmp_main_editor, SWT.NONE);
 
