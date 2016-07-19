@@ -118,6 +118,8 @@ class Editor3DDesign extends ApplicationWindow {
     final Menu[] mnu_coarseMenu = new Menu[1];
     final Menu[] mnu_mediumMenu = new Menu[1];
     final Menu[] mnu_fineMenu = new Menu[1];
+    
+    final CTabFolder[] tabFolder_OpenDatFiles = new CTabFolder[1];
 
     Action menuItem_Open = ShellHelper.DUMMY_ACTION;
     Action menuItem_Exit = ShellHelper.DUMMY_ACTION;
@@ -581,9 +583,10 @@ class Editor3DDesign extends ApplicationWindow {
                     bnt_Sync.setLayoutData(gridDataX);
                 }
                 
-                CTabFolder btn = new CTabFolder(cmp_main_editor, SWT.CLOSE);
-                btn.setMRUVisible(true);
-                btn.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                CTabFolder tabFolder_OpenDatFiles = new CTabFolder(cmp_main_editor, SWT.CLOSE);
+                this.tabFolder_OpenDatFiles[0] = tabFolder_OpenDatFiles;
+                tabFolder_OpenDatFiles.setMRUVisible(true);
+                tabFolder_OpenDatFiles.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
                 
                 {
                     GridData gridDataX = new GridData();
@@ -591,20 +594,20 @@ class Editor3DDesign extends ApplicationWindow {
                     gridDataX.horizontalAlignment = SWT.FILL;
                     gridDataX.minimumHeight = 10;
                     gridDataX.minimumWidth = 160;
-                    gridDataX.heightHint = (int) (btn.getTabHeight() / 3);
+                    gridDataX.heightHint = (int) (tabFolder_OpenDatFiles.getTabHeight() / 3);
                     
                     gridDataX.verticalAlignment = SWT.FILL;
 
                     gridDataX.grabExcessHorizontalSpace = true;
-                    btn.setLayoutData(gridDataX);
+                    tabFolder_OpenDatFiles.setLayoutData(gridDataX);
                 }
                 
-                for (int i = 0; i < 20; i++) {
-                    CTabItem tItem = new CTabItem(btn, SWT.NONE);
-                    tItem.setText("C_TAB_ITEM_#" + i); //$NON-NLS-1$
+                {
+                    CTabItem tItem = new CTabItem(tabFolder_OpenDatFiles, SWT.NONE);
+                    tItem.setText("new.dat*"); //$NON-NLS-1$
                 }
                 
-                btn.setSelection(0);
+                tabFolder_OpenDatFiles.setSelection(0);
 
                 SashForm sashForm = new SashForm(cmp_main_editor, SWT.NONE);
 
