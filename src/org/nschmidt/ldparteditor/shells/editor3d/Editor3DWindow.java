@@ -49,6 +49,8 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.custom.CTabFolder2Listener;
+import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.FocusEvent;
@@ -5947,6 +5949,38 @@ public class Editor3DWindow extends Editor3DDesign {
         } catch (InvocationTargetException consumed) {
         } catch (InterruptedException consumed) {
         }
+        
+        tabFolder_OpenDatFiles[0].getItem(0).setData(Project.getFileToEdit());
+        
+        tabFolder_OpenDatFiles[0].addCTabFolder2Listener(new CTabFolder2Listener() {
+            
+            @Override
+            public void showList(CTabFolderEvent event) {
+                // TODO Auto-generated method stub
+            }
+            
+            @Override
+            public void restore(CTabFolderEvent event) {
+                // TODO Auto-generated method stub
+            }
+            
+            @Override
+            public void minimize(CTabFolderEvent event) {
+                // TODO Auto-generated method stub
+            }
+            
+            @Override
+            public void maximize(CTabFolderEvent event) {
+                // TODO Auto-generated method stub
+            }
+            
+            @Override
+            public void close(CTabFolderEvent event) {
+                if (tabFolder_OpenDatFiles[0].getSelection() != null && tabFolder_OpenDatFiles[0].getSelection().getData() != null) {
+                    closeDatfile((DatFile) tabFolder_OpenDatFiles[0].getSelection().getData());
+                }
+            }
+        });
 
         txt_Search[0].setText(" "); //$NON-NLS-1$
         txt_Search[0].setText(""); //$NON-NLS-1$
