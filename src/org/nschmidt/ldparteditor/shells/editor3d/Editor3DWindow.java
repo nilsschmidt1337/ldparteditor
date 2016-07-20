@@ -214,7 +214,8 @@ public class Editor3DWindow extends Editor3DDesign {
     public static final ArrayList<OpenGLRenderer> renders = new ArrayList<OpenGLRenderer>();
 
     final private static AtomicBoolean alive = new AtomicBoolean(true);
-
+    final private static AtomicBoolean no_sync_deadlock = new AtomicBoolean(false);
+    
     private boolean addingSomething = false;
     private boolean addingVertices = false;
     private boolean addingLines = false;
@@ -5959,31 +5960,35 @@ public class Editor3DWindow extends Editor3DDesign {
         tabFolder_OpenDatFiles[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (tabFolder_OpenDatFiles[0].getData() != null) {
-                    return;
-                }
-                DatFile df = null;
-                if (tabFolder_OpenDatFiles[0].getSelection() != null && (df = (DatFile) tabFolder_OpenDatFiles[0].getSelection().getData()) != null) {
-                    openFileIn3DEditor(df);
-                    if (!df.equals(View.DUMMY_DATFILE) && WorkbenchManager.getUserSettingState().isSyncingTabs()) {
-                        boolean fileIsOpenInTextEditor = false;
-                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                            for (CTabItem t : w.getTabFolder().getItems()) {
-                                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                    fileIsOpenInTextEditor = true;
+                if (Editor3DWindow.getNoSyncDeadlock().compareAndSet(false, true)) {
+                    if (tabFolder_OpenDatFiles[0].getData() != null) {
+                        Editor3DWindow.getNoSyncDeadlock().set(false);
+                        return;
+                    }
+                    DatFile df = null;
+                    if (tabFolder_OpenDatFiles[0].getSelection() != null && (df = (DatFile) tabFolder_OpenDatFiles[0].getSelection().getData()) != null) {
+                        openFileIn3DEditor(df);
+                        if (!df.equals(View.DUMMY_DATFILE) && WorkbenchManager.getUserSettingState().isSyncingTabs()) {
+                            boolean fileIsOpenInTextEditor = false;
+                            for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                for (CTabItem t : w.getTabFolder().getItems()) {
+                                    if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                        fileIsOpenInTextEditor = true;
+                                    }
+                                    if (fileIsOpenInTextEditor) break;
                                 }
                                 if (fileIsOpenInTextEditor) break;
                             }
-                            if (fileIsOpenInTextEditor) break;
+                            if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
+                                openDatFile(df, OpenInWhat.EDITOR_TEXT, null);
+                            } else {
+                                Project.getOpenTextWindows().iterator().next().openNewDatFileTab(df);
+                            }
                         }
-                        if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
-                            openDatFile(df, OpenInWhat.EDITOR_TEXT, null);
-                        } else {
-                            Project.getOpenTextWindows().iterator().next().openNewDatFileTab(df);
-                        }
+                        cleanupClosedData();
+                        regainFocus();
                     }
-                    cleanupClosedData();
-                    regainFocus();
+                    Editor3DWindow.getNoSyncDeadlock().set(false);
                 }
             }
         });
@@ -8709,5 +8714,9 @@ public class Editor3DWindow extends Editor3DDesign {
                 break;
             }
         }
+    }
+
+    public static AtomicBoolean getNoSyncDeadlock() {
+        return no_sync_deadlock;
     }
 }

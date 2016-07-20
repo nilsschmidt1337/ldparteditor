@@ -209,7 +209,10 @@ public class EditorTextWindow extends EditorTextDesign {
                     if (state != null) {
                         DatFile df = state.getFileNameObj();
                         if (df != null) {
-                            Editor3DWindow.getWindow().selectTabWithDatFile(df);
+                            if (Editor3DWindow.getNoSyncDeadlock().compareAndSet(false, true)) {
+                                Editor3DWindow.getWindow().selectTabWithDatFile(df);
+                                Editor3DWindow.getNoSyncDeadlock().set(false);                               
+                            }
                             NLogger.debug(EditorTextWindow.class, "Old DatFile name {0}", df.getOldName()); //$NON-NLS-1$
                         }
                     }
