@@ -490,7 +490,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 public void widgetSelected(SelectionEvent e) {
                                     File f = new File(path);
                                     if (f.exists() && f.isFile() && f.canRead()) {
-                                        DatFile df = openDatFile(getShell(), OpenInWhat.EDITOR_3D, path);                                        
+                                        DatFile df = openDatFile(getShell(), OpenInWhat.EDITOR_3D, path);
                                         if (!df.equals(View.DUMMY_DATFILE) && WorkbenchManager.getUserSettingState().isSyncingTabs()) {
                                             boolean fileIsOpenInTextEditor = false;
                                             for (EditorTextWindow w : Project.getOpenTextWindows()) {
@@ -504,12 +504,12 @@ public class Editor3DWindow extends Editor3DDesign {
                                             }
                                             if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
                                                 openDatFile(df, OpenInWhat.EDITOR_TEXT, null);
-                                            } else {                                                         
+                                            } else {
                                                 Project.getOpenTextWindows().iterator().next().openNewDatFileTab(df);
                                             }
                                         }
                                         cleanupClosedData();
-                                        regainFocus(); 
+                                        regainFocus();
                                     }
                                 }
                             });
@@ -748,7 +748,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                     if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
                         openDatFile(dat, OpenInWhat.EDITOR_TEXT, null);
-                    } else {                                                         
+                    } else {
                         Project.getOpenTextWindows().iterator().next().openNewDatFileTab(dat);
                     }
                 }
@@ -1351,7 +1351,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        
+
         btn_ShowSelectionInTextEditor[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -1361,7 +1361,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        
+
         btn_BFCswap[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -2380,7 +2380,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 openFileIn3DEditor(df);
                                 updateTree_unsavedEntries();
                                 cleanupClosedData();
-                                regainFocus();                                
+                                regainFocus();
                             }
                         }
                     });
@@ -3992,7 +3992,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     Vector3d delta = Vector3d.sub(CoordinatesDialog.getEnd(), CoordinatesDialog.getStart());
                                     boolean doMoveOnLine = false;
                                     BigDecimal s = BigDecimal.ZERO;
-                                    Vector3d v1 = CoordinatesDialog.getStart();                                    
+                                    Vector3d v1 = CoordinatesDialog.getStart();
                                     if (CoordinatesDialog.isX() && delta.X.compareTo(BigDecimal.ZERO) != 0) {
                                         doMoveOnLine = true;
                                         s = v2.X.subtract(CoordinatesDialog.getStart().X).divide(delta.X, Threshold.mc);
@@ -4027,7 +4027,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     Vector3d delta = Vector3d.sub(CoordinatesDialog.getEnd(), CoordinatesDialog.getStart());
                                     boolean doMoveOnLine = false;
                                     BigDecimal s = BigDecimal.ZERO;
-                                    Vector3d v1 = CoordinatesDialog.getStart();                                    
+                                    Vector3d v1 = CoordinatesDialog.getStart();
                                     if (CoordinatesDialog.isX() && delta.X.compareTo(BigDecimal.ZERO) != 0) {
                                         doMoveOnLine = true;
                                         s = v2.X.subtract(CoordinatesDialog.getStart().X).divide(delta.X, Threshold.mc);
@@ -4052,7 +4052,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     CoordinatesDialog.setX(a);
                                     CoordinatesDialog.setY(b);
                                     CoordinatesDialog.setZ(c);
-                                }          
+                                }
                             } else {
                                 vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedVertices().size() == 1, true);
                             }
@@ -4296,7 +4296,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             Display.getCurrent().readAndDispatch();
                                             dfsToOpen.add(df);
                                             df.setText(source);
-                                            // Add / remove from unsaved files is mandatory! 
+                                            // Add / remove from unsaved files is mandatory!
                                             Project.addUnsavedFile(df);
                                             df.parseForData(true);
                                             Project.removeUnsavedFile(df);
@@ -4305,45 +4305,45 @@ public class Editor3DWindow extends Editor3DDesign {
                                                 int ind = fileName.lastIndexOf(File.separator + "s" + File.separator); //$NON-NLS-1$
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 1, File.separator + "parts" + File.separator + "s" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
-                                                }                                                
+                                                }
                                                 n = new TreeItem(treeItem_ProjectSubparts[0], SWT.NONE);
                                                 df.setType(DatType.SUBPART);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_Primitive")) { //$NON-NLS-1$
                                                 int ind = fileName.lastIndexOf(File.separator);
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length(), File.separator + "p" + File.separator).toString();  //$NON-NLS-1$
-                                                }                                                
+                                                }
                                                 n = new TreeItem(treeItem_ProjectPrimitives[0], SWT.NONE);
                                                 df.setType(DatType.PRIMITIVE);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_48_Primitive")) { //$NON-NLS-1$
                                                 int ind = fileName.lastIndexOf(File.separator + "48" + File.separator); //$NON-NLS-1$
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 2, File.separator + "p" + File.separator  + "48" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
-                                                }                                                
+                                                }
                                                 n = new TreeItem(treeItem_ProjectPrimitives48[0], SWT.NONE);
                                                 df.setType(DatType.PRIMITIVE48);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_8_Primitive")) { //$NON-NLS-1$
                                                 int ind = fileName.lastIndexOf(File.separator + "8" + File.separator); //$NON-NLS-1$
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 1, File.separator + "p" + File.separator  + "8" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
-                                                }                                                
+                                                }
                                                 n = new TreeItem(treeItem_ProjectPrimitives8[0], SWT.NONE);
                                                 df.setType(DatType.PRIMITIVE8);
                                             } else {
                                                 int ind = fileName.lastIndexOf(File.separator);
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length(), File.separator + "parts" + File.separator).toString();  //$NON-NLS-1$
-                                                }                                                
+                                                }
                                                 n = new TreeItem(treeItem_ProjectParts[0], SWT.NONE);
                                                 df.setType(DatType.PART);
                                             }
-                                            
+
                                             df.setNewName(fileName);
                                             df.setOldName(fileName);
                                             Project.addUnsavedFile(df);
                                             Project.getParsedFiles().add(df);
                                             Project.addOpenedFile(df);
-                                            
+
                                             n.setText(fileName2);
                                             n.setData(df);
 
@@ -4844,13 +4844,13 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        
+
         mntm_SavePalette[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                
+
                 FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
-                
+
                 dlg.setFilterPath(Project.getLastVisitedPath());
 
                 dlg.setFilterExtensions(new String[]{"*_pal.dat"}); //$NON-NLS-1$
@@ -4868,7 +4868,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (f.getParentFile() != null) {
                         Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
                     }
-                    
+
                     UTF8PrintWriter r = null;
                     try {
                         r = new UTF8PrintWriter(newPath);
@@ -4889,19 +4889,19 @@ public class Editor3DWindow extends Editor3DDesign {
                             r.close();
                         }
                     }
-                    
+
                 }
-                
+
                 regainFocus();
             }
         });
-        
+
         mntm_LoadPalette[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                
+
                 FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.OPEN);
-                
+
                 dlg.setFilterPath(Project.getLastVisitedPath());
 
                 dlg.setFilterExtensions(new String[]{"*_pal.dat"}); //$NON-NLS-1$
@@ -4919,12 +4919,12 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (f.getParentFile() != null) {
                         Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
                     }
-                    
+
                     final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
                     ArrayList<GColour> pal = WorkbenchManager.getUserSettingState().getUserPalette();
                     ArrayList<GColour> newPal = new ArrayList<GColour>();
-                    
-                    
+
+
                     UTF8BufferedReader reader = null;
                     try {
                         reader = new UTF8BufferedReader(newPath);
@@ -4950,21 +4950,21 @@ public class Editor3DWindow extends Editor3DDesign {
                         } catch (LDParsingException ex2) {
                         }
                     }
-                    
-                    reloadAllColours();                    
-                                        
+
+                    reloadAllColours();
+
                 }
-                
+
                 regainFocus();
             }
         });
-        
+
         mntm_SetPaletteSize[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                
+
                 final List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
-                
+
                 final int[] frac = new int[]{2};
                 if (new ValueDialogInt(getShell(), I18n.E3D_PaletteSetSize, "") { //$NON-NLS-1$
 
@@ -4982,7 +4982,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }.open() == OK) {
 
                     final boolean reBuild = frac[0] != colours.size();
-                    
+
                     if (frac[0] > colours.size()) {
                         while (frac[0] > colours.size()) {
                             if (colours.size() < 17) {
@@ -5000,16 +5000,16 @@ public class Editor3DWindow extends Editor3DDesign {
                             colours.remove(colours.size() - 1);
                         }
                     }
-                    
+
                     if (reBuild) {
                         reloadAllColours();
                     }
                 }
-                
+
                 regainFocus();
             }
         });
-        
+
         mntm_ResetPalette[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -5024,7 +5024,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         colours.add(View.getLDConfigColour(colours.size()));
                     }
                 }
-                
+
                 reloadAllColours();
 
                 regainFocus();
@@ -5916,27 +5916,27 @@ public class Editor3DWindow extends Editor3DDesign {
         } catch (InvocationTargetException consumed) {
         } catch (InterruptedException consumed) {
         }
-        
+
         tabFolder_OpenDatFiles[0].getItem(0).setData(View.DUMMY_DATFILE);
         tabFolder_OpenDatFiles[0].getItem(1).setData(Project.getFileToEdit());
         Project.addOpenedFile(Project.getFileToEdit());
-        
+
         tabFolder_OpenDatFiles[0].addCTabFolder2Listener(new CTabFolder2Listener() {
-            
+
             @Override
             public void showList(CTabFolderEvent event) {}
-            
+
             @Override
             public void restore(CTabFolderEvent event) {}
-            
+
             @Override
             public void minimize(CTabFolderEvent event) {}
-            
+
             @Override
             public void maximize(CTabFolderEvent event) {
                 // TODO Auto-generated method stub
             }
-            
+
             @Override
             public void close(CTabFolderEvent event) {
                 DatFile df = null;
@@ -5951,11 +5951,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                         Editor3DWindow.getWindow().getShell().forceFocus();
                         regainFocus();
-                    }                    
+                    }
                 }
             }
         });
-        
+
         tabFolder_OpenDatFiles[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -5978,16 +5978,16 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                         if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
                             openDatFile(df, OpenInWhat.EDITOR_TEXT, null);
-                        } else {                                                         
+                        } else {
                             Project.getOpenTextWindows().iterator().next().openNewDatFileTab(df);
                         }
                     }
                     cleanupClosedData();
-                    regainFocus(); 
+                    regainFocus();
                 }
-            }    
+            }
         });
-        
+
         btn_SyncTabs[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -6161,7 +6161,7 @@ public class Editor3DWindow extends Editor3DDesign {
         boolean unsavedProjectFiles = false;
         Set<DatFile> unsavedFiles = new HashSet<DatFile>(Project.getUnsavedFiles());
         for (DatFile df : unsavedFiles) {
-            final String text = df.getText(); 
+            final String text = df.getText();
             if ((!text.equals(df.getOriginalText()) || df.isVirtual() && !text.trim().isEmpty()) && !text.equals(WorkbenchManager.getDefaultFileHeader())) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
                 messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
@@ -6439,7 +6439,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 DatFile d = (DatFile) df.getData();
                 StringBuilder nameSb = new StringBuilder(new File(d.getNewName()).getName());
                 final String d2 = d.getDescription();
-                if (counter < 6 && (!d.getNewName().startsWith(Project.getProjectPath()) || !d.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$                              
+                if (counter < 6 && (!d.getNewName().startsWith(Project.getProjectPath()) || !d.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
                     nameSb.insert(0, "(!) "); //$NON-NLS-1$
                 }
 
@@ -6796,33 +6796,33 @@ public class Editor3DWindow extends Editor3DDesign {
         this.treeParts[0].redraw();
         updateTabs();
     }
-    
+
     private synchronized void updateTabs() {
-        
+
         // FIXME Needs implementation!
-        
-        boolean isSelected = false;        
+
+        boolean isSelected = false;
         if (tabFolder_OpenDatFiles[0].getData() != null) {
             return;
         }
         tabFolder_OpenDatFiles[0].setData(true);
         for (CTabItem c : tabFolder_OpenDatFiles[0].getItems()) {
             c.dispose();
-        }        
-        
+        }
+
         {
             CTabItem tItem = new CTabItem(tabFolder_OpenDatFiles[0], SWT.NONE);
             tItem.setText(I18n.E3D_NoFileSelected);
             tItem.setData(View.DUMMY_DATFILE);
         }
-        
+
         for (Iterator<DatFile> iterator = Project.getOpenedFiles().iterator(); iterator.hasNext();) {
-            DatFile df3 = (DatFile) iterator.next();
+            DatFile df3 = iterator.next();
             if (View.DUMMY_DATFILE.equals(df3)) {
                 iterator.remove();
             }
         }
-        
+
         for (DatFile df2 : Project.getOpenedFiles()) {
             CTabItem tItem = new CTabItem(tabFolder_OpenDatFiles[0], SWT.NONE);
             tItem.setText(df2.getShortName() + (Project.getUnsavedFiles().contains(df2) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -6831,15 +6831,16 @@ public class Editor3DWindow extends Editor3DDesign {
                 tabFolder_OpenDatFiles[0].setSelection(tItem);
                 isSelected = true;
             }
-        }        
+        }
         if (!isSelected) {
             tabFolder_OpenDatFiles[0].setSelection(0);
+            Project.setFileToEdit(View.DUMMY_DATFILE);
         }
         tabFolder_OpenDatFiles[0].setData(null);
         tabFolder_OpenDatFiles[0].layout();
         tabFolder_OpenDatFiles[0].redraw();
     }
-    
+
     // Helper functions
     private void clickBtnTest(Button btn) {
         WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn.getParent());
@@ -8628,13 +8629,15 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
                 return false;
             }
+        } else {
+            result2 = true;
         }
         updateTree_removeEntry(df);
         cleanupClosedData();
         regainFocus();
         return result2;
     }
-    
+
     private void openFileIn3DEditor(final DatFile df) {
         if (renders.isEmpty()) {
 
@@ -8695,16 +8698,16 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         }
     }
-    
+
     public void selectTabWithDatFile(DatFile df) {
         for (CTabItem ti : tabFolder_OpenDatFiles[0].getItems()) {
             if (df.equals(ti.getData())) {
                 tabFolder_OpenDatFiles[0].setSelection(ti);
                 openFileIn3DEditor(df);
                 cleanupClosedData();
-                regainFocus(); 
+                regainFocus();
                 break;
             }
-        }    
+        }
     }
 }
