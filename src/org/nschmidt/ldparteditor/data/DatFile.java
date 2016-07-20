@@ -881,7 +881,8 @@ public final class DatFile {
     public void parseForData(boolean addHistory) {
 
         Project.getParsedFiles().add(this);
-
+        Project.addOpenedFile(this);
+        
         Set<String> alreadyParsed = new HashSet<String>();
         alreadyParsed.add(getShortName());
 

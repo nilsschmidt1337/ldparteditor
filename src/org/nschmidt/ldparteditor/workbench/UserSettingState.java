@@ -88,6 +88,7 @@ public class UserSettingState implements Serializable {
     /** LDConfig.ldr */
     private String ldConfigPath = null;
     /** {@code true} if the user wants active synchronisation with the text editor */
+    @SuppressWarnings("unused")
     private AtomicBoolean syncWithTextEditor = new AtomicBoolean(true);
     /** {@code true} if the user wants active synchronisation with the text editor */
     private AtomicBoolean syncWithLpeInline = new AtomicBoolean(false);
@@ -370,6 +371,8 @@ public class UserSettingState implements Serializable {
     private float[] cursor2_Colour_r = null;
     private float[] cursor2_Colour_g = null;
     private float[] cursor2_Colour_b = null;
+    
+    private boolean syncingTabs = false;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -624,7 +627,8 @@ public class UserSettingState implements Serializable {
     }
 
     public AtomicBoolean getSyncWithTextEditor() {
-        return syncWithTextEditor;
+        // return syncWithTextEditor;
+        return new AtomicBoolean(true);
     }
 
     public void setSyncWithTextEditor(AtomicBoolean syncWithTextEditor) {
@@ -1273,5 +1277,13 @@ public class UserSettingState implements Serializable {
 
     public void setAllowInvalidShapes(boolean allowInvalidShapes) {
         this.allowInvalidShapes = allowInvalidShapes;
+    }
+
+    public boolean isSyncingTabs() {
+        return syncingTabs;
+    }
+
+    public void setSyncingTabs(boolean syncingTabs) {
+        this.syncingTabs = syncingTabs;
     }
 }

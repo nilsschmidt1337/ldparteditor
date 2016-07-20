@@ -120,7 +120,8 @@ class Editor3DDesign extends ApplicationWindow {
     final Menu[] mnu_fineMenu = new Menu[1];
     
     final CTabFolder[] tabFolder_OpenDatFiles = new CTabFolder[1];
-
+    final Button[] btn_SyncTabs = new Button[1];
+    
     Action menuItem_Open = ShellHelper.DUMMY_ACTION;
     Action menuItem_Exit = ShellHelper.DUMMY_ACTION;
     Action toolItem_Save = ShellHelper.DUMMY_ACTION;
@@ -279,7 +280,6 @@ class Editor3DDesign extends ApplicationWindow {
 
     final MenuItem[] mntm_UploadLogs = new MenuItem[1];
     final MenuItem[] mntm_AntiAliasing = new MenuItem[1];
-    final MenuItem[] mntm_SyncWithTextEditor = new MenuItem[1];
     final MenuItem[] mntm_SyncLpeInline = new MenuItem[1];
 
     final MenuItem[] mntm_Flip = new MenuItem[1];
@@ -574,20 +574,22 @@ class Editor3DDesign extends ApplicationWindow {
             cmp_main_editor.setLayoutData(BorderLayout.CENTER);
             cmp_main_editor.setLayout(new GridLayout(2, false));
             {
-                Button bnt_Sync = new Button(cmp_main_editor, SWT.TOGGLE);
-                bnt_Sync.setText("Sync");  //$NON-NLS-1$
+                Button btn_SyncTabs = new Button(cmp_main_editor, SWT.TOGGLE);
+                this.btn_SyncTabs[0] = btn_SyncTabs;
+                btn_SyncTabs.setToolTipText(I18n.E3D_Sync3DEditor);
+                
+                btn_SyncTabs.setSelection(WorkbenchManager.getUserSettingState().isSyncingTabs());
                 
                 {
                     GridData gridDataX = new GridData();
                     gridDataX.horizontalIndent = 10;
-                    bnt_Sync.setLayoutData(gridDataX);
+                    btn_SyncTabs.setLayoutData(gridDataX);
                 }
                 
                 CTabFolder tabFolder_OpenDatFiles = new CTabFolder(cmp_main_editor, SWT.CLOSE);
                 this.tabFolder_OpenDatFiles[0] = tabFolder_OpenDatFiles;                
                 tabFolder_OpenDatFiles.setMRUVisible(true);
                 tabFolder_OpenDatFiles.setSelectionBackground(new Color[]{Display.getCurrent().getSystemColor(SWT.COLOR_TRANSPARENT), Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND)}, new int[]{100}, true);
-                // tabFolder_OpenDatFiles.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
                 
                 {
                     GridData gridDataX = new GridData();
@@ -605,10 +607,14 @@ class Editor3DDesign extends ApplicationWindow {
                 
                 {
                     CTabItem tItem = new CTabItem(tabFolder_OpenDatFiles, SWT.NONE);
+                    tItem.setText(I18n.E3D_NoFileSelected);
+                }
+                {
+                    CTabItem tItem = new CTabItem(tabFolder_OpenDatFiles, SWT.NONE);
                     tItem.setText("new.dat*"); //$NON-NLS-1$
                 }
                 
-                tabFolder_OpenDatFiles.setSelection(0);
+                tabFolder_OpenDatFiles.setSelection(1);
 
                 SashForm sashForm = new SashForm(cmp_main_editor, SWT.NONE);
 
@@ -2308,16 +2314,16 @@ class Editor3DDesign extends ApplicationWindow {
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator4 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
-                {
-                    MenuItem mntm_SyncWithTextEditor = new MenuItem(mnu_Tools, SWT.CHECK);
-                    mntm_SyncWithTextEditor.setSelection(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
-                    this.mntm_SyncWithTextEditor[0] = mntm_SyncWithTextEditor;
-                    mntm_SyncWithTextEditor.setText(I18n.E3D_Sync3DEditor);
-                }
+                //                {
+                //                    MenuItem mntm_SyncWithTextEditor = new MenuItem(mnu_Tools, SWT.CHECK);
+                //                    mntm_SyncWithTextEditor.setSelection(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
+                //                    this.mntm_SyncWithTextEditor[0] = mntm_SyncWithTextEditor;
+                //                    mntm_SyncWithTextEditor.setText(I18n.E3D_Sync3DEditor);
+                //                }
                 {
                     MenuItem mntm_SyncLpeInline = new MenuItem(mnu_Tools, SWT.CHECK);
                     mntm_SyncLpeInline.setSelection(WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get());
-                    mntm_SyncLpeInline.setEnabled(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
+                    // mntm_SyncLpeInline.setEnabled(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
                     this.mntm_SyncLpeInline[0] = mntm_SyncLpeInline;
                     mntm_SyncLpeInline.setText(I18n.E3D_ParseInline);
                 }
