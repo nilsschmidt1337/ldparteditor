@@ -584,9 +584,10 @@ class Editor3DDesign extends ApplicationWindow {
                 }
                 
                 CTabFolder tabFolder_OpenDatFiles = new CTabFolder(cmp_main_editor, SWT.CLOSE);
-                this.tabFolder_OpenDatFiles[0] = tabFolder_OpenDatFiles;
+                this.tabFolder_OpenDatFiles[0] = tabFolder_OpenDatFiles;                
                 tabFolder_OpenDatFiles.setMRUVisible(true);
-                tabFolder_OpenDatFiles.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                tabFolder_OpenDatFiles.setSelectionBackground(new Color[]{Display.getCurrent().getSystemColor(SWT.COLOR_TRANSPARENT), Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND)}, new int[]{100}, true);
+                // tabFolder_OpenDatFiles.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
                 
                 {
                     GridData gridDataX = new GridData();
