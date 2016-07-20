@@ -118,10 +118,10 @@ class Editor3DDesign extends ApplicationWindow {
     final Menu[] mnu_coarseMenu = new Menu[1];
     final Menu[] mnu_mediumMenu = new Menu[1];
     final Menu[] mnu_fineMenu = new Menu[1];
-    
+
     final CTabFolder[] tabFolder_OpenDatFiles = new CTabFolder[1];
     final Button[] btn_SyncTabs = new Button[1];
-    
+
     Action menuItem_Open = ShellHelper.DUMMY_ACTION;
     Action menuItem_Exit = ShellHelper.DUMMY_ACTION;
     Action toolItem_Save = ShellHelper.DUMMY_ACTION;
@@ -577,34 +577,35 @@ class Editor3DDesign extends ApplicationWindow {
                 Button btn_SyncTabs = new Button(cmp_main_editor, SWT.TOGGLE);
                 this.btn_SyncTabs[0] = btn_SyncTabs;
                 btn_SyncTabs.setToolTipText(I18n.E3D_Sync3DEditor);
-                
+                btn_SyncTabs.setImage(ResourceManager.getImage("icon16_sync3D.png")); //$NON-NLS-1$
+
                 btn_SyncTabs.setSelection(WorkbenchManager.getUserSettingState().isSyncingTabs());
-                
+
                 {
                     GridData gridDataX = new GridData();
                     gridDataX.horizontalIndent = 10;
                     btn_SyncTabs.setLayoutData(gridDataX);
                 }
-                
+
                 CTabFolder tabFolder_OpenDatFiles = new CTabFolder(cmp_main_editor, SWT.CLOSE);
-                this.tabFolder_OpenDatFiles[0] = tabFolder_OpenDatFiles;                
+                this.tabFolder_OpenDatFiles[0] = tabFolder_OpenDatFiles;
                 tabFolder_OpenDatFiles.setMRUVisible(true);
-                tabFolder_OpenDatFiles.setSelectionBackground(new Color[]{Display.getCurrent().getSystemColor(SWT.COLOR_TRANSPARENT), Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND)}, new int[]{100}, true);
-                
+                tabFolder_OpenDatFiles.setSelectionBackground(new Color[]{Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND), Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND)}, new int[]{100}, true);
+
                 {
                     GridData gridDataX = new GridData();
-                    
+
                     gridDataX.horizontalAlignment = SWT.FILL;
                     gridDataX.minimumHeight = 10;
                     gridDataX.minimumWidth = 160;
-                    gridDataX.heightHint = (int) (tabFolder_OpenDatFiles.getTabHeight() / 3);
-                    
+                    gridDataX.heightHint = tabFolder_OpenDatFiles.getTabHeight() / 3;
+
                     gridDataX.verticalAlignment = SWT.FILL;
 
                     gridDataX.grabExcessHorizontalSpace = true;
                     tabFolder_OpenDatFiles.setLayoutData(gridDataX);
                 }
-                
+
                 {
                     CTabItem tItem = new CTabItem(tabFolder_OpenDatFiles, SWT.NONE);
                     tItem.setText(I18n.E3D_NoFileSelected);
@@ -613,16 +614,16 @@ class Editor3DDesign extends ApplicationWindow {
                     CTabItem tItem = new CTabItem(tabFolder_OpenDatFiles, SWT.NONE);
                     tItem.setText("new.dat*"); //$NON-NLS-1$
                 }
-                
+
                 tabFolder_OpenDatFiles.setSelection(1);
 
                 SashForm sashForm = new SashForm(cmp_main_editor, SWT.NONE);
 
                 {
                     GridData gridDataX = new GridData();
-                    
+
                     gridDataX.horizontalSpan = 2;
-                    
+
                     gridDataX.horizontalAlignment = SWT.FILL;
                     gridDataX.minimumHeight = 200;
                     gridDataX.minimumWidth = 160;
@@ -633,7 +634,7 @@ class Editor3DDesign extends ApplicationWindow {
                     gridDataX.grabExcessHorizontalSpace = true;
                     sashForm.setLayoutData(gridDataX);
                 }
-                
+
                 Editor3DDesign.setSashForm(sashForm);
                 sashForm.setToolTipText(I18n.E3D_DragHint);
                 {
@@ -2571,7 +2572,7 @@ class Editor3DDesign extends ApplicationWindow {
                 Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
                 this.btn_Manipulator_32_subfileTo[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_SubfileToManipulator);
-                btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile2.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
