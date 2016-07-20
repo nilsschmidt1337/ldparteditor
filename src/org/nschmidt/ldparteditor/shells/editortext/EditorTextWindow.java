@@ -204,12 +204,13 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab ct = (CompositeTab) e.item;
-                if (NLogger.DEBUG && ct != null) {
+                if (WorkbenchManager.getUserSettingState().isSyncingTabs() && ct != null) {
                     CompositeTabState state = ct.getState();
                     if (state != null) {
                         DatFile df = state.getFileNameObj();
                         if (df != null) {
-                            NLogger.debug(EditorTextWindow.class, "Old DatFile name {0}", ((CompositeTab) e.item).getState().getFileNameObj().getOldName()); //$NON-NLS-1$
+                            Editor3DWindow.getWindow().selectTabWithDatFile(df);
+                            NLogger.debug(EditorTextWindow.class, "Old DatFile name {0}", df.getOldName()); //$NON-NLS-1$
                         }
                     }
                 }

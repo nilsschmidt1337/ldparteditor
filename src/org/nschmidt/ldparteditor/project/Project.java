@@ -54,7 +54,10 @@ public enum Project {
     private static final HashSet<DatFile> parsedFiles = new HashSet<DatFile>();
     /** The file which is currently displayed in the 3D editor */
     private static DatFile fileToEdit = new DatFile(getProjectPath() + File.separator + "PARTS" + File.separator + "new.dat"); //$NON-NLS-1$ //$NON-NLS-2$
-
+    /** A list of all absolute filenames, which were opened */
+    private static final ArrayList<DatFile> openedFiles = new ArrayList<DatFile>();
+    
+    
     /**
      * Creates the new project file structure
      */
@@ -305,6 +308,24 @@ public enum Project {
 
     public static void removeUnsavedFile(DatFile file) {
         unsavedFiles.remove(file);
+    }
+    
+    
+    public static ArrayList<DatFile> getOpenedFiles() {
+        return openedFiles;
+    }
+
+    public static void addOpenedFile(DatFile file) {
+        if (!openedFiles.contains(file)) {
+            openedFiles.add(file);
+        } else {
+            openedFiles.remove(file);
+            openedFiles.add(0, file);
+        }
+    }
+
+    public static void removeOpenedFile(DatFile file) {
+        openedFiles.remove(file);
     }
 
     /**

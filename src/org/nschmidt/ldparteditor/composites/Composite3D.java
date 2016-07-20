@@ -385,7 +385,11 @@ public class Composite3D extends ScalableComposite {
         mntmCloseDat.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                Editor3DWindow.getWindow().closeDatfile(lockableDatFileReference);
+                Project.removeOpenedFile(lockableDatFileReference);
+                if (!Editor3DWindow.getWindow().closeDatfile(lockableDatFileReference)) {
+                    Project.addOpenedFile(lockableDatFileReference);
+                    Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                }
             }
         });
         mntmCloseDat.setText(I18n.E3D_Close);
@@ -422,6 +426,7 @@ public class Composite3D extends ScalableComposite {
                 }
                 // Project.getParsedFiles().add(df); IS NECESSARY HERE
                 Project.getParsedFiles().add(df);
+                Project.addOpenedFile(df);
                 new EditorTextWindow().run(df, false);
             }
         });
@@ -2103,7 +2108,7 @@ public class Composite3D extends ScalableComposite {
 
             // Project.getParsedFiles().add(df); IS NECESSARY HERE
             Project.getParsedFiles().add(df);
-
+            Project.addOpenedFile(df);
             final EditorTextWindow win = new EditorTextWindow();
             win.run(df, false);
             win.open();
