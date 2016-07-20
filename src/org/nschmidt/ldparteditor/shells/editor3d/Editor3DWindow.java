@@ -5979,7 +5979,17 @@ public class Editor3DWindow extends Editor3DDesign {
                                 }
                                 if (fileIsOpenInTextEditor) break;
                             }
-                            if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
+                            if (fileIsOpenInTextEditor) {
+                                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                    for (final CTabItem t : w.getTabFolder().getItems()) {
+                                        if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                            w.getTabFolder().setSelection(t);
+                                            ((CompositeTab) t).getControl().getShell().forceActive();
+                                            w.open();
+                                        }
+                                    }
+                                }
+                            } else if (Project.getOpenTextWindows().isEmpty()) {
                                 openDatFile(df, OpenInWhat.EDITOR_TEXT, null);
                             } else {
                                 Project.getOpenTextWindows().iterator().next().openNewDatFileTab(df);
