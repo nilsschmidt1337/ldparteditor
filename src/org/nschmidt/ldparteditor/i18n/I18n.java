@@ -79,6 +79,7 @@ public final class I18n {
     private static final ResourceBundle SCALE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Scale", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SEARCH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Search", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SLICERPRO = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Slicerpro", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle SMOOTH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Smooth", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SORT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Sort", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SYMSPLITTER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Symsplitter", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle TJUNCTION = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TJunctionFinder", MyLanguage.LOCALE); //$NON-NLS-1$
@@ -561,6 +562,7 @@ public final class I18n {
     public static final String E3D_SetXYZ = E3D.getString(getProperty());
     public static final String E3D_ShowAll = E3D.getString(getProperty());
     public static final String E3D_SlicerPro = E3D.getString(getProperty());
+    public static final String E3D_Smooth = E3D.getString(getProperty());
     public static final String E3D_Snapping = E3D.getString(getProperty());
     public static final String E3D_Snapshot = E3D.getString(getProperty());
     public static final String E3D_Split = E3D.getString(getProperty());
@@ -990,6 +992,7 @@ public final class I18n {
     public static final String SEARCH_SelectedLines = SEARCH.getString(getProperty());
     public static final String SLICERPRO_Hint = SLICERPRO.getString(getProperty());
     public static final String SLICERPRO_Title = SLICERPRO.getString(getProperty());
+    public static final String SMOOTH_Title = SMOOTH.getString(getProperty());
     public static final String SORT_ByColourAsc = SORT.getString(getProperty());
     public static final String SORT_ByColourDesc = SORT.getString(getProperty());
     public static final String SORT_ByTypeAsc = SORT.getString(getProperty());

@@ -283,6 +283,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_SyncLpeInline = new MenuItem[1];
 
     final MenuItem[] mntm_Flip = new MenuItem[1];
+    final MenuItem[] mntm_Smooth = new MenuItem[1];
     final MenuItem[] mntm_SubdivideCatmullClark = new MenuItem[1];
     final MenuItem[] mntm_SubdivideLoop = new MenuItem[1];
     final MenuItem[] mntm_Split = new MenuItem[1];
@@ -2038,6 +2039,11 @@ class Editor3DDesign extends ApplicationWindow {
                 MenuItem mntm_Flip = new MenuItem(mnu_Merge, SWT.PUSH);
                 this.mntm_Flip[0] = mntm_Flip;
                 mntm_Flip.setText(I18n.E3D_FlipRotate);
+            }
+            {
+                MenuItem mntm_Smooth = new MenuItem(mnu_Merge, SWT.PUSH);
+                this.mntm_Smooth[0] = mntm_Smooth;
+                mntm_Smooth.setText(I18n.E3D_Smooth);
             }
             @SuppressWarnings("unused")
             final MenuItem mntmSeparator2 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
