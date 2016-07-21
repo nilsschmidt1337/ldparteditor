@@ -17,12 +17,14 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -42,6 +44,7 @@ import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -63,7 +66,7 @@ public final class VertexManager extends VM99Clipboard {
     }
 
     public final synchronized void draw(final Composite3D c3d) {
-        if (!linkedDatFile.isDrawSelection()) return;
+        if (!linkedDatFile.isDrawSelection()) return;                
 
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewport_Inverse();
@@ -498,7 +501,7 @@ public final class VertexManager extends VM99Clipboard {
                     }
                 }
             }
-        } else if (c3d.isShowingVertices()) {
+        } else if (c3d.isShowingVertices() && !OpenGLRenderer.getSmoothing().get()) {
             GL11.glBegin(GL11.GL_POINTS);
             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
             for (Vertex vertex : selectedVertices) {
@@ -508,9 +511,44 @@ public final class VertexManager extends VM99Clipboard {
             }
             GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
             GL11.glEnd();
-        }
+        }             
 
         GL11.glPopMatrix();
+        
+        if (OpenGLRenderer.getSmoothing().get()) {
+            // FIXME Needs implementation!
+            GL11.glBegin(GL11.GL_POINTS);
+            GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+            Object[] obj = getSmoothedVertices(selectedVertices);
+            @SuppressWarnings("unchecked")
+            ArrayList<Vertex> verts = (ArrayList<Vertex>) obj[0];
+            @SuppressWarnings("unchecked")
+            TreeMap<Vertex, Integer> indmap = (TreeMap<Vertex, Integer>) obj[1];
+            @SuppressWarnings("unchecked")
+            TreeMap<Integer, ArrayList<Integer>> adjacency = (TreeMap<Integer, ArrayList<Integer>>) obj[2];
+            for (Vertex vertex : verts) {               
+                GL11.glVertex3f(vertex.x, vertex.y, vertex.z);                
+            }
+            GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
+            GL11.glEnd();
+            
+            GL11.glLineWidth(2f);
+            GL11.glBegin(GL11.GL_LINES);
+            GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+            
+            for (Vertex vertex : verts) {
+                if (adjacency.containsKey(indmap.get(vertex))) {
+                    for (Integer i : adjacency.get(indmap.get(vertex))) {
+                        GL11.glVertex3f(vertex.x, vertex.y, vertex.z);
+                        Vertex vertex2 = verts.get(i);
+                        GL11.glVertex3f(vertex2.x, vertex2.y, vertex2.z);
+                    }
+                }                               
+            }
+            GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
+            GL11.glEnd();
+        }
+        
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         if (c3d.isLightOn())
             GL11.glEnable(GL11.GL_LIGHTING);

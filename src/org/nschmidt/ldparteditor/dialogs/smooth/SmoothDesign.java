@@ -77,6 +77,9 @@ class SmoothDesign extends Dialog {
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
+        Label lbl_preview = new Label(cmp_container, SWT.NONE);
+        lbl_preview.setText("This dialog supports a realtime preview of the new mesh."); //$NON-NLS-1$ FIXME !i18n!
+        
         {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -98,6 +101,9 @@ class SmoothDesign extends Dialog {
             cb_Zaxis.setSelection(true);
         }
         
+        Label lbl_iter = new Label(cmp_container, SWT.NONE);
+        lbl_iter.setText("Iterations:"); //$NON-NLS-1$ FIXME !i18n!      
+        
         {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -111,7 +117,9 @@ class SmoothDesign extends Dialog {
             spn_pX.setValue(1);
         }
 
-
+        Label lbl_factor = new Label(cmp_container, SWT.NONE);
+        lbl_factor.setText("Factor:"); //$NON-NLS-1$ FIXME !i18n!
+      
         {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
