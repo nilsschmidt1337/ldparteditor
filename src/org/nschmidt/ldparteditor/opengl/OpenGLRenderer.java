@@ -722,6 +722,8 @@ public class OpenGLRenderer {
                                         threads[j] = new Thread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                final TreeMap<Float, float[]>  zSort = new TreeMap<Float, float[]>();
+                                                final TreeMap<Float, Vector4f>  hitSort = new TreeMap<Float, Vector4f>();
                                                 final Random tRnd = new Random(12348729642643L * start[0]);
                                                 ArrayList<float[]> points2 = new ArrayList<float[]>(10000 / chunks);
                                                 final PowerRay pr = new PowerRay();
@@ -739,11 +741,11 @@ public class OpenGLRenderer {
                                                         float gT = tc[i + 1];
                                                         float bT = tc[i + 2];
                                                         if (rS != rT || gS != gT || bS != bT) {
-                                                            TreeMap<Float, float[]>  zSort = new TreeMap<Float, float[]>();
-                                                            TreeMap<Float, Vector4f>  hitSort = new TreeMap<Float, Vector4f>();
-
+                                                            zSort.clear();
+                                                            hitSort.clear();
+                                                            final Vector4f posv = get3DCoordinatesFromScreen(x, y, z, w, h, vInverse);
                                                             for (float[] tri : tris) {
-                                                                float[] zHit = pr.TRIANGLE_INTERSECT(get3DCoordinatesFromScreen(x, y, z, w, h, vInverse), ray, tri);
+                                                                float[] zHit = pr.TRIANGLE_INTERSECT(posv, ray, tri);
                                                                 if (zHit != null) {
                                                                     Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], w, h, vM);
                                                                     hitSort.put(sz.z, sz);
