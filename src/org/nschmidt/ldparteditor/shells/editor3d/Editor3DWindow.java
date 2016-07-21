@@ -126,6 +126,7 @@ import org.nschmidt.ldparteditor.dialogs.scale.ScaleDialog;
 import org.nschmidt.ldparteditor.dialogs.selectvertex.VertexDialog;
 import org.nschmidt.ldparteditor.dialogs.setcoordinates.CoordinatesDialog;
 import org.nschmidt.ldparteditor.dialogs.slicerpro.SlicerProDialog;
+import org.nschmidt.ldparteditor.dialogs.smooth.SmoothDialog;
 import org.nschmidt.ldparteditor.dialogs.symsplitter.SymSplitterDialog;
 import org.nschmidt.ldparteditor.dialogs.tjunction.TJunctionDialog;
 import org.nschmidt.ldparteditor.dialogs.translate.TranslateDialog;
@@ -3761,6 +3762,33 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
+        
+        
+        mntm_Smooth[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (OpenGLRenderer renderer : renders) {
+                            Composite3D c3d = renderer.getC3D();
+                            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
+                                // FIXME Needs implementation!
+                                if (new SmoothDialog(getShell()).open() == OK) {
+
+                                    VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                                    vm.addSnapshot();
+                                    // vm.smooth(x, y, z, factor, times);
+                                    regainFocus();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                });
+                regainFocus();
+            }
+        });
 
         mntm_MergeToAverage[0].addSelectionListener(new SelectionAdapter() {
             @Override
@@ -6752,8 +6780,6 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     private synchronized void updateTabs() {
-
-        // FIXME Needs implementation!
 
         boolean isSelected = false;
         if (tabFolder_OpenDatFiles[0].getData() != null) {
