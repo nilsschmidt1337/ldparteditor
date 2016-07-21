@@ -176,6 +176,11 @@ public class EditorTextWindow extends EditorTextDesign {
                                     if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
                                     DatFile df = Editor3DWindow.getWindow().openDatFile(tabFolder[0].getWindow().getShell(), OpenInWhat.EDITOR_3D, f);
                                     if (df != null) {
+                                        boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
+                                        if (Project.getUnsavedFiles().contains(df)) {                      
+                                            WorkbenchManager.getUserSettingState().setSyncingTabs(false);
+                                            Editor3DWindow.getWindow().revert(df);                                                
+                                        }
                                         Editor3DWindow.getWindow().addRecentFile(df);
                                         final File f2 = new File(df.getNewName());
                                         if (f2.getParentFile() != null) {
@@ -191,6 +196,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                                 tbtmnewItem.getTextComposite().redraw();
                                             }
                                         }
+                                        WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
                                     }
                                     break;
                                 }
@@ -243,9 +249,15 @@ public class EditorTextWindow extends EditorTextDesign {
         btn_Open[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
+                boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
                 DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, null);
                 if (df != null) {
+                    if (Project.getUnsavedFiles().contains(df)) {                      
+                        WorkbenchManager.getUserSettingState().setSyncingTabs(false);
+                        Editor3DWindow.getWindow().revert(df);                                                
+                    }
                     openNewDatFileTab(df);
+                    WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
                 }
             }
         });
@@ -1006,6 +1018,11 @@ public class EditorTextWindow extends EditorTextDesign {
                                 if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
                                 DatFile df = Editor3DWindow.getWindow().openDatFile(tabFolder[0].getWindow().getShell(), OpenInWhat.EDITOR_3D, f);
                                 if (df != null) {
+                                    boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
+                                    if (Project.getUnsavedFiles().contains(df)) {                      
+                                        WorkbenchManager.getUserSettingState().setSyncingTabs(false);
+                                        Editor3DWindow.getWindow().revert(df);                                                
+                                    }
                                     Editor3DWindow.getWindow().addRecentFile(df);
                                     final File f2 = new File(df.getNewName());
                                     if (f2.getParentFile() != null) {
@@ -1021,6 +1038,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                             tbtmnewItem.getTextComposite().redraw();
                                         }
                                     }
+                                    WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
                                 }
                                 return;
                             }
