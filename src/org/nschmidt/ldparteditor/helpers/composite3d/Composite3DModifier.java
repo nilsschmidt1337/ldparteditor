@@ -48,6 +48,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * Provides functions to perform view actions for the {@linkplain Composite3D}
@@ -402,6 +403,11 @@ public class Composite3DModifier {
                                     if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
                                     DatFile df = Editor3DWindow.getWindow().openDatFile(Editor3DWindow.getWindow().getShell(), OpenInWhat.EDITOR_3D, f);
                                     if (df != null) {
+                                        boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
+                                        if (Project.getUnsavedFiles().contains(df)) {                      
+                                            WorkbenchManager.getUserSettingState().setSyncingTabs(false);
+                                            Editor3DWindow.getWindow().revert(df);                                                
+                                        }
                                         Editor3DWindow.getWindow().addRecentFile(df);
                                         final File f2 = new File(df.getNewName());
                                         if (f2.getParentFile() != null) {
@@ -411,10 +417,12 @@ public class Composite3DModifier {
                                             for (CTabItem t : w.getTabFolder().getItems()) {
                                                 if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                                                     w.closeTabWithDatfile(df);
+                                                    WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
                                                     return;
                                                 }
                                             }
                                         }
+                                        WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
                                     }
                                     break;
                                 }

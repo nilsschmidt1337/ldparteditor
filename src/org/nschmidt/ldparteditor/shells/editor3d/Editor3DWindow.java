@@ -730,8 +730,13 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_OpenDat[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                DatFile dat = openDatFile(getShell(), OpenInWhat.EDITOR_3D, null);
+                boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
+                DatFile dat = openDatFile(getShell(), OpenInWhat.EDITOR_3D, null);                
                 if (dat != null) {
+                    if (Project.getUnsavedFiles().contains(dat)) {                      
+                        WorkbenchManager.getUserSettingState().setSyncingTabs(false);
+                        revert(dat);                                                
+                    }
                     addRecentFile(dat);
                     final File f = new File(dat.getNewName());
                     if (f.getParentFile() != null) {
@@ -752,7 +757,10 @@ public class Editor3DWindow extends Editor3DDesign {
                     } else {
                         Project.getOpenTextWindows().iterator().next().openNewDatFileTab(dat);
                     }
+                    Project.setFileToEdit(dat);
+                    updateTabs();
                 }
+                WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
                 regainFocus();
             }
         });
@@ -2390,76 +2398,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         public void widgetSelected(SelectionEvent e) {
                             if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
                                 DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                if (df.isReadOnly() || !Project.getUnsavedFiles().contains(df) || df.isVirtual() && df.getText().trim().isEmpty()) {
-                                    regainFocus();
-                                    return;
-                                }
-                                df.getVertexManager().addSnapshot();
-
-                                MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-                                messageBox.setText(I18n.DIALOG_RevertTitle);
-
-                                Object[] messageArguments = {df.getShortName(), df.getLastSavedOpened()};
-                                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                formatter.setLocale(MyLanguage.LOCALE);
-                                formatter.applyPattern(I18n.DIALOG_Revert);
-                                messageBox.setMessage(formatter.format(messageArguments));
-
-                                int result = messageBox.open();
-
-                                if (result == SWT.NO) {
-                                    regainFocus();
-                                    return;
-                                }
-
-
-                                boolean canUpdate = false;
-
-                                for (OpenGLRenderer renderer : renders) {
-                                    Composite3D c3d = renderer.getC3D();
-                                    if (c3d.getLockableDatFileReference().equals(df)) {
-                                        canUpdate = true;
-                                        break;
-                                    }
-                                }
-
-                                EditorTextWindow tmpW = null;
-                                CTabItem tmpT = null;
-                                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                    for (CTabItem t : w.getTabFolder().getItems()) {
-                                        if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                            canUpdate = true;
-                                            tmpW = w;
-                                            tmpT = t;
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                df.setText(df.getOriginalText());
-                                df.setOldName(df.getNewName());
-                                if (!df.isVirtual()) {
-                                    Project.removeUnsavedFile(df);
-                                    updateTree_unsavedEntries();
-                                }
-
-                                if (canUpdate) {
-
-                                    df.parseForData(true);
-                                    df.getVertexManager().setModified(true, true);
-
-                                    if (tmpW != null) {
-                                        tmpW.getTabFolder().setSelection(tmpT);
-                                        ((CompositeTab) tmpT).getControl().getShell().forceActive();
-                                        tmpW.open();
-                                        ((CompositeTab) tmpT).getTextComposite().forceFocus();
-                                    }
-                                }
-                            } else {
-                                // MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                                // messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
-                                // messageBoxError.setMessage(I18n.DIALOG_Unavailable);
-                                // messageBoxError.open();
+                                revert(df);
                             }
                             regainFocus();
                         }
@@ -8728,5 +8667,73 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public static AtomicBoolean getNoSyncDeadlock() {
         return no_sync_deadlock;
+    }
+    
+    public void revert(DatFile df) {
+        if (df.isReadOnly() || !Project.getUnsavedFiles().contains(df) || df.isVirtual() && df.getText().trim().isEmpty()) {
+            regainFocus();
+            return;
+        }
+        df.getVertexManager().addSnapshot();
+
+        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+        messageBox.setText(I18n.DIALOG_RevertTitle);
+
+        Object[] messageArguments = {df.getShortName(), df.getLastSavedOpened()};
+        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+        formatter.setLocale(MyLanguage.LOCALE);
+        formatter.applyPattern(I18n.DIALOG_Revert);
+        messageBox.setMessage(formatter.format(messageArguments));
+
+        int result = messageBox.open();
+
+        if (result == SWT.NO) {
+            regainFocus();
+            return;
+        }
+
+
+        boolean canUpdate = false;
+
+        for (OpenGLRenderer renderer : renders) {
+            Composite3D c3d = renderer.getC3D();
+            if (c3d.getLockableDatFileReference().equals(df)) {
+                canUpdate = true;
+                break;
+            }
+        }
+
+        EditorTextWindow tmpW = null;
+        CTabItem tmpT = null;
+        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+            for (CTabItem t : w.getTabFolder().getItems()) {
+                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                    canUpdate = true;
+                    tmpW = w;
+                    tmpT = t;
+                    break;
+                }
+            }
+        }
+
+        df.setText(df.getOriginalText());
+        df.setOldName(df.getNewName());
+        if (!df.isVirtual()) {
+            Project.removeUnsavedFile(df);
+            updateTree_unsavedEntries();
+        }
+
+        if (canUpdate) {
+
+            df.parseForData(true);
+            df.getVertexManager().setModified(true, true);
+
+            if (tmpW != null) {
+                tmpW.getTabFolder().setSelection(tmpT);
+                ((CompositeTab) tmpT).getControl().getShell().forceActive();
+                tmpW.open();
+                ((CompositeTab) tmpT).getTextComposite().forceFocus();
+            }
+        }
     }
 }

@@ -84,6 +84,7 @@ import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.SyntaxFormatter;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * This is the tab composite which displays the text from a DAT file
@@ -153,6 +154,11 @@ public class CompositeTab extends CompositeTabDesign {
                                     if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
                                     DatFile df = Editor3DWindow.getWindow().openDatFile(state.window[0].getShell(), OpenInWhat.EDITOR_3D, f);
                                     if (df != null) {
+                                        boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
+                                        if (Project.getUnsavedFiles().contains(df)) {                      
+                                            WorkbenchManager.getUserSettingState().setSyncingTabs(false);
+                                            Editor3DWindow.getWindow().revert(df);                                                
+                                        }
                                         Editor3DWindow.getWindow().addRecentFile(df);
                                         final File f2 = new File(df.getNewName());
                                         if (f2.getParentFile() != null) {
@@ -168,7 +174,8 @@ public class CompositeTab extends CompositeTabDesign {
                                                 tbtmnewItem.getTextComposite().redraw();
                                             }
                                         }
-                                    }
+                                        WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
+                                    }                                   
                                     break;
                                 }
                             }
