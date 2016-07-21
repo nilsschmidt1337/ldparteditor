@@ -103,6 +103,8 @@ public class OpenGLRenderer {
     private final AtomicBoolean alive = new AtomicBoolean(true);
     private final AtomicInteger needData = new AtomicInteger(0);
     private Thread raytracer = null;
+        
+    private static final AtomicBoolean smoothing = new AtomicBoolean(false);
 
     public FloatBuffer getViewport() {
         return viewport;
@@ -2137,5 +2139,9 @@ public class OpenGLRenderer {
 
     public int getCubeMapMetalLoc() {
         return cubeMapMetalLoc;
+    }
+
+    public static AtomicBoolean getSmoothing() {
+        return smoothing;
     }
 }

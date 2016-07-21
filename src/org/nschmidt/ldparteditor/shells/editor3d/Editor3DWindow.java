@@ -3774,14 +3774,15 @@ public class Editor3DWindow extends Editor3DDesign {
                             Composite3D c3d = renderer.getC3D();
                             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                                 // FIXME Needs implementation!
+                                OpenGLRenderer.getSmoothing().set(true);
                                 if (new SmoothDialog(getShell()).open() == OK) {
-
                                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                                     vm.addSnapshot();
-                                    // vm.smooth(x, y, z, factor, times);
-                                    regainFocus();
-                                    return;
+                                    vm.smooth(SmoothDialog.isX(), SmoothDialog.isY(), SmoothDialog.isZ(), SmoothDialog.getFactor(), SmoothDialog.getIterations());
+                                    regainFocus();                                    
                                 }
+                                OpenGLRenderer.getSmoothing().set(false);
+                                return;
                             }
                         }
                     }
