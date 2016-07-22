@@ -155,6 +155,8 @@ public class VM26Smooth extends VM25RectangleSnap {
             }
         }
         
+        final BigDecimal FACTOR = SmoothDialog.getFactor();
+        final BigDecimal ONE_MINUS_FACTOR = BigDecimal.ONE.subtract(FACTOR);
         final int iterations = SmoothDialog.getIterations();
         final int size = vertsToProcess.size();
         for (int j = 0; j < iterations; j++) {
@@ -178,13 +180,21 @@ public class VM26Smooth extends VM25RectangleSnap {
                             if (isZ) vz = vz.add(vertsToProcess.get(k).Z);
                         }
                         
-                        vx = vx.divide(ad, Threshold.mc);
-                        vy = vy.divide(ad, Threshold.mc);
-                        vz = vz.divide(ad, Threshold.mc);
-                        
-                        if (!isX) vx = vertex.X;
-                        if (!isY) vy = vertex.Y;
-                        if (!isZ) vz = vertex.Z;
+                        if (isX) {
+                            vx = vx.divide(ad, Threshold.mc).multiply(FACTOR).add(vertex.X.multiply(ONE_MINUS_FACTOR));
+                        } else {
+                            vx = vertex.X;
+                        }
+                        if (isY) {
+                            vy = vy.divide(ad, Threshold.mc).multiply(FACTOR).add(vertex.Y.multiply(ONE_MINUS_FACTOR));
+                        } else {
+                            vy = vertex.Y;
+                        }
+                        if (isZ) {
+                            vz = vz.divide(ad, Threshold.mc).multiply(FACTOR).add(vertex.Z.multiply(ONE_MINUS_FACTOR));
+                        } else {
+                            vz = vertex.Z;
+                        }                                                 
                             
                         newPos.add(new Vertex(vx, vy, vz));
                         
