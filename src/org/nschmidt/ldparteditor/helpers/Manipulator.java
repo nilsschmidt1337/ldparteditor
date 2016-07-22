@@ -980,7 +980,6 @@ public class Manipulator {
     public void applyTranslation(Composite3D c3d) {
         if (modified) {
             c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, Editor3DWindow.getWindow().isMovingAdjacentData());
-            modified = false;
         }
         resetTranslation();
     }
@@ -988,11 +987,10 @@ public class Manipulator {
     public void applyTranslationAtSelect(Composite3D c3d) {
         if (modified) {
             c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, Editor3DWindow.getWindow().isMovingAdjacentData());
-            modified = false;
         }
         resetTranslation();
-        x_Translate = false;
-        y_Translate = false;
+        // x_Translate = false;
+        // y_Translate = false;
     }
 
     public void resetTranslation() {
@@ -1000,6 +998,23 @@ public class Manipulator {
         accurateScale = View.ACCURATE_ID;
         Matrix4f.setIdentity(result);
         Matrix4f.setIdentity(scale);
+        x_Translate = false;
+        y_Translate = false;
+        z_Translate = false;
+        x_Rotate = false;
+        y_Rotate = false;
+        z_Rotate = false;
+        x_Scale = false;
+        y_Scale = false;
+        z_Scale = false;
+        
+        x_rotatingForwards = false;
+        x_rotatingBackwards = false;
+        y_rotatingForwards = false;
+        y_rotatingBackwards = false;
+        z_rotatingForwards = false;
+        z_rotatingBackwards = false;  
+        modified = false;
     }
 
     public Vector4f transform(Vector2f old_mouse_position, int new_x, int new_y, Composite3D c3d) {
