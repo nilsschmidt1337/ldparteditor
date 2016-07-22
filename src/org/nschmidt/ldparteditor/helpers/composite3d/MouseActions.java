@@ -115,6 +115,7 @@ public class MouseActions {
     public void mouseDown(Event event) {
         
         syncManipulator();
+        c3d.getManipulator().lock();
         
         final DatFile datfile = c3d.getLockableDatFileReference();
         if (!datfile.isDrawSelection()) return;
@@ -125,8 +126,7 @@ public class MouseActions {
         mouse_button_pressed = event.button;
         old_mouse_position.set(event.x, event.y);
         switch (event.button) {
-        case MouseButton.LEFT:
-            c3d.getManipulator().lock();
+        case MouseButton.LEFT:            
             final Editor3DWindow window = Editor3DWindow.getWindow();
             if ((event.stateMask & SWT.SHIFT) == SWT.SHIFT && !window.isAddingSomething()) {
                 Manipulator M = c3d.getManipulator();
@@ -671,6 +671,7 @@ public class MouseActions {
     public void mouseUp(Event event) {
         
         syncManipulator();
+        c3d.getManipulator().unlock();
         
         final DatFile datfile = c3d.getLockableDatFileReference();
         final VertexManager vm = datfile.getVertexManager();
@@ -682,8 +683,7 @@ public class MouseActions {
 
         mouse_button_pressed = 0;
         switch (event.button) {
-        case MouseButton.LEFT:
-            c3d.getManipulator().unlock();
+        case MouseButton.LEFT:            
             c3d.setDoingSelection(false);
             final Editor3DWindow window = Editor3DWindow.getWindow();
             if (window.isAddingSomething() && !datfile.isReadOnly()) {
@@ -1273,6 +1273,7 @@ public class MouseActions {
             break;
         }
         
+        c3d.getManipulator().resetTranslation();
         syncManipulator();
         
     }
