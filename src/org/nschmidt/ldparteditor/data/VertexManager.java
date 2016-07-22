@@ -517,6 +517,9 @@ public final class VertexManager extends VM99Clipboard {
         
         if (OpenGLRenderer.getSmoothing().get()) {
             // FIXME Needs implementation!
+            
+            GL11.glDisable(GL11.GL_LIGHTING);
+            
             GL11.glBegin(GL11.GL_POINTS);
             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
             Object[] obj = getSmoothedVertices(selectedVertices);

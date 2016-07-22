@@ -23,7 +23,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
-import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
@@ -57,6 +56,8 @@ public class SmoothDialog extends SmoothDesign {
         x = true;
         y = true;
         z = true;
+        iterations = 1;
+        factor = BigDecimal.ONE; 
     }
 
     @Override
@@ -79,7 +80,6 @@ public class SmoothDialog extends SmoothDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 x = cb_Xaxis[0].getSelection();
-                Project.getFileToEdit().getVertexManager().selectAll(new SelectorSettings(), true);
             }
         });
         cb_Yaxis[0].addSelectionListener(new SelectionAdapter() {
