@@ -516,7 +516,6 @@ public final class VertexManager extends VM99Clipboard {
         GL11.glPopMatrix();
         
         if (OpenGLRenderer.getSmoothing().get()) {
-            // FIXME Needs implementation!
             
             GL11.glDisable(GL11.GL_LIGHTING);
             
