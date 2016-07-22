@@ -26,9 +26,9 @@ import java.util.TreeSet;
 import org.nschmidt.ldparteditor.dialogs.smooth.SmoothDialog;
 import org.nschmidt.ldparteditor.enums.Threshold;
 
-public class VM26Smooth extends VM25RectangleSnap {
+public class VM25Smooth extends VM24MeshReducer {
 
-    protected VM26Smooth(DatFile linkedDatFile) {
+    protected VM25Smooth(DatFile linkedDatFile) {
         super(linkedDatFile);
     }    
     

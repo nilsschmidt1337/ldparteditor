@@ -3773,7 +3773,6 @@ public class Editor3DWindow extends Editor3DDesign {
                         for (OpenGLRenderer renderer : renders) {
                             Composite3D c3d = renderer.getC3D();
                             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
-                                // FIXME Needs implementation!
                                 OpenGLRenderer.getSmoothing().set(true);
                                 if (new SmoothDialog(getShell()).open() == OK) {
                                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
@@ -4665,24 +4664,6 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = df.getVertexManager();
                         vm.addSnapshot();
                         vm.meshReduce(0);
-                        regainFocus();
-                        return;
-                    }
-                }
-                regainFocus();
-            }
-        });
-        // FIXME Needs implementation for issue #230!
-        if (NLogger.DEBUG) mntm_RectangleSnap[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
-                    DatFile df = c3d.getLockableDatFileReference();
-                    if (df.equals(Project.getFileToEdit()) && !df.isReadOnly()) {
-                        VertexManager vm = df.getVertexManager();
-                        vm.addSnapshot();
-                        vm.snapRectanglePrimitives();
                         regainFocus();
                         return;
                     }
