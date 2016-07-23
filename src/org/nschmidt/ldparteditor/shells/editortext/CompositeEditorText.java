@@ -16,6 +16,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.shells.editortext;
 
 import org.eclipse.swt.widgets.Composite;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabFolder;
+import swing2swt.layout.BorderLayout;
 
 /**
  * Interface class to decouple the EditorTextWindow from the logic of the text editor
@@ -25,12 +27,14 @@ import org.eclipse.swt.widgets.Composite;
 public class CompositeEditorText extends CompositeEditorTextDesign {
     
     private final boolean hasTextEditorWindow;
-    private EditorTextWindow textEditorWindow;
+    EditorTextWindow textEditorWindow;
 
     public CompositeEditorText(Composite parent, int style, boolean hasTextEditorWindow) {
-        super(parent, style, hasTextEditorWindow);        
+        super(parent, style, hasTextEditorWindow); 
+       
         this.hasTextEditorWindow = hasTextEditorWindow;
-        // TODO Auto-generated constructor stub
+        
+        this.setLayout(new BorderLayout(0, 0));       
     }
 
     public boolean hasTextEditorWindow() {
@@ -43,6 +47,13 @@ public class CompositeEditorText extends CompositeEditorTextDesign {
 
     public void setTextEditorWindow(EditorTextWindow textEditorWindow) {
         this.textEditorWindow = textEditorWindow;
+    }
+    
+    /**
+     * @return The tab folder
+     */
+    public CompositeTabFolder getTabFolder() {
+        return this.tabFolder[0];
     }
 
 }
