@@ -151,7 +151,7 @@ public class EditorTextWindow extends EditorTextDesign {
         // and the tab for the file has to be created.
         {
             CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
-            tbtmnewItem.setWindow(editorTextWindow);
+            tbtmnewItem.setFolderAndWindow(tabFolder[0], editorTextWindow);
             tbtmnewItem.getState().setFileNameObj(fileToOpen);
             tbtmnewItem.parseForErrorAndHints();
             tabFolder[0].setSelection(tbtmnewItem);
@@ -189,7 +189,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                         if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabFolder[0].getWindow())) {
                                             {
                                                 CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
-                                                tbtmnewItem.setWindow(tabFolder[0].getWindow());
+                                                tbtmnewItem.setFolderAndWindow(tabFolder[0], tabFolder[0].getWindow());
                                                 tbtmnewItem.getState().setFileNameObj(df);
                                                 tabFolder[0].setSelection(tbtmnewItem);
                                                 tbtmnewItem.parseForErrorAndHints();
@@ -237,7 +237,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     }
                     {
                         CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
-                        tbtmnewItem.setWindow(editorTextWindow);
+                        tbtmnewItem.setFolderAndWindow(tabFolder[0], editorTextWindow);
                         tbtmnewItem.getState().setFileNameObj(df);
                         tabFolder[0].setSelection(tbtmnewItem);
                         tbtmnewItem.parseForErrorAndHints();
@@ -349,7 +349,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                     if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
                                         {
                                             CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
-                                            tbtmnewItem.setWindow(editorTextWindow);
+                                            tbtmnewItem.setFolderAndWindow(tabFolder[0], editorTextWindow);
                                             tbtmnewItem.getState().setFileNameObj(df);
                                             tabFolder[0].setSelection(tbtmnewItem);
                                         }
@@ -367,25 +367,25 @@ public class EditorTextWindow extends EditorTextDesign {
         btn_Cut[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                cut();
+                tabFolder[0].cut();
             }
         });
         btn_Copy[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                copy();
+                tabFolder[0].copy();
             }
         });
         btn_Paste[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                paste();
+                tabFolder[0].paste();
             }
         });
         btn_Delete[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                delete();
+                tabFolder[0].delete();
             }
         });
 
@@ -1031,7 +1031,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                     if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabFolder[0].getWindow())) {
                                         {
                                             CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
-                                            tbtmnewItem.setWindow(tabFolder[0].getWindow());
+                                            tbtmnewItem.setFolderAndWindow(tabFolder[0], tabFolder[0].getWindow());
                                             tbtmnewItem.getState().setFileNameObj(df);
                                             tabFolder[0].setSelection(tbtmnewItem);
                                             tbtmnewItem.parseForErrorAndHints();
@@ -1295,78 +1295,6 @@ public class EditorTextWindow extends EditorTextDesign {
         }
     }
 
-    public void cut() {
-        CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-        if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
-            final StyledText ct = selection.getTextComposite();
-            if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
-                ct.copy();
-                return;
-            }
-            final int x = ct.getSelection().x;
-            if (ct.getSelection().y == x) {
-                final int start = ct.getOffsetAtLine(ct.getLineAtOffset(x));
-                ct.setSelection(start, start + ct.getLine(ct.getLineAtOffset(x)).length());
-            }
-            final int x2 = ct.getSelection().x;
-            if (ct.getSelection().y == x2) {
-                ct.forceFocus();
-                return;
-            }
-            ct.cut();
-            ct.forceFocus();
-        }
-    }
-
-    public void copy() {
-        CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-        if (selection != null) {
-            final StyledText ct = selection.getTextComposite();
-            final int x = ct.getSelection().x;
-            if (ct.getSelection().y == x) {
-                final int start = ct.getOffsetAtLine(ct.getLineAtOffset(x));
-                ct.setSelection(start, start + ct.getLine(ct.getLineAtOffset(x)).length());
-            }
-            ct.copy();
-            ct.forceFocus();
-        }
-    }
-
-    public void paste() {
-        CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-        if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
-            if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
-                return;
-            }
-            final StyledText ct = selection.getTextComposite();
-            ct.paste();
-            ct.forceFocus();
-        }
-    }
-
-    public void delete() {
-        CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-        if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
-            if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
-                return;
-            }
-            final StyledText ct = selection.getTextComposite();
-            final int x = ct.getSelection().x;
-            if (ct.getSelection().y == x) {
-                final int start = ct.getOffsetAtLine(ct.getLineAtOffset(x));
-                ct.setSelection(start, start + ct.getLine(ct.getLineAtOffset(x)).length());
-            }
-            final int x2 = ct.getSelection().x;
-            if (ct.getSelection().y == x2) {
-                ct.forceFocus();
-                return;
-            }
-            ct.insert(""); //$NON-NLS-1$
-            ct.setSelection(new Point(x, x));
-            ct.forceFocus();
-        }
-    }
-
     public void openNewDatFileTab(DatFile df, boolean updateLastVisited) {
         Editor3DWindow.getWindow().addRecentFile(df);
         final File f = new File(df.getNewName());
@@ -1376,7 +1304,7 @@ public class EditorTextWindow extends EditorTextDesign {
         if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
             {
                 CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
-                tbtmnewItem.setWindow(editorTextWindow);
+                tbtmnewItem.setFolderAndWindow(tabFolder[0], editorTextWindow);
                 tbtmnewItem.getState().setFileNameObj(df);
                 tabFolder[0].setSelection(tbtmnewItem);
                 tbtmnewItem.parseForErrorAndHints();

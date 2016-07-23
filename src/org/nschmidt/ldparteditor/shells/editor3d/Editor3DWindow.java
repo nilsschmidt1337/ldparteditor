@@ -47,6 +47,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CTabFolder2Listener;
@@ -87,6 +88,7 @@ import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.composites.CompositeScale;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabFolder;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.BFC;
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -7721,7 +7723,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return null;
     }
 
-    public boolean openDatFile(DatFile df, OpenInWhat where, EditorTextWindow tWin) {
+    public boolean openDatFile(DatFile df, OpenInWhat where, ApplicationWindow tWin) {
         if (where == OpenInWhat.EDITOR_3D || where == OpenInWhat.EDITOR_TEXT_AND_3D) {
             if (renders.isEmpty()) {
                 if ("%EMPTY%".equals(Editor3DWindow.getSashForm().getChildren()[1].getData())) { //$NON-NLS-1$
@@ -7777,19 +7779,19 @@ public class Editor3DWindow extends Editor3DDesign {
         if (where == OpenInWhat.EDITOR_TEXT || where == OpenInWhat.EDITOR_TEXT_AND_3D) {
 
             for (EditorTextWindow w : Project.getOpenTextWindows()) {
-
-                for (CTabItem t : w.getTabFolder().getItems()) {
+                final CompositeTabFolder cTabFolder = w.getTabFolder();
+                for (CTabItem t : cTabFolder.getItems()) {
                     if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                         if (Project.getUnsavedFiles().contains(df)) {
-                            w.getTabFolder().setSelection(t);
+                            cTabFolder.setSelection(t);
                             ((CompositeTab) t).getControl().getShell().forceActive();
                         } else {
-                            CompositeTab tbtmnewItem = new CompositeTab(w.getTabFolder(), SWT.CLOSE);
-                            tbtmnewItem.setWindow(w);
+                            CompositeTab tbtmnewItem = new CompositeTab(cTabFolder, SWT.CLOSE);
+                            tbtmnewItem.setFolderAndWindow(cTabFolder, w);
                             tbtmnewItem.getState().setFileNameObj(View.DUMMY_DATFILE);
                             w.closeTabWithDatfile(df);
                             tbtmnewItem.getState().setFileNameObj(df);
-                            w.getTabFolder().setSelection(tbtmnewItem);
+                            cTabFolder.setSelection(tbtmnewItem);
                             tbtmnewItem.getControl().getShell().forceActive();
                             w.open();
                             Project.getParsedFiles().add(df);

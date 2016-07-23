@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Locale;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Listener;
@@ -79,7 +80,6 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shells.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.StringHelper;
@@ -167,10 +167,10 @@ public class CompositeTab extends CompositeTabDesign {
                                         }
                                         if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, state.window[0])) {
                                             {
-                                                CompositeTab tbtmnewItem = new CompositeTab(state.window[0].getTabFolder(), SWT.CLOSE);
-                                                tbtmnewItem.setWindow(state.window[0]);
+                                                CompositeTab tbtmnewItem = new CompositeTab(state.folder[0], SWT.CLOSE);
+                                                tbtmnewItem.setFolderAndWindow(state.folder[0], state.window[0]);
                                                 tbtmnewItem.getState().setFileNameObj(df);
-                                                state.window[0].getTabFolder().setSelection(tbtmnewItem);
+                                                state.folder[0].setSelection(tbtmnewItem);
                                                 tbtmnewItem.parseForErrorAndHints();
                                                 tbtmnewItem.getTextComposite().redraw();
                                             }
@@ -1304,38 +1304,39 @@ public class CompositeTab extends CompositeTabDesign {
         mntm_Delete[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                state.window[0].delete();
+                state.folder[0].delete();
             }
         });
         mntm_Copy[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                state.window[0].copy();
+                state.folder[0].copy();
             }
         });
         mntm_Cut[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                state.window[0].cut();
+                state.folder[0].cut();
             }
         });
         mntm_Paste[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                state.window[0].paste();
+                state.folder[0].paste();
             }
         });
     }
 
     /**
      * Sets the current window of this tab
-     *
+     * @param cTabFolder TODO
      * @param textEditorWindow
      *            the window to set.
      */
-    public void setWindow(EditorTextWindow textEditorWindow) {
+    public void setFolderAndWindow(CompositeTabFolder cTabFolder, ApplicationWindow textEditorWindow) {
         this.state.window[0] = textEditorWindow;
-    }
+        this.state.folder[0] = cTabFolder;
+    }        
 
     /**
      * Shows or hides the error tab
@@ -1418,7 +1419,7 @@ public class CompositeTab extends CompositeTabDesign {
         }
         this.state.getTab().dispose();
         ct.restoreState(state);
-        ct.setWindow(folder.getWindow());
+        ct.setFolderAndWindow(folder, folder.getWindow());
         return ct;
     }
 
