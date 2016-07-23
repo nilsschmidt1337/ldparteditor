@@ -59,6 +59,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GDataCSG;
@@ -856,19 +857,26 @@ public class CompositeTab extends CompositeTabDesign {
                         break;
                     }
                     case EDITORTEXT_REDO:
-                        if (vm.isUpdated()) df.redo(getWindow().getShell());
+                        {
+                            final Shell sh = compositeText[0].getDisplay().getActiveShell(); 
+                            if (vm.isUpdated() && sh != null) df.redo(sh);
+                        }
                         break;
                     case EDITORTEXT_UNDO:
-                        if (vm.isUpdated()) df.undo(getWindow().getShell());
+                        {
+                            final Shell sh = compositeText[0].getDisplay().getActiveShell(); 
+                            if (vm.isUpdated() && sh != null) df.undo(sh);
+                        }
                         break;
                     case EDITORTEXT_SAVE:
                         if (!df.isReadOnly()) {
+                            final Shell sh = compositeText[0].getDisplay().getActiveShell(); 
                             if (df.save()) {
                                 Editor3DWindow.getWindow().addRecentFile(df);
                                 Project.removeUnsavedFile(df);
                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
-                            } else {
-                                MessageBox messageBoxError = new MessageBox(getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
+                            } else if (sh != null) {
+                                MessageBox messageBoxError = new MessageBox(sh, SWT.ICON_ERROR | SWT.OK);
                                 messageBoxError.setText(I18n.DIALOG_Error);
                                 messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
                                 messageBoxError.open();
@@ -877,13 +885,14 @@ public class CompositeTab extends CompositeTabDesign {
                         break;
                     case EDITORTEXT_FIND:
                     {
-                        if (!vm.isUpdated()) return;
+                        final Shell sh = compositeText[0].getDisplay().getActiveShell(); 
+                        if (!vm.isUpdated() || sh == null) return;
                         NLogger.debug(getClass(), "Find and Replace.."); //$NON-NLS-1$
                         SearchWindow win = Editor3DWindow.getWindow().getSearchWindow();
                         if (win != null) {
                             win.close();
                         }
-                        Editor3DWindow.getWindow().setSearchWindow(new SearchWindow(getWindow().getShell()));
+                        Editor3DWindow.getWindow().setSearchWindow(new SearchWindow(sh));
                         Editor3DWindow.getWindow().getSearchWindow().run();
                         Editor3DWindow.getWindow().getSearchWindow().setTextComposite(me);
                         Editor3DWindow.getWindow().getSearchWindow().setScopeToAll();
@@ -1326,15 +1335,6 @@ public class CompositeTab extends CompositeTabDesign {
      */
     public void setWindow(EditorTextWindow textEditorWindow) {
         this.state.window[0] = textEditorWindow;
-    }
-
-    /**
-     * Gets the current window of this tab
-     *
-     * @return the window
-     */
-    public EditorTextWindow getWindow() {
-        return this.state.window[0];
     }
 
     /**
