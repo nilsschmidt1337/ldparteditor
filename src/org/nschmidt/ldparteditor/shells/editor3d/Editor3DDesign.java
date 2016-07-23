@@ -429,7 +429,6 @@ class Editor3DDesign extends ApplicationWindow {
     public Editor3DDesign() {
         super(null);
         addToolBar(SWT.FLAT | SWT.WRAP);
-        addMenuBar();
     }
 
     /**
@@ -3176,24 +3175,6 @@ class Editor3DDesign extends ApplicationWindow {
                 }
             }
         });
-    }
-
-    /**
-     * Create the menu manager.
-     *
-     * @return the menu manager
-     */
-    @Override
-    protected MenuManager createMenuManager() {
-        MenuManager menuManager = new MenuManager("menu"); //$NON-NLS-1$
-        // menuManager.setVisible(true);
-        // {
-        // MenuManager mnu_File = new MenuManager(I18n.EDITOR3D_File);
-        // mnu_File.setVisible(true);
-        // menuManager.add(mnu_File);
-        // this.mnu_File[0] = mnu_File;
-        // }
-        return menuManager;
     }
 
     /**

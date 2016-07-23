@@ -22,13 +22,13 @@ import org.eclipse.swt.widgets.Composite;
  * @author nilss
  *
  */
-public class EditorTextComposite extends Composite {
+public class CompositeEditorText extends CompositeEditorTextDesign {
     
     private final boolean hasTextEditorWindow;
     private EditorTextWindow textEditorWindow;
 
-    public EditorTextComposite(Composite parent, int style, boolean hasTextEditorWindow) {
-        super(parent, style);        
+    public CompositeEditorText(Composite parent, int style, boolean hasTextEditorWindow) {
+        super(parent, style, hasTextEditorWindow);        
         this.hasTextEditorWindow = hasTextEditorWindow;
         // TODO Auto-generated constructor stub
     }
