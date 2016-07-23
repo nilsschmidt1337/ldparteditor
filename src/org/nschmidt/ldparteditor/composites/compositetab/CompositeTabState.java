@@ -21,13 +21,13 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 
+import org.eclipse.jface.window.ApplicationWindow;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
-import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
@@ -38,8 +38,10 @@ import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
  */
 public class CompositeTabState {
 
-    /** The current {@linkplain EditorTextWindow} of the composite tab */
-    final EditorTextWindow[] window = new EditorTextWindow[1];
+    /** The current {@linkplain ApplicationWindow} of the composite tab */
+    final ApplicationWindow[] window = new ApplicationWindow[1];
+    /** The current {@linkplain CompositeTabFolder} of the composite tab */
+    final CompositeTabFolder[] folder = new CompositeTabFolder[1];
     /** The DatFile object */
     private DatFile datFileObj;
     /** The filename of the file, which is displayed by this tab */

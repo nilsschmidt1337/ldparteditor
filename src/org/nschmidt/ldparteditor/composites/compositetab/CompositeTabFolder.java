@@ -16,6 +16,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.composites.compositetab;
 
 import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 
@@ -45,6 +47,78 @@ public class CompositeTabFolder extends CTabFolder {
      */
     public void setWindow(EditorTextWindow window) {
         this.window = window;
+    }
+    
+    public void cut() {
+        CompositeTab selection = (CompositeTab) this.getSelection();
+        if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+            final StyledText ct = selection.getTextComposite();
+            if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                ct.copy();
+                return;
+            }
+            final int x = ct.getSelection().x;
+            if (ct.getSelection().y == x) {
+                final int start = ct.getOffsetAtLine(ct.getLineAtOffset(x));
+                ct.setSelection(start, start + ct.getLine(ct.getLineAtOffset(x)).length());
+            }
+            final int x2 = ct.getSelection().x;
+            if (ct.getSelection().y == x2) {
+                ct.forceFocus();
+                return;
+            }
+            ct.cut();
+            ct.forceFocus();
+        }
+    }
+
+    public void copy() {
+        CompositeTab selection = (CompositeTab) this.getSelection();
+        if (selection != null) {
+            final StyledText ct = selection.getTextComposite();
+            final int x = ct.getSelection().x;
+            if (ct.getSelection().y == x) {
+                final int start = ct.getOffsetAtLine(ct.getLineAtOffset(x));
+                ct.setSelection(start, start + ct.getLine(ct.getLineAtOffset(x)).length());
+            }
+            ct.copy();
+            ct.forceFocus();
+        }
+    }
+
+    public void paste() {
+        CompositeTab selection = (CompositeTab) this.getSelection();
+        if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+            if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                return;
+            }
+            final StyledText ct = selection.getTextComposite();
+            ct.paste();
+            ct.forceFocus();
+        }
+    }
+
+    public void delete() {
+        CompositeTab selection = (CompositeTab) this.getSelection();
+        if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+            if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                return;
+            }
+            final StyledText ct = selection.getTextComposite();
+            final int x = ct.getSelection().x;
+            if (ct.getSelection().y == x) {
+                final int start = ct.getOffsetAtLine(ct.getLineAtOffset(x));
+                ct.setSelection(start, start + ct.getLine(ct.getLineAtOffset(x)).length());
+            }
+            final int x2 = ct.getSelection().x;
+            if (ct.getSelection().y == x2) {
+                ct.forceFocus();
+                return;
+            }
+            ct.insert(""); //$NON-NLS-1$
+            ct.setSelection(new Point(x, x));
+            ct.forceFocus();
+        }
     }
 
 }

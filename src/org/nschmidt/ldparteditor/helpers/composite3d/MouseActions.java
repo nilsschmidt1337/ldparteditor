@@ -1280,25 +1280,15 @@ public class MouseActions {
 
     private void checkSyncEditMode(VertexManager vm, DatFile datfile) {
         if (WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) {
+            Vertex v = null;            
             if (vm.getSelectedVertices().size() == 1) {
-                Vertex v = vm.getSelectedVertices().iterator().next();
-                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    for (CTabItem t : w.getTabFolder().getItems()) {
-                        if (datfile.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                            CompositeTabState state = ((CompositeTab) t).getState();
-                            state.setReplacingVertex(!datfile.isReadOnly());
-                            vm.setVertexToReplace(v);
-                            state.setToReplaceX(v.X);
-                            state.setToReplaceY(v.Y);
-                            state.setToReplaceZ(v.Z);
-                        }
-                    }
-                }
-            } else {
-                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    for (CTabItem t : w.getTabFolder().getItems()) {
-                        if (datfile.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                            CompositeTabState state = ((CompositeTab) t).getState();
+                v = vm.getSelectedVertices().iterator().next();
+            }
+            for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                for (CTabItem t : w.getTabFolder().getItems()) {
+                    if (datfile.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                        CompositeTabState state = ((CompositeTab) t).getState();
+                        if (v == null) {
                             if (state.isReplacingVertex()) {
                                 state.setReplacingVertex(false);
                                 vm.setVertexToReplace(null);
@@ -1306,6 +1296,12 @@ public class MouseActions {
                                 state.setToReplaceY(BigDecimal.ZERO);
                                 state.setToReplaceZ(BigDecimal.ZERO);
                             }
+                        } else {                                
+                            state.setReplacingVertex(!datfile.isReadOnly());
+                            vm.setVertexToReplace(v);
+                            state.setToReplaceX(v.X);
+                            state.setToReplaceY(v.Y);
+                            state.setToReplaceZ(v.Z);
                         }
                     }
                 }
