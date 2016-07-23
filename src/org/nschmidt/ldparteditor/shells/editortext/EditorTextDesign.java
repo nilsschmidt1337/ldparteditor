@@ -68,6 +68,8 @@ import swing2swt.layout.BorderLayout;
  */
 class EditorTextDesign extends ApplicationWindow {
 
+    private Composite parent = null;
+    
     final Button[] btn_New = new Button[1];
     final Button[] btn_Open = new Button[1];
     final Button[] btn_Save = new Button[1];
@@ -109,13 +111,20 @@ class EditorTextDesign extends ApplicationWindow {
      * The reference to the underlying business logic (only for testing
      * purpose!)
      */
-    EditorTextWindow editorTextWindow;
+    ApplicationWindow editorTextWindow;
     CompositeTabFolder[] tabFolder = new CompositeTabFolder[1];
 
     EditorTextDesign() {
         super(null);
+        this.editorTextWindow = this; 
         addToolBar(SWT.FLAT | SWT.WRAP);
         addStatusLine();
+    }
+
+    public EditorTextDesign(Composite parent, ApplicationWindow win) {
+        super(null);
+        this.parent = parent;
+        this.editorTextWindow = win;
     }
 
     /**
@@ -124,9 +133,236 @@ class EditorTextDesign extends ApplicationWindow {
      * @param parent
      */
     @Override
-    protected Control createContents(Composite parent) {
-        setStatus(I18n.E3D_ReadyStatus);
-        CompositeEditorText container = new CompositeEditorText(parent, SWT.NONE, true);        
+    protected Control createContents(Composite parent) {        
+        this.parent = parent;
+        return build();
+    }
+
+    /**
+     * Create the status line manager.
+     *
+     * @return the status line manager
+     */
+    @Override
+    protected StatusLineManager createStatusLineManager() {
+        StatusLineManager status = new StatusLineManager();
+        return status;
+    }
+
+    /**
+     * Configure the shell.
+     *
+     * @param newShell
+     */
+    @Override
+    protected void configureShell(Shell newShell) {
+        super.configureShell(newShell);
+    }
+
+    /**
+     * Return the initial size of the window.
+     */
+    @Override
+    protected Point getInitialSize() {
+        return new Point(916, 578);
+    }
+
+    /**
+     * Sets the reference to the business logic component of the text editor.
+     *
+     * @param editorTextWindow
+     *            the window (business logic) of the text editor Note: I need
+     *            this only for testing!
+     */
+    public void setEditorTextWindow(ApplicationWindow editorTextWindow) {
+        this.editorTextWindow = editorTextWindow;
+    }
+
+
+    private void addColorButton(ToolItem toolItem_Colours, GColour gColour, final int index) {
+        int cn = gColour.getColourNumber();
+        if (cn != -1 && View.hasLDConfigColour(cn)) {
+            gColour = View.getLDConfigColour(cn);
+        }
+        final int imgSize;
+        switch (Editor3DWindow.getIconsize()) {
+        case 0:
+            imgSize = 16;
+            break;
+        case 1:
+            imgSize = 24;
+            break;
+        case 2:
+            imgSize = 32;
+            break;
+        case 3:
+            imgSize = 48;
+            break;
+        case 4:
+            imgSize = 64;
+            break;
+        case 5:
+            imgSize = 72;
+            break;
+        default:
+            imgSize = 16;
+            break;
+        }
+
+        final GColour[] gColour2 = new GColour[] { gColour };
+        final Color[] col = new Color[1];
+        col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
+
+        final Button btn_Col = new Button(toolItem_Colours, SWT.NONE);
+        btn_Col.setData(gColour2);
+        int num = gColour2[0].getColourNumber();
+        if (!View.hasLDConfigColour(num)) {
+            num = -1;
+        }
+        if (num != -1) {
+
+            Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour1 + I18n.E3D_ControlClickModify);
+
+            btn_Col.setToolTipText(formatter.format(messageArguments));
+        } else {
+
+            StringBuilder colourBuilder = new StringBuilder();
+            colourBuilder.append("0x2"); //$NON-NLS-1$
+            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
+            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
+            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
+
+            Object[] messageArguments = {colourBuilder.toString()};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour2 + I18n.E3D_ControlClickModify);
+
+            btn_Col.setToolTipText(formatter.format(messageArguments));
+        }
+
+        btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
+
+        btn_Col.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+                    // Choose new colour
+                    new ColourDialog(btn_Col.getShell(), gColour2, false).open();
+                    WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
+                    col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
+                    int num = gColour2[0].getColourNumber();
+                    if (View.hasLDConfigColour(num)) {
+                        gColour2[0] = View.getLDConfigColour(num);
+                    } else {
+                        num = -1;
+                    }
+                    if (num != -1) {
+                        Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour1 + I18n.E3D_ControlClickModify);
+
+                        btn_Col.setToolTipText(formatter.format(messageArguments));
+                    } else {
+                        StringBuilder colourBuilder = new StringBuilder();
+                        colourBuilder.append("0x2"); //$NON-NLS-1$
+                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
+                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
+                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
+
+                        Object[] messageArguments = {colourBuilder.toString()};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour2 + I18n.E3D_ControlClickModify);
+
+                        btn_Col.setToolTipText(formatter.format(messageArguments));
+
+                    }
+                    Editor3DWindow.reloadAllColours();
+                } else {
+                    int num = gColour2[0].getColourNumber();
+                    if (View.hasLDConfigColour(num)) {
+                        gColour2[0] = View.getLDConfigColour(num);
+                    } else {
+                        num = -1;
+                    }
+
+                    CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                    if (selection != null) {
+                        DatFile df = selection.getState().getFileNameObj();
+                        if (!df.isReadOnly()) {
+                            NLogger.debug(getClass(), "Change colours..."); //$NON-NLS-1$
+                            final StyledText st = selection.getTextComposite();
+                            int s1 = st.getSelectionRange().x;
+                            int s2 = s1 + st.getSelectionRange().y;
+                            int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                            int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                            fromLine++;
+                            toLine++;
+                            NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                            NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
+                            ColourChanger.changeColour(fromLine, toLine, df, num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
+                            st.forceFocus();
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+        });
+        final Point size = btn_Col.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+        final int x = Math.round(size.x / 5f);
+        final int y = Math.round(size.y / 5f);
+        final int w = Math.round(size.x * (3f / 5f));
+        final int h = Math.round(size.y * (3f / 5f));
+        btn_Col.addPaintListener(new PaintListener() {
+            @Override
+            public void paintControl(PaintEvent e) {
+                e.gc.setBackground(col[0]);
+                e.gc.fillRectangle(x, y, w, h);
+                if (gColour2[0].getA() == 1f) {
+                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
+                } else {
+                    e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
+                }
+            }
+        });
+    }
+    
+    public void reloadColours() {
+        for (Control ctrl : toolItem_ColourBar.getChildren()) {
+            ctrl.dispose();
+        }
+        
+        List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
+        
+        final int size = colours.size();
+        for (int i = 0; i < size; i++) {
+            addColorButton(toolItem_ColourBar, colours.get(i), i);
+        }
+        
+        {
+            Button btn_Palette = new Button(toolItem_ColourBar, SWT.NONE);
+            this.btn_Palette[0] = btn_Palette;
+            btn_Palette.setToolTipText(I18n.E3D_More);
+            btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
+        }
+        
+        toolItem_ColourBar.getParent().layout();
+        toolItem_ColourBar.layout();
+        toolItem_ColourBar.redraw();
+    }
+    
+    public Control build() {
+        editorTextWindow.setStatus(I18n.E3D_ReadyStatus);
+        Composite container = new Composite(parent, SWT.NONE);   
+        container.setLayout(new BorderLayout(0, 0));      
         toolBar = new Composite(container, SWT.NONE);
         toolBar.setLayoutData(BorderLayout.NORTH);
         RowLayout rl_toolBar = new RowLayout(SWT.HORIZONTAL);
@@ -318,12 +554,12 @@ class EditorTextDesign extends ApplicationWindow {
             ToolItem toolItem_Colours = new ToolItem(toolBar, SWT.NONE, true);
             toolItem_ColourBar = toolItem_Colours;
             List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
-            
+
             final int size = colours.size();
             for (int i = 0; i < size; i++) {
                 addColorButton(toolItem_Colours, colours.get(i), i);
             }
-            
+
             {
                 Button btn_Palette = new Button(toolItem_Colours, SWT.NONE);
                 this.btn_Palette[0] = btn_Palette;
@@ -344,227 +580,10 @@ class EditorTextDesign extends ApplicationWindow {
                 tabFolder.computeSize(SWT.DEFAULT, SWT.DEFAULT);
             }
         }
-        return container;
-    }
-
-    /**
-     * Create the status line manager.
-     *
-     * @return the status line manager
-     */
-    @Override
-    protected StatusLineManager createStatusLineManager() {
-        StatusLineManager status = new StatusLineManager();
-        return status;
-    }
-
-    /**
-     * Configure the shell.
-     *
-     * @param newShell
-     */
-    @Override
-    protected void configureShell(Shell newShell) {
-        super.configureShell(newShell);
-    }
-
-    /**
-     * Return the initial size of the window.
-     */
-    @Override
-    protected Point getInitialSize() {
-        return new Point(916, 578);
-    }
-
-    /**
-     * Sets the reference to the business logic component of the text editor.
-     *
-     * @param editorTextWindow
-     *            the window (business logic) of the text editor Note: I need
-     *            this only for testing!
-     */
-    public void setEditorTextWindow(EditorTextWindow editorTextWindow) {
-        this.editorTextWindow = editorTextWindow;
-    }
-
-
-    private void addColorButton(ToolItem toolItem_Colours, GColour gColour, final int index) {
-        int cn = gColour.getColourNumber();
-        if (cn != -1 && View.hasLDConfigColour(cn)) {
-            gColour = View.getLDConfigColour(cn);
-        }
-        final int imgSize;
-        switch (Editor3DWindow.getIconsize()) {
-        case 0:
-            imgSize = 16;
-            break;
-        case 1:
-            imgSize = 24;
-            break;
-        case 2:
-            imgSize = 32;
-            break;
-        case 3:
-            imgSize = 48;
-            break;
-        case 4:
-            imgSize = 64;
-            break;
-        case 5:
-            imgSize = 72;
-            break;
-        default:
-            imgSize = 16;
-            break;
-        }
-
-        final GColour[] gColour2 = new GColour[] { gColour };
-        final Color[] col = new Color[1];
-        col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
-
-        final Button btn_Col = new Button(toolItem_Colours, SWT.NONE);
-        btn_Col.setData(gColour2);
-        int num = gColour2[0].getColourNumber();
-        if (!View.hasLDConfigColour(num)) {
-            num = -1;
-        }
-        if (num != -1) {
-
-            Object[] messageArguments = {num, View.getLDConfigColourName(num)};
-            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.EDITORTEXT_Colour1 + I18n.E3D_ControlClickModify);
-
-            btn_Col.setToolTipText(formatter.format(messageArguments));
-        } else {
-
-            StringBuilder colourBuilder = new StringBuilder();
-            colourBuilder.append("0x2"); //$NON-NLS-1$
-            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
-            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
-            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-
-            Object[] messageArguments = {colourBuilder.toString()};
-            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.EDITORTEXT_Colour2 + I18n.E3D_ControlClickModify);
-
-            btn_Col.setToolTipText(formatter.format(messageArguments));
-        }
-
-        btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
-
-        btn_Col.addSelectionListener(new SelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
-                    // Choose new colour
-                    new ColourDialog(getShell(), gColour2, false).open();
-                    WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
-                    col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
-                    int num = gColour2[0].getColourNumber();
-                    if (View.hasLDConfigColour(num)) {
-                        gColour2[0] = View.getLDConfigColour(num);
-                    } else {
-                        num = -1;
-                    }
-                    if (num != -1) {
-                        Object[] messageArguments = {num, View.getLDConfigColourName(num)};
-                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITORTEXT_Colour1 + I18n.E3D_ControlClickModify);
-
-                        btn_Col.setToolTipText(formatter.format(messageArguments));
-                    } else {
-                        StringBuilder colourBuilder = new StringBuilder();
-                        colourBuilder.append("0x2"); //$NON-NLS-1$
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-
-                        Object[] messageArguments = {colourBuilder.toString()};
-                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITORTEXT_Colour2 + I18n.E3D_ControlClickModify);
-
-                        btn_Col.setToolTipText(formatter.format(messageArguments));
-
-                    }
-                    Editor3DWindow.reloadAllColours();
-                } else {
-                    int num = gColour2[0].getColourNumber();
-                    if (View.hasLDConfigColour(num)) {
-                        gColour2[0] = View.getLDConfigColour(num);
-                    } else {
-                        num = -1;
-                    }
-
-                    CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                    if (selection != null) {
-                        DatFile df = selection.getState().getFileNameObj();
-                        if (!df.isReadOnly()) {
-                            NLogger.debug(getClass(), "Change colours..."); //$NON-NLS-1$
-                            final StyledText st = selection.getTextComposite();
-                            int s1 = st.getSelectionRange().x;
-                            int s2 = s1 + st.getSelectionRange().y;
-                            int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                            int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                            fromLine++;
-                            toLine++;
-                            NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
-                            NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                            ColourChanger.changeColour(fromLine, toLine, df, num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
-                            st.forceFocus();
-                        }
-                    }
-
-                }
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
-            }
-        });
-        final Point size = btn_Col.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-        final int x = Math.round(size.x / 5f);
-        final int y = Math.round(size.y / 5f);
-        final int w = Math.round(size.x * (3f / 5f));
-        final int h = Math.round(size.y * (3f / 5f));
-        btn_Col.addPaintListener(new PaintListener() {
-            @Override
-            public void paintControl(PaintEvent e) {
-                e.gc.setBackground(col[0]);
-                e.gc.fillRectangle(x, y, w, h);
-                if (gColour2[0].getA() == 1f) {
-                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                } else {
-                    e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                }
-            }
-        });
+        return container; 
     }
     
-    public void reloadColours() {
-        for (Control ctrl : toolItem_ColourBar.getChildren()) {
-            ctrl.dispose();
-        }
-        
-        List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
-        
-        final int size = colours.size();
-        for (int i = 0; i < size; i++) {
-            addColorButton(toolItem_ColourBar, colours.get(i), i);
-        }
-        
-        {
-            Button btn_Palette = new Button(toolItem_ColourBar, SWT.NONE);
-            this.btn_Palette[0] = btn_Palette;
-            btn_Palette.setToolTipText(I18n.E3D_More);
-            btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
-        }
-        
-        toolItem_ColourBar.getParent().layout();
-        toolItem_ColourBar.layout();
-        toolItem_ColourBar.redraw();
+    public boolean isSeperateWindow() {
+        return this == editorTextWindow;
     }
 }

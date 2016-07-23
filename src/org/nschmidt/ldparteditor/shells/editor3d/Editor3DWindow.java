@@ -4234,7 +4234,11 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                         closeAllComposite3D();
                                         for (EditorTextWindow txtwin : Project.getOpenTextWindows()) {
-                                            txtwin.getShell().close();
+                                            if (txtwin.isSeperateWindow()) {
+                                                txtwin.getShell().close();
+                                            } else {
+                                                txtwin.closeAllTabs();
+                                            }
                                         }
                                         Project.setDefaultProject(true);
                                         Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
@@ -6164,7 +6168,11 @@ public class Editor3DWindow extends Editor3DDesign {
         }
         Set<EditorTextWindow> ow = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
         for (EditorTextWindow w : ow) {
-            w.getShell().close();
+            if (w.isSeperateWindow()) {
+                w.getShell().close();
+            } else {
+                w.closeAllTabs();
+            }
         }
 
         {

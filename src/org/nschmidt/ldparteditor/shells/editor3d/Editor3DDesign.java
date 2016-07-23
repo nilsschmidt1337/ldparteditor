@@ -440,7 +440,24 @@ class Editor3DDesign extends ApplicationWindow {
     protected Control createContents(Composite parent) {
         final Editor3DWindowState windowState = WorkbenchManager.getEditor3DWindowState();
         setStatus(I18n.E3D_ReadyStatus);
-        Composite container = new Composite(parent, SWT.NONE);
+        Composite containerTop = new Composite(parent, SWT.NONE);
+        containerTop.setLayout(new BorderLayout(0, 0));
+        
+        // FIXME Needs implementation for issue #360
+        // IF TEXT_EDITOR SHOWN IN SAME WINDOW...
+        {            
+            containerTop = new SashForm(containerTop, SWT.BORDER);
+            Composite containerTextEditor = new Composite(containerTop, SWT.NONE);
+            containerTextEditor.setLayout(new BorderLayout(0, 0));
+            EditorTextWindow tWin = new EditorTextWindow(containerTextEditor, this);
+            tWin.build();
+            tWin.getTabFolder().setWindow(this);
+            tWin.registerEvents();
+            Project.getOpenTextWindows().add(tWin);
+        }
+        
+        
+        Composite container = new Composite(containerTop, SWT.NONE);
         container.setLayout(new BorderLayout(0, 0));
         {
             cmpNorth = new Composite(container, SWT.NONE);
