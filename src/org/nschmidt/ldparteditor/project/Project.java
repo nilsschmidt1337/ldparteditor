@@ -233,7 +233,11 @@ public enum Project {
         HashSet<EditorTextWindow> openWindows = new HashSet<EditorTextWindow>();
         openWindows.addAll(openTextWindows);
         for (EditorTextWindow txtwin : openWindows) {
-            txtwin.getShell().close();
+            if (txtwin.isSeperateWindow()) {
+                txtwin.getShell().close();
+            } else {
+                txtwin.closeAllTabs();
+            }
         }
     }
 

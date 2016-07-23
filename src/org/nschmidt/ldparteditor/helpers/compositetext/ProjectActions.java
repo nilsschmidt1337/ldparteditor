@@ -128,7 +128,11 @@ public enum ProjectActions {
                 if (result == SWT.NO) {
                     Set<EditorTextWindow> ow = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
                     for (EditorTextWindow w : ow) {
-                        w.getShell().close();
+                        if (w.isSeperateWindow()) {
+                            w.getShell().close();
+                        } else {
+                            w.closeAllTabs();
+                        }
                     }
                     Editor3DWindow.getWindow().closeAllComposite3D();
                 } else if (result == SWT.YES) {

@@ -13,11 +13,9 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.shells.editortext;
+package org.nschmidt.ldparteditor.composites.compositetext;
 
 import org.eclipse.swt.widgets.Composite;
-import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabFolder;
-import swing2swt.layout.BorderLayout;
 
 /**
  * Interface class to decouple the EditorTextWindow from the logic of the text editor
@@ -25,35 +23,8 @@ import swing2swt.layout.BorderLayout;
  *
  */
 public class CompositeEditorText extends CompositeEditorTextDesign {
-    
-    private final boolean hasTextEditorWindow;
-    EditorTextWindow textEditorWindow;
 
-    public CompositeEditorText(Composite parent, int style, boolean hasTextEditorWindow) {
-        super(parent, style, hasTextEditorWindow); 
-       
-        this.hasTextEditorWindow = hasTextEditorWindow;
-        
-        this.setLayout(new BorderLayout(0, 0));       
+    public CompositeEditorText(Composite parent, int style) {
+        super(parent, style); 
     }
-
-    public boolean hasTextEditorWindow() {
-        return hasTextEditorWindow;
-    }
-
-    public EditorTextWindow getTextEditorWindow() {
-        return textEditorWindow;
-    }
-
-    public void setTextEditorWindow(EditorTextWindow textEditorWindow) {
-        this.textEditorWindow = textEditorWindow;
-    }
-    
-    /**
-     * @return The tab folder
-     */
-    public CompositeTabFolder getTabFolder() {
-        return this.tabFolder[0];
-    }
-
 }

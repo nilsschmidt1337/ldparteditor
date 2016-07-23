@@ -15,11 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites.compositetab;
 
+import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
-import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 
 /**
  * @author nils
@@ -28,7 +28,7 @@ import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 public class CompositeTabFolder extends CTabFolder {
 
     /** The editor reference */
-    private EditorTextWindow window;
+    private ApplicationWindow window;
 
     public CompositeTabFolder(Composite parent, int style) {
         super(parent, style);
@@ -37,7 +37,7 @@ public class CompositeTabFolder extends CTabFolder {
     /**
      * @return the window of the text editor
      */
-    public EditorTextWindow getWindow() {
+    public ApplicationWindow getWindow() {
         return window;
     }
 
@@ -45,7 +45,7 @@ public class CompositeTabFolder extends CTabFolder {
      * @param window
      *            the text editor window to set
      */
-    public void setWindow(EditorTextWindow window) {
+    public void setWindow(ApplicationWindow window) {
         this.window = window;
     }
     
