@@ -256,7 +256,7 @@ public class EditorTextWindow extends EditorTextDesign {
                         WorkbenchManager.getUserSettingState().setSyncingTabs(false);
                         Editor3DWindow.getWindow().revert(df);                                                
                     }
-                    openNewDatFileTab(df);
+                    openNewDatFileTab(df, true);
                     WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
                 }
             }
@@ -1367,10 +1367,10 @@ public class EditorTextWindow extends EditorTextDesign {
         }
     }
 
-    public void openNewDatFileTab(DatFile df) {
+    public void openNewDatFileTab(DatFile df, boolean updateLastVisited) {
         Editor3DWindow.getWindow().addRecentFile(df);
         final File f = new File(df.getNewName());
-        if (f.getParentFile() != null) {
+        if (f.getParentFile() != null && updateLastVisited) {
             Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
         }
         if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {

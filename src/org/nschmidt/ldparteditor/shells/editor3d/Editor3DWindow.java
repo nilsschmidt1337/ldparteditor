@@ -507,7 +507,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
                                                 openDatFile(df, OpenInWhat.EDITOR_TEXT, null);
                                             } else {
-                                                Project.getOpenTextWindows().iterator().next().openNewDatFileTab(df);
+                                                Project.getOpenTextWindows().iterator().next().openNewDatFileTab(df, true);
                                             }
                                         }
                                         cleanupClosedData();
@@ -756,7 +756,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
                         openDatFile(dat, OpenInWhat.EDITOR_TEXT, null);
                     } else {
-                        Project.getOpenTextWindows().iterator().next().openNewDatFileTab(dat);
+                        Project.getOpenTextWindows().iterator().next().openNewDatFileTab(dat, true);
                     }
                     Project.setFileToEdit(dat);
                     updateTabs();
@@ -4373,7 +4373,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         txt.run(main, false);
 
                                         for (DatFile df : dfsToOpen) {
-                                            txt.openNewDatFileTab(df);
+                                            txt.openNewDatFileTab(df, false);
                                         }
 
                                         regainFocus();
@@ -5941,7 +5941,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             } else if (Project.getOpenTextWindows().isEmpty()) {
                                 openDatFile(df, OpenInWhat.EDITOR_TEXT, null);
                             } else {
-                                Project.getOpenTextWindows().iterator().next().openNewDatFileTab(df);
+                                Project.getOpenTextWindows().iterator().next().openNewDatFileTab(df, false);
                             }
                         }
                         cleanupClosedData();
