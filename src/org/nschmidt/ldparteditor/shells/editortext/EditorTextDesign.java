@@ -129,7 +129,7 @@ class EditorTextDesign extends ApplicationWindow {
     @Override
     protected Control createContents(Composite parent) {
         setStatus(I18n.E3D_ReadyStatus);
-        Composite container = new Composite(parent, SWT.NONE);
+        EditorTextComposite container = new EditorTextComposite(parent, SWT.NONE, true);
         container.setLayout(new BorderLayout(0, 0));
         toolBar = new Composite(container, SWT.NONE);
         toolBar.setLayoutData(BorderLayout.NORTH);
