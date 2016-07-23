@@ -18,7 +18,6 @@ package org.nschmidt.ldparteditor.shells.editortext;
 import java.text.MessageFormat;
 import java.util.List;
 
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
@@ -69,7 +68,6 @@ import swing2swt.layout.BorderLayout;
  */
 class EditorTextDesign extends ApplicationWindow {
 
-    final MenuManager[] mnu_File = new MenuManager[1];
     final Button[] btn_New = new Button[1];
     final Button[] btn_Open = new Button[1];
     final Button[] btn_Save = new Button[1];
@@ -117,7 +115,6 @@ class EditorTextDesign extends ApplicationWindow {
     EditorTextDesign() {
         super(null);
         addToolBar(SWT.FLAT | SWT.WRAP);
-        addMenuBar();
         addStatusLine();
     }
 
@@ -129,7 +126,7 @@ class EditorTextDesign extends ApplicationWindow {
     @Override
     protected Control createContents(Composite parent) {
         setStatus(I18n.E3D_ReadyStatus);
-        EditorTextComposite container = new EditorTextComposite(parent, SWT.NONE, true);
+        CompositeEditorText container = new CompositeEditorText(parent, SWT.NONE, true);
         container.setLayout(new BorderLayout(0, 0));
         toolBar = new Composite(container, SWT.NONE);
         toolBar.setLayoutData(BorderLayout.NORTH);
@@ -349,24 +346,6 @@ class EditorTextDesign extends ApplicationWindow {
             }
         }
         return container;
-    }
-
-    /**
-     * Create the menu manager.
-     *
-     * @return the menu manager
-     */
-    @Override
-    protected MenuManager createMenuManager() {
-        MenuManager menuManager = new MenuManager("menu"); //$NON-NLS-1$
-        menuManager.setVisible(true);
-        {
-            MenuManager mnu_File = new MenuManager(I18n.E3D_File);
-            mnu_File.setVisible(true);
-            menuManager.add(mnu_File);
-            this.mnu_File[0] = mnu_File;
-        }
-        return menuManager;
     }
 
     /**
