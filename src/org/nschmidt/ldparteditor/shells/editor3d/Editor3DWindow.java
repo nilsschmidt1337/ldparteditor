@@ -2368,7 +2368,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                         if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                                             w.getTabFolder().setSelection(t);
                                             ((CompositeTab) t).getControl().getShell().forceActive();
-                                            w.open();
+                                            if (w.isSeperateWindow()) {
+                                                w.open();
+                                            }
                                             df.getVertexManager().setUpdated(true);
                                             return;
                                         }
@@ -5940,7 +5942,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                         if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                                             w.getTabFolder().setSelection(t);
                                             ((CompositeTab) t).getControl().getShell().forceActive();
-                                            w.open();
+                                            if (w.isSeperateWindow()) {
+                                                w.open();
+                                            }
                                         }
                                     }
                                 }
@@ -7801,14 +7805,18 @@ public class Editor3DWindow extends Editor3DDesign {
                             tbtmnewItem.getState().setFileNameObj(df);
                             cTabFolder.setSelection(tbtmnewItem);
                             tbtmnewItem.getControl().getShell().forceActive();
-                            w.open();
+                            if (w.isSeperateWindow()) {
+                                w.open();
+                            }
                             Project.getParsedFiles().add(df);
                             Project.addOpenedFile(df);
                             tbtmnewItem.parseForErrorAndHints();
                             tbtmnewItem.getTextComposite().redraw();
                             return true;
                         }
-                        w.open();
+                        if (w.isSeperateWindow()) {
+                            w.open();
+                        }
                         return w == tWin;
                     }
                 }
@@ -8749,7 +8757,9 @@ public class Editor3DWindow extends Editor3DDesign {
             if (tmpW != null) {
                 tmpW.getTabFolder().setSelection(tmpT);
                 ((CompositeTab) tmpT).getControl().getShell().forceActive();
-                tmpW.open();
+                if (tmpW.isSeperateWindow()) {
+                    tmpW.open();
+                }
                 ((CompositeTab) tmpT).getTextComposite().forceFocus();
             }
         }

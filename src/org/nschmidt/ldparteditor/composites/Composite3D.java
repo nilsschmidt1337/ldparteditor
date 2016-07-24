@@ -419,7 +419,9 @@ public class Composite3D extends ScalableComposite {
                         if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                             w.getTabFolder().setSelection(t);
                             ((CompositeTab) t).getControl().getShell().forceActive();
-                            w.open();
+                            if (w.isSeperateWindow()) {
+                                w.open();
+                            }
                             return;
                         }
                     }
@@ -2078,7 +2080,9 @@ public class Composite3D extends ScalableComposite {
                                 ((CompositeTab) t).getTextComposite().redraw();
                             }
                         });
-                        w.open();
+                        if (w.isSeperateWindow()) {
+                            w.open();
+                        }
                         return;
                     }
                 }
