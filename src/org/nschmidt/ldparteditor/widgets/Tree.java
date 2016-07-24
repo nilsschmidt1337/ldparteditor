@@ -40,7 +40,7 @@ public class Tree {
     private org.eclipse.swt.widgets.TreeItem[] itemsSWT;
 
     int counter;
-
+    
     /**
      * @param parent
      * @param columnCount
@@ -173,5 +173,4 @@ public class Tree {
             tree.showSelection();
         }
     }
-
 }

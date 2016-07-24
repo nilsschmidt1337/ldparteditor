@@ -1411,6 +1411,11 @@ public class CompositeTab extends CompositeTabDesign {
         ct.compositeContainer[0] = this.compositeContainer[0];
         ct.sashForm[0] = this.sashForm[0];
         ct.tabFolder_partInformation[0] = this.tabFolder_partInformation[0];
+        ct.tree_Problems[0] = this.tree_Problems[0];
+        ct.treeItem_Hints[0] = this.treeItem_Hints[0];
+        ct.treeItem_Warnings[0] = this.treeItem_Warnings[0];
+        ct.treeItem_Errors[0] = this.treeItem_Errors[0];
+        ct.lbl_ProblemCount[0] = this.lbl_ProblemCount[0];
         try {
             ct.setControl(this.state.getTab().getControl());
         } catch (IllegalArgumentException e) {
