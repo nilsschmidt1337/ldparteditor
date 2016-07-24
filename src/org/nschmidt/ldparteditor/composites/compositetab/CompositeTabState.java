@@ -228,5 +228,8 @@ public class CompositeTabState {
     public void setOldLineIndex(int oldLineIndex) {
         this.oldLineIndex = oldLineIndex;
     }
-
+    
+    public ApplicationWindow getWindow() {
+        return this.window[0];
+    }
 }

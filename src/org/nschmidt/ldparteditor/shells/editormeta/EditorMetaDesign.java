@@ -192,9 +192,6 @@ class EditorMetaDesign extends ApplicationWindow {
     @Override
     protected Control createContents(Composite parent) {
         setStatus(I18n.E3D_ReadyStatus);
-
-
-        setStatus(I18n.E3D_ReadyStatus);
         Composite container = new Composite(parent, SWT.BORDER);
         GridLayout gridLayout = new GridLayout(1, true);
         container.setLayout(gridLayout);
