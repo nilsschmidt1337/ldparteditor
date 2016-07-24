@@ -4377,8 +4377,14 @@ public class Editor3DWindow extends Editor3DDesign {
                                         }
                                         updateTree_unsavedEntries();
 
-                                        EditorTextWindow txt = new EditorTextWindow();
-                                        txt.run(main, false);
+                                        EditorTextWindow txt;                                        
+                                        
+                                        if (Project.getOpenTextWindows().isEmpty()) {
+                                            txt = new EditorTextWindow();
+                                            txt.run(main, false);                                            
+                                        } else {
+                                            txt = Project.getOpenTextWindows().iterator().next();
+                                        }
 
                                         for (DatFile df : dfsToOpen) {
                                             txt.openNewDatFileTab(df, false);
