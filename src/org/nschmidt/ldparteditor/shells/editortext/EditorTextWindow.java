@@ -698,12 +698,24 @@ public class EditorTextWindow extends EditorTextDesign {
                     final DatFile df = state.getFileNameObj();
                     if (!state.isReplacingVertex()) {
                         VertexMarker.markTheVertex(state, st, df);
-                        setStatus(I18n.EDITORTEXT_SyncEdit);
+                        if (state.getWindow() == Editor3DWindow.getWindow()) {
+                            Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SyncEdit);
+                            Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
+                            Editor3DWindow.getStatusLabel().update();
+                        } else {
+                            state.getWindow().setStatus(I18n.EDITORTEXT_SyncEdit);
+                        }
                     } else {
                         state.setReplacingVertex(false);
                         df.getVertexManager().setVertexToReplace(null);
                         st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
-                        setStatus(I18n.EDITORTEXT_SyncEditDeactivated);
+                        if (state.getWindow() == Editor3DWindow.getWindow()) {
+                            Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SyncEditDeactivated);
+                            Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
+                            Editor3DWindow.getStatusLabel().update();
+                        } else {
+                            state.getWindow().setStatus(I18n.EDITORTEXT_SyncEditDeactivated);
+                        }
                     }
                     st.forceFocus();
                 }
