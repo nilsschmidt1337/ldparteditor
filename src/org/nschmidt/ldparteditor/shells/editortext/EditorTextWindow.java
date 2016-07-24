@@ -331,7 +331,9 @@ public class EditorTextWindow extends EditorTextDesign {
                     return;
             }
         }
-        Project.getOpenTextWindows().remove(this);
+        if (!isSeperateWindow()) {
+            Project.getOpenTextWindows().remove(this);
+        }
         // Save the workbench
         EditorTextWindowState stateText = WorkbenchManager.getEditorTextWindowState();
         stateText.getWindowState().setCentered(false);
