@@ -131,6 +131,9 @@ public class EditorTextWindow extends EditorTextDesign {
      * Run a fresh instance of this window
      */
     public void run(DatFile fileToOpen, boolean closeASAP) {
+        if (!isSeperateWindow()) {
+            return;
+        }
         Project.getOpenTextWindows().add(this);
         // Load the window state data
         this.editorTextWindowState = WorkbenchManager.getEditorTextWindowState();
@@ -331,7 +334,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     return;
             }
         }
-        if (!isSeperateWindow()) {
+        if (isSeperateWindow()) {
             Project.getOpenTextWindows().remove(this);
         }
         // Save the workbench
