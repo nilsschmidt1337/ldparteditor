@@ -2376,10 +2376,15 @@ public class Editor3DWindow extends Editor3DDesign {
                                         }
                                     }
                                 }
+                                EditorTextWindow w; 
                                 // Project.getParsedFiles().add(df); IS NECESSARY HERE
                                 Project.getParsedFiles().add(df);
                                 Project.addOpenedFile(df);
-                                new EditorTextWindow().run(df, false);
+                                if (!Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) {
+                                    w.openNewDatFileTab(df, true);
+                                } else {
+                                    new EditorTextWindow().run(df, false);
+                                }                              
                                 df.getVertexManager().addSnapshot();
                             }
                             cleanupClosedData();
@@ -7829,10 +7834,15 @@ public class Editor3DWindow extends Editor3DDesign {
             }
 
             if (tWin == null) {
+                EditorTextWindow w; 
                 // Project.getParsedFiles().add(df); IS NECESSARY HERE
                 Project.getParsedFiles().add(df);
                 Project.addOpenedFile(df);
-                new EditorTextWindow().run(df, false);
+                if (!Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) {
+                    w.openNewDatFileTab(df, true);
+                } else {
+                    new EditorTextWindow().run(df, false);
+                }                              
             }
         }
         return false;
