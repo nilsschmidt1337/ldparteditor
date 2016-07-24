@@ -426,10 +426,15 @@ public class Composite3D extends ScalableComposite {
                         }
                     }
                 }
+                EditorTextWindow w; 
                 // Project.getParsedFiles().add(df); IS NECESSARY HERE
                 Project.getParsedFiles().add(df);
                 Project.addOpenedFile(df);
-                new EditorTextWindow().run(df, false);
+                if (!Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) {
+                    w.openNewDatFileTab(df, true);
+                } else {
+                    new EditorTextWindow().run(df, false);
+                }  
             }
         });
         mntmOpenInTextEditor.setText(I18n.C3D_OpenInText);
@@ -2120,9 +2125,16 @@ public class Composite3D extends ScalableComposite {
             // Project.getParsedFiles().add(df); IS NECESSARY HERE
             Project.getParsedFiles().add(df);
             Project.addOpenedFile(df);
-            final EditorTextWindow win = new EditorTextWindow();
-            win.run(df, false);
-            win.open();
+            final EditorTextWindow win;
+            if (!Project.getOpenTextWindows().isEmpty() && !Project.getOpenTextWindows().iterator().next().isSeperateWindow()) {
+                win = Project.getOpenTextWindows().iterator().next();
+                win.openNewDatFileTab(df, true);
+            } else {
+                win = new EditorTextWindow();
+                win.run(df, false);
+                win.open();
+            }                              
+         
             for (final CTabItem t : win.getTabFolder().getItems()) {
                 if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                     win.getTabFolder().setSelection(t);
