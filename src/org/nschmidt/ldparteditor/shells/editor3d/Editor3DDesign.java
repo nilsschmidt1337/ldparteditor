@@ -89,6 +89,7 @@ import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.Editor3DWindowState;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 import swing2swt.layout.BorderLayout;
@@ -422,6 +423,10 @@ class Editor3DDesign extends ApplicationWindow {
     private ToolItem toolItem_ColourBar;
 
     private static SashForm sashForm;
+    
+    static final int TEXT_3D_SEPARATE = 0;
+    static final int TEXT_LEFT_3D_RIGHT = 1;
+    static final int TEXT_RIGHT_3D_LEFT = 2;    
 
     /**
      * Create the application window.
@@ -439,23 +444,26 @@ class Editor3DDesign extends ApplicationWindow {
     @Override
     protected Control createContents(Composite parent) {
         final Editor3DWindowState windowState = WorkbenchManager.getEditor3DWindowState();
+        final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
+        
         setStatus(I18n.E3D_ReadyStatus);
         Composite containerTop = new Composite(parent, SWT.NONE);
         containerTop.setLayout(new BorderLayout(0, 0));
         
         // FIXME Needs implementation for issue #360
-        // IF TEXT_EDITOR SHOWN IN SAME WINDOW...
-        {            
-            containerTop = new SashForm(containerTop, SWT.BORDER);
-            Composite containerTextEditor = new Composite(containerTop, SWT.NONE);
-            containerTextEditor.setLayout(new BorderLayout(0, 0));
-            EditorTextWindow tWin = new EditorTextWindow(containerTextEditor, this);
-            tWin.build();
-            tWin.getTabFolder().setWindow(this);
-            tWin.registerEvents();
-            Project.getOpenTextWindows().add(tWin);
-        }
         
+        if (userSettings.getTextWinArr() != TEXT_3D_SEPARATE) {            
+            containerTop = new SashForm(containerTop, SWT.BORDER);           
+            if ((userSettings.getTextWinArr() == TEXT_LEFT_3D_RIGHT)) {
+                Composite containerTextEditor = new Composite(containerTop, SWT.NONE);
+                containerTextEditor.setLayout(new BorderLayout(0, 0));
+                EditorTextWindow tWin = new EditorTextWindow(containerTextEditor, this);
+                tWin.build();
+                tWin.getTabFolder().setWindow(this);
+                tWin.registerEvents();
+                Project.getOpenTextWindows().add(tWin);
+            }            
+        }
         
         Composite container = new Composite(containerTop, SWT.NONE);
         container.setLayout(new BorderLayout(0, 0));
@@ -500,7 +508,7 @@ class Editor3DDesign extends ApplicationWindow {
         missingItemsToCreate.add("LINE_THICKNESS"); //$NON-NLS-1$
 
         ToolItem lastToolItem = null;
-        for (ToolItemState s : WorkbenchManager.getUserSettingState().getToolItemConfig3D()) {
+        for (ToolItemState s : userSettings.getToolItemConfig3D()) {
             String obj = s.getKey();
             if (obj.equals("SYNC_AND_RECENT_FILES")) { //$NON-NLS-1$
                 lastToolItem = createToolItemSync(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // SYNC_AND_RECENT_FILES
@@ -595,7 +603,7 @@ class Editor3DDesign extends ApplicationWindow {
                 btn_SyncTabs.setToolTipText(I18n.E3D_Sync3DEditor);
                 btn_SyncTabs.setImage(ResourceManager.getImage("icon16_sync3D.png")); //$NON-NLS-1$
 
-                btn_SyncTabs.setSelection(WorkbenchManager.getUserSettingState().isSyncingTabs());
+                btn_SyncTabs.setSelection(userSettings.isSyncingTabs());
 
                 {
                     GridData gridDataX = new GridData();
@@ -730,7 +738,7 @@ class Editor3DDesign extends ApplicationWindow {
                             this.spn_Move[0] = spinner;
                             spinner.setMaximum(new BigDecimal("100")); //$NON-NLS-1$
                             spinner.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
-                            spinner.setValue(WorkbenchManager.getUserSettingState().getMedium_move_snap());
+                            spinner.setValue(userSettings.getMedium_move_snap());
                             spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
                             Label lblNewLabel2 = new Label(cmp_snappingArea, SWT.NONE);
@@ -741,7 +749,7 @@ class Editor3DDesign extends ApplicationWindow {
                             this.spn_Rotate[0] = spinner2;
                             spinner2.setMaximum(new BigDecimal("360.0")); //$NON-NLS-1$
                             spinner2.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
-                            spinner2.setValue(WorkbenchManager.getUserSettingState().getMedium_rotate_snap());
+                            spinner2.setValue(userSettings.getMedium_rotate_snap());
                             spinner2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
                             Label lblNewLabel3 = new Label(cmp_snappingArea, SWT.NONE);
@@ -752,7 +760,7 @@ class Editor3DDesign extends ApplicationWindow {
                             this.spn_Scale[0] = spinner3;
                             spinner3.setMaximum(new BigDecimal("100.0")); //$NON-NLS-1$
                             spinner3.setMinimum(new BigDecimal("0.01")); //$NON-NLS-1$
-                            spinner3.setValue(WorkbenchManager.getUserSettingState().getMedium_scale_snap());
+                            spinner3.setValue(userSettings.getMedium_scale_snap());
                             spinner3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
                             Label separator = new Label(cmp_snappingArea, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -1510,6 +1518,16 @@ class Editor3DDesign extends ApplicationWindow {
             Label lbl_Status = new Label(status, SWT.NONE);
             lbl_Status.setText(""); //$NON-NLS-1$
         }
+        
+        if ((userSettings.getTextWinArr() == TEXT_RIGHT_3D_LEFT)) {
+            Composite containerTextEditor = new Composite(containerTop, SWT.NONE);
+            containerTextEditor.setLayout(new BorderLayout(0, 0));
+            EditorTextWindow tWin = new EditorTextWindow(containerTextEditor, this);
+            tWin.build();
+            tWin.getTabFolder().setWindow(this);
+            tWin.registerEvents();
+            Project.getOpenTextWindows().add(tWin);
+        }  
         return container;
     }
 

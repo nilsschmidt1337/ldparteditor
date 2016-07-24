@@ -838,6 +838,10 @@ public final class I18n {
     public static final String OPTIONS_License = OPTIONS.getString(getProperty());
     public static final String OPTIONS_MiscOptions = OPTIONS.getString(getProperty());
     public static final String OPTIONS_RealName = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_TextWindowArr = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_TextWindowLeft = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_TextWindowRight = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_TextWindowSeparate = OPTIONS.getString(getProperty());
     public static final String OPTIONS_UnofficialFolder = OPTIONS.getString(getProperty());
     public static final String OPTIONS_UnofficialWhere = OPTIONS.getString(getProperty());
     public static final String PARTS_HiResPrimitives = PARTS.getString(getProperty());

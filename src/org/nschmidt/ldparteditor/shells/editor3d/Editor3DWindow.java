@@ -370,11 +370,29 @@ public class Editor3DWindow extends Editor3DDesign {
         if (this.editor3DWindowState.getWindowState().isCentered()) {
             ShellHelper.centerShellOnPrimaryScreen(sh);
         }
-        // Maximize has to be called asynchronously
+        // Maximize / tab creation on text editor has to be called asynchronously
         sh.getDisplay().asyncExec(new Runnable() {
             @Override
             public void run() {
                 sh.setMaximized(editor3DWindowState.getWindowState().isMaximized());
+                
+                if ((WorkbenchManager.getUserSettingState().getTextWinArr() != TEXT_3D_SEPARATE)) {
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        if (!w.isSeperateWindow()) {
+                            Project.getParsedFiles().add(Project.getFileToEdit());
+                            Project.addOpenedFile(Project.getFileToEdit());
+                            {
+                                CompositeTab tbtmnewItem = new CompositeTab(w.getTabFolder(), SWT.CLOSE);
+                                tbtmnewItem.setFolderAndWindow(w.getTabFolder(), Editor3DWindow.getWindow());
+                                tbtmnewItem.getState().setFileNameObj(Project.getFileToEdit());
+                                w.getTabFolder().setSelection(tbtmnewItem);
+                                tbtmnewItem.parseForErrorAndHints();
+                                tbtmnewItem.getTextComposite().redraw();
+                            }
+                            break;
+                        }
+                    }
+                }
             }
         });
         // Set the snapping

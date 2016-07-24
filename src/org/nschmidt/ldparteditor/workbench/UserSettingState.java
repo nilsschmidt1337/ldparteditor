@@ -373,6 +373,8 @@ public class UserSettingState implements Serializable {
     private float[] cursor2_Colour_b = null;
     
     private boolean syncingTabs = false;
+    
+    private int textWinArr = 0; 
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -1285,5 +1287,13 @@ public class UserSettingState implements Serializable {
 
     public void setSyncingTabs(boolean syncingTabs) {
         this.syncingTabs = syncingTabs;
+    }
+
+    public int getTextWinArr() {
+        return textWinArr;
+    }
+
+    public void setTextWinArr(int textWinArr) {
+        this.textWinArr = textWinArr;
     }
 }
