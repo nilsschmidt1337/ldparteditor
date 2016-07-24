@@ -54,7 +54,8 @@ class OptionsDesign extends ApplicationWindow {
 
     Button[] btn_AllowInvalidShapes = new Button[1];
     Button[] btn_OK = new Button[1];
-        
+            
+    final Combo[] cmb_textWinArr = new Combo[1];
     final Combo[] cmb_locale = new Combo[1];
     final Text[] txt_ldrawPath = new Text[1];
     final Text[] txt_unofficialPath = new Text[1];
@@ -416,9 +417,25 @@ class OptionsDesign extends ApplicationWindow {
                 this.btn_AllowInvalidShapes[0] = btn_AllowInvalidShapes;
                 btn_AllowInvalidShapes.setText(I18n.OPTIONS_AllowInvalidShapes);
                 btn_AllowInvalidShapes.setSelection(userSettings.isAllowInvalidShapes());
+                
+                {
+                    Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                }
+                
+                Label lbl_textWinArr = new Label(cmp_container, SWT.NONE);
+                lbl_textWinArr.setText(I18n.OPTIONS_TextWindowArr);
+                
+                Combo cmb_textWinArr = new Combo(cmp_container, SWT.READ_ONLY);
+                this.cmb_textWinArr[0] = cmb_textWinArr;
+                cmb_textWinArr.setItems(new String[]{I18n.OPTIONS_TextWindowSeparate, I18n.OPTIONS_TextWindowLeft, I18n.OPTIONS_TextWindowRight});
+                cmb_textWinArr.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmb_textWinArr.select(userSettings.getTextWinArr());
                                 
-                Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-                lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                {
+                    Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                }
                 
                 Label lbl_locale = new Label(cmp_container, SWT.NONE);
                 lbl_locale.setText(I18n.OPTIONS_ChooseLocale);

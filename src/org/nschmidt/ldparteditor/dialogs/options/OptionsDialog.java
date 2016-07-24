@@ -158,6 +158,15 @@ public class OptionsDialog extends OptionsDesign {
                 }
             }
         });
+        cmb_textWinArr[0].addListener(SWT.Modify, new Listener() {
+            @Override
+            public void handleEvent(Event e) {
+                final int index = cmb_textWinArr[0].getSelectionIndex();
+                if (index != -1) {
+                    userSettingState.setTextWinArr(index);
+                }
+            }
+        });
         this.open();
     }
 
