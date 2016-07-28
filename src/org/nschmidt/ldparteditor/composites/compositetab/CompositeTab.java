@@ -407,21 +407,41 @@ public class CompositeTab extends CompositeTabDesign {
                             if (doReplace) {
                                 int off = compositeText[0].getOffsetAtLine(state.currentCaretPositionLine);
                                 newLine = oldLine.substring(0, event.start - off) + event.text + oldLine.substring(event.end - off);
-                                state.currentCaretPositionChar = event.start - off + 1;
                             } else if (event.text.length() == 0 && state.currentCaretPositionChar > 0) {
                                 if (!isDelPressed[0])
                                     state.currentCaretPositionChar--;
                                 newLine = oldLine.substring(0, state.currentCaretPositionChar) + oldLine.substring(state.currentCaretPositionChar + 1);
                             } else if (oldLine.length() > state.currentCaretPositionChar) {
                                 newLine = oldLine.substring(0, state.currentCaretPositionChar) + event.text + oldLine.substring(state.currentCaretPositionChar);
-                                state.currentCaretPositionChar += event.text.length();
                             } else {
                                 newLine = oldLine.substring(0, state.currentCaretPositionChar) + event.text + oldLine.substring(Math.min(state.currentCaretPositionChar, oldLine.length()));
-                                state.currentCaretPositionChar += event.text.length();
-                            }
+                            }                                                                                  
 
                             NLogger.debug(getClass(), "New Line {0}", newLine); //$NON-NLS-1$
 
+                            int off2 = 0;
+                            
+                            {
+                                int minLen = Math.min(oldLine.length(), newLine.length());
+                                int i = 0;
+                                for (; i < minLen; i++) {
+                                    char oc = oldLine.charAt(i);
+                                    char nc = newLine.charAt(i);
+                                    if (oc == nc) {
+                                        off2++;
+                                    } else {
+                                        if (newLine.length() < oldLine.length() && nc == ' ' && i > 0 && newLine.charAt(i - 1) == '.') {
+                                            off2--;
+                                        }
+                                        off2 += event.text.length();
+                                        break;                                    
+                                    }
+                                }
+                                if (oldLine.length() < newLine.length() & i == minLen) {
+                                    off2 = newLine.length();
+                                }
+                            }
+                            
                             String[] new_data_segments = newLine.trim().split("\\s+"); //$NON-NLS-1$
 
                             // Parse new coordinates from new line
@@ -488,6 +508,7 @@ public class CompositeTab extends CompositeTabDesign {
                                     state.setToReplaceZ(z);
                                     event.doit = false;
                                     vm.setModified_NoSync();
+                                    state.currentCaretPositionChar = off2;
                                     compositeText[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
 
                                 } else {
@@ -553,6 +574,7 @@ public class CompositeTab extends CompositeTabDesign {
                                             state.setToReplaceZ(z);
                                             event.doit = false;
                                             vm.setModified_NoSync();
+                                            state.currentCaretPositionChar = off2;
                                             compositeText[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
                                         } else {
                                             foundValidVertex = false;
@@ -617,13 +639,14 @@ public class CompositeTab extends CompositeTabDesign {
                                                     state.setToReplaceZ(z);
                                                     event.doit = false;
                                                     vm.setModified_NoSync();
+                                                    state.currentCaretPositionChar = off2;
                                                     compositeText[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
+                            }                            
                         }
                     }
                 }
