@@ -450,8 +450,6 @@ class Editor3DDesign extends ApplicationWindow {
         Composite containerTop = new Composite(parent, SWT.NONE);
         containerTop.setLayout(new BorderLayout(0, 0));
         
-        // FIXME Needs implementation for issue #360
-        
         if (userSettings.getTextWinArr() != TEXT_3D_SEPARATE) {            
             containerTop = new SashForm(containerTop, SWT.BORDER);           
             if ((userSettings.getTextWinArr() == TEXT_LEFT_3D_RIGHT)) {
