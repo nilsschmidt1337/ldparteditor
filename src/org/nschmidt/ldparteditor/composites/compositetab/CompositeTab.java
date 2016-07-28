@@ -104,7 +104,7 @@ public class CompositeTab extends CompositeTabDesign {
     final int caretHeight = compositeText[0].getCaret().getSize().y;
 
     /** The state of this tab */
-    private CompositeTabState state = new CompositeTabState();
+    private CompositeTabState state = new CompositeTabState();   
 
     // We need no other private attributes anymore!
 
@@ -219,7 +219,8 @@ public class CompositeTab extends CompositeTabDesign {
             // only POSSIBLE approach to get this working, VerifyKey has NO use!
             public void verifyText(VerifyEvent event) {
                 event.doit = true;
-                DatFile dat = state.getFileNameObj();
+                state.setDoingPaste(event.text.length() > 1);
+                final DatFile dat = state.getFileNameObj();
                 final VertexManager vm = dat.getVertexManager();
                 if (vm.getVertexToReplace() != null) {
                     if (!vm.isModified() && state.isReplacingVertex()) {
@@ -666,7 +667,7 @@ public class CompositeTab extends CompositeTabDesign {
                 vm.addSnapshot();
 
                 ViewIdleManager.pause[0].compareAndSet(false, true);
-
+                
                 final String text = compositeText[0].getText();
 
                 int new_line_count = compositeText[0].getLineCount();
@@ -682,6 +683,9 @@ public class CompositeTab extends CompositeTabDesign {
                     canvas_lineNumberArea[0].redraw();
                 } else {
                     // Text inserted
+                    if (state.isDoingPaste() && Editor3DWindow.getWindow().isMovingAdjacentData()) {
+                        Editor3DWindow.getWindow().setMovingAdjacentData(false);
+                    }
                 }
 
                 if (text.equals(dat.getOriginalText()) && dat.getOldName().equals(dat.getNewName())) {
