@@ -39,6 +39,7 @@ import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.KeyBoardHelper;
+import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -287,6 +288,7 @@ public class KeyStateManager {
                     case PASTE:
                         vm.paste();
                         win.setMovingAdjacentData(false);
+                        GuiManager.updateStatus();
                         break;
                     case MODE_COMBINED:
                         win.setWorkingAction(WorkingMode.COMBINED);

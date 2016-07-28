@@ -29,10 +29,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 
 /**
@@ -100,6 +102,14 @@ class RotateDesign extends Dialog {
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        
+        if (Editor3DWindow.getWindow().isMovingAdjacentData()) {
+            Label lbl_adjacencyWarning = new Label(cmp_container, SWT.NONE);
+            lbl_adjacencyWarning.setText(I18n.E3D_AdjacentWarningStatus);
+            lbl_adjacencyWarning.setToolTipText(I18n.E3D_AdjacentWarningDialog);
+            lbl_adjacencyWarning.setForeground(SWTResourceManager.getColor(SWT.COLOR_INFO_FOREGROUND));
+            lbl_adjacencyWarning.setBackground(SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND));
+        }
 
         {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
