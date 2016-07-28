@@ -450,6 +450,16 @@ public class Composite3D extends ScalableComposite {
         });
         mntmSelectionInTextEditor.setText(I18n.C3D_ShowInText);
         mntmSelectionInTextEditor.setSelection(false);
+        
+        final MenuItem mntmJoinInTextEditor = new MenuItem(menu, SWT.NONE);
+        mntmJoinInTextEditor.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                joinSelectionInTextEditor(lockableDatFileReference);
+            }
+        });
+        mntmJoinInTextEditor.setText(I18n.C3D_JoinSelection);
+        mntmJoinInTextEditor.setSelection(false);
 
         if (NLogger.DEBUG) {
             @SuppressWarnings("unused")
@@ -2030,6 +2040,14 @@ public class Composite3D extends ScalableComposite {
 
     public Set<Vertex> getTmpHiddenVertices() {
         return tmpHiddenVertices;
+    }
+    
+    public static void joinSelectionInTextEditor(final DatFile df) {  
+        if (df.equals(View.DUMMY_DATFILE) || df.isReadOnly()) return;
+        if (!df.getVertexManager().getSelectedData().isEmpty()) {
+            // FIXME Needs implementation for issue #233
+            showSelectionInTextEditor(df);
+        }
     }
     
     public static void showSelectionInTextEditor(final DatFile df) {        

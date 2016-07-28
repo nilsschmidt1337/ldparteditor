@@ -110,6 +110,7 @@ public final class I18n {
     public static final String C3D_GridSize = C3D.getString(getProperty());
     public static final String C3D_HiddenVertices = C3D.getString(getProperty());
     public static final String C3D_HideAll = C3D.getString(getProperty());
+    public static final String C3D_JoinSelection = C3D.getString(getProperty());
     public static final String C3D_LDrawLines = C3D.getString(getProperty());
     public static final String C3D_LDrawStandard = C3D.getString(getProperty());
     public static final String C3D_Lights = C3D.getString(getProperty());
