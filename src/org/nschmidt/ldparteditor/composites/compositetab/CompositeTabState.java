@@ -68,6 +68,7 @@ public class CompositeTabState {
     private BigDecimal toReplaceZ = new BigDecimal(3);
     
     private int oldLineIndex = -1;
+    private boolean doingPaste = false;
 
     public DatFile getFileNameObj() {
         return datFileObj;
@@ -231,5 +232,13 @@ public class CompositeTabState {
     
     public ApplicationWindow getWindow() {
         return this.window[0];
+    }
+
+    public boolean isDoingPaste() {
+        return doingPaste;
+    }
+
+    public void setDoingPaste(boolean doingPaste) {
+        this.doingPaste = doingPaste;
     }
 }
