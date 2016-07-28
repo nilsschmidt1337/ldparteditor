@@ -355,6 +355,8 @@ public final class I18n {
     public static final String E3D_AddSubpart = E3D.getString(getProperty());
     public static final String E3D_AddTriangle = E3D.getString(getProperty());
     public static final String E3D_AddVertex = E3D.getString(getProperty());
+    public static final String E3D_AdjacentWarningDialog = E3D.getString(getProperty());
+    public static final String E3D_AdjacentWarningStatus = E3D.getString(getProperty());
     public static final String E3D_AdjustRotationCenter = E3D.getString(getProperty());
     public static final String E3D_AdvancedSelect = E3D.getString(getProperty());
     public static final String E3D_All = E3D.getString(getProperty());

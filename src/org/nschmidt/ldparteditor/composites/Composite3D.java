@@ -84,6 +84,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.composite3d.Composite3DModifier;
+import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.MouseActions;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
@@ -558,6 +559,7 @@ public class Composite3D extends ScalableComposite {
                 lockableDatFileReference.getVertexManager().addSnapshot();
                 lockableDatFileReference.getVertexManager().paste();
                 Editor3DWindow.getWindow().setMovingAdjacentData(false);
+                GuiManager.updateStatus();
             }
         });
         mntmPaste.setText(I18n.COPYNPASTE_Paste);

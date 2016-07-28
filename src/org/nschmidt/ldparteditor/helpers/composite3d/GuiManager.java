@@ -82,8 +82,12 @@ public enum GuiManager {
         sb.append(df.format(cursor3D[1].multiply(View.unit_factor)));
         sb.append("; "); //$NON-NLS-1$
         sb.append(df.format(cursor3D[2].multiply(View.unit_factor)));
-        sb.append("]"); //$NON-NLS-1$
+        sb.append("] "); //$NON-NLS-1$
 
+        if (Editor3DWindow.getWindow().isMovingAdjacentData()) {
+            sb.append(I18n.E3D_AdjacentWarningStatus);
+        }
+        
         Editor3DWindow.getStatusLabel().setText(sb.toString());
         Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
         Editor3DWindow.getStatusLabel().update();

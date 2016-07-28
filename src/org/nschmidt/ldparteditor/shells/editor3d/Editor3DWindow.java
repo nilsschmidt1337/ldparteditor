@@ -155,6 +155,7 @@ import org.nschmidt.ldparteditor.helpers.Sphere;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
+import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.IsecalcSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
@@ -1329,6 +1330,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickSingleBtn(btn_MoveAdjacentData[0]);
                 setMovingAdjacentData(btn_MoveAdjacentData[0].getSelection());
+                GuiManager.updateStatus();
                 regainFocus();
             }
         });
@@ -3043,6 +3045,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().paste();
                     setMovingAdjacentData(false);
+                    GuiManager.updateStatus();
                 }
                 regainFocus();
             }
