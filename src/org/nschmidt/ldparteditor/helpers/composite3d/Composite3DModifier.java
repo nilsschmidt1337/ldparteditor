@@ -187,6 +187,8 @@ public class Composite3DModifier {
         } else {
             Composite oldScale = c3d.getParent();
             c3d.setParent(c3d.getCompositeContainer());
+            // Important, since the FillLayout from the parent requires no LayoutData
+            c3d.setLayoutData(null);
             oldScale.dispose();
         }
         c3d.getCompositeContainer().layout();
