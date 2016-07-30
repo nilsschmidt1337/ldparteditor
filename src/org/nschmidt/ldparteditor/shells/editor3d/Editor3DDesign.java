@@ -2857,6 +2857,12 @@ class Editor3DDesign extends ApplicationWindow {
             btn_OpenDAT.setImage(ResourceManager.getImage("icon16_document-opendat.png")); //$NON-NLS-1$
         }
         {
+            Button btn_Snapshot = new Button(toolItem_NewOpenDAT, SWT.NONE);
+            this.btn_LastOpen[0] = btn_Snapshot;
+            btn_Snapshot.setToolTipText(I18n.E3D_LastOpened);
+            btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
+        }
+        {
             Button btn_SaveDAT = new Button(toolItem_NewOpenDAT, SWT.NONE);
             this.btn_SaveDat[0] = btn_SaveDAT;
             KeyStateManager.addTooltipText(btn_SaveDAT, I18n.E3D_Save, Task.SAVE);
@@ -2934,12 +2940,6 @@ class Editor3DDesign extends ApplicationWindow {
             this.btn_Sync[0] = btn_Sync;
             btn_Sync.setToolTipText(I18n.E3D_SyncFolders);
             btn_Sync.setImage(ResourceManager.getImage("icon16_sync.png")); //$NON-NLS-1$
-        }
-        {
-            Button btn_Snapshot = new Button(toolItem_Sync, SWT.NONE);
-            this.btn_LastOpen[0] = btn_Snapshot;
-            btn_Snapshot.setToolTipText(I18n.E3D_LastOpened);
-            btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
         }
         return toolItem_Sync;
     }
