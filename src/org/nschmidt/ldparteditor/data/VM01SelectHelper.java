@@ -724,7 +724,7 @@ public class VM01SelectHelper extends VM01Select {
         final Set<GData4> qs = quads.keySet();
         if (c3d.isShowingHiddenVertices()) {
             if (selectedVertices.contains(vertex)) {
-                if (needRayTest)  {
+                if (needRayTest || c3d.getKeys().isAltPressed())  {
                     selectedVertices.remove(vertex);
                 }
             } else {
@@ -761,7 +761,7 @@ public class VM01SelectHelper extends VM01Select {
             }
             if (vertexIsShown) {
                 if (selectedVertices.contains(vertex)) {
-                    if (needRayTest) {
+                    if (needRayTest || c3d.getKeys().isAltPressed()) {
                         selectedVertices.remove(vertex);
                     }
                 } else {
@@ -877,8 +877,8 @@ public class VM01SelectHelper extends VM01Select {
                     for (Vertex tvertex : lines.get(line)) {
                         if (selectedVertex.equals(tvertex)) {
                             if (selectedLines.contains(line)) {
-                                if (needRayTest) selectedData.remove(line);
-                                if (needRayTest) selectedLines.remove(line);
+                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedLines.remove(line);
                             } else {
                                 selectedData.add(line);
                                 selectedLines.add(line);
@@ -892,8 +892,8 @@ public class VM01SelectHelper extends VM01Select {
                     for (Vertex tvertex : condlines.get(line)) {
                         if (selectedVertex.equals(tvertex)) {
                             if (selectedCondlines.contains(line)) {
-                                if (needRayTest) selectedData.remove(line);
-                                if (needRayTest) selectedCondlines.remove(line);
+                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedCondlines.remove(line);
                             } else {
                                 selectedData.add(line);
                                 selectedCondlines.add(line);
@@ -980,8 +980,8 @@ public class VM01SelectHelper extends VM01Select {
                                 // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
                                 //    continue;
                                 if (selectedLines.contains(line)) {
-                                    if (needRayTest) selectedData.remove(line);
-                                    if (needRayTest) selectedLines.remove(line);
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedLines.remove(line);
                                 } else {
                                     selectedData.add(line);
                                     selectedLines.add(line);
@@ -1030,8 +1030,8 @@ public class VM01SelectHelper extends VM01Select {
                                 // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
                                 //     continue;
                                 if (selectedCondlines.contains(line)) {
-                                    if (needRayTest) selectedData.remove(line);
-                                    if (needRayTest) selectedCondlines.remove(line);
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedCondlines.remove(line);
                                 } else {
                                     selectedData.add(line);
                                     selectedCondlines.add(line);
@@ -1052,8 +1052,8 @@ public class VM01SelectHelper extends VM01Select {
                         break;
                     if (allVertsFromLine) {
                         if (selectedLines.contains(line)) {
-                            if (needRayTest) selectedData.remove(line);
-                            if (needRayTest) selectedLines.remove(line);
+                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedLines.remove(line);
                         } else {
                             selectedData.add(line);
                             selectedLines.add(line);
@@ -1071,8 +1071,8 @@ public class VM01SelectHelper extends VM01Select {
                         break;
                     if (allVertsFromLine) {
                         if (selectedCondlines.contains(line)) {
-                            if (needRayTest) selectedData.remove(line);
-                            if (needRayTest) selectedCondlines.remove(line);
+                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedCondlines.remove(line);
                         } else {
                             selectedData.add(line);
                             selectedCondlines.add(line);
@@ -1313,8 +1313,8 @@ public class VM01SelectHelper extends VM01Select {
                     for (Vertex tvertex : triangles.get(line)) {
                         if (selectedVertex.equals(tvertex)) {
                             if (selectedTriangles.contains(line)) {
-                                if (needRayTest) selectedData.remove(line);
-                                if (needRayTest) selectedTriangles.remove(line);
+                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedTriangles.remove(line);
                             } else {
                                 selectedData.add(line);
                                 selectedTriangles.add(line);
@@ -1328,8 +1328,8 @@ public class VM01SelectHelper extends VM01Select {
                     for (Vertex tvertex : quads.get(line)) {
                         if (selectedVertex.equals(tvertex)) {
                             if (selectedQuads.contains(line)) {
-                                if (needRayTest) selectedData.remove(line);
-                                if (needRayTest) selectedQuads.remove(line);
+                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedQuads.remove(line);
                             } else {
                                 selectedData.add(line);
                                 selectedQuads.add(line);
@@ -1344,8 +1344,8 @@ public class VM01SelectHelper extends VM01Select {
                     if (selection.type() == 4) {
                         GData4 gd4 = (GData4) selection;
                         if (selectedQuads.contains(gd4)) {
-                            if (needRayTest) selectedData.remove(gd4);
-                            if (needRayTest) selectedQuads.remove(gd4);
+                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(gd4);
+                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedQuads.remove(gd4);
                         } else {
                             selectedData.add(gd4);
                             selectedQuads.add(gd4);
@@ -1353,8 +1353,8 @@ public class VM01SelectHelper extends VM01Select {
                     } else {
                         GData3 gd3 = (GData3) selection;
                         if (selectedTriangles.contains(gd3)) {
-                            if (needRayTest) selectedData.remove(gd3);
-                            if (needRayTest) selectedTriangles.remove(gd3);
+                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(gd3);
+                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedTriangles.remove(gd3);
                         } else {
                             selectedData.add(gd3);
                             selectedTriangles.add(gd3);
@@ -1375,8 +1375,8 @@ public class VM01SelectHelper extends VM01Select {
                 }
                 if (allVertsFromLine) {
                     if (selectedTriangles.contains(line)) {
-                        if (needRayTest) selectedData.remove(line);
-                        if (needRayTest) selectedTriangles.remove(line);
+                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedTriangles.remove(line);
                     } else {
                         selectedData.add(line);
                         selectedTriangles.add(line);
@@ -1395,8 +1395,8 @@ public class VM01SelectHelper extends VM01Select {
                 }
                 if (allVertsFromLine) {
                     if (selectedQuads.contains(line)) {
-                        if (needRayTest) selectedData.remove(line);
-                        if (needRayTest) selectedQuads.remove(line);
+                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedQuads.remove(line);
                     } else {
                         selectedData.add(line);
                         selectedQuads.add(line);
