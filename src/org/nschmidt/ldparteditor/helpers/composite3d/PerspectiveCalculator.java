@@ -53,7 +53,7 @@ public class PerspectiveCalculator {
     /** The view zoom exponent [NOT PUBLIC YET] */
     private float zoom_exponent;
     /** The view offset [NOT PUBLIC YET] */
-    Vector4f offset = new Vector4f(0, 0, 0, 1f);
+    private Vector4f offset = new Vector4f(0, 0, 0, 1f);
     /** The effective clipping value [NOT PUBLIC YET] */
     private float z_eff;
     /** The left half width in the viewport [NOT PUBLIC YET] */
@@ -477,11 +477,22 @@ public class PerspectiveCalculator {
     public float getZoom_exponent() {
         return zoom_exponent;
     }
-
+    
     public void setZoom_exponent(float zoom_exponent) {
         this.zoom_exponent = zoom_exponent;
     }
-
+    
+    public Vector4f getOffset() {
+        return new Vector4f(offset.x, offset.y, offset.z, offset.w);
+    }
+    
+    public void setOffset(Vector4f off) {
+        offset.x = off.x;
+        offset.y = off.y;
+        offset.z = off.z;
+        offset.w = off.w;
+    }
+    
     private void syncZoom() {
         if (c3d.isSyncZoom()) {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
