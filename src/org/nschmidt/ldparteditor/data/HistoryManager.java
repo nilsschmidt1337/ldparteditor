@@ -397,6 +397,38 @@ public class HistoryManager {
                                                     }
                                                 }
                                                 vm.updateUnsavedStatus();
+                                                
+                                                // Redraw the content of the StyledText (to see the selection)
+                                                try {
+                                                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                                        for (final CTabItem t : w.getTabFolder().getItems()) {
+                                                            if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                                                ((CompositeTab) t).getTextComposite().redraw();
+                                                                hasTextEditor = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (hasTextEditor) break;
+                                                    }
+                                                } catch (Exception undoRedoException) {
+
+                                                    // We want to know what can go wrong here
+                                                    // because it SHOULD be avoided!!
+
+                                                    switch (action2) {
+                                                    case 1:
+                                                        NLogger.error(getClass(), "Undo StyledText redraw failed."); //$NON-NLS-1$
+                                                        break;
+                                                    case 2:
+                                                        NLogger.error(getClass(), "Redo StyledText redraw failed."); //$NON-NLS-1$
+                                                        break;
+                                                    default:
+                                                        // Can't happen
+                                                        break;
+                                                    }
+
+                                                    NLogger.error(getClass(), undoRedoException);
+                                                }
 
                                                 // Never ever call "vm.setModified_NoSync();" here. NEVER delete the following lines.
                                                 vm.setModified(false, false);
