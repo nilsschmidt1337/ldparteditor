@@ -1135,8 +1135,14 @@ public class CompositeTab extends CompositeTabDesign {
                         } else if (sort.equals(treeItem_Warnings[0])) {
                             items.add(treeItem_Warnings[0]);
                         }
-                        if (!sorts.contains(sort.getText(0)))
-                            sorts.add(sort.getText(0));
+                        if (sort.getText(2).startsWith("[WFE]")) { //$NON-NLS-1$                            
+                            if (!sorts.contains(sort.getText(2)))
+                                sorts.add(sort.getText(2));
+                        } else {
+                            if (!sorts.contains(sort.getText(0)))
+                                sorts.add(sort.getText(0));    
+                        }
+                        
                     }
                     for (TreeItem sort : treeItem_Hints[0].getItems()) {
                         if (sorts.contains(sort.getText(0)) && !items.contains(sort))
@@ -1147,7 +1153,7 @@ public class CompositeTab extends CompositeTabDesign {
                             items.add(sort);
                     }
                     for (TreeItem sort : treeItem_Warnings[0].getItems()) {
-                        if (sorts.contains(sort.getText(0)) && !items.contains(sort))
+                        if (sorts.contains(sort.getText(0)) || sorts.contains(sort.getText(2)) && !items.contains(sort))
                             items.add(sort);
                     }
 
