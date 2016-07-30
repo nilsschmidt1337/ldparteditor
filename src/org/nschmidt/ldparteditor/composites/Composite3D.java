@@ -2297,6 +2297,10 @@ public class Composite3D extends ScalableComposite {
         state.setRenderMode(renderMode);
         state.setZoom(zoom);
         state.setZoom_exponent(getPerspectiveCalculator().getZoom_exponent());
+        
+        // FIXME !Save state here for C3D
+        
+        state.setOffset(getPerspectiveCalculator().getOffset());
         return state;
     }
     
@@ -2305,6 +2309,12 @@ public class Composite3D extends ScalableComposite {
         renderMode = state.getRenderMode();
         zoom = state.getZoom();
         getPerspectiveCalculator().setZoom_exponent(state.getZoom_exponent());
+        getPerspectiveCalculator().setOffset(state.getOffset());
+        
+        // FIXME !Load state here for C3D
+        
+        
+        getPerspectiveCalculator().initializeViewportPerspective();
         switch (renderMode) {
         case -1: // Wireframe
             mntmWireframeMode[0].setSelection(true);

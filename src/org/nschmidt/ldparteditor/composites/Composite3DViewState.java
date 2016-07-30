@@ -15,11 +15,14 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites;
 
+import org.lwjgl.util.vector.Vector4f;
+
 public class Composite3DViewState {
 
     private int renderMode = 0;
     private float zoom = 0f;
     private float zoom_exponent = 0f;
+    private Vector4f offset = new Vector4f(0, 0, 0, 1f);
 
     int getRenderMode() {
         return renderMode;
@@ -44,5 +47,12 @@ public class Composite3DViewState {
     void setZoom_exponent(float zoom_exponent) {
         this.zoom_exponent = zoom_exponent;
     }
-    
+
+    public Vector4f getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Vector4f offset) {
+        this.offset = offset;
+    }
 }

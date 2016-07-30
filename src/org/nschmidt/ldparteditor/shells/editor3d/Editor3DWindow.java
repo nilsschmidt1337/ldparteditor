@@ -8822,7 +8822,6 @@ public class Editor3DWindow extends Editor3DDesign {
         if (df == null || c3d == null) {
             return;
         }
-        // FIXME !Save state here for df
         {
             HashMap<Composite3D, org.nschmidt.ldparteditor.composites.Composite3DViewState> states = new HashMap<>();
             if (c3dStates.containsKey(df)) {
@@ -8853,8 +8852,7 @@ public class Editor3DWindow extends Editor3DDesign {
     public void loadState(final DatFile df, final Composite3D c3d) {
         if (df == null || c3d == null) {
             return;
-        }
-        // FIXME !Load state here for df
+        }        
         if (c3dStates.containsKey(df))  {
             HashMap<Composite3D, org.nschmidt.ldparteditor.composites.Composite3DViewState> states = c3dStates.get(df);
             if (states.containsKey(c3d)) {
