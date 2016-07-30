@@ -1041,6 +1041,7 @@ public final class I18n {
     public static final String SYMSPLITTER_Zm = SYMSPLITTER.getString(getProperty());
     public static final String SYMSPLITTER_Zp = SYMSPLITTER.getString(getProperty());
     public static final String TJUNCTION_Aggressive = TJUNCTION.getString(getProperty());
+    public static final String TJUNCTION_Find = TJUNCTION.getString(getProperty());
     public static final String TJUNCTION_Mode = TJUNCTION.getString(getProperty());
     public static final String TJUNCTION_Normal = TJUNCTION.getString(getProperty());
     public static final String TJUNCTION_Title = TJUNCTION.getString(getProperty());

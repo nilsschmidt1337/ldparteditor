@@ -4684,7 +4684,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (new TJunctionDialog(getShell(), tjs).open() == IDialogConstants.OK_ID) {
                             VertexManager vm = df.getVertexManager();
                             vm.addSnapshot();
-                            vm.fixTjunctions(tjs.getMode() == 0);
+                            vm.fixTjunctions(tjs.getMode());
                         }
                         regainFocus();
                         return;

@@ -43,8 +43,11 @@ class VM22TJunctionFixer extends VM21Merger {
         super(linkedDatFile);
     }
 
-    public void fixTjunctions(final boolean calculateDistance) {
+    public void fixTjunctions(int mode) {
 
+        final boolean calculateDistance = (mode < 2);
+        final boolean doMerge = (mode != 0);
+        
         linkedDatFile.setDrawSelection(false);
 
         final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
@@ -83,7 +86,7 @@ class VM22TJunctionFixer extends VM21Merger {
                                         clearSelection2();
                                         selectedVertices.add(v);
                                         verticesToSelect.add(v);
-                                        merge(MergeTo.NEAREST_EDGE, false);
+                                        if (doMerge) merge(MergeTo.NEAREST_EDGE, false);
                                         TjunctionCount[0]++;
                                     }
                                     monitor.worked(1);
