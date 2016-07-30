@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.nschmidt.ldparteditor.logger.NLogger;
-
 class VM11HideShow extends VM10Selector {
 
     private HashMap<String, ArrayList<Boolean>> state = new HashMap<String, ArrayList<Boolean>>();
