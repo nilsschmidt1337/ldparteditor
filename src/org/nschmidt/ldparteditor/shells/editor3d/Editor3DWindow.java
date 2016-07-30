@@ -262,6 +262,8 @@ public class Editor3DWindow extends Editor3DDesign {
     private boolean updatingSelectionTab = true;
 
     private ArrayList<String> recentItems = new ArrayList<String>();
+    
+    private HashMap<DatFile, HashMap<Composite3D, org.nschmidt.ldparteditor.composites.Composite3DViewState>> c3dStates = new HashMap<>();
 
     /**
      * Create the application window.
@@ -5956,14 +5958,16 @@ public class Editor3DWindow extends Editor3DDesign {
 
         tabFolder_OpenDatFiles[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(SelectionEvent e) {                
+                
                 if (Editor3DWindow.getNoSyncDeadlock().compareAndSet(false, true)) {
                     if (tabFolder_OpenDatFiles[0].getData() != null) {
                         Editor3DWindow.getNoSyncDeadlock().set(false);
                         return;
                     }
                     DatFile df = null;
-                    if (tabFolder_OpenDatFiles[0].getSelection() != null && (df = (DatFile) tabFolder_OpenDatFiles[0].getSelection().getData()) != null) {
+                    if (tabFolder_OpenDatFiles[0].getSelection() != null && (df = (DatFile) tabFolder_OpenDatFiles[0].getSelection().getData()) != null) {                                                
+                        
                         openFileIn3DEditor(df);
                         if (!df.equals(View.DUMMY_DATFILE) && WorkbenchManager.getUserSettingState().isSyncingTabs()) {
                             boolean fileIsOpenInTextEditor = false;
@@ -5994,11 +5998,12 @@ public class Editor3DWindow extends Editor3DDesign {
                                 Project.getOpenTextWindows().iterator().next().openNewDatFileTab(df, false);
                             }
                         }
+                        
                         cleanupClosedData();
                         regainFocus();
                     }
                     Editor3DWindow.getNoSyncDeadlock().set(false);
-                }
+                }                               
             }
         });
 
@@ -7785,8 +7790,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
                     df.parseForData(true);
                     Project.setFileToEdit(df);
+                    boolean hasState = hasState(df, cmp_Container.getComposite3D()); 
                     cmp_Container.getComposite3D().setLockableDatFileReference(df);
-                    cmp_Container.getComposite3D().getModifier().zoomToFit();
+                    if (!hasState) cmp_Container.getComposite3D().getModifier().zoomToFit();
                     Editor3DWindow.getSashForm().getParent().layout();
                     Editor3DWindow.getSashForm().setWeights(mainSashWeights);
                 }
@@ -7814,8 +7820,9 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (!c3d.isDatFileLockedOnDisplay()) {
+                        boolean hasState = hasState(df, c3d); 
                         c3d.setLockableDatFileReference(df);
-                        c3d.getModifier().zoomToFit();
+                        if (!hasState) c3d.getModifier().zoomToFit();
                     }
                 }
                 if (!canUpdate) {
@@ -8708,8 +8715,9 @@ public class Editor3DWindow extends Editor3DDesign {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (!c3d.isDatFileLockedOnDisplay()) {
+                    boolean hasState = hasState(df, c3d); 
                     c3d.setLockableDatFileReference(df);
-                    c3d.getModifier().zoomToFit();
+                    if (!hasState) c3d.getModifier().zoomToFit();
                 }
             }
 
@@ -8808,5 +8816,54 @@ public class Editor3DWindow extends Editor3DDesign {
                 ((CompositeTab) tmpT).getTextComposite().forceFocus();
             }
         }
+    }
+    
+    public void saveState(final DatFile df, final Composite3D c3d) {
+        if (df == null || c3d == null) {
+            return;
+        }
+        // FIXME !Save state here for df
+        {
+            HashMap<Composite3D, org.nschmidt.ldparteditor.composites.Composite3DViewState> states = new HashMap<>();
+            if (c3dStates.containsKey(df)) {
+                states = c3dStates.get(df);
+            } else {
+                c3dStates.put(df, states);
+            }
+            states.put(c3d, c3d.exportState());
+        }
+        
+        // Cleanup old states
+        {
+            HashSet<DatFile> allFiles = new HashSet<DatFile>();
+            for (CTabItem ci : tabFolder_OpenDatFiles[0].getItems()) {
+                allFiles.add((DatFile) ci.getData());
+            }
+            
+            HashSet<DatFile> cachedStates = new HashSet<DatFile>();
+            cachedStates.addAll(c3dStates.keySet());
+            for (DatFile d : cachedStates) {
+                if (!allFiles.contains(d)) {
+                    c3dStates.remove(d);
+                }
+            }                    
+        }
+    }
+    
+    public void loadState(final DatFile df, final Composite3D c3d) {
+        if (df == null || c3d == null) {
+            return;
+        }
+        // FIXME !Load state here for df
+        if (c3dStates.containsKey(df))  {
+            HashMap<Composite3D, org.nschmidt.ldparteditor.composites.Composite3DViewState> states = c3dStates.get(df);
+            if (states.containsKey(c3d)) {
+                c3d.importState(states.get(c3d));
+            }
+        }
+    }
+    
+    public boolean hasState(final DatFile df, final Composite3D c3d) {
+        return c3dStates.containsKey(df) && c3dStates.get(df).containsKey(c3d);
     }
 }

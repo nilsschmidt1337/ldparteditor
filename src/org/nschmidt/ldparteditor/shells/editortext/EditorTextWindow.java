@@ -919,8 +919,9 @@ public class EditorTextWindow extends EditorTextDesign {
                         for (OpenGLRenderer renderer : renders) {
                             Composite3D c3d = renderer.getC3D();
                             if (!c3d.isDatFileLockedOnDisplay()) {
+                                boolean hasState = Editor3DWindow.getWindow().hasState(df, c3d); 
                                 c3d.setLockableDatFileReference(df);
-                                c3d.getModifier().zoomToFit();
+                                if (!hasState) c3d.getModifier().zoomToFit();
                             }
                         }
 
