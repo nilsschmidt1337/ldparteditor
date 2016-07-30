@@ -2954,63 +2954,7 @@ class Editor3DDesign extends ApplicationWindow {
             state.setScales(false);
             c3d = c.getComposite3D();
         }
-        final int renderMode = state.getRenderMode();
-        final int lineMode = state.getLineMode();
-        final Perspective perspective = state.getPerspective();
-        c3d.setGrid_scale(state.getGridScale());
-        c3d.getPerspectiveCalculator().setPerspective(perspective);
-        c3d.setOriginShown(state.isShowOrigin());
-        c3d.setShowingLabels(state.isShowLabel());
-        c3d.setGridShown(state.isShowGrid());
-        c3d.setLightOn(state.isLights());
-        c3d.setMeshLines(state.isMeshlines());
-        c3d.setSubMeshLines(state.isSubfileMeshlines());
-        c3d.setShowingVertices(state.isVertices());
-        c3d.setShowingHiddenVertices(state.isHiddenVertices());
-        c3d.setShowingLogo(state.isStudLogo());
-        c3d.setLineMode(lineMode);
-        c3d.setBlackEdges(state.isAlwaysBlackLines());
-        c3d.setShowingAxis(state.isShowAxis());
-        c3d.setAnaglyph3d(state.isAnaglyph3d());
-        c3d.setRenderMode(renderMode);
-        c3d.setShowingCondlineControlPoints(state.isCondlineControlPoints());
-
-        c3d.setSyncManipulator(state.isSyncManipulator());
-        c3d.setSyncTranslation(state.isSyncTranslation());
-        c3d.setSyncZoom(state.isSyncZoom());
-
-        c3d.getMntmFront().setSelection(perspective == Perspective.FRONT);
-        c3d.getMntmBack().setSelection(perspective == Perspective.BACK);
-        c3d.getMntmLeft().setSelection(perspective == Perspective.LEFT);
-        c3d.getMntmRight().setSelection(perspective == Perspective.RIGHT);
-        c3d.getMntmTop().setSelection(perspective == Perspective.TOP);
-        c3d.getMntmBottom().setSelection(perspective == Perspective.BOTTOM);
-        c3d.getMntmRealPreview().setSelection(lineMode == 0);
-        c3d.getMntmShowAll().setSelection(lineMode == 1);
-        c3d.getMntmStdLines().setSelection(lineMode == 2);
-        c3d.getMntmHideAll().setSelection(lineMode == 4);
-        c3d.getMntmAlwaysBlack().setSelection(state.isAlwaysBlackLines());
-        c3d.getMntmShowOrigin().setSelection(state.isShowOrigin());
-        c3d.getMntmLabel().setSelection(state.isShowLabel());
-        c3d.getMntmShowGrid().setSelection(state.isShowGrid());
-        c3d.getMntmShowScale().setSelection(state.hasScales());
-        c3d.getMntmSwitchLights().setSelection(state.isLights());
-        c3d.getMntmMeshLines().setSelection(state.isMeshlines());
-        c3d.getMntmSubMeshLines().setSelection(state.isSubfileMeshlines());
-        c3d.getMntmVertices().setSelection(state.isVertices());
-        c3d.getMntmHiddenVertices().setSelection(state.isHiddenVertices());
-        c3d.getMntmControlPointVertices().setSelection(state.isCondlineControlPoints());
-        c3d.getMntmStudLogo().setSelection(state.isStudLogo());
-        c3d.getMntmAxis().setSelection(state.isShowAxis());
-        c3d.getMntmAnaglyph().setSelection(state.isAnaglyph3d());
-        c3d.getMntmNoBFC().setSelection(renderMode == 0);
-        c3d.getMntmRandomColours().setSelection(renderMode == 1);
-        c3d.getMntmBFCFrontBack().setSelection(renderMode == 2);
-        c3d.getMntmBFCBack().setSelection(renderMode == 3);
-        c3d.getMntmBFCReal().setSelection(renderMode == 4);
-        c3d.getMntmBFCTextured().setSelection(renderMode == 5);
-        c3d.getMntmCondlineMode().setSelection(renderMode == 6);
-        c3d.getMntmWireframeMode().setSelection(renderMode == -1);
+        c3d.loadState(state);
     }
 
     private void addColorButton(ToolItem toolItem_Colours, GColour gColour, final int index) {

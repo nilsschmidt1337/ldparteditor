@@ -101,6 +101,7 @@ import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.widgets.listeners.Win32MouseWheelFilter;
+import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -2319,7 +2320,6 @@ public class Composite3D extends ScalableComposite {
         // FIXME !Save state here for C3D
         Editor3DWindow.getWindow().fillC3DState(state.STATE, this);
         
-        
         return state;
     }
     
@@ -2327,53 +2327,7 @@ public class Composite3D extends ScalableComposite {
         WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
 
         // FIXME !Load state here for C3D
-        final Perspective perspective = state.STATE.getPerspective();
-        setGrid_scale(state.STATE.getGridScale());
-        getPerspectiveCalculator().setPerspective(perspective);
-        setOriginShown(state.STATE.isShowOrigin());
-        setShowingLabels(state.STATE.isShowLabel());
-        setGridShown(state.STATE.isShowGrid());
-        setLightOn(state.STATE.isLights());
-        setMeshLines(state.STATE.isMeshlines());
-        setSubMeshLines(state.STATE.isSubfileMeshlines());
-        setShowingVertices(state.STATE.isVertices());
-        setShowingHiddenVertices(state.STATE.isHiddenVertices());
-        setShowingLogo(state.STATE.isStudLogo());
-        setLineMode(state.STATE.getLineMode());
-        setBlackEdges(state.STATE.isAlwaysBlackLines());
-        setShowingAxis(state.STATE.isShowAxis());
-        setAnaglyph3d(state.STATE.isAnaglyph3d());
-        setRenderMode(state.STATE.getRenderMode());
-        setShowingCondlineControlPoints(state.STATE.isCondlineControlPoints());
-
-        setSyncManipulator(state.STATE.isSyncManipulator());
-        setSyncTranslation(state.STATE.isSyncTranslation());
-        setSyncZoom(state.STATE.isSyncZoom());
-
-        getMntmFront().setSelection(perspective == Perspective.FRONT);
-        getMntmBack().setSelection(perspective == Perspective.BACK);
-        getMntmLeft().setSelection(perspective == Perspective.LEFT);
-        getMntmRight().setSelection(perspective == Perspective.RIGHT);
-        getMntmTop().setSelection(perspective == Perspective.TOP);
-        getMntmBottom().setSelection(perspective == Perspective.BOTTOM);
-        getMntmRealPreview().setSelection(lineMode == 0);
-        getMntmShowAll().setSelection(lineMode == 1);
-        getMntmStdLines().setSelection(lineMode == 2);
-        getMntmHideAll().setSelection(lineMode == 4);
-        getMntmAlwaysBlack().setSelection(state.STATE.isAlwaysBlackLines());
-        getMntmShowOrigin().setSelection(state.STATE.isShowOrigin());
-        getMntmLabel().setSelection(state.STATE.isShowLabel());
-        getMntmShowGrid().setSelection(state.STATE.isShowGrid());
-        getMntmShowScale().setSelection(state.STATE.hasScales());
-        getMntmSwitchLights().setSelection(state.STATE.isLights());
-        getMntmMeshLines().setSelection(state.STATE.isMeshlines());
-        getMntmSubMeshLines().setSelection(state.STATE.isSubfileMeshlines());
-        getMntmVertices().setSelection(state.STATE.isVertices());
-        getMntmHiddenVertices().setSelection(state.STATE.isHiddenVertices());
-        getMntmControlPointVertices().setSelection(state.STATE.isCondlineControlPoints());
-        getMntmStudLogo().setSelection(state.STATE.isStudLogo());
-        getMntmAxis().setSelection(state.STATE.isShowAxis());
-        getMntmAnaglyph().setSelection(state.STATE.isAnaglyph3d());
+        loadState(state.STATE);
         
         viewport_pixel_per_ldu = state.getViewportPixelPerLDU();
         zoom = state.getZoom();
@@ -2425,5 +2379,65 @@ public class Composite3D extends ScalableComposite {
         default:
             break;
         }
+    }
+
+    public void loadState(Composite3DState state) {
+        final int renderMode = state.getRenderMode();
+        final int lineMode = state.getLineMode();
+        final Perspective perspective = state.getPerspective();
+        setGrid_scale(state.getGridScale());
+        getPerspectiveCalculator().setPerspective(perspective);
+        setOriginShown(state.isShowOrigin());
+        setShowingLabels(state.isShowLabel());
+        setGridShown(state.isShowGrid());
+        setLightOn(state.isLights());
+        setMeshLines(state.isMeshlines());
+        setSubMeshLines(state.isSubfileMeshlines());
+        setShowingVertices(state.isVertices());
+        setShowingHiddenVertices(state.isHiddenVertices());
+        setShowingLogo(state.isStudLogo());
+        setLineMode(lineMode);
+        setBlackEdges(state.isAlwaysBlackLines());
+        setShowingAxis(state.isShowAxis());
+        setAnaglyph3d(state.isAnaglyph3d());
+        setRenderMode(renderMode);
+        setShowingCondlineControlPoints(state.isCondlineControlPoints());
+
+        setSyncManipulator(state.isSyncManipulator());
+        setSyncTranslation(state.isSyncTranslation());
+        setSyncZoom(state.isSyncZoom());
+
+        getMntmFront().setSelection(perspective == Perspective.FRONT);
+        getMntmBack().setSelection(perspective == Perspective.BACK);
+        getMntmLeft().setSelection(perspective == Perspective.LEFT);
+        getMntmRight().setSelection(perspective == Perspective.RIGHT);
+        getMntmTop().setSelection(perspective == Perspective.TOP);
+        getMntmBottom().setSelection(perspective == Perspective.BOTTOM);
+        getMntmRealPreview().setSelection(lineMode == 0);
+        getMntmShowAll().setSelection(lineMode == 1);
+        getMntmStdLines().setSelection(lineMode == 2);
+        getMntmHideAll().setSelection(lineMode == 4);
+        getMntmAlwaysBlack().setSelection(state.isAlwaysBlackLines());
+        getMntmShowOrigin().setSelection(state.isShowOrigin());
+        getMntmLabel().setSelection(state.isShowLabel());
+        getMntmShowGrid().setSelection(state.isShowGrid());
+        getMntmShowScale().setSelection(state.hasScales());
+        getMntmSwitchLights().setSelection(state.isLights());
+        getMntmMeshLines().setSelection(state.isMeshlines());
+        getMntmSubMeshLines().setSelection(state.isSubfileMeshlines());
+        getMntmVertices().setSelection(state.isVertices());
+        getMntmHiddenVertices().setSelection(state.isHiddenVertices());
+        getMntmControlPointVertices().setSelection(state.isCondlineControlPoints());
+        getMntmStudLogo().setSelection(state.isStudLogo());
+        getMntmAxis().setSelection(state.isShowAxis());
+        getMntmAnaglyph().setSelection(state.isAnaglyph3d());
+        getMntmNoBFC().setSelection(renderMode == 0);
+        getMntmRandomColours().setSelection(renderMode == 1);
+        getMntmBFCFrontBack().setSelection(renderMode == 2);
+        getMntmBFCBack().setSelection(renderMode == 3);
+        getMntmBFCReal().setSelection(renderMode == 4);
+        getMntmBFCTextured().setSelection(renderMode == 5);
+        getMntmCondlineMode().setSelection(renderMode == 6);
+        getMntmWireframeMode().setSelection(renderMode == -1);
     }
 }
