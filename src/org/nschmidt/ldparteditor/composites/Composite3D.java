@@ -19,6 +19,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -2297,6 +2298,10 @@ public class Composite3D extends ScalableComposite {
         Composite3DViewState state = new Composite3DViewState();
         
         state.getHideShowState().putAll(lockableDatFileReference.getVertexManager().backupHideShowState());
+        state.getSelection().putAll(lockableDatFileReference.getVertexManager().backupSelectedDataState(new HashMap<String, ArrayList<Boolean>>()));
+        state.getHiddenVertices().addAll(lockableDatFileReference.getVertexManager().getHiddenVertices());
+        state.getSelectedVertices().addAll(lockableDatFileReference.getVertexManager().getSelectedVertices());
+        
         state.getManipulator().copyState(manipulator);
         state.setViewportPixelPerLDU(viewport_pixel_per_ldu);
         state.setZoom(zoom);
@@ -2356,6 +2361,11 @@ public class Composite3D extends ScalableComposite {
         getPerspectiveCalculator().initializeViewportPerspective();
         
         lockableDatFileReference.getVertexManager().restoreHideShowState(state.getHideShowState());
+        lockableDatFileReference.getVertexManager().restoreSelectedDataState(state.getSelection());
+        lockableDatFileReference.getVertexManager().reSelectSubFiles();
+        lockableDatFileReference.getVertexManager().getHiddenVertices().addAll(state.getHiddenVertices());
+        lockableDatFileReference.getVertexManager().getSelectedVertices().addAll(state.getSelectedVertices());
+        
         
         switch (renderMode) {
         case -1: // Wireframe

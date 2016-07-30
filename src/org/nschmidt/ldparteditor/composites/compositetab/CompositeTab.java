@@ -711,7 +711,9 @@ public class CompositeTab extends CompositeTabDesign {
 
                 if (!state.isSync()) {
                     boolean doRedraw = !vm.getSelectedData().isEmpty();
-                    vm.clearSelection();
+                    if (compositeText[0].isFocusControl()) {
+                        vm.clearSelection();
+                    }
                     if (doRedraw) {
                         compositeText[0].redraw();
                     }                    
