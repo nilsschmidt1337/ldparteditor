@@ -1754,10 +1754,11 @@ public class Composite3D extends ScalableComposite {
         return lockableDatFileReference;
     }
 
-    public void setLockableDatFileReference(DatFile datFile) {
-        if (locked != null) this.datFileLockedOnDisplay = locked.getSelection();
+    public void setLockableDatFileReference(DatFile datFile) {        
+        if (locked != null) this.datFileLockedOnDisplay = locked.getSelection();        
+        Editor3DWindow.getWindow().saveState(this.lockableDatFileReference, this);        
         this.lockableDatFileReference = datFile;
-
+        Editor3DWindow.getWindow().loadState(datFile, this);
     }
 
     public boolean isDatFileLockedOnDisplay() {
@@ -2288,6 +2289,49 @@ public class Composite3D extends ScalableComposite {
                     return;
                 }
             }
+        }
+    }
+    
+    public Composite3DViewState exportState() {
+        Composite3DViewState state = new Composite3DViewState();
+        state.setRenderMode(renderMode);
+        state.setZoom(zoom);
+        state.setZoom_exponent(getPerspectiveCalculator().getZoom_exponent());
+        return state;
+    }
+    
+    public void importState(Composite3DViewState state) {
+        WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+        renderMode = state.getRenderMode();
+        zoom = state.getZoom();
+        getPerspectiveCalculator().setZoom_exponent(state.getZoom_exponent());
+        switch (renderMode) {
+        case -1: // Wireframe
+            mntmWireframeMode[0].setSelection(true);
+            break;
+        case 0: // No BFC
+            mntmNoBFC[0].setSelection(true);
+            break;
+        case 1: // Random Colours
+            mntmRandomColours[0].setSelection(true);
+            break;
+        case 2: // Front-Backface BFC
+            mntmBFCFrontBack[0].setSelection(true);
+            break;
+        case 3: // Backface only BFC
+            mntmBFCBack[0].setSelection(true);
+            break;
+        case 4: // Real BFC
+            mntmBFCReal[0].setSelection(true);
+            break;
+        case 5: // Real BFC with texture mapping
+            mntmRealPreview[0].setSelection(true);
+            break;
+        case 6: // Special mode for "Add condlines"
+            mntmCondlineMode[0].setSelection(true);
+            break;
+        default:
+            break;
         }
     }
 }
