@@ -70,12 +70,16 @@ public class VM01SelectHelper extends VM01Select {
         final Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
         final Vector4f selectionDepth;
 
-        boolean needRayTest = false;
-        if (Math.abs(selectionWidth.x) < 0.001f && Math.abs(selectionWidth.y) < 0.001f && Math.abs(selectionWidth.z) < 0.001f)
-            needRayTest = true;
-        if (Math.abs(selectionHeight.x) < 0.001f && Math.abs(selectionHeight.y) < 0.001f && Math.abs(selectionHeight.z) < 0.001f)
-            needRayTest = true;
-
+        final boolean needRayTest;
+        {
+            boolean needRayTest2 = false;
+            if (Math.abs(selectionWidth.x) < 0.001f && Math.abs(selectionWidth.y) < 0.001f && Math.abs(selectionWidth.z) < 0.001f)
+                needRayTest2 = true;
+            if (Math.abs(selectionHeight.x) < 0.001f && Math.abs(selectionHeight.y) < 0.001f && Math.abs(selectionHeight.z) < 0.001f)
+                needRayTest2 = true;
+            needRayTest = needRayTest2;
+        }        
+        
         if (needRayTest) {
 
             Vector4f zAxis4f = new Vector4f(0, 0, c3d.hasNegDeterminant() ^ c3d.isWarpedSelection() ? -1f : 1f, 1f);
@@ -92,7 +96,7 @@ public class VM01SelectHelper extends VM01Select {
                         continue;
                     MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), selectionWidth);
                     if (selectionWidth.x * selectionWidth.x + selectionWidth.y * selectionWidth.y + selectionWidth.z * selectionWidth.z < discr) {
-                        selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
+                        selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                     }
                 }
             } else { // Multithreaded selection for many faces
@@ -126,7 +130,7 @@ public class VM01SelectHelper extends VM01Select {
                                 MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), result);
                                 if (result.x * result.x + result.y * result.y + result.z * result.z < discr) {
                                     if (dialogCanceled.get()) return;
-                                    selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
+                                    selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                                 }
                             }
                         }
@@ -228,7 +232,7 @@ public class VM01SelectHelper extends VM01Select {
                     b[2] = vertex.z - selectionStart.z;
                     b = MathHelper.gaussianElimination(A, b);
                     if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
-                        selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
+                        selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                     }
                 }
             } else {  // Multithreaded selection for many, many faces
@@ -278,7 +282,7 @@ public class VM01SelectHelper extends VM01Select {
                                 b = MathHelper.gaussianElimination(A, b);
                                 if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
                                     if (dialogCanceled.get()) return;
-                                    selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
+                                    selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                                 }
                             }
                         }
@@ -715,12 +719,14 @@ public class VM01SelectHelper extends VM01Select {
         }
     }
 
-    private void selectVertices_helper(final Composite3D c3d, final Vertex vertex, final Vector4f rayDirection, PowerRay powerRay, boolean noTrans) {
+    private void selectVertices_helper(final Composite3D c3d, final Vertex vertex, final Vector4f rayDirection, PowerRay powerRay, boolean noTrans, boolean needRayTest) {
         final Set<GData3> tris = triangles.keySet();
         final Set<GData4> qs = quads.keySet();
         if (c3d.isShowingHiddenVertices()) {
             if (selectedVertices.contains(vertex)) {
-                selectedVertices.remove(vertex);
+                if (needRayTest)  {
+                    selectedVertices.remove(vertex);
+                }
             } else {
                 selectedVertices.add(vertex);
                 if (Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) lastSelectedVertex = vertex;
@@ -755,7 +761,9 @@ public class VM01SelectHelper extends VM01Select {
             }
             if (vertexIsShown) {
                 if (selectedVertices.contains(vertex)) {
-                    selectedVertices.remove(vertex);
+                    if (needRayTest) {
+                        selectedVertices.remove(vertex);
+                    }
                 } else {
                     selectedVertices.add(vertex);
                     if (Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) lastSelectedVertex = vertex;
@@ -869,8 +877,8 @@ public class VM01SelectHelper extends VM01Select {
                     for (Vertex tvertex : lines.get(line)) {
                         if (selectedVertex.equals(tvertex)) {
                             if (selectedLines.contains(line)) {
-                                selectedData.remove(line);
-                                selectedLines.remove(line);
+                                if (needRayTest) selectedData.remove(line);
+                                if (needRayTest) selectedLines.remove(line);
                             } else {
                                 selectedData.add(line);
                                 selectedLines.add(line);
@@ -884,8 +892,8 @@ public class VM01SelectHelper extends VM01Select {
                     for (Vertex tvertex : condlines.get(line)) {
                         if (selectedVertex.equals(tvertex)) {
                             if (selectedCondlines.contains(line)) {
-                                selectedData.remove(line);
-                                selectedCondlines.remove(line);
+                                if (needRayTest) selectedData.remove(line);
+                                if (needRayTest) selectedCondlines.remove(line);
                             } else {
                                 selectedData.add(line);
                                 selectedCondlines.add(line);
@@ -972,8 +980,8 @@ public class VM01SelectHelper extends VM01Select {
                                 // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
                                 //    continue;
                                 if (selectedLines.contains(line)) {
-                                    selectedData.remove(line);
-                                    selectedLines.remove(line);
+                                    if (needRayTest) selectedData.remove(line);
+                                    if (needRayTest) selectedLines.remove(line);
                                 } else {
                                     selectedData.add(line);
                                     selectedLines.add(line);
@@ -1022,8 +1030,8 @@ public class VM01SelectHelper extends VM01Select {
                                 // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
                                 //     continue;
                                 if (selectedCondlines.contains(line)) {
-                                    selectedData.remove(line);
-                                    selectedCondlines.remove(line);
+                                    if (needRayTest) selectedData.remove(line);
+                                    if (needRayTest) selectedCondlines.remove(line);
                                 } else {
                                     selectedData.add(line);
                                     selectedCondlines.add(line);
@@ -1044,8 +1052,8 @@ public class VM01SelectHelper extends VM01Select {
                         break;
                     if (allVertsFromLine) {
                         if (selectedLines.contains(line)) {
-                            selectedData.remove(line);
-                            selectedLines.remove(line);
+                            if (needRayTest) selectedData.remove(line);
+                            if (needRayTest) selectedLines.remove(line);
                         } else {
                             selectedData.add(line);
                             selectedLines.add(line);
@@ -1063,8 +1071,8 @@ public class VM01SelectHelper extends VM01Select {
                         break;
                     if (allVertsFromLine) {
                         if (selectedCondlines.contains(line)) {
-                            selectedData.remove(line);
-                            selectedCondlines.remove(line);
+                            if (needRayTest) selectedData.remove(line);
+                            if (needRayTest) selectedCondlines.remove(line);
                         } else {
                             selectedData.add(line);
                             selectedCondlines.add(line);
@@ -1305,8 +1313,8 @@ public class VM01SelectHelper extends VM01Select {
                     for (Vertex tvertex : triangles.get(line)) {
                         if (selectedVertex.equals(tvertex)) {
                             if (selectedTriangles.contains(line)) {
-                                selectedData.remove(line);
-                                selectedTriangles.remove(line);
+                                if (needRayTest) selectedData.remove(line);
+                                if (needRayTest) selectedTriangles.remove(line);
                             } else {
                                 selectedData.add(line);
                                 selectedTriangles.add(line);
@@ -1320,8 +1328,8 @@ public class VM01SelectHelper extends VM01Select {
                     for (Vertex tvertex : quads.get(line)) {
                         if (selectedVertex.equals(tvertex)) {
                             if (selectedQuads.contains(line)) {
-                                selectedData.remove(line);
-                                selectedQuads.remove(line);
+                                if (needRayTest) selectedData.remove(line);
+                                if (needRayTest) selectedQuads.remove(line);
                             } else {
                                 selectedData.add(line);
                                 selectedQuads.add(line);
@@ -1336,8 +1344,8 @@ public class VM01SelectHelper extends VM01Select {
                     if (selection.type() == 4) {
                         GData4 gd4 = (GData4) selection;
                         if (selectedQuads.contains(gd4)) {
-                            selectedData.remove(gd4);
-                            selectedQuads.remove(gd4);
+                            if (needRayTest) selectedData.remove(gd4);
+                            if (needRayTest) selectedQuads.remove(gd4);
                         } else {
                             selectedData.add(gd4);
                             selectedQuads.add(gd4);
@@ -1345,8 +1353,8 @@ public class VM01SelectHelper extends VM01Select {
                     } else {
                         GData3 gd3 = (GData3) selection;
                         if (selectedTriangles.contains(gd3)) {
-                            selectedData.remove(gd3);
-                            selectedTriangles.remove(gd3);
+                            if (needRayTest) selectedData.remove(gd3);
+                            if (needRayTest) selectedTriangles.remove(gd3);
                         } else {
                             selectedData.add(gd3);
                             selectedTriangles.add(gd3);
@@ -1367,8 +1375,8 @@ public class VM01SelectHelper extends VM01Select {
                 }
                 if (allVertsFromLine) {
                     if (selectedTriangles.contains(line)) {
-                        selectedData.remove(line);
-                        selectedTriangles.remove(line);
+                        if (needRayTest) selectedData.remove(line);
+                        if (needRayTest) selectedTriangles.remove(line);
                     } else {
                         selectedData.add(line);
                         selectedTriangles.add(line);
@@ -1387,8 +1395,8 @@ public class VM01SelectHelper extends VM01Select {
                 }
                 if (allVertsFromLine) {
                     if (selectedQuads.contains(line)) {
-                        selectedData.remove(line);
-                        selectedQuads.remove(line);
+                        if (needRayTest) selectedData.remove(line);
+                        if (needRayTest) selectedQuads.remove(line);
                     } else {
                         selectedData.add(line);
                         selectedQuads.add(line);
