@@ -16,12 +16,16 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.composites;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 
 public class Composite3DViewState {
@@ -49,6 +53,10 @@ public class Composite3DViewState {
     private double zFar = 1000001f;
     
     private final HashMap<String, ArrayList<Boolean>> hideShowState = new HashMap<String, ArrayList<Boolean>>();
+    private final HashMap<String, ArrayList<Boolean>> selection = new HashMap<String, ArrayList<Boolean>>();
+    
+    private final Set<Vertex> hiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+    private final Set<Vertex> selectedVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
     
     float getZoom() {
         return zoom;
@@ -136,5 +144,17 @@ public class Composite3DViewState {
 
     public HashMap<String, ArrayList<Boolean>> getHideShowState() {
         return hideShowState;
+    }
+
+    public HashMap<String, ArrayList<Boolean>> getSelection() {
+        return selection;
+    }
+
+    public Set<Vertex> getHiddenVertices() {
+        return hiddenVertices;
+    }
+
+    public Set<Vertex> getSelectedVertices() {
+        return selectedVertices;
     }
 }

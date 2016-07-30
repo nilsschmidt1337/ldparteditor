@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.nschmidt.ldparteditor.logger.NLogger;
+
 class VM11HideShow extends VM10Selector {
 
     private HashMap<String, ArrayList<Boolean>> state = new HashMap<String, ArrayList<Boolean>>();
@@ -83,7 +85,7 @@ class VM11HideShow extends VM10Selector {
     public HashMap<String, ArrayList<Boolean>> backupHideShowState() {
         state.clear();
         if (hiddenData.size() > 0) {
-            backup(linkedDatFile.getDrawChainStart(), state, 0, 0);
+            backup(linkedDatFile.getDrawChainStart(), state, ""); //$NON-NLS-1$
             return state;
         }
         return new HashMap<String, ArrayList<Boolean>>();
@@ -91,31 +93,23 @@ class VM11HideShow extends VM10Selector {
 
     public HashMap<String, ArrayList<Boolean>> backupHideShowState(HashMap<String, ArrayList<Boolean>> s) {
         if (hiddenData.size() > 0) {
-            backup(linkedDatFile.getDrawChainStart(), s, 0, 0);
+            backup(linkedDatFile.getDrawChainStart(), s, ""); //$NON-NLS-1$
             return s;
         }
         return new HashMap<String, ArrayList<Boolean>>();
     }
 
-    private void backup(GData g, HashMap<String, ArrayList<Boolean>> s, int depth, int currentLine) {
+    private void backup(GData g, HashMap<String, ArrayList<Boolean>> s, String key) {
         final ArrayList<Boolean> st = new ArrayList<Boolean>();
         int lineNumber = 1;
-        ++depth;
-        final String key;
-        if (depth == 1) {
-            key = "TOP"; //$NON-NLS-1$
-        } else {
-            GData1 g1 = ((GDataInit) g).getParent();
-            key = depth + "|" + currentLine + " " + g1.shortName; //$NON-NLS-1$ //$NON-NLS-2$
-        }
         s.put(key, st);
         st.add(g.visible);
         while ((g = g.getNext()) != null) {
             final int type = g.type();
             if (type > 0 && type < 6) {
-                st.add(g.visible);
+                st.add(g.visible);    
                 if (type == 1) {
-                    backup(((GData1) g).myGData, s, depth, lineNumber);
+                    backup(((GData1) g).myGData, s, key + "|" + lineNumber); //$NON-NLS-1$
                 }
                 lineNumber++;
             }
@@ -124,31 +118,23 @@ class VM11HideShow extends VM10Selector {
 
     public HashMap<String, ArrayList<Boolean>> backupSelectedDataState(HashMap<String, ArrayList<Boolean>> s) {
         if (selectedData.size() > 0) {
-            backup2(linkedDatFile.getDrawChainStart(), s, 0, 0);
+            backup2(linkedDatFile.getDrawChainStart(), s, ""); //$NON-NLS-1$
             return s;
         }
         return new HashMap<String, ArrayList<Boolean>>();
     }
 
-    private void backup2(GData g, HashMap<String, ArrayList<Boolean>> s, int depth, int currentLine) {
+    private void backup2(GData g, HashMap<String, ArrayList<Boolean>> s, String key) {
         final ArrayList<Boolean> st = new ArrayList<Boolean>();
         int lineNumber = 1;
-        ++depth;
-        final String key;
-        if (depth == 1) {
-            key = "TOP"; //$NON-NLS-1$
-        } else {
-            GData1 g1 = ((GDataInit) g).getParent();
-            key = depth + "|" + currentLine + " " + g1.shortName; //$NON-NLS-1$ //$NON-NLS-2$
-        }
         s.put(key, st);
         st.add(selectedData.contains(g));
         while ((g = g.getNext()) != null) {
             final int type = g.type();
             if (type > 0 && type < 6) {
-                st.add(selectedData.contains(g));
+                st.add(selectedData.contains(g));    
                 if (type == 1) {
-                    backup2(((GData1) g).myGData, s, depth, lineNumber);
+                    backup2(((GData1) g).myGData, s, key + "|" + lineNumber); //$NON-NLS-1$
                 }
                 lineNumber++;
             }
@@ -156,21 +142,13 @@ class VM11HideShow extends VM10Selector {
     }
 
     public void backupHideShowAndSelectedState(HashMap<String, ArrayList<Boolean>> s1, HashMap<String, ArrayList<Boolean>> s2) {
-        backup3(linkedDatFile.getDrawChainStart(), s1, s2, 0, 0);
+        backup3(linkedDatFile.getDrawChainStart(), s1, s2, ""); //$NON-NLS-1$
     }
 
-    private void backup3(GData g, HashMap<String, ArrayList<Boolean>> s1, HashMap<String, ArrayList<Boolean>> s2, int depth, int currentLine) {
+    private void backup3(GData g, HashMap<String, ArrayList<Boolean>> s1, HashMap<String, ArrayList<Boolean>> s2, String key) {
         final ArrayList<Boolean> st1 = new ArrayList<Boolean>();
         final ArrayList<Boolean> st2 = new ArrayList<Boolean>();
         int lineNumber = 1;
-        ++depth;
-        final String key;
-        if (depth == 1) {
-            key = "TOP"; //$NON-NLS-1$
-        } else {
-            GData1 g1 = ((GDataInit) g).getParent();
-            key = depth + "|" + currentLine + " " + g1.shortName; //$NON-NLS-1$ //$NON-NLS-2$
-        }
         s1.put(key, st1);
         s2.put(key, st2);
         st1.add(g.visible);
@@ -181,7 +159,7 @@ class VM11HideShow extends VM10Selector {
                 st1.add(g.visible);
                 st2.add(selectedData.contains(g));
                 if (type == 1) {
-                    backup3(((GData1) g).myGData, s1, s2, depth, lineNumber);
+                    backup3(((GData1) g).myGData, s1, s2, key + "|" + lineNumber); //$NON-NLS-1$
                 }
                 lineNumber++;
             }
@@ -190,7 +168,7 @@ class VM11HideShow extends VM10Selector {
 
     public void restoreHideShowState() {
         if (state.size() > 0) {
-            restore(linkedDatFile.getDrawChainStart(), state, 0, 0);
+            restore(linkedDatFile.getDrawChainStart(), state, ""); //$NON-NLS-1$
             state.clear();
         }
     }
@@ -201,16 +179,8 @@ class VM11HideShow extends VM10Selector {
         restoreHideShowState();
     }
 
-    private void restore(GData g, HashMap<String, ArrayList<Boolean>> s, int depth, int currentLine) {
+    private void restore(GData g, HashMap<String, ArrayList<Boolean>> s, String key) {
         int lineNumber = 1;
-        ++depth;
-        final String key;
-        if (depth == 1) {
-            key = "TOP"; //$NON-NLS-1$
-        } else {
-            GData1 g1 = ((GDataInit) g).getParent();
-            key = depth + "|" + currentLine + " " + g1.shortName; //$NON-NLS-1$ //$NON-NLS-2$
-        }
         ArrayList<Boolean> nl = new ArrayList<Boolean>();
         nl.add(true);
         s.putIfAbsent(key, nl);
@@ -228,7 +198,7 @@ class VM11HideShow extends VM10Selector {
                 }
                 if (!g.visible) hiddenData.add(g);
                 if (type  == 1) {
-                    restore(((GData1) g).myGData, s, depth, lineNumber);
+                    restore(((GData1) g).myGData, s, key + "|" + lineNumber); //$NON-NLS-1$
                 }
                 lineNumber++;
             }
@@ -237,20 +207,12 @@ class VM11HideShow extends VM10Selector {
 
     public void restoreSelectedDataState(HashMap<String, ArrayList<Boolean>> s) {
         if (s.size() > 0) {
-            restore2(linkedDatFile.getDrawChainStart(), s, 0, 0);
+            restore2(linkedDatFile.getDrawChainStart(), s, ""); //$NON-NLS-1$
         }
     }
 
-    private void restore2(GData g, HashMap<String, ArrayList<Boolean>> s, int depth, int currentLine) {
+    private void restore2(GData g, HashMap<String, ArrayList<Boolean>> s, String key) {
         int lineNumber = 1;
-        ++depth;
-        final String key;
-        if (depth == 1) {
-            key = "TOP"; //$NON-NLS-1$
-        } else {
-            GData1 g1 = ((GDataInit) g).getParent();
-            key = depth + "|" + currentLine + " " + g1.shortName; //$NON-NLS-1$ //$NON-NLS-2$
-        }
         ArrayList<Boolean> nl = new ArrayList<Boolean>();
         nl.add(true);
         s.putIfAbsent(key, nl);
@@ -306,7 +268,7 @@ class VM11HideShow extends VM10Selector {
                     }
                 }
                 if (type  == 1) {
-                    restore2(((GData1) g).myGData, s, depth, lineNumber);
+                    restore2(((GData1) g).myGData, s, key + "|" + lineNumber); //$NON-NLS-1$
                 }
                 lineNumber++;
             }
