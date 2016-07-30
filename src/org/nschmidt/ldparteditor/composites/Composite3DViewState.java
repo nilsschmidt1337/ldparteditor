@@ -16,22 +16,15 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.composites;
 
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.ldparteditor.workbench.Composite3DState;
 
 public class Composite3DViewState {
 
-    private int renderMode = 0;
     private float zoom = 0f;
     private float zoom_exponent = 0f;
     private Vector4f offset = new Vector4f(0, 0, 0, 1f);
-
-    int getRenderMode() {
-        return renderMode;
-    }
-
-    void setRenderMode(int renderMode) {
-        this.renderMode = renderMode;
-    }
-
+    public final Composite3DState STATE = new Composite3DState();
+    
     float getZoom() {
         return zoom;
     }

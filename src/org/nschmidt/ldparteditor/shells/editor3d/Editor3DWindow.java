@@ -6381,26 +6381,7 @@ public class Editor3DWindow extends Editor3DDesign {
             st.setScales(c3d.getParent() instanceof CompositeScale);
             st.setVertical(false);
             st.setWeights(null);
-            st.setPerspective(c3d.isClassicPerspective() ? c3d.getPerspectiveIndex() : Perspective.TWO_THIRDS);
-            st.setRenderMode(c3d.getRenderMode());
-            st.setShowLabel(c3d.isShowingLabels());
-            st.setShowAxis(c3d.isShowingAxis());
-            st.setShowGrid(c3d.isGridShown());
-            st.setShowOrigin(c3d.isOriginShown());
-            st.setLights(c3d.isLightOn());
-            st.setMeshlines(c3d.isMeshLines());
-            st.setSubfileMeshlines(c3d.isSubMeshLines());
-            st.setVertices(c3d.isShowingVertices());
-            st.setCondlineControlPoints(c3d.isShowingCondlineControlPoints());
-            st.setHiddenVertices(c3d.isShowingHiddenVertices());
-            st.setStudLogo(c3d.isShowingLogo());
-            st.setLineMode(c3d.getLineMode());
-            st.setAlwaysBlackLines(c3d.isBlackEdges());
-            st.setAnaglyph3d(c3d.isAnaglyph3d());
-            st.setGridScale(c3d.getGrid_scale());
-            st.setSyncManipulator(c3d.isSyncManipulator());
-            st.setSyncTranslation(c3d.isSyncTranslation());
-            st.setSyncZoom(c3d.isSyncZoom());
+            fillC3DState(st, c3d);
         } else if (c instanceof SashForm) {
             NLogger.debug(getClass(), path);
             SashForm s = (SashForm) c;
@@ -6415,6 +6396,29 @@ public class Editor3DWindow extends Editor3DDesign {
             return;
         }
         c3dStates.add(st);
+    }
+
+    public void fillC3DState(Composite3DState st, Composite3D c3d) {
+        st.setPerspective(c3d.isClassicPerspective() ? c3d.getPerspectiveIndex() : Perspective.TWO_THIRDS);
+        st.setRenderMode(c3d.getRenderMode());
+        st.setShowLabel(c3d.isShowingLabels());
+        st.setShowAxis(c3d.isShowingAxis());
+        st.setShowGrid(c3d.isGridShown());
+        st.setShowOrigin(c3d.isOriginShown());
+        st.setLights(c3d.isLightOn());
+        st.setMeshlines(c3d.isMeshLines());
+        st.setSubfileMeshlines(c3d.isSubMeshLines());
+        st.setVertices(c3d.isShowingVertices());
+        st.setCondlineControlPoints(c3d.isShowingCondlineControlPoints());
+        st.setHiddenVertices(c3d.isShowingHiddenVertices());
+        st.setStudLogo(c3d.isShowingLogo());
+        st.setLineMode(c3d.getLineMode());
+        st.setAlwaysBlackLines(c3d.isBlackEdges());
+        st.setAnaglyph3d(c3d.isAnaglyph3d());
+        st.setGridScale(c3d.getGrid_scale());
+        st.setSyncManipulator(c3d.isSyncManipulator());
+        st.setSyncTranslation(c3d.isSyncTranslation());
+        st.setSyncZoom(c3d.isSyncZoom());
     }
 
     /**
