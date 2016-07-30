@@ -2295,23 +2295,37 @@ public class Composite3D extends ScalableComposite {
     public Composite3DViewState exportState() {
         Composite3DViewState state = new Composite3DViewState();
         
+        state.setViewportPixelPerLDU(viewport_pixel_per_ldu);
         state.setZoom(zoom);
+        state.setNegDeterminant(negDeterminant);
         state.setZoom_exponent(getPerspectiveCalculator().getZoom_exponent());
+        state.setOffset(getPerspectiveCalculator().getOffset());
+        
+        state.getViewport_translation().load(viewport_translation);
+        state.getViewport_rotation().load(viewport_rotation);
+        state.getViewport_matrix().load(viewport_matrix);
+        state.getViewport_matrix_inv().load(viewport_matrix_inv);
+        
+        for (int i = 0; i < 3; i++) {
+            state.getViewport_generator()[i] = viewport_generator[i];
+        }
+        for (int i = 0; i < 4; i++) {
+            state.getViewport_origin_axis()[i] = viewport_origin_axis[i];
+        }
+        
+        state.setzFar(zFar);
+        state.setzNear(zNear);
         
         // FIXME !Save state here for C3D
         Editor3DWindow.getWindow().fillC3DState(state.STATE, this);
         
-        state.setOffset(getPerspectiveCalculator().getOffset());
+        
         return state;
     }
     
     public void importState(Composite3DViewState state) {
         WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
-        renderMode = state.STATE.getRenderMode();
-        zoom = state.getZoom();
-        getPerspectiveCalculator().setZoom_exponent(state.getZoom_exponent());
-        getPerspectiveCalculator().setOffset(state.getOffset());
-        
+
         // FIXME !Load state here for C3D
         final Perspective perspective = state.STATE.getPerspective();
         setGrid_scale(state.STATE.getGridScale());
@@ -2329,7 +2343,7 @@ public class Composite3D extends ScalableComposite {
         setBlackEdges(state.STATE.isAlwaysBlackLines());
         setShowingAxis(state.STATE.isShowAxis());
         setAnaglyph3d(state.STATE.isAnaglyph3d());
-        setRenderMode(renderMode);
+        setRenderMode(state.STATE.getRenderMode());
         setShowingCondlineControlPoints(state.STATE.isCondlineControlPoints());
 
         setSyncManipulator(state.STATE.isSyncManipulator());
@@ -2360,6 +2374,27 @@ public class Composite3D extends ScalableComposite {
         getMntmStudLogo().setSelection(state.STATE.isStudLogo());
         getMntmAxis().setSelection(state.STATE.isShowAxis());
         getMntmAnaglyph().setSelection(state.STATE.isAnaglyph3d());
+        
+        viewport_pixel_per_ldu = state.getViewportPixelPerLDU();
+        zoom = state.getZoom();
+        negDeterminant = state.hasNegDeterminant();
+        getPerspectiveCalculator().setZoom_exponent(state.getZoom_exponent());
+        getPerspectiveCalculator().setOffset(state.getOffset());
+        
+        viewport_translation.load(state.getViewport_translation());
+        viewport_rotation.load(state.getViewport_rotation());
+        viewport_matrix.load(state.getViewport_matrix());
+        viewport_matrix_inv.load(state.getViewport_matrix_inv());
+        
+        for (int i = 0; i < 3; i++) {
+            viewport_generator[i] = state.getViewport_generator()[i];
+        }
+        for (int i = 0; i < 4; i++) {
+            viewport_origin_axis[i] = state.getViewport_origin_axis()[i];
+        }
+        
+        zFar = state.getzFar();
+        zNear = state.getzNear();
         
         getPerspectiveCalculator().initializeViewportPerspective();
         switch (renderMode) {

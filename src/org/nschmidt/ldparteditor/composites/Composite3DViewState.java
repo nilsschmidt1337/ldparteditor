@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites;
 
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 
@@ -22,8 +24,24 @@ public class Composite3DViewState {
 
     private float zoom = 0f;
     private float zoom_exponent = 0f;
+    private float viewport_pixel_per_ldu;
     private Vector4f offset = new Vector4f(0, 0, 0, 1f);
     public final Composite3DState STATE = new Composite3DState();
+    private boolean negDeterminant = false;
+    
+    private final Matrix4f viewport_translation = new Matrix4f();
+    private final Matrix4f viewport_rotation = new Matrix4f();
+    private final Matrix4f viewport_matrix = new Matrix4f();
+    private final Matrix4f viewport_matrix_inv = new Matrix4f();
+
+    /** The generator of the viewport space */
+    private final Vector4f[] viewport_generator = new Vector4f[3];
+    /** The origin axis coordinates of the viewport */
+    private final Vector3f[] viewport_origin_axis = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
+    /** The viewport z-Near value */
+    private double zNear = 1000000f;
+    /** The viewport z-Far value */
+    private double zFar = 1000001f;
     
     float getZoom() {
         return zoom;
@@ -40,6 +58,14 @@ public class Composite3DViewState {
     void setZoom_exponent(float zoom_exponent) {
         this.zoom_exponent = zoom_exponent;
     }
+    
+    public float getViewportPixelPerLDU() {
+        return viewport_pixel_per_ldu;
+    }
+
+    public void setViewportPixelPerLDU(float viewport_pixel_per_ldu) {
+        this.viewport_pixel_per_ldu = viewport_pixel_per_ldu;
+    }
 
     public Vector4f getOffset() {
         return offset;
@@ -47,5 +73,53 @@ public class Composite3DViewState {
 
     public void setOffset(Vector4f offset) {
         this.offset = offset;
+    }
+    
+    public boolean hasNegDeterminant() {
+        return negDeterminant;
+    }
+
+    public void setNegDeterminant(boolean negDeterminant) {
+        this.negDeterminant = negDeterminant;
+    }
+
+    public Matrix4f getViewport_translation() {
+        return viewport_translation;
+    }
+
+    public Matrix4f getViewport_rotation() {
+        return viewport_rotation;
+    }
+
+    public Matrix4f getViewport_matrix() {
+        return viewport_matrix;
+    }
+
+    public Matrix4f getViewport_matrix_inv() {
+        return viewport_matrix_inv;
+    }
+
+    public Vector4f[] getViewport_generator() {
+        return viewport_generator;
+    }
+
+    public Vector3f[] getViewport_origin_axis() {
+        return viewport_origin_axis;
+    }
+
+    public double getzNear() {
+        return zNear;
+    }
+
+    public void setzNear(double zNear) {
+        this.zNear = zNear;
+    }
+
+    public double getzFar() {
+        return zFar;
+    }
+
+    public void setzFar(double zFar) {
+        this.zFar = zFar;
     }
 }

@@ -8833,6 +8833,7 @@ public class Editor3DWindow extends Editor3DDesign {
             } else {
                 c3dStates.put(df, states);
             }
+            states.remove(c3d);
             states.put(c3d, c3d.exportState());
         }
         
