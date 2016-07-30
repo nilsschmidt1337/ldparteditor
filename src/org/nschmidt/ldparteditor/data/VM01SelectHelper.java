@@ -63,7 +63,7 @@ public class VM01SelectHelper extends VM01Select {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
         final boolean noCondlineVerts = !c3d.isShowingCondlineControlPoints();
         if (!c3d.getKeys().isCtrlPressed() && !addSomething || addSomething) {
-            selectedVertices.clear();
+            clearSelection2();
         }
         final Vector4f selectionStart = new Vector4f(c3d.getSelectionStart());
         final Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
@@ -845,10 +845,7 @@ public class VM01SelectHelper extends VM01Select {
     public synchronized void selectLines(Composite3D c3d) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
         if (!c3d.getKeys().isCtrlPressed()) {
-            selectedData.removeAll(selectedLines);
-            selectedData.removeAll(selectedCondlines);
-            selectedLines.clear();
-            selectedCondlines.clear();
+            clearSelection2();
         }
         Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         selectedVerticesTemp.addAll(selectedVertices);
@@ -1285,10 +1282,7 @@ public class VM01SelectHelper extends VM01Select {
 
     public synchronized void selectFaces(Composite3D c3d, Event event) {
         if (!c3d.getKeys().isCtrlPressed()) {
-            selectedData.removeAll(selectedTriangles);
-            selectedData.removeAll(selectedQuads);
-            selectedTriangles.clear();
-            selectedQuads.clear();
+            clearSelection2();
         }
         Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         selectedVerticesTemp.addAll(selectedVertices);
@@ -1631,11 +1625,7 @@ public class VM01SelectHelper extends VM01Select {
         HashSet<GData1> backupSubfiles = new HashSet<GData1>(selectedSubfiles);
 
         if (!c3d.getKeys().isCtrlPressed()) {
-            for (GData1 subf : backupSubfiles) {
-                removeSubfileFromSelection(subf);
-            }
-            selectedData.removeAll(selectedSubfiles);
-            selectedSubfiles.clear();
+            clearSelection2();
             backupSubfiles.clear();
         }
 
