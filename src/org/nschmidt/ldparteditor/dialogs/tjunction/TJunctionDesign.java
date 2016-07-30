@@ -73,7 +73,7 @@ class TJunctionDesign extends Dialog {
 
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.TJUNCTION_Normal, I18n.TJUNCTION_Aggressive});
+        cmb_scope.setItems(new String[] {I18n.TJUNCTION_Find, I18n.TJUNCTION_Normal, I18n.TJUNCTION_Aggressive});
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_scope.setText(cmb_scope.getItem(ts.getMode()));
         cmb_scope.select(ts.getMode());
