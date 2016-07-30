@@ -709,7 +709,13 @@ public class CompositeTab extends CompositeTabDesign {
                 final int off = event.start + event.length;
                 final String insertedText = event.length == 0 ? "" : compositeText[0].getText(event.start, off - 1); //$NON-NLS-1$
 
-                if (!state.isSync()) vm.clearSelection();
+                if (!state.isSync()) {
+                    boolean doRedraw = !vm.getSelectedData().isEmpty();
+                    vm.clearSelection();
+                    if (doRedraw) {
+                        compositeText[0].redraw();
+                    }                    
+                }
                 // Reset the caret position when a vertex was modified
                 if (vm.getVertexToReplace() != null) {
                     if (vm.isModified()) {
