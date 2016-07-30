@@ -68,7 +68,6 @@ import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
-import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;

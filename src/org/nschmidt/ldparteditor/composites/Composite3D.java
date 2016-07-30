@@ -2296,6 +2296,8 @@ public class Composite3D extends ScalableComposite {
     public Composite3DViewState exportState() {
         Composite3DViewState state = new Composite3DViewState();
         
+        state.getHideShowState().putAll(lockableDatFileReference.getVertexManager().backupHideShowState());
+        state.getManipulator().copyState(manipulator);
         state.setViewportPixelPerLDU(viewport_pixel_per_ldu);
         state.setZoom(zoom);
         state.setNegDeterminant(negDeterminant);
@@ -2328,6 +2330,7 @@ public class Composite3D extends ScalableComposite {
 
         // FIXME !Load state here for C3D
         loadState(state.STATE);
+        manipulator.copyState(state.getManipulator());
         
         viewport_pixel_per_ldu = state.getViewportPixelPerLDU();
         zoom = state.getZoom();
@@ -2351,6 +2354,9 @@ public class Composite3D extends ScalableComposite {
         zNear = state.getzNear();
         
         getPerspectiveCalculator().initializeViewportPerspective();
+        
+        lockableDatFileReference.getVertexManager().restoreHideShowState(state.getHideShowState());
+        
         switch (renderMode) {
         case -1: // Wireframe
             mntmWireframeMode[0].setSelection(true);

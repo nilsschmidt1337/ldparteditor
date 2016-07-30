@@ -15,9 +15,13 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 
 public class Composite3DViewState {
@@ -33,6 +37,7 @@ public class Composite3DViewState {
     private final Matrix4f viewport_rotation = new Matrix4f();
     private final Matrix4f viewport_matrix = new Matrix4f();
     private final Matrix4f viewport_matrix_inv = new Matrix4f();
+    private final Manipulator manipulator = new Manipulator();
 
     /** The generator of the viewport space */
     private final Vector4f[] viewport_generator = new Vector4f[3];
@@ -42,6 +47,8 @@ public class Composite3DViewState {
     private double zNear = 1000000f;
     /** The viewport z-Far value */
     private double zFar = 1000001f;
+    
+    private final HashMap<String, ArrayList<Boolean>> hideShowState = new HashMap<String, ArrayList<Boolean>>();
     
     float getZoom() {
         return zoom;
@@ -121,5 +128,13 @@ public class Composite3DViewState {
 
     public void setzFar(double zFar) {
         this.zFar = zFar;
+    }
+
+    public Manipulator getManipulator() {
+        return manipulator;
+    }
+
+    public HashMap<String, ArrayList<Boolean>> getHideShowState() {
+        return hideShowState;
     }
 }
