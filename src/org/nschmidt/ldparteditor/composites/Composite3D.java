@@ -1371,11 +1371,18 @@ public class Composite3D extends ScalableComposite {
                 }
             }
         }
-        EditorTextWindow w; 
+        EditorTextWindow w = null;                                
+        for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
+            if (w2.getTabFolder().getItems().length == 0) {
+                w = w2;
+                break;
+            }
+        }
+        
         // Project.getParsedFiles().add(df); IS NECESSARY HERE
         Project.getParsedFiles().add(df);
         Project.addOpenedFile(df);
-        if (!Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) {
+        if (!Project.getOpenTextWindows().isEmpty() && w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) {
             w.openNewDatFileTab(df, true);
         } else {
             new EditorTextWindow().run(df, false);
