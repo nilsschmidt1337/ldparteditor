@@ -88,6 +88,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.MouseActions;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
+import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -413,29 +414,7 @@ public class Composite3D extends ScalableComposite {
         mntmOpenInTextEditor.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                DatFile df = lockableDatFileReference;
-                if (df.equals(View.DUMMY_DATFILE)) return;
-                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    for (CTabItem t : w.getTabFolder().getItems()) {
-                        if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                            w.getTabFolder().setSelection(t);
-                            ((CompositeTab) t).getControl().getShell().forceActive();
-                            if (w.isSeperateWindow()) {
-                                w.open();
-                            }
-                            return;
-                        }
-                    }
-                }
-                EditorTextWindow w; 
-                // Project.getParsedFiles().add(df); IS NECESSARY HERE
-                Project.getParsedFiles().add(df);
-                Project.addOpenedFile(df);
-                if (!Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) {
-                    w.openNewDatFileTab(df, true);
-                } else {
-                    new EditorTextWindow().run(df, false);
-                }  
+                openInTextEditor();  
             }
         });
         mntmOpenInTextEditor.setText(I18n.C3D_OpenInText);
@@ -445,7 +424,7 @@ public class Composite3D extends ScalableComposite {
         mntmSelectionInTextEditor.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                showSelectionInTextEditor(lockableDatFileReference);
+                showSelectionInTextEditor(lockableDatFileReference, true);
             }
         });
         mntmSelectionInTextEditor.setText(I18n.C3D_ShowInText);
@@ -1377,6 +1356,32 @@ public class Composite3D extends ScalableComposite {
 
     }
 
+    private void openInTextEditor() {
+        DatFile df = lockableDatFileReference;
+        if (df.equals(View.DUMMY_DATFILE)) return;
+        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+            for (CTabItem t : w.getTabFolder().getItems()) {
+                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                    w.getTabFolder().setSelection(t);
+                    ((CompositeTab) t).getControl().getShell().forceActive();
+                    if (w.isSeperateWindow()) {
+                        w.open();
+                    }
+                    return;
+                }
+            }
+        }
+        EditorTextWindow w; 
+        // Project.getParsedFiles().add(df); IS NECESSARY HERE
+        Project.getParsedFiles().add(df);
+        Project.addOpenedFile(df);
+        if (!Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) {
+            w.openNewDatFileTab(df, true);
+        } else {
+            new EditorTextWindow().run(df, false);
+        }
+    }
+
     @Override
     public SashForm getSashForm() {
         return ((ScalableComposite) this.getParent()).getSashForm();
@@ -2042,15 +2047,90 @@ public class Composite3D extends ScalableComposite {
         return tmpHiddenVertices;
     }
     
-    public static void joinSelectionInTextEditor(final DatFile df) {  
+    public void joinSelectionInTextEditor(final DatFile df) {  
         if (df.equals(View.DUMMY_DATFILE) || df.isReadOnly()) return;
-        if (!df.getVertexManager().getSelectedData().isEmpty()) {
-            // FIXME Needs implementation for issue #233
-            showSelectionInTextEditor(df);
+        final VertexManager vm = df.getVertexManager();
+        if (!vm.getSelectedData().isEmpty()) {
+            Display.getCurrent().asyncExec(new Runnable() {
+                @Override
+                public void run() {
+                    
+                    showSelectionInTextEditor(df, false);
+                    
+                    boolean isOpen = false;
+                    CompositeTab ct = null;
+                    final CompositeTab ct2;
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        for (final CTabItem t : w.getTabFolder().getItems()) {
+                            ct = ((CompositeTab) t);
+                            if (df.equals(ct.getState().getFileNameObj())) {                        
+                                isOpen = true;
+                                break;
+                            }
+                        }
+                        if (isOpen) {
+                            break;
+                        }
+                    }
+                    
+                    if (!isOpen) {
+                        openInTextEditor();
+                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                            for (final CTabItem t : w.getTabFolder().getItems()) {
+                                ct = ((CompositeTab) t);
+                                if (df.equals(ct.getState().getFileNameObj())) {                        
+                                    isOpen = true;
+                                    break;
+                                }
+                            }
+                            if (isOpen) {
+                                break;
+                            }
+                        }
+                    }    
+                    
+                    ct2 = ct;
+                    
+                    Display.getDefault().asyncExec(new Runnable() {
+                        @Override
+                        public void run() {
+                            int minLine = Integer.MAX_VALUE;
+                            final HashBiMap<Integer, GData> dpl = df.getDrawPerLine_NOCLONE();
+                            for (GData g : vm.getSelectedData()) {
+                                if (dpl.containsValue(g)) {
+                                    int line = dpl.getKey(g);
+                                    if (line < minLine) {
+                                        minLine = line;
+                                    }
+                                }
+                            }
+                            if (minLine != Integer.MAX_VALUE) {
+                                ct2.getTextComposite().setTopIndex(minLine - 1);
+                                ct2.getTextComposite().setCaretOffset(ct2.getTextComposite().getOffsetAtLine(minLine - 1));
+                                ct2.getTextComposite().redraw();
+                            }
+
+                            vm.getSelectedVertices().clear();
+                            vm.copy();
+
+                            vm.delete(false, true);
+
+
+                            if (minLine != Integer.MAX_VALUE) {
+                                ct2.getTextComposite().setTopIndex(minLine - 1);
+                                ct2.getTextComposite().setCaretOffset(ct2.getTextComposite().getOffsetAtLine(minLine - 1));
+                                ct2.getTextComposite().redraw();
+                            }
+
+                            vm.paste(dpl.getValue(Math.max(minLine - 1, 1)));
+                        }
+                    });              
+                }                    
+            });
         }
     }
     
-    public static void showSelectionInTextEditor(final DatFile df) {        
+    public static void showSelectionInTextEditor(final DatFile df, final boolean setTopIndex) {        
         if (df.equals(View.DUMMY_DATFILE)) return;
         if (!df.getVertexManager().getSelectedData().isEmpty()) {
             for (EditorTextWindow w : Project.getOpenTextWindows()) {
@@ -2098,8 +2178,10 @@ public class Composite3D extends ScalableComposite {
                                             index = indices.get(0);                                                                                                       
                                         }
                                         
-                                        ((CompositeTab) t).getState().setOldLineIndex(index);                                                
-                                        ((CompositeTab) t).getTextComposite().setTopIndex(index - 1);
+                                        if (setTopIndex) {
+                                            ((CompositeTab) t).getState().setOldLineIndex(index);                                                
+                                            ((CompositeTab) t).getTextComposite().setTopIndex(index - 1);
+                                        }
                                     }                                                                                                                                                                                                                       
                                 }
                                 ((CompositeTab) t).getTextComposite().redraw();
@@ -2163,7 +2245,9 @@ public class Composite3D extends ScalableComposite {
                         @Override
                         public void run() {
 
-                            ((CompositeTab) t).getTextComposite().setTopIndex(index2 - 1);
+                            if (setTopIndex) {
+                                ((CompositeTab) t).getTextComposite().setTopIndex(index2 - 1);
+                            }
 
                             for (Integer i : selectedIndicies) {
                                 final GData gs = df.getDrawPerLine_NOCLONE().getValue(i);

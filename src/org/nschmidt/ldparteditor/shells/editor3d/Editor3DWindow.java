@@ -1388,7 +1388,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
-                    Composite3D.showSelectionInTextEditor(Project.getFileToEdit());
+                    Composite3D.showSelectionInTextEditor(Project.getFileToEdit(), true);
                 }
                 regainFocus();
             }

@@ -699,6 +699,106 @@ class VM99Clipboard extends VM25Smooth {
         }
     }
     
+    
+    public void paste(GData g2) {
+        if (linkedDatFile.isReadOnly())
+            return;
+        if (!CLIPBOARD.isEmpty()) {
+            clearSelection();
+            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+            int linecount = dpl.size();
+            final GData oldNext = g2.next;
+            GData before = g2;
+            for (GData g : CLIPBOARD) {
+                Set<String> alreadyParsed = new HashSet<String>();
+                alreadyParsed.add(linkedDatFile.getShortName());
+                if (CLIPBOARD_InvNext.contains(g)) {
+                    GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT);
+                    before.setNext(invNext);
+                    before = invNext;
+                    linecount++;
+                }
+                ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                GData pasted = result.get(0).getGraphicalData();
+                if (pasted == null)
+                    pasted = new GData0(g.toString());
+                linecount++;
+                selectedData.add(pasted);
+                switch (pasted.type()) {
+                case 0:
+                    selectedData.remove(pasted);
+                    Vertex vertex = ((GData0) pasted).getVertex();
+                    if (vertex != null) {
+                        selectedVertices.add(vertex);
+                    }
+                    break;
+                case 1:
+                    selectedSubfiles.add((GData1) pasted);
+                    Set<VertexInfo> vis = lineLinkedToVertices.get(pasted);
+                    if (vis != null) {
+                        for (VertexInfo vertexInfo : vis) {
+                            selectedVertices.add(vertexInfo.getVertex());
+                            GData gs = vertexInfo.getLinkedData();
+                            selectedData.add(gs);
+                            switch (gs.type()) {
+                            case 0:
+                                selectedData.remove(gs);
+                                Vertex vertex2 = ((GData0) gs).getVertex();
+                                if (vertex2 != null) {
+                                    selectedVertices.add(vertex2);
+                                }
+                                break;
+                            case 2:
+                                selectedLines.add((GData2) gs);
+                                break;
+                            case 3:
+                                selectedTriangles.add((GData3) gs);
+                                break;
+                            case 4:
+                                selectedQuads.add((GData4) gs);
+                                break;
+                            case 5:
+                                selectedCondlines.add((GData5) gs);
+                                break;
+                            default:
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                case 2:
+                    selectedLines.add((GData2) pasted);
+                    break;
+                case 3:
+                    selectedTriangles.add((GData3) pasted);
+                    break;
+                case 4:
+                    selectedQuads.add((GData4) pasted);
+                    break;
+                case 5:
+                    selectedCondlines.add((GData5) pasted);
+                    break;
+                default:
+                    break;
+                }
+                before.setNext(pasted);
+                before = pasted;
+            }
+            before.setNext(oldNext);
+            
+            dpl.clear();
+            g2 = linkedDatFile.getDrawChainStart();
+            for(int line = 1; line <= linecount; line++) {
+                g2 = g2.next;
+                dpl.put(line, g2);
+            }
+            
+            linkedDatFile.setDrawChainTail(dpl.getValue(linecount));
+        }
+        setModified(true, true);
+        updateUnsavedStatus();
+    }
+    
     public void extendClipboardContent(boolean cutExtension) {
         
         TreeMap<Integer, ArrayList<GData>> dataToInsert = new TreeMap<Integer, ArrayList<GData>>();
