@@ -1566,7 +1566,7 @@ public class VM01SelectHelper extends VM01Select {
         }
     }
 
-    private void removeSubfileFromSelection(GData1 subf) {
+    public void removeSubfileFromSelection(GData1 subf) {
         selectedData.remove(subf);
         selectedSubfiles.remove(subf);
         Set<VertexInfo> vis = lineLinkedToVertices.get(subf);

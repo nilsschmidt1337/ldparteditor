@@ -976,6 +976,17 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Vertices[0]);
                 setWorkingType(ObjectMode.VERTICES);
+                if ((e.stateMask & SWT.ALT) == SWT.ALT && Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedVertices().isEmpty()) {
+                    final VertexManager vm = Project.getFileToEdit().getVertexManager();
+                    vm.getSelectedVertices().clear();                    
+                    if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+                        vm.reSelectSubFiles();
+                    } else {
+                        vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
+                        vm.getSelectedSubfiles().clear();
+                    }
+                    vm.setModified(true, true);
+                }
                 regainFocus();
             }
         });
@@ -984,6 +995,20 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_TrisNQuads[0]);
                 setWorkingType(ObjectMode.FACES);
+                if ((e.stateMask & SWT.ALT) == SWT.ALT && Project.getFileToEdit() != null && (!Project.getFileToEdit().getVertexManager().getSelectedQuads().isEmpty() || !Project.getFileToEdit().getVertexManager().getSelectedTriangles().isEmpty())) {
+                    final VertexManager vm = Project.getFileToEdit().getVertexManager();
+                    vm.getSelectedData().removeAll(vm.getSelectedTriangles());
+                    vm.getSelectedData().removeAll(vm.getSelectedQuads());
+                    vm.getSelectedTriangles().clear();
+                    vm.getSelectedQuads().clear();
+                    if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+                        vm.reSelectSubFiles();
+                    } else {
+                        vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
+                        vm.getSelectedSubfiles().clear();
+                    }
+                    vm.setModified(true, true);
+                }
                 regainFocus();
             }
         });
@@ -992,17 +1017,39 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Lines[0]);
                 setWorkingType(ObjectMode.LINES);
+                if ((e.stateMask & SWT.ALT) == SWT.ALT && Project.getFileToEdit() != null && (!Project.getFileToEdit().getVertexManager().getSelectedLines().isEmpty() || !Project.getFileToEdit().getVertexManager().getSelectedCondlines().isEmpty())) {
+                    final VertexManager vm = Project.getFileToEdit().getVertexManager();
+                    vm.getSelectedData().removeAll(vm.getSelectedCondlines());
+                    vm.getSelectedData().removeAll(vm.getSelectedLines());
+                    vm.getSelectedCondlines().clear();
+                    vm.getSelectedLines().clear();
+                    if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+                        vm.reSelectSubFiles();
+                    } else {
+                        vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
+                        vm.getSelectedSubfiles().clear();
+                    }
+                    vm.setModified(true, true);
+                }
                 regainFocus();
             }
         });
         btn_Subfiles[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (Project.getFileToEdit() != null) {
-                    clickBtnTest(btn_Subfiles[0]);
-                    setWorkingType(ObjectMode.SUBFILES);
-                    regainFocus();
+                clickBtnTest(btn_Subfiles[0]);
+                setWorkingType(ObjectMode.SUBFILES);
+                if ((e.stateMask & SWT.ALT) == SWT.ALT && (e.stateMask & SWT.CTRL) != SWT.CTRL && Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedSubfiles().isEmpty()) {
+                    final VertexManager vm = Project.getFileToEdit().getVertexManager();
+                    final ArrayList<GData1> subfiles = new ArrayList<GData1>();
+                    subfiles.addAll(vm.getSelectedSubfiles());
+                    for (GData1 g1 : subfiles) {
+                        vm.removeSubfileFromSelection(g1);
+                    }
+                    vm.getSelectedSubfiles().clear();
+                    vm.setModified(true, true);
                 }
+                regainFocus();
             }
         });
         btn_AddComment[0].addSelectionListener(new SelectionAdapter() {
