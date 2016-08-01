@@ -222,6 +222,8 @@ public final class I18n {
     public static final String COMPOSITETAB_QuickFixSimilar = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_Type = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_Warnings = COMPOSITETAB.getString(getProperty());
+    public static final String COORDINATESDIALOG_Clipboard = COORDINATESDIALOG.getString(getProperty());
+    public static final String COORDINATESDIALOG_Manipulator = COORDINATESDIALOG.getString(getProperty());
     public static final String COORDINATESDIALOG_SetXYZ = COORDINATESDIALOG.getString(getProperty());
     public static final String COORDINATESDIALOG_X = COORDINATESDIALOG.getString(getProperty());
     public static final String COORDINATESDIALOG_Y = COORDINATESDIALOG.getString(getProperty());

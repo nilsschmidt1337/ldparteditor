@@ -4029,7 +4029,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         } else if (sv.size() == 1) {
                             v = sv.iterator().next();
                         }
-                        if (new CoordinatesDialog(getShell(), v).open() == IDialogConstants.OK_ID) {
+                        final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
+                        if (new CoordinatesDialog(getShell(), v, mani).open() == IDialogConstants.OK_ID) {
                             vm.addSnapshot();
                             int coordCount = 0;
                             coordCount += CoordinatesDialog.isX() ? 1 : 0;
