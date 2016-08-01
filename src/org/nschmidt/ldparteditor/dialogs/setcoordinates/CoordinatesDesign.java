@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 
 /**
@@ -51,19 +52,27 @@ class CoordinatesDesign extends Dialog {
     final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
+    final Button[] btn_Clipboard = new Button[1];
+    final Button[] btn_Manipulator = new Button[1];
+    Vertex m = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+    Vertex c = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     
     private final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
 
     // Use final only for subclass/listener references!
 
     Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-    CoordinatesDesign(Shell parentShell, Vertex v) {
+    CoordinatesDesign(Shell parentShell, Vertex v, Vertex manipulatorPosition) {
         super(parentShell);
+        if (manipulatorPosition != null) {
+            m = manipulatorPosition;
+        }
         if (v == null) {
             this.v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
         } else {
             this.v = v;
         }
+        c = new Vertex(v.X, v.Y, v.Z);
     }
 
     /**
@@ -83,6 +92,27 @@ class CoordinatesDesign extends Dialog {
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        
+        {
+            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
+            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmp_txt.setLayout(new GridLayout(1, true));
+            Button btn_Manipulator = new Button(cmp_txt, SWT.NONE);
+            this.btn_Manipulator[0] = btn_Manipulator;
+            btn_Manipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            btn_Manipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btn_Manipulator.setText(I18n.COORDINATESDIALOG_Manipulator);
+        }
+        {
+            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
+            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmp_txt.setLayout(new GridLayout(1, true));
+            Button btn_Clipboard = new Button(cmp_txt, SWT.NONE);
+            this.btn_Clipboard[0] = btn_Clipboard;
+            btn_Clipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            btn_Clipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
+            btn_Clipboard.setText(I18n.COORDINATESDIALOG_Clipboard);
+        }
 
         {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);

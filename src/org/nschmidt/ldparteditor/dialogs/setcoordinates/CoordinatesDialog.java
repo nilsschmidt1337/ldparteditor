@@ -48,8 +48,8 @@ public class CoordinatesDialog extends CoordinatesDesign {
      *
      * @param parentShell
      */
-    public CoordinatesDialog(Shell parentShell, Vertex v) {
-        super(parentShell, v);
+    public CoordinatesDialog(Shell parentShell, Vertex v, Vertex manipulatorPosition) {
+        super(parentShell, v, manipulatorPosition);
         x = true;
         y = true;
         z = true;
@@ -98,6 +98,22 @@ public class CoordinatesDialog extends CoordinatesDesign {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
                 vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+            }
+        });
+        btn_Manipulator[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                spn_X[0].setValue(m.X);
+                spn_Y[0].setValue(m.Y);
+                spn_Z[0].setValue(m.Z);
+            }
+        });
+        btn_Clipboard[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                spn_X[0].setValue(c.X);
+                spn_Y[0].setValue(c.Y);
+                spn_Z[0].setValue(c.Z);
             }
         });
         return super.open();
