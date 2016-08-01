@@ -490,8 +490,14 @@ public class EditorTextWindow extends EditorTextDesign {
         btn_New[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                DatFile df = Editor3DWindow.getWindow().createNewDatFile(btn_New[0].getShell(), OpenInWhat.EDITOR_3D);
-                if (df != null && !Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
+                final boolean isSyncTabs = WorkbenchManager.getUserSettingState().isSyncingTabs();
+                DatFile df;
+                if (isSyncTabs) {
+                    df = Editor3DWindow.getWindow().createNewDatFile(btn_New[0].getShell(), OpenInWhat.EDITOR_3D);
+                } else {
+                    df = Editor3DWindow.getWindow().createNewDatFile(btn_New[0].getShell(), OpenInWhat.EDITOR_TEXT);
+                }                
+                if (df != null && isSyncTabs && !Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
                     final File f = new File(df.getNewName());
                     if (f.getParentFile() != null) {
                         Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
