@@ -623,23 +623,48 @@ public class EditorTextWindow extends EditorTextDesign {
 
                                 CompositeTabState state = ct.getState();
                                 state.getFileNameObj().saveAs(selected);
-
-                                DatFile df = Editor3DWindow.getWindow().openDatFile(btn_SaveAs[0].getShell(), OpenInWhat.EDITOR_3D, selected);
-                                if (df != null) {
-                                    Editor3DWindow.getWindow().addRecentFile(df);
-                                    final File f = new File(df.getNewName());
-                                    if (f.getParentFile() != null) {
-                                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
-                                    }
-                                    if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
-                                        {
-                                            CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
-                                            tbtmnewItem.setFolderAndWindow(tabFolder[0], editorTextWindow);
-                                            tbtmnewItem.getState().setFileNameObj(df);
-                                            tabFolder[0].setSelection(tbtmnewItem);
+                                
+                                if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
+                                    DatFile df = Editor3DWindow.getWindow().openDatFile(btn_SaveAs[0].getShell(), OpenInWhat.EDITOR_3D, selected);
+                                    if (df != null) {
+                                        Editor3DWindow.getWindow().addRecentFile(df);
+                                        final File f = new File(df.getNewName());
+                                        if (f.getParentFile() != null) {
+                                            Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                                        }
+                                        if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
+                                            {
+                                                CompositeTab tbtmnewItem = new CompositeTab(tabFolder[0], SWT.CLOSE);
+                                                tbtmnewItem.setFolderAndWindow(tabFolder[0], editorTextWindow);
+                                                tbtmnewItem.getState().setFileNameObj(df);
+                                                tabFolder[0].setSelection(tbtmnewItem);
+                                            }
                                         }
                                     }
-                                }
+                                } else {
+                                    DatFile df = Editor3DWindow.getWindow().openDatFile(btn_SaveAs[0].getShell(), OpenInWhat.EDITOR_TEXT, selected);
+                                    if (df != null) {
+                                        if (Project.getUnsavedFiles().contains(df)) {                      
+                                            WorkbenchManager.getUserSettingState().setSyncingTabs(false);
+                                            Editor3DWindow.getWindow().revert(df);                                                
+                                        }
+                                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                            for (CTabItem t : w.getTabFolder().getItems()) {
+                                                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                                    w.getTabFolder().setSelection(t);
+                                                    ((CompositeTab) t).getControl().getShell().forceActive();
+                                                    if (w.isSeperateWindow()) {
+                                                        w.open();
+                                                    }
+                                                    df.getVertexManager().setUpdated(true);
+                                                }
+                                            }
+                                        }
+                                        df.getVertexManager().addSnapshot();
+                                    }   
+                                }                
+                                Editor3DWindow.getWindow().cleanupClosedData();
+                                Editor3DWindow.getWindow().updateTree_unsavedEntries();
                             }
                         } catch (Exception ex) {
                             NLogger.error(getClass(), ex);
