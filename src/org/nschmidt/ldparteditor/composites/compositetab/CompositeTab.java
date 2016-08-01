@@ -81,6 +81,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shells.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.StringHelper;
@@ -154,30 +155,43 @@ public class CompositeTab extends CompositeTabDesign {
                                 if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
                                     final File fileToOpen = new File(f);
                                     if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
-                                    DatFile df = Editor3DWindow.getWindow().openDatFile(state.window[0].getShell(), OpenInWhat.EDITOR_3D, f);
-                                    if (df != null) {
-                                        boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
-                                        if (Project.getUnsavedFiles().contains(df)) {                      
-                                            WorkbenchManager.getUserSettingState().setSyncingTabs(false);
-                                            Editor3DWindow.getWindow().revert(df);                                                
-                                        }
-                                        Editor3DWindow.getWindow().addRecentFile(df);
-                                        final File f2 = new File(df.getNewName());
-                                        if (f2.getParentFile() != null) {
-                                            Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
-                                        }
-                                        if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, state.window[0])) {
-                                            {
-                                                CompositeTab tbtmnewItem = new CompositeTab(state.folder[0], SWT.CLOSE);
-                                                tbtmnewItem.setFolderAndWindow(state.folder[0], state.window[0]);
-                                                tbtmnewItem.getState().setFileNameObj(df);
-                                                state.folder[0].setSelection(tbtmnewItem);
-                                                tbtmnewItem.parseForErrorAndHints();
-                                                tbtmnewItem.getTextComposite().redraw();
+                                    if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
+                                        DatFile df = Editor3DWindow.getWindow().openDatFile(state.window[0].getShell(), OpenInWhat.EDITOR_3D, f, true);
+                                        if (df != null) {
+                                            Editor3DWindow.getWindow().addRecentFile(df);
+                                            final File f2 = new File(df.getNewName());
+                                            if (f2.getParentFile() != null) {
+                                                Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
+                                            }
+                                            if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, state.window[0])) {
+                                                {
+                                                    CompositeTab tbtmnewItem = new CompositeTab(state.folder[0], SWT.CLOSE);
+                                                    tbtmnewItem.setFolderAndWindow(state.folder[0], state.window[0]);
+                                                    tbtmnewItem.getState().setFileNameObj(df);
+                                                    state.folder[0].setSelection(tbtmnewItem);
+                                                    tbtmnewItem.parseForErrorAndHints();
+                                                    tbtmnewItem.getTextComposite().redraw();
+                                                }
+                                            }
+                                        } 
+                                    } else {
+                                        DatFile df = Editor3DWindow.getWindow().openDatFile(state.window[0].getShell(), OpenInWhat.EDITOR_TEXT, f, true);
+                                        if (df != null) {
+                                            for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                                for (CTabItem t : w.getTabFolder().getItems()) {
+                                                    if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                                        w.getTabFolder().setSelection(t);
+                                                        ((CompositeTab) t).getControl().getShell().forceActive();
+                                                        if (w.isSeperateWindow()) {
+                                                            w.open();
+                                                        }
+                                                        df.getVertexManager().setUpdated(true);
+                                                    }
+                                                }
                                             }
                                         }
-                                        WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
-                                    }                                   
+                                        Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                                    }
                                     break;
                                 }
                             }
