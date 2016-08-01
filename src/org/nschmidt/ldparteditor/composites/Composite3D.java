@@ -1297,13 +1297,10 @@ public class Composite3D extends ScalableComposite {
                             if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
                                 final File fileToOpen = new File(f);
                                 if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
-                                DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, f);
+                                DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, f, true);
                                 if (df != null) {
                                     boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
-                                    if (Project.getUnsavedFiles().contains(df)) {                      
-                                        WorkbenchManager.getUserSettingState().setSyncingTabs(false);
-                                        Editor3DWindow.getWindow().revert(df);                                                
-                                    }
+                                    WorkbenchManager.getUserSettingState().setSyncingTabs(false);
                                     Editor3DWindow.getWindow().addRecentFile(df);
                                     final File f2 = new File(df.getNewName());
                                     if (f2.getParentFile() != null) {
