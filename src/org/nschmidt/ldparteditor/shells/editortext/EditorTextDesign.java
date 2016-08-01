@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.ToolItem;
+import org.nschmidt.ldparteditor.composites.ToolSeparator;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabFolder;
 import org.nschmidt.ldparteditor.data.ColourChanger;
@@ -337,7 +338,7 @@ class EditorTextDesign extends ApplicationWindow {
     
     public void reloadColours() {
         for (Control ctrl : toolItem_ColourBar.getChildren()) {
-            ctrl.dispose();
+            if (!(ctrl instanceof ToolSeparator)) ctrl.dispose();
         }
         
         List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
