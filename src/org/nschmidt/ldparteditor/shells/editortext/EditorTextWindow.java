@@ -510,16 +510,41 @@ public class EditorTextWindow extends EditorTextDesign {
         btn_Open[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
-                DatFile df = Editor3DWindow.getWindow().openDatFile(btn_Open[0].getShell(), OpenInWhat.EDITOR_3D, null);
-                if (df != null) {
-                    if (Project.getUnsavedFiles().contains(df)) {                      
-                        WorkbenchManager.getUserSettingState().setSyncingTabs(false);
-                        Editor3DWindow.getWindow().revert(df);                                                
+                if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
+                    boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
+                    DatFile df = Editor3DWindow.getWindow().openDatFile(btn_Open[0].getShell(), OpenInWhat.EDITOR_3D, null);
+                    if (df != null) {
+                        if (Project.getUnsavedFiles().contains(df)) {                      
+                            WorkbenchManager.getUserSettingState().setSyncingTabs(false);
+                            Editor3DWindow.getWindow().revert(df);                                                
+                        }
+                        openNewDatFileTab(df, true);
+                        WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
                     }
-                    openNewDatFileTab(df, true);
-                    WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
-                }
+                } else {
+                    DatFile df = Editor3DWindow.getWindow().openDatFile(btn_Open[0].getShell(), OpenInWhat.EDITOR_TEXT, null);
+                    if (df != null) {
+                        if (Project.getUnsavedFiles().contains(df)) {                      
+                            WorkbenchManager.getUserSettingState().setSyncingTabs(false);
+                            Editor3DWindow.getWindow().revert(df);                                                
+                        }
+                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                            for (CTabItem t : w.getTabFolder().getItems()) {
+                                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                    w.getTabFolder().setSelection(t);
+                                    ((CompositeTab) t).getControl().getShell().forceActive();
+                                    if (w.isSeperateWindow()) {
+                                        w.open();
+                                    }
+                                    df.getVertexManager().setUpdated(true);
+                                }
+                            }
+                        }
+                        df.getVertexManager().addSnapshot();
+                    }   
+                }                
+                Editor3DWindow.getWindow().cleanupClosedData();
+                Editor3DWindow.getWindow().updateTree_unsavedEntries();
             }
         });
         btn_Save[0].addSelectionListener(new SelectionListener() {
