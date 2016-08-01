@@ -64,6 +64,7 @@ import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.composites.ToolItemDrawLocation;
 import org.nschmidt.ldparteditor.composites.ToolItemDrawMode;
 import org.nschmidt.ldparteditor.composites.ToolItemState;
+import org.nschmidt.ldparteditor.composites.ToolSeparator;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
@@ -3208,7 +3209,7 @@ class Editor3DDesign extends ApplicationWindow {
 
     void reloadColours() {
         for (Control ctrl : toolItem_ColourBar.getChildren()) {
-            ctrl.dispose();
+            if (!(ctrl instanceof ToolSeparator)) ctrl.dispose();            
         }
 
         List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
