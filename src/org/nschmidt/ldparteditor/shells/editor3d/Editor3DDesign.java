@@ -167,6 +167,7 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_Manipulator_8_toEdgeNormal = new Button[1];
     final Button[] btn_Manipulator_9_toSurfaceNormal = new Button[1];
     final Button[] btn_Manipulator_XIV_adjustRotationCenter = new Button[1];
+    final Button[] btn_Manipulator_XV_toVertexPosition = new Button[1];
     final Button[] btn_Manipulator_SwitchXY = new Button[1];
     final Button[] btn_Manipulator_SwitchXZ = new Button[1];
     final Button[] btn_Manipulator_SwitchYZ = new Button[1];
@@ -187,6 +188,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Manipulator_8_toEdgeNormal = new MenuItem[1];
     final MenuItem[] mntm_Manipulator_9_toSurfaceNormal = new MenuItem[1];
     final MenuItem[] mntm_Manipulator_XIV_adjustRotationCenter = new MenuItem[1];
+    final MenuItem[] mntm_Manipulator_XV_toVertexPosition = new MenuItem[1];
     final MenuItem[] mntm_Manipulator_SwitchXY = new MenuItem[1];
     final MenuItem[] mntm_Manipulator_SwitchXZ = new MenuItem[1];
     final MenuItem[] mntm_Manipulator_SwitchYZ = new MenuItem[1];
@@ -2513,6 +2515,12 @@ class Editor3DDesign extends ApplicationWindow {
                 }
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                    this.mntm_Manipulator_XV_toVertexPosition[0] = btn_Mani;
+                    btn_Mani.setText(I18n.E3D_ManipulatorToVertexP);
+                    btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN2.png")); //$NON-NLS-1$
+                }
+                {
+                    MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                     this.mntm_Manipulator_8_toEdgeNormal[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ManipulatorToEdgeN);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
@@ -2628,6 +2636,12 @@ class Editor3DDesign extends ApplicationWindow {
                 this.btn_Manipulator_7_toVertexNormal[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToVertexN);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
+            }
+            {
+                Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
+                this.btn_Manipulator_XV_toVertexPosition[0] = btn_Mani;
+                btn_Mani.setToolTipText(I18n.E3D_ManipulatorToVertexP);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN2.png")); //$NON-NLS-1$
             }
             {
                 Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
@@ -3209,7 +3223,7 @@ class Editor3DDesign extends ApplicationWindow {
 
     void reloadColours() {
         for (Control ctrl : toolItem_ColourBar.getChildren()) {
-            if (!(ctrl instanceof ToolSeparator)) ctrl.dispose();            
+            if (!(ctrl instanceof ToolSeparator)) ctrl.dispose();
         }
 
         List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
