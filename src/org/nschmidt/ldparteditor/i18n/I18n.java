@@ -452,6 +452,7 @@ public final class I18n {
     public static final String E3D_ManipulatorToSubfile = E3D.getString(getProperty());
     public static final String E3D_ManipulatorToVertex = E3D.getString(getProperty());
     public static final String E3D_ManipulatorToVertexN = E3D.getString(getProperty());
+    public static final String E3D_ManipulatorToVertexP = E3D.getString(getProperty());
     public static final String E3D_ManipulatorToWorld = E3D.getString(getProperty());
     public static final String E3D_Medium = E3D.getString(getProperty());
     public static final String E3D_MergeQuad = E3D.getString(getProperty());
@@ -499,7 +500,7 @@ public final class I18n {
     public static final String E3D_PaletteReset = E3D.getString(getProperty());
     public static final String E3D_PaletteSave = E3D.getString(getProperty());
     public static final String E3D_PaletteSetSize = E3D.getString(getProperty());
-    public static final String E3D_ParseInline = E3D.getString(getProperty());    
+    public static final String E3D_ParseInline = E3D.getString(getProperty());
     public static final String E3D_PartReview = E3D.getString(getProperty());
     public static final String E3D_PartReviewEnterPartName = E3D.getString(getProperty());
     public static final String E3D_PartReviewError = E3D.getString(getProperty());
