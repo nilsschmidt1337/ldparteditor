@@ -3236,6 +3236,13 @@ public class Editor3DWindow extends Editor3DDesign {
                 mntm_Manipulator_XIV();
             }
         });
+        
+        if (btn_Manipulator_XV_toVertexPosition[0] != null) btn_Manipulator_XV_toVertexPosition[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                mntm_Manipulator_XV();
+            }
+        });
 
         if (mntm_Manipulator_0_toOrigin[0] != null) mntm_Manipulator_0_toOrigin[0].addSelectionListener(new SelectionAdapter() {
             @Override
@@ -3366,6 +3373,13 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_XIV();
+            }
+        });
+        
+        if (mntm_Manipulator_XV_toVertexPosition[0] != null) mntm_Manipulator_XV_toVertexPosition[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                mntm_Manipulator_XV();
             }
         });
 
@@ -8666,6 +8680,79 @@ public class Editor3DWindow extends Editor3DDesign {
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                 VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                 vm.adjustRotationCenter(c3d, null);
+            }
+        }
+        regainFocus();
+    }
+    
+    private void mntm_Manipulator_XV() {
+        for (OpenGLRenderer renderer : renders) {
+            Composite3D c3d = renderer.getC3D();
+            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                float minDist = Float.MAX_VALUE;
+                Vector4f next = new Vector4f(c3d.getManipulator().getPosition());
+                Vertex min = null;
+                VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                Set<Vertex> vertices;
+                if (vm.getSelectedVertices().isEmpty()) {
+                    vertices = vm.getVertices();
+                } else {
+                    vertices = vm.getSelectedVertices();
+                }
+                for (Vertex vertex : vertices) {
+                    Vector4f sub = Vector4f.sub(next, vertex.toVector4f(), null);
+                    float d2 = sub.lengthSquared();
+                    if (d2 < minDist) {
+                        minDist = d2;
+                        min = vertex;
+                    }
+                }
+                vm = c3d.getLockableDatFileReference().getVertexManager();
+                Vector4f n = new Vector4f(min.x, min.y, min.z, 0f);
+                if (min.x == 0f && min.y == 0f && min.z == 0f) {
+                    n = new Vector4f(0f, 0f, 1f, 0f);
+                }
+                n.normalise();
+                n.setW(1f);
+
+                float tx = 1f;
+                float ty = 0f;
+                float tz = 0f;
+
+                if (n.x <= 0f) {
+                    tx = -1;
+                }
+
+                if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(0f, 0f, tx), null).length()) > .00001f) {
+                    tz = tx;
+                    tx = 0f;
+                    ty = 0f;
+                } else if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(tx, 0f, 0f), null).length()) > .00001f) {
+                    // ty = 0f;
+                    // tz = 0f;
+                } else if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(0f, 0f, tx), null).length()) > .00001f) {
+                    ty = tx;
+                    tx = 0f;
+                    tz = 0f;
+                } else {
+                    regainFocus();
+                    return;
+                }
+
+                Vector3f cross = (Vector3f) Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(tx, ty, tz), null).normalise();
+                c3d.getManipulator().getZaxis().set(n.x, n.y, n.z, 1f);
+                c3d.getManipulator().getXaxis().set(cross.x, cross.y, cross.z, 1f);
+                Vector4f zaxis = c3d.getManipulator().getZaxis();
+                Vector4f xaxis = c3d.getManipulator().getXaxis();
+                cross = Vector3f.cross(new Vector3f(xaxis.x, xaxis.y, xaxis.z), new Vector3f(zaxis.x, zaxis.y, zaxis.z), null);
+                c3d.getManipulator().getYaxis().set(cross.x, cross.y, cross.z, 1f);
+
+                c3d.getManipulator().setAccurateXaxis(new BigDecimal(c3d.getManipulator().getXaxis().x), new BigDecimal(c3d.getManipulator().getXaxis().y),
+                        new BigDecimal(c3d.getManipulator().getXaxis().z));
+                c3d.getManipulator().setAccurateYaxis(new BigDecimal(c3d.getManipulator().getYaxis().x), new BigDecimal(c3d.getManipulator().getYaxis().y),
+                        new BigDecimal(c3d.getManipulator().getYaxis().z));
+                c3d.getManipulator().setAccurateZaxis(new BigDecimal(c3d.getManipulator().getZaxis().x), new BigDecimal(c3d.getManipulator().getZaxis().y),
+                        new BigDecimal(c3d.getManipulator().getZaxis().z));
             }
         }
         regainFocus();
