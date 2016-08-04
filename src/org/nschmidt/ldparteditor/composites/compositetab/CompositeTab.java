@@ -234,7 +234,7 @@ public class CompositeTab extends CompositeTabDesign {
             // only POSSIBLE approach to get this working, VerifyKey has NO use!
             public void verifyText(VerifyEvent event) {
                 event.doit = true;
-                state.setDoingPaste(event.text.length() > 1);
+                state.setDoingPaste(event.text.length() > 1 && compositeText[0].isFocusControl() && state.getFileNameObj().getVertexManager().isUpdated());
                 final DatFile dat = state.getFileNameObj();
                 final VertexManager vm = dat.getVertexManager();
                 if (vm.getVertexToReplace() != null) {
