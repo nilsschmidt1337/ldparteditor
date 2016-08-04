@@ -698,7 +698,7 @@ public class CompositeTab extends CompositeTabDesign {
                     canvas_lineNumberArea[0].redraw();
                 } else {
                     // Text inserted
-                    if (state.isDoingPaste() && Editor3DWindow.getWindow().isMovingAdjacentData()) {
+                    if (state.isDoingPaste() && Editor3DWindow.getWindow().isMovingAdjacentData() && WorkbenchManager.getUserSettingState().isDisableMADtext()) {
                         Editor3DWindow.getWindow().setMovingAdjacentData(false);
                         GuiManager.updateStatus();
                     }

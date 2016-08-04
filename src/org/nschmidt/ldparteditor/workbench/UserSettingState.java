@@ -119,6 +119,9 @@ public class UserSettingState implements Serializable {
 
     /** {@code true} if invalid shapes are allowed in the 3D editor */
     private boolean allowInvalidShapes = false;
+    
+    private boolean disableMAD3D = false;
+    private boolean disableMADtext = false;
 
     private float[] BFC_front_Colour_r = null;
     private float[] BFC_front_Colour_g = null;
@@ -1295,5 +1298,21 @@ public class UserSettingState implements Serializable {
 
     public void setTextWinArr(int textWinArr) {
         this.textWinArr = textWinArr;
+    }
+
+    public boolean isDisableMAD3D() {
+        return !disableMAD3D;
+    }
+
+    public void setDisableMAD3D(boolean disableMAD3D) {
+        this.disableMAD3D = !disableMAD3D;
+    }
+
+    public boolean isDisableMADtext() {
+        return !disableMADtext;
+    }
+
+    public void setDisableMADtext(boolean disableMADtext) {
+        this.disableMADtext = !disableMADtext;
     }
 }
