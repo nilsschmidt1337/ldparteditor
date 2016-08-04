@@ -346,7 +346,7 @@ class VM02Add extends VM01SelectHelper {
             }
             grefs1.retainAll(grefs2);
             for (GData gData : grefs1) {
-                if (gData.type() == 2)
+                if (gData.type() == 2 && isRealLine)
                     return;
             }
         }
@@ -402,7 +402,7 @@ class VM02Add extends VM01SelectHelper {
         grefs1.retainAll(grefs2);
         grefs1.retainAll(grefs3);
         for (GData gData : grefs1) {
-            if (gData.type() == 3)
+            if (gData.type() == 3 && isTriangle)
                 return;
         }
 
