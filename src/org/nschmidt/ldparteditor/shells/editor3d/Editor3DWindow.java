@@ -6001,10 +6001,11 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void close(CTabFolderEvent event) {
                 DatFile df = null;
-                if (tabFolder_OpenDatFiles[0].getSelection() != null && (df = (DatFile) tabFolder_OpenDatFiles[0].getSelection().getData()) != null) {
+                if (event.item != null && (df = (DatFile) event.item.getData()) != null) {
                     if (df.equals(View.DUMMY_DATFILE)) {
                         event.doit = false;
                     } else {
+                        event.item.dispose();
                         Project.removeOpenedFile(df);
                         if (!closeDatfile(df)) {
                             Project.addOpenedFile(df);
