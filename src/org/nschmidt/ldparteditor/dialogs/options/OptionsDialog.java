@@ -48,6 +48,20 @@ public class OptionsDialog extends OptionsDesign {
                 WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btn_AllowInvalidShapes[0].getSelection());
             }
         });
+        
+        btn_disableMAD3D[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().setDisableMAD3D(btn_disableMAD3D[0].getSelection());
+            }
+        });
+        
+        btn_disableMADtext[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().setDisableMADtext(btn_disableMADtext[0].getSelection());
+            }
+        });
 
         btn_browseLdrawPath[0].addListener(SWT.Selection, new Listener() {
             @Override

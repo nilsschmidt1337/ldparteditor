@@ -3098,8 +3098,10 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().paste();
-                    setMovingAdjacentData(false);
-                    GuiManager.updateStatus();
+                    if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
+                        setMovingAdjacentData(false);
+                        GuiManager.updateStatus();
+                    }
                 }
                 regainFocus();
             }

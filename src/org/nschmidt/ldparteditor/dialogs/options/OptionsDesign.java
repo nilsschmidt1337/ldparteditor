@@ -53,6 +53,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 class OptionsDesign extends ApplicationWindow {
 
     Button[] btn_AllowInvalidShapes = new Button[1];
+    Button[] btn_disableMAD3D = new Button[1];
+    Button[] btn_disableMADtext = new Button[1];
     Button[] btn_OK = new Button[1];
             
     final Combo[] cmb_textWinArr = new Combo[1];
@@ -417,6 +419,16 @@ class OptionsDesign extends ApplicationWindow {
                 this.btn_AllowInvalidShapes[0] = btn_AllowInvalidShapes;
                 btn_AllowInvalidShapes.setText(I18n.OPTIONS_AllowInvalidShapes);
                 btn_AllowInvalidShapes.setSelection(userSettings.isAllowInvalidShapes());
+                
+                Button btn_disableMAD3D = new Button(cmp_container, SWT.CHECK);
+                this.btn_disableMAD3D[0] = btn_disableMAD3D;
+                btn_disableMAD3D.setText(I18n.OPTIONS_MAD1);
+                btn_disableMAD3D.setSelection(userSettings.isDisableMAD3D());
+                
+                Button btn_disableMADtext = new Button(cmp_container, SWT.CHECK);
+                this.btn_disableMADtext[0] = btn_disableMADtext;
+                btn_disableMADtext.setText(I18n.OPTIONS_MAD2);
+                btn_disableMADtext.setSelection(userSettings.isDisableMADtext());
                 
                 {
                     Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);

@@ -549,8 +549,10 @@ public class Composite3D extends ScalableComposite {
                 if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
                 lockableDatFileReference.getVertexManager().addSnapshot();
                 lockableDatFileReference.getVertexManager().paste();
-                Editor3DWindow.getWindow().setMovingAdjacentData(false);
-                GuiManager.updateStatus();
+                if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
+                    Editor3DWindow.getWindow().setMovingAdjacentData(false);
+                    GuiManager.updateStatus();
+                }
             }
         });
         mntmPaste.setText(I18n.COPYNPASTE_Paste);

@@ -46,6 +46,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * Stores information about keys pressed on the keyboard and triggers keyboard
@@ -287,8 +288,10 @@ public class KeyStateManager {
                         break;
                     case PASTE:
                         vm.paste();
-                        win.setMovingAdjacentData(false);
-                        GuiManager.updateStatus();
+                        if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
+                            win.setMovingAdjacentData(false);
+                            GuiManager.updateStatus();
+                        }
                         break;
                     case MODE_COMBINED:
                         win.setWorkingAction(WorkingMode.COMBINED);

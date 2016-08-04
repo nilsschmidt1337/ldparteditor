@@ -842,6 +842,8 @@ public final class I18n {
     public static final String OPTIONS_LdrawFolder = OPTIONS.getString(getProperty());
     public static final String OPTIONS_LdrawName = OPTIONS.getString(getProperty());
     public static final String OPTIONS_License = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_MAD1 = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_MAD2 = OPTIONS.getString(getProperty());
     public static final String OPTIONS_MiscOptions = OPTIONS.getString(getProperty());
     public static final String OPTIONS_RealName = OPTIONS.getString(getProperty());
     public static final String OPTIONS_TextWindowArr = OPTIONS.getString(getProperty());
