@@ -41,7 +41,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
  */
 public final class GData3 extends GData {
 
-    final boolean isTriangle;
+    public final boolean isTriangle;
 
     public final int colourNumber;
 

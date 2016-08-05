@@ -5994,9 +5994,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void minimize(CTabFolderEvent event) {}
 
             @Override
-            public void maximize(CTabFolderEvent event) {
-                // TODO Auto-generated method stub
-            }
+            public void maximize(CTabFolderEvent event) {}
 
             @Override
             public void close(CTabFolderEvent event) {
