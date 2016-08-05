@@ -2043,6 +2043,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     spn_SelectionY4[0].setEnabled(true);
                                     spn_SelectionZ4[0].setEnabled(true);
                                 case 3:
+                                    spn_SelectionAngle[0].setEnabled(((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
                                     spn_SelectionX3[0].setEnabled(true);
                                     spn_SelectionY3[0].setEnabled(true);
                                     spn_SelectionZ3[0].setEnabled(true);
@@ -2090,6 +2091,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                         break;
                                     case 3:
                                         BigDecimal[] g3 = GraphicalDataTools.getPreciseCoordinates(gdata);
+                                        if (spn_SelectionAngle[0].isEnabled()) {
+                                            spn_SelectionAngle[0].setValue(new BigDecimal(((org.nschmidt.ldparteditor.data.GData3) gdata).getProtractorAngle()));
+                                        }
                                         spn_SelectionX1[0].setValue(g3[0]);
                                         spn_SelectionY1[0].setValue(g3[1]);
                                         spn_SelectionZ1[0].setValue(g3[2]);
@@ -2132,6 +2136,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         break;
                                     }
 
+                                    lbl_SelectionAngle[0].setText((gdata.type() != 1 ? I18n.E3D_ProtractorAngle : "") + " {" + spn_SelectionAngle[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$                                    
                                     lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX1 : "") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY1 : "") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ1 : "") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -2204,6 +2209,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     spn_SelectionY4[0].setEnabled(true);
                                     spn_SelectionZ4[0].setEnabled(true);
                                 case 3:
+                                    spn_SelectionAngle[0].setEnabled(((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
                                     spn_SelectionX3[0].setEnabled(true);
                                     spn_SelectionY3[0].setEnabled(true);
                                     spn_SelectionZ3[0].setEnabled(true);
@@ -2251,6 +2257,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                         break;
                                     case 3:
                                         BigDecimal[] g3 = GraphicalDataTools.getPreciseCoordinates(gdata);
+                                        if (spn_SelectionAngle[0].isEnabled()) {
+                                            spn_SelectionAngle[0].setValue(new BigDecimal(((org.nschmidt.ldparteditor.data.GData3) gdata).getProtractorAngle()));
+                                        }
                                         spn_SelectionX1[0].setValue(g3[0]);
                                         spn_SelectionY1[0].setValue(g3[1]);
                                         spn_SelectionZ1[0].setValue(g3[2]);
@@ -2293,6 +2302,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         break;
                                     }
 
+                                    lbl_SelectionAngle[0].setText((gdata.type() != 1 ? I18n.E3D_ProtractorAngle : "") + " {" + spn_SelectionAngle[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$                                                                        
                                     lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX1 : "X  :") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY1 : "Y  :") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ1 : "Z  :") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -7997,6 +8007,7 @@ public class Editor3DWindow extends Editor3DDesign {
         if (Thread.currentThread() == Display.getDefault().getThread()) {
             updatingSelectionTab = true;
             txt_Line[0].setText(""); //$NON-NLS-1$
+            spn_SelectionAngle[0].setEnabled(false);
             spn_SelectionX1[0].setEnabled(false);
             spn_SelectionY1[0].setEnabled(false);
             spn_SelectionZ1[0].setEnabled(false);
@@ -8021,6 +8032,7 @@ public class Editor3DWindow extends Editor3DDesign {
             spn_SelectionX4[0].setValue(BigDecimal.ZERO);
             spn_SelectionY4[0].setValue(BigDecimal.ZERO);
             spn_SelectionZ4[0].setValue(BigDecimal.ZERO);
+            lbl_SelectionAngle[0].setText(I18n.E3D_ProtractorAngle);
             lbl_SelectionX1[0].setText(I18n.E3D_PositionX1);
             lbl_SelectionY1[0].setText(I18n.E3D_PositionY1);
             lbl_SelectionZ1[0].setText(I18n.E3D_PositionZ1);
@@ -8042,6 +8054,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     try {
                         updatingSelectionTab = true;
                         txt_Line[0].setText(""); //$NON-NLS-1$
+                        spn_SelectionAngle[0].setEnabled(false);
                         spn_SelectionX1[0].setEnabled(false);
                         spn_SelectionY1[0].setEnabled(false);
                         spn_SelectionZ1[0].setEnabled(false);
@@ -8066,6 +8079,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         spn_SelectionX4[0].setValue(BigDecimal.ZERO);
                         spn_SelectionY4[0].setValue(BigDecimal.ZERO);
                         spn_SelectionZ4[0].setValue(BigDecimal.ZERO);
+                        lbl_SelectionAngle[0].setText(I18n.E3D_ProtractorAngle);
                         lbl_SelectionX1[0].setText(I18n.E3D_PositionX1);
                         lbl_SelectionY1[0].setText(I18n.E3D_PositionY1);
                         lbl_SelectionZ1[0].setText(I18n.E3D_PositionZ1);

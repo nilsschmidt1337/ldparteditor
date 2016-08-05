@@ -42,11 +42,20 @@ class ValueDesign extends Dialog {
 
     final String unitText;
     final String shellText;
-
+    final String decf;
+    
     ValueDesign(Shell parentShell, String shellText, String unitText) {
         super(parentShell);
         this.unitText = unitText;
         this.shellText = shellText;
+        this.decf = null;
+    }
+    
+    ValueDesign(Shell parentShell, String shellText, String unitText, String decimalFormat) {
+        super(parentShell);
+        this.unitText = unitText;
+        this.shellText = shellText;
+        this.decf = decimalFormat;
     }
 
     /**
@@ -61,7 +70,12 @@ class ValueDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        BigDecimalSpinner spn_Value = new BigDecimalSpinner(cmp_Container, SWT.NONE);
+        BigDecimalSpinner spn_Value;
+        if (decf == null) {
+            spn_Value = new BigDecimalSpinner(cmp_Container, SWT.NONE);
+        } else {
+            spn_Value = new BigDecimalSpinner(cmp_Container, SWT.NONE, decf);
+        }
         this.spn_Value[0] = spn_Value;
         GridData gd = new GridData();
         gd.grabExcessHorizontalSpace = true;
