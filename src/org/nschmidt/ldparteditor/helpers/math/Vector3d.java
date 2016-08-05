@@ -335,14 +335,13 @@ public class Vector3d {
         return new Vector3d(X, Y, Z);
     }
 
-
-    /**
-     *
-     * @return
-     */
     private static BigDecimal HALF = new BigDecimal(".5"); //$NON-NLS-1$
     public Vector3d scaledByHalf() {
         return new Vector3d(X.multiply(HALF), Y.multiply(HALF), Z.multiply(HALF));
+    }
+
+    public Vector3d scale(BigDecimal scale) {
+        return new Vector3d(X.multiply(scale), Y.multiply(scale), Z.multiply(scale));
     }
 
 }
