@@ -1672,27 +1672,4 @@ public final class GData3 extends GData {
         vc = Vector3d.sub(va, vc);
         return Vector3d.angle(vb, vc);
     }
-
-    public void setProtractorAngle(BigDecimal value, DatFile df,
-            VertexManager vm) {
-        
-        if (View.DUMMY_REFERENCE.equals(parent)) {
-            GData next = this.next;
-            GData before = this.before;
-            GData1 parent = this.parent;
-            Integer lineNumber = df.getDrawPerLine_NOCLONE().getKey(this);
-
-
-            vm.remove(this);
-
-            BigDecimal nX3 = X3;
-            BigDecimal nY3 = Y3;
-            BigDecimal nZ3 = Z3;
-
-            GData3 ng = new GData3(4, 1f, g, b, a, X1, Y1, Z1, X2, Y2, Z2, nX3, nY3, nZ3, parent, df, false);
-            df.getDrawPerLine_NOCLONE().put(lineNumber, ng);
-            ng.setNext(next);
-            before.setNext(ng);       
-       }
-    }
 }
