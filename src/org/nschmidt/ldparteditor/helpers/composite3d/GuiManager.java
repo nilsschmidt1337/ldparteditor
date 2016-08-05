@@ -18,16 +18,21 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.MessageFormat;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.state.KeyStateManager;
 
 /**
  * Manages GUI Actions, which are triggered by the {@linkplain Composite3D} and
@@ -58,15 +63,29 @@ public enum GuiManager {
 
         final VertexManager vm = c3d.getVertexManager();
         final Set<Vertex> vs;
-        if ((vs = vm.getSelectedVertices()).size() == 1) {
-            sb.append(" Vertex @  ["); //$NON-NLS-1$
-            Vertex v = vs.iterator().next();
-            sb.append(df.format(v.X.multiply(View.unit_factor)));
-            sb.append("; "); //$NON-NLS-1$
-            sb.append(df.format(v.Y.multiply(View.unit_factor)));
-            sb.append("; "); //$NON-NLS-1$
-            sb.append(df.format(v.Z.multiply(View.unit_factor)));
-            sb.append("]"); //$NON-NLS-1$
+        final Set<GData3> ts;
+        if ((vs = vm.getSelectedVertices()).size() == 1) {            
+            try {
+                Vertex v = vs.iterator().next();
+                sb.append(" Vertex @  ["); //$NON-NLS-1$
+                sb.append(df.format(v.X.multiply(View.unit_factor)));
+                sb.append("; "); //$NON-NLS-1$
+                sb.append(df.format(v.Y.multiply(View.unit_factor)));
+                sb.append("; "); //$NON-NLS-1$
+                sb.append(df.format(v.Z.multiply(View.unit_factor)));
+                sb.append("]"); //$NON-NLS-1$
+            } catch (NoSuchElementException consumed) {}
+        } else if ((ts = vm.getSelectedTriangles()).size() == 1) {
+            try {
+                GData3 t = ts.iterator().next();
+                if (!t.isTriangle) {
+                    Object[] messageArguments = {KeyStateManager.getTaskKeymap().get(Task.PROTRACTOR)};
+                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.applyPattern(I18n.E3D_Protractor);
+                    sb.append(formatter.format(messageArguments));
+                }
+            } catch (NoSuchElementException consumed) {}            
         }
 
         sb.append(" "); //$NON-NLS-1$
@@ -90,7 +109,7 @@ public enum GuiManager {
         
         Editor3DWindow.getStatusLabel().setText(sb.toString());
         Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
-        Editor3DWindow.getStatusLabel().update();
+        // TODO Linux only??? Editor3DWindow.getStatusLabel().update();
     }
 
     public static void updateStatus() {

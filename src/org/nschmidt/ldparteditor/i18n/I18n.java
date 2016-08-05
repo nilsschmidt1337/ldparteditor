@@ -525,6 +525,7 @@ public final class I18n {
     public static final String E3D_PositionZ4 = E3D.getString(getProperty());
     public static final String E3D_Previous = E3D.getString(getProperty());
     public static final String E3D_PreviousItem = E3D.getString(getProperty());
+    public static final String E3D_Protractor = E3D.getString(getProperty());
     public static final String E3D_Quads = E3D.getString(getProperty());
     public static final String E3D_Quality1 = E3D.getString(getProperty());
     public static final String E3D_Quality2 = E3D.getString(getProperty());
@@ -720,6 +721,7 @@ public final class I18n {
     public static final String KEYBOARD_ObjVertex = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Paste = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_PressAKey = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_Protractor = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_QuickFix = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_RMB = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Redo = KEYBOARD.getString(getProperty());

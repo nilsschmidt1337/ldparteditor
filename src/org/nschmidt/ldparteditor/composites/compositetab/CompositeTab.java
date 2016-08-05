@@ -1338,6 +1338,7 @@ public class CompositeTab extends CompositeTabDesign {
 
                         StringBuilder sb = new StringBuilder();
                         sb.append(start_line);
+                        sb.append(" "); //$NON-NLS-1$
                         GData source = Project.getFileToEdit().getDrawPerLine().getValue(start_line);
                         if (source != null) {
                             if (source.getBefore() != null) {
