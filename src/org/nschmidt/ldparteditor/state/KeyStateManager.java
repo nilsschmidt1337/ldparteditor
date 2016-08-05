@@ -142,8 +142,6 @@ public class KeyStateManager {
         addTask(Task.ADD_PROTRACTOR, 'p');
         addTask(Task.ADD_COMMENTS, '0');
         
-        addTask(Task.PROTRACTOR, SWT.ALT, 'p');
-
         addTask(Task.ZOOM_IN,  '+');
         addTask(Task.ZOOM_OUT,  '-');
         addTask(Task.RESET_VIEW, SWT.CTRL, 'r');
@@ -503,10 +501,6 @@ public class KeyStateManager {
                         break;
                     case SPLIT:
                         vm.split(2);
-                        break;
-                    case PROTRACTOR:
-                        // FIXME Needs implementation!
-                        NLogger.debug(getClass(), "Edit protractor"); //$NON-NLS-1$
                         break;
                     }
                 }

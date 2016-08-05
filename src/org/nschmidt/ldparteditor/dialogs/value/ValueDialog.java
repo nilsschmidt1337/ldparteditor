@@ -32,6 +32,10 @@ public abstract class ValueDialog extends ValueDesign {
     public ValueDialog(Shell shell, String shellText, String unitText) {
         super(shell, shellText, unitText);
     }
+    
+    public ValueDialog(Shell shell, String shellText, String unitText, String decimalFormat) {
+        super(shell, shellText, unitText, decimalFormat);
+    }
 
     @Override
     public int open() {
