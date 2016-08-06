@@ -904,8 +904,8 @@ class Editor3DDesign extends ApplicationWindow {
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
                                 this.spn_SelectionAngle[0] = spinner;
                                 spinner.setEnabled(false);
-                                spinner.setMaximum(new BigDecimal("360")); //$NON-NLS-1$
-                                spinner.setMinimum(new BigDecimal("0")); //$NON-NLS-1$
+                                spinner.setMaximum(new BigDecimal("179.9999")); //$NON-NLS-1$
+                                spinner.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
                                 spinner.setValue(new BigDecimal(0));
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
