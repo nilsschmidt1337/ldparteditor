@@ -2378,11 +2378,13 @@ public class Editor3DWindow extends Editor3DDesign {
                 vm.addSnapshot();                
                 
                 org.nschmidt.ldparteditor.data.GData3 tri = null;
-                if (vm.getSelectedTriangles().size() == 0) {
+                if (vm.getSelectedTriangles().size() == 0) {                  
+                    disableSelectionTab();
                     return;
                 }
                 tri = vm.getSelectedTriangles().iterator().next();
                 if (tri.isTriangle) {
+                    disableSelectionTab();
                     return;
                 }
                 
