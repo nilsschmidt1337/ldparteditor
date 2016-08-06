@@ -1820,6 +1820,7 @@ public class VM01SelectHelper extends VM01Select {
             b.setNext(pasted);
             pasted.setNext(n);
             dpl.put(line, pasted);
+            linkedDatFile.setDrawChainTail(dpl.getValue(dpl.size()));
         }
     }
 }
