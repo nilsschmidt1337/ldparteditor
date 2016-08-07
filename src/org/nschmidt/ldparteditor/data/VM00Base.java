@@ -1744,6 +1744,11 @@ class VM00Base {
         }
     }
 
+    /**
+     * Replaces GData objects with a new one.
+     * @param oldData
+     * @param newData
+     */
     protected final void linker(GData oldData, GData newData) {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
         if (oldData.equals(linkedDatFile.getDrawChainTail()))

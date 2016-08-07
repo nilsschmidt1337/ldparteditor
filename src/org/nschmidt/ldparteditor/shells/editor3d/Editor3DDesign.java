@@ -259,6 +259,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_PartReview = new MenuItem[1];
     final MenuItem[] mntm_Edger2 = new MenuItem[1];
     final MenuItem[] mntm_Txt2Dat = new MenuItem[1];
+    final MenuItem[] mntm_PrimGen2 = new MenuItem[1];
     final MenuItem[] mntm_Rectifier = new MenuItem[1];
     final MenuItem[] mntm_Isecalc = new MenuItem[1];
     final MenuItem[] mntm_SlicerPro = new MenuItem[1];
@@ -2193,6 +2194,11 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);
                     this.mntm_Edger2[0] = mntm_Edger2;
                     mntm_Edger2.setText(I18n.E3D_Edger2);
+                }
+                {
+                    MenuItem mntm_PrimGen2 = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_PrimGen2[0] = mntm_PrimGen2;
+                    mntm_PrimGen2.setText(I18n.E3D_PrimGen2);
                 }
                 {
                     MenuItem mntm_Edger2 = new MenuItem(mnu_Tools, SWT.PUSH);
