@@ -121,6 +121,7 @@ import org.nschmidt.ldparteditor.dialogs.newproject.NewProjectDialog;
 import org.nschmidt.ldparteditor.dialogs.options.OptionsDialog;
 import org.nschmidt.ldparteditor.dialogs.partreview.PartReviewDialog;
 import org.nschmidt.ldparteditor.dialogs.pathtruder.PathTruderDialog;
+import org.nschmidt.ldparteditor.dialogs.primgen2.PrimGen2Dialog;
 import org.nschmidt.ldparteditor.dialogs.rectifier.RectifierDialog;
 import org.nschmidt.ldparteditor.dialogs.ringsandcones.RingsAndConesDialog;
 import org.nschmidt.ldparteditor.dialogs.rotate.RotateDialog;
@@ -4632,6 +4633,17 @@ public class Editor3DWindow extends Editor3DDesign {
                         regainFocus();
                         return;
                     }
+                }
+                regainFocus();
+            }
+        });
+        
+        mntm_PrimGen2[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                // FIXME Needs implementation!
+                if (new PrimGen2Dialog(getShell()).open() == IDialogConstants.OK_ID) {
+                    
                 }
                 regainFocus();
             }

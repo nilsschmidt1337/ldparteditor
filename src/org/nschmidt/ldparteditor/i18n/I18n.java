@@ -72,6 +72,7 @@ public final class I18n {
     private static final ResourceBundle LINES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.LinesPattern", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle OPTIONS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Options", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle PATHTRUDER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PathTruder", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle PRIMGEN = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PrimGen", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle RECTIFIER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Rectifier", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle RCONES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.RingsAndCones", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle ROTATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Rotate", MyLanguage.LOCALE); //$NON-NLS-1$
@@ -525,6 +526,7 @@ public final class I18n {
     public static final String E3D_PositionZ4 = E3D.getString(getProperty());
     public static final String E3D_Previous = E3D.getString(getProperty());
     public static final String E3D_PreviousItem = E3D.getString(getProperty());
+    public static final String E3D_PrimGen2 = E3D.getString(getProperty());
     public static final String E3D_ProtractorAngle = E3D.getString(getProperty());
     public static final String E3D_Quads = E3D.getString(getProperty());
     public static final String E3D_Quality1 = E3D.getString(getProperty());
