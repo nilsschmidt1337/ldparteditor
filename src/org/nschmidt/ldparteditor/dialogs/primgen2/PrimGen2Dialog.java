@@ -44,7 +44,9 @@ public class PrimGen2Dialog extends PrimGen2Design {
     @Override
     public int open() {
         super.create();
-
+        spn_major[0].setValue(2);
+        spn_minor[0].setValue(1);
+        
         // MARK All final listeners will be configured here..
         
         return super.open();
