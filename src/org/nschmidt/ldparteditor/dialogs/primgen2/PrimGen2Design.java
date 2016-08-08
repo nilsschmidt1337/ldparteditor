@@ -29,12 +29,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 
 /**
@@ -53,6 +55,7 @@ class PrimGen2Design extends Dialog {
     // Use final only for subclass/listener references!
     final IntegerSpinner[] spn_major = new IntegerSpinner[1];
     final IntegerSpinner[] spn_minor = new IntegerSpinner[1];
+    final IntegerSpinner[] spn_size = new IntegerSpinner[1];
     
     final IntegerSpinner[] spn_divisions = new IntegerSpinner[1];
     final IntegerSpinner[] spn_segments = new IntegerSpinner[1];
@@ -66,12 +69,19 @@ class PrimGen2Design extends Dialog {
     final Combo[] cmb_winding = new Combo[1];
     
     final Button[] btn_saveAs = new Button[1];
+    final Button[] btn_ok = new Button[1];
+    final Button[] btn_cancel = new Button[1];
+    
+    final Label[] lbl_torusTyle = new Label[1];
+    final Label[] lbl_size = new Label[1];
+    final Label[] lbl_major = new Label[1];
+    final Label[] lbl_minor = new Label[1];
     
     DatFile df;
+    Composite3D c3d;
     
     PrimGen2Design(Shell parentShell) {
         super(parentShell);
-        // setShellStyle(SWT.RESIZE);
     }
 
     /**
@@ -82,7 +92,7 @@ class PrimGen2Design extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmp_container = (Composite) super.createDialogArea(parent);
-        cmp_container.setLayout(new GridLayout(8, true));
+        cmp_container.setLayout(new GridLayout(9, true));
         GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
@@ -107,44 +117,52 @@ class PrimGen2Design extends Dialog {
         lbl_segments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         
         Label lbl_torusType = new Label(cmp_container, SWT.NONE);
+        this.lbl_torusTyle[0] = lbl_torusType;
         lbl_torusType.setText("Torus Type"); //$NON-NLS-1$
         lbl_torusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-
+        lbl_torusType.setEnabled(false);
+        
         {
             Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));        
+            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));        
         }
         
-        Combo cmb_type = new Combo(cmp_container, SWT.NONE);
-        this.cmb_type[0] = cmb_type;
+        Combo cmb_type = new Combo(cmp_container, SWT.READ_ONLY);
+        this.cmb_type[0] = cmb_type;        
+        cmb_type.setItems(new String[]{"Circle", "Ring", "Cone", "Torus", "Cylinder", "Disc", "Disc Negative", "Chord"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
         cmb_type.setText("Circle"); //$NON-NLS-1$
         cmb_type.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
         
-        Combo cmb_divisions = new Combo(cmp_container, SWT.NONE);
-        this.cmb_divisions[0] = cmb_divisions;
+        Combo cmb_divisions = new Combo(cmp_container, SWT.READ_ONLY);
+        this.cmb_divisions[0] = cmb_divisions;        
+        cmb_divisions.setItems(new String[]{"16", "48", "Custom"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         cmb_divisions.setText("16"); //$NON-NLS-1$
         cmb_divisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         
-        Combo cmb_segments = new Combo(cmp_container, SWT.NONE);
-        this.cmb_segments[0] = cmb_segments;
+        Combo cmb_segments = new Combo(cmp_container, SWT.READ_ONLY);
+        this.cmb_segments[0] = cmb_segments;        
+        cmb_segments.setItems(new String[]{"1-4", "2-4", "3-4", "4-4", "Custom"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
         cmb_segments.setText("1-4"); //$NON-NLS-1$
         cmb_segments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         
-        Combo cmb_torusType = new Combo(cmp_container, SWT.NONE);
-        this.cmb_torusType[0] = cmb_torusType;
+        Combo cmb_torusType = new Combo(cmp_container, SWT.READ_ONLY);
+        this.cmb_torusType[0] = cmb_torusType;        
+        cmb_torusType.setItems(new String[]{"Inside", "Outside"}); //$NON-NLS-1$ //$NON-NLS-2$
         cmb_torusType.setText("Inside"); //$NON-NLS-1$
         cmb_torusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
         cmb_torusType.setEnabled(false);
         
         {
             Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));        
+            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));        
         }
    
         Label lbl_size = new Label(cmp_container, SWT.NONE);
-        lbl_size.setText("Size (radius)"); //$NON-NLS-1$
+        this.lbl_size[0] = lbl_size;
+        lbl_size.setText("Size (radius)"); //$NON-NLS-1$        
         lbl_size.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-    
+        lbl_size.setEnabled(false);
+        
         IntegerSpinner spn_divisions = new IntegerSpinner(cmp_container, SWT.NONE);
         this.spn_divisions[0] = spn_divisions;
         spn_divisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -160,19 +178,24 @@ class PrimGen2Design extends Dialog {
         spn_segments.setValue(4);
         
         Label lbl_major = new Label(cmp_container, SWT.NONE);
+        this.lbl_major[0] = lbl_major;
         lbl_major.setText("Major"); //$NON-NLS-1$
         lbl_major.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        lbl_major.setEnabled(false);
         
         Label lbl_minor = new Label(cmp_container, SWT.NONE);
+        this.lbl_minor[0] = lbl_minor;
         lbl_minor.setText("Minor"); //$NON-NLS-1$
         lbl_minor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        lbl_minor.setEnabled(false);
     
         {
             Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));        
+            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));        
         }
         
         IntegerSpinner spn_size = new IntegerSpinner(cmp_container, SWT.NONE);
+        this.spn_size[0] = spn_size;
         spn_size.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
         spn_size.setMaximum(360);
         spn_size.setMinimum(1);
@@ -183,8 +206,9 @@ class PrimGen2Design extends Dialog {
         lbl_winding.setText("Winding"); //$NON-NLS-1$
         lbl_winding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
     
-        Combo cmb_winding = new Combo(cmp_container, SWT.NONE);
-        this.cmb_winding[0] = cmb_winding;
+        Combo cmb_winding = new Combo(cmp_container, SWT.READ_ONLY);
+        this.cmb_winding[0] = cmb_winding;        
+        cmb_winding.setItems(new String[]{"CCW", "CW"}); //$NON-NLS-1$ //$NON-NLS-2$
         cmb_winding.setText("CCW"); //$NON-NLS-1$
         cmb_winding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -206,7 +230,7 @@ class PrimGen2Design extends Dialog {
         
         {
             Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));        
+            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));        
         }
    
         {
@@ -219,24 +243,38 @@ class PrimGen2Design extends Dialog {
         btn_saveAs.setText("Save As..."); //$NON-NLS-1$
         btn_saveAs.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
         
+        {
+            Label lbl_dummy = new Label(cmp_container, SWT.NONE);
+            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));        
+        }
+        
         SashForm sashForm = new SashForm(cmp_container, SWT.NONE);
-        sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 10, 30));
+        sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 30));
         
         df = new DatFile("...", "Temporary Primitive", true, DatType.PRIMITIVE); //$NON-NLS-1$ //$NON-NLS-2$
-        @SuppressWarnings("unused")
+        Project.getUnsavedFiles().add(df);
+        
         CompositeContainer cmp_Container = new CompositeContainer(sashForm, df);
+        c3d = cmp_Container.getComposite3D();
         
         StyledText txt_data = new StyledText(sashForm, SWT.V_SCROLL | SWT.H_SCROLL);
+        this.txt_data[0] = txt_data;
         txt_data.setText(""); //$NON-NLS-1$        
         txt_data.setBackground(Colour.text_background[0]);
         txt_data.setForeground(Colour.text_foreground[0]);
         txt_data.setFont(Font.MONOSPACE);
         txt_data.setLineSpacing(0);
         
+        {
+            Label lbl_dummy = new Label(cmp_container, SWT.NONE);
+            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));        
+        }
+        
         Label lbl_standard = new Label(cmp_container, SWT.NONE);
         lbl_standard.setText("STANDARD"); //$NON-NLS-1$
         lbl_standard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
         
+        cmp_container.layout();
         cmp_container.pack();
         return cmp_container;
     }
@@ -248,8 +286,8 @@ class PrimGen2Design extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        this.btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
+        this.btn_cancel[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
     }
 
     /**

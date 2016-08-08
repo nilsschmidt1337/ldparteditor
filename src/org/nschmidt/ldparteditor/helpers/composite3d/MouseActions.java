@@ -284,7 +284,9 @@ public class MouseActions {
                 break;
             if (c3d.isClassicPerspective()) {
                 c3d.setClassicPerspective(false);
-                WidgetSelectionHelper.unselectAllChildButtons(c3d.getViewAnglesMenu());
+                if (!c3d.getViewAnglesMenu().isDisposed()) {
+                    WidgetSelectionHelper.unselectAllChildButtons(c3d.getViewAnglesMenu());
+                }
             }
             float rx = 0;
             float ry = 0;
