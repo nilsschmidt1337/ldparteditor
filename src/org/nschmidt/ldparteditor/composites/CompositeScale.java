@@ -83,8 +83,10 @@ public class CompositeScale extends ScalableComposite {
                 java.awt.Point b = a.getLocation();
                 int x = (int) b.getX();
                 int y = (int) b.getY();
-                me.getComposite3D().getMenu().setLocation(x, y);
-                me.getComposite3D().getMenu().setVisible(true);
+                if (!me.getComposite3D().getMenu().isDisposed()) {
+                    me.getComposite3D().getMenu().setLocation(x, y);
+                    me.getComposite3D().getMenu().setVisible(true);   
+                }                
             }
         });
 

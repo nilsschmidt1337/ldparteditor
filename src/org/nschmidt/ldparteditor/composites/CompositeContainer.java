@@ -19,6 +19,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.enums.Perspective;
 
 /**
  * The container for a {@link Composite3D} or a {@link CompositeScale}.
@@ -64,6 +66,14 @@ public class CompositeContainer extends ScalableComposite {
         this.setLayout(new FillLayout());
         Composite3D composite3D = new Composite3D(this);
         composite3D.setParent(this);
+    }
+
+    public CompositeContainer(Composite parentSashForm, DatFile df) {
+        super(parentSashForm, org.eclipse.swt.SWT.NONE);
+        this.setLayout(new FillLayout());
+        Composite3D composite3D = new Composite3D(this, df);
+        composite3D.setParent(this);
+        composite3D.getPerspectiveCalculator().setPerspective(Perspective.TOP);
     }
 
     @Override

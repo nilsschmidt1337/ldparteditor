@@ -1267,8 +1267,10 @@ public class MouseActions {
                 final int y = (int) b.getY();
 
                 Menu menu = c3d.getMenu();
-                menu.setLocation(x, y);
-                menu.setVisible(true);
+                if (!menu.isDisposed()) {
+                    menu.setLocation(x, y);
+                    menu.setVisible(true);
+                }
             }
             break;
         }
