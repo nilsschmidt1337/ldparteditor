@@ -135,7 +135,7 @@ class PrimGen2Design extends Dialog {
         
         Combo cmb_divisions = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_divisions[0] = cmb_divisions;        
-        cmb_divisions.setItems(new String[]{"16", "48", "Custom"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        cmb_divisions.setItems(new String[]{"8", "16", "48", "Custom"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         cmb_divisions.setText("16"); //$NON-NLS-1$
         cmb_divisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         
