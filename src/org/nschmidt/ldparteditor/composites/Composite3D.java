@@ -291,6 +291,18 @@ public class Composite3D extends ScalableComposite {
         mntmSyncZoom[0].setSelection(syncZoom);
     }
     
+    public Composite3D(Composite parentCompositeContainer, DatFile df) {
+        this(parentCompositeContainer);
+        setSyncManipulator(false);
+        setSyncTranslation(false);
+        setSyncZoom(false);
+        
+        Editor3DWindow.renders.remove(openGL);
+        Editor3DWindow.canvasList.remove(canvas);
+        this.menu.dispose();
+        setLockableDatFileReference(df);
+    }
+    
     /**
      * Creates a new 3D Composite in a {@link CompositeContainer}
      *
@@ -1756,7 +1768,7 @@ public class Composite3D extends ScalableComposite {
     }
 
     public void setLockableDatFileReference(DatFile datFile) {        
-        if (locked != null) this.datFileLockedOnDisplay = locked.getSelection();        
+        if (locked != null && !locked.isDisposed()) this.datFileLockedOnDisplay = locked.getSelection();        
         Editor3DWindow.getWindow().saveState(this.lockableDatFileReference, this);        
         this.lockableDatFileReference = datFile;
         Editor3DWindow.getWindow().loadState(datFile, this);
