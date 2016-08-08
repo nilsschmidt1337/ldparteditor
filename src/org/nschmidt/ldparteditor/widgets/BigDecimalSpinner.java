@@ -49,12 +49,11 @@ public class BigDecimalSpinner extends Composite {
     private ValueChangeAdapter myListener;
 
     private final BigDecimalSpinner me;
-    private final java.text.DecimalFormat NUMBER_FORMAT4F;
-
+    private java.text.DecimalFormat numberFormat;
 
     public BigDecimalSpinner(final Composite parent, int style, String numberFormat) {
         super(parent, style);
-        NUMBER_FORMAT4F = new java.text.DecimalFormat(numberFormat, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        this.numberFormat = new java.text.DecimalFormat(numberFormat, new DecimalFormatSymbols(MyLanguage.LOCALE));
         me = this;
         createContents(parent);
     }
@@ -65,7 +64,7 @@ public class BigDecimalSpinner extends Composite {
      */
     public BigDecimalSpinner(final Composite parent, int style) {
         super(parent, style);
-        NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        numberFormat = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         me = this;
         createContents(parent);
     }
@@ -148,8 +147,8 @@ public class BigDecimalSpinner extends Composite {
                 int caret = txt_val[0].getCaretPosition();
 
                 try {
-                    NUMBER_FORMAT4F.setParseBigDecimal(true);
-                    BigDecimal val = (BigDecimal) NUMBER_FORMAT4F.parseObject(txt_val[0].getText());
+                    numberFormat.setParseBigDecimal(true);
+                    BigDecimal val = (BigDecimal) numberFormat.parseObject(txt_val[0].getText());
 
                     value = val;
                     if (value.compareTo(maximum) > 0 || value.compareTo(minimum) < 0) {
@@ -164,12 +163,12 @@ public class BigDecimalSpinner extends Composite {
                     if (oldValue[0].compareTo(value) != 0) {
                         oldValue[0] = value;
                         invalidInput[0] = true;
-                        txt_val[0].setText(NUMBER_FORMAT4F.format(value));
+                        txt_val[0].setText(numberFormat.format(value));
                     }
                 } catch (ParseException ex) {
                     if (!invalidInput[0]) {
                         invalidInput[0] = true;
-                        txt_val[0].setText(NUMBER_FORMAT4F.format(value));
+                        txt_val[0].setText(numberFormat.format(value));
                         invalidInput[0] = false;
                     }
                 }
@@ -206,7 +205,7 @@ public class BigDecimalSpinner extends Composite {
     public void setValue(BigDecimal value) {
         this.value = value.compareTo(maximum) == 1 ? maximum : value;
         this.value = value.compareTo(minimum) == -1 ? minimum : value;
-        txt_val[0].setText(NUMBER_FORMAT4F.format(this.value));
+        txt_val[0].setText(numberFormat.format(this.value));
         if (myListener != null)
             myListener.valueChanged(this);
     }
@@ -234,5 +233,13 @@ public class BigDecimalSpinner extends Composite {
         txt_val[0].setEditable(enabled);
         txt_val[0].setEnabled(enabled);
         super.setEnabled(enabled);
+    }
+    
+    public java.text.DecimalFormat getNumberFormat() {
+        return numberFormat;
+    }
+
+    public void setNumberFormat(java.text.DecimalFormat numberFormat) {
+        this.numberFormat = numberFormat;
     }
 }

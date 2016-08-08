@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.primgen2;
 
+import java.math.BigDecimal;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -35,8 +37,10 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 
 /**
@@ -54,8 +58,8 @@ class PrimGen2Design extends Dialog {
 
     // Use final only for subclass/listener references!
     final IntegerSpinner[] spn_major = new IntegerSpinner[1];
-    final IntegerSpinner[] spn_minor = new IntegerSpinner[1];
-    final IntegerSpinner[] spn_size = new IntegerSpinner[1];
+    final BigDecimalSpinner[] spn_minor = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spn_size = new BigDecimalSpinner[1];
     
     final IntegerSpinner[] spn_divisions = new IntegerSpinner[1];
     final IntegerSpinner[] spn_segments = new IntegerSpinner[1];
@@ -72,7 +76,7 @@ class PrimGen2Design extends Dialog {
     final Button[] btn_ok = new Button[1];
     final Button[] btn_cancel = new Button[1];
     
-    final Label[] lbl_torusTyle = new Label[1];
+    final Label[] lbl_torusType = new Label[1];
     final Label[] lbl_size = new Label[1];
     final Label[] lbl_major = new Label[1];
     final Label[] lbl_minor = new Label[1];
@@ -98,7 +102,7 @@ class PrimGen2Design extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Primitive Generator 2"); //$NON-NLS-1$
+        lbl_specify.setText("Primitive Generator 2.1 (Different Conditional Line Control Points)"); //$NON-NLS-1$
         lbl_specify.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
         
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -117,7 +121,7 @@ class PrimGen2Design extends Dialog {
         lbl_segments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         
         Label lbl_torusType = new Label(cmp_container, SWT.NONE);
-        this.lbl_torusTyle[0] = lbl_torusType;
+        this.lbl_torusType[0] = lbl_torusType;
         lbl_torusType.setText("Torus Type"); //$NON-NLS-1$
         lbl_torusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
         lbl_torusType.setEnabled(false);
@@ -147,8 +151,8 @@ class PrimGen2Design extends Dialog {
         
         Combo cmb_torusType = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_torusType[0] = cmb_torusType;        
-        cmb_torusType.setItems(new String[]{"Inside", "Outside"}); //$NON-NLS-1$ //$NON-NLS-2$
-        cmb_torusType.setText("Inside"); //$NON-NLS-1$
+        cmb_torusType.setItems(new String[]{"Inside", "Outside", "Tube"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        cmb_torusType.setText("Outside"); //$NON-NLS-1$
         cmb_torusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
         cmb_torusType.setEnabled(false);
         
@@ -194,12 +198,12 @@ class PrimGen2Design extends Dialog {
             lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));        
         }
         
-        IntegerSpinner spn_size = new IntegerSpinner(cmp_container, SWT.NONE);
+        BigDecimalSpinner spn_size = new BigDecimalSpinner(cmp_container, SWT.NONE, View.NUMBER_FORMAT0F);
         this.spn_size[0] = spn_size;
         spn_size.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-        spn_size.setMaximum(360);
-        spn_size.setMinimum(1);
-        spn_size.setValue(1);
+        spn_size.setMaximum(new BigDecimal(1000));
+        spn_size.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
+        spn_size.setValue(BigDecimal.ONE);
         spn_size.setEnabled(false);
         
         Label lbl_winding = new Label(cmp_container, SWT.NONE);
@@ -220,12 +224,12 @@ class PrimGen2Design extends Dialog {
         spn_major.setValue(1000);
         spn_major.setEnabled(false);
         
-        IntegerSpinner spn_minor = new IntegerSpinner(cmp_container, SWT.NONE);
+        BigDecimalSpinner spn_minor = new BigDecimalSpinner(cmp_container, SWT.NONE, View.NUMBER_FORMAT0F);
         this.spn_minor[0] = spn_minor;
         spn_minor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_minor.setMaximum(1000);
-        spn_minor.setMinimum(1);
-        spn_minor.setValue(1000);
+        spn_minor.setMaximum(new BigDecimal(1000));
+        spn_minor.setMinimum(BigDecimal.ONE);
+        spn_minor.setValue(new BigDecimal(1000));
         spn_minor.setEnabled(false);
         
         {
