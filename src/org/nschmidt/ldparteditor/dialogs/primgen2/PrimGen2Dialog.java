@@ -285,28 +285,31 @@ public class PrimGen2Dialog extends PrimGen2Design {
         
         if (et == EventType.CBO) {
             
-            switch (cmb_segments[0].getSelectionIndex()) {
+            switch (cmb_divisions[0].getSelectionIndex()) {
             case 0:
-                spn_segments[0].setValue(16);
+                spn_divisions[0].setValue(8);
                 break;
             case 1:
-                spn_segments[0].setValue(48);
+                spn_divisions[0].setValue(16);
+                break;
+            case 2:
+                spn_divisions[0].setValue(48);
                 break;
             default:
                 break;
             }
-            switch (cmb_divisions[0].getSelectionIndex()) {
+            switch (cmb_segments[0].getSelectionIndex()) {
             case 0:
-                spn_divisions[0].setValue(spn_segments[0].getValue() / 4);
+                spn_segments[0].setValue(spn_divisions[0].getValue() / 4);
                 break;
             case 1:
-                spn_divisions[0].setValue(spn_segments[0].getValue() / 2);
+                spn_segments[0].setValue(spn_divisions[0].getValue() / 2);
                 break;
             case 2:
-                spn_divisions[0].setValue(spn_segments[0].getValue() * 3 / 4);
+                spn_segments[0].setValue(spn_divisions[0].getValue() * 3 / 4);
                 break;
             case 3:
-                spn_divisions[0].setValue(spn_segments[0].getValue());
+                spn_segments[0].setValue(spn_divisions[0].getValue());
                 break;
             default:
                 break;
@@ -333,11 +336,11 @@ public class PrimGen2Dialog extends PrimGen2Design {
             final int THREE_OF_FOUR = spn_divisions[0].getValue() * 3 / 4;
             final int WHOLE = spn_divisions[0].getValue();
             
-            if (segments == QUARTER) {
+            if (segments == QUARTER && spn_divisions[0].getValue() / 4f - QUARTER == 0f) {
                 cmb_segments[0].select(0);
-            } else if (segments == HALF) {
+            } else if (segments == HALF && spn_divisions[0].getValue() / 2f - HALF == 0f) {
                 cmb_segments[0].select(1);
-            } else if (segments == THREE_OF_FOUR) {
+            } else if (segments == THREE_OF_FOUR && spn_divisions[0].getValue() * 3f / 4f - QUARTER == 0f) {
                 cmb_segments[0].select(2);
             } else if (segments == WHOLE) {
                 cmb_segments[0].select(3);
