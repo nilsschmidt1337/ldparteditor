@@ -80,6 +80,7 @@ class PrimGen2Design extends Dialog {
     final Label[] lbl_size = new Label[1];
     final Label[] lbl_major = new Label[1];
     final Label[] lbl_minor = new Label[1];
+    final Label[] lbl_standard = new Label[1];
     
     DatFile df;
     Composite3D c3d;
@@ -203,8 +204,10 @@ class PrimGen2Design extends Dialog {
         spn_size.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
         spn_size.setMaximum(new BigDecimal(1000));
         spn_size.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
-        spn_size.setValue(BigDecimal.ONE);
+        spn_size.setValue(BigDecimal.ONE);        
         spn_size.setEnabled(false);
+        spn_size.setSmallIncrement(BigDecimal.ONE);
+        spn_size.setLargeIncrement(BigDecimal.ONE);
         
         Label lbl_winding = new Label(cmp_container, SWT.NONE);
         lbl_winding.setText("Winding"); //$NON-NLS-1$
@@ -231,6 +234,8 @@ class PrimGen2Design extends Dialog {
         spn_minor.setMinimum(BigDecimal.ONE);
         spn_minor.setValue(new BigDecimal(1000));
         spn_minor.setEnabled(false);
+        spn_minor.setSmallIncrement(BigDecimal.ONE);
+        spn_minor.setLargeIncrement(BigDecimal.ONE);
         
         {
             Label lbl_dummy = new Label(cmp_container, SWT.NONE);
@@ -275,7 +280,8 @@ class PrimGen2Design extends Dialog {
         }
         
         Label lbl_standard = new Label(cmp_container, SWT.NONE);
-        lbl_standard.setText("STANDARD"); //$NON-NLS-1$
+        this.lbl_standard[0] = lbl_standard;
+        lbl_standard.setText("NON-STANDARD"); //$NON-NLS-1$
         lbl_standard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
         
         cmp_container.layout();

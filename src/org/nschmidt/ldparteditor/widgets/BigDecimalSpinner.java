@@ -50,6 +50,9 @@ public class BigDecimalSpinner extends Composite {
 
     private final BigDecimalSpinner me;
     private java.text.DecimalFormat numberFormat;
+    
+    private BigDecimal smallIncrement = new BigDecimal(".0001"); //$NON-NLS-1$
+    private BigDecimal largeIncrement = new BigDecimal(".01"); //$NON-NLS-1$
 
     public BigDecimalSpinner(final Composite parent, int style, String numberFormat) {
         super(parent, style);
@@ -105,7 +108,7 @@ public class BigDecimalSpinner extends Composite {
 
             @Override
             public void mouseDown(org.eclipse.swt.events.MouseEvent e) {
-                setValue(value.subtract(new BigDecimal(".01"))); //$NON-NLS-1$
+                setValue(value.subtract(largeIncrement));
             }
 
             @Override
@@ -128,9 +131,9 @@ public class BigDecimalSpinner extends Composite {
                     p = p.getParent();
                 }
                 if (e.count > 0) {
-                    setValue(value.add(new BigDecimal(".0001"))); //$NON-NLS-1$
+                    setValue(value.add(smallIncrement));
                 } else {
-                    setValue(value.subtract(new BigDecimal(".0001"))); //$NON-NLS-1$
+                    setValue(value.subtract(smallIncrement));
                 }
             }
         });
@@ -185,7 +188,7 @@ public class BigDecimalSpinner extends Composite {
 
             @Override
             public void mouseDown(org.eclipse.swt.events.MouseEvent e) {
-                setValue(value.add(new BigDecimal(".01"))); //$NON-NLS-1$
+                setValue(value.add(largeIncrement));
             }
 
             @Override
@@ -241,5 +244,21 @@ public class BigDecimalSpinner extends Composite {
 
     public void setNumberFormat(java.text.DecimalFormat numberFormat) {
         this.numberFormat = numberFormat;
+    }
+
+    public BigDecimal getSmallIncrement() {
+        return smallIncrement;
+    }
+
+    public void setSmallIncrement(BigDecimal smallIncrement) {
+        this.smallIncrement = smallIncrement;
+    }
+
+    public BigDecimal getLargeIncrement() {
+        return largeIncrement;
+    }
+
+    public void setLargeIncrement(BigDecimal largeIncrement) {
+        this.largeIncrement = largeIncrement;
     }
 }
