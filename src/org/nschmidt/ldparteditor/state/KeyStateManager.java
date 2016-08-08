@@ -462,11 +462,17 @@ public class KeyStateManager {
                         vm.syncWithTextEditors(true);
                         break;
                     case SHOW_GRID:
+                        if (c3d.getMenu().isDisposed()) {
+                            break;
+                        }
                         c3d.setGridShown(!c3d.isGridShown());
                         c3d.getMntmShowGrid().setSelection(c3d.isGridShown());
                         break;
                     case SHOW_RULER:
                     {
+                        if (c3d.getMenu().isDisposed()) {
+                            break;
+                        }
                         boolean scale = !c3d.getMntmShowScale().getSelection();
                         c3d.getMntmShowScale().setSelection(scale);
                         c3d.getModifier().showScale(scale);

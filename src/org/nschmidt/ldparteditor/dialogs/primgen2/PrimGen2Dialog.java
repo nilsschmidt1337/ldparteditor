@@ -15,14 +15,22 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.primgen2;
 
+import java.math.BigDecimal;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ExtendedModifyEvent;
 import org.eclipse.swt.custom.ExtendedModifyListener;
+import org.eclipse.swt.custom.LineStyleEvent;
+import org.eclipse.swt.custom.LineStyleListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.text.SyntaxFormatter;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -42,6 +50,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
     
     // FIXME Needs implementation (Logic)!
     
+    private SyntaxFormatter syntaxFormatter;
+    
     /**
      * Create the dialog.
      *
@@ -55,6 +65,9 @@ public class PrimGen2Dialog extends PrimGen2Design {
     @Override
     public int open() {
         super.create();
+        
+        syntaxFormatter = new SyntaxFormatter(txt_data[0]);
+        
         spn_major[0].setValue(2);
         spn_minor[0].setValue(1);
         
@@ -97,6 +110,21 @@ public class PrimGen2Dialog extends PrimGen2Design {
         });
         
         // MARK All final listeners will be configured here..
+        
+        txt_data[0].addLineStyleListener(new LineStyleListener() {
+            @Override
+            public void lineGetStyle(final LineStyleEvent e) {
+                // So the line will be formated with the syntax formatter from
+                // the CompositeText.
+                final VertexManager vm = df.getVertexManager();
+                final GData data = df.getDrawPerLine_NOCLONE().getValue(txt_data[0].getLineAtOffset(e.lineOffset) + 1);
+                boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
+                isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
+                syntaxFormatter.format(e,
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                        0f, false, isSelected, df);
+            }
+        });
         
         txt_data[0].addExtendedModifyListener(new ExtendedModifyListener() {
             @Override
