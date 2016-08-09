@@ -429,6 +429,7 @@ class Editor3DDesign extends ApplicationWindow {
     private ToolItem toolItem_ColourBar;
 
     private static SashForm sashForm;
+    final SashForm[] editorSashForm = new SashForm[]{null};
 
     static final int TEXT_3D_SEPARATE = 0;
     static final int TEXT_LEFT_3D_RIGHT = 1;
@@ -1544,6 +1545,21 @@ class Editor3DDesign extends ApplicationWindow {
             tWin.getTabFolder().setWindow(this);
             tWin.registerEvents();
             Project.getOpenTextWindows().add(tWin);
+        }
+        
+        if (containerTop instanceof SashForm) {
+            this.editorSashForm[0] = (SashForm) containerTop;
+            int width = windowState.getWindowState().getSizeAndPosition().width;
+            int[] sashSize = windowState.getEditorSashWeights();
+            if (sashSize == null) {
+                ((SashForm) containerTop).setWeights(new int[] { width / 2, width / 2 });
+            } else {
+                try {
+                    ((SashForm) containerTop).setWeights(sashSize);
+                } catch (IllegalArgumentException iae) {
+                    ((SashForm) containerTop).setWeights(new int[] { width / 2, width / 2 });
+                }
+            }
         }
         return container;
     }

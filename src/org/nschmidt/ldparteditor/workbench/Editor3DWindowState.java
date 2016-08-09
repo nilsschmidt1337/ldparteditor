@@ -34,6 +34,7 @@ public class Editor3DWindowState implements Serializable {
     private float primitiveZoom = (float) Math.pow(10.0d, 3f / 10 - 3);
     private float primitiveZoomExponent = 3f;
     private int[] leftSashWeights = null;
+    private int[] editorSashWeights = null;
     private Matrix4f[] primitiveViewport = null;
     private ArrayList<Composite3DState> threeDwindowConfig = null;
 
@@ -98,6 +99,14 @@ public class Editor3DWindowState implements Serializable {
 
     public void setThreeDwindowConfig(ArrayList<Composite3DState> threeDwindowConfig) {
         this.threeDwindowConfig = threeDwindowConfig;
+    }
+
+    public int[] getEditorSashWeights() {
+        return editorSashWeights;
+    }
+
+    public void setEditorSashWeights(int[] editorSashWeights) {
+        this.editorSashWeights = editorSashWeights;
     }
 
 }
