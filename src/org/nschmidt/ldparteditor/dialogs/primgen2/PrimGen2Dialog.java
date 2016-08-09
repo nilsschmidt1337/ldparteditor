@@ -881,8 +881,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                                 double xUpperNext = Math.round(Math.cos(nextAngle2) * 1E4) / 1E4 * sizeUpper; 
                                 double zUpperNext = Math.round(Math.sin(nextAngle2) * 1E4) / 1E4 * sizeUpper;
                                 
-                                double xUpperPrev = Math.round(Math.cos(prevAngle2) * 1E4) / 1E4 * sizeUpper; 
-                                double zUpperPrev = Math.round(Math.sin(prevAngle2) * 1E4) / 1E4 * sizeUpper;
+                                double yN = 1d - Math.sqrt(2);
                                 
                                 sb.append("5 24 "); //$NON-NLS-1$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xUpperCurr)));
@@ -895,9 +894,9 @@ public class PrimGen2Dialog extends PrimGen2Design {
                                 
                                 sb.append(" "); //$NON-NLS-1$
                                 
-                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleCurr)));
-                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yLower)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleCurr)));
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xUpperCurr)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yUpper + yN)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zUpperCurr)));
                                 sb.append(" "); //$NON-NLS-1$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleCurr)));
                                 sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yMiddle)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
