@@ -564,7 +564,7 @@ public final class GData5 extends GData {
 
             if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
 
-            if (zoom > 5e-6) {
+            if (zoom > View.edge_threshold) {
 
                 GL11.glColor4f(r, g, b, a);
 
@@ -678,7 +678,7 @@ public final class GData5 extends GData {
 
         if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
 
-        if (zoom > 5e-6) {
+        if (zoom > View.edge_threshold) {
 
             if (result > -1e-20f) {
                 GL11.glColor4f(0f, 0f, 0f, 1f);
