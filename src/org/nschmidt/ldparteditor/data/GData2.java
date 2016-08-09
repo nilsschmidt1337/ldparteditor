@@ -363,7 +363,7 @@ public final class GData2 extends GData {
 
 
 
-        if (c3d.getZoom() > 5e-6) {
+        if (c3d.getZoom() > View.edge_threshold) {
 
             GL11.glPushMatrix();
 
