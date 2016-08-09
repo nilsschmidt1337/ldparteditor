@@ -841,9 +841,9 @@ public class PrimGen2Dialog extends PrimGen2Design {
                         double sizeUpper = Math.round(Math.cos(nextAngle) * 1E4) / 1E4 * size + 1d;
                         double sizeLower = Math.round(Math.cos(prevAngle) * 1E4) / 1E4 * size + 1d;
                         
-                        double yCurr = Math.round(Math.sin(angle) * 1E4) / 1E4 * -size;
-                        double yNext = Math.round(Math.sin(nextAngle) * 1E4) / 1E4 * -size;
-                        double yPrev = Math.round(Math.sin(prevAngle) * 1E4) / 1E4 * -size;
+                        double yMiddle = Math.round(Math.sin(angle) * 1E4) / 1E4 * -size;
+                        double yUpper = Math.round(Math.sin(nextAngle) * 1E4) / 1E4 * -size;
+                        double yLower = Math.round(Math.sin(prevAngle) * 1E4) / 1E4 * -size;
                         
                         for(int j = 0; j < segments + off; j++) {
                             
@@ -878,29 +878,29 @@ public class PrimGen2Dialog extends PrimGen2Design {
                             
                             if (torusType != 2 && i + 1 == quarter_div && j < segments) {
                                 
-                                double x6 = Math.round(Math.cos(nextAngle2) * 1E4) / 1E4 * sizeUpper; 
-                                double z6 = Math.round(Math.sin(nextAngle2) * 1E4) / 1E4 * sizeUpper;
+                                double xUpperNext = Math.round(Math.cos(nextAngle2) * 1E4) / 1E4 * sizeUpper; 
+                                double zUpperNext = Math.round(Math.sin(nextAngle2) * 1E4) / 1E4 * sizeUpper;
                                 
-                                double x7 = Math.round(Math.cos(prevAngle2) * 1E4) / 1E4 * sizeUpper; 
-                                double z7 = Math.round(Math.sin(prevAngle2) * 1E4) / 1E4 * sizeUpper;
+                                double xUpperPrev = Math.round(Math.cos(prevAngle2) * 1E4) / 1E4 * sizeUpper; 
+                                double zUpperPrev = Math.round(Math.sin(prevAngle2) * 1E4) / 1E4 * sizeUpper;
                                 
                                 sb.append("5 24 "); //$NON-NLS-1$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xUpperCurr)));
-                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yNext)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yUpper)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zUpperCurr)));
                                 sb.append(" "); //$NON-NLS-1$
-                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x6)));
-                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yNext)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z6)));
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xUpperNext)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yUpper)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zUpperNext)));
                                 
                                 sb.append(" "); //$NON-NLS-1$
                                 
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleCurr)));
-                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yPrev)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yLower)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleCurr)));
                                 sb.append(" "); //$NON-NLS-1$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleCurr)));
-                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yCurr)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yMiddle)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleCurr)));
                                 
                                 sb.append("\n"); //$NON-NLS-1$
@@ -908,19 +908,19 @@ public class PrimGen2Dialog extends PrimGen2Design {
                             
                             sb.append("5 24 "); //$NON-NLS-1$
                             sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleCurr)));
-                            sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yCurr)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                            sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yMiddle)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                             sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleCurr)));                                               
                             sb.append(" "); //$NON-NLS-1$
                             sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xUpperCurr)));
-                            sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yNext)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                            sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yUpper)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                             sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zUpperCurr)));
                             sb.append(" "); //$NON-NLS-1$
                             sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddlePrev)));
-                            sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yCurr)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                            sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yMiddle)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                             sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddlePrev)));
                             sb.append(" "); //$NON-NLS-1$
                             sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleNext)));
-                            sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yCurr)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                            sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yMiddle)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                             sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleNext)));
                             
                             sb.append("\n"); //$NON-NLS-1$
@@ -928,21 +928,21 @@ public class PrimGen2Dialog extends PrimGen2Design {
                             if (j < segments) {                                
                                 sb.append("5 24 "); //$NON-NLS-1$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleCurr)));
-                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yCurr)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yMiddle)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleCurr)));
                                 sb.append(" "); //$NON-NLS-1$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleNext)));
-                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yCurr)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yMiddle)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleNext)));
                                 
                                 sb.append(" "); //$NON-NLS-1$
                                 
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xUpperCurr)));
-                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yNext)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yUpper)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zUpperCurr)));
                                 sb.append(" "); //$NON-NLS-1$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xLowerCurr)));
-                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yPrev)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yLower)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zLowerCurr)));
 
                                 sb.append("\n"); //$NON-NLS-1$
