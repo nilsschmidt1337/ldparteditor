@@ -6488,6 +6488,9 @@ public class Editor3DWindow extends Editor3DDesign {
         }
         winState.setThreeDwindowConfig(c3dStates);
 
+        if (editorSashForm[0] != null) {
+            winState.setEditorSashWeights(editorSashForm[0].getWeights());
+        }
         winState.setLeftSashWeights(((SashForm) Editor3DDesign.getSashForm().getChildren()[0]).getWeights());
         winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights());
         winState.setPrimitiveZoom(cmp_Primitives[0].getZoom());
