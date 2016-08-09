@@ -746,89 +746,213 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
                 
                 // FIXME Needs implementation (Torus)!
-                double deltaAngle = Math.PI * 2d / divisions;
-                double angle = -deg90;
                 
-                if (torusType == 0) {
-                    angle = -deg90 - deg90;
-                }
-                
-                StringBuilder[] sbs = new StringBuilder[segments];
-                for (int i = 0; i < segments; i++) {
-                    sbs[i] = new StringBuilder();
-                }
-                
-                for(int i = 0; i < quarter_div; i++) {
-                    double nextAngle = angle + deltaAngle;
-                    double angle2 = 0d;
-                    
-                    double size1 = Math.round(Math.cos(angle) * 1E4) / 1E4 * size + 1d;
-                    double size2 = Math.round(Math.cos(nextAngle) * 1E4) / 1E4 * size + 1d;
-                    
-                    double y1 = Math.round(Math.sin(angle) * 1E4) / 1E4 * -size;
-                    double y2 = Math.round(Math.sin(nextAngle) * 1E4) / 1E4 * -size;
-                    
-                    
-                    for(int j = 0; j < segments; j++) {
-                        double nextAngle2 = angle2 + deltaAngle;
-                        double x1 = Math.round(Math.cos(angle2) * 1E4) / 1E4 * size1; 
-                        double z1 = Math.round(Math.sin(angle2) * 1E4) / 1E4 * size1;
-                        double x2 = Math.round(Math.cos(nextAngle2) * 1E4) / 1E4 * size1; 
-                        double z2 = Math.round(Math.sin(nextAngle2) * 1E4) / 1E4 * size1;
-                        
-                        double x3 = Math.round(Math.cos(angle2) * 1E4) / 1E4 * size2; 
-                        double z3 = Math.round(Math.sin(angle2) * 1E4) / 1E4 * size2;
-                        double x4 = Math.round(Math.cos(nextAngle2) * 1E4) / 1E4 * size2; 
-                        double z4 = Math.round(Math.sin(nextAngle2) * 1E4) / 1E4 * size2;
-                        StringBuilder sb3 = sbs[j];
-                        StringBuilder sb2 = new StringBuilder();
-                        if (ccw) {
-                            sb2.append("4 16 "); //$NON-NLS-1$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(x1)));
-                            sb2.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y1)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(z1)));                                               
-                            sb2.append(" "); //$NON-NLS-1$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(x2)));
-                            sb2.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y1)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(z2)));
-                            sb2.append(" "); //$NON-NLS-1$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(x4)));
-                            sb2.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y2)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(z4)));
-                            sb2.append(" "); //$NON-NLS-1$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(x3)));
-                            sb2.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y2)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(z3)));
-                        } else {
-                            sb2.append("4 16 "); //$NON-NLS-1$                    
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(x3)));
-                            sb2.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y2)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(z3)));
-                            sb2.append(" "); //$NON-NLS-1$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(x4)));
-                            sb2.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y2)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(z4)));
-                            sb2.append(" "); //$NON-NLS-1$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(x2)));
-                            sb2.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y1)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(z2)));
-                            sb2.append(" "); //$NON-NLS-1$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(x1)));
-                            sb2.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y1)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                            sb2.append(removeTrailingZeros(DEC_FORMAT_4F.format(z1)));
-                        }
-                        sb2.append("\n"); //$NON-NLS-1$
-                        sb3.append(sb2);
-                        angle2 = nextAngle2;
+                {
+                    double deltaAngle = Math.PI * 2d / divisions;
+                    double angle = -deg90;
+
+                    if (torusType == 0) {
+                        angle = -deg90 - deg90;
                     }
-                    angle = nextAngle;
+
+
+                    for(int i = 0; i < quarter_div; i++) {
+                        double nextAngle = angle + deltaAngle;
+                        double angle2 = 0d;
+
+                        double size1 = Math.round(Math.cos(angle) * 1E4) / 1E4 * size + 1d;
+                        double size2 = Math.round(Math.cos(nextAngle) * 1E4) / 1E4 * size + 1d;
+
+                        double y1 = Math.round(Math.sin(angle) * 1E4) / 1E4 * -size;
+                        double y2 = Math.round(Math.sin(nextAngle) * 1E4) / 1E4 * -size;
+
+
+                        for(int j = 0; j < segments; j++) {
+                            double nextAngle2 = angle2 + deltaAngle;
+                            double x1 = Math.round(Math.cos(angle2) * 1E4) / 1E4 * size1; 
+                            double z1 = Math.round(Math.sin(angle2) * 1E4) / 1E4 * size1;
+                            double x2 = Math.round(Math.cos(nextAngle2) * 1E4) / 1E4 * size1; 
+                            double z2 = Math.round(Math.sin(nextAngle2) * 1E4) / 1E4 * size1;
+
+                            double x3 = Math.round(Math.cos(angle2) * 1E4) / 1E4 * size2; 
+                            double z3 = Math.round(Math.sin(angle2) * 1E4) / 1E4 * size2;
+                            double x4 = Math.round(Math.cos(nextAngle2) * 1E4) / 1E4 * size2; 
+                            double z4 = Math.round(Math.sin(nextAngle2) * 1E4) / 1E4 * size2;
+                            if (ccw) {
+                                sb.append("4 16 "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x1)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y1)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z1)));                                               
+                                sb.append(" "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x2)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y1)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z2)));
+                                sb.append(" "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x4)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y2)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z4)));
+                                sb.append(" "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x3)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y2)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z3)));
+                            } else {
+                                sb.append("4 16 "); //$NON-NLS-1$                    
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x3)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y2)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z3)));
+                                sb.append(" "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x4)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y2)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z4)));
+                                sb.append(" "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x2)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y1)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z2)));
+                                sb.append(" "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x1)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(y1)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z1)));
+                            }
+                            sb.append("\n"); //$NON-NLS-1$
+                            angle2 = nextAngle2;
+                        }
+                        angle = nextAngle;
+                    }
                 }
+                sb.append("0 // conditional lines\n"); //$NON-NLS-1$       
                 
-                for (int i = 0; i < segments; i++) {
-                    sb.append(sbs[i]);
+                
+                {
+                    double deltaAngle = Math.PI * 2d / divisions;
+                    double angle = -deg90;
+
+                    if (torusType == 0) {
+                        angle = -deg90 - deg90;
+                    }
+
+                    int off = closed ? 0 : 1;
+                    
+                    for(int i = 0; i < quarter_div; i++) {
+                        double nextAngle = angle + deltaAngle;
+                        double prevAngle = angle - deltaAngle;
+                        double angle2 = 0d;
+
+                        double sizeMiddle = Math.round(Math.cos(angle) * 1E4) / 1E4 * size + 1d;
+                        double sizeUpper = Math.round(Math.cos(nextAngle) * 1E4) / 1E4 * size + 1d;
+                        double sizeLower = Math.round(Math.cos(prevAngle) * 1E4) / 1E4 * size + 1d;
+                        
+                        double yCurr = Math.round(Math.sin(angle) * 1E4) / 1E4 * -size;
+                        double yNext = Math.round(Math.sin(nextAngle) * 1E4) / 1E4 * -size;
+                        double yPrev = Math.round(Math.sin(prevAngle) * 1E4) / 1E4 * -size;
+                        
+                        for(int j = 0; j < segments + off; j++) {
+                            
+                            double nextAngle2 = angle2 + deltaAngle;
+                            double prevAngle2 = angle2 - deltaAngle;
+                            
+                            double xUpperCurr = Math.round(Math.cos(angle2) * 1E4) / 1E4 * sizeUpper; 
+                            double zUpperCurr = Math.round(Math.sin(angle2) * 1E4) / 1E4 * sizeUpper;
+                            double xMiddleCurr = Math.round(Math.cos(angle2) * 1E4) / 1E4 * sizeMiddle; 
+                            double zMiddleCurr = Math.round(Math.sin(angle2) * 1E4) / 1E4 * sizeMiddle;
+                            double xLowerCurr = Math.round(Math.cos(angle2) * 1E4) / 1E4 * sizeLower; 
+                            double zLowerCurr = Math.round(Math.sin(angle2) * 1E4) / 1E4 * sizeLower;
+                            
+                            double xMiddlePrev = Math.round(Math.cos(prevAngle2) * 1E4) / 1E4 * sizeMiddle; 
+                            double zMiddlePrev = Math.round(Math.sin(prevAngle2) * 1E4) / 1E4 * sizeMiddle;
+                            
+                            double xMiddleNext = Math.round(Math.cos(nextAngle2) * 1E4) / 1E4 * sizeMiddle; 
+                            double zMiddleNext = Math.round(Math.sin(nextAngle2) * 1E4) / 1E4 * sizeMiddle;
+                            
+
+                            
+                            if (!closed) {                               
+                                if (j == 0) {
+                                    xMiddlePrev = xMiddleCurr;
+                                    zMiddlePrev = 1d - Math.sqrt(2);
+                                } else if (j == segments){
+                                    double strangeFactor = Math.sqrt(2) - 1d;
+                                    xMiddleNext = xMiddleCurr + Math.cos(angle2 + deg90) * strangeFactor; 
+                                    zMiddleNext = zMiddleCurr + Math.sin(angle2 + deg90) * strangeFactor; 
+                                }
+                            }
+                            
+                            if (torusType != 2 && i + 1 == quarter_div && j < segments) {
+                                
+                                double x6 = Math.round(Math.cos(nextAngle2) * 1E4) / 1E4 * sizeUpper; 
+                                double z6 = Math.round(Math.sin(nextAngle2) * 1E4) / 1E4 * sizeUpper;
+                                
+                                double x7 = Math.round(Math.cos(prevAngle2) * 1E4) / 1E4 * sizeUpper; 
+                                double z7 = Math.round(Math.sin(prevAngle2) * 1E4) / 1E4 * sizeUpper;
+                                
+                                sb.append("5 24 "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xUpperCurr)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yNext)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zUpperCurr)));
+                                sb.append(" "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x6)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yNext)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z6)));
+                                
+                                sb.append(" "); //$NON-NLS-1$
+                                
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleCurr)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yPrev)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleCurr)));
+                                sb.append(" "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleCurr)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yCurr)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleCurr)));
+                                
+                                sb.append("\n"); //$NON-NLS-1$
+                            }
+                            
+                            sb.append("5 24 "); //$NON-NLS-1$
+                            sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleCurr)));
+                            sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yCurr)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                            sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleCurr)));                                               
+                            sb.append(" "); //$NON-NLS-1$
+                            sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xUpperCurr)));
+                            sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yNext)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                            sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zUpperCurr)));
+                            sb.append(" "); //$NON-NLS-1$
+                            sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddlePrev)));
+                            sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yCurr)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                            sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddlePrev)));
+                            sb.append(" "); //$NON-NLS-1$
+                            sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleNext)));
+                            sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yCurr)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                            sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleNext)));
+                            
+                            sb.append("\n"); //$NON-NLS-1$
+                            
+                            if (j < segments) {                                
+                                sb.append("5 24 "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleCurr)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yCurr)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleCurr)));
+                                sb.append(" "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleNext)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yCurr)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleNext)));
+                                
+                                sb.append(" "); //$NON-NLS-1$
+                                
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xUpperCurr)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yNext)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zUpperCurr)));
+                                sb.append(" "); //$NON-NLS-1$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xLowerCurr)));
+                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yPrev)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zLowerCurr)));
+
+                                sb.append("\n"); //$NON-NLS-1$
+                            }
+                            
+                            angle2 = nextAngle2;
+                        }
+                        angle = nextAngle;
+                    }
                 }
-                
-                sb.append("0 // conditional lines\n"); //$NON-NLS-1$                                
             }
             
             break;
@@ -1084,7 +1208,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             break;
         }
         
-        sb.append("0 // Build by Primitive Generator 2"); //$NON-NLS-1$
+        sb.append("0 // Build by LDPartEditor (PrimGen 2.X)"); //$NON-NLS-1$
         
         if (standard) {
             lbl_standard[0].setText("STANDARD"); //$NON-NLS-1$
