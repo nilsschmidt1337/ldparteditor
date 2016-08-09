@@ -881,7 +881,15 @@ public class PrimGen2Dialog extends PrimGen2Design {
                                 double xUpperNext = Math.round(Math.cos(nextAngle2) * 1E4) / 1E4 * sizeUpper; 
                                 double zUpperNext = Math.round(Math.sin(nextAngle2) * 1E4) / 1E4 * sizeUpper;
                                 
-                                double yN = 1d - Math.sqrt(2);
+                                double xN = 0d;
+                                double yN = -.5d;
+                                double zN = 0d;
+                                
+                                if (torusType == 0) {
+                                    xN = .5d * Math.round(Math.cos(angle2) * 1E4) / 1E4;
+                                    yN = 0d;
+                                    zN = .5d * Math.round(Math.sin(angle2) * 1E4) / 1E4;
+                                }
                                 
                                 sb.append("5 24 "); //$NON-NLS-1$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xUpperCurr)));
@@ -894,9 +902,9 @@ public class PrimGen2Dialog extends PrimGen2Design {
                                 
                                 sb.append(" "); //$NON-NLS-1$
                                 
-                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xUpperCurr)));
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xUpperCurr + xN)));
                                 sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yUpper + yN)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zUpperCurr)));
+                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zUpperCurr + zN)));
                                 sb.append(" "); //$NON-NLS-1$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleCurr)));
                                 sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yMiddle)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -940,9 +948,21 @@ public class PrimGen2Dialog extends PrimGen2Design {
                                 sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yUpper)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                                 sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zUpperCurr)));
                                 sb.append(" "); //$NON-NLS-1$
-                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xLowerCurr)));
-                                sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yLower)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                                sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zLowerCurr)));
+                                
+                                if (i == 0 && torusType == 0) {
+                                    sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xMiddleCurr)));
+                                    sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yLower)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                    sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zMiddleCurr)));
+                                } else if (i == 0 && torusType == 1) {
+                                    sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(0.5d * xMiddleCurr)));
+                                    sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yMiddle)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                    sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(0.5d * zMiddleCurr)));
+                                } else {
+                                    sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(xLowerCurr)));
+                                    sb.append(" " + removeTrailingZeros(DEC_FORMAT_4F.format(yLower)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                    sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(zLowerCurr)));    
+                                }
+                                
 
                                 sb.append("\n"); //$NON-NLS-1$
                             }
