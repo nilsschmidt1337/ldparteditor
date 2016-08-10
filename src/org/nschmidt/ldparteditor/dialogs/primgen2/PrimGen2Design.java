@@ -39,6 +39,7 @@ import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
@@ -64,7 +65,8 @@ class PrimGen2Design extends Dialog {
     final IntegerSpinner[] spn_divisions = new IntegerSpinner[1];
     final IntegerSpinner[] spn_segments = new IntegerSpinner[1];
     
-    final StyledText[] txt_data = new StyledText[1];    
+    final StyledText[] txt_data = new StyledText[1];  
+    final StyledText[] txt_data2 = new StyledText[1];   
     
     final Combo[] cmb_type = new Combo[1];
     final Combo[] cmb_divisions = new Combo[1];
@@ -273,6 +275,16 @@ class PrimGen2Design extends Dialog {
         txt_data.setForeground(Colour.text_foreground[0]);
         txt_data.setFont(Font.MONOSPACE);
         txt_data.setLineSpacing(0);
+        
+        if (NLogger.DEBUG) {
+            StyledText txt_data2 = new StyledText(sashForm, SWT.V_SCROLL | SWT.H_SCROLL);
+            this.txt_data2[0] = txt_data2;
+            txt_data2.setText(""); //$NON-NLS-1$        
+            txt_data2.setBackground(Colour.text_background[0]);
+            txt_data2.setForeground(Colour.text_foreground[0]);
+            txt_data2.setFont(Font.MONOSPACE);
+            txt_data2.setLineSpacing(0);
+        }
         
         {
             Label lbl_dummy = new Label(cmp_container, SWT.NONE);
