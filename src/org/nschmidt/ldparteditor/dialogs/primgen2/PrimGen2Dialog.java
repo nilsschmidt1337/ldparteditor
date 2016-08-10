@@ -83,12 +83,10 @@ public class PrimGen2Dialog extends PrimGen2Design {
         private static DecimalFormat DF4F = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(Locale.ENGLISH));
         
         public static String format(double d) {
-            DecimalFormat df = new DecimalFormat("0.0000"); //$NON-NLS-1$
-            df.setRoundingMode(RoundingMode.HALF_UP);    
-            if ("0.1913".equals(df.format(d))) { //$NON-NLS-1$
-                return df.format(d);
+            if ("0.1913".equals(DF4F.format(d + 0.000001d))) { //$NON-NLS-1$
+                return DF4F.format(d + 0.000001d);
             }
-            return df.format(d);
+            return DF4F.format(d + 0.000001d);
         }
     }
     
