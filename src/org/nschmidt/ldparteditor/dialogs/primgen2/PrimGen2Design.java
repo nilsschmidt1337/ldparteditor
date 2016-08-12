@@ -105,7 +105,7 @@ class PrimGen2Design extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Primitive Generator 2.X (Different Conditional Line Control Points)"); //$NON-NLS-1$
+        lbl_specify.setText("Primitive Generator 2.X"); //$NON-NLS-1$
         lbl_specify.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
         
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
