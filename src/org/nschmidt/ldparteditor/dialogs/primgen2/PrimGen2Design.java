@@ -41,6 +41,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 
@@ -77,6 +78,8 @@ class PrimGen2Design extends Dialog {
     final Button[] btn_saveAs = new Button[1];
     final Button[] btn_ok = new Button[1];
     final Button[] btn_cancel = new Button[1];
+    
+    final Button[] btn_top = new Button[1];
     
     final Label[] lbl_torusType = new Label[1];
     final Label[] lbl_size = new Label[1];
@@ -244,6 +247,12 @@ class PrimGen2Design extends Dialog {
             lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));        
         }
    
+        Button btn_top = new Button(cmp_container, SWT.NONE);
+        this.btn_top[0] = btn_top;
+        btn_top.setText(I18n.PERSPECTIVE_TOP);
+        btn_top.setImage(ResourceManager.getImage("icon16_top.png")); //$NON-NLS-1$
+        btn_top.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        
         {
             Label lbl_dummy = new Label(cmp_container, SWT.NONE);
             lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 6, 1));        
@@ -260,7 +269,7 @@ class PrimGen2Design extends Dialog {
         }
         
         SashForm sashForm = new SashForm(cmp_container, SWT.NONE);
-        sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 30));
+        sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 10, 30));
         
         df = new DatFile("...", "Temporary Primitive", true, DatType.PRIMITIVE); //$NON-NLS-1$ //$NON-NLS-2$
         Project.getUnsavedFiles().add(df);
@@ -284,11 +293,8 @@ class PrimGen2Design extends Dialog {
             txt_data2.setForeground(Colour.text_foreground[0]);
             txt_data2.setFont(Font.MONOSPACE);
             txt_data2.setLineSpacing(0);
-        }
-        
-        {
-            Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));        
+        } else {
+            sashForm.setWeights(new int[]{33, 66});
         }
         
         Label lbl_standard = new Label(cmp_container, SWT.NONE);
