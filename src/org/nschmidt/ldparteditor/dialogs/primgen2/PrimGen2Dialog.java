@@ -819,7 +819,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         
         sb.append("0 // Build by LDPartEditor (PrimGen 2.X)"); //$NON-NLS-1$
         
-        if (IsOfficialRules(pType, size, divisions, segments, minor, ccw)) {
+        if (isOfficialRules(pType, size, divisions, segments, minor, ccw)) {
             lbl_standard[0].setText("STANDARD"); //$NON-NLS-1$
         } else {
             lbl_standard[0].setText("NON-STANDARD"); //$NON-NLS-1$
@@ -828,7 +828,6 @@ public class PrimGen2Dialog extends PrimGen2Design {
     }
     
     private Object cylinder(int Divisions, int Segments, boolean ccw) {
-        
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)       
@@ -1100,8 +1099,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return sb2.toString();
     }
 
-    private String ring(int Divisions, int Segments, double InnerDiameter, boolean ccw, double Width)
-    {
+    private String ring(int Divisions, int Segments, double InnerDiameter, boolean ccw, double Width) {
         
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)       
@@ -1565,8 +1563,13 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return str;
     }
     
-    public boolean IsOfficialRules(int Typ, double Size, double Divisions, double Segments, double Minor, boolean ccw)
-    {
+    public boolean isOfficialRules(int Typ, double Size, double Divisions, double Segments, double Minor, boolean ccw) {
+        
+        // Crazy Reverse Engineering from Mike's PrimGen2
+        // Thanks to Mr. Heidemann! :)       
+        
+        // DONT TOUCH THIS CODE! It simply works...
+        
         if ((Divisions != 16.0) && (Divisions != 48.0))
         {
             return false;
