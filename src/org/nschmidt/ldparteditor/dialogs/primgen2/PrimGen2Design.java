@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
@@ -59,6 +61,15 @@ class PrimGen2Design extends Dialog {
     // FIXME Needs implementation (GUI)!
 
     // Use final only for subclass/listener references!
+    
+    /** The menu of this composite */
+    final Menu[] menu = new Menu[1];
+
+    final MenuItem[] mntm_Copy = new MenuItem[1];
+    final MenuItem[] mntm_Cut = new MenuItem[1];
+    final MenuItem[] mntm_Delete = new MenuItem[1];
+    final MenuItem[] mntm_Paste = new MenuItem[1];
+    
     final IntegerSpinner[] spn_major = new IntegerSpinner[1];
     final BigDecimalSpinner[] spn_minor = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_size = new BigDecimalSpinner[1];
@@ -301,6 +312,26 @@ class PrimGen2Design extends Dialog {
         this.lbl_standard[0] = lbl_standard;
         lbl_standard.setText("NON-STANDARD"); //$NON-NLS-1$
         lbl_standard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
+        
+        this.menu[0] = new Menu(txt_data);
+        txt_data.setMenu(this.menu[0]);
+
+        MenuItem mntmCut = new MenuItem(menu[0], I18n.I18N_RTL());
+        mntmCut.setText(I18n.COPYNPASTE_Cut);
+        mntmCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
+        mntm_Cut[0] = mntmCut;
+        MenuItem mntmCopy = new MenuItem(menu[0], I18n.I18N_RTL());
+        mntmCopy.setText(I18n.COPYNPASTE_Copy);
+        mntmCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
+        mntm_Copy[0] = mntmCopy;
+        MenuItem mntmPaste = new MenuItem(menu[0], I18n.I18N_RTL());
+        mntmPaste.setText(I18n.COPYNPASTE_Paste);
+        mntmPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
+        mntm_Paste[0] = mntmPaste;
+        MenuItem mntmDelete = new MenuItem(menu[0], I18n.I18N_RTL());
+        mntmDelete.setText(I18n.COPYNPASTE_Delete);
+        mntmDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
+        mntm_Delete[0] = mntmDelete;
         
         cmp_container.layout();
         cmp_container.pack();

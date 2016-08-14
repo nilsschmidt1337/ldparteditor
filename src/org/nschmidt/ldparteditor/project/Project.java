@@ -53,7 +53,7 @@ public enum Project {
     /** A set of all absolute filenames, which were parsed */
     private static final HashSet<DatFile> parsedFiles = new HashSet<DatFile>();
     /** The file which is currently displayed in the 3D editor */
-    private static DatFile fileToEdit = new DatFile(getProjectPath() + File.separator + "PARTS" + File.separator + "new.dat"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static DatFile fileToEdit = new DatFile(getProjectPath() + File.separator + "parts" + File.separator + "new.dat"); //$NON-NLS-1$ //$NON-NLS-2$
     /** A list of all absolute filenames, which were opened */
     private static final ArrayList<DatFile> openedFiles = new ArrayList<DatFile>();
     
