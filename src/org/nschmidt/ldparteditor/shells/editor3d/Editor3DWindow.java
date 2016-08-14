@@ -4641,11 +4641,8 @@ public class Editor3DWindow extends Editor3DDesign {
         
         mntm_PrimGen2[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void widgetSelected(SelectionEvent e) {
-                // FIXME Needs implementation!
-                if (new PrimGen2Dialog(getShell()).open() == IDialogConstants.OK_ID) {
-                    
-                }
+            public void widgetSelected(SelectionEvent e) {                
+                new PrimGen2Dialog(getShell()).open();
                 regainFocus();
             }
         });
