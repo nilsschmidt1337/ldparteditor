@@ -817,7 +817,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     FileDialog fd = new FileDialog(sh, SWT.SAVE);
                     fd.setText(I18n.E3D_SaveDatFileAs);
-
+                    fd.setOverwrite(true);
+                    
                     {
                         File f = new File(df2.getNewName()).getParentFile();
                         if (f.exists()) {

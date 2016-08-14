@@ -589,7 +589,8 @@ public class EditorTextWindow extends EditorTextDesign {
 
                     FileDialog fd = new FileDialog(btn_SaveAs[0].getShell(), SWT.SAVE);
                     fd.setText(I18n.E3D_SaveDatFileAs);
-
+                    fd.setOverwrite(true);
+                    
                     {
                         File f = new File(((CompositeTab) tabFolder[0].getSelection()).getState().getFileNameObj().getNewName()).getParentFile();
                         if (f.exists()) {
