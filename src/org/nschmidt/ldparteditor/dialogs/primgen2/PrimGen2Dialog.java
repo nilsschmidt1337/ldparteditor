@@ -448,7 +448,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
     
     @Override
     protected void handleShellCloseEvent() {
-        c3d.getRenderer().disposeAllTextures();        
+        c3d.getRenderer().disposeAllTextures();
         super.handleShellCloseEvent();
     }
     
