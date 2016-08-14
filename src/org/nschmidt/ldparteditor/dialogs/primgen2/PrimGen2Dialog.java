@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ExtendedModifyEvent;
 import org.eclipse.swt.custom.ExtendedModifyListener;
 import org.eclipse.swt.custom.LineStyleEvent;
@@ -34,6 +35,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.VertexManager;
@@ -44,6 +46,8 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.SyntaxFormatter;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
@@ -80,6 +84,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
     
     private final DecimalFormat DEC_FORMAT_4F = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(Locale.ENGLISH));
     
+    private String name = "1-4edge.dat"; //$NON-NLS-1$
     
     private enum EventType {
         SPN,
@@ -265,6 +270,51 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
         
+        btn_saveAs[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    for (CTabItem t : w.getTabFolder().getItems()) {
+                        if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                            w.getTabFolder().setSelection(t);
+                            ((CompositeTab) t).getControl().getShell().forceActive();
+                            if (w.isSeperateWindow()) {
+                                w.open();
+                            }
+                            df.getVertexManager().setUpdated(true);
+                            return;
+                        }
+                    }
+                }
+                
+                EditorTextWindow w = null;                                
+                for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
+                    if (w2.getTabFolder().getItems().length == 0) {
+                        w = w2;
+                        break;
+                    }
+                }
+                
+                // Project.getParsedFiles().add(df); IS NECESSARY HERE
+                Project.getParsedFiles().add(df);
+                Project.addOpenedFile(df);
+                if (!Project.getOpenTextWindows().isEmpty() && w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) {
+                    w.openNewDatFileTab(df, true);
+                } else {
+                   w = new EditorTextWindow();
+                   w.run(df, false);
+                }
+                
+                final boolean doClose = w.saveAs(df, name);                
+                w.closeTabWithDatfile(df);
+                
+                if (doClose) {
+                    getShell().close();
+                }
+            }
+        });
+        
         btn_top[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -391,12 +441,14 @@ public class PrimGen2Dialog extends PrimGen2Design {
         Project.getUnsavedFiles().remove(df);        
         df.disposeData();
         Project.getOpenedFiles().remove(df);
+        Editor3DWindow.getWindow().cleanupClosedData();
+        Editor3DWindow.getWindow().updateTree_unsavedEntries();
         return result;
     } 
     
     @Override
     protected void handleShellCloseEvent() {
-        c3d.getRenderer().disposeAllTextures();
+        c3d.getRenderer().disposeAllTextures();        
         super.handleShellCloseEvent();
     }
     
@@ -405,8 +457,6 @@ public class PrimGen2Dialog extends PrimGen2Design {
         if (doUpdate) {
             return;
         }
-        
-        boolean standard = true;
         
         boolean ccw = cmb_winding[0].getSelectionIndex() == 0;        
         int torusType = cmb_torusType[0].getSelectionIndex();
@@ -578,7 +628,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
         final int pType = cmb_type[0].getSelectionIndex(); 
         switch (pType) {
         case CIRCLE:
-            sb.insert(0, "0 Name: " + prefix + upper + "-" + lower + "edge.dat\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            name = upper + "-" + lower + "edge.dat"; //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 " + resolution + "Circle " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             
             {
@@ -605,14 +656,16 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     
             break;
         case RING:
-            sb.insert(0, "0 Name: " + prefix + upper + "-" + lower + "ring" + removeTrailingZeros(DEC_FORMAT_4F.format(size)) + suffixWidth +  ".dat\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            name = upper + "-" + lower + "ring" + removeTrailingZeros(DEC_FORMAT_4F.format(size)) + suffixWidth +  ".dat"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 " + resolution + "Ring " + addExtraSpaces1(removeTrailingZeros(DEC_FORMAT_4F.format(size))) + " x " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + suffixWidthTitle + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             
             sb.append(ring(divisions, segments, size, ccw, width));
             
             break;
         case CONE:
-            sb.insert(0, "0 Name: " + prefix + upper + "-" + lower + "con" + removeTrailingZeros(DEC_FORMAT_4F.format(size)) + suffixWidth +  ".dat\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            name = upper + "-" + lower + "con" + removeTrailingZeros(DEC_FORMAT_4F.format(size)) + suffixWidth +  ".dat"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ 
             sb.insert(0, "0 " + resolution + "Cone " + addExtraSpaces1(removeTrailingZeros(DEC_FORMAT_4F.format(size))) + " x " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + suffixWidthTitle + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             
             sb.append(cone(divisions, segments, size, ccw, width));
@@ -647,7 +700,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     t = "q"; //$NON-NLS-1$
                 }
                 
-                sb.insert(0, "0 Name: " + prefix + r + frac + t + sweep2 + ".dat\n"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = r + frac + t + sweep2 + ".dat"; //$NON-NLS-1$
+                sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
                 sb.insert(0, "0 " + resolution + "Torus" + tt + sweep + " x " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
                 sb.append("0 // Major Radius: " + major + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -661,14 +715,16 @@ public class PrimGen2Dialog extends PrimGen2Design {
             
             break;
         case CYLINDER:
-            sb.insert(0, "0 Name: " + prefix + upper + "-" + lower + "cyli.dat\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            name = upper + "-" + lower + "cyli.dat"; //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ 
             sb.insert(0, "0 " + resolution + "Cylinder " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
           
             sb.append(cylinder(divisions, segments, ccw));
             
             break;
         case DISC:
-            sb.insert(0, "0 Name: " + prefix + upper + "-" + lower + "disc.dat\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            name = upper + "-" + lower + "disc.dat"; //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ 
             sb.insert(0, "0 " + resolution + "Disc " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
      
             {
@@ -708,7 +764,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
             
             break;
         case DISC_NEGATIVE:
-            sb.insert(0, "0 Name: " + prefix + upper + "-" + lower + "ndis.dat\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            name = upper + "-" + lower + "ndis.dat"; //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ 
             sb.insert(0, "0 " + resolution + "Disc Negative " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
      
             {
@@ -773,7 +830,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
             
             break;
         case CHORD:
-            sb.insert(0, "0 Name: " + prefix + upper + "-" + lower + "chrd.dat\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            name = upper + "-" + lower + "chrd.dat"; //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ 
             sb.insert(0, "0 " + resolution + "Chord " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
      
             {
