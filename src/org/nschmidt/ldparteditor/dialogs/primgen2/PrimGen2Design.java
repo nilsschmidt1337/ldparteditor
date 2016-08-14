@@ -58,8 +58,6 @@ import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
  */
 class PrimGen2Design extends Dialog {
     
-    // FIXME Needs implementation (GUI)!
-
     // Use final only for subclass/listener references!
     
     /** The menu of this composite */
