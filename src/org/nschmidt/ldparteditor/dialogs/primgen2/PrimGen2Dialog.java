@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.primgen2;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -23,19 +24,19 @@ import java.util.HashSet;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ExtendedModifyEvent;
 import org.eclipse.swt.custom.ExtendedModifyListener;
 import org.eclipse.swt.custom.LineStyleEvent;
 import org.eclipse.swt.custom.LineStyleListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
-import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.VertexManager;
@@ -85,6 +86,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
     private final DecimalFormat DEC_FORMAT_4F = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(Locale.ENGLISH));
     
     private String name = "1-4edge.dat"; //$NON-NLS-1$
+    private DatFile oldDf = null;
     
     private enum EventType {
         SPN,
@@ -92,10 +94,10 @@ public class PrimGen2Dialog extends PrimGen2Design {
     }
        
     // I18N Needs translation / i18n!
-    
-    // FIXME Needs implementation (Logic)!
+    // FIXME Needs translation / i18n!
     
     private SyntaxFormatter syntaxFormatter;
+    protected String resPrefix = ""; //$NON-NLS-1$
     
     /**
      * Create the dialog.
@@ -110,6 +112,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
     @Override
     public int open() {
         super.create();
+        
+        oldDf = Project.getFileToEdit();
         
         DEC_FORMAT_4F.setRoundingMode(RoundingMode.HALF_UP);
         
@@ -252,41 +256,49 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
         
+        mntm_Delete[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                final int x = txt_data[0].getSelection().x;
+                if (txt_data[0].getSelection().y == x) {
+                    final int start = txt_data[0].getOffsetAtLine(txt_data[0].getLineAtOffset(x));
+                    txt_data[0].setSelection(start, start + txt_data[0].getLine(txt_data[0].getLineAtOffset(x)).length());
+                }
+                final int x2 = txt_data[0].getSelection().x;
+                if (txt_data[0].getSelection().y == x2) {
+                    txt_data[0].forceFocus();
+                    return;
+                }
+                txt_data[0].insert(""); //$NON-NLS-1$
+                txt_data[0].setSelection(new Point(x, x));
+                txt_data[0].forceFocus();
+            }
+        });
+        mntm_Copy[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                txt_data[0].copy();
+            }
+        });
+        mntm_Cut[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                txt_data[0].cut();
+            }
+        });
+        mntm_Paste[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                txt_data[0].paste();
+            }
+        });
+        
         btn_ok[0].removeListener(SWT.Selection, btn_ok[0].getListeners(SWT.Selection)[0]);
         btn_cancel[0].removeListener(SWT.Selection, btn_cancel[0].getListeners(SWT.Selection)[0]);
         
         btn_ok[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // FIXME Needs implementation!
-                getShell().close();
-            }
-        });
-        
-        btn_cancel[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                getShell().close();
-            }
-        });
-        
-        btn_saveAs[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                
-                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    for (CTabItem t : w.getTabFolder().getItems()) {
-                        if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                            w.getTabFolder().setSelection(t);
-                            ((CompositeTab) t).getControl().getShell().forceActive();
-                            if (w.isSeperateWindow()) {
-                                w.open();
-                            }
-                            df.getVertexManager().setUpdated(true);
-                            return;
-                        }
-                    }
-                }
                 
                 EditorTextWindow w = null;                                
                 for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
@@ -306,7 +318,45 @@ public class PrimGen2Dialog extends PrimGen2Design {
                    w.run(df, false);
                 }
                 
-                final boolean doClose = w.saveAs(df, name);                
+                final boolean doClose = w.saveAs(df, name, Project.getProjectPath() + File.separator + "p" + File.separator + resPrefix + name); //$NON-NLS-1$
+                w.closeTabWithDatfile(df);
+                
+                if (doClose) {
+                    getShell().close();
+                }
+            }
+        });
+        
+        btn_cancel[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                getShell().close();
+            }
+        });
+        
+        btn_saveAs[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                
+                EditorTextWindow w = null;                                
+                for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
+                    if (w2.getTabFolder().getItems().length == 0) {
+                        w = w2;
+                        break;
+                    }
+                }
+                
+                // Project.getParsedFiles().add(df); IS NECESSARY HERE
+                Project.getParsedFiles().add(df);
+                Project.addOpenedFile(df);
+                if (!Project.getOpenTextWindows().isEmpty() && w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) {
+                    w.openNewDatFileTab(df, true);
+                } else {
+                   w = new EditorTextWindow();
+                   w.run(df, false);
+                }
+                
+                final boolean doClose = w.saveAs(df, name, null);                
                 w.closeTabWithDatfile(df);
                 
                 if (doClose) {
@@ -441,8 +491,9 @@ public class PrimGen2Dialog extends PrimGen2Design {
         Project.getUnsavedFiles().remove(df);        
         df.disposeData();
         Project.getOpenedFiles().remove(df);
+        Project.setFileToEdit(oldDf);
         Editor3DWindow.getWindow().cleanupClosedData();
-        Editor3DWindow.getWindow().updateTree_unsavedEntries();
+        Editor3DWindow.getWindow().updateTree_unsavedEntries();        
         return result;
     } 
     
@@ -571,11 +622,20 @@ public class PrimGen2Dialog extends PrimGen2Design {
         final String prefix;
         final String resolution;
         final String type;
+        
+        resPrefix = ""; //$NON-NLS-1$
+        
         if (divisions != 16) {
             if (divisions > 16) {
                 resolution = "Hi-Res "; //$NON-NLS-1$
+                if (divisions == 48) {
+                    resPrefix = "48" + File.separator; //$NON-NLS-1$
+                }
             } else {
                 resolution = "Lo-Res "; //$NON-NLS-1$
+                if (divisions == 8) {
+                    resPrefix = "8" + File.separator; //$NON-NLS-1$
+                }
             }
                     
             prefix = divisions + "\\"; //$NON-NLS-1$

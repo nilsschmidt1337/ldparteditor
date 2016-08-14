@@ -586,7 +586,7 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (tabFolder[0].getSelection() != null) {
-                    saveAs(((CompositeTab) tabFolder[0].getSelection()).getState().getFileNameObj(), null);
+                    saveAs(((CompositeTab) tabFolder[0].getSelection()).getState().getFileNameObj(), null, null);
                 }
             }
         });
@@ -1333,7 +1333,7 @@ public class EditorTextWindow extends EditorTextDesign {
         });
     }
     
-    public boolean saveAs(DatFile dfToSave, String name) {
+    public boolean saveAs(DatFile dfToSave, String name, String filePath) {
         FileDialog fd = new FileDialog(btn_SaveAs[0].getShell(), SWT.SAVE);
         fd.setText(I18n.E3D_SaveDatFileAs);
         fd.setOverwrite(true);
@@ -1358,7 +1358,12 @@ public class EditorTextWindow extends EditorTextDesign {
 
         while (true) {
             try {
-                String selected = fd.open();
+                String selected;
+                if (filePath == null) {
+                    selected = fd.open();
+                } else {
+                    selected = filePath;
+                }
                 if (selected != null) {
 
                     if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
@@ -1371,6 +1376,7 @@ public class EditorTextWindow extends EditorTextDesign {
                         if (result == SWT.CANCEL) {
                             break;
                         } else if (result == SWT.RETRY) {
+                            filePath = null;
                             continue;
                         }
                     }
