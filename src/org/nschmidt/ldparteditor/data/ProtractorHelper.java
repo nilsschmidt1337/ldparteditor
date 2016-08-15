@@ -25,6 +25,19 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 public enum ProtractorHelper {
     INSTANCE;
     
+    public static BigDecimal[] changeLength(BigDecimal newLength, GData3 tri) {
+        BigDecimal factor = newLength.divide(tri.getProtractorLength(), Threshold.mc);
+        
+        Vector3d center = new Vector3d(tri.X1, tri.Y1, tri.Z1);        
+        Vector3d AtoC = Vector3d.sub(new Vector3d(tri.X3, tri.Y3, tri.Z3), center); 
+        
+        BigDecimal[] result = new BigDecimal[3];
+        result[0] = tri.X1.add(AtoC.X.multiply(factor, Threshold.mc));
+        result[1] = tri.Y1.add(AtoC.Y.multiply(factor, Threshold.mc));
+        result[2] = tri.Z1.add(AtoC.Z.multiply(factor, Threshold.mc));
+        return result;
+    }
+    
     public static BigDecimal[] changeAngle(double angle, GData3 tri) {
         
         BigDecimal[] result = new BigDecimal[3];
