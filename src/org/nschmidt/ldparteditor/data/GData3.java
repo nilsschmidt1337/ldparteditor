@@ -1672,4 +1672,11 @@ public final class GData3 extends GData {
         vc = Vector3d.sub(va, vc);
         return Vector3d.angle(vb, vc);
     }
+
+    public BigDecimal getProtractorLength() {
+        Vector3d va = new Vector3d(X1, Y1, Z1);        
+        Vector3d vc = new Vector3d(X3, Y3, Z3);        
+        vc = Vector3d.sub(va, vc);
+        return vc.length();        
+    }
 }

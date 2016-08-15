@@ -427,7 +427,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int[] w = leftSash[0].getWeights();
-                if (w[0] == 80 && w[1] == 10 && w[2] == 10) {
+                if (w[0] == 800 && w[1] == 100 && w[2] == 100) {
                     leftSash[0].setWeights(new int[]{33, 33, 33});
                 } else {
                     leftSash[0].setWeights(new int[]{80, 10, 10});
@@ -443,7 +443,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int[] w = leftSash[0].getWeights();
-                if (w[0] == 10 && w[1] == 80 && w[2] == 10) {
+                if (w[0] == 100 && w[1] == 800 && w[2] == 100) {
                     leftSash[0].setWeights(new int[]{33, 33, 33});
                 } else {
                     leftSash[0].setWeights(new int[]{10, 80, 10});   
@@ -462,7 +462,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int[] w = leftSash[0].getWeights();
-                if (w[0] == 10 && w[1] == 10 && w[2] == 80) {
+                if (w[0] == 100 && w[1] == 100 && w[2] == 800) {
                     leftSash[0].setWeights(new int[]{33, 33, 33});
                 } else {
                     leftSash[0].setWeights(new int[]{10, 10, 80});
@@ -2094,7 +2094,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                     spn_SelectionY4[0].setEnabled(true);
                                     spn_SelectionZ4[0].setEnabled(true);
                                 case 3:
-                                    spn_SelectionAngle[0].setEnabled(!((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
+                                    spn_SelectionAngle[0].setEnabled(gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
+                                    spn_SelectionLength[0].setEnabled(gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
                                     spn_SelectionX3[0].setEnabled(true);
                                     spn_SelectionY3[0].setEnabled(true);
                                     spn_SelectionZ3[0].setEnabled(true);
@@ -2147,6 +2148,11 @@ public class Editor3DWindow extends Editor3DDesign {
                                         } else {
                                             spn_SelectionAngle[0].setValue(BigDecimal.ZERO);
                                         }
+                                        if (spn_SelectionLength[0].isEnabled()) {
+                                            spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData3) gdata).getProtractorLength());
+                                        } else {
+                                            spn_SelectionLength[0].setValue(BigDecimal.ONE);
+                                        }
                                         spn_SelectionX1[0].setValue(g3[0]);
                                         spn_SelectionY1[0].setValue(g3[1]);
                                         spn_SelectionZ1[0].setValue(g3[2]);
@@ -2189,7 +2195,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                         break;
                                     }
 
-                                    lbl_SelectionAngle[0].setText((gdata.type() != 1 ? I18n.E3D_ProtractorAngle : "") + " {" + spn_SelectionAngle[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$                                    
+                                    lbl_SelectionAngle[0].setText((gdata.type() != 1 ? I18n.E3D_ProtractorAngle : "") + " {" + spn_SelectionAngle[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    lbl_SelectionLength[0].setText((gdata.type() != 1 ? I18n.E3D_ProtractorLength : "") + " {" + spn_SelectionLength[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX1 : "") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY1 : "") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ1 : "") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -2262,7 +2269,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                     spn_SelectionY4[0].setEnabled(true);
                                     spn_SelectionZ4[0].setEnabled(true);
                                 case 3:
-                                    spn_SelectionAngle[0].setEnabled(!((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
+                                    spn_SelectionAngle[0].setEnabled(gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
+                                    spn_SelectionLength[0].setEnabled(gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
                                     spn_SelectionX3[0].setEnabled(true);
                                     spn_SelectionY3[0].setEnabled(true);
                                     spn_SelectionZ3[0].setEnabled(true);
@@ -2315,6 +2323,11 @@ public class Editor3DWindow extends Editor3DDesign {
                                         } else {
                                             spn_SelectionAngle[0].setValue(BigDecimal.ZERO);
                                         }
+                                        if (spn_SelectionLength[0].isEnabled()) {
+                                            spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData3) gdata).getProtractorLength());
+                                        } else {
+                                            spn_SelectionLength[0].setValue(BigDecimal.ONE);
+                                        }
                                         spn_SelectionX1[0].setValue(g3[0]);
                                         spn_SelectionY1[0].setValue(g3[1]);
                                         spn_SelectionZ1[0].setValue(g3[2]);
@@ -2358,6 +2371,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     }
 
                                     lbl_SelectionAngle[0].setText((gdata.type() != 1 ? I18n.E3D_ProtractorAngle : "") + " {" + spn_SelectionAngle[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$                                                                        
+                                    lbl_SelectionLength[0].setText((gdata.type() != 1 ? I18n.E3D_ProtractorLength : "") + " {" + spn_SelectionLength[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX1 : "X  :") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY1 : "Y  :") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ1 : "Z  :") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -2412,6 +2426,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (newLine.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) newLine).isTriangle) {                        
                         updatingSelectionTab = true;
                         spn_SelectionAngle[0].setValue(new BigDecimal(((org.nschmidt.ldparteditor.data.GData3) newLine).getProtractorAngle()));
+                        spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData3) newLine).getProtractorLength());
                         updatingSelectionTab = false;
                     }
                     
@@ -2439,6 +2454,46 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 
                 BigDecimal[] c = ProtractorHelper.changeAngle(spn.getValue().doubleValue(), tri);
+                updatingSelectionTab = true;
+                spn_SelectionX3[0].setValue(c[0]);
+                spn_SelectionY3[0].setValue(c[1]);
+                spn_SelectionZ3[0].setValue(c[2]);                
+                updatingSelectionTab = false;
+                
+                final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
+                        spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
+                        spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
+                        c[0], c[1], c[2],
+                        spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
+                        btn_MoveAdjacentData2[0].getSelection()
+                        );
+                if (newLine == null) {
+                    disableSelectionTab();
+                } else {
+                    txt_Line[0].setText(newLine.toString());
+                }
+            }
+        });
+        
+        spn_SelectionLength[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                if (updatingSelectionTab || Project.getFileToEdit() == null) return;
+                VertexManager vm = Project.getFileToEdit().getVertexManager();
+                vm.addSnapshot();                
+                
+                org.nschmidt.ldparteditor.data.GData3 tri = null;
+                if (vm.getSelectedTriangles().size() == 0) {                  
+                    disableSelectionTab();
+                    return;
+                }
+                tri = vm.getSelectedTriangles().iterator().next();
+                if (tri.isTriangle) {
+                    disableSelectionTab();
+                    return;
+                }
+                
+                BigDecimal[] c = ProtractorHelper.changeLength(spn.getValue(), tri);
                 updatingSelectionTab = true;
                 spn_SelectionX3[0].setValue(c[0]);
                 spn_SelectionY3[0].setValue(c[1]);
@@ -8121,6 +8176,7 @@ public class Editor3DWindow extends Editor3DDesign {
             updatingSelectionTab = true;
             txt_Line[0].setText(""); //$NON-NLS-1$
             spn_SelectionAngle[0].setEnabled(false);
+            spn_SelectionLength[0].setEnabled(false);
             spn_SelectionX1[0].setEnabled(false);
             spn_SelectionY1[0].setEnabled(false);
             spn_SelectionZ1[0].setEnabled(false);
@@ -8134,6 +8190,7 @@ public class Editor3DWindow extends Editor3DDesign {
             spn_SelectionY4[0].setEnabled(false);
             spn_SelectionZ4[0].setEnabled(false);
             spn_SelectionAngle[0].setValue(BigDecimal.ZERO);
+            spn_SelectionLength[0].setValue(BigDecimal.ONE);
             spn_SelectionX1[0].setValue(BigDecimal.ZERO);
             spn_SelectionY1[0].setValue(BigDecimal.ZERO);
             spn_SelectionZ1[0].setValue(BigDecimal.ZERO);
@@ -8147,6 +8204,7 @@ public class Editor3DWindow extends Editor3DDesign {
             spn_SelectionY4[0].setValue(BigDecimal.ZERO);
             spn_SelectionZ4[0].setValue(BigDecimal.ZERO);
             lbl_SelectionAngle[0].setText(I18n.E3D_ProtractorAngle);
+            lbl_SelectionLength[0].setText(I18n.E3D_ProtractorLength);
             lbl_SelectionX1[0].setText(I18n.E3D_PositionX1);
             lbl_SelectionY1[0].setText(I18n.E3D_PositionY1);
             lbl_SelectionZ1[0].setText(I18n.E3D_PositionZ1);
@@ -8159,6 +8217,7 @@ public class Editor3DWindow extends Editor3DDesign {
             lbl_SelectionX4[0].setText(I18n.E3D_PositionX4);
             lbl_SelectionY4[0].setText(I18n.E3D_PositionY4);
             lbl_SelectionZ4[0].setText(I18n.E3D_PositionZ4);
+            lbl_SelectionZ4[0].getParent().layout();
             updatingSelectionTab = false;
         } else {
             NLogger.error(getClass(), new SWTException(SWT.ERROR_THREAD_INVALID_ACCESS, "A wrong thread tries to access the GUI!")); //$NON-NLS-1$
@@ -8169,6 +8228,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         updatingSelectionTab = true;
                         txt_Line[0].setText(""); //$NON-NLS-1$
                         spn_SelectionAngle[0].setEnabled(false);
+                        spn_SelectionLength[0].setEnabled(false);
                         spn_SelectionX1[0].setEnabled(false);
                         spn_SelectionY1[0].setEnabled(false);
                         spn_SelectionZ1[0].setEnabled(false);
@@ -8194,6 +8254,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         spn_SelectionY4[0].setValue(BigDecimal.ZERO);
                         spn_SelectionZ4[0].setValue(BigDecimal.ZERO);
                         lbl_SelectionAngle[0].setText(I18n.E3D_ProtractorAngle);
+                        lbl_SelectionLength[0].setText(I18n.E3D_ProtractorLength);
                         lbl_SelectionX1[0].setText(I18n.E3D_PositionX1);
                         lbl_SelectionY1[0].setText(I18n.E3D_PositionY1);
                         lbl_SelectionZ1[0].setText(I18n.E3D_PositionZ1);
@@ -8206,6 +8267,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         lbl_SelectionX4[0].setText(I18n.E3D_PositionX4);
                         lbl_SelectionY4[0].setText(I18n.E3D_PositionY4);
                         lbl_SelectionZ4[0].setText(I18n.E3D_PositionZ4);
+                        lbl_SelectionZ4[0].getParent().layout();
                         updatingSelectionTab = false;
                     } catch (Exception ex) {
                         NLogger.error(getClass(), ex);
