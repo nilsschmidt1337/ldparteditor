@@ -378,6 +378,7 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_MoveAdjacentData2 = new Button[1];
     
     final BigDecimalSpinner[] spn_SelectionAngle = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spn_SelectionLength = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_SelectionX1 = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_SelectionY1 = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_SelectionZ1 = new BigDecimalSpinner[1];
@@ -391,6 +392,7 @@ class Editor3DDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spn_SelectionY4 = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_SelectionZ4 = new BigDecimalSpinner[1];
     final Label[] lbl_SelectionAngle = new Label[1];    
+    final Label[] lbl_SelectionLength = new Label[1];
     final Label[] lbl_SelectionX1 = new Label[1];
     final Label[] lbl_SelectionY1 = new Label[1];
     final Label[] lbl_SelectionZ1 = new Label[1];
@@ -909,6 +911,19 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setMaximum(new BigDecimal("179.9999")); //$NON-NLS-1$
                                 spinner.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
                                 spinner.setValue(new BigDecimal(0));
+                                spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+                            }
+                            {
+                                Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
+                                this.lbl_SelectionLength[0] = lbl_Label;
+                                lbl_Label.setText(I18n.E3D_ProtractorLength);
+                                lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, SWT.NONE);
+                                this.spn_SelectionLength[0] = spinner;
+                                spinner.setEnabled(false);
+                                spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
+                                spinner.setMinimum(new BigDecimal("0.00000001")); //$NON-NLS-1$
+                                spinner.setValue(BigDecimal.ONE);
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
