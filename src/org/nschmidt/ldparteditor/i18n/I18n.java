@@ -550,7 +550,11 @@ public final class I18n {
     public static final String E3D_RotateSelection = E3D.getString(getProperty());
     public static final String E3D_RotateSnap = E3D.getString(getProperty());
     public static final String E3D_Round = E3D.getString(getProperty());
-    public static final String E3D_Ruler = E3D.getString(getProperty());
+    public static final String E3D_Ruler = E3D.getString(getProperty());    
+    public static final String E3D_SashLower = E3D.getString(getProperty());
+    public static final String E3D_SashMiddle = E3D.getString(getProperty());
+    public static final String E3D_SashSameHeight = E3D.getString(getProperty());
+    public static final String E3D_SashUpper = E3D.getString(getProperty());    
     public static final String E3D_Save = E3D.getString(getProperty());
     public static final String E3D_SaveAll = E3D.getString(getProperty());
     public static final String E3D_SaveAs = E3D.getString(getProperty());
@@ -598,7 +602,6 @@ public final class I18n {
     public static final String E3D_SyncManipulator = E3D.getString(getProperty());
     public static final String E3D_SyncTranslation = E3D.getString(getProperty());
     public static final String E3D_SyncZoom = E3D.getString(getProperty());
-    public static final String E3D_TextLine = E3D.getString(getProperty());
     public static final String E3D_ThreshInDeg = E3D.getString(getProperty());
     public static final String E3D_ThreshInLdu = E3D.getString(getProperty());
     public static final String E3D_Tjunction = E3D.getString(getProperty());

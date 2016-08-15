@@ -422,6 +422,54 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
+        
+        SelectionAdapter sa = new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                int[] w = leftSash[0].getWeights();
+                if (w[0] == 80 && w[1] == 10 && w[2] == 10) {
+                    leftSash[0].setWeights(new int[]{33, 33, 33});
+                } else {
+                    leftSash[0].setWeights(new int[]{80, 10, 10});
+                }                
+            }
+        };
+        
+        btn_showUpper1[0].addSelectionListener(sa);        
+        btn_showUpper2[0].addSelectionListener(sa);
+        btn_showUpper3[0].addSelectionListener(sa);
+        
+        btn_showMiddle[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                int[] w = leftSash[0].getWeights();
+                if (w[0] == 10 && w[1] == 80 && w[2] == 10) {
+                    leftSash[0].setWeights(new int[]{33, 33, 33});
+                } else {
+                    leftSash[0].setWeights(new int[]{10, 80, 10});   
+                }                
+            }
+        });
+        
+        btn_sameHeight[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                leftSash[0].setWeights(new int[]{33, 33, 33});
+            }
+        });
+        
+        btn_showLower[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                int[] w = leftSash[0].getWeights();
+                if (w[0] == 10 && w[1] == 10 && w[2] == 80) {
+                    leftSash[0].setWeights(new int[]{33, 33, 33});
+                } else {
+                    leftSash[0].setWeights(new int[]{10, 10, 80});
+                }
+            }
+        });
+        
         btn_Sync[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

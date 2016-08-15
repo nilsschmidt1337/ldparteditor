@@ -306,6 +306,13 @@ class Editor3DDesign extends ApplicationWindow {
     final Text[] txt_Search = new Text[1];
     final Button[] btn_ResetSearch = new Button[1];
     final CTabFolder[] tabFolder_Settings = new CTabFolder[1];
+    
+    final Button[] btn_showUpper1 = new Button[1];
+    final Button[] btn_showUpper2 = new Button[1];
+    final Button[] btn_showUpper3 = new Button[1];
+    final Button[] btn_showMiddle = new Button[1];
+    final Button[] btn_showLower = new Button[1];
+    final Button[] btn_sameHeight = new Button[1];
 
     final Button[] btn_Hide = new Button[1];
     final Button[] btn_ShowAll = new Button[1];
@@ -432,10 +439,11 @@ class Editor3DDesign extends ApplicationWindow {
 
     private static SashForm sashForm;
     final SashForm[] editorSashForm = new SashForm[]{null};
+    final SashForm[] leftSash = new SashForm[1];
 
     static final int TEXT_3D_SEPARATE = 0;
     static final int TEXT_LEFT_3D_RIGHT = 1;
-    static final int TEXT_RIGHT_3D_LEFT = 2;
+    static final int TEXT_RIGHT_3D_LEFT = 2;    
 
     /**
      * Create the application window.
@@ -670,6 +678,7 @@ class Editor3DDesign extends ApplicationWindow {
                 sashForm.setToolTipText(I18n.E3D_DragHint);
                 {
                     SashForm sashForm2 = new SashForm(sashForm, SWT.VERTICAL);
+                    this.leftSash[0] = sashForm2;
                     Composite cmp_Container1 = new Composite(sashForm2, SWT.BORDER);
                     GridLayout gridLayout = new GridLayout(1, true);
                     cmp_Container1.setLayout(gridLayout);
@@ -705,6 +714,14 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmp_snappingArea.getLayout()).verticalSpacing = 0;
                             ((GridLayout) cmp_snappingArea.getLayout()).marginHeight = 0;
                             ((GridLayout) cmp_snappingArea.getLayout()).marginWidth = 0;
+                            
+                            {
+                                Button btn_showUpper = new Button(cmp_snappingArea, SWT.NONE);
+                                this.btn_showUpper1[0] = btn_showUpper;
+                                btn_showUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
+                                btn_showUpper.setToolTipText(I18n.E3D_SashUpper);
+                                btn_showUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 3, 1));
+                            }
 
                             {
                                 Composite cmp_dummy = new Composite(cmp_snappingArea, SWT.NONE);
@@ -856,6 +873,14 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmp_bgArea.getLayout()).verticalSpacing = 0;
                             ((GridLayout) cmp_bgArea.getLayout()).marginHeight = 0;
                             ((GridLayout) cmp_bgArea.getLayout()).marginWidth = 0;
+                            
+                            {
+                                Button btn_showUpper = new Button(cmp_bgArea, SWT.NONE);
+                                this.btn_showUpper2[0] = btn_showUpper;
+                                btn_showUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
+                                btn_showUpper.setToolTipText(I18n.E3D_SashUpper);
+                                btn_showUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 3, 1));
+                            }
 
                             {
                                 Composite cmp_Dummy = new Composite(cmp_bgArea, SWT.NONE);
@@ -874,11 +899,6 @@ class Editor3DDesign extends ApplicationWindow {
                                 cmp_Dummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 3, 1));
                             }
 
-                            {
-                                Label lbl_Label = new Label(cmp_bgArea, SWT.NONE);
-                                lbl_Label.setText(I18n.E3D_TextLine);
-                                lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                            }
                             {
                                 Composite cmp_LineSetup = new Composite(cmp_bgArea, SWT.NONE);
                                 cmp_LineSetup.setLayout(new GridLayout(1, false));
@@ -1100,6 +1120,14 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmp_bgArea.getLayout()).verticalSpacing = 0;
                             ((GridLayout) cmp_bgArea.getLayout()).marginHeight = 0;
                             ((GridLayout) cmp_bgArea.getLayout()).marginWidth = 0;
+                            
+                            {
+                                Button btn_showUpper = new Button(cmp_bgArea, SWT.NONE);
+                                this.btn_showUpper3[0] = btn_showUpper;
+                                btn_showUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
+                                btn_showUpper.setToolTipText(I18n.E3D_SashUpper);
+                                btn_showUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 3, 1));
+                            }
 
                             {
                                 Composite cmp_dummy = new Composite(cmp_bgArea, SWT.NONE);
@@ -1363,7 +1391,7 @@ class Editor3DDesign extends ApplicationWindow {
                         gridData.horizontalAlignment = SWT.FILL;
                         gridData.grabExcessHorizontalSpace = true;
                         cmp_Search.setLayoutData(gridData);
-                        GridLayout gridLayout2 = new GridLayout(2, false);
+                        GridLayout gridLayout2 = new GridLayout(4, false);
                         cmp_Search.setLayout(gridLayout2);
                         Text txt_Search = new Text(cmp_Search, SWT.BORDER);
                         this.txt_Search[0] = txt_Search;
@@ -1375,6 +1403,16 @@ class Editor3DDesign extends ApplicationWindow {
                         Button btn_ResetSearch = new Button(cmp_Search, SWT.NONE);
                         this.btn_ResetSearch[0] = btn_ResetSearch;
                         btn_ResetSearch.setText(I18n.E3D_Reset);
+                        
+                        Button btn_showMiddle = new Button(cmp_Search, SWT.RIGHT_TO_LEFT);
+                        this.btn_showMiddle[0] = btn_showMiddle;
+                        btn_showMiddle.setImage(ResourceManager.getImage("icon16_middle.png")); //$NON-NLS-1$
+                        btn_showMiddle.setToolTipText(I18n.E3D_SashMiddle);
+                        
+                        Button btn_sameHeight = new Button(cmp_Search, SWT.RIGHT_TO_LEFT);
+                        this.btn_sameHeight[0] = btn_sameHeight;
+                        btn_sameHeight.setImage(ResourceManager.getImage("icon16_sameHeight.png")); //$NON-NLS-1$
+                        btn_sameHeight.setToolTipText(I18n.E3D_SashSameHeight);
                     }
 
                     Composite cmp_Container4 = new Composite(sashForm2, SWT.BORDER);
@@ -1416,7 +1454,7 @@ class Editor3DDesign extends ApplicationWindow {
                         gridData.horizontalAlignment = SWT.FILL;
                         gridData.grabExcessHorizontalSpace = true;
                         cmp_Search.setLayoutData(gridData);
-                        GridLayout gridLayout2 = new GridLayout(4, false);
+                        GridLayout gridLayout2 = new GridLayout(5, false);
                         cmp_Search.setLayout(gridLayout2);
                         Text txt_Search = new Text(cmp_Search, SWT.BORDER);
                         this.txt_primitiveSearch[0] = txt_Search;
@@ -1434,6 +1472,10 @@ class Editor3DDesign extends ApplicationWindow {
                         Button btn_ZoomInPrimitives = new Button(cmp_Search, SWT.NONE);
                         this.btn_zoomInPrimitives[0] = btn_ZoomInPrimitives;
                         btn_ZoomInPrimitives.setText("+"); //$NON-NLS-1$
+                        Button btn_showLower = new Button(cmp_Search, SWT.RIGHT_TO_LEFT);
+                        this.btn_showLower[0] = btn_showLower;
+                        btn_showLower.setImage(ResourceManager.getImage("icon16_lower.png")); //$NON-NLS-1$
+                        btn_showLower.setToolTipText(I18n.E3D_SashLower);
                     }
 
                     int[] weights = windowState.getLeftSashWeights();
