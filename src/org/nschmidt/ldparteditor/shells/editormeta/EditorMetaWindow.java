@@ -23,6 +23,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -31,6 +33,8 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.main.LDPartEditor;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The meta editor window
@@ -66,6 +70,19 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
         // MARK All final listeners will be configured here..
 
+        sh.addShellListener(new ShellAdapter() {
+            @Override
+            public void shellActivated(ShellEvent e) {
+                final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
+                if (!ev_author_realName_txt[0].getText().equals(userSettings.getRealUserName())) {
+                    ev_author_realName_txt[0].setText(userSettings.getRealUserName());
+                }
+                if (!ev_author_userName_txt[0].getText().equals(userSettings.getLdrawUserName())) {
+                    ev_author_userName_txt[0].setText(userSettings.getLdrawUserName());
+                }
+            }
+        });
+        
         btn_Create[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
