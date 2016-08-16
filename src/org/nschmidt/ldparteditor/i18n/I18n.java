@@ -551,9 +551,12 @@ public final class I18n {
     public static final String E3D_RotateSnap = E3D.getString(getProperty());
     public static final String E3D_Round = E3D.getString(getProperty());
     public static final String E3D_Ruler = E3D.getString(getProperty());    
+    public static final String E3D_SashLeft = E3D.getString(getProperty());
     public static final String E3D_SashLower = E3D.getString(getProperty());
     public static final String E3D_SashMiddle = E3D.getString(getProperty());
+    public static final String E3D_SashRight = E3D.getString(getProperty());
     public static final String E3D_SashSameHeight = E3D.getString(getProperty());
+    public static final String E3D_SashSameWidth = E3D.getString(getProperty());
     public static final String E3D_SashUpper = E3D.getString(getProperty());    
     public static final String E3D_Save = E3D.getString(getProperty());
     public static final String E3D_SaveAll = E3D.getString(getProperty());
