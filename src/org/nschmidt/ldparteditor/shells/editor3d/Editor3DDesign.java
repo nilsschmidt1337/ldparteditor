@@ -306,13 +306,13 @@ class Editor3DDesign extends ApplicationWindow {
     final Text[] txt_Search = new Text[1];
     final Button[] btn_ResetSearch = new Button[1];
     final CTabFolder[] tabFolder_Settings = new CTabFolder[1];
-    
+
     final Button[] btn_showUpper1 = new Button[1];
     final Button[] btn_showUpper2 = new Button[1];
     final Button[] btn_showUpper3 = new Button[1];
     final Button[] btn_showMiddle = new Button[1];
     final Button[] btn_showLower = new Button[1];
-    final Button[] btn_sameHeight = new Button[1];    
+    final Button[] btn_sameHeight = new Button[1];
     final Button[] btn_showLeft = new Button[1];
     final Button[] btn_showRight = new Button[1];
     final Button[] btn_sameWidth = new Button[1];
@@ -387,7 +387,7 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_NextSelection = new Button[1];
     final Text[] txt_Line = new Text[1];
     final Button[] btn_MoveAdjacentData2 = new Button[1];
-    
+
     final BigDecimalSpinner[] spn_SelectionAngle = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_SelectionLength = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_SelectionX1 = new BigDecimalSpinner[1];
@@ -402,7 +402,7 @@ class Editor3DDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spn_SelectionX4 = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_SelectionY4 = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_SelectionZ4 = new BigDecimalSpinner[1];
-    final Label[] lbl_SelectionAngle = new Label[1];    
+    final Label[] lbl_SelectionAngle = new Label[1];
     final Label[] lbl_SelectionLength = new Label[1];
     final Label[] lbl_SelectionX1 = new Label[1];
     final Label[] lbl_SelectionY1 = new Label[1];
@@ -448,7 +448,7 @@ class Editor3DDesign extends ApplicationWindow {
 
     static final int TEXT_3D_SEPARATE = 0;
     static final int TEXT_LEFT_3D_RIGHT = 1;
-    static final int TEXT_RIGHT_3D_LEFT = 2;    
+    static final int TEXT_RIGHT_3D_LEFT = 2;
 
     /**
      * Create the application window.
@@ -509,7 +509,7 @@ class Editor3DDesign extends ApplicationWindow {
             rl_toolBar.center = true;
             cmpWest.setLayout(rl_toolBar);
         }
-                
+
         if (userSettings.getTextWinArr() != TEXT_3D_SEPARATE) {
             ToolItem toolItem_SashResize = new ToolItem(cmpNorth, SWT.NONE, true);
             if (userSettings.getTextWinArr() == TEXT_RIGHT_3D_LEFT) {
@@ -739,7 +739,7 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmp_snappingArea.getLayout()).verticalSpacing = 0;
                             ((GridLayout) cmp_snappingArea.getLayout()).marginHeight = 0;
                             ((GridLayout) cmp_snappingArea.getLayout()).marginWidth = 0;
-                            
+
                             {
                                 Button btn_showUpper = new Button(cmp_snappingArea, SWT.NONE);
                                 this.btn_showUpper1[0] = btn_showUpper;
@@ -898,7 +898,7 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmp_bgArea.getLayout()).verticalSpacing = 0;
                             ((GridLayout) cmp_bgArea.getLayout()).marginHeight = 0;
                             ((GridLayout) cmp_bgArea.getLayout()).marginWidth = 0;
-                            
+
                             {
                                 Button btn_showUpper = new Button(cmp_bgArea, SWT.NONE);
                                 this.btn_showUpper2[0] = btn_showUpper;
@@ -1145,7 +1145,7 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmp_bgArea.getLayout()).verticalSpacing = 0;
                             ((GridLayout) cmp_bgArea.getLayout()).marginHeight = 0;
                             ((GridLayout) cmp_bgArea.getLayout()).marginWidth = 0;
-                            
+
                             {
                                 Button btn_showUpper = new Button(cmp_bgArea, SWT.NONE);
                                 this.btn_showUpper3[0] = btn_showUpper;
@@ -1428,12 +1428,12 @@ class Editor3DDesign extends ApplicationWindow {
                         Button btn_ResetSearch = new Button(cmp_Search, SWT.NONE);
                         this.btn_ResetSearch[0] = btn_ResetSearch;
                         btn_ResetSearch.setText(I18n.E3D_Reset);
-                        
+
                         Button btn_showMiddle = new Button(cmp_Search, SWT.RIGHT_TO_LEFT);
                         this.btn_showMiddle[0] = btn_showMiddle;
                         btn_showMiddle.setImage(ResourceManager.getImage("icon16_middle.png")); //$NON-NLS-1$
                         btn_showMiddle.setToolTipText(I18n.E3D_SashMiddle);
-                        
+
                         Button btn_sameHeight = new Button(cmp_Search, SWT.RIGHT_TO_LEFT);
                         this.btn_sameHeight[0] = btn_sameHeight;
                         btn_sameHeight.setImage(ResourceManager.getImage("icon16_sameHeight.png")); //$NON-NLS-1$
@@ -1628,7 +1628,7 @@ class Editor3DDesign extends ApplicationWindow {
             tWin.registerEvents();
             Project.getOpenTextWindows().add(tWin);
         }
-        
+
         if (containerTop instanceof SashForm) {
             this.editorSashForm[0] = (SashForm) containerTop;
             int width = windowState.getWindowState().getSizeAndPosition().width;
@@ -1665,7 +1665,7 @@ class Editor3DDesign extends ApplicationWindow {
             Button btn_lineSize0 = new Button(toolItem_LineThickness, SWT.TOGGLE);
             this.btn_lineSize0[0] = btn_lineSize0;
             btn_lineSize0.setToolTipText(I18n.E3D_LineSize0);
-            btn_lineSize0.setImage(ResourceManager.getImage("icon16_linesize1.png")); //$NON-NLS-1$
+            btn_lineSize0.setImage(ResourceManager.getImage("icon16_linesize0.png")); //$NON-NLS-1$
         }
         {
             Button btn_lineSize1 = new Button(toolItem_LineThickness, SWT.TOGGLE);
@@ -3330,7 +3330,7 @@ class Editor3DDesign extends ApplicationWindow {
     public static SashForm getSashForm() {
         return sashForm;
     }
-    
+
     public SashForm getSplitSashForm() {
         return splitSash[0];
     }
