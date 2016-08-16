@@ -372,6 +372,7 @@ class Editor3DDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spn_PngSY = new BigDecimalSpinner[1];
 
     final Button[] btn_ToggleLinesOpenGL = new Button[1];
+    final Button[] btn_lineSize0 = new Button[1];
     final Button[] btn_lineSize1 = new Button[1];
     final Button[] btn_lineSize2 = new Button[1];
     final Button[] btn_lineSize3 = new Button[1];
@@ -1660,6 +1661,12 @@ class Editor3DDesign extends ApplicationWindow {
             break;
         }
         ToolItem toolItem_LineThickness = new ToolItem(target, SWT.NONE, mode == ToolItemDrawMode.HORIZONTAL);
+        {
+            Button btn_lineSize0 = new Button(toolItem_LineThickness, SWT.TOGGLE);
+            this.btn_lineSize0[0] = btn_lineSize0;
+            btn_lineSize0.setToolTipText(I18n.E3D_LineSize0);
+            btn_lineSize0.setImage(ResourceManager.getImage("icon16_linesize1.png")); //$NON-NLS-1$
+        }
         {
             Button btn_lineSize1 = new Button(toolItem_LineThickness, SWT.TOGGLE);
             this.btn_lineSize1[0] = btn_lineSize1;
