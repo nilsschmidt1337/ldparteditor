@@ -24,6 +24,8 @@ import org.nschmidt.ldparteditor.helpers.Sphere;
 public enum GLPrimitives {
     INSTANCE;
 
+    public static final Sphere SPHERE0 = new Sphere();
+    public static final Sphere SPHERE_INV0 = new Sphere();
     public static final Sphere SPHERE1 = new Sphere(25f, 8);
     public static final Sphere SPHERE_INV1 = new Sphere(-25f, 8);
     public static final Sphere SPHERE2 = new Sphere(50f, 8);

@@ -1488,6 +1488,13 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
+        btn_lineSize0[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                setLineSize(GLPrimitives.SPHERE0, GLPrimitives.SPHERE_INV0, 0f, 0f, 0.01f, btn_lineSize0[0]);
+                regainFocus();
+            }
+        });
         btn_lineSize1[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

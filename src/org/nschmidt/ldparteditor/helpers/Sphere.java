@@ -88,6 +88,19 @@ public class Sphere {
 
     }
 
+    public Sphere() {
+        bvertices = BufferUtils.createFloatBuffer(3);
+        bvertices.put(0f);
+        bvertices.put(0f);
+        bvertices.put(0f);
+        bindices = BufferUtils.createShortBuffer(3);
+        bindices.put((short) 0);
+        bindices.put((short) 0);
+        bindices.put((short) 0);
+        bvertices.flip();
+        bindices.flip();
+    }
+
     public void draw(float x, float y, float z) {
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y, z);
