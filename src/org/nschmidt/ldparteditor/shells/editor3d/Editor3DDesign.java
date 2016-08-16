@@ -312,7 +312,10 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_showUpper3 = new Button[1];
     final Button[] btn_showMiddle = new Button[1];
     final Button[] btn_showLower = new Button[1];
-    final Button[] btn_sameHeight = new Button[1];
+    final Button[] btn_sameHeight = new Button[1];    
+    final Button[] btn_showLeft = new Button[1];
+    final Button[] btn_showRight = new Button[1];
+    final Button[] btn_sameWidth = new Button[1];
 
     final Button[] btn_Hide = new Button[1];
     final Button[] btn_ShowAll = new Button[1];
@@ -440,6 +443,7 @@ class Editor3DDesign extends ApplicationWindow {
     private static SashForm sashForm;
     final SashForm[] editorSashForm = new SashForm[]{null};
     final SashForm[] leftSash = new SashForm[1];
+    final SashForm[] splitSash = new SashForm[1];
 
     static final int TEXT_3D_SEPARATE = 0;
     static final int TEXT_LEFT_3D_RIGHT = 1;
@@ -469,6 +473,7 @@ class Editor3DDesign extends ApplicationWindow {
 
         if (userSettings.getTextWinArr() != TEXT_3D_SEPARATE) {
             containerTop = new SashForm(containerTop, SWT.BORDER);
+            splitSash[0] = (SashForm) containerTop;
             if (userSettings.getTextWinArr() == TEXT_LEFT_3D_RIGHT) {
                 Composite containerTextEditor = new Composite(containerTop, SWT.NONE);
                 containerTextEditor.setLayout(new BorderLayout(0, 0));
@@ -502,6 +507,25 @@ class Editor3DDesign extends ApplicationWindow {
             RowLayout rl_toolBar = new RowLayout(SWT.VERTICAL);
             rl_toolBar.center = true;
             cmpWest.setLayout(rl_toolBar);
+        }
+                
+        if (userSettings.getTextWinArr() != TEXT_3D_SEPARATE) {
+            ToolItem toolItem_SashResize = new ToolItem(cmpNorth, SWT.NONE, true);
+            if (userSettings.getTextWinArr() == TEXT_RIGHT_3D_LEFT) {
+                Button btn_showLeft = new Button(toolItem_SashResize, SWT.NONE);
+                this.btn_showLeft[0] = btn_showLeft;
+                btn_showLeft.setToolTipText(I18n.E3D_SashLeft);
+                btn_showLeft.setImage(ResourceManager.getImage("icon16_leftSash.png")); //$NON-NLS-1$
+            } else {
+                Button btn_sameWidth = new Button(toolItem_SashResize, SWT.NONE);
+                this.btn_sameWidth[0] = btn_sameWidth;
+                btn_sameWidth.setToolTipText(I18n.E3D_SashSameWidth);
+                btn_sameWidth.setImage(ResourceManager.getImage("icon16_sameWidth.png")); //$NON-NLS-1$
+                Button btn_showRight = new Button(toolItem_SashResize, SWT.NONE);
+                this.btn_showRight[0] = btn_showRight;
+                btn_showRight.setToolTipText(I18n.E3D_SashRight);
+                btn_showRight.setImage(ResourceManager.getImage("icon16_rightSash.png")); //$NON-NLS-1$
+            }
         }
 
         HashSet<String> missingItemsToCreate = new HashSet<String>();
@@ -3298,6 +3322,10 @@ class Editor3DDesign extends ApplicationWindow {
 
     public static SashForm getSashForm() {
         return sashForm;
+    }
+    
+    public SashForm getSplitSashForm() {
+        return splitSash[0];
     }
 
     public static void setSashForm(SashForm sashForm) {

@@ -54,6 +54,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 import swing2swt.layout.BorderLayout;
@@ -70,6 +71,10 @@ import swing2swt.layout.BorderLayout;
 class EditorTextDesign extends ApplicationWindow {
 
     private Composite parent = null;
+    
+    final Button[] btn_showLeft = new Button[1];
+    final Button[] btn_showRight = new Button[1];
+    final Button[] btn_sameWidth = new Button[1];
     
     final Button[] btn_New = new Button[1];
     final Button[] btn_Open = new Button[1];
@@ -369,6 +374,31 @@ class EditorTextDesign extends ApplicationWindow {
         RowLayout rl_toolBar = new RowLayout(SWT.HORIZONTAL);
         rl_toolBar.center = true;
         toolBar.setLayout(rl_toolBar);
+        
+        {
+            final int TEXT_3D_SEPARATE = 0;
+            final int TEXT_LEFT_3D_RIGHT = 1; 
+            final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
+            if (userSettings.getTextWinArr() != TEXT_3D_SEPARATE) {
+                ToolItem toolItem_SashResize = new ToolItem(toolBar, SWT.NONE, true);
+                if (userSettings.getTextWinArr() == TEXT_LEFT_3D_RIGHT) {
+                    Button btn_showLeft = new Button(toolItem_SashResize, SWT.NONE);
+                    this.btn_showLeft[0] = btn_showLeft;
+                    btn_showLeft.setToolTipText(I18n.E3D_SashLeft);
+                    btn_showLeft.setImage(ResourceManager.getImage("icon16_leftSash.png")); //$NON-NLS-1$
+                } else {                    
+                    Button btn_sameWidth = new Button(toolItem_SashResize, SWT.NONE);
+                    this.btn_sameWidth[0] = btn_sameWidth;
+                    btn_sameWidth.setToolTipText(I18n.E3D_SashSameWidth);
+                    btn_sameWidth.setImage(ResourceManager.getImage("icon16_sameWidth.png")); //$NON-NLS-1$
+                    Button btn_showRight = new Button(toolItem_SashResize, SWT.NONE);
+                    this.btn_showRight[0] = btn_showRight;
+                    btn_showRight.setToolTipText(I18n.E3D_SashRight);
+                    btn_showRight.setImage(ResourceManager.getImage("icon16_rightSash.png")); //$NON-NLS-1$
+                }
+            }
+        }
+        
         ToolItem toolItem_NewOpenSave = new ToolItem(toolBar, SWT.NONE, true);
         {
             Button btn_New = new Button(toolItem_NewOpenSave, SWT.NONE);

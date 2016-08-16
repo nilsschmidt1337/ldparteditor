@@ -218,6 +218,9 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public static final ArrayList<GLCanvas> canvasList = new ArrayList<GLCanvas>();
     public static final ArrayList<OpenGLRenderer> renders = new ArrayList<OpenGLRenderer>();
+    
+    public static int sashWeight1 = 50;
+    public static int sashWeight2 = 50;
 
     final private static AtomicBoolean alive = new AtomicBoolean(true);
     final private static AtomicBoolean no_sync_deadlock = new AtomicBoolean(false);
@@ -467,6 +470,39 @@ public class Editor3DWindow extends Editor3DDesign {
                 } else {
                     leftSash[0].setWeights(new int[]{10, 10, 80});
                 }
+            }
+        });
+        
+        if (btn_showLeft[0] != null) btn_showLeft[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                final SashForm sf = splitSash[0]; 
+                int[] w = sf.getWeights();
+                if (w[1] * 9 < w[0] && w[0] * 9 >= w[1]) {                    
+                    Editor3DWindow.sashWeight1 = w[0];
+                    Editor3DWindow.sashWeight2 = w[1];
+                }
+                sf.setWeights(new int[]{95, 5});                
+            }
+        });
+        
+        if (btn_showRight[0] != null) btn_showRight[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                final SashForm sf = splitSash[0]; 
+                int[] w = sf.getWeights();
+                if (w[0] * 9 < w[1] && w[1] * 9 >= w[0]) {                    
+                    Editor3DWindow.sashWeight1 = w[0];
+                    Editor3DWindow.sashWeight2 = w[1];
+                }
+                sf.setWeights(new int[]{5, 95});                
+            }
+        });
+        
+        if (btn_sameWidth[0] != null) btn_sameWidth[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                editorSashForm[0].setWeights(new int[]{sashWeight1, sashWeight2});
             }
         });
         
@@ -2621,7 +2657,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 // Project.getParsedFiles().add(df); IS NECESSARY HERE
                                 Project.getParsedFiles().add(df);
                                 Project.addOpenedFile(df);
-                                if (!Project.getOpenTextWindows().isEmpty() && w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) {
+                                if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow())) {
                                     w.openNewDatFileTab(df, true);
                                 } else {
                                     new EditorTextWindow().run(df, false);

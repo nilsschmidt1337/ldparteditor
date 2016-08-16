@@ -29,6 +29,7 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CTabFolder2Listener;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
@@ -498,6 +499,39 @@ public class EditorTextWindow extends EditorTextDesign {
                         }
                     }
                 }
+            }
+        });
+        
+        if (btn_showLeft[0] != null) btn_showLeft[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                final SashForm sf = Editor3DWindow.getWindow().getSplitSashForm(); 
+                int[] w = sf.getWeights();
+                if (w[1] * 9 < w[0] && w[0] * 9 >= w[1]) {                    
+                    Editor3DWindow.sashWeight1 = w[0];
+                    Editor3DWindow.sashWeight2 = w[1];
+                }
+                sf.setWeights(new int[]{95, 5});                
+            }
+        });
+        
+        if (btn_showRight[0] != null) btn_showRight[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                final SashForm sf = Editor3DWindow.getWindow().getSplitSashForm(); 
+                int[] w = sf.getWeights();
+                if (w[0] * 9 < w[1] && w[1] * 9 >= w[0]) {                    
+                    Editor3DWindow.sashWeight1 = w[0];
+                    Editor3DWindow.sashWeight2 = w[1];
+                }
+                sf.setWeights(new int[]{5, 95});   
+            }
+        });
+        
+        if (btn_sameWidth[0] != null) btn_sameWidth[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Editor3DWindow.getWindow().getSplitSashForm().setWeights(new int[]{Editor3DWindow.sashWeight1, Editor3DWindow.sashWeight2});
             }
         });
 
