@@ -39,6 +39,8 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The text editor window
@@ -191,6 +193,7 @@ class EditorMetaDesign extends ApplicationWindow {
      */
     @Override
     protected Control createContents(Composite parent) {
+        final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
         setStatus(I18n.E3D_ReadyStatus);
         Composite container = new Composite(parent, SWT.BORDER);
         GridLayout gridLayout = new GridLayout(1, true);
@@ -274,14 +277,21 @@ class EditorMetaDesign extends ApplicationWindow {
                         Text txt_realName = new Text(cmp_author, SWT.SEARCH);
                         txt_realName.setMessage(I18n.META_Author);
                         ev_author_realName_txt[0] = txt_realName;
-
+                        if (userSettings.getRealUserName() != null) {
+                            txt_realName.setText(userSettings.getRealUserName());
+                        }
+                        
                         Label lbl_author2 = new Label(cmp_author, SWT.NONE);
                         lbl_author2.setText("["); //$NON-NLS-1$
 
                         Text txt_userName = new Text(cmp_author, SWT.SEARCH);
                         txt_userName.setMessage(I18n.META_Username);
                         ev_author_userName_txt[0] = txt_userName;
-
+                        
+                        if (userSettings.getLdrawUserName() != null) {
+                            txt_userName.setText(userSettings.getLdrawUserName());
+                        }
+                        
                         Label lbl_author3 = new Label(cmp_author, SWT.NONE);
                         lbl_author3.setText("]"); //$NON-NLS-1$
                     }
@@ -324,7 +334,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         Combo cmb_license = new Combo(cmp_license, SWT.NONE);
                         cmb_license.setItems(new String[] { "Redistributable under CCAL version 2.0 : see CAreadme.txt", "Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
                         cmb_license.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                        cmb_license.setText("Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
+                        cmb_license.setText(userSettings.getLicense() != null ? userSettings.getLicense() : "Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
                         cmb_license.select(0);
                         ev_license_cmb[0] = cmb_license;
                     }
