@@ -1133,7 +1133,14 @@ public class CompositeTab extends CompositeTabDesign {
                                 items.add(sort);
                         }
                     }
-                    // FIXME Needs implementation! (Duplicates III)
+                    if (items.contains(treeItem_Duplicates[0])) {
+                        NLogger.debug(getClass(), "+Quick fix all duplicates."); //$NON-NLS-1$
+                        items.remove(treeItem_Duplicates[0]);
+                        for (TreeItem sort : treeItem_Duplicates[0].getItems()) {
+                            if (!items.contains(sort))
+                                items.add(sort);
+                        }
+                    }
 
                     for (TreeItem issue : items) {
                         if (issue != null && issue.getData() != null) {
@@ -1172,6 +1179,9 @@ public class CompositeTab extends CompositeTabDesign {
                         if (sort.getText(2).startsWith("[WFE]")) { //$NON-NLS-1$                            
                             if (!sorts.contains(sort.getText(2)))
                                 sorts.add(sort.getText(2));
+                        } else if (sort.getText(2).startsWith("[E01]")) { //$NON-NLS-1$                            
+                            if (!sorts.contains(sort.getText(2)))
+                                sorts.add(sort.getText(2));
                         } else {
                             if (!sorts.contains(sort.getText(0)))
                                 sorts.add(sort.getText(0));    
@@ -1191,7 +1201,7 @@ public class CompositeTab extends CompositeTabDesign {
                             items.add(sort);
                     }
                     for (TreeItem sort : treeItem_Duplicates[0].getItems()) {
-                        if (sorts.contains(sort.getText(0)) && !items.contains(sort))
+                        if (sorts.contains(sort.getText(0)) || sorts.contains(sort.getText(2)) && !items.contains(sort))
                             items.add(sort);
                     }
 
