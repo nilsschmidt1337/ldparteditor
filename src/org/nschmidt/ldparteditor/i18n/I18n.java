@@ -211,6 +211,7 @@ public final class I18n {
     public static final String COLOUR_YAxisColour = COLOUR.getString(getProperty());
     public static final String COLOUR_ZAxisColour = COLOUR.getString(getProperty());
     public static final String COMPOSITETAB_Description = COMPOSITETAB.getString(getProperty());
+    public static final String COMPOSITETAB_Duplicates = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_Errors = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_FileEncodingError = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_FileNotFound = COMPOSITETAB.getString(getProperty());
@@ -254,6 +255,7 @@ public final class I18n {
     public static final String DATPARSER_DuplicatedCommandLine = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DuplicatedFilename = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DuplicatedLicense = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_DuplicatedLines = DATPARSER.getString(getProperty());    
     public static final String DATPARSER_DuplicatedType = DATPARSER.getString(getProperty());
     public static final String DATPARSER_FileNotFound = DATPARSER.getString(getProperty());
     public static final String DATPARSER_FilenameWhitespace = DATPARSER.getString(getProperty());
@@ -655,6 +657,8 @@ public final class I18n {
     public static final String EDITORTEXT_Comment = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Compile = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_CompileCSG = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_Duplicate = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_Duplicates = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Error = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Errors = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_FindReplace = EDITORTEXT.getString(getProperty());

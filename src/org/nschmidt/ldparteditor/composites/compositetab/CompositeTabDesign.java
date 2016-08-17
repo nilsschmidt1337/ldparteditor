@@ -70,6 +70,8 @@ class CompositeTabDesign extends CTabItem {
     final TreeItem[] treeItem_Hints = new TreeItem[1];
     final TreeItem[] treeItem_Warnings = new TreeItem[1];
     final TreeItem[] treeItem_Errors = new TreeItem[1];
+    final TreeItem[] treeItem_Duplicates = new TreeItem[1];
+    
     final Tree[] tree_Problems = new Tree[1];
 
     public CompositeTabDesign(CTabFolder tabFolder, int style) {
@@ -153,7 +155,7 @@ class CompositeTabDesign extends CTabItem {
                 Label lbl_ProblemCount = new Label(cmp_partProblems, SWT.NONE);
                 this.lbl_ProblemCount[0] = lbl_ProblemCount;
                 lbl_ProblemCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-                lbl_ProblemCount.setText("0 " + I18n.EDITORTEXT_Errors + ", 0 " + I18n.EDITORTEXT_Warnings + ", 0 " + I18n.EDITORTEXT_Others); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                lbl_ProblemCount.setText("0 " + I18n.EDITORTEXT_Errors + ", 0 " + I18n.EDITORTEXT_Warnings + ", 0 " + I18n.EDITORTEXT_Others + ", 0 " + I18n.EDITORTEXT_Duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
                 Tree tree = new Tree(cmp_partProblems, SWT.BORDER | SWT.MULTI, 128);
 
@@ -189,6 +191,11 @@ class CompositeTabDesign extends CTabItem {
                 trtm_Errors.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                 trtm_Errors.setText(new String[] { I18n.COMPOSITETAB_Errors, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
+                TreeItem trtm_Duplicates = new TreeItem(tree, SWT.NONE);
+                treeItem_Duplicates[0] = trtm_Duplicates;
+                trtm_Duplicates.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
+                trtm_Duplicates.setText(new String[] { I18n.COMPOSITETAB_Duplicates, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
+                
                 Menu menu = new Menu(tabFolder);
                 tree.setMenu(menu);
 

@@ -419,7 +419,7 @@ public final class DatFile {
      * @param errors
      */
     public void parseForErrorAndData(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings,
-            TreeItem errors) {
+            TreeItem errors, TreeItem duplicates) {
 
         HeaderState.state().setState(HeaderState._99_DONE);
 
@@ -430,6 +430,8 @@ public final class DatFile {
         GData targetData = null;
 
         long start = System.currentTimeMillis();
+        
+        duplicate.pushDuplicateCheck(drawChainAnchor);
 
         int startLine = compositeText.getLineAtOffset(startOffset_pos);
         int startOffset = compositeText.getOffsetAtLine(startLine);
@@ -685,6 +687,30 @@ public final class DatFile {
         if (tailRemoved || drawChainTail == null) {
             drawChainTail = anchorData;
         }
+
+        if (!GData.CACHE_duplicates.isEmpty()) {
+            // FIXME Needs implementation! (Duplicates I)
+            duplicates.getItems().clear();
+            for (Entry<GData, ParsingResult> entry : GData.CACHE_duplicates.entrySet()) {
+                ParsingResult result = entry.getValue();
+                Integer lineNumber2 = drawPerLine.getKey(entry.getKey());
+                
+                if (lineNumber2 != null) {
+                    position = compositeText.getOffsetAtLine(lineNumber2 - 1);
+                    Object[] messageArguments = {lineNumber2, position};
+                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.applyPattern(I18n.DATFILE_Line);
+
+                    TreeItem trtmNewTreeitem = new TreeItem(duplicates, SWT.NONE);
+                    trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
+                    trtmNewTreeitem.setVisible(false);
+                    trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
+                    trtmNewTreeitem.setData(position);
+                }
+            }
+        }
+
         hints.sortItems();
         warnings.sortItems();
         errors.sortItems();
@@ -707,7 +733,7 @@ public final class DatFile {
      * @param warnings
      * @param errors
      */
-    public void parseForError(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors, boolean unselectBgPicture) {
+    public void parseForError(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, boolean unselectBgPicture) {
 
         if (compositeText.getText().isEmpty()) {
             return;
@@ -717,6 +743,8 @@ public final class DatFile {
         alreadyParsed.add(getShortName());
 
         long start = System.currentTimeMillis();
+        
+        duplicate.pushDuplicateCheck(drawChainAnchor);
 
         int startLine = compositeText.getLineAtOffset(startOffset_pos);
         int startOffset = compositeText.getOffsetAtLine(startLine);
@@ -857,6 +885,30 @@ public final class DatFile {
             vertices.setSelectedBgPictureIndex(0);
             Editor3DWindow.getWindow().updateBgPictureTab();
         }
+        
+        if (!GData.CACHE_duplicates.isEmpty()) {
+            // FIXME Needs implementation! (Duplicates II)
+            duplicates.getItems().clear();
+            for (Entry<GData, ParsingResult> entry : GData.CACHE_duplicates.entrySet()) {
+                ParsingResult result = entry.getValue();
+                Integer lineNumber2 = drawPerLine.getKey(entry.getKey());
+                
+                if (lineNumber2 != null) {
+                    position = compositeText.getOffsetAtLine(lineNumber2 - 1);
+                    Object[] messageArguments = {lineNumber2, position};
+                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.applyPattern(I18n.DATFILE_Line);
+
+                    TreeItem trtmNewTreeitem = new TreeItem(duplicates, SWT.NONE);
+                    trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
+                    trtmNewTreeitem.setVisible(false);
+                    trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
+                    trtmNewTreeitem.setData(position);
+                }
+            }
+        }
+        
         hints.sortItems();
         warnings.sortItems();
         errors.sortItems();
@@ -1365,6 +1417,7 @@ public final class DatFile {
 
     public void disposeData() {
         history.deleteHistory();
+        duplicate.deleteDuplicate();
         GDataCSG.fullReset(this);
         text = ""; //$NON-NLS-1$
         vertices.setModified(false, true);
