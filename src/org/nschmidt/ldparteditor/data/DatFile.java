@@ -689,7 +689,6 @@ public final class DatFile {
         }
 
         if (!GData.CACHE_duplicates.isEmpty()) {
-            // FIXME Needs implementation! (Duplicates I)
             duplicates.getItems().clear();
             for (Entry<GData, ParsingResult> entry : GData.CACHE_duplicates.entrySet()) {
                 ParsingResult result = entry.getValue();
@@ -887,7 +886,6 @@ public final class DatFile {
         }
         
         if (!GData.CACHE_duplicates.isEmpty()) {
-            // FIXME Needs implementation! (Duplicates II)
             duplicates.getItems().clear();
             for (Entry<GData, ParsingResult> entry : GData.CACHE_duplicates.entrySet()) {
                 ParsingResult result = entry.getValue();
