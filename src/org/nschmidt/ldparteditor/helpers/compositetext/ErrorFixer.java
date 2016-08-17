@@ -40,6 +40,9 @@ final class ErrorFixer {
     public static String fix(int lineNumber, String sort, String line, String text, DatFile datFile, Shell tWinShell) {
         int s = Integer.parseInt(sort, 16);
         switch (s) {
+        case 1: // Duplicated line
+            text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
+            break;
         case 2: // Singular Matrix
         {
             String[] data_segments = line.trim().split(" "); //$NON-NLS-1$
