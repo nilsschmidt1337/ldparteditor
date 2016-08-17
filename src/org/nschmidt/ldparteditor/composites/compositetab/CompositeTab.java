@@ -1153,7 +1153,6 @@ public class CompositeTab extends CompositeTabDesign {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // FIXME Needs implementation! (Duplicates IV)
                 if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
                     final VertexManager vm = state.getFileNameObj().getVertexManager();
                     if (!vm.isUpdated()) return;
@@ -1167,6 +1166,8 @@ public class CompositeTab extends CompositeTabDesign {
                             items.add(treeItem_Errors[0]);
                         } else if (sort.equals(treeItem_Warnings[0])) {
                             items.add(treeItem_Warnings[0]);
+                        } else if (sort.equals(treeItem_Duplicates[0])) {
+                            items.add(treeItem_Duplicates[0]);
                         }
                         if (sort.getText(2).startsWith("[WFE]")) { //$NON-NLS-1$                            
                             if (!sorts.contains(sort.getText(2)))
@@ -1187,6 +1188,10 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                     for (TreeItem sort : treeItem_Warnings[0].getItems()) {
                         if (sorts.contains(sort.getText(0)) || sorts.contains(sort.getText(2)) && !items.contains(sort))
+                            items.add(sort);
+                    }
+                    for (TreeItem sort : treeItem_Duplicates[0].getItems()) {
+                        if (sorts.contains(sort.getText(0)) && !items.contains(sort))
                             items.add(sort);
                     }
 
@@ -1211,6 +1216,14 @@ public class CompositeTab extends CompositeTabDesign {
                         NLogger.debug(getClass(), "+Quick fix all warnings."); //$NON-NLS-1$
                         items.remove(treeItem_Warnings[0]);
                         for (TreeItem sort : treeItem_Warnings[0].getItems()) {
+                            if (!items.contains(sort))
+                                items.add(sort);
+                        }
+                    }
+                    if (items.contains(treeItem_Duplicates[0])) {
+                        NLogger.debug(getClass(), "+Quick fix all duplicates."); //$NON-NLS-1$
+                        items.remove(treeItem_Duplicates[0]);
+                        for (TreeItem sort : treeItem_Duplicates[0].getItems()) {
                             if (!items.contains(sort))
                                 items.add(sort);
                         }
