@@ -763,7 +763,7 @@ public class CompositeTab extends CompositeTabDesign {
 
                 if (state.isSync()) {
                     state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
-                            treeItem_Errors[0], false);
+                            treeItem_Errors[0], treeItem_Duplicates[0], false);
                     vm.setModified(false, true);
                 } else {
                     if (!vm.isModified()) {
@@ -772,24 +772,27 @@ public class CompositeTab extends CompositeTabDesign {
                             public void run() {
                                 state.getFileNameObj().parseForHints(compositeText[0], treeItem_Hints[0]);
                                 state.getFileNameObj().parseForErrorAndData(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
-                                        treeItem_Errors[0]);
+                                        treeItem_Errors[0], treeItem_Duplicates[0]);
                             }
                         });
                     } else {
                         vm.setModified(false, true);
                         GData.CACHE_warningsAndErrors.clear();
                         state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
-                                treeItem_Errors[0], true);
+                                treeItem_Errors[0], treeItem_Duplicates[0], true);
                     }
                     vm.setUpdated(true);
                 }
                 int errorCount = treeItem_Errors[0].getItems().size();
                 int warningCount = treeItem_Warnings[0].getItems().size();
                 int hintCount = treeItem_Hints[0].getItems().size();
+                int duplicateCount = treeItem_Duplicates[0].getItems().size();
                 String errors = errorCount == 1 ? I18n.EDITORTEXT_Error : I18n.EDITORTEXT_Errors;
                 String warnings = warningCount == 1 ? I18n.EDITORTEXT_Warning : I18n.EDITORTEXT_Warnings;
                 String hints = hintCount == 1 ? I18n.EDITORTEXT_Other : I18n.EDITORTEXT_Others;
-                lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+                String duplicates = hintCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
+                lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                lbl_ProblemCount[0].getParent().layout();
             }
         });
         final CompositeTab me = this;
@@ -871,6 +874,12 @@ public class CompositeTab extends CompositeTabDesign {
                             for (TreeItem t : treeItem_Errors[0].getItems()) {
                                 if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
                                     NLogger.debug(getClass(), "Found error at {0}", t.getText(1)); //$NON-NLS-1$
+                                    items.add(t);
+                                }
+                            }
+                            for (TreeItem t : treeItem_Duplicates[0].getItems()) {
+                                if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
+                                    NLogger.debug(getClass(), "Found duplicate at {0}", t.getText(1)); //$NON-NLS-1$
                                     items.add(t);
                                 }
                             }
@@ -1124,6 +1133,7 @@ public class CompositeTab extends CompositeTabDesign {
                                 items.add(sort);
                         }
                     }
+                    // FIXME Needs implementation! (Duplicates III)
 
                     for (TreeItem issue : items) {
                         if (issue != null && issue.getData() != null) {
@@ -1143,6 +1153,7 @@ public class CompositeTab extends CompositeTabDesign {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
+                // FIXME Needs implementation! (Duplicates IV)
                 if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
                     final VertexManager vm = state.getFileNameObj().getVertexManager();
                     if (!vm.isUpdated()) return;
@@ -1495,6 +1506,7 @@ public class CompositeTab extends CompositeTabDesign {
         ct.treeItem_Hints[0] = this.treeItem_Hints[0];
         ct.treeItem_Warnings[0] = this.treeItem_Warnings[0];
         ct.treeItem_Errors[0] = this.treeItem_Errors[0];
+        ct.treeItem_Duplicates[0] = this.treeItem_Duplicates[0];
         ct.lbl_ProblemCount[0] = this.lbl_ProblemCount[0];
         try {
             ct.setControl(this.state.getTab().getControl());
@@ -1514,14 +1526,17 @@ public class CompositeTab extends CompositeTabDesign {
 
     public void parseForErrorAndHints() {
         this.state.getFileNameObj().parseForHints(getTextComposite(), treeItem_Hints[0]);
-        this.state.getFileNameObj().parseForError(getTextComposite(), 0, getTextComposite().getText().length(), getTextComposite().getText().length(), getTextComposite().getText(), getTextComposite().getText(), treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0], true);
+        this.state.getFileNameObj().parseForError(getTextComposite(), 0, getTextComposite().getText().length(), getTextComposite().getText().length(), getTextComposite().getText(), getTextComposite().getText(), treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0], treeItem_Duplicates[0], true);
         int errorCount = treeItem_Errors[0].getItems().size();
         int warningCount = treeItem_Warnings[0].getItems().size();
         int hintCount = treeItem_Hints[0].getItems().size();
+        int duplicateCount = treeItem_Duplicates[0].getItems().size();
         String errors = errorCount == 1 ? I18n.EDITORTEXT_Error : I18n.EDITORTEXT_Errors;
         String warnings = warningCount == 1 ? I18n.EDITORTEXT_Warning : I18n.EDITORTEXT_Warnings;
         String hints = hintCount == 1 ? I18n.EDITORTEXT_Other : I18n.EDITORTEXT_Others;
-        lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        String duplicates = hintCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
+        lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        lbl_ProblemCount[0].getParent().layout();
     }
 
     public void updateColours() {

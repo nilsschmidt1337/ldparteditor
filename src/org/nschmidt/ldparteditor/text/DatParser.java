@@ -98,7 +98,7 @@ public enum DatParser {
         char c;
         if (data_segments.length < 1 || data_segments[0].length() >  1 || !Character.isDigit(c = data_segments[0].charAt(0))) {
             result.add(new ParsingResult(I18n.DATPARSER_InvalidType, "[E0D] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
-            return result;
+            return new ArrayList<ParsingResult>(result);
         }
         linetype = Character.getNumericValue(c);
         // Parse the line according to its type

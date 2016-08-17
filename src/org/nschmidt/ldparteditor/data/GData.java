@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 
 /**
  * Lightweight graphical data class
@@ -67,7 +68,9 @@ public abstract class GData implements IGData {
     public static final HashMap<String, GData> parsedLines = new HashMap<String, GData>(1000);
 
     public static final HashMap<GData, ArrayList<ParsingResult>> CACHE_warningsAndErrors = new HashMap<GData, ArrayList<ParsingResult>>(1000); // Cleared
+    public static final ThreadsafeHashMap<GData, ParsingResult> CACHE_duplicates = new ThreadsafeHashMap<GData, ParsingResult>(1000); // Cleared
 
+    
     public GData getNext() {
         return next;
     }
