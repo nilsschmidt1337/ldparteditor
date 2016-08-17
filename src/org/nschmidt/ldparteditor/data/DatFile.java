@@ -690,11 +690,14 @@ public final class DatFile {
 
         if (!GData.CACHE_duplicates.isEmpty()) {
             duplicates.getItems().clear();
+            HashSet<GData> entriesToRemove = new HashSet<GData>();
             for (Entry<GData, ParsingResult> entry : GData.CACHE_duplicates.entrySet()) {
                 ParsingResult result = entry.getValue();
                 Integer lineNumber2 = drawPerLine.getKey(entry.getKey());
                 
-                if (lineNumber2 != null) {
+                if (lineNumber2 == null) {
+                    entriesToRemove.add(entry.getKey());
+                } else {
                     position = compositeText.getOffsetAtLine(lineNumber2 - 1);
                     Object[] messageArguments = {lineNumber2, position};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
@@ -707,6 +710,9 @@ public final class DatFile {
                     trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
                     trtmNewTreeitem.setData(position);
                 }
+            }
+            for (GData gd2 : entriesToRemove) {
+                GData.CACHE_duplicates.remove(gd2);
             }
         }
 
@@ -887,11 +893,14 @@ public final class DatFile {
         
         if (!GData.CACHE_duplicates.isEmpty()) {
             duplicates.getItems().clear();
+            HashSet<GData> entriesToRemove = new HashSet<GData>();
             for (Entry<GData, ParsingResult> entry : GData.CACHE_duplicates.entrySet()) {
                 ParsingResult result = entry.getValue();
                 Integer lineNumber2 = drawPerLine.getKey(entry.getKey());
                 
-                if (lineNumber2 != null) {
+                if (lineNumber2 == null) {
+                    entriesToRemove.add(entry.getKey());
+                } else {
                     position = compositeText.getOffsetAtLine(lineNumber2 - 1);
                     Object[] messageArguments = {lineNumber2, position};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
@@ -904,6 +913,9 @@ public final class DatFile {
                     trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
                     trtmNewTreeitem.setData(position);
                 }
+            }
+            for (GData gd2 : entriesToRemove) {
+                GData.CACHE_duplicates.remove(gd2);
             }
         }
         
