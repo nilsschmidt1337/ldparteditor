@@ -120,6 +120,7 @@ public final class DatFile {
     private static Composite3D lastHoveredComposite = null;
 
     private HistoryManager history = new HistoryManager(this);
+    private DuplicateManager duplicate = new DuplicateManager(this);
 
     public DatFile(String path) {
         this.projectFile = true;
@@ -1768,6 +1769,14 @@ public final class DatFile {
 
     public void setHistory(HistoryManager history) {
         this.history = history;
+    }
+    
+    public DuplicateManager getDuplicate() {
+        return duplicate;
+    }
+
+    public void setDuplicate(DuplicateManager duplicate) {
+        this.duplicate = duplicate;
     }
 
     public void addHistory() {

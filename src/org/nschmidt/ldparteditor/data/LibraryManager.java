@@ -796,6 +796,7 @@ public class LibraryManager {
         HashMap<String, DatFileName> newDfnMap = new HashMap<String, DatFileName>();
 
         HashMap<String, HistoryManager> historyMap = new HashMap<String, HistoryManager>();
+        HashMap<String, DuplicateManager> duplicateMap = new HashMap<String, DuplicateManager>();
 
         if (prefix1.isEmpty()) {
 
@@ -809,11 +810,11 @@ public class LibraryManager {
             final TreeItem treeItem_ProjectPrimitives48 = treeItem.getItems().get(3);
             final TreeItem treeItem_ProjectPrimitives8 = treeItem.getItems().get(4);
 
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives8, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives8, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
 
             readAllUnsavedFiles(parentMap, typeMap, dfnMap, locked, existingMap);
 
@@ -838,7 +839,7 @@ public class LibraryManager {
         } else {
 
             // 1. Read and store all unsaved project files, since we want to keep them in the editor
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, readOnly, !isReadOnlyFolder);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, !isReadOnlyFolder);
 
             if (!isReadOnlyFolder) readAllUnsavedFiles(parentMap, typeMap, dfnMap, locked, existingMap);
 
@@ -908,6 +909,8 @@ public class LibraryManager {
                         // Copies the undo/redo history if there is one
                         newDf.setHistory(historyMap.get(path));
                         newDf.getHistory().setDatFile(newDf);
+                        // Also do this for possible duplicated data
+                        newDf.getDuplicate().setDatFile(newDf);
                     }
 
                     if (openIn3DMap.containsKey(path) || openInTextMap.containsKey(path)) {
@@ -990,6 +993,7 @@ public class LibraryManager {
             HashMap<String, HashSet<Composite3D>> unsavedIn3DMap,
             HashMap<String, CompositeTab> unsavedInTextMap,
             HashMap<String, HistoryManager> historyMap,
+            HashMap<String, DuplicateManager> duplicateMap,
             HashMap<String, Boolean> readOnly,
             boolean checkForUnsaved
             ) {
@@ -998,6 +1002,7 @@ public class LibraryManager {
             DatFile df = (DatFile) ti.getData();
             final String old = df.getOldName();
             historyMap.put(old, df.getHistory());
+            duplicateMap.put(old, df.getDuplicate());
             readOnly.put(old, !checkForUnsaved);
             if (checkForUnsaved && Project.getUnsavedFiles().contains(df)) {
                 locked.add(df.getNewName());
