@@ -98,7 +98,6 @@ class EditorTextDesign extends ApplicationWindow {
     final Button[] btn_SplitQuad = new Button[1];
     final Button[] btn_MergeQuad = new Button[1];
     final Button[] btn_Unrectify = new Button[1];
-    final Button[] btn_Beautify = new Button[1];
     final Button[] btn_ShowSelectionIn3D = new Button[1];
     final Button[] btn_OpenIn3D = new Button[1];
     final Button[] btn_SyncEdit = new Button[1];
@@ -517,12 +516,6 @@ class EditorTextDesign extends ApplicationWindow {
             this.btn_Unrectify[0] = btn_Unrectify;
             btn_Unrectify.setImage(ResourceManager.getImage("icon16_unrectify.png")); //$NON-NLS-1$
             btn_Unrectify.setToolTipText(I18n.EDITORTEXT_Unrectify);
-        }
-        {
-            Button btn_Beautify = new Button(toolItem_Debug, SWT.NONE);
-            this.btn_Beautify[0] = btn_Beautify;
-            btn_Beautify.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
-            btn_Beautify.setToolTipText(I18n.EDITORTEXT_RemoveDuplicates);
         }
         {
             Button btn_SyncEdit = new Button(toolItem_Debug, SWT.NONE);

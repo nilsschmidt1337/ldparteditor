@@ -76,13 +76,27 @@ public class SyntaxFormatter {
      */
     public void format(LineStyleEvent e,
             BigDecimal VX, BigDecimal VY, BigDecimal VZ,
-            float replaceEpsilon, boolean replaceVertex, boolean isSelected, DatFile df) {
+            float replaceEpsilon, boolean replaceVertex, boolean isSelected, boolean isDuplicate,
+            DatFile df) {
+        
+        ArrayList<StyleRange> styles = new ArrayList<StyleRange>();
+        
+        if (isDuplicate) {
+            StyleRange errStyleRange = new StyleRange();
+            errStyleRange.start = e.lineOffset;
+            errStyleRange.length = e.lineText.length();
+            errStyleRange.underline = true;
+            errStyleRange.underlineColor = Colour.line_error_underline[0];
+            errStyleRange.underlineStyle = SWT.UNDERLINE_ERROR;
+            styles.add(errStyleRange);
+            e.styles = styles.toArray(new StyleRange[0]);
+            return;
+        }
 
         float vx = VX.floatValue();
         float vy = VY.floatValue();
         float vz = VZ.floatValue();
-
-        ArrayList<StyleRange> styles = new ArrayList<StyleRange>();
+        
         String[] text_segments = e.lineText.split(" "); //$NON-NLS-1$
 
         // Get the linetype

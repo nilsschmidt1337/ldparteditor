@@ -57,7 +57,6 @@ import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabFolder;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabState;
-import org.nschmidt.ldparteditor.data.Beautifier;
 import org.nschmidt.ldparteditor.data.ColourChanger;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -953,21 +952,6 @@ public class EditorTextWindow extends EditorTextDesign {
                     Editor3DWindow.getWindow().getSearchWindow().run();
                     Editor3DWindow.getWindow().getSearchWindow().setTextComposite(selection);
                     Editor3DWindow.getWindow().getSearchWindow().setScopeToAll();
-                }
-            }
-        });
-
-        btn_Beautify[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
-                    if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
-                        return;
-                    }
-                    final StyledText st = selection.getTextComposite();
-                    Beautifier.beautify(st, selection.getState().getFileNameObj());
-                    st.forceFocus();
                 }
             }
         });
