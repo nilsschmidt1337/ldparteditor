@@ -9096,7 +9096,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 Editor3DWindow.getSashForm().getChildren()[1].dispose();
                 CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
                 cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
-                // FIXME addRecentFile(df);
+                addRecentFile(df);
                 df.parseForData(true);
                 Project.setFileToEdit(df);
                 cmp_Container.getComposite3D().setLockableDatFileReference(df);
@@ -9128,7 +9128,7 @@ public class Editor3DWindow extends Editor3DDesign {
             if (vm.isModified()) {
                 df.setText(df.getText());
             }
-            // FIXME addRecentFile(df);
+            addRecentFile(df);
             df.parseForData(true);
 
             Project.setFileToEdit(df);
