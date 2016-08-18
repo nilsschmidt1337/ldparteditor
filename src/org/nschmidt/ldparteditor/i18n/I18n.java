@@ -272,6 +272,7 @@ public final class I18n {
     public static final String DATPARSER_InvalidNumberFormat = DATPARSER.getString(getProperty());
     public static final String DATPARSER_InvalidTEXMAP = DATPARSER.getString(getProperty());
     public static final String DATPARSER_InvalidType = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_InvisibleLine = DATPARSER.getString(getProperty());
     public static final String DATPARSER_LogicError = DATPARSER.getString(getProperty());
     public static final String DATPARSER_MLCAD_Clip = DATPARSER.getString(getProperty());
     public static final String DATPARSER_MLCAD_ClipCCW = DATPARSER.getString(getProperty());

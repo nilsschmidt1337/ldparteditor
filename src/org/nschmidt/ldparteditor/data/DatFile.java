@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
@@ -431,8 +432,6 @@ public final class DatFile {
 
         long start = System.currentTimeMillis();
         
-        duplicate.pushDuplicateCheck(drawChainAnchor);
-
         int startLine = compositeText.getLineAtOffset(startOffset_pos);
         int startOffset = compositeText.getOffsetAtLine(startLine);
 
@@ -688,33 +687,8 @@ public final class DatFile {
             drawChainTail = anchorData;
         }
 
-        if (!GData.CACHE_duplicates.isEmpty()) {
-            duplicates.getItems().clear();
-            HashSet<GData> entriesToRemove = new HashSet<GData>();
-            for (Entry<GData, ParsingResult> entry : GData.CACHE_duplicates.entrySet()) {
-                ParsingResult result = entry.getValue();
-                Integer lineNumber2 = drawPerLine.getKey(entry.getKey());
-                
-                if (lineNumber2 == null) {
-                    entriesToRemove.add(entry.getKey());
-                } else {
-                    position = compositeText.getOffsetAtLine(lineNumber2 - 1);
-                    Object[] messageArguments = {lineNumber2, position};
-                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.DATFILE_Line);
-
-                    TreeItem trtmNewTreeitem = new TreeItem(duplicates, SWT.NONE);
-                    trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
-                    trtmNewTreeitem.setVisible(false);
-                    trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
-                    trtmNewTreeitem.setData(position);
-                }
-            }
-            for (GData gd2 : entriesToRemove) {
-                GData.CACHE_duplicates.remove(gd2);
-            }
-        }
+        duplicate.pushDuplicateCheck(drawChainAnchor);
+        updateDuplicatesErrors(compositeText, duplicates);
 
         hints.sortItems();
         warnings.sortItems();
@@ -749,8 +723,6 @@ public final class DatFile {
 
         long start = System.currentTimeMillis();
         
-        duplicate.pushDuplicateCheck(drawChainAnchor);
-
         int startLine = compositeText.getLineAtOffset(startOffset_pos);
         int startOffset = compositeText.getOffsetAtLine(startLine);
 
@@ -867,7 +839,7 @@ public final class DatFile {
                         trtmNewTreeitem.setData(position);
                     }
                     
-                } else {           
+                } else {
                     
                     position = compositeText.getOffsetAtLine(lineNumber - 1);
                     Object[] messageArguments = {lineNumber, position};
@@ -891,33 +863,8 @@ public final class DatFile {
             Editor3DWindow.getWindow().updateBgPictureTab();
         }
         
-        if (!GData.CACHE_duplicates.isEmpty()) {
-            duplicates.getItems().clear();
-            HashSet<GData> entriesToRemove = new HashSet<GData>();
-            for (Entry<GData, ParsingResult> entry : GData.CACHE_duplicates.entrySet()) {
-                ParsingResult result = entry.getValue();
-                Integer lineNumber2 = drawPerLine.getKey(entry.getKey());
-                
-                if (lineNumber2 == null) {
-                    entriesToRemove.add(entry.getKey());
-                } else {
-                    position = compositeText.getOffsetAtLine(lineNumber2 - 1);
-                    Object[] messageArguments = {lineNumber2, position};
-                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.DATFILE_Line);
-
-                    TreeItem trtmNewTreeitem = new TreeItem(duplicates, SWT.NONE);
-                    trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
-                    trtmNewTreeitem.setVisible(false);
-                    trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
-                    trtmNewTreeitem.setData(position);
-                }
-            }
-            for (GData gd2 : entriesToRemove) {
-                GData.CACHE_duplicates.remove(gd2);
-            }
-        }
+        duplicate.pushDuplicateCheck(drawChainAnchor);
+        updateDuplicatesErrors(compositeText, duplicates);
         
         hints.sortItems();
         warnings.sortItems();
@@ -926,6 +873,51 @@ public final class DatFile {
         NLogger.debug(getClass(), "Total time to parse (error check only): {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
         vertices.validateState();
         NLogger.debug(getClass(), "Total time to parse + validate: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
+    }
+
+    public boolean updateDuplicatesErrors(StyledText compositeText, TreeItem duplicates) {
+        if (duplicates.getItems().size() > 0 || !GData.CACHE_duplicates.isEmpty()) {
+            int position;
+            duplicates.getItems().clear();
+            HashSet<GData> entriesToRemove = new HashSet<GData>();
+            TreeMap<Integer, ParsingResult> results = new TreeMap<>();
+
+            for (Entry<GData, ParsingResult> entry : GData.CACHE_duplicates.entrySet()) {
+                Integer lineNumber2 = drawPerLine.getKey(entry.getKey());
+                if (lineNumber2 == null) {
+                    entriesToRemove.add(entry.getKey());
+                } else {
+                    results.put(lineNumber2, entry.getValue());
+                }
+            }
+
+            for (Entry<Integer, ParsingResult> entry : results.entrySet()) {
+                int lineNumber2 = entry.getKey();
+                ParsingResult result = entry.getValue();
+                try {
+                    position = compositeText.getOffsetAtLine(lineNumber2 - 1);
+                } catch (IllegalArgumentException iae) {
+                    continue;
+                }
+                Object[] messageArguments = {lineNumber2, position};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.applyPattern(I18n.DATFILE_Line);
+
+                TreeItem trtmNewTreeitem = new TreeItem(duplicates, SWT.NONE);
+                trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
+                trtmNewTreeitem.setVisible(false);
+                trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
+                trtmNewTreeitem.setData(position);
+            }
+            for (GData gd2 : entriesToRemove) {
+                GData.CACHE_duplicates.remove(gd2);
+            }
+            compositeText.update();
+            compositeText.redraw();
+            return true;
+        }
+        return false;
     }
 
     private boolean isNotBlank(String str) {
