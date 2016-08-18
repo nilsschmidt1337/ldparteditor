@@ -578,14 +578,16 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
             if (isCancelled[0] == 0) {
                 NLogger.debug(getClass(), "Hide intersecting faces."); //$NON-NLS-1$
 
-                selectedTriangles.addAll(trisToHide);
-                selectedQuads.addAll(quadsToHide);
-                selectedData.addAll(selectedTriangles);
-                selectedData.addAll(selectedQuads);
-                selectedSubfiles.clear();
-                selectedSubfiles.addAll(vertexCountInSubfile.keySet());
-                selectedData.addAll(selectedSubfiles);
-                hideSelection();
+                if (ins.isHidingOther()) {
+                    selectedTriangles.addAll(trisToHide);
+                    selectedQuads.addAll(quadsToHide);
+                    selectedData.addAll(selectedTriangles);
+                    selectedData.addAll(selectedQuads);
+                    selectedSubfiles.clear();
+                    selectedSubfiles.addAll(vertexCountInSubfile.keySet());
+                    selectedData.addAll(selectedSubfiles);
+                    hideSelection();
+                }
 
                 clearSelection();
 

@@ -689,6 +689,7 @@ public final class I18n {
     public static final String HINTFIXER_Title = HINTFIXER.getString(getProperty());
     public static final String INTERSECTOR_ColourMods = INTERSECTOR.getString(getProperty());
     public static final String INTERSECTOR_Description = INTERSECTOR.getString(getProperty());
+    public static final String INTERSECTOR_HideOther = INTERSECTOR.getString(getProperty());
     public static final String INTERSECTOR_NoMods = INTERSECTOR.getString(getProperty());
     public static final String INTERSECTOR_ScopeFile = INTERSECTOR.getString(getProperty());
     public static final String INTERSECTOR_ScopeSelection = INTERSECTOR.getString(getProperty());
