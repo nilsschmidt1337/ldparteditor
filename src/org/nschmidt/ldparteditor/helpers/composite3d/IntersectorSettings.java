@@ -23,6 +23,7 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
 public class IntersectorSettings {
     private int scope = 1;
     private boolean colourise = false;
+    private boolean hidingOther = false;
     public int getScope() {
         return scope;
     }
@@ -34,5 +35,11 @@ public class IntersectorSettings {
     }
     public void setColourise(boolean colourise) {
         this.colourise = colourise;
+    }
+    public boolean isHidingOther() {
+        return hidingOther;
+    }
+    public void setHidingOther(boolean hidingOther) {
+        this.hidingOther = hidingOther;
     }
 }

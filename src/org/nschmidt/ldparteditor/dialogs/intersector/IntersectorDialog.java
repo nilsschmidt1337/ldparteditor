@@ -58,6 +58,12 @@ public class IntersectorDialog extends IntersectorDesign {
                 ins.setColourise(cmb_colourise[0].getSelectionIndex() == 1);
             }
         });
+        btn_hideOther[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                ins.setHidingOther(btn_hideOther[0].getSelection());
+            }
+        });
         return super.open();
     }
 

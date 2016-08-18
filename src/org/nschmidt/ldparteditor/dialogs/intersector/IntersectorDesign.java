@@ -21,6 +21,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -42,6 +43,7 @@ class IntersectorDesign extends Dialog {
 
     final IntersectorSettings ins;
     final Combo[] cmb_colourise = new Combo[1];
+    final Button[] btn_hideOther = new Button[1];
     final Combo[] cmb_scope = new Combo[1];
 
     // Use final only for subclass/listener references!
@@ -71,7 +73,12 @@ class IntersectorDesign extends Dialog {
 
         Label lbl_description = new Label(cmp_container, SWT.NONE);
         lbl_description.setText(I18n.INTERSECTOR_Description);
-
+        
+        Button btn_hideOther = new Button(cmp_container, SWT.CHECK);
+        this.btn_hideOther[0] = btn_hideOther;
+        btn_hideOther.setText(I18n.INTERSECTOR_HideOther);
+        btn_hideOther.setSelection(ins.isHidingOther());
+        
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
         cmb_scope.setItems(new String[] {I18n.INTERSECTOR_ScopeFile, I18n.INTERSECTOR_ScopeSelection});
