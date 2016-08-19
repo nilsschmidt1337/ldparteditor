@@ -56,7 +56,7 @@ class OptionsDesign extends ApplicationWindow {
     Button[] btn_disableMAD3D = new Button[1];
     Button[] btn_disableMADtext = new Button[1];
     Button[] btn_OK = new Button[1];
-            
+
     final Combo[] cmb_textWinArr = new Combo[1];
     final Combo[] cmb_locale = new Combo[1];
     final Text[] txt_ldrawPath = new Text[1];
@@ -68,7 +68,7 @@ class OptionsDesign extends ApplicationWindow {
     final Button[] btn_browseLdrawPath = new Button[1];
     final Button[] btn_browseUnofficialPath = new Button[1];
     final Button[] btn_browseAuthoringPath = new Button[1];
-    
+
     final HashMap<String, Locale> localeMap = new HashMap<String, Locale>();
 
     private HashSet<Task>  s1 = new HashSet<Task>();
@@ -175,6 +175,7 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Copy, Task.COPY, false);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Paste, Task.PASTE, false);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Delete, Task.DELETE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ContextMenu, Task.CONTEXT_MENU, false);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Esc1, Task.ESC, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_LMB, Task.LMB, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_MergeToAvg, Task.MERGE_TO_AVERAGE, true);
@@ -298,7 +299,7 @@ class OptionsDesign extends ApplicationWindow {
 
                 registerColour(trtm_Editor3D, I18n.COLOUR_Cursor1Colour, ColourType.OPENGL_COLOUR, new Object[]{View.cursor1_Colour_r, View.cursor1_Colour_g, View.cursor1_Colour_b});
                 registerColour(trtm_Editor3D, I18n.COLOUR_Cursor2Colour, ColourType.OPENGL_COLOUR, new Object[]{View.cursor2_Colour_r, View.cursor2_Colour_g, View.cursor2_Colour_b});
-                
+
                 registerColour(trtm_Editor3D, I18n.COLOUR_MeshLineColour, ColourType.OPENGL_COLOUR, new Object[]{View.meshline_Colour_r, View.meshline_Colour_g, View.meshline_Colour_b});
 
                 registerColour(trtm_Editor3D, I18n.COLOUR_AddObjectColour, ColourType.OPENGL_COLOUR, new Object[]{View.add_Object_Colour_r, View.add_Object_Colour_g, View.add_Object_Colour_b});
@@ -419,36 +420,36 @@ class OptionsDesign extends ApplicationWindow {
                 this.btn_AllowInvalidShapes[0] = btn_AllowInvalidShapes;
                 btn_AllowInvalidShapes.setText(I18n.OPTIONS_AllowInvalidShapes);
                 btn_AllowInvalidShapes.setSelection(userSettings.isAllowInvalidShapes());
-                
+
                 Button btn_disableMAD3D = new Button(cmp_container, SWT.CHECK);
                 this.btn_disableMAD3D[0] = btn_disableMAD3D;
                 btn_disableMAD3D.setText(I18n.OPTIONS_MAD1);
                 btn_disableMAD3D.setSelection(userSettings.isDisableMAD3D());
-                
+
                 Button btn_disableMADtext = new Button(cmp_container, SWT.CHECK);
                 this.btn_disableMADtext[0] = btn_disableMADtext;
                 btn_disableMADtext.setText(I18n.OPTIONS_MAD2);
                 btn_disableMADtext.setSelection(userSettings.isDisableMADtext());
-                
+
                 {
                     Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
-                
+
                 Label lbl_textWinArr = new Label(cmp_container, SWT.NONE);
                 lbl_textWinArr.setText(I18n.OPTIONS_TextWindowArr);
-                
+
                 Combo cmb_textWinArr = new Combo(cmp_container, SWT.READ_ONLY);
                 this.cmb_textWinArr[0] = cmb_textWinArr;
                 cmb_textWinArr.setItems(new String[]{I18n.OPTIONS_TextWindowSeparate, I18n.OPTIONS_TextWindowLeft, I18n.OPTIONS_TextWindowRight});
                 cmb_textWinArr.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmb_textWinArr.select(userSettings.getTextWinArr());
-                                
+
                 {
                     Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
-                
+
                 Label lbl_locale = new Label(cmp_container, SWT.NONE);
                 lbl_locale.setText(I18n.OPTIONS_ChooseLocale);
 
@@ -488,7 +489,7 @@ class OptionsDesign extends ApplicationWindow {
                 this.txt_ldrawPath[0] = txt_ldrawPath;
                 txt_ldrawPath.setEditable(false);
                 txt_ldrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
-                txt_ldrawPath.setText(userSettings.getLdrawFolderPath());              
+                txt_ldrawPath.setText(userSettings.getLdrawFolderPath());
 
                 Button btn_BrowseLdrawPath = new Button(cmp_pathChooser1, SWT.NONE);
                 this.btn_browseLdrawPath[0] = btn_BrowseLdrawPath;
@@ -501,7 +502,7 @@ class OptionsDesign extends ApplicationWindow {
                 this.txt_ldrawUserName[0] = txt_ldrawUserName;
                 txt_ldrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 txt_ldrawUserName.setText(userSettings.getLdrawUserName());
-                
+
                 Label lbl_realNameQuestion = new Label(cmp_container, SWT.NONE);
                 lbl_realNameQuestion.setText(I18n.OPTIONS_RealName);
 
@@ -509,7 +510,7 @@ class OptionsDesign extends ApplicationWindow {
                 this.txt_realName[0] = txt_realName;
                 txt_realName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 txt_realName.setText(userSettings.getRealUserName());
-                
+
                 Label lbl_licenseQuestion = new Label(cmp_container, SWT.NONE);
                 lbl_licenseQuestion.setText(I18n.OPTIONS_License);
 
@@ -517,7 +518,7 @@ class OptionsDesign extends ApplicationWindow {
                 this.cmb_license[0] = cmb_license;
                 cmb_license.setItems(new String[] { "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
                 cmb_license.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                cmb_license.setText(userSettings.getLicense());                
+                cmb_license.setText(userSettings.getLicense());
 
                 Label lbl_authoringFolderQuestion = new Label(cmp_container, SWT.NONE);
                 lbl_authoringFolderQuestion.setText(I18n.OPTIONS_AuthoringFolder);
@@ -530,7 +531,7 @@ class OptionsDesign extends ApplicationWindow {
                 txt_partAuthoringPath.setEditable(false);
                 txt_partAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
                 txt_partAuthoringPath.setText(userSettings.getAuthoringFolderPath());
-                
+
                 Button btn_browseAuthoringPath = new Button(cmp_pathChooser2, SWT.NONE);
                 this.btn_browseAuthoringPath[0] = btn_browseAuthoringPath;
                 btn_browseAuthoringPath.setText(I18n.OPTIONS_Browse);

@@ -255,7 +255,7 @@ public final class I18n {
     public static final String DATPARSER_DuplicatedCommandLine = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DuplicatedFilename = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DuplicatedLicense = DATPARSER.getString(getProperty());
-    public static final String DATPARSER_DuplicatedLines = DATPARSER.getString(getProperty());    
+    public static final String DATPARSER_DuplicatedLines = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DuplicatedType = DATPARSER.getString(getProperty());
     public static final String DATPARSER_FileNotFound = DATPARSER.getString(getProperty());
     public static final String DATPARSER_FilenameWhitespace = DATPARSER.getString(getProperty());
@@ -554,14 +554,14 @@ public final class I18n {
     public static final String E3D_RotateSelection = E3D.getString(getProperty());
     public static final String E3D_RotateSnap = E3D.getString(getProperty());
     public static final String E3D_Round = E3D.getString(getProperty());
-    public static final String E3D_Ruler = E3D.getString(getProperty());    
+    public static final String E3D_Ruler = E3D.getString(getProperty());
     public static final String E3D_SashLeft = E3D.getString(getProperty());
     public static final String E3D_SashLower = E3D.getString(getProperty());
     public static final String E3D_SashMiddle = E3D.getString(getProperty());
     public static final String E3D_SashRight = E3D.getString(getProperty());
     public static final String E3D_SashSameHeight = E3D.getString(getProperty());
     public static final String E3D_SashSameWidth = E3D.getString(getProperty());
-    public static final String E3D_SashUpper = E3D.getString(getProperty());    
+    public static final String E3D_SashUpper = E3D.getString(getProperty());
     public static final String E3D_Save = E3D.getString(getProperty());
     public static final String E3D_SaveAll = E3D.getString(getProperty());
     public static final String E3D_SaveAs = E3D.getString(getProperty());
@@ -706,6 +706,7 @@ public final class I18n {
     public static final String KEYBOARD_AddTriangle = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_AddVertex = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Alt = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_ContextMenu = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Copy = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Ctrl = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_CustomiseShortkeys = KEYBOARD.getString(getProperty());
