@@ -87,6 +87,5 @@ public enum Task {
     RMB,
 
     INSERT_AT_CURSOR,
-    MOVE_TO_AVG,
-    CONTEXT_MENU
+    MOVE_TO_AVG
 }

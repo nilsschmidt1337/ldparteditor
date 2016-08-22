@@ -116,7 +116,6 @@ class KeyTableDesign extends Dialog {
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Copy, Task.COPY, false);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Paste, Task.PASTE, false);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Delete, Task.DELETE, true);
-        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ContextMenu, Task.CONTEXT_MENU, false);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Esc1, Task.ESC, true);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_LMB, Task.LMB, true);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_MergeToAvg, Task.MERGE_TO_AVERAGE, true);

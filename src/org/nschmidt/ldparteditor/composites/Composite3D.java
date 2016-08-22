@@ -41,6 +41,8 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.MenuDetectEvent;
+import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
@@ -155,7 +157,7 @@ public class Composite3D extends ScalableComposite {
     private float zoom;
 
     private final Vector4f screenXY = new Vector4f(0, 0, 0, 1);
-    
+
     private final Set<Vertex> tmpHiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
 
     public Vector4f getScreenXY() {
@@ -277,7 +279,7 @@ public class Composite3D extends ScalableComposite {
     final MenuItem[] mntmLabel = new MenuItem[1];
     final MenuItem[] mntmRealPreview = new MenuItem[1];
 
-    final MenuItem[] mntmSyncTranslate = new MenuItem[1];    
+    final MenuItem[] mntmSyncTranslate = new MenuItem[1];
     final MenuItem[] mntmSyncManipulator = new MenuItem[1];
     final MenuItem[] mntmSyncZoom = new MenuItem[1];
 
@@ -290,19 +292,19 @@ public class Composite3D extends ScalableComposite {
         mntmSyncTranslate[0].setSelection(syncTranslation);
         mntmSyncZoom[0].setSelection(syncZoom);
     }
-    
+
     public Composite3D(Composite parentCompositeContainer, DatFile df) {
         this(parentCompositeContainer);
         setSyncManipulator(false);
         setSyncTranslation(false);
         setSyncZoom(false);
-        
+
         Editor3DWindow.renders.remove(openGL);
         Editor3DWindow.canvasList.remove(canvas);
         this.menu.dispose();
         setLockableDatFileReference(df);
     }
-    
+
     /**
      * Creates a new 3D Composite in a {@link CompositeContainer}
      *
@@ -428,7 +430,7 @@ public class Composite3D extends ScalableComposite {
         mntmOpenInTextEditor.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                openInTextEditor();  
+                openInTextEditor();
             }
         });
         mntmOpenInTextEditor.setText(I18n.C3D_OpenInText);
@@ -443,7 +445,7 @@ public class Composite3D extends ScalableComposite {
         });
         mntmSelectionInTextEditor.setText(I18n.C3D_ShowInText);
         mntmSelectionInTextEditor.setSelection(false);
-        
+
         final MenuItem mntmJoinInTextEditor = new MenuItem(menu, SWT.NONE);
         mntmJoinInTextEditor.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -1259,6 +1261,26 @@ public class Composite3D extends ScalableComposite {
             }
         });
 
+        canvas.addMenuDetectListener(new MenuDetectListener() {
+
+            @Override
+            public void menuDetected(MenuDetectEvent e) {
+                if (e.detail != SWT.MENU_KEYBOARD) {
+                    return;
+                }
+                java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
+                final int x = (int) b.getX();
+                final int y = (int) b.getY();
+
+                Menu menu = getMenu();
+                if (!menu.isDisposed()) {
+                    menu.setLocation(x, y);
+                    menu.setVisible(true);
+                }
+
+            }
+        });
+
         Transfer[] types = new Transfer[] { MyDummyTransfer2.getInstance(), FileTransfer.getInstance() };
         int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
         DropTarget target = new DropTarget(this, operations);
@@ -1384,14 +1406,14 @@ public class Composite3D extends ScalableComposite {
                 }
             }
         }
-        EditorTextWindow w = null;                                
+        EditorTextWindow w = null;
         for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
             if (w2.getTabFolder().getItems().length == 0) {
                 w = w2;
                 break;
             }
         }
-        
+
         // Project.getParsedFiles().add(df); IS NECESSARY HERE
         Project.getParsedFiles().add(df);
         Project.addOpenedFile(df);
@@ -1767,9 +1789,9 @@ public class Composite3D extends ScalableComposite {
         return lockableDatFileReference;
     }
 
-    public void setLockableDatFileReference(DatFile datFile) {        
-        if (locked != null && !locked.isDisposed()) this.datFileLockedOnDisplay = locked.getSelection();        
-        Editor3DWindow.getWindow().saveState(this.lockableDatFileReference, this);        
+    public void setLockableDatFileReference(DatFile datFile) {
+        if (locked != null && !locked.isDisposed()) this.datFileLockedOnDisplay = locked.getSelection();
+        Editor3DWindow.getWindow().saveState(this.lockableDatFileReference, this);
         this.lockableDatFileReference = datFile;
         Editor3DWindow.getWindow().loadState(datFile, this);
     }
@@ -2067,24 +2089,24 @@ public class Composite3D extends ScalableComposite {
     public Set<Vertex> getTmpHiddenVertices() {
         return tmpHiddenVertices;
     }
-    
-    public void joinSelectionInTextEditor(final DatFile df) {  
+
+    public void joinSelectionInTextEditor(final DatFile df) {
         if (df.equals(View.DUMMY_DATFILE) || df.isReadOnly()) return;
         final VertexManager vm = df.getVertexManager();
         if (!vm.getSelectedData().isEmpty()) {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
-                    
+
                     showSelectionInTextEditor(df, false);
-                    
+
                     boolean isOpen = false;
                     CompositeTab ct = null;
                     final CompositeTab ct2;
                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
                         for (final CTabItem t : w.getTabFolder().getItems()) {
-                            ct = ((CompositeTab) t);
-                            if (df.equals(ct.getState().getFileNameObj())) {                        
+                            ct = (CompositeTab) t;
+                            if (df.equals(ct.getState().getFileNameObj())) {
                                 isOpen = true;
                                 break;
                             }
@@ -2093,13 +2115,13 @@ public class Composite3D extends ScalableComposite {
                             break;
                         }
                     }
-                    
+
                     if (!isOpen) {
                         openInTextEditor();
                         for (EditorTextWindow w : Project.getOpenTextWindows()) {
                             for (final CTabItem t : w.getTabFolder().getItems()) {
-                                ct = ((CompositeTab) t);
-                                if (df.equals(ct.getState().getFileNameObj())) {                        
+                                ct = (CompositeTab) t;
+                                if (df.equals(ct.getState().getFileNameObj())) {
                                     isOpen = true;
                                     break;
                                 }
@@ -2108,10 +2130,10 @@ public class Composite3D extends ScalableComposite {
                                 break;
                             }
                         }
-                    }    
-                    
+                    }
+
                     ct2 = ct;
-                    
+
                     Display.getDefault().asyncExec(new Runnable() {
                         @Override
                         public void run() {
@@ -2145,13 +2167,13 @@ public class Composite3D extends ScalableComposite {
 
                             vm.paste(dpl.getValue(Math.max(minLine - 1, 1)));
                         }
-                    });              
-                }                    
+                    });
+                }
             });
         }
     }
-    
-    public static void showSelectionInTextEditor(final DatFile df, final boolean setTopIndex) {        
+
+    public static void showSelectionInTextEditor(final DatFile df, final boolean setTopIndex) {
         if (df.equals(View.DUMMY_DATFILE)) return;
         if (!df.getVertexManager().getSelectedData().isEmpty()) {
             for (EditorTextWindow w : Project.getOpenTextWindows()) {
@@ -2166,27 +2188,27 @@ public class Composite3D extends ScalableComposite {
                             public void run() {
                                 final VertexManager vm = df.getVertexManager();
                                 if (vm.getSelectedData().size() > 0) {
-                                    
+
                                     final int oldIndex = ((CompositeTab) t).getTextComposite().getTopIndex() + 1;
                                     final int lastSetIndex = ((CompositeTab) t).getState().getOldLineIndex();
-                                    final ArrayList<Integer> indices = new ArrayList<Integer>();                                              
+                                    final ArrayList<Integer> indices = new ArrayList<Integer>();
                                     final HashSet<GData> selection = new HashSet<GData>();
                                     Integer index;
-                                    
+
                                     selection.addAll(vm.getSelectedData());
                                     selection.addAll(vm.getSelectedSubfiles());
-                                                                                                                              
+
                                     for (GData g : selection) {
                                         index = df.getDrawPerLine_NOCLONE().getKey(g);
                                         if (index != null) {
                                             indices.add(index);
-                                        }                                                
-                                    }                                                                                       
-                                    
+                                        }
+                                    }
+
                                     if (!indices.isEmpty()) {
-                                        
+
                                         Collections.sort(indices);
-                                        
+
                                         index = indices.get(0);
                                         for (int i : indices) {
                                             if (i > oldIndex) {
@@ -2194,16 +2216,16 @@ public class Composite3D extends ScalableComposite {
                                                 break;
                                             }
                                         }
-                                        
+
                                         if (index == lastSetIndex) {
-                                            index = indices.get(0);                                                                                                       
+                                            index = indices.get(0);
                                         }
-                                        
+
                                         if (setTopIndex) {
-                                            ((CompositeTab) t).getState().setOldLineIndex(index);                                                
+                                            ((CompositeTab) t).getState().setOldLineIndex(index);
                                             ((CompositeTab) t).getTextComposite().setTopIndex(index - 1);
                                         }
-                                    }                                                                                                                                                                                                                       
+                                    }
                                 }
                                 ((CompositeTab) t).getTextComposite().redraw();
                             }
@@ -2256,8 +2278,8 @@ public class Composite3D extends ScalableComposite {
                 win = new EditorTextWindow();
                 win.run(df, false);
                 win.open();
-            }                              
-         
+            }
+
             for (final CTabItem t : win.getTabFolder().getItems()) {
                 if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                     win.getTabFolder().setSelection(t);
@@ -2304,80 +2326,80 @@ public class Composite3D extends ScalableComposite {
             }
         }
     }
-    
+
     public Composite3DViewState exportState() {
         Composite3DViewState state = new Composite3DViewState();
-        
+
         state.getHideShowState().putAll(lockableDatFileReference.getVertexManager().backupHideShowState());
         state.getSelection().putAll(lockableDatFileReference.getVertexManager().backupSelectedDataState(new HashMap<String, ArrayList<Boolean>>()));
         state.getHiddenVertices().addAll(lockableDatFileReference.getVertexManager().getHiddenVertices());
         state.getSelectedVertices().addAll(lockableDatFileReference.getVertexManager().getSelectedVertices());
-        
+
         state.getManipulator().copyState(manipulator);
         state.setViewportPixelPerLDU(viewport_pixel_per_ldu);
         state.setZoom(zoom);
         state.setNegDeterminant(negDeterminant);
         state.setZoom_exponent(getPerspectiveCalculator().getZoom_exponent());
         state.setOffset(getPerspectiveCalculator().getOffset());
-        
+
         state.getViewport_translation().load(viewport_translation);
         state.getViewport_rotation().load(viewport_rotation);
         state.getViewport_matrix().load(viewport_matrix);
         state.getViewport_matrix_inv().load(viewport_matrix_inv);
-        
+
         for (int i = 0; i < 3; i++) {
             state.getViewport_generator()[i] = viewport_generator[i];
         }
         for (int i = 0; i < 4; i++) {
             state.getViewport_origin_axis()[i] = viewport_origin_axis[i];
         }
-        
+
         state.setzFar(zFar);
         state.setzNear(zNear);
-        
+
         // FIXME !Save state here for C3D
         Editor3DWindow.getWindow().fillC3DState(state.STATE, this);
-        
+
         return state;
     }
-    
+
     public void importState(Composite3DViewState state) {
         WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
 
         // FIXME !Load state here for C3D
         loadState(state.STATE);
         manipulator.copyState(state.getManipulator());
-        
+
         viewport_pixel_per_ldu = state.getViewportPixelPerLDU();
         zoom = state.getZoom();
         negDeterminant = state.hasNegDeterminant();
         getPerspectiveCalculator().setZoom_exponent(state.getZoom_exponent());
         getPerspectiveCalculator().setOffset(state.getOffset());
-        
+
         viewport_translation.load(state.getViewport_translation());
         viewport_rotation.load(state.getViewport_rotation());
         viewport_matrix.load(state.getViewport_matrix());
         viewport_matrix_inv.load(state.getViewport_matrix_inv());
-        
+
         for (int i = 0; i < 3; i++) {
             viewport_generator[i] = state.getViewport_generator()[i];
         }
         for (int i = 0; i < 4; i++) {
             viewport_origin_axis[i] = state.getViewport_origin_axis()[i];
         }
-        
+
         zFar = state.getzFar();
         zNear = state.getzNear();
-        
+
         getPerspectiveCalculator().initializeViewportPerspective();
-        
+
         lockableDatFileReference.getVertexManager().restoreHideShowState(state.getHideShowState());
         lockableDatFileReference.getVertexManager().restoreSelectedDataState(state.getSelection());
         lockableDatFileReference.getVertexManager().reSelectSubFiles();
         lockableDatFileReference.getVertexManager().getHiddenVertices().addAll(state.getHiddenVertices());
         lockableDatFileReference.getVertexManager().getSelectedVertices().addAll(state.getSelectedVertices());
-        
-        
+
+
         switch (renderMode) {
         case -1: // Wireframe
             mntmWireframeMode[0].setSelection(true);
