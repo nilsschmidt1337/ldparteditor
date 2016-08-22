@@ -15,8 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.state;
 
-import java.awt.MouseInfo;
-import java.awt.PointerInfo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,7 +26,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -122,8 +119,6 @@ public class KeyStateManager {
         addTask(Task.COPY, SWT.CTRL, 'c');
         addTask(Task.CUT, SWT.CTRL, 'x');
         addTask(Task.PASTE, SWT.CTRL, 'v');
-
-        addTask(Task.CONTEXT_MENU, '#');
 
         addTask(Task.OBJ_VERTEX, SWT.F2);
         addTask(Task.OBJ_FACE, SWT.F3);
@@ -512,17 +507,6 @@ public class KeyStateManager {
                         break;
                     case SPLIT:
                         vm.split(2);
-                        break;
-                    case CONTEXT_MENU:
-                        Menu menu = c3d.getMenu();
-                        if (!menu.isDisposed()) {
-                            PointerInfo a = MouseInfo.getPointerInfo();
-                            java.awt.Point b = a.getLocation();
-                            int x = (int) b.getX();
-                            int y = (int) b.getY();
-                            menu.setLocation(x, y);
-                            menu.setVisible(true);
-                        }
                         break;
                     }
                 }

@@ -706,7 +706,6 @@ public final class I18n {
     public static final String KEYBOARD_AddTriangle = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_AddVertex = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Alt = KEYBOARD.getString(getProperty());
-    public static final String KEYBOARD_ContextMenu = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Copy = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Ctrl = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_CustomiseShortkeys = KEYBOARD.getString(getProperty());
