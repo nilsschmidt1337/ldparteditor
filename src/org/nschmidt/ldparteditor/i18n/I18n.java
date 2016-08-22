@@ -347,8 +347,6 @@ public final class I18n {
     public static final String DIALOG_SyncTitle = DIALOG.getString(getProperty());
     public static final String DIALOG_TheNewProject = DIALOG.getString(getProperty());
     public static final String DIALOG_TheOldProject = DIALOG.getString(getProperty());
-    public static final String DIALOG_Unavailable = DIALOG.getString(getProperty());
-    public static final String DIALOG_UnavailableTitle = DIALOG.getString(getProperty());
     public static final String DIALOG_UnsavedChanges = DIALOG.getString(getProperty());
     public static final String DIALOG_UnsavedChangesTitle = DIALOG.getString(getProperty());
     public static final String DIALOG_Warning = DIALOG.getString(getProperty());

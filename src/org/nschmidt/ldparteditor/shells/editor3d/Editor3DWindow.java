@@ -56,6 +56,8 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MenuDetectEvent;
+import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -2578,417 +2580,174 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        treeParts[0].addListener(SWT.MouseDown, new Listener() {
+        treeParts[0].addMenuDetectListener(new MenuDetectListener() {
             @Override
-            public void handleEvent(Event event) {
-                if (event.button == MouseButton.RIGHT) {
+            public void menuDetected(MenuDetectEvent e) {
 
-                    NLogger.debug(getClass(), "Showing context menu."); //$NON-NLS-1$
+                NLogger.debug(getClass(), "Showing context menu."); //$NON-NLS-1$
 
-                    try {
-                        if (treeParts[0].getTree().getMenu() != null) {
-                            treeParts[0].getTree().getMenu().dispose();
-                        }
-                    } catch (Exception ex) {}
+                try {
+                    if (treeParts[0].getTree().getMenu() != null) {
+                        treeParts[0].getTree().getMenu().dispose();
+                    }
+                } catch (Exception ex) {}
 
-                    Menu treeMenu = new Menu(treeParts[0].getTree());
-                    treeParts[0].getTree().setMenu(treeMenu);
-                    mnu_treeMenu[0] = treeMenu;
+                final boolean enabled = treeParts[0].getSelectionCount() > 0 ? treeParts[0].getSelection()[0].getData() instanceof DatFile : false;
+                final boolean writable = enabled ? !((DatFile) treeParts[0].getSelection()[0].getData()).isReadOnly() : false;
+                final boolean isNotUnofficial = enabled && treeParts[0].getSelection()[0].getParentItem().getParentItem() != null ? !treeParts[0].getSelection()[0].getParentItem().getParentItem().equals(treeItem_Unofficial[0]) : false;
 
-                    MenuItem mntmOpenIn3DEditor = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
-                    mntm_OpenIn3DEditor[0] = mntmOpenIn3DEditor;
-                    mntmOpenIn3DEditor.setEnabled(true);
-                    mntmOpenIn3DEditor.setText(I18n.E3D_OpenIn3DEditor);
+                Menu treeMenu = new Menu(treeParts[0].getTree());
+                treeParts[0].getTree().setMenu(treeMenu);
+                mnu_treeMenu[0] = treeMenu;
 
-                    MenuItem mntmOpenInTextEditor = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
-                    mntm_OpenInTextEditor[0] = mntmOpenInTextEditor;
-                    mntmOpenInTextEditor.setEnabled(true);
-                    mntmOpenInTextEditor.setText(I18n.E3D_OpenInTextEditor);
+                MenuItem mntmOpenIn3DEditor = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                mntm_OpenIn3DEditor[0] = mntmOpenIn3DEditor;
+                mntmOpenIn3DEditor.setEnabled(enabled);
+                mntmOpenIn3DEditor.setText(I18n.E3D_OpenIn3DEditor);
 
-                    @SuppressWarnings("unused")
-                    MenuItem mntm_Separator = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
+                MenuItem mntmOpenInTextEditor = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                mntm_OpenInTextEditor[0] = mntmOpenInTextEditor;
+                mntmOpenInTextEditor.setEnabled(enabled);
+                mntmOpenInTextEditor.setText(I18n.E3D_OpenInTextEditor);
 
-                    MenuItem mntmClose = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
-                    mntm_Close[0] = mntmClose;
-                    mntmClose.setEnabled(true);
-                    mntmClose.setText(I18n.E3D_Close);
+                @SuppressWarnings("unused")
+                MenuItem mntm_Separator = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
 
-                    @SuppressWarnings("unused")
-                    MenuItem mntm_Separator2 = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
+                MenuItem mntmClose = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                mntm_Close[0] = mntmClose;
+                mntmClose.setEnabled(enabled);
+                mntmClose.setText(I18n.E3D_Close);
 
-                    MenuItem mntmRename = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
-                    mntm_Rename[0] = mntmRename;
-                    mntmRename.setEnabled(true);
-                    mntmRename.setText(I18n.E3D_RenameMove);
+                @SuppressWarnings("unused")
+                MenuItem mntm_Separator2 = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
 
-                    MenuItem mntmRevert = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
-                    mntm_Revert[0] = mntmRevert;
-                    mntmRevert.setEnabled(true);
-                    mntmRevert.setText(I18n.E3D_RevertAllChanges);
+                MenuItem mntmRename = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                mntm_Rename[0] = mntmRename;
+                mntmRename.setEnabled(enabled && writable);
+                mntmRename.setText(I18n.E3D_RenameMove);
 
-                    @SuppressWarnings("unused")
-                    MenuItem mntm_Separator3 = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
+                MenuItem mntmRevert = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                mntm_Revert[0] = mntmRevert;
+                mntmRevert.setEnabled(enabled && writable);
+                mntmRevert.setText(I18n.E3D_RevertAllChanges);
 
-                    MenuItem mntmCopyToUnofficial = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
-                    mntm_CopyToUnofficial[0] = mntmCopyToUnofficial;
-                    mntmCopyToUnofficial.setEnabled(true);
-                    mntmCopyToUnofficial.setText(I18n.E3D_CopyToUnofficialLibrary);
+                @SuppressWarnings("unused")
+                MenuItem mntm_Separator3 = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
 
-                    mntm_OpenInTextEditor[0].addSelectionListener(new SelectionAdapter() {
-                        @Override
-                        public void widgetSelected(SelectionEvent e) {
-                            if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-                                DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                    for (CTabItem t : w.getTabFolder().getItems()) {
-                                        if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                            w.getTabFolder().setSelection(t);
-                                            ((CompositeTab) t).getControl().getShell().forceActive();
-                                            if (w.isSeperateWindow()) {
-                                                w.open();
-                                            }
-                                            df.getVertexManager().setUpdated(true);
-                                            return;
+                MenuItem mntmCopyToUnofficial = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                mntm_CopyToUnofficial[0] = mntmCopyToUnofficial;
+                mntmCopyToUnofficial.setEnabled(enabled && isNotUnofficial);
+                mntmCopyToUnofficial.setText(I18n.E3D_CopyToUnofficialLibrary);
+
+                mntm_OpenInTextEditor[0].addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
+                            DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+                            for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                for (CTabItem t : w.getTabFolder().getItems()) {
+                                    if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                        w.getTabFolder().setSelection(t);
+                                        ((CompositeTab) t).getControl().getShell().forceActive();
+                                        if (w.isSeperateWindow()) {
+                                            w.open();
                                         }
+                                        df.getVertexManager().setUpdated(true);
+                                        return;
                                     }
-                                }
-
-                                EditorTextWindow w = null;
-                                for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
-                                    if (w2.getTabFolder().getItems().length == 0) {
-                                        w = w2;
-                                        break;
-                                    }
-                                }
-
-                                // Project.getParsedFiles().add(df); IS NECESSARY HERE
-                                Project.getParsedFiles().add(df);
-                                Project.addOpenedFile(df);
-                                if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow())) {
-                                    w.openNewDatFileTab(df, true);
-                                } else {
-                                    new EditorTextWindow().run(df, false);
-                                }
-                                df.getVertexManager().addSnapshot();
-                            }
-                            cleanupClosedData();
-                            updateTabs();
-                        }
-                    });
-                    mntm_OpenIn3DEditor[0].addSelectionListener(new SelectionAdapter() {
-                        @Override
-                        public void widgetSelected(SelectionEvent e) {
-                            if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-                                DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                openFileIn3DEditor(df);
-                                updateTree_unsavedEntries();
-                                cleanupClosedData();
-                                regainFocus();
-                            }
-                        }
-                    });
-                    mntm_Revert[0].addSelectionListener(new SelectionAdapter() {
-                        @Override
-                        public void widgetSelected(SelectionEvent e) {
-                            if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-                                DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                revert(df);
-                            }
-                            regainFocus();
-                        }
-                    });
-                    mntm_Close[0].addSelectionListener(new SelectionAdapter() {
-                        @Override
-                        public void widgetSelected(SelectionEvent e) {
-                            if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-                                DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                Project.removeOpenedFile(df);
-                                if (!closeDatfile(df)) {
-                                    Project.addOpenedFile(df);
-                                    updateTabs();
                                 }
                             }
-                        }
-                    });
-                    mntm_Rename[0].addSelectionListener(new SelectionAdapter() {
-                        @SuppressWarnings("unchecked")
-                        @Override
-                        public void widgetSelected(SelectionEvent e) {
-                            if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-                                DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                if (df.isReadOnly()) {
-                                    regainFocus();
-                                    return;
+
+                            EditorTextWindow w = null;
+                            for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
+                                if (w2.getTabFolder().getItems().length == 0) {
+                                    w = w2;
+                                    break;
                                 }
-                                df.getVertexManager().addSnapshot();
+                            }
 
-                                FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
-
-                                File tmp = new File(df.getNewName());
-                                dlg.setFilterPath(tmp.getAbsolutePath().substring(0, tmp.getAbsolutePath().length() - tmp.getName().length()));
-                                dlg.setFileName(tmp.getName());
-                                dlg.setFilterExtensions(new String[]{"*.dat"}); //$NON-NLS-1$
-                                dlg.setOverwrite(true);
-
-                                // Change the title bar text
-                                dlg.setText(I18n.DIALOG_RenameOrMove);
-
-                                // Calling open() will open and run the dialog.
-                                // It will return the selected file, or
-                                // null if user cancels
-                                String newPath = dlg.open();
-                                if (newPath != null) {
-
-                                    while (isFileNameAllocated(newPath, df, false)) {
-                                        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
-                                        messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
-                                        messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
-
-                                        int result = messageBox.open();
-
-                                        if (result == SWT.CANCEL) {
-                                            regainFocus();
-                                            return;
-                                        }
-                                        newPath = dlg.open();
-                                        if (newPath == null) {
-                                            regainFocus();
-                                            return;
-                                        }
-                                    }
-
-
-                                    if (df.isProjectFile() && !newPath.startsWith(Project.getProjectPath())) {
-
-                                        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-                                        messageBox.setText(I18n.DIALOG_NoProjectLocationTitle);
-
-                                        Object[] messageArguments = {new File(newPath).getName()};
-                                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                        formatter.setLocale(MyLanguage.LOCALE);
-                                        formatter.applyPattern(I18n.DIALOG_NoProjectLocation);
-                                        messageBox.setMessage(formatter.format(messageArguments));
-
-                                        int result = messageBox.open();
-
-                                        if (result == SWT.NO) {
-                                            regainFocus();
-                                            return;
-                                        }
-                                    }
-
-                                    df.setNewName(newPath);
-                                    if (!df.getOldName().equals(df.getNewName())) {
-                                        if (!Project.getUnsavedFiles().contains(df)) {
-                                            df.parseForData(true);
-                                            df.getVertexManager().setModified(true, true);
-                                            Project.getUnsavedFiles().add(df);
-                                        }
-                                    } else {
-                                        if (df.getText().equals(df.getOriginalText()) && df.getOldName().equals(df.getNewName())) {
-                                            Project.removeUnsavedFile(df);
-                                        }
-                                    }
-
-                                    df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
-
-                                    final File f = new File(df.getNewName());
-                                    if (f.getParentFile() != null) {
-                                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
-                                    }
-
-                                    HashSet<EditorTextWindow> windows = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
-                                    for (EditorTextWindow win : windows) {
-                                        win.updateTabWithDatfile(df);
-                                    }
-                                    updateTree_renamedEntries();
-                                    updateTree_unsavedEntries();
-                                }
-                            } else if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].equals(treeItem_Project[0])) {
-                                if (Project.isDefaultProject()) {
-                                    if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
-                                        Project.setLastVisitedPath(Project.getProjectPath());
-                                    }
-                                } else {
-                                    int result = new NewProjectDialog(true).open();
-                                    if (result == IDialogConstants.OK_ID && !Project.getTempProjectPath().equals(Project.getProjectPath())) {
-                                        try {
-                                            while (new File(Project.getTempProjectPath()).isDirectory()) {
-                                                MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.YES | SWT.CANCEL | SWT.NO);
-                                                messageBoxError.setText(I18n.PROJECT_ProjectOverwriteTitle);
-                                                messageBoxError.setMessage(I18n.PROJECT_ProjectOverwrite);
-                                                int result2 = messageBoxError.open();
-                                                if (result2 == SWT.CANCEL) {
-                                                    regainFocus();
-                                                    return;
-                                                } else if (result2 == SWT.YES) {
-                                                    break;
-                                                } else {
-                                                    result = new NewProjectDialog(true).open();
-                                                    if (result == IDialogConstants.CANCEL_ID) {
-                                                        regainFocus();
-                                                        return;
-                                                    }
-                                                }
-                                            }
-                                            Project.copyFolder(new File(Project.getProjectPath()), new File(Project.getTempProjectPath()));
-                                            Project.deleteFolder(new File(Project.getProjectPath()));
-                                            // Linked project parts need a new path, because they were copied to a new directory
-                                            String defaultPrefix = new File(Project.getProjectPath()).getAbsolutePath() + File.separator;
-                                            String projectPrefix = new File(Project.getTempProjectPath()).getAbsolutePath() + File.separator;
-                                            Editor3DWindow.getWindow().getProjectParts().getParentItem().setData(Project.getTempProjectPath());
-                                            HashSet<DatFile> projectFiles = new HashSet<DatFile>();
-                                            projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectParts().getData());
-                                            projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectSubparts().getData());
-                                            projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives().getData());
-                                            projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives48().getData());
-                                            for (DatFile df : projectFiles) {
-                                                df.getVertexManager().addSnapshot();
-                                                boolean isUnsaved = Project.getUnsavedFiles().contains(df);
-                                                boolean isParsed = Project.getParsedFiles().contains(df);
-                                                Project.getParsedFiles().remove(df);
-                                                Project.getUnsavedFiles().remove(df);
-                                                String newName = df.getNewName();
-                                                String oldName = df.getOldName();
-                                                df.updateLastModified();
-                                                if (!newName.startsWith(projectPrefix) && newName.startsWith(defaultPrefix)) {
-                                                    df.setNewName(projectPrefix + newName.substring(defaultPrefix.length()));
-                                                }
-                                                if (!oldName.startsWith(projectPrefix) && oldName.startsWith(defaultPrefix)) {
-                                                    df.setOldName(projectPrefix + oldName.substring(defaultPrefix.length()));
-                                                }
-                                                df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
-                                                if (isUnsaved) Project.addUnsavedFile(df);
-                                                if (isParsed) Project.getParsedFiles().add(df);
-                                                Project.addOpenedFile(df);
-                                            }
-                                            Project.setProjectName(Project.getTempProjectName());
-                                            Project.setProjectPath(Project.getTempProjectPath());
-                                            Editor3DWindow.getWindow().getProjectParts().getParentItem().setText(Project.getProjectName());
-                                            updateTree_unsavedEntries();
-                                            Project.updateEditor();
-                                            Editor3DWindow.getWindow().getShell().update();
-                                            Project.setLastVisitedPath(Project.getProjectPath());
-                                        } catch (IOException e1) {
-                                            // TODO Auto-generated catch block
-                                            e1.printStackTrace();
-                                        }
-                                    }
-                                }
+                            // Project.getParsedFiles().add(df); IS NECESSARY HERE
+                            Project.getParsedFiles().add(df);
+                            Project.addOpenedFile(df);
+                            if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow())) {
+                                w.openNewDatFileTab(df, true);
                             } else {
-                                // MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                                // messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
-                                // messageBoxError.setMessage(I18n.DIALOG_Unavailable);
-                                // messageBoxError.open();
+                                new EditorTextWindow().run(df, false);
                             }
+                            df.getVertexManager().addSnapshot();
+                        }
+                        cleanupClosedData();
+                        updateTabs();
+                    }
+                });
+                mntm_OpenIn3DEditor[0].addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
+                            DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+                            openFileIn3DEditor(df);
+                            updateTree_unsavedEntries();
+                            cleanupClosedData();
                             regainFocus();
                         }
-                    });
-                    mntm_CopyToUnofficial[0] .addSelectionListener(new SelectionAdapter() {
-                        @SuppressWarnings("unchecked")
-                        @Override
-                        public void widgetSelected(SelectionEvent e) {
-                            if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-                                DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                                TreeItem p = treeParts[0].getSelection()[0].getParentItem();
-                                String targetPath_u;
-                                String targetPath_l;
-                                String targetPathDir_u;
-                                String targetPathDir_l;
-                                TreeItem targetTreeItem;
-                                boolean projectIsFileOrigin = false;
-                                if (treeItem_ProjectParts[0].equals(p)) {
-                                    targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"; //$NON-NLS-1$
-                                    targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"; //$NON-NLS-1$
-                                    targetTreeItem = treeItem_UnofficialParts[0];
-                                    projectIsFileOrigin = true;
-                                } else if (treeItem_ProjectPrimitives[0].equals(p)) {
-                                    targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P"; //$NON-NLS-1$
-                                    targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p"; //$NON-NLS-1$
-                                    targetTreeItem = treeItem_UnofficialPrimitives[0];
-                                    projectIsFileOrigin = true;
-                                } else if (treeItem_ProjectPrimitives48[0].equals(p)) {
-                                    targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
-                                    targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
-                                    targetTreeItem = treeItem_UnofficialPrimitives48[0];
-                                    projectIsFileOrigin = true;
-                                } else if (treeItem_ProjectPrimitives8[0].equals(p)) {
-                                    targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
-                                    targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
-                                    targetTreeItem = treeItem_UnofficialPrimitives8[0];
-                                    projectIsFileOrigin = true;
-                                } else if (treeItem_ProjectSubparts[0].equals(p)) {
-                                    targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"+ File.separator + "S"; //$NON-NLS-1$ //$NON-NLS-2$
-                                    targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
-                                    targetTreeItem = treeItem_UnofficialSubparts[0];
-                                    projectIsFileOrigin = true;
-                                } else if (treeItem_OfficialParts[0].equals(p)) {
-                                    targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"; //$NON-NLS-1$
-                                    targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"; //$NON-NLS-1$
-                                    targetTreeItem = treeItem_UnofficialParts[0];
-                                } else if (treeItem_OfficialPrimitives[0].equals(p)) {
-                                    targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P"; //$NON-NLS-1$
-                                    targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p"; //$NON-NLS-1$
-                                    targetTreeItem = treeItem_UnofficialPrimitives[0];
-                                } else if (treeItem_OfficialPrimitives48[0].equals(p)) {
-                                    targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
-                                    targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
-                                    targetTreeItem = treeItem_UnofficialPrimitives48[0];
-                                } else if (treeItem_OfficialPrimitives8[0].equals(p)) {
-                                    targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
-                                    targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
-                                    targetTreeItem = treeItem_UnofficialPrimitives8[0];
-                                } else if (treeItem_OfficialSubparts[0].equals(p)) {
-                                    targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"+ File.separator + "S"; //$NON-NLS-1$ //$NON-NLS-2$
-                                    targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
-                                    targetTreeItem = treeItem_UnofficialSubparts[0];
-                                } else {
-                                    // MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                                    // messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
-                                    // messageBoxError.setMessage(I18n.DIALOG_Unavailable);
-                                    // messageBoxError.open();
-                                    regainFocus();
-                                    return;
-                                }
+                    }
+                });
+                mntm_Revert[0].addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
+                            DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+                            revert(df);
+                        }
+                        regainFocus();
+                    }
+                });
+                mntm_Close[0].addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
+                            DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+                            Project.removeOpenedFile(df);
+                            if (!closeDatfile(df)) {
+                                Project.addOpenedFile(df);
+                                updateTabs();
+                            }
+                        }
+                    }
+                });
+                mntm_Rename[0].addSelectionListener(new SelectionAdapter() {
+                    @SuppressWarnings("unchecked")
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
+                            DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+                            if (df.isReadOnly()) {
+                                regainFocus();
+                                return;
+                            }
+                            df.getVertexManager().addSnapshot();
 
-                                targetPathDir_l = targetPath_l;
-                                targetPathDir_u = targetPath_u;
+                            FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
 
-                                final String newName = new File(df.getNewName()).getName();
-                                targetPath_u = targetPath_u + File.separator + newName;
-                                targetPath_l = targetPath_l + File.separator + newName;
+                            File tmp = new File(df.getNewName());
+                            dlg.setFilterPath(tmp.getAbsolutePath().substring(0, tmp.getAbsolutePath().length() - tmp.getName().length()));
+                            dlg.setFileName(tmp.getName());
+                            dlg.setFilterExtensions(new String[]{"*.dat"}); //$NON-NLS-1$
+                            dlg.setOverwrite(true);
 
-                                DatFile fileToOverwrite_u = new DatFile(targetPath_u);
-                                DatFile fileToOverwrite_l = new DatFile(targetPath_l);
+                            // Change the title bar text
+                            dlg.setText(I18n.DIALOG_RenameOrMove);
 
-                                DatFile targetFile = null;
+                            // Calling open() will open and run the dialog.
+                            // It will return the selected file, or
+                            // null if user cancels
+                            String newPath = dlg.open();
+                            if (newPath != null) {
 
-                                TreeItem[] folders = new TreeItem[5];
-                                folders[0] = treeItem_UnofficialParts[0];
-                                folders[1] = treeItem_UnofficialPrimitives[0];
-                                folders[2] = treeItem_UnofficialPrimitives48[0];
-                                folders[3] = treeItem_UnofficialPrimitives8[0];
-                                folders[4] = treeItem_UnofficialSubparts[0];
-
-                                for (TreeItem folder : folders) {
-                                    ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
-                                    for (DatFile d : cachedReferences) {
-                                        if (fileToOverwrite_u.equals(d) || fileToOverwrite_l.equals(d)) {
-                                            targetFile = d;
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                if (new File(targetPath_u).exists() || new File(targetPath_l).exists() || targetFile != null) {
-                                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-                                    messageBox.setText(I18n.DIALOG_ReplaceTitle);
-
-                                    Object[] messageArguments = {newName};
-                                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                    formatter.setLocale(MyLanguage.LOCALE);
-                                    formatter.applyPattern(I18n.DIALOG_Replace);
-                                    messageBox.setMessage(formatter.format(messageArguments));
+                                while (isFileNameAllocated(newPath, df, false)) {
+                                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
+                                    messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
+                                    messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
 
                                     int result = messageBox.open();
 
@@ -2996,144 +2755,375 @@ public class Editor3DWindow extends Editor3DDesign {
                                         regainFocus();
                                         return;
                                     }
-                                }
-
-                                ArrayList<ArrayList<DatFile>> refResult = null;
-
-                                if (new File(targetPathDir_l).exists() || new File(targetPathDir_u).exists()) {
-                                    if (targetFile == null) {
-
-                                        int result = new CopyDialog(getShell(), new File(df.getNewName()).getName()).open();
-
-
-                                        switch (result) {
-                                        case IDialogConstants.OK_ID:
-                                            // Copy File Only
-                                            break;
-                                        case IDialogConstants.NO_ID:
-                                            // Copy File and required and related
-                                            if (projectIsFileOrigin) {
-                                                refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItem_Project[0], treeItem_Unofficial[0], treeItem_Official[0]);
-                                            } else {
-                                                refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItem_Official[0], treeItem_Unofficial[0], treeItem_Project[0]);
-                                            }
-                                            break;
-                                        case IDialogConstants.YES_ID:
-                                            // Copy File and required
-                                            if (projectIsFileOrigin) {
-                                                refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItem_Project[0], treeItem_Unofficial[0], treeItem_Official[0]);
-                                            } else {
-                                                refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItem_Official[0], treeItem_Unofficial[0], treeItem_Project[0]);
-                                            }
-                                            break;
-                                        default:
-                                            regainFocus();
-                                            return;
-                                        }
-                                        DatFile newDatFile = new DatFile(new File(targetPathDir_l).exists() ? targetPath_l : targetPath_u);
-                                        // Text exchange includes description exchange
-                                        newDatFile.setText(df.getText());
-                                        newDatFile.saveForced();
-                                        newDatFile.setType(df.getType());
-                                        ((ArrayList<DatFile>) targetTreeItem.getData()).add(newDatFile);
-                                        TreeItem ti = new TreeItem(targetTreeItem, SWT.NONE);
-                                        ti.setText(new File(df.getNewName()).getName());
-                                        ti.setData(newDatFile);
-                                    } else if (targetFile.equals(df)) { // This can only happen if the user opens the unofficial parts folder as a project
-                                        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                                        messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
-                                        messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
-                                        messageBox.open();
+                                    newPath = dlg.open();
+                                    if (newPath == null) {
                                         regainFocus();
                                         return;
-                                    } else {
-
-                                        int result = new CopyDialog(getShell(), new File(df.getNewName()).getName()).open();
-                                        switch (result) {
-                                        case IDialogConstants.OK_ID:
-                                            // Copy File Only
-                                            break;
-                                        case IDialogConstants.NO_ID:
-                                            // Copy File and required and related
-                                            if (projectIsFileOrigin) {
-                                                refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItem_Project[0], treeItem_Unofficial[0], treeItem_Official[0]);
-                                            } else {
-                                                refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItem_Official[0], treeItem_Unofficial[0], treeItem_Project[0]);
-                                            }
-                                            break;
-                                        case IDialogConstants.YES_ID:
-                                            // Copy File and required
-                                            if (projectIsFileOrigin) {
-                                                refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItem_Project[0], treeItem_Unofficial[0], treeItem_Official[0]);
-                                            } else {
-                                                refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItem_Official[0], treeItem_Unofficial[0], treeItem_Project[0]);
-                                            }
-                                            break;
-                                        default:
-                                            regainFocus();
-                                            return;
-                                        }
-
-                                        targetFile.disposeData();
-                                        updateTree_removeEntry(targetFile);
-                                        DatFile newDatFile = new DatFile(new File(targetPathDir_l).exists() ? targetPath_l : targetPath_u);
-                                        newDatFile.setText(df.getText());
-                                        newDatFile.saveForced();
-                                        ((ArrayList<DatFile>) targetTreeItem.getData()).add(newDatFile);
-                                        TreeItem ti = new TreeItem(targetTreeItem, SWT.NONE);
-                                        ti.setText(new File(df.getNewName()).getName());
-                                        ti.setData(newDatFile);
                                     }
+                                }
 
-                                    if (refResult != null) {
-                                        // Remove old data
-                                        for(int i = 0; i < 5; i++) {
-                                            ArrayList<DatFile> toRemove = refResult.get(i);
-                                            for (DatFile datToRemove : toRemove) {
-                                                datToRemove.disposeData();
-                                                updateTree_removeEntry(datToRemove);
-                                            }
-                                        }
-                                        // Create new data
-                                        TreeItem[] targetTrees = new TreeItem[]{treeItem_UnofficialParts[0], treeItem_UnofficialSubparts[0], treeItem_UnofficialPrimitives[0], treeItem_UnofficialPrimitives48[0], treeItem_UnofficialPrimitives8[0]};
-                                        for(int i = 5; i < 10; i++) {
-                                            ArrayList<DatFile> toCreate = refResult.get(i);
-                                            for (DatFile datToCreate : toCreate) {
-                                                DatFile newDatFile = new DatFile(datToCreate.getOldName());
-                                                String source = datToCreate.getTextDirect();
-                                                newDatFile.setText(source);
-                                                newDatFile.setOriginalText(source);
-                                                newDatFile.saveForced();
-                                                newDatFile.setType(datToCreate.getType());
-                                                ((ArrayList<DatFile>) targetTrees[i - 5].getData()).add(newDatFile);
-                                                TreeItem ti = new TreeItem(targetTrees[i - 5], SWT.NONE);
-                                                ti.setText(new File(datToCreate.getOldName()).getName());
-                                                ti.setData(newDatFile);
-                                            }
-                                        }
 
+                                if (df.isProjectFile() && !newPath.startsWith(Project.getProjectPath())) {
+
+                                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+                                    messageBox.setText(I18n.DIALOG_NoProjectLocationTitle);
+
+                                    Object[] messageArguments = {new File(newPath).getName()};
+                                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                    formatter.setLocale(MyLanguage.LOCALE);
+                                    formatter.applyPattern(I18n.DIALOG_NoProjectLocation);
+                                    messageBox.setMessage(formatter.format(messageArguments));
+
+                                    int result = messageBox.open();
+
+                                    if (result == SWT.NO) {
+                                        regainFocus();
+                                        return;
                                     }
+                                }
 
-                                    updateTree_unsavedEntries();
+                                df.setNewName(newPath);
+                                if (!df.getOldName().equals(df.getNewName())) {
+                                    if (!Project.getUnsavedFiles().contains(df)) {
+                                        df.parseForData(true);
+                                        df.getVertexManager().setModified(true, true);
+                                        Project.getUnsavedFiles().add(df);
+                                    }
+                                } else {
+                                    if (df.getText().equals(df.getOriginalText()) && df.getOldName().equals(df.getNewName())) {
+                                        Project.removeUnsavedFile(df);
+                                    }
+                                }
+
+                                df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
+
+                                final File f = new File(df.getNewName());
+                                if (f.getParentFile() != null) {
+                                    Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                                }
+
+                                HashSet<EditorTextWindow> windows = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
+                                for (EditorTextWindow win : windows) {
+                                    win.updateTabWithDatfile(df);
+                                }
+                                updateTree_renamedEntries();
+                                updateTree_unsavedEntries();
+                            }
+                        } else if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].equals(treeItem_Project[0])) {
+                            if (Project.isDefaultProject()) {
+                                if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
+                                    Project.setLastVisitedPath(Project.getProjectPath());
                                 }
                             } else {
-                                MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                                messageBoxError.setText(I18n.DIALOG_UnavailableTitle);
-                                messageBoxError.setMessage(I18n.DIALOG_Unavailable);
-                                messageBoxError.open();
+                                int result = new NewProjectDialog(true).open();
+                                if (result == IDialogConstants.OK_ID && !Project.getTempProjectPath().equals(Project.getProjectPath())) {
+                                    try {
+                                        while (new File(Project.getTempProjectPath()).isDirectory()) {
+                                            MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.YES | SWT.CANCEL | SWT.NO);
+                                            messageBoxError.setText(I18n.PROJECT_ProjectOverwriteTitle);
+                                            messageBoxError.setMessage(I18n.PROJECT_ProjectOverwrite);
+                                            int result2 = messageBoxError.open();
+                                            if (result2 == SWT.CANCEL) {
+                                                regainFocus();
+                                                return;
+                                            } else if (result2 == SWT.YES) {
+                                                break;
+                                            } else {
+                                                result = new NewProjectDialog(true).open();
+                                                if (result == IDialogConstants.CANCEL_ID) {
+                                                    regainFocus();
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                        Project.copyFolder(new File(Project.getProjectPath()), new File(Project.getTempProjectPath()));
+                                        Project.deleteFolder(new File(Project.getProjectPath()));
+                                        // Linked project parts need a new path, because they were copied to a new directory
+                                        String defaultPrefix = new File(Project.getProjectPath()).getAbsolutePath() + File.separator;
+                                        String projectPrefix = new File(Project.getTempProjectPath()).getAbsolutePath() + File.separator;
+                                        Editor3DWindow.getWindow().getProjectParts().getParentItem().setData(Project.getTempProjectPath());
+                                        HashSet<DatFile> projectFiles = new HashSet<DatFile>();
+                                        projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectParts().getData());
+                                        projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectSubparts().getData());
+                                        projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives().getData());
+                                        projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives48().getData());
+                                        for (DatFile df : projectFiles) {
+                                            df.getVertexManager().addSnapshot();
+                                            boolean isUnsaved = Project.getUnsavedFiles().contains(df);
+                                            boolean isParsed = Project.getParsedFiles().contains(df);
+                                            Project.getParsedFiles().remove(df);
+                                            Project.getUnsavedFiles().remove(df);
+                                            String newName = df.getNewName();
+                                            String oldName = df.getOldName();
+                                            df.updateLastModified();
+                                            if (!newName.startsWith(projectPrefix) && newName.startsWith(defaultPrefix)) {
+                                                df.setNewName(projectPrefix + newName.substring(defaultPrefix.length()));
+                                            }
+                                            if (!oldName.startsWith(projectPrefix) && oldName.startsWith(defaultPrefix)) {
+                                                df.setOldName(projectPrefix + oldName.substring(defaultPrefix.length()));
+                                            }
+                                            df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
+                                            if (isUnsaved) Project.addUnsavedFile(df);
+                                            if (isParsed) Project.getParsedFiles().add(df);
+                                            Project.addOpenedFile(df);
+                                        }
+                                        Project.setProjectName(Project.getTempProjectName());
+                                        Project.setProjectPath(Project.getTempProjectPath());
+                                        Editor3DWindow.getWindow().getProjectParts().getParentItem().setText(Project.getProjectName());
+                                        updateTree_unsavedEntries();
+                                        Project.updateEditor();
+                                        Editor3DWindow.getWindow().getShell().update();
+                                        Project.setLastVisitedPath(Project.getProjectPath());
+                                    } catch (IOException e1) {
+                                        // TODO Auto-generated catch block
+                                        e1.printStackTrace();
+                                    }
+                                }
                             }
-                            regainFocus();
                         }
-                    });
+                        regainFocus();
+                    }
+                });
+                mntm_CopyToUnofficial[0] .addSelectionListener(new SelectionAdapter() {
+                    @SuppressWarnings("unchecked")
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
+                            DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+                            TreeItem p = treeParts[0].getSelection()[0].getParentItem();
+                            String targetPath_u;
+                            String targetPath_l;
+                            String targetPathDir_u;
+                            String targetPathDir_l;
+                            TreeItem targetTreeItem;
+                            boolean projectIsFileOrigin = false;
+                            if (treeItem_ProjectParts[0].equals(p)) {
+                                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"; //$NON-NLS-1$
+                                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"; //$NON-NLS-1$
+                                targetTreeItem = treeItem_UnofficialParts[0];
+                                projectIsFileOrigin = true;
+                            } else if (treeItem_ProjectPrimitives[0].equals(p)) {
+                                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P"; //$NON-NLS-1$
+                                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p"; //$NON-NLS-1$
+                                targetTreeItem = treeItem_UnofficialPrimitives[0];
+                                projectIsFileOrigin = true;
+                            } else if (treeItem_ProjectPrimitives48[0].equals(p)) {
+                                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
+                                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
+                                targetTreeItem = treeItem_UnofficialPrimitives48[0];
+                                projectIsFileOrigin = true;
+                            } else if (treeItem_ProjectPrimitives8[0].equals(p)) {
+                                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
+                                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
+                                targetTreeItem = treeItem_UnofficialPrimitives8[0];
+                                projectIsFileOrigin = true;
+                            } else if (treeItem_ProjectSubparts[0].equals(p)) {
+                                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"+ File.separator + "S"; //$NON-NLS-1$ //$NON-NLS-2$
+                                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
+                                targetTreeItem = treeItem_UnofficialSubparts[0];
+                                projectIsFileOrigin = true;
+                            } else if (treeItem_OfficialParts[0].equals(p)) {
+                                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"; //$NON-NLS-1$
+                                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"; //$NON-NLS-1$
+                                targetTreeItem = treeItem_UnofficialParts[0];
+                            } else if (treeItem_OfficialPrimitives[0].equals(p)) {
+                                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P"; //$NON-NLS-1$
+                                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p"; //$NON-NLS-1$
+                                targetTreeItem = treeItem_UnofficialPrimitives[0];
+                            } else if (treeItem_OfficialPrimitives48[0].equals(p)) {
+                                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
+                                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
+                                targetTreeItem = treeItem_UnofficialPrimitives48[0];
+                            } else if (treeItem_OfficialPrimitives8[0].equals(p)) {
+                                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
+                                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
+                                targetTreeItem = treeItem_UnofficialPrimitives8[0];
+                            } else if (treeItem_OfficialSubparts[0].equals(p)) {
+                                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"+ File.separator + "S"; //$NON-NLS-1$ //$NON-NLS-2$
+                                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
+                                targetTreeItem = treeItem_UnofficialSubparts[0];
+                            } else {
+                                regainFocus();
+                                return;
+                            }
 
-                    java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
-                    final int x = (int) b.getX();
-                    final int y = (int) b.getY();
+                            targetPathDir_l = targetPath_l;
+                            targetPathDir_u = targetPath_u;
 
-                    Menu menu = mnu_treeMenu[0];
-                    menu.setLocation(x, y);
-                    menu.setVisible(true);
-                }
+                            final String newName = new File(df.getNewName()).getName();
+                            targetPath_u = targetPath_u + File.separator + newName;
+                            targetPath_l = targetPath_l + File.separator + newName;
+
+                            DatFile fileToOverwrite_u = new DatFile(targetPath_u);
+                            DatFile fileToOverwrite_l = new DatFile(targetPath_l);
+
+                            DatFile targetFile = null;
+
+                            TreeItem[] folders = new TreeItem[5];
+                            folders[0] = treeItem_UnofficialParts[0];
+                            folders[1] = treeItem_UnofficialPrimitives[0];
+                            folders[2] = treeItem_UnofficialPrimitives48[0];
+                            folders[3] = treeItem_UnofficialPrimitives8[0];
+                            folders[4] = treeItem_UnofficialSubparts[0];
+
+                            for (TreeItem folder : folders) {
+                                ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
+                                for (DatFile d : cachedReferences) {
+                                    if (fileToOverwrite_u.equals(d) || fileToOverwrite_l.equals(d)) {
+                                        targetFile = d;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (new File(targetPath_u).exists() || new File(targetPath_l).exists() || targetFile != null) {
+                                MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+                                messageBox.setText(I18n.DIALOG_ReplaceTitle);
+
+                                Object[] messageArguments = {newName};
+                                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                formatter.setLocale(MyLanguage.LOCALE);
+                                formatter.applyPattern(I18n.DIALOG_Replace);
+                                messageBox.setMessage(formatter.format(messageArguments));
+
+                                int result = messageBox.open();
+
+                                if (result == SWT.CANCEL) {
+                                    regainFocus();
+                                    return;
+                                }
+                            }
+
+                            ArrayList<ArrayList<DatFile>> refResult = null;
+
+                            if (new File(targetPathDir_l).exists() || new File(targetPathDir_u).exists()) {
+                                if (targetFile == null) {
+
+                                    int result = new CopyDialog(getShell(), new File(df.getNewName()).getName()).open();
+
+
+                                    switch (result) {
+                                    case IDialogConstants.OK_ID:
+                                        // Copy File Only
+                                        break;
+                                    case IDialogConstants.NO_ID:
+                                        // Copy File and required and related
+                                        if (projectIsFileOrigin) {
+                                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItem_Project[0], treeItem_Unofficial[0], treeItem_Official[0]);
+                                        } else {
+                                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItem_Official[0], treeItem_Unofficial[0], treeItem_Project[0]);
+                                        }
+                                        break;
+                                    case IDialogConstants.YES_ID:
+                                        // Copy File and required
+                                        if (projectIsFileOrigin) {
+                                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItem_Project[0], treeItem_Unofficial[0], treeItem_Official[0]);
+                                        } else {
+                                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItem_Official[0], treeItem_Unofficial[0], treeItem_Project[0]);
+                                        }
+                                        break;
+                                    default:
+                                        regainFocus();
+                                        return;
+                                    }
+                                    DatFile newDatFile = new DatFile(new File(targetPathDir_l).exists() ? targetPath_l : targetPath_u);
+                                    // Text exchange includes description exchange
+                                    newDatFile.setText(df.getText());
+                                    newDatFile.saveForced();
+                                    newDatFile.setType(df.getType());
+                                    ((ArrayList<DatFile>) targetTreeItem.getData()).add(newDatFile);
+                                    TreeItem ti = new TreeItem(targetTreeItem, SWT.NONE);
+                                    ti.setText(new File(df.getNewName()).getName());
+                                    ti.setData(newDatFile);
+                                } else if (targetFile.equals(df)) { // This can only happen if the user opens the unofficial parts folder as a project
+                                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                                    messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
+                                    messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
+                                    messageBox.open();
+                                    regainFocus();
+                                    return;
+                                } else {
+
+                                    int result = new CopyDialog(getShell(), new File(df.getNewName()).getName()).open();
+                                    switch (result) {
+                                    case IDialogConstants.OK_ID:
+                                        // Copy File Only
+                                        break;
+                                    case IDialogConstants.NO_ID:
+                                        // Copy File and required and related
+                                        if (projectIsFileOrigin) {
+                                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItem_Project[0], treeItem_Unofficial[0], treeItem_Official[0]);
+                                        } else {
+                                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItem_Official[0], treeItem_Unofficial[0], treeItem_Project[0]);
+                                        }
+                                        break;
+                                    case IDialogConstants.YES_ID:
+                                        // Copy File and required
+                                        if (projectIsFileOrigin) {
+                                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItem_Project[0], treeItem_Unofficial[0], treeItem_Official[0]);
+                                        } else {
+                                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItem_Official[0], treeItem_Unofficial[0], treeItem_Project[0]);
+                                        }
+                                        break;
+                                    default:
+                                        regainFocus();
+                                        return;
+                                    }
+
+                                    targetFile.disposeData();
+                                    updateTree_removeEntry(targetFile);
+                                    DatFile newDatFile = new DatFile(new File(targetPathDir_l).exists() ? targetPath_l : targetPath_u);
+                                    newDatFile.setText(df.getText());
+                                    newDatFile.saveForced();
+                                    ((ArrayList<DatFile>) targetTreeItem.getData()).add(newDatFile);
+                                    TreeItem ti = new TreeItem(targetTreeItem, SWT.NONE);
+                                    ti.setText(new File(df.getNewName()).getName());
+                                    ti.setData(newDatFile);
+                                }
+
+                                if (refResult != null) {
+                                    // Remove old data
+                                    for(int i = 0; i < 5; i++) {
+                                        ArrayList<DatFile> toRemove = refResult.get(i);
+                                        for (DatFile datToRemove : toRemove) {
+                                            datToRemove.disposeData();
+                                            updateTree_removeEntry(datToRemove);
+                                        }
+                                    }
+                                    // Create new data
+                                    TreeItem[] targetTrees = new TreeItem[]{treeItem_UnofficialParts[0], treeItem_UnofficialSubparts[0], treeItem_UnofficialPrimitives[0], treeItem_UnofficialPrimitives48[0], treeItem_UnofficialPrimitives8[0]};
+                                    for(int i = 5; i < 10; i++) {
+                                        ArrayList<DatFile> toCreate = refResult.get(i);
+                                        for (DatFile datToCreate : toCreate) {
+                                            DatFile newDatFile = new DatFile(datToCreate.getOldName());
+                                            String source = datToCreate.getTextDirect();
+                                            newDatFile.setText(source);
+                                            newDatFile.setOriginalText(source);
+                                            newDatFile.saveForced();
+                                            newDatFile.setType(datToCreate.getType());
+                                            ((ArrayList<DatFile>) targetTrees[i - 5].getData()).add(newDatFile);
+                                            TreeItem ti = new TreeItem(targetTrees[i - 5], SWT.NONE);
+                                            ti.setText(new File(datToCreate.getOldName()).getName());
+                                            ti.setData(newDatFile);
+                                        }
+                                    }
+
+                                }
+
+                                updateTree_unsavedEntries();
+                            }
+                        }
+                        regainFocus();
+                    }
+                });
+
+                java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
+                final int x = (int) b.getX();
+                final int y = (int) b.getY();
+
+                Menu menu = mnu_treeMenu[0];
+                menu.setLocation(x, y);
+                menu.setVisible(true);
                 regainFocus();
             }
         });
