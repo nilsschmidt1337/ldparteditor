@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.graphics.Image;
@@ -40,7 +41,7 @@ public class Tree {
     private org.eclipse.swt.widgets.TreeItem[] itemsSWT;
 
     int counter;
-    
+
     /**
      * @param parent
      * @param columnCount
@@ -88,6 +89,10 @@ public class Tree {
 
     public void addListener(int eventType, Listener listener) {
         tree.addListener(eventType, listener);
+    }
+
+    public void addMenuDetectListener(MenuDetectListener mdl) {
+        tree.addMenuDetectListener(mdl);
     }
 
     public void setLayoutData(GridData layoutData) {
