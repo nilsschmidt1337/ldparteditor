@@ -234,6 +234,13 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Close = new MenuItem[1];
     final MenuItem[] mntm_CopyToUnofficial = new MenuItem[1];
 
+    final Button[] btn_OpenIn3DEditor = new Button[1];
+    final Button[] btn_OpenInTextEditor = new Button[1];
+    final Button[] btn_Rename = new Button[1];
+    final Button[] btn_Revert = new Button[1];
+    final Button[] btn_Close = new Button[1];
+    final Button[] btn_CopyToUnofficial = new Button[1];
+
     final Button[] btn_Select2 = new Button[1];
 
     final MenuItem[] mntm_SelectAll = new MenuItem[1];
@@ -1290,7 +1297,7 @@ class Editor3DDesign extends ApplicationWindow {
                         tabFolder_Settings.setSelection(tItem);
                     }
                     Composite cmp_Container2 = new Composite(sashForm2, SWT.BORDER);
-                    GridLayout gridLayout3 = new GridLayout(1, true);
+                    GridLayout gridLayout3 = new GridLayout(2, false);
                     cmp_Container2.setLayout(gridLayout3);
                     {
                         Tree treeAllParts = new Tree(cmp_Container2, SWT.BORDER, 1); // 4096);
@@ -1408,13 +1415,64 @@ class Editor3DDesign extends ApplicationWindow {
                         gridData.verticalAlignment = SWT.FILL;
                         gridData.grabExcessVerticalSpace = true;
                         gridData.grabExcessHorizontalSpace = true;
+                        gridData.verticalSpan = 6;
                         treeAllParts.setLayoutData(gridData);
+                    }
+                    // FIXME Needs implementation!
+                    {
+                        Button btn_OpenIn3DEditor = new Button(cmp_Container2, SWT.NONE);
+                        this.btn_OpenIn3DEditor[0] = btn_OpenIn3DEditor;
+                        btn_OpenIn3DEditor.setImage(ResourceManager.getImage("icon16_openIn3D.png")); //$NON-NLS-1$
+                        btn_OpenIn3DEditor.setToolTipText(I18n.E3D_OpenIn3DEditor);
+                        btn_OpenIn3DEditor.setLayoutData(new GridData());
+                        btn_OpenIn3DEditor.setEnabled(false);
+                    }
+                    {
+                        Button btn_OpenInTextEditor = new Button(cmp_Container2, SWT.NONE);
+                        this.btn_OpenInTextEditor[0] = btn_OpenInTextEditor;
+                        btn_OpenInTextEditor.setImage(ResourceManager.getImage("icon16_openInText.png")); //$NON-NLS-1$
+                        btn_OpenInTextEditor.setToolTipText(I18n.E3D_OpenInTextEditor);
+                        btn_OpenInTextEditor.setLayoutData(new GridData());
+                        btn_OpenInTextEditor.setEnabled(false);
+                    }
+                    {
+                        Button btn_Rename = new Button(cmp_Container2, SWT.NONE);
+                        this.btn_Rename[0] = btn_Rename;
+                        btn_Rename.setImage(ResourceManager.getImage("icon16_rename.png")); //$NON-NLS-1$
+                        btn_Rename.setToolTipText(I18n.E3D_RenameMove);
+                        btn_Rename.setLayoutData(new GridData());
+                        btn_Rename.setEnabled(false);
+                    }
+                    {
+                        Button btn_Revert = new Button(cmp_Container2, SWT.NONE);
+                        this.btn_Revert[0] = btn_Revert;
+                        btn_Revert.setImage(ResourceManager.getImage("icon16_revert.png")); //$NON-NLS-1$
+                        btn_Revert.setToolTipText(I18n.E3D_RevertAllChanges);
+                        btn_Revert.setLayoutData(new GridData());
+                        btn_Revert.setEnabled(false);
+                    }
+                    {
+                        Button btn_CopyToUnofficial = new Button(cmp_Container2, SWT.NONE);
+                        this.btn_CopyToUnofficial[0] = btn_CopyToUnofficial;
+                        btn_CopyToUnofficial.setImage(ResourceManager.getImage("icon16_copyToUnofficial.png")); //$NON-NLS-1$
+                        btn_CopyToUnofficial.setToolTipText(I18n.E3D_CopyToUnofficialLibrary);
+                        btn_CopyToUnofficial.setLayoutData(new GridData());
+                        btn_CopyToUnofficial.setEnabled(false);
+                    }
+                    {
+                        Button btn_Close = new Button(cmp_Container2, SWT.NONE);
+                        this.btn_Close[0] = btn_Close;
+                        btn_Close.setImage(ResourceManager.getImage("icon16_close.png")); //$NON-NLS-1$
+                        btn_Close.setToolTipText(I18n.E3D_Close);
+                        btn_Close.setLayoutData(new GridData());
+                        btn_Close.setEnabled(false);
                     }
                     {
                         Composite cmp_Search = new Composite(cmp_Container2, SWT.NONE);
                         GridData gridData = new GridData();
                         gridData.horizontalAlignment = SWT.FILL;
                         gridData.grabExcessHorizontalSpace = true;
+                        gridData.horizontalSpan = 2;
                         cmp_Search.setLayoutData(gridData);
                         GridLayout gridLayout2 = new GridLayout(4, false);
                         cmp_Search.setLayout(gridLayout2);
