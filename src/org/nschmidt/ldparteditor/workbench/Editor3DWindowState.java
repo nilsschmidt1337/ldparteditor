@@ -31,8 +31,8 @@ public class Editor3DWindowState implements Serializable {
     /** The state of the application window */
     private WindowState windowState;
     private int[] leftSashWidth = null;
-    private float primitiveZoom = (float) Math.pow(10.0d, 3f / 10 - 3);
-    private float primitiveZoomExponent = 3f;
+    private float primitiveZoom = (float) Math.pow(10.0d, 7f / 10 - 3);
+    private float primitiveZoomExponent = 7f;
     private int[] leftSashWeights = null;
     private int[] editorSashWeights = null;
     private Matrix4f[] primitiveViewport = null;

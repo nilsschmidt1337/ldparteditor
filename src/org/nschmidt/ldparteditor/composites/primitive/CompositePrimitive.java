@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,6 +49,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Matrix4f;
@@ -136,6 +138,17 @@ public class CompositePrimitive extends Composite {
     public CompositePrimitive(Composite parent) {
         super(parent, I18n.I18N_NON_BIDIRECT() | SWT.BORDER);
         // TODO Auto-generated constructor stub
+        {
+            float[] rpf = new float[] {
+                    -0.7071f, 0.5f, 0.5f, 0,
+                    0, 0.7071f, -0.7071f, 0,
+                    -0.7071f, -0.5f, -0.5f, 0,
+                    0, 0, 0, 1 };
+            FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+            fb.put(rpf);
+            fb.flip();
+            this.viewport_rotation.load(fb);
+        }
 
         this.viewport_pixel_per_ldu = this.zoom * View.PIXEL_PER_LDU;
 
