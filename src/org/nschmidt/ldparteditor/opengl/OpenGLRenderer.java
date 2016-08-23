@@ -1954,7 +1954,7 @@ public class OpenGLRenderer {
                     GL11.glEnd();
                 }
 
-                if (!c3d.isDoingSelection() && !manipulator.isLocked()) {
+                if (!c3d.isDoingSelection() && !manipulator.isLocked() && !window.isAddingSomething() && c3d.getDraggedPrimitive() == null) {
                     Vector2f mp = c3d.getMousePosition();
                     GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
                     if (mp.x > 50f || mp.y > 50f) {

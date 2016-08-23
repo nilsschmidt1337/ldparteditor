@@ -406,6 +406,7 @@ public class Composite3D extends ScalableComposite {
                 Project.removeOpenedFile(lockableDatFileReference);
                 if (!Editor3DWindow.getWindow().closeDatfile(lockableDatFileReference)) {
                     Project.addOpenedFile(lockableDatFileReference);
+                    Project.setFileToEdit(lockableDatFileReference);
                     Editor3DWindow.getWindow().updateTree_unsavedEntries();
                 }
             }

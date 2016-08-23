@@ -1124,12 +1124,15 @@ public final class I18n {
     public static final String UNIFICATOR_VerticesSubpartVertices = UNIFICATOR.getString(getProperty());
     public static final String UNITS_Factor_primary = UNITS.getString(getProperty());
     public static final String UNITS_Factor_secondary = UNITS.getString(getProperty());
+    public static final String UNITS_Factor_tertiary = UNITS.getString(getProperty());
     public static final String UNITS_LDU = UNITS.getString(getProperty());
     public static final String UNITS_Name_LDU = UNITS.getString(getProperty());
     public static final String UNITS_Name_primary = UNITS.getString(getProperty());
     public static final String UNITS_Name_secondary = UNITS.getString(getProperty());
+    public static final String UNITS_Name_tertiary = UNITS.getString(getProperty());
     public static final String UNITS_primary = UNITS.getString(getProperty());
     public static final String UNITS_secondary = UNITS.getString(getProperty());
+    public static final String UNITS_tertiary = UNITS.getString(getProperty());
     public static final String VERSION_Contributors = VERSION.getString(getProperty());
     public static final String VERSION_DevelopmentLead = VERSION.getString(getProperty());
     public static final String VERSION_Stage = VERSION.getString(getProperty());

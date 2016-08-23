@@ -36,8 +36,8 @@ public enum GLPrimitives {
     public static final Sphere SPHERE4 = new Sphere(200f, 8);
     public static final Sphere SPHERE_INV4 = new Sphere(-200f, 8);
 
-    public static final Gear GEAR_MENU = new Gear(.0075f, 16, .0025f, .0025f);
-    public static final Gear GEAR_MENU_INV = new Gear(-.0075f, 16, -.0025f, -.0025f);
+    public static final Gear GEAR_MENU = new Gear(.005f, 16, .005f, .0025f);
+    public static final Gear GEAR_MENU_INV = new Gear(-.005f, 16, -.005f, -.0025f);
 
     public static Sphere SPHERE = new Sphere(100f, 8);
     public static Sphere SPHERE_INV = new Sphere(-100f, 8);
