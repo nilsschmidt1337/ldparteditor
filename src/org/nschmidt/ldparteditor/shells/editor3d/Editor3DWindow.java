@@ -511,18 +511,14 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         if (splitSash[0] != null) splitSash[0].getChildren()[0].addControlListener(new ControlListener() {
-
             @Override
             public void controlResized(ControlEvent e) {
-                NLogger.debug(getClass(), splitSash[0].getChildren()[0] + ""); //$NON-NLS-1$
-                final SashForm sf = splitSash[0];
-                int[] w = sf.getWeights();
+                int[] w = splitSash[0].getWeights();
                 if (w[0] * 9 > w[1] && w[1] * 9 > w[0]) {
                     Editor3DWindow.sashWeight1 = w[0];
                     Editor3DWindow.sashWeight2 = w[1];
                 }
             }
-
             @Override
             public void controlMoved(ControlEvent e) {}
         });
