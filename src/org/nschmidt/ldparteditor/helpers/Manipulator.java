@@ -262,22 +262,22 @@ public class Manipulator {
         Matrix4f.setIdentity(result);
         Matrix4f.setIdentity(scale);
     }
-    
+
     public void copyState(Manipulator origin) {
         this.accuratePosition = origin.accuratePosition.clone();
         this.position = new Vector4f(origin.position);
         this.xAxis = new Vector4f(origin.xAxis);
         this.yAxis = new Vector4f(origin.yAxis);
-        this.zAxis = new Vector4f(origin.zAxis);        
+        this.zAxis = new Vector4f(origin.zAxis);
         this.accurateXaxis = origin.accurateXaxis.clone();
         this.accurateYaxis = origin.accurateYaxis.clone();
         this.accurateZaxis = origin.accurateZaxis.clone();
-        
-        this.result.load(origin.result);      
-        this.scale.load(origin.scale);   
+
+        this.result.load(origin.result);
+        this.scale.load(origin.scale);
         this.accurateResult = new Matrix(origin.accurateResult);
         this.accurateScale = new Matrix(origin.accurateScale);
-        
+
         this.modified = origin.modified;
     }
 
@@ -1007,13 +1007,13 @@ public class Manipulator {
         x_Scale = false;
         y_Scale = false;
         z_Scale = false;
-        
+
         x_rotatingForwards = false;
         x_rotatingBackwards = false;
         y_rotatingForwards = false;
         y_rotatingBackwards = false;
         z_rotatingForwards = false;
-        z_rotatingBackwards = false;  
+        z_rotatingBackwards = false;
         modified = false;
     }
 
@@ -1864,6 +1864,10 @@ public class Manipulator {
         Y.normalise(Y);
         Z.normalise(Z);
         return new Matrix(X.X, X.Y, X.Z, BigDecimal.ZERO, Y.X, Y.Y, Y.Z, BigDecimal.ZERO, Z.X, Z.Y, Z.Z, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+    }
+
+    public boolean isLocked() {
+        return lock;
     }
 
     public static float getTranslate_size() {
