@@ -35,12 +35,14 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.opengl.GLCanvas;
+import org.eclipse.swt.widgets.Menu;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -57,6 +59,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.colour.GCGlitter;
 import org.nschmidt.ldparteditor.data.colour.GCSpeckle;
 import org.nschmidt.ldparteditor.data.colour.GCType;
+import org.nschmidt.ldparteditor.enums.GLPrimitives;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Arc;
@@ -103,8 +106,9 @@ public class OpenGLRenderer {
     private final AtomicBoolean alive = new AtomicBoolean(true);
     private final AtomicInteger needData = new AtomicInteger(0);
     private Thread raytracer = null;
-        
+
     private static final AtomicBoolean smoothing = new AtomicBoolean(false);
+    private static long hoverSettingsTime = System.currentTimeMillis();
 
     public FloatBuffer getViewport() {
         return viewport;
@@ -1924,7 +1928,7 @@ public class OpenGLRenderer {
                 }
                 if (Project.getFileToEdit().equals(c3d.getLockableDatFileReference())) {
                     if (Project.getFileToEdit().isReadOnly()) {
-                        GL11.glColor3f(0f, 0f, 0f);
+                        GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
                     } else {
                         GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                     }
@@ -1949,6 +1953,41 @@ public class OpenGLRenderer {
                     GL11.glVertex3f(viewport_width, -viewport_height, viewport_origin_axis[3].z);
                     GL11.glEnd();
                 }
+
+                if (!c3d.isDoingSelection()) {
+                    Vector2f mp = c3d.getMousePosition();
+                    GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
+                    if (mp.x > 50f || mp.y > 50f) {
+                        GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
+                        if (DatFile.getLastHoveredComposite() == c3d) {
+                            hoverSettingsTime = System.currentTimeMillis();
+                        }
+                    } else if (mp.x > 0f && mp.y > 0f) {
+                        GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                        if (System.currentTimeMillis() - hoverSettingsTime > 300 && DatFile.getLastHoveredComposite() == c3d) {
+
+                            hoverSettingsTime = System.currentTimeMillis();
+
+                            java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
+                            final int x = (int) b.getX();
+                            final int y = (int) b.getY();
+
+                            Menu menu = c3d.getMenu();
+                            if (!menu.isDisposed() && !menu.getVisible()) {
+                                menu.setLocation(x, y);
+                                menu.setVisible(true);
+                                mp.setX(51f);
+                                mp.setY(51f);
+                            }
+                        }
+                    }
+
+                    final float gx = viewport_width - 0.018f;
+                    final float gy = -viewport_height + 0.018f;
+                    GLPrimitives.GEAR_MENU.draw(gx, gy, viewport_origin_axis[0].z);
+                    GLPrimitives.GEAR_MENU_INV.draw(gx, gy, viewport_origin_axis[0].z);
+                }
+
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
                 break;
             }

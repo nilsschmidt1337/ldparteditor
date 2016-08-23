@@ -113,10 +113,10 @@ public class MouseActions {
      *            Event data.
      */
     public void mouseDown(Event event) {
-        
+
         syncManipulator();
         c3d.getManipulator().lock();
-        
+
         final DatFile datfile = c3d.getLockableDatFileReference();
         if (!datfile.isDrawSelection()) return;
         final VertexManager vm = datfile.getVertexManager();
@@ -126,7 +126,7 @@ public class MouseActions {
         mouse_button_pressed = event.button;
         old_mouse_position.set(event.x, event.y);
         switch (event.button) {
-        case MouseButton.LEFT:            
+        case MouseButton.LEFT:
             final Editor3DWindow window = Editor3DWindow.getWindow();
             if ((event.stateMask & SWT.SHIFT) == SWT.SHIFT && !window.isAddingSomething()) {
                 Manipulator M = c3d.getManipulator();
@@ -228,7 +228,7 @@ public class MouseActions {
             Matrix4f.load(c3d.getTranslation(), old_viewport_translation);
             break;
         }
-        
+
         syncManipulator();
     }
 
@@ -643,9 +643,9 @@ public class MouseActions {
                 }
             }
         }
-        
+
         syncManipulator();
-        
+
         if (c3d.isSyncTranslation()) {
             float tx = c3d.getTranslation().m30;
             float ty = c3d.getTranslation().m31;
@@ -671,10 +671,10 @@ public class MouseActions {
      */
     // MARK MouseUp
     public void mouseUp(Event event) {
-        
+
         syncManipulator();
         c3d.getManipulator().unlock();
-        
+
         final DatFile datfile = c3d.getLockableDatFileReference();
         final VertexManager vm = datfile.getVertexManager();
         vm.addSnapshot();
@@ -685,7 +685,7 @@ public class MouseActions {
 
         mouse_button_pressed = 0;
         switch (event.button) {
-        case MouseButton.LEFT:            
+        case MouseButton.LEFT:
             c3d.setDoingSelection(false);
             final Editor3DWindow window = Editor3DWindow.getWindow();
             if (window.isAddingSomething() && !datfile.isReadOnly()) {
@@ -1276,15 +1276,15 @@ public class MouseActions {
             }
             break;
         }
-        
+
         c3d.getManipulator().resetTranslation();
         syncManipulator();
-        
+
     }
 
     private void checkSyncEditMode(VertexManager vm, DatFile datfile) {
         if (WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) {
-            Vertex v = null;            
+            Vertex v = null;
             if (vm.getSelectedVertices().size() == 1) {
                 v = vm.getSelectedVertices().iterator().next();
             }
@@ -1300,7 +1300,7 @@ public class MouseActions {
                                 state.setToReplaceY(BigDecimal.ZERO);
                                 state.setToReplaceZ(BigDecimal.ZERO);
                             }
-                        } else {                                
+                        } else {
                             state.setReplacingVertex(!datfile.isReadOnly());
                             vm.setVertexToReplace(v);
                             state.setToReplaceX(v.X);
@@ -1312,7 +1312,7 @@ public class MouseActions {
             }
         }
     }
-    
+
     private void syncManipulator() {
         if (c3d.isSyncManipulator()) {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
