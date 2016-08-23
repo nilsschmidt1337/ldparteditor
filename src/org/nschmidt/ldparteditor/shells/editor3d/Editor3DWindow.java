@@ -4296,6 +4296,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                             WidgetSelectionHelper.unselectAllChildButtons(c3d.mnu_renderMode);
                                             if (state == 0) {
                                                 c3d.mntmNoBFC[0].setSelection(true);
+                                                c3d.getMntmStudLogo().setSelection(true);
+                                                c3d.getModifier().switchShowingLogo(true);
                                                 c3d.getModifier().setRenderMode(0);
                                             }
                                             if (state == 1) {
