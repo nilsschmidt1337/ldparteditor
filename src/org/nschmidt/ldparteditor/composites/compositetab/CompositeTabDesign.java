@@ -24,6 +24,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -60,6 +61,9 @@ class CompositeTabDesign extends CTabItem {
 
     final MenuItem[] mntm_QuickFix = new MenuItem[1];
     final MenuItem[] mntm_QuickFixSame = new MenuItem[1];
+    final Button[] btn_QuickFix = new Button[1];
+    final Button[] btn_QuickFixSame = new Button[1];
+
     final Canvas[] canvas_lineNumberArea = new Canvas[1];
     final StyledText[] compositeText = new StyledText[1];
     final Label[] lbl_ProblemCount = new Label[1];
@@ -71,7 +75,7 @@ class CompositeTabDesign extends CTabItem {
     final TreeItem[] treeItem_Warnings = new TreeItem[1];
     final TreeItem[] treeItem_Errors = new TreeItem[1];
     final TreeItem[] treeItem_Duplicates = new TreeItem[1];
-    
+
     final Tree[] tree_Problems = new Tree[1];
 
     public CompositeTabDesign(CTabFolder tabFolder, int style) {
@@ -150,7 +154,7 @@ class CompositeTabDesign extends CTabItem {
                 tabFolder_partInformation.setSelection(tbtm_partProblems);
                 Composite cmp_partProblems = new Composite(tabFolder_partInformation, SWT.NONE);
                 tbtm_partProblems.setControl(cmp_partProblems);
-                cmp_partProblems.setLayout(new GridLayout(1, false));
+                cmp_partProblems.setLayout(new GridLayout(3, false));
 
                 Label lbl_ProblemCount = new Label(cmp_partProblems, SWT.NONE);
                 this.lbl_ProblemCount[0] = lbl_ProblemCount;
@@ -162,7 +166,7 @@ class CompositeTabDesign extends CTabItem {
                 tree_Problems[0] = tree;
                 tree.setLinesVisible(true);
                 tree.setHeaderVisible(true);
-                tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+                tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 
                 TreeColumn trclmn_Description = new TreeColumn(tree, SWT.NONE);
                 trclmn_Description.setWidth(598);
@@ -195,7 +199,7 @@ class CompositeTabDesign extends CTabItem {
                 treeItem_Duplicates[0] = trtm_Duplicates;
                 trtm_Duplicates.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
                 trtm_Duplicates.setText(new String[] { I18n.COMPOSITETAB_Duplicates, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
-                
+
                 Menu menu = new Menu(tabFolder);
                 tree.setMenu(menu);
 
@@ -210,6 +214,21 @@ class CompositeTabDesign extends CTabItem {
                 mntmQuickFixSame.setText(I18n.COMPOSITETAB_QuickFixSimilar);
 
                 tree.build();
+
+                Label lbl_Separator = new Label(cmp_partProblems, SWT.NONE);
+                lbl_Separator.setText(" "); //$NON-NLS-1$
+
+                Button btn_QuickFix = new Button(cmp_partProblems, SWT.NONE);
+                this.btn_QuickFix[0] = btn_QuickFix;
+                btn_QuickFix.setEnabled(false);
+                btn_QuickFix.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
+                btn_QuickFix.setText(I18n.COMPOSITETAB_QuickFix);
+
+                Button btn_QuickFixSame = new Button(cmp_partProblems, SWT.NONE);
+                this.btn_QuickFixSame[0] = btn_QuickFixSame;
+                btn_QuickFixSame.setEnabled(false);
+                btn_QuickFixSame.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
+                btn_QuickFixSame.setText(I18n.COMPOSITETAB_QuickFixSimilar);
             }
             composite.pack();
             sashForm.setWeights(new int[] { this.compositeText[0].getSize().y, this.compositeText[0].getSize().y / 2 });
