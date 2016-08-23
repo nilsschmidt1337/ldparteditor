@@ -54,6 +54,8 @@ import org.eclipse.swt.custom.CTabFolder2Listener;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MenuDetectEvent;
@@ -480,11 +482,11 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 final SashForm sf = splitSash[0];
                 int[] w = sf.getWeights();
-                if (w[1] * 9 < w[0] && w[0] * 9 >= w[1]) {
-                    Editor3DWindow.sashWeight1 = w[0];
-                    Editor3DWindow.sashWeight2 = w[1];
+                if (w[1] * 9 > w[0]) {
+                    sf.setWeights(new int[]{95, 5});
+                } else {
+                    sf.setWeights(new int[]{Editor3DWindow.sashWeight1, Editor3DWindow.sashWeight2});
                 }
-                sf.setWeights(new int[]{95, 5});
             }
         });
 
@@ -493,20 +495,38 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 final SashForm sf = splitSash[0];
                 int[] w = sf.getWeights();
-                if (w[0] * 9 < w[1] && w[1] * 9 >= w[0]) {
-                    Editor3DWindow.sashWeight1 = w[0];
-                    Editor3DWindow.sashWeight2 = w[1];
+                if (w[0] * 9 > w[1]) {
+                    sf.setWeights(new int[]{5, 95});
+                } else {
+                    sf.setWeights(new int[]{Editor3DWindow.sashWeight1, Editor3DWindow.sashWeight2});
                 }
-                sf.setWeights(new int[]{5, 95});
             }
         });
 
         if (btn_sameWidth[0] != null) btn_sameWidth[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                editorSashForm[0].setWeights(new int[]{sashWeight1, sashWeight2});
+                splitSash[0].setWeights(new int[]{50, 50});
             }
         });
+
+        if (splitSash[0] != null) splitSash[0].getChildren()[0].addControlListener(new ControlListener() {
+
+            @Override
+            public void controlResized(ControlEvent e) {
+                NLogger.debug(getClass(), splitSash[0].getChildren()[0] + ""); //$NON-NLS-1$
+                final SashForm sf = splitSash[0];
+                int[] w = sf.getWeights();
+                if (w[0] * 9 > w[1] && w[1] * 9 > w[0]) {
+                    Editor3DWindow.sashWeight1 = w[0];
+                    Editor3DWindow.sashWeight2 = w[1];
+                }
+            }
+
+            @Override
+            public void controlMoved(ControlEvent e) {}
+        });
+
 
         btn_Sync[0].addSelectionListener(new SelectionAdapter() {
             @Override

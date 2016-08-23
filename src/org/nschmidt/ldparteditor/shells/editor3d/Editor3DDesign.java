@@ -1696,6 +1696,8 @@ class Editor3DDesign extends ApplicationWindow {
             } else {
                 try {
                     ((SashForm) containerTop).setWeights(sashSize);
+                    Editor3DWindow.sashWeight1 = sashSize[0];
+                    Editor3DWindow.sashWeight2 = sashSize[1];
                 } catch (IllegalArgumentException iae) {
                     ((SashForm) containerTop).setWeights(new int[] { width / 2, width / 2 });
                 }
