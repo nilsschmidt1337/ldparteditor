@@ -789,7 +789,7 @@ public class CompositeTab extends CompositeTabDesign {
                 String errors = errorCount == 1 ? I18n.EDITORTEXT_Error : I18n.EDITORTEXT_Errors;
                 String warnings = warningCount == 1 ? I18n.EDITORTEXT_Warning : I18n.EDITORTEXT_Warnings;
                 String hints = hintCount == 1 ? I18n.EDITORTEXT_Other : I18n.EDITORTEXT_Others;
-                String duplicates = hintCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
+                String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
                 lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
                 lbl_ProblemCount[0].getParent().layout();
             }
@@ -1057,7 +1057,7 @@ public class CompositeTab extends CompositeTabDesign {
                         String errors = errorCount == 1 ? I18n.EDITORTEXT_Error : I18n.EDITORTEXT_Errors;
                         String warnings = warningCount == 1 ? I18n.EDITORTEXT_Warning : I18n.EDITORTEXT_Warnings;
                         String hints = hintCount == 1 ? I18n.EDITORTEXT_Other : I18n.EDITORTEXT_Others;
-                        String duplicates = hintCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
+                        String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
                         lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
                         treeItem_Hints[0].getParent().build();
                         lbl_ProblemCount[0].getParent().layout();
@@ -1578,7 +1578,7 @@ public class CompositeTab extends CompositeTabDesign {
         String errors = errorCount == 1 ? I18n.EDITORTEXT_Error : I18n.EDITORTEXT_Errors;
         String warnings = warningCount == 1 ? I18n.EDITORTEXT_Warning : I18n.EDITORTEXT_Warnings;
         String hints = hintCount == 1 ? I18n.EDITORTEXT_Other : I18n.EDITORTEXT_Others;
-        String duplicates = hintCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
+        String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
         lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
         lbl_ProblemCount[0].getParent().layout();
     }
