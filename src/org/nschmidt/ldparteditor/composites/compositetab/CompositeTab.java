@@ -769,7 +769,6 @@ public class CompositeTab extends CompositeTabDesign {
                         Display.getCurrent().syncExec(new Runnable() {
                             @Override
                             public void run() {
-                                state.getFileNameObj().parseForHints(compositeText[0], treeItem_Hints[0]);
                                 state.getFileNameObj().parseForErrorAndData(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
                                         treeItem_Errors[0], treeItem_Duplicates[0]);
                             }
@@ -857,7 +856,7 @@ public class CompositeTab extends CompositeTabDesign {
                         if (compositeText[0].getEditable()) {
                             if (!vm.isUpdated()) return;
                             HashSet<TreeItem> items = new HashSet<TreeItem>();
-                            int offset = compositeText[0].getOffsetAtLine(state.currentLineIndex);
+                            int offset = compositeText[0].getOffsetAtLine(Math.max(Math.min(state.currentLineIndex, compositeText[0].getLineCount() - 1), 0));
                             for (TreeItem t : treeItem_Hints[0].getItems()) {
                                 if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
                                     NLogger.debug(getClass(), "Found hint at {0}", t.getText(1)); //$NON-NLS-1$
@@ -1048,8 +1047,16 @@ public class CompositeTab extends CompositeTabDesign {
                 if (!state.isSync()) {
                     DatFile df = state.getFileNameObj();
                     df.addHistory(compositeText[0].getText(), r.x, r.y, compositeText[0].getTopIndex());
-                    if (df.updateDuplicatesErrors(compositeText[0], treeItem_Duplicates[0])) {
-                        df.getDuplicate().pushDuplicateCheck(df.getDrawChainStart());
+
+                    final boolean checkDuplicates = df.updateDuplicatesErrors(compositeText[0], treeItem_Duplicates[0]);
+                    final boolean checkDatHeader = df.updateDatHeaderHints(compositeText[0], treeItem_Hints[0]);
+                    if (checkDuplicates || checkDatHeader) {
+                        if (checkDuplicates) {
+                            df.getDuplicate().pushDuplicateCheck(df.getDrawChainStart());
+                        }
+                        if (checkDatHeader) {
+                            df.getDatHeader().pushDatHeaderCheck(df.getDrawChainStart());
+                        }
                         int errorCount = treeItem_Errors[0].getItems().size();
                         int warningCount = treeItem_Warnings[0].getItems().size();
                         int hintCount = treeItem_Hints[0].getItems().size();
@@ -1070,21 +1077,30 @@ public class CompositeTab extends CompositeTabDesign {
                 int caret_offset = event.caretOffset;
                 state.currentLineIndex = compositeText[0].getLineAtOffset(caret_offset);
                 if (compositeText[0].getSelectionCount() == 0) {
-                    compositeText[0].setLineBackground(state.currentLineIndex, 1, Colour.line_highlight_background[0]);
+                    try {
+                        compositeText[0].setLineBackground(state.currentLineIndex, 1, Colour.line_highlight_background[0]);
+                    } catch (Exception a) {
+                    }
                 }
                 if (state.window[0] == Editor3DWindow.getWindow()) {
-                    if (state.isReplacingVertex()) {
-                        Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SyncEdit); //$NON-NLS-1$ //$NON-NLS-2$
-                    } else {
-                        Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
+                    try {
+                        if (state.isReplacingVertex()) {
+                            Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SyncEdit); //$NON-NLS-1$ //$NON-NLS-2$
+                        } else {
+                            Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
+                        }
+                        Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
+                        Editor3DWindow.getStatusLabel().update();
+                    } catch (Exception a) {
                     }
-                    Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
-                    Editor3DWindow.getStatusLabel().update();
                 } else {
-                    if (state.isReplacingVertex()) {
-                        state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SyncEdit); //$NON-NLS-1$ //$NON-NLS-2$
-                    } else {
-                        state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
+                    try {
+                        if (state.isReplacingVertex()) {
+                            state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SyncEdit); //$NON-NLS-1$ //$NON-NLS-2$
+                        } else {
+                            state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
+                        }
+                    } catch (Exception a) {
                     }
                 }
                 canvas_lineNumberArea[0].redraw();
@@ -1569,7 +1585,6 @@ public class CompositeTab extends CompositeTabDesign {
     }
 
     public void parseForErrorAndHints() {
-        this.state.getFileNameObj().parseForHints(getTextComposite(), treeItem_Hints[0]);
         this.state.getFileNameObj().parseForError(getTextComposite(), 0, getTextComposite().getText().length(), getTextComposite().getText().length(), getTextComposite().getText(), getTextComposite().getText(), treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0], treeItem_Duplicates[0], true);
         int errorCount = treeItem_Errors[0].getItems().size();
         int warningCount = treeItem_Warnings[0].getItems().size();
