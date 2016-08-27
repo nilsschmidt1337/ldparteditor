@@ -49,6 +49,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
@@ -56,7 +57,6 @@ import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
-import org.nschmidt.ldparteditor.text.HeaderState;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
@@ -122,6 +122,7 @@ public final class DatFile {
 
     private HistoryManager history = new HistoryManager(this);
     private DuplicateManager duplicate = new DuplicateManager(this);
+    private DatHeaderManager datHeader = new DatHeaderManager(this);
 
     public DatFile(String path) {
         this.projectFile = true;
@@ -422,8 +423,6 @@ public final class DatFile {
     public void parseForErrorAndData(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings,
             TreeItem errors, TreeItem duplicates) {
 
-        HeaderState.state().setState(HeaderState._99_DONE);
-
         Set<String> alreadyParsed = new HashSet<String>();
         alreadyParsed.add(getShortName());
 
@@ -431,7 +430,7 @@ public final class DatFile {
         GData targetData = null;
 
         long start = System.currentTimeMillis();
-        
+
         int startLine = compositeText.getLineAtOffset(startOffset_pos);
         int startOffset = compositeText.getOffsetAtLine(startLine);
 
@@ -629,11 +628,11 @@ public final class DatFile {
         for (Iterator<TreeItem> it = errors.getItems().iterator(); it.hasNext();) {
             TreeItem ti = it.next();
             if (ti.getText(0).equals( I18n.DATPARSER_InvalidInvertNext)) {
-                it.remove();    
-            }     
+                it.remove();
+            }
         }
         GData gd = drawChainAnchor;
-        int lineNumber = 1;        
+        int lineNumber = 1;
         while ((gd = gd.next) != null)
         {
             if (gd.type() == 6 && ((GDataBFC) gd).type == BFC.INVERTNEXT) {
@@ -649,7 +648,7 @@ public final class DatFile {
                     g = g.next;
                 }
                 if (validState) {
-                    
+
                     if (getVertexManager().isFlat((GData1) g)) {
                         position = compositeText.getOffsetAtLine(lineNumber - 1);
                         Object[] messageArguments = {lineNumber, position};
@@ -663,9 +662,9 @@ public final class DatFile {
                         trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
                         trtmNewTreeitem.setData(position);
                     }
-                    
-                } else {           
-                    
+
+                } else {
+
                     position = compositeText.getOffsetAtLine(lineNumber - 1);
                     Object[] messageArguments = {lineNumber, position};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
@@ -681,7 +680,7 @@ public final class DatFile {
             }
             lineNumber++;
         }
-        
+
         // Get tail
         if (tailRemoved || drawChainTail == null) {
             drawChainTail = anchorData;
@@ -689,8 +688,9 @@ public final class DatFile {
 
         duplicate.pushDuplicateCheck(drawChainAnchor);
         updateDuplicatesErrors(compositeText, duplicates);
+        datHeader.pushDatHeaderCheck(drawChainAnchor);
+        updateDatHeaderHints(compositeText, hints);
 
-        hints.sortItems();
         warnings.sortItems();
         errors.sortItems();
         hints.getParent().build();
@@ -722,7 +722,7 @@ public final class DatFile {
         alreadyParsed.add(getShortName());
 
         long start = System.currentTimeMillis();
-        
+
         int startLine = compositeText.getLineAtOffset(startOffset_pos);
         int startOffset = compositeText.getOffsetAtLine(startLine);
 
@@ -799,16 +799,16 @@ public final class DatFile {
             }
             position += line.length() + offset;
         }
-        
-        // Check BFC INVERTNEXT        
+
+        // Check BFC INVERTNEXT
         for (Iterator<TreeItem> it = errors.getItems().iterator(); it.hasNext();) {
             TreeItem ti = it.next();
             if (ti.getText(0).equals( I18n.DATPARSER_InvalidInvertNext)) {
-                it.remove();    
-            }     
-        }        
+                it.remove();
+            }
+        }
         GData gd = drawChainAnchor;
-        int lineNumber = 1;        
+        int lineNumber = 1;
         while ((gd = gd.next) != null)
         {
             if (gd.type() == 6 && ((GDataBFC) gd).type == BFC.INVERTNEXT) {
@@ -824,7 +824,7 @@ public final class DatFile {
                     g = g.next;
                 }
                 if (validState) {
-                    
+
                     if (getVertexManager().isFlat((GData1) g)) {
                         position = compositeText.getOffsetAtLine(lineNumber - 1);
                         Object[] messageArguments = {lineNumber, position};
@@ -838,9 +838,9 @@ public final class DatFile {
                         trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
                         trtmNewTreeitem.setData(position);
                     }
-                    
+
                 } else {
-                    
+
                     position = compositeText.getOffsetAtLine(lineNumber - 1);
                     Object[] messageArguments = {lineNumber, position};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
@@ -862,11 +862,12 @@ public final class DatFile {
             vertices.setSelectedBgPictureIndex(0);
             Editor3DWindow.getWindow().updateBgPictureTab();
         }
-        
+
         duplicate.pushDuplicateCheck(drawChainAnchor);
         updateDuplicatesErrors(compositeText, duplicates);
-        
-        hints.sortItems();
+        datHeader.pushDatHeaderCheck(drawChainAnchor);
+        updateDatHeaderHints(compositeText, hints);
+
         warnings.sortItems();
         errors.sortItems();
         hints.getParent().build();
@@ -920,6 +921,82 @@ public final class DatFile {
         return false;
     }
 
+    public boolean updateDatHeaderHints(StyledText compositeText, TreeItem headerHints) {
+        ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> CACHE_headerHints = datHeader.CACHE_headerHints;
+        if (!CACHE_headerHints.isEmpty()) {
+            int position = 0;
+
+            final Integer firstKey = CACHE_headerHints.firstKey();
+            ArrayList<ParsingResult> allParsingResults = CACHE_headerHints.get(firstKey);
+            if (allParsingResults.isEmpty()) {
+                if (headerHints.getItems().size() > 0) {
+                    headerHints.getItems().clear();
+                    return true;
+                }
+                return false;
+            }
+
+            headerHints.getItems().clear();
+
+            TreeMap<Integer, ArrayList<ParsingResult>> results = new TreeMap<>();
+            for (ParsingResult entry : allParsingResults) {
+                Integer lineNumber = entry.getTypeNumber();
+                ArrayList<ParsingResult> results2 = new ArrayList<ParsingResult>();
+                results.putIfAbsent(lineNumber, results2);
+                results2 = results.get(lineNumber);
+                results2.add(entry);
+            }
+
+            for (Entry<Integer, ArrayList<ParsingResult>> entry : results.entrySet()) {
+
+                // FIXME Needs implementation!!
+
+                final int lineNumber2 = entry.getKey();
+                final boolean isLineBoundHint = lineNumber2 > 0;
+                ArrayList<ParsingResult> parsingResults = entry.getValue();
+                try {
+                    if (isLineBoundHint) {
+                        position = compositeText.getOffsetAtLine(lineNumber2 - 1);
+                    }
+                } catch (IllegalArgumentException iae) {
+                    continue;
+                }
+
+                if (isLineBoundHint) {
+                    for (ParsingResult result : parsingResults) {
+                        Object[] messageArguments = {lineNumber2, position};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.applyPattern(I18n.DATFILE_Line);
+
+                        TreeItem trtmNewTreeitem = new TreeItem(headerHints, SWT.NONE);
+                        trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
+                        trtmNewTreeitem.setVisible(false);
+                        trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
+
+                        if (result.getTypeNumber() < 0) {
+                            trtmNewTreeitem.setData(result.getTypeNumber());
+                        } else {
+                            trtmNewTreeitem.setData(position);
+                        }
+                    }
+                } else {
+                    for (ParsingResult result : parsingResults) {
+                        TreeItem trtmNewTreeitem = new TreeItem(headerHints, SWT.NONE);
+                        trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
+                        trtmNewTreeitem.setVisible(false);
+                        trtmNewTreeitem.setText(new String[] { result.getMessage(), "---", result.getType() }); //$NON-NLS-1$
+                        trtmNewTreeitem.setData(result.getTypeNumber());
+                    }
+                }
+            }
+            compositeText.update();
+            compositeText.redraw();
+            return true;
+        }
+        return false;
+    }
+
     private boolean isNotBlank(String str) {
         int strLen;
         if (str == null || (strLen = str.length()) == 0) {
@@ -937,7 +1014,7 @@ public final class DatFile {
 
         Project.getParsedFiles().add(this);
         Project.addOpenedFile(this);
-        
+
         Set<String> alreadyParsed = new HashSet<String>();
         alreadyParsed.add(getShortName());
 
@@ -993,25 +1070,6 @@ public final class DatFile {
 
         ArrayList<ParsingResult> results;
 
-        // Parse header
-        {
-            HeaderState h = new HeaderState();
-            HeaderState.setState(h);
-            int lineNumber = 1;
-            for (String line : lines) {
-                if (isNotBlank(line)) {
-
-                    if (!line.trim().startsWith("0")) { //$NON-NLS-1$
-                        break;
-                    }
-
-                    DatParser.parseLine(line, lineNumber, 0, 0f, 0f, 0f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, true, alreadyParsed, false);
-                }
-                lineNumber++;
-            }
-        }
-        HeaderState.state().setState(HeaderState._99_DONE);
-
         // Clear the cache..
         GData.parsedLines.clear();
         GData.CACHE_parsedFilesSource.clear();
@@ -1057,87 +1115,6 @@ public final class DatFile {
         }
 
         if (addHistory) addHistory();
-    }
-
-    public void parseForHints(StyledText compositeText, TreeItem hints) {
-
-        Set<String> alreadyParsed = new HashSet<String>();
-        alreadyParsed.add(getShortName());
-
-        long start = System.currentTimeMillis();
-
-        HeaderState h = new HeaderState();
-        HeaderState.setState(h);
-
-        hints.removeAll();
-
-        int offset = StringHelper.getLineDelimiter().length();
-        int position = 0;
-
-        int lc = compositeText.getLineCount();
-
-        ArrayList<ParsingResult> results;
-
-        lc++;
-
-        for (int lineNumber = 1; lineNumber < lc; lineNumber++) {
-            String line = compositeText.getLine(lineNumber - 1);
-            if (isNotBlank(line)) {
-
-                if (!line.trim().startsWith("0")) { //$NON-NLS-1$
-                    HeaderState.state().setState(HeaderState._99_DONE);
-                    break;
-                }
-
-                results = DatParser.parseLine(line, lineNumber, 0, 0f, 0f, 0f, 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, true, alreadyParsed, false);
-                for (ParsingResult result : results) {
-                    if (result.getTypeNumber() == ResultType.HINT) {
-
-                        Object[] messageArguments = {lineNumber, position};
-                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.DATFILE_Line);
-
-                        TreeItem trtmNewTreeitem = new TreeItem(hints, SWT.NONE);
-                        trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
-                        trtmNewTreeitem.setVisible(false);
-                        trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
-                        trtmNewTreeitem.setData(position);
-                    }
-                }
-            }
-            position += line.length() + offset;
-        }
-        {
-            h = HeaderState.state();
-            results = new ArrayList<ParsingResult>();
-            if (!h.hasTITLE())
-                results.add(new ParsingResult(I18n.DATFILE_MissingTitle, "[H00] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-            if (!h.hasNAME())
-                results.add(new ParsingResult(I18n.DATFILE_MissingFileName, "[H10] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-            if (!h.hasAUTHOR())
-                results.add(new ParsingResult(I18n.DATFILE_MissingAuthor, "[H20] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-            if (!h.hasTYPE())
-                results.add(new ParsingResult(I18n.DATFILE_MissingPartType, "[H30] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-            if (!h.hasLICENSE())
-                results.add(new ParsingResult(I18n.DATFILE_MissingLicense, "[H40] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-            if (!h.hasBFC())
-                results.add(new ParsingResult(I18n.DATFILE_MissingBFC, "[H60] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-
-            int fakeLine = -6;
-            for (ParsingResult result : results) {
-                TreeItem trtmNewTreeitem = new TreeItem(hints, SWT.NONE);
-                trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
-                trtmNewTreeitem.setText(new String[] { result.getMessage(), "---", result.getType() }); //$NON-NLS-1$
-                trtmNewTreeitem.setData(fakeLine);
-                trtmNewTreeitem.setVisible(false);
-                fakeLine++;
-            }
-        }
-        hints.sortItems();
-        HeaderState.state().setState(HeaderState._99_DONE);
-        NLogger.debug(getClass(), "Total time to parse header: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
-
     }
 
     public HashBiMap<Integer, GData> getDrawPerLine() {
@@ -1419,7 +1396,8 @@ public final class DatFile {
 
     public void disposeData() {
         history.deleteHistory();
-        duplicate.deleteDuplicate();
+        duplicate.deleteDuplicateInfo();
+        datHeader.deleteHeaderHints();
         GDataCSG.fullReset(this);
         text = ""; //$NON-NLS-1$
         vertices.setModified(false, true);
@@ -1825,13 +1803,21 @@ public final class DatFile {
     public void setHistory(HistoryManager history) {
         this.history = history;
     }
-    
+
     public DuplicateManager getDuplicate() {
         return duplicate;
     }
 
     public void setDuplicate(DuplicateManager duplicate) {
         this.duplicate = duplicate;
+    }
+
+    public DatHeaderManager getDatHeader() {
+        return datHeader;
+    }
+
+    public void setDatHeader(DatHeaderManager datHeader) {
+        this.datHeader = datHeader;
     }
 
     public void addHistory() {

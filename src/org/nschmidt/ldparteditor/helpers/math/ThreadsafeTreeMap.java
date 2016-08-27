@@ -140,6 +140,20 @@ public class ThreadsafeTreeMap<K, V> implements Map<K, V> {
         return rvalue;
     }
 
+    public K firstKey() {
+        rl.lock();
+        final K val = map.firstKey();
+        rl.unlock();
+        return val;
+    }
+
+    public K lastKey() {
+        rl.lock();
+        final K val = map.lastKey();
+        rl.unlock();
+        return val;
+    }
+
     @Override
     public Collection<V> values() {
         rl.lock();

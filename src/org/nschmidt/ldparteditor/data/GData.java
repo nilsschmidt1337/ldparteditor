@@ -70,7 +70,6 @@ public abstract class GData implements IGData {
     public static final HashMap<GData, ArrayList<ParsingResult>> CACHE_warningsAndErrors = new HashMap<GData, ArrayList<ParsingResult>>(1000); // Cleared
     public static final ThreadsafeHashMap<GData, ParsingResult> CACHE_duplicates = new ThreadsafeHashMap<GData, ParsingResult>(1000); // Cleared
 
-    
     public GData getNext() {
         return next;
     }

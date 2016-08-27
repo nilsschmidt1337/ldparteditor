@@ -66,9 +66,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public enum DatParser {
     INSTANCE;
 
-    private static HeaderState h = null;
-    private static int headerState = 0;
-
     private static boolean upatePngImages = false;
 
     private static GColour cValue = new GColour();
@@ -259,436 +256,214 @@ public enum DatParser {
     private static ArrayList<ParsingResult> parse_Comment(String line, int lineNumber, String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix,
             DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed) {
 
-        h = HeaderState.state();
-        headerState = h.getState();
-
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
         // line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
         line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
 
-        if (headerState != HeaderState._99_DONE) {
-            int lastKnownGoodState = headerState;
-            while (true) {
-
-                // HeaderState._01_NAME
-                if (headerState == HeaderState._01_NAME) {
-                    // I expect that this line is a valid Name
-                    if (line.startsWith("0 Name: ") && line.length() > 12 && line.endsWith(".dat")) { //$NON-NLS-1$ //$NON-NLS-2$
-                        h.setLineNAME(lineNumber);
-                        h.setHasNAME(true);
-                        headerState = HeaderState._02_AUTHOR;
-                        break;
-                    } else { // Its something else..
-                        headerState = HeaderState._02_AUTHOR;
-                    }
-                } else {
-                    // I don't expect that this line is a valid Name
-                    if (line.startsWith("0 Name: ") && line.length() > 12 && line.endsWith(".dat")) { //$NON-NLS-1$ //$NON-NLS-2$
-                        // Its duplicated
-                        if (h.hasNAME()) {
-                            result.add(new ParsingResult(I18n.DATPARSER_DuplicatedFilename, "[H11] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                        } else {
-                            if (headerState > HeaderState._01_NAME) { // Its misplaced
-                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedFilename, "[H12] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            }
-                            h.setLineNAME(lineNumber);
-                            h.setHasNAME(true);
-                            headerState = HeaderState._02_AUTHOR;
-                        }
-                        break;
-                    }
-                }
-
-                // HeaderState._02_AUTHOR
-                if (headerState == HeaderState._02_AUTHOR) {
-                    // I expect that this line is a valid Author
-                    if (line.startsWith("0 Author:")) { //$NON-NLS-1$
-                        String author = line.substring(9).trim();
-                        int liL = author.lastIndexOf('[');
-                        int liR = author.lastIndexOf(']');
-                        boolean indexBrL = author.indexOf('[') == liL;
-                        boolean indexBrR = author.indexOf(']') == liR;
-                        if (author.length() > 0 && author.indexOf("[]") == -1 && indexBrL && indexBrR && (liL == -1 || author.indexOf(" [") != -1) && liL <= liR && 0 < liL * liR) { //$NON-NLS-1$ //$NON-NLS-2$
-                            h.setLineAUTHOR(lineNumber);
-                            h.setHasAUTHOR(true);
-                            headerState = HeaderState._03_TYPE;
-                            break;
-                        } else { // Its something else..
-                            headerState = HeaderState._03_TYPE;
-                        }
-                    } else { // Its something else..
-                        headerState = HeaderState._03_TYPE;
-                    }
-                } else {
-                    // I don't expect that this line is a valid Author
-                    if (line.startsWith("0 Author:")) { //$NON-NLS-1$
-                        String author = line.substring(9).trim();
-                        int liL = author.lastIndexOf('[');
-                        int liR = author.lastIndexOf(']');
-                        boolean indexBrL = author.indexOf('[') == liL;
-                        boolean indexBrR = author.indexOf(']') == liR;
-                        if (author.length() > 0 && author.indexOf("[]") == -1 && indexBrL && indexBrR && (liL == -1 || author.indexOf(" [") != -1) && liL <= liR && 0 < liL * liR) { //$NON-NLS-1$ //$NON-NLS-2$
-                            // Its duplicated
-                            if (h.hasAUTHOR()) {
-                                result.add(new ParsingResult(I18n.DATPARSER_DuplicatedAuthor, "[H21] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            } else {
-                                if (headerState > HeaderState._02_AUTHOR) { // Its misplaced
-                                    result.add(new ParsingResult(I18n.DATPARSER_MisplacedAuthor, "[H22] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                                }
-                                h.setLineAUTHOR(lineNumber);
-                                h.setHasAUTHOR(true);
-                                headerState = HeaderState._03_TYPE;
-                            }
-                            break;
-                        }
-                    }
-                }
-
-                // HeaderState._03_TYPE
-                if (headerState == HeaderState._03_TYPE) {
-                    // I expect that this line is a valid Type
-                    if ("0 !LDRAW_ORG Unofficial_Part".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Subpart".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Primitive".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_48_Primitive".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_8_Primitive".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Shortcut".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Shortcut Alias".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Shortcut Physical_Colour".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Shortcut Physical_Colour Alias".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Part Alias".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Part Physical_Colour".equals(line)) { //$NON-NLS-1$
-                        h.setLineTYPE(lineNumber);
-                        h.setHasTYPE(true);
-                        headerState = HeaderState._04_LICENSE;
-                        break;
-                    } else { // Its something else..
-                        headerState = HeaderState._04_LICENSE;
-                    }
-                } else {
-                    // I don't expect that this line is a valid Type
-                    if ("0 !LDRAW_ORG Unofficial_Part".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Subpart".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Primitive".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_8_Primitive".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_48_Primitive".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Shortcut".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Shortcut Alias".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Shortcut Physical_Colour".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Shortcut Physical_Colour Alias".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Part Alias".equals(line) //$NON-NLS-1$
-                            || "0 !LDRAW_ORG Unofficial_Part Physical_Colour".equals(line)) { //$NON-NLS-1$
-                        // Its duplicated
-                        if (h.hasTYPE()) {
-                            result.add(new ParsingResult(I18n.DATPARSER_DuplicatedType, "[H31] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                        } else {
-                            if (headerState > HeaderState._03_TYPE) { // Its misplaced
-                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedType, "[H32] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            }
-                            h.setLineTYPE(lineNumber);
-                            h.setHasTYPE(true);
-                            headerState = HeaderState._04_LICENSE;
-                        }
-                        break;
-                    }
-                }
-
-                // HeaderState._04_LICENSE
-                if (headerState == HeaderState._04_LICENSE) {
-                    // I expect that this line is a valid License
-                    if ("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt".equals(line) //$NON-NLS-1$
-                            || "0 !LICENSE Not redistributable : see NonCAreadme.txt".equals(line)) { //$NON-NLS-1$
-                        h.setLineLICENSE(lineNumber);
-                        h.setHasLICENSE(true);
-                        headerState = HeaderState._05o_HELP;
-                        break;
-                    } else { // Its something else..
-                        headerState = HeaderState._05o_HELP;
-                    }
-                } else {
-                    // I don't expect that this line is a valid License
-                    if ("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt".equals(line) //$NON-NLS-1$
-                            || "0 !LICENSE Not redistributable : see NonCAreadme.txt".equals(line)) { //$NON-NLS-1$
-                        // Its duplicated
-                        if (h.hasLICENSE()) {
-                            result.add(new ParsingResult(I18n.DATPARSER_DuplicatedLicense, "[H41] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                        } else {
-                            if (headerState > HeaderState._04_LICENSE) { // Its misplaced
-                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedLicense, "[H42] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            }
-                            h.setLineLICENSE(lineNumber);
-                            h.setHasLICENSE(true);
-                            headerState = HeaderState._05o_HELP;
-                        }
-                        break;
-                    }
-                }
-
-                // HeaderState._05o_HELP
-                if (headerState == HeaderState._05o_HELP) {
-                    // I expect that this line is a valid Help
-                    if (line.startsWith("0 !HELP")) { //$NON-NLS-1$
-                        if (h.hasHELP()) {
-                            h.setLineHELP_end(lineNumber);
-                        } else {
-                            h.setLineHELP_start(lineNumber);
-                        }
-                        h.setHasHELP(true);
-                        headerState = HeaderState._05o_HELP;
-                        break;
-                    } else { // Its something else..
-                        headerState = HeaderState._06_BFC;
-                    }
-                } else {
-                    // I don't expect that this line is a valid Help
-                    if (line.startsWith("0 !HELP")) { //$NON-NLS-1$
-                        // Its duplicated
-                        if (h.hasHELP()) {
-                            result.add(new ParsingResult(I18n.DATPARSER_SplitHelp, "[H51] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                        } else {
-                            if (headerState > HeaderState._05o_HELP) { // Its misplaced
-                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedHelp, "[H52] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            }
-                            h.setLineHELP_start(lineNumber);
-                            h.setHasHELP(true);
-                            headerState = HeaderState._05o_HELP;
-                        }
-                        break;
-                    }
-                }
-
-                // HeaderState._06_BFC
-                if (headerState == HeaderState._06_BFC) {
-                    // I expect that this line is a valid BFC Statement
-                    if ("0 BFC CERTIFY CCW".equals(line) //$NON-NLS-1$
-                            || "0 BFC CERTIFY CW".equals(line) //$NON-NLS-1$
-                            || "0 BFC NOCERTIFY".equals(line)) { //$NON-NLS-1$
-                        h.setLineBFC(lineNumber);
-                        h.setHasBFC(true);
-                        headerState = HeaderState._07o_CATEGORY;
-                        break;
-                    } else { // Its something else..
-                        headerState = HeaderState._07o_CATEGORY;
-                    }
-                } else {
-                    // I don't expect that this line is a valid BFC Statement
-                    if ("0 BFC CERTIFY CCW".equals(line) //$NON-NLS-1$
-                            || "0 BFC CERTIFY CW".equals(line) //$NON-NLS-1$
-                            || "0 BFC NOCERTIFY".equals(line)) { //$NON-NLS-1$
-                        // Its duplicated
-                        if (h.hasBFC()) {
-                            result.add(new ParsingResult(I18n.DATPARSER_DuplicatedBFC, "[H61] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                        } else {
-                            if (headerState > HeaderState._06_BFC) { // Its misplaced
-                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedBFC0, "[H62] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            }
-                            h.setLineBFC(lineNumber);
-                            h.setHasBFC(true);
-                            headerState = HeaderState._07o_CATEGORY;
-                        }
-                        break;
-                    }
-                }
-
-                // HeaderState._07o_CATEGORY
-                if (headerState == HeaderState._07o_CATEGORY) {
-                    // I expect that this line is a valid Category
-                    if (line.startsWith("0 !CATEGORY ")) { //$NON-NLS-1$
-                        h.setHasCATEGORY(true);
-                        headerState = HeaderState._08o_KEYWORDS;
-                        break;
-                    } else { // Its something else..
-                        headerState = HeaderState._08o_KEYWORDS;
-                    }
-                } else {
-                    // I don't expect that this line is a valid Category
-                    if (line.startsWith("0 !CATEGORY ")) { //$NON-NLS-1$
-                        // Its duplicated
-                        if (h.hasCATEGORY()) {
-                            result.add(new ParsingResult(I18n.DATPARSER_DuplicatedCategory, "[H71] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                        } else {
-                            if (headerState > HeaderState._07o_CATEGORY) { // Its misplaced
-                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedCategory, "[H72] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            }
-                            h.setHasCATEGORY(true);
-                            headerState = HeaderState._08o_KEYWORDS;
-                        }
-                        break;
-                    }
-                }
-
-                // HeaderState._08o_KEYWORDS
-                if (headerState == HeaderState._08o_KEYWORDS) {
-                    // I expect that this line is a valid Keyword
-                    if (line.startsWith("0 !KEYWORDS ")) { //$NON-NLS-1$
-                        h.setHasHELP(true);
-                        headerState = HeaderState._08o_KEYWORDS;
-                        break;
-                    } else { // Its something else..
-                        headerState = HeaderState._09o_CMDLINE;
-                    }
-                } else {
-                    // I don't expect that this line is a valid Keyword
-                    if (line.startsWith("0 !KEYWORDS ")) { //$NON-NLS-1$
-                        // Its duplicated
-                        if (h.hasKEYWORDS()) {
-                            result.add(new ParsingResult(I18n.DATPARSER_SplitKeyword, "[H81] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                        } else {
-                            if (headerState > HeaderState._08o_KEYWORDS) { // Its misplaced
-                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedKeyword, "[H82] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            }
-                            h.setHasKEYWORDS(true);
-                            headerState = HeaderState._08o_KEYWORDS;
-                        }
-                        break;
-                    }
-                }
-
-                // HeaderState._09o_CMDLINE
-                if (headerState == HeaderState._09o_CMDLINE) {
-                    // I expect that this line is a valid Command Line
-                    if (line.startsWith("0 !CMDLINE ")) { //$NON-NLS-1$
-                        h.setHasCMDLINE(true);
-                        headerState = HeaderState._10o_HISTORY;
-                        break;
-                    } else { // Its something else..
-                        headerState = HeaderState._10o_HISTORY;
-                    }
-                } else {
-                    // I don't expect that this line is a valid Command Line
-                    if (line.startsWith("0 !CMDLINE ")) { //$NON-NLS-1$
-                        // Its duplicated
-                        if (h.hasCMDLINE()) {
-                            result.add(new ParsingResult(I18n.DATPARSER_DuplicatedCommandLine, "[H91] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                        } else {
-                            if (headerState > HeaderState._09o_CMDLINE) { // Its misplaced
-                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedCommandLine, "[H92] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            }
-                            h.setHasCMDLINE(true);
-                            headerState = HeaderState._10o_HISTORY;
-                        }
-                        break;
-                    }
-                }
-
-                // HeaderState._10o_HISTORY TODO Needs better validation
-                if (headerState == HeaderState._10o_HISTORY) {
-                    // I expect that this line is a valid History Entry
-                    if (line.startsWith("0 !HISTORY ") && line.length() > 20) { //$NON-NLS-1$
-                        if (h.hasHISTORY()) {
-                            final String lh = h.getLastHistoryEntry();
-                            if (lh != null && line.substring(0, "0 !HISTORY YYYY-MM-DD".length()).compareTo(lh) == -1) { //$NON-NLS-1$
-                                result.add(new ParsingResult(I18n.DATPARSER_HistoryWrongOrder, "[HA3] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            }
-                        } else {
-                            h.setLastHistoryEntry(line.substring(0, "0 !HISTORY YYYY-MM-DD".length())); //$NON-NLS-1$
-                        }
-                        h.setHasHISTORY(true);
-                        headerState = HeaderState._10o_HISTORY;
-                        break;
-                    } else { // Its something else..
-                        headerState = HeaderState._11o_COMMENT;
-                    }
-                } else {
-                    // I don't expect that this line is a valid History Entry
-                    if (line.startsWith("0 !HISTORY ")) { //$NON-NLS-1$
-                        // Its duplicated
-                        if (h.hasHISTORY()) {
-                            result.add(new ParsingResult(I18n.DATPARSER_SplitHistory, "[HA1] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                        } else {
-                            if (headerState > HeaderState._10o_HISTORY) { // Its misplaced
-                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedHistory, "[HA2] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            }
-                            h.setHasHISTORY(true);
-                            headerState = HeaderState._10o_HISTORY;
-                        }
-                        break;
-                    }
-                }
-
-                // HeaderState._11o_COMMENT
-                if (headerState == HeaderState._11o_COMMENT) {
-                    // I expect that this line is a valid Comment
-                    if (line.startsWith("0 // ")) { //$NON-NLS-1$
-                        h.setHasCOMMENT(true);
-                        headerState = HeaderState._11o_COMMENT;
-                        break;
-                    } else {// Its something else..
-                        headerState = HeaderState._12o_BFC2;
-                    }
-                } else {
-                    // I don't expect that this line is a valid Comment
-                    if (line.startsWith("0 // ")) { //$NON-NLS-1$
-                        // Its duplicated
-                        if (h.hasCOMMENT()) {
-                            result.add(new ParsingResult(I18n.DATPARSER_SplitCommment, "[HB1] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                        } else {
-                            if (headerState > HeaderState._11o_COMMENT) { // Its misplaced
-                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedComment, "[HB2] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            }
-                            h.setHasCOMMENT(true);
-                            headerState = HeaderState._11o_COMMENT;
-                        }
-                        break;
-                    }
-                }
-
-                // HeaderState._12o_BFC2
-                if (headerState == HeaderState._12o_BFC2) {
-                    // I expect that this line is a valid BFC Statement
-                    if (line.startsWith("0 BFC") && (line.equals("0 BFC CW") //$NON-NLS-1$ //$NON-NLS-2$
-                            || line.equals("0 BFC CCW") //$NON-NLS-1$
-                            || line.equals("0 BFC CW CLIP") //$NON-NLS-1$
-                            || line.equals("0 BFC CCW CLIP") //$NON-NLS-1$
-                            || line.equals("0 BFC CLIP CW") //$NON-NLS-1$
-                            || line.equals("0 BFC CLIP CCW") //$NON-NLS-1$
-                            || line.equals("0 BFC NOCLIP") //$NON-NLS-1$
-                            || line.equals("0 BFC INVERTNEXT"))) { //$NON-NLS-1$
-                        h.setHasBFC2(true);
-                        headerState = HeaderState._12o_BFC2;
-                        break;
-                    }
-                } else {
-                    // I don't expect that this line is a valid BFC Statement
-                    if (line.startsWith("0 BFC") && (line.equals("0 BFC CW") //$NON-NLS-1$ //$NON-NLS-2$
-                            || line.equals("0 BFC CCW") //$NON-NLS-1$
-                            || line.equals("0 BFC CW CLIP") //$NON-NLS-1$
-                            || line.equals("0 BFC CCW CLIP") //$NON-NLS-1$
-                            || line.equals("0 BFC CLIP CW") //$NON-NLS-1$
-                            || line.equals("0 BFC CLIP CCW") //$NON-NLS-1$
-                            || line.equals("0 BFC NOCLIP") //$NON-NLS-1$
-                            || line.equals("0 BFC INVERTNEXT"))) { //$NON-NLS-1$
-                        // Its duplicated
-                        if (h.hasBFC2()) {
-                            result.add(new ParsingResult(I18n.DATPARSER_SplitBFC, "[HC1] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                        } else {
-                            if (headerState > HeaderState._12o_BFC2) { // Its misplaced
-                                result.add(new ParsingResult(I18n.DATPARSER_MisplacedBFC, "[HC2] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                            }
-                            h.setHasBFC2(true);
-                            headerState = HeaderState._12o_BFC2;
-                        }
-                        break;
-                    }
-                }
-
-                if (h.hasTITLE()) {
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidHeader, "[H01] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                    headerState = lastKnownGoodState;
-                } else {
-                    h.setLineTITLE(lineNumber);
-                    h.setHasTITLE(true);
-                    if (headerState != HeaderState._00_TITLE) {
-                        result.add(new ParsingResult(I18n.DATPARSER_MisplacedTitle, "[H02] " + I18n.DATPARSER_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
-                    } else {
-                        headerState = HeaderState._01_NAME;
-                    }
-                }
-                break;
+        if (line.startsWith("0 !: ")) { //$NON-NLS-1$
+            GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
+            if (newLPEmetaTag == null) {
+                newLPEmetaTag = new GData0(line);
+                result.add(new ParsingResult(newLPEmetaTag));
+                result.add(new ParsingResult(I18n.DATPARSER_InvalidTEXMAP, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+            } else {
+                result.add(new ParsingResult(newLPEmetaTag));
             }
-        } else {
-            if (depth == 0 && h.hasBFC() && lineNumber != h.getLineBFC() && line.startsWith("0 BFC CERTIFY ")) { //$NON-NLS-1$
-                if (line.startsWith("INVERTNEXT", 14)) { //$NON-NLS-1$
+        } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
+            GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent, datFile);
+            if (newLPEmetaTag == null) {
+                newLPEmetaTag = new GData0(line);
+                result.add(new ParsingResult(newLPEmetaTag));
+                result.add(new ParsingResult(I18n.DATPARSER_InvalidTEXMAP, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+            } else {
+                result.add(new ParsingResult(newLPEmetaTag));
+            }
+        } else if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
+            GData0 newLPEmetaTag = new GData0(line);
+            result.add(new ParsingResult(newLPEmetaTag));
+            result.add(new ParsingResult(I18n.DATPARSER_UnofficialMetaCommand, "[W0D] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+            if (line.startsWith("TODO ", 7)) { //$NON-NLS-1$
+                result.add(new ParsingResult(line.substring(12), "[WFF] " + I18n.DATPARSER_TODO, ResultType.WARN)); //$NON-NLS-1$
+            } else if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
+                Object[] messageArguments = {line.substring(14)};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.applyPattern(I18n.DATPARSER_VertexAt);
+                result.add(new ParsingResult(formatter.format(messageArguments) , "[WFE] " + I18n.DATPARSER_VertexDeclaration, ResultType.WARN)); //$NON-NLS-1$
+                boolean numberError = false;
+                if (data_segments.length == 6) {
+                    try {
+                        start.setX(new BigDecimal(data_segments[3], Threshold.mc));
+                        start.setY(new BigDecimal(data_segments[4], Threshold.mc));
+                        start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
+                    } catch (NumberFormatException nfe) {
+                        numberError = true;
+                    }
+                } else {
+                    numberError = true;
+                }
+                if (numberError) {
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                } else if (!errorCheckOnly) {
+                    if (depth == 0) {
+                        datFile.getVertexManager().addVertex(new Vertex(start.X, start.Y, start.Z), newLPEmetaTag);
+                    } else {
+                        Vector4f vert = new Vector4f(start.getXf() * 1000f, start.getYf() * 1000f, start.getZf() * 1000f, 1f);
+                        Matrix4f.transform(productMatrix, vert, vert);
+                        datFile.getVertexManager().addSubfileVertex(new Vertex(vert), newLPEmetaTag, parent);
+                    }
+                }
+            } else if (line.startsWith("DISTANCE ", 7)) { //$NON-NLS-1$
+                boolean numberError = false;
+                final GColour colour;
+                if (data_segments.length == 10) {
+                    colour = validateColour(data_segments[3], r, g, b, a);
+                    if (colour == null) {
+                        result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                        return result;
+                    }
+                    try {
+                        start.setX(new BigDecimal(data_segments[4], Threshold.mc));
+                        start.setY(new BigDecimal(data_segments[5], Threshold.mc));
+                        start.setZ(new BigDecimal(data_segments[6], Threshold.mc));
+                        end.setX(new BigDecimal(data_segments[7], Threshold.mc));
+                        end.setY(new BigDecimal(data_segments[8], Threshold.mc));
+                        end.setZ(new BigDecimal(data_segments[9], Threshold.mc));
+                    } catch (NumberFormatException nfe) {
+                        numberError = true;
+                    }
+                } else {
+                    numberError = true;
+                    colour = null;
+                }
+                if (numberError) {
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                } else if (!errorCheckOnly) {
+                    if (depth == 0) {
+                        result.remove(0);
+                        result.add(0, new ParsingResult(new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile, false)));
+                    }
+                }
+            } else if (line.startsWith("PROTRACTOR ", 7)) { //$NON-NLS-1$) {
+                boolean numberError = false;
+                final GColour colour;
+                if (data_segments.length == 13) {
+                    colour = validateColour(data_segments[3], r, g, b, a);
+                    if (colour == null) {
+                        result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                        return result;
+                    }
+                    try {
+                        vertexA.setX(new BigDecimal(data_segments[4], Threshold.mc));
+                        vertexA.setY(new BigDecimal(data_segments[5], Threshold.mc));
+                        vertexA.setZ(new BigDecimal(data_segments[6], Threshold.mc));
+                        vertexB.setX(new BigDecimal(data_segments[7], Threshold.mc));
+                        vertexB.setY(new BigDecimal(data_segments[8], Threshold.mc));
+                        vertexB.setZ(new BigDecimal(data_segments[9], Threshold.mc));
+                        vertexC.setX(new BigDecimal(data_segments[10], Threshold.mc));
+                        vertexC.setY(new BigDecimal(data_segments[11], Threshold.mc));
+                        vertexC.setZ(new BigDecimal(data_segments[12], Threshold.mc));
+                    } catch (NumberFormatException nfe) {
+                        numberError = true;
+                    }
+                } else {
+                    numberError = true;
+                    colour = null;
+                }
+                if (numberError) {
+                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                } else if (!errorCheckOnly) {
+                    if (depth == 0) {
+                        result.remove(0);
+                        result.add(0, new ParsingResult(new GData3(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA.X, vertexA.Y, vertexA.Z, vertexB.X, vertexB.Y, vertexB.Z, vertexC.X, vertexC.Y, vertexC.Z, parent, datFile, false)));
+                    }
+                }
+            } else if (line.startsWith("CSG_", 7)) { //$NON-NLS-1$
+                if (line.startsWith("UNION", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.UNION, line, parent)));
+                } else if (line.startsWith("DIFFERENCE", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.DIFFERENCE, line, parent)));
+                } else if (line.startsWith("INTERSECTION", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.INTERSECTION, line, parent)));
+                } else if (line.startsWith("TRANSFORM", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.TRANSFORM, line, parent)));
+                } else if (line.startsWith("CUBOID", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CUBOID, line, parent)));
+                } else if (line.startsWith("ELLIPSOID", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.ELLIPSOID, line, parent)));
+                } else if (line.startsWith("QUAD", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.QUAD, line, parent)));
+                } else if (line.startsWith("CYLINDER", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CYLINDER, line, parent)));
+                } else if (line.startsWith("MESH", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.MESH, line, parent)));
+                } else if (line.startsWith("CONE", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CONE, line, parent)));
+                } else if (line.startsWith("CIRCLE", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CIRCLE, line, parent)));
+                } else if (line.startsWith("COMPILE", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.COMPILE, line, parent)));
+                } else if (line.startsWith("QUALITY", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.QUALITY, line, parent)));
+                } else if (line.startsWith("EPSILON", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EPSILON, line, parent)));
+                } else if (line.startsWith("EXTRUDE", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EXTRUDE, line, parent)));
+                } else if (line.startsWith("EXT_CFG", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EXTRUDE_CFG, line, parent)));
+                    GDataCSG.forceRecompile(datFile);
+                }
+            } else if (line.startsWith("PNG", 7) && depth == 0 && data_segments.length >= 12) { //$NON-NLS-1$
+                try {
+                    Vertex offset = new Vertex(new BigDecimal(data_segments[3]), new BigDecimal(data_segments[4]), new BigDecimal(data_segments[5]));
+                    BigDecimal a1 = new BigDecimal(data_segments[6]);
+                    BigDecimal a2 = new BigDecimal(data_segments[7]);
+                    BigDecimal a3 = new BigDecimal(data_segments[8]);
+                    Vertex scale = new Vertex(new BigDecimal(data_segments[9]), new BigDecimal(data_segments[10]), BigDecimal.ONE);
+                    StringBuilder sb = new StringBuilder();
+                    for (int s = 11; s < data_segments.length - 1; s++) {
+                        sb.append(data_segments[s]);
+                        sb.append(" "); //$NON-NLS-1$
+                    }
+                    sb.append(data_segments[data_segments.length - 1]);
+                    result.remove(0);
+                    final GDataPNG gpng = new GDataPNG(line, offset, a1, a2, a3, scale, sb.toString());
+                    if (!errorCheckOnly) datFile.getVertexManager().setSelectedBgPicture(gpng);
+                    result.add(0, new ParsingResult(gpng));
+                    if (!errorCheckOnly) upatePngImages = true;
+                } catch (Exception ex) {}
+            }
+        } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
+            if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
+                result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT)));
+            } else if (line.startsWith("CERTIFY", 6)) { //$NON-NLS-1$
+                if (line.startsWith("CLIP CCW", 14) || line.startsWith("CCW CLIP", 14)) { //$NON-NLS-1$ //$NON-NLS-2$
+                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_ClipCCW, "[W0C] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
+                } else if (line.startsWith("CLIP CW", 14) || line.startsWith("CW CLIP", 14)) { //$NON-NLS-1$ //$NON-NLS-2$
+                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_ClipCW, "[W0C] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
+                } else if (line.startsWith("CCW", 14)) { //$NON-NLS-1$
+                    result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
+                } else if (line.startsWith("CW", 14)) { //$NON-NLS-1$
+                    result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
+                } else if (line.startsWith("INVERTNEXT", 14)) { //$NON-NLS-1$
                     result.add(new ParsingResult(I18n.DATPARSER_MLCAD_InvertNext, "[W0B] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
                     result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT)));
                 } else if (line.startsWith("CLIP", 14)) { //$NON-NLS-1$
@@ -697,249 +472,38 @@ public enum DatParser {
                 } else if (line.startsWith("NOCLIP", 14)) { //$NON-NLS-1$
                     result.add(new ParsingResult(I18n.DATPARSER_MLCAD_NoClip, "[W0B] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
                     result.add(new ParsingResult(new GDataBFC(BFC.NOCLIP)));
-                } else if (line.startsWith("CLIP CCW", 14) || line.startsWith("CCW CLIP", 14)) { //$NON-NLS-1$ //$NON-NLS-2$
-                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_ClipCCW, "[W0C] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
-                } else if (line.startsWith("CLIP CW", 14) || line.startsWith("CW CLIP", 14)) { //$NON-NLS-1$ //$NON-NLS-2$
-                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_ClipCW, "[W0C] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
-                } else {
-                    result.add(new ParsingResult(I18n.DATPARSER_MultipleBFC, "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-                    result.add(new ParsingResult(new GData0(line)));
-                }
-            } else if (line.startsWith("0 !: ")) { //$NON-NLS-1$
-                GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
-                if (newLPEmetaTag == null) {
-                    newLPEmetaTag = new GData0(line);
-                    result.add(new ParsingResult(newLPEmetaTag));
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidTEXMAP, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
-                } else {
-                    result.add(new ParsingResult(newLPEmetaTag));
-                }
-            } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
-                GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent, datFile);
-                if (newLPEmetaTag == null) {
-                    newLPEmetaTag = new GData0(line);
-                    result.add(new ParsingResult(newLPEmetaTag));
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidTEXMAP, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
-                } else {
-                    result.add(new ParsingResult(newLPEmetaTag));
-                }
-            } else if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
-                GData0 newLPEmetaTag = new GData0(line);
-                result.add(new ParsingResult(newLPEmetaTag));
-                result.add(new ParsingResult(I18n.DATPARSER_UnofficialMetaCommand, "[W0D] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-                if (line.startsWith("TODO ", 7)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(line.substring(12), "[WFF] " + I18n.DATPARSER_TODO, ResultType.WARN)); //$NON-NLS-1$
-                } else if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
-                    Object[] messageArguments = {line.substring(14)};
-                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.DATPARSER_VertexAt);
-                    result.add(new ParsingResult(formatter.format(messageArguments) , "[WFE] " + I18n.DATPARSER_VertexDeclaration, ResultType.WARN)); //$NON-NLS-1$
-                    boolean numberError = false;
-                    if (data_segments.length == 6) {
-                        try {
-                            start.setX(new BigDecimal(data_segments[3], Threshold.mc));
-                            start.setY(new BigDecimal(data_segments[4], Threshold.mc));
-                            start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
-                        } catch (NumberFormatException nfe) {
-                            numberError = true;
-                        }
-                    } else {
-                        numberError = true;
-                    }
-                    if (numberError) {
-                        result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
-                    } else if (!errorCheckOnly) {
-                        if (depth == 0) {
-                            datFile.getVertexManager().addVertex(new Vertex(start.X, start.Y, start.Z), newLPEmetaTag);
-                        } else {
-                            Vector4f vert = new Vector4f(start.getXf() * 1000f, start.getYf() * 1000f, start.getZf() * 1000f, 1f);
-                            Matrix4f.transform(productMatrix, vert, vert);
-                            datFile.getVertexManager().addSubfileVertex(new Vertex(vert), newLPEmetaTag, parent);
-                        }
-                    }
-                } else if (line.startsWith("DISTANCE ", 7)) { //$NON-NLS-1$
-                    boolean numberError = false;
-                    final GColour colour;
-                    if (data_segments.length == 10) {
-                        colour = validateColour(data_segments[3], r, g, b, a);
-                        if (colour == null) {
-                            result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
-                            return result;
-                        }
-                        try {
-                            start.setX(new BigDecimal(data_segments[4], Threshold.mc));
-                            start.setY(new BigDecimal(data_segments[5], Threshold.mc));
-                            start.setZ(new BigDecimal(data_segments[6], Threshold.mc));
-                            end.setX(new BigDecimal(data_segments[7], Threshold.mc));
-                            end.setY(new BigDecimal(data_segments[8], Threshold.mc));
-                            end.setZ(new BigDecimal(data_segments[9], Threshold.mc));
-                        } catch (NumberFormatException nfe) {
-                            numberError = true;
-                        }
-                    } else {
-                        numberError = true;
-                        colour = null;
-                    }
-                    if (numberError) {
-                        result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
-                    } else if (!errorCheckOnly) {
-                        if (depth == 0) {
-                            result.remove(0);
-                            result.add(0, new ParsingResult(new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile, false)));
-                        }
-                    }
-                } else if (line.startsWith("PROTRACTOR ", 7)) { //$NON-NLS-1$) {
-                    boolean numberError = false;
-                    final GColour colour;
-                    if (data_segments.length == 13) {
-                        colour = validateColour(data_segments[3], r, g, b, a);
-                        if (colour == null) {
-                            result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
-                            return result;
-                        }
-                        try {
-                            vertexA.setX(new BigDecimal(data_segments[4], Threshold.mc));
-                            vertexA.setY(new BigDecimal(data_segments[5], Threshold.mc));
-                            vertexA.setZ(new BigDecimal(data_segments[6], Threshold.mc));
-                            vertexB.setX(new BigDecimal(data_segments[7], Threshold.mc));
-                            vertexB.setY(new BigDecimal(data_segments[8], Threshold.mc));
-                            vertexB.setZ(new BigDecimal(data_segments[9], Threshold.mc));
-                            vertexC.setX(new BigDecimal(data_segments[10], Threshold.mc));
-                            vertexC.setY(new BigDecimal(data_segments[11], Threshold.mc));
-                            vertexC.setZ(new BigDecimal(data_segments[12], Threshold.mc));
-                        } catch (NumberFormatException nfe) {
-                            numberError = true;
-                        }
-                    } else {
-                        numberError = true;
-                        colour = null;
-                    }
-                    if (numberError) {
-                        result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
-                    } else if (!errorCheckOnly) {
-                        if (depth == 0) {
-                            result.remove(0);
-                            result.add(0, new ParsingResult(new GData3(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA.X, vertexA.Y, vertexA.Z, vertexB.X, vertexB.Y, vertexB.Z, vertexC.X, vertexC.Y, vertexC.Z, parent, datFile, false)));
-                        }
-                    }
-                } else if (line.startsWith("CSG_", 7)) { //$NON-NLS-1$
-                    if (line.startsWith("UNION", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.UNION, line, parent)));
-                    } else if (line.startsWith("DIFFERENCE", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.DIFFERENCE, line, parent)));
-                    } else if (line.startsWith("INTERSECTION", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.INTERSECTION, line, parent)));
-                    } else if (line.startsWith("TRANSFORM", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.TRANSFORM, line, parent)));
-                    } else if (line.startsWith("CUBOID", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CUBOID, line, parent)));
-                    } else if (line.startsWith("ELLIPSOID", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.ELLIPSOID, line, parent)));
-                    } else if (line.startsWith("QUAD", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.QUAD, line, parent)));
-                    } else if (line.startsWith("CYLINDER", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CYLINDER, line, parent)));
-                    } else if (line.startsWith("MESH", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.MESH, line, parent)));
-                    } else if (line.startsWith("CONE", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CONE, line, parent)));
-                    } else if (line.startsWith("CIRCLE", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CIRCLE, line, parent)));
-                    } else if (line.startsWith("COMPILE", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.COMPILE, line, parent)));
-                    } else if (line.startsWith("QUALITY", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.QUALITY, line, parent)));
-                    } else if (line.startsWith("EPSILON", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EPSILON, line, parent)));
-                    } else if (line.startsWith("EXTRUDE", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EXTRUDE, line, parent)));
-                    } else if (line.startsWith("EXT_CFG", 11)) { //$NON-NLS-1$
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EXTRUDE_CFG, line, parent)));
-                        GDataCSG.forceRecompile(datFile);
-                    }
-                } else if (line.startsWith("PNG", 7) && depth == 0 && data_segments.length >= 12) { //$NON-NLS-1$
-                    try {
-                        Vertex offset = new Vertex(new BigDecimal(data_segments[3]), new BigDecimal(data_segments[4]), new BigDecimal(data_segments[5]));
-                        BigDecimal a1 = new BigDecimal(data_segments[6]);
-                        BigDecimal a2 = new BigDecimal(data_segments[7]);
-                        BigDecimal a3 = new BigDecimal(data_segments[8]);
-                        Vertex scale = new Vertex(new BigDecimal(data_segments[9]), new BigDecimal(data_segments[10]), BigDecimal.ONE);
-                        StringBuilder sb = new StringBuilder();
-                        for (int s = 11; s < data_segments.length - 1; s++) {
-                            sb.append(data_segments[s]);
-                            sb.append(" "); //$NON-NLS-1$
-                        }
-                        sb.append(data_segments[data_segments.length - 1]);
-                        result.remove(0);
-                        final GDataPNG gpng = new GDataPNG(line, offset, a1, a2, a3, scale, sb.toString());
-                        if (!errorCheckOnly) datFile.getVertexManager().setSelectedBgPicture(gpng);
-                        result.add(0, new ParsingResult(gpng));
-                        if (!errorCheckOnly) upatePngImages = true;
-                    } catch (Exception ex) {}
-                }
-            } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
-                if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT)));
-                } else if (line.startsWith("CERTIFY", 6)) { //$NON-NLS-1$
-                    if (line.startsWith("CCW", 14)) { //$NON-NLS-1$
-                        result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
-                    } else if (line.startsWith("CW", 14)) { //$NON-NLS-1$
-                        result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
-                    } else if (line.startsWith("INVERTNEXT", 14)) { //$NON-NLS-1$
-                        result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT)));
-                    } else {
-                        result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
-                    }
-                } else if (line.startsWith("NOCERTIFY", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.NOCERTIFY)));
-                } else if (line.startsWith("CCW", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CCW)));
-                } else if (line.startsWith("CW", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CW)));
-                } else if (line.startsWith("NOCLIP", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.NOCLIP)));
-                } else if (line.startsWith("CLIP CCW", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
-                } else if (line.startsWith("CLIP CW", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
-                } else if (line.startsWith("CCW CLIP", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
-                } else if (line.startsWith("CW CLIP", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
-                } else if (line.startsWith("CLIP", 6)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CLIP)));
                 } else {
                     result.add(new ParsingResult(new GData0(line)));
                 }
+            } else if (line.startsWith("NOCERTIFY", 6)) { //$NON-NLS-1$
+                result.add(new ParsingResult(new GDataBFC(BFC.NOCERTIFY)));
+            } else if (line.startsWith("CCW", 6)) { //$NON-NLS-1$
+                result.add(new ParsingResult(new GDataBFC(BFC.CCW)));
+            } else if (line.startsWith("CW", 6)) { //$NON-NLS-1$
+                result.add(new ParsingResult(new GDataBFC(BFC.CW)));
+            } else if (line.startsWith("NOCLIP", 6)) { //$NON-NLS-1$
+                result.add(new ParsingResult(new GDataBFC(BFC.NOCLIP)));
+            } else if (line.startsWith("CLIP CCW", 6)) { //$NON-NLS-1$
+                result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
+            } else if (line.startsWith("CLIP CW", 6)) { //$NON-NLS-1$
+                result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
+            } else if (line.startsWith("CCW CLIP", 6)) { //$NON-NLS-1$
+                result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
+            } else if (line.startsWith("CW CLIP", 6)) { //$NON-NLS-1$
+                result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
+            } else if (line.startsWith("CLIP", 6)) { //$NON-NLS-1$
+                result.add(new ParsingResult(new GDataBFC(BFC.CLIP)));
             } else {
-                if (line.equals("0 STEP")) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GData0(line, true)));
-                } else {
-                    result.add(new ParsingResult(new GData0(line)));
-                }
-
+                result.add(new ParsingResult(new GData0(line)));
             }
+        } else {
+            if (line.equals("0 STEP")) { //$NON-NLS-1$
+                result.add(new ParsingResult(new GData0(line, true)));
+            } else {
+                result.add(new ParsingResult(new GData0(line)));
+            }
+
         }
-        h.setState(headerState);
         return result;
     }
 

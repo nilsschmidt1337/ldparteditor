@@ -34,16 +34,16 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 public class DuplicateManager {
 
     private DatFile df;
-    
+
     private boolean hasNoThread = true;
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
 
     private volatile Queue<GData> workQueue = new ConcurrentLinkedQueue<GData>();
-    
+
     public DuplicateManager(DatFile df) {
         this.df = df;
     }
-    
+
     public void pushDuplicateCheck(GData data) {
         if (df.isReadOnly()) return;
         if (hasNoThread) {
@@ -57,20 +57,20 @@ public class DuplicateManager {
                             GData newEntry = workQueue.poll();
                             if (newEntry != null) {
                                 NLogger.debug(getClass(), "Started duplicate check..."); //$NON-NLS-1$
-                                
+
                                 final HashSet<GData> allKeys = new HashSet<GData>();
                                 String lastCommentLine = null;
                                 final HashMap<String, Integer> lines = new HashMap<String, Integer>();
-                                
+
                                 allKeys.addAll(GData.CACHE_duplicates.keySet());
                                 GData gd = newEntry;
                                 int lineNumber = 1;
                                 while ((gd = gd.next) != null) {
-                                    boolean registered = false;
+                                    boolean[] registered = new boolean[]{false};
                                     int type = gd.type();
                                     String trimmedLine = gd.toString().trim();
                                     String[] data_segments = trimmedLine.split("\\s+"); //$NON-NLS-1$
-                                    
+
                                     // Remove double spaces (essential for complex types)
                                     String normalizedLine;
                                     if (type > 6 || type < 2) {
@@ -103,8 +103,7 @@ public class DuplicateManager {
                                             normalizedLine = "IV" + normalizedLine; //$NON-NLS-1$
                                             if (lines.containsKey(normalizedLine)) {
                                                 lastCommentLine = "0 BFC INVERTNEXT"; //$NON-NLS-1$
-                                                registerDuplicate(gd, lines.get(normalizedLine));
-                                                registered = true;
+                                                registerDuplicate(gd, lines.get(normalizedLine), registered);
                                             } else {
                                                 lastCommentLine = null;
                                                 lines.put(normalizedLine, lineNumber);
@@ -112,8 +111,7 @@ public class DuplicateManager {
                                         } else {
                                             normalizedLine = "NIV" + normalizedLine; //$NON-NLS-1$
                                             if (lines.containsKey(normalizedLine)) {
-                                                registerDuplicate(gd, lines.get(normalizedLine));
-                                                registered = true;
+                                                registerDuplicate(gd, lines.get(normalizedLine), registered);
                                             } else {
                                                 lastCommentLine = null;
                                                 lines.put(normalizedLine, lineNumber);
@@ -123,8 +121,7 @@ public class DuplicateManager {
                                     case 2:
                                     {
                                         if (lines.containsKey(normalizedLine)) {
-                                            registerDuplicate(gd, lines.get(normalizedLine));
-                                            registered = true;
+                                            registerDuplicate(gd, lines.get(normalizedLine), registered);
                                         } else {
                                             lines.put(normalizedLine, lineNumber);
                                             StringBuilder normalized2 = new StringBuilder();
@@ -150,8 +147,7 @@ public class DuplicateManager {
                                             String normalizedLine2 = normalized2.toString().trim();
 
                                             if (lines.containsKey(normalizedLine2)) {
-                                                registerDuplicate(gd, lines.get(normalizedLine2));
-                                                registered = true;
+                                                registerDuplicate(gd, lines.get(normalizedLine2), registered);
                                             } else {
                                                 lines.put(normalizedLine2, lineNumber);
                                                 lastCommentLine = null;
@@ -162,8 +158,7 @@ public class DuplicateManager {
                                     case 3:
                                     {
                                         if (lines.containsKey(normalizedLine)) {
-                                            registerDuplicate(gd, lines.get(normalizedLine));
-                                            registered = true;
+                                            registerDuplicate(gd, lines.get(normalizedLine), registered);
                                         } else {
                                             lines.put(normalizedLine, lineNumber);
                                             StringBuilder normalized2 = new StringBuilder();
@@ -196,8 +191,7 @@ public class DuplicateManager {
                                             String normalizedLine2 = normalized2.toString().trim();
 
                                             if (lines.containsKey(normalizedLine2)) {
-                                                registerDuplicate(gd, lines.get(normalizedLine2));
-                                                registered = true;
+                                                registerDuplicate(gd, lines.get(normalizedLine2), registered);
                                             } else {
                                                 lines.put(normalizedLine2, lineNumber);
                                                 StringBuilder normalized3 = new StringBuilder();
@@ -229,8 +223,7 @@ public class DuplicateManager {
 
                                                 String normalizedLine3 = normalized3.toString().trim();
                                                 if (lines.containsKey(normalizedLine3)) {
-                                                    registerDuplicate(gd, lines.get(normalizedLine3));
-                                                    registered = true;
+                                                    registerDuplicate(gd, lines.get(normalizedLine3), registered);
                                                 } else {
                                                     lines.put(normalizedLine3, lineNumber);
                                                     lastCommentLine = null;
@@ -242,8 +235,7 @@ public class DuplicateManager {
                                     case 4:
                                     {
                                         if (lines.containsKey(normalizedLine)) {
-                                            registerDuplicate(gd, lineNumber);
-                                            registered = true;
+                                            registerDuplicate(gd, lineNumber, registered);
                                         } else {
                                             lines.put(normalizedLine, lineNumber);
                                             StringBuilder normalized2 = new StringBuilder();
@@ -283,8 +275,7 @@ public class DuplicateManager {
                                             String normalizedLine2 = normalized2.toString().trim();
 
                                             if (lines.containsKey(normalizedLine2)) {
-                                                registerDuplicate(gd, lines.get(normalizedLine2));
-                                                registered = true;
+                                                registerDuplicate(gd, lines.get(normalizedLine2), registered);
                                             } else {
                                                 lines.put(normalizedLine2, lineNumber);
                                                 StringBuilder normalized3 = new StringBuilder();
@@ -323,8 +314,7 @@ public class DuplicateManager {
 
                                                 String normalizedLine3 = normalized3.toString().trim();
                                                 if (lines.containsKey(normalizedLine3)) {
-                                                    registerDuplicate(gd, lines.get(normalizedLine3));
-                                                    registered = true;
+                                                    registerDuplicate(gd, lines.get(normalizedLine3), registered);
                                                 } else {
                                                     lines.put(normalizedLine3, lineNumber);
                                                     StringBuilder normalized4 = new StringBuilder();
@@ -363,8 +353,7 @@ public class DuplicateManager {
 
                                                     String normalizedLine4 = normalized4.toString().trim();
                                                     if (lines.containsKey(normalizedLine4)) {
-                                                        registerDuplicate(gd, lines.get(normalizedLine4));
-                                                        registered = true;
+                                                        registerDuplicate(gd, lines.get(normalizedLine4), registered);
                                                     } else {
                                                         lines.put(normalizedLine4, lineNumber);
                                                         lastCommentLine = null;
@@ -388,8 +377,7 @@ public class DuplicateManager {
 
 
                                         if (a > Threshold.condline_angle_maximum) {
-                                            registerInvisibleCondline(gd, lineNumber);
-                                            registered = true;
+                                            registerInvisibleCondline(gd, lineNumber, registered);
                                         } else {
                                             StringBuilder normalized3 = new StringBuilder();
 
@@ -415,8 +403,7 @@ public class DuplicateManager {
                                             String normalizedLine3 = normalized3.toString().trim();
 
                                             if (lines.containsKey(normalizedLine3)) {
-                                                registerDuplicate(gd, lines.get(normalizedLine3));
-                                                registered = true;
+                                                registerDuplicate(gd, lines.get(normalizedLine3), registered);
                                             } else {
                                                 lines.put(normalizedLine3, lineNumber);
                                                 StringBuilder normalized2 = new StringBuilder();
@@ -443,8 +430,7 @@ public class DuplicateManager {
                                                 String normalizedLine2 = normalized2.toString().trim();
 
                                                 if (lines.containsKey(normalizedLine2)) {
-                                                    registerDuplicate(gd, lines.get(normalizedLine2));
-                                                    registered = true;
+                                                    registerDuplicate(gd, lines.get(normalizedLine2), registered);
                                                 } else {
                                                     lines.put(normalizedLine2, lineNumber);
                                                     lastCommentLine = null;
@@ -456,24 +442,23 @@ public class DuplicateManager {
                                     default:
                                         if (!trimmedLine.isEmpty()) {
                                             if (lastCommentLine != null && lastCommentLine.equals(normalizedLine)) {
-                                                registerDuplicate(gd, lineNumber - 1);
-                                                registered = true;
+                                                registerDuplicate(gd, lineNumber - 1, registered);
                                             } else {
                                                 lastCommentLine = normalizedLine;
                                             }
                                         }
                                         break;
                                     }
-                                    if (registered) {
+                                    if (registered[0]) {
                                         allKeys.remove(gd);
                                     }
                                     lineNumber += 1;
                                 }
-                                
+
                                 for (GData gd2 : allKeys) {
                                     GData.CACHE_duplicates.remove(gd2);
                                 }
-                                     
+
                             }
                             if (workQueue.isEmpty()) Thread.sleep(100);
                         } catch (InterruptedException e) {
@@ -489,15 +474,17 @@ public class DuplicateManager {
                     }
                 }
 
-                private void registerDuplicate(GData gd, int lineNumber) {
+                private void registerDuplicate(GData gd, int lineNumber, boolean[] registered) {
+                    registered[0] = true;
                     Object[] messageArguments = {lineNumber};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                     formatter.setLocale(MyLanguage.LOCALE);
                     formatter.applyPattern(I18n.DATPARSER_DuplicatedLines);
                     GData.CACHE_duplicates.put(gd, new ParsingResult(formatter.format(messageArguments), "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
                 }
-                
-                private void registerInvisibleCondline(GData gd, int lineNumber) {
+
+                private void registerInvisibleCondline(GData gd, int lineNumber, boolean[] registered) {
+                    registered[0] = true;
                     GData.CACHE_duplicates.put(gd, new ParsingResult(I18n.DATPARSER_InvisibleLine, "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
                 }
             }).start();
@@ -509,11 +496,11 @@ public class DuplicateManager {
             } catch (InterruptedException e) {}
         }
     }
-    
-    public void deleteDuplicate() {
+
+    public void deleteDuplicateInfo() {
         isRunning.set(false);
     }
-    
+
     public void setDatFile(DatFile df) {
         this.df = df;
     }
