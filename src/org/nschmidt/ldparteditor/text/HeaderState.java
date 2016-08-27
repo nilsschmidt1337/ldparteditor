@@ -21,8 +21,6 @@ package org.nschmidt.ldparteditor.text;
  */
 public class HeaderState {
 
-    private static final HeaderState[] lastState = new HeaderState[1];
-
     public static final int _00_TITLE = 0;
     public static final int _01_NAME = 1;
     public static final int _02_AUTHOR = 2;
@@ -553,16 +551,6 @@ public class HeaderState {
      */
     public void setLastHistoryEntry(String lastHistoryEntry) {
         this.lastHistoryEntry = lastHistoryEntry;
-    }
-
-    public static HeaderState state() {
-        if (lastState[0] == null)
-            lastState[0] = new HeaderState();
-        return lastState[0];
-    }
-
-    public static void setState(HeaderState state) {
-        lastState[0] = state;
     }
 
     @Override

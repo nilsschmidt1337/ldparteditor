@@ -35,7 +35,6 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.text.DatParser;
-import org.nschmidt.ldparteditor.text.HeaderState;
 
 public class VM20Manipulator extends VM19ColourChanger {
 
@@ -783,7 +782,6 @@ public class VM20Manipulator extends VM19ColourChanger {
 
     public void transformSubfile(GData1 g, Matrix M, boolean clearSelection, boolean syncWithTextEditor) {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
-        HeaderState.state().setState(HeaderState._99_DONE);
         StringBuilder colourBuilder = new StringBuilder();
         if (g.colourNumber == -1) {
             colourBuilder.append("0x2"); //$NON-NLS-1$

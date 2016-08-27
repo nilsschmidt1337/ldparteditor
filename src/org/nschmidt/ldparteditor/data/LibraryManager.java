@@ -911,6 +911,8 @@ public class LibraryManager {
                         newDf.getHistory().setDatFile(newDf);
                         // Also do this for possible duplicated data
                         newDf.getDuplicate().setDatFile(newDf);
+                        // and the DatHeader check
+                        newDf.getDatHeader().setDatFile(newDf);
                     }
 
                     if (openIn3DMap.containsKey(path) || openInTextMap.containsKey(path)) {

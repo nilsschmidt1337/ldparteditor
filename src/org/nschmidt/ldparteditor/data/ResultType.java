@@ -20,8 +20,8 @@ package org.nschmidt.ldparteditor.data;
  *
  */
 public class ResultType {
-    public static final byte DATA = 0;
-    public static final byte ERROR = 1;
-    public static final byte WARN = 2;
-    public static final byte HINT = 3;
+    public static final int DATA = 0;
+    public static final int ERROR = 1;
+    public static final int WARN = 2;
+    public static final int HINT = 3;
 }

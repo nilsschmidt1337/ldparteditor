@@ -23,10 +23,10 @@ public class ParsingResult {
 
     private String message;
     private String type;
-    private final byte typeNumber;
+    private final int typeNumber;
     private final GData graphicalData;
 
-    public ParsingResult(String message, String type, byte typeNumber) {
+    public ParsingResult(String message, String type, int typeNumber) {
         this.message = message;
         this.type = type;
         this.typeNumber = typeNumber;
@@ -38,7 +38,7 @@ public class ParsingResult {
         this.typeNumber = ResultType.DATA;
     }
 
-    public byte getTypeNumber() {
+    public int getTypeNumber() {
         return typeNumber;
     }
 

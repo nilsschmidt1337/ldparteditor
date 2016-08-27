@@ -30,7 +30,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 final class HintFixer {
 
     public static String fix(int lineNumber, String sort, String line, String text, DatFile datFile) {
-        HeaderState h = HeaderState.state();
+        HeaderState h = datFile.getDatHeader().getState();
         DatType type = datFile.getType();
         int s = Integer.parseInt(sort, 16);
         switch (s) {
