@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import org.eclipse.swt.custom.StyledText;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.text.HeaderState;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 
@@ -109,6 +110,9 @@ public enum QuickFixer {
             }
             text2 = sb.toString();
         }
+        
+        HeaderState h = datFile.getDatHeader().getState().clone();
+        
         for (Integer l : lineNumbers) {
 
             for (TreeItem t : issuesInLine.get(l)) {
@@ -120,7 +124,7 @@ public enum QuickFixer {
                 String line = getLine(l, text2);
 
                 if ("H".equals(type)) { //$NON-NLS-1$
-                    text2 = HintFixer.fix(l, sort, line, text2, datFile);
+                    text2 = HintFixer.fix(l, sort, line, text2, datFile, h);
                 } else if ("W".equals(type)) { //$NON-NLS-1$
                     text2 = WarningFixer.fix(l, sort, line, text2, datFile);
                 } else if ("E".equals(type)) { //$NON-NLS-1$

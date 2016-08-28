@@ -72,7 +72,6 @@ public class DatHeaderManager {
                                 final ArrayList<ParsingResult> allHints = new ArrayList<ParsingResult>();
                                 int headerState = HeaderState._00_TITLE;
                                 final HeaderState h = new HeaderState();
-                                state = h;
 
                                 GData gd = (GData) newEntry[0];
                                 final TreeItem treeItem_Hints = (TreeItem) newEntry[1];
@@ -112,7 +111,12 @@ public class DatHeaderManager {
 
                                     // FIXME Needs implementation!
 
-                                    while (type == 0 || type == 6) {
+                                    final boolean isCommentOrBfcMeta = type == 0 || type == 6;
+                                    if (!isCommentOrBfcMeta) {
+                                        break;
+                                    }
+                                    
+                                    while (isCommentOrBfcMeta) {
 
                                         // HeaderState._01_NAME
                                         if (headerState == HeaderState._01_NAME) {
@@ -533,28 +537,34 @@ public class DatHeaderManager {
 
                                 if (firstEntry != null) {
                                     registered[0] = false;
+                                    int r = 0;
+                                    if (!h.hasTITLE() && !h.hasNAME() && !h.hasAUTHOR() && !h.hasTYPE() && !h.hasLICENSE() && !h.hasBFC()) {
+                                        r = 1;
+                                    }
+                                    
                                     if (!h.hasTITLE()) {
-                                        registerHint(firstEntry, -6, "00", I18n.DATFILE_MissingTitle, registered, allHints); //$NON-NLS-1$
+                                        registerHint(firstEntry, -6 * r + -1 * (1 - r), "00", I18n.DATFILE_MissingTitle, registered, allHints); //$NON-NLS-1$
                                     }
                                     if (!h.hasNAME()) {
-                                        registerHint(firstEntry, -5, "10", I18n.DATFILE_MissingFileName, registered, allHints); //$NON-NLS-1$
+                                        registerHint(firstEntry, -5 * r + -2 * (1 - r), "10", I18n.DATFILE_MissingFileName, registered, allHints); //$NON-NLS-1$
                                     }
                                     if (!h.hasAUTHOR()) {
-                                        registerHint(firstEntry, -4, "20", I18n.DATFILE_MissingAuthor, registered, allHints); //$NON-NLS-1$
+                                        registerHint(firstEntry, -4 * r + -3 * (1 - r), "20", I18n.DATFILE_MissingAuthor, registered, allHints); //$NON-NLS-1$
                                     }
                                     if (!h.hasTYPE()) {
-                                        registerHint(firstEntry, -3, "30", I18n.DATFILE_MissingPartType, registered, allHints); //$NON-NLS-1$
+                                        registerHint(firstEntry, -3 * r + -4 * (1 - r), "30", I18n.DATFILE_MissingPartType, registered, allHints); //$NON-NLS-1$
                                     }
                                     if (!h.hasLICENSE()) {
-                                        registerHint(firstEntry, -2, "40", I18n.DATFILE_MissingLicense, registered, allHints); //$NON-NLS-1$
+                                        registerHint(firstEntry, -2 * r + -5 * (1 - r), "40", I18n.DATFILE_MissingLicense, registered, allHints); //$NON-NLS-1$
                                     }
                                     if (!h.hasBFC()) {
-                                        registerHint(firstEntry, -1, "60", I18n.DATFILE_MissingBFC, registered, allHints); //$NON-NLS-1$
+                                        registerHint(firstEntry, -1 * r + -6 * (1 - r), "60", I18n.DATFILE_MissingBFC, registered, allHints); //$NON-NLS-1$
                                     }
                                 }
 
                                 final boolean doWait = !allHints.isEmpty();
                                 
+                                state = h;
                                 int firstKey = CACHE_headerHints.isEmpty() ? Integer.MAX_VALUE : CACHE_headerHints.firstKey();
                                 firstKey -= 1;
                                 CACHE_headerHints.put(firstKey, allHints);
