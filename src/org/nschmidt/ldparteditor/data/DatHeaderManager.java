@@ -553,6 +553,8 @@ public class DatHeaderManager {
                                     }
                                 }
 
+                                final boolean doWait = !allHints.isEmpty();
+                                
                                 int firstKey = CACHE_headerHints.isEmpty() ? Integer.MAX_VALUE : CACHE_headerHints.firstKey();
                                 firstKey -= 1;
                                 CACHE_headerHints.put(firstKey, allHints);
@@ -560,12 +562,14 @@ public class DatHeaderManager {
                                     CACHE_headerHints.remove(CACHE_headerHints.lastKey());
                                 }
 
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
+                                if (doWait) {
+                                    try {
+                                        Thread.sleep(1000);
+                                    } catch (InterruptedException e) {
+                                    }
                                 }
 
-                                Display.getDefault().asyncExec(new Runnable() {
+                                Display.getDefault().syncExec(new Runnable() {
                                     @Override
                                     public void run() {
                                         try {
@@ -579,14 +583,19 @@ public class DatHeaderManager {
                                                 String hints = hintCount == 1 ? I18n.EDITORTEXT_Other : I18n.EDITORTEXT_Others;
                                                 String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
                                                 lbl_ProblemCount.setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-                                                lbl_ProblemCount.setText("TEST"); //$NON-NLS-1$
-                                                treeItem_Hints.getParent().build();
+                                                org.nschmidt.ldparteditor.widgets.Tree tree = treeItem_Hints.getParent();
+                                                tree.build();
                                                 lbl_ProblemCount.getParent().layout();
                                                 lbl_ProblemCount.getParent().redraw();
                                                 lbl_ProblemCount.getParent().update();
+                                                tree.redraw();
+                                                tree.update();
+                                                lbl_ProblemCount.redraw();
+                                                lbl_ProblemCount.update();
                                             }
                                         } catch (Exception ex) {
                                             // The text editor widget could be disposed
+                                            NLogger.debug(getClass(), "Uncritical DatHeaderManager Exception:"); //$NON-NLS-1$
                                             NLogger.debug(getClass(), ex);
                                         }
                                     }
