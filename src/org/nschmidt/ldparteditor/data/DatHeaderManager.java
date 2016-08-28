@@ -21,12 +21,16 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.HeaderState;
+import org.nschmidt.ldparteditor.widgets.TreeItem;
 
 /**
  * "Call me Mike"
@@ -41,7 +45,7 @@ public class DatHeaderManager {
     private boolean hasNoThread = true;
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
 
-    private volatile Queue<GData> workQueue = new ConcurrentLinkedQueue<GData>();
+    private volatile Queue<Object[]> workQueue = new ConcurrentLinkedQueue<Object[]>();
 
     private volatile HeaderState state = new HeaderState();
 
@@ -51,7 +55,7 @@ public class DatHeaderManager {
 
     volatile ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> CACHE_headerHints = new ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>>(); // Cleared
 
-    public void pushDatHeaderCheck(GData data) {
+    public void pushDatHeaderCheck(GData data, StyledText compositeText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount) {
         if (df.isReadOnly()) return;
         if (hasNoThread) {
             hasNoThread = false;
@@ -61,7 +65,7 @@ public class DatHeaderManager {
 
                     while (isRunning.get() && Editor3DWindow.getAlive().get()) {
                         try {
-                            GData newEntry = workQueue.poll();
+                            Object[] newEntry = workQueue.poll();
                             if (newEntry != null) {
                                 NLogger.debug(getClass(), "Started DATHeader check..."); //$NON-NLS-1$
 
@@ -70,7 +74,13 @@ public class DatHeaderManager {
                                 final HeaderState h = new HeaderState();
                                 state = h;
 
-                                GData gd = newEntry;
+                                GData gd = (GData) newEntry[0];
+                                final TreeItem treeItem_Hints = (TreeItem) newEntry[1];
+                                final TreeItem treeItem_Warnings = (TreeItem) newEntry[2];
+                                final TreeItem treeItem_Errors = (TreeItem) newEntry[3];
+                                final TreeItem treeItem_Duplicates = (TreeItem) newEntry[4];
+                                final StyledText styledText_Composite = (StyledText) newEntry[5];
+                                final Label lbl_ProblemCount = (Label) newEntry[6];
                                 final GData firstEntry = gd.next;
                                 int lineNumber = 0;
                                 boolean[] registered = new boolean[]{false};
@@ -549,6 +559,38 @@ public class DatHeaderManager {
                                 if (CACHE_headerHints.size() > 3) {
                                     CACHE_headerHints.remove(CACHE_headerHints.lastKey());
                                 }
+
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                }
+
+                                Display.getDefault().asyncExec(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            if (df.updateDatHeaderHints(styledText_Composite, hints)) {
+                                                int errorCount = treeItem_Errors.getItems().size();
+                                                int warningCount = treeItem_Warnings.getItems().size();
+                                                int hintCount = treeItem_Hints.getItems().size();
+                                                int duplicateCount = treeItem_Duplicates.getItems().size();
+                                                String errors = errorCount == 1 ? I18n.EDITORTEXT_Error : I18n.EDITORTEXT_Errors;
+                                                String warnings = warningCount == 1 ? I18n.EDITORTEXT_Warning : I18n.EDITORTEXT_Warnings;
+                                                String hints = hintCount == 1 ? I18n.EDITORTEXT_Other : I18n.EDITORTEXT_Others;
+                                                String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
+                                                lbl_ProblemCount.setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                                                lbl_ProblemCount.setText("TEST"); //$NON-NLS-1$
+                                                treeItem_Hints.getParent().build();
+                                                lbl_ProblemCount.getParent().layout();
+                                                lbl_ProblemCount.getParent().redraw();
+                                                lbl_ProblemCount.getParent().update();
+                                            }
+                                        } catch (Exception ex) {
+                                            // The text editor widget could be disposed
+                                            NLogger.debug(getClass(), ex);
+                                        }
+                                    }
+                                });
                             }
                             if (workQueue.isEmpty()) Thread.sleep(200);
                         } catch (InterruptedException e) {
@@ -594,7 +636,7 @@ public class DatHeaderManager {
             }).start();
         }
 
-        while (!workQueue.offer(data)) {
+        while (!workQueue.offer(new Object[]{data, hints, warnings, errors, duplicates, compositeText, problemCount})) {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {}

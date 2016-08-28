@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.lwjgl.opengl.GL11;
@@ -421,7 +422,7 @@ public final class DatFile {
      * @param errors
      */
     public void parseForErrorAndData(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings,
-            TreeItem errors, TreeItem duplicates) {
+            TreeItem errors, TreeItem duplicates, Label problemCount) {
 
         Set<String> alreadyParsed = new HashSet<String>();
         alreadyParsed.add(getShortName());
@@ -688,7 +689,7 @@ public final class DatFile {
 
         duplicate.pushDuplicateCheck(drawChainAnchor);
         updateDuplicatesErrors(compositeText, duplicates);
-        datHeader.pushDatHeaderCheck(drawChainAnchor);
+        datHeader.pushDatHeaderCheck(drawChainAnchor, compositeText, hints, warnings, errors, duplicates, problemCount);
         updateDatHeaderHints(compositeText, hints);
 
         warnings.sortItems();
@@ -712,7 +713,7 @@ public final class DatFile {
      * @param warnings
      * @param errors
      */
-    public void parseForError(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, boolean unselectBgPicture) {
+    public void parseForError(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount, boolean unselectBgPicture) {
 
         if (compositeText.getText().isEmpty()) {
             return;
@@ -865,7 +866,7 @@ public final class DatFile {
 
         duplicate.pushDuplicateCheck(drawChainAnchor);
         updateDuplicatesErrors(compositeText, duplicates);
-        datHeader.pushDatHeaderCheck(drawChainAnchor);
+        datHeader.pushDatHeaderCheck(drawChainAnchor, compositeText, hints, warnings, errors, duplicates, problemCount);
         updateDatHeaderHints(compositeText, hints);
 
         warnings.sortItems();
@@ -921,7 +922,7 @@ public final class DatFile {
         return false;
     }
 
-    public boolean updateDatHeaderHints(StyledText compositeText, TreeItem headerHints) {
+    public synchronized boolean updateDatHeaderHints(StyledText compositeText, TreeItem headerHints) {
         ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> CACHE_headerHints = datHeader.CACHE_headerHints;
         if (!CACHE_headerHints.isEmpty()) {
             int position = 0;
@@ -968,17 +969,11 @@ public final class DatFile {
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
                         formatter.applyPattern(I18n.DATFILE_Line);
-
                         TreeItem trtmNewTreeitem = new TreeItem(headerHints, SWT.NONE);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
                         trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
-
-                        if (result.getTypeNumber() < 0) {
-                            trtmNewTreeitem.setData(result.getTypeNumber());
-                        } else {
-                            trtmNewTreeitem.setData(position);
-                        }
+                        trtmNewTreeitem.setData(position);
                     }
                 } else {
                     for (ParsingResult result : parsingResults) {

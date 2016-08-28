@@ -762,7 +762,7 @@ public class CompositeTab extends CompositeTabDesign {
 
                 if (state.isSync()) {
                     state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
-                            treeItem_Errors[0], treeItem_Duplicates[0], false);
+                            treeItem_Errors[0], treeItem_Duplicates[0], lbl_ProblemCount[0], false);
                     vm.setModified(false, true);
                 } else {
                     if (!vm.isModified()) {
@@ -770,14 +770,14 @@ public class CompositeTab extends CompositeTabDesign {
                             @Override
                             public void run() {
                                 state.getFileNameObj().parseForErrorAndData(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
-                                        treeItem_Errors[0], treeItem_Duplicates[0]);
+                                        treeItem_Errors[0], treeItem_Duplicates[0], lbl_ProblemCount[0]);
                             }
                         });
                     } else {
                         vm.setModified(false, true);
                         GData.CACHE_warningsAndErrors.clear();
                         state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
-                                treeItem_Errors[0], treeItem_Duplicates[0], true);
+                                treeItem_Errors[0], treeItem_Duplicates[0], lbl_ProblemCount[0], true);
                     }
                     vm.setUpdated(true);
                 }
@@ -1047,16 +1047,8 @@ public class CompositeTab extends CompositeTabDesign {
                 if (!state.isSync()) {
                     DatFile df = state.getFileNameObj();
                     df.addHistory(compositeText[0].getText(), r.x, r.y, compositeText[0].getTopIndex());
-
-                    final boolean checkDuplicates = df.updateDuplicatesErrors(compositeText[0], treeItem_Duplicates[0]);
-                    final boolean checkDatHeader = df.updateDatHeaderHints(compositeText[0], treeItem_Hints[0]);
-                    if (checkDuplicates || checkDatHeader) {
-                        if (checkDuplicates) {
-                            df.getDuplicate().pushDuplicateCheck(df.getDrawChainStart());
-                        }
-                        if (checkDatHeader) {
-                            df.getDatHeader().pushDatHeaderCheck(df.getDrawChainStart());
-                        }
+                    if (df.updateDuplicatesErrors(compositeText[0], treeItem_Duplicates[0])) {
+                        df.getDuplicate().pushDuplicateCheck(df.getDrawChainStart());
                         int errorCount = treeItem_Errors[0].getItems().size();
                         int warningCount = treeItem_Warnings[0].getItems().size();
                         int hintCount = treeItem_Hints[0].getItems().size();
@@ -1585,7 +1577,7 @@ public class CompositeTab extends CompositeTabDesign {
     }
 
     public void parseForErrorAndHints() {
-        this.state.getFileNameObj().parseForError(getTextComposite(), 0, getTextComposite().getText().length(), getTextComposite().getText().length(), getTextComposite().getText(), getTextComposite().getText(), treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0], treeItem_Duplicates[0], true);
+        this.state.getFileNameObj().parseForError(getTextComposite(), 0, getTextComposite().getText().length(), getTextComposite().getText().length(), getTextComposite().getText(), getTextComposite().getText(), treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0], treeItem_Duplicates[0], lbl_ProblemCount[0], true);
         int errorCount = treeItem_Errors[0].getItems().size();
         int warningCount = treeItem_Warnings[0].getItems().size();
         int hintCount = treeItem_Hints[0].getItems().size();
