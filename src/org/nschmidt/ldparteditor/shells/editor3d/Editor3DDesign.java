@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.shells.editor3d;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -846,7 +847,7 @@ class Editor3DDesign extends ApplicationWindow {
                             lblNewLabel6.setText(I18n.UNITS_Name_tertiary + " [" + I18n.UNITS_tertiary + "]"); //$NON-NLS-1$ //$NON-NLS-2$
                             lblNewLabel6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
-                            final BigDecimalSpinner spinnerStud = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE, View.NUMBER_FORMAT8F);
+                            final BigDecimalSpinner spinnerStud = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE, View.NUMBER_FORMAT0F);
                             spinnerStud.setMaximum(new BigDecimal("9999.99999999")); //$NON-NLS-1$
                             spinnerStud.setMinimum(new BigDecimal("-9999.99999999")); //$NON-NLS-1$
                             spinnerStud.setValue(BigDecimal.ZERO);
@@ -871,7 +872,7 @@ class Editor3DDesign extends ApplicationWindow {
                                     change.set(true);
                                     spinnerInch.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
                                     spinnerMM.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
-                                    spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc));
+                                    spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc).setScale(1, RoundingMode.HALF_UP));
                                     change.set(false);
                                 }
                             });
@@ -883,7 +884,7 @@ class Editor3DDesign extends ApplicationWindow {
                                     change.set(true);
                                     spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
                                     spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
-                                    spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc));
+                                    spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc).setScale(1, RoundingMode.HALF_UP));
                                     change.set(false);
                                 }
                             });
@@ -895,7 +896,7 @@ class Editor3DDesign extends ApplicationWindow {
                                     change.set(true);
                                     spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
                                     spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
-                                    spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc));
+                                    spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc).setScale(1, RoundingMode.HALF_UP));
                                     change.set(false);
                                 }
                             });
