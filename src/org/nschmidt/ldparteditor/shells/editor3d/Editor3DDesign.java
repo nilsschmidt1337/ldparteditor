@@ -1441,10 +1441,21 @@ class Editor3DDesign extends ApplicationWindow {
                         gridData.verticalAlignment = SWT.FILL;
                         gridData.grabExcessVerticalSpace = true;
                         gridData.grabExcessHorizontalSpace = true;
-                        gridData.verticalSpan = 6;
+                        gridData.verticalSpan = 8;
                         treeAllParts.setLayoutData(gridData);
                     }
-                    // FIXME Needs implementation!
+                    {
+                        Button btn_showMiddle = new Button(cmp_Container2, SWT.RIGHT_TO_LEFT);
+                        this.btn_showMiddle[0] = btn_showMiddle;
+                        btn_showMiddle.setImage(ResourceManager.getImage("icon16_middle.png")); //$NON-NLS-1$
+                        btn_showMiddle.setToolTipText(I18n.E3D_SashMiddle);
+                    }
+                    {
+                        Button btn_sameHeight = new Button(cmp_Container2, SWT.RIGHT_TO_LEFT);
+                        this.btn_sameHeight[0] = btn_sameHeight;
+                        btn_sameHeight.setImage(ResourceManager.getImage("icon16_sameHeight.png")); //$NON-NLS-1$
+                        btn_sameHeight.setToolTipText(I18n.E3D_SashSameHeight);
+                    }
                     {
                         Button btn_OpenIn3DEditor = new Button(cmp_Container2, SWT.NONE);
                         this.btn_OpenIn3DEditor[0] = btn_OpenIn3DEditor;
@@ -1512,16 +1523,6 @@ class Editor3DDesign extends ApplicationWindow {
                         Button btn_ResetSearch = new Button(cmp_Search, SWT.NONE);
                         this.btn_ResetSearch[0] = btn_ResetSearch;
                         btn_ResetSearch.setText(I18n.E3D_Reset);
-
-                        Button btn_showMiddle = new Button(cmp_Search, SWT.RIGHT_TO_LEFT);
-                        this.btn_showMiddle[0] = btn_showMiddle;
-                        btn_showMiddle.setImage(ResourceManager.getImage("icon16_middle.png")); //$NON-NLS-1$
-                        btn_showMiddle.setToolTipText(I18n.E3D_SashMiddle);
-
-                        Button btn_sameHeight = new Button(cmp_Search, SWT.RIGHT_TO_LEFT);
-                        this.btn_sameHeight[0] = btn_sameHeight;
-                        btn_sameHeight.setImage(ResourceManager.getImage("icon16_sameHeight.png")); //$NON-NLS-1$
-                        btn_sameHeight.setToolTipText(I18n.E3D_SashSameHeight);
                     }
 
                     Composite cmp_Container4 = new Composite(sashForm2, SWT.BORDER);
