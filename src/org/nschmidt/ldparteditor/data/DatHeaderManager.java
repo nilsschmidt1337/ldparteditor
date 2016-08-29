@@ -115,7 +115,7 @@ public class DatHeaderManager {
                                     if (!isCommentOrBfcMeta) {
                                         break;
                                     }
-                                    
+
                                     while (isCommentOrBfcMeta) {
 
                                         // HeaderState._01_NAME
@@ -537,33 +537,53 @@ public class DatHeaderManager {
 
                                 if (firstEntry != null) {
                                     registered[0] = false;
-                                    int r = 0;
-                                    if (!h.hasTITLE() && !h.hasNAME() && !h.hasAUTHOR() && !h.hasTYPE() && !h.hasLICENSE() && !h.hasBFC()) {
-                                        r = 1;
-                                    }
-                                    
+                                    int r1 = 0;
+                                    int r2 = 0;
+                                    int r3 = 0;
+                                    int r4 = 0;
+                                    int r5 = 0;
+                                    int r6 = 0;
                                     if (!h.hasTITLE()) {
-                                        registerHint(firstEntry, -6 * r + -1 * (1 - r), "00", I18n.DATFILE_MissingTitle, registered, allHints); //$NON-NLS-1$
+                                        r1 = 1;
+                                        if (!h.hasNAME()) {
+                                            r2 = 1;
+                                            if (!h.hasAUTHOR()) {
+                                                r3 = 1;
+                                                if (!h.hasTYPE()) {
+                                                    r4 = 1;
+                                                    if (!h.hasLICENSE()) {
+                                                        r5 = 1;
+                                                        if (!h.hasBFC()) {
+                                                            r6 = 1;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (!h.hasTITLE()) {
+                                        registerHint(firstEntry, -60 * r1 + -1 * (1 - r1), "00", I18n.DATFILE_MissingTitle, registered, allHints); //$NON-NLS-1$
                                     }
                                     if (!h.hasNAME()) {
-                                        registerHint(firstEntry, -5 * r + -2 * (1 - r), "10", I18n.DATFILE_MissingFileName, registered, allHints); //$NON-NLS-1$
+                                        registerHint(firstEntry, -50 * r2 + -2 * (1 - r2), "10", I18n.DATFILE_MissingFileName, registered, allHints); //$NON-NLS-1$
                                     }
                                     if (!h.hasAUTHOR()) {
-                                        registerHint(firstEntry, -4 * r + -3 * (1 - r), "20", I18n.DATFILE_MissingAuthor, registered, allHints); //$NON-NLS-1$
+                                        registerHint(firstEntry, -40 * r3 + -3 * (1 - r3), "20", I18n.DATFILE_MissingAuthor, registered, allHints); //$NON-NLS-1$
                                     }
                                     if (!h.hasTYPE()) {
-                                        registerHint(firstEntry, -3 * r + -4 * (1 - r), "30", I18n.DATFILE_MissingPartType, registered, allHints); //$NON-NLS-1$
+                                        registerHint(firstEntry, -30 * r4 + -4 * (1 - r4), "30", I18n.DATFILE_MissingPartType, registered, allHints); //$NON-NLS-1$
                                     }
                                     if (!h.hasLICENSE()) {
-                                        registerHint(firstEntry, -2 * r + -5 * (1 - r), "40", I18n.DATFILE_MissingLicense, registered, allHints); //$NON-NLS-1$
+                                        registerHint(firstEntry, -20 * r5 + -5 * (1 - r5), "40", I18n.DATFILE_MissingLicense, registered, allHints); //$NON-NLS-1$
                                     }
                                     if (!h.hasBFC()) {
-                                        registerHint(firstEntry, -1 * r + -6 * (1 - r), "60", I18n.DATFILE_MissingBFC, registered, allHints); //$NON-NLS-1$
+                                        registerHint(firstEntry, -10 * r6 + -6 * (1 - r6), "60", I18n.DATFILE_MissingBFC, registered, allHints); //$NON-NLS-1$
                                     }
                                 }
 
                                 final boolean doWait = !allHints.isEmpty();
-                                
+
                                 state = h;
                                 int firstKey = CACHE_headerHints.isEmpty() ? Integer.MAX_VALUE : CACHE_headerHints.firstKey();
                                 firstKey -= 1;
