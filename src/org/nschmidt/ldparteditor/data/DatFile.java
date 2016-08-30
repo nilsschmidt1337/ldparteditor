@@ -628,7 +628,8 @@ public final class DatFile {
         // Check BFC INVERTNEXT
         for (Iterator<TreeItem> it = errors.getItems().iterator(); it.hasNext();) {
             TreeItem ti = it.next();
-            if (ti.getText(0).equals( I18n.DATPARSER_InvalidInvertNext)) {
+            final String tiText = ti.getText(0);
+            if (tiText.equals( I18n.DATPARSER_InvalidInvertNext) || tiText.equals(I18n.DATPARSER_InvalidInvertNextFlat)) {
                 it.remove();
             }
         }
@@ -804,7 +805,8 @@ public final class DatFile {
         // Check BFC INVERTNEXT
         for (Iterator<TreeItem> it = errors.getItems().iterator(); it.hasNext();) {
             TreeItem ti = it.next();
-            if (ti.getText(0).equals( I18n.DATPARSER_InvalidInvertNext)) {
+            final String tiText = ti.getText(0);
+            if (tiText.equals( I18n.DATPARSER_InvalidInvertNext) || tiText.equals(I18n.DATPARSER_InvalidInvertNextFlat)) {
                 it.remove();
             }
         }
