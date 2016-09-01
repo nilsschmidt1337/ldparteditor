@@ -3867,8 +3867,13 @@ public class Editor3DWindow extends Editor3DDesign {
                                     }
                                 }
                             }
-                        } else if (sv.size() == 1) {
+                        } else if (sv.size() == 1 && vm.getSelectedData().size() == 0) {
                             v = sv.iterator().next();
+                        } else {
+                            v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+                            vm.selectObjectVertices();
+                            CoordinatesDialog.setStart(null);
+                            CoordinatesDialog.setEnd(null);
                         }
                         final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
                         if (new CoordinatesDialog(getShell(), v, mani).open() == IDialogConstants.OK_ID) {
@@ -3906,7 +3911,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         CoordinatesDialog.setY(true);
                                         CoordinatesDialog.setZ(true);
                                     }
-                                    vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedVertices().size() == 1, true);
+                                    vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), true, true);
                                     vm.clearSelection();
                                     CoordinatesDialog.setX(a);
                                     CoordinatesDialog.setY(b);
@@ -3944,14 +3949,14 @@ public class Editor3DWindow extends Editor3DDesign {
                                         CoordinatesDialog.setY(true);
                                         CoordinatesDialog.setZ(true);
                                     }
-                                    vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedVertices().size() == 1, true);
+                                    vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), true, true);
                                     vm.clearSelection();
                                     CoordinatesDialog.setX(a);
                                     CoordinatesDialog.setY(b);
                                     CoordinatesDialog.setZ(c);
                                 }
                             } else {
-                                vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedVertices().size() == 1, true);
+                                vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), true, true);
                             }
 
                             if (noReset) {
