@@ -39,12 +39,12 @@
             <zipfileset excludes="META-INF/*.SF" src="${ws}/runtime_compiler/tools.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${ws}/LDPartEditor_linux/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${ws}/LDPartEditor_linux/swing2swt.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.core.databinding_1.5.0.v20150422-0725.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.core.databinding.beans_1.3.0.v20150422-0725.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.core.databinding.observable_1.5.0.v20150422-0725.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.core.databinding.property_1.5.0.v20150422-0725.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.jface.databinding_1.7.0.v20150406-2148.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/com.ibm.icu_54.1.1.v201501272100.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.core.databinding_1.6.0.v20160412-0910.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.core.databinding.beans_1.3.100.v20160509-1025.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.core.databinding.observable_1.6.0.v20160511-1747.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.core.databinding.property_1.6.0.v20160427-0852.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.jface.databinding_1.8.0.v20160420-2231.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/com.ibm.icu_56.1.0.v201601250100.jar"/>
         </jar>
     	<!-- Create complete archive -->
     	<zip destfile="${ws}/LDPartEditor/binary/${os}_${arc}/LDPartEditor_${os}_${arc}.zip"
