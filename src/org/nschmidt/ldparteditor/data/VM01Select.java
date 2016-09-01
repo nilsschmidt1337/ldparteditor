@@ -778,4 +778,35 @@ class VM01Select extends VM00Snapshot {
             return false;
         }
     }
+    
+    public void selectObjectVertices() {
+        Vertex[] verts;
+        for (GData2 g : selectedLines) {
+            if ((verts = lines.get(g)) != null) {
+                selectedVertices.add(verts[0]);
+                selectedVertices.add(verts[1]);
+            }
+        }
+        for (GData3 g : selectedTriangles) {
+            if ((verts = triangles.get(g)) != null) {
+                selectedVertices.add(verts[0]);
+                selectedVertices.add(verts[1]);
+                selectedVertices.add(verts[2]);
+            }
+        }
+        for (GData4 g : selectedQuads) {
+            if ((verts = quads.get(g)) != null) {
+                selectedVertices.add(verts[0]);
+                selectedVertices.add(verts[1]);
+                selectedVertices.add(verts[2]);
+                selectedVertices.add(verts[3]);
+            }
+        }
+        for (GData5 g : selectedCondlines) {
+            if ((verts = condlines.get(g)) != null) {
+                selectedVertices.add(verts[0]);
+                selectedVertices.add(verts[1]);
+            }
+        }
+    }
 }
