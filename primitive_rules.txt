@@ -4,7 +4,7 @@
 
 Axle; Title "axle.dat";Contains "Axle"
 
-Ring; Title "4-4ring1.dat"; Contains "Ring"; Order by alphabet; Order by fraction; Order by last number
+Ring; Title "4-4ring1.dat"; Contains "Ring"
 
 Box;Title "box.dat"; Contains "Box"
 Bushlock;Title "bushlock.dat"; Filename contains "bushl"
