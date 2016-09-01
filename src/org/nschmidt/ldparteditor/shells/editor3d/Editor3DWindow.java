@@ -3917,7 +3917,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     CoordinatesDialog.setY(b);
                                     CoordinatesDialog.setZ(c);
                                 }
-                            }else if (coordCount == 2 && CoordinatesDialog.getStart() != null) {
+                            } else if (coordCount == 2 && CoordinatesDialog.getStart() != null) {
                                 TreeSet<Vertex> verts = new TreeSet<Vertex>();
                                 verts.addAll(vm.getSelectedVertices());
                                 vm.clearSelection();
@@ -3956,7 +3956,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     CoordinatesDialog.setZ(c);
                                 }
                             } else {
-                                vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), true, true);
+                                vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedData().size() == 0 || vm.getSelectedVertices().size() == 1, true);
                             }
 
                             if (noReset) {
