@@ -1212,14 +1212,6 @@ public final class DatFile {
         }
     }
 
-    public void addToTailOrInsertAfterCursorReset(GData gdata) {
-        if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
-            insertAfterCursor(gdata);
-        } else {
-            addToTail(gdata);
-        }
-    }
-
     public void insertAfterCursor(GData gdata) {
         // The feature is only available when the 3D view and the text editor view are synchronized!
         if (!WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) {

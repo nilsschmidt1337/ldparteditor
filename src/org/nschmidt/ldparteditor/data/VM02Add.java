@@ -29,7 +29,6 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.project.Project;
@@ -316,7 +315,7 @@ class VM02Add extends VM01SelectHelper {
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
         }
         GDataPNG pic = new GDataPNG(new GDataPNG(text, offset, angleA, angleB, angleC, scale, texturePath).getString(offset, angleA, angleB, angleC, scale, texturePath), offset, angleA, angleB, angleC, scale, texturePath);
-        linkedDatFile.addToTailOrInsertAfterCursorReset(pic);
+        linkedDatFile.addToTailOrInsertAfterCursor(pic);
         setSelectedBgPicture(pic);
         setModified_NoSync();
     }
@@ -360,7 +359,7 @@ class VM02Add extends VM01SelectHelper {
             // Will never return a 'null' colour!
             col = DatParser.validateColour(24, 0f, 0f, .0f, 0f);
         }
-        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData2(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, isRealLine));
+        linkedDatFile.addToTailOrInsertAfterCursor(new GData2(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, isRealLine));
         linkedDatFile.setObjVertex1(v1);
         linkedDatFile.setObjVertex2(v2);
     }
@@ -437,7 +436,7 @@ class VM02Add extends VM01SelectHelper {
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
-        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, isTriangle));
+        linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, isTriangle));
         setModified(true, true);
     }
 
@@ -549,7 +548,7 @@ class VM02Add extends VM01SelectHelper {
                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
             }
             GColour col = Editor3DWindow.getWindow().getLastUsedColour();
-            linkedDatFile.addToTailOrInsertAfterCursorReset(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile, true));
+            linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile, true));
             linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v4, v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
             setModified(true, true);
             return;
@@ -656,7 +655,7 @@ class VM02Add extends VM01SelectHelper {
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
-        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData4(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
+        linkedDatFile.addToTailOrInsertAfterCursor(new GData4(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
         setModified(true, true);
     }
 
@@ -707,44 +706,28 @@ class VM02Add extends VM01SelectHelper {
             col = DatParser.validateColour(24, 0f, 0f, 0f, 0f);
         }
 
-        linkedDatFile.addToTailOrInsertAfterCursorReset(new GData5(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
+        linkedDatFile.addToTailOrInsertAfterCursor(new GData5(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
     }
 
     public void addParsedLine(String lineToParse) {
         if (linkedDatFile.isReadOnly())
             return;
         clearSelection();
-        if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
-            Set<String> alreadyParsed = new HashSet<String>();
-            alreadyParsed.add(linkedDatFile.getShortName());
-            ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, 0.5f, 0.5f, 0.5f, 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
-            GData pasted = result.get(0).getGraphicalData();
-            if (pasted == null)
-                pasted = new GData0(lineToParse);
-            linkedDatFile.insertAfterCursor(pasted);
-        } else {
-            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
-            int linecount = dpl.size();
-            GData before = linkedDatFile.getDrawChainTail();
-            if (linecount == 1 && before.toString().trim().equals("")) { //$NON-NLS-1$
-                GData tmp = before.getBefore();
-                before.derefer();
-                before = tmp;
-                linecount--;
-            }
-            Set<String> alreadyParsed = new HashSet<String>();
-            alreadyParsed.add(linkedDatFile.getShortName());
-            ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, 0.5f, 0.5f, 0.5f, 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
-            GData pasted = result.get(0).getGraphicalData();
-            if (pasted == null)
-                pasted = new GData0(lineToParse);
-            linecount++;
-            dpl.put(linecount, pasted);
-            before.setNext(pasted);
-            linkedDatFile.setDrawChainTail(pasted);
+
+        Set<String> alreadyParsed = new HashSet<String>();
+        alreadyParsed.add(linkedDatFile.getShortName());
+        ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, 0.5f, 0.5f, 0.5f, 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+        GData pasted = result.get(0).getGraphicalData();
+        if (pasted == null) {
+            pasted = new GData0(lineToParse);
         }
+
+        setModified_NoSync();
+        if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
+            Project.addUnsavedFile(linkedDatFile);
+            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+        }
+        linkedDatFile.addToTailOrInsertAfterCursor(pasted);
         setModified(true, true);
-        updateUnsavedStatus();
-        validateState();
     }
 }
