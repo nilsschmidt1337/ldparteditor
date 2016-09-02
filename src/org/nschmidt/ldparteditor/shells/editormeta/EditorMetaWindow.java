@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.shells.editormeta;
 import java.net.URLDecoder;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -27,12 +28,15 @@ import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.main.LDPartEditor;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -82,14 +86,27 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 }
             }
         });
-        
+
         btn_Create[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 String textToCompile = lbl_lineToInsert[0].getText();
-                DatFile df = Project.getFileToEdit();
+                final DatFile df = Project.getFileToEdit();
                 if (df != null) {
+                    final boolean insertAtCursor = Editor3DWindow.getWindow().isInsertingAtCursorPosition();
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
+                            break;
+                        }
+                        for (CTabItem t : w.getTabFolder().getItems()) {
+                            if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                Editor3DWindow.getWindow().setInsertingAtCursorPosition(true);
+                                break;
+                            }
+                        }
+                    }
                     df.getVertexManager().addParsedLine(textToCompile);
+                    Editor3DWindow.getWindow().setInsertingAtCursorPosition(insertAtCursor);
                 }
             }
         });

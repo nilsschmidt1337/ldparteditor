@@ -6044,6 +6044,7 @@ public class Editor3DWindow extends Editor3DDesign {
             btn_AddCondline[0].setSelection(isAddingCondlines());
             setAddingSomething(isAddingCondlines());
             clickSingleBtn(btn_AddCondline[0]);
+            break;
         case 6:
             setAddingDistance(!isAddingDistance());
             btn_AddDistance[0].setSelection(isAddingDistance());
