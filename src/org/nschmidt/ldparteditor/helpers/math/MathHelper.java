@@ -892,13 +892,13 @@ public enum MathHelper {
         return tMatrix;
     }
 
-    public static String matrixToString(Matrix4f matrix, int coordsDecimalPlaces, int matrixDecimalPlaces) {
+    public static String matrixToString(Matrix4f matrix, int coordsDecimalPlaces, int matrixDecimalPlaces, final boolean onX,  final boolean onY,  final boolean onZ) {
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m30 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(onX ? new BigDecimal(matrix.m30 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : new BigDecimal(matrix.m30 / 1000f)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m31 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(onY ? new BigDecimal(matrix.m31 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : new BigDecimal(matrix.m31 / 1000f)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m32 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(onZ ? new BigDecimal(matrix.m32 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : new BigDecimal(matrix.m32 / 1000f)));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m00).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
         lineBuilder.append(" "); //$NON-NLS-1$

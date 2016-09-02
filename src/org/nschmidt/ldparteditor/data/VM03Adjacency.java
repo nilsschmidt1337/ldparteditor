@@ -578,7 +578,8 @@ class VM03Adjacency extends VM02Add {
         return rval;
     }
 
-    public synchronized void roundSelection(int coordsDecimalPlaces, int matrixDecimalPlaces, boolean moveAdjacentData, boolean syncWithTextEditors) {
+    public synchronized void roundSelection(int coordsDecimalPlaces, int matrixDecimalPlaces, boolean moveAdjacentData, boolean syncWithTextEditors
+            , final boolean onX,  final boolean onY,  final boolean onZ) {
 
         if (linkedDatFile.isReadOnly())
             return;
@@ -756,8 +757,8 @@ class VM03Adjacency extends VM02Add {
                 setModified_NoSync();
             }
             for (Vertex vOld : singleVertices) {
-                Vertex vNew = new Vertex(vOld.X.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP), vOld.Y.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP), vOld.Z.setScale(coordsDecimalPlaces,
-                        RoundingMode.HALF_UP));
+                Vertex vNew = new Vertex(onX ? vOld.X.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.X, onY ? vOld.Y.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.Y, onZ ? vOld.Z.setScale(coordsDecimalPlaces,
+                        RoundingMode.HALF_UP) : vOld.Z);
                 changeVertexDirectFast(vOld, vNew, moveAdjacentData);
             }
 
@@ -766,7 +767,7 @@ class VM03Adjacency extends VM02Add {
                 HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
                 HashSet<GData1> newSubfiles = new HashSet<GData1>();
                 for (GData1 subf : selectedSubfiles) {
-                    String roundedString = subf.getRoundedString(coordsDecimalPlaces, matrixDecimalPlaces);
+                    String roundedString = subf.getRoundedString(coordsDecimalPlaces, matrixDecimalPlaces, onX, onY, onZ);
                     GData roundedSubfile;
                     if (16 == subf.colourNumber) {
                         roundedSubfile = DatParser
@@ -827,7 +828,7 @@ class VM03Adjacency extends VM02Add {
                         continue;
                     }
                     GColour col = csg.getColour();
-                    String roundedString = csg.getRoundedString(coordsDecimalPlaces, matrixDecimalPlaces);
+                    String roundedString = csg.getRoundedString(coordsDecimalPlaces, matrixDecimalPlaces, onX, onY, onZ);
                     GData roundedCSG;
                     if (16 == col.getColourNumber()) {
                         roundedCSG = DatParser

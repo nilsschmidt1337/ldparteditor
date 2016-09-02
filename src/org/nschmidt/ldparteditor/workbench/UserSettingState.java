@@ -378,6 +378,10 @@ public class UserSettingState implements Serializable {
     private boolean syncingTabs = false;
 
     private int textWinArr = 2;
+    
+    private boolean roundX = false;
+    private boolean roundY = false;
+    private boolean roundZ = false;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -1314,5 +1318,29 @@ public class UserSettingState implements Serializable {
 
     public void setDisableMADtext(boolean disableMADtext) {
         this.disableMADtext = !disableMADtext;
+    }
+
+    public boolean isRoundX() {
+        return roundX;
+    }
+
+    public void setRoundX(boolean roundX) {
+        this.roundX = roundX;
+    }
+
+    public boolean isRoundY() {
+        return roundY;
+    }
+
+    public void setRoundY(boolean roundY) {
+        this.roundY = roundY;
+    }
+
+    public boolean isRoundZ() {
+        return roundZ;
+    }
+
+    public void setRoundZ(boolean roundZ) {
+        this.roundZ = roundZ;
     }
 }

@@ -1474,7 +1474,7 @@ class VM07PathTruder extends VM06Edger2 {
         selectedData.addAll(selectedQuads);
 
         NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
-        roundSelection(6, 10, true, false);
+        roundSelection(6, 10, true, false, true, true, true);
 
         if (syncWithEditor) {
             setModified(true, true);

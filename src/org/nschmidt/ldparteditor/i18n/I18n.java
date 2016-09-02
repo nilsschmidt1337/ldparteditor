@@ -1027,6 +1027,9 @@ public final class I18n {
     public static final String ROUND_InDecPlaces = ROUND.getString(getProperty());
     public static final String ROUND_MatrixPrecision = ROUND.getString(getProperty());
     public static final String ROUND_Title = ROUND.getString(getProperty());
+    public static final String ROUND_X = ROUND.getString(getProperty());
+    public static final String ROUND_Y = ROUND.getString(getProperty());
+    public static final String ROUND_Z = ROUND.getString(getProperty());
     public static final String SCALE_Pivot = SCALE.getString(getProperty());
     public static final String SCALE_PivotClipboard = SCALE.getString(getProperty());
     public static final String SCALE_PivotManipulator = SCALE.getString(getProperty());

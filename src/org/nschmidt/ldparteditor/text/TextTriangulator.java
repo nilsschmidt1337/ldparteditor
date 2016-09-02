@@ -162,7 +162,7 @@ public class TextTriangulator {
 
         datFile.getVertexManager().clearSelection2();
         datFile.getVertexManager().selectTriangles(finalTriangleSet);
-        datFile.getVertexManager().roundSelection(3, 5, true, false);
+        datFile.getVertexManager().roundSelection(3, 5, true, false, true, true, true);
         datFile.getVertexManager().restoreTriangles(finalTriangleSet);
         datFile.getVertexManager().clearSelection2();
 

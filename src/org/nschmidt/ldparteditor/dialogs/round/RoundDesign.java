@@ -43,6 +43,9 @@ class RoundDesign extends Dialog {
 
     // Use final only for subclass/listener references!
     final Button[] btn_ok = new Button[1];
+    final Button[] cb_Xaxis = new Button[1];
+    final Button[] cb_Yaxis = new Button[1];
+    final Button[] cb_Zaxis = new Button[1];
     final IntegerSpinner[] spn_coords = new IntegerSpinner[1];
     final IntegerSpinner[] spn_matrix = new IntegerSpinner[1];
 
@@ -68,6 +71,27 @@ class RoundDesign extends Dialog {
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
+        {
+            Composite cmp_coords = new Composite(cmp_container, SWT.NONE);
+            cmp_coords.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmp_coords.setLayout(new GridLayout(3, true));
+
+            Button cb_Xaxis = new Button(cmp_coords, SWT.CHECK);
+            this.cb_Xaxis[0] = cb_Xaxis;
+            cb_Xaxis.setText(I18n.ROUND_X);
+            cb_Xaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundX());
+            
+            Button cb_Yaxis = new Button(cmp_coords, SWT.CHECK);
+            this.cb_Yaxis[0] = cb_Yaxis;
+            cb_Yaxis.setText(I18n.ROUND_Y);
+            cb_Yaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundY());
+            
+            Button cb_Zaxis = new Button(cmp_coords, SWT.CHECK);
+            this.cb_Zaxis[0] = cb_Zaxis;
+            cb_Zaxis.setText(I18n.ROUND_Z);
+            cb_Zaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundZ());
+        }
+        
         Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
         lbl_coordsPrec.setText(I18n.ROUND_CoordPrecision);
 

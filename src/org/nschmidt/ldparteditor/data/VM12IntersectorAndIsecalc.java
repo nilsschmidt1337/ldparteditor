@@ -264,7 +264,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
             selectedLines.addAll(newLines);
             selectedData.addAll(selectedLines);
 
-            roundSelection(6, 10, true, false);
+            roundSelection(6, 10, true, false, true, true, true);
 
             clearSelection();
             setModified_NoSync();
@@ -636,7 +636,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
             selectedData.addAll(selectedCondlines);
 
             NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
-            roundSelection(6, 10, true, false);
+            roundSelection(6, 10, true, false, true, true, true);
 
             clearSelection();
             if (syncWithTextEditor) {
@@ -2431,7 +2431,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
             selectedData.addAll(selectedTriangles);
 
             NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
-            roundSelection(6, 10, true, false);
+            roundSelection(6, 10, true, false, true, true, true);
 
             setModified(true, true);
 

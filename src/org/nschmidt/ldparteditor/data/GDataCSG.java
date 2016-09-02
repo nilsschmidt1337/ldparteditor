@@ -1171,7 +1171,7 @@ public final class GDataCSG extends GData {
         return oldMatrix;
     }
 
-    public synchronized String getRoundedString(int coordsDecimalPlaces, int matrixDecimalPlaces) {
+    public synchronized String getRoundedString(int coordsDecimalPlaces, int matrixDecimalPlaces, final boolean onX,  final boolean onY,  final boolean onZ) {
         boolean notChoosen = true;
         String t = null;
         switch (type) {
@@ -1244,7 +1244,7 @@ public final class GDataCSG extends GData {
             if (type == CSG.TRANSFORM) {
                 tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix, coordsDecimalPlaces, matrixDecimalPlaces ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix, coordsDecimalPlaces, matrixDecimalPlaces, onX, onY, onZ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         return null;
     }
