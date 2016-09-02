@@ -191,7 +191,7 @@ class VM16Subdivide extends VM15Flipper {
         selectedData.addAll(newLines);
         selectedQuads.addAll(newQuads);
         selectedData.addAll(newQuads);
-        roundSelection(6, 10, true, false);
+        roundSelection(6, 10, true, false, true, true, true);
         setModified(true, true);
         validateState();
 
@@ -282,7 +282,7 @@ class VM16Subdivide extends VM15Flipper {
         selectedData.addAll(newLines);
         selectedTriangles.addAll(newTris);
         selectedData.addAll(newTris);
-        roundSelection(6, 10, true, false);
+        roundSelection(6, 10, true, false, true, true, true);
 
         TreeSet<Vertex> verticesToMove = new TreeSet<Vertex>();
 
@@ -373,7 +373,7 @@ class VM16Subdivide extends VM15Flipper {
             gd = gd.getBefore();
             newContentSize--;
         }
-        roundSelection(6, 10, true, false);
+        roundSelection(6, 10, true, false, true, true, true);
 
         setModified(true, true);
         validateState();

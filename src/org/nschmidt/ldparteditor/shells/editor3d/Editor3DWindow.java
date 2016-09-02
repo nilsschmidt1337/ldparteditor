@@ -199,6 +199,7 @@ import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.Editor3DWindowState;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -1573,8 +1574,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().backupHideShowState();
-                    Project.getFileToEdit().getVertexManager()
-                    .roundSelection(WorkbenchManager.getUserSettingState().getCoordsPrecision(), WorkbenchManager.getUserSettingState().getTransMatrixPrecision(), isMovingAdjacentData(), true);
+                    UserSettingState userSettings = WorkbenchManager.getUserSettingState();
+                    Project.getFileToEdit().getVertexManager()                   
+                    .roundSelection(userSettings.getCoordsPrecision(), userSettings.getTransMatrixPrecision(), isMovingAdjacentData(), true, userSettings.isRoundX(), userSettings.isRoundY(), userSettings.isRoundZ());
                 }
                 regainFocus();
             }

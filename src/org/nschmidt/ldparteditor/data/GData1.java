@@ -1556,7 +1556,7 @@ public final class GData1 extends GData {
         return lineBuilder.toString();
     }
 
-    public String getRoundedString(int coordsDecimalPlaces, int matrixDecimalPlaces) {
+    public String getRoundedString(int coordsDecimalPlaces, int matrixDecimalPlaces, final boolean onX,  final boolean onY,  final boolean onZ) {
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(1);
         lineBuilder.append(" "); //$NON-NLS-1$
@@ -1569,11 +1569,11 @@ public final class GData1 extends GData {
             lineBuilder.append(colourNumber);
         }
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M30.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(onX ? accurateLocalMatrix.M30.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : accurateLocalMatrix.M30));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M31.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(onY ? accurateLocalMatrix.M31.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : accurateLocalMatrix.M31));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M32.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(onZ ? accurateLocalMatrix.M32.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : accurateLocalMatrix.M32));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M00.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
         lineBuilder.append(" "); //$NON-NLS-1$

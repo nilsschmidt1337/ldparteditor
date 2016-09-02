@@ -321,7 +321,7 @@ class VM17Unificator extends VM16Subdivide {
         selectedVertices.addAll(selectedVerts);
 
         NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
-        roundSelection(6, 10, true, true);
+        roundSelection(6, 10, true, true, true, true, true);
 
         validateState();
     }

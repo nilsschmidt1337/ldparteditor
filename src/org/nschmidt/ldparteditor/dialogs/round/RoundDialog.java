@@ -33,6 +33,10 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class RoundDialog extends RoundDesign {
 
+    private boolean onX = WorkbenchManager.getUserSettingState().isRoundX();
+    private boolean onY = WorkbenchManager.getUserSettingState().isRoundY();
+    private boolean onZ = WorkbenchManager.getUserSettingState().isRoundZ();
+    
     /**
      * Create the dialog.
      *
@@ -46,11 +50,33 @@ public class RoundDialog extends RoundDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
+        
+        cb_Xaxis[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                onX = cb_Xaxis[0].getSelection();
+            }
+        });
+        cb_Yaxis[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                onY = cb_Yaxis[0].getSelection();
+            }
+        });
+        cb_Zaxis[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                onZ = cb_Zaxis[0].getSelection();
+            }
+        });
         btn_ok[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
                 WorkbenchManager.getUserSettingState().setCoordsPrecision(spn_coords[0].getValue());
                 WorkbenchManager.getUserSettingState().setTransMatrixPrecision(spn_matrix[0].getValue());
+                WorkbenchManager.getUserSettingState().setRoundX(onX);
+                WorkbenchManager.getUserSettingState().setRoundY(onY);
+                WorkbenchManager.getUserSettingState().setRoundZ(onZ);
             }
         });
         return super.open();

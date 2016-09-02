@@ -372,7 +372,7 @@ public class VM08SlicerPro extends VM07PathTruder {
             selectedData.addAll(newTriangles);
 
             NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
-            roundSelection(6, 10, true, false);
+            roundSelection(6, 10, true, false, true, true, true);
 
             NLogger.debug(getClass(), "Rectify."); //$NON-NLS-1$
             RectifierSettings rs = new RectifierSettings();

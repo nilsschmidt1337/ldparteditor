@@ -476,6 +476,10 @@ class Editor3DDesign extends ApplicationWindow {
         final Editor3DWindowState windowState = WorkbenchManager.getEditor3DWindowState();
         final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
 
+        userSettings.setRoundX(true);
+        userSettings.setRoundY(true);
+        userSettings.setRoundZ(true);
+        
         setStatus(I18n.E3D_ReadyStatus);
         Composite containerTop = new Composite(parent, SWT.NONE);
         containerTop.setLayout(new BorderLayout(0, 0));

@@ -25,6 +25,7 @@ import org.nschmidt.ldparteditor.helpers.compositetext.Text2SelectionConverter;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -55,7 +56,11 @@ public enum Rounder {
         // Check here if single vertex replacing (ALT+SHIFT+R) is active
         // If so, round only this vertex!
 
-        final VertexManager vm = datFile.getVertexManager();
+        final VertexManager vm = datFile.getVertexManager();        
+        final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
+        final boolean onX = userSettings.isRoundX();
+        final boolean onY = userSettings.isRoundY();
+        final boolean onZ = userSettings.isRoundZ();
 
         if (st != null && st.isReplacingVertex() && vm.getVertexToReplace() != null && vm.getVertices().contains(vm.getVertexToReplace())) {
             vm.clearSelection();
@@ -65,9 +70,9 @@ public enum Rounder {
             GDataCSG.resetCSG(datFile, false);
             GDataCSG.forceRecompile(datFile);
             Vertex vOld = new Vertex(st.getToReplaceX(), st.getToReplaceY(), st.getToReplaceZ());
-            int coordsDecimalPlaces = WorkbenchManager.getUserSettingState().getCoordsPrecision();
-            Vertex vNew = new Vertex(vOld.X.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP), vOld.Y.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP), vOld.Z.setScale(coordsDecimalPlaces,
-                    RoundingMode.HALF_UP));
+            int coordsDecimalPlaces = userSettings.getCoordsPrecision();
+            Vertex vNew = new Vertex(onX ? vOld.X.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.X, onY ? vOld.Y.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.Y, onZ ? vOld.Z.setScale(coordsDecimalPlaces,
+                    RoundingMode.HALF_UP) : vOld.Z);
             vm.changeVertexDirectFast(vOld, vNew, true);
             st.setToReplaceX(vNew.X);
             st.setToReplaceY(vNew.Y);
@@ -85,7 +90,7 @@ public enum Rounder {
             datFile.getVertexManager().skipSyncTimer();
             datFile.getVertexManager().backupHideShowState();
             datFile.getVertexManager()
-            .roundSelection(WorkbenchManager.getUserSettingState().getCoordsPrecision(), WorkbenchManager.getUserSettingState().getTransMatrixPrecision(), Editor3DWindow.getWindow().isMovingAdjacentData(), true);
+            .roundSelection(userSettings.getCoordsPrecision(), userSettings.getTransMatrixPrecision(), Editor3DWindow.getWindow().isMovingAdjacentData(), true, onX, onY, onZ);
         }
 
         datFile.getVertexManager().clearSelection();
