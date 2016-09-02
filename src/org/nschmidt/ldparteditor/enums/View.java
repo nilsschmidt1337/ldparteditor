@@ -64,7 +64,7 @@ public enum View {
     /** The standard decimal format for floating point numbers (0 digits) */
     public static final String NUMBER_FORMAT0F = "###,##0;-###,##0"; //$NON-NLS-1$
     /** The standard decimal format for floating point numbers (1 digit) */
-    public static final String NUMBER_FORMAT1F = " ###,##0.00;-###,##0.00"; //$NON-NLS-1$
+    public static final String NUMBER_FORMAT1F = " ###,##0.0;-###,##0.0"; //$NON-NLS-1$
     /** The standard decimal format for floating point numbers (2 digits) */
     public static final String NUMBER_FORMAT2F = " ###,##0.00;-###,##0.00"; //$NON-NLS-1$
     /** The standard decimal format for floating point numbers (4 digits) */
@@ -117,11 +117,11 @@ public enum View {
     public static final float[] condline_shown_Colour_r = new float[] { .553f };
     public static final float[] condline_shown_Colour_g = new float[] { .22f };
     public static final float[] condline_shown_Colour_b = new float[] { 1f };
-    
+
     public static final float[] cursor1_Colour_r = new float[] { 1f };
     public static final float[] cursor1_Colour_g = new float[] { 0f };
     public static final float[] cursor1_Colour_b = new float[] { 0f };
-    
+
     public static final float[] cursor2_Colour_r = new float[] { 0f };
     public static final float[] cursor2_Colour_g = new float[] { 0f };
     public static final float[] cursor2_Colour_b = new float[] { 1f };

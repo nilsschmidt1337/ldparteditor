@@ -41,7 +41,7 @@ public enum GuiManager {
     INSTANCE;
 
     private static DecimalFormat df = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
-    private static DecimalFormat df2 = new java.text.DecimalFormat(View.NUMBER_FORMAT1F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+    private static DecimalFormat df2 = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
 
     /**
      * Updates the status text from {@linkplain Editor3DWindow}
@@ -59,7 +59,7 @@ public enum GuiManager {
 
         final VertexManager vm = c3d.getVertexManager();
         final Set<Vertex> vs;
-        if ((vs = vm.getSelectedVertices()).size() == 1) {            
+        if ((vs = vm.getSelectedVertices()).size() == 1) {
             try {
                 Vertex v = vs.iterator().next();
                 sb.append(" Vertex @  ["); //$NON-NLS-1$
@@ -90,7 +90,7 @@ public enum GuiManager {
         if (Editor3DWindow.getWindow().isMovingAdjacentData()) {
             sb.append(I18n.E3D_AdjacentWarningStatus);
         }
-        
+
         Editor3DWindow.getStatusLabel().setText(sb.toString());
         Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
         // TODO Linux only??? Editor3DWindow.getStatusLabel().update();
