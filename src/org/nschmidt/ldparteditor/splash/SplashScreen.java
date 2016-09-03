@@ -140,8 +140,6 @@ public class SplashScreen extends ApplicationWindow {
 
         // Check OpenGL version
         final boolean[] openGLerror = new boolean[1];
-        openGLerror[0] = false;
-        /*
         try {
             Shell sh2 = new Shell();
             Composite comp = new Composite(sh2, SWT.NONE);
@@ -162,7 +160,6 @@ public class SplashScreen extends ApplicationWindow {
         } catch (Exception e) {
             openGLerror[0] = true;
         }
-         */
 
         display = Display.getCurrent();
 
