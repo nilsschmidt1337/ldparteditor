@@ -30,8 +30,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.opengl.GLCanvas;
-import org.eclipse.swt.opengl.GLData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -40,8 +38,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLContext;
 import org.nschmidt.ldparteditor.composites.ToolItemDrawLocation;
 import org.nschmidt.ldparteditor.composites.ToolItemDrawMode;
 import org.nschmidt.ldparteditor.composites.ToolItemState;
@@ -144,6 +140,8 @@ public class SplashScreen extends ApplicationWindow {
 
         // Check OpenGL version
         final boolean[] openGLerror = new boolean[1];
+        openGLerror[0] = false;
+        /*
         try {
             Shell sh2 = new Shell();
             Composite comp = new Composite(sh2, SWT.NONE);
@@ -164,6 +162,7 @@ public class SplashScreen extends ApplicationWindow {
         } catch (Exception e) {
             openGLerror[0] = true;
         }
+         */
 
         display = Display.getCurrent();
 
