@@ -7,7 +7,58 @@
     	<property name="arc" value="x86"/> <!-- x86, x64-->
     	<property name="src" value="linux"/> <!-- for 64-bit architecture append '_x64' here-->
     	<property name="ws" value="/home/nils/workspace"/>
-    	<property name="eclipsePlugin" value="/home/nils/eclipse/plugins"/>
+    	<property name="eclipsePlugin" value="/usr/share/eclipse/plugins"/>
+    	
+    	<pathconvert property="core.commands">
+            <fileset dir="${eclipsePlugin}" includes="org.eclipse.core.commands_*.jar"/>
+        </pathconvert>
+    	<pathconvert property="core.databinding">
+            <fileset dir="${eclipsePlugin}" includes="org.eclipse.core.databinding_*.jar"/>
+        </pathconvert>
+        <pathconvert property="core.databinding.beans">
+            <fileset dir="${eclipsePlugin}" includes="org.eclipse.core.databinding.beans_*.jar"/>
+        </pathconvert>
+        <pathconvert property="core.databinding.observable">
+            <fileset dir="${eclipsePlugin}" includes="org.eclipse.core.databinding.observable_*.jar"/>
+        </pathconvert>
+        <pathconvert property="core.databinding.property">
+            <fileset dir="${eclipsePlugin}" includes="org.eclipse.core.databinding.property_*.jar"/>
+        </pathconvert>
+        <pathconvert property="equinox.common">
+            <fileset dir="${eclipsePlugin}" includes="org.eclipse.equinox.common_*.jar"/>
+        </pathconvert>
+        <pathconvert property="jface">
+            <fileset dir="${eclipsePlugin}" includes="org.eclipse.jface_*.jar"/>
+        </pathconvert>
+        <pathconvert property="jface.databinding">
+            <fileset dir="${eclipsePlugin}" includes="org.eclipse.jface.databinding_*.jar"/>
+        </pathconvert>
+        <pathconvert property="jface.text">
+            <fileset dir="${eclipsePlugin}" includes="org.eclipse.jface.text_*.jar"/>
+        </pathconvert>
+        <pathconvert property="osgi">
+            <fileset dir="${eclipsePlugin}" includes="org.eclipse.osgi_*.jar"/>
+        </pathconvert>
+        <pathconvert property="ui.workbench">
+            <fileset dir="${eclipsePlugin}" includes="org.eclipse.ui.workbench_*.jar"/>
+        </pathconvert>
+        <pathconvert property="icu">
+            <fileset dir="${eclipsePlugin}" includes="com.ibm.icu_*.jar"/>
+        </pathconvert>
+        
+        <!-- Do some echo for the important paths -->
+        <echo message="${core.commands}"/>
+        <echo message="${core.databinding}"/>
+        <echo message="${core.databinding.beans}"/>
+        <echo message="${core.databinding.observable}"/>
+        <echo message="${core.databinding.property}"/>
+        <echo message="${equinox.common}"/>
+        <echo message="${jface}"/>
+        <echo message="${jface.databinding}"/>
+        <echo message="${jface.text}"/>
+        <echo message="${osgi}"/>
+        <echo message="${ui.workbench}"/>
+        <echo message="${icu}"/>
 
     	<!-- Copy resource files (shaders, PNGs, txt) -->
     	<copy file="${ws}/LDPartEditor_linux/cmap.png" overwrite="true" todir="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}"/>
@@ -29,22 +80,22 @@
         	<zipfileset excludes="META-INF/*.SF" src="${ws}/LDPartEditor_linux/lib/lwjgl.jar"/>
         	<fileset dir="${ws}/org.eclipse.swt_${src}"/>
         	<zipfileset excludes="META-INF/*.SF" src="${ws}/org.eclipse.swt_${src}/swt.jar"/>
-        	<fileset dir="${ws}/org.eclipse.jface/bin"/>
-        	<zipfileset excludes="META-INF/*.SF" src="${ws}/jface/org.eclipse.core.commands_3.6.0.jar"/>
-        	<zipfileset excludes="META-INF/*.SF" src="${ws}/jface/org.eclipse.equinox.common_3.6.0.jar"/>
-        	<zipfileset excludes="META-INF/*.SF" src="${ws}/jface/org.eclipse.jface_3.5.0.jar"/>
-        	<zipfileset excludes="META-INF/*.SF" src="${ws}/jface/org.eclipse.osgi_3.6.0.jar"/>
-        	<zipfileset excludes="META-INF/*.SF" src="${ws}/jface/org.eclipse.ui.workbench_3.1.0.jar"/>
         	<fileset dir="${ws}/com.sun.tools/bin"/>
             <zipfileset excludes="META-INF/*.SF" src="${ws}/runtime_compiler/tools.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${ws}/LDPartEditor_linux/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${ws}/LDPartEditor_linux/swing2swt.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.core.databinding_1.6.0.v20160412-0910.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.core.databinding.beans_1.3.100.v20160509-1025.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.core.databinding.observable_1.6.0.v20160511-1747.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.core.databinding.property_1.6.0.v20160427-0852.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/org.eclipse.jface.databinding_1.8.0.v20160420-2231.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${eclipsePlugin}/com.ibm.icu_56.1.0.v201601250100.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.observable}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.property}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${equinox.common}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface.databinding}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface.text}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${ui.workbench}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
         </jar>
     	<!-- Create complete archive -->
     	<zip destfile="${ws}/LDPartEditor/binary/${os}_${arc}/LDPartEditor_${os}_${arc}.zip"
