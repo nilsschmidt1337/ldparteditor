@@ -76,8 +76,8 @@
             	<attribute name="Class-Path" value=". plugin/"/>
             </manifest>
         	<fileset dir="${ws}/LDPartEditor_${src}/bin"/>
-        	<zipfileset excludes="META-INF/*.SF" src="${ws}/LDPartEditor_linux/lib/lwjgl_util.jar"/>
-        	<zipfileset excludes="META-INF/*.SF" src="${ws}/LDPartEditor_linux/lib/lwjgl.jar"/>
+        	<zipfileset excludes="META-INF/*.SF" src="${ws}/lwjgl/recent/jar/lwjgl_util.jar"/>
+        	<zipfileset excludes="META-INF/*.SF" src="${ws}/lwjgl/recent/jar/lwjgl.jar"/>
         	<fileset dir="${ws}/org.eclipse.swt_${src}"/>
         	<zipfileset excludes="META-INF/*.SF" src="${ws}/org.eclipse.swt_${src}/swt.jar"/>
         	<fileset dir="${ws}/com.sun.tools/bin"/>
