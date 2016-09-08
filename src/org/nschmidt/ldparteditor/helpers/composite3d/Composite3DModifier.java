@@ -31,8 +31,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.GLContext;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
@@ -348,11 +347,7 @@ public class Composite3DModifier {
             OpenGLRenderer renderer = c3d.getRenderer();
             if (!canvas.isCurrent()) {
                 canvas.setCurrent();
-                try {
-                    GLContext.useContext(canvas);
-                } catch (LWJGLException e) {
-                    NLogger.error(OpenGLRenderer.class, e);
-                }
+                GL.setCapabilities(c3d.getCapabilities());
             }
             renderer.dispose();
 
@@ -371,11 +366,7 @@ public class Composite3DModifier {
             OpenGLRenderer renderer = c3d.getRenderer();
             if (!canvas.isCurrent()) {
                 canvas.setCurrent();
-                try {
-                    GLContext.useContext(canvas);
-                } catch (LWJGLException e) {
-                    NLogger.error(OpenGLRenderer.class, e);
-                }
+                GL.setCapabilities(c3d.getCapabilities());
             }
             renderer.dispose();
 
@@ -506,7 +497,7 @@ public class Composite3DModifier {
         pc.initializeViewportPerspective();
         syncZoom();
     }
-    
+
     private void syncZoom() {
         if (c3d.isSyncZoom()) {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {

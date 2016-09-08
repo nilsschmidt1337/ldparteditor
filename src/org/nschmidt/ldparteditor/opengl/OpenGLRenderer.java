@@ -37,10 +37,9 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Menu;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -195,28 +194,28 @@ public class OpenGLRenderer {
         GL11.glEnable(GL11.GL_LIGHT2);
         GL11.glEnable(GL11.GL_LIGHT3);
 
-        GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, BufferFactory.floatBuffer(new float[] { 0.1f, 0.1f, 0.1f, 1f }));
+        GL11.glLightModelfv(GL11.GL_LIGHT_MODEL_AMBIENT, BufferFactory.floatBuffer(new float[] { 0.1f, 0.1f, 0.1f, 1f }));
 
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.light1_Colour_r[0], View.light1_Colour_g[0], View.light1_Colour_b[0], 1f }));
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.light1_specular_Colour_r[0], View.light1_specular_Colour_g[0], View.light1_specular_Colour_b[0], 1f }));
+        GL11.glLightfv(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.light1_Colour_r[0], View.light1_Colour_g[0], View.light1_Colour_b[0], 1f }));
+        GL11.glLightfv(GL11.GL_LIGHT0, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.light1_specular_Colour_r[0], View.light1_specular_Colour_g[0], View.light1_specular_Colour_b[0], 1f }));
         GL11.glLightf(GL11.GL_LIGHT0, GL11.GL_LINEAR_ATTENUATION, .001f);
 
-        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.light2_Colour_r[0], View.light2_Colour_g[0], View.light2_Colour_b[0], 1f }));
-        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.light2_specular_Colour_r[0], View.light2_specular_Colour_g[0], View.light2_specular_Colour_b[0], 1f }));
+        GL11.glLightfv(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.light2_Colour_r[0], View.light2_Colour_g[0], View.light2_Colour_b[0], 1f }));
+        GL11.glLightfv(GL11.GL_LIGHT1, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.light2_specular_Colour_r[0], View.light2_specular_Colour_g[0], View.light2_specular_Colour_b[0], 1f }));
         GL11.glLightf(GL11.GL_LIGHT1, GL11.GL_LINEAR_ATTENUATION, .001f);
 
-        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.light3_Colour_r[0], View.light3_Colour_g[0], View.light3_Colour_b[0], 1f }));
-        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.light3_specular_Colour_r[0], View.light3_specular_Colour_g[0], View.light3_specular_Colour_b[0], 1f }));
+        GL11.glLightfv(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.light3_Colour_r[0], View.light3_Colour_g[0], View.light3_Colour_b[0], 1f }));
+        GL11.glLightfv(GL11.GL_LIGHT2, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.light3_specular_Colour_r[0], View.light3_specular_Colour_g[0], View.light3_specular_Colour_b[0], 1f }));
         GL11.glLightf(GL11.GL_LIGHT2, GL11.GL_LINEAR_ATTENUATION, .001f);
 
-        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.light4_Colour_r[0], View.light4_Colour_g[0], View.light4_Colour_b[0], 1f }));
-        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.light4_specular_Colour_r[0], View.light4_specular_Colour_g[0], View.light4_specular_Colour_b[0], 1f }));
+        GL11.glLightfv(GL11.GL_LIGHT3, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.light4_Colour_r[0], View.light4_Colour_g[0], View.light4_Colour_b[0], 1f }));
+        GL11.glLightfv(GL11.GL_LIGHT3, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.light4_specular_Colour_r[0], View.light4_specular_Colour_g[0], View.light4_specular_Colour_b[0], 1f }));
         GL11.glLightf(GL11.GL_LIGHT3, GL11.GL_LINEAR_ATTENUATION, .001f);
 
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glColorMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE);
 
-        GL11.glMaterial(GL11.GL_FRONT, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 1.0f, 1.0f, 1.0f, 1.0f }));
+        GL11.glMaterialfv(GL11.GL_FRONT, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 1.0f, 1.0f, 1.0f, 1.0f }));
         GL11.glMaterialf(GL11.GL_FRONT, GL11.GL_SHININESS, 128f);
 
 
@@ -258,11 +257,7 @@ public class OpenGLRenderer {
 
         if (!canvas.isCurrent()) {
             canvas.setCurrent();
-            try {
-                GLContext.useContext(canvas);
-            } catch (LWJGLException e) {
-                NLogger.error(OpenGLRenderer.class, e);
-            }
+            GL.setCapabilities(c3d.getCapabilities());
         }
 
         final Editor3DWindow window = Editor3DWindow.getWindow();
@@ -334,7 +329,7 @@ public class OpenGLRenderer {
             viewport_transform.store(viewport);
             c3d.setViewport(viewport_transform);
             viewport.flip();
-            GL11.glLoadMatrix(viewport);
+            GL11.glLoadMatrixf(viewport);
 
             if (c3d.isAnaglyph3d() && !raytraceMode) {
 
@@ -394,7 +389,7 @@ public class OpenGLRenderer {
                 Matrix4f.mul(viewport_transform2, viewport_translation, viewport_transform2);
                 viewport_transform2.store(viewport);
                 viewport.flip();
-                GL11.glLoadMatrix(viewport);
+                GL11.glLoadMatrixf(viewport);
 
             }
 
@@ -1880,7 +1875,7 @@ public class OpenGLRenderer {
                     }
                     GL11.glPushMatrix();
                     GL11.glTranslatef(ox - viewport_width, viewport_height - oy, 0f);
-                    GL11.glMultMatrix(rotation);
+                    GL11.glMultMatrixf(rotation);
                     new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,  l, 0f, 0f, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
                     new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,  l, 0f, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
                     new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,  l, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
@@ -1994,10 +1989,10 @@ public class OpenGLRenderer {
         }
 
         // Lights
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, 2.0f, 2.0f, 1f}));
-        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, 2.0f, 2.0f, 1f}));
-        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, -2.0f, 2.0f, 1f}));
-        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, -2.0f, 2.0f, 1f}));
+        GL11.glLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, 2.0f, 2.0f, 1f}));
+        GL11.glLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, 2.0f, 2.0f, 1f}));
+        GL11.glLightfv(GL11.GL_LIGHT2, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, -2.0f, 2.0f, 1f}));
+        GL11.glLightfv(GL11.GL_LIGHT3, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, -2.0f, 2.0f, 1f}));
 
         c3d.getCanvas().swapBuffers();
     }
@@ -2033,11 +2028,7 @@ public class OpenGLRenderer {
         final GLCanvas canvas = c3d.getCanvas();
         if (!canvas.isCurrent()) {
             canvas.setCurrent();
-            try {
-                GLContext.useContext(canvas);
-            } catch (LWJGLException e) {
-                NLogger.error(OpenGLRenderer.class, e);
-            }
+            GL.setCapabilities(c3d.getCapabilities());
         }
         for (Iterator<GTexture> it = textureSet.iterator() ; it.hasNext();) {
             GTexture tex = it.next();
@@ -2054,11 +2045,7 @@ public class OpenGLRenderer {
         final GLCanvas canvas = c3d.getCanvas();
         if (!canvas.isCurrent()) {
             canvas.setCurrent();
-            try {
-                GLContext.useContext(canvas);
-            } catch (LWJGLException e) {
-                NLogger.error(OpenGLRenderer.class, e);
-            }
+            GL.setCapabilities(c3d.getCapabilities());
         }
         Iterator<GTexture> ti = textureSet.iterator();
         for (GTexture tex = null; ti.hasNext() && (tex = ti.next()) != null;) {
@@ -2090,7 +2077,7 @@ public class OpenGLRenderer {
         GL20.glShaderSource(shaderID, shaderSource);
         GL20.glCompileShader(shaderID);
 
-        if (GL20.glGetShader(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
+        if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
             NLogger.error(OpenGLRenderer.class, new Exception("Could not compile fragment shader.")); //$NON-NLS-1$;
             return -1;
         }
@@ -2118,7 +2105,7 @@ public class OpenGLRenderer {
         GL20.glShaderSource(shaderID, shaderSource);
         GL20.glCompileShader(shaderID);
 
-        if (GL20.glGetShader(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
+        if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
             NLogger.error(OpenGLRenderer.class, new Exception("Could not compile vertex shader.")); //$NON-NLS-1$;
             return -1;
         }

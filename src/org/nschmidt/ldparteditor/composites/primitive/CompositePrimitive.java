@@ -50,8 +50,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.GLContext;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLCapabilities;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -93,6 +93,7 @@ public class CompositePrimitive extends Composite {
 
     /** the {@linkplain GLCanvas} */
     final GLCanvas canvas;
+    final GLCapabilities capabilities;
 
     /** The view zoom level */
     private float zoom = WorkbenchManager.getEditor3DWindowState().getPrimitiveZoom();//(float) Math.pow(10.0d, 3f / 10 - 3);
@@ -156,17 +157,18 @@ public class CompositePrimitive extends Composite {
         GLData data = new GLData();
         data.doubleBuffer = true;
         data.depthSize = 24;
-        data.alphaSize = 8;
-        data.blueSize = 8;
-        data.redSize = 8;
-        data.greenSize = 8;
-        data.stencilSize = 8;
+        // FIXME           data.alphaSize = 8;
+        //      data.blueSize = 8;
+        //      data.redSize = 8;
+        //      data.greenSize = 8;
+        //      data.stencilSize = 8;
         if (WorkbenchManager.getUserSettingState().isAntiAliasing()) {
             data.sampleBuffers = 1;
             data.samples = 4;
         }
         canvas = new GLCanvas(this, I18n.I18N_NON_BIDIRECT(), data);
         canvas.setCurrent();
+        capabilities = GL.createCapabilities();
         canvas.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_HAND));
         canvas.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
@@ -195,21 +197,13 @@ public class CompositePrimitive extends Composite {
             }
         });
 
-        try {
-            GLContext.useContext(canvas);
-        } catch (LWJGLException e) {
-            e.printStackTrace();
-        }
+        GL.setCapabilities(capabilities);
         // MARK Resize
         canvas.addListener(SWT.Resize, new Listener() {
             @Override
             public void handleEvent(Event event) {
                 canvas.setCurrent();
-                try {
-                    GLContext.useContext(canvas);
-                } catch (LWJGLException e) {
-                    e.printStackTrace();
-                }
+                GL.setCapabilities(capabilities);
                 Display.getCurrent().timerExec(500, new Runnable() {
                     @Override
                     public void run() {
@@ -402,6 +396,10 @@ public class CompositePrimitive extends Composite {
 
     public GLCanvas getCanvas() {
         return canvas;
+    }
+
+    public GLCapabilities getCapabilities() {
+        return capabilities;
     }
 
     /**

@@ -142,7 +142,7 @@ public class Arc {
         GL11.glPushMatrix();
 
         GL11.glTranslatef(x, y, z);
-        GL11.glMultMatrix(matrix);
+        GL11.glMultMatrixf(matrix);
         GL11.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
         GL11.glColor4f(r, g, b, a);

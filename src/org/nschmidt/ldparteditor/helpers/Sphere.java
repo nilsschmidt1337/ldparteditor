@@ -105,7 +105,7 @@ public class Sphere {
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y, z);
 
-        GL11.glVertexPointer(3, 0, bvertices);
+        GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, bvertices);
 
         GL11.glDrawElements(GL11.GL_QUADS, bindices);
 

@@ -60,18 +60,18 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 public final class VertexManager extends VM99Clipboard {
 
     private volatile AtomicBoolean calculateCondlineControlPoints = new AtomicBoolean(true);
-    
+
     public VertexManager(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 
     public final synchronized void draw(final Composite3D c3d) {
-        if (!linkedDatFile.isDrawSelection()) return;                
+        if (!linkedDatFile.isDrawSelection()) return;
 
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewport_Inverse();
         Set<Vertex> tmpHiddenVertices = c3d.getTmpHiddenVertices();
-        
+
         Manipulator manipulator = c3d.getManipulator();
         FloatBuffer matrix = manipulator.getTempTransformation();
         FloatBuffer matrix_inv = manipulator.getTempTransformationInv();
@@ -124,10 +124,10 @@ public final class VertexManager extends VM99Clipboard {
                 // tmpHiddenVertices.addAll(tmpHiddenVertices2);
                 for (Iterator<Vertex> iterator = tmpHiddenVertices.iterator(); iterator
                         .hasNext();) {
-                    Vertex vertex = (Vertex) iterator.next();
+                    Vertex vertex = iterator.next();
                     if (!tmpHiddenVertices2.contains(vertex)) {
                         iterator.remove();
-                    }                    
+                    }
                 }
                 tmpHiddenVertices.addAll(tmpHiddenVertices2);
                 calculateCondlineControlPoints.set(true);
@@ -165,7 +165,7 @@ public final class VertexManager extends VM99Clipboard {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 
         GL11.glPushMatrix();
-        GL11.glMultMatrix(matrix);
+        GL11.glMultMatrixf(matrix);
 
         if (modifiedManipulator) {
             Set<GData> alreadyMoved = new HashSet<GData>();
@@ -260,9 +260,9 @@ public final class VertexManager extends VM99Clipboard {
                                         triverts[i] = new Vertex(res.x, res.y, res.z);
                                     }
                                 }
-                                GL11.glMultMatrix(matrix_inv);
+                                GL11.glMultMatrixf(matrix_inv);
                                 new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawProtractor(c3d, triverts[0].X, triverts[0].Y, triverts[0].Z, triverts[1].X, triverts[1].Y, triverts[1].Z, triverts[2].X, triverts[2].Y, triverts[2].Z);
-                                GL11.glMultMatrix(matrix);
+                                GL11.glMultMatrixf(matrix);
                                 GL11.glBegin(GL11.GL_LINES);
                                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                                 GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
@@ -346,7 +346,7 @@ public final class VertexManager extends VM99Clipboard {
                                 }
                             }
                             if (!gd2.isLine) {
-                                GL11.glMultMatrix(matrix_inv);
+                                GL11.glMultMatrixf(matrix_inv);
                                 new GData2(lineverts2[0], lineverts2[1], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawDistance(c3d, lineverts[0].X, lineverts[0].Y, lineverts[0].Z, lineverts[1].X, lineverts[1].Y, lineverts[1].Z);
                                 GL11.glBegin(GL11.GL_LINES);
                                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
@@ -354,7 +354,7 @@ public final class VertexManager extends VM99Clipboard {
                                 GL11.glVertex3f(lineverts2[1].x, lineverts2[1].y, lineverts2[1].z);
                                 GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
                                 GL11.glEnd();
-                                GL11.glMultMatrix(matrix);
+                                GL11.glMultMatrixf(matrix);
                             }
                             GL11.glBegin(GL11.GL_LINES);
                             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
@@ -382,9 +382,9 @@ public final class VertexManager extends VM99Clipboard {
                             ny = (triverts[2].z - triverts[0].z) * (triverts[1].x - triverts[0].x) - (triverts[2].x - triverts[0].x) * (triverts[1].z - triverts[0].z);
                             nz = (triverts[2].x - triverts[0].x) * (triverts[1].y - triverts[0].y) - (triverts[2].y - triverts[0].y) * (triverts[1].x - triverts[0].x);
                             if (!gd3.isTriangle) {
-                                GL11.glMultMatrix(matrix_inv);
+                                GL11.glMultMatrixf(matrix_inv);
                                 new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawProtractor(c3d, triverts[0].X, triverts[0].Y, triverts[0].Z, triverts[1].X, triverts[1].Y, triverts[1].Z, triverts[2].X, triverts[2].Y, triverts[2].Z);
-                                GL11.glMultMatrix(matrix);
+                                GL11.glMultMatrixf(matrix);
                                 GL11.glBegin(GL11.GL_LINES);
                                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                                 GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
@@ -511,14 +511,14 @@ public final class VertexManager extends VM99Clipboard {
             }
             GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
             GL11.glEnd();
-        }             
+        }
 
         GL11.glPopMatrix();
-        
+
         if (OpenGLRenderer.getSmoothing().get()) {
-            
+
             GL11.glDisable(GL11.GL_LIGHTING);
-            
+
             GL11.glBegin(GL11.GL_POINTS);
             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
             Object[] obj = getSmoothedVertices(selectedVertices);
@@ -528,16 +528,16 @@ public final class VertexManager extends VM99Clipboard {
             TreeMap<Vertex, Integer> indmap = (TreeMap<Vertex, Integer>) obj[1];
             @SuppressWarnings("unchecked")
             TreeMap<Integer, ArrayList<Integer>> adjacency = (TreeMap<Integer, ArrayList<Integer>>) obj[2];
-            for (Vertex vertex : verts) {               
-                GL11.glVertex3f(vertex.x, vertex.y, vertex.z);                
+            for (Vertex vertex : verts) {
+                GL11.glVertex3f(vertex.x, vertex.y, vertex.z);
             }
             GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
             GL11.glEnd();
-            
+
             GL11.glLineWidth(2f);
             GL11.glBegin(GL11.GL_LINES);
             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
-            
+
             for (Vertex vertex : verts) {
                 if (adjacency.containsKey(indmap.get(vertex))) {
                     for (Integer i : adjacency.get(indmap.get(vertex))) {
@@ -545,12 +545,12 @@ public final class VertexManager extends VM99Clipboard {
                         Vertex vertex2 = verts.get(i);
                         GL11.glVertex3f(vertex2.x, vertex2.y, vertex2.z);
                     }
-                }                               
+                }
             }
             GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
             GL11.glEnd();
         }
-        
+
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         if (c3d.isLightOn())
             GL11.glEnable(GL11.GL_LIGHTING);
@@ -645,7 +645,7 @@ public final class VertexManager extends VM99Clipboard {
             Matrix4f.transform(ivm, tr, tr);
 
             GL11.glTranslatef(tr.x, tr.y, tr.z);
-            GL11.glMultMatrix(matrix);
+            GL11.glMultMatrixf(matrix);
 
             if (!modifiedManipulator)
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -678,10 +678,10 @@ public final class VertexManager extends VM99Clipboard {
                                     Vector4f res = manipulator.getUntransformed(v2.x, v2.y, v2.z);
                                     lineverts[i1] = new Vertex(res.x, res.y, res.z);
                                 }
-                                GL11.glMultMatrix(matrix_inv);
+                                GL11.glMultMatrixf(matrix_inv);
                                 new GData2(dataVerts[0], dataVerts[1], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawDistance(c3d, lineverts[0].X, lineverts[0].Y, lineverts[0].Z, lineverts[1].X, lineverts[1].Y, lineverts[1].Z);
                                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
-                                GL11.glMultMatrix(matrix);
+                                GL11.glMultMatrixf(matrix);
                             }
                             GL11.glBegin(GL11.GL_LINES);
                             GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
@@ -766,10 +766,10 @@ public final class VertexManager extends VM99Clipboard {
                                     Vector4f res = manipulator.getUntransformed(v2.x, v2.y, v2.z);
                                     lineverts[i1] = new Vertex(res.x, res.y, res.z);
                                 }
-                                GL11.glMultMatrix(matrix_inv);
+                                GL11.glMultMatrixf(matrix_inv);
                                 new GData3(dataVerts[0], dataVerts[1], dataVerts[2], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawProtractor(c3d, lineverts[0].X, lineverts[0].Y, lineverts[0].Z, lineverts[1].X, lineverts[1].Y, lineverts[1].Z, lineverts[2].X, lineverts[2].Y, lineverts[2].Z);
                                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
-                                GL11.glMultMatrix(matrix);
+                                GL11.glMultMatrixf(matrix);
                             }
                             GL11.glBegin(GL11.GL_LINES);
                             GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
