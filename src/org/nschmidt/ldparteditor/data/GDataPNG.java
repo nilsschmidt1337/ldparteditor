@@ -112,7 +112,7 @@ public final class GDataPNG extends GData {
         if (!selected && (Math.abs(direction.x - gen[2].x) > .001 || Math.abs(direction.y - gen[2].y) > .001 || Math.abs(direction.z - gen[2].z) > .001)) return;
 
         GL11.glPushMatrix();
-        GL11.glMultMatrix(matrix);
+        GL11.glMultMatrixf(matrix);
 
         final OpenGLRenderer ren = c3d.getRenderer();
         texture.bind(c3d.isDrawingSolidMaterials(), GData.globalNegativeDeterminant ^ GData.globalInvertNext, true, ren, 0);

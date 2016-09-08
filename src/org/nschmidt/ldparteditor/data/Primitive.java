@@ -96,7 +96,7 @@ public class Primitive implements Comparable<Primitive> {
     public void draw(float x, float y, FloatBuffer m) {
         GL11.glPushMatrix();
         GL11.glTranslatef(x + 10f, y + 10f, 0f);
-        GL11.glMultMatrix(m);
+        GL11.glMultMatrixf(m);
         GL11.glScalef(-zoom, zoom, zoom);
         for (PGData gd : graphicalData) {
             switch (gd.type()) {
@@ -115,7 +115,7 @@ public class Primitive implements Comparable<Primitive> {
         GL11.glPopMatrix();
         GL11.glPushMatrix();
         GL11.glTranslatef(x + 10f, y + 10f, .5f);
-        GL11.glMultMatrix(m);
+        GL11.glMultMatrixf(m);
         GL11.glScalef(-zoom, zoom, zoom);
         for (PGData gd : graphicalData) {
             switch (gd.type()) {

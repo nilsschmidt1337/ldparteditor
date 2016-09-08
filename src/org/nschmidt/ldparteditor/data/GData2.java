@@ -236,7 +236,7 @@ public final class GData2 extends GData {
             break;
         }
 
-        if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
+        if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
             drawDistance(c3d, X1, Y1, Z1, X2, Y2, Z2);
@@ -348,7 +348,7 @@ public final class GData2 extends GData {
             break;
         }
 
-        if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
+        if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
             drawDistance(c3d, X1, Y1, Z1, X2, Y2, Z2);
@@ -712,7 +712,7 @@ public final class GData2 extends GData {
         GL11.glEnd();
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glMultMatrix(renderer.getRotationInverse());
+        GL11.glMultMatrixf(renderer.getRotationInverse());
         PGData3.beginDrawText();
         GL11.glColor4f(r, g, b, 1f);
         final Vector4f textOrigin = new Vector4f((x1 + x2) / 2f, (y1 + y2) / 2f, (z1 + z2) / 2f, 1f);

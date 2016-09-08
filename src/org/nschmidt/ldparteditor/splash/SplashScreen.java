@@ -40,8 +40,8 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLContext;
 import org.nschmidt.ldparteditor.composites.ToolItemDrawLocation;
 import org.nschmidt.ldparteditor.composites.ToolItemDrawMode;
 import org.nschmidt.ldparteditor.composites.ToolItemState;
@@ -157,7 +157,7 @@ public class SplashScreen extends ApplicationWindow {
             data.stencilSize = 8;
             final GLCanvas canvas = new GLCanvas(comp, SWT.NONE, data);
             canvas.setCurrent();
-            GLContext.useContext(canvas);
+            GL.createCapabilities();
             String glVersion = GL11.glGetString(GL11.GL_VERSION);
             int major = Integer.parseInt(glVersion.substring(0, 1));
             openGLerror[0] = major < 2;

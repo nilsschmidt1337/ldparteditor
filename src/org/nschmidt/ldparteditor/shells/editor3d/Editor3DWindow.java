@@ -82,8 +82,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.GLContext;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -1575,7 +1574,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().backupHideShowState();
                     UserSettingState userSettings = WorkbenchManager.getUserSettingState();
-                    Project.getFileToEdit().getVertexManager()                   
+                    Project.getFileToEdit().getVertexManager()
                     .roundSelection(userSettings.getCoordsPrecision(), userSettings.getTransMatrixPrecision(), isMovingAdjacentData(), true, userSettings.isRoundX(), userSettings.isRoundY(), userSettings.isRoundZ());
                 }
                 regainFocus();
@@ -3835,7 +3834,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         final Set<Vertex> sv = vm.getSelectedVertices();
                         final boolean hasNoClipboardVertex;
-                        
+
                         if (VertexManager.getClipboard().size() == 1) {
                             GData vertex = VertexManager.getClipboard().get(0);
                             if (vertex.type() == 0) {
@@ -3878,8 +3877,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         } else {
                             hasNoClipboardVertex = true;
-                        } 
-                        
+                        }
+
                         if (hasNoClipboardVertex) {
                             if (sv.size() == 1 && vm.getSelectedData().size() == 0) {
                                 v = sv.iterator().next();
@@ -6257,11 +6256,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 OpenGLRenderer renderer = renders.get(i);
                 if (!canvas.isCurrent()) {
                     canvas.setCurrent();
-                    try {
-                        GLContext.useContext(canvas);
-                    } catch (LWJGLException e) {
-                        NLogger.error(Editor3DWindow.class, e);
-                    }
+                    GL.setCapabilities(renderer.getC3D().getCapabilities());
                 }
                 renderer.dispose();
             } catch (SWTException swtEx) {
@@ -8126,27 +8121,21 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public void initAllRenderers() {
         for (OpenGLRenderer renderer : renders) {
-            final GLCanvas canvas = renderer.getC3D().getCanvas();
+            final Composite3D c3d = renderer.getC3D();
+            final GLCanvas canvas = c3d.getCanvas();
             if (!canvas.isCurrent()) {
                 canvas.setCurrent();
-                try {
-                    GLContext.useContext(canvas);
-                } catch (LWJGLException e) {
-                    NLogger.error(OpenGLRenderer.class, e);
-                }
+                GL.setCapabilities(c3d.getCapabilities());
             }
             renderer.init();
         }
-        final GLCanvas canvas = getCompositePrimitive().getCanvas();
+        final CompositePrimitive cp = getCompositePrimitive();
+        final GLCanvas canvas = cp.getCanvas();
         if (!canvas.isCurrent()) {
             canvas.setCurrent();
-            try {
-                GLContext.useContext(canvas);
-            } catch (LWJGLException e) {
-                NLogger.error(OpenGLRenderer.class, e);
-            }
+            GL.setCapabilities(cp.getCapabilities());
         }
-        getCompositePrimitive().getOpenGL().init();
+        cp.getOpenGL().init();
     }
 
     public void regainFocus() {

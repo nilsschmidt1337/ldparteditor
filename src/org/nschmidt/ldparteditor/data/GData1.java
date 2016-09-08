@@ -476,7 +476,7 @@ public final class GData1 extends GData {
                     || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
 
                 GL11.glPushMatrix();
-                GL11.glMultMatrix(matrix);
+                GL11.glMultMatrixf(matrix);
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
@@ -561,7 +561,7 @@ public final class GData1 extends GData {
                     || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
 
                 GL11.glPushMatrix();
-                GL11.glMultMatrix(matrix);
+                GL11.glMultMatrixf(matrix);
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
@@ -685,7 +685,7 @@ public final class GData1 extends GData {
 
 
                 GL11.glPushMatrix();
-                GL11.glMultMatrix(matrix);
+                GL11.glMultMatrixf(matrix);
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
@@ -786,7 +786,7 @@ public final class GData1 extends GData {
                     || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
 
                 GL11.glPushMatrix();
-                GL11.glMultMatrix(matrix);
+                GL11.glMultMatrixf(matrix);
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
@@ -881,7 +881,7 @@ public final class GData1 extends GData {
                     || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
 
                 GL11.glPushMatrix();
-                GL11.glMultMatrix(matrix);
+                GL11.glMultMatrixf(matrix);
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
@@ -984,7 +984,7 @@ public final class GData1 extends GData {
                     || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
 
                 GL11.glPushMatrix();
-                GL11.glMultMatrix(matrix);
+                GL11.glMultMatrixf(matrix);
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
@@ -1189,7 +1189,7 @@ public final class GData1 extends GData {
                     || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
 
                 GL11.glPushMatrix();
-                GL11.glMultMatrix(matrix);
+                GL11.glMultMatrixf(matrix);
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))

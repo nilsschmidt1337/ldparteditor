@@ -123,7 +123,7 @@ public final class PGData1 extends PGData implements Serializable {
             PGData.localWinding = BFC.NOCERTIFY;
             PGData.globalNegativeDeterminant = PGData.globalNegativeDeterminant ^ negativeDeterminant;
             GL11.glPushMatrix();
-            GL11.glMultMatrix(matrix);
+            GL11.glMultMatrixf(matrix);
             PGData data2draw = myGData;
             if (PGData.accumClip > 0) {
                 PGData.accumClip++;

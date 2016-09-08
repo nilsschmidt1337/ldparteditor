@@ -139,7 +139,7 @@ public class Arrow {
         GL11.glPushMatrix();
 
         GL11.glTranslatef(x, y, z);
-        GL11.glMultMatrix(matrix);
+        GL11.glMultMatrixf(matrix);
         GL11.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
         GL11.glLineWidth(line_width);

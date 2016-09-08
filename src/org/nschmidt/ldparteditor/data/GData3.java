@@ -1593,7 +1593,7 @@ public final class GData3 extends GData {
 
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glMultMatrix(renderer.getRotationInverse());
+        GL11.glMultMatrixf(renderer.getRotationInverse());
 
         PGData3.beginDrawText();
         GL11.glColor4f(r, g, b, 1f);
@@ -1674,9 +1674,9 @@ public final class GData3 extends GData {
     }
 
     public BigDecimal getProtractorLength() {
-        Vector3d va = new Vector3d(X1, Y1, Z1);        
-        Vector3d vc = new Vector3d(X3, Y3, Z3);        
+        Vector3d va = new Vector3d(X1, Y1, Z1);
+        Vector3d vc = new Vector3d(X3, Y3, Z3);
         vc = Vector3d.sub(va, vc);
-        return vc.length();        
+        return vc.length();
     }
 }
