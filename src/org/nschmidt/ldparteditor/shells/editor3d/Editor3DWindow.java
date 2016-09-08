@@ -3831,51 +3831,64 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
-                        Vertex v = null;
+                        Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
                         final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         final Set<Vertex> sv = vm.getSelectedVertices();
+                        final boolean hasNoClipboardVertex;
+                        
                         if (VertexManager.getClipboard().size() == 1) {
                             GData vertex = VertexManager.getClipboard().get(0);
                             if (vertex.type() == 0) {
                                 String line = vertex.toString();
                                 line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                                 String[] data_segments = line.split("\\s+"); //$NON-NLS-1$
-                                if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
-                                    if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
-                                        Vector3d start = new Vector3d();
-                                        boolean numberError = false;
-                                        if (data_segments.length == 6) {
-                                            try {
-                                                start.setX(new BigDecimal(data_segments[3], Threshold.mc));
-                                            } catch (NumberFormatException nfe) {
-                                                numberError = true;
-                                            }
-                                            try {
-                                                start.setY(new BigDecimal(data_segments[4], Threshold.mc));
-                                            } catch (NumberFormatException nfe) {
-                                                numberError = true;
-                                            }
-                                            try {
-                                                start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
-                                            } catch (NumberFormatException nfe) {
-                                                numberError = true;
-                                            }
-                                        } else {
+                                if (line.startsWith("0 !LPE VERTEX ")) { //$NON-NLS-1$
+                                    Vector3d start = new Vector3d();
+                                    boolean numberError = false;
+                                    if (data_segments.length == 6) {
+                                        try {
+                                            start.setX(new BigDecimal(data_segments[3], Threshold.mc));
+                                        } catch (NumberFormatException nfe) {
                                             numberError = true;
                                         }
-                                        if (!numberError) {
-                                            v = new Vertex(start);
+                                        try {
+                                            start.setY(new BigDecimal(data_segments[4], Threshold.mc));
+                                        } catch (NumberFormatException nfe) {
+                                            numberError = true;
                                         }
+                                        try {
+                                            start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
+                                        } catch (NumberFormatException nfe) {
+                                            numberError = true;
+                                        }
+                                    } else {
+                                        numberError = true;
                                     }
+                                    if (!numberError) {
+                                        v = new Vertex(start);
+                                        hasNoClipboardVertex = false;
+                                    } else {
+                                        hasNoClipboardVertex = true;
+                                    }
+                                } else {
+                                    hasNoClipboardVertex = true;
                                 }
+                            } else {
+                                hasNoClipboardVertex = true;
                             }
-                        } else if (sv.size() == 1 && vm.getSelectedData().size() == 0) {
-                            v = sv.iterator().next();
                         } else {
-                            v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-                            vm.selectObjectVertices();
-                            CoordinatesDialog.setStart(null);
-                            CoordinatesDialog.setEnd(null);
+                            hasNoClipboardVertex = true;
+                        } 
+                        
+                        if (hasNoClipboardVertex) {
+                            if (sv.size() == 1 && vm.getSelectedData().size() == 0) {
+                                v = sv.iterator().next();
+                            } else {
+                                v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+                                vm.selectObjectVertices();
+                                CoordinatesDialog.setStart(null);
+                                CoordinatesDialog.setEnd(null);
+                            }
                         }
                         final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
                         if (new CoordinatesDialog(getShell(), v, mani).open() == IDialogConstants.OK_ID) {
