@@ -33,6 +33,8 @@ import org.eclipse.swt.custom.ExtendedModifyEvent;
 import org.eclipse.swt.custom.ExtendedModifyListener;
 import org.eclipse.swt.custom.LineStyleEvent;
 import org.eclipse.swt.custom.LineStyleListener;
+import org.eclipse.swt.custom.MovementEvent;
+import org.eclipse.swt.custom.MovementListener;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.VerifyKeyListener;
 import org.eclipse.swt.dnd.DND;
@@ -1096,6 +1098,62 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                 }
                 canvas_lineNumberArea[0].redraw();
+            }
+        });
+        
+        compositeText[0].addWordMovementListener(new MovementListener() {
+            public void getNextOffset (MovementEvent event) {
+                boolean ignoreLineBreak = false;
+                switch (event.movement) {
+                    /* This method is called:
+                     *   word next (control right-arrow)
+                     *   select word next (control shift right-arrow)
+                     *   delete next word (control delete)
+                     */
+                    case SWT.MOVEMENT_WORD:
+                        ignoreLineBreak = true;
+                        
+                    /* This method is called:
+                     *   double click select word
+                     *   double click drag select word
+                     */ 
+                    case SWT.MOVEMENT_WORD_END:
+                        event.newOffset = event.offset;
+                        char c = '#';
+                        final int len = compositeText[0].getText().length();
+                        while (c != ' ' && (ignoreLineBreak || c != '\n'  && c != '\r') && event.newOffset < len) {
+                            event.newOffset++;
+                            c = compositeText[0].getText().charAt(event.newOffset);
+                        }
+                        break;
+                }
+            }
+            
+            public void getPreviousOffset(MovementEvent event) {
+                boolean ignoreLineBreak = false;
+                event.newOffset = event.offset;
+                switch (event.movement) {
+                    /* This method is called:
+                     *   word previous (control right-arrow)
+                     *   select word previous (control shift right-arrow)
+                     *   delete previous word (control delete)
+                     */
+                    case SWT.MOVEMENT_WORD:
+                        event.newOffset--;
+                        ignoreLineBreak = true;
+                    /* This method is called:
+                     *   double click select word
+                     *   double click drag select word
+                     */ 
+                    case SWT.MOVEMENT_WORD_START:                        
+                        char c = '#';
+                        while (c != ' ' && (ignoreLineBreak || c != '\n'  && c != '\r') && event.newOffset > 0) {
+                            event.newOffset--;
+                            c = compositeText[0].getText().charAt(event.newOffset);
+                        }
+                        event.newOffset++;
+                        break;
+                }
             }
         });
         tabFolder_partInformation[0].addCTabFolder2Listener(new CTabFolder2Listener() {
