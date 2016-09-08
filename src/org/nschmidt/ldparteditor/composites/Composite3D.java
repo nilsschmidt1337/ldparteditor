@@ -58,8 +58,8 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.GLContext;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLCapabilities;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -200,6 +200,7 @@ public class Composite3D extends ScalableComposite {
 
     /** the {@linkplain GLCanvas} */
     final GLCanvas canvas;
+    final GLCapabilities capabilities;
 
     // Several helper classes
     /** The {@linkplain PerspectiveCalculator} instance */
@@ -363,17 +364,18 @@ public class Composite3D extends ScalableComposite {
         GLData data = new GLData();
         data.doubleBuffer = true;
         data.depthSize = 24;
-        data.alphaSize = 8;
-        data.blueSize = 8;
-        data.redSize = 8;
-        data.greenSize = 8;
-        data.stencilSize = 8;
+        // FIXME           data.alphaSize = 8;
+        //      data.blueSize = 8;
+        //      data.redSize = 8;
+        //      data.greenSize = 8;
+        //      data.stencilSize = 8;
         if (WorkbenchManager.getUserSettingState().isAntiAliasing()) {
             data.sampleBuffers = 1;
             data.samples = 4;
         }
         canvas = new GLCanvas(this, I18n.I18N_NON_BIDIRECT(), data);
         canvas.setCurrent();
+        capabilities = GL.getCapabilities();
         canvas.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_CROSS));
         canvas.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
@@ -1161,21 +1163,13 @@ public class Composite3D extends ScalableComposite {
             mntmSyncroniseZoom.setText(I18n.E3D_SyncZoom);
         }
 
-        try {
-            GLContext.useContext(canvas);
-        } catch (LWJGLException e) {
-            e.printStackTrace();
-        }
+        GL.setCapabilities(capabilities);
         // MARK Resize
         canvas.addListener(SWT.Resize, new Listener() {
             @Override
             public void handleEvent(Event event) {
                 canvas.setCurrent();
-                try {
-                    GLContext.useContext(canvas);
-                } catch (LWJGLException e) {
-                    e.printStackTrace();
-                }
+                GL.setCapabilities(capabilities);
                 perspective.initializeViewportPerspective();
                 ViewIdleManager.pause[0].compareAndSet(false, true);
             }
@@ -1672,6 +1666,10 @@ public class Composite3D extends ScalableComposite {
      */
     public GLCanvas getCanvas() {
         return canvas;
+    }
+
+    public GLCapabilities getCapabilities() {
+        return capabilities;
     }
 
     /**
