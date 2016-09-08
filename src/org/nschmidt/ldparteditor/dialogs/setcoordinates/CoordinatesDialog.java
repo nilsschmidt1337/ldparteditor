@@ -39,9 +39,9 @@ public class CoordinatesDialog extends CoordinatesDesign {
     private static Vector3d end = null;
 
     private static Vertex vertex = new Vertex(0f, 0f, 0f);
-    private static boolean x = true;
-    private static boolean y = true;
-    private static boolean z = true;
+    private static boolean x = false;
+    private static boolean y = false;
+    private static boolean z = false;
 
     /**
      * Create the dialog.
@@ -50,9 +50,9 @@ public class CoordinatesDialog extends CoordinatesDesign {
      */
     public CoordinatesDialog(Shell parentShell, Vertex v, Vertex manipulatorPosition) {
         super(parentShell, v, manipulatorPosition);
-        x = true;
-        y = true;
-        z = true;
+        x = false;
+        y = false;
+        z = false;
         if (v == null) {
             vertex = new Vertex(0f, 0f, 0f);
         } else {
@@ -86,18 +86,24 @@ public class CoordinatesDialog extends CoordinatesDesign {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
                 vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+                cb_Xaxis[0].setSelection(true);
+                x = true;
             }
         });
         spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
                 vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+                cb_Yaxis[0].setSelection(true);
+                y = true;
             }
         });
         spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
                 vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+                cb_Zaxis[0].setSelection(true);
+                z = true;
             }
         });
         btn_Manipulator[0].addSelectionListener(new SelectionAdapter() {
