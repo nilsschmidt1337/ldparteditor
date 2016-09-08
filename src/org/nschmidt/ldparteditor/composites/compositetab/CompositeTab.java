@@ -1120,9 +1120,13 @@ public class CompositeTab extends CompositeTabDesign {
                     case SWT.MOVEMENT_WORD_END:
                         event.newOffset = event.offset;
                         char c = '#';
-                        final int len = compositeText[0].getText().length();
+                        final int len = compositeText[0].getText().length() - 1;
                         while (c != ' ' && (ignoreLineBreak || c != '\n'  && c != '\r') && event.newOffset < len) {
                             event.newOffset++;
+                            c = compositeText[0].getText().charAt(event.newOffset);
+                        }
+                        while (event.newOffset > 0 && c == '\n' || c == '\r') {
+                            event.newOffset--;
                             c = compositeText[0].getText().charAt(event.newOffset);
                         }
                         break;
@@ -1152,6 +1156,10 @@ public class CompositeTab extends CompositeTabDesign {
                             c = compositeText[0].getText().charAt(event.newOffset);
                         }
                         event.newOffset++;
+                        while (event.newOffset > 0 && c == '\n' || c == '\r') {
+                            event.newOffset--;
+                            c = compositeText[0].getText().charAt(event.newOffset);
+                        }
                         break;
                 }
             }
