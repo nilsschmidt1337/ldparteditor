@@ -28,9 +28,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.lwjgl.LWJGLException;
+//import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLContext;
+//import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
@@ -73,11 +73,11 @@ public class Snippet195 {
         final GLCanvas canvas = new GLCanvas(comp, I18n.I18N_NON_BIDIRECT(), data);
 
         canvas.setCurrent();
-        try {
-            GLContext.useContext(canvas);
-        } catch (LWJGLException e) {
-            e.printStackTrace();
-        }
+        //        try {
+        //            GLContext.useContext(canvas);
+        //        } catch (LWJGLException e) {
+        //            e.printStackTrace();
+        //        }
 
         canvas.addListener(SWT.Resize, new Listener() {
             @Override
@@ -85,11 +85,11 @@ public class Snippet195 {
                 Rectangle bounds = canvas.getBounds();
                 float fAspect = (float) bounds.width / (float) bounds.height;
                 canvas.setCurrent();
-                try {
-                    GLContext.useContext(canvas);
-                } catch (LWJGLException e) {
-                    e.printStackTrace();
-                }
+                //                try {
+                //                    GLContext.useContext(canvas);
+                //                } catch (LWJGLException e) {
+                //                    e.printStackTrace();
+                //                }
                 GL11.glViewport(0, 0, bounds.width, bounds.height);
                 GL11.glMatrixMode(GL11.GL_PROJECTION);
                 GL11.glLoadIdentity();
@@ -117,11 +117,11 @@ public class Snippet195 {
             public void run() {
                 if (!canvas.isDisposed()) {
                     canvas.setCurrent();
-                    try {
-                        GLContext.useContext(canvas);
-                    } catch (LWJGLException e) {
-                        e.printStackTrace();
-                    }
+                    //                    try {
+                    //                        GLContext.useContext(canvas);
+                    //                    } catch (LWJGLException e) {
+                    //                        e.printStackTrace();
+                    //                    }
                     GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
                     GL11.glLoadIdentity();
                     GL11.glTranslatef(0.0f, 0.0f, -10.0f);
