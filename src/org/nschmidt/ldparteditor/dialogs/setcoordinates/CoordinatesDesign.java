@@ -132,7 +132,7 @@ class CoordinatesDesign extends Dialog {
             Button cb_Xaxis = new Button(cmp_txt, SWT.CHECK);
             this.cb_Xaxis[0] = cb_Xaxis;
             cb_Xaxis.setText(I18n.COORDINATESDIALOG_X);
-            cb_Xaxis.setSelection(true);
+            cb_Xaxis.setSelection(false);
 
             BigDecimalSpinner spn_X = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
             this.spn_X[0] = spn_X;
@@ -150,7 +150,7 @@ class CoordinatesDesign extends Dialog {
             Button cb_Yaxis = new Button(cmp_txt, SWT.CHECK);
             this.cb_Yaxis[0] = cb_Yaxis;
             cb_Yaxis.setText(I18n.COORDINATESDIALOG_Y);
-            cb_Yaxis.setSelection(true);
+            cb_Yaxis.setSelection(false);
 
             BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
             this.spn_Y[0] = spn_Y;
@@ -168,7 +168,7 @@ class CoordinatesDesign extends Dialog {
             Button cb_Zaxis = new Button(cmp_txt, SWT.CHECK);
             this.cb_Zaxis[0] = cb_Zaxis;
             cb_Zaxis.setText(I18n.COORDINATESDIALOG_Z);
-            cb_Zaxis.setSelection(true);
+            cb_Zaxis.setSelection(false);
 
             BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
             this.spn_Z[0] = spn_Z;
