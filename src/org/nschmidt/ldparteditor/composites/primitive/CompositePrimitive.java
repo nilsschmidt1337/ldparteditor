@@ -88,7 +88,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class CompositePrimitive extends Composite {
 
-    /** The {@linkplain OpenGLRenderer20} instance */
+    /** The {@linkplain OpenGLRendererPrimitives} instance */
     private final OpenGLRendererPrimitives openGL = new OpenGLRendererPrimitives20(this);
 
     /** the {@linkplain GLCanvas} */

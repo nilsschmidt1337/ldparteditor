@@ -215,7 +215,7 @@ public final class GData2 extends GData {
     }
 
     @Override
-    public void draw(Composite3D c3d) {
+    public void drawGL20(Composite3D c3d) {
         if (!visible) {
             if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
                 GL11.glEnable(GL11.GL_LIGHTING);
@@ -332,7 +332,7 @@ public final class GData2 extends GData {
     }
 
     @Override
-    public void drawRandomColours(Composite3D c3d) {
+    public void drawGL20_RandomColours(Composite3D c3d) {
         if (!visible) {
             return;
         }
@@ -450,32 +450,32 @@ public final class GData2 extends GData {
     }
 
     @Override
-    public void drawBFC(Composite3D c3d) {
-        draw(c3d);
+    public void drawGL20_BFC(Composite3D c3d) {
+        drawGL20(c3d);
     }
 
     @Override
-    public void drawBFCuncertified(Composite3D c3d) {
-        draw(c3d);
+    public void drawGL20_BFCuncertified(Composite3D c3d) {
+        drawGL20(c3d);
     }
 
     @Override
-    public void drawBFC_backOnly(Composite3D c3d) {
-        draw(c3d);
+    public void drawGL20_BFC_backOnly(Composite3D c3d) {
+        drawGL20(c3d);
     }
 
     @Override
-    public void drawBFC_Colour(Composite3D c3d) {
-        draw(c3d);
+    public void drawGL20_BFC_Colour(Composite3D c3d) {
+        drawGL20(c3d);
     }
 
     @Override
-    public void drawWhileAddCondlines(Composite3D c3d) {
-        draw(c3d);
+    public void drawGL20_WhileAddCondlines(Composite3D c3d) {
+        drawGL20(c3d);
     }
 
     @Override
-    public void drawBFC_Textured(Composite3D c3d) {
+    public void drawGL20_BFC_Textured(Composite3D c3d) {
         // done :)
         if (GData.globalDrawObjects) {
             final OpenGLRenderer20 r = (OpenGLRenderer20) c3d.getRenderer();

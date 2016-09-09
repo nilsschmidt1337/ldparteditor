@@ -34,7 +34,7 @@ public final class GDataInit extends GData {
     }
 
     @Override
-    public void draw(Composite3D c3d) {
+    public void drawGL20(Composite3D c3d) {
         GData.localWinding = BFC.NOCERTIFY;
         GData.accumClip = 0;
         GData.globalInvertNext = false;
@@ -43,38 +43,38 @@ public final class GDataInit extends GData {
     }
 
     @Override
-    public void drawRandomColours(Composite3D c3d) {
-        draw(c3d);
+    public void drawGL20_RandomColours(Composite3D c3d) {
+        drawGL20(c3d);
     }
 
     @Override
-    public void drawBFC(Composite3D c3d) {
-        draw(c3d);
+    public void drawGL20_BFC(Composite3D c3d) {
+        drawGL20(c3d);
     }
 
     @Override
-    public void drawBFCuncertified(Composite3D c3d) {
-        draw(c3d);
+    public void drawGL20_BFCuncertified(Composite3D c3d) {
+        drawGL20(c3d);
     }
 
     @Override
-    public void drawBFC_backOnly(Composite3D c3d) {
-        draw(c3d);
+    public void drawGL20_BFC_backOnly(Composite3D c3d) {
+        drawGL20(c3d);
     }
 
     @Override
-    public void drawBFC_Colour(Composite3D c3d) {
-        draw(c3d);
+    public void drawGL20_BFC_Colour(Composite3D c3d) {
+        drawGL20(c3d);
     }
 
     @Override
-    public void drawWhileAddCondlines(Composite3D c3d) {
-        draw(c3d);
+    public void drawGL20_WhileAddCondlines(Composite3D c3d) {
+        drawGL20(c3d);
     }
 
     @Override
-    public void drawBFC_Textured(Composite3D c3d) {
-        draw(c3d);
+    public void drawGL20_BFC_Textured(Composite3D c3d) {
+        drawGL20(c3d);
         GData.globalDrawObjects = true;
         GData.globalFoundTEXMAPNEXT = false;
         GData.globalFoundTEXMAPStack.clear();
