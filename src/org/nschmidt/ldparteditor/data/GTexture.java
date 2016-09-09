@@ -37,6 +37,7 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -396,7 +397,7 @@ public class GTexture {
         return result;
     }
 
-    public void dispose(OpenGLRenderer renderer) {
+    public void dispose(OpenGLRenderer20 renderer) {
         if (OpenGlDisposed.containsKey(renderer)) {
             boolean disposed = OpenGlDisposed.get(renderer);
             int ID = OpenGlID.get(renderer);
@@ -437,7 +438,7 @@ public class GTexture {
         }
     }
 
-    public void bind(boolean drawSolidMaterials, boolean normalSwitch, boolean lightOn, OpenGLRenderer renderer, int useCubeMap) {
+    public void bind(boolean drawSolidMaterials, boolean normalSwitch, boolean lightOn, OpenGLRenderer20 renderer, int useCubeMap) {
 
         int ID = -1;
         int ID_glossmap = -1;

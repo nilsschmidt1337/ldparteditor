@@ -33,7 +33,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
-import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 
 /**
  * @author nils
@@ -991,7 +991,7 @@ public final class GData3 extends GData {
             if (hasColourType && useCubeMap < 1) {
                 a = 0.99f;
             }
-            final OpenGLRenderer ren = c3d.getRenderer();
+            final OpenGLRenderer20 ren = (OpenGLRenderer20) c3d.getRenderer();
             if (GData.globalTextureStack.isEmpty()) {
                 GL20.glUniform1f(ren.getAlphaSwitchLoc(), c3d.isDrawingSolidMaterials() ? 1f : 0f); // Draw transparent
                 GL20.glUniform1f(ren.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);
@@ -1526,7 +1526,7 @@ public final class GData3 extends GData {
 
     public void drawProtractor(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
-        final OpenGLRenderer renderer = c3d.getRenderer();
+        final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
 
         GL11.glDisable(GL11.GL_LIGHTING);

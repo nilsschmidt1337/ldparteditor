@@ -28,7 +28,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
-import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 
 /**
  * @author nils
@@ -798,7 +798,7 @@ public final class GData5 extends GData {
     public void drawBFC_Textured(Composite3D c3d) {
         // done :)
         if (GData.globalDrawObjects) {
-            final OpenGLRenderer r = c3d.getRenderer();
+            final OpenGLRenderer20 r = (OpenGLRenderer20) c3d.getRenderer();
             GL20.glUniform1f(r.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);
             GL20.glUniform1f(r.getNoTextureSwitch(), 1f);
             GL20.glUniform1f(r.getNoLightSwitch(), 1f);

@@ -30,7 +30,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
-import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 
 /**
  * @author nils
@@ -1011,7 +1011,7 @@ public final class GData4 extends GData {
             if (hasColourType && useCubeMap < 1) {
                 a = 0.99f;
             }
-            final OpenGLRenderer ren = c3d.getRenderer();
+            final OpenGLRenderer20 ren = (OpenGLRenderer20) c3d.getRenderer();
             if (GData.globalTextureStack.isEmpty()) {
                 GL20.glUniform1f(ren.getAlphaSwitchLoc(), c3d.isDrawingSolidMaterials() ? 1f : 0f); // Draw transparent
                 GL20.glUniform1f(ren.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);

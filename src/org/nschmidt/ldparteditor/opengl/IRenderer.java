@@ -15,6 +15,15 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.opengl;
 
-public abstract class OpenGLRendererPrimitives implements IPrimitiveRenderer {
 
+import org.nschmidt.ldparteditor.composites.Composite3D;
+
+public interface IRenderer {
+
+    public Composite3D getC3D();
+    public void disposeAllTextures();
+    public void disposeOldTextures();
+    public void dispose();
+    public void init();
+    public void drawScene();
 }

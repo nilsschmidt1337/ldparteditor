@@ -28,6 +28,7 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 
 /**
  * @author nils
@@ -115,7 +116,7 @@ public final class GDataPNG extends GData {
         GL11.glMultMatrixf(matrix);
 
         final OpenGLRenderer ren = c3d.getRenderer();
-        texture.bind(c3d.isDrawingSolidMaterials(), GData.globalNegativeDeterminant ^ GData.globalInvertNext, true, ren, 0);
+        texture.bind(c3d.isDrawingSolidMaterials(), GData.globalNegativeDeterminant ^ GData.globalInvertNext, true, (OpenGLRenderer20) ren, 0);
 
         float w;
         if (this.texture.getHeight() != 0f) {
