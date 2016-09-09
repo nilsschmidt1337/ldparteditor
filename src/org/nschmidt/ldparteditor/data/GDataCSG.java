@@ -556,42 +556,42 @@ public final class GDataCSG extends GData {
     }
 
     @Override
-    public synchronized void draw(Composite3D c3d) {
+    public synchronized void drawGL20(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawRandomColours(Composite3D c3d) {
+    public synchronized void drawGL20_RandomColours(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawBFC(Composite3D c3d) {
+    public synchronized void drawGL20_BFC(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawBFCuncertified(Composite3D c3d) {
+    public synchronized void drawGL20_BFCuncertified(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawBFC_backOnly(Composite3D c3d) {
+    public synchronized void drawGL20_BFC_backOnly(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawBFC_Colour(Composite3D c3d) {
+    public synchronized void drawGL20_BFC_Colour(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawBFC_Textured(Composite3D c3d) {
+    public synchronized void drawGL20_BFC_Textured(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawWhileAddCondlines(Composite3D c3d) {
+    public synchronized void drawGL20_WhileAddCondlines(Composite3D c3d) {
         drawAndParse(c3d);
     }
 

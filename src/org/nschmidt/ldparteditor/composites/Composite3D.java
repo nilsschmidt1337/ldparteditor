@@ -208,7 +208,7 @@ public class Composite3D extends ScalableComposite {
     private final PerspectiveCalculator perspective = new PerspectiveCalculator(this);
     /** The {@linkplain Composite3DModifier} instance */
     private final Composite3DModifier c3d_modifier = new Composite3DModifier(this);
-    /** The {@linkplain OpenGLRenderer20} instance */
+    /** The {@linkplain OpenGLRenderer} instance */
     private final OpenGLRenderer openGL = new OpenGLRenderer20(this);
     /** The {@linkplain MouseActions} instance */
     private final MouseActions mouse = new MouseActions(this);
@@ -1620,7 +1620,7 @@ public class Composite3D extends ScalableComposite {
     }
 
     /**
-     * @return the {@linkplain OpenGLRenderer20}
+     * @return the {@linkplain OpenGLRenderer}
      */
     public OpenGLRenderer getRenderer() {
         return openGL;

@@ -166,69 +166,69 @@ public final class DatFile {
         case -1: // Wireframe
             break;
         case 0: // No BFC
-            data2draw.draw(c3d);
+            data2draw.drawGL20(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                data2draw.draw(c3d);
+                data2draw.drawGL20(c3d);
             }
             break;
         case 1: // Random Colours
-            data2draw.drawRandomColours(c3d);
+            data2draw.drawGL20_RandomColours(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                data2draw.drawRandomColours(c3d);
+                data2draw.drawGL20_RandomColours(c3d);
             }
             break;
         case 2: // Front-Backface BFC
-            data2draw.drawBFC(c3d);
+            data2draw.drawGL20_BFC(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 switch (GData.accumClip) {
                 case 0:
-                    data2draw.drawBFC(c3d);
+                    data2draw.drawGL20_BFC(c3d);
                     break;
                 default:
-                    data2draw.draw(c3d);
+                    data2draw.drawGL20(c3d);
                     break;
                 }
             }
             break;
         case 3: // Backface only BFC
-            data2draw.drawBFC_backOnly(c3d);
+            data2draw.drawGL20_BFC_backOnly(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 switch (GData.accumClip) {
                 case 0:
-                    data2draw.drawBFC_backOnly(c3d);
+                    data2draw.drawGL20_BFC_backOnly(c3d);
                     break;
                 default:
-                    data2draw.draw(c3d);
+                    data2draw.drawGL20(c3d);
                     break;
                 }
             }
             break;
         case 4: // Real BFC
-            data2draw.drawBFC_Colour(c3d);
+            data2draw.drawGL20_BFC_Colour(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 switch (GData.accumClip) {
                 case 0:
-                    data2draw.drawBFC_Colour(c3d);
+                    data2draw.drawGL20_BFC_Colour(c3d);
                     break;
                 default:
-                    data2draw.draw(c3d);
+                    data2draw.drawGL20(c3d);
                     break;
                 }
             }
             break;
         case 5: // Real BFC with texture mapping
             GL11.glEnable(GL11.GL_TEXTURE_2D);
-            data2draw.drawBFC_Textured(c3d);
+            data2draw.drawGL20_BFC_Textured(c3d);
             GDataInit.resetBfcState();
-            data2draw.drawBFC_Textured(c3d);
-            CUBEMAP.drawBFC_Textured(c3d);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome()), true).drawBFC_Textured(c3d.getComposite3D());
-            CUBEMAP_MATTE.drawBFC_Textured(c3d);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawBFC_Textured(c3d.getComposite3D());
-            CUBEMAP_METAL.drawBFC_Textured(c3d);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawBFC_Textured(c3d.getComposite3D());
+            data2draw.drawGL20_BFC_Textured(c3d);
+            CUBEMAP.drawGL20_BFC_Textured(c3d);
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome()), true).drawGL20_BFC_Textured(c3d.getComposite3D());
+            CUBEMAP_MATTE.drawGL20_BFC_Textured(c3d);
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawGL20_BFC_Textured(c3d.getComposite3D());
+            CUBEMAP_METAL.drawGL20_BFC_Textured(c3d);
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawGL20_BFC_Textured(c3d.getComposite3D());
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                data2draw.drawBFC_Textured(c3d);
+                data2draw.drawGL20_BFC_Textured(c3d);
             }
             // vertices.clearVertexNormalCache();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
@@ -244,9 +244,9 @@ public final class DatFile {
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             break;
         case 6: // Special mode for "Add condlines"
-            data2draw.drawWhileAddCondlines(c3d);
+            data2draw.drawGL20_WhileAddCondlines(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                data2draw.drawWhileAddCondlines(c3d);
+                data2draw.drawGL20_WhileAddCondlines(c3d);
             }
             break;
         default:

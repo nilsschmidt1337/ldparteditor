@@ -38,7 +38,7 @@ public final class GDataBFC extends GData {
     }
 
     @Override
-    public void draw(Composite3D c3d) {
+    public void drawGL20(Composite3D c3d) {
         // Nothing to do, since BFC is turned off
         // Except clipping check
         switch (type) {
@@ -62,7 +62,7 @@ public final class GDataBFC extends GData {
     }
 
     @Override
-    public void drawRandomColours(Composite3D c3d) {
+    public void drawGL20_RandomColours(Composite3D c3d) {
         // Nothing to do, since BFC is turned off
         // Except clipping check
         switch (type) {
@@ -86,7 +86,7 @@ public final class GDataBFC extends GData {
     }
 
     @Override
-    public void drawBFC(Composite3D c3d) {
+    public void drawGL20_BFC(Composite3D c3d) {
         switch (type) {
         case BFC.CCW:
             GData.localWinding = BFC.CCW;
@@ -130,26 +130,26 @@ public final class GDataBFC extends GData {
     }
 
     @Override
-    public void drawBFCuncertified(Composite3D c3d) {}
+    public void drawGL20_BFCuncertified(Composite3D c3d) {}
 
     @Override
-    public void drawBFC_backOnly(Composite3D c3d) {
-        drawBFC(null);
+    public void drawGL20_BFC_backOnly(Composite3D c3d) {
+        drawGL20_BFC(null);
     }
 
     @Override
-    public void drawBFC_Colour(Composite3D c3d) {
-        drawBFC(null);
+    public void drawGL20_BFC_Colour(Composite3D c3d) {
+        drawGL20_BFC(null);
     }
 
     @Override
-    public void drawBFC_Textured(Composite3D c3d) {
-        drawBFC(null);
+    public void drawGL20_BFC_Textured(Composite3D c3d) {
+        drawGL20_BFC(null);
     }
 
     @Override
-    public void drawWhileAddCondlines(Composite3D c3d) {
-        drawBFC(null);
+    public void drawGL20_WhileAddCondlines(Composite3D c3d) {
+        drawGL20_BFC(null);
     }
 
     @Override

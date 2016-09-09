@@ -272,7 +272,7 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void draw(Composite3D c3d) {
+    public void drawGL20(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -307,7 +307,7 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawRandomColours(Composite3D c3d) {
+    public void drawGL20_RandomColours(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -345,7 +345,7 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawBFC(Composite3D c3d) {
+    public void drawGL20_BFC(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -509,7 +509,7 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawBFCuncertified(Composite3D c3d) {
+    public void drawGL20_BFCuncertified(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -540,7 +540,7 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawBFC_backOnly(Composite3D c3d) {
+    public void drawGL20_BFC_backOnly(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -704,7 +704,7 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawBFC_Colour(Composite3D c3d) {
+    public void drawGL20_BFC_Colour(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -958,7 +958,7 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawBFC_Textured(Composite3D c3d) {
+    public void drawGL20_BFC_Textured(Composite3D c3d) {
         if (GData.globalDrawObjects) {
             GColour c = View.getLDConfigColour(View.getLDConfigIndex(r, g, b));
             GColourType ct = c.getType();
@@ -1208,8 +1208,8 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawWhileAddCondlines(Composite3D c3d) {
-        drawBFC(c3d);
+    public void drawGL20_WhileAddCondlines(Composite3D c3d) {
+        drawGL20_BFC(c3d);
     }
 
     @Override

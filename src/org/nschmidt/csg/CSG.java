@@ -510,13 +510,13 @@ public class CSG {
 
     public void draw(Composite3D c3d) {
         for (GData3 tri : result.keySet()) {
-            tri.draw(c3d);
+            tri.drawGL20(c3d);
         }
     }
 
     public void draw_textured(Composite3D c3d) {
         for (GData3 tri : result.keySet()) {
-            tri.drawBFC_Textured(c3d);
+            tri.drawGL20_BFC_Textured(c3d);
         }
     }
 
