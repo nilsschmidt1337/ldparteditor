@@ -87,6 +87,9 @@ public enum WorkbenchManager {
                 WorkbenchManager.editorTextWindowState = (EditorTextWindowState) configFileStream.readObject();
                 WorkbenchManager.userSettingState = (UserSettingState) configFileStream.readObject();
                 WorkbenchManager.userSettingState.loadShortkeys();
+                if (WorkbenchManager.userSettingState.getOpenGLVersion() == 0) {
+                    WorkbenchManager.userSettingState.setOpenGLVersion(20);
+                }
                 Manipulator.setSnap(WorkbenchManager.userSettingState.getMedium_move_snap(), WorkbenchManager.userSettingState.getMedium_rotate_snap(),
                         WorkbenchManager.userSettingState.getMedium_scale_snap());
                 try {

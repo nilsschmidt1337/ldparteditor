@@ -37,6 +37,7 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3r;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -387,15 +388,17 @@ public class PerspectiveCalculator {
      */
     public void initializeViewportPerspective() {
         Rectangle bounds = c3d.getBounds();
-        // MARK OpenGL Viewport and Perspective
-        GL11.glViewport(0, 0, bounds.width, bounds.height);
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        float viewport_width = bounds.width / View.PIXEL_PER_LDU / 2.0f;
-        float viewport_height = bounds.height / View.PIXEL_PER_LDU / 2.0f;
-        GL11.glOrtho(-viewport_width, viewport_width, -viewport_height, viewport_height, c3d.getzNear() * c3d.getZoom(), c3d.getzFar() * c3d.getZoom());
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glLoadIdentity();
+        if (c3d.getRenderer() instanceof OpenGLRenderer20) {
+            // MARK OpenGL Viewport and Perspective
+            GL11.glViewport(0, 0, bounds.width, bounds.height);
+            GL11.glMatrixMode(GL11.GL_PROJECTION);
+            GL11.glLoadIdentity();
+            float viewport_width = bounds.width / View.PIXEL_PER_LDU / 2.0f;
+            float viewport_height = bounds.height / View.PIXEL_PER_LDU / 2.0f;
+            GL11.glOrtho(-viewport_width, viewport_width, -viewport_height, viewport_height, c3d.getzNear() * c3d.getZoom(), c3d.getzFar() * c3d.getZoom());
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+            GL11.glLoadIdentity();
+        }
         calculateOriginData();
     }
 

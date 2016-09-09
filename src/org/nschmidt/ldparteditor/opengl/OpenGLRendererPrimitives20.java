@@ -273,7 +273,7 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
         GL11.glLightfv(GL11.GL_LIGHT2, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, -2.0f, 2.0f, 1f}));
         GL11.glLightfv(GL11.GL_LIGHT3, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, -2.0f, 2.0f, 1f}));
 
-        cp.getCanvas().swapBuffers();
+        canvas.swapBuffers();
     }
 
 

@@ -78,6 +78,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives;
 import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives20;
+import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives33;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
@@ -89,7 +90,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public class CompositePrimitive extends Composite {
 
     /** The {@linkplain OpenGLRendererPrimitives} instance */
-    private final OpenGLRendererPrimitives openGL = new OpenGLRendererPrimitives20(this);
+    private final OpenGLRendererPrimitives openGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20 ? new OpenGLRendererPrimitives20(this) : new OpenGLRendererPrimitives33(this);
 
     /** the {@linkplain GLCanvas} */
     final GLCanvas canvas;
@@ -157,18 +158,22 @@ public class CompositePrimitive extends Composite {
         GLData data = new GLData();
         data.doubleBuffer = true;
         data.depthSize = 24;
-        // FIXME           data.alphaSize = 8;
-        //      data.blueSize = 8;
-        //      data.redSize = 8;
-        //      data.greenSize = 8;
-        //      data.stencilSize = 8;
+        data.alphaSize = 8;
+        data.blueSize = 8;
+        data.redSize = 8;
+        data.greenSize = 8;
+        data.stencilSize = 8;
         if (WorkbenchManager.getUserSettingState().isAntiAliasing()) {
             data.sampleBuffers = 1;
             data.samples = 4;
         }
         canvas = new GLCanvas(this, I18n.I18N_NON_BIDIRECT(), data);
         canvas.setCurrent();
-        capabilities = GL.createCapabilities();
+        if (WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20) {
+            capabilities = GL.createCapabilities();
+        } else {
+            capabilities = GL.createCapabilities(true);
+        }
         canvas.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_HAND));
         canvas.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
