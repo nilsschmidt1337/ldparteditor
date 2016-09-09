@@ -22,6 +22,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
+import org.nschmidt.ldparteditor.enums.View;
 
 public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
 
@@ -49,6 +50,8 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                     
                     final float zoom = cp.getZoom();
                     final Matrix4f viewport_translation = cp.getTranslation();
+                    final float STEP = 22f * zoom * View.PIXEL_PER_LDU;
+                    cp.setRotationWidth(STEP);
                     
                     Matrix4f viewport_transform = new Matrix4f();
                     Matrix4f.setIdentity(viewport_transform);
@@ -56,6 +59,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                     Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
                     cp.setViewport(viewport_transform);
                     viewport = viewport_transform;
+                    
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
