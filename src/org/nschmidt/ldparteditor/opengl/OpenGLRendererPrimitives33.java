@@ -15,8 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.opengl;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.eclipse.swt.opengl.GLCanvas;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 
 public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
@@ -24,8 +28,42 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
     /** The Primitive Composite */
     private final CompositePrimitive cp;
     
+    private volatile AtomicBoolean isRendering = new AtomicBoolean(true);
+    
+    private volatile Matrix4f viewport = new Matrix4f();
+    
     public OpenGLRendererPrimitives33(CompositePrimitive compositePrimitive) {
         this.cp = compositePrimitive;
+    }
+    
+    @Override
+    public void init() {
+        Matrix4f.setIdentity(viewport);
+        
+        new Thread(new Runnable() {
+            
+            @Override
+            public void run() {
+
+                while (isRendering.get()) {
+                    
+                    final float zoom = cp.getZoom();
+                    final Matrix4f viewport_translation = cp.getTranslation();
+                    
+                    Matrix4f viewport_transform = new Matrix4f();
+                    Matrix4f.setIdentity(viewport_transform);
+                    Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewport_transform, viewport_transform);
+                    Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
+                    cp.setViewport(viewport_transform);
+                    viewport = viewport_transform;
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     @Override
@@ -41,8 +79,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
     }
 
     @Override
-    public void init() {
-        
+    public void dispose() {
+        isRendering.set(false);
     }
-
 }

@@ -29,7 +29,6 @@ import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Arrow;
-import org.nschmidt.ldparteditor.helpers.BufferFactory;
 
 public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
 
@@ -68,42 +67,9 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
 
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
         GL11.glPointSize(4);
-        // GL11.glLineWidth(2);
 
-        GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glShadeModel(GL11.GL_SMOOTH);
-
         GL11.glEnable(GL11.GL_NORMALIZE);
-
-        GL11.glEnable(GL11.GL_LIGHT0);
-        GL11.glEnable(GL11.GL_LIGHT1);
-        GL11.glEnable(GL11.GL_LIGHT2);
-        GL11.glEnable(GL11.GL_LIGHT3);
-
-        GL11.glLightModelfv(GL11.GL_LIGHT_MODEL_AMBIENT, BufferFactory.floatBuffer(new float[] { 0.09f, 0.09f, 0.09f, 1f }));
-
-        GL11.glLightfv(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.primitive_light1_Colour_r[0], View.primitive_light1_Colour_g[0], View.primitive_light1_Colour_b[0], 1f }));
-        GL11.glLightfv(GL11.GL_LIGHT0, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.primitive_light1_specular_Colour_r[0], View.primitive_light1_specular_Colour_g[0], View.primitive_light1_specular_Colour_b[0], 1f }));
-        GL11.glLightf(GL11.GL_LIGHT0, GL11.GL_LINEAR_ATTENUATION, .001f);
-
-        GL11.glLightfv(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.primitive_light2_Colour_r[0], View.primitive_light2_Colour_g[0], View.primitive_light2_Colour_b[0], 1f }));
-        GL11.glLightfv(GL11.GL_LIGHT1, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.primitive_light2_specular_Colour_r[0], View.primitive_light2_specular_Colour_g[0], View.primitive_light2_specular_Colour_b[0], 1f }));
-        GL11.glLightf(GL11.GL_LIGHT1, GL11.GL_LINEAR_ATTENUATION, .001f);
-
-        GL11.glLightfv(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.primitive_light3_Colour_r[0], View.primitive_light3_Colour_g[0], View.primitive_light3_Colour_b[0], 1f }));
-        GL11.glLightfv(GL11.GL_LIGHT2, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.primitive_light3_specular_Colour_r[0], View.primitive_light3_specular_Colour_g[0], View.primitive_light3_specular_Colour_b[0], 1f }));
-        GL11.glLightf(GL11.GL_LIGHT2, GL11.GL_LINEAR_ATTENUATION, .001f);
-
-        GL11.glLightfv(GL11.GL_LIGHT3, GL11.GL_DIFFUSE, BufferFactory.floatBuffer(new float[] { View.primitive_light4_Colour_r[0], View.primitive_light4_Colour_g[0], View.primitive_light4_Colour_b[0], 1f }));
-        GL11.glLightfv(GL11.GL_LIGHT3, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { View.primitive_light4_specular_Colour_r[0], View.primitive_light4_specular_Colour_g[0], View.primitive_light4_specular_Colour_b[0], 1f }));
-        GL11.glLightf(GL11.GL_LIGHT3, GL11.GL_LINEAR_ATTENUATION, .001f);
-
-        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-        GL11.glColorMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE);
-
-        GL11.glMaterialfv(GL11.GL_FRONT, GL11.GL_SPECULAR, BufferFactory.floatBuffer(new float[] { 1.0f, 1.0f, 1.0f, 1.0f }));
-        GL11.glMaterialf(GL11.GL_FRONT, GL11.GL_SHININESS, 128f);
-
 
         GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
     }
@@ -134,7 +100,6 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
         float viewport_width = bounds.width / View.PIXEL_PER_LDU;
         float viewport_height = bounds.height / View.PIXEL_PER_LDU;
         GL11.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
-        // GL11.glOrtho(viewport_width, -viewport_width, viewport_height, -viewport_height, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
@@ -266,13 +231,6 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
             cp.setFocusedPrimitive(null);
             cp.setSelectedPrimitive(null);
         }
-
-        // Lights
-        GL11.glLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, 2.0f, 2.0f, 1f}));
-        GL11.glLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, 2.0f, 2.0f, 1f}));
-        GL11.glLightfv(GL11.GL_LIGHT2, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, -2.0f, 2.0f, 1f}));
-        GL11.glLightfv(GL11.GL_LIGHT3, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, -2.0f, 2.0f, 1f}));
-
         canvas.swapBuffers();
     }
 
@@ -400,5 +358,10 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
             GL11.glVertex3f(x + widthMinusRadius + ax, y + heightMinusRadius + ay, 0f);
         }
         GL11.glEnd();
+    }
+
+    @Override
+    public void dispose() {
+        
     }
 }

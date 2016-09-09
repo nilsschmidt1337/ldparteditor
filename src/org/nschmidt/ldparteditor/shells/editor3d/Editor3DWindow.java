@@ -5937,6 +5937,7 @@ public class Editor3DWindow extends Editor3DDesign {
         Project.getFileToEdit().addHistory();
         this.open();
         // Dispose all resources (never delete this!)
+        cmp_Primitives[0].getOpenGL().dispose();
         ResourceManager.dispose();
         SWTResourceManager.dispose();
         // Dispose the display (never delete this, too!)
