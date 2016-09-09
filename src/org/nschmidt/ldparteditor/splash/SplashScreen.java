@@ -161,6 +161,12 @@ public class SplashScreen extends ApplicationWindow {
             String glVersion = GL11.glGetString(GL11.GL_VERSION);
             int major = Integer.parseInt(glVersion.substring(0, 1));
             openGLerror[0] = major < 2;
+            // FIXME No DEBUG on release!
+            if (NLogger.DEBUG && major > 2) {
+                WorkbenchManager.getUserSettingState().setOpenGLVersion(33);
+            } else {
+                WorkbenchManager.getUserSettingState().setOpenGLVersion(20);
+            }
         } catch (Exception e) {
             openGLerror[0] = true;
         }

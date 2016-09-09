@@ -98,6 +98,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer33;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -209,7 +210,7 @@ public class Composite3D extends ScalableComposite {
     /** The {@linkplain Composite3DModifier} instance */
     private final Composite3DModifier c3d_modifier = new Composite3DModifier(this);
     /** The {@linkplain OpenGLRenderer} instance */
-    private final OpenGLRenderer openGL = new OpenGLRenderer20(this);
+    private final OpenGLRenderer openGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20 ?  new OpenGLRenderer20(this) : new OpenGLRenderer33(this);
     /** The {@linkplain MouseActions} instance */
     private final MouseActions mouse = new MouseActions(this);
     /** Information about pressed keys */
@@ -365,18 +366,22 @@ public class Composite3D extends ScalableComposite {
         GLData data = new GLData();
         data.doubleBuffer = true;
         data.depthSize = 24;
-        // FIXME           data.alphaSize = 8;
-        //      data.blueSize = 8;
-        //      data.redSize = 8;
-        //      data.greenSize = 8;
-        //      data.stencilSize = 8;
+        data.alphaSize = 8;
+        data.blueSize = 8;
+        data.redSize = 8;
+        data.greenSize = 8;
+        data.stencilSize = 8;
         if (WorkbenchManager.getUserSettingState().isAntiAliasing()) {
             data.sampleBuffers = 1;
             data.samples = 4;
         }
         canvas = new GLCanvas(this, I18n.I18N_NON_BIDIRECT(), data);
         canvas.setCurrent();
-        capabilities = GL.getCapabilities();
+        if (WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20) {
+            capabilities = GL.createCapabilities();
+        } else {
+            capabilities = GL.createCapabilities(true);
+        }
         canvas.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_CROSS));
         canvas.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 

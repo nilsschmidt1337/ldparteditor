@@ -75,7 +75,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
- * This class draws all 3D models
+ * This class draws the 3D view (OpenGL 2.0 compliant)
  *
  * @author nils
  *
@@ -108,16 +108,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
     private static long hoverSettingsTime = System.currentTimeMillis();
 
-    public FloatBuffer getViewport() {
-        return viewport;
-    }
-
     public FloatBuffer getRotationInverse() {
         return rotation_inv;
-    }
-
-    public Matrix4f getRotationInverse4f() {
-        return rotation_inv4f;
     }
 
     public OpenGLRenderer20(Composite3D c3d) {
@@ -1993,7 +1985,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         GL11.glLightfv(GL11.GL_LIGHT2, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { 2.0f, -2.0f, 2.0f, 1f}));
         GL11.glLightfv(GL11.GL_LIGHT3, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, -2.0f, 2.0f, 1f}));
 
-        c3d.getCanvas().swapBuffers();
+        canvas.swapBuffers();
     }
 
     public void dispose() {
