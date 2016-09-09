@@ -167,6 +167,7 @@ public class SplashScreen extends ApplicationWindow {
             } else {
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(20);
             }
+            // WorkbenchManager.getUserSettingState().setOpenGLVersion(20);
         } catch (Exception e) {
             openGLerror[0] = true;
         }

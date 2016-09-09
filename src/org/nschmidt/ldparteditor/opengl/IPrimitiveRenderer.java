@@ -19,4 +19,5 @@ public interface IPrimitiveRenderer {
     
     public void drawScene(float mouseX, float mouseY);
     public void init();
+    public void dispose();
 }
