@@ -15,6 +15,50 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.opengl;
 
-public abstract class OpenGLRendererPrimitives implements IPrimitiveRenderer {
+import org.nschmidt.ldparteditor.composites.Composite3D;
 
+public class OpenGLRenderer33 extends OpenGLRenderer {
+
+    /** The 3D Composite */
+    private final Composite3D c3d;
+    
+    public OpenGLRenderer33(Composite3D c3d) {
+        this.c3d = c3d;
+    }
+    
+    
+    @Override
+    public Composite3D getC3D() {
+        return c3d;
+    }
+
+    @Override
+    public void disposeAllTextures() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void disposeOldTextures() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void dispose() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void init() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawScene() {
+        // TODO Auto-generated method stub
+        
+    }
 }

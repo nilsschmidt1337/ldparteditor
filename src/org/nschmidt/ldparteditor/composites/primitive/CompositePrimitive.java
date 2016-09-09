@@ -76,8 +76,8 @@ import org.nschmidt.ldparteditor.enums.Rule;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives;
+import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives20;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
@@ -88,8 +88,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class CompositePrimitive extends Composite {
 
-    /** The {@linkplain OpenGLRenderer} instance */
-    private final OpenGLRendererPrimitives openGL = new OpenGLRendererPrimitives(this);
+    /** The {@linkplain OpenGLRenderer20} instance */
+    private final OpenGLRendererPrimitives openGL = new OpenGLRendererPrimitives20(this);
 
     /** the {@linkplain GLCanvas} */
     final GLCanvas canvas;

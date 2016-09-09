@@ -34,7 +34,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
-import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -478,7 +478,7 @@ public final class GData2 extends GData {
     public void drawBFC_Textured(Composite3D c3d) {
         // done :)
         if (GData.globalDrawObjects) {
-            final OpenGLRenderer r = c3d.getRenderer();
+            final OpenGLRenderer20 r = (OpenGLRenderer20) c3d.getRenderer();
             GL20.glUniform1f(r.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);
             GL20.glUniform1f(r.getNoTextureSwitch(), 1f);
             GL20.glUniform1f(r.getNoLightSwitch(), 1f);
@@ -702,7 +702,7 @@ public final class GData2 extends GData {
 
     public void drawDistance(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c) {
         final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
-        final OpenGLRenderer renderer = c3d.getRenderer();
+        final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
         GL11.glLineWidth(View.lineWidthGL[0]);
         GL11.glColor4f(r, g, b, 1f);

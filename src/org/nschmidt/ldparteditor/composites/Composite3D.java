@@ -97,6 +97,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -207,8 +208,8 @@ public class Composite3D extends ScalableComposite {
     private final PerspectiveCalculator perspective = new PerspectiveCalculator(this);
     /** The {@linkplain Composite3DModifier} instance */
     private final Composite3DModifier c3d_modifier = new Composite3DModifier(this);
-    /** The {@linkplain OpenGLRenderer} instance */
-    private final OpenGLRenderer openGL = new OpenGLRenderer(this);
+    /** The {@linkplain OpenGLRenderer20} instance */
+    private final OpenGLRenderer openGL = new OpenGLRenderer20(this);
     /** The {@linkplain MouseActions} instance */
     private final MouseActions mouse = new MouseActions(this);
     /** Information about pressed keys */
@@ -1619,7 +1620,7 @@ public class Composite3D extends ScalableComposite {
     }
 
     /**
-     * @return the {@linkplain OpenGLRenderer}
+     * @return the {@linkplain OpenGLRenderer20}
      */
     public OpenGLRenderer getRenderer() {
         return openGL;
