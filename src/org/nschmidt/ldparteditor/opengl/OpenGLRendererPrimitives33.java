@@ -139,9 +139,9 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         
         shaderProgram.use();
         GL30.glBindVertexArray(VAO);
-        GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
+        // GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION); // <-- Not necessary!
         GL11.glDrawElements(GL11.GL_TRIANGLES, 6, GL11.GL_UNSIGNED_INT, 0);
-        GL20.glDisableVertexAttribArray(POSITION_SHADER_LOCATION);
+        // GL20.glDisableVertexAttribArray(POSITION_SHADER_LOCATION); // <-- Not necessary!
         GL30.glBindVertexArray(0);
         
         canvas.swapBuffers();
