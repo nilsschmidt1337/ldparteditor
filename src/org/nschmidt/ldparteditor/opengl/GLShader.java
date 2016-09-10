@@ -32,7 +32,7 @@ class GLShader {
     }
             
     GLShader(final String vertexPath, final String fragmentPath) {
-        final int fragment = createAndCompile(vertexPath, GL20.GL_VERTEX_SHADER);
+        final int fragment = createAndCompile(vertexPath, GL20.GL_FRAGMENT_SHADER);
         final int vertex = createAndCompile(fragmentPath, GL20.GL_VERTEX_SHADER);
         
         program = GL20.glCreateProgram();
