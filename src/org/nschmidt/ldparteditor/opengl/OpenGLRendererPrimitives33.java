@@ -37,9 +37,13 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         this.cp = compositePrimitive;
     }
     
+    private GLShader shaderProgram = new GLShader();
+    
     @Override
     public void init() {
+        
         Matrix4f.setIdentity(viewport);
+        shaderProgram = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         
         new Thread(new Runnable() {
             
@@ -78,6 +82,8 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
             canvas.setCurrent();
             GL.setCapabilities(cp.getCapabilities());
         }
+        
+        shaderProgram.use();
         
         canvas.swapBuffers();
     }
