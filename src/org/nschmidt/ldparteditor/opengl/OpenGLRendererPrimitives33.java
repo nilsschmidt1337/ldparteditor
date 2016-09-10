@@ -17,8 +17,13 @@ package org.nschmidt.ldparteditor.opengl;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
@@ -38,12 +43,21 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
     }
     
     private GLShader shaderProgram = new GLShader();
+    private int VAO;
+    private int VBO;
+    private int EBO;
+    
+    private final int POSITION_SHADER_LOCATION = 0;
     
     @Override
     public void init() {
         
         Matrix4f.setIdentity(viewport);
         shaderProgram = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+        shaderProgram.use();
+        
+        GL11.glClearDepth(1.0f);
+        GL11.glClearColor(View.primitive_background_Colour_r[0], View.primitive_background_Colour_g[0], View.primitive_background_Colour_b[0], 1.0f);
         
         new Thread(new Runnable() {
             
@@ -72,6 +86,39 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 }
             }
         }).start();
+        
+        
+        // Set up vertex data (and buffer(s)) and attribute pointers
+        float[] vertices = new float[]{
+             0.5f,  0.5f, 0.0f,  // Top Right
+             0.5f, -0.5f, 0.0f,  // Bottom Right
+            -0.5f, -0.5f, 0.0f,  // Bottom Left
+            -0.5f,  0.5f, 0.0f   // Top Left 
+        };
+        int[] indices = new int[]{  // Note that we start from 0!
+            0, 1, 3,  // First Triangle
+            1, 2, 3   // Second Triangle
+        };
+        
+        VAO = GL30.glGenVertexArrays();
+        VBO = GL15.glGenBuffers();
+        EBO = GL15.glGenBuffers();
+        // Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
+        GL30.glBindVertexArray(VAO);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STATIC_DRAW);
+
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBO);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
+
+        GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
+        GL20.glVertexAttribPointer(POSITION_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, 3 * 4, 0);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
+
+        GL30.glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
+
     }
 
     @Override
@@ -83,13 +130,32 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
             GL.setCapabilities(cp.getCapabilities());
         }
         
+        GL11.glColorMask(true, true, true, true);
+
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+        
+        Rectangle bounds = cp.getBounds();
+        GL11.glViewport(0, 0, bounds.width, bounds.height);
+        
         shaderProgram.use();
+        GL30.glBindVertexArray(VAO);
+        GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
+        GL11.glDrawElements(GL11.GL_TRIANGLES, 6, GL11.GL_UNSIGNED_INT, 0);
+        GL20.glDisableVertexAttribArray(POSITION_SHADER_LOCATION);
+        GL30.glBindVertexArray(0);
         
         canvas.swapBuffers();
     }
 
     @Override
     public void dispose() {
+        // Properly de-allocate all resources once they've outlived their purpose
+        shaderProgram.dispose();
+        
+        GL30.glDeleteVertexArrays(VAO);
+        GL15.glDeleteBuffers(VBO);
+        GL15.glDeleteBuffers(EBO);
+        
         isRendering.set(false);
     }
 }
