@@ -32,16 +32,20 @@ class GLShader {
     }
             
     GLShader(final String vertexPath, final String fragmentPath) {
-        final int fragment = createAndCompile(vertexPath, GL20.GL_FRAGMENT_SHADER);
-        final int vertex = createAndCompile(fragmentPath, GL20.GL_VERTEX_SHADER);
+        final int fragment = createAndCompile(vertexPath, GL20.GL_VERTEX_SHADER);
+        final int vertex = createAndCompile(fragmentPath, GL20.GL_FRAGMENT_SHADER);
         
         program = GL20.glCreateProgram();
         GL20.glAttachShader(program, vertex);
         GL20.glAttachShader(program, fragment);
+        
         GL20.glLinkProgram(program);
         
+        // FIXME Extract parameter locations
+        // int baseImageLoc = GL20.glGetUniformLocation(program, "colorMap"); //$NON-NLS-1$
+        
         if (GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
-            NLogger.error(OpenGLRenderer20.class, new Exception("Could not link shader: " + GL20.glGetProgramInfoLog(program, 1024))); //$NON-NLS-1$;
+            NLogger.error(GLShader.class, "Could not link shader: " + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$;
         }
         
         GL20.glDetachShader(program, vertex);
@@ -72,10 +76,15 @@ class GLShader {
         GL20.glCompileShader(shaderID);
 
         if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-            NLogger.error(OpenGLRenderer20.class, new Exception("Could not compile shader " + path)); //$NON-NLS-1$;
+            NLogger.error(GLShader.class, "Could not compile shader " + path + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$;
             return -1;
         }
 
         return shaderID;
+    }
+
+    public void dispose() {
+        GL20.glUseProgram(0);
+        GL20.glDeleteProgram(program);
     }
 }
