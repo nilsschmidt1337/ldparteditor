@@ -15,8 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.opengl;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.lwjgl.opengl.GL;
@@ -34,10 +32,6 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
     /** The Primitive Composite */
     private final CompositePrimitive cp;
     
-    private volatile AtomicBoolean isRendering = new AtomicBoolean(true);
-    
-    private volatile Matrix4f viewport = new Matrix4f();
-    
     public OpenGLRendererPrimitives33(CompositePrimitive compositePrimitive) {
         this.cp = compositePrimitive;
     }
@@ -47,7 +41,8 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
     private int VBO;
     
     private final int POSITION_SHADER_LOCATION = 0;
-    private final int COLOUR_SHADER_LOCATION = 1;
+    private final int NORMAL_SHADER_LOCATION = 1;
+    private final int COLOUR_SHADER_LOCATION = 2;
     
     @Override
     public void init() {
@@ -59,45 +54,19 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         GL11.glClearDepth(1.0f);
         GL11.glClearColor(View.primitive_background_Colour_r[0], View.primitive_background_Colour_g[0], View.primitive_background_Colour_b[0], 1.0f);
         
-        new Thread(new Runnable() {
-            
-            @Override
-            public void run() {
-
-                while (isRendering.get()) {
-                    
-                    final float zoom = cp.getZoom();
-                    final Matrix4f viewport_translation = cp.getTranslation();
-                    final float STEP = 22f * zoom * View.PIXEL_PER_LDU;
-                    cp.setRotationWidth(STEP);
-                    
-                    Matrix4f viewport_transform = new Matrix4f();
-                    Matrix4f.setIdentity(viewport_transform);
-                    Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewport_transform, viewport_transform);
-                    Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
-                    cp.setViewport(viewport_transform);
-                    viewport = viewport_transform;
-                    
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-        
-        
         // Set up vertex data (and buffer(s)) and attribute pointers
         float[] vertices = new float[]{
              0.5f,  0.5f, 0.0f,  // Top Right
-             1.0f, 0.0f, 0.0f, // Colour
+             0.0f,  0.0f, 1.0f,  // Normal
+             1.0f, 0.0f, 0.0f, 1.0f, // Colour
              
              0.5f, -0.5f, 0.0f,  // Bottom Right
-             0.0f, 1.0f, 0.0f, // Colour
+             0.0f,  0.0f, 1.0f,  // Normal
+             0.0f, 1.0f, 0.0f, 1.0f, // Colour
              
             -0.5f, -0.5f, 0.0f,  // Bottom Left
-            0.0f, 0.0f, 1.0f // Colour
+            0.0f,  0.0f, 1.0f,  // Normal
+            0.0f, 0.0f, 1.0f, 1.0f, // Colour
         };
         
         VAO = GL30.glGenVertexArrays();
@@ -109,10 +78,13 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STATIC_DRAW);
 
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
-        GL20.glVertexAttribPointer(POSITION_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, (3 + 3) * 4, 0);
+        GL20.glVertexAttribPointer(POSITION_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+        
+        GL20.glEnableVertexAttribArray(NORMAL_SHADER_LOCATION);
+        GL20.glVertexAttribPointer(NORMAL_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
         
         GL20.glEnableVertexAttribArray(COLOUR_SHADER_LOCATION);
-        GL20.glVertexAttribPointer(COLOUR_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, (3 + 3) * 4, 3 * 4);
+        GL20.glVertexAttribPointer(COLOUR_SHADER_LOCATION, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
 
@@ -151,7 +123,5 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         
         GL30.glDeleteVertexArrays(VAO);
         GL15.glDeleteBuffers(VBO);
-        
-        isRendering.set(false);
     }
 }
