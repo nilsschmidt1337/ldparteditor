@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.opengl;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -25,7 +26,8 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 
 class GLShader {
     
-    private final int program;
+    private final int program;    
+    final private HashMap<String, Integer> uniformMap = new HashMap<>();
     
     GLShader() {
         program = 0;
@@ -86,5 +88,19 @@ class GLShader {
     public void dispose() {
         GL20.glUseProgram(0);
         GL20.glDeleteProgram(program);
+        uniformMap.clear();
+    }
+    
+    public int getUniformLocation(String uniformName) {
+        int location = uniformMap.getOrDefault(uniformName, -1);
+        if (location == -1) {
+            location = GL20.glGetUniformLocation(program, uniformName);
+        }
+        if (location != -1) {
+            uniformMap.put(uniformName, location);
+        } else {
+            NLogger.error(GLShader.class, "Could not find uniform variable: " + uniformName + "\n" + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$ //$NON-NLS-2$;
+        }
+        return location;
     }
 }

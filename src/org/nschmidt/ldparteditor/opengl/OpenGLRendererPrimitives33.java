@@ -15,10 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.opengl;
 
+import java.nio.FloatBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.opengl.GLCanvas;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -90,15 +92,15 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         
         // Set up vertex data (and buffer(s)) and attribute pointers
         float[] vertices = new float[]{
-             0.5f,  0.5f, 0.0f,  // Top Right
-             1.0f, 0.0f, 0.0f, // Colour
-             
-             0.5f, -0.5f, 0.0f,  // Bottom Right
-             0.0f, 1.0f, 0.0f, // Colour
-             
-            -0.5f, -0.5f, 0.0f,  // Bottom Left
-            0.0f, 0.0f, 1.0f // Colour
-        };
+                0.1f,  0.1f, 0.0f,  // Top Right
+                1.0f, 0.0f, 0.0f, // Colour
+                
+                0.1f, -0.1f, 0.0f,  // Bottom Right
+                0.0f, 1.0f, 0.0f, // Colour
+                
+               -0.1f, -0.1f, 0.0f,  // Bottom Left
+               0.0f, 0.0f, 1.0f, // Colour
+           };
         
         VAO = GL30.glGenVertexArrays();
         VBO = GL15.glGenBuffers();
@@ -133,10 +135,41 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
         
-        Rectangle bounds = cp.getBounds();
+        final Rectangle bounds = cp.getBounds();
         GL11.glViewport(0, 0, bounds.width, bounds.height);
         
         shaderProgram.use();
+        
+        Matrix4f tmp = new Matrix4f();
+        Matrix4f.setIdentity(tmp);
+        tmp = tmp.scale(new Vector3f(2f, 2f, 2f));
+        
+        final FloatBuffer view_buf = BufferUtils.createFloatBuffer(16);
+        viewport.store(view_buf);
+        view_buf.position(0);
+        
+        final Matrix4f ID = new Matrix4f();
+        Matrix4f.setIdentity(ID);
+        
+        final FloatBuffer ID_buf = BufferUtils.createFloatBuffer(16);
+        ID.store(ID_buf);
+        ID_buf.position(0);
+                
+        final FloatBuffer projection_buf = BufferUtils.createFloatBuffer(16);        
+        final float viewport_width = bounds.width / View.PIXEL_PER_LDU;
+        final float viewport_height = bounds.height / View.PIXEL_PER_LDU;
+        GLMatrixStack.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom()).store(projection_buf);
+        projection_buf.position(0);        
+                
+        int model = shaderProgram.getUniformLocation("model" ); //$NON-NLS-1$
+        GL20.glUniformMatrix4fv(model, false, ID_buf);
+
+        int view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
+        GL20.glUniformMatrix4fv(view, true, view_buf);
+
+        int projection = shaderProgram.getUniformLocation("projection" ); //$NON-NLS-1$
+        GL20.glUniformMatrix4fv(projection, false, projection_buf);
+        
         GL30.glBindVertexArray(VAO);
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
         GL30.glBindVertexArray(0);
