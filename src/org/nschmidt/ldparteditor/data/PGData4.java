@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 import org.lwjgl.opengl.GL11;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.opengl.GL33Helper;
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
  * @author nils
@@ -40,6 +42,10 @@ public final class PGData4 extends PGData implements Serializable {
     final float x4;
     final float y4;
     final float z4;
+    
+    private final transient int[] indices = new int[12];
+    private final transient float[] vertices = new float[48]; 
+    
     public PGData4(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
         this.x1 = x1;
         this.y1 = y1;
@@ -53,13 +59,38 @@ public final class PGData4 extends PGData implements Serializable {
         this.x4 = x4;
         this.y4 = y4;
         this.z4 = z4;
+        
+        vertices[0] = x1;
+        vertices[1] = y1;
+        vertices[2] = z1;
+        vertices[6] = x2;
+        vertices[7] = y2;
+        vertices[8] = z2;
+        vertices[12] = x3;
+        vertices[13] = y3;
+        vertices[14] = z3;
+        vertices[18] = x4;
+        vertices[19] = y4;
+        vertices[20] = z4;
+        vertices[24] = x1;
+        vertices[25] = y1;
+        vertices[26] = z1;
+        vertices[30] = x2;
+        vertices[31] = y2;
+        vertices[32] = z2;
+        vertices[36] = x3;
+        vertices[37] = y3;
+        vertices[38] = z3;
+        vertices[42] = x4;
+        vertices[43] = y4;
+        vertices[44] = z4;
     }
     @Override
     public int type() {
         return 4;
     }
     @Override
-    public void drawBFCprimitive(int drawOnlyMode) {
+    public void drawBFCprimitive_GL20(int drawOnlyMode) {
         if (drawOnlyMode == 2) return;
         switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
         case BFC.CCW:
@@ -215,6 +246,235 @@ public final class PGData4 extends PGData implements Serializable {
             GL11.glEnd();
             break;
         }
+    }
+    
+    @Override
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
+        if (drawOnlyMode == 2) return;
+        switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
+        case BFC.CCW:
+            if (PGData.globalNegativeDeterminant) {
+                if (PGData.globalInvertNext) {                    
+                    indices[0] = 0;
+                    indices[1] = 3;
+                    indices[2] = 2;
+                    indices[3] = 2;
+                    indices[4] = 1;
+                    indices[5] = 0;
+                    indices[6] = 4;
+                    indices[7] = 5;
+                    indices[8] = 6;
+                    indices[9] = 6;
+                    indices[10] = 7;
+                    indices[11] = 4;
+                } else {
+                    indices[0] = 0;
+                    indices[1] = 1;
+                    indices[2] = 2;
+                    indices[3] = 2;
+                    indices[4] = 3;
+                    indices[5] = 0;
+                    indices[6] = 4;
+                    indices[7] = 7;
+                    indices[8] = 6;
+                    indices[9] = 6;
+                    indices[10] = 5;
+                    indices[11] = 4;
+                }
+            } else {
+                if (PGData.globalInvertNext) {
+                    indices[0] = 0;
+                    indices[1] = 1;
+                    indices[2] = 2;
+                    indices[3] = 2;
+                    indices[4] = 3;
+                    indices[5] = 0;
+                    indices[6] = 4;
+                    indices[7] = 7;
+                    indices[8] = 6;
+                    indices[9] = 6;
+                    indices[10] = 5;
+                    indices[11] = 4;
+                } else {
+                    indices[0] = 0;
+                    indices[1] = 3;
+                    indices[2] = 2;
+                    indices[3] = 2;
+                    indices[4] = 1;
+                    indices[5] = 0;
+                    indices[6] = 4;
+                    indices[7] = 5;
+                    indices[8] = 6;
+                    indices[9] = 6;
+                    indices[10] = 7;
+                    indices[11] = 4;
+                }
+            }
+        case BFC.CW:
+            if (indices[1] == 0) {
+                if (PGData.globalNegativeDeterminant) {
+                    if (PGData.globalInvertNext) {
+                        indices[0] = 0;
+                        indices[1] = 3;
+                        indices[2] = 2;
+                        indices[3] = 2;
+                        indices[4] = 1;
+                        indices[5] = 0;
+                        indices[6] = 4;
+                        indices[7] = 5;
+                        indices[8] = 6;
+                        indices[9] = 6;
+                        indices[10] = 7;
+                        indices[11] = 4;
+                    } else {
+                        indices[0] = 0;
+                        indices[1] = 3;
+                        indices[2] = 2;
+                        indices[3] = 2;
+                        indices[4] = 1;
+                        indices[5] = 0;
+                        indices[6] = 4;
+                        indices[7] = 5;
+                        indices[8] = 6;
+                        indices[9] = 6;
+                        indices[10] = 7;
+                        indices[11] = 4;
+                    }
+                } else {
+                    if (PGData.globalInvertNext) {                    
+                        indices[0] = 0;
+                        indices[1] = 3;
+                        indices[2] = 2;
+                        indices[3] = 2;
+                        indices[4] = 1;
+                        indices[5] = 0;
+                        indices[6] = 4;
+                        indices[7] = 5;
+                        indices[8] = 6;
+                        indices[9] = 6;
+                        indices[10] = 7;
+                        indices[11] = 4;
+                    } else {
+                        indices[0] = 0;
+                        indices[1] = 1;
+                        indices[2] = 2;
+                        indices[3] = 2;
+                        indices[4] = 3;
+                        indices[5] = 0;
+                        indices[6] = 4;
+                        indices[7] = 7;
+                        indices[8] = 6;
+                        indices[9] = 6;
+                        indices[10] = 5;
+                        indices[11] = 4;
+                    }
+                }
+            }
+            vertices[3] = View.BFC_front_Colour_r[0];
+            vertices[4] = View.BFC_front_Colour_g[0];
+            vertices[5] = View.BFC_front_Colour_b[0];
+            vertices[9] = vertices[3];
+            vertices[10] = vertices[4];
+            vertices[11] = vertices[5];
+            vertices[15] = vertices[3];
+            vertices[16] = vertices[4];
+            vertices[17] = vertices[5];                                        
+            vertices[21] = vertices[3];
+            vertices[22] = vertices[4];
+            vertices[23] = vertices[5];     
+            vertices[27] = View.BFC_back__Colour_r[0];
+            vertices[28] = View.BFC_back__Colour_g[0];
+            vertices[29] = View.BFC_back__Colour_b[0];               
+            vertices[33] = vertices[27];
+            vertices[34] = vertices[28];
+            vertices[35] = vertices[29];
+            vertices[39] = vertices[27];
+            vertices[40] = vertices[28];
+            vertices[41] = vertices[29];
+            vertices[45] = vertices[27];
+            vertices[46] = vertices[28];
+            vertices[47] = vertices[29];
+            GL33Helper.drawTrianglesIndexedRGB(vertices, indices);
+            break;
+        case BFC.NOCERTIFY:
+            indices[0] = 0;
+            indices[1] = 2;
+            indices[2] = 1;
+            indices[3] = 3;
+            indices[4] = 4;
+            indices[5] = 5;
+            indices[6] = 0;
+            indices[7] = 2;
+            indices[8] = 1;
+            indices[9] = 3;
+            indices[10] = 4;
+            indices[11] = 5;
+            vertices[3] = View.BFC_uncertified_Colour_r[0];
+            vertices[4] = View.BFC_uncertified_Colour_g[0];
+            vertices[5] = View.BFC_uncertified_Colour_b[0];
+            vertices[9] = vertices[3];
+            vertices[10] = vertices[4];
+            vertices[11] = vertices[5];
+            vertices[15] = vertices[3];
+            vertices[16] = vertices[4];
+            vertices[17] = vertices[5];                                        
+            vertices[21] = vertices[3];
+            vertices[22] = vertices[4];
+            vertices[23] = vertices[5];                    
+            vertices[27] = vertices[3];
+            vertices[28] = vertices[4];
+            vertices[29] = vertices[5];                    
+            vertices[33] = vertices[3];
+            vertices[34] = vertices[4];
+            vertices[35] = vertices[5];
+            vertices[39] = vertices[3];
+            vertices[40] = vertices[4];
+            vertices[41] = vertices[5];
+            vertices[45] = vertices[3];
+            vertices[46] = vertices[4];
+            vertices[47] = vertices[5];
+            GL33Helper.drawTrianglesIndexedRGB(vertices, indices);
+            break;
+        case BFC.NOCLIP:
+            indices[0] = 0;
+            indices[1] = 2;
+            indices[2] = 1;
+            indices[3] = 3;
+            indices[4] = 4;
+            indices[5] = 5;
+            indices[6] = 0;
+            indices[7] = 2;
+            indices[8] = 1;
+            indices[9] = 3;
+            indices[10] = 4;
+            indices[11] = 5;
+            vertices[3] = View.BFC_front_Colour_r[0];
+            vertices[4] = View.BFC_front_Colour_g[0];
+            vertices[5] = View.BFC_front_Colour_b[0];
+            vertices[9] = vertices[3];
+            vertices[10] = vertices[4];
+            vertices[11] = vertices[5];
+            vertices[15] = vertices[3];
+            vertices[16] = vertices[4];
+            vertices[17] = vertices[5];                                        
+            vertices[21] = vertices[3];
+            vertices[22] = vertices[4];
+            vertices[23] = vertices[5];                    
+            vertices[27] = vertices[3];
+            vertices[28] = vertices[4];
+            vertices[29] = vertices[5];                    
+            vertices[33] = vertices[3];            
+            vertices[34] = vertices[4];
+            vertices[35] = vertices[5];
+            vertices[39] = vertices[3];
+            vertices[40] = vertices[4];
+            vertices[41] = vertices[5];
+            vertices[45] = vertices[3];
+            vertices[46] = vertices[4];
+            vertices[47] = vertices[5];
+            GL33Helper.drawTrianglesIndexedRGB(vertices, indices);
+        }
+
     }
     public static PGData4 clone(PGData4 o) {
         return new PGData4(o.x1, o.y1, o.z1, o.x2, o.y2, o.z2, o.x3, o.y3, o.z3, o.x4, o.y4, o.z4);

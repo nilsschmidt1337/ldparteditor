@@ -1474,7 +1474,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     if (manipulator.isX_Rotate()) {
                         c = manipulator.checkManipulatorStatus(View.manipulator_x_axis_Colour_r[0], View.manipulator_x_axis_Colour_g[0], View.manipulator_x_axis_Colour_b[0], Manipulator.X_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getX_RotateArrow().x, rotateSize * manipulator.getX_RotateArrow().y, rotateSize * manipulator.getX_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .draw(mx, my, mz, zoom);
+                        .drawGL20(mx, my, mz, zoom);
                     }
 
                     c = manipulator.checkManipulatorStatus(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], Manipulator.Y_ROTATE, c3d, zoom);
@@ -1483,7 +1483,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     if (manipulator.isY_Rotate()) {
                         c = manipulator.checkManipulatorStatus(View.manipulator_y_axis_Colour_r[0], View.manipulator_y_axis_Colour_g[0], View.manipulator_y_axis_Colour_b[0], Manipulator.Y_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getY_RotateArrow().x, rotateSize * manipulator.getY_RotateArrow().y, rotateSize * manipulator.getY_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .draw(mx, my, mz, zoom);
+                        .drawGL20(mx, my, mz, zoom);
                     }
 
                     c = manipulator.checkManipulatorStatus(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], Manipulator.Z_ROTATE, c3d, zoom);
@@ -1492,7 +1492,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     if (manipulator.isZ_Rotate()) {
                         c = manipulator.checkManipulatorStatus(View.manipulator_z_axis_Colour_r[0], View.manipulator_z_axis_Colour_g[0], View.manipulator_z_axis_Colour_b[0], Manipulator.Z_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getZ_RotateArrow().x, rotateSize * manipulator.getZ_RotateArrow().y, rotateSize * manipulator.getZ_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .draw(mx, my, mz, zoom);
+                        .drawGL20(mx, my, mz, zoom);
                     }
 
                     Vector4f[] gen = c3d.getGenerator();
@@ -1503,7 +1503,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     if (manipulator.isV_Rotate()) {
                         c = manipulator.checkManipulatorStatus(View.manipulator_outerCircle_Colour_r[0], View.manipulator_outerCircle_Colour_g[0], View.manipulator_outerCircle_Colour_b[0], Manipulator.V_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateOuterSize * manipulator.getV_RotateArrow().x, rotateOuterSize * manipulator.getV_RotateArrow().y, rotateOuterSize * manipulator.getV_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .draw(mx, my, mz, zoom);
+                        .drawGL20(mx, my, mz, zoom);
                     }
                     if (singleMode)
                         break;
@@ -1518,11 +1518,11 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                         break;
                 case MOVE:
                     c = manipulator.checkManipulatorStatus(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], Manipulator.X_TRANSLATE, c3d, zoom);
-                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getXaxis().x, moveSize * manipulator.getXaxis().y, moveSize * manipulator.getXaxis().z, cone_height, cone_width, lineWidth).draw(mx, my, mz, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getXaxis().x, moveSize * manipulator.getXaxis().y, moveSize * manipulator.getXaxis().z, cone_height, cone_width, lineWidth).drawGL20(mx, my, mz, zoom);
                     c = manipulator.checkManipulatorStatus(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], Manipulator.Y_TRANSLATE, c3d, zoom);
-                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getYaxis().x, moveSize * manipulator.getYaxis().y, moveSize * manipulator.getYaxis().z, cone_height, cone_width, lineWidth).draw(mx, my, mz, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getYaxis().x, moveSize * manipulator.getYaxis().y, moveSize * manipulator.getYaxis().z, cone_height, cone_width, lineWidth).drawGL20(mx, my, mz, zoom);
                     c = manipulator.checkManipulatorStatus(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], Manipulator.Z_TRANSLATE, c3d, zoom);
-                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getZaxis().x, moveSize * manipulator.getZaxis().y, moveSize * manipulator.getZaxis().z, cone_height, cone_width, lineWidth).draw(mx, my, mz, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getZaxis().x, moveSize * manipulator.getZaxis().y, moveSize * manipulator.getZaxis().z, cone_height, cone_width, lineWidth).drawGL20(mx, my, mz, zoom);
                     break;
                 default:
                     break;
@@ -1867,9 +1867,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     GL11.glPushMatrix();
                     GL11.glTranslatef(ox - viewport_width, viewport_height - oy, 0f);
                     GL11.glMultMatrixf(rotation);
-                    new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,  l, 0f, 0f, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
-                    new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,  l, 0f, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
-                    new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,  l, cone_height, cone_width, line_width).draw(0f, 0f, 0f, .01f);
+                    new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,  l, 0f, 0f, cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
+                    new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,  l, 0f, cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
+                    new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,  l, cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
                     GL11.glPopMatrix();
                 }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);

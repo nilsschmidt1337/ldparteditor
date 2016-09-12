@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 import org.lwjgl.opengl.GL11;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.opengl.GL33Helper;
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
  * @author nils
@@ -43,7 +45,7 @@ public final class PGData2 extends PGData implements Serializable {
         this.z2 = z2;
     }
     @Override
-    public void drawBFCprimitive(int drawOnlyMode) {
+    public void drawBFCprimitive_GL20(int drawOnlyMode) {
         if (drawOnlyMode == 1) return;
         // GL11.glLineWidth(View.lineWidthGL[0]);
         GL11.glLineWidth(1f);
@@ -52,6 +54,17 @@ public final class PGData2 extends PGData implements Serializable {
         GL11.glVertex3f(x1, y1, z1);
         GL11.glVertex3f(x2, y2, z2);
         GL11.glEnd();
+    }
+    @Override
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
+        if (drawOnlyMode == 1) return;
+        GL11.glLineWidth(1f);
+        GL33Helper.drawLinesRGB(new float[]{
+                x1, y1, z1,
+                View.primitive_edge_Colour_r[0], View.primitive_edge_Colour_g[0], View.primitive_edge_Colour_b[0],
+                x2, y2, z2,
+                View.primitive_edge_Colour_r[0], View.primitive_edge_Colour_g[0], View.primitive_edge_Colour_b[0]
+        });
     }
     @Override
     public int type() {

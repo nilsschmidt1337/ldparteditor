@@ -21,6 +21,8 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.nschmidt.ldparteditor.opengl.GL33Helper;
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
  * @author nils
@@ -28,7 +30,8 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class Arrow {
 
-    final FloatBuffer matrix;
+    final FloatBuffer matrix_buf;
+    final Matrix4f rotation;
 
     final float EPSILON = 0.0000001f;
 
@@ -56,10 +59,10 @@ public class Arrow {
         length = (float) Math.sqrt(dir_x * dir_x + dir_y * dir_y + dir_z * dir_z);
         cone_start = length - cone_height;
         line_end = length - cone_height / 3f;
-        Matrix4f rotation = makeRotationDir(new Vector3f(dir_x, dir_y, dir_z));
-        matrix = BufferUtils.createFloatBuffer(16);
-        rotation.store(matrix);
-        matrix.position(0);
+        rotation = makeRotationDir(new Vector3f(dir_x, dir_y, dir_z));
+        matrix_buf = BufferUtils.createFloatBuffer(16);
+        rotation.store(matrix_buf);
+        matrix_buf.position(0);
         float cone_radius = cone_width;
         float step = (float) (Math.PI / 8d);
         float angle = 0f;
@@ -134,12 +137,12 @@ public class Arrow {
         return arrowRotation;
     }
 
-    public void draw(float x, float y, float z, float zoom) {
+    public void drawGL20(float x, float y, float z, float zoom) {
         final float zoom_inv = 1f / zoom;
         GL11.glPushMatrix();
 
         GL11.glTranslatef(x, y, z);
-        GL11.glMultMatrixf(matrix);
+        GL11.glMultMatrixf(matrix_buf);
         GL11.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
         GL11.glLineWidth(line_width);
@@ -204,5 +207,97 @@ public class Arrow {
         GL11.glEnd();
 
         GL11.glPopMatrix();
+    }
+    
+    public void drawGL30_RGB(GLMatrixStack stack, float x, float y, float z, float zoom) {
+        final float zoom_inv = 1f / zoom;
+        stack.glPushMatrix();
+        
+        stack.glTranslatef(x, y, z);
+        stack.glMultMatrixf(rotation);
+        stack.glScalef(zoom_inv, zoom_inv, zoom_inv);
+
+        GL11.glLineWidth(line_width);
+        
+        {
+            float[] vertexData = new float[]{
+                    0f, 0f, 0f,
+                    r, g, b,
+                    0f, line_end, 0f,
+                    r, g, b
+            };
+            GL33Helper.drawLinesRGB(vertexData);
+        }
+        
+        int[] indices = new int[16 * 3];            
+        for (int i = 0; i < 16; i++) {
+            indices[i * 3] = 0;
+            indices[i * 3 + 1] = i + 1;
+            indices[i * 3 + 2] = i + 2;
+        }
+        
+        {
+            float[] vertexData = new float[]{
+                    
+                    0f, length, 0f, r, g, b,
+            
+                    cone[0], cone_start, cone[1], r, g, b,
+                    cone[2], cone_start, cone[3], r, g, b,
+                    cone[4], cone_start, cone[5], r, g, b,
+                    cone[6], cone_start, cone[7], r, g, b,
+            
+                    cone[8], cone_start, cone[9], r, g, b,
+                    cone[10], cone_start, cone[11], r, g, b,
+                    cone[12], cone_start, cone[13], r, g, b,
+                    cone[14], cone_start, cone[15], r, g, b,
+            
+                    cone[16], cone_start, cone[17], r, g, b,
+                    cone[18], cone_start, cone[19], r, g, b,
+                    cone[20], cone_start, cone[21], r, g, b,
+                    cone[22], cone_start, cone[23], r, g, b,
+            
+                    cone[24], cone_start, cone[25], r, g, b,
+                    cone[26], cone_start, cone[27], r, g, b,
+                    cone[28], cone_start, cone[29], r, g, b,
+                    cone[30], cone_start, cone[31], r, g, b,
+            
+                    cone[32], cone_start, cone[33], r, g, b
+            };
+            
+            GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
+        }
+
+        {
+            float[] vertexData = new float[]{
+                    
+                0f, cone_start, 0f, r, g, b,
+        
+                cone[32], cone_start, cone[33], r, g, b,
+        
+                cone[30], cone_start, cone[31], r, g, b,
+                cone[28], cone_start, cone[29], r, g, b,
+                cone[26], cone_start, cone[27], r, g, b,
+                cone[24], cone_start, cone[25], r, g, b,
+        
+                cone[22], cone_start, cone[23], r, g, b,
+                cone[20], cone_start, cone[21], r, g, b,
+                cone[18], cone_start, cone[19], r, g, b,
+                cone[16], cone_start, cone[17], r, g, b,
+        
+                cone[14], cone_start, cone[15], r, g, b,
+                cone[12], cone_start, cone[13], r, g, b,
+                cone[10], cone_start, cone[11], r, g, b,
+                cone[8], cone_start, cone[9], r, g, b,
+        
+                cone[6], cone_start, cone[7], r, g, b,
+                cone[4], cone_start, cone[5], r, g, b,
+                cone[2], cone_start, cone[3], r, g, b,
+                cone[0], cone_start, cone[1], r, g, b
+            };
+            
+            GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
+        }
+        
+        stack.glPopMatrix();
     }
 }

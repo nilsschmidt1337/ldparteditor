@@ -15,12 +15,15 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
+
 /**
  * @author nils
  *
  */
 interface IPGData {
-    public void drawBFCprimitive(int drawOnlyMode);
+    public void drawBFCprimitive_GL20(int drawOnlyMode);
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode);
     public int type();
     public PGData data();
 }
