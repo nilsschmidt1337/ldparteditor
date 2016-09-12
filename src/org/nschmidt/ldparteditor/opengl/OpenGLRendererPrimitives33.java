@@ -212,9 +212,9 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         stack.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
         stack.glMultMatrixf(rotation);
         
-        new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,-.5f, 0f, 0f, .00015f, .00004f, 2f).drawGL30_PrimitiveArea_RGB(stack, 0f, 0f, 0f, .01f);
-        new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,.5f, 0f, .00015f, .00004f, 2f).drawGL30_PrimitiveArea_RGB(stack, 0f, 0f, 0f, .01f);
-        new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,.5f, .00015f, .00004f, 2f).drawGL30_PrimitiveArea_RGB(stack, 0f, 0f, 0f, .01f);
+        new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,-.5f, 0f, 0f, .00015f, .00004f, 2f).drawGL33_PrimitiveArea_RGB(stack, 0f, 0f, 0f, .01f);
+        new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,.5f, 0f, .00015f, .00004f, 2f).drawGL33_PrimitiveArea_RGB(stack, 0f, 0f, 0f, .01f);
+        new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,.5f, .00015f, .00004f, 2f).drawGL33_PrimitiveArea_RGB(stack, 0f, 0f, 0f, .01f);
         
         stack.glPopMatrix();
          
