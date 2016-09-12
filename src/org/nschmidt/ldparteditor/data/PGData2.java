@@ -49,9 +49,9 @@ public final class PGData2 extends PGData implements Serializable {
         
         edgeData = new float[]{
                 x1, y1, z1,
-                View.primitive_edge_Colour_r[0], View.primitive_edge_Colour_g[0], View.primitive_edge_Colour_b[0],
+                0f, 0f, 0f,
                 x2, y2, z2,
-                View.primitive_edge_Colour_r[0], View.primitive_edge_Colour_g[0], View.primitive_edge_Colour_b[0]};
+                0f, 0f, 0f};
     }
     @Override
     public void drawBFCprimitive_GL20(int drawOnlyMode) {
@@ -67,7 +67,12 @@ public final class PGData2 extends PGData implements Serializable {
     @Override
     public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
         if (drawOnlyMode == 1) return;
-        GL11.glLineWidth(1f);
+        edgeData[3] = View.primitive_edge_Colour_r[0];
+        edgeData[4] = View.primitive_edge_Colour_g[0]; 
+        edgeData[5] = View.primitive_edge_Colour_b[0];
+        edgeData[9] = edgeData[3];
+        edgeData[10] = edgeData[4]; 
+        edgeData[11] = edgeData[5];
         GL33HelperPrimitives.drawLinesRGB_Line(edgeData);
     }
     @Override
