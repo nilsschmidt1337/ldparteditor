@@ -27,6 +27,7 @@ import java.util.Locale;
 
 import org.eclipse.swt.SWT;
 import org.nschmidt.ldparteditor.helpers.Version;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * Provides a very simple logger
@@ -236,6 +237,7 @@ public enum NLogger {
         sb.append(Version.getVersion());
         sb.append(" @ SWT v"); //$NON-NLS-1$
         sb.append(SWT.getVersion());
+        sb.append(" OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersion()); //$NON-NLS-1$
         sb.append(" OS "); //$NON-NLS-1$
         sb.append(SWT.getPlatform());
         sb.append("]"); //$NON-NLS-1$

@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 import org.lwjgl.opengl.GL11;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.opengl.GL33Helper;
+import org.nschmidt.ldparteditor.opengl.GL33HelperPrimitives;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
@@ -394,7 +394,7 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[45] = vertices[27];
             vertices[46] = vertices[28];
             vertices[47] = vertices[29];
-            GL33Helper.drawTrianglesIndexedRGB(vertices, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGB_Quad(vertices, indices);
             break;
         case BFC.NOCERTIFY:
             indices[0] = 0;
@@ -433,7 +433,7 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[45] = vertices[3];
             vertices[46] = vertices[4];
             vertices[47] = vertices[5];
-            GL33Helper.drawTrianglesIndexedRGB(vertices, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGB_Quad(vertices, indices);
             break;
         case BFC.NOCLIP:
             indices[0] = 0;
@@ -472,7 +472,7 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[45] = vertices[3];
             vertices[46] = vertices[4];
             vertices[47] = vertices[5];
-            GL33Helper.drawTrianglesIndexedRGB(vertices, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGB_Quad(vertices, indices);
         }
 
     }
