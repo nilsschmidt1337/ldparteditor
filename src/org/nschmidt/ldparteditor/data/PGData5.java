@@ -68,7 +68,7 @@ public final class PGData5 extends PGData implements Serializable {
     public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
         if (drawOnlyMode == 1) return;
         GL11.glLineWidth(1f);
-        GL33HelperPrimitives.drawLinesRGB(edgeData);
+        GL33HelperPrimitives.drawLinesRGB_Line(edgeData);
     }
     @Override
     public int type() {

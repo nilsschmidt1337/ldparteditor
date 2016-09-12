@@ -209,7 +209,7 @@ public class Arrow {
         GL11.glPopMatrix();
     }
     
-    public void drawGL30_RGB(GLMatrixStack stack, float x, float y, float z, float zoom) {
+    public void drawGL30_PrimitiveArea_RGB(GLMatrixStack stack, float x, float y, float z, float zoom) {
         final float zoom_inv = 1f / zoom;
         stack.glPushMatrix();
         
@@ -226,7 +226,7 @@ public class Arrow {
                     0f, line_end, 0f,
                     r, g, b
             };
-            GL33HelperPrimitives.drawLinesRGB(vertexData);
+            GL33HelperPrimitives.drawLinesRGB_Line(vertexData);
         }
         
         int[] indices = new int[16 * 3];            
