@@ -29,22 +29,23 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
+import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Arrow;
 
 public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
 
     /** The Primitive Composite */
     private final CompositePrimitive cp;
     
-    private volatile AtomicBoolean isRendering = new AtomicBoolean(true);
-    
-    private volatile Matrix4f viewport = new Matrix4f();
+    private GLShader shaderProgram = new GLShader();
+    private final GLMatrixStack stack = new GLMatrixStack();
     
     public OpenGLRendererPrimitives33(CompositePrimitive compositePrimitive) {
         this.cp = compositePrimitive;
     }
     
-    private GLShader shaderProgram = new GLShader();
+    
     private int VAO;
     private int VBO;
     
@@ -54,51 +55,22 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
     @Override
     public void init() {
         
-        Matrix4f.setIdentity(viewport);
         shaderProgram = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+        stack.setShader(shaderProgram);
         shaderProgram.use();
         
         GL11.glClearDepth(1.0f);
         GL11.glClearColor(View.primitive_background_Colour_r[0], View.primitive_background_Colour_g[0], View.primitive_background_Colour_b[0], 1.0f);
         
-        new Thread(new Runnable() {
-            
-            @Override
-            public void run() {
-
-                while (isRendering.get()) {
-                    
-                    final float zoom = cp.getZoom();
-                    final Matrix4f viewport_translation = cp.getTranslation();
-                    final float STEP = 22f * zoom * View.PIXEL_PER_LDU;
-                    cp.setRotationWidth(STEP);
-                    
-                    Matrix4f viewport_transform = new Matrix4f();
-                    Matrix4f.setIdentity(viewport_transform);
-                    Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewport_transform, viewport_transform);
-                    Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
-                    cp.setViewport(viewport_transform);
-                    viewport = viewport_transform;
-                    
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-        
-        
         // Set up vertex data (and buffer(s)) and attribute pointers
         float[] vertices = new float[]{
-                0.1f,  0.1f, 0.0f,  // Top Right
+                0.01f,  0.01f, 0.0f,  // Top Right
                 1.0f, 0.0f, 0.0f, // Colour
                 
-                0.1f, -0.1f, 0.0f,  // Bottom Right
+                0.01f, -0.01f, 0.0f,  // Bottom Right
                 0.0f, 1.0f, 0.0f, // Colour
                 
-               -0.1f, -0.1f, 0.0f,  // Bottom Left
+               -0.01f, -0.01f, 0.0f,  // Bottom Left
                0.0f, 0.0f, 1.0f, // Colour
            };
         
@@ -140,35 +112,158 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         
         shaderProgram.use();
         
-        Matrix4f tmp = new Matrix4f();
-        Matrix4f.setIdentity(tmp);
-        tmp = tmp.scale(new Vector3f(2f, 2f, 2f));
-        
         final FloatBuffer view_buf = BufferUtils.createFloatBuffer(16);
-        viewport.store(view_buf);
-        view_buf.position(0);
         
-        final Matrix4f ID = new Matrix4f();
-        Matrix4f.setIdentity(ID);
         
-        final FloatBuffer ID_buf = BufferUtils.createFloatBuffer(16);
-        ID.store(ID_buf);
-        ID_buf.position(0);
-                
+        Matrix4f viewport_transform = new Matrix4f();
+        Matrix4f.setIdentity(viewport_transform);
+
+        float zoom = cp.getZoom();
+        Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewport_transform, viewport_transform);
+        Matrix4f viewport_translation = cp.getTranslation();
+        Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
+        viewport_transform.store(view_buf);
+        cp.setViewport(viewport_transform);
+        view_buf.flip();
+
+        // Draw all visible primitives / highlight selection
+
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        
         final FloatBuffer projection_buf = BufferUtils.createFloatBuffer(16);        
         final float viewport_width = bounds.width / View.PIXEL_PER_LDU;
         final float viewport_height = bounds.height / View.PIXEL_PER_LDU;
         GLMatrixStack.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom()).store(projection_buf);
         projection_buf.position(0);        
                 
-        int model = shaderProgram.getUniformLocation("model" ); //$NON-NLS-1$
-        GL20.glUniformMatrix4fv(model, false, ID_buf);
-
         int view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
-        GL20.glUniformMatrix4fv(view, true, view_buf);
+        GL20.glUniformMatrix4fv(view, false, view_buf);
 
         int projection = shaderProgram.getUniformLocation("projection" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(projection, false, projection_buf);
+        
+        stack.clear();
+        stack.glLoadIdentity();
+        
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        
+        float lastX = Float.MAX_VALUE;
+
+        float x = 2f;
+        float y = 2f;
+
+        float mx = mouseX + (viewport_transform.m30 - 2f) * zoom * View.PIXEL_PER_LDU;
+        float my = mouseY + (viewport_transform.m31 - 2f) * zoom * View.PIXEL_PER_LDU;
+
+        final float STEP = 22f * zoom * View.PIXEL_PER_LDU;
+        cp.setRotationWidth(STEP);
+        float minY = viewport_transform.m31 - 22f;
+        float maxY = viewport_transform.m31 + canvas.getBounds().height / (zoom * View.PIXEL_PER_LDU);
+        boolean wasFocused = false;
+        float sx = STEP;
+        float width = canvas.getBounds().width;
+        final Primitive sp = cp.getSelectedPrimitive();
+        final Matrix4f rotation = cp.getRotation();
+        final boolean hasSearchResults = cp.getSearchResults().size() > 0;
+
+        if (hasSearchResults) {
+            if (cp.getSearchResults().get(0) != null) {
+                for (Primitive p : cp.getSearchResults()) {
+                    lastX = sx;
+                    if (minY < y && maxY > y) {
+                        float ty = y * zoom * View.PIXEL_PER_LDU;
+                        boolean focused = mx > sx - STEP && mx < sx  && my > ty && my < ty + STEP;
+                        if (focused) {
+                            cp.setFocusedPrimitive(p);
+                            wasFocused = true;
+                        }                        
+                        drawCell(x, y, p.equals(sp), p.isCategory(), focused);
+                        GL11.glEnable(GL11.GL_CULL_FACE);
+                        GL11.glFrontFace(GL11.GL_CW);
+                        GL11.glCullFace(GL11.GL_BACK);
+                        GL11.glEnable(GL11.GL_DEPTH_TEST);
+                        // p.draw(x, y, rotation);
+                        GL11.glDisable(GL11.GL_DEPTH_TEST);
+                        GL11.glDisable(GL11.GL_CULL_FACE);
+                        if (p.isCategory()) {
+                            if (p.isExtended()) {
+                                // drawMinus(x, y);
+                            } else {
+                                // drawPlus(x, y);
+                            }
+                        }
+                        
+                    }
+                    sx = (sx + STEP) % width;
+                    x += 22f;
+                    if (lastX > sx) {
+                        sx = 22f * zoom * View.PIXEL_PER_LDU;
+                        x = 2f;
+                        y += 22f;
+                    }
+                }
+            }
+        } else {
+            for (Primitive p2 : cp.getPrimitives()) {
+                for (Primitive p : p2.getPrimitives()) {
+                    lastX = sx;
+                    if (minY < y && maxY > y) {
+                        float ty = y * zoom * View.PIXEL_PER_LDU;
+                        boolean focused = mx > sx - STEP && mx < sx  && my > ty && my < ty + STEP;
+                        if (focused) {
+                            cp.setFocusedPrimitive(p);
+                            wasFocused = true;
+                        }                        
+                        drawCell(x, y, p.equals(sp), p.isCategory(), focused);
+                        GL11.glEnable(GL11.GL_CULL_FACE);
+                        GL11.glFrontFace(GL11.GL_CW);
+                        GL11.glCullFace(GL11.GL_BACK);
+                        GL11.glEnable(GL11.GL_DEPTH_TEST);
+                        // p.draw(x, y, rotation);
+                        GL11.glDisable(GL11.GL_DEPTH_TEST);
+                        GL11.glDisable(GL11.GL_CULL_FACE);
+                        if (p.isCategory()) {
+                            if (p.isExtended()) {
+                             // drawMinus(x, y);
+                            } else {
+                             // drawPlus(x, y);
+                            }
+                        }
+                    }
+                    sx = (sx + STEP) % width;
+                    x += 22f;
+                    if (lastX > sx) {
+                        sx = 22f * zoom * View.PIXEL_PER_LDU;
+                        x = 2f;
+                        y += 22f;
+                    }
+                }
+            }
+        }
+        
+        stack.glLoadIdentity();
+        
+        stack.glPushMatrix();
+        stack.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
+        stack.glMultMatrixf(rotation);
+        /*
+        new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,-.5f, 0f, 0f, .00015f, .00004f, 2f).draw(0f, 0f, 0f, .01f);
+        new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,.5f, 0f, .00015f, .00004f, 2f).draw(0f, 0f, 0f, .01f);
+        new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,.5f, .00015f, .00004f, 2f).draw(0f, 0f, 0f, .01f);
+        */
+        stack.glPopMatrix();
+         
+
+        cp.setMaxY(y - 22f);
+
+        if (!wasFocused && mouseX != -1) {
+            cp.setFocusedPrimitive(null);
+            cp.setSelectedPrimitive(null);
+        }
+        
+        stack.glLoadIdentity();
         
         GL30.glBindVertexArray(VAO);
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
@@ -184,7 +279,257 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         
         GL30.glDeleteVertexArrays(VAO);
         GL15.glDeleteBuffers(VBO);
+    }
+    
+    private void drawCell(float x, float y, boolean selected, boolean category, boolean focused) {
+        if (selected) {
+            drawRoundRectangle(x, y, 20f, 20f, 5f, View.primitive_selectedCell_Colour_r[0], View.primitive_selectedCell_Colour_g[0], View.primitive_selectedCell_Colour_b[0]);
+        } else if (focused) {
+            drawRoundRectangle(x, y, 20f, 20f, 5f, View.primitive_focusedCell_Colour_r[0], View.primitive_focusedCell_Colour_g[0], View.primitive_focusedCell_Colour_b[0]);
+        } else {
+            drawRoundRectangle(x, y, 20f, 20f, 5f, View.primitive_normalCell_Colour_r[0], View.primitive_normalCell_Colour_g[0], View.primitive_normalCell_Colour_b[0]);
+        }
+        if (category) {
+            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, View.primitive_categoryCell_1_Colour_r[0], View.primitive_categoryCell_1_Colour_g[0], View.primitive_categoryCell_1_Colour_b[0]);
+            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, View.primitive_categoryCell_2_Colour_r[0], View.primitive_categoryCell_2_Colour_g[0], View.primitive_categoryCell_2_Colour_b[0]);
+        } else {
+            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, View.primitive_cell_1_Colour_r[0], View.primitive_cell_1_Colour_g[0], View.primitive_cell_1_Colour_b[0]);
+            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, View.primitive_cell_2_Colour_r[0], View.primitive_cell_2_Colour_g[0], View.primitive_cell_2_Colour_b[0]);
+        }
+    }
+
+    private void drawPlus(float x, float y) {
+        drawSignBackground(x, y);
+        GL11.glColor4f(View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0], 1f);
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glNormal3f(0f, 0f, 1f);
+        GL11.glVertex3f(x + 14f, y + 15.75f, 0f);
+        GL11.glVertex3f(x + 14f, y + 15.25f, 0f);
+        GL11.glVertex3f(x + 16f, y + 15.25f, 0f);
+        GL11.glVertex3f(x + 16f, y + 15.75f, 0f);
+        GL11.glVertex3f(x + 14.75f, y + 16.4f, 0f);
+        GL11.glVertex3f(x + 14.75f, y + 14.6f, 0f);
+        GL11.glVertex3f(x + 15.25f, y + 14.6f, 0f);
+        GL11.glVertex3f(x + 15.25f, y + 16.4f, 0f);
+        GL11.glEnd();
+    }
+
+    private void drawMinus(float x, float y) {
+        drawSignBackground(x, y);
+        GL11.glColor4f(View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0], 1f);
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glNormal3f(0f, 0f, 1f);
+        GL11.glVertex3f(x + 14f, y + 15.75f, 0f);
+        GL11.glVertex3f(x + 14f, y + 15.25f, 0f);
+        GL11.glVertex3f(x + 16f, y + 15.25f, 0f);
+        GL11.glVertex3f(x + 16f, y + 15.75f, 0f);
+        GL11.glEnd();
+    }
+
+    private void drawSignBackground(float x, float y) {
+        drawRoundRectangle(x + 13.2f, y + 13.6f, 4f, 4f, .5f, View.primitive_signBG_Colour_r[0], View.primitive_signBG_Colour_g[0], View.primitive_signBG_Colour_b[0]);
+        drawRoundRectangle(x + 13.3f, y + 13.7f, 3.6f, 3.6f, .5f, View.primitive_signFG_Colour_r[0], View.primitive_signFG_Colour_g[0], View.primitive_signFG_Colour_b[0]);
+    }
+    private void drawRoundRectangle(float x, float y,float width, float height, float radius, float r, float g, float b) {
+
+        final float widthMinusRadius = width - radius;
+        final float heightMinusRadius = height - radius;
+
+        {
+            float[] vertexData = new float[] {
+                    
+            // Middle        
+            x + radius, y, 0f,
+            r, g, b,
+            x + radius, y + height, 0f,
+            r, g, b,
+            x + widthMinusRadius, y + height, 0f,
+            r, g, b,
+            x + widthMinusRadius, y, 0f,
+            r, g, b,
+            
+            // Left
+            x, y + radius, 0f,
+            r, g, b,
+            x, y + heightMinusRadius, 0f,
+            r, g, b,
+            x + radius, y + heightMinusRadius, 0f,
+            r, g, b,
+            x + radius, y + radius, 0f,
+            r, g, b,
+            
+            // Right
+            x + width, y + radius, 0f,
+            r, g, b,
+            x + width, y + heightMinusRadius, 0f,
+            r, g, b,
+            x + widthMinusRadius, y + heightMinusRadius, 0f,
+            r, g, b,
+            x + widthMinusRadius, y + radius, 0f,
+            r, g, b,
+            
+            };
+            
+            int[] indices = new int[]{
+                0, 1, 3,
+                1, 2, 3,
+                4, 5, 7,
+                5, 6, 7,
+                8, 9, 11,
+                9, 10, 11,
+            };
+            drawIndexedDataStreamed(vertexData, indices);
+        }
         
-        isRendering.set(false);
+        int[] indices = new int[27];            
+        for (int i = 0; i < 9; i++) {
+            indices[i * 3] = 0;
+            indices[i * 3 + 1] = i + 1;
+            indices[i * 3 + 2] = i + 2;
+        }
+
+        // Upper-Left
+        {
+            int i = 6;
+            float[] vertexData = new float[66];
+            vertexData[0] = x + radius;
+            vertexData[1] = y + radius;
+            vertexData[2] = 0f;
+            vertexData[3] = r;
+            vertexData[4] = g;
+            vertexData[5] = b;
+            
+            for(float angle = 0f; angle < 100f; angle += 10f) {
+                float anglerad = (float) (Math.PI * angle / 180.0);
+                float ax = (float) (Math.cos(anglerad) * radius);
+                float ay = (float) (Math.sin(anglerad) * radius);
+                
+                vertexData[i] = x + radius - ax; i++;
+                vertexData[i] = y + radius - ay; i++;
+                vertexData[i] = 0f; i++;
+                
+                vertexData[i] = r; i++;
+                vertexData[i] = g; i++;
+                vertexData[i] = b; i++;
+            }
+            drawIndexedDataStreamed(vertexData, indices);
+        }
+        
+        
+        // Upper-Right
+        {
+            int i = 6;
+            float[] vertexData = new float[66];
+            vertexData[0] = x + widthMinusRadius;
+            vertexData[1] = y + radius;
+            vertexData[2] = 0f;
+            vertexData[3] = r;
+            vertexData[4] = g;
+            vertexData[5] = b;
+            
+            for(float angle = 0f; angle < 100f; angle += 10f) {
+                float anglerad = (float) (Math.PI * angle / 180.0);
+                float ax = (float) (Math.cos(anglerad) * radius);
+                float ay = (float) (Math.sin(anglerad) * radius);
+                
+                vertexData[i] = x + widthMinusRadius + ax; i++;
+                vertexData[i] = y + radius - ay; i++;
+                vertexData[i] = 0f; i++;
+                
+                vertexData[i] = r; i++;
+                vertexData[i] = g; i++;
+                vertexData[i] = b; i++;
+            }
+            drawIndexedDataStreamed(vertexData, indices);
+        }
+        
+        
+        // Lower-Left
+        {
+            int i = 6;
+            float[] vertexData = new float[66];
+            vertexData[0] = x + radius;
+            vertexData[1] = y + heightMinusRadius;
+            vertexData[2] = 0f;
+            vertexData[3] = r;
+            vertexData[4] = g;
+            vertexData[5] = b;
+            
+            for(float angle = 0f; angle < 100f; angle += 10f) {
+                float anglerad = (float) (Math.PI * angle / 180.0);
+                float ax = (float) (Math.cos(anglerad) * radius);
+                float ay = (float) (Math.sin(anglerad) * radius);
+                
+                vertexData[i] = x + radius - ax; i++;
+                vertexData[i] = y + heightMinusRadius + ay; i++;
+                vertexData[i] = 0f; i++;
+                
+                vertexData[i] = r; i++;
+                vertexData[i] = g; i++;
+                vertexData[i] = b; i++;
+            }
+            drawIndexedDataStreamed(vertexData, indices);
+        }
+        
+        
+        // Lower-Right
+        {
+            int i = 6;
+            float[] vertexData = new float[66];
+            vertexData[0] = x + widthMinusRadius;
+            vertexData[1] = y + heightMinusRadius;
+            vertexData[2] = 0f;
+            vertexData[3] = r;
+            vertexData[4] = g;
+            vertexData[5] = b;
+            
+            for(float angle = 0f; angle < 100f; angle += 10f) {
+                float anglerad = (float) (Math.PI * angle / 180.0);
+                float ax = (float) (Math.cos(anglerad) * radius);
+                float ay = (float) (Math.sin(anglerad) * radius);
+                
+                vertexData[i] = x + widthMinusRadius + ax; i++;
+                vertexData[i] = y + heightMinusRadius + ay; i++;
+                vertexData[i] = 0f; i++;
+                
+                vertexData[i] = r; i++;
+                vertexData[i] = g; i++;
+                vertexData[i] = b; i++;
+            }
+            drawIndexedDataStreamed(vertexData, indices);
+        }
+    }
+
+    private void drawIndexedDataStreamed(float[] vertices, int[] indices) {
+        final int VAO = GL30.glGenVertexArrays();
+        final int VBO = GL15.glGenBuffers();
+        final int EBO = GL15.glGenBuffers();
+        
+        // Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
+        GL30.glBindVertexArray(VAO);
+   
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
+        
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBO);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STREAM_DRAW);
+   
+        GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
+        GL20.glVertexAttribPointer(POSITION_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, (3 + 3) * 4, 0);
+        
+        GL20.glEnableVertexAttribArray(COLOUR_SHADER_LOCATION);
+        GL20.glVertexAttribPointer(COLOUR_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, (3 + 3) * 4, 3 * 4);
+   
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        
+        GL30.glBindVertexArray(0);
+        
+        GL30.glBindVertexArray(VAO);
+        GL11.glDrawElements(GL11.GL_TRIANGLES, indices.length, GL11.GL_UNSIGNED_INT, 0);
+        GL30.glBindVertexArray(0);
+      
+        GL30.glDeleteVertexArrays(VAO);
+        GL15.glDeleteBuffers(VBO);
+        GL15.glDeleteBuffers(EBO);
     }
 }
