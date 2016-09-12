@@ -167,7 +167,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         GL11.glDepthFunc(GL11.GL_LESS);
-        GL11.glEnable(GL11.GL_STENCIL_TEST);
+        
         GL11.glClearDepth(1.0f);
         GL11.glClearColor(View.background_Colour_r[0], View.background_Colour_g[0], View.background_Colour_b[0], 1.0f);
 
