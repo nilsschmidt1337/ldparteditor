@@ -1,0 +1,17 @@
+
+float viewport_width = bounds.width / View.PIXEL_PER_LDU;
+float viewport_height = bounds.height / View.PIXEL_PER_LDU;
+
+// Composite3D
+GL11.glOrtho(viewport_width, -viewport_width, viewport_height, -viewport_height, -c3d.getzNear() * c3d.getZoom(), c3d.getzFar() * c3d.getZoom());
+
+// CompositePrimitive
+GL11.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
+
+void org.lwjgl.opengl.GL11.glOrtho(double l, double r, double b, double t, double n, double f)
+
+
+2 / (r - l) 0 			0 				- (r + l) / (r - l) 
+0 			2 / (t - b) 0 				- (t + b) / (t - b) 
+0 			0 			- 2 / (f - n) 	- (f + n) / (f - n) 
+0 			0 			0 				1 
