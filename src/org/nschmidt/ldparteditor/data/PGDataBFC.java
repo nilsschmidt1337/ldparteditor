@@ -17,6 +17,8 @@ package org.nschmidt.ldparteditor.data;
 
 import java.io.Serializable;
 
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
+
 /**
  * @author nils
  *
@@ -39,9 +41,14 @@ public final class PGDataBFC extends PGData implements Serializable {
     public int type() {
         return 6;
     }
+    
+    @Override
+    public void drawBFCprimitive_GL20(int drawOnlyMode) {
+        drawBFCprimitiveGL33(null, drawOnlyMode);
+    }
 
     @Override
-    public void drawBFCprimitive(int drawOnlyMode) {
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
         switch (type) {
         case BFC.CCW:
             PGData.localWinding = BFC.CCW;

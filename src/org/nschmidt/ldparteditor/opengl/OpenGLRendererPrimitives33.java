@@ -16,16 +16,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.opengl;
 
 import java.nio.FloatBuffer;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
@@ -45,13 +42,6 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         this.cp = compositePrimitive;
     }
     
-    
-    private int VAO;
-    private int VBO;
-    
-    private final int POSITION_SHADER_LOCATION = 0;
-    private final int COLOUR_SHADER_LOCATION = 1;
-    
     @Override
     public void init() {
         
@@ -61,37 +51,6 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         
         GL11.glClearDepth(1.0f);
         GL11.glClearColor(View.primitive_background_Colour_r[0], View.primitive_background_Colour_g[0], View.primitive_background_Colour_b[0], 1.0f);
-        
-        // Set up vertex data (and buffer(s)) and attribute pointers
-        float[] vertices = new float[]{
-                0.01f,  0.01f, 0.0f,  // Top Right
-                1.0f, 0.0f, 0.0f, // Colour
-                
-                0.01f, -0.01f, 0.0f,  // Bottom Right
-                0.0f, 1.0f, 0.0f, // Colour
-                
-               -0.01f, -0.01f, 0.0f,  // Bottom Left
-               0.0f, 0.0f, 1.0f, // Colour
-           };
-        
-        VAO = GL30.glGenVertexArrays();
-        VBO = GL15.glGenBuffers();
-        // Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-        GL30.glBindVertexArray(VAO);
-
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STATIC_DRAW);
-
-        GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
-        GL20.glVertexAttribPointer(POSITION_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, (3 + 3) * 4, 0);
-        
-        GL20.glEnableVertexAttribArray(COLOUR_SHADER_LOCATION);
-        GL20.glVertexAttribPointer(COLOUR_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, (3 + 3) * 4, 3 * 4);
-
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
-
-        GL30.glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
-
     }
 
     @Override
@@ -144,7 +103,6 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         GL20.glUniformMatrix4fv(projection, false, projection_buf);
         
         stack.clear();
-        stack.glLoadIdentity();
         
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -184,14 +142,14 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                         GL11.glFrontFace(GL11.GL_CW);
                         GL11.glCullFace(GL11.GL_BACK);
                         GL11.glEnable(GL11.GL_DEPTH_TEST);
-                        // p.draw(x, y, rotation);
+                        p.drawGL33(stack, x, y, rotation);
                         GL11.glDisable(GL11.GL_DEPTH_TEST);
                         GL11.glDisable(GL11.GL_CULL_FACE);
                         if (p.isCategory()) {
                             if (p.isExtended()) {
-                                // drawMinus(x, y);
+                                drawMinus(x, y);
                             } else {
-                                // drawPlus(x, y);
+                                drawPlus(x, y);
                             }
                         }
                         
@@ -221,14 +179,14 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                         GL11.glFrontFace(GL11.GL_CW);
                         GL11.glCullFace(GL11.GL_BACK);
                         GL11.glEnable(GL11.GL_DEPTH_TEST);
-                        // p.draw(x, y, rotation);
+                        p.drawGL33(stack, x, y, rotation);
                         GL11.glDisable(GL11.GL_DEPTH_TEST);
                         GL11.glDisable(GL11.GL_CULL_FACE);
                         if (p.isCategory()) {
                             if (p.isExtended()) {
-                             // drawMinus(x, y);
+                                drawMinus(x, y);
                             } else {
-                             // drawPlus(x, y);
+                                drawPlus(x, y);
                             }
                         }
                     }
@@ -248,11 +206,11 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         stack.glPushMatrix();
         stack.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
         stack.glMultMatrixf(rotation);
-        /*
-        new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,-.5f, 0f, 0f, .00015f, .00004f, 2f).draw(0f, 0f, 0f, .01f);
-        new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,.5f, 0f, .00015f, .00004f, 2f).draw(0f, 0f, 0f, .01f);
-        new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,.5f, .00015f, .00004f, 2f).draw(0f, 0f, 0f, .01f);
-        */
+        
+        new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,-.5f, 0f, 0f, .00015f, .00004f, 2f).drawGL30_RGB(stack, 0f, 0f, 0f, .01f);
+        new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,.5f, 0f, .00015f, .00004f, 2f).drawGL30_RGB(stack, 0f, 0f, 0f, .01f);
+        new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,.5f, .00015f, .00004f, 2f).drawGL30_RGB(stack, 0f, 0f, 0f, .01f);
+        
         stack.glPopMatrix();
          
 
@@ -263,12 +221,6 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
             cp.setSelectedPrimitive(null);
         }
         
-        stack.glLoadIdentity();
-        
-        GL30.glBindVertexArray(VAO);
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
-        GL30.glBindVertexArray(0);
-        
         canvas.swapBuffers();
     }
 
@@ -276,9 +228,6 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
     public void dispose() {
         // Properly de-allocate all resources once they've outlived their purpose
         shaderProgram.dispose();
-        
-        GL30.glDeleteVertexArrays(VAO);
-        GL15.glDeleteBuffers(VBO);
     }
     
     private void drawCell(float x, float y, boolean selected, boolean category, boolean focused) {
@@ -300,30 +249,53 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
 
     private void drawPlus(float x, float y) {
         drawSignBackground(x, y);
-        GL11.glColor4f(View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0], 1f);
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glNormal3f(0f, 0f, 1f);
-        GL11.glVertex3f(x + 14f, y + 15.75f, 0f);
-        GL11.glVertex3f(x + 14f, y + 15.25f, 0f);
-        GL11.glVertex3f(x + 16f, y + 15.25f, 0f);
-        GL11.glVertex3f(x + 16f, y + 15.75f, 0f);
-        GL11.glVertex3f(x + 14.75f, y + 16.4f, 0f);
-        GL11.glVertex3f(x + 14.75f, y + 14.6f, 0f);
-        GL11.glVertex3f(x + 15.25f, y + 14.6f, 0f);
-        GL11.glVertex3f(x + 15.25f, y + 16.4f, 0f);
-        GL11.glEnd();
+        
+        int[] indices = new int[]{
+                0, 1, 3,
+                1, 2, 3,
+                4, 5, 7,
+                5, 6, 7};
+        
+        float[] vertexData = new float[] {
+                x + 14f, y + 15.75f, 0f,
+                View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0],
+                x + 14f, y + 15.25f, 0f,
+                View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0],
+                x + 16f, y + 15.25f, 0f,
+                View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0],
+                x + 16f, y + 15.75f, 0f,
+                View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0],
+                x + 14.75f, y + 16.4f, 0f,
+                View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0],
+                x + 14.75f, y + 14.6f, 0f,
+                View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0],
+                x + 15.25f, y + 14.6f, 0f,
+                View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0],
+                x + 15.25f, y + 16.4f, 0f,
+                View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0]};
+        
+        GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
     }
 
     private void drawMinus(float x, float y) {
         drawSignBackground(x, y);
-        GL11.glColor4f(View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0], 1f);
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glNormal3f(0f, 0f, 1f);
-        GL11.glVertex3f(x + 14f, y + 15.75f, 0f);
-        GL11.glVertex3f(x + 14f, y + 15.25f, 0f);
-        GL11.glVertex3f(x + 16f, y + 15.25f, 0f);
-        GL11.glVertex3f(x + 16f, y + 15.75f, 0f);
-        GL11.glEnd();
+        
+        int[] indices = new int[]{
+                0, 1, 3,
+                1, 2, 3};
+        
+        float[] vertexData = new float[] {
+                
+                x + 14f, y + 15.75f, 0f,
+                View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0],
+                x + 14f, y + 15.25f, 0f,
+                View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0],
+                x + 16f, y + 15.25f, 0f,
+                View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0],
+                x + 16f, y + 15.75f, 0f,
+                View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0]};
+        
+        GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
     }
 
     private void drawSignBackground(float x, float y) {
@@ -378,7 +350,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 8, 9, 11,
                 9, 10, 11,
             };
-            drawIndexedDataStreamed(vertexData, indices);
+            GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
         }
         
         int[] indices = new int[27];            
@@ -412,7 +384,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 vertexData[i] = g; i++;
                 vertexData[i] = b; i++;
             }
-            drawIndexedDataStreamed(vertexData, indices);
+            GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
         }
         
         
@@ -440,7 +412,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 vertexData[i] = g; i++;
                 vertexData[i] = b; i++;
             }
-            drawIndexedDataStreamed(vertexData, indices);
+            GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
         }
         
         
@@ -468,7 +440,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 vertexData[i] = g; i++;
                 vertexData[i] = b; i++;
             }
-            drawIndexedDataStreamed(vertexData, indices);
+            GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
         }
         
         
@@ -496,40 +468,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 vertexData[i] = g; i++;
                 vertexData[i] = b; i++;
             }
-            drawIndexedDataStreamed(vertexData, indices);
+            GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
         }
-    }
-
-    private void drawIndexedDataStreamed(float[] vertices, int[] indices) {
-        final int VAO = GL30.glGenVertexArrays();
-        final int VBO = GL15.glGenBuffers();
-        final int EBO = GL15.glGenBuffers();
-        
-        // Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-        GL30.glBindVertexArray(VAO);
-   
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
-        
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBO);
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STREAM_DRAW);
-   
-        GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
-        GL20.glVertexAttribPointer(POSITION_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, (3 + 3) * 4, 0);
-        
-        GL20.glEnableVertexAttribArray(COLOUR_SHADER_LOCATION);
-        GL20.glVertexAttribPointer(COLOUR_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, (3 + 3) * 4, 3 * 4);
-   
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        
-        GL30.glBindVertexArray(0);
-        
-        GL30.glBindVertexArray(VAO);
-        GL11.glDrawElements(GL11.GL_TRIANGLES, indices.length, GL11.GL_UNSIGNED_INT, 0);
-        GL30.glBindVertexArray(0);
-      
-        GL30.glDeleteVertexArrays(VAO);
-        GL15.glDeleteBuffers(VBO);
-        GL15.glDeleteBuffers(EBO);
     }
 }

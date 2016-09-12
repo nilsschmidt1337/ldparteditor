@@ -23,8 +23,6 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import com.sun.xml.internal.ws.protocol.soap.VersionMismatchException;
-
 public class GLMatrixStack {
     
     private Stack<Matrix4f> stack = new Stack<>();
@@ -53,10 +51,18 @@ public class GLMatrixStack {
 
     public void clear() {
         stack.clear();
+        final Matrix4f ID = new Matrix4f();
+        Matrix4f.setIdentity(ID);
+        final FloatBuffer ID_buf = BufferUtils.createFloatBuffer(16);
+        ID.store(ID_buf);
+        ID_buf.position(0);
+        currentMatrix = ID;
+        int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
+        GL20.glUniformMatrix4fv(model, false, ID_buf);
     }
     
     public void glPushMatrix() {
-        stack.push(currentMatrix);
+        stack.push(new Matrix4f(currentMatrix));
     }
     
     public void glPopMatrix() {
@@ -82,6 +88,9 @@ public class GLMatrixStack {
         
         int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(model, false, ID_buf);
+        
+        int view = shader.getUniformLocation("view" ); //$NON-NLS-1$
+        GL20.glUniformMatrix4fv(view, false, ID_buf);
     }
 
     public void glMultMatrixf(Matrix4f matrix) {
@@ -99,6 +108,18 @@ public class GLMatrixStack {
     public void glTranslatef(float x, float y, float z) {
         
         Matrix4f.translate(new Vector3f(x, y, z), currentMatrix, currentMatrix);
+        
+        final FloatBuffer buf = BufferUtils.createFloatBuffer(16);
+        currentMatrix.store(buf);
+        buf.position(0);
+        
+        int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
+        GL20.glUniformMatrix4fv(model, false, buf);
+    }
+
+    public void glScalef(float x, float y, float z) {
+        
+        Matrix4f.scale(new Vector3f(x, y, z), currentMatrix, currentMatrix);
         
         final FloatBuffer buf = BufferUtils.createFloatBuffer(16);
         currentMatrix.store(buf);

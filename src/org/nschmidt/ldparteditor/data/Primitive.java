@@ -27,6 +27,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.enums.Rule;
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 public class Primitive implements Comparable<Primitive> {
 
@@ -93,7 +94,7 @@ public class Primitive implements Comparable<Primitive> {
         return primitivesExtended;
     }
 
-    public void draw(float x, float y, FloatBuffer m) {
+    public void drawGL20(float x, float y, FloatBuffer m) {
         GL11.glPushMatrix();
         GL11.glTranslatef(x + 10f, y + 10f, 0f);
         GL11.glMultMatrixf(m);
@@ -106,7 +107,7 @@ public class Primitive implements Comparable<Primitive> {
             case 4:
             case 6:
             case 7:
-                gd.drawBFCprimitive(1);
+                gd.drawBFCprimitive_GL20(1);
                 break;
             default:
                 break;
@@ -125,7 +126,7 @@ public class Primitive implements Comparable<Primitive> {
             case 5:
             case 6:
             case 7:
-                gd.drawBFCprimitive(2);
+                gd.drawBFCprimitive_GL20(2);
                 break;
             default:
                 break;
@@ -133,13 +134,54 @@ public class Primitive implements Comparable<Primitive> {
         }
         GL11.glPopMatrix();
     }
+    
+    public void drawGL33(GLMatrixStack stack, float x, float y, Matrix4f m) {
+        stack.glPushMatrix();
+        stack.glTranslatef(x + 10f, y + 10f, 0f);
+        stack.glMultMatrixf(m);
+        stack.glScalef(-zoom, zoom, zoom);
+        for (PGData gd : graphicalData) {
+            switch (gd.type()) {
+            case 0:
+            case 1:
+            case 3:
+            case 4:
+            case 6:
+            case 7:
+                gd.drawBFCprimitiveGL33(stack, 1);
+                break;
+            default:
+                break;
+            }
+        }
+        stack.glPopMatrix();
+        stack.glPushMatrix();
+        stack.glTranslatef(x + 10f, y + 10f, .5f);
+        stack.glMultMatrixf(m);
+        stack.glScalef(-zoom, zoom, zoom);
+        for (PGData gd : graphicalData) {
+            switch (gd.type()) {
+            case 0:
+            case 1:
+            case 2:
+            case 5:
+            case 6:
+            case 7:
+                gd.drawBFCprimitiveGL33(stack, 2);
+                break;
+            default:
+                break;
+            }
+        }
+        stack.glPopMatrix();
+    }
 
     public void draw(float x, float y, float z) {
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y, z);
         GL11.glScalef(1000f, 1000f, 1000f);
         for (PGData gd : graphicalData) {
-            gd.drawBFCprimitive(0);
+            gd.drawBFCprimitive_GL20(0);
         }
         GL11.glPopMatrix();
     }

@@ -26,6 +26,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
  * @author nils
@@ -113,7 +114,7 @@ public final class PGData1 extends PGData implements Serializable {
     }
 
     @Override
-    public void drawBFCprimitive(int drawOnlyMode) {
+    public void drawBFCprimitive_GL20(int drawOnlyMode) {
         if (matrix != null) {
             byte tempWinding = PGData.localWinding;
             boolean tempInvertNext = PGData.globalInvertNext;
@@ -128,16 +129,48 @@ public final class PGData1 extends PGData implements Serializable {
             if (PGData.accumClip > 0) {
                 PGData.accumClip++;
                 while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
-                    data2draw.drawBFCprimitive(drawOnlyMode);
+                    data2draw.drawBFCprimitive_GL20(drawOnlyMode);
                 PGData.accumClip--;
             } else {
                 while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                    data2draw.drawBFCprimitive(drawOnlyMode);
+                    data2draw.drawBFCprimitive_GL20(drawOnlyMode);
                 }
                 if (PGData.accumClip > 0)
                     PGData.accumClip = 0;
             }
             GL11.glPopMatrix();
+            PGData.localWinding = tempWinding;
+            if (tempInvertNextFound)
+                PGData.globalInvertNext = !tempInvertNext;
+            PGData.globalNegativeDeterminant = tempNegativeDeterminant;
+        }
+    }
+    @Override
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
+        if (matrix != null) {
+            byte tempWinding = PGData.localWinding;
+            boolean tempInvertNext = PGData.globalInvertNext;
+            boolean tempInvertNextFound = PGData.globalInvertNextFound;
+            boolean tempNegativeDeterminant = PGData.globalNegativeDeterminant;
+            PGData.globalInvertNextFound = false;
+            PGData.localWinding = BFC.NOCERTIFY;
+            PGData.globalNegativeDeterminant = PGData.globalNegativeDeterminant ^ negativeDeterminant;
+            stack.glPushMatrix();
+            stack.glMultMatrixf(localMatrix);
+            PGData data2draw = myGData;
+            if (PGData.accumClip > 0) {
+                PGData.accumClip++;
+                while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
+                    data2draw.drawBFCprimitiveGL33(stack, drawOnlyMode);
+                PGData.accumClip--;
+            } else {
+                while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                    data2draw.drawBFCprimitiveGL33(stack, drawOnlyMode);
+                }
+                if (PGData.accumClip > 0)
+                    PGData.accumClip = 0;
+            }
+            stack.glPopMatrix();
             PGData.localWinding = tempWinding;
             if (tempInvertNextFound)
                 PGData.globalInvertNext = !tempInvertNext;

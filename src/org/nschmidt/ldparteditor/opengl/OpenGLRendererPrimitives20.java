@@ -158,7 +158,7 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
                         GL11.glFrontFace(GL11.GL_CW);
                         GL11.glCullFace(GL11.GL_BACK);
                         GL11.glEnable(GL11.GL_DEPTH_TEST);
-                        p.draw(x, y, rotation);
+                        p.drawGL20(x, y, rotation);
                         GL11.glDisable(GL11.GL_DEPTH_TEST);
                         GL11.glDisable(GL11.GL_CULL_FACE);
                         if (p.isCategory()) {
@@ -194,7 +194,7 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
                         GL11.glFrontFace(GL11.GL_CW);
                         GL11.glCullFace(GL11.GL_BACK);
                         GL11.glEnable(GL11.GL_DEPTH_TEST);
-                        p.draw(x, y, rotation);
+                        p.drawGL20(x, y, rotation);
                         GL11.glDisable(GL11.GL_DEPTH_TEST);
                         GL11.glDisable(GL11.GL_CULL_FACE);
                         if (p.isCategory()) {
@@ -220,9 +220,9 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
         GL11.glPushMatrix();
         GL11.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
         GL11.glMultMatrixf(rotation);
-        new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,-.5f, 0f, 0f, .00015f, .00004f, 2f).draw(0f, 0f, 0f, .01f);
-        new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,.5f, 0f, .00015f, .00004f, 2f).draw(0f, 0f, 0f, .01f);
-        new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,.5f, .00015f, .00004f, 2f).draw(0f, 0f, 0f, .01f);
+        new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,-.5f, 0f, 0f, .00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);
+        new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,.5f, 0f, .00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);
+        new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,.5f, .00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);
         GL11.glPopMatrix();
 
         cp.setMaxY(y - 22f);

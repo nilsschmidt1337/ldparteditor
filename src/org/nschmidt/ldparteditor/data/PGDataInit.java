@@ -17,6 +17,8 @@ package org.nschmidt.ldparteditor.data;
 
 import java.io.Serializable;
 
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
+
 
 /**
  * @author nils
@@ -29,7 +31,12 @@ public final class PGDataInit extends PGData implements Serializable {
     public PGDataInit() {}
 
     @Override
-    public void drawBFCprimitive(int drawOnlyMode) {
+    public void drawBFCprimitive_GL20(int drawOnlyMode) {
+        drawBFCprimitiveGL33(null, drawOnlyMode);
+    }
+    
+    @Override
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
         PGData.localWinding = BFC.NOCERTIFY;
         PGData.accumClip = 0;
         PGData.globalInvertNext = false;

@@ -17,6 +17,8 @@ package org.nschmidt.ldparteditor.data;
 
 import java.io.Serializable;
 
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
+
 
 /**
  * @author nils
@@ -34,9 +36,37 @@ public final class PGDataProxy extends PGData implements Serializable {
     }
 
     @Override
-    public void drawBFCprimitive(int drawOnlyMode) {
+    public void drawBFCprimitive_GL20(int drawOnlyMode) {
         if (initialised) {
-            data.drawBFCprimitive(drawOnlyMode);
+            data.drawBFCprimitive_GL20(drawOnlyMode);
+        } else {
+            initialised = true;
+            switch (data.type()) {
+            case 2:
+                data = PGData2.clone((PGData2) data);
+                break;
+            case 3:
+                data = PGData3.clone((PGData3) data);
+                break;
+            case 4:
+                data = PGData4.clone((PGData4) data);
+                break;
+            case 5:
+                data = PGData5.clone((PGData5) data);
+                break;
+            case 6:
+                data = PGDataBFC.clone((PGDataBFC) data);
+                break;
+            default:
+                initialised = false;
+            }
+        }
+    }
+    
+    @Override
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
+        if (initialised) {
+            data.drawBFCprimitiveGL33(stack, drawOnlyMode);
         } else {
             initialised = true;
             switch (data.type()) {
