@@ -209,7 +209,7 @@ public class Arrow {
         GL11.glPopMatrix();
     }
     
-    public void drawGL30_PrimitiveArea_RGB(GLMatrixStack stack, float x, float y, float z, float zoom) {
+    public void drawGL33_PrimitiveArea_RGB(GLMatrixStack stack, float x, float y, float z, float zoom) {
         final float zoom_inv = 1f / zoom;
         stack.glPushMatrix();
         
