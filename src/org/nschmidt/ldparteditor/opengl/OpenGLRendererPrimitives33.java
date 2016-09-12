@@ -77,7 +77,6 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         
         final FloatBuffer view_buf = BufferUtils.createFloatBuffer(16);
         
-        
         Matrix4f viewport_transform = new Matrix4f();
         Matrix4f.setIdentity(viewport_transform);
 
@@ -131,6 +130,8 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         final Matrix4f rotation = cp.getRotation();
         final boolean hasSearchResults = cp.getSearchResults().size() > 0;
 
+        GL11.glLineWidth(1f);
+        
         if (hasSearchResults) {
             if (cp.getSearchResults().get(0) != null) {
                 for (Primitive p : cp.getSearchResults()) {
