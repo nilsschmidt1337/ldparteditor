@@ -31,7 +31,7 @@ public class GL33HelperPrimitives {
     private static int EBO_triangle = -1;
     private static int VBO_quad = -1;
     private static int EBO_quad = -1;
-    private static int VBO_lines = -1;
+    private static int VBO_line = -1;
     public static void createVBO_PrimitiveArea() {
         VBO_general = GL15.glGenBuffers();
         EBO_general = GL15.glGenBuffers();
@@ -39,7 +39,7 @@ public class GL33HelperPrimitives {
         EBO_triangle = GL15.glGenBuffers();
         VBO_quad = GL15.glGenBuffers();
         EBO_quad = GL15.glGenBuffers();
-        VBO_lines = GL15.glGenBuffers();
+        VBO_line = GL15.glGenBuffers();
         
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_quad);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, new float[48], GL15.GL_DYNAMIC_DRAW);
@@ -69,7 +69,7 @@ public class GL33HelperPrimitives {
         
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_lines);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_line);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, new float[12], GL15.GL_DYNAMIC_DRAW);
         
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
@@ -88,7 +88,7 @@ public class GL33HelperPrimitives {
         GL15.glDeleteBuffers(EBO_triangle);
         GL15.glDeleteBuffers(VBO_quad);
         GL15.glDeleteBuffers(EBO_quad);
-        GL15.glDeleteBuffers(VBO_lines);
+        GL15.glDeleteBuffers(VBO_line);
     }
     
     public static void drawTrianglesIndexedRGB_Triangle(float[] vertices, int[] indices) {
@@ -129,10 +129,10 @@ public class GL33HelperPrimitives {
 
     public static void drawTrianglesIndexedRGB_General(float[] vertices, int[] indices) {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_general);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_DYNAMIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
         
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBO_general);
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_DYNAMIC_DRAW);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STREAM_DRAW);
    
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
         GL20.glVertexAttribPointer(POSITION_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, RGB_STRIDE, 0);
@@ -145,8 +145,8 @@ public class GL33HelperPrimitives {
         GL11.glDrawElements(GL11.GL_TRIANGLES, indices.length, GL11.GL_UNSIGNED_INT, 0);
     }
     
-    public static void drawLinesRGB(float[] vertices) {
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_lines);
+    public static void drawLinesRGB_Line(float[] vertices) {
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_line);
         GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, vertices);
         
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
@@ -157,6 +157,6 @@ public class GL33HelperPrimitives {
    
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         
-        GL11.glDrawArrays(GL11.GL_LINES, 0, vertices.length);
+        GL11.glDrawArrays(GL11.GL_LINES, 0, 2);
     }
 }
