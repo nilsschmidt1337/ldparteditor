@@ -29,6 +29,7 @@ import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Arrow;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
 
@@ -55,6 +56,9 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
 
     @Override
     public void drawScene(float mouseX, float mouseY) {
+        
+        final long start = System.currentTimeMillis();
+        
         final GLCanvas canvas = cp.getCanvas();
 
         if (!canvas.isCurrent()) {
@@ -103,6 +107,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         GL20.glUniformMatrix4fv(projection, false, projection_buf);
         
         stack.clear();
+        GL33HelperPrimitives.createVBO_PrimitiveArea();
         
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -221,7 +226,11 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
             cp.setSelectedPrimitive(null);
         }
         
+        GL33HelperPrimitives.destroyVBO_PrimitiveArea();
+        
         canvas.swapBuffers();
+        
+        NLogger.debug(getClass(), "Frametime: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
     }
 
     @Override
@@ -274,7 +283,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 x + 15.25f, y + 16.4f, 0f,
                 View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0]};
         
-        GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
+        GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
     }
 
     private void drawMinus(float x, float y) {
@@ -295,7 +304,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 x + 16f, y + 15.75f, 0f,
                 View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0]};
         
-        GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
+        GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
     }
 
     private void drawSignBackground(float x, float y) {
@@ -350,7 +359,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 8, 9, 11,
                 9, 10, 11,
             };
-            GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
         }
         
         int[] indices = new int[27];            
@@ -384,7 +393,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 vertexData[i] = g; i++;
                 vertexData[i] = b; i++;
             }
-            GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
         }
         
         
@@ -412,7 +421,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 vertexData[i] = g; i++;
                 vertexData[i] = b; i++;
             }
-            GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
         }
         
         
@@ -440,7 +449,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 vertexData[i] = g; i++;
                 vertexData[i] = b; i++;
             }
-            GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
         }
         
         
@@ -468,7 +477,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 vertexData[i] = g; i++;
                 vertexData[i] = b; i++;
             }
-            GL33Helper.drawTrianglesIndexedRGB(vertexData, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
         }
     }
 }

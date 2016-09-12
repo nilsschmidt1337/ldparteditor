@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 import org.lwjgl.opengl.GL11;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.opengl.GL33Helper;
+import org.nschmidt.ldparteditor.opengl.GL33HelperPrimitives;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
@@ -36,6 +36,9 @@ public final class PGData5 extends PGData implements Serializable {
     final float x2;
     final float y2;
     final float z2;
+    
+    final transient float[] edgeData;
+    
     public PGData5(float x1, float y1, float z1, float x2, float y2, float z2) {
         this.x1 = x1;
         this.y1 = y1;
@@ -43,6 +46,12 @@ public final class PGData5 extends PGData implements Serializable {
         this.x2 = x2;
         this.y2 = y2;
         this.z2 = z2;
+        
+        edgeData = new float[]{
+                x1, y1, z1,
+                View.primitive_condline_Colour_r[0], View.primitive_condline_Colour_g[0], View.primitive_condline_Colour_b[0],
+                x2, y2, z2,
+                View.primitive_condline_Colour_r[0], View.primitive_condline_Colour_g[0], View.primitive_condline_Colour_b[0]};
     }
     @Override
     public void drawBFCprimitive_GL20(int drawOnlyMode) {
@@ -59,12 +68,7 @@ public final class PGData5 extends PGData implements Serializable {
     public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
         if (drawOnlyMode == 1) return;
         GL11.glLineWidth(1f);
-        GL33Helper.drawLinesRGB(new float[]{
-                x1, y1, z1,
-                View.primitive_condline_Colour_r[0], View.primitive_condline_Colour_g[0], View.primitive_condline_Colour_b[0],
-                x2, y2, z2,
-                View.primitive_condline_Colour_r[0], View.primitive_condline_Colour_g[0], View.primitive_condline_Colour_b[0]
-        });
+        GL33HelperPrimitives.drawLinesRGB(edgeData);
     }
     @Override
     public int type() {
