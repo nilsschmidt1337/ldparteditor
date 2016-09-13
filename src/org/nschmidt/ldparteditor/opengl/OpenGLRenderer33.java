@@ -331,8 +331,11 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
             GL11.glCullFace(GL11.GL_BACK);
 
-            if (c3d.isLightOn())
-                GL11.glEnable(GL11.GL_LIGHTING);
+            if (c3d.isLightOn()) {
+                shaderProgram.lightsOn();
+            } else {
+                shaderProgram.lightsOff();
+            }
 
             c3d.setDrawingSolidMaterials(true);
             // FIXME c3d.getLockableDatFileReference().draw(c3d);
@@ -353,7 +356,6 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             if (window.getCompositePrimitive().isDoingDND()) {
                 final Primitive p = c3d.getDraggedPrimitive();
                 if (p != null) {
-                    GL11.glDisable(GL11.GL_LIGHTING);
                     Vector4f cur = c3d.getCursorSnapped3D();
                     GL33HelperPrimitives.backupVBO_PrimitiveArea();
                     GL33HelperPrimitives.createVBO_PrimitiveArea();
@@ -364,8 +366,6 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     shaderProgram.use();
                     GL33HelperPrimitives.destroyVBO_PrimitiveArea();
                     GL33HelperPrimitives.restoreVBO_PrimitiveArea();
-                    if (c3d.isLightOn())
-                        GL11.glEnable(GL11.GL_LIGHTING);
                 }
             } else {
                 c3d.setDraggedPrimitive(null);
@@ -373,6 +373,10 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             c3d.setDrawingSolidMaterials(false);
             // FIXME c3d.getLockableDatFileReference().draw(c3d);
 
+            if (!raytraceMode) {
+                c3d.getVertexManager().drawGL33(stack, c3d);
+            }
+            
             stack.setShader(shaderProgram2);
             shaderProgram2.use();
             
@@ -389,7 +393,6 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 cWidth[0] = w;
                 cHeight[0] = h;
                 // NLogger.debug(getClass(), "Trans: " + arr[(int) (w * 50.5f * 4)] + " " + arr[(int) (w * 50.5f * 4 + 1)] + " " + arr[(int) (w * 50.5f * 4 + 2)] + " " + arr[(int) (w * 50.5f * 4 + 3)]);  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
 
                 if (false && lock.tryLock()) {
@@ -1336,7 +1339,6 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 }
                 alive.set(true);
             } else {
-                GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
             }
 
@@ -1457,11 +1459,11 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         break;
                 case SCALE:
                     c = manipulator.checkManipulatorStatus(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], Manipulator.X_SCALE, c3d, zoom);
-                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, scaleSize * manipulator.getXaxis().x, scaleSize * manipulator.getXaxis().y, scaleSize * manipulator.getXaxis().z, bluntSize, lineWidth).draw(mx, my, mz, zoom);
+                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, scaleSize * manipulator.getXaxis().x, scaleSize * manipulator.getXaxis().y, scaleSize * manipulator.getXaxis().z, bluntSize, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
                     c = manipulator.checkManipulatorStatus(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], Manipulator.Y_SCALE, c3d, zoom);
-                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, scaleSize * manipulator.getYaxis().x, scaleSize * manipulator.getYaxis().y, scaleSize * manipulator.getYaxis().z, bluntSize, lineWidth).draw(mx, my, mz, zoom);
+                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, scaleSize * manipulator.getYaxis().x, scaleSize * manipulator.getYaxis().y, scaleSize * manipulator.getYaxis().z, bluntSize, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
                     c = manipulator.checkManipulatorStatus(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], Manipulator.Z_SCALE, c3d, zoom);
-                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, scaleSize * manipulator.getZaxis().x, scaleSize * manipulator.getZaxis().y, scaleSize * manipulator.getZaxis().z, bluntSize, lineWidth).draw(mx, my, mz, zoom);
+                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), 1f, scaleSize * manipulator.getZaxis().x, scaleSize * manipulator.getZaxis().y, scaleSize * manipulator.getZaxis().z, bluntSize, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
                     if (singleMode)
                         break;
                 case MOVE:
@@ -1478,7 +1480,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             }
 
             // MARK Draw temporary objects for all "Add..." functions here
-            if (window.isAddingSomething() && c3d.getLockableDatFileReference().getLastSelectedComposite() != null && c3d.getLockableDatFileReference().getLastSelectedComposite().equals(c3d)) {
+            if (false && window.isAddingSomething() && c3d.getLockableDatFileReference().getLastSelectedComposite() != null && c3d.getLockableDatFileReference().getLastSelectedComposite().equals(c3d)) {
                 if (window.isAddingVertices()) {
                     // Point for add vertex
                     GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
