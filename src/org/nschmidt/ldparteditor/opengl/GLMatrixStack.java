@@ -45,6 +45,10 @@ public class GLMatrixStack {
         return result;
     }
 
+    public GLShader getShader() {
+        return shader;
+    }
+    
     public void setShader(GLShader shader) {
         this.shader = shader;
     }

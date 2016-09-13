@@ -15,14 +15,14 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.enums;
 
-import org.nschmidt.ldparteditor.helpers.Gear;
+import org.nschmidt.ldparteditor.helpers.GearGL20;
 import org.nschmidt.ldparteditor.helpers.Sphere;
 
 /**
  * @author nils
  *
  */
-public enum GLPrimitives {
+public enum GL20Primitives {
     INSTANCE;
 
     public static final Sphere SPHERE0 = new Sphere();
@@ -36,8 +36,8 @@ public enum GLPrimitives {
     public static final Sphere SPHERE4 = new Sphere(200f, 8);
     public static final Sphere SPHERE_INV4 = new Sphere(-200f, 8);
 
-    public static final Gear GEAR_MENU = new Gear(.005f, 16, .005f, .0025f);
-    public static final Gear GEAR_MENU_INV = new Gear(-.005f, 16, -.005f, -.0025f);
+    public static final GearGL20 GEAR_MENU = new GearGL20(.005f, 16, .005f, .0025f);
+    public static final GearGL20 GEAR_MENU_INV = new GearGL20(-.005f, 16, -.005f, -.0025f);
 
     public static Sphere SPHERE = new Sphere(100f, 8);
     public static Sphere SPHERE_INV = new Sphere(-100f, 8);

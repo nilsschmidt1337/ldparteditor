@@ -24,16 +24,16 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
-class GLShader {
+public class GLShader {
     
     private final int program;    
     final private HashMap<String, Integer> uniformMap = new HashMap<>();
     
-    GLShader() {
+    public GLShader() {
         program = 0;
     }
             
-    GLShader(final String vertexPath, final String fragmentPath) {
+    public GLShader(final String vertexPath, final String fragmentPath) {
         final int fragment = createAndCompile(vertexPath, GL20.GL_VERTEX_SHADER);
         final int vertex = createAndCompile(fragmentPath, GL20.GL_FRAGMENT_SHADER);
         
@@ -56,7 +56,7 @@ class GLShader {
         GL20.glDeleteShader(fragment);
     }
     
-    void use() {
+    public void use() {
         GL20.glUseProgram(program);
     }
     
@@ -85,7 +85,7 @@ class GLShader {
         return shaderID;
     }
 
-    public void dispose() {
+    void dispose() {
         GL20.glUseProgram(0);
         GL20.glDeleteProgram(program);
         uniformMap.clear();

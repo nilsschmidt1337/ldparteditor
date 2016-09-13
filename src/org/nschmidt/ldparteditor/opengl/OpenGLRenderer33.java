@@ -52,7 +52,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.colour.GCGlitter;
 import org.nschmidt.ldparteditor.data.colour.GCSpeckle;
 import org.nschmidt.ldparteditor.data.colour.GCType;
-import org.nschmidt.ldparteditor.enums.GLPrimitives;
+import org.nschmidt.ldparteditor.enums.GL33Primitives;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Arc;
@@ -213,8 +213,11 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 final FloatBuffer projection_buf = BufferUtils.createFloatBuffer(16);    
                 GLMatrixStack.glOrtho(viewport_width, -viewport_width, viewport_height, -viewport_height, -c3d.getzNear() * c3d.getZoom(), c3d.getzFar() * c3d.getZoom()).store(projection_buf);
                 projection_buf.position(0);
+                shaderProgram2D.use();
+                int projection = shaderProgram2D.getUniformLocation("projection" ); //$NON-NLS-1$
+                GL20.glUniformMatrix4fv(projection, false, projection_buf);
                 shaderProgram2.use();
-                int projection = shaderProgram2.getUniformLocation("projection" ); //$NON-NLS-1$
+                projection = shaderProgram2.getUniformLocation("projection" ); //$NON-NLS-1$
                 GL20.glUniformMatrix4fv(projection, false, projection_buf);                
                 shaderProgram.use();
                 projection = shaderProgram.getUniformLocation("projection" ); //$NON-NLS-1$
@@ -237,8 +240,11 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             view_buf.flip();
             
             {
+                shaderProgram2D.use();
+                int view = shaderProgram2D.getUniformLocation("view" ); //$NON-NLS-1$
+                GL20.glUniformMatrix4fv(view, false, view_buf);
                 shaderProgram2.use();
-                int view = shaderProgram2.getUniformLocation("view" ); //$NON-NLS-1$
+                view = shaderProgram2.getUniformLocation("view" ); //$NON-NLS-1$
                 GL20.glUniformMatrix4fv(view, false, view_buf);
                 shaderProgram.use();
                 view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
@@ -304,8 +310,11 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 viewport_transform2.store(view_buf);
                 view_buf.flip();
                 {
+                    shaderProgram2D.use();
+                    int view = shaderProgram2D.getUniformLocation("view" ); //$NON-NLS-1$
+                    GL20.glUniformMatrix4fv(view, false, view_buf);
                     shaderProgram2.use();
-                    int view = shaderProgram2.getUniformLocation("view" ); //$NON-NLS-1$
+                    view = shaderProgram2.getUniformLocation("view" ); //$NON-NLS-1$
                     GL20.glUniformMatrix4fv(view, false, view_buf);
                     shaderProgram.use();
                     view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
@@ -1994,8 +2003,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                     final float gx = viewport_width - 0.018f;
                     final float gy = -viewport_height + 0.018f;
-                    // GLPrimitives.GEAR_MENU_GL33.draw(gx, gy, viewport_origin_axis[0].z, r, g, b);
-                    // GLPrimitives.GEAR_MENU_INV_GL33.draw(gx, gy, viewport_origin_axis[0].z, r, g, b);
+                    GL33Primitives.GEAR_MENU.draw(stack, shaderProgram2D, gx, gy, viewport_origin_axis[0].z, r, g, b);
+                    GL33Primitives.GEAR_MENU_INV.draw(stack, shaderProgram2D, gx, gy, viewport_origin_axis[0].z, r, g, b);
                 }
 
                 GL11.glEnable(GL11.GL_DEPTH_TEST);

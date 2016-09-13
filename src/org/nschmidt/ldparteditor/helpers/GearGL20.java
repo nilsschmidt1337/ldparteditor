@@ -26,14 +26,12 @@ import org.lwjgl.opengl.GL11;
  * @author nils
  *
  */
-public class Gear {
+public class GearGL20 {
 
     private final FloatBuffer bvertices;
     private final ShortBuffer bindices;
 
-
-
-    public Gear(float radius1, int segments, float width, float toothHeight) {
+    public GearGL20(float radius1, int segments, float width, float toothHeight) {
 
         final boolean invert = radius1 < 0f;
         final float radius2 = radius1 + width;
@@ -137,7 +135,7 @@ public class Gear {
 
     }
 
-    public Gear() {
+    public GearGL20() {
         bvertices = BufferUtils.createFloatBuffer(3);
         bvertices.put(0f);
         bvertices.put(0f);
