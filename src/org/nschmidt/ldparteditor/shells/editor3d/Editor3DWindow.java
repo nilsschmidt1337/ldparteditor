@@ -141,7 +141,7 @@ import org.nschmidt.ldparteditor.dialogs.txt2dat.Txt2DatDialog;
 import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialogInt;
-import org.nschmidt.ldparteditor.enums.GLPrimitives;
+import org.nschmidt.ldparteditor.enums.GL20Primitives;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MouseButton;
@@ -1509,35 +1509,35 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_lineSize0[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GLPrimitives.SPHERE0, GLPrimitives.SPHERE_INV0, 0f, 0f, 0.01f, btn_lineSize0[0]);
+                setLineSize(GL20Primitives.SPHERE0, GL20Primitives.SPHERE_INV0, 0f, 0f, 0.01f, btn_lineSize0[0]);
                 regainFocus();
             }
         });
         btn_lineSize1[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GLPrimitives.SPHERE1, GLPrimitives.SPHERE_INV1, 25f, .025f, .375f, btn_lineSize1[0]);
+                setLineSize(GL20Primitives.SPHERE1, GL20Primitives.SPHERE_INV1, 25f, .025f, .375f, btn_lineSize1[0]);
                 regainFocus();
             }
         });
         btn_lineSize2[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GLPrimitives.SPHERE2, GLPrimitives.SPHERE_INV2, 50f, .050f, .75f, btn_lineSize2[0]);
+                setLineSize(GL20Primitives.SPHERE2, GL20Primitives.SPHERE_INV2, 50f, .050f, .75f, btn_lineSize2[0]);
                 regainFocus();
             }
         });
         btn_lineSize3[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GLPrimitives.SPHERE3, GLPrimitives.SPHERE_INV3, 100f, .100f, 1.5f, btn_lineSize3[0]);
+                setLineSize(GL20Primitives.SPHERE3, GL20Primitives.SPHERE_INV3, 100f, .100f, 1.5f, btn_lineSize3[0]);
                 regainFocus();
             }
         });
         btn_lineSize4[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GLPrimitives.SPHERE4, GLPrimitives.SPHERE_INV4, 200f, .200f, 3f, btn_lineSize4[0]);
+                setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, 200f, .200f, 3f, btn_lineSize4[0]);
                 regainFocus();
             }
         });
@@ -8084,8 +8084,8 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     private void setLineSize(Sphere sp, Sphere sp_inv, float line_width1000, float line_width, float line_width_gl, Button btn) {
-        GLPrimitives.SPHERE = sp;
-        GLPrimitives.SPHERE_INV = sp_inv;
+        GL20Primitives.SPHERE = sp;
+        GL20Primitives.SPHERE_INV = sp_inv;
         View.lineWidth1000[0] = line_width1000;
         View.lineWidth[0] = line_width;
         View.lineWidthGL[0] = line_width_gl;

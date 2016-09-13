@@ -58,7 +58,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.colour.GCGlitter;
 import org.nschmidt.ldparteditor.data.colour.GCSpeckle;
 import org.nschmidt.ldparteditor.data.colour.GCType;
-import org.nschmidt.ldparteditor.enums.GLPrimitives;
+import org.nschmidt.ldparteditor.enums.GL20Primitives;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Arc;
@@ -1970,8 +1970,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
                     final float gx = viewport_width - 0.018f;
                     final float gy = -viewport_height + 0.018f;
-                    GLPrimitives.GEAR_MENU.draw(gx, gy, viewport_origin_axis[0].z);
-                    GLPrimitives.GEAR_MENU_INV.draw(gx, gy, viewport_origin_axis[0].z);
+                    GL20Primitives.GEAR_MENU.draw(gx, gy, viewport_origin_axis[0].z);
+                    GL20Primitives.GEAR_MENU_INV.draw(gx, gy, viewport_origin_axis[0].z);
                 }
 
                 GL11.glEnable(GL11.GL_DEPTH_TEST);

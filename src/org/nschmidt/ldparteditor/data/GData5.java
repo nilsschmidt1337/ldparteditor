@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.enums.GLPrimitives;
+import org.nschmidt.ldparteditor.enums.GL20Primitives;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
@@ -438,7 +438,7 @@ public final class GData5 extends GData {
 
                 if (GData.globalNegativeDeterminant) {
 
-                    GLPrimitives.SPHERE_INV.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
+                    GL20Primitives.SPHERE_INV.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
 
                     GL11.glBegin(GL11.GL_QUAD_STRIP);
                     GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -461,11 +461,11 @@ public final class GData5 extends GData {
                     GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                     GL11.glEnd();
 
-                    GLPrimitives.SPHERE_INV.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
+                    GL20Primitives.SPHERE_INV.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
 
                 } else {
 
-                    GLPrimitives.SPHERE.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
+                    GL20Primitives.SPHERE.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
 
                     GL11.glBegin(GL11.GL_QUAD_STRIP);
                     GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -488,7 +488,7 @@ public final class GData5 extends GData {
                     GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                     GL11.glEnd();
 
-                    GLPrimitives.SPHERE.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
+                    GL20Primitives.SPHERE.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
 
                 }
 
@@ -574,7 +574,7 @@ public final class GData5 extends GData {
 
                 if (GData.globalNegativeDeterminant) {
 
-                    GLPrimitives.SPHERE_INV.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
+                    GL20Primitives.SPHERE_INV.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
 
                     GL11.glBegin(GL11.GL_QUAD_STRIP);
                     GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -597,11 +597,11 @@ public final class GData5 extends GData {
                     GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                     GL11.glEnd();
 
-                    GLPrimitives.SPHERE_INV.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
+                    GL20Primitives.SPHERE_INV.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
 
                 } else {
 
-                    GLPrimitives.SPHERE.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
+                    GL20Primitives.SPHERE.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
 
                     GL11.glBegin(GL11.GL_QUAD_STRIP);
                     GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -624,7 +624,7 @@ public final class GData5 extends GData {
                     GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                     GL11.glEnd();
 
-                    GLPrimitives.SPHERE.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
+                    GL20Primitives.SPHERE.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
 
                 }
 
@@ -697,7 +697,7 @@ public final class GData5 extends GData {
 
             if (GData.globalNegativeDeterminant) {
 
-                GLPrimitives.SPHERE_INV.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
+                GL20Primitives.SPHERE_INV.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -720,11 +720,11 @@ public final class GData5 extends GData {
                 GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                 GL11.glEnd();
 
-                GLPrimitives.SPHERE_INV.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
+                GL20Primitives.SPHERE_INV.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
 
             } else {
 
-                GLPrimitives.SPHERE.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
+                GL20Primitives.SPHERE.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -747,7 +747,7 @@ public final class GData5 extends GData {
                 GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                 GL11.glEnd();
 
-                GLPrimitives.SPHERE.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
+                GL20Primitives.SPHERE.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
 
             }
 
