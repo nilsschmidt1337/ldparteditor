@@ -21,6 +21,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
  * @author nils
@@ -36,7 +37,6 @@ public class Arc {
     final float r;
     final float g;
     final float b;
-    final float a;
 
     final float arc_width;
     final float arc_width_neg;
@@ -44,7 +44,7 @@ public class Arc {
     final float[] circle = new float[66];
     final float[] circle2 = new float[66];
 
-    public Arc(float r, float g, float b, float a, float dir_x, float dir_y, float dir_z, float radius, float arc_width) {
+    public Arc(float r, float g, float b, float dir_x, float dir_y, float dir_z, float radius, float arc_width) {
         dir_x = dir_x / 1000f;
         dir_y = dir_y / 1000f;
         dir_z = dir_z / 1000f;
@@ -52,7 +52,6 @@ public class Arc {
         this.r = r;
         this.g = g;
         this.b = b;
-        this.a = a;
 
         this.arc_width = arc_width;
         this.arc_width_neg = -arc_width;
@@ -146,7 +145,7 @@ public class Arc {
         GL11.glMultMatrixf(matrix);
         GL11.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
-        GL11.glColor4f(r, g, b, a);
+        GL11.glColor3f(r, g, b);
         GL11.glBegin(GL11.GL_QUAD_STRIP);
 
         GL11.glVertex3f(circle[0], 0f, circle[1]);
@@ -306,5 +305,8 @@ public class Arc {
 
         GL11.glPopMatrix();
     }
-
+    
+    public void drawGL33(GLMatrixStack stack, float x, float y, float z, float zoom) {
+        
+    }
 }
