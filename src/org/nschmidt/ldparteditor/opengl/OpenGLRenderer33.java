@@ -1378,7 +1378,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     cone_height = .030f * mSize[1];
                     cone_width = .008f * mSize[2];
                     bluntSize = .02f * mSize[3];
-                    circleWidth = 0.02f * mSize[4];
+                    circleWidth = (negDet ? -1f : 1f) * 0.02f * mSize[4];
                     arcWidth = 0.004f * mSize[5];
                     break;
                 case 3:
@@ -1386,7 +1386,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     cone_height = .045f * mSize[1];
                     cone_width = .012f * mSize[2];
                     bluntSize = .03f * mSize[3];
-                    circleWidth = 0.03f * mSize[4];
+                    circleWidth = (negDet ? -1f : 1f) * 0.03f * mSize[4];
                     arcWidth = 0.006f * mSize[5];
                     break;
                 case 4:
@@ -1394,7 +1394,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     cone_height = .060f * mSize[1];
                     cone_width = .016f * mSize[2];
                     bluntSize = .04f * mSize[3];
-                    circleWidth = 0.04f * mSize[4];
+                    circleWidth = (negDet ? -1f : 1f) * 0.04f * mSize[4];
                     arcWidth = 0.008f * mSize[5];
                     break;
                 case 5:
@@ -1402,7 +1402,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     cone_height = .075f * mSize[1];
                     cone_width = .018f * mSize[2];
                     bluntSize = .045f * mSize[3];
-                    circleWidth = 0.045f * mSize[4];
+                    circleWidth = (negDet ? -1f : 1f) * 0.045f * mSize[4];
                     arcWidth = 0.009f * mSize[5];
                     break;
                 case 0:
@@ -1412,13 +1412,14 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     cone_height = .015f * mSize[1];
                     cone_width = .004f * mSize[2];
                     bluntSize = .01f * mSize[3];
-                    circleWidth = 0.01f * mSize[4];
+                    circleWidth = (negDet ? -1f : 1f) * 0.01f * mSize[4];
                     arcWidth = 0.002f * mSize[5];
-                }
+                }                
                 switch (window.getWorkingAction()) {
                 case COMBINED:
                     singleMode = false;
                 case ROTATE:
+                    
                     c = manipulator.checkManipulatorStatus(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], Manipulator.X_ROTATE, c3d, zoom);
                     new Arc(c.getR(), c.getG(), c.getB(), manipulator.getXaxis().x, manipulator.getXaxis().y, manipulator.getXaxis().z, rotateSize, arcWidth).drawGL33(stack, mx, my, mz, zoom);
 
