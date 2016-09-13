@@ -64,9 +64,9 @@ public final class PGDataProxy extends PGData implements Serializable {
     }
     
     @Override
-    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
+    public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
         if (initialised) {
-            data.drawBFCprimitiveGL33(stack, drawOnlyMode);
+            data.drawBFCprimitive_GL33(stack, drawOnlyMode);
         } else {
             initialised = true;
             switch (data.type()) {

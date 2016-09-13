@@ -30,6 +30,29 @@ public class GL33HelperPrimitives {
     private static int VBO_quad = -1;
     private static int EBO_quad = -1;
     private static int VBO_line = -1;
+    
+    private static int VBO_triangle_backup = -1;
+    private static int EBO_triangle_backup = -1;
+    private static int VBO_quad_backup = -1;
+    private static int EBO_quad_backup = -1;
+    private static int VBO_line_backup = -1;
+    
+    public static void backupVBO_PrimitiveArea() {
+        VBO_triangle_backup = VBO_triangle;
+        EBO_triangle_backup = EBO_triangle;
+        VBO_quad_backup = VBO_quad;
+        EBO_quad_backup = EBO_quad;
+        VBO_line_backup = VBO_line;
+    }
+    
+    public static void restoreVBO_PrimitiveArea() {
+        VBO_triangle = VBO_triangle_backup;
+        EBO_triangle = EBO_triangle_backup;
+        VBO_quad = VBO_quad_backup;
+        EBO_quad = EBO_quad_backup;
+        VBO_line = VBO_line_backup;
+    }
+    
     public static void createVBO_PrimitiveArea() {
         VBO_triangle = GL15.glGenBuffers();
         EBO_triangle = GL15.glGenBuffers();
