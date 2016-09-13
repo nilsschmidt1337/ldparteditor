@@ -21,6 +21,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
@@ -30,7 +31,8 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 public class ArrowBlunt {
 
     final FloatBuffer matrix;
-
+    final Matrix4f rotation;
+    
     final float EPSILON = 0.0000001f;
 
     final float r;
@@ -57,7 +59,7 @@ public class ArrowBlunt {
         final float length = (float) Math.sqrt(dir_x * dir_x + dir_y * dir_y + dir_z * dir_z);
         final float cube_start = length - edge_length;
         line_end = length - edge_length / 3f;
-        Matrix4f rotation = makeRotationDir(new Vector3f(dir_x, dir_y, dir_z));
+        rotation = makeRotationDir(new Vector3f(dir_x, dir_y, dir_z));
         matrix = BufferUtils.createFloatBuffer(16);
         rotation.store(matrix);
         matrix.position(0);
@@ -200,6 +202,73 @@ public class ArrowBlunt {
     }
     
     public void drawGL33_RGB(GLMatrixStack stack, float x, float y, float z, float zoom) {
+        final float zoom_inv = 1f / zoom;
+        stack.glPushMatrix();
         
+        stack.glTranslatef(x, y, z);
+        stack.glMultMatrixf(rotation);
+        stack.glScalef(zoom_inv, zoom_inv, zoom_inv);
+
+        GL11.glLineWidth(line_width);
+        
+        {
+            float[] vertexData = new float[]{
+                    0f, 0f, 0f,
+                    r, g, b,
+                    0f, line_end, 0f,
+                    r, g, b
+            };
+            GL33Helper.drawLinesRGB_GeneralSlow(vertexData);
+        }
+        
+        float[] vertexData = new float[]{
+                //GL11.glBegin(GL11.GL_QUADS);
+                cube_x[3], cube_y[3], cube_z[3], r, g, b,
+                cube_x[2], cube_y[2], cube_z[2], r, g, b,
+                cube_x[1], cube_y[1], cube_z[1], r, g, b,
+                cube_x[0], cube_y[0], cube_z[0], r, g, b,
+
+                cube_x[4], cube_y[4], cube_z[4], r, g, b,
+                cube_x[5], cube_y[5], cube_z[5], r, g, b,
+                cube_x[6], cube_y[6], cube_z[6], r, g, b,
+                cube_x[7], cube_y[7], cube_z[7], r, g, b,
+                //GL11.glEnd();
+
+                //GL11.glBegin(GL11.GL_QUAD_STRIP);
+                cube_x[0], cube_y[0], cube_z[0], r, g, b,
+                cube_x[4], cube_y[4], cube_z[4], r, g, b,
+                cube_x[3], cube_y[3], cube_z[3], r, g, b,
+                cube_x[7], cube_y[7], cube_z[7], r, g, b,
+                cube_x[2], cube_y[2], cube_z[2], r, g, b,
+                cube_x[6], cube_y[6], cube_z[6], r, g, b,
+                cube_x[1], cube_y[1], cube_z[1], r, g, b,
+                cube_x[5], cube_y[5], cube_z[5], r, g, b,
+                cube_x[0], cube_y[0], cube_z[0], r, g, b,
+                cube_x[4], cube_y[4], cube_z[4], r, g, b
+                //GL11.glEnd();
+        };
+        
+        int[] indices = new int[]{
+                0, 1, 2,
+                2, 3, 0,                
+                4, 5, 6,
+                6, 7, 4,
+                
+                8, 9, 10,
+                10, 9, 11,
+                
+                10, 11, 12,
+                12, 11, 13,
+                
+                12, 13, 14,
+                14, 13, 15,
+                
+                14, 15, 16,
+                16, 15, 17                
+        };
+        
+        GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
+        
+        stack.glPopMatrix();
     }
 }

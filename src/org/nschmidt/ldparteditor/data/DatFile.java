@@ -158,7 +158,7 @@ public final class DatFile {
         GData data2draw = drawChainAnchor;
         int renderMode = c3d.getRenderMode();
         if (!c3d.isDrawingSolidMaterials() && renderMode != 5)
-            vertices.draw(c3d);
+            vertices.drawGL20(c3d);
 
         if (Editor3DWindow.getWindow().isAddingCondlines())
             renderMode = 6;

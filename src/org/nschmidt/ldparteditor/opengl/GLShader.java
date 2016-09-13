@@ -103,4 +103,14 @@ public class GLShader {
         }
         return location;
     }
+    
+    public void lightsOn() {
+        final int location = getUniformLocation("light"); //$NON-NLS-1$
+        GL20.glUniform1i(location, 1);
+    }
+
+    public void lightsOff() {
+        final int location = getUniformLocation("light"); //$NON-NLS-1$
+        GL20.glUniform1i(location, 0);
+    }
 }

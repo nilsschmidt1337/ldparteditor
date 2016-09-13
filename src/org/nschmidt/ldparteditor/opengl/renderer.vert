@@ -7,6 +7,7 @@ layout(location = 2) in vec4 in_color;
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
+uniform int light;
 
 out vec4 final_colour;
 

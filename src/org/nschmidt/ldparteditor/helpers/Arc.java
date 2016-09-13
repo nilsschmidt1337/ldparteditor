@@ -29,7 +29,8 @@ import org.lwjgl.util.vector.Vector3f;
 public class Arc {
 
     final FloatBuffer matrix;
-
+    final Matrix4f rotation;
+    
     final float EPSILON = 0.0000001f;
 
     final float r;
@@ -56,7 +57,7 @@ public class Arc {
         this.arc_width = arc_width;
         this.arc_width_neg = -arc_width;
 
-        Matrix4f rotation = makeRotationDir(new Vector3f(dir_x, dir_y, dir_z));
+        rotation = makeRotationDir(new Vector3f(dir_x, dir_y, dir_z));
         matrix = BufferUtils.createFloatBuffer(16);
         rotation.store(matrix);
         matrix.position(0);
