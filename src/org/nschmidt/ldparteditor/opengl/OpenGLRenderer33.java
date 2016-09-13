@@ -47,6 +47,7 @@ import org.nschmidt.ldparteditor.data.GColourType;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
+import org.nschmidt.ldparteditor.data.GL33ModelRenderer;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
@@ -84,6 +85,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     private GLShader shaderProgram2D = new GLShader();
     private final GLMatrixStack stack = new GLMatrixStack();
     private final GL33Helper helper = new GL33Helper();
+    private final GL33ModelRenderer modelRenderer = new GL33ModelRenderer();
     
     private int skipFrame;
 
@@ -338,8 +340,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 shaderProgram.lightsOff();
             }
 
-            c3d.setDrawingSolidMaterials(true);
-            // FIXME c3d.getLockableDatFileReference().draw(c3d);
+            modelRenderer.draw(stack, shaderProgram, true, c3d.getLockableDatFileReference(), c3d);
             
             if (raytraceMode) {
                 Rectangle b = c3d.getCanvas().getBounds();
@@ -371,8 +372,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             } else {
                 c3d.setDraggedPrimitive(null);
             }
-            c3d.setDrawingSolidMaterials(false);
-            // FIXME c3d.getLockableDatFileReference().draw(c3d);
+            
+            modelRenderer.draw(stack, shaderProgram, false, c3d.getLockableDatFileReference(), c3d);
 
             if (!raytraceMode) {
                 c3d.getVertexManager().drawGL33(stack, c3d);
