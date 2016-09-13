@@ -110,4 +110,18 @@ public class GL33Helper {
         GL15.glDeleteBuffers(VBO_general);
         GL15.glDeleteBuffers(EBO_general);
     }
+    
+    public static void drawTriangle_GeneralSlow(float[] vertices) {
+        int VBO_general = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_general);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
+
+        GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
+        GL20.glVertexAttribPointer(POSITION_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, 12, 0);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+        GL15.glDeleteBuffers(VBO_general);
+    }
 }
