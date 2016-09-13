@@ -25,16 +25,12 @@ public class GL33HelperPrimitives {
     private static final int COLOUR_SHADER_LOCATION = 1;
     private static final int RGB_STRIDE = (3 + 3) * 4;
     
-    private static int VBO_general = -1;
-    private static int EBO_general = -1;
     private static int VBO_triangle = -1;
     private static int EBO_triangle = -1;
     private static int VBO_quad = -1;
     private static int EBO_quad = -1;
     private static int VBO_line = -1;
     public static void createVBO_PrimitiveArea() {
-        VBO_general = GL15.glGenBuffers();
-        EBO_general = GL15.glGenBuffers();
         VBO_triangle = GL15.glGenBuffers();
         EBO_triangle = GL15.glGenBuffers();
         VBO_quad = GL15.glGenBuffers();
@@ -82,8 +78,6 @@ public class GL33HelperPrimitives {
     }
     
     public static void destroyVBO_PrimitiveArea() {
-        GL15.glDeleteBuffers(VBO_general);
-        GL15.glDeleteBuffers(EBO_general);
         GL15.glDeleteBuffers(VBO_triangle);
         GL15.glDeleteBuffers(EBO_triangle);
         GL15.glDeleteBuffers(VBO_quad);
@@ -127,24 +121,6 @@ public class GL33HelperPrimitives {
         GL11.glDrawElements(GL11.GL_TRIANGLES, 12, GL11.GL_UNSIGNED_INT, 0);
     }
 
-    public static void drawTrianglesIndexedRGB_General(float[] vertices, int[] indices) {
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_general);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
-        
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBO_general);
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STREAM_DRAW);
-   
-        GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
-        GL20.glVertexAttribPointer(POSITION_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, RGB_STRIDE, 0);
-        
-        GL20.glEnableVertexAttribArray(COLOUR_SHADER_LOCATION);
-        GL20.glVertexAttribPointer(COLOUR_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, RGB_STRIDE, 12); // 3 * 4
-   
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        
-        GL11.glDrawElements(GL11.GL_TRIANGLES, indices.length, GL11.GL_UNSIGNED_INT, 0);
-    }
-    
     public static void drawLinesRGB_Line(float[] vertices) {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_line);
         GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, vertices);

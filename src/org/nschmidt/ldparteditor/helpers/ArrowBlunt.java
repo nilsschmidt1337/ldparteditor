@@ -21,6 +21,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
  * @author nils
@@ -196,5 +197,9 @@ public class ArrowBlunt {
         GL11.glEnd();
 
         GL11.glPopMatrix();
+    }
+    
+    public void drawGL33_RGB(GLMatrixStack stack, float x, float y, float z, float zoom) {
+        
     }
 }
