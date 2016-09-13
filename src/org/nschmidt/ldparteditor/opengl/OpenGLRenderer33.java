@@ -1892,44 +1892,47 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     stack.glPopMatrix();
                 }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
-                if (false && c3d.isShowingLabels() && c3d.isClassicPerspective()) {
-                    PGData3.beginDrawText();
+                if (c3d.isShowingLabels() && c3d.isClassicPerspective()) {
+                    PGData3.beginDrawTextGL33(shaderProgram2D);
+                    stack.setShader(shaderProgram2D);
+                    stack.glLoadIdentity();
                     switch (c3d.getPerspectiveIndex()) {
                     case FRONT:
                         for (PGData3 tri : View.FRONT) {
-                            tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
+                            tri.drawTextGL33(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
                     case BACK:
                         for (PGData3 tri : View.BACK) {
-                            tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
+                            tri.drawTextGL33(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
                     case TOP:
                         for (PGData3 tri : View.TOP) {
-                            tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
+                            tri.drawTextGL33(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
                     case BOTTOM:
                         for (PGData3 tri : View.BOTTOM) {
-                            tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
+                            tri.drawTextGL33(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
                     case LEFT:
                         for (PGData3 tri : View.LEFT) {
-                            tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
+                            tri.drawTextGL33(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
                     case RIGHT:
                         for (PGData3 tri : View.RIGHT) {
-                            tri.drawText(viewport_width, viewport_height, viewport_origin_axis[0].z);
+                            tri.drawTextGL33(viewport_width, viewport_height, viewport_origin_axis[0].z);
                         }
                         break;
                     case TWO_THIRDS:
                     default:
                         break;
                     }
-                    PGData3.endDrawText();
+                    PGData3.endDrawTextGL33(shaderProgram2);
+                    stack.setShader(shaderProgram2);
                 }
                 if (Project.getFileToEdit().equals(c3d.getLockableDatFileReference())) {
                     final float r;

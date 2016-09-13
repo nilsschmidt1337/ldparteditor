@@ -18,9 +18,12 @@ package org.nschmidt.ldparteditor.data;
 import java.io.Serializable;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GL33HelperPrimitives;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
+import org.nschmidt.ldparteditor.opengl.GLShader;
 
 /**
  * @author nils
@@ -374,6 +377,22 @@ public final class PGData3 extends PGData implements Serializable {
     }
     public static void endDrawText() {
         GL11.glEnd();
+    }
+    
+    public static void beginDrawTextGL33(GLShader shader) {
+        shader.use();
+        final int colour = shader.getUniformLocation("color"); //$NON-NLS-1$
+        GL20.glUniform3f(colour, View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
+    }
+    public void drawTextGL33(float x, float y, float z) {
+        GL33Helper.drawTriangle_GeneralSlow(new float[]{
+            -x1 + x, y1 + y, z1 + z,
+            -x3 + x, y3 + y, z3 + z,
+            -x2 + x, y2 + y, z2 + z
+        });
+    }
+    public static void endDrawTextGL33(GLShader shader) {
+        shader.use();  
     }
     public static PGData3 clone(PGData3 o) {
         return new PGData3(o.x1, o.y1, o.z1, o.x2, o.y2, o.z2, o.x3, o.y3, o.z3);
