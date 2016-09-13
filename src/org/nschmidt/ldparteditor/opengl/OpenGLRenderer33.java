@@ -355,7 +355,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 if (p != null) {
                     GL11.glDisable(GL11.GL_LIGHTING);
                     Vector4f cur = c3d.getCursorSnapped3D();
-                    p.draw(cur.x, cur.y, cur.z);
+                    GL33HelperPrimitives.backupVBO_PrimitiveArea();
+                    GL33HelperPrimitives.createVBO_PrimitiveArea();
+                    stack.setShader(shaderProgram2);
+                    shaderProgram2.use();
+                    p.drawGL33(stack, cur.x, cur.y, cur.z);
+                    stack.setShader(shaderProgram);
+                    shaderProgram.use();
+                    GL33HelperPrimitives.destroyVBO_PrimitiveArea();
+                    GL33HelperPrimitives.restoreVBO_PrimitiveArea();
                     if (c3d.isLightOn())
                         GL11.glEnable(GL11.GL_LIGHTING);
                 }

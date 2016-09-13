@@ -208,7 +208,7 @@ public final class PGData3 extends PGData implements Serializable {
     }
     
     @Override
-    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
+    public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
         if (drawOnlyMode == 2) return;
         switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
         case BFC.CCW:

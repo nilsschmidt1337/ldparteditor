@@ -44,11 +44,11 @@ public final class PGDataBFC extends PGData implements Serializable {
     
     @Override
     public void drawBFCprimitive_GL20(int drawOnlyMode) {
-        drawBFCprimitiveGL33(null, drawOnlyMode);
+        drawBFCprimitive_GL33(null, drawOnlyMode);
     }
 
     @Override
-    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
+    public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
         switch (type) {
         case BFC.CCW:
             PGData.localWinding = BFC.CCW;
