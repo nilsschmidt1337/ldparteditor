@@ -21,6 +21,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
@@ -307,6 +308,63 @@ public class Arc {
     }
     
     public void drawGL33(GLMatrixStack stack, float x, float y, float z, float zoom) {
+        final float zoom_inv = 1f / zoom;
+        stack.glPushMatrix();
+
+        stack.glTranslatef(x, y, z);
+        stack.glMultMatrixf(rotation);
+        stack.glScalef(zoom_inv, zoom_inv, zoom_inv);
+
+        float[] vertexData = new float[396];
         
+        int[] indices = new int[192];
+        int j = 0;
+        for(int i = 0; i < 192; i += 6) {
+            indices[i] = j;
+            indices[i + 1] = 1 + j;
+            indices[i + 2] = 3 + j;
+            indices[i + 3] = 3 + j;
+            indices[i + 4] = 2 + j;
+            indices[i + 5] = j;
+            j += 2;
+        }       
+        
+        j = 0;
+        for(int i = 0; i < 396; i += 12) {
+            vertexData[i]      = circle[j];
+            vertexData[i + 1]  = 0f;
+            vertexData[i + 2]  = circle[j + 1];
+            vertexData[i + 3]  = r;
+            vertexData[i + 4]  = g;
+            vertexData[i + 5]  = b;
+            vertexData[i + 6]  = circle2[j];            
+            vertexData[i + 7]  = arc_width;
+            vertexData[i + 8]  = circle2[j + 1];
+            vertexData[i + 9]  = r;
+            vertexData[i + 10] = g;
+            vertexData[i + 11] = b;
+            j += 2;
+        }
+        GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
+        
+        
+        j = 0;
+        for(int i = 0; i < 396; i += 12) {
+            vertexData[i]      = circle2[j];
+            vertexData[i + 1]  = arc_width_neg;
+            vertexData[i + 2]  = circle2[j + 1];
+            vertexData[i + 3]  = r;
+            vertexData[i + 4]  = g;
+            vertexData[i + 5]  = b;
+            vertexData[i + 6]  = circle[j];            
+            vertexData[i + 7]  = 0f;
+            vertexData[i + 8]  = circle[j + 1];
+            vertexData[i + 9]  = r;
+            vertexData[i + 10] = g;
+            vertexData[i + 11] = b;
+            j += 2;
+        }
+        GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
+        stack.glPopMatrix();
     }
 }
