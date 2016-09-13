@@ -105,12 +105,12 @@ public class GLShader {
     }
     
     public void lightsOn() {
-        final int location = getUniformLocation("light"); //$NON-NLS-1$
-        GL20.glUniform1i(location, 1);
+        final int location = getUniformLocation("lightswitch"); //$NON-NLS-1$
+        GL20.glUniform1f(location, 1f);
     }
 
     public void lightsOff() {
-        final int location = getUniformLocation("light"); //$NON-NLS-1$
-        GL20.glUniform1i(location, 0);
+        final int location = getUniformLocation("lightswitch"); //$NON-NLS-1$
+        GL20.glUniform1f(location, 0f);
     }
 }

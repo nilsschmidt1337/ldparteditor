@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
@@ -1480,25 +1481,44 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             }
 
             // MARK Draw temporary objects for all "Add..." functions here
-            if (false && window.isAddingSomething() && c3d.getLockableDatFileReference().getLastSelectedComposite() != null && c3d.getLockableDatFileReference().getLastSelectedComposite().equals(c3d)) {
+            if (window.isAddingSomething() && c3d.getLockableDatFileReference().getLastSelectedComposite() != null && c3d.getLockableDatFileReference().getLastSelectedComposite().equals(c3d)) {
                 if (window.isAddingVertices()) {
                     // Point for add vertex
-                    GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
-                    GL11.glBegin(GL11.GL_POINTS);
-                    Vector4f cursor3D = c3d.getCursorSnapped3D();
-                    GL11.glVertex3f(cursor3D.x, cursor3D.y, cursor3D.z);
-                    GL11.glEnd();
+                    final Vector4f cursor3D = c3d.getCursorSnapped3D();
+                    final int VBO = GL15.glGenBuffers();
+                    GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                            new float[] {
+                                    cursor3D.x, cursor3D.y, cursor3D.z,
+                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                    , GL15.GL_STREAM_DRAW);
+                    GL20.glEnableVertexAttribArray(0);
+                    GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
+                    GL20.glEnableVertexAttribArray(1);
+                    GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
+                    GL11.glDrawArrays(GL11.GL_POINTS, 0, 1);
+                    GL15.glDeleteBuffers(VBO);
                 } else if (window.isAddingLines() || window.isAddingDistance()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();
                     if (v != null) {
                         GL11.glLineWidth(4f);
-                        GL11.glBegin(GL11.GL_LINES);
-                        GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
-                        GL11.glVertex3f(v.x, v.y, v.z);
-                        GL11.glVertex3f(cur.x, cur.y, cur.z);
-                        GL11.glEnd();
+                        final int VBO = GL15.glGenBuffers();
+                        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+                        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                new float[] {
+                                        v.x, v.y, v.z,
+                                        View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                        cur.x, cur.y, cur.z,
+                                        View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                        , GL15.GL_STREAM_DRAW);
+                        GL20.glEnableVertexAttribArray(0);
+                        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
+                        GL20.glEnableVertexAttribArray(1);
+                        GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
+                        GL11.glDrawArrays(GL11.GL_LINES, 0, 2);
+                        GL15.glDeleteBuffers(VBO);
                     }
                 } else if (window.isAddingTriangles() || window.isAddingProtractor()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
@@ -1508,22 +1528,46 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         Vertex v2 = dat.getNearestObjVertex2();
                         if (v2 != null) {
                             GL11.glLineWidth(4f);
-                            GL11.glBegin(GL11.GL_LINES);
-                            GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
-                            GL11.glVertex3f(v.x, v.y, v.z);
-                            GL11.glVertex3f(cur.x, cur.y, cur.z);
-                            GL11.glVertex3f(v2.x, v2.y, v2.z);
-                            GL11.glVertex3f(cur.x, cur.y, cur.z);
-                            GL11.glVertex3f(v2.x, v2.y, v2.z);
-                            GL11.glVertex3f(v.x, v.y, v.z);
-                            GL11.glEnd();
+                            final int VBO = GL15.glGenBuffers();
+                            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+                            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                    new float[] {
+                                            v.x, v.y, v.z,
+                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            cur.x, cur.y, cur.z,
+                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            v2.x, v2.y, v2.z,
+                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            cur.x, cur.y, cur.z,
+                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            v2.x, v2.y, v2.z,
+                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            v.x, v.y, v.z,
+                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                            , GL15.GL_STREAM_DRAW);
+                            GL20.glEnableVertexAttribArray(0);
+                            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
+                            GL20.glEnableVertexAttribArray(1);
+                            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
+                            GL11.glDrawArrays(GL11.GL_LINES, 0, 6);
+                            GL15.glDeleteBuffers(VBO);
                         } else {
                             GL11.glLineWidth(4f);
-                            GL11.glBegin(GL11.GL_LINES);
-                            GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
-                            GL11.glVertex3f(v.x, v.y, v.z);
-                            GL11.glVertex3f(cur.x, cur.y, cur.z);
-                            GL11.glEnd();
+                            final int VBO = GL15.glGenBuffers();
+                            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+                            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                    new float[] {
+                                            v.x, v.y, v.z,
+                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            cur.x, cur.y, cur.z,
+                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                            , GL15.GL_STREAM_DRAW);
+                            GL20.glEnableVertexAttribArray(0);
+                            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
+                            GL20.glEnableVertexAttribArray(1);
+                            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
+                            GL11.glDrawArrays(GL11.GL_LINES, 0, 2);
+                            GL15.glDeleteBuffers(VBO);
                         }
                     }
                 } else if (window.isAddingQuads()) {
@@ -1538,46 +1582,96 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 Vertex v4 = dat.getObjVertex4();
                                 if (v4 != null) {
                                     GL11.glLineWidth(4f);
-                                    GL11.glBegin(GL11.GL_LINES);
-                                    GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
-                                    GL11.glVertex3f(v2.x, v2.y, v2.z);
-                                    GL11.glVertex3f(cur.x, cur.y, cur.z);
-                                    GL11.glVertex3f(v2.x, v2.y, v2.z);
-                                    GL11.glVertex3f(v.x, v.y, v.z);
-                                    GL11.glEnd();
+                                    final int VBO = GL15.glGenBuffers();
+                                    GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+                                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                            new float[] {
+                                                    v2.x, v2.y, v2.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    cur.x, cur.y, cur.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    v2.x, v2.y, v2.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    v.x, v.y, v.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                    , GL15.GL_STREAM_DRAW);
+                                    GL20.glEnableVertexAttribArray(0);
+                                    GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
+                                    GL20.glEnableVertexAttribArray(1);
+                                    GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
+                                    GL11.glDrawArrays(GL11.GL_LINES, 0, 4);
+                                    GL15.glDeleteBuffers(VBO);
                                 } else {
                                     v = dat.getObjVertex1();
                                     v2 = dat.getObjVertex2();
                                     GL11.glLineWidth(4f);
-                                    GL11.glBegin(GL11.GL_LINES);
-                                    GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
-                                    GL11.glVertex3f(v.x, v.y, v.z);
-                                    GL11.glVertex3f(v2.x, v2.y, v2.z);
-                                    GL11.glVertex3f(v2.x, v2.y, v2.z);
-                                    GL11.glVertex3f(v3.x, v3.y, v3.z);
-                                    GL11.glVertex3f(v3.x, v3.y, v3.z);
-                                    GL11.glVertex3f(cur.x, cur.y, cur.z);
-                                    GL11.glVertex3f(cur.x, cur.y, cur.z);
-                                    GL11.glVertex3f(v.x, v.y, v.z);
-                                    GL11.glEnd();
+                                    final int VBO = GL15.glGenBuffers();
+                                    GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+                                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                            new float[] {
+                                                    v.x, v.y, v.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    v2.x, v2.y, v2.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    v2.x, v2.y, v2.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    v3.x, v3.y, v3.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    v3.x, v3.y, v3.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    cur.x, cur.y, cur.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    cur.x, cur.y, cur.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    v.x, v.y, v.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                    , GL15.GL_STREAM_DRAW);
+                                    GL20.glEnableVertexAttribArray(0);
+                                    GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
+                                    GL20.glEnableVertexAttribArray(1);
+                                    GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
+                                    GL11.glDrawArrays(GL11.GL_LINES, 0, 8);
+                                    GL15.glDeleteBuffers(VBO);
                                 }
                             } else {
                                 GL11.glLineWidth(4f);
-                                GL11.glBegin(GL11.GL_LINES);
-                                GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
-                                GL11.glVertex3f(v2.x, v2.y, v2.z);
-                                GL11.glVertex3f(cur.x, cur.y, cur.z);
-                                GL11.glVertex3f(v2.x, v2.y, v2.z);
-                                GL11.glVertex3f(v.x, v.y, v.z);
-                                GL11.glEnd();
+                                final int VBO = GL15.glGenBuffers();
+                                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+                                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                        new float[] {
+                                                v2.x, v2.y, v2.z,
+                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                cur.x, cur.y, cur.z,
+                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                v2.x, v2.y, v2.z,
+                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                v.x, v.y, v.z,
+                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                , GL15.GL_STREAM_DRAW);
+                                GL20.glEnableVertexAttribArray(0);
+                                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
+                                GL20.glEnableVertexAttribArray(1);
+                                GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
+                                GL11.glDrawArrays(GL11.GL_LINES, 0, 4);
+                                GL15.glDeleteBuffers(VBO);
                             }
                         } else {
                             GL11.glLineWidth(4f);
-                            GL11.glBegin(GL11.GL_LINES);
-                            GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
-                            GL11.glVertex3f(v.x, v.y, v.z);
-                            GL11.glVertex3f(cur.x, cur.y, cur.z);
-                            GL11.glEnd();
+                            final int VBO = GL15.glGenBuffers();
+                            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+                            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                    new float[] {
+                                            v.x, v.y, v.z,
+                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            cur.x, cur.y, cur.z,
+                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                            , GL15.GL_STREAM_DRAW);
+                            GL20.glEnableVertexAttribArray(0);
+                            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
+                            GL20.glEnableVertexAttribArray(1);
+                            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
+                            GL11.glDrawArrays(GL11.GL_LINES, 0, 2);
+                            GL15.glDeleteBuffers(VBO);
                         }
                     }
                 } else if (window.isAddingCondlines()) {
@@ -1592,42 +1686,88 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 Vertex v4 = dat.getObjVertex4();
                                 if (v4 != null) {
                                     GL11.glLineWidth(4f);
-                                    GL11.glBegin(GL11.GL_LINES);
-                                    GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
-                                    GL11.glVertex3f(cur.x, cur.y, cur.z);
-                                    GL11.glVertex3f(v.x, v.y, v.z);
-                                    GL11.glEnd();
+                                    final int VBO = GL15.glGenBuffers();
+                                    GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+                                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                            new float[] {
+                                                    v.x, v.y, v.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    cur.x, cur.y, cur.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                    , GL15.GL_STREAM_DRAW);
+                                    GL20.glEnableVertexAttribArray(0);
+                                    GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
+                                    GL20.glEnableVertexAttribArray(1);
+                                    GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
+                                    GL11.glDrawArrays(GL11.GL_LINES, 0, 2);
+                                    GL15.glDeleteBuffers(VBO);
                                 } else {
                                     v = dat.getObjVertex1();
                                     v2 = dat.getObjVertex2();
                                     GL11.glLineWidth(4f);
-                                    GL11.glBegin(GL11.GL_LINES);
-                                    GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
-                                    GL11.glVertex3f(v.x, v.y, v.z);
-                                    GL11.glVertex3f(v2.x, v2.y, v2.z);
-                                    GL11.glVertex3f(v2.x, v2.y, v2.z);
-                                    GL11.glVertex3f(v3.x, v3.y, v3.z);
-                                    GL11.glVertex3f(v2.x, v2.y, v2.z);
-                                    GL11.glVertex3f(cur.x, cur.y, cur.z);
-                                    GL11.glEnd();
+                                    final int VBO = GL15.glGenBuffers();
+                                    GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+                                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                            new float[] {
+                                                    v.x, v.y, v.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    v2.x, v2.y, v2.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    v2.x, v2.y, v2.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    v3.x, v3.y, v3.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    v2.x, v2.y, v2.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    cur.x, cur.y, cur.z,
+                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                    , GL15.GL_STREAM_DRAW);
+                                    GL20.glEnableVertexAttribArray(0);
+                                    GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
+                                    GL20.glEnableVertexAttribArray(1);
+                                    GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
+                                    GL11.glDrawArrays(GL11.GL_LINES, 0, 8);
+                                    GL15.glDeleteBuffers(VBO);
                                 }
                             } else {
                                 GL11.glLineWidth(4f);
-                                GL11.glBegin(GL11.GL_LINES);
-                                GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
-                                GL11.glVertex3f(v2.x, v2.y, v2.z);
-                                GL11.glVertex3f(cur.x, cur.y, cur.z);
-                                GL11.glVertex3f(v2.x, v2.y, v2.z);
-                                GL11.glVertex3f(v.x, v.y, v.z);
-                                GL11.glEnd();
+                                final int VBO = GL15.glGenBuffers();
+                                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+                                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                        new float[] {
+                                                v2.x, v2.y, v2.z,
+                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                cur.x, cur.y, cur.z,
+                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                v2.x, v2.y, v2.z,
+                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                v.x, v.y, v.z,
+                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                , GL15.GL_STREAM_DRAW);
+                                GL20.glEnableVertexAttribArray(0);
+                                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
+                                GL20.glEnableVertexAttribArray(1);
+                                GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
+                                GL11.glDrawArrays(GL11.GL_LINES, 0, 4);
+                                GL15.glDeleteBuffers(VBO);
                             }
                         } else {
                             GL11.glLineWidth(4f);
-                            GL11.glBegin(GL11.GL_LINES);
-                            GL11.glColor3f(View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]);
-                            GL11.glVertex3f(v.x, v.y, v.z);
-                            GL11.glVertex3f(cur.x, cur.y, cur.z);
-                            GL11.glEnd();
+                            final int VBO = GL15.glGenBuffers();
+                            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+                            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                    new float[] {
+                                            v.x, v.y, v.z,
+                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            cur.x, cur.y, cur.z,
+                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                            , GL15.GL_STREAM_DRAW);
+                            GL20.glEnableVertexAttribArray(0);
+                            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
+                            GL20.glEnableVertexAttribArray(1);
+                            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
+                            GL11.glDrawArrays(GL11.GL_LINES, 0, 2);
+                            GL15.glDeleteBuffers(VBO);
                         }
                     }
                 }
