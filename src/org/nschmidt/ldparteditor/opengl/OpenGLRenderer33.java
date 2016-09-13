@@ -79,16 +79,17 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     private final Composite3D c3d;
     
     private GLShader shaderProgram = new GLShader();
+    private GLShader shaderProgram2 = new GLShader();
+    private GLShader shaderProgram2D = new GLShader();
     private final GLMatrixStack stack = new GLMatrixStack();
+    private final GL33Helper helper = new GL33Helper();
     
     private int skipFrame;
 
     private volatile AtomicBoolean calculateVertexNormals = new AtomicBoolean(true);
     
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
-    private final FloatBuffer viewport = BufferUtils.createFloatBuffer(16);
-    private final FloatBuffer rotation = BufferUtils.createFloatBuffer(16);
-    private final FloatBuffer rotation_inv = BufferUtils.createFloatBuffer(16);
+    private final FloatBuffer view_buf = BufferUtils.createFloatBuffer(16);
     private final Matrix4f rotation_inv4f = new Matrix4f();
 
     private final float[][][] renderedPoints = new float[1][][];
@@ -122,6 +123,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         // FIXME Needs implementation!
         
         shaderProgram = new GLShader("renderer.vert", "renderer.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+        shaderProgram2 = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+        shaderProgram2D = new GLShader("2D.vert", "2D.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         stack.setShader(shaderProgram);
         shaderProgram.use();
         
@@ -159,7 +162,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         // MARK OpenGL Draw Scene
         
         stack.clear();
-        shaderProgram.use();
+        helper.createVBO();
         
         // FIXME Needs implementation!
         
@@ -199,14 +202,24 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         
             Rectangle bounds = c3d.getBounds();
             GL11.glViewport(0, 0, bounds.width, bounds.height);
-            GL11.glMatrixMode(GL11.GL_PROJECTION);
-            GL11.glLoadIdentity();
+            
+            shaderProgram.use();
+            stack.setShader(shaderProgram);
+            stack.glLoadIdentity();
+            
             float viewport_width = bounds.width / View.PIXEL_PER_LDU / 2.0f;
             float viewport_height = bounds.height / View.PIXEL_PER_LDU / 2.0f;
-            // FIXME GL11.glOrtho(viewport_width, -viewport_width, viewport_height, -viewport_height, -c3d.getzNear() * c3d.getZoom(), c3d.getzFar() * c3d.getZoom());
-
-            // FIXME GL11.glMatrixMode(GL11.GL_MODELVIEW);
-            // FIXME GL11.glLoadIdentity();
+            {
+                final FloatBuffer projection_buf = BufferUtils.createFloatBuffer(16);    
+                GLMatrixStack.glOrtho(viewport_width, -viewport_width, viewport_height, -viewport_height, -c3d.getzNear() * c3d.getZoom(), c3d.getzFar() * c3d.getZoom()).store(projection_buf);
+                projection_buf.position(0);
+                shaderProgram2.use();
+                int projection = shaderProgram2.getUniformLocation("projection" ); //$NON-NLS-1$
+                GL20.glUniformMatrix4fv(projection, false, projection_buf);                
+                shaderProgram.use();
+                projection = shaderProgram.getUniformLocation("projection" ); //$NON-NLS-1$
+                GL20.glUniformMatrix4fv(projection, false, projection_buf);
+            }
 
             Matrix4f viewport_transform = new Matrix4f();
             Matrix4f.setIdentity(viewport_transform);
@@ -214,17 +227,23 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             final float zoom = c3d.getZoom();
             Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewport_transform, viewport_transform);
             Matrix4f viewport_rotation = c3d.getRotation();
-            viewport_rotation.store(rotation);
-            rotation.flip();
             Matrix4f.load(viewport_rotation, rotation_inv4f);
-            ((Matrix4f) rotation_inv4f.invert()).store(rotation_inv);
-            rotation_inv.flip();
+            rotation_inv4f.invert();
             Matrix4f.mul(viewport_rotation, viewport_transform, viewport_transform);
             Matrix4f viewport_translation = c3d.getTranslation();
             Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
-            viewport_transform.store(viewport);
+            viewport_transform.store(view_buf);
             c3d.setViewport(viewport_transform);
-            viewport.flip();
+            view_buf.flip();
+            
+            {
+                shaderProgram2.use();
+                int view = shaderProgram2.getUniformLocation("view" ); //$NON-NLS-1$
+                GL20.glUniformMatrix4fv(view, false, view_buf);
+                shaderProgram.use();
+                view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
+                GL20.glUniformMatrix4fv(view, false, view_buf);
+            }
 
             if (c3d.isAnaglyph3d() && !raytraceMode) {
 
@@ -282,9 +301,16 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                 viewport_translation = c3d.getTranslation();
                 Matrix4f.mul(viewport_transform2, viewport_translation, viewport_transform2);
-                viewport_transform2.store(viewport);
-                viewport.flip();
-
+                viewport_transform2.store(view_buf);
+                view_buf.flip();
+                {
+                    shaderProgram2.use();
+                    int view = shaderProgram2.getUniformLocation("view" ); //$NON-NLS-1$
+                    GL20.glUniformMatrix4fv(view, false, view_buf);
+                    shaderProgram.use();
+                    view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
+                    GL20.glUniformMatrix4fv(view, false, view_buf);
+                }
             }
 
             GL11.glEnable(GL11.GL_CULL_FACE);
@@ -330,6 +356,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             c3d.setDrawingSolidMaterials(false);
             // FIXME c3d.getLockableDatFileReference().draw(c3d);
 
+            stack.setShader(shaderProgram2);
+            shaderProgram2.use();
+            
             if (raytraceMode) {
                 Rectangle b = c3d.getCanvas().getBounds();
                 final float w =  b.width;
@@ -346,17 +375,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-                GL20.glUseProgram(0);
-
-                if (lock.tryLock()) {
+                if (false && lock.tryLock()) {
                     try {
                         if (renderedPoints[0] != null) {
-                            GL11.glPushMatrix();
-                            GL11.glLoadIdentity();
+                            stack.glPushMatrix();
+                            stack.glLoadIdentity();
                             final float xf = 2f * viewport_width;
                             final float yf = 2f * viewport_height;
-                            GL11.glTranslatef(-viewport_width, -viewport_height, 0f);
-                            GL11.glScalef(1f / w * xf, 1f / h * yf, 1f);
+                            stack.glTranslatef(-viewport_width, -viewport_height, 0f);
+                            stack.glScalef(1f / w * xf, 1f / h * yf, 1f);
                             // FIXME Needs adjustments for negative determinants!
                             for (float[] p : renderedPoints[0]) {
                                 GL11.glBegin(GL11.GL_QUADS);
@@ -367,7 +394,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 GL11.glVertex3f(p[9], p[10], 0f);
                                 GL11.glEnd();
                             }
-                            GL11.glPopMatrix();
+                            stack.glPopMatrix();
                         }
                     } finally {
                         lock.unlock();
@@ -1378,7 +1405,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     if (manipulator.isX_Rotate()) {
                         c = manipulator.checkManipulatorStatus(View.manipulator_x_axis_Colour_r[0], View.manipulator_x_axis_Colour_g[0], View.manipulator_x_axis_Colour_b[0], Manipulator.X_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getX_RotateArrow().x, rotateSize * manipulator.getX_RotateArrow().y, rotateSize * manipulator.getX_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .drawGL20(mx, my, mz, zoom);
+                        .drawGL33_RGB(stack, mx, my, mz, zoom);
                     }
 
                     c = manipulator.checkManipulatorStatus(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], Manipulator.Y_ROTATE, c3d, zoom);
@@ -1387,7 +1414,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     if (manipulator.isY_Rotate()) {
                         c = manipulator.checkManipulatorStatus(View.manipulator_y_axis_Colour_r[0], View.manipulator_y_axis_Colour_g[0], View.manipulator_y_axis_Colour_b[0], Manipulator.Y_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getY_RotateArrow().x, rotateSize * manipulator.getY_RotateArrow().y, rotateSize * manipulator.getY_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .drawGL20(mx, my, mz, zoom);
+                        .drawGL33_RGB(stack, mx, my, mz, zoom);
                     }
 
                     c = manipulator.checkManipulatorStatus(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], Manipulator.Z_ROTATE, c3d, zoom);
@@ -1396,7 +1423,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     if (manipulator.isZ_Rotate()) {
                         c = manipulator.checkManipulatorStatus(View.manipulator_z_axis_Colour_r[0], View.manipulator_z_axis_Colour_g[0], View.manipulator_z_axis_Colour_b[0], Manipulator.Z_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateSize * manipulator.getZ_RotateArrow().x, rotateSize * manipulator.getZ_RotateArrow().y, rotateSize * manipulator.getZ_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .drawGL20(mx, my, mz, zoom);
+                        .drawGL33_RGB(stack, mx, my, mz, zoom);
                     }
 
                     Vector4f[] gen = c3d.getGenerator();
@@ -1407,7 +1434,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     if (manipulator.isV_Rotate()) {
                         c = manipulator.checkManipulatorStatus(View.manipulator_outerCircle_Colour_r[0], View.manipulator_outerCircle_Colour_g[0], View.manipulator_outerCircle_Colour_b[0], Manipulator.V_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), 1f, rotateOuterSize * manipulator.getV_RotateArrow().x, rotateOuterSize * manipulator.getV_RotateArrow().y, rotateOuterSize * manipulator.getV_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .drawGL20(mx, my, mz, zoom);
+                        .drawGL33_RGB(stack, mx, my, mz, zoom);
                     }
                     if (singleMode)
                         break;
@@ -1422,11 +1449,11 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         break;
                 case MOVE:
                     c = manipulator.checkManipulatorStatus(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], Manipulator.X_TRANSLATE, c3d, zoom);
-                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getXaxis().x, moveSize * manipulator.getXaxis().y, moveSize * manipulator.getXaxis().z, cone_height, cone_width, lineWidth).drawGL20(mx, my, mz, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getXaxis().x, moveSize * manipulator.getXaxis().y, moveSize * manipulator.getXaxis().z, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
                     c = manipulator.checkManipulatorStatus(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], Manipulator.Y_TRANSLATE, c3d, zoom);
-                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getYaxis().x, moveSize * manipulator.getYaxis().y, moveSize * manipulator.getYaxis().z, cone_height, cone_width, lineWidth).drawGL20(mx, my, mz, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getYaxis().x, moveSize * manipulator.getYaxis().y, moveSize * manipulator.getYaxis().z, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
                     c = manipulator.checkManipulatorStatus(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], Manipulator.Z_TRANSLATE, c3d, zoom);
-                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getZaxis().x, moveSize * manipulator.getZaxis().y, moveSize * manipulator.getZaxis().z, cone_height, cone_width, lineWidth).drawGL20(mx, my, mz, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), 1f, moveSize * manipulator.getZaxis().x, moveSize * manipulator.getZaxis().y, moveSize * manipulator.getZaxis().z, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
                     break;
                 default:
                     break;
@@ -1608,15 +1635,17 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 Vector4f selectionCorner4 = new Vector4f(selectionEnd_MODELVIEW.x - height.x, selectionEnd_MODELVIEW.y - height.y, selectionEnd_MODELVIEW.z - height.z, 1f);
 
                 GL11.glLineWidth(2f);
-                GL11.glBegin(GL11.GL_LINES);
-                GL11.glColor3f(View.cursor1_Colour_r[0], View.cursor1_Colour_g[0], View.cursor1_Colour_b[0]);
-                GL11.glVertex3f(selectionCorner3.x, selectionCorner3.y, selectionCorner3.z);
-                GL11.glVertex3f(selectionCorner1.x, selectionCorner1.y, selectionCorner1.z);
-                GL11.glColor3f(View.cursor2_Colour_r[0], View.cursor2_Colour_g[0], View.cursor2_Colour_b[0]);
-                GL11.glVertex3f(selectionCorner4.x, selectionCorner4.y, selectionCorner4.z);
-                GL11.glVertex3f(selectionCorner2.x, selectionCorner2.y, selectionCorner2.z);
-
-                GL11.glEnd();
+                
+                helper.drawLinesRGB_General(new float[]{
+                        selectionCorner3.x, selectionCorner3.y, selectionCorner3.z,
+                        View.cursor1_Colour_r[0], View.cursor1_Colour_g[0], View.cursor1_Colour_b[0],
+                        selectionCorner1.x, selectionCorner1.y, selectionCorner1.z,
+                        View.cursor1_Colour_r[0], View.cursor1_Colour_g[0], View.cursor1_Colour_b[0],
+                        selectionCorner4.x, selectionCorner4.y, selectionCorner4.z,
+                        View.cursor2_Colour_r[0], View.cursor2_Colour_g[0], View.cursor2_Colour_b[0],
+                        selectionCorner2.x, selectionCorner2.y, selectionCorner2.z,
+                        View.cursor2_Colour_r[0], View.cursor2_Colour_g[0], View.cursor2_Colour_b[0]
+                });
             }
 
             GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -1647,22 +1676,27 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                 GL11.glLineWidth(3f);
 
-                GL11.glColor3f(View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0]);
-                GL11.glBegin(GL11.GL_LINES);
+                helper.drawLinesRGB_General(new float[]{
 
-                GL11.glVertex3f(selectionStart_MODELVIEW.x, selectionStart_MODELVIEW.y, selectionStart_MODELVIEW.z);
-                GL11.glVertex3f(selectionCorner1.x, selectionCorner1.y, selectionCorner1.z);
+                selectionStart_MODELVIEW.x, selectionStart_MODELVIEW.y, selectionStart_MODELVIEW.z,
+                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                selectionCorner1.x, selectionCorner1.y, selectionCorner1.z,
+                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                selectionStart_MODELVIEW.x, selectionStart_MODELVIEW.y, selectionStart_MODELVIEW.z,
+                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                selectionCorner2.x, selectionCorner2.y, selectionCorner2.z,
+                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
 
-                GL11.glVertex3f(selectionStart_MODELVIEW.x, selectionStart_MODELVIEW.y, selectionStart_MODELVIEW.z);
-                GL11.glVertex3f(selectionCorner2.x, selectionCorner2.y, selectionCorner2.z);
+                selectionEnd_MODELVIEW.x, selectionEnd_MODELVIEW.y, selectionEnd_MODELVIEW.z,
+                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                selectionCorner1.x, selectionCorner1.y, selectionCorner1.z,
+                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
 
-                GL11.glVertex3f(selectionEnd_MODELVIEW.x, selectionEnd_MODELVIEW.y, selectionEnd_MODELVIEW.z);
-                GL11.glVertex3f(selectionCorner1.x, selectionCorner1.y, selectionCorner1.z);
-
-                GL11.glVertex3f(selectionEnd_MODELVIEW.x, selectionEnd_MODELVIEW.y, selectionEnd_MODELVIEW.z);
-                GL11.glVertex3f(selectionCorner2.x, selectionCorner2.y, selectionCorner2.z);
-
-                GL11.glEnd();
+                selectionEnd_MODELVIEW.x, selectionEnd_MODELVIEW.y, selectionEnd_MODELVIEW.z,
+                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                selectionCorner2.x, selectionCorner2.y, selectionCorner2.z,
+                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0]});
+                
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
 
             } else {
@@ -1672,45 +1706,107 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
             // To make it easier to draw and calculate the grid and the origin,
             // reset the transformation matrix ;)
-            GL11.glLoadIdentity();
+            stack.glLoadIdentity();
             Vector3f[] viewport_origin_axis = c3d.getViewportOriginAxis();
             float z_offset = 0;
             if (c3d.isGridShown()) {
                 // Grid-1 and 10
+                float g_r;
+                float g_g;
+                float g_b;
                 for (int r = 0; r < 5; r += 4) {
                     if (r == 4) {
-                        GL11.glColor3f(View.grid10_Colour_r[0], View.grid10_Colour_g[0], View.grid10_Colour_b[0]);
+                        g_r = View.grid10_Colour_r[0];
+                        g_g = View.grid10_Colour_g[0];
+                        g_b = View.grid10_Colour_b[0];
                         z_offset = 1f;
                         GL11.glLineWidth(2f);
                     } else {
-                        GL11.glColor3f(View.grid_Colour_r[0], View.grid_Colour_g[0], View.grid_Colour_b[0]);
+                        g_r = View.grid_Colour_r[0];
+                        g_g = View.grid_Colour_g[0];
+                        g_b = View.grid_Colour_b[0];
                         z_offset = 0;
                         GL11.glLineWidth(1f);
                     }
-                    GL11.glBegin(GL11.GL_LINES);
                     Vector4f grid_center1 = new Vector4f();
                     Vector4f grid_center2 = new Vector4f();
                     grid_center1.set(c3d.getGrid()[r]);
                     grid_center2.set(grid_center1);
-                    for (float i = 0f; i < c3d.getGrid()[3 + r].y; i += 1f) {
+                    
+                    int size = 0;
+                    float limit = c3d.getGrid()[3 + r].y;
+                    for (float i = 0f; i < limit; i += 1f) {
+                        size = size + 24;
+                    }
+                    limit = c3d.getGrid()[3 + r].x;
+                    for (float i = 0f; i < limit; i += 1f) {
+                        size = size + 24;
+                    }
+                    
+                    final float[] vertices = new float[size];
+                    int j = 0;
+                    
+                    limit = c3d.getGrid()[3 + r].y;
+                    for (float i = 0f; i < limit; i += 1f) {
                         Vector4f.sub(grid_center2, c3d.getGrid()[2 + r], grid_center2);
-                        GL11.glVertex3f(viewport_origin_axis[0].x, grid_center1.y, viewport_origin_axis[0].z + z_offset);
-                        GL11.glVertex3f(viewport_origin_axis[1].x, grid_center1.y, viewport_origin_axis[1].z + z_offset);
-                        GL11.glVertex3f(viewport_origin_axis[0].x, grid_center2.y, viewport_origin_axis[0].z + z_offset);
-                        GL11.glVertex3f(viewport_origin_axis[1].x, grid_center2.y, viewport_origin_axis[1].z + z_offset);
+                        vertices[j] = viewport_origin_axis[0].x; j++;
+                        vertices[j] = grid_center1.y; j++;
+                        vertices[j] = viewport_origin_axis[0].z + z_offset; j++;
+                        vertices[j] = g_r; j++;
+                        vertices[j] = g_g; j++;
+                        vertices[j] = g_b; j++;
+                        vertices[j] = viewport_origin_axis[1].x; j++;
+                        vertices[j] = grid_center1.y; j++;
+                        vertices[j] = viewport_origin_axis[1].z + z_offset; j++;
+                        vertices[j] = g_r; j++;
+                        vertices[j] = g_g; j++;
+                        vertices[j] = g_b; j++;
+                        vertices[j] = viewport_origin_axis[0].x; j++;
+                        vertices[j] = grid_center2.y; j++;
+                        vertices[j] = viewport_origin_axis[0].z + z_offset; j++;
+                        vertices[j] = g_r; j++;
+                        vertices[j] = g_g; j++;
+                        vertices[j] = g_b; j++;
+                        vertices[j] = viewport_origin_axis[1].x; j++;
+                        vertices[j] = grid_center2.y; j++;
+                        vertices[j] = viewport_origin_axis[1].z + z_offset; j++;
+                        vertices[j] = g_r; j++;
+                        vertices[j] = g_g; j++;
+                        vertices[j] = g_b; j++;
                         Vector4f.add(grid_center1, c3d.getGrid()[2 + r], grid_center1);
                     }
                     grid_center1.set(c3d.getGrid()[r]);
                     grid_center2.set(grid_center1);
-                    for (float i = 0f; i < c3d.getGrid()[3 + r].x; i += 1f) {
+                    limit = c3d.getGrid()[3 + r].x;
+                    for (float i = 0f; i < limit; i += 1f) {
                         Vector4f.sub(grid_center2, c3d.getGrid()[1 + r], grid_center2);
-                        GL11.glVertex3f(grid_center2.x, viewport_origin_axis[2].y, viewport_origin_axis[2].z + z_offset);
-                        GL11.glVertex3f(grid_center2.x, viewport_origin_axis[3].y, viewport_origin_axis[3].z + z_offset);
-                        GL11.glVertex3f(grid_center1.x, viewport_origin_axis[2].y, viewport_origin_axis[2].z + z_offset);
-                        GL11.glVertex3f(grid_center1.x, viewport_origin_axis[3].y, viewport_origin_axis[3].z + z_offset);
+                        vertices[j] = grid_center2.x; j++;
+                        vertices[j] = viewport_origin_axis[2].y; j++;
+                        vertices[j] = viewport_origin_axis[2].z + z_offset; j++;
+                        vertices[j] = g_r; j++;
+                        vertices[j] = g_g; j++;
+                        vertices[j] = g_b; j++;
+                        vertices[j] = grid_center2.x; j++;
+                        vertices[j] = viewport_origin_axis[3].y; j++;
+                        vertices[j] = viewport_origin_axis[3].z + z_offset; j++;
+                        vertices[j] = g_r; j++;
+                        vertices[j] = g_g; j++;
+                        vertices[j] = g_b; j++;
+                        vertices[j] = grid_center1.x; j++;
+                        vertices[j] = viewport_origin_axis[2].y; j++;
+                        vertices[j] = viewport_origin_axis[2].z + z_offset; j++;
+                        vertices[j] = g_r; j++;
+                        vertices[j] = g_g; j++;
+                        vertices[j] = g_b; j++;
+                        vertices[j] = grid_center1.x; j++;
+                        vertices[j] = viewport_origin_axis[3].y; j++;
+                        vertices[j] = viewport_origin_axis[3].z + z_offset; j++;
+                        vertices[j] = g_r; j++;
+                        vertices[j] = g_g; j++;
+                        vertices[j] = g_b; j++;
                         Vector4f.add(grid_center1, c3d.getGrid()[1 + r], grid_center1);
                     }
-                    GL11.glEnd();
+                    helper.drawLinesRGB_General(vertices);
                 }
                 z_offset = 2f; // z_offset + 5 + 1f * c3d.getZoom();
             }
@@ -1718,13 +1814,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             if (c3d.isOriginShown()) {
                 // Origin
                 GL11.glLineWidth(2f);
-                GL11.glBegin(GL11.GL_LINES);
-                GL11.glColor3f(View.origin_Colour_r[0], View.origin_Colour_g[0], View.origin_Colour_b[0]);
-                GL11.glVertex3f(viewport_origin_axis[0].x, viewport_origin_axis[0].y, viewport_origin_axis[0].z + z_offset);
-                GL11.glVertex3f(viewport_origin_axis[1].x, viewport_origin_axis[1].y, viewport_origin_axis[1].z + z_offset);
-                GL11.glVertex3f(viewport_origin_axis[2].x, viewport_origin_axis[2].y, viewport_origin_axis[2].z + z_offset);
-                GL11.glVertex3f(viewport_origin_axis[3].x, viewport_origin_axis[3].y, viewport_origin_axis[3].z + z_offset);
-                GL11.glEnd();
+                helper.drawLinesRGB_General(new float[]{
+                        viewport_origin_axis[0].x, viewport_origin_axis[0].y, viewport_origin_axis[0].z + z_offset,
+                        View.origin_Colour_r[0], View.origin_Colour_g[0], View.origin_Colour_b[0],
+                        viewport_origin_axis[1].x, viewport_origin_axis[1].y, viewport_origin_axis[1].z + z_offset,
+                        View.origin_Colour_r[0], View.origin_Colour_g[0], View.origin_Colour_b[0],
+                        viewport_origin_axis[2].x, viewport_origin_axis[2].y, viewport_origin_axis[2].z + z_offset,
+                        View.origin_Colour_r[0], View.origin_Colour_g[0], View.origin_Colour_b[0],
+                        viewport_origin_axis[3].x, viewport_origin_axis[3].y, viewport_origin_axis[3].z + z_offset,
+                        View.origin_Colour_r[0], View.origin_Colour_g[0], View.origin_Colour_b[0]});
             }
 
             if (c3d.isAnaglyph3d() && !raytraceMode && state3d == 0) {
@@ -1768,16 +1866,16 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         cone_width = .00004f;
                         line_width = 2f;
                     }
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(ox - viewport_width, viewport_height - oy, 0f);
-                    GL11.glMultMatrixf(rotation);
-                    new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,  l, 0f, 0f, cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
-                    new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,  l, 0f, cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
-                    new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,  l, cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
-                    GL11.glPopMatrix();
+                    stack.glPushMatrix();
+                    stack.glTranslatef(ox - viewport_width, viewport_height - oy, 0f);
+                    stack.glMultMatrixf(viewport_rotation);
+                    new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,  l, 0f, 0f, cone_height, cone_width, line_width).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
+                    new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,  l, 0f, cone_height, cone_width, line_width).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
+                    new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,  l, cone_height, cone_width, line_width).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
+                    stack.glPopMatrix();
                 }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
-                if (c3d.isShowingLabels() && c3d.isClassicPerspective()) {
+                if (false && c3d.isShowingLabels() && c3d.isClassicPerspective()) {
                     PGData3.beginDrawText();
                     switch (c3d.getPerspectiveIndex()) {
                     case FRONT:
@@ -1817,50 +1915,72 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     PGData3.endDrawText();
                 }
                 if (Project.getFileToEdit().equals(c3d.getLockableDatFileReference())) {
+                    final float r;
+                    final float g;
+                    final float b;
+                    
                     if (Project.getFileToEdit().isReadOnly()) {
-                        GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
+                        r = View.text_Colour_r[0];
+                        g = View.text_Colour_g[0];
+                        b = View.text_Colour_b[0];
                     } else {
-                        GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                        r = View.vertex_selected_Colour_r[0];
+                        g = View.vertex_selected_Colour_g[0];
+                        b = View.vertex_selected_Colour_b[0];
                     }
                     GL11.glLineWidth(7f);
-                    GL11.glBegin(GL11.GL_LINES);
-                    GL11.glVertex3f(viewport_width, viewport_height, viewport_origin_axis[3].z);
-                    GL11.glVertex3f(viewport_width, -viewport_height, viewport_origin_axis[3].z);
-                    GL11.glEnd();
+                    helper.drawLinesRGB_General(new float[]{
+                    viewport_width, viewport_height, viewport_origin_axis[3].z,
+                    r, g, b,
+                    viewport_width, -viewport_height, viewport_origin_axis[3].z,
+                    r, g, b
+                    });
                     GL11.glLineWidth(10f);
-                    GL11.glBegin(GL11.GL_LINES);
-                    GL11.glVertex3f(-viewport_width, -viewport_height, viewport_origin_axis[3].z);
-                    GL11.glVertex3f(-viewport_width, viewport_height, viewport_origin_axis[3].z);
-                    GL11.glEnd();
+                    helper.drawLinesRGB_General(new float[]{
+                    -viewport_width, -viewport_height, viewport_origin_axis[3].z,
+                    r, g, b,
+                    -viewport_width, viewport_height, viewport_origin_axis[3].z,
+                    r, g, b,
+                    });
                     GL11.glLineWidth(5f);
-                    GL11.glBegin(GL11.GL_LINES);
-                    GL11.glVertex3f(-viewport_width, viewport_height, viewport_origin_axis[3].z);
-                    GL11.glVertex3f(viewport_width, viewport_height, viewport_origin_axis[3].z);
-                    GL11.glEnd();
+                    helper.drawLinesRGB_General(new float[]{
+                    -viewport_width, viewport_height, viewport_origin_axis[3].z,
+                    r, g, b,
+                    viewport_width, viewport_height, viewport_origin_axis[3].z,
+                    r, g, b
+                    });
                     GL11.glLineWidth(10f);
-                    GL11.glBegin(GL11.GL_LINES);
-                    GL11.glVertex3f(-viewport_width, -viewport_height, viewport_origin_axis[3].z);
-                    GL11.glVertex3f(viewport_width, -viewport_height, viewport_origin_axis[3].z);
-                    GL11.glEnd();
+                    helper.drawLinesRGB_General(new float[]{
+                    -viewport_width, -viewport_height, viewport_origin_axis[3].z,
+                    r, g, b,
+                    viewport_width, -viewport_height, viewport_origin_axis[3].z,
+                    r, g, b
+                    });
                 }
 
                 if (!c3d.isDoingSelection() && !manipulator.isLocked() && !window.isAddingSomething() && c3d.getDraggedPrimitive() == null) {
+                    float r;
+                    float g;
+                    float b;
                     Vector2f mp = c3d.getMousePosition();
-                    GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
+                    r = View.text_Colour_r[0];
+                    g = View.text_Colour_g[0];
+                    b = View.text_Colour_b[0];
                     if (mp.x > 50f || mp.y > 50f) {
-                        GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
                         if (DatFile.getLastHoveredComposite() == c3d) {
                             hoverSettingsTime = System.currentTimeMillis();
                         }
                     } else if (mp.x > 0f && mp.y > 0f) {
-                        GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                        r = View.vertex_selected_Colour_r[0];
+                        g = View.vertex_selected_Colour_g[0];
+                        b = View.vertex_selected_Colour_b[0];
                         if (System.currentTimeMillis() - hoverSettingsTime > 300 && DatFile.getLastHoveredComposite() == c3d) {
 
                             hoverSettingsTime = System.currentTimeMillis();
 
-                            java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
-                            final int x = (int) b.getX();
-                            final int y = (int) b.getY();
+                            java.awt.Point p = java.awt.MouseInfo.getPointerInfo().getLocation();
+                            final int x = (int) p.getX();
+                            final int y = (int) p.getY();
 
                             Menu menu = c3d.getMenu();
                             if (!menu.isDisposed() && !menu.getVisible()) {
@@ -1874,14 +1994,16 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                     final float gx = viewport_width - 0.018f;
                     final float gy = -viewport_height + 0.018f;
-                    GLPrimitives.GEAR_MENU.draw(gx, gy, viewport_origin_axis[0].z);
-                    GLPrimitives.GEAR_MENU_INV.draw(gx, gy, viewport_origin_axis[0].z);
+                    // GLPrimitives.GEAR_MENU_GL33.draw(gx, gy, viewport_origin_axis[0].z, r, g, b);
+                    // GLPrimitives.GEAR_MENU_INV_GL33.draw(gx, gy, viewport_origin_axis[0].z, r, g, b);
                 }
 
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
                 break;
             }
         }
+        
+        helper.destroyVBO();
         
         canvas.swapBuffers();
         
@@ -1892,6 +2014,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     public void dispose() {
         // Properly de-allocate all resources once they've outlived their purpose
         shaderProgram.dispose();
+        shaderProgram2.dispose();
+        shaderProgram2D.dispose();
     }
     
     @Override
@@ -1904,5 +2028,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     public void disposeAllTextures() {
         // TODO Auto-generated method stub
         
+    }
+    
+    public Matrix4f getRotationInverse() {
+        return rotation_inv4f;
     }
 }

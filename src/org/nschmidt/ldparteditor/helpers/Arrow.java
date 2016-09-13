@@ -21,7 +21,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import org.nschmidt.ldparteditor.opengl.GL33HelperPrimitives;
+import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
@@ -209,7 +209,7 @@ public class Arrow {
         GL11.glPopMatrix();
     }
     
-    public void drawGL33_PrimitiveArea_RGB(GLMatrixStack stack, float x, float y, float z, float zoom) {
+    public void drawGL33_RGB(GLMatrixStack stack, float x, float y, float z, float zoom) {
         final float zoom_inv = 1f / zoom;
         stack.glPushMatrix();
         
@@ -226,7 +226,7 @@ public class Arrow {
                     0f, line_end, 0f,
                     r, g, b
             };
-            GL33HelperPrimitives.drawLinesRGB_Line(vertexData);
+            GL33Helper.drawLinesRGB_GeneralSlow(vertexData);
         }
         
         int[] indices = new int[16 * 3];            
@@ -264,7 +264,7 @@ public class Arrow {
                     cone[32], cone_start, cone[33], r, g, b
             };
             
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
+            GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
         }
 
         {
@@ -295,7 +295,7 @@ public class Arrow {
                 cone[0], cone_start, cone[1], r, g, b
             };
             
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
+            GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
         }
         
         stack.glPopMatrix();

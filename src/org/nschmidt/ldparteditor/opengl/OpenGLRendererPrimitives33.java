@@ -38,6 +38,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
     
     private GLShader shaderProgram = new GLShader();
     private final GLMatrixStack stack = new GLMatrixStack();
+    private final GL33Helper helper = new GL33Helper();
     
     public OpenGLRendererPrimitives33(CompositePrimitive compositePrimitive) {
         this.cp = compositePrimitive;
@@ -97,8 +98,8 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         final float viewport_width = bounds.width / View.PIXEL_PER_LDU;
         final float viewport_height = bounds.height / View.PIXEL_PER_LDU;
         GLMatrixStack.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom()).store(projection_buf);
-        projection_buf.position(0);        
-                
+        projection_buf.position(0);
+
         int view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(view, false, view_buf);
 
@@ -107,6 +108,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         
         stack.clear();
         GL33HelperPrimitives.createVBO_PrimitiveArea();
+        helper.createVBO();
         
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -213,9 +215,9 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         stack.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
         stack.glMultMatrixf(rotation);
         
-        new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,-.5f, 0f, 0f, .00015f, .00004f, 2f).drawGL33_PrimitiveArea_RGB(stack, 0f, 0f, 0f, .01f);
-        new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,.5f, 0f, .00015f, .00004f, 2f).drawGL33_PrimitiveArea_RGB(stack, 0f, 0f, 0f, .01f);
-        new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,.5f, .00015f, .00004f, 2f).drawGL33_PrimitiveArea_RGB(stack, 0f, 0f, 0f, .01f);
+        new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], 1f,-.5f, 0f, 0f, .00015f, .00004f, 2f).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
+        new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 1f, 0f,.5f, 0f, .00015f, .00004f, 2f).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
+        new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 1f, 0f, 0f,.5f, .00015f, .00004f, 2f).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
         
         stack.glPopMatrix();
          
@@ -228,6 +230,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         }
         
         GL33HelperPrimitives.destroyVBO_PrimitiveArea();
+        helper.destroyVBO();
         
         canvas.swapBuffers();
         
@@ -284,7 +287,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 x + 15.25f, y + 16.4f, 0f,
                 View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0]};
         
-        GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
+        helper.drawTrianglesIndexedRGB_General(vertexData, indices);
     }
 
     private void drawMinus(float x, float y) {
@@ -305,7 +308,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 x + 16f, y + 15.75f, 0f,
                 View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0]};
         
-        GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
+        helper.drawTrianglesIndexedRGB_General(vertexData, indices);
     }
 
     private void drawSignBackground(float x, float y) {
@@ -360,7 +363,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 8, 9, 11,
                 9, 10, 11,
             };
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
+            helper.drawTrianglesIndexedRGB_General(vertexData, indices);
         }
         
         int[] indices = new int[27];            
@@ -394,7 +397,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 vertexData[i] = g; i++;
                 vertexData[i] = b; i++;
             }
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
+            helper.drawTrianglesIndexedRGB_General(vertexData, indices);
         }
         
         
@@ -422,7 +425,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 vertexData[i] = g; i++;
                 vertexData[i] = b; i++;
             }
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
+            helper.drawTrianglesIndexedRGB_General(vertexData, indices);
         }
         
         
@@ -450,7 +453,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 vertexData[i] = g; i++;
                 vertexData[i] = b; i++;
             }
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
+            helper.drawTrianglesIndexedRGB_General(vertexData, indices);
         }
         
         
@@ -478,7 +481,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
                 vertexData[i] = g; i++;
                 vertexData[i] = b; i++;
             }
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_General(vertexData, indices);
+            helper.drawTrianglesIndexedRGB_General(vertexData, indices);
         }
     }
 }
