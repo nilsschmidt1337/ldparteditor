@@ -151,7 +151,7 @@ public final class GDataBFC extends GData {
     public void drawGL20_WhileAddCondlines(Composite3D c3d) {
         drawGL20_BFC(null);
     }
-
+    
     @Override
     public int type() {
         return 6;
@@ -333,5 +333,4 @@ public final class GDataBFC extends GData {
             break;
         }
     }
-
 }

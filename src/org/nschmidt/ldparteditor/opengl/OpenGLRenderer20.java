@@ -22,11 +22,9 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -82,9 +80,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class OpenGLRenderer20 extends OpenGLRenderer {
 
-    /** The 3D Composite */
-    private final Composite3D c3d;
-
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
     private final FloatBuffer viewport = BufferUtils.createFloatBuffer(16);
     private final FloatBuffer rotation = BufferUtils.createFloatBuffer(16);
@@ -113,7 +108,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
     }
 
     public OpenGLRenderer20(Composite3D c3d) {
-        this.c3d = c3d;
+        super(c3d);
     }
 
     public Composite3D getC3D() {
@@ -136,22 +131,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
     private int noGlossMapSwitch = -1;
     private int cubeMapSwitch = -1;
 
-    /** The set, which stores already loaded textures in-memory. */
-    private Set<GTexture> textureSet = new HashSet<GTexture>();
-
     private int skipFrame;
 
     private volatile AtomicBoolean calculateVertexNormals = new AtomicBoolean(true);
-
-    /**
-     * Registers a texture with a given ID
-     *
-     * @param ID
-     *            The ID of the texture
-     */
-    public void registerTexture(GTexture tex) {
-        textureSet.add(tex);
-    }
 
     /**
      * Initializes the Scene and gives OpenGL-Hints
@@ -2012,42 +1994,6 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         }
     }
 
-    /**
-     * Disposes all textures
-     */
-    public void disposeAllTextures() {
-        final GLCanvas canvas = c3d.getCanvas();
-        if (!canvas.isCurrent()) {
-            canvas.setCurrent();
-            GL.setCapabilities(c3d.getCapabilities());
-        }
-        for (Iterator<GTexture> it = textureSet.iterator() ; it.hasNext();) {
-            GTexture tex = it.next();
-            NLogger.debug(getClass(), "Dispose texture: {0}", tex); //$NON-NLS-1$
-            tex.dispose(this);
-            it.remove();
-        }
-    }
-
-    /**
-     * Disposes old textures
-     */
-    public synchronized void disposeOldTextures() {
-        final GLCanvas canvas = c3d.getCanvas();
-        if (!canvas.isCurrent()) {
-            canvas.setCurrent();
-            GL.setCapabilities(c3d.getCapabilities());
-        }
-        Iterator<GTexture> ti = textureSet.iterator();
-        for (GTexture tex = null; ti.hasNext() && (tex = ti.next()) != null;) {
-            if (tex.isTooOld()) {
-                NLogger.debug(getClass(), "Dispose old texture: {0}", tex); //$NON-NLS-1$
-                tex.dispose(this);
-                ti.remove();
-            }
-        }
-    }
-
     private int loadGlossFragmentShader() {
         StringBuilder shaderSource = new StringBuilder();
         int shaderID = 0;
@@ -2138,16 +2084,6 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
     public int getCubeMapSwitch() {
         return cubeMapSwitch;
-    }
-
-    public boolean containsOnlyCubeMaps() {
-        int counter = 0;
-        for (GTexture tex : textureSet) {
-            if (tex.getCubeMapIndex() > 0) {
-                counter++;
-            }
-        }
-        return textureSet.size() == counter;
     }
 
     public int getCubeMapMatteLoc() {

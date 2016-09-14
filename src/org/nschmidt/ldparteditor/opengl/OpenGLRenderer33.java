@@ -77,9 +77,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class OpenGLRenderer33 extends OpenGLRenderer {
 
-    /** The 3D Composite */
-    private final Composite3D c3d;
-    
     private GLShader shaderProgram = new GLShader();
     private GLShader shaderProgram2 = new GLShader();
     private GLShader shaderProgram2D = new GLShader();
@@ -113,7 +110,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     private static long hoverSettingsTime = System.currentTimeMillis();
     
     public OpenGLRenderer33(Composite3D c3d) {
-        this.c3d = c3d;
+        super(c3d);
     }
     
     @Override
@@ -2180,18 +2177,6 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         shaderProgram.dispose();
         shaderProgram2.dispose();
         shaderProgram2D.dispose();
-    }
-    
-    @Override
-    public void disposeOldTextures() {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    @Override
-    public void disposeAllTextures() {
-        // TODO Auto-generated method stub
-        
     }
     
     public Matrix4f getRotationInverse() {

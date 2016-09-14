@@ -397,7 +397,7 @@ public class GTexture {
         return result;
     }
 
-    public void dispose(OpenGLRenderer20 renderer) {
+    public void dispose(OpenGLRenderer renderer) {
         if (OpenGlDisposed.containsKey(renderer)) {
             boolean disposed = OpenGlDisposed.get(renderer);
             int ID = OpenGlID.get(renderer);
