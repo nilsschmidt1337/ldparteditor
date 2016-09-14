@@ -36,6 +36,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -44,6 +45,7 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GColourType;
+import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
@@ -90,6 +92,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
     private final FloatBuffer view_buf = BufferUtils.createFloatBuffer(16);
+    private final FloatBuffer rot_buf = BufferUtils.createFloatBuffer(16);
     private final Matrix4f rotation_inv4f = new Matrix4f();
 
     private final float[][][] renderedPoints = new float[1][][];
@@ -127,6 +130,37 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         shaderProgram2D = new GLShader("2D.vert", "2D.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         stack.setShader(shaderProgram);
         shaderProgram.use();
+        
+        
+        {
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l0_r"), View.light1_Colour_r[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l0_g"), View.light1_Colour_g[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l0_b"), View.light1_Colour_b[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l0s_r"), View.light1_specular_Colour_r[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l0s_g"), View.light1_specular_Colour_g[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l0s_b"), View.light1_specular_Colour_b[0]); //$NON-NLS-1$
+            
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l1_r"), View.light2_Colour_r[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l1_g"), View.light2_Colour_g[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l1_b"), View.light2_Colour_b[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l1s_r"), View.light2_specular_Colour_r[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l1s_g"), View.light2_specular_Colour_g[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l1s_b"), View.light2_specular_Colour_b[0]); //$NON-NLS-1$
+            
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l2_r"), View.light3_Colour_r[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l2_g"), View.light3_Colour_g[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l2_b"), View.light3_Colour_b[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l2s_r"), View.light3_specular_Colour_r[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l2s_g"), View.light3_specular_Colour_g[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l2s_b"), View.light3_specular_Colour_b[0]); //$NON-NLS-1$
+            
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l3_r"), View.light4_Colour_r[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l3_g"), View.light4_Colour_g[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l3_b"), View.light4_Colour_b[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_r"), View.light4_specular_Colour_r[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_g"), View.light4_specular_Colour_g[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_b"), View.light4_specular_Colour_b[0]); //$NON-NLS-1$
+        }
         
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -230,6 +264,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             final float zoom = c3d.getZoom();
             Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewport_transform, viewport_transform);
             Matrix4f viewport_rotation = c3d.getRotation();
+            viewport_rotation.store(rot_buf);
+            rot_buf.flip();
             Matrix4f.load(viewport_rotation, rotation_inv4f);
             rotation_inv4f.invert();
             Matrix4f.mul(viewport_rotation, viewport_transform, viewport_transform);
@@ -249,6 +285,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 shaderProgram.use();
                 view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
                 GL20.glUniformMatrix4fv(view, false, view_buf);
+                view = shaderProgram.getUniformLocation("rotation" ); //$NON-NLS-1$
+                GL20.glUniformMatrix4fv(view, false, rot_buf);
             }
 
             if (c3d.isAnaglyph3d() && !raytraceMode) {
@@ -322,6 +360,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 }
             }
 
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
             GL11.glEnable(GL11.GL_CULL_FACE);
             if (negDet) {
                 GL11.glFrontFace(GL11.GL_CCW);
@@ -371,6 +410,10 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             }
             
             modelRenderer.draw(stack, shaderProgram, false, c3d.getLockableDatFileReference(), c3d);
+            
+//            GL30.glDeleteVertexArrays(GData.VAOtest);
+//            GL15.glDeleteBuffers(VBOtest);
+//            GL15.glDeleteBuffers(EBOtest);
 
             if (!raytraceMode) {
                 c3d.getVertexManager().drawGL33(stack, c3d);

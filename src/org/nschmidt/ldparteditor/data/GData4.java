@@ -19,7 +19,9 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -1656,10 +1658,69 @@ public final class GData4 extends GData {
         return 0;
     }
 
+    private int VAO = -1;
     @Override
     public void drawGL33(Composite3D c3d, GLMatrixStack stack) {
         // TODO Auto-generated method stub
-        
+        final StringBuilder id = new StringBuilder();
+        id.append(ID);
+        id.append(GDataBFC.globalNegativeDeterminant ^ GDataBFC.globalInvertNext);
+        id.append(0); // Render mode
+        id.append(GDataBFC.localWinding);
+        if (VAO != -1) {
+            GL30.glBindVertexArray(VAO);
+            GL11.glDrawElements(GL11.GL_TRIANGLES, 12, GL11.GL_UNSIGNED_INT, 0);
+            GL30.glBindVertexArray(0);
+        } else {
+            float[] verticestest = new float[]{
+                    x1,  y1, z1,  // Top Right
+                    xn,  yn, zn,  // Normal
+                    r, g, b, a, // Colour
+                    
+                    x2, y2, z2,  // Bottom Right
+                    xn,  yn, zn,  // Normal
+                    r, g, b, a, // Colour
+                    
+                    x3, y3, z3,  // Bottom Left
+                    xn,  yn, zn,  // Normal
+                    r, g, b, a, // Colour
+                    
+                    x4, y4, z4,  // Bottom Left
+                    xn,  yn, zn,  // Normal
+                    r, g, b, a // Colour
+               };
+               int[] indices = new int[]{ 
+                       0, 1, 2,
+                       2, 3, 0,
+                       0, 3, 2,
+                       2, 1, 0
+               };
+               
+               VAO = GL30.glGenVertexArrays();
+               int VBOtest = GL15.glGenBuffers();
+               int EBOtest = GL15.glGenBuffers();
+               // Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
+               GL30.glBindVertexArray(VAO);
+
+               GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOtest);
+               GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticestest, GL15.GL_STATIC_DRAW);
+               
+               GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBOtest);
+               GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
+
+               GL20.glEnableVertexAttribArray(0);
+               GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+               
+               GL20.glEnableVertexAttribArray(1);
+               GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
+               
+               GL20.glEnableVertexAttribArray(2);
+               GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+
+               GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
+
+               GL30.glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
+        }
     }
 
     @Override
