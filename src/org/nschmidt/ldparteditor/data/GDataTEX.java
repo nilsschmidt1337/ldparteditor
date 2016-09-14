@@ -21,6 +21,7 @@ import java.util.HashMap;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
  * @author nils
@@ -316,5 +317,53 @@ public final class GDataTEX extends GData {
 
     public GData getLinkedData() {
         return linkedData;
+    }
+
+    @Override
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFCuncertified(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC_backOnly(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC_Textured(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_WhileAddCondlines(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
     }
 }

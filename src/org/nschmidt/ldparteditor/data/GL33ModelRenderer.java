@@ -74,52 +74,52 @@ public class GL33ModelRenderer {
         case -1: // Wireframe
             break;
         case 0: // No BFC
-            data2draw.drawGL20(c3d);
+            data2draw.drawGL33(c3d, stack);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-             // FIXME data2draw.drawGL20(c3d);
+                data2draw.drawGL33(c3d, stack);
             }
             break;
         case 1: // Random Colours
-            data2draw.drawGL20_RandomColours(c3d);
+            data2draw.drawGL33_RandomColours(c3d, stack);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                // FIXME data2draw.drawGL20_RandomColours(c3d);
+                data2draw.drawGL33_RandomColours(c3d, stack);
             }
             break;
         case 2: // Front-Backface BFC
-            data2draw.drawGL20_BFC(c3d);
+            data2draw.drawGL33_BFC(c3d, stack);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 switch (GData.accumClip) {
                 case 0:
-                    // FIXME data2draw.drawGL20_BFC(c3d);
+                    data2draw.drawGL33_BFC(c3d, stack);
                     break;
                 default:
-                    // FIXME data2draw.drawGL20(c3d);
+                    data2draw.drawGL33(c3d, stack);
                     break;
                 }
             }
             break;
         case 3: // Backface only BFC
-            data2draw.drawGL20_BFC_backOnly(c3d);
+            data2draw.drawGL33_BFC_backOnly(c3d, stack);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 switch (GData.accumClip) {
                 case 0:
-                    // FIXME data2draw.drawGL20_BFC_backOnly(c3d);
+                    data2draw.drawGL33_BFC_backOnly(c3d, stack);
                     break;
                 default:
-                    // FIXME data2draw.drawGL20(c3d);
+                    data2draw.drawGL33(c3d, stack);
                     break;
                 }
             }
             break;
         case 4: // Real BFC
-            data2draw.drawGL20_BFC_Colour(c3d);
+            data2draw.drawGL33_BFC_Colour(c3d, stack);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 switch (GData.accumClip) {
                 case 0:
-                 // FIXME data2draw.drawGL20_BFC_Colour(c3d);
+                    data2draw.drawGL33_BFC_Colour(c3d, stack);
                     break;
                 default:
-                 // FIXME data2draw.drawGL20(c3d);
+                    data2draw.drawGL33(c3d, stack);
                     break;
                 }
             }
@@ -129,17 +129,17 @@ public class GL33ModelRenderer {
                 break;
             }
             GL11.glEnable(GL11.GL_TEXTURE_2D);
-            data2draw.drawGL20_BFC_Textured(c3d);
+            data2draw.drawGL33_BFC_Textured(c3d, stack);
             GDataInit.resetBfcState();
-            data2draw.drawGL20_BFC_Textured(c3d);
-            CUBEMAP.drawGL20_BFC_Textured(c3d);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome()), true).drawGL20_BFC_Textured(c3d.getComposite3D());
-            CUBEMAP_MATTE.drawGL20_BFC_Textured(c3d);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawGL20_BFC_Textured(c3d.getComposite3D());
-            CUBEMAP_METAL.drawGL20_BFC_Textured(c3d);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawGL20_BFC_Textured(c3d.getComposite3D());
+            data2draw.drawGL33_BFC_Textured(c3d, stack);
+            CUBEMAP.drawGL33_BFC_Textured(c3d, stack);
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack);
+            CUBEMAP_MATTE.drawGL33_BFC_Textured(c3d, stack);
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack);
+            CUBEMAP_METAL.drawGL33_BFC_Textured(c3d, stack);
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                data2draw.drawGL20_BFC_Textured(c3d);
+                data2draw.drawGL33_BFC_Textured(c3d, stack);
             }
             // vertices.clearVertexNormalCache();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
@@ -155,9 +155,9 @@ public class GL33ModelRenderer {
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             break;
         case 6: // Special mode for "Add condlines"
-            data2draw.drawGL20_WhileAddCondlines(c3d);
+            data2draw.drawGL33_WhileAddCondlines(c3d, stack);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                // FIXME data2draw.drawGL20_WhileAddCondlines(c3d);
+                data2draw.drawGL33_WhileAddCondlines(c3d, stack);
             }
             break;
         default:
