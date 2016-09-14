@@ -43,6 +43,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.TexMapParser;
 
@@ -480,9 +481,9 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1();
+                        drawStudLogo1_GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2();
+                        drawStudLogo2_GL20();
                 }
 
                 GData data2draw = myGData;
@@ -565,9 +566,9 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1();
+                        drawStudLogo1_GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2();
+                        drawStudLogo2_GL20();
                 }
 
                 GData data2draw = myGData;
@@ -689,9 +690,9 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1();
+                        drawStudLogo1_GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2();
+                        drawStudLogo2_GL20();
                 }
 
                 GData data2draw = myGData;
@@ -790,9 +791,9 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1();
+                        drawStudLogo1_GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2();
+                        drawStudLogo2_GL20();
                 }
 
                 GData data2draw = myGData;
@@ -885,9 +886,9 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1();
+                        drawStudLogo1_GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2();
+                        drawStudLogo2_GL20();
                 }
 
                 GData data2draw = myGData;
@@ -988,9 +989,9 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1();
+                        drawStudLogo1_GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2();
+                        drawStudLogo2_GL20();
                 }
 
                 GData data2draw = myGData;
@@ -1193,9 +1194,9 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1();
+                        drawStudLogo1_GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2();
+                        drawStudLogo2_GL20();
                 }
 
                 GData data2draw = myGData;
@@ -2137,7 +2138,7 @@ public final class GData1 extends GData {
         return lineBuilder.toString();
     }
 
-    private static void drawStudLogo1() {
+    private static void drawStudLogo1_GL20() {
         final float Y = -4.04f;
         GL11.glLineWidth(2f);
         GL11.glColor4f(0f, 0f, 0f, 1f);
@@ -2323,7 +2324,7 @@ public final class GData1 extends GData {
         GL11.glEnd();
     }
 
-    private static void drawStudLogo2() {
+    private static void drawStudLogo2_GL20() {
         final float Y = -0.04f;
         GL11.glLineWidth(2f);
         GL11.glColor4f(0f, 0f, 0f, 1f);
@@ -2507,6 +2508,16 @@ public final class GData1 extends GData {
         GL11.glVertex3f(1.24f * 620f, Y * 620f, 1.93f * 620f);
         GL11.glVertex3f(-1.45f * 620f, Y * 620f, 2.66f * 620f);
         GL11.glEnd();
+    }
+
+    private static void  drawStudLogo1_GL33() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    private static void  drawStudLogo2_GL33() {
+        // TODO Auto-generated method stub
+        
     }
 
     public boolean isRecursive() {
@@ -2810,6 +2821,132 @@ public final class GData1 extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(shortName);
         return lineBuilder.toString();
+    }
+
+    @Override
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack) {
+        if (!visible)
+            return;
+        if (matrix != null) {
+
+            final Rectangle bounds = c3d.getClientArea();
+            final PerspectiveCalculator PC = c3d.getPerspectiveCalculator();
+
+            Vector4f bbmin = new Vector4f();
+            Vector4f bbmax = new Vector4f();
+
+            Vector4f c1 = new Vector4f(boundingBoxMin);
+            Vector4f c2 = new Vector4f(boundingBoxMin);
+            Vector4f c3 = new Vector4f(boundingBoxMin);
+            Vector4f c4 = new Vector4f(boundingBoxMin);
+            Vector4f c5 = new Vector4f(boundingBoxMax);
+            Vector4f c6 = new Vector4f(boundingBoxMax);
+            Vector4f c7 = new Vector4f(boundingBoxMax);
+            Vector4f c8 = new Vector4f(boundingBoxMax);
+
+            c2.x = boundingBoxMax.x;
+            c3.y = boundingBoxMax.y;
+            c4.z = boundingBoxMax.z;
+
+            c6.x = boundingBoxMin.x;
+            c7.y = boundingBoxMin.y;
+            c8.z = boundingBoxMin.z;
+
+            c1.set(PC.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(PC.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(PC.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(PC.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(PC.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(PC.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(PC.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(PC.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+
+            bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
+            bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
+
+            bbmin.y = Math.min(c1.y, Math.min(c2.y, Math.min(c3.y, Math.min(c4.y, Math.min(c5.y, Math.min(c6.y, Math.min(c7.y, c8.y)))))));
+            bbmax.y = Math.max(c1.y, Math.max(c2.y, Math.max(c3.y, Math.max(c4.y, Math.max(c5.y, Math.max(c6.y, Math.max(c7.y, c8.y)))))));
+
+            Rectangle boundingBox = new Rectangle((int) bbmin.x, (int) bbmin.y, (int) (bbmax.x - bbmin.x), (int) (bbmax.y - bbmin.y));
+
+            boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
+            GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
+
+            if (boundingBox.intersects(bounds) || boundingBox.contains(0, 0) || boundingBox.contains(bounds.width, bounds.height) || boundingBox.contains(bounds.width, 0)
+                    || boundingBox.contains(0, bounds.height) || bounds.contains(boundingBox.x, boundingBox.y) || bounds.contains(boundingBox.x, boundingBox.y + boundingBox.height)
+                    || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
+
+                stack.glPushMatrix();
+                stack.glMultMatrixf(localMatrix);
+
+                if (c3d.isShowingLogo()) {
+                    if (filesWithLogo1.contains(shortName))
+                        drawStudLogo1_GL33();
+                    else if (filesWithLogo2.contains(shortName))
+                        drawStudLogo2_GL33();
+                }
+
+                GData data2draw = myGData;
+                if (GData.accumClip > 0) {
+                    GData.accumClip++;
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
+                        data2draw.drawGL33(c3d, stack);
+                    GData.accumClip--;
+                } else {
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
+                        data2draw.drawGL33(c3d, stack);
+                    if (GData.accumClip > 0)
+                        GData.accumClip = 0;
+                }
+
+                stack.glPopMatrix();
+
+            }
+
+            GData.globalNegativeDeterminant = tempNegativeDeterminant;
+        }
+    }
+
+    @Override
+    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFCuncertified(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC_backOnly(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC_Textured(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_WhileAddCondlines(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

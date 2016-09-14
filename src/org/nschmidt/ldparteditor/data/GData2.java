@@ -34,6 +34,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -821,6 +822,49 @@ public final class GData2 extends GData {
             }
             ox2 = ox2 - .01f * zoom;
         }
+    }
+
+    @Override
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack) {
+        drawGL33(c3d, stack);
+    }
+
+    @Override
+    public void drawGL33_BFCuncertified(Composite3D c3d, GLMatrixStack stack) {
+        drawGL33(c3d, stack);
+    }
+
+    @Override
+    public void drawGL33_BFC_backOnly(Composite3D c3d, GLMatrixStack stack) {
+        drawGL33(c3d, stack);
+    }
+
+    @Override
+    public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack) {
+        drawGL33(c3d, stack);
+    }
+
+    @Override
+    public void drawGL33_BFC_Textured(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_WhileAddCondlines(Composite3D c3d, GLMatrixStack stack) {
+        drawGL33(c3d, stack);
     }
 
     /*

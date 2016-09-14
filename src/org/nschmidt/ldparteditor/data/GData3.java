@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 
 /**
@@ -278,7 +279,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL20(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -313,7 +314,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL20(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         final float r = MathHelper.randomFloat(ID, 0);
@@ -351,7 +352,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL20(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -546,7 +547,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL20(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -710,7 +711,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL20(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -833,7 +834,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL20(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         switch (a < 1f ? BFC.NOCERTIFY : GData.localWinding) {
@@ -1524,7 +1525,7 @@ public final class GData3 extends GData {
         return lineBuilder.toString();
     }
 
-    public void drawProtractor(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
+    public void drawProtractor_GL20(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
@@ -1678,5 +1679,52 @@ public final class GData3 extends GData {
         Vector3d vc = new Vector3d(X3, Y3, Z3);
         vc = Vector3d.sub(va, vc);
         return vc.length();
+    }
+
+    @Override
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFCuncertified(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC_backOnly(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_BFC_Textured(Composite3D c3d, GLMatrixStack stack) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void drawGL33_WhileAddCondlines(Composite3D c3d, GLMatrixStack stack) {
+        drawGL33_BFC(c3d, stack);
     }
 }
