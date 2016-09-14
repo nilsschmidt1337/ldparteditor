@@ -26,7 +26,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
  *
  */
 interface IGData {
-
+    
     public void drawGL20(Composite3D c3d);
 
     public void drawGL20_RandomColours(Composite3D c3d);

@@ -15,13 +15,87 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.opengl;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.eclipse.swt.opengl.GLCanvas;
+import org.lwjgl.opengl.GL;
+import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.data.GTexture;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 public abstract class OpenGLRenderer implements IRenderer {
 
     private static final AtomicBoolean smoothing = new AtomicBoolean(false);
+    /** The 3D Composite */
+    protected final Composite3D c3d;
+    
+    protected OpenGLRenderer(Composite3D c3d) {
+        this.c3d = c3d;
+    }
+    
+    /** The set, which stores already loaded textures in-memory. */
+    protected Set<GTexture> textureSet = new HashSet<GTexture>();
     
     public static AtomicBoolean getSmoothing() {
         return smoothing;
+    }
+    
+    /**
+     * Registers a texture with a given ID
+     *
+     * @param ID
+     *            The ID of the texture
+     */
+    public void registerTexture(GTexture tex) {
+        textureSet.add(tex);
+    }
+    
+    /**
+     * Disposes all textures
+     */
+    public void disposeAllTextures() {
+        final GLCanvas canvas = c3d.getCanvas();
+        if (!canvas.isCurrent()) {
+            canvas.setCurrent();
+            GL.setCapabilities(c3d.getCapabilities());
+        }
+        for (Iterator<GTexture> it = textureSet.iterator() ; it.hasNext();) {
+            GTexture tex = it.next();
+            NLogger.debug(getClass(), "Dispose texture: {0}", tex); //$NON-NLS-1$
+            tex.dispose(this);
+            it.remove();
+        }
+    }
+
+    /**
+     * Disposes old textures
+     */
+    public synchronized void disposeOldTextures() {
+        final GLCanvas canvas = c3d.getCanvas();
+        if (!canvas.isCurrent()) {
+            canvas.setCurrent();
+            GL.setCapabilities(c3d.getCapabilities());
+        }
+        Iterator<GTexture> ti = textureSet.iterator();
+        for (GTexture tex = null; ti.hasNext() && (tex = ti.next()) != null;) {
+            if (tex.isTooOld()) {
+                NLogger.debug(getClass(), "Dispose old texture: {0}", tex); //$NON-NLS-1$
+                tex.dispose(this);
+                ti.remove();
+            }
+        }
+    }
+    
+    public boolean containsOnlyCubeMaps() {
+        int counter = 0;
+        for (GTexture tex : textureSet) {
+            if (tex.getCubeMapIndex() > 0) {
+                counter++;
+            }
+        }
+        return textureSet.size() == counter;
     }
 }
