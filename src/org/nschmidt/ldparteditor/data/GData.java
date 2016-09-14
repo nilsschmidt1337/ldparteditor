@@ -53,7 +53,7 @@ public abstract class GData implements IGData {
     static boolean globalNegativeDeterminant = false;
     static boolean globalDrawObjects = true;
     static boolean globalFoundTEXMAPNEXT = false;
-
+    
     static boolean globalFoundTEXMAPDEF = false;
     static Deque<GTexture> globalTextureStack = new ArrayDeque<GTexture>();
     static Deque<Boolean> globalFoundTEXMAPStack = new ArrayDeque<Boolean>();
