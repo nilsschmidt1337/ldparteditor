@@ -17,6 +17,8 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -1660,7 +1662,7 @@ public final class GData4 extends GData {
 
     private int VAO = -1;
     @Override
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack) {
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         // TODO Auto-generated method stub
         final StringBuilder id = new StringBuilder();
         id.append(ID);

@@ -16,6 +16,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
@@ -336,7 +338,7 @@ public final class GDataBFC extends GData {
     }
 
     @Override
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack) {
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         drawGL20(c3d);
     }
 
