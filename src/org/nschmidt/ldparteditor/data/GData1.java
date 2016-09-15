@@ -22,6 +22,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.swt.graphics.Rectangle;
@@ -2824,7 +2825,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack) {
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         if (!visible)
             return;
         if (matrix != null) {
@@ -2890,11 +2891,11 @@ public final class GData1 extends GData {
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL33(c3d, stack);
+                        data2draw.drawGL33(c3d, stack, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                     GData.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL33(c3d, stack);
+                        data2draw.drawGL33(c3d, stack, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                     if (GData.accumClip > 0)
                         GData.accumClip = 0;
                 }

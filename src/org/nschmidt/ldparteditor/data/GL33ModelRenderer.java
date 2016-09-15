@@ -15,10 +15,13 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.colour.GCChrome;
@@ -42,10 +45,15 @@ public class GL33ModelRenderer {
     private ThreadsafeHashMap<GData3, Vertex[]> triangles;
     private ThreadsafeHashMap<GData4, Vertex[]> quads;
     
+    private HashMap<String, Integer[]> vaoMap = new HashMap<>();
     private HashSet<Integer> vaoPool_1 = new HashSet<>();
     private HashSet<Integer> vaoPool_2 = new HashSet<>();    
     private HashSet<Integer> bufPool_1 = new HashSet<>();
     private HashSet<Integer> bufPool_2 = new HashSet<>();
+    private HashSet<Integer> swapPool = null;
+    private HashSet<String> swapPool2 = null;
+    private HashSet<String> idPool_1 = new HashSet<>();
+    private HashSet<String> idPool_2 = new HashSet<>();    
     
     private static final GTexture CUBEMAP_TEXTURE = new GTexture(TexType.PLANAR, "cmap.png", null, 1, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GDataTEX CUBEMAP = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_TEXTURE); //$NON-NLS-1$
@@ -65,8 +73,21 @@ public class GL33ModelRenderer {
         }
         GDataCSG.resetCSG(df, c3d.getManipulator().isModified());
 
+        swapPool = vaoPool_1;
+        vaoPool_1 = vaoPool_2;
+        vaoPool_2 = swapPool;
+        
+        swapPool = bufPool_1;
+        bufPool_1 = bufPool_2;
+        bufPool_2 = swapPool;
+        
+        swapPool2 = idPool_1;
+        idPool_1 = idPool_2;
+        idPool_2 = swapPool2;
+        
         GData data2draw = df.getDrawChainStart();
         int renderMode = c3d.getRenderMode();
+        boolean isPaused = false;
 
         if (Editor3DWindow.getWindow().isAddingCondlines())
             renderMode = 6;
@@ -74,52 +95,58 @@ public class GL33ModelRenderer {
         case -1: // Wireframe
             break;
         case 0: // No BFC
-            data2draw.drawGL33(c3d, stack);
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                data2draw.drawGL33(c3d, stack);
+            data2draw.drawGL33(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+            while ((data2draw = data2draw.getNext()) != null && !isPaused) {
+                isPaused = ViewIdleManager.pause[0].get();
+                data2draw.drawGL33(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                
             }
             break;
         case 1: // Random Colours
             data2draw.drawGL33_RandomColours(c3d, stack);
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+            while ((data2draw = data2draw.getNext()) != null && !isPaused) {
+                isPaused = ViewIdleManager.pause[0].get();
                 data2draw.drawGL33_RandomColours(c3d, stack);
             }
             break;
         case 2: // Front-Backface BFC
             data2draw.drawGL33_BFC(c3d, stack);
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+            while ((data2draw = data2draw.getNext()) != null && !isPaused) {
+                isPaused = ViewIdleManager.pause[0].get();
                 switch (GData.accumClip) {
                 case 0:
                     data2draw.drawGL33_BFC(c3d, stack);
                     break;
                 default:
-                    data2draw.drawGL33(c3d, stack);
+                    data2draw.drawGL33(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
                     break;
                 }
             }
             break;
         case 3: // Backface only BFC
             data2draw.drawGL33_BFC_backOnly(c3d, stack);
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+            while ((data2draw = data2draw.getNext()) != null && !isPaused) {
+                isPaused = ViewIdleManager.pause[0].get();
                 switch (GData.accumClip) {
                 case 0:
                     data2draw.drawGL33_BFC_backOnly(c3d, stack);
                     break;
                 default:
-                    data2draw.drawGL33(c3d, stack);
+                    data2draw.drawGL33(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
                     break;
                 }
             }
             break;
         case 4: // Real BFC
             data2draw.drawGL33_BFC_Colour(c3d, stack);
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+            while ((data2draw = data2draw.getNext()) != null && !isPaused) {
+                isPaused = ViewIdleManager.pause[0].get();
                 switch (GData.accumClip) {
                 case 0:
                     data2draw.drawGL33_BFC_Colour(c3d, stack);
                     break;
                 default:
-                    data2draw.drawGL33(c3d, stack);
+                    data2draw.drawGL33(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
                     break;
                 }
             }
@@ -138,7 +165,8 @@ public class GL33ModelRenderer {
             new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack);
             CUBEMAP_METAL.drawGL33_BFC_Textured(c3d, stack);
             new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack);
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+            while ((data2draw = data2draw.getNext()) != null && !isPaused) {
+                isPaused = ViewIdleManager.pause[0].get();
                 data2draw.drawGL33_BFC_Textured(c3d, stack);
             }
             // vertices.clearVertexNormalCache();
@@ -156,13 +184,35 @@ public class GL33ModelRenderer {
             break;
         case 6: // Special mode for "Add condlines"
             data2draw.drawGL33_WhileAddCondlines(c3d, stack);
-            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+            while ((data2draw = data2draw.getNext()) != null && !isPaused) {
+                isPaused = ViewIdleManager.pause[0].get();
                 data2draw.drawGL33_WhileAddCondlines(c3d, stack);
             }
             break;
         default:
             break;
         }
+        
+        if (isPaused) {
+            idPool_2.addAll(idPool_1);
+            vaoPool_2.addAll(vaoPool_1);
+            bufPool_2.addAll(bufPool_1);
+        } else {
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+            GL30.glBindVertexArray(0);
+            for (Integer id : vaoPool_1) {
+                GL30.glDeleteVertexArrays(id);
+            }
+            for (Integer id : bufPool_1) {
+                GL15.glDeleteBuffers(id);
+            }
+            for (String id : idPool_1) {
+                vaoMap.remove(id);
+            }
+        }
+        idPool_1.clear();
+        vaoPool_1.clear();
+        bufPool_1.clear();
 
         GDataCSG.finishCacheCleanup(c3d.getLockableDatFileReference());
 

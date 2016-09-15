@@ -18,6 +18,8 @@ package org.nschmidt.ldparteditor.data;
 import java.math.BigDecimal;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -307,7 +309,7 @@ public final class GDataPNG extends GData {
     }
 
     @Override
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack) {
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         // TODO Auto-generated method stub
         
     }

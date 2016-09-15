@@ -60,6 +60,8 @@ public abstract class GData implements IGData {
 
     static TexMeta globalLastTextureType = null;
 
+    protected static final StringBuilder sb = new StringBuilder();
+    
     // Cleared before viewport change
     public static final HashMap<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<GData1, Matrix4f>(1000);
 
