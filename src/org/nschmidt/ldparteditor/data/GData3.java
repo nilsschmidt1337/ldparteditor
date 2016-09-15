@@ -1720,55 +1720,55 @@ public final class GData3 extends GData {
             float[] vertices;
             if (GData.globalNegativeDeterminant) {
                 vertices = new float[]{
-                        x1,  y1, z1,
-                        xn,  yn, zn,
+                        x1, y1, z1,
+                        xn, yn, zn,
                         r, g, b, a,
 
                         x2, y2, z2,
-                        xn,  yn, zn,
+                        xn, yn, zn,
                         r, g, b, a,
 
                         x3, y3, z3,
-                        xn,  yn, zn,
+                        xn, yn, zn,
                         r, g, b, a,
                         
-                        x1,  y1, z1,
-                        -xn,  -yn, -zn,
+                        x1, y1, z1,
+                        -xn, -yn, -zn,
                         r, g, b, a,
 
                         x3, y3, z3,
-                        -xn,  -yn, -zn,
+                        -xn, -yn, -zn,
                         r, g, b, a,
 
                         x2, y2, z2,
-                        -xn,  -yn, -zn,
+                        -xn, -yn, -zn,
                         r, g, b, a,
 
                 };
             } else {
                 vertices = new float[]{
                         x1,  y1, z1,
-                        -xn,  -yn, -zn,
+                        -xn, -yn, -zn,
                         r, g, b, a,
 
                         x2, y2, z2,
-                        -xn,  -yn, -zn,
+                        -xn, -yn, -zn,
                         r, g, b, a,
 
                         x3, y3, z3,
-                        -xn,  -yn, -zn,
+                        -xn, -yn, -zn,
                         r, g, b, a,
                         
-                        x1,  y1, z1,
-                        xn,  yn, zn,
+                        x1, y1, z1,
+                        xn, yn, zn,
                         r, g, b, a,
 
                         x3, y3, z3,
-                        xn,  yn, zn,
+                        xn, yn, zn,
                         r, g, b, a,
 
                         x2, y2, z2,
-                        xn,  yn, zn,
+                        xn, yn, zn,
                         r, g, b, a,
                 };
             }
