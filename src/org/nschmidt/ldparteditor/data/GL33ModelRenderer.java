@@ -103,10 +103,10 @@ public class GL33ModelRenderer {
             }
             break;
         case 1: // Random Colours
-            data2draw.drawGL33_RandomColours(c3d, stack);
+            data2draw.drawGL33_RandomColours(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
             while ((data2draw = data2draw.getNext()) != null && !isPaused) {
                 isPaused = ViewIdleManager.pause[0].get();
-                data2draw.drawGL33_RandomColours(c3d, stack);
+                data2draw.drawGL33_RandomColours(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
             }
             break;
         case 2: // Front-Backface BFC

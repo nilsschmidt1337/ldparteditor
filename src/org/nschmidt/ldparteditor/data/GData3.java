@@ -1801,9 +1801,124 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack) {
+    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         // TODO Auto-generated method stub
+        if (!visible)
+            return;
+        if (a < 1f ^ c3d.isDrawingSolidMaterials())
+            return;
+        if (!isTriangle) {
+            // drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            return;
+        }
+        final String idStr;
+        {
+            sb.setLength(0);
+            sb.append(ID);
+            sb.append(GDataBFC.globalNegativeDeterminant ^ GDataBFC.globalInvertNext);
+            sb.append(1); // Render mode
+            sb.append(GDataBFC.localWinding);
+            idStr = sb.toString();
+        }
         
+        Integer[] objs = mapGLO.get(idStr);
+        int vao = objs == null ? -1 : objs[0];
+        int vbo = objs == null ? -1 : objs[1];
+        
+        if (vao != -1) {
+            sourceID.remove(idStr);
+            sourceVAO.remove(vao);
+            sourceBUF.remove(vbo);
+            GL30.glBindVertexArray(vao);
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
+            GL30.glBindVertexArray(0);
+        } else {
+            
+            final float r = MathHelper.randomFloat(ID, 0);
+            final float g = MathHelper.randomFloat(ID, 1);
+            final float b = MathHelper.randomFloat(ID, 2);
+            
+            float[] vertices;
+            if (GData.globalNegativeDeterminant) {
+                vertices = new float[]{
+                        x1, y1, z1,
+                        xn, yn, zn,
+                        r, g, b, a,
+
+                        x2, y2, z2,
+                        xn, yn, zn,
+                        r, g, b, a,
+
+                        x3, y3, z3,
+                        xn, yn, zn,
+                        r, g, b, a,
+                        
+                        x1, y1, z1,
+                        -xn, -yn, -zn,
+                        r, g, b, a,
+
+                        x3, y3, z3,
+                        -xn, -yn, -zn,
+                        r, g, b, a,
+
+                        x2, y2, z2,
+                        -xn, -yn, -zn,
+                        r, g, b, a,
+
+                };
+            } else {
+                vertices = new float[]{
+                        x1,  y1, z1,
+                        -xn, -yn, -zn,
+                        r, g, b, a,
+
+                        x2, y2, z2,
+                        -xn, -yn, -zn,
+                        r, g, b, a,
+
+                        x3, y3, z3,
+                        -xn, -yn, -zn,
+                        r, g, b, a,
+                        
+                        x1, y1, z1,
+                        xn, yn, zn,
+                        r, g, b, a,
+
+                        x3, y3, z3,
+                        xn, yn, zn,
+                        r, g, b, a,
+
+                        x2, y2, z2,
+                        xn, yn, zn,
+                        r, g, b, a,
+                };
+            }
+
+            vao = GL30.glGenVertexArrays();
+            vbo = GL15.glGenBuffers();
+            
+            GL30.glBindVertexArray(vao);
+
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STATIC_DRAW);
+
+            GL20.glEnableVertexAttribArray(0);
+            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+
+            GL20.glEnableVertexAttribArray(1);
+            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
+
+            GL20.glEnableVertexAttribArray(2);
+            GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+            GL30.glBindVertexArray(0);
+            
+            mapGLO.put(idStr, new Integer[]{vao, vbo});
+        }
+        targetID.add(idStr);
+        targetVAO.add(vao);
+        targetBUF.add(vbo);
     }
 
     @Override
