@@ -223,6 +223,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
      */
     public void drawScene() {
 
+        final long start = System.currentTimeMillis();
+        
         final boolean negDet = c3d.hasNegDeterminant();
         final boolean raytraceMode = c3d.getRenderMode() == 5;
 
@@ -1968,6 +1970,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         GL11.glLightfv(GL11.GL_LIGHT3, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, -2.0f, 2.0f, 1f}));
 
         canvas.swapBuffers();
+        
+        NLogger.debug(getClass(), "Frametime: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
     }
 
     public void dispose() {

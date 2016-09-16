@@ -23,6 +23,7 @@ import java.util.Set;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.GL20Primitives;
@@ -102,7 +103,7 @@ public final class GData5 extends GData {
         this.g = g;
         this.b = b;
         this.a = a;
-        this.lGeom = MathHelper.getLineVertices(new Vector4f(x1.floatValue(), y1.floatValue(), z1.floatValue(), 1f), new Vector4f(x2.floatValue(), y2.floatValue(), z2.floatValue(), 1f),
+        this.lGeom = MathHelper.getLineVertices(new Vector3f(x1.floatValue(), y1.floatValue(), z1.floatValue()), new Vector3f(x2.floatValue(), y2.floatValue(), z2.floatValue()),
                 parent.productMatrix);
         this.X1 = x1;
         this.Y1 = y1;
@@ -178,7 +179,7 @@ public final class GData5 extends GData {
         this.x4 = x42;
         this.y4 = y42;
         this.z4 = z42;
-        this.lGeom = MathHelper.getLineVertices1000(new Vector4f(this.x1, this.y1, this.z1, 1f), new Vector4f(this.x2, this.y2, this.z2, 1f), parent.productMatrix);
+        this.lGeom = MathHelper.getLineVertices1000(new Vector3f(this.x1, this.y1, this.z1), new Vector3f(this.x2, this.y2, this.z2), parent.productMatrix);
         datFile.getVertexManager().add(this);
         A2.x = this.x1;
         B2.x = this.x2;
@@ -269,7 +270,7 @@ public final class GData5 extends GData {
         this.x4 = v4.x;
         this.y4 = v4.y;
         this.z4 = v4.z;
-        this.lGeom = MathHelper.getLineVertices1000(new Vector4f(x1, y1, z1, 1f), new Vector4f(x2, y2, z2, 1f), parent.productMatrix);
+        this.lGeom = MathHelper.getLineVertices1000(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
         this.parent = parent;
         A2.x = this.x1;
         B2.x = this.x2;
@@ -365,7 +366,7 @@ public final class GData5 extends GData {
         this.x4 = v4.x;
         this.y4 = v4.y;
         this.z4 = v4.z;
-        this.lGeom = MathHelper.getLineVertices1000(new Vector4f(x1, y1, z1, 1f), new Vector4f(x2, y2, z2, 1f), parent.productMatrix);
+        this.lGeom = MathHelper.getLineVertices1000(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
         this.parent = parent;
         datFile.getVertexManager().add(this);
         A2.x = this.x1;
@@ -437,11 +438,11 @@ public final class GData5 extends GData {
 
                 GL11.glPushMatrix();
 
-                GL11.glScalef(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+                GL11.glScalef(lGeom[20][0], lGeom[20][1], lGeom[20][2]);
 
                 if (GData.globalNegativeDeterminant) {
 
-                    GL20Primitives.SPHERE_INV.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
+                    GL20Primitives.SPHERE_INV.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                     GL11.glBegin(GL11.GL_QUAD_STRIP);
                     GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -464,11 +465,11 @@ public final class GData5 extends GData {
                     GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                     GL11.glEnd();
 
-                    GL20Primitives.SPHERE_INV.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
+                    GL20Primitives.SPHERE_INV.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
                 } else {
 
-                    GL20Primitives.SPHERE.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
+                    GL20Primitives.SPHERE.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                     GL11.glBegin(GL11.GL_QUAD_STRIP);
                     GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -491,7 +492,7 @@ public final class GData5 extends GData {
                     GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                     GL11.glEnd();
 
-                    GL20Primitives.SPHERE.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
+                    GL20Primitives.SPHERE.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
                 }
 
@@ -573,11 +574,11 @@ public final class GData5 extends GData {
 
                 GL11.glPushMatrix();
 
-                GL11.glScalef(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+                GL11.glScalef(lGeom[20][0], lGeom[20][1], lGeom[20][2]);
 
                 if (GData.globalNegativeDeterminant) {
 
-                    GL20Primitives.SPHERE_INV.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
+                    GL20Primitives.SPHERE_INV.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                     GL11.glBegin(GL11.GL_QUAD_STRIP);
                     GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -600,11 +601,11 @@ public final class GData5 extends GData {
                     GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                     GL11.glEnd();
 
-                    GL20Primitives.SPHERE_INV.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
+                    GL20Primitives.SPHERE_INV.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
                 } else {
 
-                    GL20Primitives.SPHERE.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
+                    GL20Primitives.SPHERE.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                     GL11.glBegin(GL11.GL_QUAD_STRIP);
                     GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -627,7 +628,7 @@ public final class GData5 extends GData {
                     GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                     GL11.glEnd();
 
-                    GL20Primitives.SPHERE.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
+                    GL20Primitives.SPHERE.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
                 }
 
@@ -696,11 +697,11 @@ public final class GData5 extends GData {
 
             GL11.glPushMatrix();
 
-            GL11.glScalef(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+            GL11.glScalef(lGeom[20][0], lGeom[20][1], lGeom[20][2]);
 
             if (GData.globalNegativeDeterminant) {
 
-                GL20Primitives.SPHERE_INV.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
+                GL20Primitives.SPHERE_INV.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -723,11 +724,11 @@ public final class GData5 extends GData {
                 GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                 GL11.glEnd();
 
-                GL20Primitives.SPHERE_INV.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
+                GL20Primitives.SPHERE_INV.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
             } else {
 
-                GL20Primitives.SPHERE.draw(x1 * lGeom[18][0], y1 * lGeom[18][1], z1 * lGeom[18][2]);
+                GL20Primitives.SPHERE.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -750,7 +751,7 @@ public final class GData5 extends GData {
                 GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                 GL11.glEnd();
 
-                GL20Primitives.SPHERE.draw(x2 * lGeom[18][0], y2 * lGeom[18][1], z2 * lGeom[18][2]);
+                GL20Primitives.SPHERE.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
             }
 
@@ -1079,35 +1080,35 @@ public final class GData5 extends GData {
     }
 
     @Override
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
     public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, null, null, null, null, null, null, null);
+        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
     }
 
     @Override
     public void drawGL33_BFCuncertified(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, null, null, null, null, null, null, null);
+        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
     }
 
     @Override
     public void drawGL33_BFC_backOnly(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, null, null, null, null, null, null, null);
+        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
     }
 
     @Override
     public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, null, null, null, null, null, null, null);
+        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
     }
 
     @Override

@@ -2825,7 +2825,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         if (!visible)
             return;
         if (matrix != null) {
@@ -2891,11 +2891,11 @@ public final class GData1 extends GData {
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL33(c3d, stack, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
+                        data2draw.drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                     GData.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL33(c3d, stack, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
+                        data2draw.drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                     if (GData.accumClip > 0)
                         GData.accumClip = 0;
                 }
@@ -2909,7 +2909,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         if (!visible)
             return;
         if (matrix != null) {
@@ -2975,11 +2975,11 @@ public final class GData1 extends GData {
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL33_RandomColours(c3d, stack, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
+                        data2draw.drawGL33_RandomColours(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                     GData.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL33_RandomColours(c3d, stack, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
+                        data2draw.drawGL33_RandomColours(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                     if (GData.accumClip > 0)
                         GData.accumClip = 0;
                 }

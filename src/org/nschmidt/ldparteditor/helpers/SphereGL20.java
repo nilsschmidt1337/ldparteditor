@@ -26,14 +26,14 @@ import org.lwjgl.opengl.GL11;
  * @author nils
  *
  */
-public class Sphere {
+public class SphereGL20 {
 
     private final FloatBuffer bvertices;
     private final ShortBuffer bindices;
 
     final ArrayList<Short> indices = new ArrayList<Short>();
 
-    public Sphere(float radius, int segments) {
+    public SphereGL20(float radius, int segments) {
 
         final ArrayList<Float> vertices = new ArrayList<Float>();
 
@@ -88,7 +88,7 @@ public class Sphere {
 
     }
 
-    public Sphere() {
+    public SphereGL20() {
         bvertices = BufferUtils.createFloatBuffer(3);
         bvertices.put(0f);
         bvertices.put(0f);

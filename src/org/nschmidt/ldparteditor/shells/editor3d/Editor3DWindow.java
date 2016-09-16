@@ -156,7 +156,7 @@ import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
-import org.nschmidt.ldparteditor.helpers.Sphere;
+import org.nschmidt.ldparteditor.helpers.SphereGL20;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
@@ -8083,7 +8083,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return recentItems;
     }
 
-    private void setLineSize(Sphere sp, Sphere sp_inv, float line_width1000, float line_width, float line_width_gl, Button btn) {
+    private void setLineSize(SphereGL20 sp, SphereGL20 sp_inv, float line_width1000, float line_width, float line_width_gl, Button btn) {
         GL20Primitives.SPHERE = sp;
         GL20Primitives.SPHERE_INV = sp_inv;
         View.lineWidth1000[0] = line_width1000;

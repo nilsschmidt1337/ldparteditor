@@ -1661,13 +1661,10 @@ public final class GData4 extends GData {
     }
 
     @Override
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        // TODO Auto-generated method stub
-        if (!visible)
-            return;
-        if (a < 1f ^ c3d.isDrawingSolidMaterials())
-            return;
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         final String idStr;
+        int vao;
+        int vbo;
         {
             sb.setLength(0);
             sb.append(ID);
@@ -1676,15 +1673,27 @@ public final class GData4 extends GData {
             sb.append(GDataBFC.localWinding);
             idStr = sb.toString();
         }
-        
+        sourceID.remove(idStr);
+        targetID.add(idStr);
         Integer[] objs = mapGLO.get(idStr);
-        int vao = objs == null ? -1 : objs[0];
-        int vbo = objs == null ? -1 : objs[1];
-        
-        if (vao != -1) {
-            sourceID.remove(idStr);
+        if (objs == null) {
+            vao = -1;
+            vbo = -1;
+        } else {
+            vao = objs[0];
+            vbo = objs[1];
             sourceVAO.remove(vao);
             sourceBUF.remove(vbo);
+            targetVAO.add(vao);
+            targetBUF.add(vbo);
+        }
+        
+        if (!visible)
+            return;
+        if (a < 1f ^ drawSolidMaterials)
+            return;
+        
+        if (vao != -1) {
             GL30.glBindVertexArray(vao);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 12);
             GL30.glBindVertexArray(0);
@@ -1794,6 +1803,8 @@ public final class GData4 extends GData {
 
             vao = GL30.glGenVertexArrays();
             vbo = GL15.glGenBuffers();
+            targetVAO.add(vao);
+            targetBUF.add(vbo);
             
             GL30.glBindVertexArray(vao);
 
@@ -1814,19 +1825,13 @@ public final class GData4 extends GData {
             
             mapGLO.put(idStr, new Integer[]{vao, vbo});
         }
-        targetID.add(idStr);
-        targetVAO.add(vao);
-        targetBUF.add(vbo);
     }
 
     @Override
-    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        // TODO Auto-generated method stub
-        if (!visible)
-            return;
-        if (a < 1f ^ c3d.isDrawingSolidMaterials())
-            return;
+    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         final String idStr;
+        int vao;
+        int vbo;
         {
             sb.setLength(0);
             sb.append(ID);
@@ -1835,15 +1840,27 @@ public final class GData4 extends GData {
             sb.append(GDataBFC.localWinding);
             idStr = sb.toString();
         }
-        
+        sourceID.remove(idStr);
+        targetID.add(idStr);
         Integer[] objs = mapGLO.get(idStr);
-        int vao = objs == null ? -1 : objs[0];
-        int vbo = objs == null ? -1 : objs[1];
-        
-        if (vao != -1) {
-            sourceID.remove(idStr);
+        if (objs == null) {
+            vao = -1;
+            vbo = -1;
+        } else {
+            vao = objs[0];
+            vbo = objs[1];
             sourceVAO.remove(vao);
             sourceBUF.remove(vbo);
+            targetVAO.add(vao);
+            targetBUF.add(vbo);
+        }
+        
+        if (!visible)
+            return;
+        if (a < 1f ^ drawSolidMaterials)
+            return;
+        
+        if (vao != -1) {
             GL30.glBindVertexArray(vao);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 12);
             GL30.glBindVertexArray(0);
@@ -1958,6 +1975,8 @@ public final class GData4 extends GData {
 
             vao = GL30.glGenVertexArrays();
             vbo = GL15.glGenBuffers();
+            targetVAO.add(vao);
+            targetBUF.add(vbo);
             
             GL30.glBindVertexArray(vao);
 
@@ -1978,9 +1997,6 @@ public final class GData4 extends GData {
             
             mapGLO.put(idStr, new Integer[]{vao, vbo});
         }
-        targetID.add(idStr);
-        targetVAO.add(vao);
-        targetBUF.add(vbo);
     }
 
     @Override

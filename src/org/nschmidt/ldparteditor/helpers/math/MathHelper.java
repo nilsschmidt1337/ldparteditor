@@ -138,7 +138,7 @@ public enum MathHelper {
         return result;
     }
 
-    public static float[][] getLineVertices(Vector4f p1, Vector4f p2, Matrix4f pMatrix) {
+    public static float[][] getLineVertices(Vector3f p1, Vector3f p2, Matrix4f pMatrix) {
 
         Vector3f col1 = new Vector3f(pMatrix.m00, pMatrix.m01, pMatrix.m02);
         Vector3f col2 = new Vector3f(pMatrix.m10, pMatrix.m11, pMatrix.m12);
@@ -155,7 +155,7 @@ public enum MathHelper {
         if (sz == 0f)
             sz = 1f;
 
-        float[][] result = new float[20][3];
+        float[][] result = new float[21][3];
 
         Vector4f n = new Vector4f();
         Vector4f p = new Vector4f();
@@ -231,17 +231,20 @@ public enum MathHelper {
 
         }
 
-        result[18][0] = sx;
-        result[18][1] = sy;
-        result[18][2] = sz;
-        result[19][0] = 1f / sx;
-        result[19][1] = 1f / sy;
-        result[19][2] = 1f / sz;
+        result[18][0] = sx * p1.x;
+        result[18][1] = sy * p1.y;
+        result[18][2] = sz * p1.z;
+        result[19][0] = sx * p2.x;
+        result[19][1] = sy * p2.y;
+        result[19][2] = sz * p2.z;
+        result[20][0] = 1f / sx;
+        result[20][1] = 1f / sy;
+        result[20][2] = 1f / sz;
 
         return result;
     }
 
-    public static float[][] getLineVertices1000(Vector4f p1, Vector4f p2, Matrix4f pMatrix) {
+    public static float[][] getLineVertices1000(Vector3f p1, Vector3f p2, Matrix4f pMatrix) {
 
         Vector3f col1 = new Vector3f(pMatrix.m00, pMatrix.m01, pMatrix.m02);
         Vector3f col2 = new Vector3f(pMatrix.m10, pMatrix.m11, pMatrix.m12);
@@ -258,7 +261,7 @@ public enum MathHelper {
         if (sz == 0f)
             sz = 1f;
 
-        float[][] result = new float[20][3];
+        float[][] result = new float[21][3];
 
         Vector4f n = new Vector4f();
         Vector4f p = new Vector4f();
@@ -335,12 +338,15 @@ public enum MathHelper {
 
         }
 
-        result[18][0] = sx;
-        result[18][1] = sy;
-        result[18][2] = sz;
-        result[19][0] = 1f / sx;
-        result[19][1] = 1f / sy;
-        result[19][2] = 1f / sz;
+        result[18][0] = sx * p1.x;
+        result[18][1] = sy * p1.y;
+        result[18][2] = sz * p1.z;
+        result[19][0] = sx * p2.x;
+        result[19][1] = sy * p2.y;
+        result[19][2] = sz * p2.z;
+        result[20][0] = 1f / sx;
+        result[20][1] = 1f / sy;
+        result[20][2] = 1f / sz;
 
         return result;
     }

@@ -16,7 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.enums;
 
 import org.nschmidt.ldparteditor.helpers.GearGL20;
-import org.nschmidt.ldparteditor.helpers.Sphere;
+import org.nschmidt.ldparteditor.helpers.SphereGL20;
 
 /**
  * @author nils
@@ -25,20 +25,20 @@ import org.nschmidt.ldparteditor.helpers.Sphere;
 public enum GL20Primitives {
     INSTANCE;
 
-    public static final Sphere SPHERE0 = new Sphere();
-    public static final Sphere SPHERE_INV0 = new Sphere();
-    public static final Sphere SPHERE1 = new Sphere(25f, 8);
-    public static final Sphere SPHERE_INV1 = new Sphere(-25f, 8);
-    public static final Sphere SPHERE2 = new Sphere(50f, 8);
-    public static final Sphere SPHERE_INV2 = new Sphere(-50f, 8);
-    public static final Sphere SPHERE3 = new Sphere(100f, 8);
-    public static final Sphere SPHERE_INV3 = new Sphere(-100f, 8);
-    public static final Sphere SPHERE4 = new Sphere(200f, 8);
-    public static final Sphere SPHERE_INV4 = new Sphere(-200f, 8);
+    public static final SphereGL20 SPHERE0 = new SphereGL20();
+    public static final SphereGL20 SPHERE_INV0 = new SphereGL20();
+    public static final SphereGL20 SPHERE1 = new SphereGL20(25f, 8);
+    public static final SphereGL20 SPHERE_INV1 = new SphereGL20(-25f, 8);
+    public static final SphereGL20 SPHERE2 = new SphereGL20(50f, 8);
+    public static final SphereGL20 SPHERE_INV2 = new SphereGL20(-50f, 8);
+    public static final SphereGL20 SPHERE3 = new SphereGL20(100f, 8);
+    public static final SphereGL20 SPHERE_INV3 = new SphereGL20(-100f, 8);
+    public static final SphereGL20 SPHERE4 = new SphereGL20(200f, 8);
+    public static final SphereGL20 SPHERE_INV4 = new SphereGL20(-200f, 8);
 
     public static final GearGL20 GEAR_MENU = new GearGL20(.005f, 16, .005f, .0025f);
     public static final GearGL20 GEAR_MENU_INV = new GearGL20(-.005f, 16, -.005f, -.0025f);
 
-    public static Sphere SPHERE = new Sphere(100f, 8);
-    public static Sphere SPHERE_INV = new Sphere(-100f, 8);
+    public static SphereGL20 SPHERE = new SphereGL20(100f, 8);
+    public static SphereGL20 SPHERE_INV = new SphereGL20(-100f, 8);
 }
