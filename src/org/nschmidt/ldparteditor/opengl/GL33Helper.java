@@ -124,4 +124,17 @@ public class GL33Helper {
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
         GL15.glDeleteBuffers(VBO_general);
     }
+    
+    
+    public static int[] createQuadStrip_VAO_VBO(float r, float g, float b, float a, float[] vertices) {
+        final int[] result = new int[2];
+        // FIXME Needs implementation!
+        return result;
+    }
+    
+    public static int[] createLines_VAO_VBO(float r, float g, float b, float a, float[] vertices) {
+        final int[] result = new int[2];
+        // FIXME Needs implementation!
+        return result;
+    }
 }

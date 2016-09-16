@@ -409,6 +409,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 c3d.setDraggedPrimitive(null);
             }
             
+            GL20.glUniformMatrix4fv(shaderProgram.getUniformLocation("view"), false, view_buf); //$NON-NLS-1$
+            
             modelRenderer.draw(stack, shaderProgram, false, c3d.getLockableDatFileReference(), c3d);
             
 //            GL30.glDeleteVertexArrays(GData.VAOtest);

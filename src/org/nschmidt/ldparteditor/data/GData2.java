@@ -25,9 +25,11 @@ import java.util.Set;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.GL20Primitives;
+import org.nschmidt.ldparteditor.enums.GL33Primitives;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
@@ -35,7 +37,9 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
+import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -81,7 +85,7 @@ public final class GData2 extends GData {
         this.g = g;
         this.b = b;
         this.a = a;
-        this.lGeom = MathHelper.getLineVertices(new Vector4f(x1.floatValue(), y1.floatValue(), z1.floatValue(), 1f), new Vector4f(x2.floatValue(), y2.floatValue(), z2.floatValue(), 1f),
+        this.lGeom = MathHelper.getLineVertices(new Vector3f(x1.floatValue(), y1.floatValue(), z1.floatValue()), new Vector3f(x2.floatValue(), y2.floatValue(), z2.floatValue()),
                 parent.productMatrix);
         this.X1 = x1;
         this.Y1 = y1;
@@ -119,7 +123,7 @@ public final class GData2 extends GData {
         this.x2 = x22;
         this.y2 = y22;
         this.z2 = z22;
-        this.lGeom = MathHelper.getLineVertices1000(new Vector4f(this.x1, this.y1, this.z1, 1f), new Vector4f(this.x2, this.y2, this.z2, 1f), parent.productMatrix);
+        this.lGeom = MathHelper.getLineVertices1000(new Vector3f(this.x1, this.y1, this.z1), new Vector3f(this.x2, this.y2, this.z2), parent.productMatrix);
         this.parent = parent;
         this.isLine = isLine;
         datFile.getVertexManager().add(this);
@@ -146,7 +150,7 @@ public final class GData2 extends GData {
         this.parent = parent;
         this.isLine = isLine;
         datFile.getVertexManager().add(this);
-        this.lGeom = MathHelper.getLineVertices1000(new Vector4f(x1, y1, z1, 1f), new Vector4f(x2, y2, z2, 1f), parent.productMatrix);
+        this.lGeom = MathHelper.getLineVertices1000(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
     }
 
     /**
@@ -207,7 +211,7 @@ public final class GData2 extends GData {
         this.z2 = v2.z;
         this.parent = parent;
         this.isLine = true;
-        this.lGeom = MathHelper.getLineVertices1000(new Vector4f(x1, y1, z1, 1f), new Vector4f(x2, y2, z2, 1f), parent.productMatrix);
+        this.lGeom = MathHelper.getLineVertices1000(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
         this.X1 = null;
         this.Y1 = null;
         this.Z1 = null;
@@ -241,7 +245,7 @@ public final class GData2 extends GData {
         if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
-            drawDistance(c3d, X1, Y1, Z1, X2, Y2, Z2);
+            drawDistanceGL20(c3d, X1, Y1, Z1, X2, Y2, Z2);
             if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
                 GL11.glEnable(GL11.GL_LIGHTING);
             return;
@@ -252,19 +256,11 @@ public final class GData2 extends GData {
             GL11.glPushMatrix();
 
             GL11.glColor4f(r, g, b, a);
-            GL11.glScalef(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
-
-            float lx1 = x1 * lGeom[18][0];
-            float ly1 = y1 * lGeom[18][1];
-            float lz1 = z1 * lGeom[18][2];
-
-            float lx2 = x2 * lGeom[18][0];
-            float ly2 = y2 * lGeom[18][1];
-            float lz2 = z2 * lGeom[18][2];
+            GL11.glScalef(lGeom[20][0], lGeom[20][1], lGeom[20][2]);
 
             if (GData.globalNegativeDeterminant) {
 
-                GL20Primitives.SPHERE_INV.draw(lx1, ly1, lz1);
+                GL20Primitives.SPHERE_INV.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -287,11 +283,11 @@ public final class GData2 extends GData {
                 GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                 GL11.glEnd();
 
-                GL20Primitives.SPHERE_INV.draw(lx2, ly2, lz2);
+                GL20Primitives.SPHERE_INV.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
             } else {
 
-                GL20Primitives.SPHERE.draw(lx1, ly1, lz1);
+                GL20Primitives.SPHERE.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -314,7 +310,7 @@ public final class GData2 extends GData {
                 GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                 GL11.glEnd();
 
-                GL20Primitives.SPHERE.draw(lx2, ly2, lz2);
+                GL20Primitives.SPHERE.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
             }
 
@@ -353,7 +349,7 @@ public final class GData2 extends GData {
         if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
-            drawDistance(c3d, X1, Y1, Z1, X2, Y2, Z2);
+            drawDistanceGL20(c3d, X1, Y1, Z1, X2, Y2, Z2);
             if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
                 GL11.glEnable(GL11.GL_LIGHTING);
             return;
@@ -363,26 +359,16 @@ public final class GData2 extends GData {
         final float g = MathHelper.randomFloat(ID, 1);
         final float b = MathHelper.randomFloat(ID, 2);
 
-
-
         if (c3d.getZoom() > View.edge_threshold) {
 
             GL11.glPushMatrix();
 
             GL11.glColor4f(r, g, b, a);
-            GL11.glScalef(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
-
-            float lx1 = x1 * lGeom[18][0];
-            float ly1 = y1 * lGeom[18][1];
-            float lz1 = z1 * lGeom[18][2];
-
-            float lx2 = x2 * lGeom[18][0];
-            float ly2 = y2 * lGeom[18][1];
-            float lz2 = z2 * lGeom[18][2];
+            GL11.glScalef(lGeom[20][0], lGeom[20][1], lGeom[20][2]);
 
             if (GData.globalNegativeDeterminant) {
 
-                GL20Primitives.SPHERE_INV.draw(lx1, ly1, lz1);
+                GL20Primitives.SPHERE_INV.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -405,11 +391,11 @@ public final class GData2 extends GData {
                 GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                 GL11.glEnd();
 
-                GL20Primitives.SPHERE_INV.draw(lx2, ly2, lz2);
+                GL20Primitives.SPHERE_INV.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
             } else {
 
-                GL20Primitives.SPHERE.draw(lx1, ly1, lz1);
+                GL20Primitives.SPHERE.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -432,7 +418,7 @@ public final class GData2 extends GData {
                 GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                 GL11.glEnd();
 
-                GL20Primitives.SPHERE.draw(lx2, ly2, lz2);
+                GL20Primitives.SPHERE.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
             }
 
@@ -702,7 +688,7 @@ public final class GData2 extends GData {
         return lineBuilder.toString();
     }
 
-    public void drawDistance(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c) {
+    public void drawDistanceGL20(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c) {
         final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
@@ -826,35 +812,138 @@ public final class GData2 extends GData {
     }
 
     @Override
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        // TODO Auto-generated method stub
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+        if (true || !visible) {
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                stack.getShader().lightsOn();
+            return;
+        }
+        if (a < 1f && drawSolidMaterials || !drawSolidMaterials && a == 1f) {
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                stack.getShader().lightsOn();
+            return;
+        }
+        switch (c3d.getLineMode()) {
+        case 3:
+        case 4:
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                stack.getShader().lightsOn();
+            return;
+        default:
+            break;
+        }
         
+        final GLShader shader = stack.getShader(); 
+
+        if (shader.isLightOn()) shader.lightsOff();
+
+        if (!isLine) {
+            // drawDistanceGL33(c3d, X1, Y1, Z1, X2, Y2, Z2);
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                shader.lightsOn();
+            return;
+        }
+
+        if (c3d.getZoom() > View.edge_threshold) {
+
+            stack.glPushMatrix();
+
+            stack.glScalef(lGeom[20][0], lGeom[20][1], lGeom[20][2]);
+
+            if (GData.globalNegativeDeterminant) {
+
+                GL33Primitives.SPHERE_INV.draw(stack, lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+
+                int[] id = GL33Helper.createQuadStrip_VAO_VBO(r, g, b, a, new float[] {
+                    lGeom[1][0], lGeom[1][1], lGeom[1][2],
+                    lGeom[0][0], lGeom[0][1], lGeom[0][2],
+                    lGeom[3][0], lGeom[3][1], lGeom[3][2],
+                    lGeom[2][0], lGeom[2][1], lGeom[2][2],
+                    lGeom[5][0], lGeom[5][1], lGeom[5][2],
+                    lGeom[4][0], lGeom[4][1], lGeom[4][2],
+                    lGeom[7][0], lGeom[7][1], lGeom[7][2],
+                    lGeom[6][0], lGeom[6][1], lGeom[6][2],
+                    lGeom[9][0], lGeom[9][1], lGeom[9][2],
+                    lGeom[8][0], lGeom[8][1], lGeom[8][2],
+                    lGeom[11][0], lGeom[11][1], lGeom[11][2],
+                    lGeom[10][0], lGeom[10][1], lGeom[10][2],
+                    lGeom[13][0], lGeom[13][1], lGeom[13][2],
+                    lGeom[12][0], lGeom[12][1], lGeom[12][2],
+                    lGeom[15][0], lGeom[15][1], lGeom[15][2],
+                    lGeom[14][0], lGeom[14][1], lGeom[14][2],
+                    lGeom[17][0], lGeom[17][1], lGeom[17][2],
+                    lGeom[16][0], lGeom[16][1], lGeom[16][2]
+                });
+
+                GL33Primitives.SPHERE_INV.draw(stack, lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+
+            } else {
+
+                GL33Primitives.SPHERE.draw(stack, lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+
+                int[] id = GL33Helper.createQuadStrip_VAO_VBO(r, g, b, a, new float[] {
+                    lGeom[0][0], lGeom[0][1], lGeom[0][2],
+                    lGeom[1][0], lGeom[1][1], lGeom[1][2],
+                    lGeom[2][0], lGeom[2][1], lGeom[2][2],
+                    lGeom[3][0], lGeom[3][1], lGeom[3][2],
+                    lGeom[4][0], lGeom[4][1], lGeom[4][2],
+                    lGeom[5][0], lGeom[5][1], lGeom[5][2],
+                    lGeom[6][0], lGeom[6][1], lGeom[6][2],
+                    lGeom[7][0], lGeom[7][1], lGeom[7][2],
+                    lGeom[8][0], lGeom[8][1], lGeom[8][2],
+                    lGeom[9][0], lGeom[9][1], lGeom[9][2],
+                    lGeom[10][0], lGeom[10][1], lGeom[10][2],
+                    lGeom[11][0], lGeom[11][1], lGeom[11][2],
+                    lGeom[12][0], lGeom[12][1], lGeom[12][2],
+                    lGeom[13][0], lGeom[13][1], lGeom[13][2],
+                    lGeom[14][0], lGeom[14][1], lGeom[14][2],
+                    lGeom[15][0], lGeom[15][1], lGeom[15][2],
+                    lGeom[16][0], lGeom[16][1], lGeom[16][2],
+                    lGeom[17][0], lGeom[17][1], lGeom[17][2]
+                });
+
+                GL33Primitives.SPHERE.draw(stack, lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+
+            }
+
+            stack.glPopMatrix();
+
+        } else {
+            GL11.glLineWidth(View.lineWidthGL[0]);
+            int[] id = GL33Helper.createLines_VAO_VBO(r, g, b, a, new float[] {
+                x1, y1, z1,
+                x2, y2, z2
+            });
+        }
+
+        if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+            shader.lightsOn();
     }
 
     @Override
-    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+    public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
     public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, null, null, null, null, null, null, null);
+        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
     }
 
     @Override
     public void drawGL33_BFCuncertified(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, null, null, null, null, null, null, null);
+        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
     }
 
     @Override
     public void drawGL33_BFC_backOnly(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, null, null, null, null, null, null, null);
+        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
     }
 
     @Override
     public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, null, null, null, null, null, null, null);
+        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
     }
 
     @Override
@@ -865,7 +954,7 @@ public final class GData2 extends GData {
 
     @Override
     public void drawGL33_WhileAddCondlines(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, null, null, null, null, null, null, null);
+        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
     }
 
     /*

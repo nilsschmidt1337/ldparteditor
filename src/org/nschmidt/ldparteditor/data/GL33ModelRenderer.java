@@ -95,18 +95,18 @@ public class GL33ModelRenderer {
         case -1: // Wireframe
             break;
         case 0: // No BFC
-            data2draw.drawGL33(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+            data2draw.drawGL33(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
             while ((data2draw = data2draw.getNext()) != null && !isPaused) {
                 isPaused = ViewIdleManager.pause[0].get();
-                data2draw.drawGL33(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                data2draw.drawGL33(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
                 
             }
             break;
         case 1: // Random Colours
-            data2draw.drawGL33_RandomColours(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+            data2draw.drawGL33_RandomColours(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
             while ((data2draw = data2draw.getNext()) != null && !isPaused) {
                 isPaused = ViewIdleManager.pause[0].get();
-                data2draw.drawGL33_RandomColours(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                data2draw.drawGL33_RandomColours(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
             }
             break;
         case 2: // Front-Backface BFC
@@ -118,7 +118,7 @@ public class GL33ModelRenderer {
                     data2draw.drawGL33_BFC(c3d, stack);
                     break;
                 default:
-                    data2draw.drawGL33(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                    data2draw.drawGL33(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
                     break;
                 }
             }
@@ -132,7 +132,7 @@ public class GL33ModelRenderer {
                     data2draw.drawGL33_BFC_backOnly(c3d, stack);
                     break;
                 default:
-                    data2draw.drawGL33(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                    data2draw.drawGL33(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
                     break;
                 }
             }
@@ -146,7 +146,7 @@ public class GL33ModelRenderer {
                     data2draw.drawGL33_BFC_Colour(c3d, stack);
                     break;
                 default:
-                    data2draw.drawGL33(c3d, stack, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                    data2draw.drawGL33(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
                     break;
                 }
             }
