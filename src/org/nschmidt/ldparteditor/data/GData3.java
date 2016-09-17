@@ -1720,15 +1720,6 @@ public final class GData3 extends GData {
             targetBUF.add(vbo);
         }
         
-        if (!visible)
-            return;
-        if (a < 1f ^ drawSolidMaterials)
-            return;
-        if (!isTriangle) {
-            // drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
-            return;
-        }
-
         if (vao != -1) {            
             GL30.glBindVertexArray(vao);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
@@ -1980,15 +1971,6 @@ public final class GData3 extends GData {
             targetBUF.add(vbo);
         }
         
-        if (!visible)
-            return;
-        if (a < 1f ^ drawSolidMaterials)
-            return;
-        if (!isTriangle) {
-            // drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
-            return;
-        }
-
         if (vao != -1) {            
             GL30.glBindVertexArray(vao);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
@@ -2273,10 +2255,10 @@ public final class GData3 extends GData {
                             View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
                     };
                 }
+                break;
             default:
-                vertices = new float[0];                    
+                throw new AssertionError("There must be some winding info! GData.localWinding=" + GData.localWinding); //$NON-NLS-1$
             }
-            
 
             vao = GL30.glGenVertexArrays();
             vbo = GL15.glGenBuffers();
@@ -2340,15 +2322,6 @@ public final class GData3 extends GData {
             targetBUF.add(vbo);
         }
         
-        if (!visible)
-            return;
-        if (a < 1f ^ drawSolidMaterials)
-            return;
-        if (!isTriangle) {
-            // drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
-            return;
-        }
-
         if (vao != -1) {            
             GL30.glBindVertexArray(vao);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
@@ -2408,7 +2381,6 @@ public final class GData3 extends GData {
                         View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
                 };
             }
-
 
             vao = GL30.glGenVertexArrays();
             vbo = GL15.glGenBuffers();
