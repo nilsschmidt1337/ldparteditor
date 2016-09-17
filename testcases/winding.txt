@@ -1,0 +1,23 @@
+0 WINDING FULLTEST
+0 Name: new.dat
+0 Author: Nils Schmidt [BlackBrick89]
+0 !LDRAW_ORG Unofficial_Part
+0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt
+
+0 BFC CERTIFY CCW
+
+1 1 0 0 0 1 0 0 0 1 0 0 0 1 ccw.dat
+1 2 2 0 0 1 0 0 0 1 0 0 0 1 cw.dat
+
+1 3 4 0 0 1 0 0 0 -1 0 0 0 1 ccw.dat
+1 4 6 0 0 1 0 0 0 -1 0 0 0 1 cw.dat
+
+0 BFC INVERTNEXT
+1 6 8 0 0 1 0 0 0 1 0 0 0 1 ccw.dat
+0 BFC INVERTNEXT
+1 7 10 0 0 1 0 0 0 1 0 0 0 1 cw.dat
+
+0 BFC INVERTNEXT
+1 14 12 0 0 1 0 0 0 -1 0 0 0 1 ccw.dat
+0 BFC INVERTNEXT
+1 10 14 0 0 1 0 0 0 -1 0 0 0 1 cw.dat

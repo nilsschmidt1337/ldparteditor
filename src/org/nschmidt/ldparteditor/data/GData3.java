@@ -1528,6 +1528,10 @@ public final class GData3 extends GData {
         return lineBuilder.toString();
     }
 
+    public void drawProtractor_GL33(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
+        // FIXME Needs implementation!
+    }
+    
     public void drawProtractor_GL20(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
@@ -1691,7 +1695,7 @@ public final class GData3 extends GData {
         if (a > .9f ^ drawSolidMaterials)
             return;
         if (!isTriangle) {
-            // drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         
@@ -1809,7 +1813,7 @@ public final class GData3 extends GData {
         if (a > .9f ^ drawSolidMaterials)
             return;
         if (!isTriangle) {
-            // drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         
@@ -1934,7 +1938,7 @@ public final class GData3 extends GData {
         if (a > .9f ^ drawSolidMaterials)
             return;
         if (!isTriangle) {
-            // drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         
@@ -2284,7 +2288,7 @@ public final class GData3 extends GData {
         if (a < 1f ^ drawSolidMaterials)
             return;
         if (!isTriangle) {
-            // drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         
@@ -2401,20 +2405,587 @@ public final class GData3 extends GData {
 
     @Override
     public void drawGL33_BFC_backOnly(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        // TODO Auto-generated method stub
+        if (!visible)
+            return;
+        if (a > .9f ^ drawSolidMaterials)
+            return;
+        if (!isTriangle) {
+            drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            return;
+        }
         
+        final String idStr;
+        int vao;
+        int vbo;
+        {
+            sb.setLength(0);
+            sb.append(ID);
+            sb.append(GDataBFC.globalNegativeDeterminant ^ GDataBFC.globalInvertNext);
+            sb.append(3); // Render mode
+            sb.append(GDataBFC.localWinding);
+            idStr = sb.toString();
+        }
+        sourceID.remove(idStr);
+        targetID.add(idStr);
+        Integer[] objs = mapGLO.get(idStr);
+        if (objs == null) {
+            vao = -1;
+        } else {
+            vao = objs[0];
+            vbo = objs[1];
+            sourceVAO.remove(vao);
+            sourceBUF.remove(vbo);
+            targetVAO.add(vao);
+            targetBUF.add(vbo);
+        }
+        
+        if (vao != -1) {            
+            GL30.glBindVertexArray(vao);
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
+        } else {
+            float[] vertices;
+            
+            switch (GData.localWinding) {
+            case BFC.CCW:
+                if (GData.globalNegativeDeterminant) {
+                    if (GData.globalInvertNext) {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                        };
+                    } else {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x1, y1, z1,
+                                xn, yn, zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                        };
+                    }
+                } else {
+                    if (GData.globalInvertNext) {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x1, y1, z1,
+                                xn, yn, zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                        };
+                    } else {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                        };
+                    }
+                }
+                break;
+            case BFC.CW:
+                if (GData.globalNegativeDeterminant) {
+                    if (GData.globalInvertNext) {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x1, y1, z1,
+                                xn, yn, zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                        };
+                    } else {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                        };
+                    }
+                } else {
+                    if (GData.globalInvertNext) {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x1, y1, z1,
+                                xn, yn, zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                        };
+                    } else {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                        };
+                    }
+                }
+                break;
+            case BFC.NOCERTIFY:
+                if (GData.globalNegativeDeterminant) {
+                    vertices = new float[]{
+                            x1, y1, z1,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x2, y2, z2,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x3, y3, z3,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x1, y1, z1,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x3, y3, z3,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x2, y2, z2,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                    };
+                } else {
+                    vertices = new float[]{
+                            x1,  y1, z1,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x2, y2, z2,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x3, y3, z3,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x1, y1, z1,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x3, y3, z3,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x2, y2, z2,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                    };
+                }
+                break;
+            default:
+                throw new AssertionError("There must be some winding info! GData.localWinding=" + GData.localWinding); //$NON-NLS-1$
+            }
+
+            vao = GL30.glGenVertexArrays();
+            vbo = GL15.glGenBuffers();
+            targetVAO.add(vao);
+            targetBUF.add(vbo);
+            
+            GL30.glBindVertexArray(vao);
+
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STATIC_DRAW);
+
+            GL20.glEnableVertexAttribArray(0);
+            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+
+            GL20.glEnableVertexAttribArray(1);
+            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
+
+            GL20.glEnableVertexAttribArray(2);
+            GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+            GL30.glBindVertexArray(0);
+            
+            mapGLO.put(idStr, new Integer[]{vao, vbo});
+        }
     }
 
     @Override
     public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        // TODO Auto-generated method stub
+        if (!visible)
+            return;
+        if (a > .9f ^ drawSolidMaterials)
+            return;
+        if (!isTriangle) {
+            drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            return;
+        }
         
+        final String idStr;
+        int vao;
+        int vbo;
+        {
+            sb.setLength(0);
+            sb.append(ID);
+            sb.append(GDataBFC.globalNegativeDeterminant ^ GDataBFC.globalInvertNext);
+            sb.append(4); // Render mode
+            sb.append(GDataBFC.localWinding);
+            idStr = sb.toString();
+        }
+        sourceID.remove(idStr);
+        targetID.add(idStr);
+        Integer[] objs = mapGLO.get(idStr);
+        if (objs == null) {
+            vao = -1;
+        } else {
+            vao = objs[0];
+            vbo = objs[1];
+            sourceVAO.remove(vao);
+            sourceBUF.remove(vbo);
+            targetVAO.add(vao);
+            targetBUF.add(vbo);
+        }
+        
+        if (vao != -1) {            
+            GL30.glBindVertexArray(vao);
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+        } else {
+            float[] vertices;
+            
+            switch (GData.localWinding) {
+            case BFC.CCW:
+                if (GData.globalNegativeDeterminant) {
+                    if (GData.globalInvertNext) {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a
+                        };
+                    } else {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a
+                        };
+                    }
+                } else {
+                    if (GData.globalInvertNext) {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a
+                        };
+                    } else {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                r, g, b, a
+                        };
+                    }
+                }
+                break;
+            case BFC.CW:
+                if (GData.globalNegativeDeterminant) {
+                    if (GData.globalInvertNext) {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a
+                        };
+                    } else {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a
+                        };
+                    }
+                } else {
+                    if (GData.globalInvertNext) {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                r, g, b, a
+                        };
+                    } else {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a,
+
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a
+                        };
+                    }
+                }
+                break;
+            case BFC.NOCERTIFY:
+                if (GData.globalNegativeDeterminant) {
+                    vertices = new float[]{
+                            x1, y1, z1,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x2, y2, z2,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x3, y3, z3,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a
+                    };
+                } else {
+                    vertices = new float[]{
+                            x1,  y1, z1,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x2, y2, z2,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x3, y3, z3,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a
+                    };
+                }
+                break;
+            default:
+                throw new AssertionError("There must be some winding info! GData.localWinding=" + GData.localWinding); //$NON-NLS-1$
+            }
+
+            vao = GL30.glGenVertexArrays();
+            vbo = GL15.glGenBuffers();
+            targetVAO.add(vao);
+            targetBUF.add(vbo);
+            
+            GL30.glBindVertexArray(vao);
+
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STATIC_DRAW);
+
+            GL20.glEnableVertexAttribArray(0);
+            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+
+            GL20.glEnableVertexAttribArray(1);
+            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
+
+            GL20.glEnableVertexAttribArray(2);
+            GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+            GL30.glBindVertexArray(0);
+            
+            mapGLO.put(idStr, new Integer[]{vao, vbo});
+        }
     }
 
     @Override
     public void drawGL33_BFC_Textured(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        // TODO Auto-generated method stub
-        
+        // FIXME Needs implementation!
     }
 
     @Override

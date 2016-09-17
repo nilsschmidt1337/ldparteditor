@@ -42,16 +42,16 @@ public class GL33ModelRenderer {
 
     boolean isPaused = false;
     
-    HashMap<String, Integer[]> mapGLO = new HashMap<>();
-    HashSet<Integer> sourceVAO = new HashSet<>();
-    HashSet<Integer> targetVAO = new HashSet<>();    
-    HashSet<Integer> sourceBUF = new HashSet<>();
-    HashSet<Integer> targetBUF = new HashSet<>();
-    HashSet<Integer> swapPool = null;
-    HashSet<String> swapPool2 = null;
-    HashSet<String> sourceID = new HashSet<>();
-    HashSet<String> targetID = new HashSet<>();
-    final Composite3D c3d;
+    private HashMap<String, Integer[]> mapGLO = new HashMap<>();
+    private HashSet<Integer> sourceVAO = new HashSet<>();
+    private HashSet<Integer> targetVAO = new HashSet<>();    
+    private HashSet<Integer> sourceBUF = new HashSet<>();
+    private HashSet<Integer> targetBUF = new HashSet<>();
+    private HashSet<Integer> swapPool = null;
+    private HashSet<String> swapPool2 = null;
+    private HashSet<String> sourceID = new HashSet<>();
+    private HashSet<String> targetID = new HashSet<>();
+    private final Composite3D c3d;
     
     private static final GTexture CUBEMAP_TEXTURE = new GTexture(TexType.PLANAR, "cmap.png", null, 1, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GDataTEX CUBEMAP = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_TEXTURE); //$NON-NLS-1$
