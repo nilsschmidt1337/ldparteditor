@@ -36,7 +36,6 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -45,7 +44,6 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GColourType;
-import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
@@ -84,7 +82,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     private GLShader shaderProgram2D = new GLShader();
     private final GLMatrixStack stack = new GLMatrixStack();
     private final GL33Helper helper = new GL33Helper();
-    private final GL33ModelRenderer modelRenderer = new GL33ModelRenderer();
+    private final GL33ModelRenderer modelRenderer = new GL33ModelRenderer(c3d);
     
     private int skipFrame;
 
@@ -376,7 +374,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 shaderProgram.lightsOff();
             }
 
-            modelRenderer.draw(stack, shaderProgram, true, c3d.getLockableDatFileReference(), c3d);
+            modelRenderer.draw(stack, shaderProgram, true, c3d.getLockableDatFileReference());
             
             if (raytraceMode) {
                 Rectangle b = c3d.getCanvas().getBounds();
@@ -409,9 +407,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 c3d.setDraggedPrimitive(null);
             }
             
-            GL20.glUniformMatrix4fv(shaderProgram.getUniformLocation("view"), false, view_buf); //$NON-NLS-1$
-            
-            modelRenderer.draw(stack, shaderProgram, false, c3d.getLockableDatFileReference(), c3d);
+            // GL20.glUniformMatrix4fv(shaderProgram.getUniformLocation("view"), false, view_buf); //$NON-NLS-1$
+            modelRenderer.draw(stack, shaderProgram, false, c3d.getLockableDatFileReference());
             
 //            GL30.glDeleteVertexArrays(GData.VAOtest);
 //            GL15.glDeleteBuffers(VBOtest);
