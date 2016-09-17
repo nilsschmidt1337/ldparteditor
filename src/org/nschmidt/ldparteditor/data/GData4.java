@@ -1662,6 +1662,11 @@ public final class GData4 extends GData {
 
     @Override
     public void drawGL33(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+        if (!visible)
+            return;
+        if (a < 1f ^ drawSolidMaterials)
+            return;
+        
         final String idStr;
         int vao;
         int vbo;
@@ -1678,7 +1683,6 @@ public final class GData4 extends GData {
         Integer[] objs = mapGLO.get(idStr);
         if (objs == null) {
             vao = -1;
-            vbo = -1;
         } else {
             vao = objs[0];
             vbo = objs[1];
@@ -1687,11 +1691,6 @@ public final class GData4 extends GData {
             targetVAO.add(vao);
             targetBUF.add(vbo);
         }
-        
-        if (!visible)
-            return;
-        if (a < 1f ^ drawSolidMaterials)
-            return;
         
         if (vao != -1) {
             GL30.glBindVertexArray(vao);
@@ -1829,6 +1828,11 @@ public final class GData4 extends GData {
 
     @Override
     public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+        if (!visible)
+            return;
+        if (a < 1f ^ drawSolidMaterials)
+            return;
+        
         final String idStr;
         int vao;
         int vbo;
@@ -1845,7 +1849,6 @@ public final class GData4 extends GData {
         Integer[] objs = mapGLO.get(idStr);
         if (objs == null) {
             vao = -1;
-            vbo = -1;
         } else {
             vao = objs[0];
             vbo = objs[1];
@@ -1854,11 +1857,6 @@ public final class GData4 extends GData {
             targetVAO.add(vao);
             targetBUF.add(vbo);
         }
-        
-        if (!visible)
-            return;
-        if (a < 1f ^ drawSolidMaterials)
-            return;
         
         if (vao != -1) {
             GL30.glBindVertexArray(vao);
@@ -2000,37 +1998,37 @@ public final class GData4 extends GData {
     }
 
     @Override
-    public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack) {
+    public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void drawGL33_BFCuncertified(Composite3D c3d, GLMatrixStack stack) {
+    public void drawGL33_BFCuncertified(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void drawGL33_BFC_backOnly(Composite3D c3d, GLMatrixStack stack) {
+    public void drawGL33_BFC_backOnly(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack) {
+    public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void drawGL33_BFC_Textured(Composite3D c3d, GLMatrixStack stack) {
+    public void drawGL33_BFC_Textured(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void drawGL33_WhileAddCondlines(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33_BFC(c3d, stack);
+    public void drawGL33_WhileAddCondlines(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+        drawGL33_BFC(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
     }
 }

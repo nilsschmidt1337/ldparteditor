@@ -818,7 +818,7 @@ public final class GData2 extends GData {
                 stack.getShader().lightsOn();
             return;
         }
-        if (a < 1f && drawSolidMaterials || !drawSolidMaterials && a == 1f) {
+        if (a < 1f ^ drawSolidMaterials) {
             if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
                 stack.getShader().lightsOn();
             return;
@@ -927,34 +927,34 @@ public final class GData2 extends GData {
     }
 
     @Override
-    public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
+    public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+        drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
     }
 
     @Override
-    public void drawGL33_BFCuncertified(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
+    public void drawGL33_BFCuncertified(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+        drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
     }
 
     @Override
-    public void drawGL33_BFC_backOnly(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
+    public void drawGL33_BFC_backOnly(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+        drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
     }
 
     @Override
-    public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
+    public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+        drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
     }
 
     @Override
-    public void drawGL33_BFC_Textured(Composite3D c3d, GLMatrixStack stack) {
+    public void drawGL33_BFC_Textured(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void drawGL33_WhileAddCondlines(Composite3D c3d, GLMatrixStack stack) {
-        drawGL33(c3d, stack, false, null, null, null, null, null, null, null);
+    public void drawGL33_WhileAddCondlines(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
+        drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
     }
 
     /*
