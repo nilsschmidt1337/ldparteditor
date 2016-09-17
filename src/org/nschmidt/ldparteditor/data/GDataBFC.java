@@ -339,7 +339,7 @@ public final class GDataBFC extends GData {
 
     @Override
     public void drawGL33(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        drawGL20(c3d);
+        drawGL20(null);
     }
 
     @Override

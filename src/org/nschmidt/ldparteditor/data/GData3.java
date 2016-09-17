@@ -1688,7 +1688,7 @@ public final class GData3 extends GData {
     public void drawGL33(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         if (!visible)
             return;
-        if (a < 1f ^ drawSolidMaterials)
+        if (a > .9f ^ drawSolidMaterials)
             return;
         if (!isTriangle) {
             // drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
@@ -1701,9 +1701,6 @@ public final class GData3 extends GData {
         {
             sb.setLength(0);
             sb.append(ID);
-            sb.append(GDataBFC.globalNegativeDeterminant ^ GDataBFC.globalInvertNext);
-            sb.append(0); // Render mode
-            sb.append(GDataBFC.localWinding);
             idStr = sb.toString();
         }
         sourceID.remove(idStr);
@@ -1723,7 +1720,6 @@ public final class GData3 extends GData {
         if (vao != -1) {            
             GL30.glBindVertexArray(vao);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
-            GL30.glBindVertexArray(0);
         } else {
             float[] vertices;
             if (GData.globalNegativeDeterminant) {
@@ -1750,8 +1746,7 @@ public final class GData3 extends GData {
 
                         x2, y2, z2,
                         -xn, -yn, -zn,
-                        r, g, b, a,
-
+                        r, g, b, a
                 };
             } else {
                 vertices = new float[]{
@@ -1777,7 +1772,7 @@ public final class GData3 extends GData {
 
                         x2, y2, z2,
                         xn, yn, zn,
-                        r, g, b, a,
+                        r, g, b, a
                 };
             }
 
@@ -1811,7 +1806,7 @@ public final class GData3 extends GData {
     public void drawGL33_RandomColours(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         if (!visible)
             return;
-        if (a < 1f ^ drawSolidMaterials)
+        if (a > .9f ^ drawSolidMaterials)
             return;
         if (!isTriangle) {
             // drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
@@ -1824,9 +1819,7 @@ public final class GData3 extends GData {
         {
             sb.setLength(0);
             sb.append(ID);
-            sb.append(GDataBFC.globalNegativeDeterminant ^ GDataBFC.globalInvertNext);
-            sb.append(1); // Render mode
-            sb.append(GDataBFC.localWinding);
+            sb.append('r'); // Render mode
             idStr = sb.toString();
         }
         sourceID.remove(idStr);
@@ -1846,7 +1839,6 @@ public final class GData3 extends GData {
         if (vao != -1) {            
             GL30.glBindVertexArray(vao);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
-            GL30.glBindVertexArray(0);
         } else {
             
             final float r = MathHelper.randomFloat(ID, 0);
@@ -1939,7 +1931,7 @@ public final class GData3 extends GData {
     public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         if (!visible)
             return;
-        if (a < 1f ^ drawSolidMaterials)
+        if (a > .9f ^ drawSolidMaterials)
             return;
         if (!isTriangle) {
             // drawProtractor_GL33(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
@@ -1974,7 +1966,6 @@ public final class GData3 extends GData {
         if (vao != -1) {            
             GL30.glBindVertexArray(vao);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
-            GL30.glBindVertexArray(0);
         } else {
             float[] vertices;
             

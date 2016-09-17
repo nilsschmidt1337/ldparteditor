@@ -42,15 +42,16 @@ public class GL33ModelRenderer {
 
     boolean isPaused = false;
     
-    private HashMap<String, Integer[]> vaoMap = new HashMap<>();
-    private HashSet<Integer> vaoPool_1 = new HashSet<>();
-    private HashSet<Integer> vaoPool_2 = new HashSet<>();    
-    private HashSet<Integer> bufPool_1 = new HashSet<>();
-    private HashSet<Integer> bufPool_2 = new HashSet<>();
-    private HashSet<Integer> swapPool = null;
-    private HashSet<String> swapPool2 = null;
-    private HashSet<String> idPool_1 = new HashSet<>();
-    private HashSet<String> idPool_2 = new HashSet<>();    
+    HashMap<String, Integer[]> mapGLO = new HashMap<>();
+    HashSet<Integer> sourceVAO = new HashSet<>();
+    HashSet<Integer> targetVAO = new HashSet<>();    
+    HashSet<Integer> sourceBUF = new HashSet<>();
+    HashSet<Integer> targetBUF = new HashSet<>();
+    HashSet<Integer> swapPool = null;
+    HashSet<String> swapPool2 = null;
+    HashSet<String> sourceID = new HashSet<>();
+    HashSet<String> targetID = new HashSet<>();
+    final Composite3D c3d;
     
     private static final GTexture CUBEMAP_TEXTURE = new GTexture(TexType.PLANAR, "cmap.png", null, 1, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GDataTEX CUBEMAP = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_TEXTURE); //$NON-NLS-1$
@@ -61,23 +62,27 @@ public class GL33ModelRenderer {
     private static final GTexture CUBEMAP_METAL_TEXTURE = new GTexture(TexType.PLANAR, "metal.png", null, 2, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GDataTEX CUBEMAP_METAL = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_METAL_TEXTURE); //$NON-NLS-1$
     
+    public GL33ModelRenderer(Composite3D c3d) {
+        this.c3d = c3d;
+    }
+
     // FIXME Renderer needs implementation!
-    public void draw(GLMatrixStack stack, GLShader shaderProgram, boolean drawSolidMaterials, DatFile df, Composite3D c3d) {
+    public void draw(GLMatrixStack stack, GLShader shaderProgram, boolean drawSolidMaterials, DatFile df) {
 
         GDataCSG.resetCSG(df, c3d.getManipulator().isModified());
 
         if (drawSolidMaterials) {
-            swapPool = vaoPool_1;
-            vaoPool_1 = vaoPool_2;
-            vaoPool_2 = swapPool;
+            swapPool = sourceVAO;
+            sourceVAO = targetVAO;
+            targetVAO = swapPool;
             
-            swapPool = bufPool_1;
-            bufPool_1 = bufPool_2;
-            bufPool_2 = swapPool;
+            swapPool = sourceBUF;
+            sourceBUF = targetBUF;
+            targetBUF = swapPool;
             
-            swapPool2 = idPool_1;
-            idPool_1 = idPool_2;
-            idPool_2 = swapPool2;
+            swapPool2 = sourceID;
+            sourceID = targetID;
+            targetID = swapPool2;
         }
         
         GData data2draw = df.getDrawChainStart();
@@ -89,76 +94,76 @@ public class GL33ModelRenderer {
         case -1: // Wireframe
             break;
         case 0: // No BFC
-            data2draw.drawGL33(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+            data2draw.drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
             while ((data2draw = data2draw.getNext()) != null && !isPaused) {
                 isPaused = ViewIdleManager.pause[0].get();
-                data2draw.drawGL33(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                data2draw.drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                 
             }
             break;
         case 1: // Random Colours
-            data2draw.drawGL33_RandomColours(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+            data2draw.drawGL33_RandomColours(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
             while ((data2draw = data2draw.getNext()) != null && !isPaused) {
                 isPaused = ViewIdleManager.pause[0].get();
-                data2draw.drawGL33_RandomColours(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                data2draw.drawGL33_RandomColours(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
             }
             break;
         case 2: // Front-Backface BFC
-            data2draw.drawGL33_BFC(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+            data2draw.drawGL33_BFC(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
             while ((data2draw = data2draw.getNext()) != null && !isPaused) {
                 isPaused = ViewIdleManager.pause[0].get();
                 switch (GData.accumClip) {
                 case 0:
-                    data2draw.drawGL33_BFC(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                    data2draw.drawGL33_BFC(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                     break;
                 default:
-                    data2draw.drawGL33(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                    data2draw.drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                     break;
                 }
             }
             break;
         case 3: // Backface only BFC
-            data2draw.drawGL33_BFC_backOnly(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+            data2draw.drawGL33_BFC_backOnly(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
             while ((data2draw = data2draw.getNext()) != null && !isPaused) {
                 isPaused = ViewIdleManager.pause[0].get();
                 switch (GData.accumClip) {
                 case 0:
-                    data2draw.drawGL33_BFC_backOnly(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                    data2draw.drawGL33_BFC_backOnly(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                     break;
                 default:
-                    data2draw.drawGL33(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                    data2draw.drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                     break;
                 }
             }
             break;
         case 4: // Real BFC
-            data2draw.drawGL33_BFC_Colour(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+            data2draw.drawGL33_BFC_Colour(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
             while ((data2draw = data2draw.getNext()) != null && !isPaused) {
                 isPaused = ViewIdleManager.pause[0].get();
                 switch (GData.accumClip) {
                 case 0:
-                    data2draw.drawGL33_BFC_Colour(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                    data2draw.drawGL33_BFC_Colour(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                     break;
                 default:
-                    data2draw.drawGL33(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                    data2draw.drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
                     break;
                 }
             }
             break;
         case 5: // FIXME Real BFC with texture mapping
             GL11.glEnable(GL11.GL_TEXTURE_2D);
-            data2draw.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+            data2draw.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
             GDataInit.resetBfcState();
-            data2draw.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
-            CUBEMAP.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
-            CUBEMAP_MATTE.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
-            CUBEMAP_METAL.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+            data2draw.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
+            CUBEMAP.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
+            CUBEMAP_MATTE.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
+            CUBEMAP_METAL.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
             while ((data2draw = data2draw.getNext()) != null && !isPaused) {
                 isPaused = ViewIdleManager.pause[0].get();
-                data2draw.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                data2draw.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
             }
             // vertices.clearVertexNormalCache();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
@@ -174,10 +179,10 @@ public class GL33ModelRenderer {
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             break;
         case 6: // Special mode for "Add condlines"
-            data2draw.drawGL33_WhileAddCondlines(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+            data2draw.drawGL33_WhileAddCondlines(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
             while ((data2draw = data2draw.getNext()) != null && !isPaused) {
                 isPaused = ViewIdleManager.pause[0].get();
-                data2draw.drawGL33_WhileAddCondlines(c3d, stack, drawSolidMaterials, vaoPool_1, vaoPool_2, bufPool_1, bufPool_2, idPool_1, idPool_2, vaoMap);
+                data2draw.drawGL33_WhileAddCondlines(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
             }
             break;
         default:
@@ -186,25 +191,25 @@ public class GL33ModelRenderer {
         
         if (!drawSolidMaterials) {
             if (isPaused) {
-                idPool_2.addAll(idPool_1);
-                vaoPool_2.addAll(vaoPool_1);
-                bufPool_2.addAll(bufPool_1);
+                targetID.addAll(sourceID);
+                targetVAO.addAll(sourceVAO);
+                targetBUF.addAll(sourceBUF);
             } else {
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
                 GL30.glBindVertexArray(0);
-                for (Integer id : vaoPool_1) {
+                for (Integer id : sourceVAO) {
                     GL30.glDeleteVertexArrays(id);
                 }
-                for (Integer id : bufPool_1) {
+                for (Integer id : sourceBUF) {
                     GL15.glDeleteBuffers(id);
                 }
-                for (String id : idPool_1) {
-                    vaoMap.remove(id);
+                for (String id : sourceID) {
+                    mapGLO.remove(id);
                 }
             }
-            idPool_1.clear();
-            vaoPool_1.clear();
-            bufPool_1.clear();
+            sourceID.clear();
+            sourceVAO.clear();
+            sourceBUF.clear();
             isPaused = false;
         }
 
@@ -212,5 +217,6 @@ public class GL33ModelRenderer {
 
         if (drawSolidMaterials && renderMode != 5)
             df.getVertexManager().showHidden();
+        
     }
 }
