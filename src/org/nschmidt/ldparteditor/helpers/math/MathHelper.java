@@ -156,7 +156,14 @@ public enum MathHelper {
             sz = 1f;
 
         float[][] result = new float[21][3];
-
+        
+        result[18][0] = p1.x * 1000f;
+        result[18][1] = p1.y * 1000f;
+        result[18][2] = p1.z * 1000f;
+        result[19][0] = p2.x * 1000f;
+        result[19][1] = p2.y * 1000f;
+        result[19][2] = p2.z * 1000f;
+        
         Vector4f n = new Vector4f();
         Vector4f p = new Vector4f();
         Vector4f q = new Vector4f();
@@ -231,12 +238,12 @@ public enum MathHelper {
 
         }
 
-        result[18][0] = sx * p1.x;
-        result[18][1] = sy * p1.y;
-        result[18][2] = sz * p1.z;
-        result[19][0] = sx * p2.x;
-        result[19][1] = sy * p2.y;
-        result[19][2] = sz * p2.z;
+        result[18][0] = result[18][0] * sx;
+        result[18][1] = result[18][1] * sy;
+        result[18][2] = result[18][2] * sz;
+        result[19][0] = result[19][0] * sx;
+        result[19][1] = result[19][1] * sy;
+        result[19][2] = result[19][2] * sz;
         result[20][0] = 1f / sx;
         result[20][1] = 1f / sy;
         result[20][2] = 1f / sz;
@@ -262,6 +269,13 @@ public enum MathHelper {
             sz = 1f;
 
         float[][] result = new float[21][3];
+        
+        result[18][0] = p1.x;
+        result[18][1] = p1.y;
+        result[18][2] = p1.z;
+        result[19][0] = p2.x;
+        result[19][1] = p2.y;
+        result[19][2] = p2.z;
 
         Vector4f n = new Vector4f();
         Vector4f p = new Vector4f();
@@ -338,12 +352,12 @@ public enum MathHelper {
 
         }
 
-        result[18][0] = sx * p1.x;
-        result[18][1] = sy * p1.y;
-        result[18][2] = sz * p1.z;
-        result[19][0] = sx * p2.x;
-        result[19][1] = sy * p2.y;
-        result[19][2] = sz * p2.z;
+        result[18][0] = result[18][0] * sx;
+        result[18][1] = result[18][1] * sy;
+        result[18][2] = result[18][2] * sz;
+        result[19][0] = result[19][0] * sx;
+        result[19][1] = result[19][1] * sy;
+        result[19][2] = result[19][2] * sz;
         result[20][0] = 1f / sx;
         result[20][1] = 1f / sy;
         result[20][2] = 1f / sz;
