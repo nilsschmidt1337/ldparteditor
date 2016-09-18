@@ -1122,4 +1122,26 @@ public final class GData5 extends GData {
         // TODO Auto-generated method stub
         
     }
+    
+    public boolean isShown(Matrix4f viewport, HashMap<GData1, Matrix4f> CACHE_viewByProjection, float zoom, Vector4f A, Vector4f B, Vector4f C, Vector4f D, Vector4f N, Matrix4f M) {
+        
+        final Matrix4f M2 = CACHE_viewByProjection.get(parent);
+        if (M2 == null) {
+            Matrix4f.mul(viewport, parent.productMatrix, M);
+            CACHE_viewByProjection.put(parent, M);
+        } else {
+            M = M2;
+        }
+        
+        // Calculate the real coordinates
+        Matrix4f.transform(M, A2, A);
+        Matrix4f.transform(M, B2, B);
+        Matrix4f.transform(M, C2, C);
+        Matrix4f.transform(M, D2, D);
+
+        N.x = A.y - B.y;
+        N.y = B.x - A.x;
+
+        return (zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null))) > -1e-20f;
+    }
 }

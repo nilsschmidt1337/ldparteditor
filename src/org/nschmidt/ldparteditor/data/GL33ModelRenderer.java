@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,7 +31,9 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.colour.GCChrome;
 import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
@@ -270,7 +273,18 @@ public class GL33ModelRenderer {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                final Vector4f Av = new Vector4f(0, 0, 0, 1f);
+                final Vector4f Bv = new Vector4f(0, 0, 0, 1f);
+                final Vector4f Cv = new Vector4f(0, 0, 0, 1f);
+                final Vector4f Dv = new Vector4f(0, 0, 0, 1f);
+
+                final Vector4f Nv = new Vector4f(0, 0, 0, 1f);
+                final Matrix4f Mm = new Matrix4f();
+                
                 final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
+                final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
+                final HashMap<GData, Boolean> condlineMap = new HashMap<>();
+                final HashMap<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<GData1, Matrix4f>(1000);
                 final int myID = idGen.getAndIncrement();
                 while (isRunning.get()) {
                     if (myID == idCount.get()) {
@@ -292,6 +306,9 @@ public class GL33ModelRenderer {
 
                             // Build the list of the data from the datfile
                             dataInOrder.clear();
+                            vertexMap.clear();
+                            condlineMap.clear();
+                            CACHE_viewByProjection.clear();
                             {
                                 Stack<GData> stack = new Stack<>();
                                 Stack<Byte> tempWinding = new Stack<>();
@@ -307,7 +324,7 @@ public class GL33ModelRenderer {
                                 boolean globalInvertNextFound = false;
                                 boolean globalNegativeDeterminant = false;
 
-                                // The BFC logic/state machine is not correct yet.
+                                // The BFC logic/state machine is not correct yet (for BFC no-certify).
                                 while ((gd = gd.next) != null || !stack.isEmpty()) {                                
                                     if (gd == null) {
                                         if (accumClip > 0) {
@@ -321,12 +338,39 @@ public class GL33ModelRenderer {
                                         continue;
                                     }
                                     final int type = gd.type();
+                                    boolean addData = false;
+                                    Vertex[] verts;
                                     switch (type) {
                                     case 1:
+                                        break;
                                     case 2:
+                                        verts = lines.get(gd);
+                                        if (verts != null) {
+                                            vertexMap.put(gd, verts);
+                                            addData = true;
+                                        }
+                                        break;
                                     case 3:
+                                        verts = triangles.get(gd);
+                                        if (verts != null) {
+                                            vertexMap.put(gd, verts);
+                                            addData = true;
+                                        }
+                                        break;
                                     case 4:
+                                        verts = quads.get(gd);
+                                        if (verts != null) {
+                                            vertexMap.put(gd, verts);
+                                            addData = true;
+                                        }
+                                        break;
                                     case 5:
+                                        verts = condlines.get(gd);
+                                        if (verts != null) {
+                                            vertexMap.put(gd, verts);
+                                            addData = true;
+                                        }
+                                        break;
                                     case 6:
                                         break;
                                     case 9:
@@ -339,7 +383,9 @@ public class GL33ModelRenderer {
                                         continue;
                                     }
                                     
-                                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
+                                    if (addData) {
+                                        dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
+                                    }
                                     
                                     switch (type) {
                                     case 1:
@@ -405,12 +451,30 @@ public class GL33ModelRenderer {
                                 }
                             }
                             
+                            final boolean openGL_lines = View.edge_threshold == 5e6f;
+                            final int renderMode = c3d.getRenderMode();
+                            final int lineMode = c3d.getLineMode();
+                            final boolean showAllLines = lineMode == 1;
+                            final boolean condlineMode = renderMode == 6;
+                            final float zoom = c3d.getZoom();
+                            final Matrix4f viewport = c3d.getViewport();
+                            
+                            int size2 = 0;
+                            int size3 = 0;
+                            
                             // Calculate the buffer size (and condline visibility)
-                            for (GDataAndWinding gw : dataInOrder) {
+                            for (Iterator<GDataAndWinding> it = dataInOrder.iterator(); it.hasNext();) {
+                                final GDataAndWinding gw = (GDataAndWinding) it.next();
+                            
                                 final GData gd = gw.data;
                                 switch (gd.type()) {
                                 case 2:
-                                    
+                                    // If "OpenGL lines" is ON, I have to use another buffer for it
+                                    if (openGL_lines) {
+                                        size3 += 20;
+                                    } else {
+                                        
+                                    }
                                     break;
                                 case 3:
                                     
@@ -419,8 +483,21 @@ public class GL33ModelRenderer {
                                     
                                     break;
                                 case 5:
-                                    // Condlines are tricky, since I have to calculate the visibility
-                                    
+                                    // Condlines are tricky, since I have to calculate their visibility
+                                    // and save the result for the special condline mode
+                                    GData5 gd5 = (GData5) gd;
+                                    final boolean visible = gd5.isShown(viewport, CACHE_viewByProjection, zoom, Av, Bv, Cv, Dv, Nv, Mm);
+                                    if (showAllLines || condlineMode || visible) {
+                                        condlineMap.put(gd, visible);
+                                        // If "OpenGL lines" is ON, I have to use another buffer for it 
+                                        if (openGL_lines) {
+                                            
+                                        } else {
+                                           
+                                        }
+                                    } else {
+                                        it.remove();
+                                    }
                                     break;
                                 default:
                                     break;
@@ -430,11 +507,17 @@ public class GL33ModelRenderer {
                             float[] vertexData = new float[size];
                             
                             // Iterate the objects and generate the buffer data
+                            // TEXMAP and Real Backface Culling are quite "the same", but they need different vertex normals
                             for (GDataAndWinding gw : dataInOrder) {
                                 final GData gd = gw.data;
                                 switch (gd.type()) {
                                 case 2:
-                                    
+                                    // If "OpenGL lines" is ON, I have to use another buffer for it
+                                    if (openGL_lines) {
+                                        
+                                    } else {
+                                       
+                                    }
                                     break;
                                 case 3:
                                     
@@ -443,8 +526,12 @@ public class GL33ModelRenderer {
                                     
                                     break;
                                 case 5:
-                                    // Condlines are tricky, since I have to calculate the visibility
-                                    
+                                    // If "OpenGL lines" is ON, I have to use another buffer for it
+                                    if (openGL_lines) {
+                                        
+                                    } else {
+                                       
+                                    }
                                     break;
                                 default:
                                     break;
