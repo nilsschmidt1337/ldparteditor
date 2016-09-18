@@ -18,7 +18,10 @@ package org.nschmidt.ldparteditor.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -34,6 +37,8 @@ import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
 import org.nschmidt.ldparteditor.data.colour.GCMetal;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -233,10 +238,13 @@ public class GL33ModelRenderer {
     
     private int vao;
     private int vbo;
-    private final int triangle_count = 1000000;
+    private final int triangle_count = 1000;
     private final int size = 30 * triangle_count;
     
-    private volatile Lock lock = new ReentrantLock();    
+    private volatile Lock lock = new ReentrantLock();
+    private static volatile Lock static_lock = new ReentrantLock();
+    private static volatile AtomicInteger idGen = new AtomicInteger(0);
+    private static volatile AtomicInteger idCount = new AtomicInteger(0);
     private volatile float[] data = null;
     
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
@@ -258,33 +266,138 @@ public class GL33ModelRenderer {
         
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
-        
+
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // TODO Auto-generated method stub
+                final ArrayList<GData> dataInOrder = new ArrayList<>();
+                final int myID = idGen.getAndIncrement();
                 while (isRunning.get()) {
-                    float[] vertexData = new float[size];                    
-                    for(int i = 0; i < size; i += 10) {
-                        
-                            vertexData[i] = (float) (2000f * Math.random()) - 1000f;
-                            vertexData[i + 1] = (float) (2000f * Math.random()) - 1000f;
-                            vertexData[i + 2] = (float) (2000f * Math.random()) - 1000f;
-                            
-                            vertexData[i + 3] = 1f;
-                            vertexData[i + 4] = 1f;
-                            vertexData[i + 5] = 1f;
-                            
-                            vertexData[i + 6] = (float) Math.random();
-                            vertexData[i + 7] = (float) Math.random();
-                            vertexData[i + 8] = (float) Math.random();
-                            vertexData[i + 9] = 1f;
-                            
+                    if (myID == idCount.get()) {
+                        try {
+                            static_lock.lock();
+                            final long start = System.currentTimeMillis();
+
+                            // First we have to get links to the sets from the model
+                            final DatFile df = c3d.getLockableDatFileReference();
+                            final VertexManager vm = df.getVertexManager();
+                            final ThreadsafeHashMap<GData2, Vertex[]> lines = vm.lines;
+                            final ThreadsafeHashMap<GData3, Vertex[]> triangles = vm.triangles;
+                            final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
+                            final ThreadsafeHashMap<GData5, Vertex[]> condlines = vm.condlines;
+                            final Set<Vertex> vertices = vm.vertexLinkedToPositionInFile.keySet();
+
+                            boolean hasTEXMAP = false;
+                            boolean hasPNG = false;
+
+                            // Build the list of the data from the datfile
+                            dataInOrder.clear();
+                            {
+                                Stack<GData> stack = new Stack<>();
+                                Stack<Byte> tempWinding = new Stack<>();
+                                Stack<Boolean> tempInvertNext = new Stack<>();
+                                Stack<Boolean> tempInvertNextFound = new Stack<>();
+                                Stack<Boolean> tempNegativeDeterminant = new Stack<>();
+
+                                GData gd = df.getDrawChainStart();
+
+                                byte localWinding = BFC.NOCERTIFY;
+                                int accumClip = 0;
+                                boolean globalInvertNext = false;
+                                boolean globalInvertNextFound = false;
+                                boolean globalNegativeDeterminant = false;
+
+                                while ((gd = gd.next) != null || !stack.isEmpty()) {                                
+                                    if (gd == null) {
+                                        if (accumClip > 0) {
+                                            accumClip--;
+                                        }
+                                        gd = stack.pop();
+                                        localWinding = tempWinding.pop();
+                                        globalInvertNext = tempInvertNext.pop();
+                                        globalInvertNextFound = tempInvertNextFound.pop();
+                                        globalNegativeDeterminant = tempNegativeDeterminant.pop();
+                                        continue;
+                                    }
+                                    final int type = gd.type();
+                                    switch (type) {
+                                    case 1:
+                                    case 2:
+                                    case 3:
+                                    case 4:
+                                    case 5:
+                                    case 6:
+                                        break;
+                                    case 9:
+                                        hasTEXMAP = true;
+                                        break;
+                                    case 10:
+                                        hasPNG = true;
+                                        break;
+                                    default:
+                                        continue;
+                                    }
+                                    dataInOrder.add(gd);
+                                    switch (type) {
+                                    case 1:
+                                        stack.push(gd);
+                                        tempWinding.push(localWinding);
+                                        tempInvertNext.push(globalInvertNext);
+                                        tempInvertNextFound.push(globalInvertNextFound);
+                                        tempNegativeDeterminant.push(globalNegativeDeterminant);
+                                        if (accumClip > 0) {
+                                            accumClip++;
+                                        }
+                                        gd = ((GData1) gd).myGData;
+                                        break;
+
+                                    default:
+                                        break;
+                                    }
+                                }
+                            }
+
+                            float[] vertexData = new float[size];                    
+                            for(int i = 0; i < size; i += 10) {
+
+                                vertexData[i] = (float) (2000f * Math.random()) - 1000f;
+                                vertexData[i + 1] = (float) (2000f * Math.random()) - 1000f;
+                                vertexData[i + 2] = (float) (2000f * Math.random()) - 1000f;
+
+                                vertexData[i + 3] = 1f;
+                                vertexData[i + 4] = 1f;
+                                vertexData[i + 5] = 1f;
+
+                                vertexData[i + 6] = (float) Math.random();
+                                vertexData[i + 7] = (float) Math.random();
+                                vertexData[i + 8] = (float) Math.random();
+                                vertexData[i + 9] = 1f;
+
+                            }
+                            lock.lock();
+                            data = vertexData;
+                            lock.unlock();
+
+                            NLogger.debug(getClass(), "Processing time: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
+                        } catch (Exception ex) {
+                            NLogger.debug(getClass(), "Exception: " + ex.getMessage()); //$NON-NLS-1$
+                        } finally {
+                            static_lock.unlock();
+                        }
+                        if (idCount.incrementAndGet() >= idGen.get()) {
+                            idCount.set(0);
+                        }
+                    } else {
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                        }
                     }
-                    lock.lock();
-                    data = vertexData;
-                    lock.unlock();
                 }
+            }
+            
+            class GDataAndWinding {
+                
             }
         }).start();
     }
