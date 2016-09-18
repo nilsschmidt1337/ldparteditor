@@ -270,7 +270,7 @@ public class GL33ModelRenderer {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final ArrayList<GData> dataInOrder = new ArrayList<>();
+                final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
                 final int myID = idGen.getAndIncrement();
                 while (isRunning.get()) {
                     if (myID == idCount.get()) {
@@ -307,6 +307,7 @@ public class GL33ModelRenderer {
                                 boolean globalInvertNextFound = false;
                                 boolean globalNegativeDeterminant = false;
 
+                                // The BFC logic/state machine is not correct yet.
                                 while ((gd = gd.next) != null || !stack.isEmpty()) {                                
                                     if (gd == null) {
                                         if (accumClip > 0) {
@@ -337,9 +338,12 @@ public class GL33ModelRenderer {
                                     default:
                                         continue;
                                     }
-                                    dataInOrder.add(gd);
+                                    
+                                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
+                                    
                                     switch (type) {
                                     case 1:
+                                        final GData1 gd1 = ((GData1) gd);
                                         stack.push(gd);
                                         tempWinding.push(localWinding);
                                         tempInvertNext.push(globalInvertNext);
@@ -348,16 +352,106 @@ public class GL33ModelRenderer {
                                         if (accumClip > 0) {
                                             accumClip++;
                                         }
-                                        gd = ((GData1) gd).myGData;
+                                        globalInvertNextFound = false;
+                                        localWinding = BFC.NOCERTIFY;
+                                        globalNegativeDeterminant = globalNegativeDeterminant ^ gd1.negativeDeterminant;
+                                        gd = gd1.myGData;
                                         break;
-
+                                    case 6:
+                                        switch (((GDataBFC) gd).type) {
+                                        case BFC.CCW:
+                                            localWinding = BFC.CCW;
+                                            break;
+                                        case BFC.CCW_CLIP:
+                                            localWinding = BFC.CCW;
+                                            break;
+                                        case BFC.CW:
+                                            localWinding = BFC.CW;
+                                            break;
+                                        case BFC.CW_CLIP:
+                                            localWinding = BFC.CW;
+                                            break;
+                                        case BFC.INVERTNEXT:
+                                            boolean validState = false;
+                                            GData g = gd.next;
+                                            while (g != null && g.type() < 2) {
+                                                if (g.type() == 1) {
+                                                    if (g.visible) validState = true;
+                                                    break;
+                                                } else if (!g.toString().trim().isEmpty()) {
+                                                    break;
+                                                }
+                                                g = g.next;
+                                            }
+                                            if (validState) {
+                                                globalInvertNext = !globalInvertNext;
+                                                globalInvertNextFound = true;
+                                            }
+                                            break;
+                                        case BFC.NOCERTIFY:
+                                            localWinding = BFC.NOCERTIFY;
+                                            break;
+                                        case BFC.NOCLIP:
+                                            if (accumClip == 0)
+                                                accumClip = 1;
+                                            break;
+                                        default:
+                                            break;
+                                        }
+                                        break;
                                     default:
                                         break;
                                     }
                                 }
                             }
+                            
+                            // Calculate the buffer size (and condline visibility)
+                            for (GDataAndWinding gw : dataInOrder) {
+                                final GData gd = gw.data;
+                                switch (gd.type()) {
+                                case 2:
+                                    
+                                    break;
+                                case 3:
+                                    
+                                    break;
+                                case 4:
+                                    
+                                    break;
+                                case 5:
+                                    // Condlines are tricky, since I have to calculate the visibility
+                                    
+                                    break;
+                                default:
+                                    break;
+                                }
+                            }
+                            
+                            float[] vertexData = new float[size];
+                            
+                            // Iterate the objects and generate the buffer data
+                            for (GDataAndWinding gw : dataInOrder) {
+                                final GData gd = gw.data;
+                                switch (gd.type()) {
+                                case 2:
+                                    
+                                    break;
+                                case 3:
+                                    
+                                    break;
+                                case 4:
+                                    
+                                    break;
+                                case 5:
+                                    // Condlines are tricky, since I have to calculate the visibility
+                                    
+                                    break;
+                                default:
+                                    break;
+                                }
+                            }
 
-                            float[] vertexData = new float[size];                    
+                                             
                             for(int i = 0; i < size; i += 10) {
 
                                 vertexData[i] = (float) (2000f * Math.random()) - 1000f;
@@ -397,7 +491,16 @@ public class GL33ModelRenderer {
             }
             
             class GDataAndWinding {
-                
+                final GData data;
+                final byte winding;
+                final boolean negativeDeterminant;
+                final boolean invertNext;
+                public GDataAndWinding(GData gd, byte bfc, boolean negDet, boolean iNext) {
+                    data = gd;
+                    winding = bfc;
+                    negativeDeterminant = negDet;
+                    invertNext = iNext;
+                }
             }
         }).start();
     }
