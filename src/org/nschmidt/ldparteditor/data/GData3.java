@@ -615,7 +615,7 @@ public final class GData3 extends GData {
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
-                    GL11.glNormal3f(xn, yn, zn);
+                    GL11.glNormal3f(xn, yn, zn);                    
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
@@ -917,12 +917,12 @@ public final class GData3 extends GData {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, a);
                     GL11.glBegin(GL11.GL_TRIANGLES);
-                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                     GL11.glEnd();
                 } else {
                     GL11.glColor4f(r, g, b, a);
@@ -939,12 +939,12 @@ public final class GData3 extends GData {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, a);
                     GL11.glBegin(GL11.GL_TRIANGLES);
-                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
                     GL11.glEnd();
                 } else {
                     GL11.glColor4f(r, g, b, a);
@@ -1979,53 +1979,53 @@ public final class GData3 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     } else {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     }
@@ -2033,53 +2033,53 @@ public final class GData3 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     } else {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     }
@@ -2090,53 +2090,53 @@ public final class GData3 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     } else {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     }
@@ -2144,53 +2144,53 @@ public final class GData3 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     } else {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     }
@@ -2451,53 +2451,53 @@ public final class GData3 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     } else {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     }
@@ -2562,53 +2562,53 @@ public final class GData3 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     } else {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     }
@@ -2616,53 +2616,53 @@ public final class GData3 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     } else {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                         };
                     }
@@ -2801,29 +2801,29 @@ public final class GData3 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a
                         };
                     } else {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a
                         };
                     }
@@ -2831,29 +2831,29 @@ public final class GData3 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a
                         };
                     } else {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a
                         };
                     }
@@ -2864,29 +2864,29 @@ public final class GData3 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a
                         };
                     } else {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a
                         };
                     }
@@ -2894,29 +2894,29 @@ public final class GData3 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a
                         };
                     } else {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a
                         };
                     }
@@ -2935,7 +2935,19 @@ public final class GData3 extends GData {
 
                             x3, y3, z3,
                             xn, yn, zn,
-                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x1, y1, z1,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x3, y3, z3,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x2, y2, z2,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
                     };
                 } else {
                     vertices = new float[]{
@@ -2949,7 +2961,19 @@ public final class GData3 extends GData {
 
                             x3, y3, z3,
                             -xn, -yn, -zn,
-                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x1, y1, z1,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x3, y3, z3,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+
+                            x2, y2, z2,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
                     };
                 }
                 break;
