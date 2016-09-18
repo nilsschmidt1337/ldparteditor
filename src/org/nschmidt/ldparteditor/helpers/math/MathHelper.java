@@ -364,6 +364,106 @@ public enum MathHelper {
 
         return result;
     }
+    
+    public static float[][] getLineVerticesFast(Vector3f p1, Vector3f p2) {
+
+
+        float[][] result = new float[21][3];
+        
+        result[18][0] = p1.x;
+        result[18][1] = p1.y;
+        result[18][2] = p1.z;
+        result[19][0] = p2.x;
+        result[19][1] = p2.y;
+        result[19][2] = p2.z;
+
+        Vector4f n = new Vector4f();
+        Vector4f p = new Vector4f();
+        Vector4f q = new Vector4f();
+        Vector4f perp = new Vector4f();
+
+        int j = 0;
+        float theta;
+
+        /* Normal pointing from p1 to p2 */
+        n.x = p1.x - p2.x;
+        n.y = p1.y - p2.y;
+        n.z = p1.z - p2.z;
+
+        /*
+         * Create two perpendicular vectors perp and q on the plane of the disk
+         */
+
+        perp.x = n.x;
+        perp.y = n.y;
+        perp.z = n.z;
+        if (n.x == 0 && n.z == 0)
+            perp.x += 1;
+        else
+            perp.y += 1;
+        crossProduct(perp, n, q);
+        crossProduct(n, q, perp);
+        try {
+            perp.normalise();
+            q.normalise();
+        } catch (IllegalStateException ise) {
+            perp.x = 0f;
+            perp.y = 0f;
+            perp.z = 0f;
+            q.x = 0f;
+            q.y = 0f;
+            q.z = 0f;
+        }
+
+        float r1 = View.lineWidth1000[0];
+        float r2 = r1;
+
+        float twoPI = (float) Math.PI / 4f;
+        for (int i = 0; i <= 8; i++) {
+            theta = i * twoPI;
+
+            n.x = (float) (Math.cos(theta) * perp.x + Math.sin(theta) * q.x);
+            n.y = (float) (Math.cos(theta) * perp.y + Math.sin(theta) * q.y);
+            n.z = (float) (Math.cos(theta) * perp.z + Math.sin(theta) * q.z);
+            try {
+                n.normalise();
+            } catch (IllegalStateException ise) {
+                n.x = 0f;
+                n.y = 0f;
+                n.z = 0f;
+            }
+
+
+            p.x = p1.x + r1 * n.x;
+            p.y = p1.y + r1 * n.y;
+            p.z = p1.z + r1 * n.z;
+            result[j][0] = p.x;
+            result[j][1] = p.y;
+            result[j][2] = p.z;
+            j++;
+
+            p.x = p2.x + r2 * n.x;
+            p.y = p2.y + r2 * n.y;
+            p.z = p2.z + r2 * n.z;
+            result[j][0] = p.x;
+            result[j][1] = p.y;
+            result[j][2] = p.z;
+            j++;
+
+        }
+
+        result[18][0] = result[18][0];
+        result[18][1] = result[18][1];
+        result[18][2] = result[18][2];
+        result[19][0] = result[19][0];
+        result[19][1] = result[19][1];
+        result[19][2] = result[19][2];
+        result[20][0] = 1f;
+        result[20][1] = 1f;
+        result[20][2] = 1f;
+
+        return result;
+    }
 
     /**
      * Calculates the square root of a BigDecimal
