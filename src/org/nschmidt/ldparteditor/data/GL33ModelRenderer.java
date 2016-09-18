@@ -15,12 +15,17 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -218,5 +223,117 @@ public class GL33ModelRenderer {
         if (drawSolidMaterials && renderMode != 5)
             df.getVertexManager().showHidden();
         
+    }
+    
+    // FIXME needs concept implementation!
+    // |
+    // --v Here I try to use only one(!) VAO for the price of letting an asynchronous thread doing the buffer data generation! 
+    
+    // However, TEXMAP/!LPE PNG will require a multi-VAO solution (all non-TEXMAP/PNG stuff can still be rendered with one VAO). 
+    
+    private int vao;
+    private int vbo;
+    private final int triangle_count = 1000000;
+    private final int size = 30 * triangle_count;
+    
+    private volatile Lock lock = new ReentrantLock();    
+    private volatile float[] data = null;
+    
+    private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
+    
+    public void init() {
+        vao = GL30.glGenVertexArrays();
+        vbo = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vao);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+        
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+
+        GL20.glEnableVertexAttribArray(1);
+        GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
+
+        GL20.glEnableVertexAttribArray(2);
+        GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+        
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL30.glBindVertexArray(0);
+        
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                while (isRunning.get()) {
+                    float[] vertexData = new float[size];                    
+                    for(int i = 0; i < size; i += 10) {
+                        
+                            vertexData[i] = (float) (2000f * Math.random()) - 1000f;
+                            vertexData[i + 1] = (float) (2000f * Math.random()) - 1000f;
+                            vertexData[i + 2] = (float) (2000f * Math.random()) - 1000f;
+                            
+                            vertexData[i + 3] = 1f;
+                            vertexData[i + 4] = 1f;
+                            vertexData[i + 5] = 1f;
+                            
+                            vertexData[i + 6] = (float) Math.random();
+                            vertexData[i + 7] = (float) Math.random();
+                            vertexData[i + 8] = (float) Math.random();
+                            vertexData[i + 9] = 1f;
+                            
+                    }
+                    lock.lock();
+                    data = vertexData;
+                    lock.unlock();
+                }
+            }
+        }).start();
+    }
+    
+    public void dispose() {
+        isRunning.set(false);
+        GL30.glDeleteVertexArrays(vao);
+        GL15.glDeleteBuffers(vbo);
+    }
+
+    public void draw2(GLMatrixStack stack, GLShader shaderProgram, boolean drawSolidMaterials, DatFile df) {
+        
+            if (data == null) {
+                return;
+            }
+            
+            if (drawSolidMaterials) {
+                GL30.glBindVertexArray(vao);
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+                lock.lock();
+                // I can't use glBufferSubData() it creates a memory leak!!!
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
+                lock.unlock();
+                
+                GL20.glEnableVertexAttribArray(0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+    
+                GL20.glEnableVertexAttribArray(1);
+                GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
+    
+                GL20.glEnableVertexAttribArray(2);
+                GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+                
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+            }
+        
+            GL30.glBindVertexArray(vao);
+            
+            // Transparent and solid parts are at a different location in the buffer
+            if (drawSolidMaterials) {
+                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3 * triangle_count);
+            } else {
+                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3 * triangle_count);
+            }
+            GL30.glBindVertexArray(0);
+            
+            // TODO Draw !LPE PNG VAOs here
+            
+            
+            // TODO Draw !TEXMAP VAOs here
     }
 }
