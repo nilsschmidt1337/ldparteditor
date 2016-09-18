@@ -478,17 +478,17 @@ public final class GData4 extends GData {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f( // 011
                             View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a);
-                    GL11.glNormal3f(xn, yn, zn);
-                    GL11.glVertex3f(x1, y1, z1);
-                    GL11.glVertex3f(x4, y4, z4);
-                    GL11.glVertex3f(x3, y3, z3);
-                    GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
+                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glNormal3f(xn, yn, zn);
+                    GL11.glVertex3f(x1, y1, z1);
+                    GL11.glVertex3f(x4, y4, z4);
+                    GL11.glVertex3f(x3, y3, z3);
+                    GL11.glVertex3f(x2, y2, z2);
                 } else {
                     GL11.glColor4f( // 010
                             View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a);
@@ -673,17 +673,17 @@ public final class GData4 extends GData {
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, a);
-                    GL11.glNormal3f(xn, yn, zn);
-                    GL11.glVertex3f(x1, y1, z1);
-                    GL11.glVertex3f(x4, y4, z4);
-                    GL11.glVertex3f(x3, y3, z3);
-                    GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
+                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glNormal3f(xn, yn, zn);
+                    GL11.glVertex3f(x1, y1, z1);
+                    GL11.glVertex3f(x4, y4, z4);
+                    GL11.glVertex3f(x3, y3, z3);
+                    GL11.glVertex3f(x2, y2, z2);
                 } else {
                     GL11.glColor4f(r, g, b, a);
                     GL11.glNormal3f(xn, yn, zn);
@@ -806,11 +806,11 @@ public final class GData4 extends GData {
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, a);
-                    GL11.glNormal3f(xn, yn, zn);
+                    GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
-                    GL11.glVertex3f(x4, y4, z4);
-                    GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
+                    GL11.glVertex3f(x3, y3, z3);
+                    GL11.glVertex3f(x4, y4, z4);
                 } else {
                     GL11.glColor4f(r, g, b, a);
                     GL11.glNormal3f(xn, yn, zn);
@@ -919,9 +919,9 @@ public final class GData4 extends GData {
                     GL11.glColor4f(r, g, b, a);
                     GL11.glBegin(GL11.GL_QUADS);
                     c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, false, this, useCubeMap);
-                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
                     c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, false, this, useCubeMap);
                     GL11.glEnd();
                 } else {
                     GL11.glColor4f(r, g, b, a);
@@ -954,29 +954,57 @@ public final class GData4 extends GData {
             break;
         case BFC.NOCERTIFY:
             if (GData.globalNegativeDeterminant) {
-                GL11.glColor4f(r, g, b, a);
-                GL11.glBegin(GL11.GL_QUADS);
-                c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, false, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, true, this, useCubeMap);
-                GL11.glEnd();
+                if (GData.globalInvertNext) {
+                    GL11.glColor4f(r, g, b, a);
+                    GL11.glBegin(GL11.GL_QUADS);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, false, this, useCubeMap);
+                    GL11.glEnd();
+                } else {
+                    GL11.glColor4f(r, g, b, a);
+                    GL11.glBegin(GL11.GL_QUADS);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, true, this, useCubeMap);
+                    GL11.glEnd();
+                }
             } else {
-                GL11.glColor4f(r, g, b, a);
-                GL11.glBegin(GL11.GL_QUADS);
-                c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, true, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
-                c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, false, this, useCubeMap);
-                GL11.glEnd();
+                if (GData.globalInvertNext) {
+                    GL11.glColor4f(r, g, b, a);
+                    GL11.glBegin(GL11.GL_QUADS);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, true, this, useCubeMap);
+                    GL11.glEnd();
+                } else {
+                    GL11.glColor4f(r, g, b, a);
+                    GL11.glBegin(GL11.GL_QUADS);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
+                    c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, false, this, useCubeMap);
+                    GL11.glEnd();
+                }
             }
             break;
         }
@@ -1122,18 +1150,18 @@ public final class GData4 extends GData {
                             GL11.glColor4f(r, g, b, a);
                             GL11.glBegin(GL11.GL_QUADS);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
-                            tex.calcUVcoords2(x4, y4, z4, parent);
+                            tex.calcUVcoords2(x2, y2, z2, parent);
                             tex.calcUVcoords3(x3, y3, z3, parent);
-                            tex.calcUVcoords4(x2, y2, z2, parent);
+                            tex.calcUVcoords4(x4, y4, z4, parent);
                             uv = tex.getUVcoords(false, this);
                             GL11.glTexCoord2f(uv[0], uv[1]);
                             c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
                             GL11.glTexCoord2f(uv[2], uv[3]);
-                            c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, false, this, useCubeMap);
+                            c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
                             GL11.glTexCoord2f(uv[4], uv[5]);
                             c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
                             GL11.glTexCoord2f(uv[6], uv[7]);
-                            c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
+                            c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, false, this, useCubeMap);
                             GL11.glEnd();
                         } else {
                             GL11.glColor4f(r, g, b, a);
@@ -1517,13 +1545,13 @@ public final class GData4 extends GData {
                 case BFC.CW:
                     if (state.globalInvertNext) {
                         if (state.globalNegativeDeterminant) {
-                            result[0] = -xn;
-                            result[1] = -yn;
-                            result[2] = -zn;
-                        } else {
                             result[0] = xn;
                             result[1] = yn;
                             result[2] = zn;
+                        } else {
+                            result[0] = -xn;
+                            result[1] = -yn;
+                            result[2] = -zn;
                         }
                     } else {
                         if (state.globalNegativeDeterminant) {
@@ -2033,101 +2061,101 @@ public final class GData4 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
-                                View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
-                                
-                                x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1, y1, z1,
                                 -xn, -yn, -zn,
+                                View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
+                                
+                                x1, y1, z1,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     } else {
                         vertices = new float[]{
                                 x1,  y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1,  y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     }
@@ -2135,101 +2163,101 @@ public final class GData4 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1,  y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1,  y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     } else {
                         vertices = new float[]{
                                 x1,  y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1,  y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     }
@@ -2243,19 +2271,19 @@ public final class GData4 extends GData {
                                 xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
-                                x4, y4, z4,
-                                xn, yn, zn,
-                                View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
-                                
-                                x3, y3, z3,
-                                xn, yn, zn,
-                                View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
-                                
-                                x3, y3, z3,
-                                xn, yn, zn,
-                                View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
-                                
                                 x2, y2, z2,
+                                xn, yn, zn,
+                                View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
+                                
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
+                                
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
+                                
+                                x4, y4, z4,
                                 xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
@@ -2267,19 +2295,19 @@ public final class GData4 extends GData {
                                 -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
-                                x2, y2, z2,
-                                -xn, -yn, -zn,
-                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
-                                
-                                x3, y3, z3,
-                                -xn, -yn, -zn,
-                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
-                                
-                                x3, y3, z3,
-                                -xn, -yn, -zn,
-                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
-                                
                                 x4, y4, z4,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                                
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                                
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                                
+                                x2, y2, z2,
                                 -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
@@ -2290,51 +2318,51 @@ public final class GData4 extends GData {
                     } else {
                         vertices = new float[]{
                                 x1,  y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1,  y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     }
@@ -2342,101 +2370,101 @@ public final class GData4 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1,  y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1,  y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     } else {
                         vertices = new float[]{
                                 x1,  y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1,  y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     }
@@ -2784,101 +2812,101 @@ public final class GData4 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
-                                r, g, b, a,
-                                
-                                x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x1, y1, z1,
                                 -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x1, y1, z1,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     } else {
                         vertices = new float[]{
                                 x1,  y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x1,  y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     }
@@ -2886,101 +2914,101 @@ public final class GData4 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1,  y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x1,  y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     } else {
                         vertices = new float[]{
                                 x1,  y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x1,  y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     }
@@ -2994,19 +3022,19 @@ public final class GData4 extends GData {
                                 xn, yn, zn,
                                 r, g, b, a,
                                 
-                                x4, y4, z4,
-                                xn, yn, zn,
-                                r, g, b, a,
-                                
-                                x3, y3, z3,
-                                xn, yn, zn,
-                                r, g, b, a,
-                                
-                                x3, y3, z3,
-                                xn, yn, zn,
-                                r, g, b, a,
-                                
                                 x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x4, y4, z4,
                                 xn, yn, zn,
                                 r, g, b, a,
                                 
@@ -3018,19 +3046,19 @@ public final class GData4 extends GData {
                                 -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
-                                x2, y2, z2,
-                                -xn, -yn, -zn,
-                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
-                                
-                                x3, y3, z3,
-                                -xn, -yn, -zn,
-                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
-                                
-                                x3, y3, z3,
-                                -xn, -yn, -zn,
-                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
-                                
                                 x4, y4, z4,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                                
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                                
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
+                                
+                                x2, y2, z2,
                                 -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
@@ -3041,51 +3069,51 @@ public final class GData4 extends GData {
                     } else {
                         vertices = new float[]{
                                 x1,  y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x1,  y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     }
@@ -3093,101 +3121,101 @@ public final class GData4 extends GData {
                     if (GData.globalInvertNext) {
                         vertices = new float[]{
                                 x1,  y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x1,  y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 r, g, b, a,
                                 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     } else {
                         vertices = new float[]{
                                 x1,  y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x2, y2, z2,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x3, y3, z3,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x4, y4, z4,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x1,  y1, z1,
-                                xn, yn, zn,
+                                -xn, -yn, -zn,
                                 r, g, b, a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x4, y4, z4,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x3, y3, z3,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x2, y2, z2,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a,
                                 
                                 x1, y1, z1,
-                                -xn, -yn, -zn,
+                                xn, yn, zn,
                                 View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a
                            };
                     }
@@ -3328,8 +3356,395 @@ public final class GData4 extends GData {
 
     @Override
     public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        // TODO Auto-generated method stub
+        if (!visible)
+            return;
+        if (a > .9f ^ drawSolidMaterials)
+            return;
         
+        final String idStr;
+        int vao;
+        int vbo;
+        {
+            sb.setLength(0);
+            sb.append(ID);
+            sb.append(GDataBFC.globalNegativeDeterminant ^ GDataBFC.globalInvertNext);
+            sb.append(4); // Render mode
+            sb.append(GDataBFC.localWinding);
+            idStr = sb.toString();
+        }
+        sourceID.remove(idStr);
+        targetID.add(idStr);
+        Integer[] objs = mapGLO.get(idStr);
+        if (objs == null) {
+            vao = -1;
+        } else {
+            vao = objs[0];
+            vbo = objs[1];
+            sourceVAO.remove(vao);
+            sourceBUF.remove(vbo);
+            targetVAO.add(vao);
+            targetBUF.add(vbo);
+        }
+        
+        if (vao != -1) {            
+            GL30.glBindVertexArray(vao);
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
+        } else {
+            float[] vertices;
+            switch (GData.localWinding) {
+            case BFC.CCW:
+                if (GData.globalNegativeDeterminant) {
+                    if (GData.globalInvertNext) {
+                        vertices = new float[]{
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x4, y4, z4,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x1, y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a
+                           };
+                    } else {
+                        vertices = new float[]{
+                                x1,  y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x4, y4, z4,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x1,  y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a
+                           };
+                    }
+                } else {
+                    if (GData.globalInvertNext) {
+                        vertices = new float[]{
+                                x1,  y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x4, y4, z4,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x1,  y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a
+                           };
+                    } else {
+                        vertices = new float[]{
+                                x1,  y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x4, y4, z4,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x1,  y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a
+                           };
+                    }
+                }
+                break;
+            case BFC.CW:
+                if (GData.globalNegativeDeterminant) {
+                    if (GData.globalInvertNext) {
+                        vertices = new float[]{
+                                x1,  y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x4, y4, z4,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x1,  y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a
+                           };
+                    } else {
+                        vertices = new float[]{
+                                x1,  y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x4, y4, z4,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x1,  y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a
+                           };
+                    }
+                } else {
+                    if (GData.globalInvertNext) {
+                        vertices = new float[]{
+                                x1,  y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x4, y4, z4,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x2, y2, z2,
+                                xn, yn, zn,
+                                r, g, b, a,
+                                
+                                x1,  y1, z1,
+                                xn, yn, zn,
+                                r, g, b, a
+                           };
+                    } else {
+                        vertices = new float[]{
+                                x1,  y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x2, y2, z2,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x3, y3, z3,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x4, y4, z4,
+                                -xn, -yn, -zn,
+                                r, g, b, a,
+                                
+                                x1,  y1, z1,
+                                -xn, -yn, -zn,
+                                r, g, b, a
+                           };
+                    }
+                }
+                break;
+            case BFC.NOCERTIFY:
+                if (GData.globalNegativeDeterminant) {
+                    vertices = new float[]{
+                            x1,  y1, z1,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x2, y2, z2,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x3, y3, z3,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x3, y3, z3,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x4, y4, z4,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x1,  y1, z1,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x1, y1, z1,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x4, y4, z4,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x3, y3, z3,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x3, y3, z3,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x2, y2, z2,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x1, y1, z1,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a
+                       };
+                } else {
+                    vertices = new float[]{
+                            x1,  y1, z1,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x2, y2, z2,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x3, y3, z3,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x3, y3, z3,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x4, y4, z4,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x1,  y1, z1,
+                            -xn, -yn, -zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x1, y1, z1,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x4, y4, z4,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x3, y3, z3,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x3, y3, z3,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x2, y2, z2,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a,
+                            
+                            x1, y1, z1,
+                            xn, yn, zn,
+                            View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a
+                       };
+                }
+                break;
+            default:
+                throw new AssertionError("There must be some winding info! GData.localWinding=" + GData.localWinding); //$NON-NLS-1$
+            }
+
+            vao = GL30.glGenVertexArrays();
+            vbo = GL15.glGenBuffers();
+            targetVAO.add(vao);
+            targetBUF.add(vbo);
+            
+            GL30.glBindVertexArray(vao);
+
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STATIC_DRAW);
+
+            GL20.glEnableVertexAttribArray(0);
+            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+
+            GL20.glEnableVertexAttribArray(1);
+            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
+
+            GL20.glEnableVertexAttribArray(2);
+            GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+            GL30.glBindVertexArray(0);
+            
+            mapGLO.put(idStr, new Integer[]{vao, vbo});
+        }
     }
 
     @Override
