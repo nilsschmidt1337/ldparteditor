@@ -172,6 +172,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         GL11.glClearColor(View.background_Colour_r[0], View.background_Colour_g[0], View.background_Colour_b[0], 1.0f);
 
         GL11.glPointSize(5);
+        
+        modelRenderer.init();
     }
 
     @Override
@@ -374,7 +376,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 shaderProgram.lightsOff();
             }
 
-            modelRenderer.draw(stack, shaderProgram, true, c3d.getLockableDatFileReference());
+            modelRenderer.draw2(stack, shaderProgram, true, c3d.getLockableDatFileReference());
             
             if (raytraceMode) {
                 Rectangle b = c3d.getCanvas().getBounds();
@@ -408,7 +410,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             }
             
             // GL20.glUniformMatrix4fv(shaderProgram.getUniformLocation("view"), false, view_buf); //$NON-NLS-1$
-            modelRenderer.draw(stack, shaderProgram, false, c3d.getLockableDatFileReference());
+            modelRenderer.draw2(stack, shaderProgram, false, c3d.getLockableDatFileReference());
             
             if (!raytraceMode) {
                 c3d.getVertexManager().drawGL33(stack, c3d);
@@ -2212,6 +2214,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     @Override
     public void dispose() {
         // Properly de-allocate all resources once they've outlived their purpose
+        modelRenderer.dispose();
         shaderProgram.dispose();
         shaderProgram2.dispose();
         shaderProgram2D.dispose();

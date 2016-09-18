@@ -1840,7 +1840,7 @@ public final class GData3 extends GData {
             targetBUF.add(vbo);
         }
 
-        if (vao != -1) {            
+        if (vao != -1) {
             GL30.glBindVertexArray(vao);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
         } else {

@@ -4,6 +4,7 @@ out vec4 color;
 in vec4 sceneColor;
 in vec3 normal;
 in vec3 position;
+in vec2 tex;
 
 uniform float lightswitch;
 
