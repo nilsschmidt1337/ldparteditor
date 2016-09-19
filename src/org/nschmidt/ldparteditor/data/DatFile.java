@@ -76,7 +76,7 @@ public final class DatFile {
     private static final Pattern pattern = Pattern.compile("\r?\n|\r"); //$NON-NLS-1$
 
     private final boolean readOnly;
-    private boolean drawSelection = true;
+    private volatile boolean drawSelection = true;
 
     private final GData drawChainAnchor = new GDataInit(View.DUMMY_REFERENCE);
 

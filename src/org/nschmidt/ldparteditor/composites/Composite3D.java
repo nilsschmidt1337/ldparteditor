@@ -156,7 +156,7 @@ public class Composite3D extends ScalableComposite {
     /** The translation matrix of the view */
     private final Matrix4f viewport_translation = new Matrix4f();
     /** The view zoom level */
-    private float zoom;
+    private volatile float zoom;
 
     private final Vector4f screenXY = new Vector4f(0, 0, 0, 1);
 
@@ -236,11 +236,11 @@ public class Composite3D extends ScalableComposite {
     private boolean showingAxis;
     private boolean showingLabels;
 
-    private int lineMode;
+    private volatile int lineMode;
 
-    private int renderMode = 0;
+    private volatile int renderMode = 0;
 
-    private DatFile lockableDatFileReference;
+    private volatile DatFile lockableDatFileReference;
     private boolean datFileLockedOnDisplay;
 
     private boolean drawingSolidMaterials;
