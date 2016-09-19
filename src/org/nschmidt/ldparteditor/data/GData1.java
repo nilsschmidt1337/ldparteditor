@@ -22,7 +22,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.swt.graphics.Rectangle;
@@ -44,7 +43,6 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.TexMapParser;
 
@@ -2511,16 +2509,6 @@ public final class GData1 extends GData {
         GL11.glEnd();
     }
 
-    private static void  drawStudLogo1_GL33() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    private static void  drawStudLogo2_GL33() {
-        // TODO Auto-generated method stub
-        
-    }
-
     public boolean isRecursive() {
         return recursive;
     }
@@ -2822,101 +2810,5 @@ public final class GData1 extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(shortName);
         return lineBuilder.toString();
-    }
-
-    @Override
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        if (!visible)
-            return;
-        if (matrix != null) {
-
-            boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
-            GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
-
-            stack.glPushMatrix();
-            stack.glMultMatrixf(localMatrix);
-
-            if (c3d.isShowingLogo()) {
-                if (filesWithLogo1.contains(shortName))
-                    drawStudLogo1_GL33();
-                else if (filesWithLogo2.contains(shortName))
-                    drawStudLogo2_GL33();
-            }
-
-            GData data2draw = myGData;
-            if (GData.accumClip > 0) {
-                GData.accumClip++;
-                while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                    data2draw.drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-                GData.accumClip--;
-            } else {
-                while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                    data2draw.drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-                if (GData.accumClip > 0)
-                    GData.accumClip = 0;
-            }
-
-            stack.glPopMatrix();
-
-            GData.globalNegativeDeterminant = tempNegativeDeterminant;
-        }
-    }
-
-    @Override
-    public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        if (!visible)
-            return;
-        if (matrix != null) {
-
-
-            byte tempWinding = GData.localWinding;
-            boolean tempInvertNext = GData.globalInvertNext;
-            boolean tempInvertNextFound = GData.globalInvertNextFound;
-            boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
-
-            GData.globalInvertNextFound = false;
-            GData.localWinding = BFC.NOCERTIFY;
-            GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
-
-            stack.glPushMatrix();
-            stack.glMultMatrixf(localMatrix);
-
-            if (c3d.isShowingLogo()) {
-                if (filesWithLogo1.contains(shortName))
-                    drawStudLogo1_GL33();
-                else if (filesWithLogo2.contains(shortName))
-                    drawStudLogo2_GL33();
-            }
-
-            GData data2draw = myGData;
-
-            if (GData.accumClip > 0) {
-                GData.accumClip++;
-                while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                    data2draw.drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-                GData.accumClip--;
-            } else {
-                while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
-                    switch (tempWinding) {
-                    case BFC.NOCERTIFY:
-                        break;
-                    default:
-                        data2draw.drawGL33_BFC(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-                        break;
-                    }
-                }
-                if (GData.accumClip > 0)
-                    GData.accumClip = 0;
-            }
-
-            stack.glPopMatrix();
-
-
-            GData.localWinding = tempWinding;
-            if (tempInvertNextFound)
-                GData.globalInvertNext = !tempInvertNext;
-
-            GData.globalNegativeDeterminant = tempNegativeDeterminant;
-        }
     }
 }
