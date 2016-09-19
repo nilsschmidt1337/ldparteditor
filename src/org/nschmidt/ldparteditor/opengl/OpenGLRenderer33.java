@@ -376,7 +376,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 shaderProgram.lightsOff();
             }
 
-            modelRenderer.draw2(stack, shaderProgram, true, c3d.getLockableDatFileReference());
+            modelRenderer.draw(stack, shaderProgram, true, c3d.getLockableDatFileReference());
             
             if (raytraceMode) {
                 Rectangle b = c3d.getCanvas().getBounds();
@@ -410,7 +410,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             }
             
             // GL20.glUniformMatrix4fv(shaderProgram.getUniformLocation("view"), false, view_buf); //$NON-NLS-1$
-            modelRenderer.draw2(stack, shaderProgram, false, c3d.getLockableDatFileReference());
+            modelRenderer.draw(stack, shaderProgram, false, c3d.getLockableDatFileReference());
             
             stack.setShader(shaderProgram2);
             shaderProgram2.use();
