@@ -21,6 +21,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
@@ -248,6 +250,9 @@ public class GL33ModelRenderer {
     private static volatile Lock static_lock = new ReentrantLock();
     private static volatile AtomicInteger idGen = new AtomicInteger(0);
     private static volatile AtomicInteger idCount = new AtomicInteger(0);
+    
+    private static volatile CopyOnWriteArrayList<Integer> idList = new CopyOnWriteArrayList<>();
+    
     private volatile float[] data = null;
     
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
@@ -285,10 +290,12 @@ public class GL33ModelRenderer {
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
                 final HashMap<GData, Boolean> condlineMap = new HashMap<>();
                 final HashMap<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<GData1, Matrix4f>(1000);
-                final int myID = idGen.getAndIncrement();
+                final Integer myID = idGen.getAndIncrement();
+                idList.add(myID);
                 while (isRunning.get()) {
-                    if (myID == idCount.get()) {
-                        try {
+
+                    try {
+                        if (myID == idList.get(idCount.get())) {
                             static_lock.lock();
                             final long start = System.currentTimeMillis();
 
@@ -299,7 +306,9 @@ public class GL33ModelRenderer {
                             final ThreadsafeHashMap<GData3, Vertex[]> triangles = vm.triangles;
                             final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
                             final ThreadsafeHashMap<GData5, Vertex[]> condlines = vm.condlines;
-                            final Set<Vertex> vertices = vm.vertexLinkedToPositionInFile.keySet();
+                            final Set<Vertex> vertices = new TreeSet<Vertex>(vm.vertexLinkedToPositionInFile.keySet());
+                            final Set<Vertex> selectedVertices = new TreeSet<Vertex>(vm.selectedVertices);
+                            final Set<GData> selectedData = vm.selectedData;
 
                             boolean hasTEXMAP = false;
                             boolean hasPNG = false;
@@ -315,7 +324,8 @@ public class GL33ModelRenderer {
                                 Stack<Boolean> tempInvertNext = new Stack<>();
                                 Stack<Boolean> tempInvertNextFound = new Stack<>();
                                 Stack<Boolean> tempNegativeDeterminant = new Stack<>();
-
+                                boolean isCertified = true; 
+                                
                                 GData gd = df.getDrawChainStart();
 
                                 byte localWinding = BFC.NOCERTIFY;
@@ -324,7 +334,7 @@ public class GL33ModelRenderer {
                                 boolean globalInvertNextFound = false;
                                 boolean globalNegativeDeterminant = false;
 
-                                // The BFC logic/state machine is not correct yet (for BFC no-certify).
+                                // The BFC logic/state machine is not correct yet? (for BFC no-certify).
                                 while ((gd = gd.next) != null || !stack.isEmpty()) {                                
                                     if (gd == null) {
                                         if (accumClip > 0) {
@@ -332,6 +342,7 @@ public class GL33ModelRenderer {
                                         }
                                         gd = stack.pop();
                                         localWinding = tempWinding.pop();
+                                        isCertified = localWinding != BFC.NOCERTIFY;
                                         globalInvertNext = tempInvertNext.pop();
                                         globalInvertNextFound = tempInvertNextFound.pop();
                                         globalNegativeDeterminant = tempNegativeDeterminant.pop();
@@ -382,15 +393,16 @@ public class GL33ModelRenderer {
                                     default:
                                         continue;
                                     }
-                                    
+
                                     if (addData) {
                                         dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
                                     }
-                                    
+
                                     switch (type) {
                                     case 1:
                                         final GData1 gd1 = ((GData1) gd);
                                         stack.push(gd);
+                                        isCertified = localWinding != BFC.NOCERTIFY;
                                         tempWinding.push(localWinding);
                                         tempInvertNext.push(globalInvertNext);
                                         tempInvertNextFound.push(globalInvertNextFound);
@@ -404,45 +416,69 @@ public class GL33ModelRenderer {
                                         gd = gd1.myGData;
                                         break;
                                     case 6:
-                                        switch (((GDataBFC) gd).type) {
-                                        case BFC.CCW:
-                                            localWinding = BFC.CCW;
+                                        if (!isCertified) {
                                             break;
-                                        case BFC.CCW_CLIP:
-                                            localWinding = BFC.CCW;
-                                            break;
-                                        case BFC.CW:
-                                            localWinding = BFC.CW;
-                                            break;
-                                        case BFC.CW_CLIP:
-                                            localWinding = BFC.CW;
-                                            break;
-                                        case BFC.INVERTNEXT:
-                                            boolean validState = false;
-                                            GData g = gd.next;
-                                            while (g != null && g.type() < 2) {
-                                                if (g.type() == 1) {
-                                                    if (g.visible) validState = true;
-                                                    break;
-                                                } else if (!g.toString().trim().isEmpty()) {
-                                                    break;
+                                        }
+                                        if (accumClip > 0) {
+                                            switch (type) {
+                                            case BFC.CCW_CLIP:
+                                                if (accumClip == 1)
+                                                    accumClip = 0;
+                                                localWinding = BFC.CCW;
+                                                break;
+                                            case BFC.CLIP:
+                                                if (accumClip == 1)
+                                                    accumClip = 0;
+                                                break;
+                                            case BFC.CW_CLIP:
+                                                if (accumClip == 1)
+                                                    accumClip = 0;
+                                                localWinding = BFC.CW;
+                                                break;
+                                            default:
+                                                break;
+                                            }
+                                        } else {
+                                            switch (((GDataBFC) gd).type) {
+                                            case BFC.CCW:
+                                                localWinding = BFC.CCW;
+                                                break;
+                                            case BFC.CCW_CLIP:
+                                                localWinding = BFC.CCW;
+                                                break;
+                                            case BFC.CW:
+                                                localWinding = BFC.CW;
+                                                break;
+                                            case BFC.CW_CLIP:
+                                                localWinding = BFC.CW;
+                                                break;
+                                            case BFC.INVERTNEXT:
+                                                boolean validState = false;
+                                                GData g = gd.next;
+                                                while (g != null && g.type() < 2) {
+                                                    if (g.type() == 1) {
+                                                        if (g.visible) validState = true;
+                                                        break;
+                                                    } else if (!g.toString().trim().isEmpty()) {
+                                                        break;
+                                                    }
+                                                    g = g.next;
                                                 }
-                                                g = g.next;
+                                                if (validState) {
+                                                    globalInvertNext = !globalInvertNext;
+                                                    globalInvertNextFound = true;
+                                                }
+                                                break;
+                                            case BFC.NOCERTIFY:
+                                                localWinding = BFC.NOCERTIFY;
+                                                break;
+                                            case BFC.NOCLIP:
+                                                if (accumClip == 0)
+                                                    accumClip = 1;
+                                                break;
+                                            default:
+                                                break;
                                             }
-                                            if (validState) {
-                                                globalInvertNext = !globalInvertNext;
-                                                globalInvertNextFound = true;
-                                            }
-                                            break;
-                                        case BFC.NOCERTIFY:
-                                            localWinding = BFC.NOCERTIFY;
-                                            break;
-                                        case BFC.NOCLIP:
-                                            if (accumClip == 0)
-                                                accumClip = 1;
-                                            break;
-                                        default:
-                                            break;
                                         }
                                         break;
                                     default:
@@ -450,7 +486,7 @@ public class GL33ModelRenderer {
                                     }
                                 }
                             }
-                            
+
                             final boolean openGL_lines = View.edge_threshold == 5e6f;
                             final int renderMode = c3d.getRenderMode();
                             final int lineMode = c3d.getLineMode();
@@ -458,29 +494,29 @@ public class GL33ModelRenderer {
                             final boolean condlineMode = renderMode == 6;
                             final float zoom = c3d.getZoom();
                             final Matrix4f viewport = c3d.getViewport();
-                            
+
                             int size2 = 0;
                             int size3 = 0;
-                            
-                            // Calculate the buffer size (and condline visibility)
+
+                            // Calculate the buffer sizes (and condline visibility)
                             for (Iterator<GDataAndWinding> it = dataInOrder.iterator(); it.hasNext();) {
                                 final GDataAndWinding gw = (GDataAndWinding) it.next();
-                            
+
                                 final GData gd = gw.data;
                                 switch (gd.type()) {
                                 case 2:
                                     // If "OpenGL lines" is ON, I have to use another buffer for it
                                     if (openGL_lines) {
-                                        size3 += 20;
+                                        size3 += 17;
                                     } else {
-                                        
+
                                     }
                                     break;
                                 case 3:
-                                    
+
                                     break;
                                 case 4:
-                                    
+
                                     break;
                                 case 5:
                                     // Condlines are tricky, since I have to calculate their visibility
@@ -491,9 +527,9 @@ public class GL33ModelRenderer {
                                         condlineMap.put(gd, visible);
                                         // If "OpenGL lines" is ON, I have to use another buffer for it 
                                         if (openGL_lines) {
-                                            
+                                            size3 += 17;
                                         } else {
-                                           
+
                                         }
                                     } else {
                                         it.remove();
@@ -503,34 +539,34 @@ public class GL33ModelRenderer {
                                     break;
                                 }
                             }
-                            
+
                             float[] vertexData = new float[size];
-                            
+
                             // Iterate the objects and generate the buffer data
-                            // TEXMAP and Real Backface Culling are quite "the same", but they need different vertex normals
-                            for (GDataAndWinding gw : dataInOrder) {
+                            // TEXMAP and Real Backface Culling are quite "the same", but they need different vertex normals / materials
+                            for (GDataAndWinding gw : dataInOrder) {                                
                                 final GData gd = gw.data;
                                 switch (gd.type()) {
                                 case 2:
                                     // If "OpenGL lines" is ON, I have to use another buffer for it
                                     if (openGL_lines) {
-                                        
+
                                     } else {
-                                       
+
                                     }
                                     break;
                                 case 3:
-                                    
+
                                     break;
                                 case 4:
-                                    
+
                                     break;
                                 case 5:
                                     // If "OpenGL lines" is ON, I have to use another buffer for it
                                     if (openGL_lines) {
-                                        
+
                                     } else {
-                                       
+
                                     }
                                     break;
                                 default:
@@ -538,7 +574,7 @@ public class GL33ModelRenderer {
                                 }
                             }
 
-                                             
+
                             for(int i = 0; i < size; i += 10) {
 
                                 vertexData[i] = (float) (2000f * Math.random()) - 1000f;
@@ -560,21 +596,24 @@ public class GL33ModelRenderer {
                             lock.unlock();
 
                             NLogger.debug(getClass(), "Processing time: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
-                        } catch (Exception ex) {
-                            NLogger.debug(getClass(), "Exception: " + ex.getMessage()); //$NON-NLS-1$
-                        } finally {
-                            static_lock.unlock();
+                        } else {
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+                            }
                         }
-                        if (idCount.incrementAndGet() >= idGen.get()) {
-                            idCount.set(0);
-                        }
-                    } else {
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                        }
+                    } catch (Exception ex) {
+                        NLogger.debug(getClass(), "Exception: " + ex.getMessage()); //$NON-NLS-1$
+                    } finally {
+                        static_lock.unlock();
+                    }
+                    if (idCount.incrementAndGet() >= idList.size()) {
+                        idCount.set(0);
                     }
                 }
+                idCount.set(0);
+                idList.remove(myID);
+                idCount.set(0);
             }
             
             class GDataAndWinding {
@@ -630,7 +669,7 @@ public class GL33ModelRenderer {
             if (drawSolidMaterials) {
                 GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3 * triangle_count);
             } else {
-                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3 * triangle_count);
+                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 0);
             }
             GL30.glBindVertexArray(0);
             

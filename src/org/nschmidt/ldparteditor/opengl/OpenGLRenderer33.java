@@ -412,10 +412,6 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             // GL20.glUniformMatrix4fv(shaderProgram.getUniformLocation("view"), false, view_buf); //$NON-NLS-1$
             modelRenderer.draw2(stack, shaderProgram, false, c3d.getLockableDatFileReference());
             
-            if (!raytraceMode) {
-                c3d.getVertexManager().drawGL33(stack, c3d);
-            }
-            
             stack.setShader(shaderProgram2);
             shaderProgram2.use();
             
