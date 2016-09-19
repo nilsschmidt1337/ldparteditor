@@ -1008,7 +1008,9 @@ public final class DatFile {
     }
 
     public void parseForData(boolean addHistory) {
-
+        final boolean drawSelection = isDrawSelection();
+        setDrawSelection(false);
+        
         Project.getParsedFiles().add(this);
         Project.addOpenedFile(this);
 
@@ -1112,6 +1114,7 @@ public final class DatFile {
         }
 
         if (addHistory) addHistory();
+        setDrawSelection(drawSelection);
     }
 
     public HashBiMap<Integer, GData> getDrawPerLine() {

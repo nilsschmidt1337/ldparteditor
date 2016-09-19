@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -146,9 +147,8 @@ public class GL33ModelRenderer {
                             continue; // static_lock.unlock(); on finally
                         }
                         final VertexManager vm = df.getVertexManager();
-                        // For the declared vertices, we have to use a map and a new tree set
-                        final ThreadsafeHashMap<GData0, Vertex[]> declaredVertices = vm.declaredVertices;
-                        final Set<Vertex> vertices = new TreeSet<>();
+                        // For the declared vertices, we have to use shallow copy
+                        final List<Vertex> vertices = vm.vertexLinkedToPositionInFile.threadSafeKeyList();
                         // The links are sufficient
                         final Set<GData> selectedData = vm.selectedData;
                         final Set<Vertex> selectedVertices = vm.selectedVertices;
@@ -163,12 +163,12 @@ public class GL33ModelRenderer {
                         condlineMap.clear();
                         CACHE_viewByProjection.clear();
                         
-                        boolean hasTEXMAP = false;
                         boolean hasPNG = false;
+                        boolean hasTEXMAP = false;
                         
                         {
                             boolean[] special = loadBFCinfo(dataInOrder, vertexMap, matrixMap, df,
-                                    lines, triangles, quads, condlines, declaredVertices, vertices);
+                                    lines, triangles, quads, condlines);
                             hasPNG = special[0];
                             hasTEXMAP = special[1];                            
                         }
@@ -380,9 +380,13 @@ public class GL33ModelRenderer {
                         transparentOffset = 0;
                         lock.unlock();
 
-                        // NLogger.debug(getClass(), "Processing time: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
+                        if (NLogger.DEBUG) {
+                            System.out.println("Processing time: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
+                        }
                     } catch (Exception ex) {
-                        NLogger.debug(getClass(), "Exception: " + ex.getMessage()); //$NON-NLS-1$
+                        if (NLogger.DEBUG) {
+                            System.out.println("Exception: " + ex.getMessage()); //$NON-NLS-1$
+                        }
                     } finally {
                         static_lock.unlock();
                     }
@@ -456,9 +460,7 @@ public class GL33ModelRenderer {
             final ThreadsafeHashMap<GData2, Vertex[]> lines,
             final ThreadsafeHashMap<GData3, Vertex[]> triangles,
             final ThreadsafeHashMap<GData4, Vertex[]> quads,
-            final ThreadsafeHashMap<GData5, Vertex[]> condlines,
-            final ThreadsafeHashMap<GData0, Vertex[]> declaredVertices,
-            final Set<Vertex> vertices) {
+            final ThreadsafeHashMap<GData5, Vertex[]> condlines) {
 
         final boolean[] result = new boolean[2];
         boolean hasTEXMAP = false;
@@ -498,11 +500,6 @@ public class GL33ModelRenderer {
             boolean addData = false;
             Vertex[] verts;
             switch (type) {
-            case 0:
-                if ((v = vertexMap.get(gd)) != null) {
-                    vertices.add(v[0]);
-                }
-                break;
             case 1:
                 break;
             case 2:
