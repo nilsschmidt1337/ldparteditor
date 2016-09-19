@@ -3746,14 +3746,4 @@ public final class GData4 extends GData {
             mapGLO.put(idStr, new Integer[]{vao, vbo});
         }
     }
-
-    @Override
-    public void drawGL33_BFC_Textured(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        // FIXME Needs implementation!
-    }
-
-    @Override
-    public void drawGL33_WhileAddCondlines(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        drawGL33_BFC(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-    }
 }

@@ -227,13 +227,4 @@ public final class GData0 extends GData {
     @Override
     public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
     }
-
-    @Override
-    public void drawGL33_BFC_Textured(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        drawGL20_BFC_Textured(null);
-    }
-
-    @Override
-    public void drawGL33_WhileAddCondlines(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-    }
 }

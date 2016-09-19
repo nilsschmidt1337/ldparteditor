@@ -29,7 +29,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.GL20Primitives;
-import org.nschmidt.ldparteditor.enums.GL33Primitives;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
@@ -37,9 +36,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
-import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
-import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -813,111 +810,6 @@ public final class GData2 extends GData {
 
     @Override
     public void drawGL33(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        if (true || !visible) {
-            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
-                stack.getShader().lightsOn();
-            return;
-        }
-        if (a < 1f ^ drawSolidMaterials) {
-            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
-                stack.getShader().lightsOn();
-            return;
-        }
-        switch (c3d.getLineMode()) {
-        case 3:
-        case 4:
-            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
-                stack.getShader().lightsOn();
-            return;
-        default:
-            break;
-        }
-        
-        final GLShader shader = stack.getShader(); 
-
-        if (shader.isLightOn()) shader.lightsOff();
-
-        if (!isLine) {
-            // drawDistanceGL33(c3d, X1, Y1, Z1, X2, Y2, Z2);
-            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
-                shader.lightsOn();
-            return;
-        }
-
-        if (c3d.getZoom() > View.edge_threshold) {
-
-            stack.glPushMatrix();
-
-            stack.glScalef(lGeom[20][0], lGeom[20][1], lGeom[20][2]);
-
-            if (GData.globalNegativeDeterminant) {
-
-                GL33Primitives.SPHERE_INV.draw(stack, lGeom[18][0], lGeom[18][1], lGeom[18][2]);
-
-                int[] id = GL33Helper.createQuadStrip_VAO_VBO(r, g, b, a, new float[] {
-                    lGeom[1][0], lGeom[1][1], lGeom[1][2],
-                    lGeom[0][0], lGeom[0][1], lGeom[0][2],
-                    lGeom[3][0], lGeom[3][1], lGeom[3][2],
-                    lGeom[2][0], lGeom[2][1], lGeom[2][2],
-                    lGeom[5][0], lGeom[5][1], lGeom[5][2],
-                    lGeom[4][0], lGeom[4][1], lGeom[4][2],
-                    lGeom[7][0], lGeom[7][1], lGeom[7][2],
-                    lGeom[6][0], lGeom[6][1], lGeom[6][2],
-                    lGeom[9][0], lGeom[9][1], lGeom[9][2],
-                    lGeom[8][0], lGeom[8][1], lGeom[8][2],
-                    lGeom[11][0], lGeom[11][1], lGeom[11][2],
-                    lGeom[10][0], lGeom[10][1], lGeom[10][2],
-                    lGeom[13][0], lGeom[13][1], lGeom[13][2],
-                    lGeom[12][0], lGeom[12][1], lGeom[12][2],
-                    lGeom[15][0], lGeom[15][1], lGeom[15][2],
-                    lGeom[14][0], lGeom[14][1], lGeom[14][2],
-                    lGeom[17][0], lGeom[17][1], lGeom[17][2],
-                    lGeom[16][0], lGeom[16][1], lGeom[16][2]
-                });
-
-                GL33Primitives.SPHERE_INV.draw(stack, lGeom[19][0], lGeom[19][1], lGeom[19][2]);
-
-            } else {
-
-                GL33Primitives.SPHERE.draw(stack, lGeom[18][0], lGeom[18][1], lGeom[18][2]);
-
-                int[] id = GL33Helper.createQuadStrip_VAO_VBO(r, g, b, a, new float[] {
-                    lGeom[0][0], lGeom[0][1], lGeom[0][2],
-                    lGeom[1][0], lGeom[1][1], lGeom[1][2],
-                    lGeom[2][0], lGeom[2][1], lGeom[2][2],
-                    lGeom[3][0], lGeom[3][1], lGeom[3][2],
-                    lGeom[4][0], lGeom[4][1], lGeom[4][2],
-                    lGeom[5][0], lGeom[5][1], lGeom[5][2],
-                    lGeom[6][0], lGeom[6][1], lGeom[6][2],
-                    lGeom[7][0], lGeom[7][1], lGeom[7][2],
-                    lGeom[8][0], lGeom[8][1], lGeom[8][2],
-                    lGeom[9][0], lGeom[9][1], lGeom[9][2],
-                    lGeom[10][0], lGeom[10][1], lGeom[10][2],
-                    lGeom[11][0], lGeom[11][1], lGeom[11][2],
-                    lGeom[12][0], lGeom[12][1], lGeom[12][2],
-                    lGeom[13][0], lGeom[13][1], lGeom[13][2],
-                    lGeom[14][0], lGeom[14][1], lGeom[14][2],
-                    lGeom[15][0], lGeom[15][1], lGeom[15][2],
-                    lGeom[16][0], lGeom[16][1], lGeom[16][2],
-                    lGeom[17][0], lGeom[17][1], lGeom[17][2]
-                });
-
-                GL33Primitives.SPHERE.draw(stack, lGeom[19][0], lGeom[19][1], lGeom[19][2]);
-
-            }
-
-            stack.glPopMatrix();
-
-        } else {
-            GL11.glLineWidth(View.lineWidthGL[0]);
-            int[] id = GL33Helper.createLines_VAO_VBO(r, g, b, a, new float[] {
-                x1, y1, z1,
-                x2, y2, z2
-            });
-        }
-
-        if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
-            shader.lightsOn();
     }
 
     @Override
@@ -944,17 +836,6 @@ public final class GData2 extends GData {
     @Override
     public void drawGL33_BFC_Colour(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
         drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-    }
-
-    @Override
-    public void drawGL33_BFC_Textured(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void drawGL33_WhileAddCondlines(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-     // drawGL33(c3d);
     }
 
     /*
