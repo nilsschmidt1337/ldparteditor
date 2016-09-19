@@ -84,6 +84,10 @@ material frontMaterial = material(
 
 void main()
 {
+    if (sceneColor.a < 0.1f) {
+    	discard;
+    }
+    
 	lights[0] = light0;
 	lights[1] = light1;
 	lights[2] = light2;

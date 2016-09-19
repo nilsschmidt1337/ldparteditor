@@ -17,13 +17,9 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
-import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
  * @author nils
@@ -319,17 +315,5 @@ public final class GDataTEX extends GData {
 
     public GData getLinkedData() {
         return linkedData;
-    }
-
-    @Override
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        // TODO Auto-generated method stub
-        
     }
 }

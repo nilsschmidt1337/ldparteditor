@@ -17,8 +17,6 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -31,7 +29,6 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
-import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 
 /**
@@ -1079,17 +1076,6 @@ public final class GData5 extends GData {
         return lineBuilder.toString();
     }
 
-    @Override
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-    }
-    
     public boolean isShown(Matrix4f viewport, HashMap<GData1, Matrix4f> CACHE_viewByProjection, float zoom, Vector4f A, Vector4f B, Vector4f C, Vector4f D, Vector4f N, Matrix4f M) {
         
         final Matrix4f M2 = CACHE_viewByProjection.get(parent);

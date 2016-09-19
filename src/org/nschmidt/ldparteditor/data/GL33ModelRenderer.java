@@ -143,7 +143,7 @@ public class GL33ModelRenderer {
                         final DatFile df = c3d.getLockableDatFileReference();
                         // Just to speed up things in some cases...                           
                         if (!df.isDrawSelection()) {
-                            continue; // static_lock.lock(); on finally
+                            continue; // static_lock.unlock(); on finally
                         }
                         final VertexManager vm = df.getVertexManager();
                         // For the vertices, we have to create a copy, since we have to iterate the set
@@ -156,182 +156,20 @@ public class GL33ModelRenderer {
                         final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
                         final ThreadsafeHashMap<GData5, Vertex[]> condlines = vm.condlines;                            
 
-                        boolean hasTEXMAP = false;
-                        boolean hasPNG = false;
-
                         // Build the list of the data from the datfile
                         dataInOrder.clear();
                         vertexMap.clear();
                         condlineMap.clear();
                         CACHE_viewByProjection.clear();
+                        
+                        boolean hasTEXMAP = false;
+                        boolean hasPNG = false;
+                        
                         {
-                            Stack<GData> stack = new Stack<>();
-                            Stack<Byte> tempWinding = new Stack<>();
-                            Stack<Boolean> tempInvertNext = new Stack<>();
-                            Stack<Boolean> tempInvertNextFound = new Stack<>();
-                            Stack<Boolean> tempNegativeDeterminant = new Stack<>();
-                            boolean isCertified = true; 
-
-                            GData gd = df.getDrawChainStart();
-
-                            byte localWinding = BFC.NOCERTIFY;
-                            int accumClip = 0;
-                            boolean globalInvertNext = false;
-                            boolean globalInvertNextFound = false;
-                            boolean globalNegativeDeterminant = false;
-
-                            // The BFC logic/state machine is not correct yet? (for BFC no-certify).
-                            while ((gd = gd.next) != null || !stack.isEmpty()) {                                
-                                if (gd == null) {
-                                    if (accumClip > 0) {
-                                        accumClip--;
-                                    }
-                                    gd = stack.pop();
-                                    localWinding = tempWinding.pop();
-                                    isCertified = localWinding != BFC.NOCERTIFY;
-                                    globalInvertNext = tempInvertNext.pop();
-                                    globalInvertNextFound = tempInvertNextFound.pop();
-                                    globalNegativeDeterminant = tempNegativeDeterminant.pop();
-                                    continue;
-                                }
-                                final int type = gd.type();
-                                boolean addData = false;
-                                Vertex[] verts;
-                                switch (type) {
-                                case 1:
-                                    break;
-                                case 2:
-                                    verts = lines.get(gd);
-                                    if (verts != null) {
-                                        vertexMap.put(gd, verts);
-                                        addData = true;
-                                    }
-                                    break;
-                                case 3:
-                                    verts = triangles.get(gd);
-                                    if (verts != null) {
-                                        vertexMap.put(gd, verts);
-                                        addData = true;
-                                    }
-                                    break;
-                                case 4:
-                                    verts = quads.get(gd);
-                                    if (verts != null) {
-                                        vertexMap.put(gd, verts);
-                                        addData = true;
-                                    }
-                                    break;
-                                case 5:
-                                    verts = condlines.get(gd);
-                                    if (verts != null) {
-                                        vertexMap.put(gd, verts);
-                                        addData = true;
-                                    }
-                                    break;
-                                case 6:
-                                    break;
-                                case 9:
-                                    hasTEXMAP = true;
-                                    break;
-                                case 10:
-                                    hasPNG = true;
-                                    break;
-                                default:
-                                    continue;
-                                }
-
-                                if (addData) {
-                                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
-                                }
-
-                                switch (type) {
-                                case 1:
-                                    final GData1 gd1 = ((GData1) gd);
-                                    matrixMap.put(gd1, gd1.productMatrix);
-                                    stack.push(gd);
-                                    isCertified = localWinding != BFC.NOCERTIFY;
-                                    tempWinding.push(localWinding);
-                                    tempInvertNext.push(globalInvertNext);
-                                    tempInvertNextFound.push(globalInvertNextFound);
-                                    tempNegativeDeterminant.push(globalNegativeDeterminant);
-                                    if (accumClip > 0) {
-                                        accumClip++;
-                                    }
-                                    globalInvertNextFound = false;
-                                    localWinding = BFC.NOCERTIFY;
-                                    globalNegativeDeterminant = globalNegativeDeterminant ^ gd1.negativeDeterminant;
-                                    gd = gd1.myGData;
-                                    break;
-                                case 6:
-                                    if (!isCertified) {
-                                        break;
-                                    }
-                                    if (accumClip > 0) {
-                                        switch (type) {
-                                        case BFC.CCW_CLIP:
-                                            if (accumClip == 1)
-                                                accumClip = 0;
-                                            localWinding = BFC.CCW;
-                                            break;
-                                        case BFC.CLIP:
-                                            if (accumClip == 1)
-                                                accumClip = 0;
-                                            break;
-                                        case BFC.CW_CLIP:
-                                            if (accumClip == 1)
-                                                accumClip = 0;
-                                            localWinding = BFC.CW;
-                                            break;
-                                        default:
-                                            break;
-                                        }
-                                    } else {
-                                        switch (((GDataBFC) gd).type) {
-                                        case BFC.CCW:
-                                            localWinding = BFC.CCW;
-                                            break;
-                                        case BFC.CCW_CLIP:
-                                            localWinding = BFC.CCW;
-                                            break;
-                                        case BFC.CW:
-                                            localWinding = BFC.CW;
-                                            break;
-                                        case BFC.CW_CLIP:
-                                            localWinding = BFC.CW;
-                                            break;
-                                        case BFC.INVERTNEXT:
-                                            boolean validState = false;
-                                            GData g = gd.next;
-                                            while (g != null && g.type() < 2) {
-                                                if (g.type() == 1) {
-                                                    if (g.visible) validState = true;
-                                                    break;
-                                                } else if (!g.toString().trim().isEmpty()) {
-                                                    break;
-                                                }
-                                                g = g.next;
-                                            }
-                                            if (validState) {
-                                                globalInvertNext = !globalInvertNext;
-                                                globalInvertNextFound = true;
-                                            }
-                                            break;
-                                        case BFC.NOCERTIFY:
-                                            localWinding = BFC.NOCERTIFY;
-                                            break;
-                                        case BFC.NOCLIP:
-                                            if (accumClip == 0)
-                                                accumClip = 1;
-                                            break;
-                                        default:
-                                            break;
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    break;
-                                }
-                            }
+                            boolean[] special = loadBFCinfo(dataInOrder, vertexMap, matrixMap, df,
+                                    lines, triangles, quads, condlines);
+                            hasPNG = special[0];
+                            hasTEXMAP = special[1];                            
                         }
 
                         final boolean openGL_lines = View.edge_threshold == 5e6f;
@@ -507,7 +345,7 @@ public class GL33ModelRenderer {
                                     pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
                                     pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
 
-                                    colourise(0, 12, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, triangleIndex);
+                                    colourise(0, 12, gd4.r, gd4.g, gd4.b, gd4.visible ? gd4.a : 0f, triangleData, triangleIndex);
                                     if (gw.negativeDeterminant) {                                            
                                         normal(0, 6, xn, yn, zn, triangleData, triangleIndex);
                                         normal(6, 6, -xn, -yn, -zn, triangleData, triangleIndex);
@@ -554,48 +392,6 @@ public class GL33ModelRenderer {
                 idCount.set(0);
                 idList.remove(myID);
                 idCount.set(0);
-            }
-
-            private void normal(int offset, int times, float xn, float yn, float zn,
-                    float[] vertexData, int i) {
-                for (int j = 0; j < times; j++) {
-                    int pos = (offset + i + j) * 10;
-                    vertexData[pos + 3] = xn;
-                    vertexData[pos + 4] = yn;
-                    vertexData[pos + 5] = zn;
-                }
-            }
-
-            private void colourise(int offset, int times, float r, float g, float b,
-                    float a, float[] vertexData, int i) {
-                for (int j = 0; j < times; j++) {
-                    int pos = (offset + i + j) * 10;
-                    vertexData[pos + 6] = r;
-                    vertexData[pos + 7] = g;
-                    vertexData[pos + 8] = b;
-                    vertexData[pos + 9] = a;
-                }
-            }
-
-            private void pointAt(int offset, float x, float y, float z,
-                    float[] vertexData, int i) {
-                int pos = (offset + i) * 10;
-                vertexData[pos] = x;
-                vertexData[pos + 1] = y;
-                vertexData[pos + 2] = z;
-            }
-
-            class GDataAndWinding {
-                final GData data;
-                final byte winding;
-                final boolean negativeDeterminant;
-                final boolean invertNext;
-                public GDataAndWinding(GData gd, byte bfc, boolean negDet, boolean iNext) {
-                    data = gd;
-                    winding = bfc;
-                    negativeDeterminant = negDet;
-                    invertNext = iNext;
-                }
             }
         }).start();
     }
@@ -650,5 +446,231 @@ public class GL33ModelRenderer {
 
 
         // TODO Draw !TEXMAP VAOs here
+    }
+    
+    private boolean[] loadBFCinfo(
+            final ArrayList<GDataAndWinding> dataInOrder,
+            final HashMap<GData, Vertex[]> vertexMap,
+            final HashMap<GData1, Matrix4f> matrixMap, final DatFile df,
+            final ThreadsafeHashMap<GData2, Vertex[]> lines,
+            final ThreadsafeHashMap<GData3, Vertex[]> triangles,
+            final ThreadsafeHashMap<GData4, Vertex[]> quads,
+            final ThreadsafeHashMap<GData5, Vertex[]> condlines) {
+
+        final boolean[] result = new boolean[2];
+        boolean hasTEXMAP = false;
+        boolean hasPNG = false;
+        Stack<GData> stack = new Stack<>();
+        Stack<Byte> tempWinding = new Stack<>();
+        Stack<Boolean> tempInvertNext = new Stack<>();
+        Stack<Boolean> tempInvertNextFound = new Stack<>();
+        Stack<Boolean> tempNegativeDeterminant = new Stack<>();
+        boolean isCertified = true; 
+
+        GData gd = df.getDrawChainStart();
+
+        byte localWinding = BFC.NOCERTIFY;
+        int accumClip = 0;
+        boolean globalInvertNext = false;
+        boolean globalInvertNextFound = false;
+        boolean globalNegativeDeterminant = false;
+
+        // The BFC logic/state machine is not correct yet? (for BFC no-certify).
+        while ((gd = gd.next) != null || !stack.isEmpty()) {                                
+            if (gd == null) {
+                if (accumClip > 0) {
+                    accumClip--;
+                }
+                gd = stack.pop();
+                localWinding = tempWinding.pop();
+                isCertified = localWinding != BFC.NOCERTIFY;
+                globalInvertNext = tempInvertNext.pop();
+                globalInvertNextFound = tempInvertNextFound.pop();
+                globalNegativeDeterminant = tempNegativeDeterminant.pop();
+                continue;
+            }
+            final int type = gd.type();
+            boolean addData = false;
+            Vertex[] verts;
+            switch (type) {
+            case 1:
+                break;
+            case 2:
+                verts = lines.get(gd);
+                if (verts != null) {
+                    vertexMap.put(gd, verts);
+                    addData = true;
+                }
+                break;
+            case 3:
+                verts = triangles.get(gd);
+                if (verts != null) {
+                    vertexMap.put(gd, verts);
+                    addData = true;
+                }
+                break;
+            case 4:
+                verts = quads.get(gd);
+                if (verts != null) {
+                    vertexMap.put(gd, verts);
+                    addData = true;
+                }
+                break;
+            case 5:
+                verts = condlines.get(gd);
+                if (verts != null) {
+                    vertexMap.put(gd, verts);
+                    addData = true;
+                }
+                break;
+            case 6:
+                break;
+            case 9:
+                hasTEXMAP = true;
+                break;
+            case 10:
+                hasPNG = true;
+                break;
+            default:
+                continue;
+            }
+
+            if (addData) {
+                dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
+            }
+
+            switch (type) {
+            case 1:
+                final GData1 gd1 = ((GData1) gd);
+                matrixMap.put(gd1, gd1.productMatrix);
+                stack.push(gd);
+                isCertified = localWinding != BFC.NOCERTIFY;
+                tempWinding.push(localWinding);
+                tempInvertNext.push(globalInvertNext);
+                tempInvertNextFound.push(globalInvertNextFound);
+                tempNegativeDeterminant.push(globalNegativeDeterminant);
+                if (accumClip > 0) {
+                    accumClip++;
+                }
+                globalInvertNextFound = false;
+                localWinding = BFC.NOCERTIFY;
+                globalNegativeDeterminant = globalNegativeDeterminant ^ gd1.negativeDeterminant;
+                gd = gd1.myGData;
+                break;
+            case 6:
+                if (!isCertified) {
+                    break;
+                }
+                if (accumClip > 0) {
+                    switch (type) {
+                    case BFC.CCW_CLIP:
+                        if (accumClip == 1)
+                            accumClip = 0;
+                        localWinding = BFC.CCW;
+                        break;
+                    case BFC.CLIP:
+                        if (accumClip == 1)
+                            accumClip = 0;
+                        break;
+                    case BFC.CW_CLIP:
+                        if (accumClip == 1)
+                            accumClip = 0;
+                        localWinding = BFC.CW;
+                        break;
+                    default:
+                        break;
+                    }
+                } else {
+                    switch (((GDataBFC) gd).type) {
+                    case BFC.CCW:
+                        localWinding = BFC.CCW;
+                        break;
+                    case BFC.CCW_CLIP:
+                        localWinding = BFC.CCW;
+                        break;
+                    case BFC.CW:
+                        localWinding = BFC.CW;
+                        break;
+                    case BFC.CW_CLIP:
+                        localWinding = BFC.CW;
+                        break;
+                    case BFC.INVERTNEXT:
+                        boolean validState = false;
+                        GData g = gd.next;
+                        while (g != null && g.type() < 2) {
+                            if (g.type() == 1) {
+                                if (g.visible) validState = true;
+                                break;
+                            } else if (!g.toString().trim().isEmpty()) {
+                                break;
+                            }
+                            g = g.next;
+                        }
+                        if (validState) {
+                            globalInvertNext = !globalInvertNext;
+                            globalInvertNextFound = true;
+                        }
+                        break;
+                    case BFC.NOCERTIFY:
+                        localWinding = BFC.NOCERTIFY;
+                        break;
+                    case BFC.NOCLIP:
+                        if (accumClip == 0)
+                            accumClip = 1;
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                break;
+            default:
+                break;
+            }
+        }
+        result[0] = hasPNG;
+        result[1] = hasTEXMAP;
+        return result;
+    }
+    
+    private void normal(int offset, int times, float xn, float yn, float zn,
+            float[] vertexData, int i) {
+        for (int j = 0; j < times; j++) {
+            int pos = (offset + i + j) * 10;
+            vertexData[pos + 3] = xn;
+            vertexData[pos + 4] = yn;
+            vertexData[pos + 5] = zn;
+        }
+    }
+
+    private void colourise(int offset, int times, float r, float g, float b,
+            float a, float[] vertexData, int i) {
+        for (int j = 0; j < times; j++) {
+            int pos = (offset + i + j) * 10;
+            vertexData[pos + 6] = r;
+            vertexData[pos + 7] = g;
+            vertexData[pos + 8] = b;
+            vertexData[pos + 9] = a;
+        }
+    }
+
+    private void pointAt(int offset, float x, float y, float z,
+            float[] vertexData, int i) {
+        int pos = (offset + i) * 10;
+        vertexData[pos] = x;
+        vertexData[pos + 1] = y;
+        vertexData[pos + 2] = z;
+    }
+
+    class GDataAndWinding {
+        final GData data;
+        final byte winding;
+        final boolean negativeDeterminant;
+        final boolean invertNext;
+        public GDataAndWinding(GData gd, byte bfc, boolean negDet, boolean iNext) {
+            data = gd;
+            winding = bfc;
+            negativeDeterminant = negDet;
+            invertNext = iNext;
+        }
     }
 }

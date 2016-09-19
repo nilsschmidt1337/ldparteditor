@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.lwjgl.opengl.GL11;
@@ -36,7 +35,6 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
-import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -806,15 +804,6 @@ public final class GData2 extends GData {
             }
             ox2 = ox2 - .01f * zoom;
         }
-    }
-
-    @Override
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-    }
-
-    @Override
-    public void drawGL33_BFC(Composite3D c3d, GLMatrixStack stack, boolean drawSolidMaterials, Set<Integer> sourceVAO, Set<Integer> targetVAO, Set<Integer> sourceBUF, Set<Integer> targetBUF, Set<String> sourceID, Set<String> targetID, Map<String, Integer[]> mapGLO) {
-        drawGL33(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
     }
 
     /*
