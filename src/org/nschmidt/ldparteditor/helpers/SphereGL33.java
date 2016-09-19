@@ -15,12 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers;
 
-import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
 import java.util.ArrayList;
-
-import org.lwjgl.BufferUtils;
-import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
  * @author nils
@@ -28,14 +23,10 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
  */
 public class SphereGL33 {
 
-    private final FloatBuffer bvertices;
-    private final ShortBuffer bindices;
-
-    final ArrayList<Short> indices = new ArrayList<Short>();
+    final ArrayList<Short> indices = new ArrayList<>();
+    final ArrayList<Float> vertices = new ArrayList<>();
 
     public SphereGL33(float radius, int segments) {
-
-        final ArrayList<Float> vertices = new ArrayList<Float>();
 
         final double R = 1d / (segments - 1);
         final double S = 1d / (segments - 1);
@@ -69,44 +60,13 @@ public class SphereGL33 {
             indices.remove(indices.size() - 1);
             indices.remove(indices.size() - 1);
         }
-
-        bvertices = BufferUtils.createFloatBuffer(vertices.size());
-        bindices = BufferUtils.createShortBuffer(indices.size());
-
-        for (Float f : vertices) {
-            bvertices.put(f);
-        }
-        int vertex_count = vertices.size() / 3;
-
-        for (Short sh : indices) {
-            bindices.put((short) (sh % vertex_count));
-        }
-
-        bvertices.flip();
-        // bnormals.flip();
-        bindices.flip();
-
     }
 
     public SphereGL33() {
-        bvertices = BufferUtils.createFloatBuffer(3);
-        bvertices.put(0f);
-        bvertices.put(0f);
-        bvertices.put(0f);
-        bindices = BufferUtils.createShortBuffer(3);
-        bindices.put((short) 0);
-        bindices.put((short) 0);
-        bindices.put((short) 0);
-        bvertices.flip();
-        bindices.flip();
     }
 
-    public void draw(GLMatrixStack stack, float x, float y, float z) {
-        stack.glPushMatrix();
-        stack.glTranslatef(x, y, z);
-        
+    public int insertSphere(float x, float y, float z, float[] triangleData, int triangleIndex) {
         // FIXME Needs implementation!
-        
-        stack.glPopMatrix();
+        return 0;
     }
 }
