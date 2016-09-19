@@ -29,17 +29,12 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.data.colour.GCChrome;
-import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
-import org.nschmidt.ldparteditor.data.colour.GCMetal;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
@@ -68,20 +63,12 @@ public class GL33ModelRenderer {
     private HashSet<String> targetID = new HashSet<>();
     private final Composite3D c3d;
     
-    private static final GTexture CUBEMAP_TEXTURE = new GTexture(TexType.PLANAR, "cmap.png", null, 1, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
-    private static final GDataTEX CUBEMAP = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_TEXTURE); //$NON-NLS-1$
-
-    private static final GTexture CUBEMAP_MATTE_TEXTURE = new GTexture(TexType.PLANAR, "matte_metal.png", null, 2, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
-    private static final GDataTEX CUBEMAP_MATTE = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_MATTE_TEXTURE); //$NON-NLS-1$
-
-    private static final GTexture CUBEMAP_METAL_TEXTURE = new GTexture(TexType.PLANAR, "metal.png", null, 2, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
-    private static final GDataTEX CUBEMAP_METAL = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_METAL_TEXTURE); //$NON-NLS-1$
-    
     public GL33ModelRenderer(Composite3D c3d) {
         this.c3d = c3d;
     }
 
     // FIXME Renderer needs implementation!
+    @Deprecated
     public void draw(GLMatrixStack stack, GLShader shaderProgram, boolean drawSolidMaterials, DatFile df) {
 
         GDataCSG.resetCSG(df, c3d.getManipulator().isModified());
@@ -166,39 +153,8 @@ public class GL33ModelRenderer {
             }
             break;
         case 5: // FIXME Real BFC with texture mapping
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-            data2draw.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-            GDataInit.resetBfcState();
-            data2draw.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-            CUBEMAP.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-            CUBEMAP_MATTE.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-            CUBEMAP_METAL.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawGL33_BFC_Textured(c3d.getComposite3D(), stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-            while ((data2draw = data2draw.getNext()) != null && !isPaused) {
-                isPaused = ViewIdleManager.pause[0].get();
-                data2draw.drawGL33_BFC_Textured(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-            }
-            // vertices.clearVertexNormalCache();
-            GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-            GL13.glActiveTexture(GL13.GL_TEXTURE0 + 2);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-            GL13.glActiveTexture(GL13.GL_TEXTURE0 + 4);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-            GL13.glActiveTexture(GL13.GL_TEXTURE0 + 8);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-            GL13.glActiveTexture(GL13.GL_TEXTURE0 + 16);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
             break;
         case 6: // Special mode for "Add condlines"
-            data2draw.drawGL33_WhileAddCondlines(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-            while ((data2draw = data2draw.getNext()) != null && !isPaused) {
-                isPaused = ViewIdleManager.pause[0].get();
-                data2draw.drawGL33_WhileAddCondlines(c3d, stack, drawSolidMaterials, sourceVAO, targetVAO, sourceBUF, targetBUF, sourceID, targetID, mapGLO);
-            }
             break;
         default:
             break;
@@ -541,13 +497,20 @@ public class GL33ModelRenderer {
                                     }
                                     break;
                                 case 3:
-                                    switch (renderMode) {
-                                    case 0:
-                                        size2 += 60;
-                                        solidVertexCount += 6;
-                                        break;
-                                    default:
-                                        break;
+                                    final GData3 gd3 = (GData3) gd;
+                                    if (gd3.isTriangle) {
+                                        switch (renderMode) {
+                                        case 0:                                        
+                                            size2 += 60;
+                                            solidVertexCount += 6;
+                                            break;
+                                        default:
+                                            break;
+                                        }
+                                    } else {
+                                        int[] protractorSize = gd3.getProtractorDataSize();
+                                        size2 += protractorSize[0];
+                                        solidVertexCount += protractorSize[1];
                                     }
                                     break;
                                 case 4:
@@ -620,7 +583,7 @@ public class GL33ModelRenderer {
                                         pointAt(3, v[0].x, v[0].y, v[0].z, vertexData, i);
                                         pointAt(4, v[2].x, v[2].y, v[2].z, vertexData, i);
                                         pointAt(5, v[1].x, v[1].y, v[1].z, vertexData, i);
-                                        colourise(0, 6, gd3.r, gd3.g, gd3.b, gd3.a, vertexData, i);
+                                        colourise(0, 6, gd3.r, gd3.g, gd3.b, gd3.visible ? gd3.a : 0f, vertexData, i);
                                         if (gw.negativeDeterminant) {                                            
                                             normal(0, 3, xn, yn, zn, vertexData, i);
                                             normal(3, 3, -xn, -yn, -zn, vertexData, i);
