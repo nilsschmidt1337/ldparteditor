@@ -466,6 +466,7 @@ public class Composite3DModifier {
     }
 
     public void zoomToFit() {
+        if (true) return;
         final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
         float max_x = 0f;
         float max_y = 0f;

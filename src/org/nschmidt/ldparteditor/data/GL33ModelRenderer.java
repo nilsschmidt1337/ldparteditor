@@ -146,11 +146,12 @@ public class GL33ModelRenderer {
                             continue; // static_lock.unlock(); on finally
                         }
                         final VertexManager vm = df.getVertexManager();
-                        // For the vertices, we have to create a copy, since we have to iterate the set
-                        final Set<Vertex> vertices = new TreeSet<Vertex>(vm.vertexLinkedToPositionInFile.keySet());
-                        final Set<Vertex> selectedVertices = new TreeSet<Vertex>(vm.selectedVertices);
+                        // For the declared vertices, we have to use a map and a new tree set
+                        final ThreadsafeHashMap<GData0, Vertex[]> declaredVertices = vm.declaredVertices;
+                        final Set<Vertex> vertices = new TreeSet<>();
                         // The links are sufficient
                         final Set<GData> selectedData = vm.selectedData;
+                        final Set<Vertex> selectedVertices = vm.selectedVertices;
                         final ThreadsafeHashMap<GData2, Vertex[]> lines = vm.lines;
                         final ThreadsafeHashMap<GData3, Vertex[]> triangles = vm.triangles;
                         final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
@@ -167,7 +168,7 @@ public class GL33ModelRenderer {
                         
                         {
                             boolean[] special = loadBFCinfo(dataInOrder, vertexMap, matrixMap, df,
-                                    lines, triangles, quads, condlines);
+                                    lines, triangles, quads, condlines, declaredVertices, vertices);
                             hasPNG = special[0];
                             hasTEXMAP = special[1];                            
                         }
@@ -379,7 +380,7 @@ public class GL33ModelRenderer {
                         transparentOffset = 0;
                         lock.unlock();
 
-                        NLogger.debug(getClass(), "Processing time: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
+                        // NLogger.debug(getClass(), "Processing time: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
                     } catch (Exception ex) {
                         NLogger.debug(getClass(), "Exception: " + ex.getMessage()); //$NON-NLS-1$
                     } finally {
@@ -455,7 +456,9 @@ public class GL33ModelRenderer {
             final ThreadsafeHashMap<GData2, Vertex[]> lines,
             final ThreadsafeHashMap<GData3, Vertex[]> triangles,
             final ThreadsafeHashMap<GData4, Vertex[]> quads,
-            final ThreadsafeHashMap<GData5, Vertex[]> condlines) {
+            final ThreadsafeHashMap<GData5, Vertex[]> condlines,
+            final ThreadsafeHashMap<GData0, Vertex[]> declaredVertices,
+            final Set<Vertex> vertices) {
 
         final boolean[] result = new boolean[2];
         boolean hasTEXMAP = false;
@@ -475,6 +478,8 @@ public class GL33ModelRenderer {
         boolean globalInvertNextFound = false;
         boolean globalNegativeDeterminant = false;
 
+        Vertex[] v = null;
+        
         // The BFC logic/state machine is not correct yet? (for BFC no-certify).
         while ((gd = gd.next) != null || !stack.isEmpty()) {                                
             if (gd == null) {
@@ -493,6 +498,11 @@ public class GL33ModelRenderer {
             boolean addData = false;
             Vertex[] verts;
             switch (type) {
+            case 0:
+                if ((v = vertexMap.get(gd)) != null) {
+                    vertices.add(v[0]);
+                }
+                break;
             case 1:
                 break;
             case 2:
