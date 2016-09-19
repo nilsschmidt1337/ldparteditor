@@ -86,7 +86,7 @@ public final class VertexManager extends VM99Clipboard {
                 if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6) {
                     if (!tmpHiddenVertices.isEmpty()) {
                         boolean pureControlPoint;
-                        for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
+                        for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.threadSafeEntrySet()) {
                             final Vertex vertex = entry.getKey();
                             Set<VertexManifestation> manis = entry.getValue();
                             if (manis != null) {
@@ -105,7 +105,7 @@ public final class VertexManager extends VM99Clipboard {
                     }
                 } else {
                     boolean pureControlPoint;
-                    for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
+                    for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.threadSafeEntrySet()) {
                         final Vertex vertex = entry.getKey();
                         Set<VertexManifestation> manis = entry.getValue();
                         if (manis != null) {
