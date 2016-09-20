@@ -158,6 +158,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_r"), View.light4_specular_Colour_r[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_g"), View.light4_specular_Colour_g[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_b"), View.light4_specular_Colour_b[0]); //$NON-NLS-1$
+            
+            shaderProgram.setFactor(1f);
         }
         
         GL11.glDepthMask(true);
@@ -369,7 +371,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             }
 
             GL11.glCullFace(GL11.GL_BACK);
-
+            
             if (c3d.isLightOn()) {
                 shaderProgram.lightsOn();
             } else {

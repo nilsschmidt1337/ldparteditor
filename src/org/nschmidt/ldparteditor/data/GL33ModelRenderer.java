@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
-import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -65,6 +64,9 @@ public class GL33ModelRenderer {
 
     private int vao;
     private int vbo;
+    
+    private int vaoVertices;
+    private int vboVertices;
 
     private volatile Lock lock = new ReentrantLock();
     private static volatile Lock static_lock = new ReentrantLock();
@@ -74,9 +76,11 @@ public class GL33ModelRenderer {
     private static volatile CopyOnWriteArrayList<Integer> idList = new CopyOnWriteArrayList<>();
 
     private volatile float[] data = null;
+    private volatile float[] dataVertices = null;
     private volatile int solidSize = 0;
     private volatile int transparentOffset = 0;
     private volatile int transparentSize = 0;
+    private volatile int vertexSize = 0;
 
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
 
@@ -94,6 +98,20 @@ public class GL33ModelRenderer {
 
         GL20.glEnableVertexAttribArray(2);
         GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL30.glBindVertexArray(0);
+        
+        vaoVertices = GL30.glGenVertexArrays();
+        vboVertices = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoVertices);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVertices);
+
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
+
+        GL20.glEnableVertexAttribArray(2);
+        GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
@@ -152,6 +170,7 @@ public class GL33ModelRenderer {
                         // The links are sufficient
                         final Set<GData> selectedData = vm.selectedData;
                         final Set<Vertex> selectedVertices = vm.selectedVertices;
+                        final Set<Vertex> hiddenVertices = vm.hiddenVertices;
                         final ThreadsafeHashMap<GData2, Vertex[]> lines = vm.lines;
                         final ThreadsafeHashMap<GData3, Vertex[]> triangles = vm.triangles;
                         final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
@@ -183,6 +202,7 @@ public class GL33ModelRenderer {
 
                         int triangleSize = 0;
                         int lineSize = 0;
+                        int verticesSize = vertices.size();
 
                         int solidVertexCount = 0;
 
@@ -255,6 +275,37 @@ public class GL33ModelRenderer {
                         float[] triangleData = new float[triangleSize];
                         // for GL_LINES
                         float[] lineData = new float[lineSize];
+                        // for GL_POINTS
+                        float[] vertexData = new float[verticesSize * 7];
+                        
+                        {
+                            final float r = View.vertex_Colour_r[0]; 
+                            final float g = View.vertex_Colour_g[0];
+                            final float b = View.vertex_Colour_b[0];
+                            final float r2 = View.vertex_selected_Colour_r[0]; 
+                            final float g2 = View.vertex_selected_Colour_g[0];
+                            final float b2 = View.vertex_selected_Colour_b[0];
+                            int i = 0;
+                            for(Vertex v : vertices) {
+                                vertexData[i] = v.x;
+                                vertexData[i + 1] = v.y;
+                                vertexData[i + 2] = v.z;
+                                
+                                if (selectedVertices.contains(v)) {
+                                    vertexData[i + 3] = r2;
+                                    vertexData[i + 4] = g2;
+                                    vertexData[i + 5] = b2;
+                                    vertexData[i + 6] = 7f;
+                                } else {
+                                    vertexData[i + 3] = r;
+                                    vertexData[i + 4] = g;
+                                    vertexData[i + 5] = b;
+                                    vertexData[i + 6] = hiddenVertices.contains(v) ? 0f : 7f;
+                                }
+                                i += 7;
+                            }
+                        }
+                        
                         
                         Vertex[] v;
                         int triangleIndex = 0;
@@ -378,6 +429,8 @@ public class GL33ModelRenderer {
                         solidSize = solidVertexCount;
                         transparentSize = 0;
                         transparentOffset = 0;
+                        vertexSize = verticesSize;
+                        dataVertices = vertexData;
                         lock.unlock();
 
                         if (NLogger.DEBUG) {
@@ -405,12 +458,17 @@ public class GL33ModelRenderer {
         isRunning.set(false);
         GL30.glDeleteVertexArrays(vao);
         GL15.glDeleteBuffers(vbo);
+        GL30.glDeleteVertexArrays(vaoVertices);
+        GL15.glDeleteBuffers(vboVertices);
     }
 
-    private int ts, ss, to;
+    private int ts, ss, to, vs;
     public void draw(GLMatrixStack stack, GLShader shaderProgram, boolean drawSolidMaterials, DatFile df) {
 
-        if (data == null) {
+        Matrix4f vm = c3d.getViewport();
+        Matrix4f ivm = c3d.getViewport_Inverse();
+        
+        if (data == null || dataVertices == null) {
             return;
         }
 
@@ -444,6 +502,39 @@ public class GL33ModelRenderer {
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, ss);
         } else {
             GL11.glDrawArrays(GL11.GL_TRIANGLES, to, ts);
+            
+            if (c3d.isShowingVertices()) {
+                GL30.glBindVertexArray(vaoVertices);
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVertices);
+                lock.lock();
+                // I can't use glBufferSubData() it creates a memory leak!!!
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataVertices, GL15.GL_STATIC_DRAW);
+                vs = vertexSize;
+                lock.unlock();
+
+                GL20.glEnableVertexAttribArray(0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
+
+                GL20.glEnableVertexAttribArray(2);
+                GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
+
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+                
+                if (c3d.isShowingHiddenVertices()) {
+                    shaderProgram.setFactor(.5f);
+                    GL11.glDisable(GL11.GL_DEPTH_TEST);
+                    GL11.glDrawArrays(GL11.GL_POINTS, 0, vs);
+                    GL11.glEnable(GL11.GL_DEPTH_TEST);
+                    shaderProgram.setFactor(1f);
+                }
+                
+                Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * c3d.getZoom(), 1f);
+                Matrix4f.transform(ivm, tr, tr);
+                stack.glPushMatrix();
+                stack.glTranslatef(tr.x, tr.y, tr.z);
+                GL11.glDrawArrays(GL11.GL_POINTS, 0, vs);
+                stack.glPopMatrix();
+            }
         }
         GL30.glBindVertexArray(0);
 
@@ -480,8 +571,6 @@ public class GL33ModelRenderer {
         boolean globalInvertNextFound = false;
         boolean globalNegativeDeterminant = false;
 
-        Vertex[] v = null;
-        
         // The BFC logic/state machine is not correct yet? (for BFC no-certify).
         while ((gd = gd.next) != null || !stack.isEmpty()) {                                
             if (gd == null) {
