@@ -100,9 +100,15 @@ void main()
 	vec4   lightAmbientDiffuse  = vec4(0.0,0.0,0.0,0.0);
 	vec4   lightTextureSpecular = vec4(0.0,0.0,0.0,0.0);
 	vec4   lightSpecular        = vec4(0.0,0.0,0.0,0.0);
-
+	
+	int count = 4;
+	
+	if (sceneColor.a > 5.0f) {
+		count = 0;
+	}
+	
 	// iterate all lights
-	for (int i=0; i<4; ++i)
+	for (int i=0; i<count; ++i)
 	{
 		// attenuation and light direction
      	// positional light source

@@ -5,6 +5,8 @@ layout(location = 1) in vec3 in_normal;
 layout(location = 2) in vec4 in_color;
 layout(location = 3) in vec2 in_tex;  
 
+uniform float factor;
+
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
@@ -20,7 +22,7 @@ void main()
 	tex = in_tex;
 	gl_Position = projection * view * model * vec4(in_position, 1.0f);
 	position = vec3(view * model * vec4(in_position, 1.0f));
-    sceneColor = in_color;
+    sceneColor = vec4(in_color.r * factor, in_color.g * factor, in_color.b * factor, in_color.a);
     
     mat4 glNormalMatrix_m;
     vec3 n1;

@@ -115,4 +115,8 @@ public class GLShader {
     public boolean isLightOn() {
         return GL20.glGetUniformf(program, getUniformLocation("lightswitch")) == 1f; //$NON-NLS-1$
     }
+    
+    public void setFactor(float f) {
+        GL20.glUniform1f(getUniformLocation("factor"), f); //$NON-NLS-1$
+    }
 }
