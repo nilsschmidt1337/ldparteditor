@@ -50,8 +50,6 @@ public enum NLogger {
     private static boolean writeInNewFile;
     /** The print stream for errors */
     private static PrintStream errorStream = null;
-    /** The formatter for debug messages */
-    private static MessageFormat formatter = new MessageFormat("", Locale.ENGLISH); //$NON-NLS-1$
 
     /**
      * Initializes the logger.
@@ -183,6 +181,7 @@ public enum NLogger {
      *            Parameters separated with a comma
      */
     private static synchronized void debug_sync(Class<?> clazz, String message, Object... args) {
+        MessageFormat formatter = new MessageFormat("", Locale.ENGLISH); //$NON-NLS-1$
         formatter.applyPattern(message);
         StringBuilder sb = new StringBuilder();
         sb.append("[DEBUG "); //$NON-NLS-1$
