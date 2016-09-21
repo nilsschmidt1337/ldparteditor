@@ -133,8 +133,6 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
     private int skipFrame;
 
-    private volatile AtomicBoolean calculateVertexNormals = new AtomicBoolean(true);
-
     /**
      * Initializes the Scene and gives OpenGL-Hints
      */
@@ -247,20 +245,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 skipFrame = 0;
                 return;
             }
-            if (calculateVertexNormals.compareAndSet(true, false)) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        c3d.getVertexManager().clearVertexNormalCache();
-                        c3d.getVertexManager().fillVertexNormalCache(c3d.getLockableDatFileReference().getDrawChainStart());
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                        }
-                        calculateVertexNormals.set(true);
-                    }
-                }).start();
-            }
+            c3d.getVertexManager().clearVertexNormalCache();
+            c3d.getVertexManager().fillVertexNormalCache(c3d.getLockableDatFileReference().getDrawChainStart());
             GL20.glUseProgram(pGlossId);
         } else {
             GL20.glUseProgram(0);
