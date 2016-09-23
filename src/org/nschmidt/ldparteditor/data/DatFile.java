@@ -1438,6 +1438,8 @@ public final class DatFile {
             // Don't save read only files!
             return true;
         }
+        
+        text = getText();
 
         boolean deleteFirst = oldName.equals(newName);
 
@@ -1509,6 +1511,7 @@ public final class DatFile {
     }
 
     public boolean saveForced() {
+        text = getText();
         UTF8PrintWriter r = null;
         try {
             File newFile = new File(newName);
@@ -1555,6 +1558,7 @@ public final class DatFile {
     }
 
     public boolean saveAs(String newName) {
+        text = getText();
         UTF8PrintWriter r = null;
         try {
             File newFile = new File(newName);
