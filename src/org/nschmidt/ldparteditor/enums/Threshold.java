@@ -42,6 +42,8 @@ public enum Threshold implements Serializable {
     public static BigDecimal identical_vertex_distance = new BigDecimal("0.0001", MathContext.DECIMAL128); //$NON-NLS-1$
     /** The threshold for the minimum collinear angle */
     public static double collinear_angle_minimum = 0.025d;
+    /** The threshold for the maximum collinear angle */
+    public static double collinear_angle_maximum = 179.9d;
     /** The threshold for the maximum coplanarity angle for warnings */
     public static double coplanarity_angle_warning = 1d;
     /** The threshold for the maximum coplanarity angle */
