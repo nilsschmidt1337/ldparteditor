@@ -212,7 +212,7 @@ public final class Polygon {
                 org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexB, vertexC, vertexB);
                 boolean parseError = org.nschmidt.ldparteditor.helpers.math.Vector3d.angle(vertexA, vertexB) < Threshold.collinear_angle_minimum;
 
-                parseError = parseError ||vertexA.length().compareTo(identical_vertex_distance) < 0;
+                parseError = parseError || vertexA.length().compareTo(identical_vertex_distance) < 0;
                 parseError = parseError || vertexB.length().compareTo(identical_vertex_distance) < 0;
                 parseError = parseError || org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
 

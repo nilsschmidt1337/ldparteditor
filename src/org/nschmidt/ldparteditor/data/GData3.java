@@ -1484,14 +1484,35 @@ public final class GData3 extends GData {
     }
 
     public boolean isCollinear() {
+        double angle;
         Vector3d vertexA = new Vector3d(X1, Y1, Z1);
         Vector3d vertexB = new Vector3d(X2, Y2, Z2);
         Vector3d vertexC = new Vector3d(X3, Y3, Z3);
-        Vector3d vertexA2 = new Vector3d();
-        Vector3d vertexB2 = new Vector3d();
-        Vector3d.sub(vertexA, vertexC, vertexA2);
-        Vector3d.sub(vertexB, vertexC, vertexB2);
-        return Vector3d.angle(vertexA2, vertexB2) < Threshold.collinear_angle_minimum;
+        Vector3d A = new Vector3d();
+        Vector3d B = new Vector3d();
+        Vector3d C = new Vector3d();
+        Vector3d.sub(vertexB, vertexA, A);
+        Vector3d.sub(vertexC, vertexB, B);
+        Vector3d.sub(vertexC, vertexA, C);
+        
+        angle = Vector3d.angle(A, C);
+        double sumAngle = angle;
+        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+            return true;
+        }
+        
+        A.negate();
+        angle = Vector3d.angle(A, B);
+        sumAngle = sumAngle + angle;
+        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+            return true;
+        }
+        
+        angle = 180.0 - sumAngle;
+        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+            return true;
+        }
+        return false;
     }
 
     public String colourReplace(String col) {

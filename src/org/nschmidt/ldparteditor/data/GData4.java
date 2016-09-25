@@ -1150,13 +1150,13 @@ public final class GData4 extends GData {
                             tex.calcUVcoords4(x4, y4, z4, parent);
                             uv = tex.getUVcoords(false, this);
                             GL11.glTexCoord2f(uv[0], uv[1]);
-                            c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, false, this, useCubeMap);
+                            c3d.getVertexManager().setVertexAndNormal(x1, y1, z1, true, this, useCubeMap);
                             GL11.glTexCoord2f(uv[2], uv[3]);
-                            c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
+                            c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                             GL11.glTexCoord2f(uv[4], uv[5]);
-                            c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
+                            c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
                             GL11.glTexCoord2f(uv[6], uv[7]);
-                            c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, false, this, useCubeMap);
+                            c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, true, this, useCubeMap);
                             GL11.glEnd();
                         } else {
                             GL11.glColor4f(r, g, b, a);
@@ -1632,15 +1632,37 @@ public final class GData4 extends GData {
         Vector3d vertexB = new Vector3d(X2, Y2, Z2);
         Vector3d vertexC = new Vector3d(X3, Y3, Z3);
         Vector3d vertexD = new Vector3d(X4, Y4, Z4);
-        Vector3d.sub(vertexA, vertexD, vertexA);
-        Vector3d.sub(vertexB, vertexD, vertexB);
-        Vector3d.sub(vertexC, vertexD, vertexC);
-        boolean parseError = false;
-        parseError = Vector3d.angle(vertexA, vertexB) < Threshold.collinear_angle_minimum;
-        parseError = parseError || Vector3d.angle(vertexB, vertexC) < Threshold.collinear_angle_minimum;
-        parseError = parseError || 180.0 - Vector3d.angle(vertexA, vertexC) < Threshold.collinear_angle_minimum;
-        parseError = parseError || 180.0 - Vector3d.angle(Vector3d.sub(vertexC, vertexB), Vector3d.sub(vertexA, vertexB)) < Threshold.collinear_angle_minimum;
-        return parseError;
+        Vector3d A = Vector3d.sub(vertexB, vertexA);
+        Vector3d B = Vector3d.sub(vertexB, vertexC);
+        Vector3d C = Vector3d.sub(vertexD, vertexC);
+        Vector3d D = Vector3d.sub(vertexD, vertexA);
+
+        double angle = Vector3d.angle(A, D);
+        double sumAngle = angle;
+        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+            return true;
+        }
+        
+        angle = Vector3d.angle(B, C);
+        sumAngle = sumAngle + angle;
+        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+            return true;
+        }
+        
+        A.negate();
+        B.negate();
+        angle = Vector3d.angle(A, B);
+        sumAngle = sumAngle + angle;
+        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+            return true;
+        }
+        
+        angle = 360.0 - sumAngle;
+        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+            return true;
+        }
+        
+        return false;
     }
 
     public int getHourglassConfiguration() {

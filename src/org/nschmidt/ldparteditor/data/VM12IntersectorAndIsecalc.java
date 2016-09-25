@@ -1287,14 +1287,34 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                                 // Check collinearity
                                 {
+                                    double angle;
                                     Vector3d vertexA = new Vector3d(triVerts[0]);
                                     Vector3d vertexB = new Vector3d(triVerts[1]);
                                     Vector3d vertexC = new Vector3d(triVerts[2]);
-                                    Vector3d vertexA2 = new Vector3d();
-                                    Vector3d vertexB2 = new Vector3d();
-                                    Vector3d.sub(vertexA, vertexC, vertexA2);
-                                    Vector3d.sub(vertexB, vertexC, vertexB2);
-                                    if  (Vector3d.angle(vertexA2, vertexB2) < Threshold.collinear_angle_minimum) continue;
+                                    Vector3d A = new Vector3d();
+                                    Vector3d B = new Vector3d();
+                                    Vector3d C = new Vector3d();
+                                    Vector3d.sub(vertexB, vertexA, A);
+                                    Vector3d.sub(vertexC, vertexB, B);
+                                    Vector3d.sub(vertexC, vertexA, C);
+                                    
+                                    angle = Vector3d.angle(A, C);
+                                    double sumAngle = angle;
+                                    if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                        continue;
+                                    }
+                                    
+                                    A.negate();
+                                    angle = Vector3d.angle(A, B);
+                                    sumAngle = sumAngle + angle;
+                                    if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                        continue;
+                                    }
+                                    
+                                    angle = 180.0 - sumAngle;
+                                    if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                        continue;
+                                    }
                                 }
 
                                 if (MathHelper.directionOfVectors(normal, originalNormal) == 1) {
@@ -1306,7 +1326,6 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     resultVertices.add(triVerts[2]);
                                     resultVertices.add(triVerts[1]);
                                 }
-
 
                                 if (ins.isColourise()) {
 
@@ -2289,14 +2308,34 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                                                             // Check collinearity
                                                             {
+                                                                double angle;
                                                                 Vector3d vertexA = new Vector3d(triVerts[0]);
                                                                 Vector3d vertexB = new Vector3d(triVerts[1]);
                                                                 Vector3d vertexC = new Vector3d(triVerts[2]);
-                                                                Vector3d vertexA2 = new Vector3d();
-                                                                Vector3d vertexB2 = new Vector3d();
-                                                                Vector3d.sub(vertexA, vertexC, vertexA2);
-                                                                Vector3d.sub(vertexB, vertexC, vertexB2);
-                                                                if  (Vector3d.angle(vertexA2, vertexB2) < Threshold.collinear_angle_minimum) continue;
+                                                                Vector3d A = new Vector3d();
+                                                                Vector3d B = new Vector3d();
+                                                                Vector3d C = new Vector3d();
+                                                                Vector3d.sub(vertexB, vertexA, A);
+                                                                Vector3d.sub(vertexC, vertexB, B);
+                                                                Vector3d.sub(vertexC, vertexA, C);
+                                                                
+                                                                angle = Vector3d.angle(A, C);
+                                                                double sumAngle = angle;
+                                                                if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                                    continue;
+                                                                }
+                                                                
+                                                                A.negate();
+                                                                angle = Vector3d.angle(A, B);
+                                                                sumAngle = sumAngle + angle;
+                                                                if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                                    continue;
+                                                                }
+                                                                
+                                                                angle = 180.0 - sumAngle;
+                                                                if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                                    continue;
+                                                                }
                                                             }
 
                                                             {
