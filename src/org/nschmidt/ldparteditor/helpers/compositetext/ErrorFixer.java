@@ -272,25 +272,37 @@ final class ErrorFixer {
             Vertex C = new Vertex(vertexC.X, vertexC.Y, vertexC.Z);
             Vertex D = new Vertex(vertexD.X, vertexD.Y, vertexD.Z);
 
-            Vector3d.sub(vertexA, vertexD, vertexA);
-            Vector3d.sub(vertexB, vertexD, vertexB);
-            Vector3d.sub(vertexC, vertexD, vertexC);
-
-            double angle = Vector3d.angle(vertexA, vertexB);
-            boolean AB = angle < Threshold.collinear_angle_minimum;
+            Vector3d.sub(vertexB, vertexA, vertexA);
+            Vector3d.sub(vertexB, vertexC, vertexB);
+            Vector3d.sub(vertexD, vertexC, vertexC);
+            Vector3d.sub(vertexD, new Vector3d(A), vertexD);
+            
+            
+            boolean pointA, pointC, pointB, pointD;
+            double angle = Vector3d.angle(vertexA, vertexD);
+            double sumAngle = angle;
+            pointA = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+            
             angle = Vector3d.angle(vertexB, vertexC);
-            boolean BC = angle < Threshold.collinear_angle_minimum;
-            boolean ACD = 180.0 - Vector3d.angle(vertexC, vertexA) < Threshold.collinear_angle_minimum;
-            angle = 180.0 - Vector3d.angle(Vector3d.sub(vertexC, vertexB), Vector3d.sub(vertexA, vertexB)); // 180 - (C-B)(A-B)
-            boolean ACB = angle < Threshold.collinear_angle_minimum;
-
+            sumAngle = sumAngle + angle;
+            pointC = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+        
+            vertexA.negate();
+            vertexB.negate();
+            angle = Vector3d.angle(vertexA, vertexB);
+            sumAngle = sumAngle + angle;
+            pointB = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                                        
+            angle = 360.0 - sumAngle;
+            pointD = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+            
             VertexManager vm = datFile.getVertexManager();
 
-            if (AB && (BC || ACD || ACB) || BC && (ACD || ACB) || ACD && ACB) {
+            if (pointA && (pointC || pointB || pointD) || pointC && (pointB || pointD) || pointB && pointD) {
                 text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
-            } else if (AB) {
-                NLogger.debug(ErrorFixer.class, "AB"); //$NON-NLS-1$
-                if (vm.linkedCommonFaces(A, B).size() == 1 && vm.linkedCommonFaces(D, A).size() == 1) {
+            } else if (pointA) {
+                NLogger.debug(ErrorFixer.class, "Point A"); //$NON-NLS-1$
+                if (vm.linkedCommonFaces(D, A).size() == 1 && vm.linkedCommonFaces(A, B).size() == 1) {
                     text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
                             data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -307,8 +319,26 @@ final class ErrorFixer {
                                     data_segments[2] + " " + data_segments[3] + " " + data_segments[4], text);  //$NON-NLS-1$ //$NON-NLS-2$
 
                 }
-            } else if (BC) {
-                NLogger.debug(ErrorFixer.class, "BC"); //$NON-NLS-1$
+            } else if (pointB) {
+                NLogger.debug(ErrorFixer.class, "Point B"); //$NON-NLS-1$
+                if (vm.linkedCommonFaces(A, B).size() == 1 && vm.linkedCommonFaces(B, C).size() == 1) {
+                    text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                            data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
+                } else {
+                    text = QuickFixer.setLine(lineNumber + 1,
+                            "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                    data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + //$NON-NLS-1$ //$NON-NLS-2$
+                                    "<br>3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                    data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    data_segments[5] + " " + data_segments[6] + " " + data_segments[7], text);  //$NON-NLS-1$ //$NON-NLS-2$
+                }
+            } else if (pointC) {
+                NLogger.debug(ErrorFixer.class, "Point C"); //$NON-NLS-1$
                 if (vm.linkedCommonFaces(B, C).size() == 1 && vm.linkedCommonFaces(C, D).size() == 1) {
                     text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
                             data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -326,31 +356,13 @@ final class ErrorFixer {
                                     data_segments[2] + " " + data_segments[3] + " " + data_segments[4], text);  //$NON-NLS-1$ //$NON-NLS-2$
 
                 }
-            } else if (ACD) {
-                NLogger.debug(ErrorFixer.class, "ACD"); //$NON-NLS-1$
+            } else if (pointD) {
+                NLogger.debug(ErrorFixer.class, "Point D"); //$NON-NLS-1$
                 if (vm.linkedCommonFaces(C, D).size() == 1 && vm.linkedCommonFaces(D, A).size() == 1) {
                     text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
                             data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             data_segments[8] + " " + data_segments[9] + " " + data_segments[10], text); //$NON-NLS-1$ //$NON-NLS-2$
-                } else {
-                    text = QuickFixer.setLine(lineNumber + 1,
-                            "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                    data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + //$NON-NLS-1$ //$NON-NLS-2$
-                                    "<br>3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                    data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[5] + " " + data_segments[6] + " " + data_segments[7], text);  //$NON-NLS-1$ //$NON-NLS-2$
-                }
-            } else if (ACB) {
-                NLogger.debug(ErrorFixer.class, "ACB"); //$NON-NLS-1$
-                if (vm.linkedCommonFaces(A, B).size() == 1 && vm.linkedCommonFaces(B, C).size() == 1) {
-                    text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                            data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
                 } else {
                     text = QuickFixer.setLine(lineNumber + 1,
                             "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$

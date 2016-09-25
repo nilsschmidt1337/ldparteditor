@@ -207,26 +207,39 @@ class VM04Rectifier extends VM03Adjacency {
                                                             // Concave
                                                             continue;
                                                         }
-
-                                                        Vector3d.sub(vertexA, vertexD, vertexA);
-                                                        Vector3d.sub(vertexB, vertexD, vertexB);
-                                                        Vector3d.sub(vertexC, vertexD, vertexC);
-
-                                                        boolean parseError = false;
-                                                        angle = Vector3d.angle(vertexA, vertexB); // AB
-                                                        parseError = angle < Threshold.collinear_angle_minimum;
-                                                        angle = Vector3d.angle(vertexB, vertexC); // BC
-                                                        parseError = parseError || angle < Threshold.collinear_angle_minimum;
-                                                        angle = 180.0 - Vector3d.angle(vertexA, vertexC); // 180 - AC
-                                                        parseError = parseError || angle < Threshold.collinear_angle_minimum;
-                                                        angle = 180.0 - Vector3d.angle(Vector3d.sub(vertexC, vertexB), Vector3d.sub(vertexA, vertexB)); // 180 - (C-B)(A-B)
-                                                        parseError = parseError || angle < Threshold.collinear_angle_minimum;
-                                                        if (parseError) {
-                                                            continue;
-                                                        }
-
+                                                        
                                                         angle = Vector3d.angle(normals[0], normals[2]);
                                                         if (angle > targetAngle) continue;
+
+                                                        Vector3d A = Vector3d.sub(vertexB, vertexA);
+                                                        Vector3d B = Vector3d.sub(vertexB, vertexC);
+                                                        Vector3d C = Vector3d.sub(vertexD, vertexC);
+                                                        Vector3d D = Vector3d.sub(vertexD, vertexA);
+
+                                                        angle = Vector3d.angle(A, D);
+                                                        double sumAngle = angle;
+                                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                            continue;
+                                                        }
+                                                        
+                                                        angle = Vector3d.angle(B, C);
+                                                        sumAngle = sumAngle + angle;
+                                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                            continue;
+                                                        }
+                                                        
+                                                        A.negate();
+                                                        B.negate();
+                                                        angle = Vector3d.angle(A, B);
+                                                        sumAngle = sumAngle + angle;
+                                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                            continue;
+                                                        }
+                                                        
+                                                        angle = 360.0 - sumAngle;
+                                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                            continue;
+                                                        }
 
                                                         BigDecimal m1 = Vector3d.distSquare(new Vector3d(first), new Vector3d(third)).add(BigDecimal.ONE);
                                                         BigDecimal m2 = Vector3d.distSquare(new Vector3d(second), new Vector3d(fourth)).add(BigDecimal.ONE);
@@ -685,25 +698,38 @@ class VM04Rectifier extends VM03Adjacency {
                                             continue;
                                         }
 
-                                        Vector3d.sub(vertexA, vertexD, vertexA);
-                                        Vector3d.sub(vertexB, vertexD, vertexB);
-                                        Vector3d.sub(vertexC, vertexD, vertexC);
-
-                                        boolean parseError = false;
-                                        angle = Vector3d.angle(vertexA, vertexB); // AB
-                                        parseError = angle < Threshold.collinear_angle_minimum;
-                                        angle = Vector3d.angle(vertexB, vertexC); // BC
-                                        parseError = parseError || angle < Threshold.collinear_angle_minimum;
-                                        angle = 180.0 - Vector3d.angle(vertexA, vertexC); // 180 - AC
-                                        parseError = parseError || angle < Threshold.collinear_angle_minimum;
-                                        angle = 180.0 - Vector3d.angle(Vector3d.sub(vertexC, vertexB), Vector3d.sub(vertexA, vertexB)); // 180 - (C-B)(A-B)
-                                        parseError = parseError || angle < Threshold.collinear_angle_minimum;
-                                        if (parseError) {
-                                            continue;
-                                        }
-
                                         angle = Vector3d.angle(normals[0], normals[2]);
                                         if (angle > targetAngle) continue;
+                                        
+                                        Vector3d A = Vector3d.sub(vertexB, vertexA);
+                                        Vector3d B = Vector3d.sub(vertexB, vertexC);
+                                        Vector3d C = Vector3d.sub(vertexD, vertexC);
+                                        Vector3d D = Vector3d.sub(vertexD, vertexA);
+
+                                        angle = Vector3d.angle(A, D);
+                                        double sumAngle = angle;
+                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                            continue;
+                                        }
+                                        
+                                        angle = Vector3d.angle(B, C);
+                                        sumAngle = sumAngle + angle;
+                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                            continue;
+                                        }
+                                        
+                                        A.negate();
+                                        B.negate();
+                                        angle = Vector3d.angle(A, B);
+                                        sumAngle = sumAngle + angle;
+                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                            continue;
+                                        }
+                                        
+                                        angle = 360.0 - sumAngle;
+                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                            continue;
+                                        }
 
                                         BigDecimal m1 = Vector3d.distSquare(new Vector3d(first), new Vector3d(third)).add(BigDecimal.ONE);
                                         BigDecimal m2 = Vector3d.distSquare(new Vector3d(second), new Vector3d(fourth)).add(BigDecimal.ONE);

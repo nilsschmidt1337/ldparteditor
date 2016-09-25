@@ -55,6 +55,10 @@ public class SyntaxFormatter {
     private final Vector3d vertexB = new Vector3d();
     private final Vector3d vertexC = new Vector3d();
     private final Vector3d vertexD = new Vector3d();
+    private final Vector3d vertexA2 = new Vector3d();
+    private final Vector3d vertexB2 = new Vector3d();
+    private final Vector3d vertexC2 = new Vector3d();
+    private final Vector3d vertexD2 = new Vector3d();
     private final Vector3d controlI = new Vector3d();
     private final Vector3d controlII = new Vector3d();
 
@@ -927,13 +931,30 @@ public class SyntaxFormatter {
                         setBorderStyle(styles.get(11));
                     }
                 }
-                Vector3d.sub(vertexA, vertexC, vertexA);
-                Vector3d.sub(vertexB, vertexC, vertexB);
-                double angle = Vector3d.angle(vertexA, vertexB);
-                parseError = parseError || angle < Threshold.collinear_angle_minimum;
-                parseError = parseError || vertexA.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                parseError = parseError || vertexB.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                parseError = parseError || Vector3d.sub(vertexA, vertexB, null).length().compareTo(Threshold.identical_vertex_distance) < 0;
+                
+                Vector3d.sub(vertexA, vertexC, vertexA2);
+                Vector3d.sub(vertexB, vertexC, vertexB2);
+                Vector3d.sub(vertexB, vertexA, vertexC2);
+                
+                double angle = Vector3d.angle(vertexA2, vertexB2);
+                double sumAngle = angle;
+                parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                
+                if (!parseError) {
+                    vertexA2.negate();
+                    angle = Vector3d.angle(vertexA2, vertexC2);
+                    sumAngle = sumAngle + angle;
+                    parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                }
+                
+                if (!parseError) {
+                    angle = 180.0 - sumAngle;
+                    parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                }
+                
+                parseError = parseError || vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
+                parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
+                parseError = parseError || vertexC2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                 break;
             }
         }
@@ -1156,21 +1177,41 @@ public class SyntaxFormatter {
                 // Coplanarity
                 parseWarning = angle > Threshold.coplanarity_angle_warning;
                 parseError = parseError || angle > Threshold.coplanarity_angle_error;
-                Vector3d.sub(vertexA, vertexD, vertexA);
-                Vector3d.sub(vertexB, vertexD, vertexB);
-                Vector3d.sub(vertexC, vertexD, vertexC);
-                // Collinearity (please note that this is not a full test, but it is sufficient to detect an error)
-                angle = Vector3d.angle(vertexA, vertexB);
-                parseError = parseError || angle < Threshold.collinear_angle_minimum;
-                angle = Vector3d.angle(vertexB, vertexC);
-                parseError = parseError || angle < Threshold.collinear_angle_minimum;
-                angle = Vector3d.angle(vertexC, vertexA);
-                parseError = parseError || angle < Threshold.collinear_angle_minimum;
-                parseError = parseError || vertexA.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                parseError = parseError || vertexB.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                parseError = parseError || vertexC.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                parseError = parseError || Vector3d.sub(vertexA, vertexB, null).length().compareTo(Threshold.identical_vertex_distance) < 0;
-                parseError = parseError || Vector3d.sub(vertexB, vertexC, null).length().compareTo(Threshold.identical_vertex_distance) < 0;
+
+                Vector3d.sub(vertexB, vertexA, vertexA2);
+                Vector3d.sub(vertexB, vertexC, vertexB2);
+                Vector3d.sub(vertexD, vertexC, vertexC2);
+                Vector3d.sub(vertexD, vertexA, vertexD2);
+                
+                // Collinearity
+                angle = Vector3d.angle(vertexA2, vertexD2);
+                double sumAngle = angle;
+                parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                
+                if (!parseError) {
+                    angle = Vector3d.angle(vertexB2, vertexC2);
+                    sumAngle = sumAngle + angle;
+                    parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                }
+                
+                if (!parseError) {
+                    vertexA2.negate();
+                    vertexB2.negate();
+                    angle = Vector3d.angle(vertexA2, vertexB2);
+                    sumAngle = sumAngle + angle;
+                    parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                                                
+                }
+                
+                if (!parseError) {
+                    angle = 360.0 - sumAngle;
+                    parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                }              
+                
+                parseError = parseError || vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
+                parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
+                parseError = parseError || vertexC2.length().compareTo(Threshold.identical_vertex_distance) < 0;
+                parseError = parseError || vertexD2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                 break;
             }
         }
