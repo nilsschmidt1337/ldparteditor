@@ -189,6 +189,19 @@ class VM15Flipper extends VM14Splitter {
                             linkedDatFile.insertAfter(cline, new GData5(cline.colourNumber, cline.r, cline.g, cline.b, cline.a, first, third, second, fourth, cline.parent, linkedDatFile));
                             clinesToDelete2.add(cline);
                         }
+                        
+                        // Adjacent Condline Check 1
+                        checkAdjacentCondline(clinesToDelete2, first, second, third, fourth);
+                        checkAdjacentCondline(clinesToDelete2, first, second, fourth, third);
+                        // Adjacent Condline Check 2
+                        checkAdjacentCondline(clinesToDelete2, second, third, first, fourth);
+                        checkAdjacentCondline(clinesToDelete2, second, third, fourth, first);
+                        // Adjacent Condline Check 3
+                        checkAdjacentCondline(clinesToDelete2, third, fourth, first, second);
+                        checkAdjacentCondline(clinesToDelete2, third, fourth, second, first);
+                        // Adjacent Condline Check 4
+                        checkAdjacentCondline(clinesToDelete2, fourth, first, third, second);
+                        checkAdjacentCondline(clinesToDelete2, fourth, first, second, third);
                     }
                 }
 
@@ -257,5 +270,25 @@ class VM15Flipper extends VM14Splitter {
             syncWithTextEditors(true);
         }
         validateState();
+    }
+
+    private void checkAdjacentCondline(final Set<GData5> clinesToDelete,
+            Vertex start, Vertex end, Vertex controlPoint, Vertex mergeTarget) {
+        final GData5 cline= hasCondline(start, end);
+        if (cline != null && lineLinkedToVertices.containsKey(cline)) {
+            Vertex[] verts = condlines.get(cline);
+            if (verts != null) {
+                Vertex backupVert = null;
+                if (verts[2].equals(controlPoint)) {
+                    backupVert = verts[3];                                    
+                } else if (verts[3].equals(controlPoint)) {
+                    backupVert = verts[2];
+                }
+                if (backupVert != null) {
+                    linkedDatFile.insertAfter(cline, new GData5(cline.colourNumber, cline.r, cline.g, cline.b, cline.a, verts[0], verts[1], backupVert, mergeTarget, cline.parent, linkedDatFile));
+                    clinesToDelete.add(cline);
+                }
+            }
+        }
     }
 }
