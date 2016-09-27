@@ -23,7 +23,7 @@ import java.math.BigDecimal;
  */
 public class Edger2Settings {
 
-    private BigDecimal equalDistance = new BigDecimal("0.0001"); //$NON-NLS-1$
+    private BigDecimal equalDistance = new BigDecimal("0.0010"); //$NON-NLS-1$
     private BigDecimal af = new BigDecimal("0.1"); //$NON-NLS-1$
     private BigDecimal ac = new BigDecimal("60"); //$NON-NLS-1$
     private BigDecimal ae = new BigDecimal("60"); //$NON-NLS-1$
