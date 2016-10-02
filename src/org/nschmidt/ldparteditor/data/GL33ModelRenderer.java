@@ -35,6 +35,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
@@ -225,7 +226,8 @@ public class GL33ModelRenderer {
                                 final GData3 gd3 = (GData3) gd;
                                 if (gd3.isTriangle) {
                                     switch (renderMode) {
-                                    case 0:                                        
+                                    case 0:                                   
+                                    case 1:
                                         triangleSize += 60;
                                         solidVertexCount += 6;
                                         break;
@@ -242,6 +244,7 @@ public class GL33ModelRenderer {
                             case 4:
                                 switch (renderMode) {
                                 case 0:
+                                case 1:
                                     triangleSize += 120;
                                     solidVertexCount += 12;
                                     break;
@@ -354,9 +357,40 @@ public class GL33ModelRenderer {
                                             normal(0, 3, -xn, -yn, -zn, triangleData, triangleIndex);
                                             normal(3, 3, xn, yn, zn, triangleData, triangleIndex);
                                         }
-                                    }
-                                    triangleIndex += 6;
-                                    break;
+                                        triangleIndex += 6;
+                                        break;
+                                    }                                    
+                                    case 1:
+                                    {
+                                        final float r = MathHelper.randomFloat(gd3.ID, 0);
+                                        final float g = MathHelper.randomFloat(gd3.ID, 1);
+                                        final float b = MathHelper.randomFloat(gd3.ID, 2);
+                                        Nv.x = gd3.xn;
+                                        Nv.y = gd3.yn;
+                                        Nv.z = gd3.zn;
+                                        Nv.w = 1f;
+                                        Matrix4f loc = matrixMap.get(gd3.parent);
+                                        Matrix4f.transform(loc, Nv, Nv);
+                                        float xn = Nv.x - loc.m30; 
+                                        float yn = Nv.y - loc.m31;
+                                        float zn = Nv.z - loc.m32;
+                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
+                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
+                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
+                                        pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
+                                        pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
+                                        pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
+                                        colourise(0, 6, r, g, b, gd3.visible ? gd3.a : 0f, triangleData, triangleIndex);
+                                        if (gw.negativeDeterminant) {                                            
+                                            normal(0, 3, xn, yn, zn, triangleData, triangleIndex);
+                                            normal(3, 3, -xn, -yn, -zn, triangleData, triangleIndex);
+                                        } else {
+                                            normal(0, 3, -xn, -yn, -zn, triangleData, triangleIndex);
+                                            normal(3, 3, xn, yn, zn, triangleData, triangleIndex);
+                                        }
+                                        triangleIndex += 6;
+                                        break;
+                                    }                                    
                                     default:
                                         break;
                                     }
@@ -369,6 +403,7 @@ public class GL33ModelRenderer {
                             case 4:
                                 switch (renderMode) {
                                 case 0:
+                                {
                                     v = vertexMap.get(gd);
                                     GData4 gd4 = (GData4) gd;
                                     Nv.x = gd4.xn;
@@ -407,6 +442,51 @@ public class GL33ModelRenderer {
                                     }
                                     triangleIndex += 12;
                                     break;
+                                }                                
+                                case 1:
+                                {
+                                    v = vertexMap.get(gd);
+                                    GData4 gd4 = (GData4) gd;
+                                    final float r = MathHelper.randomFloat(gd4.ID, 0);
+                                    final float g = MathHelper.randomFloat(gd4.ID, 1);
+                                    final float b = MathHelper.randomFloat(gd4.ID, 2);
+                                    Nv.x = gd4.xn;
+                                    Nv.y = gd4.yn;
+                                    Nv.z = gd4.zn;
+                                    Nv.w = 1f;
+                                    Matrix4f loc = matrixMap.get(gd4.parent);
+                                    Matrix4f.transform(loc, Nv, Nv);
+                                    Nv.x = Nv.x - loc.m30; 
+                                    Nv.y = Nv.y - loc.m31;
+                                    Nv.z = Nv.z - loc.m32;
+                                    float xn = Nv.x;
+                                    float yn = Nv.y;
+                                    float zn = Nv.z;
+                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
+                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
+                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
+                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
+                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, triangleIndex);
+                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
+
+                                    pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
+                                    pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, triangleIndex);
+                                    pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
+                                    pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
+                                    pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
+                                    pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
+
+                                    colourise(0, 12, r, g, b, gd4.visible ? gd4.a : 0f, triangleData, triangleIndex);
+                                    if (gw.negativeDeterminant) {                                            
+                                        normal(0, 6, xn, yn, zn, triangleData, triangleIndex);
+                                        normal(6, 6, -xn, -yn, -zn, triangleData, triangleIndex);
+                                    } else {
+                                        normal(0, 6, -xn, -yn, -zn, triangleData, triangleIndex);
+                                        normal(6, 6, xn, yn, zn, triangleData, triangleIndex);
+                                    }
+                                    triangleIndex += 12;
+                                    break;
+                                }
                                 default:
                                     break;
                                 }
@@ -499,9 +579,13 @@ public class GL33ModelRenderer {
 
         // Transparent and solid parts are at a different location in the buffer
         if (drawSolidMaterials) {
+            shaderProgram.setFactor(.9f);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, ss);
+            shaderProgram.setFactor(1f);
         } else {
+            shaderProgram.setFactor(.9f);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, to, ts);
+            shaderProgram.setFactor(1f);
             
             if (c3d.isShowingVertices()) {
                 GL30.glBindVertexArray(vaoVertices);
