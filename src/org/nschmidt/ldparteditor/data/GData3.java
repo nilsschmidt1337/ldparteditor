@@ -1706,7 +1706,7 @@ public final class GData3 extends GData {
     }
      
     public int[] getProtractorDataSize() {
-        final int[] result = new int[]{0, 0, 0};
+        final int[] result = new int[]{0, 0, 0, 0};
         // FIXME Needs implementation!
         return result;
     }

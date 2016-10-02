@@ -66,6 +66,9 @@ public class GL33ModelRenderer {
     private int vao;
     private int vbo;
     
+    private int vaoLines;
+    private int vboLines;
+    
     private int vaoVertices;
     private int vboVertices;
 
@@ -77,10 +80,12 @@ public class GL33ModelRenderer {
     private static volatile CopyOnWriteArrayList<Integer> idList = new CopyOnWriteArrayList<>();
 
     private volatile float[] data = null;
+    private volatile float[] dataLines = new float[]{0f};
     private volatile float[] dataVertices = null;
     private volatile int solidSize = 0;
     private volatile int transparentOffset = 0;
     private volatile int transparentSize = 0;
+    private volatile int lineSize = 0;
     private volatile int vertexSize = 0;
 
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
@@ -99,6 +104,20 @@ public class GL33ModelRenderer {
 
         GL20.glEnableVertexAttribArray(2);
         GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL30.glBindVertexArray(0);
+        
+        vaoLines = GL30.glGenVertexArrays();
+        vboLines = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoVertices);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboLines);
+
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
+
+        GL20.glEnableVertexAttribArray(2);
+        GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
@@ -126,8 +145,9 @@ public class GL33ModelRenderer {
                 final Vector4f Dv = new Vector4f(0, 0, 0, 1f);
 
                 final Vector4f Nv = new Vector4f(0, 0, 0, 1f);
-                final Matrix4f Mm = new Matrix4f();
-
+                final Matrix4f Mm = new Matrix4f();                
+                Matrix4f.setIdentity(Mm);
+                
                 final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
                 final HashMap<GData, Boolean> condlineMap = new HashMap<>();
@@ -202,10 +222,11 @@ public class GL33ModelRenderer {
                         final Matrix4f viewport = c3d.getViewport();
 
                         int triangleSize = 0;
-                        int lineSize = 0;
+                        int lineAndCondlineSize = 0;
                         int verticesSize = vertices.size();
 
                         int solidVertexCount = 0;
+                        int lineVertexCount = 0;
 
                         // Calculate the buffer sizes (and condline visibility)
                         // Lines are never transparent!
@@ -213,13 +234,22 @@ public class GL33ModelRenderer {
                             final GDataAndWinding gw = (GDataAndWinding) it.next();
 
                             final GData gd = gw.data;
+                            if (!gd.visible) {
+                                it.remove();
+                                continue;
+                            }
+                            
                             switch (gd.type()) {
                             case 2:
                                 // If "OpenGL lines" is ON, I have to use another buffer for it
-                                if (openGL_lines) {
-                                    lineSize += 17;
+                                if (((GData2) gd).isLine) {
+                                    if (openGL_lines) {
+                                        lineAndCondlineSize += 14;
+                                        lineVertexCount += 2;
+                                    } else {                                    
+                                    }
                                 } else {
-
+                                    
                                 }
                                 break;
                             case 3:
@@ -238,7 +268,8 @@ public class GL33ModelRenderer {
                                     int[] protractorSize = gd3.getProtractorDataSize();
                                     triangleSize += protractorSize[0];
                                     solidVertexCount += protractorSize[1];
-                                    lineSize += protractorSize[2];
+                                    lineAndCondlineSize += protractorSize[2];
+                                    lineVertexCount += protractorSize[3];
                                 }
                                 break;
                             case 4:
@@ -257,13 +288,13 @@ public class GL33ModelRenderer {
                                 // and save the result for the special condline mode
                                 GData5 gd5 = (GData5) gd;
                                 final boolean visible = gd5.isShown(viewport, CACHE_viewByProjection, zoom, Av, Bv, Cv, Dv, Nv, Mm);
-                                if (showAllLines || condlineMode || visible) {
+                                if (showAllLines || condlineMode || visible) {                                     
                                     condlineMap.put(gd, visible);
                                     // If "OpenGL lines" is ON, I have to use another buffer for it 
-                                    if (openGL_lines) {
-                                        lineSize += 17;
-                                    } else {
-
+                                    if (openGL_lines) {                                        
+                                        lineAndCondlineSize += 14;
+                                        lineVertexCount += 2;
+                                    } else {                                        
                                     }
                                 } else {
                                     it.remove();
@@ -277,10 +308,17 @@ public class GL33ModelRenderer {
                         // for GL_TRIANGLES
                         float[] triangleData = new float[triangleSize];
                         // for GL_LINES
-                        float[] lineData = new float[lineSize];
+                        float[] lineData;
+                        if (openGL_lines) {
+                            lineData = new float[lineAndCondlineSize];                            
+                        } else {
+                            lineData = new float[0];
+                        }
+                        
                         // for GL_POINTS
                         float[] vertexData = new float[verticesSize * 7];
                         
+                        // Build the vertex array
                         {
                             final float r = View.vertex_Colour_r[0]; 
                             final float g = View.vertex_Colour_g[0];
@@ -320,11 +358,20 @@ public class GL33ModelRenderer {
                             final GData gd = gw.data;
                             switch (gd.type()) {
                             case 2:
-                                // If "OpenGL lines" is ON, I have to use another buffer for it
-                                if (openGL_lines) {
-
+                                GData2 gd2 = (GData2) gd;
+                                v = vertexMap.get(gd);
+                                if (gd2.isLine) {
+                                    // If "OpenGL lines" is ON, I have to use another buffer for it                                    
+                                    if (openGL_lines) {
+                                        pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
+                                        pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
+                                        colourise7(0, 2, gd2.r, gd2.g, gd2.b, 7f, lineData, lineIndex);
+                                        lineIndex += 2;
+                                    } else {
+    
+                                    }
                                 } else {
-
+                                    
                                 }
                                 break;
                             case 3:
@@ -493,8 +540,13 @@ public class GL33ModelRenderer {
                                 break;
                             case 5:
                                 // If "OpenGL lines" is ON, I have to use another buffer for it
+                                GData5 gd5 = (GData5) gd;
+                                v = vertexMap.get(gd);
                                 if (openGL_lines) {
-
+                                    pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
+                                    pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
+                                    colourise7(0, 2, gd5.r, gd5.g, gd5.b, 7f, lineData, lineIndex);
+                                    lineIndex += 2;
                                 } else {
 
                                 }
@@ -511,6 +563,8 @@ public class GL33ModelRenderer {
                         transparentOffset = 0;
                         vertexSize = verticesSize;
                         dataVertices = vertexData;
+                        lineSize = lineVertexCount;
+                        dataLines = lineData;
                         lock.unlock();
 
                         if (NLogger.DEBUG) {
@@ -540,18 +594,20 @@ public class GL33ModelRenderer {
         GL15.glDeleteBuffers(vbo);
         GL30.glDeleteVertexArrays(vaoVertices);
         GL15.glDeleteBuffers(vboVertices);
+        GL30.glDeleteVertexArrays(vaoLines);
+        GL15.glDeleteBuffers(vboLines);
     }
 
-    private int ts, ss, to, vs;
+    private int ts, ss, to, vs, ls;
     public void draw(GLMatrixStack stack, GLShader shaderProgram, boolean drawSolidMaterials, DatFile df) {
 
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewport_Inverse();
         
-        if (data == null || dataVertices == null) {
+        if (data == null || dataLines == null || dataVertices == null) {
             return;
-        }
-
+        }                
+        
         if (drawSolidMaterials) {
             GL30.glBindVertexArray(vao);
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
@@ -561,6 +617,7 @@ public class GL33ModelRenderer {
             ss = solidSize;
             to = transparentOffset;
             ts = transparentSize;
+            ls = lineSize;
             lock.unlock();
 
             GL20.glEnableVertexAttribArray(0);
@@ -576,14 +633,46 @@ public class GL33ModelRenderer {
         }
 
         GL30.glBindVertexArray(vao);
+        
+        if (c3d.isLightOn()) {
+            shaderProgram.setFactor(.9f);
+        } else {
+            shaderProgram.setFactor(1f);
+        }
 
         // Transparent and solid parts are at a different location in the buffer
         if (drawSolidMaterials) {
-            shaderProgram.setFactor(.9f);
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, ss);
+            
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, ss);            
+                        
+            if (ls > 0) {
+                GL30.glBindVertexArray(vaoLines);
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboLines);
+                lock.lock();
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataLines, GL15.GL_STATIC_DRAW);
+                lock.unlock();
+
+                GL20.glEnableVertexAttribArray(0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
+
+                GL20.glEnableVertexAttribArray(2);
+                GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
+
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+                GL11.glLineWidth(View.lineWidthGL[0]);                    
+                
+                Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * c3d.getZoom(), 1f);
+                Matrix4f.transform(ivm, tr, tr);
+                stack.glPushMatrix();
+                stack.glTranslatef(tr.x, tr.y, tr.z);
+                GL11.glDrawArrays(GL11.GL_LINES, 0, ls);
+                stack.glPopMatrix();
+            }
+            
             shaderProgram.setFactor(1f);
+            
         } else {
-            shaderProgram.setFactor(.9f);
+
             GL11.glDrawArrays(GL11.GL_TRIANGLES, to, ts);
             shaderProgram.setFactor(1f);
             
@@ -832,10 +921,29 @@ public class GL33ModelRenderer {
             vertexData[pos + 9] = a;
         }
     }
+    
+    private void colourise7(int offset, int times, float r, float g, float b,
+            float a, float[] vertexData, int i) {
+        for (int j = 0; j < times; j++) {
+            int pos = (offset + i + j) * 7;
+            vertexData[pos + 3] = r;
+            vertexData[pos + 4] = g;
+            vertexData[pos + 5] = b;
+            vertexData[pos + 6] = a;
+        }
+    }
 
     private void pointAt(int offset, float x, float y, float z,
             float[] vertexData, int i) {
         int pos = (offset + i) * 10;
+        vertexData[pos] = x;
+        vertexData[pos + 1] = y;
+        vertexData[pos + 2] = z;
+    }
+    
+    private void pointAt7(int offset, float x, float y, float z,
+            float[] vertexData, int i) {
+        int pos = (offset + i) * 7;
         vertexData[pos] = x;
         vertexData[pos + 1] = y;
         vertexData[pos + 2] = z;

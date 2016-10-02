@@ -365,17 +365,12 @@ public enum MathHelper {
         return result;
     }
     
-    public static float[][] getLineVerticesFast(Vector3f p1, Vector3f p2) {
+    public static float[][] getLineVerticesFast(
+            final float x1, final float y1, final float z1,
+            final float x2, final float y2, final float z2) {
 
 
-        float[][] result = new float[21][3];
-        
-        result[18][0] = p1.x;
-        result[18][1] = p1.y;
-        result[18][2] = p1.z;
-        result[19][0] = p2.x;
-        result[19][1] = p2.y;
-        result[19][2] = p2.z;
+        float[][] result = new float[18][3];
 
         Vector4f n = new Vector4f();
         Vector4f p = new Vector4f();
@@ -386,9 +381,9 @@ public enum MathHelper {
         float theta;
 
         /* Normal pointing from p1 to p2 */
-        n.x = p1.x - p2.x;
-        n.y = p1.y - p2.y;
-        n.z = p1.z - p2.z;
+        n.x = x1 - x2;
+        n.y = y1 - y2;
+        n.z = z1 - z2;
 
         /*
          * Create two perpendicular vectors perp and q on the plane of the disk
@@ -434,34 +429,23 @@ public enum MathHelper {
             }
 
 
-            p.x = p1.x + r1 * n.x;
-            p.y = p1.y + r1 * n.y;
-            p.z = p1.z + r1 * n.z;
+            p.x = x1 + r1 * n.x;
+            p.y = y1 + r1 * n.y;
+            p.z = z1 + r1 * n.z;
             result[j][0] = p.x;
             result[j][1] = p.y;
             result[j][2] = p.z;
             j++;
 
-            p.x = p2.x + r2 * n.x;
-            p.y = p2.y + r2 * n.y;
-            p.z = p2.z + r2 * n.z;
+            p.x = x2 + r2 * n.x;
+            p.y = y2 + r2 * n.y;
+            p.z = z2 + r2 * n.z;
             result[j][0] = p.x;
             result[j][1] = p.y;
             result[j][2] = p.z;
             j++;
 
         }
-
-        result[18][0] = result[18][0];
-        result[18][1] = result[18][1];
-        result[18][2] = result[18][2];
-        result[19][0] = result[19][0];
-        result[19][1] = result[19][1];
-        result[19][2] = result[19][2];
-        result[20][0] = 1f;
-        result[20][1] = 1f;
-        result[20][2] = 1f;
-
         return result;
     }
 

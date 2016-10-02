@@ -274,8 +274,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             Matrix4f viewport_translation = c3d.getTranslation();
             Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
             viewport_transform.store(view_buf);
-            c3d.setViewport(viewport_transform);
             view_buf.flip();
+            c3d.setViewport(viewport_transform);            
             
             {
                 shaderProgram2D.use();
