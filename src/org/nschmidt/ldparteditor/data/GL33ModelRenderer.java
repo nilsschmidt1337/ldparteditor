@@ -242,14 +242,19 @@ public class GL33ModelRenderer {
                             switch (gd.type()) {
                             case 2:
                                 // If "OpenGL lines" is ON, I have to use another buffer for it
-                                if (((GData2) gd).isLine) {
+                                final GData2 gd2 = (GData2) gd;
+                                if (gd2.isLine) {
                                     if (openGL_lines) {
                                         lineAndCondlineSize += 14;
                                         lineVertexCount += 2;
                                     } else {                                    
                                     }
                                 } else {
-                                    
+                                    int[] distanceMeterSize = gd2.getDistanceMeterDataSize();
+                                    triangleSize += distanceMeterSize[0];
+                                    solidVertexCount += distanceMeterSize[1];
+                                    lineAndCondlineSize += distanceMeterSize[2];
+                                    lineVertexCount += distanceMeterSize[3];
                                 }
                                 break;
                             case 3:
@@ -371,7 +376,9 @@ public class GL33ModelRenderer {
     
                                     }
                                 } else {
-                                    
+                                    int[] inc = gd2.insertDistanceMeter(v, triangleData, lineData, triangleIndex, lineIndex);
+                                    triangleIndex += inc[0];
+                                    lineIndex += inc[1];
                                 }
                                 break;
                             case 3:
