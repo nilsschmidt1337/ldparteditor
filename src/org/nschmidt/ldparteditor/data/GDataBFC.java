@@ -111,7 +111,7 @@ public final class GDataBFC extends GData {
                 }
                 g = g.next;
             }
-            if (validState) {
+            if (validState || (g == null && c3d.getRenderMode() == 5)) {
                 GData.globalInvertNext = !GData.globalInvertNext;
                 GData.globalInvertNextFound = true;
             }
@@ -143,7 +143,7 @@ public final class GDataBFC extends GData {
 
     @Override
     public void drawGL20_BFC_Textured(Composite3D c3d) {
-        drawGL20_BFC(null);
+        drawGL20_BFC(c3d);
     }
 
     @Override
