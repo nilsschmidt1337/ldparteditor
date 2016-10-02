@@ -805,6 +805,18 @@ public final class GData2 extends GData {
             ox2 = ox2 - .01f * zoom;
         }
     }
+    
+    public int[] getDistanceMeterDataSize() {
+        final int[] result = new int[]{0, 0, 0, 0};
+        // FIXME Needs implementation!
+        return result;
+    }
+
+    public int[] insertDistanceMeter(Vertex[] v, float[] triangleData, float[] lineData, int triangleIndex, int lineIndex) {
+        final int[] result = new int[]{0, 0};
+        // FIXME Needs implementation!
+        return result;
+    }
 
     /*
      * LOW QUALITY LINES: GL11.glDisable(GL11.GL_LIGHTING); GL11.glColor4f(r, g,
