@@ -8100,8 +8100,8 @@ public class Editor3DWindow extends Editor3DDesign {
         if (useLegacyGL) {
             GL20Primitives.SPHERE = sp;
             GL20Primitives.SPHERE_INV = sp_inv;
-        }
-        compileAll();
+            compileAll();
+        }        
         clickSingleBtn(btn);
     }
 

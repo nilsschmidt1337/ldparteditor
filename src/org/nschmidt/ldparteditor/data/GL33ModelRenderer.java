@@ -40,6 +40,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.GLShader;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer33;
 
 /**
  * New OpenGL 3.3 high performance render function for the model (VAO accelerated)
@@ -51,9 +52,11 @@ public class GL33ModelRenderer {
     boolean isPaused = false;
 
     private final Composite3D c3d;
+    private final OpenGLRenderer33 renderer;
 
     public GL33ModelRenderer(Composite3D c3d) {
         this.c3d = c3d;
+        this.renderer = (OpenGLRenderer33) c3d.getRenderer();
     }
 
     // FIXME needs concept implementation!
@@ -66,8 +69,14 @@ public class GL33ModelRenderer {
     private int vao;
     private int vbo;
     
+    private int vaoGlyphs;
+    private int vboGlyphs;
+    
     private int vaoLines;
     private int vboLines;
+    
+    private int vaoTempLines;
+    private int vboTempLines;
     
     private int vaoVertices;
     private int vboVertices;
@@ -79,13 +88,17 @@ public class GL33ModelRenderer {
 
     private static volatile CopyOnWriteArrayList<Integer> idList = new CopyOnWriteArrayList<>();
 
-    private volatile float[] data = null;
+    private volatile float[] dataTriangles = null;
     private volatile float[] dataLines = new float[]{0f};
+    private volatile float[] dataTempLines = new float[]{0f};
+    private volatile float[] dataGlyphs = new float[]{0f};
     private volatile float[] dataVertices = null;
-    private volatile int solidSize = 0;
-    private volatile int transparentOffset = 0;
-    private volatile int transparentSize = 0;
+    private volatile int solidTriangleSize = 0;
+    private volatile int transparentTriangleOffset = 0;
+    private volatile int transparentTriangleSize = 0;
     private volatile int lineSize = 0;
+    private volatile int tempLineSize = 0;
+    private volatile int glyphSize = 0;
     private volatile int vertexSize = 0;
 
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
@@ -108,10 +121,41 @@ public class GL33ModelRenderer {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
         
+        vaoGlyphs = GL30.glGenVertexArrays();
+        vboGlyphs = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoGlyphs);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGlyphs);
+
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+
+        GL20.glEnableVertexAttribArray(1);
+        GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
+
+        GL20.glEnableVertexAttribArray(2);
+        GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL30.glBindVertexArray(0);
+        
         vaoLines = GL30.glGenVertexArrays();
         vboLines = GL15.glGenBuffers();
-        GL30.glBindVertexArray(vaoVertices);
+        GL30.glBindVertexArray(vaoLines);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboLines);
+
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
+
+        GL20.glEnableVertexAttribArray(2);
+        GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL30.glBindVertexArray(0);
+        
+        vaoTempLines = GL30.glGenVertexArrays();
+        vboTempLines = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoTempLines);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboTempLines);
 
         GL20.glEnableVertexAttribArray(0);
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
@@ -221,12 +265,16 @@ public class GL33ModelRenderer {
                         final float zoom = c3d.getZoom();
                         final Matrix4f viewport = c3d.getViewport();
 
-                        int triangleSize = 0;
-                        int lineAndCondlineSize = 0;
-                        int verticesSize = vertices.size();
-
-                        int solidVertexCount = 0;
+                        int local_triangleSize = 0;
+                        int local_lineSize = 0;
+                        int local_tempLineSize = 0;
+                        int local_verticesSize = vertices.size();
+                        int local_glyphSize = 0;
+                        
+                        int triangleVertexCount = 0;
                         int lineVertexCount = 0;
+                        int tempLineVertexCount = 0;
+                        int glyphVertexCount = 0;
 
                         // Calculate the buffer sizes (and condline visibility)
                         // Lines are never transparent!
@@ -245,16 +293,16 @@ public class GL33ModelRenderer {
                                 final GData2 gd2 = (GData2) gd;
                                 if (gd2.isLine) {
                                     if (openGL_lines) {
-                                        lineAndCondlineSize += 14;
+                                        local_lineSize += 14;
                                         lineVertexCount += 2;
                                     } else {                                    
                                     }
                                 } else {
                                     int[] distanceMeterSize = gd2.getDistanceMeterDataSize();
-                                    triangleSize += distanceMeterSize[0];
-                                    solidVertexCount += distanceMeterSize[1];
-                                    lineAndCondlineSize += distanceMeterSize[2];
-                                    lineVertexCount += distanceMeterSize[3];
+                                    local_triangleSize += distanceMeterSize[0];
+                                    triangleVertexCount += distanceMeterSize[1];
+                                    local_tempLineSize += distanceMeterSize[2];
+                                    tempLineVertexCount += distanceMeterSize[3];
                                 }
                                 break;
                             case 3:
@@ -263,26 +311,26 @@ public class GL33ModelRenderer {
                                     switch (renderMode) {
                                     case 0:                                   
                                     case 1:
-                                        triangleSize += 60;
-                                        solidVertexCount += 6;
+                                        local_triangleSize += 60;
+                                        triangleVertexCount += 6;
                                         break;
                                     default:
                                         break;
                                     }
                                 } else {
                                     int[] protractorSize = gd3.getProtractorDataSize();
-                                    triangleSize += protractorSize[0];
-                                    solidVertexCount += protractorSize[1];
-                                    lineAndCondlineSize += protractorSize[2];
-                                    lineVertexCount += protractorSize[3];
+                                    local_triangleSize += protractorSize[0];
+                                    triangleVertexCount += protractorSize[1];
+                                    local_tempLineSize += protractorSize[2];
+                                    tempLineVertexCount += protractorSize[3];
                                 }
                                 break;
                             case 4:
                                 switch (renderMode) {
                                 case 0:
                                 case 1:
-                                    triangleSize += 120;
-                                    solidVertexCount += 12;
+                                    local_triangleSize += 120;
+                                    triangleVertexCount += 12;
                                     break;
                                 default:
                                     break;
@@ -297,7 +345,7 @@ public class GL33ModelRenderer {
                                     condlineMap.put(gd, visible);
                                     // If "OpenGL lines" is ON, I have to use another buffer for it 
                                     if (openGL_lines) {                                        
-                                        lineAndCondlineSize += 14;
+                                        local_lineSize += 14;
                                         lineVertexCount += 2;
                                     } else {                                        
                                     }
@@ -311,17 +359,14 @@ public class GL33ModelRenderer {
                         }
 
                         // for GL_TRIANGLES
-                        float[] triangleData = new float[triangleSize];
+                        float[] triangleData = new float[local_triangleSize];
+                        float[] glyphData = new float[local_glyphSize];
                         // for GL_LINES
-                        float[] lineData;
-                        if (openGL_lines) {
-                            lineData = new float[lineAndCondlineSize];                            
-                        } else {
-                            lineData = new float[0];
-                        }
+                        float[] lineData = new float[local_lineSize];                            
+                        float[] tempLineData = new float[local_tempLineSize];
                         
                         // for GL_POINTS
-                        float[] vertexData = new float[verticesSize * 7];
+                        float[] vertexData = new float[local_verticesSize * 7];
                         
                         // Build the vertex array
                         {
@@ -356,6 +401,7 @@ public class GL33ModelRenderer {
                         Vertex[] v;
                         int triangleIndex = 0;
                         int lineIndex = 0;
+                        int tempLineIndex = 0;
 
                         // Iterate the objects and generate the buffer data
                         // TEXMAP and Real Backface Culling are quite "the same", but they need different vertex normals / materials
@@ -376,9 +422,9 @@ public class GL33ModelRenderer {
     
                                     }
                                 } else {
-                                    int[] inc = gd2.insertDistanceMeter(v, triangleData, lineData, triangleIndex, lineIndex);
+                                    int[] inc = gd2.insertDistanceMeter(v, triangleData, tempLineData, triangleIndex, tempLineIndex);
                                     triangleIndex += inc[0];
-                                    lineIndex += inc[1];
+                                    tempLineIndex += inc[1];
                                 }
                                 break;
                             case 3:
@@ -449,9 +495,9 @@ public class GL33ModelRenderer {
                                         break;
                                     }
                                 } else {
-                                    int[] inc = gd3.insertProtractor(v, triangleData, lineData, triangleIndex, lineIndex);
+                                    int[] inc = gd3.insertProtractor(v, triangleData, tempLineData, triangleIndex, tempLineIndex);
                                     triangleIndex += inc[0];
-                                    lineIndex += inc[1];
+                                    tempLineIndex += inc[1];
                                 }
                                 break;
                             case 4:
@@ -564,14 +610,16 @@ public class GL33ModelRenderer {
                         }
 
                         lock.lock();
-                        data = triangleData;
-                        solidSize = solidVertexCount;
-                        transparentSize = 0;
-                        transparentOffset = 0;
-                        vertexSize = verticesSize;
+                        dataTriangles = triangleData;
+                        solidTriangleSize = triangleVertexCount;
+                        transparentTriangleSize = 0;
+                        transparentTriangleOffset = 0;
+                        vertexSize = local_verticesSize;
                         dataVertices = vertexData;
                         lineSize = lineVertexCount;
                         dataLines = lineData;
+                        tempLineSize = tempLineVertexCount;
+                        dataTempLines = tempLineData;        
                         lock.unlock();
 
                         if (NLogger.DEBUG) {
@@ -603,28 +651,52 @@ public class GL33ModelRenderer {
         GL15.glDeleteBuffers(vboVertices);
         GL30.glDeleteVertexArrays(vaoLines);
         GL15.glDeleteBuffers(vboLines);
+        GL30.glDeleteVertexArrays(vaoTempLines);
+        GL15.glDeleteBuffers(vboTempLines);
+        GL30.glDeleteVertexArrays(vaoGlyphs);
+        GL15.glDeleteBuffers(vboGlyphs);
     }
 
-    private int ts, ss, to, vs, ls;
+    private int ts, ss, to, vs, ls, tls, gs;
     public void draw(GLMatrixStack stack, GLShader shaderProgram, boolean drawSolidMaterials, DatFile df) {
 
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewport_Inverse();
         
-        if (data == null || dataLines == null || dataVertices == null) {
+        if (dataTriangles == null || dataLines == null || dataVertices == null) {
             return;
         }                
         
         if (drawSolidMaterials) {
+            
+            GL30.glBindVertexArray(vaoGlyphs);
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGlyphs);
+            lock.lock();
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataGlyphs, GL15.GL_STATIC_DRAW);
+            gs = glyphSize;
+            lock.unlock();
+
+            GL20.glEnableVertexAttribArray(0);
+            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+
+            GL20.glEnableVertexAttribArray(1);
+            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
+
+            GL20.glEnableVertexAttribArray(2);
+            GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+            
             GL30.glBindVertexArray(vao);
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
             lock.lock();
             // I can't use glBufferSubData() it creates a memory leak!!!
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
-            ss = solidSize;
-            to = transparentOffset;
-            ts = transparentSize;
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataTriangles, GL15.GL_STATIC_DRAW);
+            ss = solidTriangleSize;
+            to = transparentTriangleOffset;
+            ts = transparentTriangleSize;
             ls = lineSize;
+            tls = tempLineSize;
             lock.unlock();
 
             GL20.glEnableVertexAttribArray(0);
@@ -657,6 +729,32 @@ public class GL33ModelRenderer {
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboLines);
                 lock.lock();
                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataLines, GL15.GL_STATIC_DRAW);
+                ls = lineSize;
+                lock.unlock();
+
+                GL20.glEnableVertexAttribArray(0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
+
+                GL20.glEnableVertexAttribArray(2);
+                GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
+
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+                GL11.glLineWidth(View.lineWidthGL[0]);                    
+                
+                Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * c3d.getZoom(), 1f);
+                Matrix4f.transform(ivm, tr, tr);
+                stack.glPushMatrix();
+                stack.glTranslatef(tr.x, tr.y, tr.z);
+                GL11.glDrawArrays(GL11.GL_LINES, 0, ls);
+                stack.glPopMatrix();
+            }
+            
+            if (tls > 0) {
+                GL30.glBindVertexArray(vaoTempLines);
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboTempLines);
+                lock.lock();
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataTempLines, GL15.GL_STATIC_DRAW);
+                tls = tempLineSize;
                 lock.unlock();
 
                 GL20.glEnableVertexAttribArray(0);
@@ -715,6 +813,16 @@ public class GL33ModelRenderer {
                 GL11.glDrawArrays(GL11.GL_POINTS, 0, vs);
                 stack.glPopMatrix();
             }
+        }
+        
+        if (gs > 0) {
+            GL30.glBindVertexArray(vaoGlyphs);
+            stack.glPushMatrix();
+            GL11.glDisable(GL11.GL_CULL_FACE);
+            stack.glMultMatrixf(renderer.getRotationInverse());
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, gs);
+            GL11.glEnable(GL11.GL_CULL_FACE);
+            stack.glPopMatrix();
         }
         GL30.glBindVertexArray(0);
 
