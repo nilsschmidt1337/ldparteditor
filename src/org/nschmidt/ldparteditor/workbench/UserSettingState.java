@@ -384,7 +384,7 @@ public class UserSettingState implements Serializable {
     private boolean roundZ = false;
     
     
-    private int openGLVersion = 20;
+    private transient int openGLVersion = 20;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));

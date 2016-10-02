@@ -8093,11 +8093,14 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     private void setLineSize(SphereGL20 sp, SphereGL20 sp_inv, float line_width1000, float line_width, float line_width_gl, Button btn) {
-        GL20Primitives.SPHERE = sp;
-        GL20Primitives.SPHERE_INV = sp_inv;
+        final boolean useLegacyGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20;         
         View.lineWidth1000[0] = line_width1000;
         View.lineWidth[0] = line_width;
         View.lineWidthGL[0] = line_width_gl;
+        if (useLegacyGL) {
+            GL20Primitives.SPHERE = sp;
+            GL20Primitives.SPHERE_INV = sp_inv;
+        }
         compileAll();
         clickSingleBtn(btn);
     }

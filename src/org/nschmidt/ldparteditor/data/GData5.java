@@ -1094,7 +1094,9 @@ public final class GData5 extends GData {
 
         N.x = A.y - B.y;
         N.y = B.x - A.x;
-
-        return (zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null))) > -1e-20f;
+        N.z = 0f;
+        N.w = 1f;
+        float result = (zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null)));
+        return result > -1e-20f;
     }
 }
