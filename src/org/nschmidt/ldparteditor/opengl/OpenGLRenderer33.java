@@ -80,6 +80,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     private GLShader shaderProgram = new GLShader();
     private GLShader shaderProgram2 = new GLShader();
     private GLShader shaderProgram2D = new GLShader();
+    private GLShader shaderProgramCondline = new GLShader();
     private final GLMatrixStack stack = new GLMatrixStack();
     private final GL33Helper helper = new GL33Helper();
     private final GL33ModelRenderer modelRenderer = new GL33ModelRenderer(c3d);
@@ -123,9 +124,19 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     public void init() {
         // FIXME Needs implementation!
         
-        shaderProgram = new GLShader("renderer.vert", "renderer.frag"); //$NON-NLS-1$ //$NON-NLS-2$
-        shaderProgram2 = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
-        shaderProgram2D = new GLShader("2D.vert", "2D.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (shaderProgram.isDefault()) shaderProgram = new GLShader("renderer.vert", "renderer.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (shaderProgram2.isDefault()) shaderProgram2 = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (shaderProgram2D.isDefault()) shaderProgram2D = new GLShader("2D.vert", "2D.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (shaderProgramCondline.isDefault()) shaderProgramCondline = new GLShader("condline.vert", "condline.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+        
+        shaderProgramCondline.use();
+        GL20.glUniform1f(shaderProgramCondline.getUniformLocation("condline_shown_Colour_r"), View.condline_shown_Colour_r[0]); //$NON-NLS-1$
+        GL20.glUniform1f(shaderProgramCondline.getUniformLocation("condline_shown_Colour_g"), View.condline_shown_Colour_g[0]); //$NON-NLS-1$
+        GL20.glUniform1f(shaderProgramCondline.getUniformLocation("condline_shown_Colour_b"), View.condline_shown_Colour_b[0]); //$NON-NLS-1$
+        
+        GL20.glUniform1f(shaderProgramCondline.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
+        GL20.glUniform1f(shaderProgramCondline.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
+        
         stack.setShader(shaderProgram);
         shaderProgram.use();
         
@@ -254,7 +265,10 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 GL20.glUniformMatrix4fv(projection, false, projection_buf);
                 shaderProgram2.use();
                 projection = shaderProgram2.getUniformLocation("projection" ); //$NON-NLS-1$
-                GL20.glUniformMatrix4fv(projection, false, projection_buf);                
+                GL20.glUniformMatrix4fv(projection, false, projection_buf);
+                shaderProgramCondline.use();
+                projection = shaderProgramCondline.getUniformLocation("projection" ); //$NON-NLS-1$
+                GL20.glUniformMatrix4fv(projection, false, projection_buf);
                 shaderProgram.use();
                 projection = shaderProgram.getUniformLocation("projection" ); //$NON-NLS-1$
                 GL20.glUniformMatrix4fv(projection, false, projection_buf);
@@ -284,6 +298,11 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 shaderProgram2.use();
                 view = shaderProgram2.getUniformLocation("view" ); //$NON-NLS-1$
                 GL20.glUniformMatrix4fv(view, false, view_buf);
+                shaderProgramCondline.use();
+                view = shaderProgramCondline.getUniformLocation("view" ); //$NON-NLS-1$
+                GL20.glUniformMatrix4fv(view, false, view_buf);
+                view = shaderProgramCondline.getUniformLocation("zoom" ); //$NON-NLS-1$
+                GL20.glUniform1f(view, zoom);
                 shaderProgram.use();
                 view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
                 GL20.glUniformMatrix4fv(view, false, view_buf);
@@ -356,6 +375,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     shaderProgram2.use();
                     view = shaderProgram2.getUniformLocation("view" ); //$NON-NLS-1$
                     GL20.glUniformMatrix4fv(view, false, view_buf);
+                    shaderProgramCondline.use();
+                    view = shaderProgramCondline.getUniformLocation("view" ); //$NON-NLS-1$
+                    GL20.glUniformMatrix4fv(view, false, view_buf);
                     shaderProgram.use();
                     view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
                     GL20.glUniformMatrix4fv(view, false, view_buf);
@@ -378,7 +400,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 shaderProgram.lightsOff();
             }
 
-            modelRenderer.draw(stack, shaderProgram, true, c3d.getLockableDatFileReference());
+            modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, true, c3d.getLockableDatFileReference());
             
             if (raytraceMode) {
                 Rectangle b = c3d.getCanvas().getBounds();
@@ -411,8 +433,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 c3d.setDraggedPrimitive(null);
             }
             
-            // GL20.glUniformMatrix4fv(shaderProgram.getUniformLocation("view"), false, view_buf); //$NON-NLS-1$
-            modelRenderer.draw(stack, shaderProgram, false, c3d.getLockableDatFileReference());
+            modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, false, c3d.getLockableDatFileReference());
             
             stack.setShader(shaderProgram2);
             shaderProgram2.use();
@@ -2216,6 +2237,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         shaderProgram.dispose();
         shaderProgram2.dispose();
         shaderProgram2D.dispose();
+        shaderProgramCondline.dispose();
     }
     
     public Matrix4f getRotationInverse() {
