@@ -29,6 +29,7 @@ import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 
 /**
@@ -1349,6 +1350,18 @@ public class UserSettingState implements Serializable {
 
     public int getOpenGLVersion() {
         return openGLVersion;
+    }
+    
+    public String getOpenGLVersionString() {
+        switch (openGLVersion) {
+            case 20:
+                return "2.0"; //$NON-NLS-1$
+            case 33:
+                return "3.3"; //$NON-NLS-1$
+            default:
+                NLogger.error(getClass(), "getOpenGLVersionString(): No version string defined! OpenGL " + openGLVersion); //$NON-NLS-1$
+                return openGLVersion + " [n.def.!]"; //$NON-NLS-1$
+        }
     }
 
     public void setOpenGLVersion(int openGLVersion) {

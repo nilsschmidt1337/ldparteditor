@@ -204,11 +204,7 @@ public enum Project {
         setDefaultProject(true);
         setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
         createFileStructure(false);
-        if (NLogger.DEBUG) {
-            Editor3DWindow.getWindow().getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersion() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        } else {
-            Editor3DWindow.getWindow().getShell().setText(Version.getApplicationName() + " " + Version.getVersion()); //$NON-NLS-1$
-        }        
+        Editor3DWindow.getWindow().getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         Editor3DWindow.getWindow().getShell().update();
     }
 

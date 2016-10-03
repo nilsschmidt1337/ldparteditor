@@ -236,7 +236,7 @@ public enum NLogger {
         sb.append(Version.getVersion());
         sb.append(" @ SWT v"); //$NON-NLS-1$
         sb.append(SWT.getVersion());
-        sb.append(" OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersion()); //$NON-NLS-1$
+        sb.append(" OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersionString()); //$NON-NLS-1$
         sb.append(" OS "); //$NON-NLS-1$
         sb.append(SWT.getPlatform());
         sb.append("]"); //$NON-NLS-1$
