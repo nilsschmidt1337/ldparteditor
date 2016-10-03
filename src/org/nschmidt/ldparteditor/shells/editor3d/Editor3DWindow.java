@@ -375,11 +375,7 @@ public class Editor3DWindow extends Editor3DDesign {
         // Creating the window to get the shell
         this.create();
         final Shell sh = this.getShell();
-        if (NLogger.DEBUG) {
-            sh.setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersion() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        } else {
-            sh.setText(Version.getApplicationName() + " " + Version.getVersion()); //$NON-NLS-1$
-        }
+        sh.setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         sh.setMinimumSize(640, 480);
@@ -4177,11 +4173,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         }
                                         Project.setDefaultProject(true);
                                         Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
-                                        if (NLogger.DEBUG) {
-                                            getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersion() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                        } else {
-                                            getShell().setText(Version.getApplicationName() + " " + Version.getVersion()); //$NON-NLS-1$
-                                        }
+                                        getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                         getShell().update();
                                         treeItem_Project[0].setText(fileName);
                                         treeItem_Project[0].setData(Project.getProjectPath());
