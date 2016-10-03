@@ -17,11 +17,6 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -1081,7 +1076,11 @@ public final class GData5 extends GData {
         return lineBuilder.toString();
     }
 
-    public boolean isShown(Matrix4f viewport, HashMap<GData1, Matrix4f> CACHE_viewByProjection, float zoom, Vector4f A, Vector4f B, Vector4f C, Vector4f D, Vector4f N, Matrix4f M) {
+    public void isShown(Matrix4f viewport, ThreadsafeHashMap<GData1, Matrix4f> CACHE_viewByProjection, float zoom) {
+        
+        if (wasShown) {
+            return;
+        }
         
         final Matrix4f M2 = CACHE_viewByProjection.get(parent);
         if (M2 == null) {
@@ -1101,10 +1100,7 @@ public final class GData5 extends GData {
         N.y = B.x - A.x;
         N.z = 0f;
         N.w = 1f;
-        float result = (zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null)));
-        boolean shown = result > -1e-20f;
-        wasShown = wasShown || shown; 
-        return shown;
+        wasShown = zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null)) > -1e-20f; 
     }
     
     public boolean wasShown() {

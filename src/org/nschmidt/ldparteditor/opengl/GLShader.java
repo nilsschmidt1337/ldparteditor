@@ -34,12 +34,12 @@ public class GLShader {
     }
             
     public GLShader(final String vertexPath, final String fragmentPath) {
-        final int fragment = createAndCompile(vertexPath, GL20.GL_VERTEX_SHADER);
-        final int vertex = createAndCompile(fragmentPath, GL20.GL_FRAGMENT_SHADER);
+        final int vertex = createAndCompile(vertexPath, GL20.GL_VERTEX_SHADER);
+        final int fragment = createAndCompile(fragmentPath, GL20.GL_FRAGMENT_SHADER);
         
         program = GL20.glCreateProgram();
-        GL20.glAttachShader(program, vertex);
         GL20.glAttachShader(program, fragment);
+        GL20.glAttachShader(program, vertex);
         
         GL20.glLinkProgram(program);
         
@@ -50,10 +50,10 @@ public class GLShader {
             NLogger.error(GLShader.class, "Could not link shader: " + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$;
         }
         
-        GL20.glDetachShader(program, vertex);
         GL20.glDetachShader(program, fragment);
-        GL20.glDeleteShader(vertex);
+        GL20.glDetachShader(program, vertex);
         GL20.glDeleteShader(fragment);
+        GL20.glDeleteShader(vertex);
     }
     
     public void use() {
@@ -118,5 +118,9 @@ public class GLShader {
     
     public void setFactor(float f) {
         GL20.glUniform1f(getUniformLocation("factor"), f); //$NON-NLS-1$
+    }
+    
+    public boolean isDefault() {
+        return program == 0;
     }
 }
