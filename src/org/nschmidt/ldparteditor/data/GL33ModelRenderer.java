@@ -21,6 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,6 +39,7 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.GLShader;
@@ -80,6 +83,9 @@ public class GL33ModelRenderer {
     
     private int vaoVertices;
     private int vboVertices;
+    
+    private int vaoSelectionLines;
+    private int vboSelectionLines;
 
     private volatile Lock lock = new ReentrantLock();
     private static volatile Lock static_lock = new ReentrantLock();
@@ -88,11 +94,14 @@ public class GL33ModelRenderer {
 
     private static volatile CopyOnWriteArrayList<Integer> idList = new CopyOnWriteArrayList<>();
 
+    private volatile AtomicBoolean calculateCondlineControlPoints = new AtomicBoolean(true);
+    private volatile TreeSet<Vertex> pureCondlineControlPoints = new TreeSet<>();
     private volatile float[] dataTriangles = null;
     private volatile float[] dataLines = new float[]{0f};
     private volatile float[] dataTempLines = new float[]{0f};
     private volatile float[] dataGlyphs = new float[]{0f};
     private volatile float[] dataVertices = null;
+    private volatile float[] dataSelectionLines = new float[]{0f};
     private volatile int solidTriangleSize = 0;
     private volatile int transparentTriangleOffset = 0;
     private volatile int transparentTriangleSize = 0;
@@ -100,6 +109,7 @@ public class GL33ModelRenderer {
     private volatile int tempLineSize = 0;
     private volatile int glyphSize = 0;
     private volatile int vertexSize = 0;
+    private volatile int selectionSize = 0;
 
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
 
@@ -179,10 +189,27 @@ public class GL33ModelRenderer {
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
+        
+        vaoSelectionLines = GL30.glGenVertexArrays();
+        vboSelectionLines = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoSelectionLines);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboSelectionLines);
+
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
+
+        GL20.glEnableVertexAttribArray(2);
+        GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL30.glBindVertexArray(0);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
+                
+                float[] normal;
+                
                 final Vector4f Av = new Vector4f(0, 0, 0, 1f);
                 final Vector4f Bv = new Vector4f(0, 0, 0, 1f);
                 final Vector4f Cv = new Vector4f(0, 0, 0, 1f);
@@ -194,6 +221,8 @@ public class GL33ModelRenderer {
                 
                 final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
+                final HashMap<GData, float[]> normalMap = new HashMap<>();
+                final HashMap<GData, GData> transformMap = new HashMap<>();
                 final HashMap<GData, Boolean> condlineMap = new HashMap<>();
                 final HashMap<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<GData1, Matrix4f>(1000);
                 final HashMap<GData1, Matrix4f> matrixMap = new HashMap<>();
@@ -230,8 +259,38 @@ public class GL33ModelRenderer {
                             continue; // static_lock.unlock(); on finally
                         }
                         final VertexManager vm = df.getVertexManager();
+                        final Lock maniLock = vm.getManifestationLock();
                         // For the declared vertices, we have to use shallow copy
-                        final List<Vertex> vertices = vm.vertexLinkedToPositionInFile.threadSafeKeyList();
+                        maniLock.lock();
+                        final List<Vertex> vertices = new ArrayList<>(vm.vertexLinkedToPositionInFile.size());
+                        vertices.addAll(vm.vertexLinkedToPositionInFile.keySet());
+                        maniLock.unlock();
+                        
+                        if (calculateCondlineControlPoints.compareAndSet(true, false)) {
+                            CompletableFuture.runAsync( () -> {
+                                final TreeSet<Vertex> tmpPureCondlineControlPoints = new TreeSet<>();
+                                for (Vertex v : vertices) {
+                                    Set<VertexManifestation> manis = vm.vertexLinkedToPositionInFile.get(v);
+                                    if (manis != null) {
+                                        boolean pureControlPoint = true;
+                                        maniLock.lock();
+                                        for (VertexManifestation m : manis) {
+                                            if (m.getPosition() < 2 || m.getGdata().type() != 5) {
+                                                pureControlPoint = false;
+                                                break;
+                                            }
+                                        }
+                                        maniLock.unlock();
+                                        if (pureControlPoint) {
+                                            tmpPureCondlineControlPoints.add(v);
+                                        }
+                                    }
+                                }
+                                pureCondlineControlPoints = tmpPureCondlineControlPoints;
+                                calculateCondlineControlPoints.set(true);
+                            });
+                        }
+                        
                         // The links are sufficient
                         final Set<GData> selectedData = vm.selectedData;
                         final Set<Vertex> selectedVertices = vm.selectedVertices;
@@ -244,6 +303,8 @@ public class GL33ModelRenderer {
                         // Build the list of the data from the datfile
                         dataInOrder.clear();
                         vertexMap.clear();
+                        normalMap.clear();
+                        transformMap.clear();
                         condlineMap.clear();
                         CACHE_viewByProjection.clear();
                         
@@ -270,23 +331,29 @@ public class GL33ModelRenderer {
                         int local_tempLineSize = 0;
                         int local_verticesSize = vertices.size();
                         int local_glyphSize = 0;
+                        int local_selectionLineSize = 0;
                         
                         int triangleVertexCount = 0;
                         int lineVertexCount = 0;
                         int tempLineVertexCount = 0;
                         int glyphVertexCount = 0;
+                        int selectionLineVertexCount = 0;
 
                         // Calculate the buffer sizes (and condline visibility)
                         // Lines are never transparent!
                         for (Iterator<GDataAndWinding> it = dataInOrder.iterator(); it.hasNext();) {
                             final GDataAndWinding gw = (GDataAndWinding) it.next();
-
-                            final GData gd = gw.data;
-                            if (!gd.visible) {
+                            
+                            GData tgd = gw.data;
+                            if (!tgd.visible) {
                                 it.remove();
                                 continue;
-                            }
+                            }                            
                             
+                            // FIXME If anything is transformed, transform it here (transformMap)
+                            // and update the vertex positions (vertexMap) and normals for it (normalMap)
+                            
+                            final GData gd = tgd;                            
                             switch (gd.type()) {
                             case 2:
                                 // If "OpenGL lines" is ON, I have to use another buffer for it
@@ -299,8 +366,8 @@ public class GL33ModelRenderer {
                                     }
                                 } else {
                                     int[] distanceMeterSize = gd2.getDistanceMeterDataSize();
-                                    local_triangleSize += distanceMeterSize[0];
-                                    triangleVertexCount += distanceMeterSize[1];
+                                    local_glyphSize += distanceMeterSize[0];
+                                    glyphVertexCount += distanceMeterSize[1];
                                     local_tempLineSize += distanceMeterSize[2];
                                     tempLineVertexCount += distanceMeterSize[3];
                                 }
@@ -319,8 +386,8 @@ public class GL33ModelRenderer {
                                     }
                                 } else {
                                     int[] protractorSize = gd3.getProtractorDataSize();
-                                    local_triangleSize += protractorSize[0];
-                                    triangleVertexCount += protractorSize[1];
+                                    local_glyphSize += protractorSize[0];
+                                    glyphVertexCount += protractorSize[1];
                                     local_tempLineSize += protractorSize[2];
                                     tempLineVertexCount += protractorSize[3];
                                 }
@@ -340,8 +407,8 @@ public class GL33ModelRenderer {
                                 // Condlines are tricky, since I have to calculate their visibility
                                 // and save the result for the special condline mode
                                 GData5 gd5 = (GData5) gd;
-                                final boolean visible = gd5.isShown(viewport, CACHE_viewByProjection, zoom, Av, Bv, Cv, Dv, Nv, Mm);
-                                if (showAllLines || condlineMode || visible) {                                     
+                                final boolean visible = showAllLines || gd5.isShown(viewport, CACHE_viewByProjection, zoom, Av, Bv, Cv, Dv, Nv, Mm);
+                                if (showAllLines || condlineMode || visible) {
                                     condlineMap.put(gd, visible);
                                     // If "OpenGL lines" is ON, I have to use another buffer for it 
                                     if (openGL_lines) {                                        
@@ -391,7 +458,12 @@ public class GL33ModelRenderer {
                                     vertexData[i + 3] = r;
                                     vertexData[i + 4] = g;
                                     vertexData[i + 5] = b;
-                                    vertexData[i + 6] = hiddenVertices.contains(v) ? 0f : 7f;
+                                    
+                                    if (c3d.isShowingCondlineControlPoints()) {
+                                        vertexData[i + 6] = hiddenVertices.contains(v) ? 0f : 7f;
+                                    } else {
+                                        vertexData[i + 6] = hiddenVertices.contains(v) || pureCondlineControlPoints.contains(v) ? 0f : 7f;
+                                    }
                                 }
                                 i += 7;
                             }
@@ -399,14 +471,15 @@ public class GL33ModelRenderer {
                         
                         
                         Vertex[] v;
-                        int triangleIndex = 0;
+                        int triangleIndex = 0;                        
                         int lineIndex = 0;
                         int tempLineIndex = 0;
+                        int glyphIndex = 0;
 
                         // Iterate the objects and generate the buffer data
                         // TEXMAP and Real Backface Culling are quite "the same", but they need different vertex normals / materials
                         for (GDataAndWinding gw : dataInOrder) {                                
-                            final GData gd = gw.data;
+                            final GData gd = transformMap.getOrDefault(gw.data, gw.data);
                             switch (gd.type()) {
                             case 2:
                                 GData2 gd2 = (GData2) gd;
@@ -422,27 +495,36 @@ public class GL33ModelRenderer {
     
                                     }
                                 } else {
-                                    int[] inc = gd2.insertDistanceMeter(v, triangleData, tempLineData, triangleIndex, tempLineIndex);
-                                    triangleIndex += inc[0];
-                                    tempLineIndex += inc[1];
+                                    int[] inc = gd2.insertDistanceMeter(v, glyphData, tempLineData, glyphIndex, tempLineIndex);
+                                    tempLineIndex += inc[0];
+                                    glyphIndex += inc[1];
                                 }
                                 break;
                             case 3:
                                 GData3 gd3 = (GData3) gd;
                                 v = vertexMap.get(gd);
                                 if (gd3.isTriangle) {
-                                    switch (renderMode) {
-                                    case 0:
-                                    {                                        
+                                    float xn, yn, zn;
+                                    
+                                    if ((normal = normalMap.get(gd)) != null) {
+                                        xn = normal[0];
+                                        yn = normal[1];
+                                        zn = normal[2];
+                                    } else {
                                         Nv.x = gd3.xn;
                                         Nv.y = gd3.yn;
                                         Nv.z = gd3.zn;
                                         Nv.w = 1f;
                                         Matrix4f loc = matrixMap.get(gd3.parent);
                                         Matrix4f.transform(loc, Nv, Nv);
-                                        float xn = Nv.x - loc.m30; 
-                                        float yn = Nv.y - loc.m31;
-                                        float zn = Nv.z - loc.m32;
+                                        xn = Nv.x - loc.m30; 
+                                        yn = Nv.y - loc.m31;
+                                        zn = Nv.z - loc.m32;
+                                    }                                    
+                                    
+                                    switch (renderMode) {
+                                    case 0:
+                                    {
                                         pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
                                         pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
                                         pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
@@ -465,15 +547,6 @@ public class GL33ModelRenderer {
                                         final float r = MathHelper.randomFloat(gd3.ID, 0);
                                         final float g = MathHelper.randomFloat(gd3.ID, 1);
                                         final float b = MathHelper.randomFloat(gd3.ID, 2);
-                                        Nv.x = gd3.xn;
-                                        Nv.y = gd3.yn;
-                                        Nv.z = gd3.zn;
-                                        Nv.w = 1f;
-                                        Matrix4f loc = matrixMap.get(gd3.parent);
-                                        Matrix4f.transform(loc, Nv, Nv);
-                                        float xn = Nv.x - loc.m30; 
-                                        float yn = Nv.y - loc.m31;
-                                        float zn = Nv.z - loc.m32;
                                         pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
                                         pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
                                         pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
@@ -495,17 +568,21 @@ public class GL33ModelRenderer {
                                         break;
                                     }
                                 } else {
-                                    int[] inc = gd3.insertProtractor(v, triangleData, tempLineData, triangleIndex, tempLineIndex);
+                                    int[] inc = gd3.insertProtractor(v, glyphData, tempLineData, glyphIndex, tempLineIndex);
                                     triangleIndex += inc[0];
                                     tempLineIndex += inc[1];
                                 }
                                 break;
                             case 4:
-                                switch (renderMode) {
-                                case 0:
-                                {
-                                    v = vertexMap.get(gd);
-                                    GData4 gd4 = (GData4) gd;
+                                float xn, yn, zn;
+                                v = vertexMap.get(gd);
+                                GData4 gd4 = (GData4) gd;
+                                
+                                if ((normal = normalMap.get(gd)) != null) {
+                                    xn = normal[0];
+                                    yn = normal[1];
+                                    zn = normal[2];
+                                } else {
                                     Nv.x = gd4.xn;
                                     Nv.y = gd4.yn;
                                     Nv.z = gd4.zn;
@@ -515,9 +592,14 @@ public class GL33ModelRenderer {
                                     Nv.x = Nv.x - loc.m30; 
                                     Nv.y = Nv.y - loc.m31;
                                     Nv.z = Nv.z - loc.m32;
-                                    float xn = Nv.x;
-                                    float yn = Nv.y;
-                                    float zn = Nv.z;
+                                    xn = Nv.x;
+                                    yn = Nv.y;
+                                    zn = Nv.z;
+                                }
+                                
+                                switch (renderMode) {
+                                case 0:
+                                {
                                     pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
                                     pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
                                     pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
@@ -545,23 +627,9 @@ public class GL33ModelRenderer {
                                 }                                
                                 case 1:
                                 {
-                                    v = vertexMap.get(gd);
-                                    GData4 gd4 = (GData4) gd;
                                     final float r = MathHelper.randomFloat(gd4.ID, 0);
                                     final float g = MathHelper.randomFloat(gd4.ID, 1);
                                     final float b = MathHelper.randomFloat(gd4.ID, 2);
-                                    Nv.x = gd4.xn;
-                                    Nv.y = gd4.yn;
-                                    Nv.z = gd4.zn;
-                                    Nv.w = 1f;
-                                    Matrix4f loc = matrixMap.get(gd4.parent);
-                                    Matrix4f.transform(loc, Nv, Nv);
-                                    Nv.x = Nv.x - loc.m30; 
-                                    Nv.y = Nv.y - loc.m31;
-                                    Nv.z = Nv.z - loc.m32;
-                                    float xn = Nv.x;
-                                    float yn = Nv.y;
-                                    float zn = Nv.z;
                                     pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
                                     pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
                                     pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
@@ -619,7 +687,8 @@ public class GL33ModelRenderer {
                         lineSize = lineVertexCount;
                         dataLines = lineData;
                         tempLineSize = tempLineVertexCount;
-                        dataTempLines = tempLineData;        
+                        dataTempLines = tempLineData;
+                        selectionSize = 0;
                         lock.unlock();
 
                         if (NLogger.DEBUG) {
@@ -655,9 +724,11 @@ public class GL33ModelRenderer {
         GL15.glDeleteBuffers(vboTempLines);
         GL30.glDeleteVertexArrays(vaoGlyphs);
         GL15.glDeleteBuffers(vboGlyphs);
+        GL30.glDeleteVertexArrays(vaoSelectionLines);
+        GL15.glDeleteBuffers(vboSelectionLines);
     }
 
-    private int ts, ss, to, vs, ls, tls, gs;
+    private int ts, ss, to, vs, ls, tls, gs, sls;
     public void draw(GLMatrixStack stack, GLShader shaderProgram, boolean drawSolidMaterials, DatFile df) {
 
         Matrix4f vm = c3d.getViewport();
@@ -697,6 +768,7 @@ public class GL33ModelRenderer {
             ts = transparentTriangleSize;
             ls = lineSize;
             tls = tempLineSize;
+            sls = selectionSize;
             lock.unlock();
 
             GL20.glEnableVertexAttribArray(0);
@@ -722,7 +794,29 @@ public class GL33ModelRenderer {
         // Transparent and solid parts are at a different location in the buffer
         if (drawSolidMaterials) {
             
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, ss);            
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, ss);
+            
+            
+            if (sls > 0) {
+                GL30.glBindVertexArray(vaoSelectionLines);
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboSelectionLines);
+                lock.lock();
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataSelectionLines, GL15.GL_STATIC_DRAW);
+                sls = selectionSize;
+                lock.unlock();
+
+                GL20.glEnableVertexAttribArray(0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
+
+                GL20.glEnableVertexAttribArray(2);
+                GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
+
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+                
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glDrawArrays(GL11.GL_LINES, 0, sls);
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+            }
                         
             if (ls > 0) {
                 GL30.glBindVertexArray(vaoLines);
@@ -770,7 +864,7 @@ public class GL33ModelRenderer {
                 Matrix4f.transform(ivm, tr, tr);
                 stack.glPushMatrix();
                 stack.glTranslatef(tr.x, tr.y, tr.z);
-                GL11.glDrawArrays(GL11.GL_LINES, 0, ls);
+                GL11.glDrawArrays(GL11.GL_LINES, 0, tls);
                 stack.glPopMatrix();
             }
             
@@ -824,6 +918,7 @@ public class GL33ModelRenderer {
             GL11.glEnable(GL11.GL_CULL_FACE);
             stack.glPopMatrix();
         }
+        
         GL30.glBindVertexArray(0);
 
         // TODO Draw !LPE PNG VAOs here

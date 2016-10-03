@@ -35,6 +35,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -807,15 +808,20 @@ public final class GData2 extends GData {
     }
     
     public int[] getDistanceMeterDataSize() {
-        final int[] result = new int[]{0, 0, 0, 0};
+        int glyphSize = 0;
+        int glyphVertexCount = 0;
+        int tempLineSize = 14;
+        int tempLineVertexCount = 2;
         // FIXME Needs implementation!
-        return result;
+        return new int[]{glyphSize, glyphVertexCount, tempLineSize, tempLineVertexCount};
     }
 
     public int[] insertDistanceMeter(Vertex[] v, float[] triangleData, float[] lineData, int triangleIndex, int lineIndex) {
-        final int[] result = new int[]{0, 0};
+        GL33Helper.pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
+        GL33Helper.pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
+        GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
         // FIXME Needs implementation!
-        return result;
+        return new int[]{2, 0};
     }
 
     /*

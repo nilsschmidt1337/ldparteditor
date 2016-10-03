@@ -51,9 +51,11 @@ class VM02Add extends VM01SelectHelper {
             vertexTag = new GData0("0 !LPE VERTEX 0 0 0"); //$NON-NLS-1$
             vertex = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
         }
+        getManifestationLock().lock();
         if (!vertexLinkedToPositionInFile.containsKey(vertex))
             vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<VertexManifestation, Boolean>()));
         vertexLinkedToPositionInFile.get(vertex).add(new VertexManifestation(0, vertexTag));
+        getManifestationLock().unlock();
         lineLinkedToVertices.put(vertexTag, Collections.newSetFromMap(new ThreadsafeHashMap<VertexInfo, Boolean>()));
         lineLinkedToVertices.get(vertexTag).add(new VertexInfo(vertex, 0, vertexTag));
         declaredVertices.put(vertexTag, new Vertex[] { vertex });
@@ -66,9 +68,11 @@ class VM02Add extends VM01SelectHelper {
         }
         int vertexCount = vertexCountInSubfile.get(subfile);
         vertexCount--;
+        getManifestationLock().lock();
         if (!vertexLinkedToPositionInFile.containsKey(vertex))
             vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<VertexManifestation, Boolean>()));
         vertexLinkedToPositionInFile.get(vertex).add(new VertexManifestation(0, vertexTag));
+        getManifestationLock().unlock();
         if (!lineLinkedToVertices.containsKey(subfile))
             lineLinkedToVertices.put(subfile, Collections.newSetFromMap(new ThreadsafeHashMap<VertexInfo, Boolean>()));
         lineLinkedToVertices.get(subfile).add(new VertexInfo(vertex, vertexCount, vertexTag));
@@ -264,6 +268,7 @@ class VM02Add extends VM01SelectHelper {
             break;
         }
 
+        getManifestationLock().lock();
         if (subVertex) {
             if (!vertexCountInSubfile.containsKey(gdata)) {
                 vertexCountInSubfile.put((GData1) gdata, 0);
@@ -306,6 +311,7 @@ class VM02Add extends VM01SelectHelper {
                 lineLinkedToVertices.get(gdata).add(new VertexInfo(vArray[i], vdArray[i].getPosition(), gdata));
             }
         }
+        getManifestationLock().unlock();
     }
 
     public void addBackgroundPicture(String text, Vertex offset, BigDecimal angleA, BigDecimal angleB, BigDecimal angleC, Vertex scale, String texturePath) {

@@ -15,10 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers.math;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -98,7 +96,7 @@ public class ThreadsafeTreeMap<K, V> implements Map<K, V> {
         rl.unlock();
         return result;
     }
-
+    
     @Override
     public V get(Object key) {
         rl.lock();
@@ -121,17 +119,6 @@ public class ThreadsafeTreeMap<K, V> implements Map<K, V> {
         final Set<K> val = map.keySet();
         rl.unlock();
         return val;
-    }
-    
-    public List<K> threadSafeKeyList() {
-        rl.lock();
-        final Set<K> val = map.keySet();
-        final ArrayList<K> result = new ArrayList<>();
-        for (K key : val) {
-            result.add(key);
-        }
-        rl.unlock();
-        return result;
     }
 
     @Override

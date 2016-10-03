@@ -1706,9 +1706,12 @@ public final class GData3 extends GData {
     }
      
     public int[] getProtractorDataSize() {
-        final int[] result = new int[]{0, 0, 0, 0};
+        int glyphSize = 0;
+        int glyphVertexCount = 0;
+        int tempLineSize = 0;
+        int tempLineVertexCount = 0;
         // FIXME Needs implementation!
-        return result;
+        return new int[]{glyphSize, glyphVertexCount, tempLineSize, tempLineVertexCount};
     }
 
     public int[] insertProtractor(Vertex[] v, float[] triangleData, float[] lineData, int triangleIndex, int lineIndex) {

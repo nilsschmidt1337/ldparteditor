@@ -17,6 +17,11 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -1097,6 +1102,12 @@ public final class GData5 extends GData {
         N.z = 0f;
         N.w = 1f;
         float result = (zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null)));
-        return result > -1e-20f;
+        boolean shown = result > -1e-20f;
+        wasShown = wasShown || shown; 
+        return shown;
+    }
+    
+    public boolean wasShown() {
+        return wasShown;
     }
 }

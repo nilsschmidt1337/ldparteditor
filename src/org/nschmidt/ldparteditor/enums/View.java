@@ -52,9 +52,9 @@ import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
  */
 public enum View {
     INSTANCE;
-
+    
     /** Resolution of the viewport at 100% zoom */
-    public final static float PIXEL_PER_LDU = 1000.0f;
+    public static final float PIXEL_PER_LDU = 1000.0f;
     /** i18n reference string for the current unit */
     public static String unit = "LDU"; //$NON-NLS-1$
     /** The current unit factor */
