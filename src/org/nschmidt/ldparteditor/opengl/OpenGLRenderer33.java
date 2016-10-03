@@ -130,9 +130,6 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         if (shaderProgramCondline.isDefault()) shaderProgramCondline = new GLShader("condline.vert", "condline.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         
         shaderProgramCondline.use();
-        GL20.glUniform1f(shaderProgramCondline.getUniformLocation("condline_shown_Colour_r"), View.condline_shown_Colour_r[0]); //$NON-NLS-1$
-        GL20.glUniform1f(shaderProgramCondline.getUniformLocation("condline_shown_Colour_g"), View.condline_shown_Colour_g[0]); //$NON-NLS-1$
-        GL20.glUniform1f(shaderProgramCondline.getUniformLocation("condline_shown_Colour_b"), View.condline_shown_Colour_b[0]); //$NON-NLS-1$
         
         GL20.glUniform1f(shaderProgramCondline.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
         GL20.glUniform1f(shaderProgramCondline.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$

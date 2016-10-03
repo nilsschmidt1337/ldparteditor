@@ -7,11 +7,6 @@ layout(location = 3) in vec3 in_C;
 layout(location = 4) in vec3 in_D;
 layout(location = 5) in vec3 in_color;
 
-uniform float condline_shown_Colour_r;
-uniform float condline_shown_Colour_g;
-uniform float condline_shown_Colour_b;
-
-
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
@@ -41,7 +36,7 @@ void main()
 		}
 	} else {
 		if (zoom / dot(N, C - A) * dot(N, D - A) > -1.0e-20f) {
-			sceneColor = vec4(condline_shown_Colour_r, condline_shown_Colour_g, condline_shown_Colour_b, 1.0f);
+			sceneColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 		} else {
 			sceneColor = vec4(in_color.r, in_color.g, in_color.b, 1.0f);
 		}
