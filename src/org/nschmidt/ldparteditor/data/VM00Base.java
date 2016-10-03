@@ -149,7 +149,8 @@ class VM00Base {
     protected volatile AtomicInteger tid = new AtomicInteger(0);
     protected volatile AtomicInteger openThreads = new AtomicInteger(0);
     protected volatile Lock lock = new ReentrantLock();
-
+    private volatile Lock manifestationLock = new ReentrantLock();
+    
     protected VM00Base(DatFile linkedDatFile) {
         this.linkedDatFile = linkedDatFile;
     }
@@ -695,6 +696,7 @@ class VM00Base {
             return false;
         final Set<VertexInfo> lv = lineLinkedToVertices.get(gdata);
         Set<VertexManifestation> vd;
+        getManifestationLock().lock();
         switch (gdata.type()) {
         case 0: // Vertex Reference
             declaredVertices.remove(gdata);
@@ -846,6 +848,7 @@ class VM00Base {
         default:
             break;
         }
+        getManifestationLock().unlock();
         gdata.derefer();
         boolean tailRemoved = gdata.equals(linkedDatFile.getDrawChainTail());
         if (tailRemoved) linkedDatFile.setDrawChainTail(null);
@@ -1358,10 +1361,12 @@ class VM00Base {
         if (vertex == null) {
             vertex = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
         }
+        getManifestationLock().lock();
         if (!vertexLinkedToPositionInFile.containsKey(vertex))
             vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<VertexManifestation, Boolean>()));
         GData0 vertexTag = new GData0("0 !LPE VERTEX " + bigDecimalToString(vertex.X) + " " + bigDecimalToString(vertex.Y) + " " + bigDecimalToString(vertex.Z)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
         vertexLinkedToPositionInFile.get(vertex).add(new VertexManifestation(0, vertexTag));
+        getManifestationLock().unlock();
         lineLinkedToVertices.put(vertexTag, Collections.newSetFromMap(new ThreadsafeHashMap<VertexInfo, Boolean>()));
         lineLinkedToVertices.get(vertexTag).add(new VertexInfo(vertex, 0, vertexTag));
         declaredVertices.put(vertexTag, new Vertex[] { vertex });
@@ -1810,7 +1815,9 @@ class VM00Base {
     public final synchronized void clear() {
         final Editor3DWindow win = Editor3DWindow.getWindow();
         vertexCountInSubfile.clear();
+        getManifestationLock().lock();
         vertexLinkedToPositionInFile.clear();
+        getManifestationLock().unlock();
         vertexLinkedToSubfile.clear();
         lineLinkedToVertices.clear();
         declaredVertices.clear();
@@ -1832,5 +1839,9 @@ class VM00Base {
 
     public void skipSyncTimer() {
         skipTimer.set(true);
+    }
+
+    public Lock getManifestationLock() {
+        return manifestationLock;
     }
 }
