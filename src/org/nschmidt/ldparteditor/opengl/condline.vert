@@ -1,11 +1,10 @@
 #version 330 core
 
 layout(location = 0) in vec3 in_position;
-layout(location = 1) in vec3 in_A;
-layout(location = 2) in vec3 in_B;
-layout(location = 3) in vec3 in_C;
-layout(location = 4) in vec3 in_D;
-layout(location = 5) in vec3 in_color;
+layout(location = 1) in vec3 in_B;
+layout(location = 2) in vec3 in_C;
+layout(location = 3) in vec3 in_D;
+layout(location = 4) in vec3 in_color;
 
 uniform mat4 projection;
 uniform mat4 view;
@@ -21,7 +20,7 @@ void main()
 {
 	mat4 pvm = projection * view * model;
 	gl_Position = pvm * vec4(in_position, 1.0f);	
-	vec4 A = pvm * vec4(in_A, 1.0f);
+	vec4 A = gl_Position;
 	vec4 B = pvm * vec4(in_B, 1.0f);
 	vec4 C = pvm * vec4(in_C, 1.0f);
 	vec4 D = pvm * vec4(in_D, 1.0f);	

@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -214,17 +213,15 @@ public class GL33ModelRenderer {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
 
         GL20.glEnableVertexAttribArray(0);
-        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 18 * 4, 0);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 15 * 4, 0);
         GL20.glEnableVertexAttribArray(1);
-        GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 18 * 4, 3 * 4);
+        GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 15 * 4, 3 * 4);
         GL20.glEnableVertexAttribArray(2);
-        GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 18 * 4, 6 * 4);
+        GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 15 * 4, 6 * 4);
         GL20.glEnableVertexAttribArray(3);
-        GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 18 * 4, 9 * 4);
+        GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 15 * 4, 9 * 4);
         GL20.glEnableVertexAttribArray(4);
-        GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 18 * 4, 12 * 4);
-        GL20.glEnableVertexAttribArray(5);
-        GL20.glVertexAttribPointer(5, 3, GL11.GL_FLOAT, false, 18 * 4, 15 * 4);
+        GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 15 * 4, 12 * 4);
         
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
@@ -336,7 +333,6 @@ public class GL33ModelRenderer {
                             hasTEXMAP = special[1];                            
                         }
 
-                        final boolean openGL_lines = View.edge_threshold == 5e6f;
                         final int renderMode = c3d.getRenderMode();
                         final int lineMode = c3d.getLineMode();
                         final boolean showAllLines = lineMode == 1;
@@ -391,14 +387,10 @@ public class GL33ModelRenderer {
                                 if (hideLines) {                                    
                                     continue;
                                 }
-                                // If "OpenGL lines" is ON, I have to use another buffer for it
                                 final GData2 gd2 = (GData2) gd;
                                 if (gd2.isLine) {
-                                    if (openGL_lines) {
-                                        local_lineSize += 14;
-                                        lineVertexCount += 2;
-                                    } else {                                    
-                                    }
+                                    local_lineSize += 14;
+                                    lineVertexCount += 2;
                                 } else {
                                     int[] distanceMeterSize = gd2.getDistanceMeterDataSize();
                                     local_glyphSize += distanceMeterSize[0];
@@ -442,12 +434,8 @@ public class GL33ModelRenderer {
                                     continue;
                                 }
                                 // Condlines are tricky, since I have to calculate their visibility
-                                // If "OpenGL lines" is ON, I have to use another buffer for it 
-                                if (openGL_lines) {                                        
-                                    local_condlineSize += 36;
-                                    condlineVertexCount += 2;
-                                } else {
-                                }
+                                local_condlineSize += 30;
+                                condlineVertexCount += 2;
                                 continue;
                             default:
                                 continue;
@@ -523,22 +511,17 @@ public class GL33ModelRenderer {
                                 GData2 gd2 = (GData2) gd;
                                 v = vertexMap.get(gd);
                                 if (gd2.isLine) {
-                                    // If "OpenGL lines" is ON, I have to use another buffer for it                                    
-                                    if (openGL_lines) {
-                                        pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
-                                        pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);                                        
-                                        if (renderMode != 1) {
-                                            colourise7(0, 2, gd2.r, gd2.g, gd2.b, 7f, lineData, lineIndex);   
-                                        } else {
-                                            final float r = MathHelper.randomFloat(gd2.ID, 0);
-                                            final float g = MathHelper.randomFloat(gd2.ID, 1);
-                                            final float b = MathHelper.randomFloat(gd2.ID, 2);
-                                            colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
-                                        }
-                                        lineIndex += 2;
+                                    pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
+                                    pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);                                        
+                                    if (renderMode != 1) {
+                                        colourise7(0, 2, gd2.r, gd2.g, gd2.b, 7f, lineData, lineIndex);   
                                     } else {
-    
+                                        final float r = MathHelper.randomFloat(gd2.ID, 0);
+                                        final float g = MathHelper.randomFloat(gd2.ID, 1);
+                                        final float b = MathHelper.randomFloat(gd2.ID, 2);
+                                        colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
                                     }
+                                    lineIndex += 2;
                                 } else {
                                     int[] inc = gd2.insertDistanceMeter(v, glyphData, tempLineData, glyphIndex, tempLineIndex);
                                     tempLineIndex += inc[0];
@@ -710,37 +693,31 @@ public class GL33ModelRenderer {
                                 // If "OpenGL lines" is ON, I have to use another buffer for it
                                 GData5 gd5 = (GData5) gd;
                                 v = vertexMap.get(gd);
-                                if (openGL_lines) {
-                                    pointAt18(0, v[0].x, v[0].y, v[0].z, condlineData, condlineIndex);
-                                    pointAt18(1, v[1].x, v[1].y, v[1].z, condlineData, condlineIndex);                                    
-                                    controlPointAt18(0, 0, v[0].x, v[0].y, v[0].z, condlineData, condlineIndex);
-                                    controlPointAt18(0, 1, v[1].x, v[1].y, v[1].z, condlineData, condlineIndex);
-                                    controlPointAt18(0, 2, v[2].x, v[2].y, v[2].z, condlineData, condlineIndex);
-                                    controlPointAt18(0, 3, v[3].x, v[3].y, v[3].z, condlineData, condlineIndex);
-                                    controlPointAt18(1, 0, v[0].x, v[0].y, v[0].z, condlineData, condlineIndex);
-                                    controlPointAt18(1, 1, v[1].x, v[1].y, v[1].z, condlineData, condlineIndex);
-                                    controlPointAt18(1, 2, v[2].x, v[2].y, v[2].z, condlineData, condlineIndex);
-                                    controlPointAt18(1, 3, v[3].x, v[3].y, v[3].z, condlineData, condlineIndex);
-                                    if (condlineMode) {
-                                        if (gd5.wasShown()) {
-                                            colourise18(0, 2, View.condline_shown_Colour_r[0], View.condline_shown_Colour_g[0], View.condline_shown_Colour_b[0], condlineData, condlineIndex);
-                                        } else {
-                                            colourise18(0, 2, View.condline_hidden_Colour_r[0], View.condline_hidden_Colour_g[0], View.condline_hidden_Colour_b[0], condlineData, condlineIndex);
-                                        }
+                                pointAt15(0, v[0].x, v[0].y, v[0].z, condlineData, condlineIndex);
+                                pointAt15(1, v[1].x, v[1].y, v[1].z, condlineData, condlineIndex);                                    
+                                controlPointAt15(0, 0, v[1].x, v[1].y, v[1].z, condlineData, condlineIndex);
+                                controlPointAt15(0, 1, v[2].x, v[2].y, v[2].z, condlineData, condlineIndex);
+                                controlPointAt15(0, 2, v[3].x, v[3].y, v[3].z, condlineData, condlineIndex);
+                                controlPointAt15(1, 0, v[0].x, v[0].y, v[0].z, condlineData, condlineIndex);
+                                controlPointAt15(1, 1, v[2].x, v[2].y, v[2].z, condlineData, condlineIndex);
+                                controlPointAt15(1, 2, v[3].x, v[3].y, v[3].z, condlineData, condlineIndex);
+                                if (condlineMode) {
+                                    if (gd5.wasShown()) {
+                                        colourise15(0, 2, View.condline_shown_Colour_r[0], View.condline_shown_Colour_g[0], View.condline_shown_Colour_b[0], condlineData, condlineIndex);
                                     } else {
-                                        if (renderMode != 1) {
-                                            colourise18(0, 2, gd5.r, gd5.g, gd5.b, condlineData, condlineIndex);   
-                                        } else {
-                                            final float r = MathHelper.randomFloat(gd5.ID, 0);
-                                            final float g = MathHelper.randomFloat(gd5.ID, 1);
-                                            final float b = MathHelper.randomFloat(gd5.ID, 2);
-                                            colourise18(0, 2, r, g, b, condlineData, condlineIndex);
-                                        }                                         
-                                    } 
-                                    condlineIndex += 2;
+                                        colourise15(0, 2, View.condline_hidden_Colour_r[0], View.condline_hidden_Colour_g[0], View.condline_hidden_Colour_b[0], condlineData, condlineIndex);
+                                    }
                                 } else {
-
-                                }
+                                    if (renderMode != 1) {
+                                        colourise15(0, 2, gd5.r, gd5.g, gd5.b, condlineData, condlineIndex);   
+                                    } else {
+                                        final float r = MathHelper.randomFloat(gd5.ID, 0);
+                                        final float g = MathHelper.randomFloat(gd5.ID, 1);
+                                        final float b = MathHelper.randomFloat(gd5.ID, 2);
+                                        colourise15(0, 2, r, g, b, condlineData, condlineIndex);
+                                    }                                         
+                                } 
+                                condlineIndex += 2;
                                 continue;
                             default:
                                 continue;
@@ -1002,17 +979,15 @@ public class GL33ModelRenderer {
             lock.unlock();
 
             GL20.glEnableVertexAttribArray(0);
-            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 18 * 4, 0);
+            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 15 * 4, 0);
             GL20.glEnableVertexAttribArray(1);
-            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 18 * 4, 3 * 4);
+            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 15 * 4, 3 * 4);
             GL20.glEnableVertexAttribArray(2);
-            GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 18 * 4, 6 * 4);
+            GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 15 * 4, 6 * 4);
             GL20.glEnableVertexAttribArray(3);
-            GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 18 * 4, 9 * 4);
+            GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 15 * 4, 9 * 4);
             GL20.glEnableVertexAttribArray(4);
-            GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 18 * 4, 12 * 4);
-            GL20.glEnableVertexAttribArray(5);
-            GL20.glVertexAttribPointer(5, 3, GL11.GL_FLOAT, false, 18 * 4, 15 * 4);
+            GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 15 * 4, 12 * 4);            
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
             
@@ -1020,12 +995,8 @@ public class GL33ModelRenderer {
             Matrix4f.transform(ivm, tr, tr);
             stack.glPushMatrix();
             stack.glTranslatef(tr.x, tr.y, tr.z);
-            if (View.edge_threshold == 5e6f) {
-                GL11.glLineWidth(View.lineWidthGL[0]);
-                GL11.glDrawArrays(GL11.GL_LINES, 0, cls);
-            } else {
-                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, cls);
-            }
+            GL11.glLineWidth(View.lineWidthGL[0]);
+            GL11.glDrawArrays(GL11.GL_LINES, 0, cls);
             stack.glPopMatrix();
             mainShader.use();
             stack.setShader(mainShader);
@@ -1250,13 +1221,13 @@ public class GL33ModelRenderer {
         }
     }
     
-    private void colourise18(int offset, int times, float r, float g, float b,
+    private void colourise15(int offset, int times, float r, float g, float b,
             float[] vertexData, int i) {
         for (int j = 0; j < times; j++) {
-            int pos = (offset + i + j) * 18;
-            vertexData[pos + 15] = r;
-            vertexData[pos + 16] = g;
-            vertexData[pos + 17] = b;            
+            int pos = (offset + i + j) * 15;
+            vertexData[pos + 12] = r;
+            vertexData[pos + 13] = g;
+            vertexData[pos + 14] = b;            
         }
     }
 
@@ -1276,17 +1247,17 @@ public class GL33ModelRenderer {
         vertexData[pos + 2] = z;
     }
     
-    private void pointAt18(int offset, float x, float y, float z,
+    private void pointAt15(int offset, float x, float y, float z,
             float[] vertexData, int i) {
-        int pos = (offset + i) * 18;
+        int pos = (offset + i) * 15;
         vertexData[pos] = x;
         vertexData[pos + 1] = y;
         vertexData[pos + 2] = z;
     }
     
-    private void controlPointAt18(int offset, int offset2, float x, float y, float z,
+    private void controlPointAt15(int offset, int offset2, float x, float y, float z,
             float[] vertexData, int i) {
-        int pos = (offset + i) * 18 + 3 * offset2;
+        int pos = (offset + i) * 15 + 3 * offset2;
         vertexData[pos + 3] = x;
         vertexData[pos + 4] = y;
         vertexData[pos + 5] = z;
