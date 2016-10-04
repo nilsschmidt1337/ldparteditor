@@ -1783,7 +1783,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_lineSize4.setToolTipText(I18n.E3D_LineSize4);
             btn_lineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
         }
-        {
+        if (WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20) {
             Button btn_toggleLinesOpenGL = new Button(target, SWT.TOGGLE);
             this.btn_ToggleLinesOpenGL[0] = btn_toggleLinesOpenGL;
             btn_toggleLinesOpenGL.setToolTipText(I18n.E3D_LineOpenGL);
