@@ -142,7 +142,6 @@ import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialogInt;
 import org.nschmidt.ldparteditor.enums.GL20Primitives;
-import org.nschmidt.ldparteditor.enums.GL33Primitives;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MouseButton;
@@ -158,7 +157,6 @@ import org.nschmidt.ldparteditor.helpers.FileHelper;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.SphereGL20;
-import org.nschmidt.ldparteditor.helpers.SphereGL33;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
@@ -1512,35 +1510,35 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_lineSize0[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GL20Primitives.SPHERE0, GL20Primitives.SPHERE_INV0, GL33Primitives.SPHERE0, GL33Primitives.SPHERE_INV0, 0f, 0f, 0.01f, btn_lineSize0[0]);
+                setLineSize(GL20Primitives.SPHERE0, GL20Primitives.SPHERE_INV0, 0f, 0f, 0.01f, btn_lineSize0[0]);
                 regainFocus();
             }
         });
         btn_lineSize1[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GL20Primitives.SPHERE1, GL20Primitives.SPHERE_INV1, GL33Primitives.SPHERE1, GL33Primitives.SPHERE_INV1, 25f, .025f, .375f, btn_lineSize1[0]);
+                setLineSize(GL20Primitives.SPHERE1, GL20Primitives.SPHERE_INV1, 25f, .025f, .375f, btn_lineSize1[0]);
                 regainFocus();
             }
         });
         btn_lineSize2[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GL20Primitives.SPHERE2, GL20Primitives.SPHERE_INV2, GL33Primitives.SPHERE2, GL33Primitives.SPHERE_INV2, 50f, .050f, .75f, btn_lineSize2[0]);
+                setLineSize(GL20Primitives.SPHERE2, GL20Primitives.SPHERE_INV2, 50f, .050f, .75f, btn_lineSize2[0]);
                 regainFocus();
             }
         });
         btn_lineSize3[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GL20Primitives.SPHERE3, GL20Primitives.SPHERE_INV3, GL33Primitives.SPHERE3, GL33Primitives.SPHERE_INV3, 100f, .100f, 1.5f, btn_lineSize3[0]);
+                setLineSize(GL20Primitives.SPHERE3, GL20Primitives.SPHERE_INV3, 100f, .100f, 1.5f, btn_lineSize3[0]);
                 regainFocus();
             }
         });
         btn_lineSize4[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, GL33Primitives.SPHERE4, GL33Primitives.SPHERE_INV4, 200f, .200f, 3f, btn_lineSize4[0]);
+                setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, 200f, .200f, 3f, btn_lineSize4[0]);
                 regainFocus();
             }
         });
@@ -8086,7 +8084,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return recentItems;
     }
 
-    private void setLineSize(SphereGL20 sp, SphereGL20 sp_inv, SphereGL33 sp2, SphereGL33 sp2_inv, float line_width1000, float line_width, float line_width_gl, Button btn) {
+    private void setLineSize(SphereGL20 sp, SphereGL20 sp_inv, float line_width1000, float line_width, float line_width_gl, Button btn) {
         final boolean useLegacyGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20;         
         View.lineWidth1000[0] = line_width1000;
         View.lineWidth[0] = line_width;
@@ -8095,10 +8093,6 @@ public class Editor3DWindow extends Editor3DDesign {
             GL20Primitives.SPHERE = sp;
             GL20Primitives.SPHERE_INV = sp_inv;
             compileAll();
-        } else {
-            GL33Primitives.SPHERE = sp2;
-            GL33Primitives.SPHERE_INV = sp2_inv;
-            GData.CACHE_lineGeom.clear();
         }
         clickSingleBtn(btn);
     }

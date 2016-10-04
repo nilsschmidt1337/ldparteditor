@@ -71,7 +71,6 @@ public abstract class GData implements IGData {
 
     public static final HashMap<GData, ArrayList<ParsingResult>> CACHE_warningsAndErrors = new HashMap<GData, ArrayList<ParsingResult>>(1000); // Cleared
     public static final ThreadsafeHashMap<GData, ParsingResult> CACHE_duplicates = new ThreadsafeHashMap<GData, ParsingResult>(1000); // Cleared
-    public static final ThreadsafeHashMap<GData, float[]> CACHE_lineGeom = new ThreadsafeHashMap<GData, float[]>(1000); // Cleared
 
     public GData getNext() {
         return next;
@@ -83,7 +82,6 @@ public abstract class GData implements IGData {
 
     public void derefer() {
         CACHE_warningsAndErrors.remove(this);
-        CACHE_lineGeom.remove(this);
         next = null;
         before = null;
     }

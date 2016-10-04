@@ -16,7 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.enums;
 
 import org.nschmidt.ldparteditor.helpers.GearGL33;
-import org.nschmidt.ldparteditor.helpers.SphereGL33;
 
 /**
  * @author nils
@@ -24,21 +23,6 @@ import org.nschmidt.ldparteditor.helpers.SphereGL33;
  */
 public enum GL33Primitives {
     INSTANCE;
-    
-    public static final SphereGL33 SPHERE0 = new SphereGL33();
-    public static final SphereGL33 SPHERE_INV0 = new SphereGL33();
-    public static final SphereGL33 SPHERE1 = new SphereGL33(25f, 8);
-    public static final SphereGL33 SPHERE_INV1 = new SphereGL33(-25f, 8);
-    public static final SphereGL33 SPHERE2 = new SphereGL33(50f, 8);
-    public static final SphereGL33 SPHERE_INV2 = new SphereGL33(-50f, 8);
-    public static final SphereGL33 SPHERE3 = new SphereGL33(100f, 8);
-    public static final SphereGL33 SPHERE_INV3 = new SphereGL33(-100f, 8);
-    public static final SphereGL33 SPHERE4 = new SphereGL33(200f, 8);
-    public static final SphereGL33 SPHERE_INV4 = new SphereGL33(-200f, 8);
-    
     public static final GearGL33 GEAR_MENU = new GearGL33(.005f, 16, .005f, .0025f);
     public static final GearGL33 GEAR_MENU_INV = new GearGL33(-.005f, 16, -.005f, -.0025f);
-
-    public static SphereGL33 SPHERE = new SphereGL33(100f, 8);
-    public static SphereGL33 SPHERE_INV = new SphereGL33(-100f, 8);
 }
