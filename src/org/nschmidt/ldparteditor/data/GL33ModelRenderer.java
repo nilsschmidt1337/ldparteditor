@@ -398,6 +398,10 @@ public class GL33ModelRenderer {
                                 if (gd2.isLine) {
                                     local_lineSize += 14;
                                     lineVertexCount += 2;
+                                    if (selected) {
+                                        local_selectionLineSize += 14;
+                                        selectionLineVertexCount += 2;
+                                    }
                                 } else {
                                     int[] distanceMeterSize = gd2.getDistanceMeterDataSize();
                                     local_glyphSize += distanceMeterSize[0];
@@ -456,6 +460,7 @@ public class GL33ModelRenderer {
                         float[] lineData = new float[local_lineSize];
                         float[] condlineData = new float[local_condlineSize];
                         float[] tempLineData = new float[local_tempLineSize];
+                        float[] selectionLineData = new float[local_selectionLineSize];
                         
                         // for GL_POINTS
                         float[] vertexData = new float[local_verticesSize * 7];
@@ -500,6 +505,7 @@ public class GL33ModelRenderer {
                         int lineIndex = 0;
                         int condlineIndex = 0;
                         int tempLineIndex = 0;
+                        int selectionLineIndex = 0;
                         int glyphIndex = 0;
 
                         // Iterate the objects and generate the buffer data
@@ -510,6 +516,7 @@ public class GL33ModelRenderer {
                                 continue;
                             }
                             final boolean transformed = gd != gw.data;
+                            final boolean selected = selectionSet.contains(gd);
                             switch (gd.type()) {
                             case 2:
                                 if (hideLines) {
@@ -518,10 +525,16 @@ public class GL33ModelRenderer {
                                 GData2 gd2 = (GData2) gd;
                                 v = vertexMap.get(gd);
                                 if (gd2.isLine) {
+                                    if (selected) {
+                                        pointAt7(0, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
+                                        pointAt7(1, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
+                                        colourise7(0, 2, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
+                                        selectionLineIndex += 2;
+                                    }
                                     pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
-                                    pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);                                        
+                                    pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
                                     if (renderMode != 1) {
-                                        colourise7(0, 2, gd2.r, gd2.g, gd2.b, 7f, lineData, lineIndex);   
+                                        colourise7(0, 2, gd2.r, gd2.g, gd2.b, 7f, lineData, lineIndex);
                                     } else {
                                         final float r = MathHelper.randomFloat(gd2.ID, 0);
                                         final float g = MathHelper.randomFloat(gd2.ID, 1);
@@ -743,7 +756,8 @@ public class GL33ModelRenderer {
                         dataCondlines = condlineData;
                         tempLineSize = tempLineVertexCount;
                         dataTempLines = tempLineData;
-                        selectionSize = 0;
+                        selectionSize = selectionLineVertexCount;
+                        dataSelectionLines = selectionLineData;
                         lock.unlock();
 
                         if (NLogger.DEBUG) {
