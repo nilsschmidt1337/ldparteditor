@@ -447,6 +447,10 @@ public class GL33ModelRenderer {
                                 // Condlines are tricky, since I have to calculate their visibility
                                 local_condlineSize += 30;
                                 condlineVertexCount += 2;
+                                if (selected) {
+                                    local_selectionLineSize += 42;
+                                    selectionLineVertexCount += 6;
+                                }
                                 continue;
                             default:
                                 continue;
@@ -712,6 +716,18 @@ public class GL33ModelRenderer {
                                 }
                                 GData5 gd5 = (GData5) gd;
                                 v = vertexMap.get(gd);
+                                if (selected) {
+                                    pointAt7(0, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
+                                    pointAt7(1, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
+                                    pointAt7(2, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
+                                    pointAt7(3, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
+                                    pointAt7(4, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
+                                    pointAt7(5, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
+                                    colourise7(0, 2, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
+                                    colourise7(2, 2, View.condline_selected_Colour_r[0], View.condline_selected_Colour_g[0], View.condline_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
+                                    colourise7(4, 2, View.condline_selected_Colour_r[0] / 2f, View.condline_selected_Colour_g[0] / 2f, View.condline_selected_Colour_b[0] / 2f, 7f, selectionLineData, selectionLineIndex);
+                                    selectionLineIndex += 6;
+                                }
                                 pointAt15(0, v[0].x, v[0].y, v[0].z, condlineData, condlineIndex);
                                 pointAt15(1, v[1].x, v[1].y, v[1].z, condlineData, condlineIndex);                                    
                                 controlPointAt15(0, 0, v[1].x, v[1].y, v[1].z, condlineData, condlineIndex);
