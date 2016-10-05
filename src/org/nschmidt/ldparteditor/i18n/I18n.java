@@ -640,6 +640,8 @@ public final class I18n {
     public static final String EDGER_Condition3 = EDGER.getString(getProperty());
     public static final String EDGER_Condition4 = EDGER.getString(getProperty());
     public static final String EDGER_CondlineMaxAngle = EDGER.getString(getProperty());
+    public static final String EDGER_CondlineOnQuadOff = EDGER.getString(getProperty());
+    public static final String EDGER_CondlineOnQuadOn = EDGER.getString(getProperty());
     public static final String EDGER_EdgeMaxAngle = EDGER.getString(getProperty());
     public static final String EDGER_ExcludeUnmatched = EDGER.getString(getProperty());
     public static final String EDGER_FlatMaxAngle = EDGER.getString(getProperty());

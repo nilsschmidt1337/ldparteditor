@@ -28,6 +28,7 @@ public class Edger2Settings {
     private BigDecimal ac = new BigDecimal("60"); //$NON-NLS-1$
     private BigDecimal ae = new BigDecimal("60"); //$NON-NLS-1$
     private boolean extendedRange = false;
+    private boolean condlineOnQuads = false;
     private int scope = 0;
     private int unmatchedMode = 0;
     public BigDecimal getEqualDistance() {
@@ -71,5 +72,11 @@ public class Edger2Settings {
     }
     public void setUnmatchedMode(int unmatchedMode) {
         this.unmatchedMode = unmatchedMode;
+    }
+    public boolean isCondlineOnQuads() {
+        return condlineOnQuads;
+    }
+    public void setCondlineOnQuads(boolean condlineOnQuads) {
+        this.condlineOnQuads = condlineOnQuads;
     }
 }
