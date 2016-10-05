@@ -162,8 +162,19 @@ class VM03Adjacency extends VM02Add {
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
                 GData bg = b.getGdata();
-                if (a.getGdata().equals(bg) && (bg.type() == 3 || bg.type() == 4)) {
-                    result.add(bg);
+                if (a.getGdata().equals(bg)) {
+                    switch (bg.type()) {
+                    case 3:
+                        if (((GData3) bg).isTriangle) {
+                            result.add(bg);
+                        }
+                        continue;
+                    case 4:
+                        result.add(bg);
+                        continue;
+                    default:
+                        continue;
+                    }
                 }
             }
         }
@@ -182,8 +193,19 @@ class VM03Adjacency extends VM02Add {
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
                 GData bg = b.getGdata();
-                if (a.getGdata().equals(bg) && (bg.type() == 3 || bg.type() == 4)) {
-                    result.add(bg);
+                if (a.getGdata().equals(bg)) {
+                    switch (bg.type()) {
+                    case 3:
+                        if (((GData3) bg).isTriangle) {
+                            result.add(bg);
+                        }
+                        continue;
+                    case 4:
+                        result.add(bg);
+                        continue;
+                    default:
+                        continue;
+                    }
                 }
             }
         }

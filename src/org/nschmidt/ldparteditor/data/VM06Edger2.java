@@ -275,9 +275,12 @@ class VM06Edger2 extends VM05Distance {
             }
             Set<GData2> lins = lines.keySet();
             for (GData2 g2 : lins) {
+                if (!g2.isLine) {
+                    continue;
+                }    
                 Vertex[] verts = lines.get(g2);
                 AccurateEdge e1 = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
-                presentEdges.add(e1);
+                presentEdges.add(e1);            
             }
             Set<GData5> clins = condlines.keySet();
             for (GData5 g5 : clins) {
@@ -288,6 +291,9 @@ class VM06Edger2 extends VM05Distance {
 
             Set<GData3> tris = triangles.keySet();
             for (GData3 g3 : tris) {
+                if (!g3.isTriangle) {
+                    continue;
+                }
                 Vertex[] verts = triangles.get(g3);
                 {
                     AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
@@ -409,6 +415,9 @@ class VM06Edger2 extends VM05Distance {
             }
             Set<GData2> lins = lines.keySet();
             for (GData2 g2 : lins) {
+                if (!g2.isLine) {
+                    continue;
+                }
                 Vertex[] verts = lines.get(g2);
                 AccurateEdge e1 = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
                 presentEdges.add(e1);
@@ -422,7 +431,7 @@ class VM06Edger2 extends VM05Distance {
 
             Set<GData3> tris = triangles.keySet();
             for (GData3 g3 : tris) {
-                if (!lineLinkedToVertices.containsKey(g3)) continue;
+                if (!lineLinkedToVertices.containsKey(g3) || !g3.isTriangle) continue;
                 Vertex[] verts = triangles.get(g3);
                 {
                     AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
@@ -545,6 +554,9 @@ class VM06Edger2 extends VM05Distance {
             }
             Set<GData2> lins = lines.keySet();
             for (GData2 g2 : lins) {
+                if (!g2.isLine) {
+                    continue;
+                }
                 Vertex[] verts = lines.get(g2);
                 AccurateEdge e1 = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
                 presentEdges.add(e1);
@@ -558,7 +570,7 @@ class VM06Edger2 extends VM05Distance {
 
             Set<GData3> tris = triangles.keySet();
             for (GData3 g3 : tris) {
-                if (!lineLinkedToVertices.containsKey(g3)) continue;
+                if (!lineLinkedToVertices.containsKey(g3) || !g3.isTriangle) continue;
                 Vertex[] verts = triangles.get(g3);
                 {
                     AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
@@ -642,6 +654,7 @@ class VM06Edger2 extends VM05Distance {
                 HashSet<AccurateEdge> selectedEdges = new HashSet<AccurateEdge>();
 
                 for (GData3 g3 : selectedTriangles) {
+                    if (!g3.isTriangle) continue;
                     Vertex[] verts = triangles.get(g3);
                     {
                         AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
