@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -113,6 +114,9 @@ public class GL33ModelRenderer {
     private volatile int vertexSize = 0;
     private volatile int condlineSize = 0;
     private volatile int selectionSize = 0;
+    
+    private volatile boolean usesTEXMAP = false;
+    private volatile boolean usesPNG = false;
 
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
 
@@ -236,6 +240,7 @@ public class GL33ModelRenderer {
                 final Matrix4f Mm = new Matrix4f();                
                 Matrix4f.setIdentity(Mm);
                 
+                final Set<GData> selectionSet = new HashSet<GData>();
                 final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
                 final HashMap<GData, float[]> normalMap = new HashMap<>();
@@ -308,7 +313,7 @@ public class GL33ModelRenderer {
                         }
                         
                         // The links are sufficient
-                        final Set<GData> selectedData = vm.selectedData;
+                        final Set<GData> selectedData = vm.selectedData;                        
                         final Set<Vertex> selectedVertices = vm.selectedVertices;
                         final Set<Vertex> hiddenVertices = vm.hiddenVertices;
                         final ThreadsafeHashMap<GData2, Vertex[]> lines = vm.lines;
@@ -321,21 +326,18 @@ public class GL33ModelRenderer {
                         vertexMap.clear();
                         normalMap.clear();
                         transformMap.clear();
+                        selectionSet.clear();
                         CACHE_viewByProjection.clear();
-                        
-                        boolean hasPNG = false;
-                        boolean hasTEXMAP = false;
                         
                         {
                             boolean[] special = loadBFCinfo(dataInOrder, vertexMap, matrixMap, df,
                                     lines, triangles, quads, condlines);
-                            hasPNG = special[0];
-                            hasTEXMAP = special[1];                            
+                            usesPNG = special[0];
+                            usesTEXMAP = special[1];                            
                         }
 
                         final int renderMode = c3d.getRenderMode();
                         final int lineMode = c3d.getLineMode();
-                        final boolean showAllLines = lineMode == 1;
                         final boolean condlineMode = renderMode == 6;
                         final boolean hideCondlines = !condlineMode && lineMode > 1;
                         final boolean hideLines = !condlineMode && lineMode > 2;
@@ -378,10 +380,15 @@ public class GL33ModelRenderer {
                                 continue;
                             }
                             
+                            final boolean selected = selectedData.contains(tgd);
+                            
                             // FIXME If anything is transformed, transform it here (transformMap)
                             // and update the vertex positions (vertexMap) and normals for it (normalMap)
                             
-                            final GData gd = tgd;                            
+                            final GData gd = tgd;
+                            if (selected) {
+                                selectionSet.add(gd);
+                            }
                             switch (gd.type()) {
                             case 2:
                                 if (hideLines) {                                    
@@ -690,7 +697,6 @@ public class GL33ModelRenderer {
                                 if (hideCondlines) {
                                     continue;
                                 }
-                                // If "OpenGL lines" is ON, I have to use another buffer for it
                                 GData5 gd5 = (GData5) gd;
                                 v = vertexMap.get(gd);
                                 pointAt15(0, v[0].x, v[0].y, v[0].z, condlineData, condlineIndex);
@@ -791,6 +797,18 @@ public class GL33ModelRenderer {
         
         final float zoom = c3d.getZoom();
         
+        
+        // TODO Draw !LPE PNG VAOs here
+        if (usesPNG) {
+            
+        }
+
+        // TODO Draw !TEXMAP VAOs here
+        if (usesTEXMAP) {
+            
+        }
+
+        
         if (drawSolidMaterials) {
             
             GL30.glBindVertexArray(vaoGlyphs);
@@ -847,29 +865,7 @@ public class GL33ModelRenderer {
         // Transparent and solid parts are at a different location in the buffer
         if (drawSolidMaterials) {
             
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, ss);
-            
-            
-            if (sls > 0) {
-                GL30.glBindVertexArray(vaoSelectionLines);
-                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboSelectionLines);
-                lock.lock();
-                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataSelectionLines, GL15.GL_STATIC_DRAW);
-                sls = selectionSize;
-                lock.unlock();
-
-                GL20.glEnableVertexAttribArray(0);
-                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
-
-                GL20.glEnableVertexAttribArray(2);
-                GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
-
-                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-                
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
-                GL11.glDrawArrays(GL11.GL_LINES, 0, sls);
-                GL11.glEnable(GL11.GL_DEPTH_TEST);
-            }
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, ss);           
                         
             if (ls > 0) {
                 GL30.glBindVertexArray(vaoLines);
@@ -962,8 +958,7 @@ public class GL33ModelRenderer {
             }
         }
         
-        // TODO Draw condlines here
-        // if (cls > 0) {
+        // Draw condlines here
         if (drawSolidMaterials) {
             condlineShader.use();
             stack.setShader(condlineShader);
@@ -1000,25 +995,47 @@ public class GL33ModelRenderer {
             stack.glPopMatrix();
             mainShader.use();
             stack.setShader(mainShader);
-        }        
-        
-        // TODO Draw glyphs here 
-        if (gs > 0) {
-            GL30.glBindVertexArray(vaoGlyphs);
-            stack.glPushMatrix();
-            GL11.glDisable(GL11.GL_CULL_FACE);
-            stack.glMultMatrixf(renderer.getRotationInverse());
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, gs);
-            GL11.glEnable(GL11.GL_CULL_FACE);
-            stack.glPopMatrix();
+            
+        } else {
+            
+            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            
+            // Draw lines from the selection
+            if (sls > 0) {
+                GL30.glBindVertexArray(vaoSelectionLines);
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboSelectionLines);
+                lock.lock();
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataSelectionLines, GL15.GL_STATIC_DRAW);
+                sls = selectionSize;
+                lock.unlock();
+
+                GL20.glEnableVertexAttribArray(0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
+
+                GL20.glEnableVertexAttribArray(2);
+                GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
+
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+                
+                
+                GL11.glDrawArrays(GL11.GL_LINES, 0, sls);            
+            }
+            
+            // TODO Draw glyphs here 
+            if (gs > 0) {
+                GL30.glBindVertexArray(vaoGlyphs);
+                stack.glPushMatrix();
+                GL11.glDisable(GL11.GL_CULL_FACE);
+                stack.glMultMatrixf(renderer.getRotationInverse());
+                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, gs);
+                GL11.glEnable(GL11.GL_CULL_FACE);
+                stack.glPopMatrix();
+            }
+            
+            GL11.glEnable(GL11.GL_DEPTH_TEST);            
         }
         
         GL30.glBindVertexArray(0);
-
-        // TODO Draw !LPE PNG VAOs here
-
-
-        // TODO Draw !TEXMAP VAOs here
     }
     
     private boolean[] loadBFCinfo(
