@@ -322,7 +322,7 @@ class VM06Edger2 extends VM05Distance {
             }
             Set<GData4> qs = quads.keySet();
             for (GData4 g4 : qs) {
-                addLineQuadEdger2(g4, presentEdges, es, snap);
+                if (es.isCondlineOnQuads()) addLineQuadEdger2(g4, presentEdges, es, snap);
                 Vertex[] verts = quads.get(g4);
                 {
                     AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));

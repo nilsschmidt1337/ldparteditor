@@ -52,6 +52,7 @@ class EdgerDesign extends Dialog {
     final BigDecimalSpinner[] spn_ac = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_ae = new BigDecimalSpinner[1];
     final Combo[] cmb_b = new Combo[1];
+    final Combo[] cmb_c = new Combo[1];
     final Combo[] cmb_u = new Combo[1];
     final Combo[] cmb_scope = new Combo[1];
 
@@ -97,6 +98,13 @@ class EdgerDesign extends Dialog {
         cmb_b.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_b.setText(es.isExtendedRange() ? cmb_b.getItem(1) : cmb_b.getItem(0));
         cmb_b.select(es.isExtendedRange() ? 1 : 0);
+        
+        Combo cmb_c = new Combo(cmp_container, SWT.READ_ONLY);
+        this.cmb_c[0] = cmb_c;
+        cmb_c.setItems(new String[] { I18n.EDGER_CondlineOnQuadOff, I18n.EDGER_CondlineOnQuadOn });
+        cmb_c.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmb_c.setText(es.isCondlineOnQuads() ? cmb_c.getItem(1) : cmb_c.getItem(0));
+        cmb_c.select(es.isCondlineOnQuads() ? 1 : 0);
 
         Label lbl_af = new Label(cmp_container, SWT.NONE);
         lbl_af.setText(I18n.EDGER_FlatMaxAngle);

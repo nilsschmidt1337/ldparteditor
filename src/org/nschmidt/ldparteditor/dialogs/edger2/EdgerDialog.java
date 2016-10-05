@@ -80,6 +80,12 @@ public class EdgerDialog extends EdgerDesign {
                 es.setExtendedRange(cmb_b[0].getSelectionIndex() == 1);
             }
         });
+        cmb_c[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                es.setCondlineOnQuads(cmb_c[0].getSelectionIndex() == 1);
+            }
+        });
         cmb_u[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
