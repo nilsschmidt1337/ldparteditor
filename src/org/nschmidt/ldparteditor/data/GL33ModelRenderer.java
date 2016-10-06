@@ -119,6 +119,7 @@ public class GL33ModelRenderer {
 
     private volatile boolean usesTEXMAP = false;
     private volatile boolean usesPNG = false;
+    private volatile boolean usesCSG = false;
 
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
 
@@ -342,6 +343,7 @@ public class GL33ModelRenderer {
                                     lines, triangles, quads, condlines);
                             usesPNG = special[0];
                             usesTEXMAP = special[1];
+                            usesCSG = special[2];
                         }
 
                         final boolean smoothVertices = OpenGLRenderer.getSmoothing().get();
@@ -1051,6 +1053,12 @@ public class GL33ModelRenderer {
 
         }
 
+        // TODO Draw CSG VAOs here
+        if (usesCSG) {
+
+        }
+
+
 
         if (drawSolidMaterials) {
 
@@ -1291,9 +1299,10 @@ public class GL33ModelRenderer {
             final ThreadsafeHashMap<GData4, Vertex[]> quads,
             final ThreadsafeHashMap<GData5, Vertex[]> condlines) {
 
-        final boolean[] result = new boolean[2];
+        final boolean[] result = new boolean[3];
         boolean hasTEXMAP = false;
         boolean hasPNG = false;
+        boolean hasCSG = false;
         Stack<GData> stack = new Stack<>();
         Stack<Byte> tempWinding = new Stack<>();
         Stack<Boolean> tempInvertNext = new Stack<>();
@@ -1435,6 +1444,9 @@ public class GL33ModelRenderer {
                     dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
                 }
                 continue;
+            case 8:
+                hasCSG = true;
+                continue;
             case 9:
                 hasTEXMAP = true;
                 continue;
@@ -1447,6 +1459,7 @@ public class GL33ModelRenderer {
         }
         result[0] = hasPNG;
         result[1] = hasTEXMAP;
+        result[2] = hasCSG;
         return result;
     }
 
