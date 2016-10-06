@@ -150,7 +150,7 @@ class VM00Base {
     protected volatile AtomicInteger openThreads = new AtomicInteger(0);
     protected volatile Lock lock = new ReentrantLock();
     private volatile Lock manifestationLock = new ReentrantLock();
-    
+
     protected VM00Base(DatFile linkedDatFile) {
         this.linkedDatFile = linkedDatFile;
     }
@@ -193,7 +193,7 @@ class VM00Base {
         if (result.startsWith("0."))return result.substring(1); //$NON-NLS-1$
         return result;
     }
-    
+
     public boolean isPureCondlineControlPoint(Vertex v) {
         boolean pureControlPoint = false;
         Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
@@ -527,6 +527,7 @@ class VM00Base {
         }
     }
 
+    // FIXME Needs improvements!
     final void cleanupHiddenData() {
         if (hiddenData.size() > 0) {
             HashMap<String, ArrayList<GData>> dict = new HashMap<String, ArrayList<GData>>();
@@ -556,12 +557,13 @@ class VM00Base {
                 dict.get(key).add(g2);
             }
             HashSet<GData> dataToHide = new HashSet<GData>();
+            HashMap<GData, GData> cache = new HashMap<>();
             for (Iterator<GData> hi = hiddenData.iterator(); hi.hasNext();) {
                 final GData oldData = hi.next();
                 ArrayList<GData> g3 = dict.get(oldData.toString());
                 if (g3 != null) {
                     for (GData g : g3) {
-                        if (isSharingSameSubfile(g, oldData)) {
+                        if (isSharingSameSubfile(g, oldData, cache)) {
                             dataToHide.add(g);
                             g.visible = false;
                         }
@@ -573,9 +575,17 @@ class VM00Base {
         }
     }
 
-    private boolean isSharingSameSubfile(GData g1, GData g2) {
-        GData1 s1 = getSubfile(g1);
-        GData1 s2 = getSubfile(g2);
+    private boolean isSharingSameSubfile(GData g1, GData g2, HashMap<GData, GData> cache) {
+        GData s1 = cache.get(g1);
+        GData s2 = cache.get(g2);
+        if (s1 == null) {
+            s1 = getSubfile(g1);
+            cache.put(g1, s1);
+        }
+        if (s2 == null) {
+            s2 = getSubfile(g2);
+            cache.put(g2, s2);
+        }
         if (s1 == View.DUMMY_REFERENCE && s2 == View.DUMMY_REFERENCE) {
             return true;
         }
