@@ -375,6 +375,7 @@ public class GL33ModelRenderer {
                         int local_selectionLineSize = 0;
 
                         int triangleVertexCount = 0;
+                        int transparentTriangleVertexCount = 0;
                         int lineVertexCount = 0;
                         int condlineVertexCount = 0;
                         int tempLineVertexCount = 0;
@@ -483,7 +484,11 @@ public class GL33ModelRenderer {
                                     case 0:
                                     case 1:
                                         local_triangleSize += 60;
-                                        triangleVertexCount += 6;
+                                        if (gd3.a < 1f) {
+                                            transparentTriangleVertexCount += 6;
+                                        } else {
+                                            triangleVertexCount += 6;
+                                        }
                                         continue;
                                     default:
                                         continue;
@@ -497,6 +502,7 @@ public class GL33ModelRenderer {
                                 }
                                 continue;
                             case 4:
+                                final GData4 gd4 = (GData4) gd;
                                 if (drawWireframe || meshLines && (subfileMeshLines ^ mainFileContent.contains(gw.data))) {
                                     local_tempLineSize += 56;
                                     tempLineVertexCount += 8;
@@ -507,7 +513,11 @@ public class GL33ModelRenderer {
                                 case 0:
                                 case 1:
                                     local_triangleSize += 120;
-                                    triangleVertexCount += 12;
+                                    if (gd4.a < 1f) {
+                                        transparentTriangleVertexCount += 12;
+                                    } else {
+                                        triangleVertexCount += 12;
+                                    }
                                     continue;
                                 default:
                                     continue;
@@ -606,6 +616,7 @@ public class GL33ModelRenderer {
 
                         Vertex[] v;
                         int triangleIndex = 0;
+                        int transparentTriangleIndex = triangleVertexCount;
                         int lineIndex = 0;
                         int condlineIndex = 0;
                         int tempLineIndex = 0;
@@ -717,6 +728,11 @@ public class GL33ModelRenderer {
                                 GData3 gd3 = (GData3) gd;
                                 v = vertexMap.get(gd);
                                 if (gd3.isTriangle) {
+                                    final boolean transparent = gd3.a < 1f;
+                                    int tempIndex = triangleIndex;
+                                    if (transparent) {
+                                        tempIndex = transparentTriangleIndex;
+                                    }
                                     float xn, yn, zn;
 
                                     if ((normal = normalMap.get(gd)) != null) {
@@ -750,21 +766,25 @@ public class GL33ModelRenderer {
                                         continue;
                                     case 0:
                                     {
-                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
-                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
-                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
-                                        pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
-                                        pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
-                                        pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
-                                        colourise(0, 6, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, triangleIndex);
+                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                        pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                        pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                        pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                        colourise(0, 6, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
                                         if (gw.negativeDeterminant) {
-                                            normal(0, 3, xn, yn, zn, triangleData, triangleIndex);
-                                            normal(3, 3, -xn, -yn, -zn, triangleData, triangleIndex);
+                                            normal(0, 3, xn, yn, zn, triangleData, tempIndex);
+                                            normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
                                         } else {
-                                            normal(0, 3, -xn, -yn, -zn, triangleData, triangleIndex);
-                                            normal(3, 3, xn, yn, zn, triangleData, triangleIndex);
+                                            normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                            normal(3, 3, xn, yn, zn, triangleData, tempIndex);
                                         }
-                                        triangleIndex += 6;
+                                        if (transparent) {
+                                            transparentTriangleIndex += 6;
+                                        } else {
+                                            triangleIndex += 6;
+                                        }
                                         continue;
                                     }
                                     case 1:
@@ -772,21 +792,25 @@ public class GL33ModelRenderer {
                                         final float r = MathHelper.randomFloat(gd3.ID, 0);
                                         final float g = MathHelper.randomFloat(gd3.ID, 1);
                                         final float b = MathHelper.randomFloat(gd3.ID, 2);
-                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
-                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
-                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
-                                        pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
-                                        pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
-                                        pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
-                                        colourise(0, 6, r, g, b, gd3.a, triangleData, triangleIndex);
+                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                        pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                        pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                        pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                        colourise(0, 6, r, g, b, gd3.a, triangleData, tempIndex);
                                         if (gw.negativeDeterminant) {
-                                            normal(0, 3, xn, yn, zn, triangleData, triangleIndex);
-                                            normal(3, 3, -xn, -yn, -zn, triangleData, triangleIndex);
+                                            normal(0, 3, xn, yn, zn, triangleData, tempIndex);
+                                            normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
                                         } else {
-                                            normal(0, 3, -xn, -yn, -zn, triangleData, triangleIndex);
-                                            normal(3, 3, xn, yn, zn, triangleData, triangleIndex);
+                                            normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                            normal(3, 3, xn, yn, zn, triangleData, tempIndex);
                                         }
-                                        triangleIndex += 6;
+                                        if (transparent) {
+                                            transparentTriangleIndex += 6;
+                                        } else {
+                                            triangleIndex += 6;
+                                        }
                                         continue;
                                     }
                                     default:
@@ -802,6 +826,11 @@ public class GL33ModelRenderer {
                                 float xn, yn, zn;
                                 v = vertexMap.get(gd);
                                 GData4 gd4 = (GData4) gd;
+                                final boolean transparent = gd4.a < 1f;
+                                int tempIndex = triangleIndex;
+                                if (transparent) {
+                                    tempIndex = transparentTriangleIndex;
+                                }
 
                                 if ((normal = normalMap.get(gd)) != null) {
                                     xn = normal[0];
@@ -840,29 +869,33 @@ public class GL33ModelRenderer {
                                     continue;
                                 case 0:
                                 {
-                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
-                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
-                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
-                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
-                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, triangleIndex);
-                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
+                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
 
-                                    pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
-                                    pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, triangleIndex);
-                                    pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
-                                    pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
-                                    pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
-                                    pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
+                                    pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                    pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
 
-                                    colourise(0, 12, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, triangleIndex);
+                                    colourise(0, 12, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
                                     if (gw.negativeDeterminant) {
-                                        normal(0, 6, xn, yn, zn, triangleData, triangleIndex);
-                                        normal(6, 6, -xn, -yn, -zn, triangleData, triangleIndex);
+                                        normal(0, 6, xn, yn, zn, triangleData, tempIndex);
+                                        normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
                                     } else {
-                                        normal(0, 6, -xn, -yn, -zn, triangleData, triangleIndex);
-                                        normal(6, 6, xn, yn, zn, triangleData, triangleIndex);
+                                        normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                        normal(6, 6, xn, yn, zn, triangleData, tempIndex);
                                     }
-                                    triangleIndex += 12;
+                                    if (transparent) {
+                                        transparentTriangleIndex += 12;
+                                    } else {
+                                        triangleIndex += 12;
+                                    }
                                     continue;
                                 }
                                 case 1:
@@ -870,29 +903,33 @@ public class GL33ModelRenderer {
                                     final float r = MathHelper.randomFloat(gd4.ID, 0);
                                     final float g = MathHelper.randomFloat(gd4.ID, 1);
                                     final float b = MathHelper.randomFloat(gd4.ID, 2);
-                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
-                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
-                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
-                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
-                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, triangleIndex);
-                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
+                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
 
-                                    pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
-                                    pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, triangleIndex);
-                                    pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
-                                    pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
-                                    pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
-                                    pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
+                                    pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                    pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
 
-                                    colourise(0, 12, r, g, b, gd4.a, triangleData, triangleIndex);
+                                    colourise(0, 12, r, g, b, gd4.a, triangleData, tempIndex);
                                     if (gw.negativeDeterminant) {
-                                        normal(0, 6, xn, yn, zn, triangleData, triangleIndex);
-                                        normal(6, 6, -xn, -yn, -zn, triangleData, triangleIndex);
+                                        normal(0, 6, xn, yn, zn, triangleData, tempIndex);
+                                        normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
                                     } else {
-                                        normal(0, 6, -xn, -yn, -zn, triangleData, triangleIndex);
-                                        normal(6, 6, xn, yn, zn, triangleData, triangleIndex);
+                                        normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                        normal(6, 6, xn, yn, zn, triangleData, tempIndex);
                                     }
-                                    triangleIndex += 12;
+                                    if (transparent) {
+                                        transparentTriangleIndex += 12;
+                                    } else {
+                                        triangleIndex += 12;
+                                    }
                                     continue;
                                 }
                                 default:
@@ -938,8 +975,8 @@ public class GL33ModelRenderer {
                         lock.lock();
                         dataTriangles = triangleData;
                         solidTriangleSize = triangleVertexCount;
-                        transparentTriangleSize = 0;
-                        transparentTriangleOffset = 0;
+                        transparentTriangleSize = transparentTriangleVertexCount;
+                        transparentTriangleOffset = triangleVertexCount;
                         vertexSize = local_verticesSize;
                         dataVertices = vertexData;
                         lineSize = lineVertexCount;
@@ -1002,7 +1039,7 @@ public class GL33ModelRenderer {
         }
 
         final float zoom = c3d.getZoom();
-
+        final boolean drawLines = View.lineWidthGL[0] > 0.01f;
 
         // TODO Draw !LPE PNG VAOs here
         if (usesPNG) {
@@ -1073,7 +1110,7 @@ public class GL33ModelRenderer {
 
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, ss);
 
-            if (ls > 0 && View.lineWidthGL[0] > 0.01f) {
+            if (ls > 0 && drawLines) {
                 GL30.glBindVertexArray(vaoLines);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboLines);
                 lock.lock();
@@ -1166,42 +1203,43 @@ public class GL33ModelRenderer {
 
         // Draw condlines here
         if (drawSolidMaterials) {
-            condlineShader.use();
-            stack.setShader(condlineShader);
+            if (drawLines) {
+                condlineShader.use();
+                stack.setShader(condlineShader);
 
-            GL20.glUniform1f(condlineShader.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
-            GL20.glUniform1f(condlineShader.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
+                GL20.glUniform1f(condlineShader.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
+                GL20.glUniform1f(condlineShader.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
 
-            GL30.glBindVertexArray(vaoCondlines);
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
-            lock.lock();
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataCondlines, GL15.GL_STATIC_DRAW);
-            cls = condlineSize;
-            lock.unlock();
+                GL30.glBindVertexArray(vaoCondlines);
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
+                lock.lock();
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataCondlines, GL15.GL_STATIC_DRAW);
+                cls = condlineSize;
+                lock.unlock();
 
-            GL20.glEnableVertexAttribArray(0);
-            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 15 * 4, 0);
-            GL20.glEnableVertexAttribArray(1);
-            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 15 * 4, 3 * 4);
-            GL20.glEnableVertexAttribArray(2);
-            GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 15 * 4, 6 * 4);
-            GL20.glEnableVertexAttribArray(3);
-            GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 15 * 4, 9 * 4);
-            GL20.glEnableVertexAttribArray(4);
-            GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 15 * 4, 12 * 4);
+                GL20.glEnableVertexAttribArray(0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 15 * 4, 0);
+                GL20.glEnableVertexAttribArray(1);
+                GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 15 * 4, 3 * 4);
+                GL20.glEnableVertexAttribArray(2);
+                GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 15 * 4, 6 * 4);
+                GL20.glEnableVertexAttribArray(3);
+                GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 15 * 4, 9 * 4);
+                GL20.glEnableVertexAttribArray(4);
+                GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 15 * 4, 12 * 4);
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
-            Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
-            Matrix4f.transform(ivm, tr, tr);
-            stack.glPushMatrix();
-            stack.glTranslatef(tr.x, tr.y, tr.z);
-            GL11.glLineWidth(View.lineWidthGL[0]);
-            GL11.glDrawArrays(GL11.GL_LINES, 0, cls);
-            stack.glPopMatrix();
-            mainShader.use();
-            stack.setShader(mainShader);
-
+                Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
+                Matrix4f.transform(ivm, tr, tr);
+                stack.glPushMatrix();
+                stack.glTranslatef(tr.x, tr.y, tr.z);
+                GL11.glLineWidth(View.lineWidthGL[0]);
+                GL11.glDrawArrays(GL11.GL_LINES, 0, cls);
+                stack.glPopMatrix();
+                mainShader.use();
+                stack.setShader(mainShader);
+            }
         } else {
 
             GL11.glDisable(GL11.GL_DEPTH_TEST);
