@@ -72,8 +72,19 @@ class VM11HideShow extends VM10Selector {
     }
 
     public void showAll() {
-        cleanupHiddenData();
-        for (GData ghost : hiddenData) {
+        for (GData1 ghost : vertexCountInSubfile.keySet()) {
+            ghost.show();
+        }
+        for (GData2 ghost : lines.keySet()) {
+            ghost.show();
+        }
+        for (GData3 ghost : triangles.keySet()) {
+            ghost.show();
+        }
+        for (GData4 ghost : quads.keySet()) {
+            ghost.show();
+        }
+        for (GData5 ghost : condlines.keySet()) {
             ghost.show();
         }
         hiddenVertices.clear();
@@ -105,7 +116,7 @@ class VM11HideShow extends VM10Selector {
         while ((g = g.getNext()) != null) {
             final int type = g.type();
             if (type > 0 && type < 6) {
-                st.add(g.visible);    
+                st.add(g.visible);
                 if (type == 1) {
                     backup(((GData1) g).myGData, s, key + "|" + lineNumber); //$NON-NLS-1$
                 }
@@ -130,7 +141,7 @@ class VM11HideShow extends VM10Selector {
         while ((g = g.getNext()) != null) {
             final int type = g.type();
             if (type > 0 && type < 6) {
-                st.add(selectedData.contains(g));    
+                st.add(selectedData.contains(g));
                 if (type == 1) {
                     backup2(((GData1) g).myGData, s, key + "|" + lineNumber); //$NON-NLS-1$
                 }
