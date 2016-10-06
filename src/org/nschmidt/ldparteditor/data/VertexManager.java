@@ -120,8 +120,6 @@ public final class VertexManager extends VM99Clipboard {
                         }
                     }
                 }
-                // tmpHiddenVertices.clear();
-                // tmpHiddenVertices.addAll(tmpHiddenVertices2);
                 for (Iterator<Vertex> iterator = tmpHiddenVertices.iterator(); iterator
                         .hasNext();) {
                     Vertex vertex = iterator.next();
@@ -844,7 +842,7 @@ public final class VertexManager extends VM99Clipboard {
             }
         }
     }
-    
+
     public synchronized void adjustRotationCenter(Composite3D c3d, Event event) {
         Point cSize = c3d.getSize();
         PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
