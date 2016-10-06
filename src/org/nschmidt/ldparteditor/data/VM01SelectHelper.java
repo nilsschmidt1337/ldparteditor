@@ -78,8 +78,8 @@ public class VM01SelectHelper extends VM01Select {
             if (Math.abs(selectionHeight.x) < 0.001f && Math.abs(selectionHeight.y) < 0.001f && Math.abs(selectionHeight.z) < 0.001f)
                 needRayTest2 = true;
             needRayTest = needRayTest2;
-        }        
-        
+        }
+
         if (needRayTest) {
 
             Vector4f zAxis4f = new Vector4f(0, 0, c3d.hasNegDeterminant() ^ c3d.isWarpedSelection() ? -1f : 1f, 1f);
@@ -436,7 +436,7 @@ public class VM01SelectHelper extends VM01Select {
     private synchronized void selectVertices2(final Composite3D c3d) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
         final boolean noCondlineVerts = !c3d.isShowingCondlineControlPoints();
-        
+
         final Vector4f selectionStart = new Vector4f(c3d.getSelectionStart());
         final Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
         final Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
@@ -858,10 +858,10 @@ public class VM01SelectHelper extends VM01Select {
         Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         selectedVerticesTemp.addAll(selectedVertices);
         selectedVertices.clear();
-        selectVertices(c3d, false);
-        boolean allVertsFromLine = false;
         Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
         Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
+        selectVertices(c3d, false);
+        boolean allVertsFromLine = false;
         boolean needRayTest = false;
         if (Math.abs(selectionWidth.x) < 0.001f && Math.abs(selectionWidth.y) < 0.001f && Math.abs(selectionWidth.z) < 0.001f)
             needRayTest = true;
@@ -973,7 +973,7 @@ public class VM01SelectHelper extends VM01Select {
 
                         if (solution[1] >= 0f && solution[1] <= 1f) {
                             float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
-                            if (distanceSquared < discr) {                                
+                            if (distanceSquared < discr) {
                                 if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
                                     continue;
                                 // Vertex[] v = lines.get(line);
@@ -1089,16 +1089,16 @@ public class VM01SelectHelper extends VM01Select {
     /**
      * ONLY FOR SELECT SUBFILES
      * @param c3d
+     * @param selectionHeight
+     * @param selectionWidth
      */
-    private synchronized void selectLines2(Composite3D c3d) {
+    private synchronized void selectLines2(Composite3D c3d, Vector4f selectionWidth, Vector4f selectionHeight) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
         Set<Vertex> tmpVerts = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         tmpVerts.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
         selectVertices2(c3d);
         boolean allVertsFromLine = false;
-        Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
-        Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
         boolean needRayTest = false;
         if (Math.abs(selectionWidth.x) < 0.001f && Math.abs(selectionWidth.y) < 0.001f && Math.abs(selectionWidth.z) < 0.001f)
             needRayTest = true;
@@ -1412,13 +1412,13 @@ public class VM01SelectHelper extends VM01Select {
      * ONLY FOR SELECT SUBFILES
      * @param c3d
      * @param event
+     * @param selectionHeight
+     * @param selectionWidth
      */
-    private synchronized void selectFaces2(Composite3D c3d, Event event) {
+    private synchronized void selectFaces2(Composite3D c3d, Event event, Vector4f selectionWidth, Vector4f selectionHeight) {
         Set<Vertex> selVert4sTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
         selVert4sTemp.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
-        Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
-        Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
         selectVertices2(c3d);
         boolean allVertsFromLine = false;
         boolean needRayTest = false;
@@ -1639,9 +1639,12 @@ public class VM01SelectHelper extends VM01Select {
 
         backupSelection();
         clearSelection();
-
-        selectFaces2(c3d, event);
-        selectLines2(c3d);
+        {
+            final Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
+            final Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
+            selectFaces2(c3d, event, selectionWidth, selectionHeight);
+            selectLines2(c3d, selectionWidth, selectionHeight);
+        }
 
         // Determine which subfiles were selected
 
