@@ -103,7 +103,7 @@ void main()
 	
 	int count = 4;
 	
-	if (sceneColor.a > 5.0f) {
+	if (sceneColor.a > 5.0f || lightswitch < 1.0f) {
 		count = 0;
 	}
 	
@@ -117,15 +117,7 @@ void main()
 		lights[i].linearAttenuation * dist +
 		lights[i].quadraticAttenuation * dist * dist );
 		lightDir = normalize(lights[i].position.xyz - position);
-				
-		if (lightswitch > 0.0)
-		{
-			/*if (normalSwitch == 0.0) lightDir = vec3(-lightDir.x, -lightDir.y, -lightDir.z);*/
-		} else {
-			lightDir = normal;
-			attenFactor = .6;
-		}
-
+		
 		lightAmbientDiffuse += lights[i].diffuse * frontMaterial.diffuse * max(dot(normal, lightDir), 0.0) * attenFactor;
 		
 		// specular

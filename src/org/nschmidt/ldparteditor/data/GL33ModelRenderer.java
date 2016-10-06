@@ -243,6 +243,7 @@ public class GL33ModelRenderer {
                 Matrix4f.setIdentity(Mm);
 
                 final Set<GData> selectionSet = new HashSet<GData>();
+                final Set<GData> hiddenSet = new HashSet<GData>();
                 final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
                 final HashMap<GData, float[]> normalMap = new HashMap<>();
@@ -283,6 +284,7 @@ public class GL33ModelRenderer {
                         }
                         final VertexManager vm = df.getVertexManager();
                         final Lock maniLock = vm.getManifestationLock();
+                        final Set<GData> mainFileContent = vm.lineLinkedToVertices.keySet();
                         // For the declared vertices, we have to use shallow copy
                         maniLock.lock();
                         final List<Vertex> vertices = new ArrayList<>(vm.vertexLinkedToPositionInFile.size());
@@ -332,6 +334,7 @@ public class GL33ModelRenderer {
                         normalMap.clear();
                         transformMap.clear();
                         selectionSet.clear();
+                        hiddenSet.clear();
                         CACHE_viewByProjection.clear();
 
                         {
@@ -353,6 +356,9 @@ public class GL33ModelRenderer {
                         final Object[] smoothObj = smoothVertices ? vm.getSmoothedVertices(tmpSelectedVertices) : null;
                         final int renderMode = c3d.getRenderMode();
                         final int lineMode = c3d.getLineMode();
+                        final boolean meshLines = c3d.isMeshLines();
+                        final boolean subfileMeshLines = c3d.isSubMeshLines();
+                        final boolean drawWireframe = renderMode == -1;
                         final boolean condlineMode = renderMode == 6;
                         final boolean hideCondlines = !condlineMode && lineMode > 1;
                         final boolean hideLines = !condlineMode && lineMode > 2;
@@ -443,6 +449,7 @@ public class GL33ModelRenderer {
 
 
                             if (!gd.visible) {
+                                hiddenSet.add(gd);
                                 continue;
                             }
 
@@ -466,7 +473,13 @@ public class GL33ModelRenderer {
                             case 3:
                                 final GData3 gd3 = (GData3) gd;
                                 if (gd3.isTriangle) {
+                                    if (drawWireframe || meshLines && (subfileMeshLines ^ mainFileContent.contains(gw.data))) {
+                                        local_tempLineSize += 42;
+                                        tempLineVertexCount += 6;
+                                    }
                                     switch (renderMode) {
+                                    case -1:
+                                        continue;
                                     case 0:
                                     case 1:
                                         local_triangleSize += 60;
@@ -484,7 +497,13 @@ public class GL33ModelRenderer {
                                 }
                                 continue;
                             case 4:
+                                if (drawWireframe || meshLines && (subfileMeshLines ^ mainFileContent.contains(gw.data))) {
+                                    local_tempLineSize += 56;
+                                    tempLineVertexCount += 8;
+                                }
                                 switch (renderMode) {
+                                case -1:
+                                    continue;
                                 case 0:
                                 case 1:
                                     local_triangleSize += 120;
@@ -666,7 +685,7 @@ public class GL33ModelRenderer {
                                 }
                             }
 
-                            if (!gd.visible) {
+                            if (hiddenSet.contains(gd)) {
                                 continue;
                             }
                             switch (type) {
@@ -716,7 +735,19 @@ public class GL33ModelRenderer {
                                         zn = Nv.z - loc.m32;
                                     }
 
+                                    if (drawWireframe || meshLines && (subfileMeshLines ^ mainFileContent.contains(gw.data))) {
+                                        pointAt7(0, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
+                                        pointAt7(1, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
+                                        pointAt7(2, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
+                                        pointAt7(3, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
+                                        pointAt7(4, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
+                                        pointAt7(5, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
+                                        colourise7(0, 6, View.meshline_Colour_r[0], View.meshline_Colour_g[0], View.meshline_Colour_b[0], 7f, tempLineData, tempLineIndex);
+                                        tempLineIndex += 6;
+                                    }
                                     switch (renderMode) {
+                                    case -1:
+                                        continue;
                                     case 0:
                                     {
                                         pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
@@ -725,7 +756,7 @@ public class GL33ModelRenderer {
                                         pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
                                         pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
                                         pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
-                                        colourise(0, 6, gd3.r, gd3.g, gd3.b, gd3.visible ? gd3.a : 0f, triangleData, triangleIndex);
+                                        colourise(0, 6, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, triangleIndex);
                                         if (gw.negativeDeterminant) {
                                             normal(0, 3, xn, yn, zn, triangleData, triangleIndex);
                                             normal(3, 3, -xn, -yn, -zn, triangleData, triangleIndex);
@@ -747,7 +778,7 @@ public class GL33ModelRenderer {
                                         pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
                                         pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, triangleIndex);
                                         pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
-                                        colourise(0, 6, r, g, b, gd3.visible ? gd3.a : 0f, triangleData, triangleIndex);
+                                        colourise(0, 6, r, g, b, gd3.a, triangleData, triangleIndex);
                                         if (gw.negativeDeterminant) {
                                             normal(0, 3, xn, yn, zn, triangleData, triangleIndex);
                                             normal(3, 3, -xn, -yn, -zn, triangleData, triangleIndex);
@@ -791,7 +822,22 @@ public class GL33ModelRenderer {
                                     zn = Nv.z;
                                 }
 
+                                if (drawWireframe || meshLines && (subfileMeshLines ^ mainFileContent.contains(gw.data))) {
+                                    pointAt7(0, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
+                                    pointAt7(1, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
+                                    pointAt7(2, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
+                                    pointAt7(3, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
+                                    pointAt7(4, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
+                                    pointAt7(5, v[3].x, v[3].y, v[3].z, tempLineData, tempLineIndex);
+                                    pointAt7(6, v[3].x, v[3].y, v[3].z, tempLineData, tempLineIndex);
+                                    pointAt7(7, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
+                                    colourise7(0, 8, View.meshline_Colour_r[0], View.meshline_Colour_g[0], View.meshline_Colour_b[0], 7f, tempLineData, tempLineIndex);
+                                    tempLineIndex += 8;
+                                }
+
                                 switch (renderMode) {
+                                case -1:
+                                    continue;
                                 case 0:
                                 {
                                     pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
@@ -808,7 +854,7 @@ public class GL33ModelRenderer {
                                     pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
                                     pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
 
-                                    colourise(0, 12, gd4.r, gd4.g, gd4.b, gd4.visible ? gd4.a : 0f, triangleData, triangleIndex);
+                                    colourise(0, 12, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, triangleIndex);
                                     if (gw.negativeDeterminant) {
                                         normal(0, 6, xn, yn, zn, triangleData, triangleIndex);
                                         normal(6, 6, -xn, -yn, -zn, triangleData, triangleIndex);
@@ -838,7 +884,7 @@ public class GL33ModelRenderer {
                                     pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, triangleIndex);
                                     pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, triangleIndex);
 
-                                    colourise(0, 12, r, g, b, gd4.visible ? gd4.a : 0f, triangleData, triangleIndex);
+                                    colourise(0, 12, r, g, b, gd4.a, triangleData, triangleIndex);
                                     if (gw.negativeDeterminant) {
                                         normal(0, 6, xn, yn, zn, triangleData, triangleIndex);
                                         normal(6, 6, -xn, -yn, -zn, triangleData, triangleIndex);
@@ -1027,7 +1073,7 @@ public class GL33ModelRenderer {
 
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, ss);
 
-            if (ls > 0) {
+            if (ls > 0 && View.lineWidthGL[0] > 0.01f) {
                 GL30.glBindVertexArray(vaoLines);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboLines);
                 lock.lock();
@@ -1067,7 +1113,7 @@ public class GL33ModelRenderer {
                 GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
 
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-                GL11.glLineWidth(View.lineWidthGL[0]);
+                GL11.glLineWidth(1f);
 
                 Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
                 Matrix4f.transform(ivm, tr, tr);
@@ -1177,7 +1223,7 @@ public class GL33ModelRenderer {
 
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
-
+                GL11.glLineWidth(2f);
                 GL11.glDrawArrays(GL11.GL_LINES, 0, sls);
             }
 
