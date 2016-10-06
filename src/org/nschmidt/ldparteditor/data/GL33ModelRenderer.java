@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -42,6 +43,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.GLShader;
+import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer33;
 
 /**
@@ -315,6 +317,9 @@ public class GL33ModelRenderer {
                         // The links are sufficient
                         final Set<GData> selectedData = vm.selectedData;
                         final Set<Vertex> selectedVertices = vm.selectedVertices;
+                        Set<Vertex> tmpSelectedVertices = null;
+                        TreeMap<Integer, ArrayList<Integer>> smoothVertexAdjacency = null;
+                        TreeMap<Vertex, Integer> smoothVertexIndmap = null;
                         final Set<Vertex> hiddenVertices = vm.hiddenVertices;
                         final ThreadsafeHashMap<GData2, Vertex[]> lines = vm.lines;
                         final ThreadsafeHashMap<GData3, Vertex[]> triangles = vm.triangles;
@@ -336,6 +341,16 @@ public class GL33ModelRenderer {
                             usesTEXMAP = special[1];
                         }
 
+                        final boolean smoothVertices = OpenGLRenderer.getSmoothing().get();
+                        if (smoothVertices) {
+                            tmpSelectedVertices = new TreeSet<Vertex>();
+                            for (Vertex vertex : vertices) {
+                                if (selectedVertices.contains(vertex)) {
+                                    tmpSelectedVertices.add(vertex);
+                                }
+                            }
+                        }
+                        final Object[] smoothObj = smoothVertices ? vm.getSmoothedVertices(tmpSelectedVertices) : null;
                         final int renderMode = c3d.getRenderMode();
                         final int lineMode = c3d.getLineMode();
                         final boolean condlineMode = renderMode == 6;
@@ -348,7 +363,8 @@ public class GL33ModelRenderer {
                         int local_lineSize = 0;
                         int local_condlineSize = 0;
                         int local_tempLineSize = 0;
-                        int local_verticesSize = vertices.size();
+                        @SuppressWarnings("unchecked")
+                        int local_verticesSize = vertices.size() + (smoothVertices ? ((ArrayList<Vertex>) smoothObj[0]).size() : 0);
                         int local_glyphSize = 0;
                         int local_selectionLineSize = 0;
 
@@ -358,6 +374,20 @@ public class GL33ModelRenderer {
                         int tempLineVertexCount = 0;
                         int glyphVertexCount = 0;
                         int selectionLineVertexCount = 0;
+
+                        if (smoothVertices) {
+                            @SuppressWarnings("unchecked")
+                            TreeMap<Integer, ArrayList<Integer>> tmpAdjacency = (TreeMap<Integer, ArrayList<Integer>>) smoothObj[2];
+                            @SuppressWarnings("unchecked")
+                            TreeMap<Vertex, Integer> tmpIndex = (TreeMap<Vertex, Integer>) smoothObj[1];
+                            smoothVertexAdjacency = tmpAdjacency;
+                            smoothVertexIndmap = tmpIndex;
+                            for (ArrayList<Integer> lst : smoothVertexAdjacency.values()) {
+                                final int size = lst.size();
+                                local_selectionLineSize += 14 * size;
+                                selectionLineVertexCount += 2 * size;
+                            }
+                        }
 
 
                         // Only do "heavy" CPU condline computing with the special condline mode
@@ -497,28 +527,60 @@ public class GL33ModelRenderer {
                             final float g2 = View.vertex_selected_Colour_g[0];
                             final float b2 = View.vertex_selected_Colour_b[0];
                             int i = 0;
-                            for(Vertex v : vertices) {
-                                vertexData[i] = v.x;
-                                vertexData[i + 1] = v.y;
-                                vertexData[i + 2] = v.z;
+                            if (smoothVertices) {
 
-                                if (selectedVertices.contains(v)) {
-                                    vertexData[i + 3] = r2;
-                                    vertexData[i + 4] = g2;
-                                    vertexData[i + 5] = b2;
-                                    vertexData[i + 6] = 7f;
-                                } else {
+                                for(Vertex v : vertices) {
+                                    vertexData[i] = v.x;
+                                    vertexData[i + 1] = v.y;
+                                    vertexData[i + 2] = v.z;
                                     vertexData[i + 3] = r;
                                     vertexData[i + 4] = g;
                                     vertexData[i + 5] = b;
-
                                     if (c3d.isShowingCondlineControlPoints()) {
                                         vertexData[i + 6] = hiddenVertices.contains(v) ? 0f : 7f;
                                     } else {
                                         vertexData[i + 6] = hiddenVertices.contains(v) || pureCondlineControlPoints.contains(v) ? 0f : 7f;
                                     }
+                                    i += 7;
                                 }
-                                i += 7;
+
+                                @SuppressWarnings("unchecked")
+                                ArrayList<Vertex> verts = ((ArrayList<Vertex>) smoothObj[0]);
+                                for(Vertex v : verts) {
+                                    vertexData[i] = v.x;
+                                    vertexData[i + 1] = v.y;
+                                    vertexData[i + 2] = v.z;
+                                    vertexData[i + 3] = r2;
+                                    vertexData[i + 4] = g2;
+                                    vertexData[i + 5] = b2;
+                                    vertexData[i + 6] = 7f;
+                                    i += 7;
+                                }
+                            } else {
+                                for(Vertex v : vertices) {
+                                    vertexData[i] = v.x;
+                                    vertexData[i + 1] = v.y;
+                                    vertexData[i + 2] = v.z;
+
+                                    if (selectedVertices.contains(v)) {
+                                        vertexData[i + 3] = r2;
+                                        vertexData[i + 4] = g2;
+                                        vertexData[i + 5] = b2;
+                                        vertexData[i + 6] = 7f;
+                                    } else {
+                                        vertexData[i + 3] = r;
+                                        vertexData[i + 4] = g;
+                                        vertexData[i + 5] = b;
+
+                                        if (c3d.isShowingCondlineControlPoints()) {
+                                            vertexData[i + 6] = hiddenVertices.contains(v) ? 0f : 7f;
+                                        } else {
+                                            vertexData[i + 6] = hiddenVertices.contains(v) || pureCondlineControlPoints.contains(v) ? 0f : 7f;
+                                        }
+                                    }
+                                    i += 7;
+                                }
+
                             }
                         }
 
@@ -530,6 +592,22 @@ public class GL33ModelRenderer {
                         int tempLineIndex = 0;
                         int selectionLineIndex = 0;
                         int glyphIndex = 0;
+
+                        if (smoothVertices) {
+                            @SuppressWarnings("unchecked")
+                            ArrayList<Vertex> verts = ((ArrayList<Vertex>) smoothObj[0]);
+                            for (Vertex v1 : verts) {
+                                if (smoothVertexAdjacency.containsKey(smoothVertexIndmap.get(v1))) {
+                                    for (Integer i : smoothVertexAdjacency.get(smoothVertexIndmap.get(v1))) {
+                                        Vertex v2 = verts.get(i);
+                                        pointAt7(0, v1.x, v1.y, v1.z, selectionLineData, selectionLineIndex);
+                                        pointAt7(1, v2.x, v2.y, v2.z, selectionLineData, selectionLineIndex);
+                                        colourise7(0, 2, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
+                                        selectionLineIndex += 2;
+                                    }
+                                }
+                            }
+                        }
 
                         // Iterate the objects and generate the buffer data
                         // TEXMAP and Real Backface Culling are quite "the same", but they need different vertex normals / materials

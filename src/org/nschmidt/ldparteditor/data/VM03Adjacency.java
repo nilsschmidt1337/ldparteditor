@@ -101,11 +101,13 @@ class VM03Adjacency extends VM02Add {
         HashSet<GData> rval = new HashSet<GData>();
         Set<VertexManifestation> vm = vertexLinkedToPositionInFile.get(vertex);
         if (vm != null) {
+            getManifestationLock().lock();
             for (VertexManifestation m : vm) {
                 int type = m.getGdata().type();
                 if (type < 5 && type > 2)
                     rval.add(m.getGdata());
             }
+            getManifestationLock().unlock();
         }
         return rval;
     }
@@ -227,7 +229,7 @@ class VM03Adjacency extends VM02Add {
         }
         return false;
     }
-    
+
     /**
      * Tests, if two surfaces share a common edge
      * @param g1 a surface
