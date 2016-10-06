@@ -376,7 +376,7 @@ public class Editor3DWindow extends Editor3DDesign {
         this.create();
         final Shell sh = this.getShell();
         sh.setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        
+
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         sh.setMinimumSize(640, 480);
         sh.setBounds(this.editor3DWindowState.getWindowState().getSizeAndPosition());
@@ -1517,28 +1517,28 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_lineSize1[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GL20Primitives.SPHERE1, GL20Primitives.SPHERE_INV1, 25f, .025f, .375f, btn_lineSize1[0]);
+                setLineSize(GL20Primitives.SPHERE1, GL20Primitives.SPHERE_INV1, 25f, .025f, 1f, btn_lineSize1[0]);
                 regainFocus();
             }
         });
         btn_lineSize2[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GL20Primitives.SPHERE2, GL20Primitives.SPHERE_INV2, 50f, .050f, .75f, btn_lineSize2[0]);
+                setLineSize(GL20Primitives.SPHERE2, GL20Primitives.SPHERE_INV2, 50f, .050f, 2f, btn_lineSize2[0]);
                 regainFocus();
             }
         });
         btn_lineSize3[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GL20Primitives.SPHERE3, GL20Primitives.SPHERE_INV3, 100f, .100f, 1.5f, btn_lineSize3[0]);
+                setLineSize(GL20Primitives.SPHERE3, GL20Primitives.SPHERE_INV3, 100f, .100f, 3f, btn_lineSize3[0]);
                 regainFocus();
             }
         });
         btn_lineSize4[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, 200f, .200f, 3f, btn_lineSize4[0]);
+                setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, 200f, .200f, 4f, btn_lineSize4[0]);
                 regainFocus();
             }
         });
@@ -8085,7 +8085,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     private void setLineSize(SphereGL20 sp, SphereGL20 sp_inv, float line_width1000, float line_width, float line_width_gl, Button btn) {
-        final boolean useLegacyGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20;         
+        final boolean useLegacyGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20;
         View.lineWidth1000[0] = line_width1000;
         View.lineWidth[0] = line_width;
         View.lineWidthGL[0] = line_width_gl;
