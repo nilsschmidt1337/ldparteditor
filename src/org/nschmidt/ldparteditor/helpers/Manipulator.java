@@ -69,7 +69,7 @@ public class Manipulator {
 
     private final FloatBuffer matrix = BufferUtils.createFloatBuffer(16);
     private final FloatBuffer matrix_inv = BufferUtils.createFloatBuffer(16);
-    private boolean modified = false;
+    private volatile boolean modified = false;
 
     private static float translate_size = 140f;
     private static float rotate_size = 100f;
@@ -256,7 +256,7 @@ public class Manipulator {
     private Vector4f position = new Vector4f(0f, 0f, 0f, 1f);
     private BigDecimal[] accuratePosition = new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO };
 
-    private static long timstampModified = System.nanoTime();
+    private static volatile long timstampModified = System.nanoTime();
 
     public Manipulator() {
         Matrix4f.setIdentity(result);

@@ -91,12 +91,16 @@ public class GL33ModelRenderer {
     private int vaoCondlines;
     private int vboCondlines;
 
+    private int vaoCSG;
+    private int vboCSG;
+
     private volatile Lock lock = new ReentrantLock();
     private static volatile Lock static_lock = new ReentrantLock();
     private static volatile AtomicInteger idGen = new AtomicInteger(0);
     private static volatile AtomicInteger idCount = new AtomicInteger(0);
 
     private static volatile CopyOnWriteArrayList<Integer> idList = new CopyOnWriteArrayList<>();
+    private static volatile AtomicBoolean calculateCSG = new AtomicBoolean(true);
 
     private volatile AtomicBoolean calculateCondlineControlPoints = new AtomicBoolean(true);
     private volatile TreeSet<Vertex> pureCondlineControlPoints = new TreeSet<>();
@@ -107,9 +111,13 @@ public class GL33ModelRenderer {
     private volatile float[] dataVertices = null;
     private volatile float[] dataCondlines = new float[]{0f};
     private volatile float[] dataSelectionLines = new float[]{0f};
+    private volatile float[] dataCSG = new float[]{0f};
     private volatile int solidTriangleSize = 0;
     private volatile int transparentTriangleOffset = 0;
     private volatile int transparentTriangleSize = 0;
+    private volatile int solidCSGsize = 0;
+    private volatile int transparentCSGoffset = 0;
+    private volatile int transparentCSGsize = 0;
     private volatile int lineSize = 0;
     private volatile int tempLineSize = 0;
     private volatile int glyphSize = 0;
@@ -328,6 +336,7 @@ public class GL33ModelRenderer {
                         final ThreadsafeHashMap<GData3, Vertex[]> triangles = vm.triangles;
                         final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
                         final ThreadsafeHashMap<GData5, Vertex[]> condlines = vm.condlines;
+                        final ArrayList<GDataCSG> csgData = new ArrayList<>();
 
                         // Build the list of the data from the datfile
                         dataInOrder.clear();
@@ -339,12 +348,28 @@ public class GL33ModelRenderer {
                         CACHE_viewByProjection.clear();
 
                         {
-                            boolean[] special = loadBFCinfo(dataInOrder, vertexMap, matrixMap, df,
+                            boolean[] special = loadBFCinfo(
+                                    dataInOrder, csgData, vertexMap, matrixMap, df,
                                     lines, triangles, quads, condlines);
                             usesPNG = special[0];
                             usesTEXMAP = special[1];
                             usesCSG = special[2];
                         }
+
+
+                        if (calculateCSG.compareAndSet(true, false)) {
+                            final ArrayList<GDataCSG> csgData2 = csgData;
+                            CompletableFuture.runAsync( () -> {
+                                // FIXME Do asynchronous CSG calculations here...
+                                GDataCSG.resetCSG(df, c3d.getManipulator().isModified());
+                                GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
+                                for (GDataCSG csg : csgData2) {
+                                    csg.drawAndParse(c3d, df, false);
+                                }
+                                calculateCSG.set(true);
+                            });
+                        }
+
 
                         final boolean smoothVertices = OpenGLRenderer.getSmoothing().get();
                         if (smoothVertices) {
@@ -1028,9 +1053,11 @@ public class GL33ModelRenderer {
         GL15.glDeleteBuffers(vboSelectionLines);
         GL30.glDeleteVertexArrays(vaoCondlines);
         GL15.glDeleteBuffers(vboCondlines);
+        GL30.glDeleteVertexArrays(vaoCSG);
+        GL15.glDeleteBuffers(vboCSG);
     }
 
-    private int ts, ss, to, vs, ls, tls, gs, sls, cls;
+    private int ts, ss, to, vs, ls, tls, gs, sls, cls, ssCSG, toCSG, tsCSG;
     public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, boolean drawSolidMaterials, DatFile df) {
 
         Matrix4f vm = c3d.getViewport();
@@ -1048,6 +1075,12 @@ public class GL33ModelRenderer {
 
         }
 
+        if (c3d.isLightOn()) {
+            mainShader.setFactor(.9f);
+        } else {
+            mainShader.setFactor(1f);
+        }
+
         // TODO Draw !TEXMAP VAOs here
         if (usesTEXMAP) {
 
@@ -1055,7 +1088,35 @@ public class GL33ModelRenderer {
 
         // TODO Draw CSG VAOs here
         if (usesCSG) {
+            if (drawSolidMaterials) {
 
+                GL30.glBindVertexArray(vaoCSG);
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCSG);
+                lock.lock();
+                // I can't use glBufferSubData() it creates a memory leak!!!
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataCSG, GL15.GL_STATIC_DRAW);
+                ssCSG = solidCSGsize;
+                toCSG = transparentCSGoffset;
+                tsCSG = transparentCSGsize;
+                lock.unlock();
+
+                GL20.glEnableVertexAttribArray(0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+
+                GL20.glEnableVertexAttribArray(1);
+                GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
+
+                GL20.glEnableVertexAttribArray(2);
+                GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+
+                // Transparent and solid parts are at a different location in the buffer
+                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, ssCSG);
+            } else {
+                GL30.glBindVertexArray(vaoCSG);
+                GL11.glDrawArrays(GL11.GL_TRIANGLES, toCSG, tsCSG);
+            }
         }
 
 
@@ -1106,12 +1167,6 @@ public class GL33ModelRenderer {
         }
 
         GL30.glBindVertexArray(vao);
-
-        if (c3d.isLightOn()) {
-            mainShader.setFactor(.9f);
-        } else {
-            mainShader.setFactor(1f);
-        }
 
         // Transparent and solid parts are at a different location in the buffer
         if (drawSolidMaterials) {
@@ -1292,6 +1347,7 @@ public class GL33ModelRenderer {
 
     private boolean[] loadBFCinfo(
             final ArrayList<GDataAndWinding> dataInOrder,
+            final ArrayList<GDataCSG> csgData,
             final HashMap<GData, Vertex[]> vertexMap,
             final HashMap<GData1, Matrix4f> matrixMap, final DatFile df,
             final ThreadsafeHashMap<GData2, Vertex[]> lines,
@@ -1445,6 +1501,7 @@ public class GL33ModelRenderer {
                 }
                 continue;
             case 8:
+                csgData.add((GDataCSG) gd);
                 hasCSG = true;
                 continue;
             case 9:

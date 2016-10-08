@@ -328,10 +328,10 @@ public final class GDataCSG extends GData {
 
     private void drawAndParse(Composite3D c3d) {
         final DatFile df = c3d.getLockableDatFileReference();
-        drawAndParse(c3d, df);
+        drawAndParse(c3d, df, true);
     }
 
-    private void drawAndParse(Composite3D c3d, DatFile df) {
+    public void drawAndParse(Composite3D c3d, DatFile df, boolean doDraw) {
 
         final boolean clearCaches = clearPolygonCache.putIfAbsent(df, true) || type == CSG.MESH && CSGMesh.needCacheRefresh(cachedData, this, df) || type == CSG.EXTRUDE && CSGExtrude.needCacheRefresh(cachedData, this, df);
         if (clearCaches) {
@@ -542,7 +542,7 @@ public final class GDataCSG extends GData {
 
             }
         }
-        if (compiledCSG != null && c3d != null) {
+        if (compiledCSG != null && c3d != null && doDraw) {
             if (c3d.getRenderMode() != 5) {
                 compiledCSG.draw(c3d);
             } else {
@@ -618,7 +618,7 @@ public final class GDataCSG extends GData {
                 while ((g = g.getNext()) != null) {
                     if (g.type() == 8) {
                         GDataCSG gcsg = (GDataCSG) g;
-                        gcsg.drawAndParse(null, myDat);
+                        gcsg.drawAndParse(null, myDat, false);
                     }
                 }
                 if (!deleteAndRecompile) {
@@ -700,7 +700,7 @@ public final class GDataCSG extends GData {
         if (flt == (int) flt) {
             result = String.format("%d", (int) flt); //$NON-NLS-1$
         } else {
-            result = String.format("%s", flt); //$NON-NLS-1$            
+            result = String.format("%s", flt); //$NON-NLS-1$
         }
         if (result.equals("0.0"))result = "0"; //$NON-NLS-1$ //$NON-NLS-2$
         if (result.startsWith("-0.")) return "-" + result.substring(2); //$NON-NLS-1$ //$NON-NLS-2$
