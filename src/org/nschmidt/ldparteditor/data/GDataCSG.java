@@ -1294,4 +1294,20 @@ public final class GDataCSG extends GData {
     public static boolean isInlining(DatFile df) {
         return compileAndInline.get(df);
     }
+
+    public int[] getDataSize() {
+        final int[] result = new int[]{0, 0, 0};
+        if (compiledCSG != null) {
+            HashMap<GData3, Integer> resultData = compiledCSG.getResult();
+            for (GData3 tri : resultData.keySet()) {
+                if (tri.a < 1f) {
+                    result[2] += 6;
+                } else {
+                    result[1] += 6;
+                }
+            }
+            result[0] = 60 * resultData.size();
+        }
+        return result;
+    }
 }
