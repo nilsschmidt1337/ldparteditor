@@ -361,11 +361,29 @@ public class GL33ModelRenderer {
                             final ArrayList<GDataCSG> csgData2 = csgData;
                             CompletableFuture.runAsync( () -> {
                                 // FIXME Do asynchronous CSG calculations here...
+                                int csgDataSize = 0;
+                                int csgSolidVertexCount = 0;
+                                int csgTransVertexCount = 0;
                                 GDataCSG.resetCSG(df, c3d.getManipulator().isModified());
-                                GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
+                                // GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
                                 for (GDataCSG csg : csgData2) {
                                     csg.drawAndParse(c3d, df, false);
+                                    final int[] size = csg.getDataSize();
+                                    csgDataSize += size[0];
+                                    csgSolidVertexCount += size[1];
+                                    csgTransVertexCount += size[2];
                                 }
+                                float[] tmpCsgData = new float[csgDataSize];
+                                /* FIXME Fill array here!
+                                int
+                                for (GDataCSG csg : csgData2) {
+                                    final int[]
+                                }
+                                */
+                                lock.lock();
+                                dataCSG = tmpCsgData;
+
+                                lock.unlock();
                                 calculateCSG.set(true);
                             });
                         }
