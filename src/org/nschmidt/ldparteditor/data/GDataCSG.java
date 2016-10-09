@@ -1144,7 +1144,7 @@ public final class GDataCSG extends GData {
         selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>()).clear();
     }
 
-    public synchronized static void rebuildSelection(DatFile df) {
+    public static void rebuildSelection(DatFile df) {
         final Composite3D c3d = df.getLastSelectedComposite();
         if (c3d == null || df.getLastSelectedComposite().isDisposed()) return;
         final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>());
@@ -1331,5 +1331,9 @@ public final class GDataCSG extends GData {
         } else {
             return compiledCSG.getResult().keySet();
         }
+    }
+
+    public static HashSet<GData3> getSelectionData(DatFile df) {
+        return selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>());
     }
 }
