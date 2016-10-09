@@ -149,6 +149,23 @@ public class GL33ModelRenderer {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
 
+        vaoCSG = GL30.glGenVertexArrays();
+        vboCSG = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoCSG);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCSG);
+
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+
+        GL20.glEnableVertexAttribArray(1);
+        GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
+
+        GL20.glEnableVertexAttribArray(2);
+        GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL30.glBindVertexArray(0);
+
         vaoGlyphs = GL30.glGenVertexArrays();
         vboGlyphs = GL15.glGenBuffers();
         GL30.glBindVertexArray(vaoGlyphs);
@@ -364,27 +381,110 @@ public class GL33ModelRenderer {
                                 int csgDataSize = 0;
                                 int csgSolidVertexCount = 0;
                                 int csgTransVertexCount = 0;
-                                GDataCSG.resetCSG(df, c3d.getManipulator().isModified());
-                                // GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
-                                for (GDataCSG csg : csgData2) {
-                                    csg.drawAndParse(c3d, df, false);
-                                    final int[] size = csg.getDataSize();
-                                    csgDataSize += size[0];
-                                    csgSolidVertexCount += size[1];
-                                    csgTransVertexCount += size[2];
-                                }
-                                float[] tmpCsgData = new float[csgDataSize];
-                                /* FIXME Fill array here!
-                                int
-                                for (GDataCSG csg : csgData2) {
-                                    final int[]
-                                }
-                                */
-                                lock.lock();
-                                dataCSG = tmpCsgData;
+                                try {
+                                    GDataCSG.static_lock.lock();
+                                    GDataCSG.resetCSG(df, c3d.getManipulator().isModified());
+                                    // GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
+                                    for (GDataCSG csg : csgData2) {
+                                        csg.drawAndParse(c3d, df, false);
+                                        final int[] size = csg.getDataSize();
+                                        csgDataSize += size[0];
+                                        csgSolidVertexCount += size[1];
+                                        csgTransVertexCount += size[2];
+                                    }
 
-                                lock.unlock();
-                                calculateCSG.set(true);
+                                    int csgIndex = 0;
+                                    int transparentCSGindex = csgSolidVertexCount;
+                                    float[] tmpCsgData = new float[csgDataSize];
+                                    // FIXME Fill array here!
+                                    final Vector4f[] v = new Vector4f[]{
+                                            new Vector4f(0f, 0f, 0f, 1f),
+                                            new Vector4f(0f, 0f, 0f, 1f),
+                                            new Vector4f(0f, 0f, 0f, 1f),
+                                            new Vector4f(0f, 0f, 0f, 1f)
+                                    };
+                                    for (GDataCSG csg : csgData2) {
+                                        for (GData3 gd3 : csg.getSurfaces()) {
+                                            final boolean transparent = gd3.a < 1f;
+                                            int tempIndex = csgIndex;
+                                            if (transparent) {
+                                                tempIndex = transparentCSGindex;
+                                            }
+                                            if (csg.parent == View.DUMMY_REFERENCE) {
+                                                final float xn = gd3.xn;
+                                                final float yn = gd3.yn;
+                                                final float zn = gd3.zn;
+                                                pointAt(0, gd3.x1, gd3.y1, gd3.z1, tmpCsgData, tempIndex);
+                                                pointAt(1, gd3.x2, gd3.y2, gd3.z2, tmpCsgData, tempIndex);
+                                                pointAt(2, gd3.x3, gd3.y3, gd3.z3, tmpCsgData, tempIndex);
+                                                pointAt(3, gd3.x1, gd3.y1, gd3.z1, tmpCsgData, tempIndex);
+                                                pointAt(4, gd3.x3, gd3.y3, gd3.z3, tmpCsgData, tempIndex);
+                                                pointAt(5, gd3.x2, gd3.y2, gd3.z2, tmpCsgData, tempIndex);
+                                                normal(0, 3, -xn, -yn, -zn, tmpCsgData, tempIndex);
+                                                normal(3, 3, xn, yn, zn, tmpCsgData, tempIndex);
+                                            } else {
+                                                final Matrix4f m = csg.parent.productMatrix;
+
+                                                v[0].x = gd3.x1;
+                                                v[0].y = gd3.y1;
+                                                v[0].z = gd3.z1;
+                                                v[0].w = 1f;
+                                                v[1].x = gd3.x2;
+                                                v[1].y = gd3.y2;
+                                                v[1].z = gd3.z2;
+                                                v[1].w = 1f;
+                                                v[2].x = gd3.x3;
+                                                v[2].y = gd3.y3;
+                                                v[2].z = gd3.z3;
+                                                v[2].w = 1f;
+                                                v[3].x = gd3.xn;
+                                                v[3].y = gd3.yn;
+                                                v[3].z = gd3.zn;
+                                                v[3].w = 1f;
+                                                Matrix4f.transform(m, v[0], v[0]);
+                                                Matrix4f.transform(m, v[1], v[1]);
+                                                Matrix4f.transform(m, v[2], v[2]);
+                                                Matrix4f.transform(m, v[3], v[3]);
+                                                // No normalization necessary (the shader does the job)!
+                                                // v[3].w = 0f;
+                                                // v[3].normalise();
+                                                final float xn = v[3].x;
+                                                final float yn = v[3].y;
+                                                final float zn = v[3].z;
+                                                pointAt(0, v[0].x, v[0].y, v[0].z, tmpCsgData, tempIndex);
+                                                pointAt(1, v[1].x, v[1].y, v[1].z, tmpCsgData, tempIndex);
+                                                pointAt(2, v[2].x, v[2].y, v[2].z, tmpCsgData, tempIndex);
+                                                pointAt(3, v[0].x, v[0].y, v[0].z, tmpCsgData, tempIndex);
+                                                pointAt(4, v[2].x, v[2].y, v[2].z, tmpCsgData, tempIndex);
+                                                pointAt(5, v[1].x, v[1].y, v[1].z, tmpCsgData, tempIndex);
+                                                if (m.determinant() < 0f) {
+                                                    normal(0, 3, xn, yn, zn, tmpCsgData, tempIndex);
+                                                    normal(3, 3, -xn, -yn, -zn, tmpCsgData, tempIndex);
+                                                } else {
+                                                    normal(0, 3, -xn, -yn, -zn, tmpCsgData, tempIndex);
+                                                    normal(3, 3, xn, yn, zn, tmpCsgData, tempIndex);
+                                                }
+                                            }
+                                            colourise(0, 6, gd3.r, gd3.g, gd3.b, gd3.a, tmpCsgData, tempIndex);
+                                            if (transparent) {
+                                                transparentCSGindex += 6;
+                                            } else {
+                                                csgIndex += 6;
+                                            }
+                                        }
+                                    }
+                                    lock.lock();
+                                    dataCSG = tmpCsgData;
+                                    solidCSGsize= csgIndex;
+                                    transparentCSGoffset = csgIndex;
+                                    transparentCSGsize = csgTransVertexCount;
+                                    lock.unlock();
+                                    calculateCSG.set(true);
+                            } catch (Exception ex) {
+                                NLogger.error(getClass(), ex);
+                            } finally {
+                                GDataCSG.static_lock.unlock();
+                            }
                             });
                         }
 
