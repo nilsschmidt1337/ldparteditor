@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -68,6 +70,8 @@ import org.nschmidt.ldparteditor.text.DatParser;
 public final class GDataCSG extends GData {
 
     final byte type;
+
+    static volatile Lock static_lock = new ReentrantLock();
 
     private final static ThreadsafeHashMap<DatFile, HashMap<String, CSG>> linkedCSG = new ThreadsafeHashMap<DatFile, HashMap<String, CSG>>();
     private final static ThreadsafeHashMap<DatFile, HashBiMap<Integer, GDataCSG>> idToGDataCSG = new ThreadsafeHashMap<DatFile, HashBiMap<Integer, GDataCSG>>();
@@ -607,91 +611,96 @@ public final class GDataCSG extends GData {
 
     @Override
     public synchronized String inlinedString(final byte bfc, final GColour colour) {
-        switch (type) {
-        case CSG.COMPILE:
-            if (compiledCSG != null) {
-                compileAndInline.put(myDat, true);
-                resetCSG(myDat, false);
-                GDataCSG.forceRecompile(myDat);
-                GData g = myDat.getDrawChainStart();
-                deleteAndRecompile = true;
-                while ((g = g.getNext()) != null) {
-                    if (g.type() == 8) {
-                        GDataCSG gcsg = (GDataCSG) g;
-                        gcsg.drawAndParse(null, myDat, false);
-                    }
-                }
-                if (!deleteAndRecompile) {
-                    return getNiceString() + "<br>0 // INLINE FAILED! :("; //$NON-NLS-1$
-                }
-
-                compileAndInline.put(Project.getFileToEdit(), false);
-                allNewPolygonVertices.get(myDat).clear();
-
-                final StringBuilder sb = new StringBuilder();
-
-                try {
-                    new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(false, false, new IRunnableWithProgress() {
-
-                        @Override
-                        public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                            Editor3DWindow.getWindow().getShell().getDisplay().readAndDispatch();
-                            Object[] messageArguments = {getNiceString()};
-                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                            formatter.setLocale(MyLanguage.LOCALE);
-                            formatter.applyPattern(I18n.DATFILE_Inlined);
-
-                            sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
-
-                            HashMap<GData3, Integer> result = compiledCSG.getResult();
-
-                            for (GData3 g3 : result.keySet()) {
-                                StringBuilder lineBuilder3 = new StringBuilder();
-                                lineBuilder3.append("3 "); //$NON-NLS-1$
-                                if (g3.colourNumber == -1) {
-                                    lineBuilder3.append("0x2"); //$NON-NLS-1$
-                                    lineBuilder3.append(MathHelper.toHex((int) (255f * g3.r)).toUpperCase());
-                                    lineBuilder3.append(MathHelper.toHex((int) (255f * g3.g)).toUpperCase());
-                                    lineBuilder3.append(MathHelper.toHex((int) (255f * g3.b)).toUpperCase());
-                                } else {
-                                    lineBuilder3.append(g3.colourNumber);
-                                }
-                                Vector4f g3_v1 = new Vector4f(g3.x1, g3.y1, g3.z1, 1f);
-                                Vector4f g3_v2 = new Vector4f(g3.x2, g3.y2, g3.z2, 1f);
-                                Vector4f g3_v3 = new Vector4f(g3.x3, g3.y3, g3.z3, 1f);
-                                lineBuilder3.append(" "); //$NON-NLS-1$
-                                lineBuilder3.append(floatToString(g3_v1.x / 1000f));
-                                lineBuilder3.append(" "); //$NON-NLS-1$
-                                lineBuilder3.append(floatToString(g3_v1.y / 1000f));
-                                lineBuilder3.append(" "); //$NON-NLS-1$
-                                lineBuilder3.append(floatToString(g3_v1.z / 1000f));
-                                lineBuilder3.append(" "); //$NON-NLS-1$
-                                lineBuilder3.append(floatToString(g3_v2.x / 1000f));
-                                lineBuilder3.append(" "); //$NON-NLS-1$
-                                lineBuilder3.append(floatToString(g3_v2.y / 1000f));
-                                lineBuilder3.append(" "); //$NON-NLS-1$
-                                lineBuilder3.append(floatToString(g3_v2.z / 1000f));
-                                lineBuilder3.append(" "); //$NON-NLS-1$
-                                lineBuilder3.append(floatToString(g3_v3.x / 1000f));
-                                lineBuilder3.append(" "); //$NON-NLS-1$
-                                lineBuilder3.append(floatToString(g3_v3.y / 1000f));
-                                lineBuilder3.append(" "); //$NON-NLS-1$
-                                lineBuilder3.append(floatToString(g3_v3.z / 1000f));
-                                sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
-                            }
+        try {
+            static_lock.lock();
+            switch (type) {
+            case CSG.COMPILE:
+                if (compiledCSG != null) {
+                    compileAndInline.put(myDat, true);
+                    resetCSG(myDat, false);
+                    GDataCSG.forceRecompile(myDat);
+                    GData g = myDat.getDrawChainStart();
+                    deleteAndRecompile = true;
+                    while ((g = g.getNext()) != null) {
+                        if (g.type() == 8) {
+                            GDataCSG gcsg = (GDataCSG) g;
+                            gcsg.drawAndParse(null, myDat, false);
                         }
-                    });
-                } catch (InvocationTargetException consumed) {
-                    consumed.printStackTrace();
-                } catch (InterruptedException consumed) {
-                    consumed.printStackTrace();
+                    }
+                    if (!deleteAndRecompile) {
+                        return getNiceString() + "<br>0 // INLINE FAILED! :("; //$NON-NLS-1$
+                    }
+
+                    compileAndInline.put(Project.getFileToEdit(), false);
+                    allNewPolygonVertices.get(myDat).clear();
+
+                    final StringBuilder sb = new StringBuilder();
+
+                    try {
+                        new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(false, false, new IRunnableWithProgress() {
+
+                            @Override
+                            public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                                Editor3DWindow.getWindow().getShell().getDisplay().readAndDispatch();
+                                Object[] messageArguments = {getNiceString()};
+                                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                formatter.setLocale(MyLanguage.LOCALE);
+                                formatter.applyPattern(I18n.DATFILE_Inlined);
+
+                                sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
+
+                                HashMap<GData3, Integer> result = compiledCSG.getResult();
+
+                                for (GData3 g3 : result.keySet()) {
+                                    StringBuilder lineBuilder3 = new StringBuilder();
+                                    lineBuilder3.append("3 "); //$NON-NLS-1$
+                                    if (g3.colourNumber == -1) {
+                                        lineBuilder3.append("0x2"); //$NON-NLS-1$
+                                        lineBuilder3.append(MathHelper.toHex((int) (255f * g3.r)).toUpperCase());
+                                        lineBuilder3.append(MathHelper.toHex((int) (255f * g3.g)).toUpperCase());
+                                        lineBuilder3.append(MathHelper.toHex((int) (255f * g3.b)).toUpperCase());
+                                    } else {
+                                        lineBuilder3.append(g3.colourNumber);
+                                    }
+                                    Vector4f g3_v1 = new Vector4f(g3.x1, g3.y1, g3.z1, 1f);
+                                    Vector4f g3_v2 = new Vector4f(g3.x2, g3.y2, g3.z2, 1f);
+                                    Vector4f g3_v3 = new Vector4f(g3.x3, g3.y3, g3.z3, 1f);
+                                    lineBuilder3.append(" "); //$NON-NLS-1$
+                                    lineBuilder3.append(floatToString(g3_v1.x / 1000f));
+                                    lineBuilder3.append(" "); //$NON-NLS-1$
+                                    lineBuilder3.append(floatToString(g3_v1.y / 1000f));
+                                    lineBuilder3.append(" "); //$NON-NLS-1$
+                                    lineBuilder3.append(floatToString(g3_v1.z / 1000f));
+                                    lineBuilder3.append(" "); //$NON-NLS-1$
+                                    lineBuilder3.append(floatToString(g3_v2.x / 1000f));
+                                    lineBuilder3.append(" "); //$NON-NLS-1$
+                                    lineBuilder3.append(floatToString(g3_v2.y / 1000f));
+                                    lineBuilder3.append(" "); //$NON-NLS-1$
+                                    lineBuilder3.append(floatToString(g3_v2.z / 1000f));
+                                    lineBuilder3.append(" "); //$NON-NLS-1$
+                                    lineBuilder3.append(floatToString(g3_v3.x / 1000f));
+                                    lineBuilder3.append(" "); //$NON-NLS-1$
+                                    lineBuilder3.append(floatToString(g3_v3.y / 1000f));
+                                    lineBuilder3.append(" "); //$NON-NLS-1$
+                                    lineBuilder3.append(floatToString(g3_v3.z / 1000f));
+                                    sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
+                                }
+                            }
+                        });
+                    } catch (InvocationTargetException consumed) {
+                        consumed.printStackTrace();
+                    } catch (InterruptedException consumed) {
+                        consumed.printStackTrace();
+                    }
+                    return sb.toString();
+                } else {
+                    return getNiceString();
                 }
-                return sb.toString();
-            } else {
+            default:
                 return getNiceString();
             }
-        default:
-            return getNiceString();
+        } finally {
+            static_lock.unlock();
         }
     }
 
@@ -992,26 +1001,31 @@ public final class GDataCSG extends GData {
         }
     }
 
-    public synchronized static void selectCSG(Composite3D c3d, Event event) {
-        final DatFile df = c3d.getLockableDatFileReference();
-        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>());
-        if (!c3d.getKeys().isCtrlPressed()) {
-            selectedTriangles.clear();
-        }
-        final Integer selectedBodyID = selectCSG_helper(c3d, event);
-        if (selectedBodyID != null) {
-            for (Entry<String, CSG> csg_pair : linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).entrySet()) {
-                if (csg_pair.getKey() != null && csg_pair.getKey().endsWith("#>null")) { //$NON-NLS-1$
-                    CSG csg = csg_pair.getValue();
-                    if (csg != null) {
-                        for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
-                            if (selectedBodyID.equals(pair.getValue())) {
-                                selectedTriangles.add(pair.getKey());
+    public static void selectCSG(Composite3D c3d, Event event) {
+        try {
+            static_lock.lock();
+            final DatFile df = c3d.getLockableDatFileReference();
+            final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>());
+            if (!c3d.getKeys().isCtrlPressed()) {
+                selectedTriangles.clear();
+            }
+            final Integer selectedBodyID = selectCSG_helper(c3d, event);
+            if (selectedBodyID != null) {
+                for (Entry<String, CSG> csg_pair : linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).entrySet()) {
+                    if (csg_pair.getKey() != null && csg_pair.getKey().endsWith("#>null")) { //$NON-NLS-1$
+                        CSG csg = csg_pair.getValue();
+                        if (csg != null) {
+                            for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
+                                if (selectedBodyID.equals(pair.getValue())) {
+                                    selectedTriangles.add(pair.getKey());
+                                }
                             }
                         }
                     }
                 }
             }
+        } finally {
+            static_lock.unlock();
         }
     }
 
@@ -1309,5 +1323,13 @@ public final class GDataCSG extends GData {
             result[0] = 60 * resultData.size();
         }
         return result;
+    }
+
+    public Set<GData3> getSurfaces() {
+        if (compiledCSG == null) {
+            return new HashSet<GData3>();
+        } else {
+            return compiledCSG.getResult().keySet();
+        }
     }
 }
