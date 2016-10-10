@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.math.BigDecimal;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
@@ -37,6 +38,7 @@ public final class GDataPNG extends GData {
     private final Vector4f direction;
     private final GTexture texture;
     private final FloatBuffer matrix;
+    private final Matrix4f tMatrix;
     public final Vertex offset;
     public final Vertex scale;
     public final BigDecimal angleA;
@@ -56,10 +58,11 @@ public final class GDataPNG extends GData {
         this.angleB = angleB;
         this.angleC = angleC;
 
-        Matrix4f tMatrix = new Matrix4f();
-        tMatrix.setIdentity();
-
-        tMatrix = tMatrix.scale(new Vector3f(scale.x, scale.y, scale.z));
+        {
+            Matrix4f tMatrix2 = new Matrix4f();
+            tMatrix2.setIdentity();
+            tMatrix = tMatrix2.scale(new Vector3f(scale.x, scale.y, scale.z));
+        }
 
         Matrix4f dMatrix = new Matrix4f();
         dMatrix.setIdentity();
