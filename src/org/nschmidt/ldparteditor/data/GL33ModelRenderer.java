@@ -533,6 +533,7 @@ public class GL33ModelRenderer {
                         final boolean condlineMode = renderMode == 6;
                         final boolean hideCondlines = !condlineMode && lineMode > 1;
                         final boolean hideLines = !condlineMode && lineMode > 2;
+                        final boolean drawStudLogo = c3d.isShowingLogo();
                         final float zoom = c3d.getZoom();
                         final Matrix4f viewport = c3d.getViewport();
 
@@ -626,6 +627,12 @@ public class GL33ModelRenderer {
                             }
 
                             switch (type) {
+                            case 1:
+                                // FIXME Count stud data here...
+                                if (drawStudLogo) {
+
+                                }
+                                continue;
                             case 2:
                                 if (hideLines) {
                                     continue;
@@ -871,6 +878,12 @@ public class GL33ModelRenderer {
                                 continue;
                             }
                             switch (type) {
+                            case 1:
+                                // FIXME Draw studs here
+                                if (drawStudLogo) {
+
+                                }
+                                continue;
                             case 2:
                                 if (hideLines) {
                                     continue;
