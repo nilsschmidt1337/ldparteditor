@@ -53,6 +53,18 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer33;
  */
 public class GL33ModelRenderer {
 
+    private static Set<String> filesWithLogo1 = new HashSet<String>();
+    private static Set<String> filesWithLogo2 = new HashSet<String>();
+
+    static {
+        filesWithLogo1.add("STUD.DAT"); //$NON-NLS-1$
+        filesWithLogo1.add("STUD.dat"); //$NON-NLS-1$
+        filesWithLogo1.add("stud.dat"); //$NON-NLS-1$
+        filesWithLogo2.add("STUD2.DAT"); //$NON-NLS-1$
+        filesWithLogo2.add("STUD2.dat"); //$NON-NLS-1$
+        filesWithLogo2.add("stud2.dat"); //$NON-NLS-1$
+    }
+
     boolean isPaused = false;
 
     private final Composite3D c3d;
@@ -630,7 +642,17 @@ public class GL33ModelRenderer {
                             case 1:
                                 // FIXME Count stud data here...
                                 if (drawStudLogo) {
-
+                                    GData1 gd1 = (GData1) gd;
+                                    // FIXME Inline studLogoSize array! (if I know how the size is)
+                                    if (filesWithLogo1.contains(gd1.shortName)) {
+                                        final int[] studLogoSize = new int[]{0,0};
+                                        local_tempLineSize += studLogoSize[0];
+                                        tempLineVertexCount += studLogoSize[1];
+                                    } else if (filesWithLogo2.contains(gd1.shortName)) {
+                                        final int[] studLogoSize = new int[]{0,0};
+                                        local_tempLineSize += studLogoSize[0];
+                                        tempLineVertexCount += studLogoSize[1];
+                                    }
                                 }
                                 continue;
                             case 2:
@@ -881,7 +903,15 @@ public class GL33ModelRenderer {
                             case 1:
                                 // FIXME Draw studs here
                                 if (drawStudLogo) {
-
+                                    GData1 gd1 = (GData1) gd;
+                                    final float x = gd1.productMatrix.m30;
+                                    final float y = gd1.productMatrix.m31;
+                                    final float z = gd1.productMatrix.m32;
+                                    if (filesWithLogo1.contains(gd1.shortName)) {
+                                        // tempLineIndex += drawStudLogo1(tempLineData, tempLineIndex, x, y, z);
+                                    } else if (filesWithLogo2.contains(gd1.shortName)) {
+                                        // tempLineIndex += drawStudLogo2(tempLineData, tempLineIndex, x, y, z);
+                                    }
                                 }
                                 continue;
                             case 2:

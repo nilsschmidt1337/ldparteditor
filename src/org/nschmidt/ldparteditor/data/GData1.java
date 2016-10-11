@@ -305,10 +305,10 @@ public final class GData1 extends GData {
             this.name = null;
             this.shortName = null;
             this.matrix = null;
-            this.productMatrix = null;
-            this.localMatrix = null;
-            this.accurateProductMatrix = null;
-            this.accurateLocalMatrix = null;
+            this.productMatrix = View.ID;
+            this.localMatrix = View.ID;
+            this.accurateProductMatrix = View.ACCURATE_ID;
+            this.accurateLocalMatrix = View.ACCURATE_ID;
             this.negativeDeterminant = false;
         }
     }
@@ -395,8 +395,8 @@ public final class GData1 extends GData {
             this.name = null;
             this.shortName = null;
             this.matrix = null;
-            this.productMatrix = null;
-            this.localMatrix = null;
+            this.productMatrix = View.ID;
+            this.localMatrix = View.ID;
             this.negativeDeterminant = false;
         }
     }
