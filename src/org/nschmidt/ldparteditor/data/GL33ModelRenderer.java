@@ -106,6 +106,12 @@ public class GL33ModelRenderer {
     private int vaoCSG;
     private int vboCSG;
 
+    private int vaoStudLogo1;
+    private int vboStudLogo1;
+
+    private int vaoStudLogo2;
+    private int vboStudLogo2;
+
     private volatile Lock lock = new ReentrantLock();
     private static volatile Lock static_lock = new ReentrantLock();
     private static volatile AtomicInteger idGen = new AtomicInteger(0);
@@ -643,7 +649,9 @@ public class GL33ModelRenderer {
                                 // FIXME Count stud data here...
                                 if (drawStudLogo) {
                                     GData1 gd1 = (GData1) gd;
-                                    // FIXME Inline studLogoSize array! (if I know how the size is)
+                                    // Well, it would be better to use one VAO for each logo and
+                                    // iterate with different matrices over the VAO!
+                                    // This is much, much faster!
                                     if (filesWithLogo1.contains(gd1.shortName)) {
                                         final int[] studLogoSize = new int[]{0,0};
                                         local_tempLineSize += studLogoSize[0];
@@ -900,20 +908,6 @@ public class GL33ModelRenderer {
                                 continue;
                             }
                             switch (type) {
-                            case 1:
-                                // FIXME Draw studs here
-                                if (drawStudLogo) {
-                                    GData1 gd1 = (GData1) gd;
-                                    final float x = gd1.productMatrix.m30;
-                                    final float y = gd1.productMatrix.m31;
-                                    final float z = gd1.productMatrix.m32;
-                                    if (filesWithLogo1.contains(gd1.shortName)) {
-                                        // tempLineIndex += drawStudLogo1(tempLineData, tempLineIndex, x, y, z);
-                                    } else if (filesWithLogo2.contains(gd1.shortName)) {
-                                        // tempLineIndex += drawStudLogo2(tempLineData, tempLineIndex, x, y, z);
-                                    }
-                                }
-                                continue;
                             case 2:
                                 if (hideLines) {
                                     continue;
