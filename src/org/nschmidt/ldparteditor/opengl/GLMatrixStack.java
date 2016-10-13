@@ -24,31 +24,31 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 public class GLMatrixStack {
-    
+
     private Stack<Matrix4f> stack = new Stack<>();
     private GLShader shader;
     private Matrix4f currentMatrix;
-    
+
     public GLMatrixStack() {
-        
+
     }
 
     public static Matrix4f glOrtho(double l, double r, double b, double t, double n, double f) {
         Matrix4f result = new Matrix4f();
         result.m00 = (float) (2 / (r - l));
-        result.m30 = (float) (- (r + l) / (r - l)); 
+        result.m30 = (float) (- (r + l) / (r - l));
         result.m11 = (float) (2 / (t - b));
         result.m31 = (float) (- (t + b) / (t - b));
-        result.m22 = (float) (- 2 / (f - n));  
+        result.m22 = (float) (- 2 / (f - n));
         result.m23 = (float) (- (f + n) / (f - n));
-        result.m33 = 1f; 
+        result.m33 = 1f;
         return result;
     }
 
     public GLShader getShader() {
         return shader;
     }
-    
+
     public void setShader(GLShader shader) {
         this.shader = shader;
     }
@@ -64,71 +64,81 @@ public class GLMatrixStack {
         int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(model, false, ID_buf);
     }
-    
+
     public void glPushMatrix() {
         stack.push(new Matrix4f(currentMatrix));
     }
-    
+
     public void glPopMatrix() {
         if (!stack.isEmpty()) {
             currentMatrix = stack.pop();
-            
+
             final FloatBuffer buf = BufferUtils.createFloatBuffer(16);
             currentMatrix.store(buf);
             buf.position(0);
-            
+
             int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
             GL20.glUniformMatrix4fv(model, false, buf);
         }
     }
-    
-    public void glLoadIdentity() {        
+
+    public void glLoadIdentity() {
         final Matrix4f ID = new Matrix4f();
         Matrix4f.setIdentity(ID);
         final FloatBuffer ID_buf = BufferUtils.createFloatBuffer(16);
         ID.store(ID_buf);
         ID_buf.position(0);
         currentMatrix = ID;
-        
+
         int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(model, false, ID_buf);
-        
+
         int view = shader.getUniformLocation("view" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(view, false, ID_buf);
     }
 
+    public void glLoadMatrix(Matrix4f m) {
+        final FloatBuffer m_buf = BufferUtils.createFloatBuffer(16);
+        m.store(m_buf);
+        m_buf.position(0);
+        currentMatrix = m;
+
+        int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
+        GL20.glUniformMatrix4fv(model, false, m_buf);
+    }
+
     public void glMultMatrixf(Matrix4f matrix) {
-        
+
         Matrix4f.mul(currentMatrix, matrix, currentMatrix);
-        
+
         final FloatBuffer buf = BufferUtils.createFloatBuffer(16);
         currentMatrix.store(buf);
         buf.position(0);
-        
+
         int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(model, false, buf);
     }
 
     public void glTranslatef(float x, float y, float z) {
-        
+
         Matrix4f.translate(new Vector3f(x, y, z), currentMatrix, currentMatrix);
-        
+
         final FloatBuffer buf = BufferUtils.createFloatBuffer(16);
         currentMatrix.store(buf);
         buf.position(0);
-        
+
         int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(model, false, buf);
     }
 
     public void glScalef(float x, float y, float z) {
-        
+
         Matrix4f.scale(new Vector3f(x, y, z), currentMatrix, currentMatrix);
-        
+
         final FloatBuffer buf = BufferUtils.createFloatBuffer(16);
         currentMatrix.store(buf);
         buf.position(0);
-        
+
         int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(model, false, buf);
     }

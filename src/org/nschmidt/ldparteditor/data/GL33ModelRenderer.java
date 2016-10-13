@@ -38,6 +38,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.StudLogo;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -149,6 +150,9 @@ public class GL33ModelRenderer {
     private volatile boolean usesPNG = false;
     private volatile boolean usesCSG = false;
 
+    private volatile ArrayList<Matrix4f> stud1_Matrices = new ArrayList<>();
+    private volatile ArrayList<Matrix4f> stud2_Matrices = new ArrayList<>();
+
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
 
     public void init() {
@@ -207,6 +211,36 @@ public class GL33ModelRenderer {
         vboLines = GL15.glGenBuffers();
         GL30.glBindVertexArray(vaoLines);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboLines);
+
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
+
+        GL20.glEnableVertexAttribArray(2);
+        GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL30.glBindVertexArray(0);
+
+        vaoStudLogo1 = GL30.glGenVertexArrays();
+        vboStudLogo1 = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoStudLogo1);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboStudLogo1);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, StudLogo.getStudLogoData1(), GL15.GL_STATIC_DRAW);
+
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
+
+        GL20.glEnableVertexAttribArray(2);
+        GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL30.glBindVertexArray(0);
+
+        vaoStudLogo2 = GL30.glGenVertexArrays();
+        vboStudLogo2 = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoStudLogo2);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboStudLogo2);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, StudLogo.getStudLogoData2(), GL15.GL_STATIC_DRAW);
 
         GL20.glEnableVertexAttribArray(0);
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 4) * 4, 0);
@@ -374,6 +408,7 @@ public class GL33ModelRenderer {
                         final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
                         final ThreadsafeHashMap<GData5, Vertex[]> condlines = vm.condlines;
                         final ArrayList<GDataCSG> csgData = new ArrayList<>();
+                        final boolean drawStudLogo = c3d.isShowingLogo();
 
                         // Build the list of the data from the datfile
                         dataInOrder.clear();
@@ -387,7 +422,7 @@ public class GL33ModelRenderer {
                         {
                             boolean[] special = loadBFCinfo(
                                     dataInOrder, csgData, vertexMap, matrixMap, df,
-                                    lines, triangles, quads, condlines);
+                                    lines, triangles, quads, condlines, drawStudLogo);
                             usesPNG = special[0];
                             usesTEXMAP = special[1];
                             usesCSG = special[2];
@@ -551,9 +586,19 @@ public class GL33ModelRenderer {
                         final boolean condlineMode = renderMode == 6;
                         final boolean hideCondlines = !condlineMode && lineMode > 1;
                         final boolean hideLines = !condlineMode && lineMode > 2;
-                        final boolean drawStudLogo = c3d.isShowingLogo();
                         final float zoom = c3d.getZoom();
                         final Matrix4f viewport = c3d.getViewport();
+
+                        final ArrayList<Matrix4f> stud1Matrices;
+                        final ArrayList<Matrix4f> stud2Matrices;
+
+                        if (drawStudLogo) {
+                            stud1Matrices = new ArrayList<>();
+                            stud2Matrices = new ArrayList<>();
+                        } else {
+                            stud1Matrices = null;
+                            stud2Matrices = null;
+                        }
 
                         int local_triangleSize = 0;
                         int local_lineSize = 0;
@@ -646,20 +691,16 @@ public class GL33ModelRenderer {
 
                             switch (type) {
                             case 1:
-                                // FIXME Count stud data here...
+                                // FIXME Collect stud matrices here...
                                 if (drawStudLogo) {
                                     GData1 gd1 = (GData1) gd;
                                     // Well, it would be better to use one VAO for each logo and
                                     // iterate with different matrices over the VAO!
                                     // This is much, much faster!
                                     if (filesWithLogo1.contains(gd1.shortName)) {
-                                        final int[] studLogoSize = new int[]{0,0};
-                                        local_tempLineSize += studLogoSize[0];
-                                        tempLineVertexCount += studLogoSize[1];
+                                        stud1Matrices.add(gd1.productMatrix);
                                     } else if (filesWithLogo2.contains(gd1.shortName)) {
-                                        final int[] studLogoSize = new int[]{0,0};
-                                        local_tempLineSize += studLogoSize[0];
-                                        tempLineVertexCount += studLogoSize[1];
+                                        stud2Matrices.add(gd1.productMatrix);
                                     }
                                 }
                                 continue;
@@ -1180,6 +1221,13 @@ public class GL33ModelRenderer {
                             }
                         }
 
+                        if (drawStudLogo) {
+                            lock.lock();
+                            stud1_Matrices = stud1Matrices;
+                            stud2_Matrices = stud2Matrices;
+                            lock.unlock();
+                        }
+
                         lock.lock();
                         dataTriangles = triangleData;
                         solidTriangleSize = triangleVertexCount;
@@ -1236,6 +1284,10 @@ public class GL33ModelRenderer {
         GL15.glDeleteBuffers(vboCondlines);
         GL30.glDeleteVertexArrays(vaoCSG);
         GL15.glDeleteBuffers(vboCSG);
+        GL30.glDeleteVertexArrays(vaoStudLogo1);
+        GL15.glDeleteBuffers(vboStudLogo1);
+        GL30.glDeleteVertexArrays(vaoStudLogo2);
+        GL15.glDeleteBuffers(vboStudLogo2);
     }
 
     private int ts, ss, to, vs, ls, tls, gs, sls, cls, ssCSG, toCSG, tsCSG, sCSG;
@@ -1250,6 +1302,7 @@ public class GL33ModelRenderer {
 
         final float zoom = c3d.getZoom();
         final boolean drawLines = View.lineWidthGL[0] > 0.01f;
+        final boolean studlogo = c3d.isShowingLogo();
 
         // TODO Draw !LPE PNG VAOs here
         if (usesPNG) {
@@ -1377,6 +1430,34 @@ public class GL33ModelRenderer {
                 stack.glTranslatef(tr.x, tr.y, tr.z);
                 GL11.glDrawArrays(GL11.GL_LINES, 0, ls);
                 stack.glPopMatrix();
+            }
+
+            if (studlogo) {
+
+                GL11.glLineWidth(3f);
+
+                stack.glPushMatrix();
+
+                {
+                    lock.lock();
+                    ArrayList<Matrix4f> stud1Matrices = stud1_Matrices;
+                    ArrayList<Matrix4f> stud2Matrices = stud2_Matrices;
+                    lock.unlock();
+                    GL30.glBindVertexArray(vaoStudLogo1);
+                    for (Matrix4f m : stud1Matrices) {
+                        stack.glLoadMatrix(m);
+                        GL11.glDrawArrays(GL11.GL_LINES, 0, 320);
+                    }
+                    GL30.glBindVertexArray(vaoStudLogo2);
+                    for (Matrix4f m : stud2Matrices) {
+                        stack.glLoadMatrix(m);
+                        GL11.glDrawArrays(GL11.GL_LINES, 0, 320);
+                    }
+                }
+
+                stack.glPopMatrix();
+
+                GL11.glLineWidth(1f);
             }
 
             if (tls > 0) {
@@ -1555,7 +1636,8 @@ public class GL33ModelRenderer {
             final ThreadsafeHashMap<GData2, Vertex[]> lines,
             final ThreadsafeHashMap<GData3, Vertex[]> triangles,
             final ThreadsafeHashMap<GData4, Vertex[]> quads,
-            final ThreadsafeHashMap<GData5, Vertex[]> condlines) {
+            final ThreadsafeHashMap<GData5, Vertex[]> condlines,
+            final boolean drawStudLogo) {
 
         final boolean[] result = new boolean[3];
         boolean hasTEXMAP = false;
@@ -1607,6 +1689,9 @@ public class GL33ModelRenderer {
                 globalInvertNextFound = false;
                 localWinding = BFC.NOCERTIFY;
                 globalNegativeDeterminant = globalNegativeDeterminant ^ gd1.negativeDeterminant;
+                if (drawStudLogo) {
+                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
+                }
                 gd = gd1.myGData;
                 continue;
             case 6:
