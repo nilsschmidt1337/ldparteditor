@@ -15,8 +15,13 @@ FOR ANY CLAIM * 1000f, DAMAGES OR OTHER LIABILITY * 1000f, WHETHER IN AN ACTION 
 ARISING FROM * 1000f, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers;
 
+import java.util.ArrayList;
+
 public enum StudLogo {
     INSTANCE;
+
+    private static float[] stud1 = null;
+    private static float[] stud2 = null;
 
     // Letter L
     static final float[] letter_L_logo1 = new float[]{
@@ -379,4 +384,78 @@ public enum StudLogo {
     1.24f * 620f, -0.04f * 620f, 1.93f * 620f,
     -1.45f * 620f, -0.04f * 620f, 2.66f * 620f
     };
+
+    public static float[] getStudLogoData1() {
+        if (stud1 == null) {
+            ArrayList<float[]> letters = new ArrayList<>();
+            letters.add(letter_L_logo1);
+            letters.add(letter_E_logo1);
+            letters.add(letter_G_logo1);
+            letters.add(letter_O_inner_logo1);
+            letters.add(letter_O_outer_logo1);
+            stud1 = createStudData(letters);
+        }
+        return stud1;
+    }
+
+    public static float[] getStudLogoData2() {
+        if (stud2 == null) {
+            ArrayList<float[]> letters = new ArrayList<>();
+            letters.add(letter_L_logo2);
+            letters.add(letter_E_logo2);
+            letters.add(letter_G_logo2);
+            letters.add(letter_O_inner_logo2);
+            letters.add(letter_O_outer_logo2);
+            stud2 = createStudData(letters);
+        }
+        return stud2;
+    }
+
+    // FIXME Stud data creation needs implementation!
+    private static float[] createStudData(ArrayList<float[]> letters) {
+        float[] result;
+        int resultSize = 0;
+        for (float[] letter : letters) {
+            final int size = letter.length / 3 - 1;
+            resultSize += size;
+        }
+        result = new float[resultSize * 14];
+        int vertexIndex = 0;
+        for (float[] letter : letters) {
+            final int size = letter.length / 3 - 1;
+            for (int i = 0; i < size; i++) {
+                int offset1 = i * 3;
+                final float x1 = letter[offset1];
+                final float y1 = letter[offset1 + 1];
+                final float z1 = letter[offset1 + 2];
+                final float x2 = letter[offset1 + 3];
+                final float y2 = letter[offset1 + 4];
+                final float z2 = letter[offset1 + 5];
+                pointAt7(0, x1, y1, z1, result, vertexIndex);
+                pointAt7(1, x2, y2, z2, result, vertexIndex);
+                colourise7(0, 2, 0f, 0f, 0f, 7f, result, vertexIndex);
+                vertexIndex += 2;
+            }
+        }
+        return result;
+    }
+
+    private static void colourise7(int offset, int times, float r, float g, float b,
+            float a, float[] vertexData, int i) {
+        for (int j = 0; j < times; j++) {
+            int pos = (offset + i + j) * 7;
+            vertexData[pos + 3] = r;
+            vertexData[pos + 4] = g;
+            vertexData[pos + 5] = b;
+            vertexData[pos + 6] = a;
+        }
+    }
+
+    private static void pointAt7(int offset, float x, float y, float z,
+            float[] vertexData, int i) {
+        int pos = (offset + i) * 7;
+        vertexData[pos] = x;
+        vertexData[pos + 1] = y;
+        vertexData[pos + 2] = z;
+    }
 }
