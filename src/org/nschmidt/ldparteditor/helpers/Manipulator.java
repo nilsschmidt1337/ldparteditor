@@ -281,6 +281,10 @@ public class Manipulator {
         this.modified = origin.modified;
     }
 
+    public Matrix4f getTempTransformation4f() {
+        return result;
+    }
+
     public FloatBuffer getTempTransformation() {
         Matrix4f.invert(result, resultinv);
         result.store(matrix);
