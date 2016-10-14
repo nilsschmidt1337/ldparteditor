@@ -330,7 +330,6 @@ public class GL33ModelRenderer {
                 final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
                 final HashMap<GData, float[]> normalMap = new HashMap<>();
-                final HashMap<GData, GData> transformMap = new HashMap<>();
                 final ThreadsafeHashMap<GData1, Matrix4f> CACHE_viewByProjection = new ThreadsafeHashMap<GData1, Matrix4f>(1000);
                 final HashMap<GData1, Matrix4f> matrixMap = new HashMap<>();
                 final Integer myID = idGen.getAndIncrement();
@@ -418,7 +417,6 @@ public class GL33ModelRenderer {
                         dataInOrder.clear();
                         vertexMap.clear();
                         normalMap.clear();
-                        transformMap.clear();
                         selectionSet.clear();
                         hiddenSet.clear();
                         CACHE_viewByProjection.clear();
@@ -687,24 +685,24 @@ public class GL33ModelRenderer {
                         // Lines are never transparent!
                         for (GDataAndWinding gw : dataInOrder) {
 
-                            GData tgd = gw.data;
-                            final boolean selected = selectedData.contains(tgd);
-                            final int type = tgd.type();
+                            final GData gd = gw.data;
+                            final boolean selected = selectedData.contains(gd);
+                            final int type = gd.type();
 
-                            // FIXME If anything is transformed, transform it here (transformMap)
+                            // If anything is transformed, transform it here
                             // and update the vertex positions (vertexMap) and normals for it (normalMap)
                             if (isTransforming && type > 1) {
                                 if (moveAdjacentData) {
-                                    if (selected || ltv.containsKey(tgd)) {
+                                    if (selected || ltv.containsKey(gd)) {
                                         boolean needNormal = false;
-                                        Vertex[] verts = vertexMap.get(tgd);
+                                        Vertex[] verts = vertexMap.get(gd);
                                         Vertex[] nverts = new Vertex[verts.length];
                                         for (int i = 0; i < verts.length; i++) {
                                             Vector4f v = transformedVerts.getOrDefault(verts[i], verts[i].toVector4fm());
                                             needNormal = needNormal || verts[i].toVector4fm() != v;
                                             nverts[i] = new Vertex(v.x, v.y, v.z, true);
                                         }
-                                        vertexMap.put(tgd, nverts);
+                                        vertexMap.put(gd, nverts);
                                         if (needNormal) {
                                             switch (type) {
                                             case 3:
@@ -712,7 +710,7 @@ public class GL33ModelRenderer {
                                                     float xn = (nverts[2].y - nverts[0].y) * (nverts[1].z - nverts[0].z) - (nverts[2].z - nverts[0].z) * (nverts[1].y - nverts[0].y);
                                                     float yn = (nverts[2].z - nverts[0].z) * (nverts[1].x - nverts[0].x) - (nverts[2].x - nverts[0].x) * (nverts[1].z - nverts[0].z);
                                                     float zn = (nverts[2].x - nverts[0].x) * (nverts[1].y - nverts[0].y) - (nverts[2].y - nverts[0].y) * (nverts[1].x - nverts[0].x);
-                                                    normalMap.put(tgd, new float[]{xn, yn, zn});
+                                                    normalMap.put(gd, new float[]{xn, yn, zn});
                                                 }
                                                 break;
                                             case 4:
@@ -736,7 +734,7 @@ public class GL33ModelRenderer {
                                                     float xn = -quadNormal.x;
                                                     float yn = -quadNormal.y;
                                                     float zn = -quadNormal.z;
-                                                    normalMap.put(tgd, new float[]{xn, yn, zn});
+                                                    normalMap.put(gd, new float[]{xn, yn, zn});
                                                 }
                                                 break;
                                             default:
@@ -745,20 +743,20 @@ public class GL33ModelRenderer {
                                         }
                                     }
                                 } else if (selected) {
-                                    Vertex[] verts = vertexMap.get(tgd);
+                                    Vertex[] verts = vertexMap.get(gd);
                                     Vertex[] nverts = new Vertex[verts.length];
                                     for (int i = 0; i < verts.length; i++) {
                                         Vector4f v = Matrix4f.transform(transform, verts[i].toVector4f(), new Vector4f());
                                         nverts[i] = new Vertex(v.x, v.y, v.z, true);
                                     }
-                                    vertexMap.put(tgd, nverts);
+                                    vertexMap.put(gd, nverts);
                                     switch (type) {
                                     case 3:
                                         {
                                             float xn = (nverts[2].y - nverts[0].y) * (nverts[1].z - nverts[0].z) - (nverts[2].z - nverts[0].z) * (nverts[1].y - nverts[0].y);
                                             float yn = (nverts[2].z - nverts[0].z) * (nverts[1].x - nverts[0].x) - (nverts[2].x - nverts[0].x) * (nverts[1].z - nverts[0].z);
                                             float zn = (nverts[2].x - nverts[0].x) * (nverts[1].y - nverts[0].y) - (nverts[2].y - nverts[0].y) * (nverts[1].x - nverts[0].x);
-                                            normalMap.put(tgd, new float[]{xn, yn, zn});
+                                            normalMap.put(gd, new float[]{xn, yn, zn});
                                         }
                                         break;
                                     case 4:
@@ -782,7 +780,7 @@ public class GL33ModelRenderer {
                                             float xn = quadNormal.x;
                                             float yn = quadNormal.y;
                                             float zn = quadNormal.z;
-                                            normalMap.put(tgd, new float[]{xn, yn, zn});
+                                            normalMap.put(gd, new float[]{xn, yn, zn});
                                         }
                                         break;
                                     default:
@@ -790,8 +788,6 @@ public class GL33ModelRenderer {
                                     }
                                 }
                             }
-
-                            final GData gd = tgd;
 
                             // FIXME Calculate the buffer size for selected objects
                             if (selected) {
@@ -1040,10 +1036,9 @@ public class GL33ModelRenderer {
                         // Iterate the objects and generate the buffer data
                         // TEXMAP and Real Backface Culling are quite "the same", but they need different vertex normals / materials
                         for (GDataAndWinding gw : dataInOrder) {
-                            final GData gd = transformMap.getOrDefault(gw.data, gw.data);
+                            final GData gd = gw.data;
 
                             final int type = gd.type();
-                            final boolean transformed = gd != gw.data;
                             final boolean selected = selectionSet.contains(gd);
 
                             if (selected) {
