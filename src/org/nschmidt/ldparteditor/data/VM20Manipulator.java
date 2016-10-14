@@ -321,7 +321,7 @@ public class VM20Manipulator extends VM19ColourChanger {
      *            {@code true} if all data should be transformed which is
      *            adjacent to the current selection
      */
-    public final synchronized void transformSelection(Matrix transformation, Vector3d newVertex, boolean moveAdjacentData) {
+    public final void transformSelection(Matrix transformation, Vector3d newVertex, boolean moveAdjacentData) {
         if (linkedDatFile.isReadOnly())
             return;
 
