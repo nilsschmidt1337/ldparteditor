@@ -523,8 +523,7 @@ public final class GData2 extends GData {
             return text;
         StringBuilder lineBuilder = new StringBuilder();
         if (isLine) {
-            lineBuilder.append(2);
-            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append("2 "); //$NON-NLS-1$
         } else {
             lineBuilder.append("0 !LPE DISTANCE "); //$NON-NLS-1$
         }

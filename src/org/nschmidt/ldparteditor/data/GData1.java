@@ -1393,8 +1393,7 @@ public final class GData1 extends GData {
 
         df.getVertexManager().remove(untransformedSubfile);
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(1);
-        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append("1 "); //$NON-NLS-1$
         if (colourNumber == -1) {
             lineBuilder.append("0x2"); //$NON-NLS-1$
             lineBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
@@ -1524,8 +1523,7 @@ public final class GData1 extends GData {
 
     public String getColouredString(String colour) {
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(1);
-        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append("1 "); //$NON-NLS-1$
         lineBuilder.append(colour);
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M30));
@@ -1558,8 +1556,7 @@ public final class GData1 extends GData {
 
     public String getRoundedString(int coordsDecimalPlaces, int matrixDecimalPlaces, final boolean onX,  final boolean onY,  final boolean onZ) {
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(1);
-        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append("1 "); //$NON-NLS-1$
         if (colourNumber == -1) {
             lineBuilder.append("0x2"); //$NON-NLS-1$
             lineBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
@@ -2722,8 +2719,7 @@ public final class GData1 extends GData {
                 {
                     Matrix newMatrix = this.accurateProductMatrix;
                     StringBuilder lineBuilder1 = new StringBuilder();
-                    lineBuilder1.append(1);
-                    lineBuilder1.append(" "); //$NON-NLS-1$
+                    lineBuilder1.append("1 "); //$NON-NLS-1$
                     if (this.colourNumber == -1) {
                         lineBuilder1.append("0x2"); //$NON-NLS-1$
                         lineBuilder1.append(MathHelper.toHex((int) (255f * this.r)).toUpperCase());
@@ -2780,8 +2776,7 @@ public final class GData1 extends GData {
 
     public String colourReplace(String col) {
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(1);
-        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append("1 "); //$NON-NLS-1$
         lineBuilder.append(col);
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M30));

@@ -1224,8 +1224,7 @@ public final class GData3 extends GData {
             return text;
         StringBuilder lineBuilder = new StringBuilder();
         if (isTriangle) {
-            lineBuilder.append(3);
-            lineBuilder.append(" "); //$NON-NLS-1$
+            lineBuilder.append("3 "); //$NON-NLS-1$
         } else {
             lineBuilder.append("0 !LPE PROTRACTOR "); //$NON-NLS-1$
         }

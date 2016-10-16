@@ -883,8 +883,7 @@ public final class GData5 extends GData {
         if (text != null)
             return text;
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(5);
-        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append("5 "); //$NON-NLS-1$
         if (colourNumber == -1) {
             lineBuilder.append("0x2"); //$NON-NLS-1$
             lineBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
@@ -1077,11 +1076,11 @@ public final class GData5 extends GData {
     }
 
     public void isShown(Matrix4f viewport, ThreadsafeHashMap<GData1, Matrix4f> CACHE_viewByProjection, float zoom) {
-        
+
         if (wasShown) {
             return;
         }
-        
+
         final Matrix4f M2 = CACHE_viewByProjection.get(parent);
         if (M2 == null) {
             Matrix4f.mul(viewport, parent.productMatrix, M);
@@ -1089,7 +1088,7 @@ public final class GData5 extends GData {
         } else {
             M = M2;
         }
-        
+
         // Calculate the real coordinates
         Matrix4f.transform(M, A2, A);
         Matrix4f.transform(M, B2, B);
@@ -1100,9 +1099,9 @@ public final class GData5 extends GData {
         N.y = B.x - A.x;
         N.z = 0f;
         N.w = 1f;
-        wasShown = zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null)) > -1e-20f; 
+        wasShown = zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null)) > -1e-20f;
     }
-    
+
     public boolean wasShown() {
         return wasShown;
     }
