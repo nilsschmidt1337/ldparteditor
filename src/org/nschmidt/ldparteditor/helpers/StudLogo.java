@@ -411,7 +411,6 @@ public enum StudLogo {
         return stud2;
     }
 
-    // FIXME Stud data creation needs implementation!
     private static float[] createStudData(ArrayList<float[]> letters) {
         float[] result;
         int resultSize = 0;
