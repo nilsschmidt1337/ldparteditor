@@ -149,6 +149,8 @@ public class GL33ModelRenderer {
     private volatile int condlineSize = 0;
     private volatile int selectionSize = 0;
 
+    private volatile ArrayList<GDataPNG> images = new ArrayList<>();
+
     private volatile boolean usesTEXMAP = false;
     private volatile boolean usesPNG = false;
     private volatile boolean usesCSG = false;
@@ -412,6 +414,7 @@ public class GL33ModelRenderer {
                         final ThreadsafeHashMap<GData5, Vertex[]> condlines = vm.condlines;
                         final ArrayList<GDataCSG> csgData = new ArrayList<>();
                         final boolean drawStudLogo = c3d.isShowingLogo();
+                        final ArrayList<GDataPNG> pngImages = new ArrayList<>();
 
                         // Build the list of the data from the datfile
                         dataInOrder.clear();
@@ -424,7 +427,8 @@ public class GL33ModelRenderer {
                         {
                             boolean[] special = loadBFCinfo(
                                     dataInOrder, csgData, vertexMap, matrixMap, df,
-                                    lines, triangles, quads, condlines, drawStudLogo);
+                                    lines, triangles, quads, condlines, drawStudLogo,
+                                    pngImages);
                             usesPNG = special[0];
                             usesTEXMAP = special[1];
                             usesCSG = special[2];
@@ -1373,6 +1377,7 @@ public class GL33ModelRenderer {
                         }
 
                         lock.lock();
+                        images = pngImages;
                         dataTriangles = triangleData;
                         solidTriangleSize = triangleVertexCount;
                         transparentTriangleSize = transparentTriangleVertexCount;
@@ -1709,6 +1714,15 @@ public class GL33ModelRenderer {
                 mainShader.use();
                 stack.setShader(mainShader);
             }
+
+            // Draw LPE PNG images here
+            if (!images.isEmpty()) {
+                mainShader.pngModeOn();
+                for (GDataPNG png : images) {
+                    png.drawGL33(c3d, stack);
+                }
+                mainShader.pngModeOff();
+            }
         } else {
 
             GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -1781,7 +1795,7 @@ public class GL33ModelRenderer {
             final ThreadsafeHashMap<GData3, Vertex[]> triangles,
             final ThreadsafeHashMap<GData4, Vertex[]> quads,
             final ThreadsafeHashMap<GData5, Vertex[]> condlines,
-            final boolean drawStudLogo) {
+            final boolean drawStudLogo, ArrayList<GDataPNG> pngImages) {
 
         final boolean[] result = new boolean[3];
         boolean hasTEXMAP = false;
@@ -1939,6 +1953,7 @@ public class GL33ModelRenderer {
                 hasTEXMAP = true;
                 continue;
             case 10:
+                pngImages.add((GDataPNG) gd);
                 hasPNG = true;
                 continue;
             default:

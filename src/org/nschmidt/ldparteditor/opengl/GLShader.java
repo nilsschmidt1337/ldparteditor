@@ -25,44 +25,44 @@ import org.lwjgl.opengl.GL20;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
 public class GLShader {
-    
-    private final int program;    
+
+    private final int program;
     final private HashMap<String, Integer> uniformMap = new HashMap<>();
-    
+
     public GLShader() {
         program = 0;
     }
-            
+
     public GLShader(final String vertexPath, final String fragmentPath) {
         final int vertex = createAndCompile(vertexPath, GL20.GL_VERTEX_SHADER);
         final int fragment = createAndCompile(fragmentPath, GL20.GL_FRAGMENT_SHADER);
-        
+
         program = GL20.glCreateProgram();
         GL20.glAttachShader(program, fragment);
         GL20.glAttachShader(program, vertex);
-        
+
         GL20.glLinkProgram(program);
-        
+
         // FIXME Extract parameter locations
         // int baseImageLoc = GL20.glGetUniformLocation(program, "colorMap"); //$NON-NLS-1$
-        
+
         if (GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
             NLogger.error(GLShader.class, "Could not link shader: " + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$;
         }
-        
+
         GL20.glDetachShader(program, fragment);
         GL20.glDetachShader(program, vertex);
         GL20.glDeleteShader(fragment);
         GL20.glDeleteShader(vertex);
     }
-    
+
     public void use() {
         GL20.glUseProgram(program);
     }
-    
+
     private int createAndCompile(final String path, final int type) {
         final StringBuilder shaderSource = new StringBuilder();
-        
+
         try (BufferedReader shaderReader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream(path), "UTF-8"))) { //$NON-NLS-1$) {
             String line;
             while ((line = shaderReader.readLine()) != null) {
@@ -90,7 +90,7 @@ public class GLShader {
         GL20.glDeleteProgram(program);
         uniformMap.clear();
     }
-    
+
     public int getUniformLocation(String uniformName) {
         int location = uniformMap.getOrDefault(uniformName, -1);
         if (location == -1) {
@@ -103,7 +103,7 @@ public class GLShader {
         }
         return location;
     }
-    
+
     public void lightsOn() {
         GL20.glUniform1f(getUniformLocation("lightswitch"), 1f); //$NON-NLS-1$
     }
@@ -115,12 +115,20 @@ public class GLShader {
     public boolean isLightOn() {
         return GL20.glGetUniformf(program, getUniformLocation("lightswitch")) == 1f; //$NON-NLS-1$
     }
-    
+
     public void setFactor(float f) {
         GL20.glUniform1f(getUniformLocation("factor"), f); //$NON-NLS-1$
     }
-    
+
     public boolean isDefault() {
         return program == 0;
+    }
+
+    public void pngModeOn() {
+        GL20.glUniform1f(getUniformLocation("pngswitch"), 1f); //$NON-NLS-1$
+    }
+
+    public void pngModeOff() {
+        GL20.glUniform1f(getUniformLocation("pngswitch"), 0f); //$NON-NLS-1$
     }
 }

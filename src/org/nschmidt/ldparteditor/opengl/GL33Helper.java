@@ -18,12 +18,17 @@ package org.nschmidt.ldparteditor.opengl;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 public class GL33Helper {
 
     private static final int POSITION_SHADER_LOCATION = 0;
     private static final int COLOUR_SHADER_LOCATION = 1;
+    private static final int TEX_NORMAL_SHADER_LOCATION = 1;
+    private static final int TEX_COLOUR_SHADER_LOCATION = 2;
+    private static final int UV_SHADER_LOCATION = 3;
     private static final int RGB_STRIDE = (3 + 3) * 4;
+    private static final int RGB_UV_STRIDE = (3 + 3 + 4 + 2) * 4;
 
     private int VBO_general = -1;
     private int EBO_general = -1;
@@ -110,7 +115,40 @@ public class GL33Helper {
         GL15.glDeleteBuffers(VBO_general);
         GL15.glDeleteBuffers(EBO_general);
     }
-    
+
+    public static void drawTrianglesIndexedTextured_GeneralSlow(float[] vertices, int[] indices) {
+        int VAO_general = GL30.glGenVertexArrays();
+        int VBO_general = GL15.glGenBuffers();
+        int EBO_general = GL15.glGenBuffers();
+        GL30.glBindVertexArray(VAO_general);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_general);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STATIC_DRAW);
+
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBO_general);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
+
+        GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
+        GL20.glVertexAttribPointer(POSITION_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, RGB_UV_STRIDE, 0);
+
+        GL20.glEnableVertexAttribArray(TEX_NORMAL_SHADER_LOCATION);
+        GL20.glVertexAttribPointer(TEX_NORMAL_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, RGB_UV_STRIDE, 12); // 3 * 4
+
+        GL20.glEnableVertexAttribArray(TEX_COLOUR_SHADER_LOCATION);
+        GL20.glVertexAttribPointer(TEX_COLOUR_SHADER_LOCATION, 4, GL11.GL_FLOAT, false, RGB_UV_STRIDE, 24);
+
+        GL20.glEnableVertexAttribArray(UV_SHADER_LOCATION);
+        GL20.glVertexAttribPointer(UV_SHADER_LOCATION, 2, GL11.GL_FLOAT, false, RGB_UV_STRIDE, 40);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+
+        GL11.glDrawElements(GL11.GL_TRIANGLES, indices.length, GL11.GL_UNSIGNED_INT, 0);
+
+        GL30.glBindVertexArray(0);
+        GL30.glDeleteVertexArrays(VAO_general);
+        GL15.glDeleteBuffers(VBO_general);
+        GL15.glDeleteBuffers(EBO_general);
+    }
+
     public static void drawTriangle_GeneralSlow(float[] vertices) {
         int VBO_general = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_general);
@@ -124,20 +162,20 @@ public class GL33Helper {
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
         GL15.glDeleteBuffers(VBO_general);
     }
-    
-    
+
+
     public static int[] createQuadStrip_VAO_VBO(float r, float g, float b, float a, float[] vertices) {
         final int[] result = new int[2];
         // FIXME Needs implementation!
         return result;
     }
-    
+
     public static int[] createLines_VAO_VBO(float r, float g, float b, float a, float[] vertices) {
         final int[] result = new int[2];
         // FIXME Needs implementation!
         return result;
     }
-    
+
     public static void colourise(int offset, int times, float r, float g, float b,
             float a, float[] vertexData, int i) {
         for (int j = 0; j < times; j++) {
@@ -148,7 +186,7 @@ public class GL33Helper {
             vertexData[pos + 9] = a;
         }
     }
-    
+
     public static void colourise7(int offset, int times, float r, float g, float b,
             float a, float[] vertexData, int i) {
         for (int j = 0; j < times; j++) {
@@ -167,7 +205,7 @@ public class GL33Helper {
         vertexData[pos + 1] = y;
         vertexData[pos + 2] = z;
     }
-    
+
     public static void pointAt7(int offset, float x, float y, float z,
             float[] vertexData, int i) {
         int pos = (offset + i) * 7;

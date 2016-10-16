@@ -7,6 +7,8 @@ in vec3 position;
 in vec2 tex;
 
 uniform float lightswitch;
+uniform float pngswitch;
+uniform sampler2D ldpePngSampler;
 
 uniform float l0_r;
 uniform float l0_g;
@@ -126,6 +128,15 @@ void main()
 		lightSpecular += lights[i].specular * frontMaterial.specular * pow(max(dot(r, eyeDir), 0.0), frontMaterial.shininess) * attenFactor;
 		
 	}
-    lightSpecular *= .05;
-	color = (sceneColor + lightAmbientDiffuse) + lightSpecular;
+	if (pngswitch < 1.0f) {	
+    	lightSpecular *= .05;
+		color = (sceneColor + lightAmbientDiffuse) + lightSpecular;
+	} else {
+		vec4 texColor = texture2D(ldpePngSampler, tex.xy);
+		if (sceneColor.a == 7.0f) {
+			color = sceneColor;
+		} else {
+			color = texColor + sceneColor;
+		}	
+	}
 }
