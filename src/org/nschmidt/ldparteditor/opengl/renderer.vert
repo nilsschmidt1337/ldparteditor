@@ -6,6 +6,7 @@ layout(location = 2) in vec4 in_color;
 layout(location = 3) in vec2 in_tex;  
 
 uniform float factor;
+uniform float pngswitch;
 
 uniform mat4 projection;
 uniform mat4 view;
@@ -18,8 +19,10 @@ out vec3 position;
 out vec2 tex;
 
 void main()
-{	
-	tex = in_tex;
+{
+	if (pngswitch > 0.0f) {
+		tex = in_tex;
+	}
 	gl_Position = projection * view * model * vec4(in_position, 1.0f);
 	position = vec3(view * model * vec4(in_position, 1.0f));
     sceneColor = vec4(in_color.r * factor, in_color.g * factor, in_color.b * factor, in_color.a);

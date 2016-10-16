@@ -27,6 +27,8 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.opengl.GL33Helper;
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 
 /**
@@ -208,6 +210,180 @@ public final class GDataPNG extends GData {
 
 
         GL11.glPopMatrix();
+    }
+
+    public void drawGL33(Composite3D c3d, GLMatrixStack stack) {
+
+        final boolean selected = this.equals(c3d.getLockableDatFileReference().getVertexManager().getSelectedBgPicture());
+
+        Vector4f[] gen = c3d.getGenerator();
+        if (!selected && (Math.abs(direction.x - gen[2].x) > .001 || Math.abs(direction.y - gen[2].y) > .001 || Math.abs(direction.z - gen[2].z) > .001)) return;
+
+        stack.glPushMatrix();
+        stack.glMultMatrixf(tMatrix);
+
+        texture.bindGL33(c3d.getRenderer(), stack.getShader());
+
+        float w;
+        if (this.texture.getHeight() != 0f) {
+            w = this.texture.getWidth() / this.texture.getHeight();
+        } else {
+            w = 1f;
+        }
+
+        GL11.glDisable(GL11.GL_CULL_FACE);
+
+        if (selected) {
+
+            GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(new float[] {
+            w + 0.05f, 1f + 0.05f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+            w, 1f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+            w, -1f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+            w + 0.05f, -1f - 0.05f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+
+            -w, -1f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+            -w, 1f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+            -w - 0.05f, 1f + 0.05f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+            -w - 0.05f, -1f - 0.05f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+
+            w + 0.05f, 1f + 0.05f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+            -w - 0.05f, 1f + 0.05f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+            -w, 1f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+            w, 1f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+
+            -w, -1f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+            -w - 0.05f, -1f - 0.05f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+            w + 0.05f, -1f - 0.05f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f,
+            w, -1f, 0f,
+            1f, 0f, 0f,
+            1f, 0f, 0f, 7f,
+            0f, 0f
+            }, new int[]{0,1,2,2,3,0,4,5,6,6,7,4,8,9,10,10,11,8,12,13,14,14,15,12});
+
+            GL11.glEnable(GL11.GL_CULL_FACE);
+
+            if (scale.x * scale.y < 0f) {
+                GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(new float[] {
+                // 1 1
+                -w, -1f, 0f,
+                1f, 0f, 0f,
+                1f, 0.7f, 0.7f, 1f,
+                0f, 0f,
+                // 1 0
+                -w, 1f, 0f,
+                1f, 0f, 0f,
+                1f, 0.7f, 0.7f, 1f,
+                0f, 1f,
+                // 0 0
+                w, 1f, 0f,
+                1f, 0f, 0f,
+                1f, 0.7f, 0.7f, 1f,
+                1f, 1f,
+                // 0 1
+                w, -1f, 0f,
+                1f, 0f, 0f,
+                1f, 0.7f, 0.7f, 1f,
+                1f, 0f,
+                }, new int[]{0,1,2,2,3,0});
+            } else {
+                GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(new float[] {
+                // 1 1
+                w, 1f, 0f,
+                1f, 0f, 0f,
+                1f, 0.7f, 0.7f, 1f,
+                1f, 1f,
+                // 1 0
+                -w, 1f, 0f,
+                1f, 0f, 0f,
+                1f, 0.7f, 0.7f, 1f,
+                0f, 1f,
+                // 0 0
+                -w, -1f, 0f,
+                1f, 0f, 0f,
+                1f, 0.7f, 0.7f, 1f,
+                0f, 0f,
+                // 0 1
+                w, -1f, 0f,
+                1f, 0f, 0f,
+                1f, 0.7f, 0.7f, 1f,
+                1f, 0f,
+                }, new int[]{0,1,2,2,3,0});
+            }
+
+        } else {
+
+            GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(new float[] {
+            // 1 1
+            w, 1f, 0f,
+            1f, 0f, 0f,
+            0f, 0f, 0f, 1f,
+            1f, 1f,
+            // 1 0
+            -w, 1f, 0f,
+            1f, 0f, 0f,
+            0f, 0f, 0f, 1f,
+            0f, 1f,
+            // 0 0
+            -w, -1f, 0f,
+            1f, 0f, 0f,
+            0f, 0f, 0f, 1f,
+            0f, 0f,
+            // 0 1
+            w, -1f, 0f,
+            1f, 0f, 0f,
+            0f, 0f, 0f, 1f,
+            1f, 0f,
+            }, new int[]{0,1,2,2,3,0});
+        }
+
+        GL11.glEnable(GL11.GL_CULL_FACE);
+
+        stack.glPopMatrix();
     }
 
     @Override
