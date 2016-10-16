@@ -1307,8 +1307,7 @@ public final class GData4 extends GData {
         if (text != null)
             return text;
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(4);
-        lineBuilder.append(" "); //$NON-NLS-1$
+        lineBuilder.append("4 "); //$NON-NLS-1$
         if (colourNumber == -1) {
             lineBuilder.append("0x2"); //$NON-NLS-1$
             lineBuilder.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
@@ -1642,13 +1641,13 @@ public final class GData4 extends GData {
         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
             return true;
         }
-        
+
         angle = Vector3d.angle(B, C);
         sumAngle = sumAngle + angle;
         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
             return true;
         }
-        
+
         A.negate();
         B.negate();
         angle = Vector3d.angle(A, B);
@@ -1656,12 +1655,12 @@ public final class GData4 extends GData {
         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
             return true;
         }
-        
+
         angle = 360.0 - sumAngle;
         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
             return true;
         }
-        
+
         return false;
     }
 
