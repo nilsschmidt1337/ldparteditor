@@ -163,6 +163,25 @@ public class GL33Helper {
         GL15.glDeleteBuffers(VBO_general);
     }
 
+    public static void drawTriangleVAO_GeneralSlow(float[] vertices) {
+        int VAO_general = GL30.glGenVertexArrays();
+        int VBO_general = GL15.glGenBuffers();
+        GL30.glBindVertexArray(VAO_general);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_general);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
+
+        GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
+        GL20.glVertexAttribPointer(POSITION_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, 12, 0);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+
+        GL30.glBindVertexArray(0);
+        GL30.glDeleteVertexArrays(VAO_general);
+        GL15.glDeleteBuffers(VBO_general);
+    }
+
 
     public static int[] createQuadStrip_VAO_VBO(float r, float g, float b, float a, float[] vertices) {
         final int[] result = new int[2];

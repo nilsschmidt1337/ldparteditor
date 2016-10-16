@@ -42,10 +42,10 @@ public final class PGData3 extends PGData implements Serializable {
     public final float x3;
     public final float y3;
     final float z3;
-    
+
     private final transient int[] indices = new int[6];
     private final transient float[] vertices = new float[36];
-    
+
     public PGData3(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
         this.x1 = x1;
         this.y1 = y1;
@@ -56,7 +56,7 @@ public final class PGData3 extends PGData implements Serializable {
         this.x3 = x3;
         this.y3 = y3;
         this.z3 = z3;
-        
+
         vertices[0] = x1;
         vertices[1] = y1;
         vertices[2] = z1;
@@ -209,14 +209,14 @@ public final class PGData3 extends PGData implements Serializable {
             GL11.glEnd();
         }
     }
-    
+
     @Override
     public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
         if (drawOnlyMode == 2) return;
         switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
         case BFC.CCW:
             if (PGData.globalNegativeDeterminant) {
-                if (PGData.globalInvertNext) {                    
+                if (PGData.globalInvertNext) {
                     indices[0] = 0;
                     indices[1] = 2;
                     indices[2] = 1;
@@ -267,7 +267,7 @@ public final class PGData3 extends PGData implements Serializable {
                         indices[5] = 5;
                     }
                 } else {
-                    if (PGData.globalInvertNext) {                    
+                    if (PGData.globalInvertNext) {
                         indices[0] = 0;
                         indices[1] = 2;
                         indices[2] = 1;
@@ -292,13 +292,13 @@ public final class PGData3 extends PGData implements Serializable {
             vertices[11] = vertices[5];
             vertices[15] = vertices[3];
             vertices[16] = vertices[4];
-            vertices[17] = vertices[5];                                        
+            vertices[17] = vertices[5];
             vertices[21] = View.BFC_back__Colour_r[0];
             vertices[22] = View.BFC_back__Colour_g[0];
-            vertices[23] = View.BFC_back__Colour_b[0];                    
+            vertices[23] = View.BFC_back__Colour_b[0];
             vertices[27] = vertices[21];
             vertices[28] = vertices[22];
-            vertices[29] = vertices[23];                    
+            vertices[29] = vertices[23];
             vertices[33] = vertices[21];
             vertices[34] = vertices[22];
             vertices[35] = vertices[23];
@@ -319,13 +319,13 @@ public final class PGData3 extends PGData implements Serializable {
             vertices[11] = vertices[5];
             vertices[15] = vertices[3];
             vertices[16] = vertices[4];
-            vertices[17] = vertices[5];                                        
+            vertices[17] = vertices[5];
             vertices[21] = vertices[3];
             vertices[22] = vertices[4];
-            vertices[23] = vertices[5];                    
+            vertices[23] = vertices[5];
             vertices[27] = vertices[3];
             vertices[28] = vertices[4];
-            vertices[29] = vertices[5];                    
+            vertices[29] = vertices[5];
             vertices[33] = vertices[3];
             vertices[34] = vertices[4];
             vertices[35] = vertices[5];
@@ -346,21 +346,21 @@ public final class PGData3 extends PGData implements Serializable {
             vertices[11] = vertices[5];
             vertices[15] = vertices[3];
             vertices[16] = vertices[4];
-            vertices[17] = vertices[5];                                        
+            vertices[17] = vertices[5];
             vertices[21] = vertices[3];
             vertices[22] = vertices[4];
-            vertices[23] = vertices[5];                    
+            vertices[23] = vertices[5];
             vertices[27] = vertices[3];
             vertices[28] = vertices[4];
-            vertices[29] = vertices[5];                    
+            vertices[29] = vertices[5];
             vertices[33] = vertices[3];
             vertices[34] = vertices[4];
             vertices[35] = vertices[5];
             GL33HelperPrimitives.drawTrianglesIndexedRGB_Triangle(vertices, indices);
         }
     }
-    
-    
+
+
     public static void beginDrawText() {
         GL11.glColor4f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0], 1f);
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -378,7 +378,7 @@ public final class PGData3 extends PGData implements Serializable {
     public static void endDrawText() {
         GL11.glEnd();
     }
-    
+
     public static void beginDrawTextGL33(GLShader shader) {
         shader.use();
         final int colour = shader.getUniformLocation("color"); //$NON-NLS-1$
@@ -391,8 +391,15 @@ public final class PGData3 extends PGData implements Serializable {
             -x2 + x, y2 + y, z2 + z
         });
     }
+    public void drawTextGL33_VAO(float x, float y, float z, float scale) {
+        GL33Helper.drawTriangleVAO_GeneralSlow(new float[] {
+            -x1 * scale + x, y1 * scale + y, z1 * scale + z,
+            -x3 * scale + x, y3 * scale + y, z3 * scale + z,
+            -x2 * scale + x, y2 * scale + y, z2 * scale + z
+        });
+    }
     public static void endDrawTextGL33(GLShader shader) {
-        shader.use();  
+        shader.use();
     }
     public static PGData3 clone(PGData3 o) {
         return new PGData3(o.x1, o.y1, o.z1, o.x2, o.y2, o.z2, o.x3, o.y3, o.z3);

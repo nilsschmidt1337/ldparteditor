@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -74,9 +75,9 @@ public class GL33ModelRenderer {
     private final Composite3D c3d;
     private final OpenGLRenderer33 renderer;
 
-    public GL33ModelRenderer(Composite3D c3d) {
+    public GL33ModelRenderer(Composite3D c3d, OpenGLRenderer33 renderer) {
         this.c3d = c3d;
-        this.renderer = (OpenGLRenderer33) c3d.getRenderer();
+        this.renderer = renderer;
     }
 
     // FIXME needs concept implementation!
@@ -88,9 +89,6 @@ public class GL33ModelRenderer {
 
     private int vao;
     private int vbo;
-
-    private int vaoGlyphs;
-    private int vboGlyphs;
 
     private int vaoLines;
     private int vboLines;
@@ -129,7 +127,6 @@ public class GL33ModelRenderer {
     private volatile float[] dataTriangles = null;
     private volatile float[] dataLines = new float[]{0f};
     private volatile float[] dataTempLines = new float[]{0f};
-    private volatile float[] dataGlyphs = new float[]{0f};
     private volatile float[] dataVertices = null;
     private volatile float[] dataCondlines = new float[]{0f};
     private volatile float[] dataSelectionLines = new float[]{0f};
@@ -144,12 +141,14 @@ public class GL33ModelRenderer {
     private volatile int transparentCSGsize = 0;
     private volatile int lineSize = 0;
     private volatile int tempLineSize = 0;
-    private volatile int glyphSize = 0;
     private volatile int vertexSize = 0;
     private volatile int condlineSize = 0;
     private volatile int selectionSize = 0;
 
     private volatile ArrayList<GDataPNG> images = new ArrayList<>();
+    private volatile ArrayList<GData2> distanceMeters = new ArrayList<>();
+    private volatile ArrayList<GData3> protractors = new ArrayList<>();
+    private volatile HashMap<GData, Vertex[]> sharedVertexMap = new HashMap<>();
 
     private volatile boolean usesTEXMAP = false;
     private volatile boolean usesPNG = false;
@@ -182,23 +181,6 @@ public class GL33ModelRenderer {
         vboCSG = GL15.glGenBuffers();
         GL30.glBindVertexArray(vaoCSG);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCSG);
-
-        GL20.glEnableVertexAttribArray(0);
-        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
-
-        GL20.glEnableVertexAttribArray(1);
-        GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
-
-        GL20.glEnableVertexAttribArray(2);
-        GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
-
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        GL30.glBindVertexArray(0);
-
-        vaoGlyphs = GL30.glGenVertexArrays();
-        vboGlyphs = GL15.glGenBuffers();
-        GL30.glBindVertexArray(vaoGlyphs);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGlyphs);
 
         GL20.glEnableVertexAttribArray(0);
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
@@ -415,6 +397,8 @@ public class GL33ModelRenderer {
                         final ArrayList<GDataCSG> csgData = new ArrayList<>();
                         final boolean drawStudLogo = c3d.isShowingLogo();
                         final ArrayList<GDataPNG> pngImages = new ArrayList<>();
+                        final ArrayList<GData2> tmpDistanceMeters = new ArrayList<>();
+                        final ArrayList<GData3> tmpProtractors = new ArrayList<>();
 
                         // Build the list of the data from the datfile
                         dataInOrder.clear();
@@ -428,7 +412,7 @@ public class GL33ModelRenderer {
                             boolean[] special = loadBFCinfo(
                                     dataInOrder, csgData, vertexMap, matrixMap, df,
                                     lines, triangles, quads, condlines, drawStudLogo,
-                                    pngImages);
+                                    pngImages, tmpDistanceMeters, tmpProtractors);
                             usesPNG = special[0];
                             usesTEXMAP = special[1];
                             usesCSG = special[2];
@@ -616,7 +600,6 @@ public class GL33ModelRenderer {
                         int local_tempLineSize = 0;
                         @SuppressWarnings("unchecked")
                         int local_verticesSize = vertices.size() + (smoothVertices ? ((ArrayList<Vertex>) smoothObj[0]).size() : 0);
-                        int local_glyphSize = 0;
                         int local_selectionLineSize = 0;
 
                         int triangleVertexCount = 0;
@@ -624,7 +607,6 @@ public class GL33ModelRenderer {
                         int lineVertexCount = 0;
                         int condlineVertexCount = 0;
                         int tempLineVertexCount = 0;
-                        int glyphVertexCount = 0;
                         int selectionLineVertexCount = 0;
 
                         if (smoothVertices) {
@@ -849,11 +831,8 @@ public class GL33ModelRenderer {
                                     local_lineSize += 14;
                                     lineVertexCount += 2;
                                 } else {
-                                    int[] distanceMeterSize = gd2.getDistanceMeterDataSize();
-                                    local_glyphSize += distanceMeterSize[0];
-                                    glyphVertexCount += distanceMeterSize[1];
-                                    local_tempLineSize += distanceMeterSize[2];
-                                    tempLineVertexCount += distanceMeterSize[3];
+                                    local_lineSize += 28;
+                                    lineVertexCount += 4;
                                 }
                                 continue;
                             case 3:
@@ -879,11 +858,8 @@ public class GL33ModelRenderer {
                                         continue;
                                     }
                                 } else {
-                                    int[] protractorSize = gd3.getProtractorDataSize();
-                                    local_glyphSize += protractorSize[0];
-                                    glyphVertexCount += protractorSize[1];
-                                    local_tempLineSize += protractorSize[2];
-                                    tempLineVertexCount += protractorSize[3];
+                                    local_lineSize += 168;
+                                    lineVertexCount += 24;
                                 }
                                 continue;
                             case 4:
@@ -922,7 +898,6 @@ public class GL33ModelRenderer {
 
                         // for GL_TRIANGLES
                         float[] triangleData = new float[local_triangleSize];
-                        float[] glyphData = new float[local_glyphSize];
                         // for GL_LINES
                         float[] lineData = new float[local_lineSize];
                         float[] condlineData = new float[local_condlineSize];
@@ -1019,7 +994,6 @@ public class GL33ModelRenderer {
                         int condlineIndex = 0;
                         int tempLineIndex = 0;
                         int selectionLineIndex = 0;
-                        int glyphIndex = 0;
 
                         if (smoothVertices) {
                             @SuppressWarnings("unchecked")
@@ -1116,9 +1090,7 @@ public class GL33ModelRenderer {
                                     }
                                     lineIndex += 2;
                                 } else {
-                                    int[] inc = gd2.insertDistanceMeter(v, glyphData, tempLineData, glyphIndex, tempLineIndex);
-                                    tempLineIndex += inc[0];
-                                    glyphIndex += inc[1];
+                                    lineIndex += gd2.insertDistanceMeter(v, lineData, lineIndex);
                                 }
                                 continue;
                             case 3:
@@ -1214,9 +1186,7 @@ public class GL33ModelRenderer {
                                         continue;
                                     }
                                 } else {
-                                    int[] inc = gd3.insertProtractor(v, glyphData, tempLineData, glyphIndex, tempLineIndex);
-                                    triangleIndex += inc[0];
-                                    tempLineIndex += inc[1];
+                                    lineIndex += gd3.insertProtractor(v, lineData, lineIndex);
                                 }
                                 continue;
                             case 4:
@@ -1376,8 +1346,11 @@ public class GL33ModelRenderer {
                             lock.unlock();
                         }
 
+                        sharedVertexMap = vertexMap;
                         lock.lock();
                         images = pngImages;
+                        distanceMeters = tmpDistanceMeters;
+                        protractors = tmpProtractors;
                         dataTriangles = triangleData;
                         solidTriangleSize = triangleVertexCount;
                         transparentTriangleSize = transparentTriangleVertexCount;
@@ -1425,8 +1398,6 @@ public class GL33ModelRenderer {
         GL15.glDeleteBuffers(vboLines);
         GL30.glDeleteVertexArrays(vaoTempLines);
         GL15.glDeleteBuffers(vboTempLines);
-        GL30.glDeleteVertexArrays(vaoGlyphs);
-        GL15.glDeleteBuffers(vboGlyphs);
         GL30.glDeleteVertexArrays(vaoSelectionLines);
         GL15.glDeleteBuffers(vboSelectionLines);
         GL30.glDeleteVertexArrays(vaoCondlines);
@@ -1439,8 +1410,8 @@ public class GL33ModelRenderer {
         GL15.glDeleteBuffers(vboStudLogo2);
     }
 
-    private int ts, ss, to, vs, ls, tls, gs, sls, cls, ssCSG, toCSG, tsCSG, sCSG;
-    public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, boolean drawSolidMaterials, DatFile df) {
+    private int ts, ss, to, vs, ls, tls, sls, cls, ssCSG, toCSG, tsCSG, sCSG;
+    public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, GLShader glyphShader, boolean drawSolidMaterials, DatFile df) {
 
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewport_Inverse();
@@ -1505,24 +1476,6 @@ public class GL33ModelRenderer {
 
 
         if (drawSolidMaterials) {
-
-            GL30.glBindVertexArray(vaoGlyphs);
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGlyphs);
-            lock.lock();
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataGlyphs, GL15.GL_STATIC_DRAW);
-            gs = glyphSize;
-            lock.unlock();
-
-            GL20.glEnableVertexAttribArray(0);
-            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
-
-            GL20.glEnableVertexAttribArray(1);
-            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4);
-
-            GL20.glEnableVertexAttribArray(2);
-            GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4);
-
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
             GL30.glBindVertexArray(vao);
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
@@ -1769,15 +1722,47 @@ public class GL33ModelRenderer {
                 GL11.glDrawArrays(GL11.GL_LINES, 0, sCSG);
             }
 
-            // TODO Draw glyphs here
-            if (gs > 0) {
-                GL30.glBindVertexArray(vaoGlyphs);
+            // TODO Draw glyphs here (Distance meters, protractors)
+            if (!protractors.isEmpty() || !distanceMeters.isEmpty()) {
+                glyphShader.use();
+                stack.setShader(glyphShader);
                 stack.glPushMatrix();
                 GL11.glDisable(GL11.GL_CULL_FACE);
                 stack.glMultMatrixf(renderer.getRotationInverse());
-                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, gs);
+                for (GData2 dm : distanceMeters) {
+                    Vertex[] verts = sharedVertexMap.get(dm);
+                    if (verts != null) {
+                        if (verts[0].X == null || verts[1].X == null) {
+                            dm.drawDistanceGL33(
+                                    c3d,
+                                    glyphShader,
+                                    new BigDecimal(Float.toString(verts[0].x)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[0].y)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[0].z)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[1].x)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[1].y)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[1].z)).scaleByPowerOfTen(-3),
+                                    true
+                                    );
+                        } else {
+                            dm.drawDistanceGL33(
+                                    c3d,
+                                    glyphShader,
+                                    verts[0].X,
+                                    verts[0].Y,
+                                    verts[0].Z,
+                                    verts[1].X,
+                                    verts[1].Y,
+                                    verts[1].Z,
+                                    false
+                                    );
+                        }
+                    }
+                }
                 GL11.glEnable(GL11.GL_CULL_FACE);
                 stack.glPopMatrix();
+                mainShader.use();
+                stack.setShader(mainShader);
             }
 
             GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -1795,7 +1780,10 @@ public class GL33ModelRenderer {
             final ThreadsafeHashMap<GData3, Vertex[]> triangles,
             final ThreadsafeHashMap<GData4, Vertex[]> quads,
             final ThreadsafeHashMap<GData5, Vertex[]> condlines,
-            final boolean drawStudLogo, ArrayList<GDataPNG> pngImages) {
+            final boolean drawStudLogo,
+            ArrayList<GDataPNG> pngImages,
+            ArrayList<GData2> tmpDistanceMeters,
+            ArrayList<GData3> tmpProtractors) {
 
         final boolean[] result = new boolean[3];
         boolean hasTEXMAP = false;
@@ -1918,15 +1906,23 @@ public class GL33ModelRenderer {
                     }
                 }
             case 2:
-                verts = lines.get(gd);
+                GData2 gd2 = (GData2) gd;
+                verts = lines.get(gd2);
                 if (verts != null) {
+                    if (!gd2.isLine) {
+                        tmpDistanceMeters.add(gd2);
+                    }
                     vertexMap.put(gd, verts);
                     dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
                 }
                 continue;
             case 3:
-                verts = triangles.get(gd);
+                GData3 gd3 = (GData3) gd;
+                verts = triangles.get(gd3);
                 if (verts != null) {
+                    if (!gd3.isTriangle) {
+                        tmpProtractors.add(gd3);
+                    }
                     vertexMap.put(gd, verts);
                     dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
                 }

@@ -83,12 +83,12 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     private GLShader shaderProgramCondline = new GLShader();
     private final GLMatrixStack stack = new GLMatrixStack();
     private final GL33Helper helper = new GL33Helper();
-    private final GL33ModelRenderer modelRenderer = new GL33ModelRenderer(c3d);
-    
+    private final GL33ModelRenderer modelRenderer = new GL33ModelRenderer(c3d, this);
+
     private int skipFrame;
 
     private volatile AtomicBoolean calculateVertexNormals = new AtomicBoolean(true);
-    
+
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
     private final FloatBuffer view_buf = BufferUtils.createFloatBuffer(16);
     private final FloatBuffer rot_buf = BufferUtils.createFloatBuffer(16);
@@ -110,11 +110,11 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     private Thread raytracer = null;
 
     private static long hoverSettingsTime = System.currentTimeMillis();
-    
+
     public OpenGLRenderer33(Composite3D c3d) {
         super(c3d);
     }
-    
+
     @Override
     public Composite3D getC3D() {
         return c3d;
@@ -123,21 +123,21 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     @Override
     public void init() {
         // FIXME Needs implementation!
-        
+
         if (shaderProgram.isDefault()) shaderProgram = new GLShader("renderer.vert", "renderer.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgram2.isDefault()) shaderProgram2 = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgram2D.isDefault()) shaderProgram2D = new GLShader("2D.vert", "2D.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgramCondline.isDefault()) shaderProgramCondline = new GLShader("condline.vert", "condline.frag"); //$NON-NLS-1$ //$NON-NLS-2$
-        
+
         shaderProgramCondline.use();
-        
+
         GL20.glUniform1f(shaderProgramCondline.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
         GL20.glUniform1f(shaderProgramCondline.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
-        
+
         stack.setShader(shaderProgram);
         shaderProgram.use();
-        
-        
+
+
         {
             GL20.glUniform1f(shaderProgram.getUniformLocation("l0_r"), View.light1_Colour_r[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l0_g"), View.light1_Colour_g[0]); //$NON-NLS-1$
@@ -145,31 +145,31 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             GL20.glUniform1f(shaderProgram.getUniformLocation("l0s_r"), View.light1_specular_Colour_r[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l0s_g"), View.light1_specular_Colour_g[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l0s_b"), View.light1_specular_Colour_b[0]); //$NON-NLS-1$
-            
+
             GL20.glUniform1f(shaderProgram.getUniformLocation("l1_r"), View.light2_Colour_r[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l1_g"), View.light2_Colour_g[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l1_b"), View.light2_Colour_b[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l1s_r"), View.light2_specular_Colour_r[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l1s_g"), View.light2_specular_Colour_g[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l1s_b"), View.light2_specular_Colour_b[0]); //$NON-NLS-1$
-            
+
             GL20.glUniform1f(shaderProgram.getUniformLocation("l2_r"), View.light3_Colour_r[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l2_g"), View.light3_Colour_g[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l2_b"), View.light3_Colour_b[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l2s_r"), View.light3_specular_Colour_r[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l2s_g"), View.light3_specular_Colour_g[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l2s_b"), View.light3_specular_Colour_b[0]); //$NON-NLS-1$
-            
+
             GL20.glUniform1f(shaderProgram.getUniformLocation("l3_r"), View.light4_Colour_r[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l3_g"), View.light4_Colour_g[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l3_b"), View.light4_Colour_b[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_r"), View.light4_specular_Colour_r[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_g"), View.light4_specular_Colour_g[0]); //$NON-NLS-1$
             GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_b"), View.light4_specular_Colour_b[0]); //$NON-NLS-1$
-            
+
             shaderProgram.setFactor(1f);
         }
-        
+
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -182,34 +182,34 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         GL11.glClearColor(View.background_Colour_r[0], View.background_Colour_g[0], View.background_Colour_b[0], 1.0f);
 
         GL11.glPointSize(5);
-        
+
         modelRenderer.init();
     }
 
     @Override
     public void drawScene() {
-        
+
         final long start = System.currentTimeMillis();
-        
+
         final boolean negDet = c3d.hasNegDeterminant();
         final boolean raytraceMode = c3d.getRenderMode() == 5;
-        
+
         final GLCanvas canvas = c3d.getCanvas();
-        
+
         if (!canvas.isCurrent()) {
             canvas.setCurrent();
             GL.setCapabilities(c3d.getCapabilities());
         }
-        
+
         final Editor3DWindow window = Editor3DWindow.getWindow();
 
         // MARK OpenGL Draw Scene
-        
+
         stack.clear();
         helper.createVBO();
-        
+
         // FIXME Needs implementation!
-        
+
         if (raytraceMode) {
             if (skipFrame < 2) {
                 skipFrame++;
@@ -233,7 +233,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 }).start();
             }
         }
-        
+
         int state3d = 0;
         if (c3d.isAnaglyph3d() && !raytraceMode) {
             GL11.glColorMask(true, false, false, true);
@@ -243,18 +243,18 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         while (true) {
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
-        
+
             Rectangle bounds = c3d.getBounds();
             GL11.glViewport(0, 0, bounds.width, bounds.height);
-            
+
             shaderProgram.use();
             stack.setShader(shaderProgram);
             stack.glLoadIdentity();
-            
+
             float viewport_width = bounds.width / View.PIXEL_PER_LDU / 2.0f;
             float viewport_height = bounds.height / View.PIXEL_PER_LDU / 2.0f;
             {
-                final FloatBuffer projection_buf = BufferUtils.createFloatBuffer(16);    
+                final FloatBuffer projection_buf = BufferUtils.createFloatBuffer(16);
                 GLMatrixStack.glOrtho(viewport_width, -viewport_width, viewport_height, -viewport_height, -c3d.getzNear() * c3d.getZoom(), c3d.getzFar() * c3d.getZoom()).store(projection_buf);
                 projection_buf.position(0);
                 shaderProgram2D.use();
@@ -286,8 +286,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
             viewport_transform.store(view_buf);
             view_buf.flip();
-            c3d.setViewport(viewport_transform);            
-            
+            c3d.setViewport(viewport_transform);
+
             {
                 shaderProgram2D.use();
                 int view = shaderProgram2D.getUniformLocation("view" ); //$NON-NLS-1$
@@ -390,15 +390,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             }
 
             GL11.glCullFace(GL11.GL_BACK);
-            
+
             if (c3d.isLightOn()) {
                 shaderProgram.lightsOn();
             } else {
                 shaderProgram.lightsOff();
             }
 
-            modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, true, c3d.getLockableDatFileReference());
-            
+            modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, true, c3d.getLockableDatFileReference());
+
             if (raytraceMode) {
                 Rectangle b = c3d.getCanvas().getBounds();
                 final int w =  b.width;
@@ -429,12 +429,12 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             } else {
                 c3d.setDraggedPrimitive(null);
             }
-            
-            modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, false, c3d.getLockableDatFileReference());
-            
+
+            modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, false, c3d.getLockableDatFileReference());
+
             stack.setShader(shaderProgram2);
             shaderProgram2.use();
-            
+
             if (raytraceMode) {
                 Rectangle b = c3d.getCanvas().getBounds();
                 final float w =  b.width;
@@ -1468,12 +1468,12 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     bluntSize = .01f * mSize[3];
                     circleWidth = (negDet ? -1f : 1f) * 0.01f * mSize[4];
                     arcWidth = 0.002f * mSize[5];
-                }                
+                }
                 switch (window.getWorkingAction()) {
                 case COMBINED:
                     singleMode = false;
                 case ROTATE:
-                    
+
                     c = manipulator.checkManipulatorStatus(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], Manipulator.X_ROTATE, c3d, zoom);
                     new Arc(c.getR(), c.getG(), c.getB(), manipulator.getXaxis().x, manipulator.getXaxis().y, manipulator.getXaxis().z, rotateSize, arcWidth).drawGL33(stack, mx, my, mz, zoom);
 
@@ -1542,7 +1542,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     final Vector4f cursor3D = c3d.getCursorSnapped3D();
                     final int VBO = GL15.glGenBuffers();
                     GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                             new float[] {
                                     cursor3D.x, cursor3D.y, cursor3D.z,
                                     View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
@@ -1561,7 +1561,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         GL11.glLineWidth(4f);
                         final int VBO = GL15.glGenBuffers();
                         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-                        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                 new float[] {
                                         v.x, v.y, v.z,
                                         View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
@@ -1585,7 +1585,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL11.glLineWidth(4f);
                             final int VBO = GL15.glGenBuffers();
                             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-                            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                            GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                     new float[] {
                                             v.x, v.y, v.z,
                                             View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
@@ -1610,7 +1610,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL11.glLineWidth(4f);
                             final int VBO = GL15.glGenBuffers();
                             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-                            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                            GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                     new float[] {
                                             v.x, v.y, v.z,
                                             View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
@@ -1639,7 +1639,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL11.glLineWidth(4f);
                                     final int VBO = GL15.glGenBuffers();
                                     GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-                                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                             new float[] {
                                                     v2.x, v2.y, v2.z,
                                                     View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
@@ -1662,7 +1662,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL11.glLineWidth(4f);
                                     final int VBO = GL15.glGenBuffers();
                                     GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-                                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                             new float[] {
                                                     v.x, v.y, v.z,
                                                     View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
@@ -1692,7 +1692,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 GL11.glLineWidth(4f);
                                 final int VBO = GL15.glGenBuffers();
                                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-                                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                         new float[] {
                                                 v2.x, v2.y, v2.z,
                                                 View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
@@ -1714,7 +1714,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL11.glLineWidth(4f);
                             final int VBO = GL15.glGenBuffers();
                             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-                            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                            GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                     new float[] {
                                             v.x, v.y, v.z,
                                             View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
@@ -1743,7 +1743,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL11.glLineWidth(4f);
                                     final int VBO = GL15.glGenBuffers();
                                     GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-                                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                             new float[] {
                                                     v.x, v.y, v.z,
                                                     View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
@@ -1762,7 +1762,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL11.glLineWidth(4f);
                                     final int VBO = GL15.glGenBuffers();
                                     GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-                                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                    GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                             new float[] {
                                                     v.x, v.y, v.z,
                                                     View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
@@ -1788,7 +1788,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 GL11.glLineWidth(4f);
                                 final int VBO = GL15.glGenBuffers();
                                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-                                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                                GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                         new float[] {
                                                 v2.x, v2.y, v2.z,
                                                 View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
@@ -1810,7 +1810,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL11.glLineWidth(4f);
                             final int VBO = GL15.glGenBuffers();
                             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
-                            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 
+                            GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                     new float[] {
                                             v.x, v.y, v.z,
                                             View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
@@ -1849,7 +1849,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 Vector4f selectionCorner4 = new Vector4f(selectionEnd_MODELVIEW.x - height.x, selectionEnd_MODELVIEW.y - height.y, selectionEnd_MODELVIEW.z - height.z, 1f);
 
                 GL11.glLineWidth(2f);
-                
+
                 helper.drawLinesRGB_General(new float[]{
                         selectionCorner3.x, selectionCorner3.y, selectionCorner3.z,
                         View.cursor1_Colour_r[0], View.cursor1_Colour_g[0], View.cursor1_Colour_b[0],
@@ -1910,7 +1910,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
                 selectionCorner2.x, selectionCorner2.y, selectionCorner2.z,
                 View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0]});
-                
+
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
 
             } else {
@@ -1946,7 +1946,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     Vector4f grid_center2 = new Vector4f();
                     grid_center1.set(c3d.getGrid()[r]);
                     grid_center2.set(grid_center1);
-                    
+
                     int size = 0;
                     float limit = c3d.getGrid()[3 + r].y;
                     for (float i = 0f; i < limit; i += 1f) {
@@ -1956,10 +1956,10 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     for (float i = 0f; i < limit; i += 1f) {
                         size = size + 24;
                     }
-                    
+
                     final float[] vertices = new float[size];
                     int j = 0;
-                    
+
                     limit = c3d.getGrid()[3 + r].y;
                     for (float i = 0f; i < limit; i += 1f) {
                         Vector4f.sub(grid_center2, c3d.getGrid()[2 + r], grid_center2);
@@ -2135,7 +2135,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     final float r;
                     final float g;
                     final float b;
-                    
+
                     if (Project.getFileToEdit().isReadOnly()) {
                         r = View.text_Colour_r[0];
                         g = View.text_Colour_g[0];
@@ -2219,14 +2219,14 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 break;
             }
         }
-        
+
         helper.destroyVBO();
-        
+
         canvas.swapBuffers();
-        
+
         NLogger.debug(getClass(), "Frametime: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
     }
-    
+
     @Override
     public void dispose() {
         // Properly de-allocate all resources once they've outlived their purpose
@@ -2236,7 +2236,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         shaderProgram2D.dispose();
         shaderProgramCondline.dispose();
     }
-    
+
     public Matrix4f getRotationInverse() {
         return rotation_inv4f;
     }

@@ -36,6 +36,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
+import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -806,22 +807,130 @@ public final class GData2 extends GData {
             ox2 = ox2 - .01f * zoom;
         }
     }
-    
-    public int[] getDistanceMeterDataSize() {
-        int glyphSize = 0;
-        int glyphVertexCount = 0;
-        int tempLineSize = 14;
-        int tempLineVertexCount = 2;
-        // FIXME Needs implementation!
-        return new int[]{glyphSize, glyphVertexCount, tempLineSize, tempLineVertexCount};
+
+    private void drawNumberGL33(String number, float ox, float oy, float oz, float zoom) {
+        final int length =  number.length();
+        float ox2 = 0f;
+        for (int i = 0; i < length; i++) {
+            Set<PGData3> tris = new HashSet<PGData3>();
+            final char c = number.charAt(i);
+            switch (c) {
+            case '0':
+                tris = View.D0;
+                break;
+            case '1':
+                tris = View.D1;
+                break;
+            case '2':
+                tris = View.D2;
+                break;
+            case '3':
+                tris = View.D3;
+                break;
+            case '4':
+                tris = View.D4;
+                break;
+            case '5':
+                tris = View.D5;
+                break;
+            case '6':
+                tris = View.D6;
+                break;
+            case '7':
+                tris = View.D7;
+                break;
+            case '8':
+                tris = View.D8;
+                break;
+            case '9':
+                tris = View.D9;
+                break;
+            case '.':
+                tris = View.Dd;
+                break;
+            case ',':
+                tris = View.Dc;
+                break;
+            case '-':
+                tris = View.DM;
+                break;
+            default:
+                break;
+            }
+            for (PGData3 tri : tris) {
+                tri.drawTextGL33_VAO(ox + ox2, oy, oz + 100000f, zoom);
+            }
+            ox2 = ox2 - .01f * zoom;
+        }
     }
 
-    public int[] insertDistanceMeter(Vertex[] v, float[] triangleData, float[] lineData, int triangleIndex, int lineIndex) {
+    public int insertDistanceMeter(Vertex[] v, float[] lineData, int lineIndex) {
+        GL33Helper.pointAt7(0, x1, y1, z1, lineData, lineIndex);
+        GL33Helper.pointAt7(1, x2, y2, z2, lineData, lineIndex);
+        GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+
+        lineIndex += 2;
+
         GL33Helper.pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
         GL33Helper.pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
-        GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
-        // FIXME Needs implementation!
-        return new int[]{2, 0};
+        GL33Helper.colourise7(0, 2, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, lineData, lineIndex);
+
+        return 4;
+    }
+
+    public void drawDistanceGL33(Composite3D c3d, GLShader shader, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, boolean forceLengthCalculation) {
+        GL20.glUniform3f(shader.getUniformLocation("color"), r, g, b); //$NON-NLS-1$
+
+        final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        final float zoom = 1f / c3d.getZoom();
+        final Vector4f textOrigin = new Vector4f((x1 + x2) / 2f, (y1 + y2) / 2f, (z1 + z2) / 2f, 1f);
+        Matrix4f.transform(c3d.getRotation(), textOrigin, textOrigin);
+        BigDecimal dx = x2c.subtract(x1c);
+        BigDecimal dy = y2c.subtract(y1c);
+        BigDecimal dz = z2c.subtract(z1c);
+        if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
+            if (state != -1 || forceLengthCalculation) {
+                length = new Vector3d(dx, dy, dz).length();
+                state = -1;
+            }
+        } else {
+            Vector3d tr = c3d.getManipulator().getAccurateRotation().transform(new Vector3d(dx, dy, dz));
+            dx = tr.X;
+            dy = tr.Y;
+            dz = tr.Z;
+            if (state < 1 || forceLengthCalculation) {
+                length = new Vector3d(dx, dy, dz).length();
+                state = 11;
+            }
+            state--;
+        }
+        BigDecimal dA = length;
+
+        String dx_s = NUMBER_FORMAT4F.format(dx);
+        String dy_s = NUMBER_FORMAT4F.format(dy);
+        String dz_s = NUMBER_FORMAT4F.format(dz);
+        String dA_s = NUMBER_FORMAT4F.format(dA);
+        final float oy1 = .015f * zoom;
+        final float oy2 = .03f * zoom;
+        final float oy3 = .045f * zoom;
+        final float ox1 = -.045f * zoom;
+        for (PGData3 tri : View.DA) {
+            tri.drawTextGL33_VAO(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
+        }
+        for (PGData3 tri : View.DX) {
+            tri.drawTextGL33_VAO(textOrigin.x, textOrigin.y + oy1, textOrigin.z + 100000f, zoom);
+        }
+        for (PGData3 tri : View.DY) {
+            tri.drawTextGL33_VAO(textOrigin.x, textOrigin.y + oy2, textOrigin.z + 100000f, zoom);
+        }
+        for (PGData3 tri : View.DZ) {
+            tri.drawTextGL33_VAO(textOrigin.x, textOrigin.y + oy3, textOrigin.z + 100000f, zoom);
+        }
+        drawNumberGL33(dA_s, textOrigin.x + ox1, textOrigin.y, textOrigin.z, zoom);
+        drawNumberGL33(dx_s, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);
+        drawNumberGL33(dy_s, textOrigin.x + ox1, textOrigin.y + oy2, textOrigin.z, zoom);
+        drawNumberGL33(dz_s, textOrigin.x + ox1, textOrigin.y + oy3, textOrigin.z, zoom);
+        GL11.glEnable(GL11.GL_CULL_FACE);
     }
 
     /*

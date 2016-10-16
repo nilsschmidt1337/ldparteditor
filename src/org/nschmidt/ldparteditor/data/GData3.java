@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 
 /**
@@ -611,7 +612,7 @@ public final class GData3 extends GData {
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
-                    GL11.glNormal3f(xn, yn, zn);                    
+                    GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
@@ -1494,20 +1495,20 @@ public final class GData3 extends GData {
         Vector3d.sub(vertexB, vertexA, A);
         Vector3d.sub(vertexC, vertexB, B);
         Vector3d.sub(vertexC, vertexA, C);
-        
+
         angle = Vector3d.angle(A, C);
         double sumAngle = angle;
         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
             return true;
         }
-        
+
         A.negate();
         angle = Vector3d.angle(A, B);
         sumAngle = sumAngle + angle;
         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
             return true;
         }
-        
+
         angle = 180.0 - sumAngle;
         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
             return true;
@@ -1548,7 +1549,7 @@ public final class GData3 extends GData {
     public void drawProtractor_GL33(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         // FIXME Needs implementation!
     }
-    
+
     public void drawProtractor_GL20(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
@@ -1704,19 +1705,149 @@ public final class GData3 extends GData {
         vc = Vector3d.sub(va, vc);
         return vc.length();
     }
-     
-    public int[] getProtractorDataSize() {
-        int glyphSize = 0;
-        int glyphVertexCount = 0;
-        int tempLineSize = 0;
-        int tempLineVertexCount = 0;
-        // FIXME Needs implementation!
-        return new int[]{glyphSize, glyphVertexCount, tempLineSize, tempLineVertexCount};
-    }
 
-    public int[] insertProtractor(Vertex[] v, float[] triangleData, float[] lineData, int triangleIndex, int lineIndex) {
-        final int[] result = new int[]{0, 0};
-        // FIXME Needs implementation!
-        return result;
+    public int insertProtractor(Vertex[] v, float[] lineData, int lineIndex) {
+
+        GL33Helper.pointAt7(0, x1, y1, z1, lineData, lineIndex);
+        GL33Helper.pointAt7(1, x2, y2, z2, lineData, lineIndex);
+        GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+
+        lineIndex += 2;
+
+        GL33Helper.pointAt7(0, x1, y1, z1, lineData, lineIndex);
+        GL33Helper.pointAt7(1, x3, y3, z3, lineData, lineIndex);
+        GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+
+        lineIndex += 2;
+
+        GL33Helper.pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
+        GL33Helper.pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
+        GL33Helper.colourise7(0, 2, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, lineData, lineIndex);
+
+        lineIndex += 2;
+
+        GL33Helper.pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
+        GL33Helper.pointAt7(1, v[2].x, v[2].y, v[2].z, lineData, lineIndex);
+        GL33Helper.colourise7(0, 2, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, lineData, lineIndex);
+
+        lineIndex += 2;
+
+        {
+            float sx1 = x1 + (x2 - x1) * .2f;
+            float sy1 = y1 + (y2 - y1) * .2f;
+            float sz1 = z1 + (z2 - z1) * .2f;
+            float sx2 = x1 + (x3 - x1) * .2f;
+            float sy2 = y1 + (y3 - y1) * .2f;
+            float sz2 = z1 + (z3 - z1) * .2f;
+            float sx1t = x1 + (x2 - x1) * .25f;
+            float sy1t = y1 + (y2 - y1) * .25f;
+            float sz1t = z1 + (z2 - z1) * .25f;
+            float sx2t = x1 + (x3 - x1) * .25f;
+            float sy2t = y1 + (y3 - y1) * .25f;
+            float sz2t = z1 + (z3 - z1) * .25f;
+            float sx1tt = x1 + (x2 - x1) * .24f;
+            float sy1tt = y1 + (y2 - y1) * .24f;
+            float sz1tt = z1 + (z2 - z1) * .24f;
+            float sx2tt = x1 + (x3 - x1) * .24f;
+            float sy2tt = y1 + (y3 - y1) * .24f;
+            float sz2tt = z1 + (z3 - z1) * .24f;
+            float sx3 = sx1t * .5f + sx2t * .5f;
+            float sy3 = sy1t * .5f + sy2t * .5f;
+            float sz3 = sz1t * .5f + sz2t * .5f;
+            float sx3r = sx1tt * .7f + sx2tt * .3f;
+            float sy3r = sy1tt * .7f + sy2tt * .3f;
+            float sz3r = sz1tt * .7f + sz2tt * .3f;
+            float sx3l = sx1tt * .3f + sx2tt * .7f;
+            float sy3l = sy1tt * .3f + sy2tt * .7f;
+            float sz3l = sz1tt * .3f + sz2tt * .7f;
+
+            GL33Helper.pointAt7(0, sx1, sy1, sz1, lineData, lineIndex);
+            GL33Helper.pointAt7(1, sx3r, sy3r, sz3r, lineData, lineIndex);
+            GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+
+            lineIndex += 2;
+
+            GL33Helper.pointAt7(0, sx3r, sy3r, sz3r, lineData, lineIndex);
+            GL33Helper.pointAt7(1, sx3, sy3, sz3, lineData, lineIndex);
+            GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+
+            lineIndex += 2;
+
+            GL33Helper.pointAt7(0, sx3, sy3, sz3, lineData, lineIndex);
+            GL33Helper.pointAt7(1, sx3l, sy3l, sz3l, lineData, lineIndex);
+            GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+
+            lineIndex += 2;
+
+            GL33Helper.pointAt7(0, sx3l, sy3l, sz3l, lineData, lineIndex);
+            GL33Helper.pointAt7(1, sx2, sy2, sz2, lineData, lineIndex);
+            GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+
+            lineIndex += 2;
+        }
+
+        {
+            float x1 = v[0].x;
+            float y1 = v[0].y;
+            float z1 = v[0].z;
+            float x2 = v[1].x;
+            float y2 = v[1].y;
+            float z2 = v[1].z;
+            float x3 = v[2].x;
+            float y3 = v[2].y;
+            float z3 = v[2].z;
+
+            float sx1 = x1 + (x2 - x1) * .2f;
+            float sy1 = y1 + (y2 - y1) * .2f;
+            float sz1 = z1 + (z2 - z1) * .2f;
+            float sx2 = x1 + (x3 - x1) * .2f;
+            float sy2 = y1 + (y3 - y1) * .2f;
+            float sz2 = z1 + (z3 - z1) * .2f;
+            float sx1t = x1 + (x2 - x1) * .25f;
+            float sy1t = y1 + (y2 - y1) * .25f;
+            float sz1t = z1 + (z2 - z1) * .25f;
+            float sx2t = x1 + (x3 - x1) * .25f;
+            float sy2t = y1 + (y3 - y1) * .25f;
+            float sz2t = z1 + (z3 - z1) * .25f;
+            float sx1tt = x1 + (x2 - x1) * .24f;
+            float sy1tt = y1 + (y2 - y1) * .24f;
+            float sz1tt = z1 + (z2 - z1) * .24f;
+            float sx2tt = x1 + (x3 - x1) * .24f;
+            float sy2tt = y1 + (y3 - y1) * .24f;
+            float sz2tt = z1 + (z3 - z1) * .24f;
+            float sx3 = sx1t * .5f + sx2t * .5f;
+            float sy3 = sy1t * .5f + sy2t * .5f;
+            float sz3 = sz1t * .5f + sz2t * .5f;
+            float sx3r = sx1tt * .7f + sx2tt * .3f;
+            float sy3r = sy1tt * .7f + sy2tt * .3f;
+            float sz3r = sz1tt * .7f + sz2tt * .3f;
+            float sx3l = sx1tt * .3f + sx2tt * .7f;
+            float sy3l = sy1tt * .3f + sy2tt * .7f;
+            float sz3l = sz1tt * .3f + sz2tt * .7f;
+
+            GL33Helper.pointAt7(0, sx1, sy1, sz1, lineData, lineIndex);
+            GL33Helper.pointAt7(1, sx3r, sy3r, sz3r, lineData, lineIndex);
+            GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+
+            lineIndex += 2;
+
+            GL33Helper.pointAt7(0, sx3r, sy3r, sz3r, lineData, lineIndex);
+            GL33Helper.pointAt7(1, sx3, sy3, sz3, lineData, lineIndex);
+            GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+
+            lineIndex += 2;
+
+            GL33Helper.pointAt7(0, sx3, sy3, sz3, lineData, lineIndex);
+            GL33Helper.pointAt7(1, sx3l, sy3l, sz3l, lineData, lineIndex);
+            GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+
+            lineIndex += 2;
+
+            GL33Helper.pointAt7(0, sx3l, sy3l, sz3l, lineData, lineIndex);
+            GL33Helper.pointAt7(1, sx2, sy2, sz2, lineData, lineIndex);
+            GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+        }
+
+        return 24;
     }
 }
