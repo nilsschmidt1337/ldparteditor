@@ -5380,6 +5380,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         }
                         updateBgPictureTab();
+                        break;
                     }
                 }
                 regainFocus();
@@ -5415,6 +5416,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         }
                         updateBgPictureTab();
+                        break;
                     }
                 }
                 regainFocus();
