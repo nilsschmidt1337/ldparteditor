@@ -1902,7 +1902,6 @@ public class GL33ModelRenderer {
         Stack<Boolean> tempInvertNext = new Stack<>();
         Stack<Boolean> tempInvertNextFound = new Stack<>();
         Stack<Boolean> tempNegativeDeterminant = new Stack<>();
-        boolean isCertified = true;
 
         GData gd = df.getDrawChainStart();
 
@@ -1920,11 +1919,12 @@ public class GL33ModelRenderer {
                 }
                 gd = stack.pop();
                 localWinding = tempWinding.pop();
-                isCertified = localWinding != BFC.NOCERTIFY;
-                tempInvertNext.pop();
-                tempInvertNextFound.pop();
-                globalInvertNext = false;
-                globalInvertNextFound = false;
+                globalInvertNextFound = tempInvertNextFound.pop();
+                if (globalInvertNextFound) {
+                    globalInvertNext = !tempInvertNext.pop();
+                } else {
+                    tempInvertNext.pop();
+                }
                 globalNegativeDeterminant = tempNegativeDeterminant.pop();
                 continue;
             }
@@ -1934,7 +1934,6 @@ public class GL33ModelRenderer {
                 final GData1 gd1 = ((GData1) gd);
                 matrixMap.put(gd1, gd1.productMatrix);
                 stack.push(gd);
-                isCertified = localWinding != BFC.NOCERTIFY;
                 tempWinding.push(localWinding);
                 tempInvertNext.push(globalInvertNext);
                 tempInvertNextFound.push(globalInvertNextFound);
@@ -1946,12 +1945,12 @@ public class GL33ModelRenderer {
                 localWinding = BFC.NOCERTIFY;
                 globalNegativeDeterminant = globalNegativeDeterminant ^ gd1.negativeDeterminant;
                 if (drawStudLogo) {
-                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
+                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                 }
                 gd = gd1.myGData;
                 continue;
             case 6:
-                if (!isCertified) {
+                if (!tempWinding.isEmpty() && tempWinding.peek() == BFC.NOCERTIFY) {
                     continue;
                 }
                 if (accumClip > 0) {
@@ -2023,7 +2022,7 @@ public class GL33ModelRenderer {
                         tmpDistanceMeters.add(gd2);
                     }
                     vertexMap.put(gd, verts);
-                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
+                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                 }
                 continue;
             case 3:
@@ -2034,21 +2033,21 @@ public class GL33ModelRenderer {
                         tmpProtractors.add(gd3);
                     }
                     vertexMap.put(gd, verts);
-                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
+                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                 }
                 continue;
             case 4:
                 verts = quads.get(gd);
                 if (verts != null) {
                     vertexMap.put(gd, verts);
-                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
+                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                 }
                 continue;
             case 5:
                 verts = condlines.get(gd);
                 if (verts != null) {
                     vertexMap.put(gd, verts);
-                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext));
+                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                 }
                 continue;
             case 8:
@@ -2151,11 +2150,13 @@ public class GL33ModelRenderer {
         final byte winding;
         final boolean negativeDeterminant;
         final boolean invertNext;
-        public GDataAndWinding(GData gd, byte bfc, boolean negDet, boolean iNext) {
+        final boolean noclip;
+        public GDataAndWinding(GData gd, byte bfc, boolean negDet, boolean iNext, int accumClip) {
             data = gd;
             winding = bfc;
             negativeDeterminant = negDet;
             invertNext = iNext;
+            noclip = accumClip > 0;
         }
     }
 }
