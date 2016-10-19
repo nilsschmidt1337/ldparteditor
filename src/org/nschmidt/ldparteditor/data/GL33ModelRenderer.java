@@ -847,6 +847,7 @@ public class GL33ModelRenderer {
                                         continue;
                                     case 0:
                                     case 1:
+                                    case 2:
                                         local_triangleSize += 60;
                                         if (gd3.a < 1f) {
                                             transparentTriangleVertexCount += 6;
@@ -873,6 +874,7 @@ public class GL33ModelRenderer {
                                     continue;
                                 case 0:
                                 case 1:
+                                case 2:
                                     local_triangleSize += 120;
                                     if (gd4.a < 1f) {
                                         transparentTriangleVertexCount += 12;
@@ -1182,6 +1184,56 @@ public class GL33ModelRenderer {
                                         }
                                         continue;
                                     }
+                                    case 2:
+                                    {
+                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                        pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                        pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                        pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+
+
+                                        switch (gw.winding) {
+                                        case BFC.CW:
+                                            if (gw.negativeDeterminant ^ gw.invertNext) {
+                                                colourise(0, 3, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd3.a, triangleData, tempIndex);
+                                                colourise(3, 3, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd3.a, triangleData, tempIndex);
+                                            } else {
+                                                colourise(3, 3, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd3.a, triangleData, tempIndex);
+                                                colourise(0, 3, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd3.a, triangleData, tempIndex);
+                                            }
+                                            break;
+                                        case BFC.CCW:
+                                            if (gw.negativeDeterminant ^ gw.invertNext) {
+                                                colourise(3, 3, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd3.a, triangleData, tempIndex);
+                                                colourise(0, 3, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd3.a, triangleData, tempIndex);
+                                            } else {
+                                                colourise(0, 3, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd3.a, triangleData, tempIndex);
+                                                colourise(3, 3, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd3.a, triangleData, tempIndex);
+                                            }
+                                            break;
+                                        case BFC.NOCERTIFY:
+                                            colourise(0, 6, View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], gd3.a, triangleData, tempIndex);
+                                            break;
+                                        default:
+                                            break;
+                                        }
+
+                                        if (gw.negativeDeterminant) {
+                                            normal(0, 3, xn, yn, zn, triangleData, tempIndex);
+                                            normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                        } else {
+                                            normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                            normal(3, 3, xn, yn, zn, triangleData, tempIndex);
+                                        }
+                                        if (transparent) {
+                                            transparentTriangleIndex += 6;
+                                        } else {
+                                            triangleIndex += 6;
+                                        }
+                                        continue;
+                                    }
                                     default:
                                         continue;
                                     }
@@ -1285,6 +1337,62 @@ public class GL33ModelRenderer {
                                     pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
 
                                     colourise(0, 12, r, g, b, gd4.a, triangleData, tempIndex);
+                                    if (gw.negativeDeterminant) {
+                                        normal(0, 6, xn, yn, zn, triangleData, tempIndex);
+                                        normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                    } else {
+                                        normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                        normal(6, 6, xn, yn, zn, triangleData, tempIndex);
+                                    }
+                                    if (transparent) {
+                                        transparentTriangleIndex += 12;
+                                    } else {
+                                        triangleIndex += 12;
+                                    }
+                                    continue;
+                                }
+                                case 2:
+                                {
+                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                                    pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                    pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                                    switch (gw.winding) {
+                                    case BFC.CW:
+                                        if (gw.invertNext  ^ gw.negativeDeterminant) {
+                                            colourise(6, 6, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd4.a, triangleData, tempIndex);
+                                            colourise(0, 6, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd4.a, triangleData, tempIndex);
+                                        } else {
+                                            colourise(0, 6, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd4.a, triangleData, tempIndex);
+                                            colourise(6, 6, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd4.a, triangleData, tempIndex);
+                                        }
+                                        break;
+                                    case BFC.CCW:
+                                        if (gw.invertNext  ^ gw.negativeDeterminant) {
+                                            colourise(0, 6, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd4.a, triangleData, tempIndex);
+                                            colourise(6, 6, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd4.a, triangleData, tempIndex);
+                                        } else {
+                                            colourise(6, 6, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd4.a, triangleData, tempIndex);
+                                            colourise(0, 6, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd4.a, triangleData, tempIndex);
+                                        }
+                                        break;
+                                    case BFC.NOCERTIFY:
+                                        colourise(0, 12, View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], gd4.a, triangleData, tempIndex);
+                                        break;
+                                    default:
+                                        break;
+                                    }
+
                                     if (gw.negativeDeterminant) {
                                         normal(0, 6, xn, yn, zn, triangleData, tempIndex);
                                         normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
@@ -1804,7 +1912,7 @@ public class GL33ModelRenderer {
         boolean globalInvertNextFound = false;
         boolean globalNegativeDeterminant = false;
 
-        // The BFC logic/state machine is not correct yet? (for BFC no-certify).
+        // The BFC logic/state machine is not correct yet? (for BFC INVERTNEXT).
         while ((gd = gd.next) != null || !stack.isEmpty()) {
             if (gd == null) {
                 if (accumClip > 0) {
@@ -1813,8 +1921,10 @@ public class GL33ModelRenderer {
                 gd = stack.pop();
                 localWinding = tempWinding.pop();
                 isCertified = localWinding != BFC.NOCERTIFY;
-                globalInvertNext = tempInvertNext.pop();
-                globalInvertNextFound = tempInvertNextFound.pop();
+                tempInvertNext.pop();
+                tempInvertNextFound.pop();
+                globalInvertNext = false;
+                globalInvertNextFound = false;
                 globalNegativeDeterminant = tempNegativeDeterminant.pop();
                 continue;
             }
