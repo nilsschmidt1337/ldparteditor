@@ -1925,6 +1925,7 @@ public class GL33ModelRenderer {
                 } else {
                     tempInvertNext.pop();
                 }
+                globalInvertNextFound = false;
                 globalNegativeDeterminant = tempNegativeDeterminant.pop();
                 continue;
             }
