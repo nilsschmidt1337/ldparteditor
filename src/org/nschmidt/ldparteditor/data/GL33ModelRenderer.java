@@ -1117,9 +1117,9 @@ public class GL33ModelRenderer {
                                         Nv.w = 1f;
                                         Matrix4f loc = matrixMap.get(gd3.parent);
                                         Matrix4f.transform(loc, Nv, Nv);
-                                        xn = Nv.x - loc.m30;
-                                        yn = Nv.y - loc.m31;
-                                        zn = Nv.z - loc.m32;
+                                        xn = Nv.x;
+                                        yn = Nv.y;
+                                        zn = Nv.z;
                                     }
 
                                     if (drawWireframe || meshLines && (subfileMeshLines ^ mainFileContent.contains(gw.data))) {
@@ -1262,9 +1262,6 @@ public class GL33ModelRenderer {
                                     Nv.w = 1f;
                                     Matrix4f loc = matrixMap.get(gd4.parent);
                                     Matrix4f.transform(loc, Nv, Nv);
-                                    Nv.x = Nv.x - loc.m30;
-                                    Nv.y = Nv.y - loc.m31;
-                                    Nv.z = Nv.z - loc.m32;
                                     xn = Nv.x;
                                     yn = Nv.y;
                                     zn = Nv.z;
@@ -1933,7 +1930,39 @@ public class GL33ModelRenderer {
             switch (gd.type()) {
             case 1:
                 final GData1 gd1 = ((GData1) gd);
-                matrixMap.put(gd1, gd1.productMatrix);
+
+
+                final Matrix4f rotation = new Matrix4f();
+                final Vector3f x = new Vector3f(gd1.productMatrix.m00, gd1.productMatrix.m10, gd1.productMatrix.m20);
+                final Vector3f y = new Vector3f(gd1.productMatrix.m01, gd1.productMatrix.m11, gd1.productMatrix.m21);
+                final Vector3f z = new Vector3f(gd1.productMatrix.m02, gd1.productMatrix.m12, gd1.productMatrix.m22);
+
+                if (x.lengthSquared() > 0f) {
+                    x.normalise();
+                } else {
+                    x.x = 1f;
+                    x.y = 0f;
+                    x.z = 0f;
+                }
+                if (y.lengthSquared() > 0f) {
+                    y.normalise();
+                } else {
+                    y.x = 0f;
+                    y.y = 1f;
+                    y.z = 0f;
+                }
+                if (z.lengthSquared() > 0f) {
+                    z.normalise();
+                } else {
+                    z.x = 0f;
+                    z.y = 0f;
+                    z.z = 1f;
+                }
+                rotation.m00 = x.x; rotation.m10 = x.y; rotation.m20 = x.z;
+                rotation.m01 = y.x; rotation.m11 = y.y; rotation.m21 = y.z;
+                rotation.m02 = z.x; rotation.m12 = z.y; rotation.m22 = z.z;
+                rotation.m33 = 1f;
+                matrixMap.put(gd1, rotation);
                 stack.push(gd);
                 tempWinding.push(localWinding);
                 tempInvertNext.push(globalInvertNext);
