@@ -854,6 +854,7 @@ public class GL33ModelRenderer {
                                         }
                                         continue;
                                     case 4:
+                                    case 5:
                                         if (gw.noclip) {
                                             local_triangleSize += 60;
                                             if (gd3.a < 1f) {
@@ -900,6 +901,7 @@ public class GL33ModelRenderer {
                                     }
                                     continue;
                                 case 4:
+                                case 5:
                                     if (gw.noclip) {
                                         local_triangleSize += 120;
                                         if (gd4.a < 1f) {
@@ -1324,6 +1326,7 @@ public class GL33ModelRenderer {
                                         continue;
                                     }
                                     case 4:
+                                    case 5:
                                     {
                                         colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
                                         switch (gw.winding) {
@@ -1607,6 +1610,7 @@ public class GL33ModelRenderer {
                                     continue;
                                 }
                                 case 4:
+                                case 5:
                                 {
                                     colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
                                     switch (gw.winding) {
@@ -1804,6 +1808,7 @@ public class GL33ModelRenderer {
         final float zoom = c3d.getZoom();
         final boolean drawLines = View.lineWidthGL[0] > 0.01f;
         final boolean studlogo = c3d.isShowingLogo();
+        final boolean noRaytrace = c3d.getRenderMode() != 5;
 
         // TODO Draw !LPE PNG VAOs here
         if (usesPNG) {
@@ -1822,7 +1827,7 @@ public class GL33ModelRenderer {
         }
 
         // TODO Draw CSG VAOs here
-        if (usesCSG) {
+        if (noRaytrace && usesCSG) {
             if (drawSolidMaterials) {
 
                 GL30.glBindVertexArray(vaoCSG);
@@ -1943,7 +1948,7 @@ public class GL33ModelRenderer {
                 GL11.glLineWidth(1f);
             }
 
-            if (tls > 0) {
+            if (noRaytrace && tls > 0) {
                 GL30.glBindVertexArray(vaoTempLines);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboTempLines);
                 lock.lock();
@@ -1975,7 +1980,7 @@ public class GL33ModelRenderer {
             GL11.glDrawArrays(GL11.GL_TRIANGLES, to, ts);
             mainShader.setFactor(1f);
 
-            if (c3d.isShowingVertices()) {
+            if (noRaytrace && c3d.isShowingVertices()) {
                 GL30.glBindVertexArray(vaoVertices);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVertices);
                 lock.lock();

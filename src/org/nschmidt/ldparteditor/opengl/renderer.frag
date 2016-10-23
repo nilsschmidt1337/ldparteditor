@@ -10,6 +10,10 @@ uniform float lightswitch;
 uniform float pngswitch;
 uniform sampler2D ldpePngSampler;
 
+uniform sampler2D cubeMap;
+uniform sampler2D cubeMapMatte;
+uniform sampler2D cubeMapMetal;
+
 uniform float l0_r;
 uniform float l0_g;
 uniform float l0_b;

@@ -52,7 +52,7 @@ import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
  */
 public enum View {
     INSTANCE;
-    
+
     /** Resolution of the viewport at 100% zoom */
     public static final float PIXEL_PER_LDU = 1000.0f;
     /** i18n reference string for the current unit */
@@ -518,7 +518,7 @@ public enum View {
                                             float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
                                             float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
                                             float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
-                                            colour = new GColour(index, R, G, B, alpha, new GCSpeckle(vR, vG, vB, fraction, minSize, maxSize));
+                                            colour = new GColour(index, R, G, B, Math.min(alpha, .99f), new GCSpeckle(vR, vG, vB, fraction, minSize, maxSize));
                                         }
                                     } catch (Exception e) {
                                         NLogger.error(View.class, "Line: " + line); //$NON-NLS-1$
@@ -581,7 +581,7 @@ public enum View {
                                             float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
                                             float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
                                             float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
-                                            colour = new GColour(index, R, G, B, 1f, new GCSpeckle(vR, vG, vB, fraction, minSize, maxSize));
+                                            colour = new GColour(index, R, G, B, .99f, new GCSpeckle(vR, vG, vB, fraction, minSize, maxSize));
                                         }
                                     } catch (Exception e) {
                                         NLogger.error(View.class, "Line: " + line); //$NON-NLS-1$
