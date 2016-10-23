@@ -34,6 +34,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
+import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 
 /**
@@ -1545,8 +1546,25 @@ public final class GData3 extends GData {
         return lineBuilder.toString();
     }
 
-    public void drawProtractor_GL33(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
-        // FIXME Needs implementation!
+    public void drawProtractorGL33(Composite3D c3d, GLShader shader, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
+        GL20.glUniform3f(shader.getUniformLocation("color"), r, g, b); //$NON-NLS-1$
+
+        final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        final float zoom = 1f / c3d.getZoom();
+
+        final Vector4f textOrigin = new Vector4f(x1, y1, z1, 1f);
+        Matrix4f.transform(c3d.getRotation(), textOrigin, textOrigin);
+
+        Vector3d va = new Vector3d(x1c, y1c, z1c);
+        Vector3d vb = new Vector3d(x2c, y2c, z2c);
+        Vector3d vc = new Vector3d(x3c, y3c, z3c);
+        vb = Vector3d.sub(va, vb);
+        vc = Vector3d.sub(va, vc);
+        double angle = Vector3d.angle(vb, vc);
+        BigDecimal ang = new BigDecimal(angle);
+        String angle_s = NUMBER_FORMAT2F.format(ang) + "°"; //$NON-NLS-1$
+
+        drawNumberGL33(angle_s, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
     }
 
     public void drawProtractor_GL20(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
@@ -1684,6 +1702,65 @@ public final class GData3 extends GData {
             }
             for (PGData3 tri : tris) {
                 tri.drawText(ox + ox2, oy, oz + 100000f, zoom);
+            }
+            ox2 = ox2 - .01f * zoom;
+        }
+    }
+
+    private void drawNumberGL33(String number, float ox, float oy, float oz, float zoom) {
+        final int length =  number.length();
+        float ox2 = 0f;
+        for (int i = 0; i < length; i++) {
+            Set<PGData3> tris = new HashSet<PGData3>();
+            final char c = number.charAt(i);
+            switch (c) {
+            case '0':
+                tris = View.D0;
+                break;
+            case '1':
+                tris = View.D1;
+                break;
+            case '2':
+                tris = View.D2;
+                break;
+            case '3':
+                tris = View.D3;
+                break;
+            case '4':
+                tris = View.D4;
+                break;
+            case '5':
+                tris = View.D5;
+                break;
+            case '6':
+                tris = View.D6;
+                break;
+            case '7':
+                tris = View.D7;
+                break;
+            case '8':
+                tris = View.D8;
+                break;
+            case '9':
+                tris = View.D9;
+                break;
+            case '.':
+                tris = View.Dd;
+                break;
+            case ',':
+                tris = View.Dc;
+                break;
+            case '°':
+                tris = View.Dg;
+                break;
+            case '-':
+                tris = View.DM;
+                break;
+            default:
+                break;
+            }
+            for (PGData3 tri : tris) {
+                tri.drawTextGL33_VAO(ox + ox2, oy, oz + 100000f, zoom);
             }
             ox2 = ox2 - .01f * zoom;
         }

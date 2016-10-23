@@ -313,6 +313,7 @@ public class GL33ModelRenderer {
                 final Set<GData> hiddenSet = new HashSet<GData>();
                 final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
+                final HashMap<GData, Vertex[]> vertexMap2 = new HashMap<>();
                 final HashMap<GData, float[]> normalMap = new HashMap<>();
                 final ThreadsafeHashMap<GData1, Matrix4f> CACHE_viewByProjection = new ThreadsafeHashMap<GData1, Matrix4f>(1000);
                 final HashMap<GData1, Matrix4f> matrixMap = new HashMap<>();
@@ -399,10 +400,10 @@ public class GL33ModelRenderer {
                         final ArrayList<GDataPNG> pngImages = new ArrayList<>();
                         final ArrayList<GData2> tmpDistanceMeters = new ArrayList<>();
                         final ArrayList<GData3> tmpProtractors = new ArrayList<>();
+                        final HashSet<GData> dataToRemove = new HashSet<>(vertexMap.keySet());
 
                         // Build the list of the data from the datfile
                         dataInOrder.clear();
-                        vertexMap.clear();
                         normalMap.clear();
                         selectionSet.clear();
                         hiddenSet.clear();
@@ -674,6 +675,8 @@ public class GL33ModelRenderer {
                             final GData gd = gw.data;
                             final boolean selected = selectedData.contains(gd);
                             final int type = gd.type();
+
+                            dataToRemove.remove(gd);
 
                             // If anything is transformed, transform it here
                             // and update the vertex positions (vertexMap) and normals for it (normalMap)
@@ -1717,7 +1720,14 @@ public class GL33ModelRenderer {
                             lock.unlock();
                         }
 
-                        sharedVertexMap = vertexMap;
+                        if (vertexMap2.size() != vertexMap.size() || !dataToRemove.isEmpty() || isTransforming) {
+                            for (GData gd : dataToRemove) {
+                                vertexMap.remove(gd);
+                                vertexMap2.remove(gd);
+                            }
+                            vertexMap2.putAll(vertexMap);
+                            sharedVertexMap = vertexMap2;
+                        }
                         lock.lock();
                         images = pngImages;
                         distanceMeters = tmpDistanceMeters;
@@ -2126,6 +2136,40 @@ public class GL33ModelRenderer {
                                     verts[1].Y,
                                     verts[1].Z,
                                     false
+                                    );
+                        }
+                    }
+                }
+                for (GData3 pt : protractors) {
+                    Vertex[] verts = sharedVertexMap.get(pt);
+                    if (verts != null) {
+                        if (verts[0].X == null || verts[1].X == null) {
+                            pt.drawProtractorGL33(
+                                    c3d,
+                                    glyphShader,
+                                    new BigDecimal(Float.toString(verts[0].x)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[0].y)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[0].z)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[1].x)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[1].y)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[1].z)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[2].x)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[2].y)).scaleByPowerOfTen(-3),
+                                    new BigDecimal(Float.toString(verts[2].z)).scaleByPowerOfTen(-3)
+                                    );
+                        } else {
+                            pt.drawProtractorGL33(
+                                    c3d,
+                                    glyphShader,
+                                    verts[0].X,
+                                    verts[0].Y,
+                                    verts[0].Z,
+                                    verts[1].X,
+                                    verts[1].Y,
+                                    verts[1].Z,
+                                    verts[2].X,
+                                    verts[2].Y,
+                                    verts[2].Z
                                     );
                         }
                     }
