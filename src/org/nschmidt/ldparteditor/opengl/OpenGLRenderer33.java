@@ -450,7 +450,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 // NLogger.debug(getClass(), "Trans: " + arr[(int) (w * 50.5f * 4)] + " " + arr[(int) (w * 50.5f * 4 + 1)] + " " + arr[(int) (w * 50.5f * 4 + 2)] + " " + arr[(int) (w * 50.5f * 4 + 3)]);  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-                if (false && lock.tryLock()) {
+                if (lock.tryLock()) {
                     try {
                         if (renderedPoints[0] != null) {
                             stack.glPushMatrix();
@@ -460,15 +460,25 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             stack.glTranslatef(-viewport_width, -viewport_height, 0f);
                             stack.glScalef(1f / w * xf, 1f / h * yf, 1f);
                             // FIXME Needs adjustments for negative determinants!
+
+                            GL33HelperPrimitives.backupVBO_PrimitiveArea();
+                            GL33HelperPrimitives.createVBO_PrimitiveArea();
                             for (float[] p : renderedPoints[0]) {
-                                GL11.glBegin(GL11.GL_QUADS);
-                                GL11.glColor3f(p[0], p[1], p[2]);
-                                GL11.glVertex3f(p[3], p[4], 0f);
-                                GL11.glVertex3f(p[5], p[6], 0f);
-                                GL11.glVertex3f(p[7], p[8], 0f);
-                                GL11.glVertex3f(p[9], p[10], 0f);
-                                GL11.glEnd();
+                                GL33HelperPrimitives.drawTrianglesIndexedRGB_Triangle(
+                                    new float[] {
+                                            p[3], p[4], 0f,
+                                            p[0], p[1], p[2],
+                                            p[5], p[6], 0f,
+                                            p[0], p[1], p[2],
+                                            p[7], p[8], 0f,
+                                            p[0], p[1], p[2],
+                                            p[9], p[10], 0f,
+                                            p[0], p[1], p[2]
+                                    }
+                                    , new int[]{0, 1, 2, 2, 3, 0});
                             }
+                            GL33HelperPrimitives.destroyVBO_PrimitiveArea();
+                            GL33HelperPrimitives.restoreVBO_PrimitiveArea();
                             stack.glPopMatrix();
                         }
                     } finally {
