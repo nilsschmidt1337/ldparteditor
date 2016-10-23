@@ -510,7 +510,7 @@ public enum View {
                                             float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
                                             float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
                                             float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
-                                            colour = new GColour(index, R, G, B, alpha, new GCGlitter(vR, vG, vB, fraction, minSize, maxSize));
+                                            colour = new GColour(index, R, G, B, Math.min(alpha, .99f), new GCGlitter(vR, vG, vB, fraction, minSize, maxSize));
                                         } else if (line.contains(" SPECKLE")) { //$NON-NLS-1$
                                             Matcher m6 = pSpeckle.matcher(line);
                                             m6.find();
@@ -539,7 +539,7 @@ public enum View {
                                 GColour colour = new GColour(index, R, G, B, 1f, new GCMetal());
                                 colourFromIndex.put(index, colour);
                             } else if (line.contains(" PEARLESCENT")) { //$NON-NLS-1$
-                                GColour colour = new GColour(index, R, G, B, 1f, new GCPearl());
+                                GColour colour = new GColour(index, R, G, B, .99f, new GCPearl());
                                 colourFromIndex.put(index, colour);
                             } else {
                                 GColour colour = new GColour(index, R, G, B, 1f);
@@ -573,7 +573,7 @@ public enum View {
                                             float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
                                             float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
                                             float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
-                                            colour = new GColour(index, R, G, B, 1f, new GCGlitter(vR, vG, vB, fraction, minSize, maxSize));
+                                            colour = new GColour(index, R, G, B, 99f, new GCGlitter(vR, vG, vB, fraction, minSize, maxSize));
                                         } else if (line.contains(" SPECKLE")) { //$NON-NLS-1$
                                             Matcher m6 = pSpeckle.matcher(line);
                                             m6.find();

@@ -1169,7 +1169,7 @@ public class GL33ModelRenderer {
                                         tempLineIndex += 6;
                                     }
                                     int tmpRenderMode = renderMode;
-                                    if (tmpRenderMode < 5  && tmpRenderMode > 1 && gw.noclip) {
+                                    if (tmpRenderMode < 6  && tmpRenderMode > 1 && gw.noclip) {
                                         tmpRenderMode = 0;
                                     }
                                     switch (tmpRenderMode) {
@@ -1425,7 +1425,7 @@ public class GL33ModelRenderer {
                                 }
 
                                 int tmpRenderMode = renderMode;
-                                if (tmpRenderMode < 5  && tmpRenderMode > 1 && gw.noclip) {
+                                if (tmpRenderMode < 6  && tmpRenderMode > 1 && gw.noclip) {
                                     tmpRenderMode = 0;
                                 }
                                 switch (tmpRenderMode) {
@@ -2067,7 +2067,7 @@ public class GL33ModelRenderer {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 
             // Draw lines from the selection
-            if (sls > 0) {
+            if (noRaytrace && sls > 0) {
                 GL30.glBindVertexArray(vaoSelectionLines);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboSelectionLines);
                 lock.lock();
@@ -2088,7 +2088,7 @@ public class GL33ModelRenderer {
             }
 
             // Draw lines from the CSG selection
-            if (usesCSG) {
+            if (noRaytrace && usesCSG) {
                 GL30.glBindVertexArray(vaoSelectionLines);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboSelectionLines);
                 lock.lock();
