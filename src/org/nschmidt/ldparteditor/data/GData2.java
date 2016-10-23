@@ -929,7 +929,6 @@ public final class GData2 extends GData {
         drawNumberGL33(dx_s, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);
         drawNumberGL33(dy_s, textOrigin.x + ox1, textOrigin.y + oy2, textOrigin.z, zoom);
         drawNumberGL33(dz_s, textOrigin.x + ox1, textOrigin.y + oy3, textOrigin.z, zoom);
-        GL11.glEnable(GL11.GL_CULL_FACE);
     }
 
     /*
