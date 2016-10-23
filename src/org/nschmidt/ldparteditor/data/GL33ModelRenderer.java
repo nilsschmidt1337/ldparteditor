@@ -717,10 +717,7 @@ public class GL33ModelRenderer {
                                                     for (int i = 0; i < 4; i++) {
                                                         Vector3f.add(normals[i], quadNormal, quadNormal);
                                                     }
-                                                    float xn = -quadNormal.x;
-                                                    float yn = -quadNormal.y;
-                                                    float zn = -quadNormal.z;
-                                                    normalMap.put(gd, new float[]{xn, yn, zn});
+                                                    normalMap.put(gd, new float[]{-quadNormal.x, -quadNormal.y, -quadNormal.z});
                                                 }
                                                 break;
                                             default:
@@ -763,10 +760,7 @@ public class GL33ModelRenderer {
                                             for (int i = 0; i < 4; i++) {
                                                 Vector3f.add(normals[i], quadNormal, quadNormal);
                                             }
-                                            float xn = quadNormal.x;
-                                            float yn = quadNormal.y;
-                                            float zn = quadNormal.z;
-                                            normalMap.put(gd, new float[]{xn, yn, zn});
+                                            normalMap.put(gd, new float[]{-quadNormal.x, -quadNormal.y, -quadNormal.z});
                                         }
                                         break;
                                     default:
@@ -838,7 +832,7 @@ public class GL33ModelRenderer {
                             case 3:
                                 final GData3 gd3 = (GData3) gd;
                                 if (gd3.isTriangle) {
-                                    if (drawWireframe || meshLines && (subfileMeshLines ^ mainFileContent.contains(gw.data))) {
+                                    if (drawWireframe || meshLines && (subfileMeshLines || mainFileContent.contains(gw.data))) {
                                         local_tempLineSize += 42;
                                         tempLineVertexCount += 6;
                                     }
@@ -865,7 +859,7 @@ public class GL33ModelRenderer {
                                 continue;
                             case 4:
                                 final GData4 gd4 = (GData4) gd;
-                                if (drawWireframe || meshLines && (subfileMeshLines ^ mainFileContent.contains(gw.data))) {
+                                if (drawWireframe || meshLines && (subfileMeshLines || mainFileContent.contains(gw.data))) {
                                     local_tempLineSize += 56;
                                     tempLineVertexCount += 8;
                                 }
@@ -1122,7 +1116,7 @@ public class GL33ModelRenderer {
                                         zn = Nv.z;
                                     }
 
-                                    if (drawWireframe || meshLines && (subfileMeshLines ^ mainFileContent.contains(gw.data))) {
+                                    if (drawWireframe || meshLines && (subfileMeshLines || mainFileContent.contains(gw.data))) {
                                         pointAt7(0, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
                                         pointAt7(1, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
                                         pointAt7(2, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
@@ -1267,7 +1261,7 @@ public class GL33ModelRenderer {
                                     zn = Nv.z;
                                 }
 
-                                if (drawWireframe || meshLines && (subfileMeshLines ^ mainFileContent.contains(gw.data))) {
+                                if (drawWireframe || meshLines && (subfileMeshLines || mainFileContent.contains(gw.data))) {
                                     pointAt7(0, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
                                     pointAt7(1, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
                                     pointAt7(2, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
@@ -1930,38 +1924,12 @@ public class GL33ModelRenderer {
             switch (gd.type()) {
             case 1:
                 final GData1 gd1 = ((GData1) gd);
-
-
-                final Matrix4f rotation = new Matrix4f();
-                final Vector3f x = new Vector3f(gd1.productMatrix.m00, gd1.productMatrix.m10, gd1.productMatrix.m20);
-                final Vector3f y = new Vector3f(gd1.productMatrix.m01, gd1.productMatrix.m11, gd1.productMatrix.m21);
-                final Vector3f z = new Vector3f(gd1.productMatrix.m02, gd1.productMatrix.m12, gd1.productMatrix.m22);
-
-                if (x.lengthSquared() > 0f) {
-                    x.normalise();
-                } else {
-                    x.x = 1f;
-                    x.y = 0f;
-                    x.z = 0f;
-                }
-                if (y.lengthSquared() > 0f) {
-                    y.normalise();
-                } else {
-                    y.x = 0f;
-                    y.y = 1f;
-                    y.z = 0f;
-                }
-                if (z.lengthSquared() > 0f) {
-                    z.normalise();
-                } else {
-                    z.x = 0f;
-                    z.y = 0f;
-                    z.z = 1f;
-                }
-                rotation.m00 = x.x; rotation.m10 = x.y; rotation.m20 = x.z;
-                rotation.m01 = y.x; rotation.m11 = y.y; rotation.m21 = y.z;
-                rotation.m02 = z.x; rotation.m12 = z.y; rotation.m22 = z.z;
-                rotation.m33 = 1f;
+                final Matrix4f rotation = new Matrix4f(gd1.productMatrix);
+                rotation.m30 = 0f;
+                rotation.m31 = 0f;
+                rotation.m32 = 0f;
+                rotation.invert();
+                rotation.transpose();
                 matrixMap.put(gd1, rotation);
                 stack.push(gd);
                 tempWinding.push(localWinding);
