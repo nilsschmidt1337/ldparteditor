@@ -1330,7 +1330,37 @@ public class GL33ModelRenderer {
                                     case 4:
                                     case 5:
                                     {
-                                        colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
+                                        if (tmpRenderMode != 5) {
+                                            colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
+                                        } else {
+                                            GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd3.r, gd3.g, gd3.b));
+                                            GColourType ct = c.getType();
+                                            boolean hasColourType = ct != null;
+                                            boolean matLight = true;
+                                            int useCubeMap = 0;
+                                            if (hasColourType) {
+                                                switch (ct.type()) {
+                                                case CHROME:
+                                                    colourise(0, 3, gd3.r, gd3.g, gd3.b, 2f, triangleData, tempIndex);
+                                                    break;
+                                                case MATTE_METALLIC:
+                                                    colourise(0, 3, gd3.r, gd3.g, gd3.b, 4.2f, triangleData, tempIndex);
+                                                    break;
+                                                case METAL:
+                                                    colourise(0, 3, gd3.r, gd3.g, gd3.b, 3.2f, triangleData, tempIndex);
+                                                    break;
+                                                case RUBBER:
+                                                    colourise(0, 3, gd3.r, gd3.g, gd3.b, 5.2f, triangleData, tempIndex);
+                                                    break;
+                                                default:
+                                                    colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
+                                                    break;
+                                                }
+                                            } else {
+                                                colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
+                                            }
+                                        }
+
                                         switch (gw.winding) {
                                         case BFC.CW:
                                             if (gw.invertNext) {
@@ -1614,7 +1644,34 @@ public class GL33ModelRenderer {
                                 case 4:
                                 case 5:
                                 {
-                                    colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
+                                    if (tmpRenderMode != 5) {
+                                        colourise(0, 3, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
+                                    } else {
+                                        GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd4.r, gd4.g, gd4.b));
+                                        GColourType ct = c.getType();
+                                        boolean hasColourType = ct != null;
+                                        if (hasColourType) {
+                                            switch (ct.type()) {
+                                            case CHROME:
+                                                colourise(0, 6, gd4.r, gd4.g, gd4.b, 2f, triangleData, tempIndex);
+                                                break;
+                                            case MATTE_METALLIC:
+                                                colourise(0, 6, gd4.r, gd4.g, gd4.b, 4.2f, triangleData, tempIndex);
+                                                break;
+                                            case METAL:
+                                                colourise(0, 6, gd4.r, gd4.g, gd4.b, 3.2f, triangleData, tempIndex);
+                                                break;
+                                            case RUBBER:
+                                                colourise(0, 6, gd4.r, gd4.g, gd4.b, 5.2f, triangleData, tempIndex);
+                                                break;
+                                            default:
+                                                colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
+                                                break;
+                                            }
+                                        } else {
+                                            colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
+                                        }
+                                    }
                                     switch (gw.winding) {
                                     case BFC.CW:
                                         if (gw.invertNext) {

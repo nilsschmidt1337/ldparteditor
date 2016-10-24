@@ -40,9 +40,9 @@ uniform float l3s_r;
 uniform float l3s_g;
 uniform float l3s_b;
 
-void MyFunction(inout vec4 col);
+void MyFunction(in vec4 col, out vec4 result);
 
-void MyFunction(inout vec4 col)
+void MyFunction(in vec4 col, out vec4 result)
 {
 
 vec2   uv = vec2(0.0, 0.0);
@@ -107,19 +107,24 @@ if (az >= ax) {
 }
 
    vec4 cubeColor = vec4(0.0,0.0,0.0,0.0);
-   float cubeMapSwitch = 1.0f;
-   if (cubeMapSwitch < 2.0f) {
+   float cubeMapSwitch = col.a;
+   if (cubeMapSwitch < 3.0f) {
       cubeColor = texture2D(cubeMap, uv);
-   } else if (cubeMapSwitch < 3.0f) {
-      cubeColor = texture2D(cubeMapMatte, uv);
-   } else {
+      result.a = col.a;
+   } else if (cubeMapSwitch < 4.0f) {
       cubeColor = texture2D(cubeMapMetal, uv);
+      result.a = col.a;
+   } else if (cubeMapSwitch < 5.0f) {
+      cubeColor = texture2D(cubeMapMatte, uv);
+      result.a = col.a;
+   } else {
+      cubeColor = texture2D(cubeMapMatte, uv);
+      result.a = 6.0f;
    }
    cubeColor = mix(cubeColor, col, cubeColor);
-   col.r = cubeColor.r;
-   col.g = cubeColor.g;
-   col.b = cubeColor.b;   
-   col.a = 1.0;
+   result.r = cubeColor.r;
+   result.g = cubeColor.g;
+   result.b = cubeColor.b;      
 }
 
 struct lightSource
@@ -177,9 +182,11 @@ void main()
 	
     if (resultColor.a < 0.1f) {
     	discard;
+    } else if (resultColor.a > 1.0f && resultColor.a < 6.0f) {
+    	vec4 cubeColor = vec4(0.0,0.0,0.0,0.0);
+    	MyFunction(resultColor, cubeColor);
+    	resultColor = cubeColor;    	
     }
-    
-    MyFunction(resultColor);
     
 	lights[0] = light0;
 	lights[1] = light1;
