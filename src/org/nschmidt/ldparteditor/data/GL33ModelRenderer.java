@@ -58,6 +58,10 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
  */
 public class GL33ModelRenderer {
 
+    private static final GTexture CUBEMAP_TEXTURE = new GTexture(TexType.PLANAR, "cmap.png", null, 1, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
+    private static final GTexture CUBEMAP_MATTE_TEXTURE = new GTexture(TexType.PLANAR, "matte_metal.png", null, 2, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
+    private static final GTexture CUBEMAP_METAL_TEXTURE = new GTexture(TexType.PLANAR, "metal.png", null, 3, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
+
     private static Set<String> filesWithLogo1 = new HashSet<String>();
     private static Set<String> filesWithLogo2 = new HashSet<String>();
 
@@ -151,7 +155,6 @@ public class GL33ModelRenderer {
     private volatile HashMap<GData, Vertex[]> sharedVertexMap = new HashMap<>();
 
     private volatile boolean usesTEXMAP = false;
-    private volatile boolean usesPNG = false;
     private volatile boolean usesCSG = false;
 
     private volatile ArrayList<Matrix4f> stud1_Matrices = new ArrayList<>();
@@ -414,9 +417,8 @@ public class GL33ModelRenderer {
                                     dataInOrder, csgData, vertexMap, matrixMap, df,
                                     lines, triangles, quads, condlines, drawStudLogo,
                                     pngImages, tmpDistanceMeters, tmpProtractors);
-                            usesPNG = special[0];
-                            usesTEXMAP = special[1];
-                            usesCSG = special[2];
+                            usesTEXMAP = special[0];
+                            usesCSG = special[1];
                         }
 
 
@@ -1810,9 +1812,10 @@ public class GL33ModelRenderer {
         final boolean studlogo = c3d.isShowingLogo();
         final boolean noRaytrace = c3d.getRenderMode() != 5;
 
-        // TODO Draw !LPE PNG VAOs here
-        if (usesPNG) {
-
+        if (!noRaytrace) {
+            CUBEMAP_TEXTURE.bindGL33(renderer, mainShader);
+            CUBEMAP_MATTE_TEXTURE.bindGL33(renderer, mainShader);
+            CUBEMAP_METAL_TEXTURE.bindGL33(renderer, mainShader);
         }
 
         if (c3d.isLightOn()) {
@@ -2207,7 +2210,6 @@ public class GL33ModelRenderer {
 
         final boolean[] result = new boolean[3];
         boolean hasTEXMAP = false;
-        boolean hasPNG = false;
         boolean hasCSG = false;
         Stack<GData> stack = new Stack<>();
         Stack<Byte> tempWinding = new Stack<>();
@@ -2378,15 +2380,13 @@ public class GL33ModelRenderer {
                 continue;
             case 10:
                 pngImages.add((GDataPNG) gd);
-                hasPNG = true;
                 continue;
             default:
                 continue;
             }
         }
-        result[0] = hasPNG;
-        result[1] = hasTEXMAP;
-        result[2] = hasCSG;
+        result[0] = hasTEXMAP;
+        result[1] = hasCSG;
         return result;
     }
 

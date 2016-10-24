@@ -87,8 +87,6 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
     private int skipFrame;
 
-    private volatile AtomicBoolean calculateVertexNormals = new AtomicBoolean(true);
-
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
     private final FloatBuffer view_buf = BufferUtils.createFloatBuffer(16);
     private final FloatBuffer rot_buf = BufferUtils.createFloatBuffer(16);
@@ -194,6 +192,16 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         final boolean negDet = c3d.hasNegDeterminant();
         final boolean raytraceMode = c3d.getRenderMode() == 5;
 
+        if (raytraceMode) {
+            if (skipFrame < 2) {
+                skipFrame++;
+
+            } else {
+                skipFrame = 0;
+                return;
+            }
+        }
+
         final GLCanvas canvas = c3d.getCanvas();
 
         if (!canvas.isCurrent()) {
@@ -209,30 +217,6 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         helper.createVBO();
 
         // FIXME Needs implementation!
-
-        if (raytraceMode) {
-            if (skipFrame < 2) {
-                skipFrame++;
-
-            } else {
-                skipFrame = 0;
-                return;
-            }
-            if (calculateVertexNormals.compareAndSet(true, false)) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        c3d.getVertexManager().clearVertexNormalCache();
-                        c3d.getVertexManager().fillVertexNormalCache(c3d.getLockableDatFileReference().getDrawChainStart());
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                        }
-                        calculateVertexNormals.set(true);
-                    }
-                }).start();
-            }
-        }
 
         int state3d = 0;
         if (c3d.isAnaglyph3d() && !raytraceMode) {

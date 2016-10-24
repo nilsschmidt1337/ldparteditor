@@ -554,7 +554,7 @@ public class GTexture {
             ID = loadPNGTexture(texture, GL13.GL_TEXTURE0, df);
             if (glossy && false)
                 ID_glossmap = loadPNGTexture(glossmap, GL13.GL_TEXTURE1, df);
-            if (cubeMapIndex > 0 && false) {
+            if (cubeMapIndex > 0) {
                 switch (cubeMapIndex) {
                 case 1:
                     ID_cubemap = loadPNGTexture("cmap.png", GL13.GL_TEXTURE2, df ); //$NON-NLS-1$
@@ -588,22 +588,22 @@ public class GTexture {
             } else {
                 // GL20.glUniform1f(renderer.getNoGlossMapSwitch(), 1f);
             }
-            if (cubeMapIndex > 0 && false) {
+            if (cubeMapIndex > 0) {
                 switch (cubeMapIndex) {
                 case 1:
                     GL13.glActiveTexture(GL13.GL_TEXTURE0 + 4);
                     GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap);
-                    // GL20.glUniform1i(renderer.getCubeMapLoc(), 4); // Texture unit 4 is for cube maps.
+                    GL20.glUniform1i(shader.getUniformLocation("cubeMap"), 4); // Texture unit 4 is for cube maps. //$NON-NLS-1$
                     break;
                 case 2:
                     GL13.glActiveTexture(GL13.GL_TEXTURE0 + 8);
                     GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap_matte);
-                    // GL20.glUniform1i(renderer.getCubeMapMatteLoc(), 8); // Texture unit 8 is for cube maps.
+                    GL20.glUniform1i(shader.getUniformLocation("cubeMapMatte"), 8); // Texture unit 8 is for cube maps. //$NON-NLS-1$
                     break;
                 case 3:
                     GL13.glActiveTexture(GL13.GL_TEXTURE0 + 16);
                     GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap_metal);
-                    // GL20.glUniform1i(renderer.getCubeMapMetalLoc(), 16); // Texture unit 16 is for cube maps.
+                    GL20.glUniform1i(shader.getUniformLocation("cubeMapMetal"), 16); // Texture unit 16 is for cube maps. //$NON-NLS-1$
                     break;
                 }
             }
