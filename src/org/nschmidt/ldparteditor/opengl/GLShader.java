@@ -79,6 +79,7 @@ public class GLShader {
 
         if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
             NLogger.error(GLShader.class, "Could not compile shader " + path + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$;
+            NLogger.error(GLShader.class, "msg:  " + path + GL20.glGetShaderInfoLog(shaderID)); //$NON-NLS-1$;
             return -1;
         }
 

@@ -89,7 +89,7 @@ public final class DatFile {
     private static final GTexture CUBEMAP_MATTE_TEXTURE = new GTexture(TexType.PLANAR, "matte_metal.png", null, 2, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GDataTEX CUBEMAP_MATTE = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_MATTE_TEXTURE); //$NON-NLS-1$
 
-    private static final GTexture CUBEMAP_METAL_TEXTURE = new GTexture(TexType.PLANAR, "metal.png", null, 2, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
+    private static final GTexture CUBEMAP_METAL_TEXTURE = new GTexture(TexType.PLANAR, "metal.png", null, 3, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GDataTEX CUBEMAP_METAL = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_METAL_TEXTURE); //$NON-NLS-1$
 
 
@@ -1010,7 +1010,7 @@ public final class DatFile {
     public void parseForData(boolean addHistory) {
         final boolean drawSelection = isDrawSelection();
         setDrawSelection(false);
-        
+
         Project.getParsedFiles().add(this);
         Project.addOpenedFile(this);
 
@@ -1438,7 +1438,7 @@ public final class DatFile {
             // Don't save read only files!
             return true;
         }
-        
+
         text = getText();
 
         boolean deleteFirst = oldName.equals(newName);
