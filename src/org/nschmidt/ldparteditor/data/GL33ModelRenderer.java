@@ -1645,7 +1645,7 @@ public class GL33ModelRenderer {
                                 case 5:
                                 {
                                     if (tmpRenderMode != 5) {
-                                        colourise(0, 3, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
+                                        colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
                                     } else {
                                         GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd4.r, gd4.g, gd4.b));
                                         GColourType ct = c.getType();
