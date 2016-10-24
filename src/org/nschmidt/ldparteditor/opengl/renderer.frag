@@ -40,6 +40,88 @@ uniform float l3s_r;
 uniform float l3s_g;
 uniform float l3s_b;
 
+void MyFunction(inout vec4 col);
+
+void MyFunction(inout vec4 col)
+{
+
+vec2   uv = vec2(0.0, 0.0);
+vec3   pos;
+
+pos = normal;
+pos.y = -pos.y;
+
+float ax = abs(pos.x) + 0.0001;
+float ay = abs(pos.y) + 0.0001;
+float az = abs(pos.z) + 0.0001;
+
+if (ax >= ay) {
+  if (ax >= az) {
+    // X
+    if (pos.x >= 0) {
+      uv.x = (-pos.z / ax + 1.0) / 2.0;
+      uv.y = (pos.y / ax + 1.0) / 2.0;
+      uv.x = uv.x * 0.25 + 0.5;
+      uv.y = uv.y * 0.33 + 0.33;
+    } else {
+      uv.x = (-pos.z / ax + 1.0) / 2.0;
+      uv.y = (pos.y / ax + 1.0) / 2.0;
+      uv.x = uv.x * 0.25;
+      uv.y = uv.y * 0.33 + 0.33;
+    }
+  }
+}
+
+if (ay >= ax) {
+  if (ay >= az) {
+    // Y
+    if (pos.y >= 0) {
+      uv.x = (pos.x / ay + 1.0) / 2.0;
+      uv.y = (pos.z / ay + 1.0) / 2.0;
+      uv.x = uv.x * 0.25 + 0.25;
+      uv.y = uv.y * 0.33 + 0.66;
+    } else {
+      uv.x = (pos.x / ay + 1.0) / 2.0;
+      uv.y = (pos.z / ay + 1.0) / 2.0;
+      uv.x = uv.x * 0.25 + 0.25;
+      uv.y = uv.y * 0.33;
+    }
+  }
+}
+
+if (az >= ax) {
+  if (az >= ay) {
+    // Z
+    if (pos.z >= 0) {
+      uv.x = (pos.x / az + 1.0) / 2.0;
+      uv.y = (pos.y / az + 1.0) / 2.0;
+      uv.x = uv.x * 0.25 + 0.25;
+      uv.y = uv.y * 0.33 + 0.33;
+    } else {
+      uv.x = (pos.x / az + 1.0) / 2.0;
+      uv.y = (pos.y / az + 1.0) / 2.0;
+      uv.x = uv.x * 0.25 + 0.75;
+      uv.y = uv.y * 0.33 + 0.33;
+    }
+  }
+}
+
+   vec4 cubeColor = vec4(0.0,0.0,0.0,0.0);
+   float cubeMapSwitch = 1.0f;
+   if (cubeMapSwitch < 2.0f) {
+      cubeColor = texture2D(cubeMap, uv);
+   } else if (cubeMapSwitch < 3.0f) {
+      cubeColor = texture2D(cubeMapMatte, uv);
+   } else {
+      cubeColor = texture2D(cubeMapMetal, uv);
+   }
+   cubeColor = mix(cubeColor, col, cubeColor);
+   col.r = cubeColor.r;
+   col.g = cubeColor.g;
+   col.b = cubeColor.b;   
+   col.a = 1.0;
+}
+
 struct lightSource
 {
   vec4 position;
@@ -90,9 +172,14 @@ material frontMaterial = material(
 
 void main()
 {
-    if (sceneColor.a < 0.1f) {
+	
+	vec4   resultColor = vec4(sceneColor);
+	
+    if (resultColor.a < 0.1f) {
     	discard;
     }
+    
+    MyFunction(resultColor);
     
 	lights[0] = light0;
 	lights[1] = light1;
@@ -109,7 +196,7 @@ void main()
 	
 	int count = 4;
 	
-	if (sceneColor.a > 5.0f || lightswitch < 1.0f) {
+	if (resultColor.a > 5.0f || lightswitch < 1.0f) {
 		count = 0;
 	}
 	
@@ -134,13 +221,13 @@ void main()
 	}
 	if (pngswitch < 1.0f) {	
     	lightSpecular *= .05;
-		color = (sceneColor + lightAmbientDiffuse) + lightSpecular;
+		color = (resultColor + lightAmbientDiffuse) + lightSpecular;
 	} else {
 		vec4 texColor = texture2D(ldpePngSampler, tex.xy);
-		if (sceneColor.a == 7.0f) {
-			color = sceneColor;
+		if (resultColor.a == 7.0f) {
+			color = resultColor;
 		} else {
-			color = texColor + sceneColor;
+			color = texColor + resultColor;
 		}	
 	}
 }
