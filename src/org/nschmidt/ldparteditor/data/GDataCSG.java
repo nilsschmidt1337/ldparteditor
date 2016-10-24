@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -649,7 +650,7 @@ public final class GDataCSG extends GData {
 
                                 sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
 
-                                HashMap<GData3, Integer> result = compiledCSG.getResult();
+                                TreeMap<GData3, Integer> result = compiledCSG.getResult();
 
                                 for (GData3 g3 : result.keySet()) {
                                     StringBuilder lineBuilder3 = new StringBuilder();
@@ -1314,7 +1315,7 @@ public final class GDataCSG extends GData {
     public int[] getDataSize() {
         final int[] result = new int[]{0, 0, 0};
         if (compiledCSG != null) {
-            HashMap<GData3, Integer> resultData = compiledCSG.getResult();
+            TreeMap<GData3, Integer> resultData = compiledCSG.getResult();
             for (GData3 tri : resultData.keySet()) {
                 if (tri.a < 1f) {
                     result[2] += 6;
