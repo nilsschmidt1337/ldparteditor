@@ -31,7 +31,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
  * @author nils
  *
  */
-public abstract class GData implements IGData {
+public abstract class GData implements IGData, Comparable<GData> {
 
     abstract String getNiceString();
 
@@ -53,7 +53,7 @@ public abstract class GData implements IGData {
     static boolean globalNegativeDeterminant = false;
     static boolean globalDrawObjects = true;
     static boolean globalFoundTEXMAPNEXT = false;
-    
+
     static boolean globalFoundTEXMAPDEF = false;
     static Deque<GTexture> globalTextureStack = new ArrayDeque<GTexture>();
     static Deque<Boolean> globalFoundTEXMAPStack = new ArrayDeque<Boolean>();
@@ -61,7 +61,7 @@ public abstract class GData implements IGData {
     static TexMeta globalLastTextureType = null;
 
     protected static final StringBuilder sb = new StringBuilder();
-    
+
     // Cleared before viewport change
     public static final HashMap<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<GData1, Matrix4f>(1000);
 
@@ -132,6 +132,14 @@ public abstract class GData implements IGData {
         if (obj == null)
             return false;
         return this == obj;
+    }
+
+    @Override
+    public int compareTo(GData o) {
+        if (equals(o)) {
+            return 0;
+        }
+        return Integer.compare(ID, o.ID);
     }
 
     public static int getLastID() {

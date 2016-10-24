@@ -36,11 +36,11 @@ package org.nschmidt.csg;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeMap;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -107,7 +107,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
  */
 public class CSG {
 
-    HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
+    TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
 
     private List<Polygon> polygons;
 
@@ -398,8 +398,8 @@ public class CSG {
      *
      * @return this csg as list of LDraw triangles
      */
-    public HashMap<GData3, Integer> toLDrawTriangles(GData1 parent) {
-        HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
+    public TreeMap<GData3, Integer> toLDrawTriangles(GData1 parent) {
+        TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
         for (Polygon p : this.polygons) {
             result.putAll(p.toLDrawTriangles(parent));
         }
@@ -500,8 +500,8 @@ public class CSG {
         return g1;
     }
 
-    public HashMap<GData3, Integer> toLDrawTriangles2(GData1 parent) {
-        HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
+    public TreeMap<GData3, Integer> toLDrawTriangles2(GData1 parent) {
+        TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
         for (Polygon p : this.polygons) {
             result.putAll(p.toLDrawTriangles2(parent));
         }
@@ -520,7 +520,7 @@ public class CSG {
         }
     }
 
-    public HashMap<GData3, Integer> getResult() {
+    public TreeMap<GData3, Integer> getResult() {
         return result;
     }
 
