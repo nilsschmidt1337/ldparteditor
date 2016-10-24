@@ -182,7 +182,7 @@ void main()
 	
     if (resultColor.a < 0.1f) {
     	discard;
-    } else if (resultColor.a > 1.0f && resultColor.a < 6.0f) {
+    } else if (resultColor.a > 1.2f && resultColor.a < 6.0f) {
     	vec4 cubeColor = vec4(0.0,0.0,0.0,0.0);
     	MyFunction(resultColor, cubeColor);
     	resultColor = cubeColor;    	
