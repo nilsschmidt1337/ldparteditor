@@ -552,8 +552,6 @@ public class GTexture {
             DatFile df = renderer.getC3D().getLockableDatFileReference();
 
             ID = loadPNGTexture(texture, GL13.GL_TEXTURE0, df);
-            if (glossy && false)
-                ID_glossmap = loadPNGTexture(glossmap, GL13.GL_TEXTURE1, df);
             if (cubeMapIndex > 0) {
                 switch (cubeMapIndex) {
                 case 1:
@@ -580,14 +578,6 @@ public class GTexture {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID);
             GL20.glUniform1i(shader.getUniformLocation("ldpePngSampler"), 0); // Texture unit 0 is for base images. //$NON-NLS-1$
 
-            if (glossy && false) {
-                GL13.glActiveTexture(GL13.GL_TEXTURE0 + 2);
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_glossmap);
-                // GL20.glUniform1i(renderer.getGlossMapLoc(), 2); // Texture unit 2 is for gloss maps.
-                // GL20.glUniform1f(renderer.getNoGlossMapSwitch(), 0f);
-            } else {
-                // GL20.glUniform1f(renderer.getNoGlossMapSwitch(), 1f);
-            }
             if (cubeMapIndex > 0) {
                 switch (cubeMapIndex) {
                 case 1:

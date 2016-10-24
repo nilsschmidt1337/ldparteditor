@@ -315,6 +315,7 @@ public class GL33ModelRenderer {
                 final Set<GData> selectionSet = new HashSet<GData>();
                 final Set<GData> hiddenSet = new HashSet<GData>();
                 final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
+                final ArrayList<GDataAndWinding> texmapDataInOrder = new ArrayList<>();
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
                 final HashMap<GData, Vertex[]> vertexMap2 = new HashMap<>();
                 final HashMap<GData, float[]> normalMap = new HashMap<>();
@@ -404,18 +405,20 @@ public class GL33ModelRenderer {
                         final ArrayList<GData2> tmpDistanceMeters = new ArrayList<>();
                         final ArrayList<GData3> tmpProtractors = new ArrayList<>();
                         final HashSet<GData> dataToRemove = new HashSet<>(vertexMap.keySet());
+                        final int renderMode = c3d.getRenderMode();
 
                         // Build the list of the data from the datfile
                         dataInOrder.clear();
+                        texmapDataInOrder.clear();
                         normalMap.clear();
                         selectionSet.clear();
                         hiddenSet.clear();
                         CACHE_viewByProjection.clear();
 
                         {
-                            boolean[] special = loadBFCinfo(
-                                    dataInOrder, csgData, vertexMap, matrixMap, df,
-                                    lines, triangles, quads, condlines, drawStudLogo,
+                            boolean[] special = load_BFC_and_TEXMAP_info(
+                                    dataInOrder, texmapDataInOrder, csgData, vertexMap, matrixMap, df,
+                                    lines, triangles, quads, condlines, drawStudLogo, renderMode == 5,
                                     pngImages, tmpDistanceMeters, tmpProtractors);
                             usesTEXMAP = special[0];
                             usesCSG = special[1];
@@ -571,7 +574,6 @@ public class GL33ModelRenderer {
                             }
                         }
                         final Object[] smoothObj = smoothVertices ? vm.getSmoothedVertices(tmpSelectedVertices) : null;
-                        final int renderMode = c3d.getRenderMode();
                         final int lineMode = c3d.getLineMode();
                         final boolean meshLines = c3d.isMeshLines();
                         final boolean subfileMeshLines = c3d.isSubMeshLines();
@@ -1336,8 +1338,6 @@ public class GL33ModelRenderer {
                                             GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd3.r, gd3.g, gd3.b));
                                             GColourType ct = c.getType();
                                             boolean hasColourType = ct != null;
-                                            boolean matLight = true;
-                                            int useCubeMap = 0;
                                             if (hasColourType) {
                                                 switch (ct.type()) {
                                                 case CHROME:
@@ -2124,10 +2124,15 @@ public class GL33ModelRenderer {
             }
         } else {
 
+            if (!noRaytrace) {
+                GL30.glBindVertexArray(0);
+                return;
+            }
+
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 
             // Draw lines from the selection
-            if (noRaytrace && sls > 0) {
+            if (sls > 0) {
                 GL30.glBindVertexArray(vaoSelectionLines);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboSelectionLines);
                 lock.lock();
@@ -2148,7 +2153,7 @@ public class GL33ModelRenderer {
             }
 
             // Draw lines from the CSG selection
-            if (noRaytrace && usesCSG) {
+            if (usesCSG) {
                 GL30.glBindVertexArray(vaoSelectionLines);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboSelectionLines);
                 lock.lock();
@@ -2251,8 +2256,9 @@ public class GL33ModelRenderer {
         GL30.glBindVertexArray(0);
     }
 
-    private boolean[] loadBFCinfo(
+    private boolean[] load_BFC_and_TEXMAP_info(
             final ArrayList<GDataAndWinding> dataInOrder,
+            final ArrayList<GDataAndWinding> texmapDataInOrder,
             final ArrayList<GDataCSG> csgData,
             final HashMap<GData, Vertex[]> vertexMap,
             final HashMap<GData1, Matrix4f> matrixMap, final DatFile df,
@@ -2261,6 +2267,7 @@ public class GL33ModelRenderer {
             final ThreadsafeHashMap<GData4, Vertex[]> quads,
             final ThreadsafeHashMap<GData5, Vertex[]> condlines,
             final boolean drawStudLogo,
+            final boolean parseTexmap,
             ArrayList<GDataPNG> pngImages,
             ArrayList<GData2> tmpDistanceMeters,
             ArrayList<GData3> tmpProtractors) {
@@ -2433,7 +2440,18 @@ public class GL33ModelRenderer {
                 hasCSG = true;
                 continue;
             case 9:
+                if (!parseTexmap) {
+                    continue;
+                }
+                GDataTEX tex = (GDataTEX) gd;
+                texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                 hasTEXMAP = true;
+                if (tex.linkedData != null && tex.linkedData.type() == 1) {
+
+                }
+                if (tex.meta == TexMeta.FALLBACK) {
+                    while ((gd = gd.next) != null && !(gd instanceof GDataTEX && ((GDataTEX) gd).meta == TexMeta.END));
+                }
                 continue;
             case 10:
                 pngImages.add((GDataPNG) gd);

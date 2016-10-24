@@ -48,6 +48,7 @@ import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GL33ModelRenderer;
+import org.nschmidt.ldparteditor.data.GTexture;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
@@ -2229,6 +2230,13 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         shaderProgram2.dispose();
         shaderProgram2D.dispose();
         shaderProgramCondline.dispose();
+        // Dispose all textures
+        for (Iterator<GTexture> it = textureSet.iterator() ; it.hasNext();) {
+            GTexture tex = it.next();
+            NLogger.debug(getClass(), "Dispose texture: {0}", tex); //$NON-NLS-1$
+            tex.dispose(this);
+            it.remove();
+        }
     }
 
     public Matrix4f getRotationInverse() {
