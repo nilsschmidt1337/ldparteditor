@@ -135,7 +135,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
         stack.setShader(shaderProgram);
         shaderProgram.use();
-
+        shaderProgram.texmapOff();
 
         {
             GL20.glUniform1f(shaderProgram.getUniformLocation("l0_r"), View.light1_Colour_r[0]); //$NON-NLS-1$
@@ -194,7 +194,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         final boolean raytraceMode = c3d.getRenderMode() == 5;
 
         if (raytraceMode) {
-            if (skipFrame < 2) {
+            if (skipFrame < 1) {
                 skipFrame++;
 
             } else {

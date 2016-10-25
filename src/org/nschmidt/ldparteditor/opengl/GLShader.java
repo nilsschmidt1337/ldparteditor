@@ -113,6 +113,22 @@ public class GLShader {
         GL20.glUniform1f(getUniformLocation("lightswitch"), 0f); //$NON-NLS-1$
     }
 
+    public void texmapOn() {
+        GL20.glUniform1f(getUniformLocation("texmapswitch"), 1f); //$NON-NLS-1$
+    }
+
+    public void texmapOff() {
+        GL20.glUniform1f(getUniformLocation("texmapswitch"), 0f); //$NON-NLS-1$
+    }
+
+    public void transparentOn() {
+        GL20.glUniform1f(getUniformLocation("alphaswitch"), 1f); //$NON-NLS-1$
+    }
+
+    public void transparentOff() {
+        GL20.glUniform1f(getUniformLocation("alphaswitch"), 0f); //$NON-NLS-1$
+    }
+
     public boolean isLightOn() {
         return GL20.glGetUniformf(program, getUniformLocation("lightswitch")) == 1f; //$NON-NLS-1$
     }

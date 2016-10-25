@@ -7,6 +7,7 @@ layout(location = 3) in vec2 in_tex;
 
 uniform float factor;
 uniform float pngswitch;
+uniform float texmapswitch;
 
 uniform mat4 projection;
 uniform mat4 view;
@@ -20,7 +21,7 @@ out vec2 tex;
 
 void main()
 {
-	if (pngswitch > 0.0f) {
+	if (pngswitch > 0.5f || texmapswitch > 0.5f) {
 		tex = in_tex;
 	}
 	gl_Position = projection * view * model * vec4(in_position, 1.0f);
