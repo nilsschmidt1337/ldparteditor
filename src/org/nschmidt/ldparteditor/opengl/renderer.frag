@@ -6,6 +6,8 @@ in vec3 normal;
 in vec3 position;
 in vec2 tex;
 
+uniform float alphaswitch;
+uniform float texmapswitch;
 uniform float lightswitch;
 uniform float pngswitch;
 uniform sampler2D ldpePngSampler;
@@ -203,7 +205,7 @@ void main()
 	
 	int count = 4;
 	
-	if (resultColor.a > 5.0f || lightswitch < 1.0f) {
+	if (resultColor.a > 5.0f || lightswitch < 0.5f) {
 		count = 0;
 	}
 	
@@ -226,7 +228,42 @@ void main()
 		lightSpecular += lights[i].specular * frontMaterial.specular * pow(max(dot(r, eyeDir), 0.0), frontMaterial.shininess) * attenFactor;
 		
 	}
-	if (pngswitch < 1.0f) {	
+	if (texmapswitch > 0.5f) {
+		vec4 texColor = texture2D(ldpePngSampler, tex.xy);
+		lightSpecular *= .05;
+		if (alphaswitch < 0.5f) {
+			if (resultColor.a < 0.9f) {
+			    if (texColor.a < 0.9f) {
+					discard;
+				} else {
+					resultColor = texColor;
+					resultColor.a = 1.0f;
+				}
+				color = (resultColor + lightAmbientDiffuse) + lightSpecular;
+			} else {				
+				if (texColor.a < 0.9f) {
+					resultColor = mix(resultColor, texColor, resultColor);
+					resultColor.a = 1.0f;
+				} else {
+					resultColor = texColor;
+				}
+				color = (resultColor + lightAmbientDiffuse) + lightSpecular;
+			}
+		} else {
+			if (resultColor.a < 0.9f) {
+				if (texColor.a < 0.9f) {
+					texColor = mix(resultColor, texColor, resultColor);
+					texColor.a = resultColor.a;
+					resultColor = texColor;
+				} else {
+					discard;
+				}
+				color = (resultColor + lightAmbientDiffuse) + lightSpecular;
+			} else {
+				discard;
+			}
+		}
+	} else if (pngswitch < 0.5f) {	
     	lightSpecular *= .05;
 		color = (resultColor + lightAmbientDiffuse) + lightSpecular;
 	} else {

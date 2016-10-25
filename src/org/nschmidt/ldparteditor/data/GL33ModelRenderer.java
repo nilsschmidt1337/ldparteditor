@@ -149,6 +149,7 @@ public class GL33ModelRenderer {
     private volatile int condlineSize = 0;
     private volatile int selectionSize = 0;
 
+    private volatile ArrayList<GDataAndWinding> texmapData = new ArrayList<>();
     private volatile ArrayList<GDataPNG> images = new ArrayList<>();
     private volatile ArrayList<GData2> distanceMeters = new ArrayList<>();
     private volatile ArrayList<GData3> protractors = new ArrayList<>();
@@ -422,6 +423,9 @@ public class GL33ModelRenderer {
                                     pngImages, tmpDistanceMeters, tmpProtractors);
                             usesTEXMAP = special[0];
                             usesCSG = special[1];
+                            if (usesTEXMAP) {
+                                texmapData = new ArrayList<>(texmapDataInOrder);
+                            }
                         }
 
 
@@ -1881,9 +1885,36 @@ public class GL33ModelRenderer {
             mainShader.setFactor(1f);
         }
 
-        // TODO Draw !TEXMAP VAOs here
+        // TODO Draw !TEXMAP VAOs here (slow)
         if (usesTEXMAP) {
-
+            mainShader.texmapOn();
+            if (drawSolidMaterials) {
+                mainShader.transparentOff();
+            } else {
+                mainShader.transparentOn();
+            }
+            GTexture lastTexture = null;
+            for (GDataAndWinding gw : texmapData) {
+                final GData gd = gw.data;
+                switch (gd.type()) {
+                case 3:
+                    // GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(vertices, indices);
+                    continue;
+                case 4:
+                    // GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(vertices, indices);
+                    continue;
+                case 9:
+                    GDataTEX tex = (GDataTEX) gd;
+                    if (tex.meta == TexMeta.START || tex.meta == TexMeta.NEXT) {
+                        lastTexture = tex.linkedTexture;
+                        lastTexture.refreshCache();
+                        lastTexture.bindGL33(renderer, mainShader);
+                    }
+                    continue;
+                default:
+                }
+            }
+            mainShader.texmapOff();
         }
 
         // TODO Draw CSG VAOs here
