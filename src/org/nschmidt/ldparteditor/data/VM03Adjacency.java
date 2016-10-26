@@ -135,16 +135,22 @@ class VM03Adjacency extends VM02Add {
         if (m1 == null || m2 == null) {
             return null;
         }
+        getManifestationLock().lock();
         for (VertexManifestation a : m1) {
             if (a.getPosition() > 1) continue;
             for (VertexManifestation b : m2) {
                 if (b.getPosition() > 1) continue;
                 if (a.getGdata().equals(b.getGdata()) && b.getGdata().type() == 5) {
-                    if (!lineLinkedToVertices.containsKey(b.getGdata())) return null;
+                    if (!lineLinkedToVertices.containsKey(b.getGdata())) {
+                        getManifestationLock().unlock();
+                        return null;
+                    }
+                    getManifestationLock().unlock();
                     return (GData5) b.getGdata();
                 }
             }
         }
+        getManifestationLock().unlock();
         return null;
     }
 
