@@ -443,7 +443,7 @@ public class GL33ModelRenderer {
                         }
 
                         final boolean smoothShading = false;
-                        if (true && !drawWireframe) {
+                        if (true && !drawWireframe) { // smoothShading &&
                             // FIXME Calculate normals here...
                             final HashMap<GData, Vector3f> surfaceNormals = new HashMap<>();
                             for (GDataAndWinding gw : dataInOrder) {
@@ -483,6 +483,20 @@ public class GL33ModelRenderer {
                             surfaceNormals.values().parallelStream().forEach((n) -> {
                                 if (n.lengthSquared() > 0f) n.normalise();
                             });
+                            // Now calculate vertex normals (based on adjacent condlines)...
+                            final HashMap<GData, Vector3f[]> vertexNormals = new HashMap<>();
+                            for (GDataAndWinding gw : dataInOrder) {
+                                final GData gd = gw.data;
+                                if (gd.type() == 3) {
+                                    final Vector3f norm = surfaceNormals.get(gd);
+                                    final Vector3f[] normals = new Vector3f[]{new Vector3f(norm), new Vector3f(norm), new Vector3f(norm)};
+                                    vertexNormals.put(gd, normals);
+                                } else if (gd.type() == 4) {
+                                    final Vector3f norm = surfaceNormals.get(gd);
+                                    final Vector3f[] normals = new Vector3f[]{new Vector3f(norm), new Vector3f(norm), new Vector3f(norm), new Vector3f(norm)};
+                                    vertexNormals.put(gd, normals);
+                                }
+                            }
                         }
 
                         if (calculateCSG.compareAndSet(true, false)) {
