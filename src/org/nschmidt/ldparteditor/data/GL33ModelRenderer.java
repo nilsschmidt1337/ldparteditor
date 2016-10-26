@@ -156,7 +156,7 @@ public class GL33ModelRenderer {
     private volatile ArrayList<GData2> distanceMeters = new ArrayList<>();
     private volatile ArrayList<GData3> protractors = new ArrayList<>();
     private volatile HashMap<GData, Vertex[]> sharedVertexMap = new HashMap<>();
-    private volatile HashMap<GData, float[]> sharedNormalMap = new HashMap<>();
+    private volatile HashMap<GData, float[]> shared_TEXMAP_NormalMap = new HashMap<>();
 
     private volatile boolean usesTEXMAP = false;
     private volatile boolean usesCSG = false;
@@ -431,10 +431,10 @@ public class GL33ModelRenderer {
                                 texmapData = new ArrayList<>(texmapDataInOrder);
                             }
                             HashSet<GData> allData = new HashSet<>();
-                            for (GDataAndWinding gw : dataInOrder) {
+                            for (GDataAndWinding gw : texmapDataInOrder) {
                                 allData.add(gw.data);
                             }
-                            Iterator<Entry<GData, float[]>> iter = sharedNormalMap.entrySet().iterator();
+                            Iterator<Entry<GData, float[]>> iter = shared_TEXMAP_NormalMap.entrySet().iterator();
                             while (iter.hasNext()) {
                                 if(!allData.contains(iter.next().getKey())){
                                     iter.remove();
@@ -445,8 +445,15 @@ public class GL33ModelRenderer {
                         final boolean smoothShading = false;
                         if (true && !drawWireframe) { // smoothShading &&
                             // FIXME Calculate normals here...
+                            final ArrayList<GDataAndWinding> data;
+                            if (usesTEXMAP) {
+                                data = new ArrayList<>(dataInOrder);
+                                data.addAll(texmapDataInOrder);
+                            } else {
+                                data = dataInOrder;
+                            }
                             final HashMap<GData, Vector3f> surfaceNormals = new HashMap<>();
-                            for (GDataAndWinding gw : dataInOrder) {
+                            for (GDataAndWinding gw : data) {
                                 final GData gd = gw.data;
                                 Vector3f normalv = null;
                                 if (gd.type() == 3) {
@@ -485,7 +492,7 @@ public class GL33ModelRenderer {
                             });
                             // Now calculate vertex normals (based on adjacent condlines)...
                             final HashMap<GData, Vector3f[]> vertexNormals = new HashMap<>();
-                            for (GDataAndWinding gw : dataInOrder) {
+                            for (GDataAndWinding gw : data) {
                                 final GData gd = gw.data;
                                 if (gd.type() == 3) {
                                     final Vector3f norm = surfaceNormals.get(gd);
@@ -494,6 +501,32 @@ public class GL33ModelRenderer {
                                 } else if (gd.type() == 4) {
                                     final Vector3f norm = surfaceNormals.get(gd);
                                     final Vector3f[] normals = new Vector3f[]{new Vector3f(norm), new Vector3f(norm), new Vector3f(norm), new Vector3f(norm)};
+                                    vertexNormals.put(gd, normals);
+                                }
+                            }
+                            for (GDataAndWinding gw : data) {
+                                final GData gd = gw.data;
+                                final int t = gd.type();
+                                if (t > 2 && t < 5) {
+                                    final Vector3f norm = surfaceNormals.get(gd);
+                                    final Vector3f[] normals = vertexNormals.get(gd);
+                                    Vertex[] v = vertexMap.get(gd);
+                                    for (int i = 0; i < t; i++) {
+                                        final int j = (i + 1) % t;
+                                        if (vm.hasCondline(v[i], v[j]) != null) {
+                                            ArrayList<GData> surfs = vm.linkedCommonFaces(v[i], v[j]);
+                                            for (GData s : surfs) {
+                                                if (s != gd) {
+                                                    Vertex[] w = vertexMap.get(s);
+                                                    Vector3f[] normals2 = vertexNormals.get(s);
+                                                    for (int k = 0; k < w.length; k++) {
+
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
                                     vertexNormals.put(gd, normals);
                                 }
                             }
