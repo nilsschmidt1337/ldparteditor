@@ -192,6 +192,7 @@ class VM03Adjacency extends VM02Add {
         if (m1 == null || m2 == null) {
             return result;
         }
+        getManifestationLock().lock();
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
                 GData bg = b.getGdata();
@@ -211,6 +212,7 @@ class VM03Adjacency extends VM02Add {
                 }
             }
         }
+        getManifestationLock().unlock();
         return result;
     }
 
