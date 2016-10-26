@@ -410,6 +410,7 @@ public class GL33ModelRenderer {
                         final ArrayList<GData3> tmpProtractors = new ArrayList<>();
                         final HashSet<GData> dataToRemove = new HashSet<>(vertexMap.keySet());
                         final int renderMode = c3d.getRenderMode();
+                        final boolean drawWireframe = renderMode == -1;
 
                         // Build the list of the data from the datfile
                         dataInOrder.clear();
@@ -442,7 +443,7 @@ public class GL33ModelRenderer {
                         }
 
                         final boolean smoothShading = false;
-                        if (true) {
+                        if (true && !drawWireframe) {
                             // FIXME Calculate normals here...
                             final HashMap<GData, Vector3f> surfaceNormals = new HashMap<>();
                             for (GDataAndWinding gw : dataInOrder) {
@@ -636,7 +637,6 @@ public class GL33ModelRenderer {
                         final int lineMode = c3d.getLineMode();
                         final boolean meshLines = c3d.isMeshLines();
                         final boolean subfileMeshLines = c3d.isSubMeshLines();
-                        final boolean drawWireframe = renderMode == -1;
                         final boolean condlineMode = renderMode == 6;
                         final boolean hideCondlines = !condlineMode && lineMode > 1;
                         final boolean hideLines = !condlineMode && lineMode > 2;
