@@ -1400,7 +1400,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             // MARK Manipulator
             boolean singleMode = true;
             GColour c;
-            if (window.getWorkingAction() != WorkingMode.SELECT) {
+            if (!raytraceMode && window.getWorkingAction() != WorkingMode.SELECT) {
                 final float lineWidth;
                 final float cone_height;
                 final float cone_width;
