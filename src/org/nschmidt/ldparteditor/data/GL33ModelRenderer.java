@@ -1395,7 +1395,12 @@ public class GL33ModelRenderer {
                                         pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                         colourise(0, 6, r, g, b, gd3.a, triangleData, tempIndex);
                                         if (smoothShading) {
-
+                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                            normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                            normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                            normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                            normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                            normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
                                         } else {
                                             if (gw.negativeDeterminant) {
                                                 normal(0, 3, xn, yn, zn, triangleData, tempIndex);
@@ -1449,7 +1454,12 @@ public class GL33ModelRenderer {
                                             break;
                                         }
                                         if (smoothShading) {
-
+                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                            normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                            normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                            normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                            normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                            normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
                                         } else {
                                             if (gw.negativeDeterminant) {
                                                 normal(0, 3, xn, yn, zn, triangleData, tempIndex);
@@ -1502,7 +1512,12 @@ public class GL33ModelRenderer {
                                             break;
                                         }
                                         if (smoothShading) {
-
+                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                            normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                            normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                            normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                            normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                            normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
                                         } else {
                                             if (gw.negativeDeterminant) {
                                                 normal(0, 3, xn, yn, zn, triangleData, tempIndex);
@@ -1554,7 +1569,15 @@ public class GL33ModelRenderer {
                                         switch (gw.winding) {
                                         case BFC.CW:
                                             if (smoothShading) {
-
+                                                if (gw.negativeDeterminant ^ gw.invertNext) {
+                                                    normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                                    normal(1, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                                    normal(2, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                                } else {
+                                                    normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                                    normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                                    normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                                }
                                             } else {
                                                 if (gw.invertNext) {
                                                     normal(0, 3, xn, yn, zn, triangleData, tempIndex);
@@ -1574,7 +1597,15 @@ public class GL33ModelRenderer {
                                             break;
                                         case BFC.CCW:
                                             if (smoothShading) {
-
+                                                if (gw.negativeDeterminant ^ gw.invertNext) {
+                                                    normal(0, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                                    normal(1, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
+                                                    normal(2, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                                } else {
+                                                    normal(0, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                                    normal(1, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                                    normal(2, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
+                                                }
                                             } else {
                                                 if (gw.invertNext) {
                                                     normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
