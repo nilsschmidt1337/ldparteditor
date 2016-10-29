@@ -517,9 +517,9 @@ public class GL33ModelRenderer {
                                         if (vm.hasCondline2(v[i], v[j]) != null) {
                                             for (GData s : vm.linkedCommonFaces(v[i], v[j])) {
                                                 if (s != gd) {
-                                                    for (Vertex w : vertexMap.get(s)) {
+                                                    if (vertexMap.get(s) != null) for (Vertex w : vertexMap.get(s)) {
                                                         if (w.equals(v[i])) {
-                                                           Vector3f.add(normals[i], surfaceNormals.get(s), normals[i]);
+                                                            Vector3f.add(normals[i], surfaceNormals.get(s), normals[i]);
                                                         } else if (w.equals(v[j])) {
                                                             Vector3f.add(normals[j], surfaceNormals.get(s), normals[j]);
                                                         }
@@ -676,11 +676,11 @@ public class GL33ModelRenderer {
                                     selectionCSGsize = csgSelectionVertexSize;
                                     lock.unlock();
                                     calculateCSG.set(true);
-                            } catch (Exception ex) {
-                                NLogger.error(getClass(), ex);
-                            } finally {
-                                GDataCSG.static_lock.unlock();
-                            }
+                                } catch (Exception ex) {
+                                    NLogger.error(getClass(), ex);
+                                } finally {
+                                    GDataCSG.static_lock.unlock();
+                                }
                             });
                         }
 
@@ -819,42 +819,42 @@ public class GL33ModelRenderer {
                                         if (needNormal) {
                                             switch (type) {
                                             case 3:
-                                                {
-                                                    float xn = (nverts[2].y - nverts[0].y) * (nverts[1].z - nverts[0].z) - (nverts[2].z - nverts[0].z) * (nverts[1].y - nverts[0].y);
-                                                    float yn = (nverts[2].z - nverts[0].z) * (nverts[1].x - nverts[0].x) - (nverts[2].x - nverts[0].x) * (nverts[1].z - nverts[0].z);
-                                                    float zn = (nverts[2].x - nverts[0].x) * (nverts[1].y - nverts[0].y) - (nverts[2].y - nverts[0].y) * (nverts[1].x - nverts[0].x);
-                                                    normalMap.put(gd, new float[]{
-                                                            xn, yn, zn,
-                                                            xn, yn, zn,
-                                                            xn, yn, zn});
-                                                }
-                                                break;
+                                            {
+                                                float xn = (nverts[2].y - nverts[0].y) * (nverts[1].z - nverts[0].z) - (nverts[2].z - nverts[0].z) * (nverts[1].y - nverts[0].y);
+                                                float yn = (nverts[2].z - nverts[0].z) * (nverts[1].x - nverts[0].x) - (nverts[2].x - nverts[0].x) * (nverts[1].z - nverts[0].z);
+                                                float zn = (nverts[2].x - nverts[0].x) * (nverts[1].y - nverts[0].y) - (nverts[2].y - nverts[0].y) * (nverts[1].x - nverts[0].x);
+                                                normalMap.put(gd, new float[]{
+                                                        xn, yn, zn,
+                                                        xn, yn, zn,
+                                                        xn, yn, zn});
+                                            }
+                                            break;
                                             case 4:
+                                            {
+                                                final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
                                                 {
-                                                    final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
-                                                    {
-                                                        final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
-                                                        Vector3f.sub(new Vector3f(nverts[1].x, nverts[1].y, nverts[1].z), new Vector3f(nverts[0].x, nverts[0].y, nverts[0].z), lineVectors[0]);
-                                                        Vector3f.sub(new Vector3f(nverts[2].x, nverts[2].y, nverts[2].z), new Vector3f(nverts[1].x, nverts[1].y, nverts[1].z), lineVectors[1]);
-                                                        Vector3f.sub(new Vector3f(nverts[3].x, nverts[3].y, nverts[3].z), new Vector3f(nverts[2].x, nverts[2].y, nverts[2].z), lineVectors[2]);
-                                                        Vector3f.sub(new Vector3f(nverts[0].x, nverts[0].y, nverts[0].z), new Vector3f(nverts[3].x, nverts[3].y, nverts[3].z), lineVectors[3]);
-                                                        Vector3f.cross(lineVectors[0], lineVectors[1], normals[0]);
-                                                        Vector3f.cross(lineVectors[1], lineVectors[2], normals[1]);
-                                                        Vector3f.cross(lineVectors[2], lineVectors[3], normals[2]);
-                                                        Vector3f.cross(lineVectors[3], lineVectors[0], normals[3]);
-                                                    }
-                                                    Vector3f quadNormal = new Vector3f();
-                                                    for (int i = 0; i < 4; i++) {
-                                                        Vector3f.add(normals[i], quadNormal, quadNormal);
-                                                    }
-                                                    quadNormal.negate();
-                                                    normalMap.put(gd, new float[]{
-                                                            quadNormal.x, quadNormal.y, quadNormal.z,
-                                                            quadNormal.x, quadNormal.y, quadNormal.z,
-                                                            quadNormal.x, quadNormal.y, quadNormal.z,
-                                                            quadNormal.x, quadNormal.y, quadNormal.z});
+                                                    final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
+                                                    Vector3f.sub(new Vector3f(nverts[1].x, nverts[1].y, nverts[1].z), new Vector3f(nverts[0].x, nverts[0].y, nverts[0].z), lineVectors[0]);
+                                                    Vector3f.sub(new Vector3f(nverts[2].x, nverts[2].y, nverts[2].z), new Vector3f(nverts[1].x, nverts[1].y, nverts[1].z), lineVectors[1]);
+                                                    Vector3f.sub(new Vector3f(nverts[3].x, nverts[3].y, nverts[3].z), new Vector3f(nverts[2].x, nverts[2].y, nverts[2].z), lineVectors[2]);
+                                                    Vector3f.sub(new Vector3f(nverts[0].x, nverts[0].y, nverts[0].z), new Vector3f(nverts[3].x, nverts[3].y, nverts[3].z), lineVectors[3]);
+                                                    Vector3f.cross(lineVectors[0], lineVectors[1], normals[0]);
+                                                    Vector3f.cross(lineVectors[1], lineVectors[2], normals[1]);
+                                                    Vector3f.cross(lineVectors[2], lineVectors[3], normals[2]);
+                                                    Vector3f.cross(lineVectors[3], lineVectors[0], normals[3]);
                                                 }
-                                                break;
+                                                Vector3f quadNormal = new Vector3f();
+                                                for (int i = 0; i < 4; i++) {
+                                                    Vector3f.add(normals[i], quadNormal, quadNormal);
+                                                }
+                                                quadNormal.negate();
+                                                normalMap.put(gd, new float[]{
+                                                        quadNormal.x, quadNormal.y, quadNormal.z,
+                                                        quadNormal.x, quadNormal.y, quadNormal.z,
+                                                        quadNormal.x, quadNormal.y, quadNormal.z,
+                                                        quadNormal.x, quadNormal.y, quadNormal.z});
+                                            }
+                                            break;
                                             default:
                                                 break;
                                             }
@@ -870,42 +870,42 @@ public class GL33ModelRenderer {
                                     vertexMap.put(gd, nverts);
                                     switch (type) {
                                     case 3:
-                                        {
-                                            float xn = (nverts[2].y - nverts[0].y) * (nverts[1].z - nverts[0].z) - (nverts[2].z - nverts[0].z) * (nverts[1].y - nverts[0].y);
-                                            float yn = (nverts[2].z - nverts[0].z) * (nverts[1].x - nverts[0].x) - (nverts[2].x - nverts[0].x) * (nverts[1].z - nverts[0].z);
-                                            float zn = (nverts[2].x - nverts[0].x) * (nverts[1].y - nverts[0].y) - (nverts[2].y - nverts[0].y) * (nverts[1].x - nverts[0].x);
-                                            normalMap.put(gd, new float[]{
-                                                    xn, yn, zn,
-                                                    xn, yn, zn,
-                                                    xn, yn, zn});
-                                        }
-                                        break;
+                                    {
+                                        float xn = (nverts[2].y - nverts[0].y) * (nverts[1].z - nverts[0].z) - (nverts[2].z - nverts[0].z) * (nverts[1].y - nverts[0].y);
+                                        float yn = (nverts[2].z - nverts[0].z) * (nverts[1].x - nverts[0].x) - (nverts[2].x - nverts[0].x) * (nverts[1].z - nverts[0].z);
+                                        float zn = (nverts[2].x - nverts[0].x) * (nverts[1].y - nverts[0].y) - (nverts[2].y - nverts[0].y) * (nverts[1].x - nverts[0].x);
+                                        normalMap.put(gd, new float[]{
+                                                xn, yn, zn,
+                                                xn, yn, zn,
+                                                xn, yn, zn});
+                                    }
+                                    break;
                                     case 4:
+                                    {
+                                        final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
                                         {
-                                            final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
-                                            {
-                                                final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
-                                                Vector3f.sub(new Vector3f(nverts[1].x, nverts[1].y, nverts[1].z), new Vector3f(nverts[0].x, nverts[0].y, nverts[0].z), lineVectors[0]);
-                                                Vector3f.sub(new Vector3f(nverts[2].x, nverts[2].y, nverts[2].z), new Vector3f(nverts[1].x, nverts[1].y, nverts[1].z), lineVectors[1]);
-                                                Vector3f.sub(new Vector3f(nverts[3].x, nverts[3].y, nverts[3].z), new Vector3f(nverts[2].x, nverts[2].y, nverts[2].z), lineVectors[2]);
-                                                Vector3f.sub(new Vector3f(nverts[0].x, nverts[0].y, nverts[0].z), new Vector3f(nverts[3].x, nverts[3].y, nverts[3].z), lineVectors[3]);
-                                                Vector3f.cross(lineVectors[0], lineVectors[1], normals[0]);
-                                                Vector3f.cross(lineVectors[1], lineVectors[2], normals[1]);
-                                                Vector3f.cross(lineVectors[2], lineVectors[3], normals[2]);
-                                                Vector3f.cross(lineVectors[3], lineVectors[0], normals[3]);
-                                            }
-                                            Vector3f quadNormal = new Vector3f();
-                                            for (int i = 0; i < 4; i++) {
-                                                Vector3f.add(normals[i], quadNormal, quadNormal);
-                                            }
-                                            quadNormal.negate();
-                                            normalMap.put(gd, new float[]{
-                                                    quadNormal.x, quadNormal.y, quadNormal.z,
-                                                    quadNormal.x, quadNormal.y, quadNormal.z,
-                                                    quadNormal.x, quadNormal.y, quadNormal.z,
-                                                    quadNormal.x, quadNormal.y, quadNormal.z});
+                                            final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
+                                            Vector3f.sub(new Vector3f(nverts[1].x, nverts[1].y, nverts[1].z), new Vector3f(nverts[0].x, nverts[0].y, nverts[0].z), lineVectors[0]);
+                                            Vector3f.sub(new Vector3f(nverts[2].x, nverts[2].y, nverts[2].z), new Vector3f(nverts[1].x, nverts[1].y, nverts[1].z), lineVectors[1]);
+                                            Vector3f.sub(new Vector3f(nverts[3].x, nverts[3].y, nverts[3].z), new Vector3f(nverts[2].x, nverts[2].y, nverts[2].z), lineVectors[2]);
+                                            Vector3f.sub(new Vector3f(nverts[0].x, nverts[0].y, nverts[0].z), new Vector3f(nverts[3].x, nverts[3].y, nverts[3].z), lineVectors[3]);
+                                            Vector3f.cross(lineVectors[0], lineVectors[1], normals[0]);
+                                            Vector3f.cross(lineVectors[1], lineVectors[2], normals[1]);
+                                            Vector3f.cross(lineVectors[2], lineVectors[3], normals[2]);
+                                            Vector3f.cross(lineVectors[3], lineVectors[0], normals[3]);
                                         }
-                                        break;
+                                        Vector3f quadNormal = new Vector3f();
+                                        for (int i = 0; i < 4; i++) {
+                                            Vector3f.add(normals[i], quadNormal, quadNormal);
+                                        }
+                                        quadNormal.negate();
+                                        normalMap.put(gd, new float[]{
+                                                quadNormal.x, quadNormal.y, quadNormal.z,
+                                                quadNormal.x, quadNormal.y, quadNormal.z,
+                                                quadNormal.x, quadNormal.y, quadNormal.z,
+                                                quadNormal.x, quadNormal.y, quadNormal.z});
+                                    }
+                                    break;
                                     default:
                                         break;
                                     }
@@ -1125,7 +1125,7 @@ public class GL33ModelRenderer {
                                 }
 
                                 @SuppressWarnings("unchecked")
-                                ArrayList<Vertex> verts = ((ArrayList<Vertex>) smoothObj[0]);
+                                ArrayList<Vertex> verts = (ArrayList<Vertex>) smoothObj[0];
                                 for(Vertex v : verts) {
                                     vertexData[i] = v.x;
                                     vertexData[i + 1] = v.y;
@@ -1175,7 +1175,7 @@ public class GL33ModelRenderer {
 
                         if (smoothVertices) {
                             @SuppressWarnings("unchecked")
-                            ArrayList<Vertex> verts = ((ArrayList<Vertex>) smoothObj[0]);
+                            ArrayList<Vertex> verts = (ArrayList<Vertex>) smoothObj[0];
                             for (Vertex v1 : verts) {
                                 if (smoothVertexAdjacency.containsKey(smoothVertexIndmap.get(v1))) {
                                     for (Integer i : smoothVertexAdjacency.get(smoothVertexIndmap.get(v1))) {
@@ -2656,12 +2656,14 @@ public class GL33ModelRenderer {
         Stack<Boolean> tempNegativeDeterminant = new Stack<>();
 
         GData gd = df.getDrawChainStart();
+        GData backup = gd;
 
         byte localWinding = BFC.NOCERTIFY;
         int accumClip = 0;
         boolean globalInvertNext = false;
         boolean globalInvertNextFound = false;
         boolean globalNegativeDeterminant = false;
+        boolean texmap = false;
 
         // The BFC logic/state machine is not correct yet? (for BFC INVERTNEXT).
         while ((gd = gd.next) != null || !stack.isEmpty()) {
@@ -2682,9 +2684,16 @@ public class GL33ModelRenderer {
                 continue;
             }
             Vertex[] verts = null;
+            backup = gd;
+            if (texmap && gd.type() == 9) {
+                final GDataTEX tex = (GDataTEX) gd;
+                if (tex.linkedData != null) {
+                    gd = tex.linkedData;
+                }
+            }
             switch (gd.type()) {
             case 1:
-                final GData1 gd1 = ((GData1) gd);
+                final GData1 gd1 = (GData1) gd;
                 final Matrix4f rotation = new Matrix4f(gd1.productMatrix);
                 rotation.m30 = 0f;
                 rotation.m31 = 0f;
