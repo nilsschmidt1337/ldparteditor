@@ -40,6 +40,10 @@ public enum GL33TexmapRenderer {
         final HashMap<GData1, Matrix4f> matrixMap = new HashMap<>();
         int[] triIndices = new int[]{0, 1, 2};
         int[] quadIndices = new int[]{0, 1, 2, 2, 3, 0};
+
+        int[] triIndicesNOCLIP = new int[]{0, 2, 1};
+        int[] quadIndicesNOCLIP = new int[]{0, 3, 2, 2, 1, 0};
+
         for (GDataAndWinding gw : texmapData) {
             final GData gd = gw.data;
             switch (gd.type()) {
@@ -181,6 +185,10 @@ public enum GL33TexmapRenderer {
                         continue;
                     }
                     GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(triVertices, triIndices);
+                    if (gw.noclip) {
+                        flipnormals(3, triVertices);
+                        GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(triVertices, triIndicesNOCLIP);
+                    }
                 }
                 continue;
             case 4:
@@ -339,6 +347,10 @@ public enum GL33TexmapRenderer {
                         continue;
                     }
                     GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(quadVertices, quadIndices);
+                    if (gw.noclip) {
+                        flipnormals(4, quadVertices);
+                        GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(quadVertices, quadIndicesNOCLIP);
+                    }
                 }
                 continue;
             case 9:
@@ -351,6 +363,15 @@ public enum GL33TexmapRenderer {
                 continue;
             default:
             }
+        }
+    }
+
+    private static void flipnormals(int i, float[] data) {
+        for (int j = 0; j < i; j++) {
+            int k = j * 12;
+            data[k + 3] = -data[k + 3];
+            data[k + 4] = -data[k + 4];
+            data[k + 5] = -data[k + 5];
         }
     }
 

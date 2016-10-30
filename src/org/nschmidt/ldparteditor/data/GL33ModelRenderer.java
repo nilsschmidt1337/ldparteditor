@@ -518,7 +518,7 @@ public class GL33ModelRenderer {
                                         if (vm.hasCondline2(v[i], v[j]) != null) {
                                             for (GData s : vm.linkedCommonFaces(v[i], v[j])) {
                                                 if (s != gd) {
-                                                    if (vertexMap.get(s) != null) for (Vertex w : vertexMap.get(s)) {
+                                                    if (vertexMap.get(s) != null && surfaceNormals.get(s) != null) for (Vertex w : vertexMap.get(s)) {
                                                         if (w.equals(v[i])) {
                                                             Vector3f.add(normals[i], surfaceNormals.get(s), normals[i]);
                                                         } else if (w.equals(v[j])) {
