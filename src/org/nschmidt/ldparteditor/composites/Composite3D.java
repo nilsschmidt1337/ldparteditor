@@ -236,6 +236,8 @@ public class Composite3D extends ScalableComposite {
     private boolean showingAxis;
     private boolean showingLabels;
 
+    private boolean smoothShading;
+
     private volatile int lineMode;
 
     private volatile int renderMode = 0;
@@ -1914,6 +1916,14 @@ public class Composite3D extends ScalableComposite {
 
     public void setShowingLabels(boolean showingLabels) {
         this.showingLabels = showingLabels;
+    }
+
+    public void setSmoothShading(boolean smoothShading) {
+        this.smoothShading = smoothShading;
+    }
+
+    public boolean isSmoothShading() {
+        return smoothShading;
     }
 
     public MenuItem getMntmNoBFC() {

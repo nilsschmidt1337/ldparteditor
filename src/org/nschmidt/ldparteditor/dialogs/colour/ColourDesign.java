@@ -149,7 +149,7 @@ class ColourDesign extends Dialog {
                 public void paintControl(PaintEvent e) {
                     e.gc.setBackground(col);
                     e.gc.fillRectangle(x, y, w, h);
-                    if (gColour2.getA() == 1f) {
+                    if (gColour2.getA() >= .99f) {
                         e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png", 0), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
                     } else {
                         e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png", 0), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
