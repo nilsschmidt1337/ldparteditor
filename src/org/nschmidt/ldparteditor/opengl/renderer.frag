@@ -6,6 +6,7 @@ in vec3 normal;
 in vec3 position;
 in vec2 tex;
 
+uniform float factor;
 uniform float alphaswitch;
 uniform float texmapswitch;
 uniform float lightswitch;
@@ -230,6 +231,9 @@ void main()
 	}
 	if (texmapswitch > 0.5f) {
 		vec4 texColor = texture2D(ldpePngSampler, tex.xy);
+		texColor.r *= factor;
+		texColor.g *= factor;
+		texColor.b *= factor;
 		lightSpecular *= .05;
 		if (alphaswitch < 0.5f) {
 			if (resultColor.a < 0.9f) {
@@ -242,8 +246,10 @@ void main()
 				color = (resultColor + lightAmbientDiffuse) + lightSpecular;
 			} else {				
 				if (texColor.a < 0.9f) {
-					resultColor = mix(resultColor, texColor, resultColor);
-					resultColor.a = 1.0f;
+					if (texColor.a > 0.1f) {					
+						resultColor = mix(resultColor, texColor, resultColor);
+						resultColor.a = 1.0f;
+					}
 				} else {
 					resultColor = texColor;
 				}

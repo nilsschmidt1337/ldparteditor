@@ -22,6 +22,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GL33ModelRenderer.GDataAndWinding;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -73,9 +74,32 @@ public enum GL33TexmapRenderer {
                     lastTexture.calcUVcoords2(gd3.x2, gd3.y2, gd3.z2, gd3.parent);
                     lastTexture.calcUVcoords3(gd3.x3, gd3.y3, gd3.z3, gd3.parent);
                     uv = lastTexture.getUVcoords(true, gd);
+                    GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd3.r, gd3.g, gd3.b));
+                    GColourType ct = c.getType();
+                    boolean hasColourType = ct != null;
+                    if (hasColourType) {
+                        switch (ct.type()) {
+                        case CHROME:
+                            colourise(3, gd3.r, gd3.g, gd3.b, 2f, triVertices);
+                            break;
+                        case MATTE_METALLIC:
+                            colourise(3, gd3.r, gd3.g, gd3.b, 4.2f, triVertices);
+                            break;
+                        case METAL:
+                            colourise(3, gd3.r, gd3.g, gd3.b, 3.2f, triVertices);
+                            break;
+                        case RUBBER:
+                            colourise(3, gd3.r, gd3.g, gd3.b, 5.2f, triVertices);
+                            break;
+                        default:
+                            colourise(3, gd3.r, gd3.g, gd3.b, gd3.a, triVertices);
+                            break;
+                        }
+                    } else {
+                        colourise(3, gd3.r, gd3.g, gd3.b, gd3.a, triVertices);
+                    }
                     switch (gw.winding) {
                     case BFC.CW:
-                        colourise(3, gd3.r, gd3.g, gd3.b, gd3.a, triVertices);
                         if (smoothShading) {
                             if (gw.invertNext ^ gw.negativeDeterminant) {
                                 normal(0, n[0].x, n[0].y, n[0].z, triVertices);
@@ -114,7 +138,6 @@ public enum GL33TexmapRenderer {
                         }
                         break;
                     case BFC.CCW:
-                        colourise(3, gd3.r, gd3.g, gd3.b, gd3.a, triVertices);
                         if (smoothShading) {
                             if (gw.invertNext ^ gw.negativeDeterminant) {
                                 normal(0, n[0].x, n[0].y, n[0].z, triVertices);
@@ -154,6 +177,7 @@ public enum GL33TexmapRenderer {
                         break;
                     case BFC.NOCERTIFY:
                     default:
+                        colourise(3, 0f, 0f, 0f, 0f, triVertices);
                         continue;
                     }
                     GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(triVertices, triIndices);
@@ -192,9 +216,32 @@ public enum GL33TexmapRenderer {
                     lastTexture.calcUVcoords3(gd4.x3, gd4.y3, gd4.z3, gd4.parent);
                     lastTexture.calcUVcoords4(gd4.x4, gd4.y4, gd4.z4, gd4.parent);
                     uv = lastTexture.getUVcoords(false, gd);
+                    GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd4.r, gd4.g, gd4.b));
+                    GColourType ct = c.getType();
+                    boolean hasColourType = ct != null;
+                    if (hasColourType) {
+                        switch (ct.type()) {
+                        case CHROME:
+                            colourise(4, gd4.r, gd4.g, gd4.b, 2f, quadVertices);
+                            break;
+                        case MATTE_METALLIC:
+                            colourise(4, gd4.r, gd4.g, gd4.b, 4.2f, quadVertices);
+                            break;
+                        case METAL:
+                            colourise(4, gd4.r, gd4.g, gd4.b, 3.2f, quadVertices);
+                            break;
+                        case RUBBER:
+                            colourise(4, gd4.r, gd4.g, gd4.b, 5.2f, quadVertices);
+                            break;
+                        default:
+                            colourise(4, gd4.r, gd4.g, gd4.b, gd4.a, quadVertices);
+                            break;
+                        }
+                    } else {
+                        colourise(4, gd4.r, gd4.g, gd4.b, gd4.a, quadVertices);
+                    }
                     switch (gw.winding) {
                     case BFC.CW:
-                        colourise(4, gd4.r, gd4.g, gd4.b, gd4.a, quadVertices);
                         if (smoothShading) {
                             if (gw.invertNext ^ gw.negativeDeterminant) {
                                 normal(0, n[0].x, n[0].y, n[0].z, quadVertices);
@@ -241,7 +288,6 @@ public enum GL33TexmapRenderer {
                         }
                         break;
                     case BFC.CCW:
-                        colourise(4, gd4.r, gd4.g, gd4.b, gd4.a, quadVertices);
                         if (smoothShading) {
                             if (gw.invertNext ^ gw.negativeDeterminant) {
                                 normal(0, n[0].x, n[0].y, n[0].z, quadVertices);
@@ -289,6 +335,7 @@ public enum GL33TexmapRenderer {
                         break;
                     case BFC.NOCERTIFY:
                     default:
+                        colourise(4, 0f, 0f, 0f, 0f, quadVertices);
                         continue;
                     }
                     GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(quadVertices, quadIndices);
