@@ -18,7 +18,9 @@ package org.nschmidt.ldparteditor.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GL33ModelRenderer.GDataAndWinding;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLShader;
@@ -33,7 +35,8 @@ public enum GL33TexmapRenderer {
         float[] uv;
         float[] triVertices = new float[36];
         float[] quadVertices = new float[48];
-
+        final Vector4f Nv = new Vector4f(0, 0, 0, 1f);
+        final HashMap<GData1, Matrix4f> matrixMap = new HashMap<>();
         int[] triIndices = new int[]{0, 1, 2};
         int[] quadIndices = new int[]{0, 1, 2, 2, 3, 0};
         for (GDataAndWinding gw : texmapData) {
@@ -43,7 +46,29 @@ public enum GL33TexmapRenderer {
                 GData3 gd3 = (GData3) gd;
                 Vertex[] v = vertexMap.get(gd);
                 Vector3f[] n = normalMap.get(gd);
-                if (lastTexture != null && v != null && n != null) {
+                if (n == null) {
+                    Nv.x = gd3.xn;
+                    Nv.y = gd3.yn;
+                    Nv.z = gd3.zn;
+                    Nv.w = 1f;
+                    Matrix4f loc = matrixMap.get(gd3.parent);
+                    if (loc == null) {
+                        final Matrix4f rotation = new Matrix4f(gd3.parent.productMatrix);
+                        rotation.m30 = 0f;
+                        rotation.m31 = 0f;
+                        rotation.m32 = 0f;
+                        rotation.invert();
+                        rotation.transpose();
+                        matrixMap.put(gd3.parent, rotation);
+                        loc = rotation;
+                    }
+                    Matrix4f.transform(loc, Nv, Nv);
+                    n = new Vector3f[3];
+                    n[0] = new Vector3f(Nv.x, Nv.y, Nv.z);
+                    n[1] = n[0];
+                    n[2] = n[0];
+                }
+                if (lastTexture != null && v != null) {
                     lastTexture.calcUVcoords1(gd3.x1, gd3.y1, gd3.z1, gd3.parent, gd);
                     lastTexture.calcUVcoords2(gd3.x2, gd3.y2, gd3.z2, gd3.parent);
                     lastTexture.calcUVcoords3(gd3.x3, gd3.y3, gd3.z3, gd3.parent);
@@ -138,7 +163,30 @@ public enum GL33TexmapRenderer {
                 GData4 gd4 = (GData4) gd;
                 v = vertexMap.get(gd);
                 n = normalMap.get(gd);
-                if (lastTexture != null && v != null && n != null) {
+                if (n == null) {
+                    Nv.x = gd4.xn;
+                    Nv.y = gd4.yn;
+                    Nv.z = gd4.zn;
+                    Nv.w = 1f;
+                    Matrix4f loc = matrixMap.get(gd4.parent);
+                    if (loc == null) {
+                        final Matrix4f rotation = new Matrix4f(gd4.parent.productMatrix);
+                        rotation.m30 = 0f;
+                        rotation.m31 = 0f;
+                        rotation.m32 = 0f;
+                        rotation.invert();
+                        rotation.transpose();
+                        matrixMap.put(gd4.parent, rotation);
+                        loc = rotation;
+                    }
+                    Matrix4f.transform(loc, Nv, Nv);
+                    n = new Vector3f[4];
+                    n[0] = new Vector3f(Nv.x, Nv.y, Nv.z);
+                    n[1] = n[0];
+                    n[2] = n[0];
+                    n[3] = n[0];
+                }
+                if (lastTexture != null && v != null) {
                     lastTexture.calcUVcoords1(gd4.x1, gd4.y1, gd4.z1, gd4.parent, gd);
                     lastTexture.calcUVcoords2(gd4.x2, gd4.y2, gd4.z2, gd4.parent);
                     lastTexture.calcUVcoords3(gd4.x3, gd4.y3, gd4.z3, gd4.parent);
