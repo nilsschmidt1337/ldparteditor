@@ -427,12 +427,13 @@ public class GL33ModelRenderer {
                                     pngImages, tmpDistanceMeters, tmpProtractors);
                             usesTEXMAP = special[0];
                             usesCSG = special[1];
-                            if (usesTEXMAP) {
-                                texmapData = new ArrayList<>(texmapDataInOrder);
-                            }
                             HashSet<GData> allData = new HashSet<>();
-                            for (GDataAndWinding gw : texmapDataInOrder) {
-                                allData.add(gw.data);
+                            if (usesTEXMAP) {
+                                for (GDataAndWinding gw : texmapDataInOrder) {
+                                    allData.add(gw.data);
+                                    dataToRemove.remove(gw.data);
+                                }
+                                texmapData = new ArrayList<>(texmapDataInOrder);
                             }
                             Iterator<Entry<GData, Vector3f[]>> iter = shared_TEXMAP_NormalMap.entrySet().iterator();
                             while (iter.hasNext()) {
@@ -442,7 +443,7 @@ public class GL33ModelRenderer {
                             }
                         }
 
-                        final boolean smoothShading = true && !drawWireframe;
+                        final boolean smoothShading = c3d.isSmoothShading() && !drawWireframe;
                         final HashMap<GData, Vector3f[]> vertexNormals;
                         if (smoothShading) {
                             // MARK Calculate normals here...
@@ -2236,27 +2237,7 @@ public class GL33ModelRenderer {
             } else {
                 mainShader.transparentOn();
             }
-            GTexture lastTexture = null;
-            for (GDataAndWinding gw : texmapData) {
-                final GData gd = gw.data;
-                switch (gd.type()) {
-                case 3:
-                    // GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(vertices, indices);
-                    continue;
-                case 4:
-                    // GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(vertices, indices);
-                    continue;
-                case 9:
-                    GDataTEX tex = (GDataTEX) gd;
-                    if (tex.meta == TexMeta.START || tex.meta == TexMeta.NEXT) {
-                        lastTexture = tex.linkedTexture;
-                        lastTexture.refreshCache();
-                        lastTexture.bindGL33(renderer, mainShader);
-                    }
-                    continue;
-                default:
-                }
-            }
+            GL33TexmapRenderer.render(texmapData, mainShader, renderer, shared_TEXMAP_NormalMap, sharedVertexMap, c3d.isSmoothShading());
             mainShader.texmapOff();
         }
 
@@ -2664,14 +2645,29 @@ public class GL33ModelRenderer {
         boolean globalInvertNextFound = false;
         boolean globalNegativeDeterminant = false;
         boolean texmap = false;
+        boolean texmapNext = false;
+        GData firstTexmapObject = null;
+
+        Vector4f v1 = new Vector4f(0f, 0f, 0f, 1f);
+        Vector4f v2 = new Vector4f(0f, 0f, 0f, 1f);
+        Vector4f v3 = new Vector4f(0f, 0f, 0f, 1f);
+        Vector4f v4 = new Vector4f(0f, 0f, 0f, 1f);
 
         // The BFC logic/state machine is not correct yet? (for BFC INVERTNEXT).
-        while ((gd = gd.next) != null || !stack.isEmpty()) {
+        while ((gd = backup.next) != null || !stack.isEmpty()) {
+            final boolean parseTexmapSubfile = firstTexmapObject != null;
             if (gd == null) {
                 if (accumClip > 0) {
                     accumClip--;
                 }
-                gd = stack.pop();
+                backup = stack.pop();
+                if (backup == firstTexmapObject) {
+                    firstTexmapObject = null;
+                    if (texmapNext) {
+                        texmap = false;
+                        texmapNext = false;
+                    }
+                }
                 localWinding = tempWinding.pop();
                 globalInvertNextFound = tempInvertNextFound.pop();
                 if (globalInvertNextFound) {
@@ -2685,7 +2681,7 @@ public class GL33ModelRenderer {
             }
             Vertex[] verts = null;
             backup = gd;
-            if (texmap && gd.type() == 9) {
+            if (parseTexmap && gd.type() == 9) {
                 final GDataTEX tex = (GDataTEX) gd;
                 if (tex.linkedData != null) {
                     gd = tex.linkedData;
@@ -2693,6 +2689,9 @@ public class GL33ModelRenderer {
             }
             switch (gd.type()) {
             case 1:
+                if (texmap && !parseTexmapSubfile) {
+                    firstTexmapObject = backup;
+                }
                 final GData1 gd1 = (GData1) gd;
                 final Matrix4f rotation = new Matrix4f(gd1.productMatrix);
                 rotation.m30 = 0f;
@@ -2701,7 +2700,7 @@ public class GL33ModelRenderer {
                 rotation.invert();
                 rotation.transpose();
                 matrixMap.put(gd1, rotation);
-                stack.push(gd);
+                stack.push(backup);
                 tempWinding.push(localWinding);
                 tempInvertNext.push(globalInvertNext);
                 tempInvertNextFound.push(globalInvertNextFound);
@@ -2715,7 +2714,7 @@ public class GL33ModelRenderer {
                 if (drawStudLogo) {
                     dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                 }
-                gd = gd1.myGData;
+                backup = gd1.myGData;
                 continue;
             case 6:
                 if (!tempWinding.isEmpty() && tempWinding.peek() == BFC.NOCERTIFY) {
@@ -2783,6 +2782,10 @@ public class GL33ModelRenderer {
                     }
                 }
             case 2:
+                if (texmapNext && !parseTexmapSubfile) {
+                    texmap = false;
+                    texmapNext = false;
+                }
                 GData2 gd2 = (GData2) gd;
                 verts = lines.get(gd2);
                 if (verts != null) {
@@ -2795,23 +2798,72 @@ public class GL33ModelRenderer {
                 continue;
             case 3:
                 GData3 gd3 = (GData3) gd;
-                verts = triangles.get(gd3);
-                if (verts != null) {
-                    if (!gd3.isTriangle) {
-                        tmpProtractors.add(gd3);
+                if (texmap) {
+                    if (gd3.isTriangle) {
+                        verts = triangles.get(gd3);
+                        if (verts == null) {
+                            v1.set(gd3.x1, gd3.y1, gd3.z1, 1f);
+                            v2.set(gd3.x2, gd3.y2, gd3.z2, 1f);
+                            v3.set(gd3.x3, gd3.y3, gd3.z3, 1f);
+                            Matrix4f m = gd3.parent.productMatrix;
+                            Matrix4f.transform(m, v1, v1);
+                            Matrix4f.transform(m, v2, v2);
+                            Matrix4f.transform(m, v3, v3);
+                            verts = new Vertex[]{new Vertex(v1.x, v1.y, v1.z, true), new Vertex(v2.x, v2.y, v2.z, true), new Vertex(v3.x, v3.y, v3.z, true)};
+                        }
+                        vertexMap.put(gd, verts);
+                        texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
+                        if (texmapNext && !parseTexmapSubfile) {
+                            texmap = false;
+                            texmapNext = false;
+                        }
                     }
-                    vertexMap.put(gd, verts);
-                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
+                } else {
+                    verts = triangles.get(gd3);
+                    if (verts != null) {
+                        if (!gd3.isTriangle) {
+                            tmpProtractors.add(gd3);
+                        }
+                        vertexMap.put(gd, verts);
+                        dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
+                    }
                 }
                 continue;
             case 4:
-                verts = quads.get(gd);
-                if (verts != null) {
+                if (texmap) {
+                    GData4 gd4 = (GData4) gd;
+                    verts = quads.get(gd4);
+                    if (verts == null) {
+                        v1.set(gd4.x1, gd4.y1, gd4.z1, 1f);
+                        v2.set(gd4.x2, gd4.y2, gd4.z2, 1f);
+                        v3.set(gd4.x3, gd4.y3, gd4.z3, 1f);
+                        v4.set(gd4.x4, gd4.y4, gd4.z4, 1f);
+                        Matrix4f m = gd4.parent.productMatrix;
+                        Matrix4f.transform(m, v1, v1);
+                        Matrix4f.transform(m, v2, v2);
+                        Matrix4f.transform(m, v3, v3);
+                        Matrix4f.transform(m, v4, v4);
+                        verts = new Vertex[]{new Vertex(v1.x, v1.y, v1.z, true), new Vertex(v2.x, v2.y, v2.z, true), new Vertex(v3.x, v3.y, v3.z, true), new Vertex(v4.x, v4.y, v4.z, true)};
+                    }
                     vertexMap.put(gd, verts);
-                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
+                    texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
+                    if (texmapNext && !parseTexmapSubfile) {
+                        texmap = false;
+                        texmapNext = false;
+                    }
+                } else {
+                    verts = quads.get(gd);
+                    if (verts != null) {
+                        vertexMap.put(gd, verts);
+                        dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
+                    }
                 }
                 continue;
             case 5:
+                if (texmapNext && !parseTexmapSubfile) {
+                    texmap = false;
+                    texmapNext = false;
+                }
                 verts = condlines.get(gd);
                 if (verts != null) {
                     vertexMap.put(gd, verts);
@@ -2819,25 +2871,43 @@ public class GL33ModelRenderer {
                 }
                 continue;
             case 8:
-                csgData.add((GDataCSG) gd);
-                hasCSG = true;
+                if (!texmap) {
+                    csgData.add((GDataCSG) gd);
+                    hasCSG = true;
+                }
                 continue;
             case 9:
-                if (!parseTexmap) {
+                if (!parseTexmap || parseTexmapSubfile) {
                     continue;
                 }
                 GDataTEX tex = (GDataTEX) gd;
-                texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                 hasTEXMAP = true;
-                if (tex.linkedData != null && tex.linkedData.type() == 1) {
-
-                }
-                if (tex.meta == TexMeta.FALLBACK) {
-                    while ((gd = gd.next) != null && !(gd instanceof GDataTEX && ((GDataTEX) gd).meta == TexMeta.END));
+                switch (tex.meta) {
+                case START:
+                    texmap = true;
+                    texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
+                    break;
+                case NEXT:
+                    texmapNext = true;
+                    texmap = true;
+                    texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
+                    break;
+                case GEOMETRY:
+                    // Shouldn't happen...
+                    break;
+                case FALLBACK:
+                    while ((backup = backup.next) != null && !(backup instanceof GDataTEX && ((GDataTEX) backup).meta == TexMeta.END));
+                    texmap = false;
+                    break;
+                case END:
+                    // Won't happen...
+                    break;
                 }
                 continue;
             case 10:
-                pngImages.add((GDataPNG) gd);
+                if (!texmap) {
+                    pngImages.add((GDataPNG) gd);
+                }
                 continue;
             default:
                 continue;
