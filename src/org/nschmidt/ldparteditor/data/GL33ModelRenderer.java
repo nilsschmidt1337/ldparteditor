@@ -2237,7 +2237,6 @@ public class GL33ModelRenderer {
             } else {
                 mainShader.transparentOn();
             }
-            c3d.setSmoothShading(true);
             GL33TexmapRenderer.render(texmapData, mainShader, renderer, shared_TEXMAP_NormalMap, sharedVertexMap, c3d.isSmoothShading());
             mainShader.texmapOff();
         }

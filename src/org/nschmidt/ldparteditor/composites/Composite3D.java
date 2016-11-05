@@ -265,6 +265,7 @@ public class Composite3D extends ScalableComposite {
     final MenuItem[] mntmStdLines = new MenuItem[1];
     final MenuItem[] mntmShowAll = new MenuItem[1];
     final MenuItem[] mntmStudLogo = new MenuItem[1];
+    final MenuItem[] mntmSmoothShading = new MenuItem[1];
     final MenuItem[] mntmControlPointVertices = new MenuItem[1];
     final MenuItem[] mntmHiddenVertices = new MenuItem[1];
     final MenuItem[] mntmVertices = new MenuItem[1];
@@ -801,6 +802,19 @@ public class Composite3D extends ScalableComposite {
                 }
             });
             mntmControlPointVertices.setText(I18n.C3D_CondlineVertices);
+
+            if (WorkbenchManager.getUserSettingState().getOpenGLVersion() >= 33) {
+                final MenuItem mntmSmoothShading = new MenuItem(mnu_viewActions, SWT.CHECK);
+                this.mntmSmoothShading[0] = mntmSmoothShading;
+                mntmSmoothShading.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        c3d_modifier.switchSmoothShading(mntmSmoothShading.getSelection());
+                    }
+                });
+                mntmSmoothShading.setText(I18n.C3D_SmoothShading);
+                mntmSmoothShading.setSelection(false);
+            }
 
             final MenuItem mntmStudLogo = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmStudLogo[0] = mntmStudLogo;
@@ -1986,6 +2000,10 @@ public class Composite3D extends ScalableComposite {
         return mntmStudLogo[0];
     }
 
+    public MenuItem getMntmSmoothShading() {
+        return mntmSmoothShading[0];
+    }
+
     public MenuItem getMntmControlPointVertices() {
         return mntmControlPointVertices[0];
     }
@@ -2453,6 +2471,7 @@ public class Composite3D extends ScalableComposite {
         getPerspectiveCalculator().setPerspective(perspective);
         setOriginShown(state.isShowOrigin());
         setShowingLabels(state.isShowLabel());
+        setSmoothShading(state.isSmooth());
         setGridShown(state.isShowGrid());
         setLightOn(state.isLights());
         setMeshLines(state.isMeshlines());
@@ -2503,5 +2522,9 @@ public class Composite3D extends ScalableComposite {
         getMntmBFCTextured().setSelection(renderMode == 5);
         getMntmCondlineMode().setSelection(renderMode == 6);
         getMntmWireframeMode().setSelection(renderMode == -1);
+
+        if (getMntmSmoothShading() != null) {
+            getMntmSmoothShading().setSelection(state.isSmooth());
+        }
     }
 }
