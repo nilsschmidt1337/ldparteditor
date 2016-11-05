@@ -1100,8 +1100,9 @@ public class CompositeTab extends CompositeTabDesign {
                 canvas_lineNumberArea[0].redraw();
             }
         });
-        
+
         compositeText[0].addWordMovementListener(new MovementListener() {
+            @Override
             public void getNextOffset (MovementEvent event) {
                 boolean ignoreLineBreak = false;
                 switch (event.movement) {
@@ -1112,11 +1113,11 @@ public class CompositeTab extends CompositeTabDesign {
                      */
                     case SWT.MOVEMENT_WORD:
                         ignoreLineBreak = true;
-                        
+
                     /* This method is called:
                      *   double click select word
                      *   double click drag select word
-                     */ 
+                     */
                     case SWT.MOVEMENT_WORD_END:
                         event.newOffset = event.offset;
                         char c = '#';
@@ -1125,14 +1126,11 @@ public class CompositeTab extends CompositeTabDesign {
                             event.newOffset++;
                             c = compositeText[0].getText().charAt(event.newOffset);
                         }
-                        while (event.newOffset > 0 && c == '\n' || c == '\r') {
-                            event.newOffset--;
-                            c = compositeText[0].getText().charAt(event.newOffset);
-                        }
                         break;
                 }
             }
-            
+
+            @Override
             public void getPreviousOffset(MovementEvent event) {
                 boolean ignoreLineBreak = false;
                 event.newOffset = event.offset;
@@ -1148,9 +1146,16 @@ public class CompositeTab extends CompositeTabDesign {
                     /* This method is called:
                      *   double click select word
                      *   double click drag select word
-                     */ 
-                    case SWT.MOVEMENT_WORD_START:                        
-                        char c = '#';
+                     */
+                    case SWT.MOVEMENT_WORD_START:
+                        if (!ignoreLineBreak && event.offset == compositeText[0].getOffsetAtLine(compositeText[0].getLineAtOffset(event.offset))) {
+                            return;
+                        }
+                        char c = ignoreLineBreak ? '#' : compositeText[0].getText().charAt(event.newOffset);
+                        if (!ignoreLineBreak && event.newOffset > 0 && c == '\n'  || c == '\r') {
+                            event.newOffset--;
+                            c = '#';
+                        }
                         while (c != ' ' && (ignoreLineBreak || c != '\n'  && c != '\r') && event.newOffset > 0) {
                             event.newOffset--;
                             c = compositeText[0].getText().charAt(event.newOffset);
