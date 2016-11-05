@@ -6326,6 +6326,7 @@ public class Editor3DWindow extends Editor3DDesign {
         st.setShowGrid(c3d.isGridShown());
         st.setShowOrigin(c3d.isOriginShown());
         st.setLights(c3d.isLightOn());
+        st.setSmooth(c3d.isSmoothShading());
         st.setMeshlines(c3d.isMeshLines());
         st.setSubfileMeshlines(c3d.isSubMeshLines());
         st.setVertices(c3d.isShowingVertices());

@@ -134,6 +134,10 @@ public class Composite3DModifier {
         c3d.setShowingLogo(logo);
     }
 
+    public void switchSmoothShading(boolean shading) {
+        c3d.setSmoothShading(shading);
+    }
+
     /**
      * Switches mesh lines within {@linkplain Composite3D}.
      *

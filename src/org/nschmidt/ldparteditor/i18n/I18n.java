@@ -130,6 +130,7 @@ public final class I18n {
     public static final String C3D_ShowAll = C3D.getString(getProperty());
     public static final String C3D_ShowEdges = C3D.getString(getProperty());
     public static final String C3D_ShowInText = C3D.getString(getProperty());
+    public static final String C3D_SmoothShading = C3D.getString(getProperty());
     public static final String C3D_StudLogo = C3D.getString(getProperty());
     public static final String C3D_SubfileMeshLines = C3D.getString(getProperty());
     public static final String C3D_UseAlwaysBlackLines = C3D.getString(getProperty());

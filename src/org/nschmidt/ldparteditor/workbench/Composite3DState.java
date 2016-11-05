@@ -52,10 +52,12 @@ public class Composite3DState implements Serializable {
 
     private String path = null;
     private String parentPath = null;
-    
+
     private boolean syncManipulator = false;
     private boolean syncTranslation = false;
     private boolean syncZoom = false;
+
+    private boolean smooth = false;
 
     public Composite3DState() {
 
@@ -277,6 +279,14 @@ public class Composite3DState implements Serializable {
 
     public void setSyncZoom(boolean syncZoom) {
         this.syncZoom = syncZoom;
+    }
+
+    public boolean isSmooth() {
+        return smooth;
+    }
+
+    public void setSmooth(boolean smooth) {
+        this.smooth = smooth;
     }
 
 }
