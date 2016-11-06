@@ -42,8 +42,8 @@ class VM07PathTruder extends VM06Edger2 {
         super(linkedDatFile);
     }
 
-    public void pathTruder(final PathTruderSettings ps, boolean syncWithEditor) {
-        if (linkedDatFile.isReadOnly()) return;
+    public void pathTruder(final PathTruderSettings ps, boolean syncWithEditor, Set<GData> sl) {
+        if (linkedDatFile.isReadOnly() && syncWithEditor) return;
 
         final Set<GData2> originalSelection = new HashSet<GData2>();
         final Set<GData2> newLines = new HashSet<GData2>();
@@ -61,7 +61,13 @@ class VM07PathTruder extends VM06Edger2 {
 
         final ArrayList<GData2> lineIndicators = new ArrayList<GData2>();
 
-        originalSelection.addAll(selectedLines);
+        if (syncWithEditor) {
+            originalSelection.addAll(selectedLines);
+        } else {
+            for (GData gd : sl) {
+                originalSelection.add((GData2) gd);
+            }
+        }
 
         // Validate and evaluate selection
         {
@@ -233,10 +239,11 @@ class VM07PathTruder extends VM06Edger2 {
             shape2.add(0, shape2Normal);
         }
 
-        // Clear selection
-        clearSelection();
-
         if (syncWithEditor) {
+
+            // Clear selection
+            clearSelection2();
+
             try {
                 new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress() {
                     @Override
@@ -1392,10 +1399,13 @@ class VM07PathTruder extends VM06Edger2 {
         }
 
         if (!syncWithEditor) {
-            selectedTriangles.addAll(newTriangles);
+            /*selectedTriangles.addAll(newTriangles);
             selectedQuads.addAll(newQuads);
             selectedData.addAll(newTriangles);
-            selectedData.addAll(newQuads);
+            selectedData.addAll(newQuads);*/
+            sl.clear();
+            sl.addAll(newTriangles);
+            sl.addAll(newQuads);
             return;
         }
 
