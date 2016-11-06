@@ -4533,7 +4533,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         if (new PathTruderDialog(getShell(), ps).open() == IDialogConstants.OK_ID) {
                             vm.addSnapshot();
-                            vm.pathTruder(ps, true);
+                            vm.pathTruder(ps, true, null);
                         }
                         regainFocus();
                         return;

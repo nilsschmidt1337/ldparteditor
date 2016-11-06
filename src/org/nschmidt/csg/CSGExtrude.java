@@ -17,7 +17,7 @@ package org.nschmidt.csg;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -65,10 +65,8 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
 
         final HashBiMap<Integer, GData> dpl = df.getDrawPerLine_NOCLONE();
         final VertexManager vm= df.getVertexManager();
-        vm.backupSelection();
-        vm.clearSelection2();
-        final Set<GData> sd = vm.getSelectedData();
-        final Set<GData2> sl = vm.getSelectedLines();
+
+        final TreeSet<GData> sl = new TreeSet<>();
         for (GData g : cachedData) {
             if (g.type() == 9) {
                 GDataTEX tex = (GDataTEX) g;
@@ -78,23 +76,22 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
                 }
             }
             if (g.type() == 2) {
-                sd.add(g);
-                sl.add((GData2) g);
+                sl.add(g);
             }
         }
 
-        vm.pathTruder(pts, false);
+        vm.pathTruder(pts, false, sl);
 
         for (GData g : cachedData) {
             if (g.type() == 9) {
                 g = ((GDataTEX) g).getLinkedData();
             }
             if (g.type() > 2 && g.type() < 5) {
-                sd.add(g);
+                sl.add(g);
             }
         }
 
-        for (GData g : sd) {
+        for (GData g : sl) {
             if (g.type() == 3) {
                 GData3 g3 = (GData3) g;
                 GColour colour2 = colour;
@@ -131,7 +128,6 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
                 polygons.add(p2);
             }
         }
-        vm.restoreSelection();
 
         polygonCache.clear();
         polygonCache.addAll(polygons);
