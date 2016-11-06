@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1267,18 +1268,33 @@ public final class GDataCSG extends GData {
     }
 
     public static synchronized void backupSelection(DatFile linkedDatFile) {
-        backupSelectedBodyMap.put(linkedDatFile, new HashSet<GDataCSG>(selectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<GDataCSG>())));
-        backupSelectedTrianglesMap.put(linkedDatFile, new HashSet<GData3>(selectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<GData3>())));
+        while (true) {
+            try {
+                backupSelectedBodyMap.put(linkedDatFile, new HashSet<GDataCSG>(selectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<GDataCSG>())));
+                backupSelectedTrianglesMap.put(linkedDatFile, new HashSet<GData3>(selectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<GData3>())));
+                break;
+            } catch (ConcurrentModificationException cme) {}
+        }
     }
 
     public static synchronized void backupSelectionClear(DatFile linkedDatFile) {
-        backupSelectedBodyMap.put(linkedDatFile, new HashSet<GDataCSG>());
-        backupSelectedTrianglesMap.put(linkedDatFile, new HashSet<GData3>());
+        while (true) {
+            try {
+                backupSelectedBodyMap.put(linkedDatFile, new HashSet<GDataCSG>());
+                backupSelectedTrianglesMap.put(linkedDatFile, new HashSet<GData3>());
+                break;
+            } catch (ConcurrentModificationException cme) {}
+        }
     }
 
     public static synchronized void restoreSelection(DatFile linkedDatFile) {
-        selectedBodyMap.put(linkedDatFile, backupSelectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<GDataCSG>()));
-        selectedTrianglesMap.put(linkedDatFile, backupSelectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<GData3>()));
+        while (true) {
+            try {
+                selectedBodyMap.put(linkedDatFile, backupSelectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<GDataCSG>()));
+                selectedTrianglesMap.put(linkedDatFile, backupSelectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<GData3>()));
+                break;
+            } catch (ConcurrentModificationException cme) {}
+        }
     }
 
     public static Collection<CSG> getCSGs(final DatFile df) {
