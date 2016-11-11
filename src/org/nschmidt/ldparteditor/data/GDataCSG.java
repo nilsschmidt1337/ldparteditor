@@ -1153,26 +1153,30 @@ public final class GDataCSG extends GData {
         final HashSet<GDataCSG> selectedBodies = selectedBodyMap.get(df);
         selectedTriangles.clear();
         if (selectedBodies != null) {
-            for (GDataCSG c : selectedBodies) {
-                if (c == null) {
-                    selectedTriangles.clear();
-                    selectedBodies.clear();
-                    return;
-                }
-                if (c.dataCSG == null) {
-                    selectedTriangles.clear();
-                } else {
-                    for (Polygon p : c.dataCSG.getPolygons()) {
-                        Matrix4f id = new Matrix4f();
-                        Matrix4f.setIdentity(id);
-                        GData1 g1 = new GData1(-1, .5f, .5f, .5f, 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
-                                new HashSet<String>(), View.DUMMY_REFERENCE);
-                        selectedTriangles.addAll(p.toLDrawTriangles(g1).keySet());
+            try {
+                for (GDataCSG c : selectedBodies) {
+                    if (c == null) {
+                        selectedTriangles.clear();
+                        selectedBodies.clear();
+                        return;
+                    }
+                    if (c.dataCSG == null) {
+                        selectedTriangles.clear();
+                    } else {
+                        for (Polygon p : c.dataCSG.getPolygons()) {
+                            Matrix4f id = new Matrix4f();
+                            Matrix4f.setIdentity(id);
+                            GData1 g1 = new GData1(-1, .5f, .5f, .5f, 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
+                                    new HashSet<String>(), View.DUMMY_REFERENCE);
+                            selectedTriangles.addAll(p.toLDrawTriangles(g1).keySet());
+                        }
                     }
                 }
-            }
-            if (selectedTriangles.isEmpty()) {
-                selectedBodies.clear();
+                if (selectedTriangles.isEmpty()) {
+                    selectedBodies.clear();
+                }
+            } catch (ConcurrentModificationException consumed) {
+
             }
         }
     }
