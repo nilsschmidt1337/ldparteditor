@@ -1782,15 +1782,16 @@ public class VM01SelectHelper extends VM01Select {
         }
     }
 
-    public void toggleTEXMAP() {
-        toggleHelper("0 !: "); //$NON-NLS-1$
+    public int toggleTEXMAP() {
+        return toggleHelper("0 !: "); //$NON-NLS-1$
     }
 
-    public void toggleComment() {
-        toggleHelper("0 // "); //$NON-NLS-1$
+    public int toggleComment() {
+        return toggleHelper("0 // "); //$NON-NLS-1$
     }
 
-    private void toggleHelper(final String token) {
+    private int toggleHelper(final String token) {
+        int offsetCorrection = 0;
         final String token2 = token.substring(0, 4);
         HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
         for (GData g : selectedData) {
@@ -1800,10 +1801,13 @@ public class VM01SelectHelper extends VM01Select {
             final String lineToParse;
             if (oldStr.startsWith(token)) {
                 lineToParse = oldStr.substring(5);
+                offsetCorrection -= 5;
             } else if (oldStr.startsWith(token2)) {
                 lineToParse = oldStr.substring(4);
+                offsetCorrection -= 4;
             } else {
                 lineToParse = token + oldStr;
+                offsetCorrection += 5;
             }
             Integer line = dpl.getKey(g);
             if (remove(g)) {
@@ -1825,5 +1829,6 @@ public class VM01SelectHelper extends VM01Select {
             dpl.put(line, pasted);
             linkedDatFile.setDrawChainTail(dpl.getValue(dpl.size()));
         }
+        return offsetCorrection;
     }
 }
