@@ -139,7 +139,6 @@ public class CompositePrimitive extends Composite {
 
     public CompositePrimitive(Composite parent) {
         super(parent, I18n.I18N_NON_BIDIRECT() | SWT.BORDER);
-        // TODO Auto-generated constructor stub
         {
             float[] rpf = new float[] {
                     -0.7071f, 0.5f, 0.5f, 0,
@@ -1151,13 +1150,8 @@ public class CompositePrimitive extends Composite {
 
     // What follows now is a very minimalistic DAT file parser (<500LOC)
 
-    private static final Vector3f start = new Vector3f();
-    private static final Vector3f end = new Vector3f();
-    private static final Vector3f vertexA = new Vector3f();
-    private static final Vector3f vertexB = new Vector3f();
-    private static final Vector3f vertexC = new Vector3f();
-    private static final Vector3f vertexD = new Vector3f();
     private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
+    private static final PGDataBFC PLACEHOLDER = new PGDataBFC(BFC.PLACEHOLDER);
 
     public static PGData parseLine(String line, int depth, Matrix4f productMatrix, Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
 
@@ -1186,7 +1180,7 @@ public class CompositePrimitive extends Composite {
         int linetype = 0;
         char c;
         if (!(data_segments.length > 2 && data_segments[0].length() == 1 && Character.isDigit(c = data_segments[0].charAt(0)))) {
-            result = new PGDataBFC(BFC.PLACEHOLDER);
+            result = PLACEHOLDER;
             cache.put(line, result);
             return result;
         }
@@ -1213,7 +1207,7 @@ public class CompositePrimitive extends Composite {
             break;
         }
         if (result == null) {
-            result = new PGDataBFC(BFC.PLACEHOLDER);
+            result = PLACEHOLDER;
         }
         cache.put(line, result);
         return result;
@@ -1413,17 +1407,15 @@ public class CompositePrimitive extends Composite {
         if (data_segments.length != 8) {
             return null;
         } else {
+            final PGData result;
             try {
-                start.setX(Float.parseFloat(data_segments[2]));
-                start.setY(Float.parseFloat(data_segments[3]));
-                start.setZ(Float.parseFloat(data_segments[4]));
-                end.setX(Float.parseFloat(data_segments[5]));
-                end.setY(Float.parseFloat(data_segments[6]));
-                end.setZ(Float.parseFloat(data_segments[7]));
+                result = new PGData2(
+                        Float.parseFloat(data_segments[2]), Float.parseFloat(data_segments[3]), Float.parseFloat(data_segments[4]),
+                        Float.parseFloat(data_segments[5]), Float.parseFloat(data_segments[6]), Float.parseFloat(data_segments[7]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new PGData2(start.x, start.y, start.z, end.x, end.y, end.z);
+            return result;
         }
     }
 
@@ -1431,21 +1423,16 @@ public class CompositePrimitive extends Composite {
         if (data_segments.length != 11) {
             return null;
         } else {
+            final PGData result;
             try {
-                vertexA.setX(Float.parseFloat(data_segments[2]));
-                vertexA.setY(Float.parseFloat(data_segments[3]));
-                vertexA.setZ(Float.parseFloat(data_segments[4]));
-                vertexB.setX(Float.parseFloat(data_segments[5]));
-                vertexB.setY(Float.parseFloat(data_segments[6]));
-                vertexB.setZ(Float.parseFloat(data_segments[7]));
-                vertexC.setX(Float.parseFloat(data_segments[8]));
-                vertexC.setY(Float.parseFloat(data_segments[9]));
-                vertexC.setZ(Float.parseFloat(data_segments[10]));
+                result = new PGData3(
+                        Float.parseFloat(data_segments[2]), Float.parseFloat(data_segments[3]), Float.parseFloat(data_segments[4]),
+                        Float.parseFloat(data_segments[5]), Float.parseFloat(data_segments[6]), Float.parseFloat(data_segments[7]),
+                        Float.parseFloat(data_segments[8]), Float.parseFloat(data_segments[9]), Float.parseFloat(data_segments[10]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new PGData3(vertexA.x, vertexA.y, vertexA.z, vertexB.x, vertexB.y, vertexB.z, vertexC.x,
-                    vertexC.y, vertexC.z);
+            return result;
         }
     }
 
@@ -1453,24 +1440,17 @@ public class CompositePrimitive extends Composite {
         if (data_segments.length != 14) {
             return null;
         } else {
+            final PGData result;
             try {
-                vertexA.setX(Float.parseFloat(data_segments[2]));
-                vertexA.setY(Float.parseFloat(data_segments[3]));
-                vertexA.setZ(Float.parseFloat(data_segments[4]));
-                vertexB.setX(Float.parseFloat(data_segments[5]));
-                vertexB.setY(Float.parseFloat(data_segments[6]));
-                vertexB.setZ(Float.parseFloat(data_segments[7]));
-                vertexC.setX(Float.parseFloat(data_segments[8]));
-                vertexC.setY(Float.parseFloat(data_segments[9]));
-                vertexC.setZ(Float.parseFloat(data_segments[10]));
-                vertexD.setX(Float.parseFloat(data_segments[11]));
-                vertexD.setY(Float.parseFloat(data_segments[12]));
-                vertexD.setZ(Float.parseFloat(data_segments[13]));
+                result = new PGData4(
+                        Float.parseFloat(data_segments[2]), Float.parseFloat(data_segments[3]), Float.parseFloat(data_segments[4]),
+                        Float.parseFloat(data_segments[5]), Float.parseFloat(data_segments[6]), Float.parseFloat(data_segments[7]),
+                        Float.parseFloat(data_segments[8]), Float.parseFloat(data_segments[9]), Float.parseFloat(data_segments[10]),
+                        Float.parseFloat(data_segments[11]), Float.parseFloat(data_segments[12]), Float.parseFloat(data_segments[13]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new PGData4(vertexA.x, vertexA.y, vertexA.z, vertexB.x, vertexB.y, vertexB.z, vertexC.x,
-                    vertexC.y, vertexC.z, vertexD.x, vertexD.y, vertexD.z);
+            return result;
         }
     }
 
@@ -1478,17 +1458,15 @@ public class CompositePrimitive extends Composite {
         if (data_segments.length != 14) {
             return null;
         } else {
+            final PGData result;
             try {
-                start.setX(Float.parseFloat(data_segments[2]));
-                start.setY(Float.parseFloat(data_segments[3]));
-                start.setZ(Float.parseFloat(data_segments[4]));
-                end.setX(Float.parseFloat(data_segments[5]));
-                end.setY(Float.parseFloat(data_segments[6]));
-                end.setZ(Float.parseFloat(data_segments[7]));
+                result = new PGData5(
+                        Float.parseFloat(data_segments[2]), Float.parseFloat(data_segments[3]), Float.parseFloat(data_segments[4]),
+                        Float.parseFloat(data_segments[5]), Float.parseFloat(data_segments[6]), Float.parseFloat(data_segments[7]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            return new PGData5(start.x, start.y, start.z, end.x, end.y, end.z);
+            return result;
         }
     }
 
