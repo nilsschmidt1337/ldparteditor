@@ -154,25 +154,31 @@ class VM03Adjacency extends VM02Add {
         return null;
     }
 
-    public GData5 hasCondline2(Vertex v1, Vertex v2) {
+    public boolean hasCondlineAndNoEdge(Vertex v1, Vertex v2) {
+        boolean hasCondline = false;
         Set<VertexManifestation> m1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> m2 = vertexLinkedToPositionInFile.get(v2);
         if (m1 == null || m2 == null) {
-            return null;
+            return false;
         }
         getManifestationLock().lock();
         for (VertexManifestation a : m1) {
             if (a.getPosition() > 1) continue;
             for (VertexManifestation b : m2) {
                 if (b.getPosition() > 1) continue;
-                if (a.getGdata().equals(b.getGdata()) && b.getGdata().type() == 5) {
-                    getManifestationLock().unlock();
-                    return (GData5) b.getGdata();
+                if (a.getGdata().equals(b.getGdata())) {
+                    final int type = b.getGdata().type();
+                    if (type == 5) {
+                        hasCondline = true;
+                    } else if (type == 2) {
+                        getManifestationLock().unlock();
+                        return false;
+                    }
                 }
             }
         }
         getManifestationLock().unlock();
-        return null;
+        return hasCondline;
     }
 
     protected ArrayList<GData> linkedCommonFaces(TreeSet<Vertex> h1, TreeSet<Vertex> h2, Vertex[] rv1, Vertex[] rv2) {
