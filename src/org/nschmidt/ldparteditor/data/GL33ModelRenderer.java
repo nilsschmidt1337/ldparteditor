@@ -515,7 +515,7 @@ public class GL33ModelRenderer {
                                     final Vertex[] v = vertexMap.get(gd);
                                     for (int i = 0; i < t; i++) {
                                         final int j = (i + 1) % t;
-                                        if (vm.hasCondline2(v[i], v[j]) != null) {
+                                        if (vm.hasCondlineAndNoEdge(v[i], v[j])) {
                                             for (GData s : vm.linkedCommonFaces(v[i], v[j])) {
                                                 if (s != gd) {
                                                     if (vertexMap.get(s) != null && surfaceNormals.get(s) != null) for (Vertex w : vertexMap.get(s)) {
