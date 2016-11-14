@@ -163,7 +163,7 @@ public class SplashScreen extends ApplicationWindow {
             int minor = Integer.parseInt(glVersion.substring(2, 3));
             openGLerror[0] = major < 2;
             // FIXME No DEBUG on release!
-            if (NLogger.DEBUG && (major > 3 || (major == 3 && minor > 2))) {
+            if (NLogger.DEBUG && (major > 3 || major == 3 && minor > 2)) {
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(33);
             } else {
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(20);
