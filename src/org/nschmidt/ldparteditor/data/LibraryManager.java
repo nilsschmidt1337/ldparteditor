@@ -28,6 +28,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -597,95 +598,100 @@ public class LibraryManager {
             ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
             File libFolder = new File(folderPath);
             StringBuilder titleSb = new StringBuilder();
-            for (File f : libFolder.listFiles()) {
-                if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
-                    titleSb.setLength(0);
-                    UTF8BufferedReader reader = null;
-                    try {
-                        reader = new UTF8BufferedReader(f.getAbsolutePath());
-                        String title = reader.readLine();
-                        if (title != null) {
-                            title = title.trim();
-                            if (title.length() > 0) {
-                                titleSb.append(" -"); //$NON-NLS-1$
-                                titleSb.append(title.substring(1));
+            File[] files = libFolder.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
+                        titleSb.setLength(0);
+                        UTF8BufferedReader reader = null;
+                        try {
+                            reader = new UTF8BufferedReader(f.getAbsolutePath());
+                            String title = reader.readLine();
+                            if (title != null) {
+                                title = title.trim();
+                                if (title.length() > 0) {
+                                    titleSb.append(" -"); //$NON-NLS-1$
+                                    titleSb.append(title.substring(1));
+                                }
                             }
-                        }
-                        // Detect type
-                        while (true) {
-                            String typ = reader.readLine();
-                            if (typ != null) {
-                                typ = typ.trim();
-                                if (!typ.startsWith("0")) { //$NON-NLS-1$
-                                    break;
-                                } else {
-                                    int i1 = typ.indexOf("!LDRAW_ORG"); //$NON-NLS-1$
-                                    if (i1 > -1) {
-                                        int i2;
-                                        i2 = typ.indexOf("Subpart"); //$NON-NLS-1$
-                                        if (i2 > -1 && i1 < i2) {
-                                            type = DatType.SUBPART;
-                                            break;
-                                        }
-                                        i2 = typ.indexOf("Part"); //$NON-NLS-1$
-                                        if (i2 > -1 && i1 < i2) {
-                                            type = DatType.PART;
-                                            break;
-                                        }
-                                        i2 = typ.indexOf("48_Primitive"); //$NON-NLS-1$
-                                        if (i2 > -1 && i1 < i2) {
-                                            type = DatType.PRIMITIVE48;
-                                            break;
-                                        }
-                                        i2 = typ.indexOf("8_Primitive"); //$NON-NLS-1$
-                                        if (i2 > -1 && i1 < i2) {
-                                            type = DatType.PRIMITIVE8;
-                                            break;
-                                        }
-                                        i2 = typ.indexOf("Primitive"); //$NON-NLS-1$
-                                        if (i2 > -1 && i1 < i2) {
-                                            type = DatType.PRIMITIVE;
-                                            break;
+                            // Detect type
+                            while (true) {
+                                String typ = reader.readLine();
+                                if (typ != null) {
+                                    typ = typ.trim();
+                                    if (!typ.startsWith("0")) { //$NON-NLS-1$
+                                        break;
+                                    } else {
+                                        int i1 = typ.indexOf("!LDRAW_ORG"); //$NON-NLS-1$
+                                        if (i1 > -1) {
+                                            int i2;
+                                            i2 = typ.indexOf("Subpart"); //$NON-NLS-1$
+                                            if (i2 > -1 && i1 < i2) {
+                                                type = DatType.SUBPART;
+                                                break;
+                                            }
+                                            i2 = typ.indexOf("Part"); //$NON-NLS-1$
+                                            if (i2 > -1 && i1 < i2) {
+                                                type = DatType.PART;
+                                                break;
+                                            }
+                                            i2 = typ.indexOf("48_Primitive"); //$NON-NLS-1$
+                                            if (i2 > -1 && i1 < i2) {
+                                                type = DatType.PRIMITIVE48;
+                                                break;
+                                            }
+                                            i2 = typ.indexOf("8_Primitive"); //$NON-NLS-1$
+                                            if (i2 > -1 && i1 < i2) {
+                                                type = DatType.PRIMITIVE8;
+                                                break;
+                                            }
+                                            i2 = typ.indexOf("Primitive"); //$NON-NLS-1$
+                                            if (i2 > -1 && i1 < i2) {
+                                                type = DatType.PRIMITIVE;
+                                                break;
+                                            }
                                         }
                                     }
+                                } else {
+                                    break;
                                 }
-                            } else {
+                            }
+                            if (type == null) type = DatType.PART;
+                            // Change treeItem according to type
+                            switch (type) {
+                            case PART:
+                                treeItem = Editor3DWindow.getWindow().getProjectParts();
+                                break;
+                            case SUBPART:
+                                treeItem = Editor3DWindow.getWindow().getProjectSubparts();
+                                break;
+                            case PRIMITIVE:
+                                treeItem = Editor3DWindow.getWindow().getProjectPrimitives();
+                                break;
+                            case PRIMITIVE48:
+                                treeItem = Editor3DWindow.getWindow().getProjectPrimitives48();
+                                break;
+                            default:
                                 break;
                             }
+                        } catch (LDParsingException e) {
+                        } catch (FileNotFoundException e) {
+                        } catch (UnsupportedEncodingException e) {
+                        } finally {
+                            try {
+                                if (reader != null)
+                                    reader.close();
+                            } catch (LDParsingException e1) {
+                            }
                         }
-                        if (type == null) type = DatType.PART;
-                        // Change treeItem according to type
-                        switch (type) {
-                        case PART:
-                            treeItem = Editor3DWindow.getWindow().getProjectParts();
-                            break;
-                        case SUBPART:
-                            treeItem = Editor3DWindow.getWindow().getProjectSubparts();
-                            break;
-                        case PRIMITIVE:
-                            treeItem = Editor3DWindow.getWindow().getProjectPrimitives();
-                            break;
-                        case PRIMITIVE48:
-                            treeItem = Editor3DWindow.getWindow().getProjectPrimitives48();
-                            break;
-                        default:
-                            break;
-                        }
-                    } catch (LDParsingException e) {
-                    } catch (FileNotFoundException e) {
-                    } catch (UnsupportedEncodingException e) {
-                    } finally {
-                        try {
-                            if (reader != null)
-                                reader.close();
-                        } catch (LDParsingException e1) {
-                        }
+                        DatFileName name = new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48  || type == DatType.PRIMITIVE8);
+                        datFiles.add(name);
+                        parentMap.put(name, treeItem);
+                        typeMap.put(name, type);
                     }
-                    DatFileName name = new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48  || type == DatType.PRIMITIVE8);
-                    datFiles.add(name);
-                    parentMap.put(name, treeItem);
-                    typeMap.put(name, type);
                 }
+            } else {
+                NLogger.error(LibraryManager.class, "readLibraryFolder: Can't open directory" + folderPath);  //$NON-NLS-1$
             }
             // Sort the file list
             Collections.sort(datFiles);
@@ -1083,112 +1089,117 @@ public class LibraryManager {
 
         if (prefix1.isEmpty() && prefix2.isEmpty()) {
             StringBuilder titleSb = new StringBuilder();
-            for (File f : baseFolder.listFiles()) {
-                if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
-                    final String path = f.getAbsolutePath();
-                    if (locked.contains(path)) {
-                        // File is locked by LPE, so don't parse it twice
-                        result[2] = result[2] + 1;
-                        continue;
-                    }
-                    if (!loaded.contains(path)) {
-                        // The file is new
-                        result[0] = result[0] + 1;
-                    }
-                    titleSb.setLength(0);
-                    TreeItem treeItem2 = Editor3DWindow.getWindow().getProjectParts();
-                    UTF8BufferedReader reader = null;
-                    try {
-                        reader = new UTF8BufferedReader(path);
-                        String title = reader.readLine();
-                        if (title != null) {
-                            title = title.trim();
-                            if (title.length() > 0) {
-                                titleSb.append(" -"); //$NON-NLS-1$
-                                titleSb.append(title.substring(1));
-                            }
+            File[] files = baseFolder.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
+                        final String path = f.getAbsolutePath();
+                        if (locked.contains(path)) {
+                            // File is locked by LPE, so don't parse it twice
+                            result[2] = result[2] + 1;
+                            continue;
                         }
-                        // Detect type
-                        while (true) {
-                            String typ = reader.readLine();
-                            if (typ != null) {
-                                typ = typ.trim();
-                                if (!typ.startsWith("0")) { //$NON-NLS-1$
-                                    break;
-                                } else {
-                                    int i1 = typ.indexOf("!LDRAW_ORG"); //$NON-NLS-1$
-                                    if (i1 > -1) {
-                                        int i2;
-                                        i2 = typ.indexOf("Subpart"); //$NON-NLS-1$
-                                        if (i2 > -1 && i1 < i2) {
-                                            type = DatType.SUBPART;
-                                            break;
-                                        }
-                                        i2 = typ.indexOf("Part"); //$NON-NLS-1$
-                                        if (i2 > -1 && i1 < i2) {
-                                            type = DatType.PART;
-                                            break;
-                                        }
-                                        i2 = typ.indexOf("48_Primitive"); //$NON-NLS-1$
-                                        if (i2 > -1 && i1 < i2) {
-                                            type = DatType.PRIMITIVE48;
-                                            break;
-                                        }
-                                        i2 = typ.indexOf("8_Primitive"); //$NON-NLS-1$
-                                        if (i2 > -1 && i1 < i2) {
-                                            type = DatType.PRIMITIVE8;
-                                            break;
-                                        }
-                                        i2 = typ.indexOf("Primitive"); //$NON-NLS-1$
-                                        if (i2 > -1 && i1 < i2) {
-                                            type = DatType.PRIMITIVE;
-                                            break;
+                        if (!loaded.contains(path)) {
+                            // The file is new
+                            result[0] = result[0] + 1;
+                        }
+                        titleSb.setLength(0);
+                        TreeItem treeItem2 = Editor3DWindow.getWindow().getProjectParts();
+                        UTF8BufferedReader reader = null;
+                        try {
+                            reader = new UTF8BufferedReader(path);
+                            String title = reader.readLine();
+                            if (title != null) {
+                                title = title.trim();
+                                if (title.length() > 0) {
+                                    titleSb.append(" -"); //$NON-NLS-1$
+                                    titleSb.append(title.substring(1));
+                                }
+                            }
+                            // Detect type
+                            while (true) {
+                                String typ = reader.readLine();
+                                if (typ != null) {
+                                    typ = typ.trim();
+                                    if (!typ.startsWith("0")) { //$NON-NLS-1$
+                                        break;
+                                    } else {
+                                        int i1 = typ.indexOf("!LDRAW_ORG"); //$NON-NLS-1$
+                                        if (i1 > -1) {
+                                            int i2;
+                                            i2 = typ.indexOf("Subpart"); //$NON-NLS-1$
+                                            if (i2 > -1 && i1 < i2) {
+                                                type = DatType.SUBPART;
+                                                break;
+                                            }
+                                            i2 = typ.indexOf("Part"); //$NON-NLS-1$
+                                            if (i2 > -1 && i1 < i2) {
+                                                type = DatType.PART;
+                                                break;
+                                            }
+                                            i2 = typ.indexOf("48_Primitive"); //$NON-NLS-1$
+                                            if (i2 > -1 && i1 < i2) {
+                                                type = DatType.PRIMITIVE48;
+                                                break;
+                                            }
+                                            i2 = typ.indexOf("8_Primitive"); //$NON-NLS-1$
+                                            if (i2 > -1 && i1 < i2) {
+                                                type = DatType.PRIMITIVE8;
+                                                break;
+                                            }
+                                            i2 = typ.indexOf("Primitive"); //$NON-NLS-1$
+                                            if (i2 > -1 && i1 < i2) {
+                                                type = DatType.PRIMITIVE;
+                                                break;
+                                            }
                                         }
                                     }
+                                } else {
+                                    break;
                                 }
-                            } else {
+                            }
+
+                            if (type == null) type = DatType.PART;
+
+                            // Change treeItem according to type
+                            switch (type) {
+                            case PART:
+                                treeItem2 = Editor3DWindow.getWindow().getProjectParts();
                                 break;
+                            case SUBPART:
+                                treeItem2 = Editor3DWindow.getWindow().getProjectSubparts();
+                                break;
+                            case PRIMITIVE:
+                                treeItem2 = Editor3DWindow.getWindow().getProjectPrimitives();
+                                break;
+                            case PRIMITIVE48:
+                                treeItem2 = Editor3DWindow.getWindow().getProjectPrimitives48();
+                                break;
+                            case PRIMITIVE8:
+                                treeItem2 = Editor3DWindow.getWindow().getProjectPrimitives8();
+                                break;
+                            default:
+                                break;
+                            }
+                        } catch (LDParsingException e) {
+                        } catch (FileNotFoundException e) {
+                        } catch (UnsupportedEncodingException e) {
+                        } finally {
+                            try {
+                                if (reader != null)
+                                    reader.close();
+                            } catch (LDParsingException e1) {
                             }
                         }
 
-                        if (type == null) type = DatType.PART;
-
-                        // Change treeItem according to type
-                        switch (type) {
-                        case PART:
-                            treeItem2 = Editor3DWindow.getWindow().getProjectParts();
-                            break;
-                        case SUBPART:
-                            treeItem2 = Editor3DWindow.getWindow().getProjectSubparts();
-                            break;
-                        case PRIMITIVE:
-                            treeItem2 = Editor3DWindow.getWindow().getProjectPrimitives();
-                            break;
-                        case PRIMITIVE48:
-                            treeItem2 = Editor3DWindow.getWindow().getProjectPrimitives48();
-                            break;
-                        case PRIMITIVE8:
-                            treeItem2 = Editor3DWindow.getWindow().getProjectPrimitives8();
-                            break;
-                        default:
-                            break;
-                        }
-                    } catch (LDParsingException e) {
-                    } catch (FileNotFoundException e) {
-                    } catch (UnsupportedEncodingException e) {
-                    } finally {
-                        try {
-                            if (reader != null)
-                                reader.close();
-                        } catch (LDParsingException e1) {
-                        }
+                        newDfnMap.put(path, new DatFileName(path, f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48 || type == DatType.PRIMITIVE8));
+                        newParentMap.put(path, treeItem2);
+                        newTypeMap.put(path, type);
+                        readOnly.put(path, isReadOnlyFolder);
                     }
-
-                    newDfnMap.put(path, new DatFileName(path, f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48 || type == DatType.PRIMITIVE8));
-                    newParentMap.put(path, treeItem2);
-                    newTypeMap.put(path, type);
-                    readOnly.put(path, isReadOnlyFolder);
                 }
+            } else {
+                NLogger.error(LibraryManager.class, "readActualDataFromFolder: Can't open directory" + basePath);  //$NON-NLS-1$
             }
         } else {
             boolean canSearch = true;

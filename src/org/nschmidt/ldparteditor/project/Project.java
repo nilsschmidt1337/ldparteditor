@@ -57,8 +57,8 @@ public enum Project {
     private static DatFile fileToEdit = new DatFile(getProjectPath() + File.separator + "parts" + File.separator + "new.dat"); //$NON-NLS-1$ //$NON-NLS-2$
     /** A list of all absolute filenames, which were opened */
     private static final ArrayList<DatFile> openedFiles = new ArrayList<DatFile>();
-    
-    
+
+
     /**
      * Creates the new project file structure
      */
@@ -184,9 +184,11 @@ public enum Project {
     public static void deleteFolder(File src)
             throws IOException{
         if(src.isDirectory()){
-            File files[] = src.listFiles();
-            for (File file : files) {
-                deleteFolder(file);
+            File[] files = src.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    deleteFolder(file);
+                }
             }
             src.delete();
             NLogger.debug(Project.class, "Directory deleted {0}", src); //$NON-NLS-1$
@@ -314,8 +316,8 @@ public enum Project {
     public static void removeUnsavedFile(DatFile file) {
         unsavedFiles.remove(file);
     }
-    
-    
+
+
     public static ArrayList<DatFile> getOpenedFiles() {
         return openedFiles;
     }

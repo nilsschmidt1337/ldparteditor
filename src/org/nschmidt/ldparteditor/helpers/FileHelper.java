@@ -108,8 +108,11 @@ public enum FileHelper {
     public static void deleteDirectory(File dir) {
         try {
             if (!dir.delete() && dir.isDirectory()) {
-                for (File f : dir.listFiles()) {
-                    deleteDirectory(f);
+                File[] files = dir.listFiles();
+                if (files != null) {
+                    for (File f : files) {
+                        deleteDirectory(f);
+                    }
                 }
                 dir.delete();
             }
