@@ -1184,9 +1184,9 @@ public class CompositePrimitive extends Composite {
         int linetype = 0;
         char c;
         if (!(data_segments.length > 2 && data_segments[0].length() == 1 && Character.isDigit(c = data_segments[0].charAt(0)))) {
-            result = PLACEHOLDER;
-            cache.put(line, result);
-            return result;
+            // result = PLACEHOLDER;
+            // cache.put(line, result);
+            return null;
         }
         linetype = Character.getNumericValue(c);
         // Parse the line according to its type
@@ -1211,7 +1211,7 @@ public class CompositePrimitive extends Composite {
             break;
         }
         if (result == null) {
-            result = PLACEHOLDER;
+            return null;
         }
         cache.put(line, result);
         return result;
