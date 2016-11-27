@@ -482,6 +482,7 @@ public final class I18n {
     public static final String E3D_NeedsAThreshold = E3D.getString(getProperty());
     public static final String E3D_New = E3D.getString(getProperty());
     public static final String E3D_NewDat = E3D.getString(getProperty());
+    public static final String E3D_NewEngine = E3D.getString(getProperty());
     public static final String E3D_NewFile = E3D.getString(getProperty());
     public static final String E3D_Next = E3D.getString(getProperty());
     public static final String E3D_NextItem = E3D.getString(getProperty());

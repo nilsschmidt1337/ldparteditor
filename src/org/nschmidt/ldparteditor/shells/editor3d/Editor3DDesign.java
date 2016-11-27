@@ -291,6 +291,7 @@ class Editor3DDesign extends ApplicationWindow {
 
     final MenuItem[] mntm_UploadLogs = new MenuItem[1];
     final MenuItem[] mntm_AntiAliasing = new MenuItem[1];
+    final MenuItem[] mntm_NewEngine = new MenuItem[1];
     final MenuItem[] mntm_SyncLpeInline = new MenuItem[1];
 
     final MenuItem[] mntm_Flip = new MenuItem[1];
@@ -479,7 +480,7 @@ class Editor3DDesign extends ApplicationWindow {
         userSettings.setRoundX(true);
         userSettings.setRoundY(true);
         userSettings.setRoundZ(true);
-        
+
         setStatus(I18n.E3D_ReadyStatus);
         Composite containerTop = new Composite(parent, SWT.NONE);
         containerTop.setLayout(new BorderLayout(0, 0));
@@ -2562,6 +2563,12 @@ class Editor3DDesign extends ApplicationWindow {
                     mntm_AntiAliasing.setSelection(WorkbenchManager.getUserSettingState().isAntiAliasing());
                     this.mntm_AntiAliasing[0] = mntm_AntiAliasing;
                     mntm_AntiAliasing.setText(I18n.E3D_AntiAliasing);
+                }
+                {
+                    MenuItem mntm_NewEngine = new MenuItem(mnu_Tools, SWT.CHECK);
+                    mntm_NewEngine.setSelection(WorkbenchManager.getUserSettingState().isNewEngine());
+                    this.mntm_NewEngine[0] = mntm_NewEngine;
+                    mntm_NewEngine.setText(I18n.E3D_NewEngine);
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator4 = new MenuItem(mnu_Tools, SWT.SEPARATOR);

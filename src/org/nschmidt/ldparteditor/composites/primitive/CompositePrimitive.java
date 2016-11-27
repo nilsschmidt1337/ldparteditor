@@ -1155,7 +1155,7 @@ public class CompositePrimitive extends Composite {
     // What follows now is a very minimalistic DAT file parser (<500LOC)
 
     private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
-    private static final PGDataBFC PLACEHOLDER = new PGDataBFC(BFC.PLACEHOLDER);
+    // private static final PGDataBFC PLACEHOLDER = new PGDataBFC(BFC.PLACEHOLDER);
 
     public static PGData parseLine(String line, int depth, Matrix4f productMatrix, Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
 

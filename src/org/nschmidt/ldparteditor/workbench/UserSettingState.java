@@ -118,6 +118,9 @@ public class UserSettingState implements Serializable {
     /** {@code true} if anti-aliasing is enabled for 3D windows */
     private boolean antiAliasing = false;
 
+    /** {@code true} if the new engine is enabled for 3D windows */
+    private boolean newEngine = false;
+
     /** {@code true} if invalid shapes are allowed in the 3D editor */
     private boolean allowInvalidShapes = false;
 
@@ -379,12 +382,12 @@ public class UserSettingState implements Serializable {
     private boolean syncingTabs = false;
 
     private int textWinArr = 2;
-    
+
     private boolean roundX = false;
     private boolean roundY = false;
     private boolean roundZ = false;
-    
-    
+
+
     private transient int openGLVersion = 20;
 
     public UserSettingState() {
@@ -774,6 +777,14 @@ public class UserSettingState implements Serializable {
 
     public void setAntiAliasing(boolean antiAliasing) {
         this.antiAliasing = antiAliasing;
+    }
+
+    public boolean isNewEngine() {
+        return newEngine;
+    }
+
+    public void setNewEngine(boolean newEngine) {
+        this.newEngine = newEngine;
     }
 
     public void saveColours() {
@@ -1351,7 +1362,7 @@ public class UserSettingState implements Serializable {
     public int getOpenGLVersion() {
         return openGLVersion;
     }
-    
+
     public String getOpenGLVersionString() {
         switch (openGLVersion) {
             case 20:
