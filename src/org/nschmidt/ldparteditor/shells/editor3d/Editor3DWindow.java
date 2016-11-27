@@ -5135,6 +5135,14 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        mntm_NewEngine[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().setNewEngine(mntm_NewEngine[0].getSelection());
+                regainFocus();
+            }
+        });
+
         //        mntm_SyncWithTextEditor[0].addSelectionListener(new SelectionAdapter() {
         //            @Override
         //            public void widgetSelected(SelectionEvent e) {
