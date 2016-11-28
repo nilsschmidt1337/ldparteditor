@@ -759,10 +759,12 @@ class VM05Distance extends VM04Rectifier {
         return targetVertex;
     }
 
-    public Vertex getMinimalDistanceVertexToLines(Vertex vertex) {
+    public Vertex[] getMinimalDistanceVertexToLines(Vertex vertex) {
         double minDist = Double.MAX_VALUE;
         Vector4f vp = vertex.toVector4f();
         Vertex targetVertex = new Vertex(vp);
+        Vertex startVertex = new Vertex(vp);
+        Vertex endVertex = new Vertex(vp);
         Set<GData3> ts;
         Set<GData4> qs;
 
@@ -812,6 +814,8 @@ class VM05Distance extends VM04Rectifier {
                 float d1 = Vector4f.sub(v1, vp, null).length();
                 if (d1 < minDist) {
                     targetVertex = new Vertex(v1);
+                    startVertex = verts[0];
+                    endVertex = verts[1];
                     minDist = d1;
                 }
             }
@@ -825,6 +829,8 @@ class VM05Distance extends VM04Rectifier {
                 float d1 = Vector4f.sub(v1, vp, null).length();
                 if (d1 < minDist) {
                     targetVertex = new Vertex(v1);
+                    startVertex = verts[0];
+                    endVertex = verts[1];
                     minDist = d1;
                 }
             }
@@ -833,6 +839,8 @@ class VM05Distance extends VM04Rectifier {
                 float d1 = Vector4f.sub(v1, vp, null).length();
                 if (d1 < minDist) {
                     targetVertex = new Vertex(v1);
+                    startVertex = verts[1];
+                    endVertex = verts[2];
                     minDist = d1;
                 }
             }
@@ -841,6 +849,8 @@ class VM05Distance extends VM04Rectifier {
                 float d1 = Vector4f.sub(v1, vp, null).length();
                 if (d1 < minDist) {
                     targetVertex = new Vertex(v1);
+                    startVertex = verts[2];
+                    endVertex = verts[0];
                     minDist = d1;
                 }
             }
@@ -854,6 +864,8 @@ class VM05Distance extends VM04Rectifier {
                 float d1 = Vector4f.sub(v1, vp, null).length();
                 if (d1 < minDist) {
                     targetVertex = new Vertex(v1);
+                    startVertex = verts[0];
+                    endVertex = verts[1];
                     minDist = d1;
                 }
             }
@@ -862,6 +874,8 @@ class VM05Distance extends VM04Rectifier {
                 float d1 = Vector4f.sub(v1, vp, null).length();
                 if (d1 < minDist) {
                     targetVertex = new Vertex(v1);
+                    startVertex = verts[1];
+                    endVertex = verts[2];
                     minDist = d1;
                 }
             }
@@ -870,6 +884,8 @@ class VM05Distance extends VM04Rectifier {
                 float d1 = Vector4f.sub(v1, vp, null).length();
                 if (d1 < minDist) {
                     targetVertex = new Vertex(v1);
+                    startVertex = verts[2];
+                    endVertex = verts[3];
                     minDist = d1;
                 }
             }
@@ -878,6 +894,8 @@ class VM05Distance extends VM04Rectifier {
                 float d1 = Vector4f.sub(v1, vp, null).length();
                 if (d1 < minDist) {
                     targetVertex = new Vertex(v1);
+                    startVertex = verts[3];
+                    endVertex = verts[0];
                     minDist = d1;
                 }
             }
@@ -891,6 +909,8 @@ class VM05Distance extends VM04Rectifier {
                 float d1 = Vector4f.sub(v1, vp, null).length();
                 if (d1 < minDist) {
                     targetVertex = new Vertex(v1);
+                    startVertex = verts[0];
+                    endVertex = verts[1];
                     minDist = d1;
                 }
             }
@@ -916,8 +936,8 @@ class VM05Distance extends VM04Rectifier {
         }
 
         if (minDist == Double.MAX_VALUE)
-            return new Vertex(vp);
-        return targetVertex;
+            return new Vertex[]{new Vertex(vp), null};
+        return new Vertex[]{targetVertex, new Vertex(Vector4f.sub(endVertex.toVector4f(), startVertex.toVector4f(), new Vector4f()))};
     }
 
     public Vertex getMinimalDistanceVertexToSurfaces(Vertex vertex) {
