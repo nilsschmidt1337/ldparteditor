@@ -70,7 +70,7 @@ public enum Annotator {
             sd.add(dpl.getValue(line));
         }
 
-        final int correction = vm.toggleComment();
+        final int[] correction = vm.toggleComment();
         vm.restoreSelection();
         vm.restoreHideShowState();
         vm.setModified_NoSync();
@@ -79,7 +79,8 @@ public enum Annotator {
                 if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {
                     ((CompositeTab) t).getState().setSync(true);
                     Point s = ((CompositeTab) t).getTextComposite().getSelection();
-                    s.y += correction;
+                    s.x += correction[1];
+                    s.y += correction[0];
                     ((CompositeTab) t).getTextComposite().setText(datFile.getText());
                     ((CompositeTab) t).getTextComposite().setSelection(s);
                     ((CompositeTab) t).getState().setSync(false);
