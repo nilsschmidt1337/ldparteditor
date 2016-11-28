@@ -1782,16 +1782,17 @@ public class VM01SelectHelper extends VM01Select {
         }
     }
 
-    public int toggleTEXMAP() {
+    public int[] toggleTEXMAP() {
         return toggleHelper("0 !: "); //$NON-NLS-1$
     }
 
-    public int toggleComment() {
+    public int[] toggleComment() {
         return toggleHelper("0 // "); //$NON-NLS-1$
     }
 
-    private int toggleHelper(final String token) {
-        int offsetCorrection = 0;
+    private int[] toggleHelper(final String token) {
+        int[] offsetCorrection = new int[]{0, 0};
+        boolean firstToken = true;
         final String token2 = token.substring(0, 4);
         HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
         for (GData g : selectedData) {
@@ -1801,13 +1802,25 @@ public class VM01SelectHelper extends VM01Select {
             final String lineToParse;
             if (oldStr.startsWith(token)) {
                 lineToParse = oldStr.substring(5);
-                offsetCorrection -= 5;
+                offsetCorrection[0] -= 5;
+                if (firstToken) {
+                    firstToken = false;
+                    offsetCorrection[1] = -5;
+                }
             } else if (oldStr.startsWith(token2)) {
                 lineToParse = oldStr.substring(4);
-                offsetCorrection -= 4;
+                offsetCorrection[0] -= 4;
+                if (firstToken) {
+                    firstToken = false;
+                    offsetCorrection[1] = -4;
+                }
             } else {
                 lineToParse = token + oldStr;
-                offsetCorrection += 5;
+                offsetCorrection[0] += 5;
+                if (firstToken) {
+                    firstToken = false;
+                    offsetCorrection[1] = 5;
+                }
             }
             Integer line = dpl.getKey(g);
             if (remove(g)) {
