@@ -28,8 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
@@ -73,7 +71,6 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -124,10 +121,6 @@ class Editor3DDesign extends ApplicationWindow {
     final CTabFolder[] tabFolder_OpenDatFiles = new CTabFolder[1];
     final Button[] btn_SyncTabs = new Button[1];
 
-    Action menuItem_Open = ShellHelper.DUMMY_ACTION;
-    Action menuItem_Exit = ShellHelper.DUMMY_ACTION;
-    Action toolItem_Save = ShellHelper.DUMMY_ACTION;
-    final MenuManager[] mnu_File = new MenuManager[1];
     private Composite cmpNorth;
     private Composite cmpEast;
     private Composite cmpWest;
