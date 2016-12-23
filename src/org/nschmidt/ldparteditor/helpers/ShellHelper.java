@@ -15,7 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Monitor;
@@ -47,8 +46,4 @@ public enum ShellHelper {
 
         sh.setLocation(x, y);
     }
-
-    /** The dummy action, to avoid null references on design initialisation */
-    public static final Action DUMMY_ACTION = new Action("Label not loaded yet.") {}; //$NON-NLS-1$
-
 }
