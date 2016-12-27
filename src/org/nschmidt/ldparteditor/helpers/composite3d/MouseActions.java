@@ -771,7 +771,7 @@ public class MouseActions {
                                     if (window.isAddingTriangles()) {
                                         vm.addTriangle(v1, v2, nv, c3d);
                                     } else {
-                                        vm.addProtractor(v1, v2, nv, c3d);
+                                        vm.addProtractor(v1, nv, v2, c3d);
                                     }
                                     vm.getSelectedVertices().clear();
                                 }

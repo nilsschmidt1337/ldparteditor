@@ -416,7 +416,7 @@ class VM02Add extends VM01SelectHelper {
         Vector3f a = new Vector3f();
         Vector3f b = new Vector3f();
         Vector3f c = new Vector3f();
-        
+
         {
             Vector3f v13f = new Vector3f(v1.x, v1.y, v1.z);
             Vector3f v23f = new Vector3f(v2.x, v2.y, v2.z);
@@ -425,14 +425,14 @@ class VM02Add extends VM01SelectHelper {
             Vector3f.sub(v33f, v23f, b);
             Vector3f.sub(v33f, v13f, c);
         }
-        
+
         angle = Vector3f.angle(a, c) * 180d / Math.PI;
         double sumAngle = angle;
         if ((angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
             return;
         }
-        
+
         a.negate();
         angle = Vector3f.angle(a, b) * 180d / Math.PI;
         sumAngle = sumAngle + angle;
@@ -440,13 +440,13 @@ class VM02Add extends VM01SelectHelper {
             linkedDatFile.setObjVertex3(null);
             return;
         }
-        
+
         angle = 180.0 - sumAngle;
         if ((angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
             return;
         }
-        
+
         Vector4f n = new Vector4f();
         n.setW(1f);
         n.setX((v3.y - v1.y) * (v2.z - v1.z) - (v3.z - v1.z) * (v2.y - v1.y));
@@ -455,7 +455,7 @@ class VM02Add extends VM01SelectHelper {
         Matrix4f vport = c3d.getViewport();
         Matrix4f.transform(vport, n, n);
         Vector4f.sub(n, new Vector4f(vport.m03, vport.m13, vport.m23, 0f), n);
-        if (n.z > 0f ^ Editor3DWindow.getWindow().hasBfcToggle()) {
+        if (isTriangle && n.z > 0f ^ Editor3DWindow.getWindow().hasBfcToggle()) {
             Vertex t = v1;
             v1 = v2;
             v2 = t;
@@ -645,12 +645,12 @@ class VM02Add extends VM01SelectHelper {
         Vector3f b = new Vector3f();
         Vector3f c = new Vector3f();
         Vector3f d = new Vector3f();
-        
+
         Vector3f.sub(v23f, v13f, a);
         Vector3f.sub(v23f, v33f, b);
         Vector3f.sub(v43f, v33f, c);
         Vector3f.sub(v43f, v13f, d);
-    
+
         angle = Vector3f.angle(a, d) * 180d / Math.PI;
         double sumAngle = angle;
         if ((angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) && !allowInvalidShapes) {
@@ -658,7 +658,7 @@ class VM02Add extends VM01SelectHelper {
             linkedDatFile.setObjVertex4(null);
             return;
         }
-        
+
         angle = Vector3f.angle(b, c) * 180d / Math.PI;
         sumAngle = sumAngle + angle;
         if ((angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) && !allowInvalidShapes) {
@@ -666,7 +666,7 @@ class VM02Add extends VM01SelectHelper {
             linkedDatFile.setObjVertex4(null);
             return;
         }
-        
+
         a.negate();
         b.negate();
         angle = Vector3f.angle(a, b) * 180d / Math.PI;
@@ -676,7 +676,7 @@ class VM02Add extends VM01SelectHelper {
             linkedDatFile.setObjVertex4(null);
             return;
         }
-        
+
         angle = 360.0 - sumAngle;
         if ((angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
