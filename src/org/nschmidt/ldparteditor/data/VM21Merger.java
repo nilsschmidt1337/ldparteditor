@@ -81,6 +81,7 @@ public class VM21Merger extends VM20Manipulator {
             lastSelectedVertex = null;
             break;
         case NEAREST_EDGE:
+        case NEAREST_EDGE_SPLIT:
         case NEAREST_FACE:
             if (originVerts.size() == 0) return;
             {
@@ -117,6 +118,11 @@ public class VM21Merger extends VM20Manipulator {
                     // And using changeVertexDirectFast() to do the merge
                     boolean modified = false;
                     if (mode == MergeTo.NEAREST_EDGE) {
+                        for (Vertex vertex : originVerts) {
+                            final Object[] target = getMinimalDistanceVerticesToLines(vertex, false);
+                            modified = changeVertexDirectFast(vertex, (Vertex) target[2], true) || modified;
+                        }
+                    } else if (mode == MergeTo.NEAREST_EDGE_SPLIT) {
                         for (Vertex vertex : originVerts) {
                             final Object[] target = getMinimalDistanceVerticesToLines(vertex, false);
                             modified = changeVertexDirectFast(vertex, (Vertex) target[2], true) || modified;

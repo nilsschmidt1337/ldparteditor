@@ -3784,6 +3784,22 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
+        mntm_MergeToNearestEdgeSplit[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
+                        vm.merge(MergeTo.NEAREST_EDGE_SPLIT, true);
+                        regainFocus();
+                        return;
+                    }
+                }
+                regainFocus();
+            }
+        });
         mntm_MergeToNearestFace[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

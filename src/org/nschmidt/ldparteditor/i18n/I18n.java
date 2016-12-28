@@ -464,6 +464,7 @@ public final class I18n {
     public static final String E3D_MergeToAvg = E3D.getString(getProperty());
     public static final String E3D_MergeToLastSelected = E3D.getString(getProperty());
     public static final String E3D_MergeToNearestEdge = E3D.getString(getProperty());
+    public static final String E3D_MergeToNearestEdgeSplit = E3D.getString(getProperty());
     public static final String E3D_MergeToNearestFace = E3D.getString(getProperty());
     public static final String E3D_MergeToNearestVertex = E3D.getString(getProperty());
     public static final String E3D_MeshReduce = E3D.getString(getProperty());
