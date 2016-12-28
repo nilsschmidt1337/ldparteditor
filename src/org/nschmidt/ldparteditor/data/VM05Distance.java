@@ -965,6 +965,9 @@ class VM05Distance extends VM04Rectifier {
         }
 
         for (GData3 g3 : ts) {
+            if (!g3.isTriangle) {
+                continue;
+            }
             Vertex[] verts = triangles.get(g3);
             if (verts == null) continue;
             Vector4f v1 = MathHelper
