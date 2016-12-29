@@ -207,7 +207,7 @@ class VM04Rectifier extends VM03Adjacency {
                                                             // Concave
                                                             continue;
                                                         }
-                                                        
+
                                                         angle = Vector3d.angle(normals[0], normals[2]);
                                                         if (angle > targetAngle) continue;
 
@@ -221,13 +221,13 @@ class VM04Rectifier extends VM03Adjacency {
                                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                                             continue;
                                                         }
-                                                        
+
                                                         angle = Vector3d.angle(B, C);
                                                         sumAngle = sumAngle + angle;
                                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                                             continue;
                                                         }
-                                                        
+
                                                         A.negate();
                                                         B.negate();
                                                         angle = Vector3d.angle(A, B);
@@ -235,7 +235,7 @@ class VM04Rectifier extends VM03Adjacency {
                                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                                             continue;
                                                         }
-                                                        
+
                                                         angle = 360.0 - sumAngle;
                                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                                             continue;
@@ -416,6 +416,19 @@ class VM04Rectifier extends VM03Adjacency {
 
                                                 if (noAdjacentCondlines && hasCondline(vq[0], vq[1]) != null || hasCondline(vq[1], vq[2])  != null || hasCondline(vq[2], vq[3]) != null || hasCondline(vq[3], vq[0]) != null) {
                                                     continue;
+                                                }
+
+                                                if (linesToDelete.contains(e1)) {
+                                                    e1 = null;
+                                                }
+                                                if (linesToDelete.contains(e2)) {
+                                                    e2 = null;
+                                                }
+                                                if (linesToDelete.contains(e3)) {
+                                                    e3 = null;
+                                                }
+                                                if (linesToDelete.contains(e4)) {
+                                                    e4 = null;
                                                 }
 
                                                 int edgeflags =  (e1 != null ? 1 : 0) + (e2 != null ? 2 : 0) + (e3 != null ? 4 : 0) + (e4 != null ? 8 : 0);
@@ -700,7 +713,7 @@ class VM04Rectifier extends VM03Adjacency {
 
                                         angle = Vector3d.angle(normals[0], normals[2]);
                                         if (angle > targetAngle) continue;
-                                        
+
                                         Vector3d A = Vector3d.sub(vertexB, vertexA);
                                         Vector3d B = Vector3d.sub(vertexB, vertexC);
                                         Vector3d C = Vector3d.sub(vertexD, vertexC);
@@ -711,13 +724,13 @@ class VM04Rectifier extends VM03Adjacency {
                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                             continue;
                                         }
-                                        
+
                                         angle = Vector3d.angle(B, C);
                                         sumAngle = sumAngle + angle;
                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                             continue;
                                         }
-                                        
+
                                         A.negate();
                                         B.negate();
                                         angle = Vector3d.angle(A, B);
@@ -725,7 +738,7 @@ class VM04Rectifier extends VM03Adjacency {
                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                             continue;
                                         }
-                                        
+
                                         angle = 360.0 - sumAngle;
                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                             continue;
@@ -906,6 +919,19 @@ class VM04Rectifier extends VM03Adjacency {
 
                                 if (noAdjacentCondlines && hasCondline(vq[0], vq[1]) != null || hasCondline(vq[1], vq[2])  != null || hasCondline(vq[2], vq[3]) != null || hasCondline(vq[3], vq[0]) != null) {
                                     continue;
+                                }
+
+                                if (linesToDelete.contains(e1)) {
+                                    e1 = null;
+                                }
+                                if (linesToDelete.contains(e2)) {
+                                    e2 = null;
+                                }
+                                if (linesToDelete.contains(e3)) {
+                                    e3 = null;
+                                }
+                                if (linesToDelete.contains(e4)) {
+                                    e4 = null;
                                 }
 
                                 int edgeflags =  (e1 != null ? 1 : 0) + (e2 != null ? 2 : 0) + (e3 != null ? 4 : 0) + (e4 != null ? 8 : 0);
