@@ -177,7 +177,7 @@ public enum Inliner {
         for (Integer l : lineNumbers) {
             String line = getLine(l, text2);
             NLogger.debug(Inliner.class, "Inlining: {0}", line); //$NON-NLS-1$
-            text2 = Inliner.inline(l, line, text2, datFile);
+            text2 = Inliner.inline(l, line, text2, datFile, false);
         }
         cText.setText(restoreLineTermination(text2));
         int tl = cText.getText().length();
@@ -297,7 +297,7 @@ public enum Inliner {
             bfcStatusTarget = bfcStatusToLine.get(l);
             String line = getLine(l, text2);
             NLogger.debug(Inliner.class, "Inlining: {0}", line); //$NON-NLS-1$
-            text2 = Inliner.inline(l, line, text2, datFile);
+            text2 = Inliner.inline(l, line, text2, datFile, true);
         }
         cText.setText(restoreLineTermination(text2));
         int tl = cText.getText().length();
@@ -344,7 +344,7 @@ public enum Inliner {
         return text.replaceAll("<br>", StringHelper.getLineDelimiter()); //$NON-NLS-1$
     }
 
-    private static String inline(Integer lineNumber, String line, String source, DatFile datFile) {
+    private static String inline(Integer lineNumber, String line, String source, DatFile datFile, boolean removeTrailingBreak) {
 
         GData gd = datFile.getDrawPerLine_NOCLONE().getValue(lineNumber);
         switch (gd.type()) {
@@ -380,7 +380,17 @@ public enum Inliner {
             break;
         }
 
-        source = setLine(lineNumber, gd.inlinedString(bfcStatusTarget, View.getLDConfigColour(16)), source);
+        if (removeTrailingBreak) {
+            String inlinedString = gd.inlinedString(bfcStatusTarget, View.getLDConfigColour(16));
+            int end = inlinedString.length();
+            if (inlinedString.endsWith("<br>")) { //$NON-NLS-1$
+                end -= 4;
+            }
+            inlinedString = inlinedString.substring(0, end);
+            source = setLine(lineNumber, inlinedString, source);
+        } else {
+            source = setLine(lineNumber, gd.inlinedString(bfcStatusTarget, View.getLDConfigColour(16)), source);
+        }
 
         if (hasINVERTNEXT && gd.type() == 1) {
             hasINVERTNEXT = false;
