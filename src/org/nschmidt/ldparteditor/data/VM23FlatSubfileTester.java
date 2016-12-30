@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.ldparteditor.enums.Axis;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
@@ -29,19 +30,19 @@ class VM23FlatSubfileTester extends VM22TJunctionFixer {
     protected VM23FlatSubfileTester(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
-    
-    public boolean isFlat(GData1 ref) {
-        
-        if (ref == null) return false;
-        
+
+    public Axis isFlatOnAxis(GData1 ref) {
+
+        if (ref == null) return Axis.NONE;
+
         Matrix4f tMatrix = (Matrix4f) ref.accurateLocalMatrix.getMatrix4f().invert();
-        
+
         boolean plainOnX = true;
         boolean plainOnY = true;
         boolean plainOnZ = true;
 
         Set<VertexInfo> verts = lineLinkedToVertices.get(ref);
-        if (verts == null) return false;
+        if (verts == null) return Axis.NONE;
         for (VertexInfo vi : verts) {
             Vector4f vert = vi.vertex.toVector4f();
             vert.setX(vert.x / 1000f);
@@ -59,16 +60,24 @@ class VM23FlatSubfileTester extends VM22TJunctionFixer {
                 plainOnZ = false;
             }
             if (!plainOnX && !plainOnY && !plainOnZ) {
-                return false;
+                return Axis.NONE;
             }
         }
-        
-        return true;
+
+        if (plainOnX) {
+            return Axis.X;
+        } else if (plainOnY) {
+            return Axis.Y;
+        } else if (plainOnZ) {
+            return Axis.Z;
+        } else {
+            return Axis.NONE;
+        }
     }
 
     public ArrayList<ParsingResult> checkForFlatScaling(GData1 ref) {
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
-        
+
         Matrix4f tMatrix = (Matrix4f) ref.accurateLocalMatrix.getMatrix4f().invert();
 
         boolean plainOnX = true;
