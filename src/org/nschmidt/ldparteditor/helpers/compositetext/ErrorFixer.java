@@ -17,19 +17,25 @@ package org.nschmidt.ldparteditor.helpers.compositetext;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.HashSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
+import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
+import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.text.DatParser;
 
 /**
  * @author nils
@@ -43,6 +49,73 @@ final class ErrorFixer {
         case 1: // Duplicated line
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
             break;
+        case 10: // INVERTNEXT (Flat subfile)
+        case 11:
+        case 12:
+        {
+            text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
+            GData1 subfileToFlip = null;
+            boolean validState = false;
+            GData g = datFile.getDrawPerLine_NOCLONE().getValue(lineNumber + 1).getNext();
+            while (g != null && g.type() < 2) {
+                lineNumber++;
+                if (g.type() == 1) {
+                    validState = true;
+                    break;
+                } else if (!g.toString().trim().isEmpty()) {
+                    break;
+                }
+                g = g.getNext();
+            }
+            if (validState) {
+                subfileToFlip = (GData1) g;
+                Matrix m = null;
+                final Matrix t = subfileToFlip.getAccurateProductMatrix();
+                GData1 untransformedSubfile;
+                StringBuilder colourBuilder = new StringBuilder();
+                if (subfileToFlip.colourNumber == -1) {
+                    colourBuilder.append("0x2"); //$NON-NLS-1$
+                    colourBuilder.append(MathHelper.toHex((int) (255f * subfileToFlip.r)).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex((int) (255f * subfileToFlip.g)).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex((int) (255f * subfileToFlip.b)).toUpperCase());
+                } else {
+                    colourBuilder.append(subfileToFlip.colourNumber);
+                }
+                untransformedSubfile = (GData1) DatParser
+                        .parseLine("1 " + colourBuilder.toString() + " 0 0 0 1 0 0 0 1 0 0 0 1 " + subfileToFlip.getShortName() , 0, 0, 0.5f, 0.5f, 0.5f, 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false, //$NON-NLS-1$ //$NON-NLS-2$
+                                new HashSet<String>(), false).get(0).getGraphicalData();
+                switch (s) {
+                case 10: // INVERTNEXT on X (Flat subfile)
+                    m = new Matrix(
+                            t.M00.negate(), t.M01.negate(), t.M02.negate(), t.M03,
+                            t.M10, t.M11, t.M12, t.M13,
+                            t.M20, t.M21, t.M22, t.M23,
+                            t.M30, t.M31, t.M32, t.M33);
+                    break;
+                case 11: // INVERTNEXT on Y (Flat subfile)
+                    m = new Matrix(
+                            t.M00, t.M01, t.M02, t.M03,
+                            t.M10.negate(), t.M11.negate(), t.M12.negate(), t.M13,
+                            t.M20, t.M21, t.M22, t.M23,
+                            t.M30, t.M31, t.M32, t.M33);
+                    break;
+                case 12: // INVERTNEXT on Z (Flat subfile)
+                    m = new Matrix(
+                            t.M00, t.M01, t.M02, t.M03,
+                            t.M10, t.M11, t.M12, t.M13,
+                            t.M20.negate(), t.M21.negate(), t.M22.negate(), t.M23,
+                            t.M30, t.M31, t.M32, t.M33);
+                    break;
+                }
+
+                GData1 newSubfile = (GData1) DatParser
+                        .parseLine(untransformedSubfile.getTransformedString(m, datFile, false) , datFile.getDrawPerLine_NOCLONE().getKey(subfileToFlip).intValue(), 0, 0.5f, 0.5f, 0.5f, 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false,
+                                new HashSet<String>(), false).get(0).getGraphicalData();
+                datFile.getVertexManager().remove(untransformedSubfile);
+                text = QuickFixer.setLine(lineNumber + 1, newSubfile.toString(), text);
+            }
+        }
+        break;
         case 2: // Singular Matrix
         {
             String[] data_segments = line.trim().split(" "); //$NON-NLS-1$
@@ -276,26 +349,26 @@ final class ErrorFixer {
             Vector3d.sub(vertexB, vertexC, vertexB);
             Vector3d.sub(vertexD, vertexC, vertexC);
             Vector3d.sub(vertexD, new Vector3d(A), vertexD);
-            
-            
+
+
             boolean pointA, pointC, pointB, pointD;
             double angle = Vector3d.angle(vertexA, vertexD);
             double sumAngle = angle;
             pointA = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
-            
+
             angle = Vector3d.angle(vertexB, vertexC);
             sumAngle = sumAngle + angle;
             pointC = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
-        
+
             vertexA.negate();
             vertexB.negate();
             angle = Vector3d.angle(vertexA, vertexB);
             sumAngle = sumAngle + angle;
             pointB = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
-                                        
+
             angle = 360.0 - sumAngle;
             pointD = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
-            
+
             VertexManager vm = datFile.getVertexManager();
 
             if (pointA && (pointC || pointB || pointD) || pointC && (pointB || pointD) || pointB && pointD) {

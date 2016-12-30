@@ -46,6 +46,7 @@ import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabState;
 import org.nschmidt.ldparteditor.data.colour.GCChrome;
 import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
 import org.nschmidt.ldparteditor.data.colour.GCMetal;
+import org.nschmidt.ldparteditor.enums.Axis;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
@@ -650,8 +651,8 @@ public final class DatFile {
                     g = g.next;
                 }
                 if (validState) {
-
-                    if (getVertexManager().isFlat((GData1) g)) {
+                    final Axis flatAxis;
+                    if ((flatAxis = getVertexManager().isFlatOnAxis((GData1) g)) != Axis.NONE) {
                         position = compositeText.getOffsetAtLine(lineNumber - 1);
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
@@ -661,7 +662,21 @@ public final class DatFile {
                         TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
-                        trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                        switch (flatAxis) {
+                        case X:
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0A] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            break;
+                        case Y:
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0B] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            break;
+                        case Z:
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0C] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            break;
+                        case NONE:
+                        default:
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            break;
+                        }
                         trtmNewTreeitem.setData(position);
                     }
 
@@ -827,8 +842,8 @@ public final class DatFile {
                     g = g.next;
                 }
                 if (validState) {
-
-                    if (getVertexManager().isFlat((GData1) g)) {
+                    final Axis flatAxis;
+                    if ((flatAxis = getVertexManager().isFlatOnAxis((GData1) g)) != Axis.NONE) {
                         position = compositeText.getOffsetAtLine(lineNumber - 1);
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
@@ -838,8 +853,21 @@ public final class DatFile {
                         TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
-                        trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
-                        trtmNewTreeitem.setData(position);
+                        switch (flatAxis) {
+                        case X:
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0A] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            break;
+                        case Y:
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0B] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            break;
+                        case Z:
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0C] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            break;
+                        case NONE:
+                        default:
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            break;
+                        }trtmNewTreeitem.setData(position);
                     }
 
                 } else {

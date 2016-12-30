@@ -409,6 +409,10 @@ public final class GData1 extends GData {
         return accurateProductMatrix;
     }
 
+    public String getShortName() {
+        return shortName;
+    }
+
     private boolean isNotBlank(String str) {
         int strLen;
         if (str == null || (strLen = str.length()) == 0) {
