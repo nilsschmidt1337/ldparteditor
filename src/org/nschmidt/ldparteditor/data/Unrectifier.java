@@ -30,7 +30,7 @@ import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
 public enum Unrectifier {
     INSTANCE;
 
-    public static void splitAllIntoTriangles(StyledText st, DatFile fileNameObj) {
+    public static void splitAllIntoTriangles(StyledText st, DatFile fileNameObj, boolean splitQuads) {
 
         // Backup selection range
         final int x = st.getSelectionRange().x;
@@ -69,22 +69,24 @@ public enum Unrectifier {
         VertexManager vm = fileNameObj.getVertexManager();
         vm.clearSelection();
 
-        HashSet<GData4> selectedQuads = new HashSet<GData4>();
+        if (splitQuads) {
+            HashSet<GData4> selectedQuads = new HashSet<GData4>();
 
-        data2draw = fileNameObj.getDrawChainStart();
-        while ((data2draw = data2draw.getNext()) != null) {
-            switch (data2draw.type()) {
-            case 4:
-                selectedQuads.add((GData4) data2draw);
-                break;
-            default:
+            data2draw = fileNameObj.getDrawChainStart();
+            while ((data2draw = data2draw.getNext()) != null) {
+                switch (data2draw.type()) {
+                case 4:
+                    selectedQuads.add((GData4) data2draw);
+                    break;
+                default:
+                }
             }
+
+            vm.getSelectedQuads().addAll(selectedQuads);
+            vm.getSelectedData().addAll(selectedQuads);
+
+            vm.splitQuads(false);
         }
-
-        vm.getSelectedQuads().addAll(selectedQuads);
-        vm.getSelectedData().addAll(selectedQuads);
-
-        vm.splitQuads(false);
 
         if (vm.isModified()) {
             st.setText(fileNameObj.getText());

@@ -1041,7 +1041,13 @@ public class EditorTextWindow extends EditorTextDesign {
                     }
                     NLogger.debug(getClass(), "Unrectify.."); //$NON-NLS-1$
                     final StyledText st = selection.getTextComposite();
-                    Unrectifier.splitAllIntoTriangles(st, selection.getState().getFileNameObj());
+                    if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+                        // Don't split quads
+                        Unrectifier.splitAllIntoTriangles(st, selection.getState().getFileNameObj(), false);
+                    } else {
+                        // Split quads AND rect primitives
+                        Unrectifier.splitAllIntoTriangles(st, selection.getState().getFileNameObj(), true);
+                    }
                     st.forceFocus();
                 }
             }
