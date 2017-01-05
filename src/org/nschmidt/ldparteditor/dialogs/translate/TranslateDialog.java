@@ -18,7 +18,10 @@ package org.nschmidt.ldparteditor.dialogs.translate;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
@@ -38,6 +41,7 @@ public class TranslateDialog extends TranslateDesign {
     private static boolean x = true;
     private static boolean y = true;
     private static boolean z = true;
+    private static ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
     /**
      * Create the dialog.
@@ -49,6 +53,7 @@ public class TranslateDialog extends TranslateDesign {
         x = true;
         y = true;
         z = true;
+        transformationMode = ManipulatorScope.LOCAL;
         if (v == null) {
             setOffset(new Vertex(0f, 0f, 0f));
         } else {
@@ -60,6 +65,22 @@ public class TranslateDialog extends TranslateDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
+        btn_Local[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
+                btn_Local[0].setSelection(true);
+                transformationMode = ManipulatorScope.LOCAL;
+            }
+        });
+        btn_Global[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
+                btn_Global[0].setSelection(true);
+                transformationMode = ManipulatorScope.GLOBAL;
+            }
+        });
         cb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -129,5 +150,9 @@ public class TranslateDialog extends TranslateDesign {
 
     public static void setOffset(Vertex offset) {
         TranslateDialog.offset = offset;
+    }
+
+    public static ManipulatorScope getTransformationMode() {
+        return transformationMode;
     }
 }

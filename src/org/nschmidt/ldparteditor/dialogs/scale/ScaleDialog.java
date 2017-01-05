@@ -20,7 +20,10 @@ import java.util.Set;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
@@ -41,6 +44,7 @@ public class ScaleDialog extends ScaleDesign {
     private static boolean x = true;
     private static boolean y = true;
     private static boolean z = true;
+    private static ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
     /**
      * Create the dialog.
@@ -52,6 +56,7 @@ public class ScaleDialog extends ScaleDesign {
         x = true;
         y = true;
         z = true;
+        transformationMode = ManipulatorScope.LOCAL;
         if (v == null) {
             setScaleFactors(new Vertex(1f, 1f, 1f));
         } else {
@@ -67,6 +72,22 @@ public class ScaleDialog extends ScaleDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
+        btn_Local[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
+                btn_Local[0].setSelection(true);
+                transformationMode = ManipulatorScope.LOCAL;
+            }
+        });
+        btn_Global[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
+                btn_Global[0].setSelection(true);
+                transformationMode = ManipulatorScope.GLOBAL;
+            }
+        });
         cb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -178,5 +199,9 @@ public class ScaleDialog extends ScaleDesign {
 
     public static void setPivot(Vertex pivot) {
         ScaleDialog.pivot = pivot;
+    }
+
+    public static ManipulatorScope getTransformationMode() {
+        return transformationMode;
     }
 }
