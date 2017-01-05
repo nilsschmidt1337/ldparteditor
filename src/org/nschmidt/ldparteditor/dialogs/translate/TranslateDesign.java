@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -48,6 +49,7 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
  */
 class TranslateDesign extends Dialog {
 
+    static ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
     final Button[] btn_Local = new Button[1];
     final Button[] btn_Global = new Button[1];
@@ -64,8 +66,9 @@ class TranslateDesign extends Dialog {
     // Use final only for subclass/listener references!
 
     Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-    TranslateDesign(Shell parentShell, Vertex v) {
+    TranslateDesign(Shell parentShell, Vertex v, ManipulatorScope scope) {
         super(parentShell);
+        transformationMode = scope;
         if (v == null) {
             this.v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
         } else {
@@ -104,13 +107,14 @@ class TranslateDesign extends Dialog {
             Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Local[0] = btn_Local;
             btn_Local.setToolTipText(I18n.E3D_Local);
-            btn_Local.setSelection(true);
+            if (transformationMode == ManipulatorScope.LOCAL) btn_Local.setSelection(true);
             btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
             Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Global[0] = btn_Global;
             btn_Global.setToolTipText(I18n.E3D_Global);
+            if (transformationMode == ManipulatorScope.GLOBAL) btn_Global.setSelection(true);
             btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
         }
 

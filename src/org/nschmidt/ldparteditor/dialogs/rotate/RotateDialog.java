@@ -44,19 +44,17 @@ public class RotateDialog extends RotateDesign {
     private static boolean x = true;
     private static boolean y = false;
     private static boolean z = false;
-    private static ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
     /**
      * Create the dialog.
      *
      * @param parentShell
      */
-    public RotateDialog(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition) {
-        super(parentShell, v, clipboardVertices, manipulatorPosition);
+    public RotateDialog(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition, ManipulatorScope scope) {
+        super(parentShell, v, clipboardVertices, manipulatorPosition, scope);
         x = true;
         y = false;
         z = false;
-        transformationMode = ManipulatorScope.LOCAL;
         if (v == null) {
             setAngles(new Vertex(0f, 0f, 0f));
         } else {
