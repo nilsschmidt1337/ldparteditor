@@ -20,7 +20,10 @@ import java.util.Set;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
@@ -41,6 +44,7 @@ public class RotateDialog extends RotateDesign {
     private static boolean x = true;
     private static boolean y = false;
     private static boolean z = false;
+    private static ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
     /**
      * Create the dialog.
@@ -52,6 +56,7 @@ public class RotateDialog extends RotateDesign {
         x = true;
         y = false;
         z = false;
+        transformationMode = ManipulatorScope.LOCAL;
         if (v == null) {
             setAngles(new Vertex(0f, 0f, 0f));
         } else {
@@ -67,6 +72,22 @@ public class RotateDialog extends RotateDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
+        btn_Local[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
+                btn_Local[0].setSelection(true);
+                transformationMode = ManipulatorScope.LOCAL;
+            }
+        });
+        btn_Global[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
+                btn_Global[0].setSelection(true);
+                transformationMode = ManipulatorScope.GLOBAL;
+            }
+        });
         rb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -208,5 +229,9 @@ public class RotateDialog extends RotateDesign {
 
     public static void setPivot(Vertex pivot) {
         RotateDialog.pivot = pivot;
+    }
+
+    public static ManipulatorScope getTransformationMode() {
+        return transformationMode;
     }
 }

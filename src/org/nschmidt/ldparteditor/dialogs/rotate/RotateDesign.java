@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -48,6 +49,9 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
  */
 class RotateDesign extends Dialog {
 
+
+    final Button[] btn_Local = new Button[1];
+    final Button[] btn_Global = new Button[1];
 
     final Button[] rb_Xaxis = new Button[1];
     final Button[] rb_Yaxis = new Button[1];
@@ -109,6 +113,21 @@ class RotateDesign extends Dialog {
             lbl_adjacencyWarning.setToolTipText(I18n.E3D_AdjacentWarningDialog);
             lbl_adjacencyWarning.setForeground(SWTResourceManager.getColor(SWT.COLOR_INFO_FOREGROUND));
             lbl_adjacencyWarning.setBackground(SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND));
+        }
+
+        ToolItem toolItem_TransformationModes = new ToolItem(cmp_container, SWT.NONE, true);
+        {
+            Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            this.btn_Local[0] = btn_Local;
+            btn_Local.setToolTipText(I18n.E3D_Local);
+            btn_Local.setSelection(true);
+            btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            this.btn_Global[0] = btn_Global;
+            btn_Global.setToolTipText(I18n.E3D_Global);
+            btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
         }
 
         {
