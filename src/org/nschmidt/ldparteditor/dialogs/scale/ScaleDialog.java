@@ -44,19 +44,17 @@ public class ScaleDialog extends ScaleDesign {
     private static boolean x = true;
     private static boolean y = true;
     private static boolean z = true;
-    private static ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
     /**
      * Create the dialog.
      *
      * @param parentShell
      */
-    public ScaleDialog(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition) {
-        super(parentShell, v, clipboardVertices, manipulatorPosition);
+    public ScaleDialog(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition, ManipulatorScope scope) {
+        super(parentShell, v, clipboardVertices, manipulatorPosition, scope);
         x = true;
         y = true;
         z = true;
-        transformationMode = ManipulatorScope.LOCAL;
         if (v == null) {
             setScaleFactors(new Vertex(1f, 1f, 1f));
         } else {

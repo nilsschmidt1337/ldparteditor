@@ -4009,7 +4009,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
-                        if (new TranslateDialog(getShell(), null).open() == IDialogConstants.OK_ID) {
+                        if (new TranslateDialog(getShell(), null, transformationMode).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(TranslateDialog.getOffset(), null, TransformationMode.TRANSLATE, TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), isMovingAdjacentData(), true);
                         }
@@ -4057,7 +4057,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         }
                         final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
-                        if (new RotateDialog(getShell(), null, clipboard, mani).open() == IDialogConstants.OK_ID) {
+                        if (new RotateDialog(getShell(), null, clipboard, mani, transformationMode).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), RotateDialog.isZ(), isMovingAdjacentData(), true);
                         }
@@ -4105,7 +4105,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         }
                         final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
-                        if (new ScaleDialog(getShell(), null, clipboard, mani).open() == IDialogConstants.OK_ID) {
+                        if (new ScaleDialog(getShell(), null, clipboard, mani, transformationMode).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), TransformationMode.SCALE, ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), isMovingAdjacentData(), true);
                         }
