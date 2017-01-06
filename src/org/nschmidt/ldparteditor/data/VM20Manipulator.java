@@ -25,11 +25,14 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.RotationSnap;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
@@ -620,7 +623,7 @@ public class VM20Manipulator extends VM19ColourChanger {
         return newGData;
     }
 
-    public final void setXyzOrTranslateOrTransform(Vertex target, Vertex pivot, TransformationMode tm, boolean x, boolean y, boolean z, boolean moveAdjacentData, boolean syncWithTextEditors) {
+    public final void setXyzOrTranslateOrTransform(Vertex target, Vertex pivot, TransformationMode tm, boolean x, boolean y, boolean z, boolean moveAdjacentData, boolean syncWithTextEditors, ManipulatorScope scope) {
         if (linkedDatFile.isReadOnly())
             return;
 
@@ -751,6 +754,21 @@ public class VM20Manipulator extends VM19ColourChanger {
             transformSelection(View.ACCURATE_ID, new Vector3d(x ? target.X : null,  y ? target.Y : null, z ? target.Z : null), moveAdjacentData);
 
         } else {
+
+            Composite3D c3d = linkedDatFile.getLastSelectedComposite();
+            if (scope == ManipulatorScope.LOCAL && c3d != null) {
+                Manipulator mani = c3d.getManipulator();
+                BigDecimal[] X = mani.getAccurateXaxis();
+                BigDecimal[] Y = mani.getAccurateYaxis();
+                BigDecimal[] Z = mani.getAccurateZaxis();
+                final Matrix m = new Matrix(
+                        X[0], X[1], X[2], BigDecimal.ZERO,
+                        Y[0], Y[1], Y[2], BigDecimal.ZERO,
+                        Z[0], Z[1], Z[2], BigDecimal.ZERO,
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+                transformation = Matrix.mul(m, transformation);
+            }
+
             final Matrix forward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X.negate(), pivot.Y.negate(), pivot.Z.negate() }), View.ACCURATE_ID);
             final Matrix backward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X, pivot.Y, pivot.Z }), View.ACCURATE_ID);
 

@@ -111,6 +111,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         super(c3d);
     }
 
+    @Override
     public Composite3D getC3D() {
         return c3d;
     }
@@ -136,6 +137,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
     /**
      * Initializes the Scene and gives OpenGL-Hints
      */
+    @Override
     public void init() {
         // MARK OpenGL Hints and Initialization
         GL11.glDepthMask(true);
@@ -147,7 +149,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         GL11.glDepthFunc(GL11.GL_LESS);
-        
+
         GL11.glClearDepth(1.0f);
         GL11.glClearColor(View.background_Colour_r[0], View.background_Colour_g[0], View.background_Colour_b[0], 1.0f);
 
@@ -219,10 +221,11 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
     /**
      * Draws the scene
      */
+    @Override
     public void drawScene() {
 
         final long start = System.currentTimeMillis();
-        
+
         final boolean negDet = c3d.hasNegDeterminant();
         final boolean raytraceMode = c3d.getRenderMode() == 5;
 
@@ -1885,6 +1888,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 if (Project.getFileToEdit().equals(c3d.getLockableDatFileReference())) {
                     if (Project.getFileToEdit().isReadOnly()) {
                         GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
+                    } else if (c3d.equals(Project.getFileToEdit().getLastSelectedComposite())) {
+                        GL11.glColor3f(1f - View.vertex_selected_Colour_r[0], 1f - View.vertex_selected_Colour_g[0], 1f - View.vertex_selected_Colour_b[0]);
                     } else {
                         GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                     }
@@ -1956,10 +1961,11 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         GL11.glLightfv(GL11.GL_LIGHT3, GL11.GL_POSITION, BufferFactory.floatBuffer(new float[] { -2.0f, -2.0f, 2.0f, 1f}));
 
         canvas.swapBuffers();
-        
+
         NLogger.debug(getClass(), "Frametime: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
     }
 
+    @Override
     public void dispose() {
         GL20.glUseProgram(0);
         if (pGlossId != -1) {

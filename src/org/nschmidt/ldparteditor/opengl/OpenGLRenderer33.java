@@ -450,17 +450,17 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL33HelperPrimitives.createVBO_PrimitiveArea();
                             for (float[] p : renderedPoints[0]) {
                                 GL33HelperPrimitives.drawTrianglesIndexedRGB_Triangle(
-                                    new float[] {
-                                            p[3], p[4], 0f,
-                                            p[0], p[1], p[2],
-                                            p[5], p[6], 0f,
-                                            p[0], p[1], p[2],
-                                            p[7], p[8], 0f,
-                                            p[0], p[1], p[2],
-                                            p[9], p[10], 0f,
-                                            p[0], p[1], p[2]
-                                    }
-                                    , new int[]{0, 1, 2, 2, 3, 0});
+                                        new float[] {
+                                                p[3], p[4], 0f,
+                                                p[0], p[1], p[2],
+                                                p[5], p[6], 0f,
+                                                p[0], p[1], p[2],
+                                                p[7], p[8], 0f,
+                                                p[0], p[1], p[2],
+                                                p[9], p[10], 0f,
+                                                p[0], p[1], p[2]
+                                        }
+                                        , new int[]{0, 1, 2, 2, 3, 0});
                             }
                             GL33HelperPrimitives.destroyVBO_PrimitiveArea();
                             GL33HelperPrimitives.restoreVBO_PrimitiveArea();
@@ -1887,24 +1887,24 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                 helper.drawLinesRGB_General(new float[]{
 
-                selectionStart_MODELVIEW.x, selectionStart_MODELVIEW.y, selectionStart_MODELVIEW.z,
-                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
-                selectionCorner1.x, selectionCorner1.y, selectionCorner1.z,
-                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
-                selectionStart_MODELVIEW.x, selectionStart_MODELVIEW.y, selectionStart_MODELVIEW.z,
-                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
-                selectionCorner2.x, selectionCorner2.y, selectionCorner2.z,
-                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        selectionStart_MODELVIEW.x, selectionStart_MODELVIEW.y, selectionStart_MODELVIEW.z,
+                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        selectionCorner1.x, selectionCorner1.y, selectionCorner1.z,
+                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        selectionStart_MODELVIEW.x, selectionStart_MODELVIEW.y, selectionStart_MODELVIEW.z,
+                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        selectionCorner2.x, selectionCorner2.y, selectionCorner2.z,
+                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
 
-                selectionEnd_MODELVIEW.x, selectionEnd_MODELVIEW.y, selectionEnd_MODELVIEW.z,
-                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
-                selectionCorner1.x, selectionCorner1.y, selectionCorner1.z,
-                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        selectionEnd_MODELVIEW.x, selectionEnd_MODELVIEW.y, selectionEnd_MODELVIEW.z,
+                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        selectionCorner1.x, selectionCorner1.y, selectionCorner1.z,
+                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
 
-                selectionEnd_MODELVIEW.x, selectionEnd_MODELVIEW.y, selectionEnd_MODELVIEW.z,
-                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
-                selectionCorner2.x, selectionCorner2.y, selectionCorner2.z,
-                View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0]});
+                        selectionEnd_MODELVIEW.x, selectionEnd_MODELVIEW.y, selectionEnd_MODELVIEW.z,
+                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        selectionCorner2.x, selectionCorner2.y, selectionCorner2.z,
+                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0]});
 
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
 
@@ -2135,6 +2135,10 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         r = View.text_Colour_r[0];
                         g = View.text_Colour_g[0];
                         b = View.text_Colour_b[0];
+                    } else if (c3d.equals(Project.getFileToEdit().getLastSelectedComposite())) {
+                        r = 1f - View.vertex_selected_Colour_r[0];
+                        g = 1f - View.vertex_selected_Colour_g[0];
+                        b = 1f - View.vertex_selected_Colour_b[0];
                     } else {
                         r = View.vertex_selected_Colour_r[0];
                         g = View.vertex_selected_Colour_g[0];
@@ -2142,31 +2146,31 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     }
                     GL11.glLineWidth(7f);
                     helper.drawLinesRGB_General(new float[]{
-                    viewport_width, viewport_height, viewport_origin_axis[3].z,
-                    r, g, b,
-                    viewport_width, -viewport_height, viewport_origin_axis[3].z,
-                    r, g, b
+                            viewport_width, viewport_height, viewport_origin_axis[3].z,
+                            r, g, b,
+                            viewport_width, -viewport_height, viewport_origin_axis[3].z,
+                            r, g, b
                     });
                     GL11.glLineWidth(10f);
                     helper.drawLinesRGB_General(new float[]{
-                    -viewport_width, -viewport_height, viewport_origin_axis[3].z,
-                    r, g, b,
-                    -viewport_width, viewport_height, viewport_origin_axis[3].z,
-                    r, g, b,
+                            -viewport_width, -viewport_height, viewport_origin_axis[3].z,
+                            r, g, b,
+                            -viewport_width, viewport_height, viewport_origin_axis[3].z,
+                            r, g, b,
                     });
                     GL11.glLineWidth(5f);
                     helper.drawLinesRGB_General(new float[]{
-                    -viewport_width, viewport_height, viewport_origin_axis[3].z,
-                    r, g, b,
-                    viewport_width, viewport_height, viewport_origin_axis[3].z,
-                    r, g, b
+                            -viewport_width, viewport_height, viewport_origin_axis[3].z,
+                            r, g, b,
+                            viewport_width, viewport_height, viewport_origin_axis[3].z,
+                            r, g, b
                     });
                     GL11.glLineWidth(10f);
                     helper.drawLinesRGB_General(new float[]{
-                    -viewport_width, -viewport_height, viewport_origin_axis[3].z,
-                    r, g, b,
-                    viewport_width, -viewport_height, viewport_origin_axis[3].z,
-                    r, g, b
+                            -viewport_width, -viewport_height, viewport_origin_axis[3].z,
+                            r, g, b,
+                            viewport_width, -viewport_height, viewport_origin_axis[3].z,
+                            r, g, b
                     });
                 }
 
