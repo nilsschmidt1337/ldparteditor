@@ -766,7 +766,9 @@ public class VM20Manipulator extends VM19ColourChanger {
                         Y[0], Y[1], Y[2], BigDecimal.ZERO,
                         Z[0], Z[1], Z[2], BigDecimal.ZERO,
                         BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+                final Matrix mi = m.invert();
                 transformation = Matrix.mul(m, transformation);
+                transformation = Matrix.mul(transformation, mi);
             }
 
             final Matrix forward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X.negate(), pivot.Y.negate(), pivot.Z.negate() }), View.ACCURATE_ID);
