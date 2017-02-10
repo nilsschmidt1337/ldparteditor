@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -48,14 +49,14 @@ public class OptionsDialog extends OptionsDesign {
                 WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btn_AllowInvalidShapes[0].getSelection());
             }
         });
-        
+
         btn_disableMAD3D[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setDisableMAD3D(btn_disableMAD3D[0].getSelection());
             }
         });
-        
+
         btn_disableMADtext[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -186,6 +187,7 @@ public class OptionsDialog extends OptionsDesign {
 
     @Override
     protected void handleShellCloseEvent() {
+        View.overrideColour16();
         Editor3DWindow.getWindow().compileAll();
         Editor3DWindow.getWindow().initAllRenderers();
         super.handleShellCloseEvent();
