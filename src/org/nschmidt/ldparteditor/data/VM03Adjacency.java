@@ -651,6 +651,8 @@ class VM03Adjacency extends VM02Add {
         final HashSet<GData4> effSelectedQuads = new HashSet<GData4>();
         final HashSet<GData5> effSelectedCondlines = new HashSet<GData5>();
 
+        final GColour col16 = View.getLDConfigColour(16);
+
         selectedData.clear();
 
         // 0. Deselect selected subfile data (for whole selected subfiles)
@@ -830,7 +832,7 @@ class VM03Adjacency extends VM02Add {
                     GData roundedSubfile;
                     if (16 == subf.colourNumber) {
                         roundedSubfile = DatParser
-                                .parseLine(roundedString, drawPerLine.getKey(subf).intValue(), 0, 0.5f, 0.5f, 0.5f, 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
+                                .parseLine(roundedString, drawPerLine.getKey(subf).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
                                         new HashSet<String>(), false).get(0).getGraphicalData();
                     } else {
                         roundedSubfile = DatParser
@@ -891,7 +893,7 @@ class VM03Adjacency extends VM02Add {
                     GData roundedCSG;
                     if (16 == col.getColourNumber()) {
                         roundedCSG = DatParser
-                                .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, new HashSet<String>(), false)
+                                .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, new HashSet<String>(), false)
                                 .get(0).getGraphicalData();
                     } else {
                         roundedCSG = DatParser

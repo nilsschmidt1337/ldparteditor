@@ -23,6 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.Matrix;
@@ -45,6 +46,7 @@ final class ErrorFixer {
 
     public static String fix(int lineNumber, String sort, String line, String text, DatFile datFile, Shell tWinShell) {
         int s = Integer.parseInt(sort, 16);
+        final GColour col16 = View.getLDConfigColour(16);
         switch (s) {
         case 1: // Duplicated line
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
@@ -82,7 +84,7 @@ final class ErrorFixer {
                     colourBuilder.append(subfileToFlip.colourNumber);
                 }
                 untransformedSubfile = (GData1) DatParser
-                        .parseLine("1 " + colourBuilder.toString() + " 0 0 0 1 0 0 0 1 0 0 0 1 " + subfileToFlip.getShortName() , 0, 0, 0.5f, 0.5f, 0.5f, 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false, //$NON-NLS-1$ //$NON-NLS-2$
+                        .parseLine("1 " + colourBuilder.toString() + " 0 0 0 1 0 0 0 1 0 0 0 1 " + subfileToFlip.getShortName() , 0, 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false, //$NON-NLS-1$ //$NON-NLS-2$
                                 new HashSet<String>(), false).get(0).getGraphicalData();
                 switch (s) {
                 case 10: // INVERTNEXT on X (Flat subfile)
@@ -109,7 +111,7 @@ final class ErrorFixer {
                 }
 
                 GData1 newSubfile = (GData1) DatParser
-                        .parseLine(untransformedSubfile.getTransformedString(m, datFile, false) , datFile.getDrawPerLine_NOCLONE().getKey(subfileToFlip).intValue(), 0, 0.5f, 0.5f, 0.5f, 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false,
+                        .parseLine(untransformedSubfile.getTransformedString(m, datFile, false) , datFile.getDrawPerLine_NOCLONE().getKey(subfileToFlip).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false,
                                 new HashSet<String>(), false).get(0).getGraphicalData();
                 text = QuickFixer.setLine(lineNumber + 1, newSubfile.toString(), text);
                 datFile.getVertexManager().remove(untransformedSubfile);

@@ -354,6 +354,8 @@ class VM01Select extends VM00Snapshot {
                 final GData before = selectedLine.getBefore();
                 final GData next = selectedLine.getNext();
                 final HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+                final GColour col16 = View.getLDConfigColour(16);
+
                 GData newData = null;
                 GData1 g1 = (GData1) selectedLine;
                 selectedSubfiles.remove(g1);
@@ -376,7 +378,7 @@ class VM01Select extends VM00Snapshot {
 
                 if (16 == g1.colourNumber) {
                     newData = DatParser
-                            .parseLine(transformedString, drawPerLine.getKey(g1).intValue(), 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
+                            .parseLine(transformedString, drawPerLine.getKey(g1).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                 } else {
                     newData = DatParser
@@ -778,7 +780,7 @@ class VM01Select extends VM00Snapshot {
             return false;
         }
     }
-    
+
     public void selectObjectVertices() {
         Vertex[] verts;
         for (GData2 g : selectedLines) {

@@ -349,131 +349,131 @@ class VM99Clipboard extends VM25Smooth {
                     @Override
                     public int compare(GData o1, GData o2) {
                         try {
-                        if (dpl.containsValue(o1)) {
-                            if (dpl.containsValue(o2)) {
-                                return dpl.getKey(o1).compareTo(dpl.getKey(o2));
-                            } else {
-                                switch (o2.type()) {
-                                case 1:
-                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GData1) o2).firstRef));
-                                case 2:
-                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GData2) o2).parent.firstRef));
-                                case 3:
-                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GData3) o2).parent.firstRef));
-                                case 4:
-                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GData4) o2).parent.firstRef));
-                                case 5:
-                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GData5) o2).parent.firstRef));
-                                default:
-                                    GData t = o2.getBefore();
-                                    while (t != null && t.getBefore() != null) {
-                                        t = t.getBefore();
-                                    }
-                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GDataInit) t).getParent().firstRef));
-                                }
-                            }
-                        } else {
-                            if (dpl.containsValue(o2)) {
-                                switch (o1.type()) {
-                                case 1:
-                                    return dpl.getKey(((GData1) o1).firstRef).compareTo(dpl.getKey(o2));
-                                case 2:
-                                    return dpl.getKey(((GData2) o1).parent.firstRef).compareTo(dpl.getKey(o2));
-                                case 3:
-                                    return dpl.getKey(((GData3) o1).parent.firstRef).compareTo(dpl.getKey(o2));
-                                case 4:
-                                    return dpl.getKey(((GData4) o1).parent.firstRef).compareTo(dpl.getKey(o2));
-                                case 5:
-                                    return dpl.getKey(((GData5) o1).parent.firstRef).compareTo(dpl.getKey(o2));
-                                default:
-                                    GData t = o2.getBefore();
-                                    while (t != null && t.getBefore() != null) {
-                                        t = t.getBefore();
-                                    }
-                                    return dpl.getKey(((GDataInit) t).getParent().firstRef).compareTo(dpl.getKey(o2));
-                                }
-                            } else {
-                                final Integer co1;
-                                final Integer co2;
-                                {
-                                    switch (o1.type()) {
-                                    case 1:
-                                        co1 = dpl.getKey(((GData1) o1).firstRef);
-                                        break;
-                                    case 2:
-                                        co1 = dpl.getKey(((GData2) o1).parent.firstRef);
-                                        break;
-                                    case 3:
-                                        co1 = dpl.getKey(((GData3) o1).parent.firstRef);
-                                        break;
-                                    case 4:
-                                        co1 = dpl.getKey(((GData4) o1).parent.firstRef);
-                                        break;
-                                    case 5:
-                                        co1 = dpl.getKey(((GData5) o1).parent.firstRef);
-                                        break;
-                                    default:
-                                        GData t = o2.getBefore();
-                                        while (t != null && t.getBefore() != null) {
-                                            t = t.getBefore();
-                                        }
-                                        co1 = dpl.getKey(((GDataInit) t).getParent().firstRef);
-                                    }
-                                }
-                                {
+                            if (dpl.containsValue(o1)) {
+                                if (dpl.containsValue(o2)) {
+                                    return dpl.getKey(o1).compareTo(dpl.getKey(o2));
+                                } else {
                                     switch (o2.type()) {
                                     case 1:
-                                        co2 = dpl.getKey(((GData1) o2).firstRef);
-                                        break;
+                                        return dpl.getKey(o1).compareTo(dpl.getKey(((GData1) o2).firstRef));
                                     case 2:
-                                        co2 = dpl.getKey(((GData2) o2).parent.firstRef);
-                                        break;
+                                        return dpl.getKey(o1).compareTo(dpl.getKey(((GData2) o2).parent.firstRef));
                                     case 3:
-                                        co2 = dpl.getKey(((GData3) o2).parent.firstRef);
-                                        break;
+                                        return dpl.getKey(o1).compareTo(dpl.getKey(((GData3) o2).parent.firstRef));
                                     case 4:
-                                        co2 = dpl.getKey(((GData4) o2).parent.firstRef);
-                                        break;
+                                        return dpl.getKey(o1).compareTo(dpl.getKey(((GData4) o2).parent.firstRef));
                                     case 5:
-                                        co2 = dpl.getKey(((GData5) o2).parent.firstRef);
-                                        break;
+                                        return dpl.getKey(o1).compareTo(dpl.getKey(((GData5) o2).parent.firstRef));
                                     default:
                                         GData t = o2.getBefore();
                                         while (t != null && t.getBefore() != null) {
                                             t = t.getBefore();
                                         }
-                                        co2 = dpl.getKey(((GDataInit) t).getParent().firstRef);
+                                        return dpl.getKey(o1).compareTo(dpl.getKey(((GDataInit) t).getParent().firstRef));
                                     }
                                 }
-                                if (co1 == null && co2 == null) {
-                                    return 0;
-                                } else if (co1 == null) {
-                                    return -1;
-                                } else if (co2 == null) {
-                                    return 1;
-                                }
-                                int comparism = co1.compareTo(co2);
-                                if (comparism == 0) {
-                                    if (o1.ID > o2.ID) { // The id can "never" be equal!
-                                        return 1;
-                                    } else {
-                                        return -1;
+                            } else {
+                                if (dpl.containsValue(o2)) {
+                                    switch (o1.type()) {
+                                    case 1:
+                                        return dpl.getKey(((GData1) o1).firstRef).compareTo(dpl.getKey(o2));
+                                    case 2:
+                                        return dpl.getKey(((GData2) o1).parent.firstRef).compareTo(dpl.getKey(o2));
+                                    case 3:
+                                        return dpl.getKey(((GData3) o1).parent.firstRef).compareTo(dpl.getKey(o2));
+                                    case 4:
+                                        return dpl.getKey(((GData4) o1).parent.firstRef).compareTo(dpl.getKey(o2));
+                                    case 5:
+                                        return dpl.getKey(((GData5) o1).parent.firstRef).compareTo(dpl.getKey(o2));
+                                    default:
+                                        GData t = o2.getBefore();
+                                        while (t != null && t.getBefore() != null) {
+                                            t = t.getBefore();
+                                        }
+                                        return dpl.getKey(((GDataInit) t).getParent().firstRef).compareTo(dpl.getKey(o2));
                                     }
                                 } else {
-                                    return comparism;
+                                    final Integer co1;
+                                    final Integer co2;
+                                    {
+                                        switch (o1.type()) {
+                                        case 1:
+                                            co1 = dpl.getKey(((GData1) o1).firstRef);
+                                            break;
+                                        case 2:
+                                            co1 = dpl.getKey(((GData2) o1).parent.firstRef);
+                                            break;
+                                        case 3:
+                                            co1 = dpl.getKey(((GData3) o1).parent.firstRef);
+                                            break;
+                                        case 4:
+                                            co1 = dpl.getKey(((GData4) o1).parent.firstRef);
+                                            break;
+                                        case 5:
+                                            co1 = dpl.getKey(((GData5) o1).parent.firstRef);
+                                            break;
+                                        default:
+                                            GData t = o2.getBefore();
+                                            while (t != null && t.getBefore() != null) {
+                                                t = t.getBefore();
+                                            }
+                                            co1 = dpl.getKey(((GDataInit) t).getParent().firstRef);
+                                        }
+                                    }
+                                    {
+                                        switch (o2.type()) {
+                                        case 1:
+                                            co2 = dpl.getKey(((GData1) o2).firstRef);
+                                            break;
+                                        case 2:
+                                            co2 = dpl.getKey(((GData2) o2).parent.firstRef);
+                                            break;
+                                        case 3:
+                                            co2 = dpl.getKey(((GData3) o2).parent.firstRef);
+                                            break;
+                                        case 4:
+                                            co2 = dpl.getKey(((GData4) o2).parent.firstRef);
+                                            break;
+                                        case 5:
+                                            co2 = dpl.getKey(((GData5) o2).parent.firstRef);
+                                            break;
+                                        default:
+                                            GData t = o2.getBefore();
+                                            while (t != null && t.getBefore() != null) {
+                                                t = t.getBefore();
+                                            }
+                                            co2 = dpl.getKey(((GDataInit) t).getParent().firstRef);
+                                        }
+                                    }
+                                    if (co1 == null && co2 == null) {
+                                        return 0;
+                                    } else if (co1 == null) {
+                                        return -1;
+                                    } else if (co2 == null) {
+                                        return 1;
+                                    }
+                                    int comparism = co1.compareTo(co2);
+                                    if (comparism == 0) {
+                                        if (o1.ID > o2.ID) { // The id can "never" be equal!
+                                            return 1;
+                                        } else {
+                                            return -1;
+                                        }
+                                    } else {
+                                        return comparism;
+                                    }
                                 }
                             }
+                        } catch (NullPointerException npe) {
+                            NLogger.error(getClass(), "NullPointerException within CLIPBOARD!"); //$NON-NLS-1$
+                            NLogger.error(getClass(), "Object 1:" + o1.toString()); //$NON-NLS-1$
+                            NLogger.error(getClass(), "Object 2:" + o2.toString()); //$NON-NLS-1$
+                            if (o1.ID > o2.ID) { // The id can "never" be equal!
+                                return 1;
+                            } else {
+                                return -1;
+                            }
                         }
-                    } catch (NullPointerException npe) {
-                        NLogger.error(getClass(), "NullPointerException within CLIPBOARD!"); //$NON-NLS-1$
-                        NLogger.error(getClass(), "Object 1:" + o1.toString()); //$NON-NLS-1$
-                        NLogger.error(getClass(), "Object 2:" + o2.toString()); //$NON-NLS-1$
-                        if (o1.ID > o2.ID) { // The id can "never" be equal!
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    }
                     }
                 });
             }
@@ -536,6 +536,7 @@ class VM99Clipboard extends VM25Smooth {
     public void paste() {
         if (linkedDatFile.isReadOnly())
             return;
+        final GColour col16 = View.getLDConfigColour(16);
         if (!CLIPBOARD.isEmpty()) {
             clearSelection();
             if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
@@ -546,7 +547,7 @@ class VM99Clipboard extends VM25Smooth {
                         GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT);
                         linkedDatFile.insertAfterCursor(invNext);
                     }
-                    ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                    ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
                     GData pasted = result.get(0).getGraphicalData();
                     if (pasted == null)
                         pasted = new GData0(g.toString());
@@ -624,7 +625,7 @@ class VM99Clipboard extends VM25Smooth {
                         linecount++;
                         dpl.put(linecount, invNext);
                     }
-                    ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                    ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
                     GData pasted = result.get(0).getGraphicalData();
                     if (pasted == null)
                         pasted = new GData0(g.toString());
@@ -698,11 +699,12 @@ class VM99Clipboard extends VM25Smooth {
             updateUnsavedStatus();
         }
     }
-    
-    
+
+
     public void paste(GData g2) {
         if (linkedDatFile.isReadOnly())
             return;
+        final GColour col16 = View.getLDConfigColour(16);
         if (!CLIPBOARD.isEmpty()) {
             clearSelection();
             final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
@@ -718,7 +720,7 @@ class VM99Clipboard extends VM25Smooth {
                     before = invNext;
                     linecount++;
                 }
-                ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
                 GData pasted = result.get(0).getGraphicalData();
                 if (pasted == null)
                     pasted = new GData0(g.toString());
@@ -785,25 +787,25 @@ class VM99Clipboard extends VM25Smooth {
                 before = pasted;
             }
             before.setNext(oldNext);
-            
+
             dpl.clear();
             g2 = linkedDatFile.getDrawChainStart();
             for(int line = 1; line <= linecount; line++) {
                 g2 = g2.next;
                 dpl.put(line, g2);
             }
-            
+
             linkedDatFile.setDrawChainTail(dpl.getValue(linecount));
         }
         setModified(true, true);
         updateUnsavedStatus();
     }
-    
+
     public void extendClipboardContent(boolean cutExtension) {
-        
+
         TreeMap<Integer, ArrayList<GData>> dataToInsert = new TreeMap<Integer, ArrayList<GData>>();
         HashSet<GData> cset = new HashSet<GData>(CLIPBOARD);
-        
+
         if (CLIPBOARD.size() > 0) {
             final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
             GData g = CLIPBOARD.get(0);
@@ -815,10 +817,10 @@ class VM99Clipboard extends VM25Smooth {
                 dataToInsert.put(0, l);
             }
         }
-        
+
         int lineNumber = -1;
         for (Iterator<GData> itc = CLIPBOARD.iterator(); itc.hasNext();) {
-            GData g = (GData) itc.next();
+            GData g = itc.next();
             ArrayList<GData> l = new ArrayList<>();
             while ((g = g.next) != null && (g.type() < 1 || g.type() > 5) && !CLIPBOARD_InvNext.contains(g) && !cset.contains(g)) {
                 l.add(g);
@@ -828,7 +830,7 @@ class VM99Clipboard extends VM25Smooth {
             }
             lineNumber--;
         }
-        
+
         for (int key : dataToInsert.keySet()) {
             CLIPBOARD.addAll(-key, dataToInsert.get(key));
         }
@@ -866,7 +868,7 @@ class VM99Clipboard extends VM25Smooth {
                 }
             }
         }
-        
+
         final StringBuilder cbString = new StringBuilder();
         for (GData data : CLIPBOARD) {
             if (CLIPBOARD_InvNext.contains(data)) {

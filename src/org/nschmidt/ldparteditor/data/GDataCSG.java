@@ -186,6 +186,7 @@ public final class GDataCSG extends GData {
         this.parent = parent;
         registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(this);
         String[] data_segments = csgLine.trim().split("\\s+"); //$NON-NLS-1$
+        final GColour col16 = View.getLDConfigColour(16);
         this.type = type;
         this.text = csgLine;
         switch (type) {
@@ -210,7 +211,7 @@ public final class GDataCSG extends GData {
         case CSG.CONE:
             if (data_segments.length == 17) {
                 ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
-                GColour c = DatParser.validateColour(data_segments[4], .5f, .5f, .5f, 1f);
+                GColour c = DatParser.validateColour(data_segments[4], col16.getR(), col16.getG(), col16.getB(), 1f);
                 if (c != null) {
                     colour = c.clone();
                 } else {
@@ -245,7 +246,7 @@ public final class GDataCSG extends GData {
             if (data_segments.length == 18) {
                 ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
                 ref2 = data_segments[4] + "#>" + parent.shortName; //$NON-NLS-1$
-                GColour c = DatParser.validateColour(data_segments[5], .5f, .5f, .5f, 1f);
+                GColour c = DatParser.validateColour(data_segments[5], col16.getR(), col16.getG(), col16.getB(), 1f);
                 if (c != null) {
                     colour = c.clone();
                 } else {

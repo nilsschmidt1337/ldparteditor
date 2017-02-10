@@ -251,6 +251,7 @@ class VM07PathTruder extends VM06Edger2 {
                         try {
                             monitor.beginTask(I18n.VM_PathTruder, IProgressMonitor.UNKNOWN);
 
+                            final GColour col16 = View.getLDConfigColour(16);
                             final Thread[] threads = new Thread[1];
                             threads[0] = new Thread(new Runnable() {
                                 @Override
@@ -261,7 +262,7 @@ class VM07PathTruder extends VM06Edger2 {
                                     }
 
                                     final GColour lineColour = DatParser.validateColour(24, .5f, .5f, .5f, 1f).clone();
-                                    final GColour bodyColour = DatParser.validateColour(16, .5f, .5f, .5f, 1f).clone();
+                                    final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).clone();
 
                                     double VERTMERGE = 0.001;
                                     double PI = 3.14159265358979323846;
@@ -848,12 +849,13 @@ class VM07PathTruder extends VM06Edger2 {
             } catch (InterruptedException consumed) {
             }
         } else {
+            final GColour col16 = View.getLDConfigColour(16);
             final Thread[] threads = new Thread[1];
             threads[0] = new Thread(new Runnable() {
                 @Override
                 public void run() {
 
-                    final GColour bodyColour = DatParser.validateColour(16, .5f, .5f, .5f, 1f).clone();
+                    final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).clone();
 
                     double VERTMERGE = 0.001;
                     double PI = 3.14159265358979323846;

@@ -770,9 +770,10 @@ class VM02Add extends VM01SelectHelper {
             return;
         clearSelection();
 
+        final GColour col16 = View.getLDConfigColour(16);
         Set<String> alreadyParsed = new HashSet<String>();
         alreadyParsed.add(linkedDatFile.getShortName());
-        ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, 0.5f, 0.5f, 0.5f, 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+        ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
         GData pasted = result.get(0).getGraphicalData();
         if (pasted == null) {
             pasted = new GData0(lineToParse);
