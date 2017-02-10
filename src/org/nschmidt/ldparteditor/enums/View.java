@@ -639,7 +639,8 @@ public enum View {
         col16.setG(g);
         col16.setB(b);
         indexFromColour.remove(col16_indexedEntry);
-        indexFromColour.put(new IndexedEntry(r + .000016f, g + .000016f, b + .000016f), 16);
+        col16_indexedEntry = new IndexedEntry(r + .000016f, g + .000016f, b + .000016f);
+        indexFromColour.put(col16_indexedEntry, 16);
     }
 
 }
