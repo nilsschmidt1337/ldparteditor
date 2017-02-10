@@ -287,6 +287,8 @@ class OptionsDesign extends ApplicationWindow {
                 trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
                 trtm_EditorText.setVisible(true);
 
+                // registerColour(trtm_Editor3D, I18n.COLOUR_Colour16Override, ColourType.OPENGL_COLOUR, new Object[]{View.background_Colour_r, View.background_Colour_g, View.background_Colour_b});
+
                 registerColour(trtm_Editor3D, I18n.COLOUR_Background3DColour, ColourType.OPENGL_COLOUR, new Object[]{View.background_Colour_r, View.background_Colour_g, View.background_Colour_b});
                 registerColour(trtm_Editor3D, I18n.COLOUR_BfcBackColour, ColourType.OPENGL_COLOUR, new Object[]{View.BFC_back__Colour_r, View.BFC_back__Colour_g, View.BFC_back__Colour_b});
                 registerColour(trtm_Editor3D, I18n.COLOUR_BfcFrontColour, ColourType.OPENGL_COLOUR, new Object[]{View.BFC_front_Colour_r, View.BFC_front_Colour_g, View.BFC_front_Colour_b});
