@@ -127,6 +127,10 @@ public class UserSettingState implements Serializable {
     private boolean disableMAD3D = false;
     private boolean disableMADtext = false;
 
+    private float[] Color16_override_r = null;
+    private float[] Color16_override_g = null;
+    private float[] Color16_override_b = null;
+
     private float[] BFC_front_Colour_r = null;
     private float[] BFC_front_Colour_g = null;
     private float[] BFC_front_Colour_b = null;
@@ -788,6 +792,11 @@ public class UserSettingState implements Serializable {
     }
 
     public void saveColours() {
+
+        Color16_override_r = View.Color16_override_r;
+        Color16_override_g = View.Color16_override_g;
+        Color16_override_b = View.Color16_override_b;
+
         BFC_front_Colour_r = View.BFC_front_Colour_r;
         BFC_front_Colour_g = View.BFC_front_Colour_g;
         BFC_front_Colour_b = View.BFC_front_Colour_b;
@@ -1042,6 +1051,11 @@ public class UserSettingState implements Serializable {
     }
 
     public void loadColours() {
+
+        if (Color16_override_r != null) View.Color16_override_r[0] = Color16_override_r[0];
+        if (Color16_override_g != null) View.Color16_override_g[0] = Color16_override_g[0];
+        if (Color16_override_b != null) View.Color16_override_b[0] = Color16_override_b[0];
+
         if (BFC_front_Colour_r != null) View.BFC_front_Colour_r[0] = BFC_front_Colour_r[0];
         if (BFC_front_Colour_g != null) View.BFC_front_Colour_g[0] = BFC_front_Colour_g[0];
         if (BFC_front_Colour_b != null) View.BFC_front_Colour_b[0] = BFC_front_Colour_b[0];
@@ -1365,13 +1379,13 @@ public class UserSettingState implements Serializable {
 
     public String getOpenGLVersionString() {
         switch (openGLVersion) {
-            case 20:
-                return "2.0"; //$NON-NLS-1$
-            case 33:
-                return "3.3"; //$NON-NLS-1$
-            default:
-                NLogger.error(getClass(), "getOpenGLVersionString(): No version string defined! OpenGL " + openGLVersion); //$NON-NLS-1$
-                return openGLVersion + " [n.def.!]"; //$NON-NLS-1$
+        case 20:
+            return "2.0"; //$NON-NLS-1$
+        case 33:
+            return "3.3"; //$NON-NLS-1$
+        default:
+            NLogger.error(getClass(), "getOpenGLVersionString(): No version string defined! OpenGL " + openGLVersion); //$NON-NLS-1$
+            return openGLVersion + " [n.def.!]"; //$NON-NLS-1$
         }
     }
 

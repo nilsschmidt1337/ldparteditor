@@ -74,9 +74,9 @@ public enum View {
 
     public final static GColour RANDOM_COLOUR = new GColour(-1, 1f, 1f, 1f, 0f);
 
-    public static final float[] Color16_override_r = new float[] { .5f };
-    public static final float[] Color16_override_g = new float[] { .5f };
-    public static final float[] Color16_override_b = new float[] { .5f };
+    public static final float[] Color16_override_r = new float[] { 0f };
+    public static final float[] Color16_override_g = new float[] { 0f };
+    public static final float[] Color16_override_b = new float[] { 0f };
 
     public static final float[] BFC_front_Colour_r = new float[] { 0f };
     public static final float[] BFC_front_Colour_g = new float[] { .9f };
@@ -341,6 +341,8 @@ public enum View {
     public final static Set<PGData3> DM = TextTriangulator.triangulateGLText(Font.MONOSPACE, "-", 0.07, 0.3, 16.9); //$NON-NLS-1$
 
     private static final GColour BLACK = new GColour(-1, 0f, 0f, 0f, 1f);
+    private static IndexedEntry col16_indexedEntry = new IndexedEntry(.5f + .000016f, .5f + .000016f, .5f + .000016f);
+    private static GColour original_col16 = new GColour(-1, 0f, 0f, 0f, 1f);
 
     public static final int NUM_CORES = Runtime.getRuntime().availableProcessors();
 
@@ -594,7 +596,12 @@ public enum View {
                                 }
                                 colourFromIndex.put(index, colour);
                             }
-                            indexFromColour.put(new IndexedEntry(R, G, B), index);
+                            IndexedEntry entry = new IndexedEntry(R, G, B);
+                            if (index == 16) {
+                                col16_indexedEntry = entry;
+                                original_col16 = colourFromIndex.get(16).clone();
+                            }
+                            indexFromColour.put(entry, index);
                             edgeColourFromIndex.put(index, new GColour(index, R2, G2, B2, 1f));
                             colourNameFromIndex.put(index, data_segments[2].replaceAll("_", " ")); //$NON-NLS-1$ //$NON-NLS-2$
                         }
@@ -611,6 +618,28 @@ public enum View {
             }
         }
         return false;
+    }
+
+    public static void overrideColour16() {
+        float r;
+        float g;
+        float b;
+        GColour col16 = getLDConfigColour(16);
+        if (Color16_override_r != null && Color16_override_g != null && Color16_override_b != null &&
+                Color16_override_r[0] > 0f && Color16_override_g[0] > 0f && Color16_override_b[0] > 0f) {
+            r = Color16_override_r[0];
+            g = Color16_override_g[0];
+            b = Color16_override_b[0];
+        } else {
+            r = original_col16.getR();
+            g = original_col16.getG();
+            b = original_col16.getB();
+        }
+        col16.setR(r);
+        col16.setG(g);
+        col16.setB(b);
+        indexFromColour.remove(col16_indexedEntry);
+        indexFromColour.put(new IndexedEntry(r + .000016f, g + .000016f, b + .000016f), 16);
     }
 
 }

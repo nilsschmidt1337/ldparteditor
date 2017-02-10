@@ -338,6 +338,7 @@ public class Editor3DWindow extends Editor3DDesign {
         window = this;
         // Load colours
         WorkbenchManager.getUserSettingState().loadColours();
+        View.overrideColour16();
         // Load recent files
         recentItems = WorkbenchManager.getUserSettingState().getRecentItems();
         if (recentItems == null) recentItems = new ArrayList<String>();
@@ -4762,6 +4763,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 System.out.println(selected);
 
                 if (selected != null && View.loadLDConfig(selected)) {
+                    View.overrideColour16();
                     GData.CACHE_warningsAndErrors.clear();
                     WorkbenchManager.getUserSettingState().setLdConfigPath(selected);
                     Set<DatFile> dfs = new HashSet<DatFile>();
