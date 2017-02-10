@@ -803,6 +803,7 @@ public class VM20Manipulator extends VM19ColourChanger {
     public void transformSubfile(GData1 g, Matrix M, boolean clearSelection, boolean syncWithTextEditor) {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
         StringBuilder colourBuilder = new StringBuilder();
+        final GColour col16 = View.getLDConfigColour(16);
         if (g.colourNumber == -1) {
             colourBuilder.append("0x2"); //$NON-NLS-1$
             colourBuilder.append(MathHelper.toHex((int) (255f * g.r)).toUpperCase());
@@ -815,7 +816,7 @@ public class VM20Manipulator extends VM19ColourChanger {
         GData.parsedLines.clear();
         GData.CACHE_parsedFilesSource.clear();
         GData1 reloadedSubfile = (GData1) DatParser
-                .parseLine("1 " + colourBuilder.toString() + M.toLDrawString() + g.shortName , 0, 0, 0.5f, 0.5f, 0.5f, 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, //$NON-NLS-1$
+                .parseLine("1 " + colourBuilder.toString() + M.toLDrawString() + g.shortName , 0, 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, //$NON-NLS-1$
                         new HashSet<String>(), false).get(0).getGraphicalData();
         // Clear the cache..
         GData.parsedLines.clear();

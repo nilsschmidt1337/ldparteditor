@@ -63,6 +63,7 @@ public enum RingsAndCones {
         if (df.isReadOnly()) return;
 
         final VertexManager vm = df.getVertexManager();
+        final GColour col16 = View.getLDConfigColour(16);
 
         vm.clearSelection2();
 
@@ -345,7 +346,7 @@ public enum RingsAndCones {
                         z2 = z2.multiply(r2);
                         String line3 = "4 16 " + px1 + " 0 " + pz1 + " " + x1 + " 0 " + z1 + " " + x2 + " " + y + " " + z2 + " " + px2 + " " + y + " " + pz2;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
                         GData quad = DatParser.parseLine(line3
-                                , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
+                                , -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                                 new HashSet<String>(), false).get(0).getGraphicalData();
                         vm.getSelectedData().add(quad);
                         vm.getSelectedQuads().add((GData4) quad);
@@ -361,7 +362,7 @@ public enum RingsAndCones {
 
                             String line5 = "5 24 " + x1 + " 0 " + z1 + " " + x2 + " " + y + " " + z2 + " " + nx + " 0 " + nz + " " + px1 + " 0 " + pz1;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
                             GData condline = DatParser.parseLine(line5
-                                    , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
+                                    , -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                             vm.getSelectedData().add(condline);
                             vm.getSelectedCondlines().add((GData5) condline);
@@ -428,7 +429,7 @@ public enum RingsAndCones {
                     String line = "1 16 0 " + bigDecimalToString(height) + " 0 " + sfs + " 0 0 0 " + step.negate() + " 0 0 0 " + sfs + " " + anglePrefix + middle + radiusSuffix + ".dat";     //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
                     GData gd = DatParser
                             .parseLine(line
-                                    , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
+                                    , -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                     if (gd == null) {
                         gd = new GData0(line);
@@ -454,7 +455,7 @@ public enum RingsAndCones {
             }
             GData gd = DatParser
                     .parseLine(line
-                            , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
+                            , -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                             new HashSet<String>(), false).get(0).getGraphicalData();
             if (gd == null) {
                 if (!rs.isCreatingNothingOnNoSolution()) {
@@ -485,7 +486,7 @@ public enum RingsAndCones {
                         z = z.multiply(r);
                         String line3 = "3 16 0 0 0 " + px + " " + y + " " + pz + " " + x + " " + y + " " + z;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
                         GData tri = DatParser.parseLine(line3
-                                , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
+                                , -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                                 new HashSet<String>(), false).get(0).getGraphicalData();
                         vm.getSelectedData().add(tri);
                         vm.getSelectedTriangles().add((GData3) tri);
@@ -501,7 +502,7 @@ public enum RingsAndCones {
 
                             String line5 = "5 24 0 0 0 " + px + " " + y + " " + pz + " " + x + " " + y + " " + z + " " + nx + " " + y + " " + nz;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
                             GData condline = DatParser.parseLine(line5
-                                    , -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
+                                    , -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                             vm.getSelectedData().add(condline);
                             vm.getSelectedCondlines().add((GData5) condline);

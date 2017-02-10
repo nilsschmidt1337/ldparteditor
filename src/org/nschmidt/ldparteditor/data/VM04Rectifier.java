@@ -78,6 +78,7 @@ class VM04Rectifier extends VM03Adjacency {
 
         final boolean noAdjacentCondlines = rs.isNoBorderedQuadToRectConversation();
         final boolean replaceQuads = !rs.isNoQuadConversation();
+        final GColour col16 = View.getLDConfigColour(16);
 
         if (showProgressMonitor) {
             try
@@ -566,7 +567,7 @@ class VM04Rectifier extends VM03Adjacency {
 
                                                 Set<String> alreadyParsed = new HashSet<String>();
                                                 alreadyParsed.add(linkedDatFile.getShortName());
-                                                ArrayList<ParsingResult> result = DatParser.parseLine(lineBuilder.toString(), -1, 0, 0.5f, 0.5f, 0.5f, 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                                                ArrayList<ParsingResult> result = DatParser.parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
                                                 GData rect = result.get(0).getGraphicalData();
                                                 if (rect == null)
                                                     rect = new GData0(lineBuilder.toString());
@@ -1069,7 +1070,7 @@ class VM04Rectifier extends VM03Adjacency {
 
                                 Set<String> alreadyParsed = new HashSet<String>();
                                 alreadyParsed.add(linkedDatFile.getShortName());
-                                ArrayList<ParsingResult> result = DatParser.parseLine(lineBuilder.toString(), -1, 0, 0.5f, 0.5f, 0.5f, 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                                ArrayList<ParsingResult> result = DatParser.parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
                                 GData rect = result.get(0).getGraphicalData();
                                 if (rect == null)
                                     rect = new GData0(lineBuilder.toString());

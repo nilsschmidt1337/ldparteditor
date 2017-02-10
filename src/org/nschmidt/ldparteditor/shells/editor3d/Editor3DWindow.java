@@ -245,7 +245,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private ObjectMode workingType = ObjectMode.VERTICES;
     private WorkingMode workingAction = WorkingMode.SELECT;
 
-    private GColour lastUsedColour = new GColour(16, .5f, .5f, .5f, 1f);
+    private GColour lastUsedColour = View.getLDConfigColour(16);
 
     private ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
@@ -1362,9 +1362,10 @@ public class Editor3DWindow extends Editor3DDesign {
                                                 // Insert a reference to the subfile in the old file
                                                 Set<String> alreadyParsed = new HashSet<String>();
                                                 alreadyParsed.add(Project.getFileToEdit().getShortName());
+                                                final GColour col16 = View.getLDConfigColour(16);
                                                 ArrayList<ParsingResult> subfileLine = DatParser
                                                         .parseLine(
-                                                                "1 16 0 0 0 1 0 0 0 1 0 0 0 1 s\\" + new File(selected).getName(), -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, Project.getFileToEdit(), false, alreadyParsed, false); //$NON-NLS-1$
+                                                                "1 16 0 0 0 1 0 0 0 1 0 0 0 1 s\\" + new File(selected).getName(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, Project.getFileToEdit(), false, alreadyParsed, false); //$NON-NLS-1$
                                                 GData1 gd1 = (GData1) subfileLine.get(0).getGraphicalData();
                                                 if (gd1 != null) {
                                                     if (isInsertingAtCursorPosition()) {

@@ -409,7 +409,8 @@ public class CSG {
     public GData1 compile() {
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
-        GData1 g1 = new GData1(-1, .5f, .5f, .5f, 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
+        GColour col = View.getLDConfigColour(16);
+        GData1 g1 = new GData1(-1, col.getR(), col.getG(), col.getB(), 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
                 new HashSet<String>(), View.DUMMY_REFERENCE);
         this.result = toLDrawTriangles(g1);
         return g1;
@@ -494,7 +495,8 @@ public class CSG {
 
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
-        GData1 g1 = new GData1(-1, .5f, .5f, .5f, 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
+        GColour col = View.getLDConfigColour(16);
+        GData1 g1 = new GData1(-1, col.getR(), col.getG(), col.getB(), 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
                 new HashSet<String>(), View.DUMMY_REFERENCE);
         this.result = toLDrawTriangles2(g1);
         return g1;

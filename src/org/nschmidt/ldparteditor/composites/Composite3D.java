@@ -66,6 +66,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData2;
@@ -1384,11 +1385,12 @@ public class Composite3D extends ScalableComposite {
                 NLogger.debug(getClass(), "Primitive: {0}", p); //$NON-NLS-1$
                 String ref = p.getName();
                 final BigDecimal[] cur = getCursorSnapped3Dprecise();
+                final GColour col16 = View.getLDConfigColour(16);
                 Set<String> alreadyParsed = new HashSet<String>();
                 alreadyParsed.add(datfile.getShortName());
                 ArrayList<ParsingResult> subfileLine = DatParser
                         .parseLine(
-                                "1 16 " + MathHelper.bigDecimalToString(cur[0]) + " " + MathHelper.bigDecimalToString(cur[1]) + " " + MathHelper.bigDecimalToString(cur[2]) + " 1 0 0 0 1 0 0 0 1 " + ref, -1, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datfile, false, alreadyParsed, false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                                "1 16 " + MathHelper.bigDecimalToString(cur[0]) + " " + MathHelper.bigDecimalToString(cur[1]) + " " + MathHelper.bigDecimalToString(cur[2]) + " 1 0 0 0 1 0 0 0 1 " + ref, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datfile, false, alreadyParsed, false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 GData1 vertexLine = (GData1) subfileLine.get(0).getGraphicalData();
                 if (vertexLine != null) {
                     datfile.addToTailOrInsertAfterCursor(vertexLine);

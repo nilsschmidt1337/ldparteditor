@@ -1843,7 +1843,8 @@ class Editor3DDesign extends ApplicationWindow {
                 public void widgetSelected(SelectionEvent e) {
                     if (Project.getFileToEdit() != null) {
                         Project.getFileToEdit().getVertexManager().addSnapshot();
-                        Project.getFileToEdit().getVertexManager().colourChangeSelection(16, .5f, .5f, .5f, 1f, true);
+                        GColour col = View.getLDConfigColour(16);
+                        Project.getFileToEdit().getVertexManager().colourChangeSelection(16, col.getR(), col.getG(), col.getB(), 1f, true);
                     }
                     Editor3DWindow.getWindow().regainFocus();
                 }

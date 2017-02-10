@@ -49,6 +49,8 @@ class VM19ColourChanger extends VM18LineConverter {
         final HashSet<GData4> subSelectedQuads = new HashSet<GData4>();
         final HashSet<GData5> subSelectedCondlines = new HashSet<GData5>();
 
+        final GColour col16 = View.getLDConfigColour(16);
+
         selectedData.clear();
         selectedVertices.clear();
 
@@ -196,7 +198,7 @@ class VM19ColourChanger extends VM18LineConverter {
                 GData colouredSubfile;
                 if ("16".equals(col)) { //$NON-NLS-1$
                     colouredSubfile = DatParser
-                            .parseLine(colouredString, drawPerLine.getKey(subf).intValue(), 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
+                            .parseLine(colouredString, drawPerLine.getKey(subf).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                 } else {
                     colouredSubfile = DatParser

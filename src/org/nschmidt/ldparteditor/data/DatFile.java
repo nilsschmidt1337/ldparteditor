@@ -551,6 +551,7 @@ public final class DatFile {
         int position = startOffset;
 
         ArrayList<ParsingResult> results;
+        final GColour col16 = View.getLDConfigColour(16);
 
         // Clear the cache..
         GData.parsedLines.clear();
@@ -565,7 +566,7 @@ public final class DatFile {
 
             if (isNotBlank(line)) {
 
-                results = DatParser.parseLine(line, lineNumber, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed, true);
+                results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed, true);
 
                 gdata = results.get(0).getGraphicalData();
                 if (gdata == null) {
@@ -758,6 +759,7 @@ public final class DatFile {
         int position = startOffset;
 
         ArrayList<ParsingResult> results;
+        final GColour col16 = View.getLDConfigColour(16);
 
         // Clear the cache..
         GData.parsedLines.clear();
@@ -773,7 +775,7 @@ public final class DatFile {
                 GData gd = drawPerLine.getValue(lineNumber);
                 results = GData.CACHE_warningsAndErrors.get(gd);
                 if (results == null) {
-                    results = DatParser.parseLine(line, lineNumber, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, true, alreadyParsed, true);
+                    results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, true, alreadyParsed, true);
                     GData.CACHE_warningsAndErrors.put(gd, results);
                 }
 
@@ -1096,6 +1098,7 @@ public final class DatFile {
         GData targetData = null;
 
         ArrayList<ParsingResult> results;
+        final GColour col16 = View.getLDConfigColour(16);
 
         // Clear the cache..
         GData.parsedLines.clear();
@@ -1108,7 +1111,7 @@ public final class DatFile {
         for (String line : lines) {
 
             if (isNotBlank(line)) {
-                results = DatParser.parseLine(line, lineNumber, 0, 0.5f, 0.5f, 0.5f, 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed, false);
+                results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed, false);
 
                 gdata = results.get(0).getGraphicalData();
                 if (gdata == null) {
