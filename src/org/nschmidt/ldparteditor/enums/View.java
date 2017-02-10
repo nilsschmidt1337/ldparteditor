@@ -74,6 +74,10 @@ public enum View {
 
     public final static GColour RANDOM_COLOUR = new GColour(-1, 1f, 1f, 1f, 0f);
 
+    public static final float[] Color16_override_r = new float[] { .5f };
+    public static final float[] Color16_override_g = new float[] { .5f };
+    public static final float[] Color16_override_b = new float[] { .5f };
+
     public static final float[] BFC_front_Colour_r = new float[] { 0f };
     public static final float[] BFC_front_Colour_g = new float[] { .9f };
     public static final float[] BFC_front_Colour_b = new float[] { 0f };
@@ -86,9 +90,9 @@ public enum View {
     public static final float[] BFC_uncertified_Colour_g = new float[] { 0f };
     public static final float[] BFC_uncertified_Colour_b = new float[] { 1f };
 
-    public static final float[] vertex_Colour_r = new float[] { 0.9f };
-    public static final float[] vertex_Colour_g = new float[] { 0.9f };
-    public static final float[] vertex_Colour_b = new float[] { 0.04f };
+    public static final float[] vertex_Colour_r = new float[] { 0.118f };
+    public static final float[] vertex_Colour_g = new float[] { 0.565f };
+    public static final float[] vertex_Colour_b = new float[] { 1f };
 
     public static final float[] vertex_selected_Colour_r = new float[] { 0.75f };
     public static final float[] vertex_selected_Colour_g = new float[] { 0.05f };
