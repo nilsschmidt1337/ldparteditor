@@ -1095,7 +1095,7 @@ class VM14Splitter extends VM13SymSplitter {
                         A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
                         A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
 
-                        View.DUMMY_REFERENCE, linkedDatFile, true));
+                        View.DUMMY_REFERENCE, linkedDatFile, g.isLine));
                 cur = next;
             }
         }
