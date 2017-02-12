@@ -217,6 +217,13 @@ public final class GData2 extends GData {
         this.Z2 = null;
     }
 
+    public BigDecimal getLength() {
+        BigDecimal dx = X1.subtract(X2);
+        BigDecimal dy = Y1.subtract(Y2);
+        BigDecimal dz = Z1.subtract(Z2);
+        return new Vector3d(dx, dy, dz).length();
+    }
+
     @Override
     public void drawGL20(Composite3D c3d) {
         if (!visible) {

@@ -2165,6 +2165,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     spn_SelectionY3[0].setEnabled(true);
                                     spn_SelectionZ3[0].setEnabled(true);
                                 case 2:
+                                    spn_SelectionLength[0].setEnabled(gdata.type() == 2 && !((org.nschmidt.ldparteditor.data.GData2) gdata).isLine);
                                     spn_SelectionX1[0].setEnabled(true);
                                     spn_SelectionY1[0].setEnabled(true);
                                     spn_SelectionZ1[0].setEnabled(true);
@@ -2230,6 +2231,11 @@ public class Editor3DWindow extends Editor3DDesign {
                                         break;
                                     case 2:
                                         BigDecimal[] g2 = GraphicalDataTools.getPreciseCoordinates(gdata);
+                                        if (spn_SelectionLength[0].isEnabled()) {
+                                            spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData2) gdata).getLength());
+                                        } else {
+                                            spn_SelectionLength[0].setValue(BigDecimal.ONE);
+                                        }
                                         spn_SelectionX1[0].setValue(g2[0]);
                                         spn_SelectionY1[0].setValue(g2[1]);
                                         spn_SelectionZ1[0].setValue(g2[2]);
@@ -2340,6 +2346,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     spn_SelectionY3[0].setEnabled(true);
                                     spn_SelectionZ3[0].setEnabled(true);
                                 case 2:
+                                    spn_SelectionLength[0].setEnabled(gdata.type() == 2 && !((org.nschmidt.ldparteditor.data.GData2) gdata).isLine);
                                     spn_SelectionX1[0].setEnabled(true);
                                     spn_SelectionY1[0].setEnabled(true);
                                     spn_SelectionZ1[0].setEnabled(true);
@@ -2405,6 +2412,11 @@ public class Editor3DWindow extends Editor3DDesign {
                                         break;
                                     case 2:
                                         BigDecimal[] g2 = GraphicalDataTools.getPreciseCoordinates(gdata);
+                                        if (spn_SelectionLength[0].isEnabled()) {
+                                            spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData2) gdata).getLength());
+                                        } else {
+                                            spn_SelectionLength[0].setValue(BigDecimal.ONE);
+                                        }
                                         spn_SelectionX1[0].setValue(g2[0]);
                                         spn_SelectionY1[0].setValue(g2[1]);
                                         spn_SelectionZ1[0].setValue(g2[2]);
@@ -2488,6 +2500,11 @@ public class Editor3DWindow extends Editor3DDesign {
                     disableSelectionTab();
                 } else {
 
+                    if (newLine.type() == 2 && !((org.nschmidt.ldparteditor.data.GData2) newLine).isLine) {
+                        updatingSelectionTab = true;
+                        spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData2) newLine).getLength());
+                        updatingSelectionTab = false;
+                    }
                     if (newLine.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) newLine).isTriangle) {
                         updatingSelectionTab = true;
                         spn_SelectionAngle[0].setValue(new BigDecimal(((org.nschmidt.ldparteditor.data.GData3) newLine).getProtractorAngle()));
@@ -2547,35 +2564,66 @@ public class Editor3DWindow extends Editor3DDesign {
                 VertexManager vm = Project.getFileToEdit().getVertexManager();
                 vm.addSnapshot();
 
-                org.nschmidt.ldparteditor.data.GData3 tri = null;
-                if (vm.getSelectedTriangles().size() == 0) {
-                    disableSelectionTab();
-                    return;
-                }
-                tri = vm.getSelectedTriangles().iterator().next();
-                if (tri.isTriangle) {
-                    disableSelectionTab();
-                    return;
-                }
+                if (vm.getSelectedLines().size() > 0) {
+                    org.nschmidt.ldparteditor.data.GData2 line = null;
+                    line = vm.getSelectedLines().iterator().next();
+                    if (line.isLine) {
+                        disableSelectionTab();
+                        return;
+                    }
 
-                BigDecimal[] c = ProtractorHelper.changeLength(spn.getValue(), tri);
-                updatingSelectionTab = true;
-                spn_SelectionX3[0].setValue(c[0]);
-                spn_SelectionY3[0].setValue(c[1]);
-                spn_SelectionZ3[0].setValue(c[2]);
-                updatingSelectionTab = false;
+                    BigDecimal[] c = ProtractorHelper.changeLength(spn.getValue(), line);
+                    updatingSelectionTab = true;
+                    spn_SelectionX2[0].setValue(c[0]);
+                    spn_SelectionY2[0].setValue(c[1]);
+                    spn_SelectionZ2[0].setValue(c[2]);
+                    updatingSelectionTab = false;
 
-                final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
-                        spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
-                        spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
-                        c[0], c[1], c[2],
-                        spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
-                        btn_MoveAdjacentData2[0].getSelection()
-                        );
-                if (newLine == null) {
-                    disableSelectionTab();
+                    final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
+                            spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
+                            c[0], c[1], c[2],
+                            spn_SelectionX3[0].getValue(), spn_SelectionY3[0].getValue(), spn_SelectionZ3[0].getValue(),
+                            spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
+                            btn_MoveAdjacentData2[0].getSelection()
+                            );
+                    if (newLine == null) {
+                        disableSelectionTab();
+                    } else {
+                        txt_Line[0].setText(newLine.toString());
+                    }
+
                 } else {
-                    txt_Line[0].setText(newLine.toString());
+
+                    org.nschmidt.ldparteditor.data.GData3 tri = null;
+                    if (vm.getSelectedTriangles().size() == 0) {
+                        disableSelectionTab();
+                        return;
+                    }
+                    tri = vm.getSelectedTriangles().iterator().next();
+                    if (tri.isTriangle) {
+                        disableSelectionTab();
+                        return;
+                    }
+
+                    BigDecimal[] c = ProtractorHelper.changeLength(spn.getValue(), tri);
+                    updatingSelectionTab = true;
+                    spn_SelectionX3[0].setValue(c[0]);
+                    spn_SelectionY3[0].setValue(c[1]);
+                    spn_SelectionZ3[0].setValue(c[2]);
+                    updatingSelectionTab = false;
+
+                    final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
+                            spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
+                            spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
+                            c[0], c[1], c[2],
+                            spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
+                            btn_MoveAdjacentData2[0].getSelection()
+                            );
+                    if (newLine == null) {
+                        disableSelectionTab();
+                    } else {
+                        txt_Line[0].setText(newLine.toString());
+                    }
                 }
             }
         });
