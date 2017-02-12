@@ -109,8 +109,6 @@ public class DatHeaderManager {
                                         continue;
                                     }
 
-                                    // FIXME Needs implementation!
-
                                     final boolean isCommentOrBfcMeta = type == 0 || type == 6;
                                     if (!isCommentOrBfcMeta) {
                                         break;

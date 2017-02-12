@@ -156,14 +156,14 @@ public enum MathHelper {
             sz = 1f;
 
         float[][] result = new float[21][3];
-        
+
         result[18][0] = p1.x * 1000f;
         result[18][1] = p1.y * 1000f;
         result[18][2] = p1.z * 1000f;
         result[19][0] = p2.x * 1000f;
         result[19][1] = p2.y * 1000f;
         result[19][2] = p2.z * 1000f;
-        
+
         Vector4f n = new Vector4f();
         Vector4f p = new Vector4f();
         Vector4f q = new Vector4f();
@@ -269,7 +269,7 @@ public enum MathHelper {
             sz = 1f;
 
         float[][] result = new float[21][3];
-        
+
         result[18][0] = p1.x;
         result[18][1] = p1.y;
         result[18][2] = p1.z;
@@ -364,7 +364,7 @@ public enum MathHelper {
 
         return result;
     }
-    
+
     public static float[][] getLineVerticesFast(
             final float x1, final float y1, final float z1,
             final float x2, final float y2, final float z2) {
@@ -1057,7 +1057,7 @@ public enum MathHelper {
         if (flt == (int) flt) {
             result = String.format("%d", (int) flt); //$NON-NLS-1$
         } else {
-            result = String.format("%s", flt); //$NON-NLS-1$            
+            result = String.format("%s", flt); //$NON-NLS-1$
         }
         if (result.equals("0.0"))result = "0"; //$NON-NLS-1$ //$NON-NLS-2$
         if (result.startsWith("-0."))return "-" + result.substring(2); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1969,6 +1969,4 @@ public enum MathHelper {
         }
         return result;
     }
-
-
 }

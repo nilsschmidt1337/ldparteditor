@@ -982,8 +982,6 @@ public final class DatFile {
 
             for (Entry<Integer, ArrayList<ParsingResult>> entry : results.entrySet()) {
 
-                // FIXME Needs implementation!!
-
                 final int lineNumber2 = entry.getKey();
                 final boolean isLineBoundHint = lineNumber2 > 0;
                 ArrayList<ParsingResult> parsingResults = entry.getValue();

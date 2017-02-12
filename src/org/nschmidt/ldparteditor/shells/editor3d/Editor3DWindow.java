@@ -3778,7 +3778,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
-                        vm.merge(MergeTo.AVERAGE, true);
+                        vm.merge(MergeTo.AVERAGE, true, false);
                         regainFocus();
                         return;
                     }
@@ -3794,7 +3794,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
-                        vm.merge(MergeTo.LAST_SELECTED, true);
+                        vm.merge(MergeTo.LAST_SELECTED, true, false);
                         regainFocus();
                         return;
                     }
@@ -3810,7 +3810,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
-                        vm.merge(MergeTo.NEAREST_VERTEX, true);
+                        vm.merge(MergeTo.NEAREST_VERTEX, true, false);
                         regainFocus();
                         return;
                     }
@@ -3826,7 +3826,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
-                        vm.merge(MergeTo.NEAREST_EDGE, true);
+                        vm.merge(MergeTo.NEAREST_EDGE, true, false);
                         regainFocus();
                         return;
                     }
@@ -3842,7 +3842,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
-                        vm.merge(MergeTo.NEAREST_EDGE_SPLIT, true);
+                        vm.merge(MergeTo.NEAREST_EDGE_SPLIT, true, false);
                         regainFocus();
                         return;
                     }
@@ -3858,7 +3858,57 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
-                        vm.merge(MergeTo.NEAREST_FACE, true);
+                        vm.merge(MergeTo.NEAREST_FACE, true, false);
+                        regainFocus();
+                        return;
+                    }
+                }
+                regainFocus();
+            }
+        });
+
+
+        mntm_MergeToNearestEdgeDir[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
+                        vm.merge(MergeTo.NEAREST_EDGE, true, true);
+                        regainFocus();
+                        return;
+                    }
+                }
+                regainFocus();
+            }
+        });
+        mntm_MergeToNearestEdgeSplitDir[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
+                        vm.merge(MergeTo.NEAREST_EDGE_SPLIT, true, true);
+                        regainFocus();
+                        return;
+                    }
+                }
+                regainFocus();
+            }
+        });
+        mntm_MergeToNearestFaceDir[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
+                        vm.merge(MergeTo.NEAREST_FACE, true, true);
                         regainFocus();
                         return;
                     }
