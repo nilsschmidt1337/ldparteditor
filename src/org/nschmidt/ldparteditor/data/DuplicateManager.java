@@ -120,113 +120,181 @@ public class DuplicateManager {
                                         break;
                                     case 2:
                                     {
+                                        if (!((GData2) gd).isLine) {
+                                            break;
+                                        }
                                         if (lines.containsKey(normalizedLine)) {
                                             registerDuplicate(gd, lines.get(normalizedLine), registered);
                                         } else {
                                             lines.put(normalizedLine, lineNumber);
-                                            StringBuilder normalized2 = new StringBuilder();
+                                            StringBuilder normalized1 = new StringBuilder();
 
-                                            normalized2.append(data_segments[0]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            // normalized2.append(data_segments[1]);
-                                            // normalized2.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[0]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            // normalized1.append(data_segments[1]);
+                                            // normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized2.append(data_segments[5]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[6]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[7]);
-                                            normalized2.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[2]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[3]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[4]);
+                                            normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized2.append(data_segments[2]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[3]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[4]);
+                                            normalized1.append(data_segments[5]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[6]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[7]);
 
-                                            String normalizedLine2 = normalized2.toString().trim();
+                                            String normalizedLine1 = normalized1.toString().trim();
 
-                                            if (lines.containsKey(normalizedLine2)) {
-                                                registerDuplicate(gd, lines.get(normalizedLine2), registered);
+                                            if (lines.containsKey(normalizedLine1)) {
+                                                registerDuplicate(gd, lines.get(normalizedLine1), registered);
                                             } else {
-                                                lines.put(normalizedLine2, lineNumber);
+                                                lines.put(normalizedLine1, lineNumber);
                                                 lastCommentLine = null;
+
+                                                StringBuilder normalized2 = new StringBuilder();
+                                                normalized2.append(data_segments[0]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                // normalized2.append(data_segments[1]);
+                                                // normalized2.append(" "); //$NON-NLS-1$
+
+                                                normalized2.append(data_segments[5]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[6]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[7]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+
+                                                normalized2.append(data_segments[2]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[3]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[4]);
+
+                                                String normalizedLine2 = normalized2.toString().trim();
+
+                                                if (lines.containsKey(normalizedLine2)) {
+                                                    registerDuplicate(gd, lines.get(normalizedLine2), registered);
+                                                } else {
+                                                    lines.put(normalizedLine2, lineNumber);
+                                                    lastCommentLine = null;
+                                                }
                                             }
                                         }
                                     }
                                     break;
                                     case 3:
                                     {
+                                        if (!((GData3) gd).isTriangle) {
+                                            break;
+                                        }
                                         if (lines.containsKey(normalizedLine)) {
                                             registerDuplicate(gd, lines.get(normalizedLine), registered);
                                         } else {
                                             lines.put(normalizedLine, lineNumber);
-                                            StringBuilder normalized2 = new StringBuilder();
+                                            StringBuilder normalized1 = new StringBuilder();
 
-                                            normalized2.append(data_segments[0]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            // normalized2.append(data_segments[1]);
-                                            // normalized2.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[0]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            // normalized1.append(data_segments[1]);
+                                            // normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized2.append(data_segments[8]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[9]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[10]);
-                                            normalized2.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[2]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[3]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[4]);
+                                            normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized2.append(data_segments[2]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[3]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[4]);
-                                            normalized2.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[5]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[6]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[7]);
+                                            normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized2.append(data_segments[5]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[6]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[7]);
+                                            normalized1.append(data_segments[8]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[9]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[10]);
 
-                                            String normalizedLine2 = normalized2.toString().trim();
+                                            String normalizedLine1 = normalized1.toString().trim();
 
-                                            if (lines.containsKey(normalizedLine2)) {
-                                                registerDuplicate(gd, lines.get(normalizedLine2), registered);
+                                            if (lines.containsKey(normalizedLine1)) {
+                                                registerDuplicate(gd, lines.get(normalizedLine1), registered);
                                             } else {
-                                                lines.put(normalizedLine2, lineNumber);
-                                                StringBuilder normalized3 = new StringBuilder();
+                                                lines.put(normalizedLine1, lineNumber);
+                                                StringBuilder normalized2 = new StringBuilder();
 
-                                                normalized3.append(data_segments[0]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                // normalized3.append(data_segments[1]);
-                                                // normalized3.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[0]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                // normalized2.append(data_segments[1]);
+                                                // normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized3.append(data_segments[5]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[6]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[7]);
-                                                normalized3.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[8]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[9]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[10]);
+                                                normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized3.append(data_segments[8]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[9]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[10]);
-                                                normalized3.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[2]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[3]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[4]);
+                                                normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized3.append(data_segments[2]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[3]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[4]);
+                                                normalized2.append(data_segments[5]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[6]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[7]);
 
-                                                String normalizedLine3 = normalized3.toString().trim();
-                                                if (lines.containsKey(normalizedLine3)) {
-                                                    registerDuplicate(gd, lines.get(normalizedLine3), registered);
+                                                String normalizedLine2 = normalized2.toString().trim();
+
+                                                if (lines.containsKey(normalizedLine2)) {
+                                                    registerDuplicate(gd, lines.get(normalizedLine2), registered);
                                                 } else {
-                                                    lines.put(normalizedLine3, lineNumber);
-                                                    lastCommentLine = null;
+                                                    lines.put(normalizedLine2, lineNumber);
+                                                    StringBuilder normalized3 = new StringBuilder();
+
+                                                    normalized3.append(data_segments[0]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    // normalized3.append(data_segments[1]);
+                                                    // normalized3.append(" "); //$NON-NLS-1$
+
+                                                    normalized3.append(data_segments[5]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[6]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[7]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+
+                                                    normalized3.append(data_segments[8]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[9]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[10]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+
+                                                    normalized3.append(data_segments[2]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[3]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[4]);
+
+                                                    String normalizedLine3 = normalized3.toString().trim();
+                                                    if (lines.containsKey(normalizedLine3)) {
+                                                        registerDuplicate(gd, lines.get(normalizedLine3), registered);
+                                                    } else {
+                                                        lines.put(normalizedLine3, lineNumber);
+                                                        lastCommentLine = null;
+                                                    }
                                                 }
                                             }
                                         }
@@ -238,125 +306,166 @@ public class DuplicateManager {
                                             registerDuplicate(gd, lineNumber, registered);
                                         } else {
                                             lines.put(normalizedLine, lineNumber);
-                                            StringBuilder normalized2 = new StringBuilder();
+                                            StringBuilder normalized1 = new StringBuilder();
 
-                                            normalized2.append(data_segments[0]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            // normalized2.append(data_segments[1]);
-                                            // normalized2.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[0]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            // normalized1.append(data_segments[1]);
+                                            // normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized2.append(data_segments[11]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[12]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[13]);
-                                            normalized2.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[2]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[3]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[4]);
+                                            normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized2.append(data_segments[2]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[3]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[4]);
-                                            normalized2.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[5]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[6]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[7]);
+                                            normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized2.append(data_segments[5]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[6]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[7]);
-                                            normalized2.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[8]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[9]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[10]);
+                                            normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized2.append(data_segments[8]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[9]);
-                                            normalized2.append(" "); //$NON-NLS-1$
-                                            normalized2.append(data_segments[10]);
+                                            normalized1.append(data_segments[11]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[12]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(data_segments[13]);
 
-                                            String normalizedLine2 = normalized2.toString().trim();
+                                            String normalizedLine1 = normalized1.toString().trim();
 
-                                            if (lines.containsKey(normalizedLine2)) {
-                                                registerDuplicate(gd, lines.get(normalizedLine2), registered);
+                                            if (lines.containsKey(normalizedLine1)) {
+                                                registerDuplicate(gd, lines.get(normalizedLine1), registered);
                                             } else {
-                                                lines.put(normalizedLine2, lineNumber);
-                                                StringBuilder normalized3 = new StringBuilder();
+                                                lines.put(normalizedLine1, lineNumber);
+                                                StringBuilder normalized2 = new StringBuilder();
 
-                                                normalized3.append(data_segments[0]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                // normalized3.append(data_segments[1]);
-                                                // normalized3.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[0]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                // normalized2.append(data_segments[1]);
+                                                // normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized3.append(data_segments[8]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[9]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[10]);
-                                                normalized3.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[11]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[12]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[13]);
+                                                normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized3.append(data_segments[11]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[12]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[13]);
-                                                normalized3.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[2]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[3]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[4]);
+                                                normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized3.append(data_segments[2]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[3]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[4]);
-                                                normalized3.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[5]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[6]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[7]);
+                                                normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized3.append(data_segments[5]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[6]);
-                                                normalized3.append(" "); //$NON-NLS-1$
-                                                normalized3.append(data_segments[7]);
+                                                normalized2.append(data_segments[8]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[9]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(data_segments[10]);
 
-                                                String normalizedLine3 = normalized3.toString().trim();
-                                                if (lines.containsKey(normalizedLine3)) {
-                                                    registerDuplicate(gd, lines.get(normalizedLine3), registered);
+                                                String normalizedLine2 = normalized2.toString().trim();
+
+                                                if (lines.containsKey(normalizedLine2)) {
+                                                    registerDuplicate(gd, lines.get(normalizedLine2), registered);
                                                 } else {
-                                                    lines.put(normalizedLine3, lineNumber);
-                                                    StringBuilder normalized4 = new StringBuilder();
+                                                    lines.put(normalizedLine2, lineNumber);
+                                                    StringBuilder normalized3 = new StringBuilder();
 
-                                                    normalized4.append(data_segments[0]);
-                                                    normalized4.append(" "); //$NON-NLS-1$
-                                                    // normalized4.append(data_segments[1]);
-                                                    // normalized4.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[0]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    // normalized3.append(data_segments[1]);
+                                                    // normalized3.append(" "); //$NON-NLS-1$
 
-                                                    normalized4.append(data_segments[5]);
-                                                    normalized4.append(" "); //$NON-NLS-1$
-                                                    normalized4.append(data_segments[6]);
-                                                    normalized4.append(" "); //$NON-NLS-1$
-                                                    normalized4.append(data_segments[7]);
-                                                    normalized4.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[8]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[9]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[10]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
 
-                                                    normalized4.append(data_segments[8]);
-                                                    normalized4.append(" "); //$NON-NLS-1$
-                                                    normalized4.append(data_segments[9]);
-                                                    normalized4.append(" "); //$NON-NLS-1$
-                                                    normalized4.append(data_segments[10]);
-                                                    normalized4.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[11]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[12]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[13]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
 
-                                                    normalized4.append(data_segments[11]);
-                                                    normalized4.append(" "); //$NON-NLS-1$
-                                                    normalized4.append(data_segments[12]);
-                                                    normalized4.append(" "); //$NON-NLS-1$
-                                                    normalized4.append(data_segments[13]);
-                                                    normalized4.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[2]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[3]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[4]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
 
-                                                    normalized4.append(data_segments[2]);
-                                                    normalized4.append(" "); //$NON-NLS-1$
-                                                    normalized4.append(data_segments[3]);
-                                                    normalized4.append(" "); //$NON-NLS-1$
-                                                    normalized4.append(data_segments[4]);
+                                                    normalized3.append(data_segments[5]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[6]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(data_segments[7]);
 
-                                                    String normalizedLine4 = normalized4.toString().trim();
-                                                    if (lines.containsKey(normalizedLine4)) {
-                                                        registerDuplicate(gd, lines.get(normalizedLine4), registered);
+                                                    String normalizedLine3 = normalized3.toString().trim();
+                                                    if (lines.containsKey(normalizedLine3)) {
+                                                        registerDuplicate(gd, lines.get(normalizedLine3), registered);
                                                     } else {
-                                                        lines.put(normalizedLine4, lineNumber);
-                                                        lastCommentLine = null;
+                                                        lines.put(normalizedLine3, lineNumber);
+                                                        StringBuilder normalized4 = new StringBuilder();
+
+                                                        normalized4.append(data_segments[0]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+                                                        // normalized4.append(data_segments[1]);
+                                                        // normalized4.append(" "); //$NON-NLS-1$
+
+                                                        normalized4.append(data_segments[5]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+                                                        normalized4.append(data_segments[6]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+                                                        normalized4.append(data_segments[7]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+
+                                                        normalized4.append(data_segments[8]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+                                                        normalized4.append(data_segments[9]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+                                                        normalized4.append(data_segments[10]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+
+                                                        normalized4.append(data_segments[11]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+                                                        normalized4.append(data_segments[12]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+                                                        normalized4.append(data_segments[13]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+
+                                                        normalized4.append(data_segments[2]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+                                                        normalized4.append(data_segments[3]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+                                                        normalized4.append(data_segments[4]);
+
+                                                        String normalizedLine4 = normalized4.toString().trim();
+                                                        if (lines.containsKey(normalizedLine4)) {
+                                                            registerDuplicate(gd, lines.get(normalizedLine4), registered);
+                                                        } else {
+                                                            lines.put(normalizedLine4, lineNumber);
+                                                            lastCommentLine = null;
+                                                        }
                                                     }
                                                 }
                                             }
