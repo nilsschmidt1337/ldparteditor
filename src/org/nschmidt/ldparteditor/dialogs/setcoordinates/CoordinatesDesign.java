@@ -29,7 +29,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -47,6 +49,10 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
  */
 class CoordinatesDesign extends Dialog {
 
+    static ManipulatorScope transformationMode = ManipulatorScope.GLOBAL;
+
+    final Button[] btn_Local = new Button[1];
+    final Button[] btn_Global = new Button[1];
 
     final Button[] cb_Xaxis = new Button[1];
     final Button[] cb_Yaxis = new Button[1];
@@ -58,7 +64,7 @@ class CoordinatesDesign extends Dialog {
     final Button[] btn_Manipulator = new Button[1];
     Vertex m = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex c = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-    
+
     private final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
 
     // Use final only for subclass/listener references!
@@ -94,7 +100,7 @@ class CoordinatesDesign extends Dialog {
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        
+
         if (Editor3DWindow.getWindow().isMovingAdjacentData()) {
             Label lbl_adjacencyWarning = new Label(cmp_container, SWT.NONE);
             lbl_adjacencyWarning.setText(I18n.E3D_AdjacentWarningStatus);
@@ -102,7 +108,23 @@ class CoordinatesDesign extends Dialog {
             lbl_adjacencyWarning.setForeground(SWTResourceManager.getColor(SWT.COLOR_INFO_FOREGROUND));
             lbl_adjacencyWarning.setBackground(SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND));
         }
-        
+
+        ToolItem toolItem_TransformationModes = new ToolItem(cmp_container, SWT.NONE, true);
+        {
+            Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            this.btn_Local[0] = btn_Local;
+            btn_Local.setToolTipText(I18n.E3D_Local);
+            if (transformationMode == ManipulatorScope.LOCAL) btn_Local.setSelection(true);
+            btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            this.btn_Global[0] = btn_Global;
+            btn_Global.setToolTipText(I18n.E3D_Global);
+            if (transformationMode == ManipulatorScope.GLOBAL) btn_Global.setSelection(true);
+            btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
+        }
+
         {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
