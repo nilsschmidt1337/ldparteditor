@@ -1867,7 +1867,13 @@ public class Manipulator {
         X.normalise(X);
         Y.normalise(Y);
         Z.normalise(Z);
-        return new Matrix(X.X, X.Y, X.Z, BigDecimal.ZERO, Y.X, Y.Y, Y.Z, BigDecimal.ZERO, Z.X, Z.Y, Z.Z, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+        // wrong! -> return new Matrix(X.X, X.Y, X.Z, BigDecimal.ZERO, Y.X, Y.Y, Y.Z, BigDecimal.ZERO, Z.X, Z.Y, Z.Z, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+        // Should be transposed:
+        return new Matrix(
+                X.X, Y.X, Z.X, BigDecimal.ZERO,
+                X.Y, Y.Y, Z.Y, BigDecimal.ZERO,
+                X.Z, Y.Z, Z.Z, BigDecimal.ZERO,
+                BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
     }
 
     public boolean isLocked() {
