@@ -676,6 +676,4 @@ class OptionsDesign extends ApplicationWindow {
     protected Point getInitialSize() {
         return new Point(super.getInitialSize().x, super.getInitialSize().y * 2);
     }
-
-    // FIXME OptionsDialog needs implementation!
 }

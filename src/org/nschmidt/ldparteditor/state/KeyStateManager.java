@@ -500,10 +500,10 @@ public class KeyStateManager {
                         break;
                     }
                     case MERGE_TO_AVERAGE:
-                        vm.merge(MergeTo.AVERAGE, true);
+                        vm.merge(MergeTo.AVERAGE, true, false);
                         break;
                     case MERGE_TO_LAST:
-                        vm.merge(MergeTo.LAST_SELECTED, true);
+                        vm.merge(MergeTo.LAST_SELECTED, true, false);
                         break;
                     case SPLIT:
                         vm.split(2);

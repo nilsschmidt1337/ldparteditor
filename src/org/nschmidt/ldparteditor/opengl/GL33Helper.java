@@ -182,19 +182,6 @@ public class GL33Helper {
         GL15.glDeleteBuffers(VBO_general);
     }
 
-
-    public static int[] createQuadStrip_VAO_VBO(float r, float g, float b, float a, float[] vertices) {
-        final int[] result = new int[2];
-        // FIXME Needs implementation!
-        return result;
-    }
-
-    public static int[] createLines_VAO_VBO(float r, float g, float b, float a, float[] vertices) {
-        final int[] result = new int[2];
-        // FIXME Needs implementation!
-        return result;
-    }
-
     public static void colourise(int offset, int times, float r, float g, float b,
             float a, float[] vertexData, int i) {
         for (int j = 0; j < times; j++) {

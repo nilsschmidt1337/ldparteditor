@@ -19,13 +19,17 @@ import java.math.BigDecimal;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
 import org.nschmidt.ldparteditor.data.tools.Merger;
+import org.nschmidt.ldparteditor.dialogs.direction.DirectionDialog;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.Threshold;
+import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 public class VM21Merger extends VM20Manipulator {
 
@@ -33,9 +37,25 @@ public class VM21Merger extends VM20Manipulator {
         super(linkedDatFile);
     }
 
-    public void merge(MergeTo mode, boolean syncWithTextEditor) {
+    public void merge(MergeTo mode, boolean syncWithTextEditor, boolean directional) {
 
         if (linkedDatFile.isReadOnly()) return;
+
+
+
+        // Get a direction if necessary...
+        if (directional) {
+            if (linkedDatFile.getLastSelectedComposite() == null) {
+                return;
+            }
+            Manipulator manipulator = linkedDatFile.getLastSelectedComposite().getManipulator();
+            if (new DirectionDialog(Editor3DWindow.getWindow().getShell(), manipulator).open() != IDialogConstants.OK_ID) {
+                return;
+            }
+            if (!DirectionDialog.calculateDirection(manipulator)) {
+                return;
+            }
+        }
 
         Vector3d newVertex = new Vector3d();
         Set<Vertex> originVerts = new TreeSet<Vertex>();
@@ -120,6 +140,10 @@ public class VM21Merger extends VM20Manipulator {
                     if (mode == MergeTo.NEAREST_EDGE) {
                         for (Vertex vertex : originVerts) {
                             final Object[] target = getMinimalDistanceVerticesToLines(vertex, false);
+                            if (directional) {
+                                // FIXME NEEDS IMPLEMENTATION!!!
+                            }
+
                             modified = changeVertexDirectFast(vertex, (Vertex) target[2], true) || modified;
                         }
                     } else if (mode == MergeTo.NEAREST_EDGE_SPLIT) {

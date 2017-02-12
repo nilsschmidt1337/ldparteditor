@@ -121,7 +121,6 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
     @Override
     public void init() {
-        // FIXME Needs implementation!
 
         if (shaderProgram.isDefault()) shaderProgram = new GLShader("renderer.vert", "renderer.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgram2.isDefault()) shaderProgram2 = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -216,8 +215,6 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
         stack.clear();
         helper.createVBO();
-
-        // FIXME Needs implementation!
 
         int state3d = 0;
         if (c3d.isAnaglyph3d() && !raytraceMode) {

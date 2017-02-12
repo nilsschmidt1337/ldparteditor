@@ -192,6 +192,4 @@ public class OptionsDialog extends OptionsDesign {
         Editor3DWindow.getWindow().initAllRenderers();
         super.handleShellCloseEvent();
     }
-
-    // FIXME OptionsDialog needs implementation!
 }
