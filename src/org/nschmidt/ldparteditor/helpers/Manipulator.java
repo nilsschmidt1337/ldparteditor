@@ -1794,6 +1794,11 @@ public class Manipulator {
         position = new Vector4f(0f, 0f, 0f, 1f);
     }
 
+    public void positionToOrigin() {
+        accuratePosition = new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO };
+        position = new Vector4f(0f, 0f, 0f, 1f);
+    }
+
     public void loadIntoMatrix(Matrix4f transformation) {
         transformation.setIdentity();
         transformation.m30 = position.x;

@@ -3909,7 +3909,17 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         }
                         final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
-                        if (new CoordinatesDialog(getShell(), v, mani).open() == IDialogConstants.OK_ID) {
+                        if (new CoordinatesDialog(getShell(), v, mani, c3d.getManipulator()).open() == IDialogConstants.OK_ID) {
+
+                            if (CoordinatesDialog.getTransformationMode() == ManipulatorScope.LOCAL) {
+                                BigDecimal[] pos = c3d.getManipulator().getAccuratePosition();
+                                CoordinatesDialog.setVertex(
+                                        new Vertex(
+                                                Vector3d.add(
+                                                        c3d.getManipulator().getAccurateRotation().invert().transform(new Vector3d(CoordinatesDialog.getVertex())),
+                                                        new Vector3d(pos[0], pos[1], pos[2]))));
+                            }
+
                             vm.addSnapshot();
                             int coordCount = 0;
                             coordCount += CoordinatesDialog.isX() ? 1 : 0;
@@ -8171,7 +8181,7 @@ public class Editor3DWindow extends Editor3DDesign {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                    c3d.getManipulator().reset();
+                    c3d.getManipulator().positionToOrigin();
                 }
             }
         }

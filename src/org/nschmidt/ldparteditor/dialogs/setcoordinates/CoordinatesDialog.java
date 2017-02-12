@@ -15,11 +15,16 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.setcoordinates;
 
+import java.math.BigDecimal;
+
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
+import org.nschmidt.ldparteditor.helpers.Manipulator;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
@@ -46,12 +51,14 @@ public class CoordinatesDialog extends CoordinatesDesign {
     private static boolean y = false;
     private static boolean z = false;
 
+    private final Manipulator mani;
+
     /**
      * Create the dialog.
      *
      * @param parentShell
      */
-    public CoordinatesDialog(Shell parentShell, Vertex v, Vertex manipulatorPosition) {
+    public CoordinatesDialog(Shell parentShell, Vertex v, Vertex manipulatorPosition, Manipulator mani) {
         super(parentShell, v, manipulatorPosition);
         x = false;
         y = false;
@@ -61,12 +68,40 @@ public class CoordinatesDialog extends CoordinatesDesign {
         } else {
             vertex = new Vertex(v.X, v.Y, v.Z);
         }
+        this.mani = mani;
+        if (transformationMode == ManipulatorScope.LOCAL) {
+            vertex = globalToLocal(vertex);
+        }
     }
 
     @Override
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
+        btn_Local[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
+                btn_Local[0].setSelection(true);
+                if (transformationMode != ManipulatorScope.LOCAL) {
+                    transformationMode = ManipulatorScope.LOCAL;
+                    vertex = globalToLocal(vertex);
+                }
+                updateXYZ();
+            }
+        });
+        btn_Global[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
+                btn_Global[0].setSelection(true);
+                if (transformationMode != ManipulatorScope.GLOBAL) {
+                    transformationMode = ManipulatorScope.GLOBAL;
+                    vertex = localToGlobal(vertex);
+                }
+                updateXYZ();
+            }
+        });
         cb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -112,17 +147,23 @@ public class CoordinatesDialog extends CoordinatesDesign {
         btn_Manipulator[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                spn_X[0].setValue(m.X);
-                spn_Y[0].setValue(m.Y);
-                spn_Z[0].setValue(m.Z);
+                if (transformationMode == ManipulatorScope.GLOBAL) {
+                    vertex = new Vertex(m.X, m.Y, m.Z);
+                } else {
+                    vertex = globalToLocal(new Vertex(m.X, m.Y, m.Z));
+                }
+                updateXYZ();
             }
         });
         btn_Clipboard[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                spn_X[0].setValue(c.X);
-                spn_Y[0].setValue(c.Y);
-                spn_Z[0].setValue(c.Z);
+                if (transformationMode == ManipulatorScope.GLOBAL) {
+                    vertex = new Vertex(c.X, c.Y, c.Z);
+                } else {
+                    vertex = globalToLocal(new Vertex(c.X, c.Y, c.Z));
+                }
+                updateXYZ();
             }
         });
         return super.open();
@@ -178,5 +219,22 @@ public class CoordinatesDialog extends CoordinatesDesign {
 
     public static ManipulatorScope getTransformationMode() {
         return transformationMode;
+    }
+
+    private Vertex globalToLocal(Vertex vert) {
+        BigDecimal[] pos = mani.getAccuratePosition();
+        return new Vertex(mani.getAccurateRotation().transform(Vector3d.sub(new Vector3d(vert), new Vector3d(pos[0], pos[1], pos[2]))));
+    }
+
+    private Vertex localToGlobal(Vertex vert) {
+        BigDecimal[] pos = mani.getAccuratePosition();
+        return new Vertex(Vector3d.add(mani.getAccurateRotation().invert().transform(new Vector3d(vert)), new Vector3d(pos[0], pos[1], pos[2])));
+    }
+
+    private void updateXYZ() {
+        Vector3d v2 = new Vector3d(vertex.X, vertex.Y, vertex.Z);
+        spn_X[0].setValue(v2.X);
+        spn_Y[0].setValue(v2.Y);
+        spn_Z[0].setValue(v2.Z);
     }
 }
