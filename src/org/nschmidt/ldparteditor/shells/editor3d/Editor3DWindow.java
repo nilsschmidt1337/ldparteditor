@@ -3867,39 +3867,6 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-
-        mntm_MergeToNearestEdgeDir[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
-                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        vm.addSnapshot();
-                        vm.merge(MergeTo.NEAREST_EDGE, true, true);
-                        regainFocus();
-                        return;
-                    }
-                }
-                regainFocus();
-            }
-        });
-        mntm_MergeToNearestEdgeSplitDir[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
-                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        vm.addSnapshot();
-                        vm.merge(MergeTo.NEAREST_EDGE_SPLIT, true, true);
-                        regainFocus();
-                        return;
-                    }
-                }
-                regainFocus();
-            }
-        });
         mntm_MergeToNearestFaceDir[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
