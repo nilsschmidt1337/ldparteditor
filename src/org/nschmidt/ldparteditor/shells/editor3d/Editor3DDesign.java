@@ -301,8 +301,6 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_MergeToNearestEdgeSplit = new MenuItem[1];
     final MenuItem[] mntm_MergeToNearestFace = new MenuItem[1];
 
-    final MenuItem[] mntm_MergeToNearestEdgeDir = new MenuItem[1];
-    final MenuItem[] mntm_MergeToNearestEdgeSplitDir = new MenuItem[1];
     final MenuItem[] mntm_MergeToNearestFaceDir = new MenuItem[1];
 
     final MenuItem[] mntm_setXYZ = new MenuItem[1];
@@ -2336,16 +2334,6 @@ class Editor3DDesign extends ApplicationWindow {
             }
             @SuppressWarnings("unused")
             final MenuItem mntmSeparator4 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
-            {
-                MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
-                this.mntm_MergeToNearestEdgeDir[0] = mntm_mergeTo;
-                mntm_mergeTo.setText(I18n.E3D_MergeToNearestEdgeDir);
-            }
-            {
-                MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
-                this.mntm_MergeToNearestEdgeSplitDir[0] = mntm_mergeTo;
-                mntm_mergeTo.setText(I18n.E3D_MergeToNearestEdgeSplitDir);
-            }
             {
                 MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
                 this.mntm_MergeToNearestFaceDir[0] = mntm_mergeTo;

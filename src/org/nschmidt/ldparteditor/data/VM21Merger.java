@@ -140,28 +140,26 @@ public class VM21Merger extends VM20Manipulator {
                     if (mode == MergeTo.NEAREST_EDGE) {
                         for (Vertex vertex : originVerts) {
                             final Object[] target = getMinimalDistanceVerticesToLines(vertex, false);
-                            if (directional) {
-                                // FIXME NEEDS IMPLEMENTATION!!!
-                            }
                             modified = changeVertexDirectFast(vertex, (Vertex) target[2], true) || modified;
                         }
                     } else if (mode == MergeTo.NEAREST_EDGE_SPLIT) {
                         for (Vertex vertex : originVerts) {
                             final Object[] target = getMinimalDistanceVerticesToLines(vertex, false);
-                            if (directional) {
-                                // FIXME NEEDS IMPLEMENTATION!!!
-                            }
                             modified = changeVertexDirectFast(vertex, (Vertex) target[2], true) || modified;
                             // And split at target position!
                             modified = split((Vertex) target[0], (Vertex) target[1], (Vertex) target[2]) || modified;
                         }
                     } else {
-                        for (Vertex vertex : originVerts) {
-                            final Vertex target = getMinimalDistanceVertexToSurfaces(vertex);
-                            if (directional) {
-                                // FIXME NEEDS IMPLEMENTATION!!!
+                        if (directional) {
+                            // FIXME NEEDS IMPLEMENTATION!!!
+                            for (Vertex vertex : originVerts) {
+
                             }
-                            modified = changeVertexDirectFast(vertex, target, true) || modified;
+                        } else {
+                            for (Vertex vertex : originVerts) {
+                                final Vertex target = getMinimalDistanceVertexToSurfaces(vertex);
+                                modified = changeVertexDirectFast(vertex, target, true) || modified;
+                            }
                         }
                     }
                     clearSelection();
