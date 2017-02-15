@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -115,6 +116,9 @@ public class VM21Merger extends VM20Manipulator {
                 // so the nearest edge will not be adjacent to the (selected) origin vertex
 
                 for (Vertex v : originVerts) {
+                    if (!vertexLinkedToPositionInFile.containsKey(v)) {
+                        continue;
+                    }
                     for (VertexManifestation mani : vertexLinkedToPositionInFile.get(v)) {
                         GData gd = mani.getGdata();
                         switch (gd.type()) {
@@ -157,9 +161,59 @@ public class VM21Merger extends VM20Manipulator {
                     } else {
                         if (directional) {
                             // FIXME NEEDS IMPLEMENTATION!!!
+                            final HashSet<GData> allSurfs = new HashSet<>();
+                            allSurfs.addAll(triangles.keySet());
+                            allSurfs.addAll(quads.keySet());
                             for (Vertex vertex : originVerts) {
+                                HashSet<GData> linkedSurfs = getLinkedSurfaces(vertex);
+                                Vector3r orig = new Vector3r(vertex);
+                                Vector3r r = new Vector3r();
+                                Vector3r p1 = new Vector3r();
+                                Vector3r p2 = new Vector3r();
+                                Vector3r p3 = new Vector3r();
+                                Vector3r p4 = new Vector3r();
+                                Vertex[] verts;
+                                Rational[] distance = new Rational[1];
+                                for (GData surf : allSurfs) {
+                                    if (linkedSurfs.contains(surf) || hiddenData.contains(surf)) {
+                                        continue;
+                                    }
+                                    switch (surf.type()) {
+                                    case 3:
+                                        GData3 gd3 = (GData3) surf;
+                                        verts = triangles.get(gd3);
+                                        if (verts == null) {
+                                            continue;
+                                        }
+                                        p1.set(verts[0]);
+                                        p2.set(verts[1]);
+                                        p3.set(verts[2]);
+                                        projectRayOnTriangleWithDistance(orig, dir, p1, p2, p3, r, distance);
+                                        continue;
+                                    case 4:
+                                        GData4 gd4 = (GData4) surf;
+                                        verts = quads.get(gd4);
+                                        if (verts == null) {
+                                            continue;
+                                        }
+                                        p1.set(verts[0]);
+                                        p2.set(verts[1]);
+                                        p3.set(verts[2]);
+                                        p4.set(verts[3]);
+                                        projectRayOnTriangleWithDistance(orig, dir, p1, p2, p3, r, distance);
+                                        projectRayOnTriangleWithDistance(orig, dir, p3, p4, p1, r, distance);
+                                        continue;
+                                    default:
+                                        continue;
+                                    }
+                                }
 
+                                if (distance[0] != null && distance[0].compareTo(Rational.ZERO) > 0) {
+                                    final Vertex target = new Vertex(r);
+                                    modified = changeVertexDirectFast(vertex, target, true) || modified;
+                                }
                             }
+                            break;
                         } else {
                             for (Vertex vertex : originVerts) {
                                 final Vertex target = getMinimalDistanceVertexToSurfaces(vertex);
@@ -245,12 +299,11 @@ public class VM21Merger extends VM20Manipulator {
         if (v.compareTo(Rational.ZERO) < 0 || u.add(v).compareTo(Rational.ONE) > 0)
             return;
         Rational t = Vector3r.dot(corner2, qvec).multiply(inv_diskr);
-        if (distance[0] == null) {
+        if (t.compareTo(Rational.ZERO) < 0)
+            return;
+        if (distance[0] == null || t.compareTo(distance[0]) < 0) {
             distance[0] = t;
         }
-        if (t.compareTo(Rational.ZERO) < 0 || t.compareTo(distance[0]) > 0)
-            return;
-        distance[0] = t;
         r.setX(orig2.X.add(dir2.X.multiply(t)));
         r.setY(orig2.Y.add(dir2.Y.multiply(t)));
         r.setZ(orig2.Z.add(dir2.Z.multiply(t)));
