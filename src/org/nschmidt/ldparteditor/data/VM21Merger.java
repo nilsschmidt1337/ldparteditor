@@ -43,7 +43,7 @@ public class VM21Merger extends VM20Manipulator {
 
         if (linkedDatFile.isReadOnly()) return;
 
-
+        final Vector3r dir;
 
         // Get a direction if necessary...
         if (directional) {
@@ -57,6 +57,9 @@ public class VM21Merger extends VM20Manipulator {
             if (!DirectionDialog.calculateDirection(manipulator)) {
                 return;
             }
+            dir = new Vector3r(new Vertex(DirectionDialog.getDirection()));
+        } else {
+            dir = null;
         }
 
         Vector3d newVertex = new Vector3d();
