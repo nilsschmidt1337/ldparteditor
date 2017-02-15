@@ -219,7 +219,7 @@ public class VM21Merger extends VM20Manipulator {
         validateState();
     }
 
-    private Rational projectRayOnTriangleWithDistance(
+    private void projectRayOnTriangleWithDistance(
             Vector3r vector3r, Vector3r dirN,
             Vector3r tv, Vector3r tv2, Vector3r tv3,
             Vector3r r, Rational[] distance) {
@@ -234,26 +234,27 @@ public class VM21Merger extends VM20Manipulator {
         Vector3r pvec = Vector3r.cross(dir2, corner2);
         diskr = Vector3r.dot(corner1, pvec);
         if (diskr.abs().compareTo(Rational.ZERO) == 0)
-            return null;
+            return;
         Rational inv_diskr = Rational.ONE.divide(diskr);
         Vector3r tvec = Vector3r.sub(orig2, vert0);
         Rational u = Vector3r.dot(tvec, pvec).multiply(inv_diskr);
         if (u.compareTo(Rational.ZERO) < 0 || u.compareTo(Rational.ONE) > 1)
-            return null;
+            return;
         Vector3r qvec = Vector3r.cross(tvec, corner1);
         Rational v = Vector3r.dot(dir2, pvec).multiply(inv_diskr);
         if (v.compareTo(Rational.ZERO) < 0 || u.add(v).compareTo(Rational.ONE) > 0)
-            return null;
+            return;
         Rational t = Vector3r.dot(corner2, qvec).multiply(inv_diskr);
         if (distance[0] == null) {
             distance[0] = t;
         }
         if (t.compareTo(Rational.ZERO) < 0 || t.compareTo(distance[0]) > 0)
-            return null;
+            return;
+        distance[0] = t;
         r.setX(orig2.X.add(dir2.X.multiply(t)));
         r.setY(orig2.Y.add(dir2.Y.multiply(t)));
         r.setZ(orig2.Z.add(dir2.Z.multiply(t)));
-        return t;
+        return;
     }
 
 }
