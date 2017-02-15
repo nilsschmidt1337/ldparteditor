@@ -96,6 +96,12 @@ public class Vector3r {
         this.Z = tmp;
     }
 
+    public void set(Vertex v) {
+        this.X = new Rational(v.X);
+        this.Y = new Rational(v.Y);
+        this.Z = new Rational(v.Z);
+    }
+
     public static Vector3r add(Vector3r a, Vector3r b) {
         return new Vector3r(a.X.add(b.X), a.Y.add(b.Y), a.Z.add(b.Z));
     }
