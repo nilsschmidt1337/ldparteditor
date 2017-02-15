@@ -795,7 +795,6 @@ public class VM08SlicerPro extends VM07PathTruder {
 
     private void projectRayOnTrianglePlane(Vector3r vector3r, Vector3r dirN, Vector3r tv, Vector3r tv2, Vector3r tv3, Vector3r r) {
         Rational diskr = Rational.ZERO;
-        Rational inv_diskr = Rational.ZERO;
         Vector3r vert0 = new Vector3r(tv);
         Vector3r vert1 = new Vector3r(tv2);
         Vector3r vert2 = new Vector3r(tv3);
@@ -807,7 +806,7 @@ public class VM08SlicerPro extends VM07PathTruder {
         diskr = Vector3r.dot(corner1, pvec);
         if (diskr.abs().compareTo(Rational.ZERO) == 0)
             return;
-        inv_diskr = Rational.ONE.divide(diskr);
+        Rational inv_diskr = Rational.ONE.divide(diskr);
         Vector3r tvec = Vector3r.sub(orig2, vert0);
         Vector3r qvec = Vector3r.cross(tvec, corner1);
         Rational t = Vector3r.dot(corner2, qvec).multiply(inv_diskr);

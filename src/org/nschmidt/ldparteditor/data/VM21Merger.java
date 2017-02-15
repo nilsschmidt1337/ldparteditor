@@ -28,7 +28,9 @@ import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
+import org.nschmidt.ldparteditor.helpers.math.Rational;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.helpers.math.Vector3r;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 public class VM21Merger extends VM20Manipulator {
@@ -212,6 +214,43 @@ public class VM21Merger extends VM20Manipulator {
         Merger.mergeTo(new Vertex(newVertex), this, linkedDatFile, syncWithTextEditor);
         clearSelection();
         validateState();
+    }
+
+    private Rational projectRayOnTriangleWithDistance(
+            Vector3r vector3r, Vector3r dirN,
+            Vector3r tv, Vector3r tv2, Vector3r tv3,
+            Vector3r r, Rational[] distance) {
+        Rational diskr = Rational.ZERO;
+        Vector3r vert0 = new Vector3r(tv);
+        Vector3r vert1 = new Vector3r(tv2);
+        Vector3r vert2 = new Vector3r(tv3);
+        Vector3r corner1 = Vector3r.sub(vert1, vert0);
+        Vector3r corner2 = Vector3r.sub(vert2, vert0);
+        Vector3r orig2 = new Vector3r(vector3r);
+        Vector3r dir2 = new Vector3r(dirN);
+        Vector3r pvec = Vector3r.cross(dir2, corner2);
+        diskr = Vector3r.dot(corner1, pvec);
+        if (diskr.abs().compareTo(Rational.ZERO) == 0)
+            return null;
+        Rational inv_diskr = Rational.ONE.divide(diskr);
+        Vector3r tvec = Vector3r.sub(orig2, vert0);
+        Rational u = Vector3r.dot(tvec, pvec).multiply(inv_diskr);
+        if (u.compareTo(Rational.ZERO) < 0 || u.compareTo(Rational.ONE) > 1)
+            return null;
+        Vector3r qvec = Vector3r.cross(tvec, corner1);
+        Rational v = Vector3r.dot(dir2, pvec).multiply(inv_diskr);
+        if (v.compareTo(Rational.ZERO) < 0 || u.add(v).compareTo(Rational.ONE) > 0)
+            return null;
+        Rational t = Vector3r.dot(corner2, qvec).multiply(inv_diskr);
+        if (distance[0] == null) {
+            distance[0] = t;
+        }
+        if (t.compareTo(Rational.ZERO) < 0 || t.compareTo(distance[0]) > 0)
+            return null;
+        r.setX(orig2.X.add(dir2.X.multiply(t)));
+        r.setY(orig2.Y.add(dir2.Y.multiply(t)));
+        r.setZ(orig2.Z.add(dir2.Z.multiply(t)));
+        return t;
     }
 
 }
