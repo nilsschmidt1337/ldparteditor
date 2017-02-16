@@ -222,7 +222,7 @@ public class DirectionDialog extends DirectionDesign {
 
     private double[] sphericalToCartesian(double[] sphe) {
         double t = sphe[THETA] * Math.PI / 180.0;
-        double p = sphe[THETA] * Math.PI / 180.0;
+        double p = sphe[PHI] * Math.PI / 180.0;
         double x = sphe[RHO] * Math.sin(t) * Math.cos(p);
         double y = sphe[RHO] * Math.sin(t) * Math.sin(p) ;
         double z = sphe[RHO] * Math.cos(t);

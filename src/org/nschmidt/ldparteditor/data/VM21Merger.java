@@ -27,6 +27,7 @@ import org.nschmidt.ldparteditor.data.tools.Merger;
 import org.nschmidt.ldparteditor.dialogs.direction.DirectionDialog;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.Threshold;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.Rational;
@@ -45,6 +46,7 @@ public class VM21Merger extends VM20Manipulator {
         if (linkedDatFile.isReadOnly()) return;
 
         final Vector3r dir;
+        final HashSet<VertexManifestation> selectedSurfs = new HashSet<>();
 
         // Get a direction if necessary...
         if (directional) {
@@ -115,11 +117,9 @@ public class VM21Merger extends VM20Manipulator {
                 // First, I had to extend the selection to adjacent data,
                 // so the nearest edge will not be adjacent to the (selected) origin vertex
 
+                final HashSet<VertexManifestation> emptySet = new HashSet<>();
                 for (Vertex v : originVerts) {
-                    if (!vertexLinkedToPositionInFile.containsKey(v)) {
-                        continue;
-                    }
-                    for (VertexManifestation mani : vertexLinkedToPositionInFile.get(v)) {
+                    for (VertexManifestation mani : vertexLinkedToPositionInFile.getOrDefault(v, emptySet)) {
                         GData gd = mani.getGdata();
                         switch (gd.type()) {
                         case 2:
@@ -139,97 +139,112 @@ public class VM21Merger extends VM20Manipulator {
                         }
                         selectedData.add(gd);
                     }
+                }
 
-                    // Then invert the selection, so that getMinimalDistanceVertexToLines() will snap on the target
+                // Then invert the selection, so that getMinimalDistanceVertexToLines() will snap on the target
 
+                if (!directional) {
                     selectInverse(new SelectorSettings());
+                }
 
-                    // And using changeVertexDirectFast() to do the merge
-                    boolean modified = false;
-                    if (mode == MergeTo.NEAREST_EDGE) {
-                        for (Vertex vertex : originVerts) {
-                            final Object[] target = getMinimalDistanceVerticesToLines(vertex, false);
-                            modified = changeVertexDirectFast(vertex, (Vertex) target[2], true) || modified;
-                        }
-                    } else if (mode == MergeTo.NEAREST_EDGE_SPLIT) {
-                        for (Vertex vertex : originVerts) {
-                            final Object[] target = getMinimalDistanceVerticesToLines(vertex, false);
-                            modified = changeVertexDirectFast(vertex, (Vertex) target[2], true) || modified;
-                            // And split at target position!
-                            modified = split((Vertex) target[0], (Vertex) target[1], (Vertex) target[2]) || modified;
-                        }
-                    } else {
-                        if (directional) {
-                            // FIXME NEEDS IMPLEMENTATION!!!
-                            final HashSet<GData> allSurfs = new HashSet<>();
-                            allSurfs.addAll(triangles.keySet());
-                            allSurfs.addAll(quads.keySet());
-                            for (Vertex vertex : originVerts) {
-                                HashSet<GData> linkedSurfs = getLinkedSurfaces(vertex);
-                                Vector3r orig = new Vector3r(vertex);
-                                Vector3r r = new Vector3r();
-                                Vector3r p1 = new Vector3r();
-                                Vector3r p2 = new Vector3r();
-                                Vector3r p3 = new Vector3r();
-                                Vector3r p4 = new Vector3r();
-                                Vertex[] verts;
-                                Rational[] distance = new Rational[1];
-                                for (GData surf : allSurfs) {
-                                    if (linkedSurfs.contains(surf) || hiddenData.contains(surf)) {
-                                        continue;
-                                    }
-                                    switch (surf.type()) {
-                                    case 3:
-                                        GData3 gd3 = (GData3) surf;
-                                        verts = triangles.get(gd3);
-                                        if (verts == null) {
-                                            continue;
-                                        }
-                                        p1.set(verts[0]);
-                                        p2.set(verts[1]);
-                                        p3.set(verts[2]);
-                                        projectRayOnTriangleWithDistance(orig, dir, p1, p2, p3, r, distance);
-                                        continue;
-                                    case 4:
-                                        GData4 gd4 = (GData4) surf;
-                                        verts = quads.get(gd4);
-                                        if (verts == null) {
-                                            continue;
-                                        }
-                                        p1.set(verts[0]);
-                                        p2.set(verts[1]);
-                                        p3.set(verts[2]);
-                                        p4.set(verts[3]);
-                                        projectRayOnTriangleWithDistance(orig, dir, p1, p2, p3, r, distance);
-                                        projectRayOnTriangleWithDistance(orig, dir, p3, p4, p1, r, distance);
-                                        continue;
-                                    default:
-                                        continue;
-                                    }
+                // And using changeVertexDirectFast() to do the merge
+                boolean modified = false;
+                if (mode == MergeTo.NEAREST_EDGE) {
+                    for (Vertex vertex : originVerts) {
+                        final Object[] target = getMinimalDistanceVerticesToLines(vertex, false);
+                        modified = changeVertexDirectFast(vertex, (Vertex) target[2], true) || modified;
+                    }
+                } else if (mode == MergeTo.NEAREST_EDGE_SPLIT) {
+                    for (Vertex vertex : originVerts) {
+                        final Object[] target = getMinimalDistanceVerticesToLines(vertex, false);
+                        modified = changeVertexDirectFast(vertex, (Vertex) target[2], true) || modified;
+                        // And split at target position!
+                        modified = split((Vertex) target[0], (Vertex) target[1], (Vertex) target[2]) || modified;
+                    }
+                } else if (directional) {
+                    // FIXME NEEDS IMPLEMENTATION!!!
+                    final HashSet<GData> allSurfs = new HashSet<>();
+                    allSurfs.addAll(triangles.keySet());
+                    allSurfs.addAll(quads.keySet());
+                    for (Vertex vertex : originVerts) {
+                        HashSet<GData> linkedSurfs = getLinkedSurfaces(vertex);
+                        Vector3r orig = new Vector3r(vertex);
+                        Vector3r r = new Vector3r();
+                        Vector3r p1 = new Vector3r();
+                        Vector3r p2 = new Vector3r();
+                        Vector3r p3 = new Vector3r();
+                        Vector3r p4 = new Vector3r();
+                        Vertex[] verts;
+                        Rational[] distance = new Rational[1];
+                        for (GData surf : allSurfs) {
+                            if ((!triangles.containsKey(surf) && !quads.containsKey(surf)) || linkedSurfs.contains(surf) || hiddenData.contains(surf) || selectedData.contains(surf)) {
+                                continue;
+                            }
+                            switch (surf.type()) {
+                            case 3:
+                                GData3 gd3 = (GData3) surf;
+                                verts = triangles.get(gd3);
+                                if (verts == null) {
+                                    continue;
                                 }
+                                p1.set(verts[0]);
+                                p2.set(verts[1]);
+                                p3.set(verts[2]);
+                                projectRayOnTriangleWithDistance(orig, dir, p1, p2, p3, r, distance);
+                                continue;
+                            case 4:
+                                GData4 gd4 = (GData4) surf;
+                                verts = quads.get(gd4);
+                                if (verts == null) {
+                                    continue;
+                                }
+                                p1.set(verts[0]);
+                                p2.set(verts[1]);
+                                p3.set(verts[2]);
+                                p4.set(verts[3]);
+                                projectRayOnTriangleWithDistance(orig, dir, p1, p2, p3, r, distance);
+                                projectRayOnTriangleWithDistance(orig, dir, p3, p4, p1, r, distance);
+                                continue;
+                            default:
+                                continue;
+                            }
+                        }
 
-                                if (distance[0] != null && distance[0].compareTo(Rational.ZERO) > 0) {
-                                    final Vertex target = new Vertex(r);
-                                    modified = changeVertexDirectFast(vertex, target, true) || modified;
-                                }
-                            }
-                            break;
-                        } else {
-                            for (Vertex vertex : originVerts) {
-                                final Vertex target = getMinimalDistanceVertexToSurfaces(vertex);
-                                modified = changeVertexDirectFast(vertex, target, true) || modified;
-                            }
+                        if (distance[0] != null && distance[0].compareTo(Rational.ZERO) > 0) {
+                            final Vertex target = new Vertex(r);
+                            modified = changeVertexDirectFast(vertex, target, true) || modified;
                         }
                     }
+                } else {
+                    GData3 dummyTriangle = new GData3(
+                            new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
+                            new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
+                            new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
+                            View.DUMMY_REFERENCE, new GColour(-1, 1f, 1f, 1f, 1f), false);
+                    GData4 dummyQuad = new GData4(
+                            new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
+                            new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
+                            new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
+                            new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
+                            View.DUMMY_REFERENCE, new GColour(-1, 1f, 1f, 1f, 1f));
+                    selectedTriangles.add(dummyTriangle);
+                    selectedQuads.add(dummyQuad);
+                    for (Vertex vertex : originVerts) {
+                        final Vertex target = getMinimalDistanceVertexToSurfaces(vertex);
+                        modified = changeVertexDirectFast(vertex, target, true) || modified;
+                    }
+                    selectedTriangles.remove(dummyTriangle);
+                    selectedQuads.remove(dummyQuad);
+                }
+                clearSelection();
+
+                if (modified) {
+                    IdenticalVertexRemover.removeIdenticalVertices(this, linkedDatFile, false, true);
                     clearSelection();
-
-                    if (modified) {
-                        IdenticalVertexRemover.removeIdenticalVertices(this, linkedDatFile, false, true);
-                        clearSelection();
-                        setModified_NoSync();
-                    }
+                    setModified_NoSync();
                 }
             }
+
             if (syncWithTextEditor) {
                 syncWithTextEditors(true);
             }
