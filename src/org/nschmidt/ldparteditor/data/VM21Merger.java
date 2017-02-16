@@ -318,10 +318,15 @@ public class VM21Merger extends VM20Manipulator {
             return;
         if (distance[0] == null || t.compareTo(distance[0]) < 0) {
             distance[0] = t;
+            /*Rational w = Rational.ONE.subtract(u).subtract(v);
+            r.setX(vert0.X.multiply(v).add(vert1.X.multiply(u)).add(vert2.X.multiply(w)));
+            r.setY(vert0.Y.multiply(v).add(vert1.Y.multiply(u)).add(vert2.Y.multiply(w)));
+            r.setZ(vert0.Z.multiply(v).add(vert1.Z.multiply(u)).add(vert2.Z.multiply(w)));*/
+
+            r.setX(orig2.X.add(dir2.X.multiply(t)));
+            r.setY(orig2.Y.add(dir2.Y.multiply(t)));
+            r.setZ(orig2.Z.add(dir2.Z.multiply(t)));
         }
-        r.setX(orig2.X.add(dir2.X.multiply(t)));
-        r.setY(orig2.Y.add(dir2.Y.multiply(t)));
-        r.setZ(orig2.Z.add(dir2.Z.multiply(t)));
         return;
     }
 
