@@ -46,7 +46,6 @@ public class VM21Merger extends VM20Manipulator {
         if (linkedDatFile.isReadOnly()) return;
 
         final Vector3r dir;
-        final HashSet<VertexManifestation> selectedSurfs = new HashSet<>();
 
         // Get a direction if necessary...
         if (directional) {
@@ -307,25 +306,24 @@ public class VM21Merger extends VM20Manipulator {
         Rational inv_diskr = Rational.ONE.divide(diskr);
         Vector3r tvec = Vector3r.sub(orig2, vert0);
         Rational u = Vector3r.dot(tvec, pvec).multiply(inv_diskr);
-        if (u.compareTo(Rational.ZERO) < 0 || u.compareTo(Rational.ONE) > 1)
+        if (u.compareTo(Rational.ZERO) < 0 || u.compareTo(Rational.ONE) > 0)
             return;
         Vector3r qvec = Vector3r.cross(tvec, corner1);
-        Rational v = Vector3r.dot(dir2, pvec).multiply(inv_diskr);
+        Rational v = Vector3r.dot(dir2, qvec).multiply(inv_diskr);
         if (v.compareTo(Rational.ZERO) < 0 || u.add(v).compareTo(Rational.ONE) > 0)
             return;
         Rational t = Vector3r.dot(corner2, qvec).multiply(inv_diskr);
         if (t.compareTo(Rational.ZERO) < 0)
             return;
         if (distance[0] == null || t.compareTo(distance[0]) < 0) {
-            distance[0] = t;
             /*Rational w = Rational.ONE.subtract(u).subtract(v);
             r.setX(vert0.X.multiply(v).add(vert1.X.multiply(u)).add(vert2.X.multiply(w)));
             r.setY(vert0.Y.multiply(v).add(vert1.Y.multiply(u)).add(vert2.Y.multiply(w)));
             r.setZ(vert0.Z.multiply(v).add(vert1.Z.multiply(u)).add(vert2.Z.multiply(w)));*/
-
             r.setX(orig2.X.add(dir2.X.multiply(t)));
             r.setY(orig2.Y.add(dir2.Y.multiply(t)));
             r.setZ(orig2.Z.add(dir2.Z.multiply(t)));
+            distance[0] = t;
         }
         return;
     }
