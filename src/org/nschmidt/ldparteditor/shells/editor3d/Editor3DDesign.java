@@ -63,7 +63,6 @@ import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.composites.ToolItemDrawLocation;
 import org.nschmidt.ldparteditor.composites.ToolItemDrawMode;
 import org.nschmidt.ldparteditor.composites.ToolItemState;
-import org.nschmidt.ldparteditor.composites.ToolSeparator;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
@@ -444,7 +443,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_IconSize5 = new MenuItem[1];
     final MenuItem[] mntm_IconSize6 = new MenuItem[1];
 
-    private ToolItem toolItem_ColourBar;
+    ToolItem toolItem_ColourBar;
 
     private static SashForm sashForm;
     final SashForm[] editorSashForm = new SashForm[]{null};
@@ -3204,7 +3203,7 @@ class Editor3DDesign extends ApplicationWindow {
         c3d.loadState(state);
     }
 
-    private void addColorButton(ToolItem toolItem_Colours, GColour gColour, final int index) {
+    void addColorButton(ToolItem toolItem_Colours, GColour gColour, final int index) {
         int cn = gColour.getColourNumber();
         if (cn != -1 && View.hasLDConfigColour(cn)) {
             gColour = View.getLDConfigColour(cn);
@@ -3306,7 +3305,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                         btn_Col.setToolTipText(formatter.format(messageArguments));
                     }
-                    reloadAllColours();
+                    Editor3DWindow.reloadAllColours();
                 } else {
                     int num = gColour2[0].getColourNumber();
                     if (View.hasLDConfigColour(num)) {
@@ -3456,36 +3455,5 @@ class Editor3DDesign extends ApplicationWindow {
 
     public static int getIconsize() {
         return iconSize;
-    }
-
-    void reloadColours() {
-        for (Control ctrl : toolItem_ColourBar.getChildren()) {
-            if (!(ctrl instanceof ToolSeparator)) ctrl.dispose();
-        }
-
-        List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
-
-        final int size = colours.size();
-        for (int i = 0; i < size; i++) {
-            addColorButton(toolItem_ColourBar, colours.get(i), i);
-        }
-
-        {
-            Button btn_Palette = new Button(toolItem_ColourBar, SWT.NONE);
-            this.btn_Palette[0] = btn_Palette;
-            btn_Palette.setToolTipText(I18n.E3D_More);
-            btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
-        }
-
-        toolItem_ColourBar.getParent().layout();
-        toolItem_ColourBar.layout();
-        toolItem_ColourBar.redraw();
-    }
-
-    public static void reloadAllColours() {
-        for (EditorTextWindow w : Project.getOpenTextWindows()) {
-            w.reloadColours();
-        }
-        Editor3DWindow.getWindow().reloadColours();
     }
 }
