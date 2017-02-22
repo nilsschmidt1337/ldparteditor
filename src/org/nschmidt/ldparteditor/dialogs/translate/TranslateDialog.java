@@ -37,6 +37,7 @@ import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
  */
 public class TranslateDialog extends TranslateDesign {
 
+    private static Vertex manipulator = new Vertex(0f, 0f, 0f);
     private static Vertex offset = new Vertex(0f, 0f, 0f);
     private static boolean x = true;
     private static boolean y = true;
@@ -47,16 +48,12 @@ public class TranslateDialog extends TranslateDesign {
      *
      * @param parentShell
      */
-    public TranslateDialog(Shell parentShell, Vertex v, ManipulatorScope scope) {
-        super(parentShell, v, scope);
+    public TranslateDialog(Shell parentShell, Vertex manipulatorPosition, ManipulatorScope scope) {
+        super(parentShell, scope);
         x = true;
         y = true;
         z = true;
-        if (v == null) {
-            setOffset(new Vertex(0f, 0f, 0f));
-        } else {
-            setOffset(new Vertex(v.X, v.Y, v.Z));
-        }
+        manipulator = manipulatorPosition;
     }
 
     @Override
@@ -77,6 +74,17 @@ public class TranslateDialog extends TranslateDesign {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
                 btn_Global[0].setSelection(true);
                 transformationMode = ManipulatorScope.GLOBAL;
+            }
+        });
+        btn_ToManipulatorPosition[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
+                btn_Global[0].setSelection(true);
+                transformationMode = ManipulatorScope.GLOBAL;
+                spn_X[0].setValue(manipulator.X);
+                spn_Y[0].setValue(manipulator.Y);
+                spn_Z[0].setValue(manipulator.Z);
             }
         });
         cb_Xaxis[0].addSelectionListener(new SelectionAdapter() {

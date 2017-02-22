@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.ToolItem;
-import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -61,19 +60,15 @@ class TranslateDesign extends Dialog {
     final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
 
+    final Button[] btn_ToManipulatorPosition = new Button[1];
+
     private final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
 
     // Use final only for subclass/listener references!
 
-    Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-    TranslateDesign(Shell parentShell, Vertex v, ManipulatorScope scope) {
+    TranslateDesign(Shell parentShell, ManipulatorScope scope) {
         super(parentShell);
         transformationMode = scope;
-        if (v == null) {
-            this.v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-        } else {
-            this.v = v;
-        }
     }
 
     /**
@@ -133,7 +128,7 @@ class TranslateDesign extends Dialog {
             spn_X.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spn_X.setMaximum(new BigDecimal(1000000));
             spn_X.setMinimum(new BigDecimal(-1000000));
-            spn_X.setValue(v.X);
+            spn_X.setValue(BigDecimal.ZERO);
         }
 
         {
@@ -151,7 +146,7 @@ class TranslateDesign extends Dialog {
             spn_Y.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spn_Y.setMaximum(new BigDecimal(1000000));
             spn_Y.setMinimum(new BigDecimal(-1000000));
-            spn_Y.setValue(v.Y);
+            spn_Y.setValue(BigDecimal.ZERO);
         }
 
         {
@@ -169,7 +164,14 @@ class TranslateDesign extends Dialog {
             spn_Z.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spn_Z.setMaximum(new BigDecimal(1000000));
             spn_Z.setMinimum(new BigDecimal(-1000000));
-            spn_Z.setValue(v.Z);
+            spn_Z.setValue(BigDecimal.ZERO);
+        }
+
+        {
+            Button btn_ToManipulatorPosition = new Button(cmp_container, SWT.NONE);
+            this.btn_ToManipulatorPosition[0] = btn_ToManipulatorPosition;
+            btn_ToManipulatorPosition.setText(I18n.TRANSLATE_ToManipulatorPosition);
+            btn_ToManipulatorPosition.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
 
         cmp_container.pack();
