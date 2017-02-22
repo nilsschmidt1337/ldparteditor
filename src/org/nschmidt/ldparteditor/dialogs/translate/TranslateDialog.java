@@ -87,6 +87,18 @@ public class TranslateDialog extends TranslateDesign {
                 spn_Z[0].setValue(manipulator.Z);
             }
         });
+        btn_ToManipulatorPositionInverted[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
+                btn_Global[0].setSelection(true);
+                transformationMode = ManipulatorScope.GLOBAL;
+                spn_X[0].setValue(manipulator.X.negate());
+                spn_Y[0].setValue(manipulator.Y.negate());
+                spn_Z[0].setValue(manipulator.Z.negate());
+            }
+        });
+
         cb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
