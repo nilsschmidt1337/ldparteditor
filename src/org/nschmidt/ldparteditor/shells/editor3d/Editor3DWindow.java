@@ -4003,8 +4003,10 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
-                        if (new TranslateDialog(getShell(), null, transformationMode).open() == IDialogConstants.OK_ID) {
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())
+                            && c3d.equals(DatFile.getLastHoveredComposite())
+                            && !c3d.getLockableDatFileReference().isReadOnly()) {
+                        if (new TranslateDialog(getShell(), new Vertex(c3d.getManipulator().getAccuratePosition()), transformationMode).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(TranslateDialog.getOffset(), null, TransformationMode.TRANSLATE, TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), isMovingAdjacentData(), true, TranslateDialog.getTransformationMode());
                         }
