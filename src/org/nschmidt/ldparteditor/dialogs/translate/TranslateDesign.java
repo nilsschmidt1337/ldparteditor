@@ -61,6 +61,7 @@ class TranslateDesign extends Dialog {
     final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
 
     final Button[] btn_ToManipulatorPosition = new Button[1];
+    final Button[] btn_ToManipulatorPositionInverted = new Button[1];
 
     private final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
 
@@ -172,6 +173,12 @@ class TranslateDesign extends Dialog {
             this.btn_ToManipulatorPosition[0] = btn_ToManipulatorPosition;
             btn_ToManipulatorPosition.setText(I18n.TRANSLATE_ToManipulatorPosition);
             btn_ToManipulatorPosition.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+        }
+        {
+            Button btn_ToManipulatorPositionInverted = new Button(cmp_container, SWT.NONE);
+            this.btn_ToManipulatorPositionInverted[0] = btn_ToManipulatorPositionInverted;
+            btn_ToManipulatorPositionInverted.setText(I18n.TRANSLATE_ToManipulatorPositionInverted);
+            btn_ToManipulatorPositionInverted.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
 
         cmp_container.pack();

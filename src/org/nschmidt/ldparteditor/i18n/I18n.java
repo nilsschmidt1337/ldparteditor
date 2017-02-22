@@ -1111,6 +1111,7 @@ public final class I18n {
     public static final String TJUNCTION_Title = TJUNCTION.getString(getProperty());
     public static final String TRANSLATE_Title = TRANSLATE.getString(getProperty());
     public static final String TRANSLATE_ToManipulatorPosition = TRANSLATE.getString(getProperty());
+    public static final String TRANSLATE_ToManipulatorPositionInverted = TRANSLATE.getString(getProperty());
     public static final String TRANSLATE_X = TRANSLATE.getString(getProperty());
     public static final String TRANSLATE_Y = TRANSLATE.getString(getProperty());
     public static final String TRANSLATE_Z = TRANSLATE.getString(getProperty());
