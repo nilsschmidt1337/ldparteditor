@@ -37,8 +37,7 @@ public class OptionsDialog extends OptionsDesign {
         btn_OK[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                Editor3DWindow.getWindow().compileAll();
-                Editor3DWindow.getWindow().initAllRenderers();
+                closingProcedure();
                 me.close();
             }
         });
@@ -187,9 +186,16 @@ public class OptionsDialog extends OptionsDesign {
 
     @Override
     protected void handleShellCloseEvent() {
-        View.overrideColour16();
-        Editor3DWindow.getWindow().compileAll();
-        Editor3DWindow.getWindow().initAllRenderers();
+        closingProcedure();
         super.handleShellCloseEvent();
+    }
+
+    private void closingProcedure() {
+        // Override colour 16
+        View.overrideColour16();
+        // Recompile
+        Editor3DWindow.getWindow().compileAll(true);
+        // Re-initialise the renderer
+        Editor3DWindow.getWindow().initAllRenderers();
     }
 }

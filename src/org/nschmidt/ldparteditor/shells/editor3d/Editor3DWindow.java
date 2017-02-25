@@ -8117,19 +8117,19 @@ public class Editor3DWindow extends Editor3DDesign {
         if (useLegacyGL) {
             GL20Primitives.SPHERE = sp;
             GL20Primitives.SPHERE_INV = sp_inv;
-            compileAll();
+            compileAll(false);
         }
         clickSingleBtn(btn);
     }
 
-    public void compileAll() {
+    public void compileAll(boolean forceParsing) {
         Set<DatFile> dfs = new HashSet<DatFile>();
         for (OpenGLRenderer renderer : renders) {
             dfs.add(renderer.getC3D().getLockableDatFileReference());
         }
         for (DatFile df : dfs) {
             df.getVertexManager().addSnapshot();
-            SubfileCompiler.compile(df, false, false);
+            SubfileCompiler.compile(df, false, forceParsing);
         }
     }
 
