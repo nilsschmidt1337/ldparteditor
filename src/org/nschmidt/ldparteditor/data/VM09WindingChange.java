@@ -206,7 +206,7 @@ public class VM09WindingChange extends VM08SlicerPro {
                                 t.M30, t.M31, t.M32, t.M33);
                     }
                     newSubfile = (GData1) DatParser
-                            .parseLine(untransformedSubfile.getTransformedString(m, linkedDatFile, false) , dpl.getKey(subf).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
+                            .parseLine(untransformedSubfile.getTransformedString(m, null, linkedDatFile, false) , dpl.getKey(subf).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                 } else {
                     needsInvertNext = true;

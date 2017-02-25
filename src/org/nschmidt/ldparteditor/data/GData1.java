@@ -1336,7 +1336,17 @@ public final class GData1 extends GData {
         return text;
     }
 
-    public String getTransformedString(Matrix transformation, DatFile df, boolean avoidFlatScaling) {
+    public String getTransformedString(Matrix transformation, Vector3d newOrigin, DatFile df, boolean avoidFlatScaling) {
+
+        if (newOrigin != null) {
+            Matrix4f id = new Matrix4f();
+            Matrix4f.setIdentity(id);
+            transformation = new Matrix(id).translate(new BigDecimal[] {
+                    newOrigin.X == null ? BigDecimal.ZERO : newOrigin.X.subtract(this.accurateLocalMatrix.M30),
+                    newOrigin.Y == null ? BigDecimal.ZERO : newOrigin.Y.subtract(this.accurateLocalMatrix.M31),
+                    newOrigin.Z == null ? BigDecimal.ZERO : newOrigin.Z.subtract(this.accurateLocalMatrix.M32) });
+        }
+
         GColour col16 = View.getLDConfigColour(16);
         Matrix accurateLocalMatrix = new Matrix(this.accurateLocalMatrix);
         BigDecimal tx = this.accurateLocalMatrix.M30.add(BigDecimal.ZERO);
