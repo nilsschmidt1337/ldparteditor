@@ -63,6 +63,8 @@ public class RotateDialog extends RotateDesign {
         if (clipboardVertices.size() == 1) {
             p = clipboardVertices.iterator().next();
             c = new Vertex(p.X, p.Y, p.Z);
+        } else if (transformationMode == ManipulatorScope.LOCAL && manipulatorPosition != null) {
+            pivot = new Vertex(m.X, m.Y, m.Z);
         }
     }
 
