@@ -111,7 +111,7 @@ final class ErrorFixer {
                 }
 
                 GData1 newSubfile = (GData1) DatParser
-                        .parseLine(untransformedSubfile.getTransformedString(m, datFile, false) , datFile.getDrawPerLine_NOCLONE().getKey(subfileToFlip).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false,
+                        .parseLine(untransformedSubfile.getTransformedString(m, null, datFile, false) , datFile.getDrawPerLine_NOCLONE().getKey(subfileToFlip).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false,
                                 new HashSet<String>(), false).get(0).getGraphicalData();
                 text = QuickFixer.setLine(lineNumber + 1, newSubfile.toString(), text);
                 datFile.getVertexManager().remove(untransformedSubfile);

@@ -554,7 +554,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                     if (!drawPerLine.containsValue(subf)) {
                         continue;
                     }
-                    String transformedString = subf.getTransformedString(transformation, linkedDatFile, true);
+                    String transformedString = subf.getTransformedString(transformation, newVertex, linkedDatFile, true);
                     GData transformedSubfile = DatParser
                             .parseLine(transformedString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile,
                                     false, new HashSet<String>(), false).get(0).getGraphicalData();
