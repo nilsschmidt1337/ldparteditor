@@ -195,6 +195,7 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_CompileSubfile = new Button[1];
     final Button[] btn_SplitQuad = new Button[1];
     final Button[] btn_MergeQuad = new Button[1];
+    final Button[] btn_LineIntersection = new Button[1];
     final Button[] btn_CondlineToLine = new Button[1];
     final Button[] btn_LineToCondline = new Button[1];
     final Button[] btn_MoveOnLine = new Button[1];
@@ -2068,6 +2069,12 @@ class Editor3DDesign extends ApplicationWindow {
             this.btn_MergeQuad[0] = btn_MergeQuad;
             btn_MergeQuad.setImage(ResourceManager.getImage("icon16_triToquad.png")); //$NON-NLS-1$
             btn_MergeQuad.setToolTipText(I18n.EDITORTEXT_MergeQuad);
+        }
+        {
+            Button btn_LineIntersection = new Button(toolItem_MiscClick, SWT.NONE);
+            this.btn_LineIntersection[0] = btn_LineIntersection;
+            btn_LineIntersection.setImage(ResourceManager.getImage("icon16_lineintersect.png")); //$NON-NLS-1$
+            btn_LineIntersection.setToolTipText(I18n.E3D_LineIntersection);
         }
         {
             Button btn_CondlineToLine = new Button(toolItem_MiscClick, SWT.NONE);
