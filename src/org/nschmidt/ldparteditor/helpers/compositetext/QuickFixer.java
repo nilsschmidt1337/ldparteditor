@@ -110,9 +110,9 @@ public enum QuickFixer {
             }
             text2 = sb.toString();
         }
-        
+
         HeaderState h = datFile.getDatHeader().getState().clone();
-        
+
         for (Integer l : lineNumbers) {
 
             for (TreeItem t : issuesInLine.get(l)) {
@@ -151,7 +151,7 @@ public enum QuickFixer {
     }
 
     static String setLine(int line, String textToSet, String text) {
-        return text.replaceFirst("<L" + line + ">.*</L" + line + ">", "<L" + line + ">" + textToSet + "</L" + line + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        return text.replaceFirst("<L" + line + ">.*</L" + line + ">", "<L" + line + ">" + Matcher.quoteReplacement(textToSet) + "</L" + line + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
     }
 
     static String getLine(int line, String text) {
