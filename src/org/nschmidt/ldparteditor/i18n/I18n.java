@@ -430,6 +430,7 @@ public final class I18n {
     public static final String E3D_LDrawSourceFile = E3D.getString(getProperty());
     public static final String E3D_LastOpened = E3D.getString(getProperty());
     public static final String E3D_LastProject = E3D.getString(getProperty());
+    public static final String E3D_LineIntersection = E3D.getString(getProperty());
     public static final String E3D_LineOpenGL = E3D.getString(getProperty());
     public static final String E3D_LineSize0 = E3D.getString(getProperty());
     public static final String E3D_LineSize1 = E3D.getString(getProperty());
