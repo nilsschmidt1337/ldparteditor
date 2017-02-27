@@ -307,7 +307,6 @@ public class PerspectiveCalculator {
         return result;
     }
 
-
     /**
      * Transforms screen coordinates to 3D space coordinates
      * (needs viewport inverse)
@@ -480,22 +479,22 @@ public class PerspectiveCalculator {
     public float getZoom_exponent() {
         return zoom_exponent;
     }
-    
+
     public void setZoom_exponent(float zoom_exponent) {
         this.zoom_exponent = zoom_exponent;
     }
-    
+
     public Vector4f getOffset() {
         return new Vector4f(offset.x, offset.y, offset.z, offset.w);
     }
-    
+
     public void setOffset(Vector4f off) {
         offset.x = off.x;
         offset.y = off.y;
         offset.z = off.z;
         offset.w = off.w;
     }
-    
+
     private void syncZoom() {
         if (c3d.isSyncZoom()) {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
