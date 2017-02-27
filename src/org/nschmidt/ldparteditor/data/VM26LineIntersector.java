@@ -98,8 +98,4 @@ public class VM26LineIntersector extends VM25Smooth {
             updateUnsavedStatus();
         }
     }
-
-    public void intersectionVerticesBetweenLines2D() {
-        // FIXME Needs implementation!
-    }
 }
