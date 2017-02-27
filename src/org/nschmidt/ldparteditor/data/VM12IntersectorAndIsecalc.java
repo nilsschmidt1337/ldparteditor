@@ -1297,20 +1297,20 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     Vector3d.sub(vertexB, vertexA, A);
                                     Vector3d.sub(vertexC, vertexB, B);
                                     Vector3d.sub(vertexC, vertexA, C);
-                                    
+
                                     angle = Vector3d.angle(A, C);
                                     double sumAngle = angle;
                                     if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                         continue;
                                     }
-                                    
+
                                     A.negate();
                                     angle = Vector3d.angle(A, B);
                                     sumAngle = sumAngle + angle;
                                     if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                         continue;
                                     }
-                                    
+
                                     angle = 180.0 - sumAngle;
                                     if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                         continue;
@@ -1556,7 +1556,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
         return true;
     }
 
-    private Vector3d intersectLineLineSegmentUnidirectional2(Vector3dd p, Vector3dd p2, Vector3dd q, Vector3dd q2) {
+    protected Vector3d intersectLineLineSegmentUnidirectional2(Vector3dd p, Vector3dd p2, Vector3dd q, Vector3dd q2) {
 
 
         Vector3d sp = Vector3d.sub(p2, p);
@@ -2318,20 +2318,20 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                                 Vector3d.sub(vertexB, vertexA, A);
                                                                 Vector3d.sub(vertexC, vertexB, B);
                                                                 Vector3d.sub(vertexC, vertexA, C);
-                                                                
+
                                                                 angle = Vector3d.angle(A, C);
                                                                 double sumAngle = angle;
                                                                 if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                                                     continue;
                                                                 }
-                                                                
+
                                                                 A.negate();
                                                                 angle = Vector3d.angle(A, B);
                                                                 sumAngle = sumAngle + angle;
                                                                 if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                                                     continue;
                                                                 }
-                                                                
+
                                                                 angle = 180.0 - sumAngle;
                                                                 if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                                                     continue;
