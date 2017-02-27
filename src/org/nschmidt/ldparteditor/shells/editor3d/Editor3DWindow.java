@@ -1922,6 +1922,17 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        btn_LineIntersection[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
+                    Project.getFileToEdit().getVertexManager().intersectionVerticesBetweenLines3D();
+                }
+                regainFocus();
+            }
+        });
+
         btn_CondlineToLine[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
