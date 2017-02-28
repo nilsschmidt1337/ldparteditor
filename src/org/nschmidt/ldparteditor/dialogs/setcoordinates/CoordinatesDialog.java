@@ -50,6 +50,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
     private static boolean x = false;
     private static boolean y = false;
     private static boolean z = false;
+    private static boolean creatingCopy = false;
 
     private final Manipulator mani;
 
@@ -63,6 +64,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
         x = false;
         y = false;
         z = false;
+        creatingCopy = false;
         if (v == null) {
             vertex = new Vertex(0f, 0f, 0f);
         } else {
@@ -166,7 +168,19 @@ public class CoordinatesDialog extends CoordinatesDesign {
                 updateXYZ();
             }
         });
+        btn_Copy[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                creatingCopy = true;
+                setReturnCode(OK);
+                close();
+            }
+        });
         return super.open();
+    }
+
+    public static boolean isCreatingCopy() {
+        return creatingCopy;
     }
 
     public static boolean isZ() {

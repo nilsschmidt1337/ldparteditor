@@ -55,6 +55,8 @@ class RotateDesign extends Dialog {
     final Button[] btn_Local = new Button[1];
     final Button[] btn_Global = new Button[1];
 
+    final Button[] btn_Copy = new Button[1];
+
     final Button[] rb_Xaxis = new Button[1];
     final Button[] rb_Yaxis = new Button[1];
     final Button[] rb_Zaxis = new Button[1];
@@ -251,6 +253,7 @@ class RotateDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
+        btn_Copy[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_CreateTransformedCopy, false);
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, false);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
     }

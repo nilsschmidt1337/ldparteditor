@@ -44,6 +44,7 @@ public class RotateDialog extends RotateDesign {
     private static boolean x = true;
     private static boolean y = false;
     private static boolean z = false;
+    private static boolean creatingCopy = false;
 
     /**
      * Create the dialog.
@@ -55,6 +56,7 @@ public class RotateDialog extends RotateDesign {
         x = true;
         y = false;
         z = false;
+        creatingCopy = false;
         if (v == null) {
             setAngles(new Vertex(0f, 0f, 0f));
         } else {
@@ -188,7 +190,19 @@ public class RotateDialog extends RotateDesign {
                 spn_pZ[0].setValue(c.Z);
             }
         });
+        btn_Copy[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                creatingCopy = true;
+                setReturnCode(OK);
+                close();
+            }
+        });
         return super.open();
+    }
+
+    public static boolean isCreatingCopy() {
+        return creatingCopy;
     }
 
     public static boolean isZ() {
