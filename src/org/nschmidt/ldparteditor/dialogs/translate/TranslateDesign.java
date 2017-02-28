@@ -53,6 +53,8 @@ class TranslateDesign extends Dialog {
     final Button[] btn_Local = new Button[1];
     final Button[] btn_Global = new Button[1];
 
+    final Button[] btn_Copy = new Button[1];
+
     final Button[] cb_Xaxis = new Button[1];
     final Button[] cb_Yaxis = new Button[1];
     final Button[] cb_Zaxis = new Button[1];
@@ -192,6 +194,7 @@ class TranslateDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
+        btn_Copy[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_CreateTransformedCopy, false);
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, false);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
     }

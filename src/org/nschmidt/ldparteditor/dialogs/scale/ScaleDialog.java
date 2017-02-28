@@ -44,6 +44,7 @@ public class ScaleDialog extends ScaleDesign {
     private static boolean x = true;
     private static boolean y = true;
     private static boolean z = true;
+    private static boolean creatingCopy = false;
 
     /**
      * Create the dialog.
@@ -55,6 +56,7 @@ public class ScaleDialog extends ScaleDesign {
         x = true;
         y = true;
         z = true;
+        creatingCopy = false;
         if (v == null) {
             setScaleFactors(new Vertex(1f, 1f, 1f));
         } else {
@@ -158,7 +160,19 @@ public class ScaleDialog extends ScaleDesign {
                 spn_pZ[0].setValue(c.Z);
             }
         });
+        btn_Copy[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                creatingCopy = true;
+                setReturnCode(OK);
+                close();
+            }
+        });
         return super.open();
+    }
+
+    public static boolean isCreatingCopy() {
+        return creatingCopy;
     }
 
     public static boolean isZ() {

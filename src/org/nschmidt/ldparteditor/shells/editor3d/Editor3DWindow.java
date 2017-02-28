@@ -3995,7 +3995,16 @@ public class Editor3DWindow extends Editor3DDesign {
                                     CoordinatesDialog.setZ(c);
                                 }
                             } else {
-                                vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedData().size() == 0 || vm.getSelectedVertices().size() == 1, true, CoordinatesDialog.getTransformationMode());
+                                final boolean moveAdjacentData = isMovingAdjacentData();
+                                if (CoordinatesDialog.isCreatingCopy()) {
+                                    vm.copy();
+                                    vm.paste();
+                                    setMovingAdjacentData(false);
+                                    vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), false, true, CoordinatesDialog.getTransformationMode());
+                                    setMovingAdjacentData(moveAdjacentData);
+                                } else {
+                                    vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedData().size() == 0 || vm.getSelectedVertices().size() == 1, true, CoordinatesDialog.getTransformationMode());
+                                }
                             }
 
                             if (noReset) {
@@ -4024,7 +4033,16 @@ public class Editor3DWindow extends Editor3DDesign {
                         Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
                         if (new TranslateDialog(getShell(), new Vertex(c3d.getManipulator().getAccuratePosition()), transformationMode).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
+                            final boolean moveAdjacentData = isMovingAdjacentData();
+                            if (TranslateDialog.isCreatingCopy()) {
+                                c3d.getLockableDatFileReference().getVertexManager().copy();
+                                c3d.getLockableDatFileReference().getVertexManager().paste();
+                                setMovingAdjacentData(false);
+                            }
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(TranslateDialog.getOffset(), null, TransformationMode.TRANSLATE, TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), isMovingAdjacentData(), true, TranslateDialog.getTransformationMode());
+                            if (TranslateDialog.isCreatingCopy()) {
+                                setMovingAdjacentData(moveAdjacentData);
+                            }
                         }
                         Editor3DWindow.getWindow().setWorkingAction(action);
                         regainFocus();
@@ -4075,7 +4093,16 @@ public class Editor3DWindow extends Editor3DDesign {
                         Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
                         if (new RotateDialog(getShell(), null, clipboard, mani, transformationMode).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
+                            final boolean moveAdjacentData = isMovingAdjacentData();
+                            if (RotateDialog.isCreatingCopy()) {
+                                c3d.getLockableDatFileReference().getVertexManager().copy();
+                                c3d.getLockableDatFileReference().getVertexManager().paste();
+                                setMovingAdjacentData(false);
+                            }
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), RotateDialog.isZ(), isMovingAdjacentData(), true, RotateDialog.getTransformationMode());
+                            if (RotateDialog.isCreatingCopy()) {
+                                setMovingAdjacentData(moveAdjacentData);
+                            }
                         }
                         Editor3DWindow.getWindow().setWorkingAction(action);
                         regainFocus();
@@ -4126,7 +4153,16 @@ public class Editor3DWindow extends Editor3DDesign {
                         Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
                         if (new ScaleDialog(getShell(), null, clipboard, mani, transformationMode).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
+                            final boolean moveAdjacentData = isMovingAdjacentData();
+                            if (ScaleDialog.isCreatingCopy()) {
+                                c3d.getLockableDatFileReference().getVertexManager().copy();
+                                c3d.getLockableDatFileReference().getVertexManager().paste();
+                                setMovingAdjacentData(false);
+                            }
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), TransformationMode.SCALE, ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), isMovingAdjacentData(), true, ScaleDialog.getTransformationMode());
+                            if (ScaleDialog.isCreatingCopy()) {
+                                setMovingAdjacentData(moveAdjacentData);
+                            }
                         }
                         Editor3DWindow.getWindow().setWorkingAction(action);
                         regainFocus();

@@ -42,6 +42,7 @@ public class TranslateDialog extends TranslateDesign {
     private static boolean x = true;
     private static boolean y = true;
     private static boolean z = true;
+    private static boolean creatingCopy = false;
 
     /**
      * Create the dialog.
@@ -53,6 +54,7 @@ public class TranslateDialog extends TranslateDesign {
         x = true;
         y = true;
         z = true;
+        creatingCopy = false;
         manipulator = manipulatorPosition;
     }
 
@@ -135,7 +137,19 @@ public class TranslateDialog extends TranslateDesign {
                 setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
             }
         });
+        btn_Copy[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                creatingCopy = true;
+                setReturnCode(OK);
+                close();
+            }
+        });
         return super.open();
+    }
+
+    public static boolean isCreatingCopy() {
+        return creatingCopy;
     }
 
     public static boolean isZ() {
