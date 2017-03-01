@@ -2381,7 +2381,8 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            final Button btn_ToolsActions = new Button(toolItem_MiscClick, SWT.ARROW | SWT.DOWN);
+            final Button btn_ToolsActions = new Button(toolItem_MiscClick, SWT.PUSH);
+            btn_ToolsActions.setText(I18n.E3D_Tools);
             btn_ToolsActions.setToolTipText(I18n.E3D_ToolsOptions);
             this.mnu_Tools = new Menu(this.getShell(), SWT.POP_UP);
             btn_ToolsActions.addSelectionListener(new SelectionAdapter() {
