@@ -743,7 +743,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                     BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
                     BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
                     BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO,
-                    offset.X, offset.Y, offset.Z, BigDecimal.ONE);
+                    x ? offset.X : BigDecimal.ZERO, y ? offset.Y : BigDecimal.ZERO, z ? offset.Z : BigDecimal.ZERO, BigDecimal.ONE);
             break;
         default:
             break;
