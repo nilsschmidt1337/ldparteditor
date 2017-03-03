@@ -542,6 +542,7 @@ public enum TexMapParser {
                 alreadyParsed.remove(shortFilename);
                 return result;
             } else if (!fileExists) {
+                alreadyParsed.remove(shortFilename);
                 return null;
             } else {
                 absoluteFilename = fileToOpen.getAbsolutePath();
@@ -558,10 +559,13 @@ public enum TexMapParser {
                         lines.add(line);
                     }
                 } catch (FileNotFoundException e1) {
+                    alreadyParsed.remove(shortFilename);
                     return null;
                 } catch (LDParsingException e1) {
+                    alreadyParsed.remove(shortFilename);
                     return null;
                 } catch (UnsupportedEncodingException e1) {
+                    alreadyParsed.remove(shortFilename);
                     return null;
                 } finally {
                     try {
