@@ -237,8 +237,16 @@ void main()
 		lightSpecular *= .05;
 		if (alphaswitch < 0.5f) {
 			if (resultColor.a < 0.9f) {
+				if (texColor.a < 0.1f) {
+			    	discard;
+			    }
 			    if (texColor.a < 0.9f) {
-					discard;
+					float oneMinusTexAlpha = 1.0 - texColor.a;
+					texColor.r = texColor.r * texColor.a + resultColor.r * oneMinusTexAlpha;
+            	    texColor.g = texColor.g * texColor.a + resultColor.g * oneMinusTexAlpha;
+            	    texColor.b = texColor.b * texColor.a + resultColor.b * oneMinusTexAlpha;
+					texColor.a = resultColor.a;
+					resultColor = texColor;
 				} else {
 					resultColor = texColor;
 					resultColor.a = 1.0f;
@@ -246,8 +254,11 @@ void main()
 				color = (resultColor + lightAmbientDiffuse) + lightSpecular;
 			} else {				
 				if (texColor.a < 0.9f) {
-					if (texColor.a > 0.1f) {					
-						resultColor = mix(resultColor, texColor, resultColor);
+					if (texColor.a > 0.1f) {
+						float oneMinusTexAlpha = 1.0 - texColor.a;
+						resultColor.r = texColor.r * texColor.a + resultColor.r * oneMinusTexAlpha;
+            			resultColor.g = texColor.g * texColor.a + resultColor.g * oneMinusTexAlpha;
+            			resultColor.b = texColor.b * texColor.a + resultColor.b * oneMinusTexAlpha;
 						resultColor.a = 1.0f;
 					}
 				} else {
@@ -257,13 +268,6 @@ void main()
 			}
 		} else {
 			if (resultColor.a < 0.9f) {
-				if (texColor.a < 0.9f) {
-					texColor = mix(resultColor, texColor, resultColor);
-					texColor.a = resultColor.a;
-					resultColor = texColor;
-				} else {
-					discard;
-				}
 				color = (resultColor + lightAmbientDiffuse) + lightSpecular;
 			} else {
 				discard;
