@@ -238,10 +238,10 @@ void main (void)
        } else {
          if (alphaSwitch > 0.0) {
             vec4 textureColor =  (gl_FrontLightModelProduct.sceneColor + lightTextureDiffuse) + lightTextureSpecular * reflectivity;
-            float oneMinusGroundAlpha = 1.0 - groundAlpha;
-            gl_FragColor.r = textureColor.r * oneMinusGroundAlpha - groundColor.r * groundAlpha;
-            gl_FragColor.g = textureColor.g * oneMinusGroundAlpha - groundColor.g * groundAlpha;
-            gl_FragColor.b = textureColor.b * oneMinusGroundAlpha - groundColor.b * groundAlpha;
+            float oneMinusTexAlpha = 1.0 - texColor.a;
+            gl_FragColor.r = textureColor.r * texColor.a + groundColor.r * oneMinusTexAlpha;
+            gl_FragColor.g = textureColor.g * texColor.a + groundColor.g * oneMinusTexAlpha;
+            gl_FragColor.b = textureColor.b * texColor.a + groundColor.b * oneMinusTexAlpha;
             gl_FragColor.a = 1.0;
          } else {
             discard;
