@@ -354,7 +354,7 @@ public class GL33ModelRenderer {
                         // First we have to get links to the sets from the model
                         final DatFile df = c3d.getLockableDatFileReference();
                         // Just to speed up things in some cases...
-                        if (!df.isDrawSelection()) {
+                        if (df == null || !df.isDrawSelection()) {
                             continue; // static_lock.unlock(); on finally
                         }
                         final VertexManager vm = df.getVertexManager();
