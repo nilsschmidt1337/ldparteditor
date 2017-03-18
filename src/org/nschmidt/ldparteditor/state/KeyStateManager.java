@@ -161,6 +161,7 @@ public class KeyStateManager {
 
         addTask(Task.SELECT_OPTION_WITH_SAME_COLOURS, SWT.ALT, 's');
 
+        addTask(Task.FLIP_ROTATE_VERTICES, 'f');
         addTask(Task.MERGE_TO_AVERAGE, SWT.CTRL, 'w');
         addTask(Task.MERGE_TO_LAST, SWT.CTRL, 'e');
         addTask(Task.SPLIT, SWT.ALT, 'v');
@@ -499,6 +500,9 @@ public class KeyStateManager {
                         vm.syncWithTextEditors(true);
                         break;
                     }
+                    case FLIP_ROTATE_VERTICES:
+                        vm.flipSelection();
+                        break;
                     case MERGE_TO_AVERAGE:
                         vm.merge(MergeTo.AVERAGE, true, false);
                         break;

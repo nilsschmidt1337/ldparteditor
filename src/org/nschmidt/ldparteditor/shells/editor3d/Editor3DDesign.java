@@ -2288,6 +2288,7 @@ class Editor3DDesign extends ApplicationWindow {
                 MenuItem mntm_Flip = new MenuItem(mnu_Merge, SWT.PUSH);
                 this.mntm_Flip[0] = mntm_Flip;
                 mntm_Flip.setText(I18n.E3D_FlipRotate);
+                KeyStateManager.addKeyText(mntm_Flip, I18n.E3D_FlipRotate, Task.FLIP_ROTATE_VERTICES);
             }
             {
                 MenuItem mntm_Smooth = new MenuItem(mnu_Merge, SWT.PUSH);
