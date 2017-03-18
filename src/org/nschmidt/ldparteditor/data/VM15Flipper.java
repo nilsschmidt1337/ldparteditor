@@ -33,7 +33,7 @@ class VM15Flipper extends VM14Splitter {
     public void flipSelection() {
 
         if (linkedDatFile.isReadOnly()) return;
-        
+
         final boolean adjacentData = Editor3DWindow.getWindow().isMovingAdjacentData();
         Editor3DWindow.getWindow().setMovingAdjacentData(false);
         GuiManager.updateStatus();
@@ -108,9 +108,9 @@ class VM15Flipper extends VM14Splitter {
                         j++;
                     }
                     i++;
-                }    
+                }
             }
-            
+
             effSelectedTriangles.removeAll(surfsToIgnore);
             for (GData3 s1 : trianglePair.keySet()) {
                 GData3 s2 = trianglePair.get(s1);
@@ -189,7 +189,7 @@ class VM15Flipper extends VM14Splitter {
                             linkedDatFile.insertAfter(cline, new GData5(cline.colourNumber, cline.r, cline.g, cline.b, cline.a, first, third, second, fourth, cline.parent, linkedDatFile));
                             clinesToDelete2.add(cline);
                         }
-                        
+
                         // Adjacent Condline Check 1
                         checkAdjacentCondline(clinesToDelete2, first, second, third, fourth);
                         checkAdjacentCondline(clinesToDelete2, first, second, fourth, third);
@@ -209,14 +209,14 @@ class VM15Flipper extends VM14Splitter {
         }
 
         for (GData2 g : effSelectedLines) {
-            GData2 n = new GData2(g.colourNumber, g.r, g.g, g.b, g.a, g.X2, g.Y2, g.Z2, g.X1, g.Y1, g.Z1, g.parent, linkedDatFile, true);
+            GData2 n = new GData2(g.colourNumber, g.r, g.g, g.b, g.a, g.X2, g.Y2, g.Z2, g.X1, g.Y1, g.Z1, g.parent, linkedDatFile, g.isLine);
             newLines.add(n);
             linkedDatFile.insertAfter(g, n);
             linesToDelete2.add(g);
         }
 
         for (GData3 g : effSelectedTriangles) {
-            GData3 n = new GData3(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X2, g.Y2, g.Z2), g.parent, linkedDatFile, true);
+            GData3 n = new GData3(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X2, g.Y2, g.Z2), g.parent, linkedDatFile, g.isTriangle);
             newTriangles.add(n);
             linkedDatFile.insertAfter(g, n);
             trisToDelete2.add(g);
@@ -252,7 +252,7 @@ class VM15Flipper extends VM14Splitter {
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
         delete(false, false);
-        
+
         clearSelection();
 
         selectedLines.addAll(newLines);
@@ -263,7 +263,7 @@ class VM15Flipper extends VM14Splitter {
         selectedData.addAll(selectedTriangles);
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
-        
+
         Editor3DWindow.getWindow().setMovingAdjacentData(adjacentData);
 
         if (isModified()) {
@@ -280,7 +280,7 @@ class VM15Flipper extends VM14Splitter {
             if (verts != null) {
                 Vertex backupVert = null;
                 if (verts[2].equals(controlPoint)) {
-                    backupVert = verts[3];                                    
+                    backupVert = verts[3];
                 } else if (verts[3].equals(controlPoint)) {
                     backupVert = verts[2];
                 }
