@@ -142,6 +142,7 @@ import org.nschmidt.ldparteditor.dialogs.txt2dat.Txt2DatDialog;
 import org.nschmidt.ldparteditor.dialogs.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialogInt;
+import org.nschmidt.ldparteditor.dialogs.ytruder.YTruderDialog;
 import org.nschmidt.ldparteditor.enums.GL20Primitives;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MergeTo;
@@ -175,6 +176,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.TreeData;
 import org.nschmidt.ldparteditor.helpers.composite3d.Txt2DatSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.UnificatorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
+import org.nschmidt.ldparteditor.helpers.composite3d.YTruderSettings;
 import org.nschmidt.ldparteditor.helpers.compositetext.ProjectActions;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -259,6 +261,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private SlicerProSettings ss = new SlicerProSettings();
     private IntersectorSettings ins = new IntersectorSettings();
     private PathTruderSettings ps = new PathTruderSettings();
+    private YTruderSettings ys = new YTruderSettings();
     private SymSplitterSettings sims = new SymSplitterSettings();
     private UnificatorSettings us = new UnificatorSettings();
     private RingsAndConesSettings ris = new RingsAndConesSettings();
@@ -4606,6 +4609,25 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (new PathTruderDialog(getShell(), ps).open() == IDialogConstants.OK_ID) {
                             vm.addSnapshot();
                             vm.pathTruder(ps, true, null);
+                        }
+                        regainFocus();
+                        return;
+                    }
+                }
+                regainFocus();
+            }
+        });
+
+        mntm_YTruder[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        if (new YTruderDialog(getShell(), ys).open() == IDialogConstants.OK_ID) {
+                            vm.addSnapshot();
+                            // FIXME vm.yTruder(ys, true, null);
                         }
                         regainFocus();
                         return;

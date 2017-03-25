@@ -267,6 +267,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Intersector = new MenuItem[1];
     final MenuItem[] mntm_Lines2Pattern = new MenuItem[1];
     final MenuItem[] mntm_PathTruder = new MenuItem[1];
+    final MenuItem[] mntm_YTruder = new MenuItem[1];
     final MenuItem[] mntm_SymSplitter = new MenuItem[1];
     final MenuItem[] mntm_Unificator = new MenuItem[1];
     final MenuItem[] mntm_RingsAndCones = new MenuItem[1];
@@ -2447,6 +2448,11 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_PathTruder = new MenuItem(mnu_Tools, SWT.PUSH);
                     this.mntm_PathTruder[0] = mntm_PathTruder;
                     mntm_PathTruder.setText(I18n.E3D_PathTruder);
+                }
+                {
+                    MenuItem mntm_YTruder = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_YTruder[0] = mntm_YTruder;
+                    mntm_YTruder.setText(I18n.E3D_YTruder);
                 }
                 {
                     MenuItem mntm_SymSplitter = new MenuItem(mnu_Tools, SWT.PUSH);

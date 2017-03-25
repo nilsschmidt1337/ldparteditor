@@ -72,6 +72,7 @@ public final class I18n {
     private static final ResourceBundle LINES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.LinesPattern", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle OPTIONS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Options", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle PATHTRUDER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PathTruder", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle YTRUDER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.YTruder", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle PRIMGEN = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PrimGen", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle RECTIFIER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Rectifier", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle RCONES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.RingsAndCones", MyLanguage.LOCALE); //$NON-NLS-1$
@@ -641,6 +642,7 @@ public final class I18n {
     public static final String E3D_WithSameColour = E3D.getString(getProperty());
     public static final String E3D_WithSameOrientation = E3D.getString(getProperty());
     public static final String E3D_WithWholeSubfileSelection = E3D.getString(getProperty());
+    public static final String E3D_YTruder = E3D.getString(getProperty());
     public static final String EDGER_0to180 = EDGER.getString(getProperty());
     public static final String EDGER_0to90 = EDGER.getString(getProperty());
     public static final String EDGER_Condition1 = EDGER.getString(getProperty());
@@ -1173,6 +1175,18 @@ public final class I18n {
     public static final String VM_Triangulate = VM.getString(getProperty());
     public static final String VM_Unificator = VM.getString(getProperty());
     public static final String VM_Unify = VM.getString(getProperty());
+    public static final String YTRUDER_Axis = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_Description = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_ExtrudeRadially = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_ProjectionOnPlane = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_RotAngle = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_SymmetryAcrossPlane = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_Title = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_TranslationByDistance = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_Value = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_X = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_Y = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_Z = YTRUDER.getString(getProperty());
 
     // Custom Methods
     public static String UNIT_CurrentUnit() {
