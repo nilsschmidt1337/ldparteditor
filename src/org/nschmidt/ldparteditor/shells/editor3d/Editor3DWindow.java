@@ -4627,7 +4627,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         if (new YTruderDialog(getShell(), ys).open() == IDialogConstants.OK_ID) {
                             vm.addSnapshot();
-                            // FIXME vm.yTruder(ys, true, null);
+                            vm.yTruder(ys);
                         }
                         regainFocus();
                         return;

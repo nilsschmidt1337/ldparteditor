@@ -21,11 +21,32 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
  */
 public class YTruderSettings {
     // FIXME Needs implementation!
-    private int axis = 0;
+    private int axis = 1;
+    private int mode = 1;
+    private double condlineAngleThreshold = 30.0;
+    private double distance = 0.0;
     public int getAxis() {
         return axis;
     }
     public void setAxis(int axis) {
         this.axis = axis;
+    }
+    public int getMode() {
+        return mode;
+    }
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
+    public double getCondlineAngleThreshold() {
+        return condlineAngleThreshold;
+    }
+    public void setCondlineAngleThreshold(double condlineAngleThreshold) {
+        this.condlineAngleThreshold = condlineAngleThreshold;
+    }
+    public double getDistance() {
+        return distance;
+    }
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 }
