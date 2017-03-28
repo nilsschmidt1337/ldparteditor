@@ -20,7 +20,6 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
  *
  */
 public class YTruderSettings {
-    // FIXME Needs implementation!
     private int axis = 1;
     private int mode = 1;
     private double condlineAngleThreshold = 30.0;
