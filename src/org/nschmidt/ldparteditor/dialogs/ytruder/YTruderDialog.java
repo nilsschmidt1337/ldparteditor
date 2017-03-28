@@ -16,6 +16,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialogs.ytruder;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
@@ -54,11 +56,13 @@ public class YTruderDialog extends YTruderDesign {
         spn_value[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
+                ys.setDistance(spn.getValue().doubleValue());
             }
         });
-        spn_rotationAngle[0].addValueChangeListener(new ValueChangeAdapter() {
+        spn_condlineAngleThreshold[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
             public void valueChanged(BigDecimalSpinner spn) {
+                ys.setCondlineAngleThreshold(spn.getValue().doubleValue());
             }
         });
         cmb_axis[0].addListener(SWT.Selection, new Listener() {
@@ -67,7 +71,30 @@ public class YTruderDialog extends YTruderDesign {
                 ys.setAxis(cmb_axis[0].getSelectionIndex());
             }
         });
-
+        btn_TranslateByDistance[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                ys.setMode(1);
+            }
+        });
+        btn_SymmetryAcrossPlane[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                ys.setMode(2);
+            }
+        });
+        btn_ProjectionOnPlane[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                ys.setMode(3);
+            }
+        });
+        btn_ExtrudeRadially[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                ys.setMode(4);
+            }
+        });
         return super.open();
     }
 

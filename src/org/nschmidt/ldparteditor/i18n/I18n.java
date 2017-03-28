@@ -1176,10 +1176,10 @@ public final class I18n {
     public static final String VM_Unificator = VM.getString(getProperty());
     public static final String VM_Unify = VM.getString(getProperty());
     public static final String YTRUDER_Axis = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_CondlineAngle = YTRUDER.getString(getProperty());
     public static final String YTRUDER_Description = YTRUDER.getString(getProperty());
     public static final String YTRUDER_ExtrudeRadially = YTRUDER.getString(getProperty());
     public static final String YTRUDER_ProjectionOnPlane = YTRUDER.getString(getProperty());
-    public static final String YTRUDER_RotAngle = YTRUDER.getString(getProperty());
     public static final String YTRUDER_SymmetryAcrossPlane = YTRUDER.getString(getProperty());
     public static final String YTRUDER_Title = YTRUDER.getString(getProperty());
     public static final String YTRUDER_TranslationByDistance = YTRUDER.getString(getProperty());
